@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< E > {
+public class SimpleExpressionFillIn< E extends org.lgna.project.ast.Expression > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< E > {
 	private final E transientValue;
 	public SimpleExpressionFillIn( E value ) {
 		super( java.util.UUID.fromString( "7479f074-b5f1-4c72-96da-5ebc3c547db5" ) );

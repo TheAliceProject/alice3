@@ -47,12 +47,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.stageide.ast.SceneAdapter;
+import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.virtualmachine.VirtualMachine;
 import org.lgna.story.Scene;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
 public class StageIDE extends org.alice.ide.IDE {
@@ -159,34 +159,34 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected void registerAdapters(VirtualMachine vm) {
 		vm.registerAnonymousAdapter( Scene.class, SceneAdapter.class );
 	}
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava MOUSE_BUTTON_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.event.MouseButtonListener.class );
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava KEY_LISTENER_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.event.KeyListener.class );
+	private org.lgna.project.ast.TypeDeclaredInJava MOUSE_BUTTON_LISTENER_TYPE = org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.event.MouseButtonListener.class );
+	private org.lgna.project.ast.TypeDeclaredInJava KEY_LISTENER_TYPE = org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.event.KeyListener.class );
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createPredeterminedExpressionIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > desiredValueType ) {
+	protected org.lgna.project.ast.Expression createPredeterminedExpressionIfAppropriate( org.lgna.project.ast.AbstractType< ?, ?, ? > desiredValueType ) {
 		if( desiredValueType == MOUSE_BUTTON_LISTENER_TYPE ) {
-			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {
-					new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.lgna.story.event.MouseButtonEvent.class )
+			org.lgna.project.ast.ParameterDeclaredInAlice[] parameters = new org.lgna.project.ast.ParameterDeclaredInAlice[] {
+					new org.lgna.project.ast.ParameterDeclaredInAlice( "e", org.lgna.story.event.MouseButtonEvent.class )
 			};
-			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "mouseButtonClicked", Void.TYPE, parameters, body );
+			org.lgna.project.ast.BlockStatement body = new org.lgna.project.ast.BlockStatement();
+			org.lgna.project.ast.MethodDeclaredInAlice method = new org.lgna.project.ast.MethodDeclaredInAlice( "mouseButtonClicked", Void.TYPE, parameters, body );
 			method.isSignatureLocked.setValue( true );
-			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = new edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice();
+			org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice type = new org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice();
 			type.superType.setValue( desiredValueType );
 			type.methods.add( method );
-			edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
-			return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
+			org.lgna.project.ast.AnonymousConstructor constructor = org.lgna.project.ast.AnonymousConstructor.get( type );
+			return new org.lgna.project.ast.InstanceCreation( constructor );
 		} else if( desiredValueType == KEY_LISTENER_TYPE ) {
-			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {
-					new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.lgna.story.event.KeyEvent.class )
+			org.lgna.project.ast.ParameterDeclaredInAlice[] parameters = new org.lgna.project.ast.ParameterDeclaredInAlice[] {
+					new org.lgna.project.ast.ParameterDeclaredInAlice( "e", org.lgna.story.event.KeyEvent.class )
 			};
-			edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "keyPressed", Void.TYPE, parameters, body );
+			org.lgna.project.ast.BlockStatement body = new org.lgna.project.ast.BlockStatement();
+			org.lgna.project.ast.MethodDeclaredInAlice method = new org.lgna.project.ast.MethodDeclaredInAlice( "keyPressed", Void.TYPE, parameters, body );
 			method.isSignatureLocked.setValue( true );
-			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = new edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice();
+			org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice type = new org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice();
 			type.superType.setValue( desiredValueType );
 			type.methods.add( method );
-			edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
-			return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
+			org.lgna.project.ast.AnonymousConstructor constructor = org.lgna.project.ast.AnonymousConstructor.get( type );
+			return new org.lgna.project.ast.InstanceCreation( constructor );
 		} else {
 			return super.createPredeterminedExpressionIfAppropriate( desiredValueType );
 		}
@@ -200,7 +200,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected void promptForLicenseAgreements() {
 		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
 		try {
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.alice.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 3): Alice 3", edu.cmu.cs.dennisc.alice.License.TEXT, "Alice" );
+			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( org.lgna.project.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 3): Alice 3", org.lgna.project.License.TEXT, "Alice" );
 //			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.wustl.cse.lookingglass.apis.walkandtouch.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 2 of 3): Looking Glass Walk & Touch API",
 //					edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "the Looking Glass Walk & Touch API" );
 			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.nebulous.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 3 of 3): The Sims (TM) 2 Art Assets",
@@ -211,18 +211,18 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 
-	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava COLOR_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Color.class );
+	private static final org.lgna.project.ast.TypeDeclaredInJava COLOR_TYPE = org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Color.class );
 
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon > mapFieldToIcon = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon >();
+	private java.util.Map< org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon > mapFieldToIcon = new java.util.HashMap< org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon >();
 
-	private javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
 		if( field.getDeclaringType() == COLOR_TYPE && field.getValueType() == COLOR_TYPE ) {
 			org.alice.ide.swing.icons.ColorIcon rv = this.mapFieldToIcon.get( field );
 			if( rv != null ) {
 				//pass
 			} else {
 				try {
-					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField fieldInJava = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField)field;
+					org.lgna.project.ast.FieldDeclaredInJavaWithField fieldInJava = (org.lgna.project.ast.FieldDeclaredInJavaWithField)field;
 					org.lgna.story.Color color = (org.lgna.story.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fieldInJava.getFieldReflectionProxy().getReification(), null );
 					rv = new org.alice.ide.swing.icons.ColorIcon( org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor() );
 					this.mapFieldToIcon.put( field, rv );
@@ -241,7 +241,7 @@ public class StageIDE extends org.alice.ide.IDE {
 //	}
 
 	@Override
-	protected boolean isAccessibleDesired( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
 		if( super.isAccessibleDesired( accessible ) ) {
 //			if( accessible.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Marker.class) ) {
 //				return false;
@@ -253,8 +253,8 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public org.lgna.croquet.components.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+	public org.lgna.croquet.components.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
+		org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 		javax.swing.Icon icon = getIconFor( field );
 		if( icon != null ) {
 			return new org.lgna.croquet.components.Label( icon );
@@ -262,13 +262,13 @@ public class StageIDE extends org.alice.ide.IDE {
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
 
-	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava REVOLUTIONS_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.lgna.story.AngleInRevolutions.class, Number.class );
-	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava PORTION_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.lgna.story.Portion.class, Number.class );
+	private static final org.lgna.project.ast.ConstructorDeclaredInJava REVOLUTIONS_CONSTRUCTOR = org.lgna.project.ast.ConstructorDeclaredInJava.get( org.lgna.story.AngleInRevolutions.class, Number.class );
+	private static final org.lgna.project.ast.ConstructorDeclaredInJava PORTION_CONSTRUCTOR = org.lgna.project.ast.ConstructorDeclaredInJava.get( org.lgna.story.Portion.class, Number.class );
 
-	protected org.alice.ide.common.DeclarationNameLabel createDeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	protected org.alice.ide.common.DeclarationNameLabel createDeclarationNameLabel( org.lgna.project.ast.AbstractField field ) {
 		//todo: better name
 		class ThisFieldAccessNameLabel extends org.alice.ide.common.DeclarationNameLabel {
-			public ThisFieldAccessNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+			public ThisFieldAccessNameLabel( org.lgna.project.ast.AbstractField field ) {
 				super( field );
 			}
 			@Override
@@ -283,13 +283,13 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new ThisFieldAccessNameLabel( field );
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
-			edu.cmu.cs.dennisc.alice.ast.Expression fieldExpression = fieldAccess.expression.getValue();
-			if( fieldExpression instanceof edu.cmu.cs.dennisc.alice.ast.ThisExpression ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
-				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
+	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, org.lgna.project.ast.Expression expression ) {
+		if( expression instanceof org.lgna.project.ast.FieldAccess ) {
+			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
+			org.lgna.project.ast.Expression fieldExpression = fieldAccess.expression.getValue();
+			if( fieldExpression instanceof org.lgna.project.ast.ThisExpression ) {
+				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+				org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
 				if( declaringType != null && declaringType.isAssignableTo( org.lgna.story.Scene.class ) ) {
 					if( field.getValueType().isAssignableTo( org.lgna.story.Entity.class ) ) {
 						return new org.alice.ide.common.ExpressionPane( expression, this.createDeclarationNameLabel( field ) ) {
@@ -305,9 +305,9 @@ public class StageIDE extends org.alice.ide.IDE {
 			if( this.isJava() ) {
 				//pass
 			} else {
-				if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
-					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
-					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+				if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
+					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+					org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
 						return new org.lgna.croquet.components.LineAxisPanel( factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), new org.lgna.croquet.components.Label( " revolutions" ) );
 					} else if( constructor == PORTION_CONSTRUCTOR ) {
@@ -319,16 +319,16 @@ public class StageIDE extends org.alice.ide.IDE {
 		return super.getOverrideComponent( factory, expression );
 	}
 	@Override
-	public boolean isDropDownDesiredForFieldInitializer( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType declaringType = field.getDeclaringType();
+	public boolean isDropDownDesiredForFieldInitializer( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+		org.lgna.project.ast.AbstractType declaringType = field.getDeclaringType();
 		if( declaringType != null ) {
 			if( declaringType.isAssignableTo( org.lgna.story.Scene.class ) ) {
-				edu.cmu.cs.dennisc.alice.ast.Expression initializer = field.initializer.getValue();
-				if( initializer instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
-					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)initializer;
-					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+				org.lgna.project.ast.Expression initializer = field.initializer.getValue();
+				if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
+					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
+					org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 					if( constructor != null ) {
-						edu.cmu.cs.dennisc.alice.ast.AbstractType type = constructor.getDeclaringType();
+						org.lgna.project.ast.AbstractType type = constructor.getDeclaringType();
 						if( type != null ) {
 							if( type.isAssignableTo( org.lgna.story.Turnable.class ) ) {
 								return false;
@@ -341,24 +341,24 @@ public class StageIDE extends org.alice.ide.IDE {
 		return super.isDropDownDesiredForFieldInitializer( field );
 	}
 	@Override
-	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
 		if( super.isDropDownDesiredFor( expression ) ) {
 			if( expression != null ) {
-				if (expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation) {
-					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation) expression;
-					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = instanceCreation.getType();
-					if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
+				if (expression instanceof org.lgna.project.ast.InstanceCreation) {
+					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation) expression;
+					org.lgna.project.ast.AbstractType<?,?,?> type = instanceCreation.getType();
+					if( type instanceof org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice ) {
 						if( type.isAssignableTo( org.lgna.story.event.KeyListener.class ) || type.isAssignableTo( org.lgna.story.event.MouseButtonListener.class ) ) {
 							return false;
 						}
 					}
 				} else {
-					edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
-					if( parent instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-						edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)parent;
-						edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+					org.lgna.project.ast.Node parent = expression.getParent();
+					if( parent instanceof org.lgna.project.ast.FieldAccess ) {
+						org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)parent;
+						org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 						assert field != null;
-						edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
+						org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
 						if( declaringType != null && declaringType.isAssignableTo( org.lgna.story.Scene.class ) ) {
 							if( field.getValueType().isAssignableTo( org.lgna.story.Turnable.class ) ) {
 								return false;
@@ -427,21 +427,21 @@ public class StageIDE extends org.alice.ide.IDE {
 		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
 	}
 
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, String > mapTypeToText;
+	private java.util.Map< org.lgna.project.ast.AbstractType, String > mapTypeToText;
 
-	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getDeclaredMethod( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, String name, Class< ? >... paramClses ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( type.getDeclaredMethod( name, paramClses ), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+	private static org.lgna.project.ast.MethodDeclaredInAlice getDeclaredMethod( org.lgna.project.ast.TypeDeclaredInAlice type, String name, Class< ? >... paramClses ) {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( type.getDeclaredMethod( name, paramClses ), org.lgna.project.ast.MethodDeclaredInAlice.class );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice getDeclaredConstructor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, Class< ? >... paramClses ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( type.getDeclaredConstructor( paramClses ), edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice.class );
+	private static org.lgna.project.ast.ConstructorDeclaredInAlice getDeclaredConstructor( org.lgna.project.ast.TypeDeclaredInAlice type, Class< ? >... paramClses ) {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( type.getDeclaredConstructor( paramClses ), org.lgna.project.ast.ConstructorDeclaredInAlice.class );
 	}
 
 	@Override
-	public void setProject( edu.cmu.cs.dennisc.alice.Project project ) {
+	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
 		if( project != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = project.getProgramType();
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = getSceneTypeFromProgramType( programType );
+			org.lgna.project.ast.TypeDeclaredInAlice programType = project.getProgramType();
+			org.lgna.project.ast.TypeDeclaredInAlice sceneType = getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
 				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().edit( sceneType.findMethod( "myFirstMethod" ), false );
 			}
@@ -452,38 +452,38 @@ public class StageIDE extends org.alice.ide.IDE {
 		return "<html><em>examples:</em> " + examples + "</html>";
 	}
 	@Override
-	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public String getTextFor( org.lgna.project.ast.AbstractType type ) {
 		if( mapTypeToText != null ) {
 			//pass
 		} else {
-			mapTypeToText = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType, String >();
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, createExampleText( "0.25, 1.0, 3.14, 98.6" ) );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, createExampleText( "1, 2, 42, 100" ) );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, createExampleText( "true, false" ) );
-			mapTypeToText.put( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), createExampleText( "\"hello\", \"goodbye\"" ) );
+			mapTypeToText = new java.util.HashMap< org.lgna.project.ast.AbstractType, String >();
+			mapTypeToText.put( org.lgna.project.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, createExampleText( "0.25, 1.0, 3.14, 98.6" ) );
+			mapTypeToText.put( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, createExampleText( "1, 2, 42, 100" ) );
+			mapTypeToText.put( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, createExampleText( "true, false" ) );
+			mapTypeToText.put( org.lgna.project.ast.TypeDeclaredInJava.get( String.class ), createExampleText( "\"hello\", \"goodbye\"" ) );
 		}
 		return mapTypeToText.get( type );
 	}
 
 	@Override
-	protected java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > addPrimeTimeJavaTypes( java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv ) {
+	protected java.util.List< ? super org.lgna.project.ast.TypeDeclaredInJava > addPrimeTimeJavaTypes( java.util.List< ? super org.lgna.project.ast.TypeDeclaredInJava > rv ) {
 		rv = super.addPrimeTimeJavaTypes( rv );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Biped.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Model.class ) );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Biped.class ) );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Model.class ) );
 		return rv;
 	}
 
 	@Override
-	protected java.util.List<? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava> addSecondaryJavaTypes(java.util.List<? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava> rv) {
+	protected java.util.List<? super org.lgna.project.ast.TypeDeclaredInJava> addSecondaryJavaTypes(java.util.List<? super org.lgna.project.ast.TypeDeclaredInJava> rv) {
 		super.addSecondaryJavaTypes(rv);
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Color.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.MoveDirection.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.TurnDirection.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.RollDirection.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Model.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Marker.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.ObjectMarker.class ) );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.CameraMarker.class ) );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Color.class ) );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.MoveDirection.class ) );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.TurnDirection.class ) );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.RollDirection.class ) );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Model.class ) );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Marker.class ) );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.ObjectMarker.class ) );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.CameraMarker.class ) );
 		return rv;
 	}
 	@Override
@@ -521,12 +521,12 @@ public class StageIDE extends org.alice.ide.IDE {
 //		}
 //	}
 	@Override
-	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = typeInAlice.getFirstTypeEncounteredDeclaredInJava();
+	public boolean isInstanceCreationAllowableFor( org.lgna.project.ast.TypeDeclaredInAlice typeInAlice ) {
+		org.lgna.project.ast.TypeDeclaredInJava typeInJava = typeInAlice.getFirstTypeEncounteredDeclaredInJava();
 		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getReification(), org.lgna.story.Scene.class, org.lgna.story.Camera.class );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType, int frameRate ) {
+	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.TypeDeclaredInAlice programType, int frameRate ) {
 		throw new RuntimeException( "todo" );
 //		return new MoveAndTurnRuntimeProgram( sceneType, vm ) {
 //			@Override

@@ -105,12 +105,12 @@ class TimeSlider extends javax.swing.JSlider {
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
-	class BogusNode extends edu.cmu.cs.dennisc.alice.ast.AbstractNode {
-		private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty bogusProperty = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
+public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< org.lgna.project.ast.InstanceCreation > {
+	class BogusNode extends org.lgna.project.ast.AbstractNode {
+		private org.lgna.project.ast.ExpressionProperty bogusProperty = new org.lgna.project.ast.ExpressionProperty( this ) {
 			@Override
-			public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
-				return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.virtualmachine.resources.AudioResource.class );
+			public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
+				return org.lgna.project.ast.TypeDeclaredInJava.get( org.alice.virtualmachine.resources.AudioResource.class );
 			}
 		};
 		@Override
@@ -150,27 +150,27 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 	};
 	private TestOperation testOperation = new TestOperation();
 
-	private static edu.cmu.cs.dennisc.alice.ast.Expression getArgumentExpressionAt( edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation, int index ) {
+	private static org.lgna.project.ast.Expression getArgumentExpressionAt( org.lgna.project.ast.InstanceCreation instanceCreation, int index ) {
 		assert instanceCreation.arguments.size() >= index;
-		edu.cmu.cs.dennisc.alice.ast.Argument arg = instanceCreation.arguments.get( index );
+		org.lgna.project.ast.Argument arg = instanceCreation.arguments.get( index );
 		assert arg != null;
 		return arg.expression.getValue();
 	}
 	public AudioSourceChooser() {
-		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = null;
+		org.lgna.project.ast.ResourceExpression resourceExpression = null;
 		org.alice.virtualmachine.resources.AudioResource audioResource = null;
 		double volumeLevel = 1.0;
 		double startTime = 0.0;
 		double stopTime = Double.NaN;
 
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
-			edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)previousExpression;
+		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
+		if( previousExpression instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)previousExpression;
 			int n = instanceCreation.arguments.size();
 			if( n > 0 ) {
-				edu.cmu.cs.dennisc.alice.ast.Expression expression0 = getArgumentExpressionAt( instanceCreation, 0 );
-				if( expression0 instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression ) {
-					resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)expression0;
+				org.lgna.project.ast.Expression expression0 = getArgumentExpressionAt( instanceCreation, 0 );
+				if( expression0 instanceof org.lgna.project.ast.ResourceExpression ) {
+					resourceExpression = (org.lgna.project.ast.ResourceExpression)expression0;
 					org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
 					if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
 						audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
@@ -178,21 +178,21 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 					if( n > 1 ) {
 						if( n > 2 ) {
 							if( n > 3 ) {
-								edu.cmu.cs.dennisc.alice.ast.Expression expression3 = getArgumentExpressionAt( instanceCreation, 3 );
-								if( expression3 instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-									edu.cmu.cs.dennisc.alice.ast.DoubleLiteral stopTimeLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)expression3;
+								org.lgna.project.ast.Expression expression3 = getArgumentExpressionAt( instanceCreation, 3 );
+								if( expression3 instanceof org.lgna.project.ast.DoubleLiteral ) {
+									org.lgna.project.ast.DoubleLiteral stopTimeLiteral = (org.lgna.project.ast.DoubleLiteral)expression3;
 									stopTime = stopTimeLiteral.value.getValue();
 								}
 							}
-							edu.cmu.cs.dennisc.alice.ast.Expression expression2 = getArgumentExpressionAt( instanceCreation, 2 );
-							if( expression2 instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-								edu.cmu.cs.dennisc.alice.ast.DoubleLiteral startTimeLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)expression2;
+							org.lgna.project.ast.Expression expression2 = getArgumentExpressionAt( instanceCreation, 2 );
+							if( expression2 instanceof org.lgna.project.ast.DoubleLiteral ) {
+								org.lgna.project.ast.DoubleLiteral startTimeLiteral = (org.lgna.project.ast.DoubleLiteral)expression2;
 								startTime = startTimeLiteral.value.getValue();
 							}
 						}
-						edu.cmu.cs.dennisc.alice.ast.Expression expression1 = getArgumentExpressionAt( instanceCreation, 1 );
-						if( expression1 instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-							edu.cmu.cs.dennisc.alice.ast.DoubleLiteral volumeLevelLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)expression1;
+						org.lgna.project.ast.Expression expression1 = getArgumentExpressionAt( instanceCreation, 1 );
+						if( expression1 instanceof org.lgna.project.ast.DoubleLiteral ) {
+							org.lgna.project.ast.DoubleLiteral volumeLevelLiteral = (org.lgna.project.ast.DoubleLiteral)expression1;
 							volumeLevel = volumeLevelLiteral.value.getValue();
 						}
 					}
@@ -244,7 +244,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 	
 	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
-		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
+		org.lgna.project.ast.ResourceExpression resourceExpression = (org.lgna.project.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
 		if( resourceExpression != null ) {
 			if( resourceExpression.resource.getValue() instanceof org.alice.virtualmachine.resources.AudioResource ) {
 				return null;
@@ -285,22 +285,22 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getValue() {
+	public org.lgna.project.ast.InstanceCreation getValue() {
 		org.lgna.story.AudioSource audioSource = this.getAudioSource();
 		if( audioSource != null ) {
 			org.alice.virtualmachine.resources.AudioResource audioResource = audioSource.getAudioResource();
 
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+			org.lgna.project.Project project = ide.getProject();
 			if( project != null ) {
 				project.addResource( audioResource );
 			}
 
-			edu.cmu.cs.dennisc.alice.ast.Expression arg0Expression;
+			org.lgna.project.ast.Expression arg0Expression;
 			if( audioResource != null ) {
-				arg0Expression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );				
+				arg0Expression = new org.lgna.project.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );				
 			} else {
-				arg0Expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+				arg0Expression = new org.lgna.project.ast.NullLiteral();
 			}
 
 			double volume = audioSource.getVolume();
@@ -313,13 +313,13 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 			boolean isNotDefaultStopTime = org.lgna.story.AudioSource.isDefaultStopTime_aka_NaN( stopTime ) == false;
 
 			if( isNotDefaultVolume || isNotDefaultStartTime || isNotDefaultStopTime ) {
-				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral volumeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( volume );
+				org.lgna.project.ast.DoubleLiteral volumeLiteral = new org.lgna.project.ast.DoubleLiteral( volume );
 				if( isNotDefaultStartTime || isNotDefaultStopTime ) {
-					edu.cmu.cs.dennisc.alice.ast.DoubleLiteral startTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( startTime );
+					org.lgna.project.ast.DoubleLiteral startTimeLiteral = new org.lgna.project.ast.DoubleLiteral( startTime );
 					if( isNotDefaultStopTime ) {
-						edu.cmu.cs.dennisc.alice.ast.DoubleLiteral stopTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( stopTime );
+						org.lgna.project.ast.DoubleLiteral stopTimeLiteral = new org.lgna.project.ast.DoubleLiteral( stopTime );
 
-						edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+						org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( 
 								org.lgna.story.AudioSource.class, 
 								org.alice.virtualmachine.resources.AudioResource.class,
 								Number.class, 
@@ -327,7 +327,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 								Number.class );
 						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
 					} else {
-						edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+						org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( 
 								org.lgna.story.AudioSource.class, 
 								org.alice.virtualmachine.resources.AudioResource.class,
 								Number.class, 
@@ -335,14 +335,14 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral );
 					}
 				} else {
-					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+					org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( 
 							org.lgna.story.AudioSource.class, 
 							org.alice.virtualmachine.resources.AudioResource.class,
 							Number.class );
 					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
 				}
 			} else {
-				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+				org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( 
 						org.lgna.story.AudioSource.class, 
 						org.alice.virtualmachine.resources.AudioResource.class );
 				return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression );
@@ -358,7 +358,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		double start;
 		double stop;
 		double duration;
-		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
+		org.lgna.project.ast.ResourceExpression resourceExpression = (org.lgna.project.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
 		if( resourceExpression != null ) {
 			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
 			if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {

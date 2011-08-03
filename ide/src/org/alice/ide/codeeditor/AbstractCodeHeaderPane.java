@@ -47,10 +47,10 @@ package org.alice.ide.codeeditor;
  */
 class AbstractCodeHeaderPane extends org.lgna.croquet.components.Panel {
 	protected static final float NAME_SCALE = 1.8f;
-	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice;
+	private org.lgna.project.ast.CodeDeclaredInAlice codeDeclarationInAlice;
 	private ParametersPane parametersPane;
 	private boolean isPreview;
-	public AbstractCodeHeaderPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice, ParametersPane parametersPane, boolean isPreview ) {
+	public AbstractCodeHeaderPane( org.lgna.project.ast.CodeDeclaredInAlice codeDeclarationInAlice, ParametersPane parametersPane, boolean isPreview ) {
 		this.codeDeclarationInAlice = codeDeclarationInAlice;
 		this.parametersPane = parametersPane;
 		this.isPreview = isPreview;

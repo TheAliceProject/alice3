@@ -47,20 +47,20 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class SetterInsertCascade extends ExpressionStatementInsertCascade {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public SetterInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private final org.lgna.project.ast.AbstractField field;
+	public SetterInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "2593d9c3-5619-4d8d-812b-481d73035fe9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( field.getDesiredValueType() ) );
 		this.field = field;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
+	public org.lgna.project.ast.AbstractField getField() {
 		return this.field;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression rv = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
+	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
+		org.lgna.project.ast.AssignmentExpression rv = new org.lgna.project.ast.AssignmentExpression(
 			this.field.getValueType(), 
-			new edu.cmu.cs.dennisc.alice.ast.FieldAccess( instanceExpression, this.field ),
-			edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN,
+			new org.lgna.project.ast.FieldAccess( instanceExpression, this.field ),
+			org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
 			expressions[ 0 ] 
 		);
 		return rv;

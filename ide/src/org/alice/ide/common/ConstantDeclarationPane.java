@@ -47,7 +47,7 @@ package org.alice.ide.common;
  */
 
 class ConstantDeclarationPane extends LocalDeclarationPane {
-	public ConstantDeclarationPane( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constantDeclaredInAlice ) {
+	public ConstantDeclarationPane( org.lgna.project.ast.ConstantDeclaredInAlice constantDeclaredInAlice ) {
 		super( constantDeclaredInAlice, new ConstantPane( constantDeclaredInAlice ) );
 	}
 }

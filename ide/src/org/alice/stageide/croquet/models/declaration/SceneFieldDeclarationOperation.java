@@ -49,13 +49,13 @@ package org.alice.stageide.croquet.models.declaration;
 public abstract class SceneFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation {
 	public SceneFieldDeclarationOperation( 
 			java.util.UUID id, 
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> initialValueComponentType,
+			org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType,
 			boolean isValueComponentTypeEditable,
 			boolean initialIsArrayValueType,
 			boolean isIsArrayValueTypeEditable,
 			String initialName,
 			boolean isNameEditable,
-			edu.cmu.cs.dennisc.alice.ast.Expression initialExpression,
+			org.lgna.project.ast.Expression initialExpression,
 			boolean isInitializerEditable
 		) {
 		super( 
@@ -68,7 +68,7 @@ public abstract class SceneFieldDeclarationOperation extends org.alice.ide.croqu
 		);
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	public org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
 		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 }

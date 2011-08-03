@@ -46,7 +46,7 @@ package org.alice.stageide.sceneeditor;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class FieldTile extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> {
-	private edu.cmu.cs.dennisc.alice.ast.Accessible accessible;
+	private org.lgna.project.ast.Accessible accessible;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 //		}
@@ -57,15 +57,15 @@ package org.alice.stageide.sceneeditor;
 //		FieldSelectedState state = FieldSelectedState.getInstance(accessible);
 //		return state.register( new FieldTile( accessible ) );
 //	}
-	public FieldTile( edu.cmu.cs.dennisc.alice.ast.Accessible accessible, org.lgna.croquet.BooleanState booleanState ) {
+	public FieldTile( org.lgna.project.ast.Accessible accessible, org.lgna.croquet.BooleanState booleanState ) {
 		super( booleanState );
 		assert accessible != null;
 		this.accessible = accessible;
 		//this.setOpaque( false );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,4 ) );
 		//this.setPopupMenuOperation( new org.lgna.croquet.PredeterminedMenuModel( java.util.UUID.fromString( "8e3989b2-34d6-44cf-998c-dda26662b3a0" ), FieldTile.this.createPopupOperations() ).getPopupMenuOperation() );
-		if( this.accessible instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
+		if( this.accessible instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
+			org.lgna.project.ast.FieldDeclaredInAlice field = (org.lgna.project.ast.FieldDeclaredInAlice)this.accessible;
 			this.setPopupPrepModel( org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( field ).getPopupPrepModel() );
 		}
 		this.updateLabel();
@@ -141,9 +141,9 @@ package org.alice.stageide.sceneeditor;
 	}
 
 	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.MenuItemPrepModel > rv ) {
-		if( this.accessible instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.accessible;
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> fieldType = fieldInAlice.getValueType();
+		if( this.accessible instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
+			org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)this.accessible;
+			org.lgna.project.ast.AbstractType<?,?,?> fieldType = fieldInAlice.getValueType();
 			rv.add( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( fieldInAlice ).getMenuItemPrepModel() );
 			if( fieldType.isAssignableTo( org.lgna.story.Turnable.class ) ) {
 				if( fieldType.isAssignableTo( org.lgna.story.Camera.class ) ) {
@@ -193,7 +193,7 @@ package org.alice.stageide.sceneeditor;
 
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		java.awt.Color color = ide.getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+		java.awt.Color color = ide.getTheme().getColorFor( org.lgna.project.ast.FieldAccess.class );
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
 		if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
 			org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
@@ -213,7 +213,7 @@ package org.alice.stageide.sceneeditor;
 		return color;
 	}
 
-	public edu.cmu.cs.dennisc.alice.ast.Accessible getAccessible()
+	public org.lgna.project.ast.Accessible getAccessible()
 	{
 		return this.accessible;
 	}

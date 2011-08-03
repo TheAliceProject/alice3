@@ -43,9 +43,9 @@
 package org.alice.stageide.apis.moveandturn.event;
 
 public class MouseButtonAdapter implements org.lgna.story.event.MouseButtonListener {
-	private edu.cmu.cs.dennisc.alice.virtualmachine.Context context;
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	public MouseButtonAdapter( edu.cmu.cs.dennisc.alice.virtualmachine.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type, Object[] arguments ) {
+	private org.lgna.project.virtualmachine.Context context;
+	private org.lgna.project.ast.MethodDeclaredInAlice method;
+	public MouseButtonAdapter( org.lgna.project.virtualmachine.Context context, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > type, Object[] arguments ) {
 		this.context = context;
 		this.method = type.getDeclaredMethod( "mouseButtonClicked", org.lgna.story.event.MouseButtonEvent.class );
 	}

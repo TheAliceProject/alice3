@@ -44,7 +44,7 @@
 package org.alice.ide.name.validators;
 
 public class TypeNameValidator extends NodeNameValidator {
-	public TypeNameValidator( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	public TypeNameValidator( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		super( type );
 	}
 	@Override

@@ -47,13 +47,13 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
+public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< org.lgna.project.ast.DoubleLiteral > {
 	private org.lgna.croquet.components.Component< ? >[] components = { org.alice.stageide.croquet.models.custom.PortionState.getInstance().createSlider() };
 	public PortionChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression != null ) {
-			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
+			if( previousExpression instanceof org.lgna.project.ast.DoubleLiteral ) {
+				org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)previousExpression;
 				double dValue = doubleLiteral.value.getValue();
 				int iValue = (int)(dValue*100.0);
 				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValue( iValue );
@@ -69,9 +69,9 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 		//todo?
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral getValue() {
+	public org.lgna.project.ast.DoubleLiteral getValue() {
 		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue() / 100.0;
-		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
+		org.lgna.project.ast.DoubleLiteral doubleLiteral = new org.lgna.project.ast.DoubleLiteral( value );
 //		final boolean IS_LITERAL_DESIRED = true;
 //		if( IS_LITERAL_DESIRED ) {
 			return doubleLiteral;

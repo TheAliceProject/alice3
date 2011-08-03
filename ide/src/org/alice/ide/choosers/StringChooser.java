@@ -45,16 +45,16 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class StringChooser extends AbstractChooserWithTextField< edu.cmu.cs.dennisc.alice.ast.StringLiteral > {
+public class StringChooser extends AbstractChooserWithTextField< org.lgna.project.ast.StringLiteral > {
 	public StringChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.StringLiteral ) {
-			edu.cmu.cs.dennisc.alice.ast.StringLiteral stringLiteral = (edu.cmu.cs.dennisc.alice.ast.StringLiteral)previousExpression;
+		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
+		if( previousExpression instanceof org.lgna.project.ast.StringLiteral ) {
+			org.lgna.project.ast.StringLiteral stringLiteral = (org.lgna.project.ast.StringLiteral)previousExpression;
 			this.setAndSelectText( stringLiteral.value.getValue() );
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.StringLiteral valueOf( String text ) {
-		return new edu.cmu.cs.dennisc.alice.ast.StringLiteral( text );
+	protected org.lgna.project.ast.StringLiteral valueOf( String text ) {
+		return new org.lgna.project.ast.StringLiteral( text );
 	}
 }

@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models.cascade.arithmetic;
 /**
  * @author Dennis Cosgrove
  */
-public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ReplaceOperatorInPreviousArithmeticExpressionFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< org.lgna.project.ast.ArithmeticInfixExpression > {
+	private static java.util.Map< org.lgna.project.ast.ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ReplaceOperatorInPreviousArithmeticExpressionFillIn getInstance( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			ReplaceOperatorInPreviousArithmeticExpressionFillIn rv = map.get( operator );
 			if( rv != null ) {
@@ -60,8 +60,8 @@ public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.ali
 			return rv;
 		}
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator;
-	private ReplaceOperatorInPreviousArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+	private final org.lgna.project.ast.ArithmeticInfixExpression.Operator operator;
+	private ReplaceOperatorInPreviousArithmeticExpressionFillIn( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "7699fe5b-b1bc-4bc2-9632-eace7166bdb6" ) );
 		this.operator = operator;
 	}
@@ -70,10 +70,10 @@ public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.ali
 //		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
 //	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		assert previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
-		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmetic = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;
-		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression(
+	protected org.lgna.project.ast.ArithmeticInfixExpression createValue( org.lgna.project.ast.Expression previousExpression ) {
+		assert previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
+		org.lgna.project.ast.ArithmeticInfixExpression previousArithmetic = (org.lgna.project.ast.ArithmeticInfixExpression)previousExpression;
+		return new org.lgna.project.ast.ArithmeticInfixExpression(
 				previousArithmetic.leftOperand.getValue(),
 				this.operator,
 				previousArithmetic.rightOperand.getValue(),

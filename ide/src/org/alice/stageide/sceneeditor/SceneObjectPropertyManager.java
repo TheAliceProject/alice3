@@ -66,10 +66,10 @@ import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.ToolPalette;
+import org.lgna.project.ast.AbstractField;
 
-import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 
-public class SceneObjectPropertyManager extends GridBagPanel implements org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>
+public class SceneObjectPropertyManager extends GridBagPanel implements org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.project.ast.Accessible>
 {
 	private AbstractField selectedField;
 	private Object selectedObject;
@@ -191,17 +191,17 @@ public class SceneObjectPropertyManager extends GridBagPanel implements org.lgna
 	    this.addNameAndControllerToPanel(propertyPair.label, propertyPair.controller.getPanel(), panel, index);
 	}
 
-	public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+	public void changing( org.lgna.croquet.State< org.lgna.project.ast.Accessible > state, org.lgna.project.ast.Accessible prevValue, org.lgna.project.ast.Accessible nextValue, boolean isAdjusting ) {
 	}
-	public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+	public void changed( org.lgna.croquet.State< org.lgna.project.ast.Accessible > state, org.lgna.project.ast.Accessible prevValue, org.lgna.project.ast.Accessible nextValue, boolean isAdjusting ) {
 		this.selectedField = null;
 		this.selectedObject = null;
 		if( nextValue instanceof AbstractField ) {
 			AbstractField field = (AbstractField)nextValue;
 			this.selectedField = field;
 			Object instance = IDE.getActiveInstance().getSceneEditor().getInstanceInAliceVMForField( field );
-			if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
-				edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
+			if( instance instanceof org.lgna.project.virtualmachine.InstanceInAlice ) {
+				org.lgna.project.virtualmachine.InstanceInAlice instanceInAlice = (org.lgna.project.virtualmachine.InstanceInAlice)instance;
 				instance = instanceInAlice.getInstanceInJava();
 			}
 			this.selectedObject = instance;

@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >, PreviousExpressionItselfFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static PreviousExpressionItselfFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillInWithoutBlanks< org.lgna.project.ast.Expression > {
+	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, PreviousExpressionItselfFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static PreviousExpressionItselfFillIn getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		synchronized( map ) {
 			PreviousExpressionItselfFillIn rv = map.get( type );
 			if( rv != null ) {
@@ -60,13 +60,13 @@ public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillI
 			return rv;
 		}
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type;
-	private PreviousExpressionItselfFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
+	private PreviousExpressionItselfFillIn( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		super( java.util.UUID.fromString( "a15cbb4f-f955-498a-9291-60bf23007c34" ) );
 		this.type = type;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+	protected org.lgna.project.ast.Expression createValue( org.lgna.project.ast.Expression previousExpression ) {
 		return previousExpression;
 	}
 }

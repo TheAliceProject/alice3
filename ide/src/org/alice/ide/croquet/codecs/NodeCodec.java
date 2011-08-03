@@ -45,9 +45,9 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements org.lgna.croquet.ItemCodec< T > {
+public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.croquet.ItemCodec< T > {
 	private static java.util.Map< Class<?>, NodeCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T extends edu.cmu.cs.dennisc.alice.ast.Node > NodeCodec< T > getInstance( Class< T > cls ) {
+	public static synchronized < T extends org.lgna.project.ast.Node > NodeCodec< T > getInstance( Class< T > cls ) {
 		NodeCodec< ? > rv = map.get( cls );
 		if( rv != null ) {
 			//pass
@@ -68,7 +68,7 @@ public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements o
 		if( valueIsNotNull ) {
 			java.util.UUID id = binaryDecoder.decodeId();
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id );
+			return org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), id );
 		} else {
 			return null;
 		}
@@ -81,7 +81,7 @@ public class NodeCodec<T extends edu.cmu.cs.dennisc.alice.ast.Node> implements o
 		}
 	}
 	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, value, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, value, locale );
 		return rv;
 	}
 }

@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ParameterAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ParameterAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.ParameterDeclaredInAlice, org.lgna.project.ast.ExpressionProperty, ParameterAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ParameterAccessOperation getInstance( org.lgna.project.ast.ParameterDeclaredInAlice parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert parameter != null;
 		assert expressionProperty != null;
 		ParameterAccessOperation rv = map.get( parameter, expressionProperty );
@@ -60,13 +60,13 @@ public class ParameterAccessOperation extends org.alice.ide.croquet.models.ast.c
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-	private ParameterAccessOperation( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.ParameterDeclaredInAlice parameter;
+	private ParameterAccessOperation( org.lgna.project.ast.ParameterDeclaredInAlice parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "30f93afc-3c73-4295-8b93-d1dac94b6c8c" ), expressionProperty );
 		this.parameter = parameter;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
+	protected org.lgna.project.ast.Expression createExpression() {
+		return new org.lgna.project.ast.ParameterAccess( this.parameter );
 	}
 }

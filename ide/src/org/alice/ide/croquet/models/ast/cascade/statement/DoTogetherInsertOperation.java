@@ -63,7 +63,7 @@ public class DoTogetherInsertOperation extends StatementInsertOperation {
 		super( java.util.UUID.fromString( "e808bf50-d3bd-4256-a416-453542eff619" ), blockStatementIndexPair );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement() {
+	protected final org.lgna.project.ast.Statement createStatement() {
 		return org.alice.ide.ast.NodeUtilities.createDoTogether();
 	}
 }

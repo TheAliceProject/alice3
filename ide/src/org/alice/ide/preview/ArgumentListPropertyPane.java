@@ -46,12 +46,12 @@ package org.alice.ide.preview;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+	public ArgumentListPropertyPane( Factory factory, org.lgna.project.ast.ArgumentListProperty property ) {
 		super( factory, property );
 	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
+		org.lgna.project.ast.Argument argument = (org.lgna.project.ast.Argument)instance;
 		org.lgna.croquet.components.Component< ? > expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
 		final boolean IS_PARAMETER_NAME_DESIRED = false;
 		if( IS_PARAMETER_NAME_DESIRED ) {

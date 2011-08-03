@@ -46,28 +46,28 @@ package org.alice.ide.croquet.models.cascade.string;
 /**
  * @author Dennis Cosgrove
  */
-public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
+public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< org.lgna.project.ast.StringConcatenation > {
 	private static class SingletonHolder {
 		private static StringConcatinationRightOperandOnlyFillIn instance = new StringConcatinationRightOperandOnlyFillIn();
 	}
 	public static StringConcatinationRightOperandOnlyFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.StringConcatenation transientValue;
+	private final org.lgna.project.ast.StringConcatenation transientValue;
 	private StringConcatinationRightOperandOnlyFillIn() {
 		super( java.util.UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
-		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( 
+		this.transientValue = new org.lgna.project.ast.StringConcatenation( 
 				new org.alice.ide.ast.PreviousValueExpression( Object.class ),
 				new org.alice.ide.ast.EmptyExpression( Object.class )
 		);
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.StringConcatenation createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( previousExpression, expressions[ 0 ] );
+	protected org.lgna.project.ast.StringConcatenation createValue( org.lgna.project.ast.Expression previousExpression, org.lgna.project.ast.Expression[] expressions ) {
+		return new org.lgna.project.ast.StringConcatenation( previousExpression, expressions[ 0 ] );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.StringConcatenation,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public org.lgna.project.ast.StringConcatenation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.StringConcatenation,org.lgna.project.ast.Expression > step ) {
 		return this.transientValue;
 	}
 }

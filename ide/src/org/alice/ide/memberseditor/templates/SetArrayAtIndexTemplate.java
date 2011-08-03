@@ -46,25 +46,25 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class SetArrayAtIndexTemplate extends ExpressionStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public SetArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private org.lgna.project.ast.AbstractField field;
+	public SetArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.croquet.models.ast.SetArrayAtIndexDragModel.getInstance( field ) );
 		this.field = field;
-		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
+		if( this.field instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
+			org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)this.field;
 			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( 
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
+		return new org.lgna.project.ast.AssignmentExpression( 
 				this.field.getDesiredValueType().getComponentType(), 
-				new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
+				new org.lgna.project.ast.ArrayAccess( 
 						field.getValueType(), 
 						org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( this.field ), 
-						new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
+						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
 				), 
-				edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, 
+				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 
 				new org.alice.ide.ast.EmptyExpression( this.field.getDesiredValueType().getComponentType() )
 		);
 	}

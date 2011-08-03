@@ -46,7 +46,7 @@ package org.lgna.story.resources;
 /**
  * @author Dennis Cosgrove
  */
-@edu.cmu.cs.dennisc.alice.annotations.ResourceTemplate( modelClass=org.lgna.story.Biped.class )
+@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Biped.class )
 public interface BipedResource extends ModelResource{
 	public static enum BipedJointId implements JointId {
 		PELVIS_LOWER_BODY( null ),

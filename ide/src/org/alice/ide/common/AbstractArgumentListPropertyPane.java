@@ -46,8 +46,8 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractArgumentListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > {
-	public AbstractArgumentListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+public abstract class AbstractArgumentListPropertyPane extends AbstractListPropertyPane< org.lgna.project.ast.ArgumentListProperty > {
+	public AbstractArgumentListPropertyPane( Factory factory, org.lgna.project.ast.ArgumentListProperty property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override

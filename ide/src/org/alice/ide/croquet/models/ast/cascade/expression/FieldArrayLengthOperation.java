@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class FieldArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FieldArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized FieldArrayLengthOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized FieldArrayLengthOperation getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert field != null;
 		assert expressionProperty != null;
 		FieldArrayLengthOperation rv = map.get( field, expressionProperty );
@@ -60,13 +60,13 @@ public class FieldArrayLengthOperation extends ArrayLengthOperation {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private FieldArrayLengthOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.AbstractField field;
+	private FieldArrayLengthOperation( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "52ff6677-3ebe-44ba-8869-b1b2761ead6f" ), expressionProperty );
 		this.field = field;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+	protected org.lgna.project.ast.Expression createAccessExpression() {
 		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
 				org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), 
 				this.field

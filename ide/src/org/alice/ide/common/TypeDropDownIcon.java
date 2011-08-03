@@ -48,7 +48,7 @@ package org.alice.ide.common;
 public class TypeDropDownIcon extends TypeIcon {
 	private static final int ARROW_SIZE = 12;
 	private javax.swing.ButtonModel model;
-	public TypeDropDownIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, javax.swing.ButtonModel model ) {
+	public TypeDropDownIcon( org.lgna.project.ast.AbstractType<?,?,?> type, javax.swing.ButtonModel model ) {
 		super( type );
 		this.model = model;
 	}

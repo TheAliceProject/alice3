@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.integer;
 /**
  * @author Dennis Cosgrove
  */
-public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< org.lgna.project.ast.Expression > {
 	private static class SingletonHolder {
 		private static MathCascadeMenu instance = new MathCascadeMenu();
 	}
@@ -57,7 +57,7 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 		super( java.util.UUID.fromString( "a7c69555-3232-4091-96f6-8f9b6ec2ee3a" ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > context ) {
 //		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().createCopyOfPreviousExpression();
 //		final boolean isTop = blank.getParentFillIn() == null;
 //		
@@ -75,10 +75,10 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 //			} );
 //			blank.addSeparator();
 //		}
-		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
+		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
 			rv.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 		}
-		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
+		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
 			rv.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 		rv.add( IncompleteDivideRemainderCascadeMenu.getInstance() );

@@ -45,7 +45,7 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
+public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< org.lgna.project.ast.DoubleLiteral > {
 	private org.alice.stageide.controls.VolumeLevelControl volumeLevelControl = new org.alice.stageide.controls.VolumeLevelControl();
 	private org.lgna.croquet.components.Component< ? >[] components = { new org.lgna.croquet.components.SwingAdapter( this.volumeLevelControl ) };
 	public VolumeLevelChooser() {
@@ -53,10 +53,10 @@ public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 	}
 	@Override
 	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 		double volumeLevel;
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
+		if( previousExpression instanceof org.lgna.project.ast.DoubleLiteral ) {
+			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)previousExpression;
 			volumeLevel = doubleLiteral.value.getValue();
 		} else {
 			//todo?
@@ -70,8 +70,8 @@ public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		return this.components;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.DoubleLiteral getValue() {
-		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( this.volumeLevelControl.getVolumeLevel() );
+	public org.lgna.project.ast.DoubleLiteral getValue() {
+		org.lgna.project.ast.DoubleLiteral doubleLiteral = new org.lgna.project.ast.DoubleLiteral( this.volumeLevelControl.getVolumeLevel() );
 //		final boolean IS_LITERAL_DESIRED = true;
 //		if( IS_LITERAL_DESIRED ) {
 			return doubleLiteral;

@@ -45,12 +45,12 @@ package org.alice.ide.sceneeditor;
 
 public interface FieldAndInstanceMapper 
 {
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInAliceVM(Object instance);
+	public org.lgna.project.ast.AbstractField getFieldForInstanceInAliceVM(Object instance);
 	
-	public Object getInstanceInAliceVMForField(edu.cmu.cs.dennisc.alice.ast.AbstractField field);
+	public Object getInstanceInAliceVMForField(org.lgna.project.ast.AbstractField field);
 	
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInJavaVM(Object instance);
+	public org.lgna.project.ast.AbstractField getFieldForInstanceInJavaVM(Object instance);
 	
-	public Object getInstanceInJavaVMForField(edu.cmu.cs.dennisc.alice.ast.AbstractField field);
+	public Object getInstanceInJavaVMForField(org.lgna.project.ast.AbstractField field);
 	
 }

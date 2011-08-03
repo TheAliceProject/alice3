@@ -45,9 +45,9 @@ package org.alice.ide.croquet.models.ast;
 /**
 * @author Dennis Cosgrove
 */
-public class EditConstructorOperation extends EditCodeOperation< edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice, EditConstructorOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized EditConstructorOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
+public class EditConstructorOperation extends EditCodeOperation< org.lgna.project.ast.ConstructorDeclaredInAlice > {
+	private static java.util.Map< org.lgna.project.ast.ConstructorDeclaredInAlice, EditConstructorOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized EditConstructorOperation getInstance( org.lgna.project.ast.ConstructorDeclaredInAlice constructor ) {
 		EditConstructorOperation rv = map.get( constructor );
 		if( rv != null ) {
 			//pass
@@ -57,12 +57,12 @@ public class EditConstructorOperation extends EditCodeOperation< edu.cmu.cs.denn
 		}
 		return rv;
 	}
-	private EditConstructorOperation( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
+	private EditConstructorOperation( org.lgna.project.ast.ConstructorDeclaredInAlice constructor ) {
 		super( java.util.UUID.fromString( "4dce50a6-c637-490c-b1ff-3cd3028dd8ac" ), constructor );
 		this.setName( "<html>Edit <strong>constructor</strong></html>" );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditConstructorOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditConstructorOperation >( this, this.getCode(), edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditConstructorOperation >( this, this.getCode(), org.lgna.project.ast.ConstructorDeclaredInAlice.class );
 	}
 }

@@ -46,8 +46,8 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance  {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
+	private org.lgna.project.ast.Expression expression;
+	public ExpressionPane( org.lgna.project.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
 		this.expression = expression;
 		this.addComponent( component );
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( expression ) );
@@ -67,16 +67,16 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
 		if( this.expression != null ) {
 			return this.expression.getType();
 		} else {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
+			return org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE;
 		}
 	}
 	@Override
 	protected int getInsetTop() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
+		if( this.expression instanceof org.lgna.project.ast.InfixExpression || this.expression instanceof org.lgna.project.ast.LogicalComplement ) {
 			return 0;
 		} else {
 			return super.getInsetTop();
@@ -84,7 +84,7 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	}
 	@Override
 	protected int getInsetBottom() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
+		if( this.expression instanceof org.lgna.project.ast.InfixExpression || this.expression instanceof org.lgna.project.ast.LogicalComplement ) {
 			return 0;
 		} else {
 			return super.getInsetTop();

@@ -46,17 +46,17 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class SetterTemplate extends ExpressionStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private org.lgna.project.ast.AbstractField field;
+	public SetterTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.croquet.models.ast.SetterTemplateDragModel.getInstance( field ) );
 		this.field = field;
-		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
+		if( this.field instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
+			org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)this.field;
 			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( this.field );
 	}
 	@Override

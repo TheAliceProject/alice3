@@ -47,13 +47,13 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class ParameterArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
-	private final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-	public ParameterArrayAtIndexAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	private final org.lgna.project.ast.ParameterDeclaredInAlice parameter;
+	public ParameterArrayAtIndexAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
 		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, parameter.getDesiredValueType() );
 		this.parameter = parameter;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter ); 
+	protected org.lgna.project.ast.Expression createAccessExpression() {
+		return new org.lgna.project.ast.ParameterAccess( this.parameter ); 
 	}
 }

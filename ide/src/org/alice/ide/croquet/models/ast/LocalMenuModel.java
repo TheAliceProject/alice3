@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class LocalMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice, LocalMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized LocalMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+	private static java.util.Map< org.lgna.project.ast.LocalDeclaredInAlice, LocalMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized LocalMenuModel getInstance( org.lgna.project.ast.LocalDeclaredInAlice local ) {
 		LocalMenuModel rv = map.get( local );
 		if( rv != null ) {
 			//pass
@@ -58,7 +58,7 @@ public class LocalMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		return rv;
 	}
 
-	private LocalMenuModel( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+	private LocalMenuModel( org.lgna.project.ast.LocalDeclaredInAlice local ) {
 		super( java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
 				org.alice.ide.croquet.models.ast.rename.RenameLocalOperation.getInstance( local ).getMenuItemPrepModel()
 		);

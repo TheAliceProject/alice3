@@ -51,10 +51,10 @@ public enum ThisInstanceFactory implements InstanceFactory {
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
+	public org.lgna.project.ast.Expression createExpression() {
+		return new org.lgna.project.ast.ThisExpression();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getValueType() {
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return org.alice.ide.IDE.getActiveInstance().getTypeInScope();
 	}
 	public String getRepr() {

@@ -47,15 +47,15 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionStatementInsertCascade extends SelectedExpressionBasedStatmentInsertCascade {
-	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< edu.cmu.cs.dennisc.alice.ast.Expression >... blanks ) {
+	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
 		super( id, blockStatementIndexPair, blanks );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
+	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( instanceExpression, expressions );
+	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
+		org.lgna.project.ast.Expression expression = this.createExpression( instanceExpression, expressions );
 		if( expression != null ) {
-			return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
+			return new org.lgna.project.ast.ExpressionStatement( expression );
 		} else {
 			return null;
 		}

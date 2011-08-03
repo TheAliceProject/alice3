@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement> {
+public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.LocalDeclarationStatement> {
 	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
 	public DeclareLocalOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "09dfabbc-eda3-4a92-8a44-6d013c9c2a92" ) );
@@ -59,7 +59,7 @@ public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDia
 	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = step.getMainPanel();
-			edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = createLocalPane.getInputValue();
+			org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = createLocalPane.getInputValue();
 			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, localDeclarationStatement ) );
 		} else {
 			step.cancel();

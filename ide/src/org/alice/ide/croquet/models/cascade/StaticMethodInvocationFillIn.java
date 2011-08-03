@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, StaticMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static StaticMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks< org.lgna.project.ast.MethodInvocation > {
+	private static java.util.Map< org.lgna.project.ast.AbstractMethod, StaticMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static StaticMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {
 			StaticMethodInvocationFillIn rv = map.get( method );
 			if( rv != null ) {
@@ -60,28 +60,28 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
 			return rv;
 		}
 	}
-	public static StaticMethodInvocationFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
+	public static StaticMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( method );
 	}
 	public static StaticMethodInvocationFillIn getInstance( Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), methodName, parameterClses );
+		return getInstance( org.lgna.project.ast.TypeDeclaredInJava.get( cls ), methodName, parameterClses );
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation transientValue;
-	private StaticMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private final org.lgna.project.ast.MethodInvocation transientValue;
+	private StaticMethodInvocationFillIn( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
 		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteStaticMethodInvocation( method );
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
 			this.addBlank( ParameterBlank.getInstance( parameter ) );
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
 		return org.alice.ide.ast.NodeUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.MethodInvocation,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation,org.lgna.project.ast.Expression > step ) {
 		return this.transientValue;
 	}
 }

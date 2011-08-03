@@ -76,12 +76,12 @@ public class DefaultTheme implements Theme {
 		return getFieldColor();
 	}
 
-	public java.awt.Paint getPaintFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int x, int y, int width, int height ) {
+	public java.awt.Paint getPaintFor( Class< ? extends org.lgna.project.ast.Statement > cls, int x, int y, int width, int height ) {
 		java.awt.Color color = this.getColorFor( cls );
-		if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
+		if( org.lgna.project.ast.Comment.class.isAssignableFrom( cls ) ) {
 			return color;
 		} else {
-			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.DoTogether.class, edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, edu.cmu.cs.dennisc.alice.ast.DoInThread.class ) ) {
+			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.DoTogether.class, org.lgna.project.ast.EachInArrayTogether.class, org.lgna.project.ast.DoInThread.class ) ) {
 				java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
 				java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
 				return new java.awt.GradientPaint( x, y, colorA, x + 200, y, colorB );
@@ -91,9 +91,9 @@ public class DefaultTheme implements Theme {
 			}
 		}
 	}
-	public java.awt.Color getColorFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
-		if( edu.cmu.cs.dennisc.alice.ast.Statement.class.isAssignableFrom( cls ) ) {
-			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
+	public java.awt.Color getColorFor( Class< ? extends org.lgna.project.ast.Node > cls ) {
+		if( org.lgna.project.ast.Statement.class.isAssignableFrom( cls ) ) {
+			if( org.lgna.project.ast.Comment.class.isAssignableFrom( cls ) ) {
 				return edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 245 );
 			} else {
 //				if( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
@@ -105,17 +105,17 @@ public class DefaultTheme implements Theme {
 					//return new java.awt.Color( 255, 255, 210 );
 //				}
 			}
-		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
-			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) ) {
+		} else if( org.lgna.project.ast.Expression.class.isAssignableFrom( cls ) ) {
+			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.MethodInvocation.class ) ) {
 				return new java.awt.Color( 0xd3e7c7 );
-			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class, edu.cmu.cs.dennisc.alice.ast.StringConcatenation.class ) ) {
+			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.InfixExpression.class, org.lgna.project.ast.LogicalComplement.class, org.lgna.project.ast.StringConcatenation.class ) ) {
 				return new java.awt.Color( 0xDEEBD3 );
-			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
+			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.InstanceCreation.class, org.lgna.project.ast.ArrayInstanceCreation.class ) ) {
 				return new java.awt.Color( 0xbdcfb3 );
-			} else if( edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class.isAssignableFrom( cls ) ) {
+			} else if( org.lgna.project.ast.ResourceExpression.class.isAssignableFrom( cls ) ) {
 				return new java.awt.Color( 0xffffff );
 			} else {
-				if( edu.cmu.cs.dennisc.alice.ast.NullLiteral.class.isAssignableFrom( cls ) ) {
+				if( org.lgna.project.ast.NullLiteral.class.isAssignableFrom( cls ) ) {
 					return java.awt.Color.RED;
 				} else {
 					//return new java.awt.Color( 255, 255, 210 );
@@ -126,9 +126,9 @@ public class DefaultTheme implements Theme {
 			return java.awt.Color.BLUE;
 		}
 	}
-	public java.awt.Color getColorFor( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+	public java.awt.Color getColorFor( org.lgna.project.ast.Node node ) {
 		if( node != null ) {
-			Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls = node.getClass();
+			Class< ? extends org.lgna.project.ast.Node > cls = node.getClass();
 //			if( node instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 //				edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)node;
 //				if( fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
@@ -147,15 +147,15 @@ public class DefaultTheme implements Theme {
 		return new java.awt.Color( 0, 100, 0 );
 	}
 
-	public java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+	public java.awt.Color getCodeDeclaredInAliceColor( org.lgna.project.ast.AbstractCode code ) {
+		if( code instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+			org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = (org.lgna.project.ast.MethodDeclaredInAlice)code;
 			if( methodDeclaredInAlice.isProcedure() ) {
 				return getProcedureColor();
 			} else {
 				return getFunctionColor();
 			}
-		} else if( code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
+		} else if( code instanceof org.lgna.project.ast.ConstructorDeclaredInAlice ) {
 			return getConstructorColor();
 		} else {
 			return java.awt.Color.GRAY;

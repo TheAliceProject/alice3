@@ -46,9 +46,9 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPanel {
-	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+	private org.lgna.project.ast.FieldDeclaredInAlice field;
 	private org.lgna.croquet.components.Label finalLabel = new org.lgna.croquet.components.Label();
-	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	public FieldDeclarationPane( Factory factory, org.lgna.project.ast.FieldDeclaredInAlice field ) {
 		this.field = field;
 		if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
 			this.addComponent( finalLabel );
@@ -101,7 +101,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
 		super.handleUndisplayable();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getField() {
+	public org.lgna.project.ast.FieldDeclaredInAlice getField() {
 		return this.field;
 	}
 }

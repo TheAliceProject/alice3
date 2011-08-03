@@ -46,10 +46,10 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode;
+	private org.lgna.project.ast.AbstractCode nextCode;
 	
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, FocusCodeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FocusCodeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractCode, FocusCodeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static FocusCodeOperation getInstance( org.lgna.project.ast.AbstractCode nextCode ) {
 		FocusCodeOperation rv = map.get( nextCode );
 		if( rv != null ) {
 			//pass
@@ -60,11 +60,11 @@ public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation
 		return rv;
 	}
 	
-	private FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+	private FocusCodeOperation( org.lgna.project.ast.AbstractCode nextCode ) {
 		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "82bf4d2a-f1ff-4df5-a5dc-80f981181ba5" ) );
 		this.nextCode = nextCode;
 		String name;
-		if( nextCode instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
+		if( nextCode instanceof org.lgna.project.ast.ConstructorDeclaredInAlice ) {
 			name = "Edit Constructor";
 		} else {
 			name = "Edit";
@@ -73,7 +73,7 @@ public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation
 	}
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
+		final org.lgna.project.ast.AbstractCode prevCode = getIDE().getFocusedCode();
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
@@ -86,7 +86,7 @@ public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation
 			@Override
 			protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 				rv.append( "focus: " );
-				rv.append( edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, nextCode, locale) );
+				rv.append( org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, nextCode, locale) );
 				return rv;
 			}
 		} );

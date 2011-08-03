@@ -45,12 +45,12 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMethodOperation extends DeleteMemberOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeleteMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DeleteMethodOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+public class DeleteMethodOperation extends DeleteMemberOperation< org.lgna.project.ast.MethodDeclaredInAlice > {
+	private static java.util.Map< org.lgna.project.ast.MethodDeclaredInAlice, DeleteMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DeleteMethodOperation getInstance( org.lgna.project.ast.MethodDeclaredInAlice method ) {
 		return getInstance( method, method.getDeclaringType() );
 	}
-	public static synchronized DeleteMethodOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+	public static synchronized DeleteMethodOperation getInstance( org.lgna.project.ast.MethodDeclaredInAlice method, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		DeleteMethodOperation rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -61,20 +61,20 @@ public class DeleteMethodOperation extends DeleteMemberOperation< edu.cmu.cs.den
 		return rv;
 	}
 
-	private DeleteMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+	private DeleteMethodOperation( org.lgna.project.ast.MethodDeclaredInAlice method, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( java.util.UUID.fromString( "ed56c9b9-3eed-48d0-9bbc-f6e251fdd3b5" ), method, declaringType );
 	}
 	@Override
-	protected java.lang.Class< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > getNodeParameterType() {
-		return edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class;
+	protected java.lang.Class< org.lgna.project.ast.MethodDeclaredInAlice > getNodeParameterType() {
+		return org.lgna.project.ast.MethodDeclaredInAlice.class;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > getNodeListProperty( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+	protected org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.MethodDeclaredInAlice > getNodeListProperty( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		return declaringType.methods;
 	}
 	@Override
-	protected boolean isClearToDelete( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > references = this.getIDE().getMethodInvocations( method );
+	protected boolean isClearToDelete( org.lgna.project.ast.MethodDeclaredInAlice method ) {
+		java.util.List< org.lgna.project.ast.MethodInvocation > references = this.getIDE().getMethodInvocations( method );
 		final int N = references.size();
 		if( N > 0 ) {
 			StringBuffer sb = new StringBuffer();

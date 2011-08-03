@@ -45,9 +45,9 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class MoreCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, MoreCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MoreCascade getInstance( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+public class MoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
+	private static java.util.Map< org.lgna.project.ast.MethodInvocation, MoreCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized MoreCascade getInstance( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		MoreCascade rv = map.get( methodInvocation );
 		if( rv != null ) {
 			//pass
@@ -58,29 +58,29 @@ public class MoreCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.al
 		return rv;
 	}
 	
-	private static edu.cmu.cs.dennisc.alice.ast.AbstractParameter getNextParameter( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
-		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextMethod.getParameters();
+	private static org.lgna.project.ast.AbstractParameter getNextParameter( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getParameters();
 		return parameters.get( parameters.size()-1 );
 	}
 	
-	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation;
-	private final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
-	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
-	private MoreCascade( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
+	private final org.lgna.project.ast.MethodInvocation methodInvocation;
+	private final org.lgna.project.ast.ExpressionStatement expressionStatement;
+	private final org.lgna.project.ast.MethodInvocation nextMethodInvocation;
+	private MoreCascade( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
-		this.expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.methodInvocation.getParent();
-		assert this.expressionStatement != null : ((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava)this.methodInvocation.method.getValue()).getMethodReflectionProxy().getReification();
+		this.expressionStatement = (org.lgna.project.ast.ExpressionStatement)this.methodInvocation.getParent();
+		assert this.expressionStatement != null : ((org.lgna.project.ast.MethodDeclaredInJava)this.methodInvocation.method.getValue()).getMethodReflectionProxy().getReification();
 		
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.methodInvocation.method.getValue();
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
-		this.nextMethodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
+		org.lgna.project.ast.AbstractMethod method = this.methodInvocation.method.getValue();
+		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
+		this.nextMethodInvocation = new org.lgna.project.ast.MethodInvocation();
 		this.nextMethodInvocation.method.setValue( nextMethod );
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : nextMethod.getParameters() ) {
-			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, null );
+		for( org.lgna.project.ast.AbstractParameter parameter : nextMethod.getParameters() ) {
+			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, null );
 			this.nextMethodInvocation.arguments.add( argument );
 		}
 //		this.updateToolTipText();
@@ -91,13 +91,13 @@ public class MoreCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.al
 //		return org.alice.ide.IDE.PROJECT_GROUP;
 //	}
 
-	public edu.cmu.cs.dennisc.alice.ast.ExpressionStatement getExpressionStatement() {
+	public org.lgna.project.ast.ExpressionStatement getExpressionStatement() {
 		return this.expressionStatement;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getPrevMethodInvocation() {
+	public org.lgna.project.ast.MethodInvocation getPrevMethodInvocation() {
 		return this.methodInvocation;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getNextMethodInvocation() {
+	public org.lgna.project.ast.MethodInvocation getNextMethodInvocation() {
 		return this.nextMethodInvocation;
 	}
 	
@@ -129,7 +129,7 @@ public class MoreCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.al
 //		return lastParameter.getDesiredValueType();
 //	}
 	@Override
-	protected org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit(org.lgna.croquet.history.CascadeCompletionStep<edu.cmu.cs.dennisc.alice.ast.Expression> step, edu.cmu.cs.dennisc.alice.ast.Expression[] values) {
+	protected org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit(org.lgna.croquet.history.CascadeCompletionStep<org.lgna.project.ast.Expression> step, org.lgna.project.ast.Expression[] values) {
 		return new org.alice.ide.croquet.edits.ast.FillInMoreEdit( step, values[ 0 ] );
 	}
 }

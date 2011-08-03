@@ -55,18 +55,18 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 	}
 	@Override
 	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
-		edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();
+		org.lgna.project.Project project = this.getIDE().getProject();
 		if( project != null ) {
 			final int frameRate = 24;
 			//this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
 			org.alice.media.VideoCapturePane videoCapturePane = new org.alice.media.VideoCapturePane(project, frameRate){
 
 				@Override
-				protected edu.cmu.cs.dennisc.animation.Program createProgram( edu.cmu.cs.dennisc.alice.Project project )
+				protected edu.cmu.cs.dennisc.animation.Program createProgram( org.lgna.project.Project project )
 				{
 				    org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)ExportVideoUploadToYouTubeOperation.this.getIDE();
 			        ide.ensureProjectCodeUpToDate();
-					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
+					org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 					return ide.createRuntimeProgramForMovieEncoding( vm, project.getProgramType(), frameRate );
 				}
 				

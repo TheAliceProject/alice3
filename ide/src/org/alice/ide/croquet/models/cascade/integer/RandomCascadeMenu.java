@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.integer;
 /**
  * @author Dennis Cosgrove
  */
-public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< org.lgna.project.ast.MethodInvocation > {
 	private static class SingletonHolder {
 		private static RandomCascadeMenu instance = new RandomCascadeMenu();
 	}
@@ -57,7 +57,7 @@ public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 		super( java.util.UUID.fromString( "d0b0e182-e766-49ba-8e10-239df62def0a" ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.MethodInvocation > context ) {
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFrom0ToNExclusive", Integer.class ) );
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFromAToBExclusive", Integer.class, Integer.class ) );
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.alice.random.RandomUtilities.class, "nextIntegerFromAToBInclusive", Integer.class, Integer.class ) );

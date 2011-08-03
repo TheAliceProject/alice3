@@ -150,13 +150,13 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 			new Thread() {
 				@Override
 				public void run() {
-					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
+					org.lgna.project.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
 					vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 					vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
 					vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
-					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getProgramType();
+					org.lgna.project.ast.TypeDeclaredInAlice programType = ide.getProgramType();
 					//String[] args = {};
-					edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice programInstance = vm.ENTRY_POINT_createInstance( programType );
+					org.lgna.project.virtualmachine.InstanceInAlice programInstance = vm.ENTRY_POINT_createInstance( programType );
 					org.lgna.story.Program program = programInstance.getInstanceInJava( org.lgna.story.Program.class );
 					org.lgna.story.implementation.ProgramImplementation programImplementation = org.lgna.story.ImplementationAccessor.getImplementation( program );
 					programImplementation.initializeInAwtContainer( rv.getAwtComponent() );

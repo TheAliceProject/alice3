@@ -47,34 +47,34 @@ package org.alice.ide.croquet.edits.ast;
  */
 public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 	public static final int AT_END = Short.MAX_VALUE;
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	private org.lgna.project.ast.BlockStatement blockStatement;
+	private org.lgna.project.ast.Statement statement;
 	private int specifiedIndex;
-	private edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions;
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.Expression[] initialExpressions ) {
+	private org.lgna.project.ast.Expression[] initialExpressions;
+	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
 		super( completionStep );
 		this.blockStatement = blockStatementIndexPair.getBlockStatement();
 		this.specifiedIndex = blockStatementIndexPair.getIndex();
 		this.statement = statement;
 		this.initialExpressions = initialExpressions;
 	}
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		this( completionStep, blockStatementIndexPair, statement, new edu.cmu.cs.dennisc.alice.ast.Expression[] {} );
+	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement ) {
+		this( completionStep, blockStatementIndexPair, statement, new org.lgna.project.ast.Expression[] {} );
 	}
 	public InsertStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		org.lgna.project.Project project = ide.getProject();
 		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
+		this.blockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( project, blockStatementId );
 		this.specifiedIndex = binaryDecoder.decodeInt();
 		java.util.UUID statementId = binaryDecoder.decodeId();
-		this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
+		this.statement = org.lgna.project.project.ProjectUtilities.lookupNode( project, statementId );
 		java.util.UUID[] ids = binaryDecoder.decodeIdArray();
 		final int N = ids.length;
-		this.initialExpressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
+		this.initialExpressions = new org.lgna.project.ast.Expression[ N ];
 		for( int i=0; i<N; i++ ) {
-			this.initialExpressions[ i ] = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, ids[ i ] );
+			this.initialExpressions[ i ] = org.lgna.project.project.ProjectUtilities.lookupNode( project, ids[ i ] );
 		}
 	}
 	@Override
@@ -91,7 +91,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		binaryEncoder.encode( ids );
 	}
 
-	public edu.cmu.cs.dennisc.alice.ast.Expression[] getInitialExpressions() {
+	public org.lgna.project.ast.Expression[] getInitialExpressions() {
 		return this.initialExpressions;
 	}
 	
@@ -118,7 +118,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		}
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
+	public org.lgna.project.ast.Statement getStatement() {
 		return this.statement;
 	}
 
@@ -133,7 +133,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "drop: " );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
 		return rv;
 	}
 	@Override
@@ -146,12 +146,12 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 				//todo
 				if( N == 1 ) {
 					for( int i=0; i<N; i++ ) {
-						edu.cmu.cs.dennisc.alice.ast.Expression originalI = this.initialExpressions[ i ];
-						edu.cmu.cs.dennisc.alice.ast.Expression replacementI = insertStatementEdit.initialExpressions[ i ];
-						if( originalI instanceof edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral ) {
-							if( replacementI instanceof edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral ) {
-								Object originalValue = ((edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)originalI).getValueProperty().getValue();
-								Object replacementValue = ((edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)replacementI).getValueProperty().getValue();
+						org.lgna.project.ast.Expression originalI = this.initialExpressions[ i ];
+						org.lgna.project.ast.Expression replacementI = insertStatementEdit.initialExpressions[ i ];
+						if( originalI instanceof org.lgna.project.ast.AbstractValueLiteral ) {
+							if( replacementI instanceof org.lgna.project.ast.AbstractValueLiteral ) {
+								Object originalValue = ((org.lgna.project.ast.AbstractValueLiteral)originalI).getValueProperty().getValue();
+								Object replacementValue = ((org.lgna.project.ast.AbstractValueLiteral)replacementI).getValueProperty().getValue();
 								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalValue, replacementValue ) ) {
 									rv = org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH;
 								} else {
@@ -199,11 +199,11 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		super.retarget( retargeter );
 		this.blockStatement = retargeter.retarget( this.blockStatement );
 		this.statement = retargeter.retarget( this.statement );
-		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
-			edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
-			edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
-			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+		if( this.statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 				methodInvocation.method.setValue( retargeter.retarget( methodInvocation.method.getValue() ) );
 			}
 		}
@@ -215,8 +215,8 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
 		System.err.println( "TODO: recursive retarget" );
-		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
-			retargeter.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)replacementEdit.statement).body.getValue() );
+		if( this.statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+			retargeter.addKeyValuePair( ((org.lgna.project.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((org.lgna.project.ast.AbstractStatementWithBody)replacementEdit.statement).body.getValue() );
 		}
 		final int N = this.initialExpressions.length;
 		assert N == replacementEdit.initialExpressions.length;

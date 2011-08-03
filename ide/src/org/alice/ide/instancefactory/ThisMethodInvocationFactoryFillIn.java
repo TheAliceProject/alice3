@@ -47,8 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, ThisMethodInvocationFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisMethodInvocationFactoryFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod value ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ThisMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.AbstractMethod value ) {
 		synchronized( map ) {
 			ThisMethodInvocationFactoryFillIn rv = map.get( value );
 			if( rv != null ) {
@@ -61,9 +61,9 @@ public class ThisMethodInvocationFactoryFillIn extends InstanceFactoryFillInWith
 		}
 	}
 	public static ThisMethodInvocationFactoryFillIn getInstance( Class<?> declaringCls, String name ) {
-		return getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( declaringCls, name ) );
+		return getInstance( org.lgna.project.ast.MethodDeclaredInJava.get( declaringCls, name ) );
 	}
-	private ThisMethodInvocationFactoryFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private ThisMethodInvocationFactoryFillIn( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "1ab72e54-03d3-4569-b777-cac55c793b6e" ), ThisMethodInvocationFactory.getInstance( method ) );
 	}
 	@Override

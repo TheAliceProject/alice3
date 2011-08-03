@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class ForEachInArrayLoopTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public ForEachInArrayLoopTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteForEachInArrayLoop() );
+		super( org.lgna.project.ast.ForEachInArrayLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteForEachInArrayLoop() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

@@ -46,8 +46,8 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static DeclareFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > ownerType ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? >, DeclareFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static DeclareFieldOperation getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > ownerType ) {
 		DeclareFieldOperation rv = map.get( ownerType );
 		if( rv != null ) {
 			//pass
@@ -57,13 +57,13 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 		}
 		return rv;
 	}
-	private DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+	private DeclareFieldOperation( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( java.util.UUID.fromString( "e935b0ea-e927-49ff-b33b-2c8eaf5c8b57" ), declaringType );
 		this.setName( "Declare Property..." );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFieldOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFieldOperation >( this, this.getDeclaringType(), edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFieldOperation >( this, this.getDeclaringType(), org.lgna.project.ast.AbstractTypeDeclaredInAlice.class );
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.CreateFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {

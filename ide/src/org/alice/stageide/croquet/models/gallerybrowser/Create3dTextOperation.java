@@ -306,7 +306,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 	private void handleTextChange( javax.swing.event.DocumentEvent e ) {
 		if( this.constrainInstanceNameToTextVC.getAwtComponent().isSelected() ) {
 			String text = this.textVC.getText();
-			String instanceName = edu.cmu.cs.dennisc.alice.ast.IdentifierUtilities.getConventionalInstanceName( text );
+			String instanceName = org.lgna.project.ast.IdentifierUtilities.getConventionalInstanceName( text );
 			this.instanceNameVC.setText( instanceName );
 		}
 	}
@@ -361,23 +361,23 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		return new CreateTextPane( this ); 
 	}
 	
-	private edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lgna.story.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
+	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.FieldDeclaredInAlice, org.lgna.story.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		//"Create Text"
 		CreateTextPane createTextPane = context.getMainPanel();
 		org.lgna.story.Text text = createTextPane.createText();
 		if( text != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getActiveInstance().getTypeDeclaredInAliceFor( org.lgna.story.Text.class );
-			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( text.getName(), type, initializer );
-			field.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-			field.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+			org.lgna.project.ast.TypeDeclaredInAlice type = org.alice.ide.IDE.getActiveInstance().getTypeDeclaredInAliceFor( org.lgna.story.Text.class );
+			org.lgna.project.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );
+			org.lgna.project.ast.FieldDeclaredInAlice field = new org.lgna.project.ast.FieldDeclaredInAlice( text.getName(), type, initializer );
+			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+			field.access.setValue( org.lgna.project.ast.Access.PRIVATE );
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, text );
 		} else {
 			return null;
 		}
 	}
 	
-	private final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
+	private final org.lgna.project.ast.TypeDeclaredInAlice getOwnerType() {
 		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 	private boolean isInstanceValid() {
@@ -387,13 +387,13 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	@Override
 	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lgna.story.Text> tuple = this.createFieldAndInstance( step );
+			edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.FieldDeclaredInAlice, org.lgna.story.Text> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {
-				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
+				org.lgna.project.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
-					edu.cmu.cs.dennisc.alice.ast.Statement[] doStatements = null; //todo
-					edu.cmu.cs.dennisc.alice.ast.Statement[] undoStatements = null; //todo
+					org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> ownerType = this.getOwnerType();
+					org.lgna.project.ast.Statement[] doStatements = null; //todo
+					org.lgna.project.ast.Statement[] undoStatements = null; //todo
 					step.commitAndInvokeDo( new org.alice.ide.operations.ast.DeclareFieldEdit( step, ownerType, field, doStatements, undoStatements ) );
 				} else {
 					step.cancel();

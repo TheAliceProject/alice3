@@ -58,7 +58,7 @@ abstract class DirectoryListContentPanel extends ListContentPanel {
 		java.io.File directory = this.getDirectory();
 		java.net.URI[] rv;
 		if( directory != null ) {
-			java.io.File[] files = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.listProjectFiles( this.getDirectory() );
+			java.io.File[] files = org.lgna.project.project.ProjectUtilities.listProjectFiles( this.getDirectory() );
 			final int N = files.length;
 			rv = new java.net.URI[ N ];
 			for( int i=0; i<N; i++ ) {

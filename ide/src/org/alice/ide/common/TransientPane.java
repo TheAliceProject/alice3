@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TransientPane<N extends edu.cmu.cs.dennisc.alice.ast.AbstractTransient> extends AccessiblePane {
+public abstract class TransientPane<N extends org.lgna.project.ast.AbstractTransient> extends AccessiblePane {
 	private N trans;
 	public TransientPane( N trans ) {
 		this.trans = trans;
@@ -54,7 +54,7 @@ public abstract class TransientPane<N extends edu.cmu.cs.dennisc.alice.ast.Abstr
 		return this.trans;
 	}
 	@Override
-	public final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+	public final org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.getTransient().getValueType();
 	}
 }

@@ -47,24 +47,24 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public abstract class ArrayAtIndexAssignmentInsertCascade extends StatementInsertCascade {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > arrayType;
-	public ArrayAtIndexAssignmentInsertCascade( java.util.UUID id,  org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > arrayType ) {
-		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
+	private final org.lgna.project.ast.AbstractType< ?,?,? > arrayType;
+	public ArrayAtIndexAssignmentInsertCascade( java.util.UUID id,  org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractType< ?,?,? > arrayType ) {
+		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
 		this.arrayType = arrayType;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression(); 
+	protected abstract org.lgna.project.ast.Expression createAccessExpression(); 
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
+	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
+		org.lgna.project.ast.AssignmentExpression assignmentExpression = new org.lgna.project.ast.AssignmentExpression(
 				this.arrayType.getComponentType(), 
-				new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
+				new org.lgna.project.ast.ArrayAccess( 
 						this.arrayType, 
 						this.createAccessExpression(), 
 						expressions[ 0 ]
 				), 
-				edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, 
+				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 
 				expressions[ 1 ]
 		);
-		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( assignmentExpression );
+		return new org.lgna.project.ast.ExpressionStatement( assignmentExpression );
 	}
 }

@@ -47,10 +47,10 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class LocalTransformationMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private final edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions;
-	public LocalTransformationMethodInvocationEditFactory( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {
+	private final org.lgna.project.ast.AbstractField field;
+	private final org.lgna.project.ast.AbstractMethod method;
+	private final org.lgna.project.ast.Expression[] argumentExpressions;
+	public LocalTransformationMethodInvocationEditFactory( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		this.field = field;
 		this.method = method;
 		this.argumentExpressions = argumentExpressions;

@@ -45,16 +45,16 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviousValueExpression extends edu.cmu.cs.dennisc.alice.ast.Expression {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-	public PreviousValueExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+public class PreviousValueExpression extends org.lgna.project.ast.Expression {
+	private org.lgna.project.ast.AbstractType<?,?,?> type;
+	public PreviousValueExpression( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
 	}
 	public PreviousValueExpression( Class<?> cls ) {
-		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+		this( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getType() {
 		return this.type;
 	}
 //	@Override

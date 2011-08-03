@@ -46,28 +46,28 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 public class TypeFunctionsPane extends AbstractTypeMethodsPane {
-	public TypeFunctionsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public TypeFunctionsPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods, type.constructors };
 	}
 	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		//return org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type ).createButton();
 		return org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( type ).createButton();
 	}
 	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		return org.alice.ide.operations.ast.FocusCodeOperation.getInstance( type.getDeclaredConstructor() ).createButton();
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	protected org.lgna.croquet.components.Component< ? > createFunctionTemplate( org.lgna.project.ast.AbstractMethod method ) {
 		return org.alice.ide.memberseditor.templates.TemplateFactory.getFunctionInvocationTemplate( method );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	protected org.lgna.croquet.components.Component< ? > createProcedureTemplate( org.lgna.project.ast.AbstractMethod method ) {
 		return null;
 	}
 }

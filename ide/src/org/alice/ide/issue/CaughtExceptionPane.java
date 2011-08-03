@@ -99,7 +99,7 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 	}
 	@Override
 	protected String[] getAffectsVersions() {
-		return new String[] { edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() };
+		return new String[] { org.lgna.project.Version.getCurrentVersionText() };
 	}
 
 	private boolean isClearedToAttachCurrentProject = false;

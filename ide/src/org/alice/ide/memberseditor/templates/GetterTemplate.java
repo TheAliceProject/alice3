@@ -47,25 +47,25 @@ package org.alice.ide.memberseditor.templates;
  */
 //todo: reduce visibility
 public class GetterTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
-	private static final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] ZERO_LENGTH_TYPE_ARRAY = new edu.cmu.cs.dennisc.alice.ast.AbstractType[] {};  
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	protected GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private static final org.lgna.project.ast.AbstractType<?,?,?>[] ZERO_LENGTH_TYPE_ARRAY = new org.lgna.project.ast.AbstractType[] {};  
+	private org.lgna.project.ast.AbstractField field;
+	protected GetterTemplate( org.lgna.project.ast.AbstractField field ) {
 		this.field = field;
-		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
+		if( this.field instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
+			org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)this.field;
 			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.field.getValueType();
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
 	}
 }

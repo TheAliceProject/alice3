@@ -47,12 +47,12 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.Cascade<MethodInvocationEditFactory> > {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private final edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions;
+	private final org.lgna.project.ast.AbstractField field;
+	private final org.lgna.project.ast.AbstractMethod method;
+	private final org.lgna.project.ast.Expression[] argumentExpressions;
 	private transient org.lgna.story.implementation.AbstractTransformableImplementation transformable;
 	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
-	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {
+	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		super( completionStep );
 		this.field = field;
 		this.method = method;
@@ -60,28 +60,28 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	}
 	public LocalTransformationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		this.field = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.decodeNode( project, binaryDecoder );
-		this.method = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.decodeNode( project, binaryDecoder );
+		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		this.field = org.lgna.project.project.ProjectUtilities.decodeNode( project, binaryDecoder );
+		this.method = org.lgna.project.project.ProjectUtilities.decodeNode( project, binaryDecoder );
 		this.argumentExpressions = null;
 		assert false : this.argumentExpressions;
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		edu.cmu.cs.dennisc.alice.project.ProjectUtilities.encodeNode( binaryEncoder, this.field );
-		edu.cmu.cs.dennisc.alice.project.ProjectUtilities.encodeNode( binaryEncoder, this.method );
+		org.lgna.project.project.ProjectUtilities.encodeNode( binaryEncoder, this.field );
+		org.lgna.project.project.ProjectUtilities.encodeNode( binaryEncoder, this.method );
 		assert false : this.argumentExpressions;
 	}
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
-		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = ide.getVirtualMachineForSceneEditor();
-		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)sceneEditor.getInstanceInAliceVMForField( sceneEditor.getSceneField() );
+		org.lgna.project.virtualmachine.VirtualMachine vm = ide.getVirtualMachineForSceneEditor();
+		org.lgna.project.virtualmachine.InstanceInAlice sceneInstanceInAlice = (org.lgna.project.virtualmachine.InstanceInAlice)sceneEditor.getInstanceInAliceVMForField( sceneEditor.getSceneField() );
 		Object instance = sceneEditor.getInstanceInAliceVMForField( this.field );
-		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
-			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
+		if( instance instanceof org.lgna.project.virtualmachine.InstanceInAlice ) {
+			org.lgna.project.virtualmachine.InstanceInAlice instanceInAlice = (org.lgna.project.virtualmachine.InstanceInAlice)instance;
 			org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)sceneEditor.getInstanceInJavaVMForField( this.field );
 			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( turnable );
 			this.m = this.transformable.getLocalTransformation();

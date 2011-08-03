@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class EditTypeOperation extends org.lgna.croquet.InputDialogOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, EditTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static EditTypeOperation getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	private static java.util.Map< org.lgna.project.ast.TypeDeclaredInAlice, EditTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static EditTypeOperation getInstance( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		synchronized( map ) {
 			EditTypeOperation rv = map.get( type );
 			if( rv != null ) {
@@ -60,8 +60,8 @@ public class EditTypeOperation extends org.lgna.croquet.InputDialogOperation {
 		}
 	}
 
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	private EditTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	private org.lgna.project.ast.TypeDeclaredInAlice type;
+	private EditTypeOperation( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		super( ENCLOSING_DIALOG_GROUP, java.util.UUID.fromString( "027be381-1467-4ca4-82c1-67f908dc0297" ) );
 		this.type = type;
 		this.setName( "<html>Edit <strong>" + this.type.getName() + "</strong>...</html>" );
@@ -69,7 +69,7 @@ public class EditTypeOperation extends org.lgna.croquet.InputDialogOperation {
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditTypeOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditTypeOperation >( this, this.type, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditTypeOperation >( this, this.type, org.lgna.project.ast.TypeDeclaredInAlice.class );
 	}
 	@Override
 	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {

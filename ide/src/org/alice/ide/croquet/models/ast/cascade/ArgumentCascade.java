@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.ast.cascade;
  * @author Dennis Cosgrove
  */
 public class ArgumentCascade extends ProjectExpressionPropertyCascade {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Argument, ArgumentCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ArgumentCascade getInstance( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
+	private static java.util.Map< org.lgna.project.ast.Argument, ArgumentCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ArgumentCascade getInstance( org.lgna.project.ast.Argument argument ) {
 		ArgumentCascade rv = map.get( argument );
 		if( rv != null ) {
 			//pass
@@ -57,8 +57,8 @@ public class ArgumentCascade extends ProjectExpressionPropertyCascade {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.Argument argument;
-	private ArgumentCascade( edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
+	private final org.lgna.project.ast.Argument argument;
+	private ArgumentCascade( org.lgna.project.ast.Argument argument ) {
 		super( java.util.UUID.fromString( "c60b0eec-d8ac-4256-a8be-54b16605fc0e" ), argument.expression, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( argument.parameter.getValue() ) );
 		this.argument = argument;
 	}
@@ -72,10 +72,10 @@ public class ArgumentCascade extends ProjectExpressionPropertyCascade {
 //	}
 	@Override
 	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade > getCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade >( this, this.argument, edu.cmu.cs.dennisc.alice.ast.Argument.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade >( this, this.argument, org.lgna.project.ast.Argument.class );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
 		assert expressions.length == 1;
 		return expressions[ 0 ];
 	}

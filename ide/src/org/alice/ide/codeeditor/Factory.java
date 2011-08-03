@@ -43,10 +43,10 @@
 package org.alice.ide.codeeditor;
 
 abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.operations.ActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement;
-	public ConvertStatementWithBodyActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement ) {
+	private org.lgna.project.ast.StatementListProperty property;
+	private org.lgna.project.ast.AbstractStatementWithBody original;
+	private org.lgna.project.ast.AbstractStatementWithBody replacement;
+	public ConvertStatementWithBodyActionOperation( java.util.UUID individualId, org.lgna.project.ast.StatementListProperty property, org.lgna.project.ast.AbstractStatementWithBody original, org.lgna.project.ast.AbstractStatementWithBody replacement ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		this.property = property;
 		this.original = original;
@@ -55,7 +55,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final int index = this.property.indexOf( this.original );
-		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
+		final org.lgna.project.ast.BlockStatement body = this.original.body.getValue();
 		if( index >= 0 ) {
 			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 				@Override
@@ -79,9 +79,9 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 				@Override
 				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "convert:" );
-					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, original, locale);
+					org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, original, locale);
 					rv.append( " --> " );
-					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, replacement, locale);
+					org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, replacement, locale);
 					return rv;
 				}
 			} );
@@ -91,8 +91,8 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 	}
 }
 class ConvertDoInOrderToDoTogetherActionOperation extends ConvertStatementWithBodyActionOperation {
-	public ConvertDoInOrderToDoTogetherActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder ) {
-		super( java.util.UUID.fromString( "d3abb3c6-f016-4687-be00-f0921de7cb39" ), property, doInOrder, new edu.cmu.cs.dennisc.alice.ast.DoTogether() );
+	public ConvertDoInOrderToDoTogetherActionOperation( org.lgna.project.ast.StatementListProperty property, org.lgna.project.ast.DoInOrder doInOrder ) {
+		super( java.util.UUID.fromString( "d3abb3c6-f016-4687-be00-f0921de7cb39" ), property, doInOrder, new org.lgna.project.ast.DoTogether() );
 	}
 	@Override
 	protected void localize() {
@@ -101,8 +101,8 @@ class ConvertDoInOrderToDoTogetherActionOperation extends ConvertStatementWithBo
 	}
 }
 class ConvertDoTogetherToDoInOrderActionOperation extends ConvertStatementWithBodyActionOperation {
-	public ConvertDoTogetherToDoInOrderActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether ) {
-		super( java.util.UUID.fromString( "14aec49f-ae07-4a4c-9c0b-73c5533d514f" ), property, doTogether, new edu.cmu.cs.dennisc.alice.ast.DoInOrder() );
+	public ConvertDoTogetherToDoInOrderActionOperation( org.lgna.project.ast.StatementListProperty property, org.lgna.project.ast.DoTogether doTogether ) {
+		super( java.util.UUID.fromString( "14aec49f-ae07-4a4c-9c0b-73c5533d514f" ), property, doTogether, new org.lgna.project.ast.DoInOrder() );
 	}
 	@Override
 	protected void localize() {
@@ -112,9 +112,9 @@ class ConvertDoTogetherToDoInOrderActionOperation extends ConvertStatementWithBo
 }
 
 class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody;
-	public DissolveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody ) {
+	private org.lgna.project.ast.StatementListProperty property;
+	private org.lgna.project.ast.AbstractStatementWithBody abstractStatementWithBody;
+	public DissolveStatementActionOperation( org.lgna.project.ast.StatementListProperty property, org.lgna.project.ast.AbstractStatementWithBody abstractStatementWithBody ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
 		this.property = property;
 		this.abstractStatementWithBody = abstractStatementWithBody;
@@ -126,7 +126,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 		if( index >= 0 ) {
 			final int N = this.abstractStatementWithBody.body.getValue().statements.size();
 
-			final edu.cmu.cs.dennisc.alice.ast.Statement[] statements = new edu.cmu.cs.dennisc.alice.ast.Statement[ N ];
+			final org.lgna.project.ast.Statement[] statements = new org.lgna.project.ast.Statement[ N ];
 			this.abstractStatementWithBody.body.getValue().statements.toArray( statements );
 			
 			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
@@ -149,7 +149,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 				@Override
 				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "dissolve:" );
-					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, abstractStatementWithBody, locale);
+					org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, abstractStatementWithBody, locale);
 					return rv;
 				}
 			} );
@@ -160,18 +160,18 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 }
 
 class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	private org.lgna.project.ast.StatementListProperty property;
+	private org.lgna.project.ast.Statement statement;
 
-	public DeleteStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public DeleteStatementActionOperation( org.lgna.project.ast.StatementListProperty property, org.lgna.project.ast.Statement statement ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "c2b2810b-68ad-4935-b47f-458fe90f877b" ) );
 		this.property = property;
 		this.statement = statement;
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Delete " );
-		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
+		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
 			sb.append( "Statement" );
-		} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
+		} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
 			sb.append( "If/Else" );
 		} else {
 			sb.append( this.statement.getClass().getSimpleName() );
@@ -198,7 +198,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 				@Override
 				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 					rv.append( "delete:" );
-					edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, statement, locale);
+					org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement, locale);
 					return rv;
 				}
 			} );
@@ -209,9 +209,9 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 }
 
 class StatementEnabledStateOperation extends org.lgna.croquet.BooleanState {
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	private org.lgna.project.ast.Statement statement;
 
-	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public StatementEnabledStateOperation( org.lgna.project.ast.Statement statement ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
 		this.statement = statement;
 		this.addValueObserver( new ValueObserver<Boolean>() {
@@ -240,11 +240,11 @@ class StatementEnabledStateOperation extends org.lgna.croquet.BooleanState {
  */
 public class Factory extends org.alice.ide.common.Factory {
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
+	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType, org.lgna.croquet.Group group, boolean isBogus ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
+	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType, org.lgna.croquet.Group group, boolean isBogus ) {
+		org.lgna.project.ast.Expression expression = expressionProperty.getValue();
 		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
 			org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade model;
@@ -259,11 +259,11 @@ public class Factory extends org.alice.ide.common.Factory {
 		return rv;
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType ) {
+	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType ) {
 		return this.createExpressionPropertyPane( expressionProperty, prefixPane, desiredValueType, org.alice.ide.IDE.PROJECT_GROUP, false );
 	}
 	@Override
-	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
+	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
 		abstractStatementPane.setDragModel( new org.alice.ide.croquet.models.ToDoDragModel() );
 		abstractStatementPane.setPopupPrepModel( new org.lgna.croquet.PredeterminedMenuModel(
@@ -273,38 +273,38 @@ public class Factory extends org.alice.ide.common.Factory {
 		return abstractStatementPane;
 	}
 	protected java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = abstractStatementPane.getOwner();
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
-		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
+		org.lgna.project.ast.StatementListProperty property = abstractStatementPane.getOwner();
+		org.lgna.project.ast.Statement statement = abstractStatementPane.getStatement();
+		if( statement instanceof org.lgna.project.ast.Comment ) {
 			//pass
 		} else {
 			rv.add( new StatementEnabledStateOperation( statement ).getMenuItemPrepModel() );
 		}
-		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
-			edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
-			edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
-			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
-				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-				if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+				if( method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
 					rv.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( method ).getMenuItemPrepModel() );
 				}
 			}
 		}
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		rv.add( new DeleteStatementActionOperation( property, statement ).getMenuItemPrepModel() );
-		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody = (edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)statement;
+		if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+			org.lgna.project.ast.AbstractStatementWithBody abstractStatementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
 			rv.add( new DissolveStatementActionOperation( property, abstractStatementWithBody ).getMenuItemPrepModel() );
-			if( abstractStatementWithBody instanceof edu.cmu.cs.dennisc.alice.ast.DoInOrder ) {
-				edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder = (edu.cmu.cs.dennisc.alice.ast.DoInOrder)abstractStatementWithBody;
+			if( abstractStatementWithBody instanceof org.lgna.project.ast.DoInOrder ) {
+				org.lgna.project.ast.DoInOrder doInOrder = (org.lgna.project.ast.DoInOrder)abstractStatementWithBody;
 				rv.add( new ConvertDoInOrderToDoTogetherActionOperation( property, doInOrder ).getMenuItemPrepModel() );
-			} else if( abstractStatementWithBody instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
-				edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether = (edu.cmu.cs.dennisc.alice.ast.DoTogether)abstractStatementWithBody;
+			} else if( abstractStatementWithBody instanceof org.lgna.project.ast.DoTogether ) {
+				org.lgna.project.ast.DoTogether doTogether = (org.lgna.project.ast.DoTogether)abstractStatementWithBody;
 				rv.add( new ConvertDoTogetherToDoInOrderActionOperation( property, doTogether ).getMenuItemPrepModel() );
 			}
-		} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
-			edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = (edu.cmu.cs.dennisc.alice.ast.ConditionalStatement)statement;
+		} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
+			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
 			//todo: dissolve to if, dissolve to else
 		}
 		return rv;

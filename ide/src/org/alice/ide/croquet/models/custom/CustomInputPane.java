@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.preview.PanelWithPreview< E > {
+public class CustomInputPane<E extends org.lgna.project.ast.Expression> extends org.alice.ide.preview.PanelWithPreview< E > {
 	private org.alice.ide.choosers.ValueChooser< E > chooser;
 	public CustomInputPane( org.alice.ide.choosers.ValueChooser< E > chooser ) {
 		this.chooser = chooser;
@@ -63,12 +63,12 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression> 
 	
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression;
+		org.lgna.project.ast.Expression expression;
 		try {
 			expression = this.getInputValue();
 		} catch( RuntimeException re ) {
 			//re.printStackTrace();
-			expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+			expression = new org.lgna.project.ast.NullLiteral();
 		}
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		rv.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );

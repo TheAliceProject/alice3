@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomInputDialogOperation<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<E> {
+public abstract class CustomInputDialogOperation<E extends org.lgna.project.ast.Expression> extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<E> {
 	private CustomInputPane< E > customInputPane;
 	
 	public CustomInputDialogOperation( java.util.UUID id, org.alice.ide.choosers.ValueChooser< E > chooser ) {

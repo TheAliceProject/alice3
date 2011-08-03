@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomKeyInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
+public class CustomKeyInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< org.lgna.project.ast.FieldAccess > {
 	private static class SingletonHolder {
 		private static CustomKeyInputDialogOperation instance = new CustomKeyInputDialogOperation();
 	}

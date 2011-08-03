@@ -47,10 +47,10 @@ package org.alice.stageide.croquet.components.declaration;
  * @author Dennis Cosgrove
  */
 public class PaintView extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.alice.stageide.croquet.models.declaration.PaintState > {
-	private org.lgna.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Expression > state, edu.cmu.cs.dennisc.alice.ast.Expression prevValue, edu.cmu.cs.dennisc.alice.ast.Expression nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Expression > state, edu.cmu.cs.dennisc.alice.ast.Expression prevValue, edu.cmu.cs.dennisc.alice.ast.Expression nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 			PaintView.this.repaint();
 		}
 	};
@@ -77,11 +77,11 @@ public class PaintView extends org.lgna.croquet.components.ViewController< javax
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
-				edu.cmu.cs.dennisc.alice.ast.Expression expression = PaintView.this.getModel().getValue();
+				org.lgna.project.ast.Expression expression = PaintView.this.getModel().getValue();
 				if( expression != null ) {
-					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
+					org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
 					
-					Object[] values = vm.ENTRY_POINT_evaluate( null, new edu.cmu.cs.dennisc.alice.ast.Expression[] { expression } );
+					Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
 					assert values.length == 1;
 					if( values[ 0 ] instanceof org.lgna.story.Paint ) {
 						org.lgna.story.Paint paint = (org.lgna.story.Paint)values[ 0 ];

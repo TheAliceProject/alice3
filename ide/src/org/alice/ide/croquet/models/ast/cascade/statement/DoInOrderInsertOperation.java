@@ -63,7 +63,7 @@ public class DoInOrderInsertOperation extends StatementInsertOperation {
 		super( java.util.UUID.fromString( "6f297fb3-8618-4d6c-bfdc-63c8320471f7" ), blockStatementIndexPair );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement() {
+	protected final org.lgna.project.ast.Statement createStatement() {
 		return org.alice.ide.ast.NodeUtilities.createDoInOrder();
 	}
 }

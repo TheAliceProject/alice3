@@ -44,16 +44,16 @@
 package org.alice.ide.name.validators;
 
 public class MethodNameValidator extends MemberNameValidator {
-	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	public MethodNameValidator( org.lgna.project.ast.MethodDeclaredInAlice method ) {
 		super( method, method.getDeclaringType() );
 	}
-	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type ) {
+	public MethodNameValidator( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type ) {
 		super( null, type );
 	}
 	@Override
 	protected boolean isNameAvailable( String name ) {
-		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
-		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.getType().methods ) {
+		org.lgna.project.ast.Node node = this.getNode();
+		for( org.lgna.project.ast.MethodDeclaredInAlice method : this.getType().methods ) {
 			if( method == node ) {
 				//pass
 			} else {

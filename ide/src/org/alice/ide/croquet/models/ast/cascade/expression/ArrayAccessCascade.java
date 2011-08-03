@@ -47,14 +47,14 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public abstract class ArrayAccessCascade extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade {
-	public ArrayAccessCascade( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public ArrayAccessCascade( java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( id, expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( Integer.class ) );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getArrayType();
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
+	protected abstract org.lgna.project.ast.AbstractType<?,?,?> getArrayType();
+	protected abstract org.lgna.project.ast.Expression createAccessExpression();
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
 		assert expressions.length == 1;
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( this.getArrayType(), this.createAccessExpression(), expressions[ 0 ] );
+		return new org.lgna.project.ast.ArrayAccess( this.getArrayType(), this.createAccessExpression(), expressions[ 0 ] );
 	}
 }

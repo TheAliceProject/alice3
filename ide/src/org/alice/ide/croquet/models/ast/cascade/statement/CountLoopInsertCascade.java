@@ -63,7 +63,7 @@ public class CountLoopInsertCascade extends StatementInsertCascade {
 		super( java.util.UUID.fromString( "6c314e4c-fec7-4c33-803c-a7efb17249aa" ), blockStatementIndexPair, CountBlank.getInstance() );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.alice.ide.ast.NodeUtilities.createCountLoop( expressions[ 0 ] );
 	}
 }

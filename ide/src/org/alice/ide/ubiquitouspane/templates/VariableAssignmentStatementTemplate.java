@@ -46,9 +46,9 @@ package org.alice.ide.ubiquitouspane.templates;
  * @author Dennis Cosgrove
  */
 public class VariableAssignmentStatementTemplate extends CascadingUbiquitousStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	public VariableAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		super( new org.alice.ide.croquet.models.ToDoDragModel(), edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteVariableAssignmentStatement( variable ) );
+	private org.lgna.project.ast.VariableDeclaredInAlice variable;
+	public VariableAssignmentStatementTemplate( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
+		super( new org.alice.ide.croquet.models.ToDoDragModel(), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteVariableAssignmentStatement( variable ) );
 		this.variable = variable;
 		this.variable.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {

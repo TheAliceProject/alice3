@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.arithmetic;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ReduceToOperandInPreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class ReduceToOperandInPreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< org.lgna.project.ast.Expression > {
 	public ReduceToOperandInPreviousArithmeticExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}
@@ -54,11 +54,11 @@ public abstract class ReduceToOperandInPreviousArithmeticExpressionFillIn extend
 //	protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< edu.cmu.cs.dennisc.alice.ast.Expression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
 //		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
 //	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression getOperand( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmetic );
+	protected abstract org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ArithmeticInfixExpression previousArithmetic );
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		assert previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
-		edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmetic = (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)previousExpression;
+	protected final org.lgna.project.ast.Expression createValue( org.lgna.project.ast.Expression previousExpression ) {
+		assert previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
+		org.lgna.project.ast.ArithmeticInfixExpression previousArithmetic = (org.lgna.project.ast.ArithmeticInfixExpression)previousExpression;
 		return this.getOperand( previousArithmetic );
 	}
 }

@@ -266,7 +266,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 			return org.alice.ide.codeeditor.CodeEditor.getInstance( item.getCode() );
 		}
 		
-		private boolean isEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		private boolean isEntryPoint( org.lgna.project.ast.AbstractCode code ) {
 			if( "run".equals( code.getName() ) ) { 
 				return code.getDeclaringType() == org.alice.ide.IDE.getActiveInstance().getSceneType();
 			}
@@ -277,9 +277,9 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 			button.getAwtComponent().setIcon( getMenuSmallIcon( item ) );
 			button.scaleFont( 1.5f );
 			
-			edu.cmu.cs.dennisc.alice.ast.AbstractCode code = item.getCode();
-			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-				final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+			org.lgna.project.ast.AbstractCode code = item.getCode();
+			if( code instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+				final org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = (org.lgna.project.ast.MethodDeclaredInAlice)code;
 				methodDeclaredInAlice.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 					public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 					}
@@ -314,7 +314,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 
 	@Override
 	protected String getMenuText(CodeComposite codeComposite) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = codeComposite.getCode();
+		org.lgna.project.ast.AbstractCode code = codeComposite.getCode();
 		if( code != null ) {
 			return code.getName();
 		} else {
@@ -324,7 +324,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	
 	@Override
 	protected javax.swing.Icon getMenuSmallIcon(CodeComposite codeComposite) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = codeComposite.getCode();
+		org.lgna.project.ast.AbstractCode code = codeComposite.getCode();
 		if( code != null ) {
 			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( code.getDeclaringType() );
 		} else {
@@ -484,7 +484,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 			super.handleUndisplayable();
 		}
 		private void updateOperation( CodeComposite item ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+			org.lgna.project.ast.AbstractType<?,?,?> type;
 			if( item != null ) {
 				type = item.getCode().getDeclaringType();
 			} else {
@@ -527,7 +527,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 //		}
 //	}
 
-	private Cycle< edu.cmu.cs.dennisc.alice.ast.AbstractCode > editedCodes = Cycle.newInstance();
+	private Cycle< org.lgna.project.ast.AbstractCode > editedCodes = Cycle.newInstance();
 	/*package-private*/ void editPreviousCode() {
 		this.edit( this.editedCodes.setToPrevious(), true );
 		
@@ -561,37 +561,37 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 			}
 		}
 	}
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> typeMembersListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice>() {
-		public void adding(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.MethodDeclaredInAlice> typeMembersListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.MethodDeclaredInAlice>() {
+		public void adding(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
 		}
-		public void added(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		public void added(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
 		}
-		public void clearing(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		public void clearing(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
 		}
-		public void cleared(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		public void cleared(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
 			EditorsTabSelectionState.this.removeDeadCode();
 		}
-		public void removing(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		public void removing(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
 		}
-		public void removed(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		public void removed(edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
 			EditorsTabSelectionState.this.removeDeadCode();
 		}
-		public void setting(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		public void setting(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
 		}
-		public void set(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> e) {
+		public void set(edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<org.lgna.project.ast.MethodDeclaredInAlice> e) {
 			EditorsTabSelectionState.this.removeDeadCode();
 		}
 	};
-	private java.util.Set<edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>> typeSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-	private void startListeningTo( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type ) {
+	private java.util.Set<org.lgna.project.ast.AbstractTypeDeclaredInAlice<?>> typeSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+	private void startListeningTo( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type ) {
 	}
 
 	@Override
 	protected void handleItemAdded( CodeComposite item ) {
 		super.handleItemAdded( item );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = item.getCode().getDeclaringType();
-		if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
+		org.lgna.project.ast.AbstractType<?,?,?> declaringType = item.getCode().getDeclaringType();
+		if (declaringType instanceof org.lgna.project.ast.AbstractTypeDeclaredInAlice<?>) {
+			org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (org.lgna.project.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
 			if( this.typeSet.contains( typeInAlice ) ) {
 				//pass
 			} else {
@@ -613,23 +613,23 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	@Override
 	public void clear() {
 		super.clear();
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type : this.typeSet ) {
+		for( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type : this.typeSet ) {
 			type.methods.removeListPropertyListener( this.typeMembersListener );
 		}
 		this.typeSet.clear();
 	}
 	@Deprecated
-	public void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
+	public void edit( final org.lgna.project.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
 		if( code != null ) {
 			CodeComposite item = CodeComposite.getInstance( code );
 			if( this.containsItem( item ) ) {
 				//pass
 			} else {
 				this.addItem( item );
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> declaringType = code.getDeclaringType();
+				org.lgna.project.ast.AbstractType<?,?,?> declaringType = code.getDeclaringType();
 				if( declaringType != null ) {
-					if (declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) {
-						edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
+					if (declaringType instanceof org.lgna.project.ast.AbstractTypeDeclaredInAlice<?>) {
+						org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> typeInAlice = (org.lgna.project.ast.AbstractTypeDeclaredInAlice<?>) declaringType;
 						this.startListeningTo( typeInAlice );
 					}
 				} else {
@@ -720,12 +720,12 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 //	};
 
 	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() {
-		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
 			EditorsTabSelectionState.this.clear();
 			EditorsTabSelectionState.this.editedCodes.clear();
 			EditorsTabSelectionState.this.updateBackOperationsEnabled();
 		}
-		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+		public void projectOpened( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
 		}
 	};
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {

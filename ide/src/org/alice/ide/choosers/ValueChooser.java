@@ -45,8 +45,8 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expression> {
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> {
+	protected org.lgna.project.ast.Expression getPreviousExpression() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
 			return ide.getCascadeManager().getPreviousExpression();

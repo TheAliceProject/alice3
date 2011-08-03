@@ -47,8 +47,8 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class ProceduresCascade extends org.lgna.croquet.Cascade< MethodInvocationEditFactory > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ProceduresCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ProceduresCascade getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	private static java.util.Map< org.lgna.project.ast.FieldDeclaredInAlice, ProceduresCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ProceduresCascade getInstance( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 		synchronized( map ) {
 			ProceduresCascade rv = map.get( field );
 			if( rv != null ) {
@@ -60,7 +60,7 @@ public class ProceduresCascade extends org.lgna.croquet.Cascade< MethodInvocatio
 			return rv;
 		}
 	}
-	private ProceduresCascade( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	private ProceduresCascade( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( field ) );
 	}
 	@Override

@@ -59,14 +59,14 @@ public class ParameterDeclarationPanel extends DeclarationPanel< org.alice.ide.c
 	@Override
 	protected org.lgna.croquet.components.Component< ? >[] createWarningRow() {
 		org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation model = this.getModel();
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = model.getCode();
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
+		org.lgna.project.ast.CodeDeclaredInAlice code = model.getCode();
+		java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
 		final int N = argumentLists.size();
 		if( N > 0 ) {
 
 			String codeText;
-			if( code instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)code;
+			if( code instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)code;
 				if( method.isProcedure() ) {
 					codeText = "procedure";
 				} else {
@@ -110,7 +110,7 @@ public class ParameterDeclarationPanel extends DeclarationPanel< org.alice.ide.c
 			org.lgna.croquet.components.PageAxisPanel pane = new org.lgna.croquet.components.PageAxisPanel();
 			pane.addComponent( new org.lgna.croquet.components.Label( sb.toString() ) );
 			pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
-			pane.addComponent( new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "Tip: look for " ), org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
+			pane.addComponent( new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "Tip: look for " ), org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( new org.lgna.project.ast.NullLiteral() ) ) );
 			pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
 			pane.addComponent( checkBox );
 			return new org.lgna.croquet.components.Component< ? >[] { new org.lgna.croquet.components.Label( "WARNING:" ), pane };

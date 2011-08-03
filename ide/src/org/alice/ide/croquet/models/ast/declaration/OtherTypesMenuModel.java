@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel< org.lgna.project.ast.AbstractType > {
 	private static class SingletonHolder {
 		private static OtherTypesMenuModel instance = new OtherTypesMenuModel();
 	}
@@ -56,9 +56,9 @@ public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel< edu.
 		super( java.util.UUID.fromString( "909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0" ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.AbstractType > blankNode ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > otherTypes = org.alice.ide.IDE.getActiveInstance().getSecondarySelectableTypesDeclaredInJava();
-		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava otherType : otherTypes ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
+		java.util.List< org.lgna.project.ast.TypeDeclaredInJava > otherTypes = org.alice.ide.IDE.getActiveInstance().getSecondarySelectableTypesDeclaredInJava();
+		for( org.lgna.project.ast.TypeDeclaredInJava otherType : otherTypes ) {
 			rv.add( TypeFillIn.getInstance( otherType ) );
 		}
 		return rv;

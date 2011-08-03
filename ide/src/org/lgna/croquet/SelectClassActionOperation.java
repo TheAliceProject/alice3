@@ -42,7 +42,7 @@
  */
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.TypeDeclaredInAlice;
 
 
 /**

@@ -45,13 +45,13 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class SelectedFieldExpression extends edu.cmu.cs.dennisc.alice.ast.Expression {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> requiredType;
-	public SelectedFieldExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> requiredType ) {
+public class SelectedFieldExpression extends org.lgna.project.ast.Expression {
+	private org.lgna.project.ast.AbstractType<?,?,?> requiredType;
+	public SelectedFieldExpression( org.lgna.project.ast.AbstractType<?,?,?> requiredType ) {
 		this.requiredType = requiredType;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getType() {
 		return this.requiredType;
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachine.Resource > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.ResourceExpression > {
+public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachine.Resource > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.ResourceExpression > {
 	protected abstract Class< E > getResourceClass();
 	protected abstract org.alice.ide.resource.prompter.ResourcePrompter<E> getResourcePrompter();
 	protected abstract String getMenuText();
@@ -54,16 +54,16 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 		super( id );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void > step ) {
+	public org.lgna.project.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > step ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		try {
 			E resource = getResourcePrompter().promptUserForResource( ide.getFrame() );
 			if( resource != null ) {
-				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+				org.lgna.project.Project project = ide.getProject();
 				if( project != null ) {
 					project.addResource( resource );
 				}
-				return new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( getResourceClass(), resource );
+				return new org.lgna.project.ast.ResourceExpression( getResourceClass(), resource );
 			} else {
 				throw new org.lgna.croquet.CancelException();
 			}
@@ -73,7 +73,7 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ResourceExpression,Void > step ) {
+	public org.lgna.project.ast.ResourceExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > step ) {
 		return null;
 	}
 //	@Override

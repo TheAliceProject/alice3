@@ -46,8 +46,8 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty > {
-	public ExpressionListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty property ) {
+public class ExpressionListPropertyPane extends AbstractListPropertyPane< org.lgna.project.ast.ExpressionListProperty > {
+	public ExpressionListPropertyPane( Factory factory, org.lgna.project.ast.ExpressionListProperty property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
@@ -60,7 +60,7 @@ public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cm
 	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)instance;
+		org.lgna.project.ast.Expression expression = (org.lgna.project.ast.Expression)instance;
 		return this.getFactory().createExpressionPane( expression );
 	}
 }

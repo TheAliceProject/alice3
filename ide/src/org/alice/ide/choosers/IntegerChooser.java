@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerChooser extends AbstractNumberChooser<edu.cmu.cs.dennisc.alice.ast.Expression> {
+public class IntegerChooser extends AbstractNumberChooser<org.lgna.project.ast.Expression> {
 	public IntegerChooser() {
 		super( org.alice.ide.croquet.models.numberpad.IntegerModel.getInstance() );
 		//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();

@@ -47,18 +47,18 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > implements org.lgna.croquet.resolvers.RetargetableResolver< T > {
-	private edu.cmu.cs.dennisc.alice.ast.Node nodes[];
-	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterTypes[];
+	private org.lgna.project.ast.Node nodes[];
+	private Class< ? extends org.lgna.project.ast.Node > parameterTypes[];
 	
-	public NodeStaticGetInstanceKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node[] nodes, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node >[] parameterTypes ) {
+	public NodeStaticGetInstanceKeyedResolver( T instance, org.lgna.project.ast.Node[] nodes, Class< ? extends org.lgna.project.ast.Node >[] parameterTypes ) {
 		super( instance );
 		assert nodes.length > 0;
 		assert nodes.length == parameterTypes.length;
 		this.nodes = nodes;
 		this.parameterTypes = parameterTypes;
 	}
-	public NodeStaticGetInstanceKeyedResolver( T instance, edu.cmu.cs.dennisc.alice.ast.Node node, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterType ) {
-		this( instance, new edu.cmu.cs.dennisc.alice.ast.Node[]{ node }, new Class[] { parameterType } );
+	public NodeStaticGetInstanceKeyedResolver( T instance, org.lgna.project.ast.Node node, Class< ? extends org.lgna.project.ast.Node > parameterType ) {
+		this( instance, new org.lgna.project.ast.Node[]{ node }, new Class[] { parameterType } );
 	}
 	public NodeStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
@@ -82,25 +82,25 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.reso
 	@Override
 	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.parameterTypes.length );
-		for( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > parameterType : parameterTypes ) {
+		for( Class< ? extends org.lgna.project.ast.Node > parameterType : parameterTypes ) {
 			this.encodeClass( binaryEncoder, parameterType );
 		}
 	}
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		final int N = binaryDecoder.decodeInt();
-		edu.cmu.cs.dennisc.alice.ast.Node[] rv = new edu.cmu.cs.dennisc.alice.ast.Node[ N ];
+		org.lgna.project.ast.Node[] rv = new org.lgna.project.ast.Node[ N ];
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		for( int i=0; i<N; i++ ) {
 			java.util.UUID id = binaryDecoder.decodeId();
-			rv[ i ] = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), id );
+			rv[ i ] = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), id );
 		}
 		return rv;
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.nodes.length );
-		for( edu.cmu.cs.dennisc.alice.ast.Node node : nodes ) {
+		for( org.lgna.project.ast.Node node : nodes ) {
 			binaryEncoder.encode( node.getUUID() );
 		}
 	}

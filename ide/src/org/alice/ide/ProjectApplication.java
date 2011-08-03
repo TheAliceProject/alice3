@@ -101,7 +101,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		sb.append( " is able to open projects from files saved by " );
 		sb.append( this.getApplicationName() );
 		sb.append( ".\n\nLook for files with an " );
-		sb.append( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION );
+		sb.append( org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION );
 		sb.append( " extension." );
 		this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 	}
@@ -125,10 +125,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 				String lcFilename = file.getName().toLowerCase();
 				if( lcFilename.endsWith( ".a2w" ) ) {
 					this.showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
-				} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
-					this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
+				} else if( lcFilename.endsWith( org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
+					this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
 				} else {
-					boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() );
+					boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() );
 					java.util.zip.ZipFile zipFile;
 					try {
 						zipFile = new java.util.zip.ZipFile( file );
@@ -141,9 +141,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 						}
 					}
 					if( zipFile != null ) {
-						edu.cmu.cs.dennisc.alice.Project project;
+						org.lgna.project.Project project;
 						try {
-							project = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( zipFile );
+							project = org.lgna.project.project.ProjectUtilities.readProject( zipFile );
 						} catch( java.io.IOException ioe ) {
 							if( isWorthyOfException ) {
 								throw new RuntimeException( file.getAbsolutePath(), ioe );
@@ -182,13 +182,13 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 				this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 			}
 		} else {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.Appearance.valueOf( uri.toString() ) );
-			edu.cmu.cs.dennisc.alice.Project project = new edu.cmu.cs.dennisc.alice.Project( programType );
+			org.lgna.project.ast.TypeDeclaredInAlice programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.Appearance.valueOf( uri.toString() ) );
+			org.lgna.project.Project project = new org.lgna.project.Project( programType );
 			this.setProject( project );
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.alice.Project project = null;
+	private org.lgna.project.Project project = null;
 	
 	public final edu.cmu.cs.dennisc.history.HistoryManager getProjectHistoryManager() {
 		return edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
@@ -246,8 +246,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	}
 
 	public static interface ProjectObserver {
-		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject );
-		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject );
+		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject );
+		public void projectOpened( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject );
 	}
 	
 	private java.util.List< ProjectObserver > projectObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
@@ -260,11 +260,11 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	}
 	
 	
-	public edu.cmu.cs.dennisc.alice.Project getProject() {
+	public org.lgna.project.Project getProject() {
 		return this.project;
 	}
-	public void setProject( edu.cmu.cs.dennisc.alice.Project project ) {
-		edu.cmu.cs.dennisc.alice.Project previousProject = this.project;
+	public void setProject( org.lgna.project.Project project ) {
+		org.lgna.project.Project previousProject = this.project;
 		for( ProjectObserver projectObserver : this.projectObservers ) {
 			projectObserver.projectOpening( previousProject, project );
 		}
@@ -294,7 +294,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
 
 	public void saveProjectTo( java.io.File file ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.alice.Project project = getProject();
+		org.lgna.project.Project project = getProject();
 		this.ensureProjectCodeUpToDate();
 		this.preserveProjectProperties();
 
@@ -321,7 +321,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		} catch( Throwable t ) {
 			dataSources = new edu.cmu.cs.dennisc.zip.DataSource[] {};
 		}
-		edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeProject( file, project, dataSources );
+		org.lgna.project.project.ProjectUtilities.writeProject( file, project, dataSources );
 		this.uri = file.toURI();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
 		this.updateHistoryLengthAtLastFileOperation();
@@ -340,7 +340,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		return rv.replaceAll( " ", "" );
 	}
 	public java.io.File getMyProjectsDirectory() {
-		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyProjectsDirectory( this.getSubPath() );
+		return org.lgna.project.project.ProjectUtilities.getMyProjectsDirectory( this.getSubPath() );
 	}
 
 	public abstract void ensureProjectCodeUpToDate();

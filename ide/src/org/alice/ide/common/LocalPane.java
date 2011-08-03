@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalPane< N extends edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > extends TransientPane< N > {
+public abstract class LocalPane< N extends org.lgna.project.ast.LocalDeclaredInAlice > extends TransientPane< N > {
 	public LocalPane( N local ) {
 		super( local );
 		this.addComponent( new org.alice.ide.common.LocalNameLabel( this.getTransient() ) );

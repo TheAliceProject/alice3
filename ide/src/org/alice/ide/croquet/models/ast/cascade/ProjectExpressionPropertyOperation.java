@@ -47,21 +47,21 @@ package org.alice.ide.croquet.models.ast.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectExpressionPropertyOperation extends org.lgna.croquet.ActionOperation {
-	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	public ProjectExpressionPropertyOperation( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+	public ProjectExpressionPropertyOperation( java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id );
 		this.expressionProperty = expressionProperty;
 	}
-	public final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+	public final org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+	private org.lgna.project.ast.Expression getPreviousExpression() {
 		return this.expressionProperty.getValue();
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression();
+	protected abstract org.lgna.project.ast.Expression createExpression();
 	@Override
 	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression value = this.createExpression();
+		org.lgna.project.ast.Expression value = this.createExpression();
 		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.getPreviousExpression(), value ) );
 	}
 }

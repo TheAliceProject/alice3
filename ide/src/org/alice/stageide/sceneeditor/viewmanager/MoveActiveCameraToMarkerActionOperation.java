@@ -43,6 +43,7 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import org.lgna.project.ast.FieldDeclaredInAlice;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.Entity;
 import org.lgna.story.OrthographicCameraMarker;
@@ -52,7 +53,6 @@ import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {

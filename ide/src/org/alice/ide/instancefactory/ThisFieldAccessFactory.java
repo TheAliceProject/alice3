@@ -47,8 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessFactory implements InstanceFactory {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, ThisFieldAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ThisFieldAccessFactory getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractField, ThisFieldAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ThisFieldAccessFactory getInstance( org.lgna.project.ast.AbstractField field ) {
 		assert field != null;
 		ThisFieldAccessFactory rv = map.get( field );
 		if( rv != null ) {
@@ -59,20 +59,20 @@ public class ThisFieldAccessFactory implements InstanceFactory {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private ThisFieldAccessFactory( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private final org.lgna.project.ast.AbstractField field;
+	private ThisFieldAccessFactory( org.lgna.project.ast.AbstractField field ) {
 		this.field = field;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
+	public org.lgna.project.ast.AbstractField getField() {
 		return this.field;
 	}
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return this.field.getNamePropertyIfItExists();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), this.field );
+	public org.lgna.project.ast.Expression createExpression() {
+		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getValueType() {
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return this.field.getValueType();
 	}
 	public String getRepr() {

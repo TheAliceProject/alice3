@@ -50,7 +50,7 @@ public abstract class AbstractGalleryDeclareFieldOperation extends org.alice.ide
 		super( individualId );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	protected org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
 		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 }

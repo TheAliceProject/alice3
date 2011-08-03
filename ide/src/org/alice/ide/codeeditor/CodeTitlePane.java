@@ -47,14 +47,14 @@ package org.alice.ide.codeeditor;
  */
 @Deprecated
 public class CodeTitlePane extends org.lgna.croquet.components.LineAxisPanel {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
-	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+	private org.lgna.project.ast.AbstractCode code;
+	public CodeTitlePane( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.code.getDeclaringType() ) );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( this.code ) );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
+	public org.lgna.project.ast.AbstractCode getCode() {
 		return this.code;
 	}
 }

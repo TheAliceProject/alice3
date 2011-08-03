@@ -48,11 +48,11 @@ package test;
  */
 public class TestBootstrap {
 	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.Appearance.GRASS );
-		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
+		org.lgna.project.ast.TypeDeclaredInAlice programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.Appearance.GRASS );
+		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 		if( true ) {
-			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice programInstance = vm.ENTRY_POINT_createInstance( programType );
+			org.lgna.project.virtualmachine.InstanceInAlice programInstance = vm.ENTRY_POINT_createInstance( programType );
 			vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
 			System.err.println();
 			System.err.println();

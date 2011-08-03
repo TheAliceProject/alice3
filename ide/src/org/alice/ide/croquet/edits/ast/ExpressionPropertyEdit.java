@@ -46,11 +46,11 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
-	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	private final edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
-	private final edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
+	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+	private final org.lgna.project.ast.Expression nextExpression;
+	private final org.lgna.project.ast.Expression prevExpression;
 
-	public ExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, edu.cmu.cs.dennisc.alice.ast.Expression nextExpression ) {
+	public ExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.Expression prevExpression, org.lgna.project.ast.Expression nextExpression ) {
 		super( completionStep );
 		this.expressionProperty = expressionProperty;
 		this.prevExpression = prevExpression;
@@ -65,16 +65,16 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 
 		
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-		edu.cmu.cs.dennisc.alice.ast.AbstractNode node = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, expressionPropertyNodeId );
-		this.expressionProperty = (edu.cmu.cs.dennisc.alice.ast.ExpressionProperty)node.getPropertyNamed( propertyName );
-		this.prevExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, prevExpressionId );
-		this.nextExpression = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, nextExpressionId );
+		org.lgna.project.Project project = ide.getProject();
+		org.lgna.project.ast.AbstractNode node = org.lgna.project.project.ProjectUtilities.lookupNode( project, expressionPropertyNodeId );
+		this.expressionProperty = (org.lgna.project.ast.ExpressionProperty)node.getPropertyNamed( propertyName );
+		this.prevExpression = org.lgna.project.project.ProjectUtilities.lookupNode( project, prevExpressionId );
+		this.nextExpression = org.lgna.project.project.ProjectUtilities.lookupNode( project, nextExpressionId );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)this.expressionProperty.getOwner();
+		org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)this.expressionProperty.getOwner();
 		binaryEncoder.encode( node.getUUID() );
 		binaryEncoder.encode( this.expressionProperty.getName() );
 		
@@ -93,9 +93,9 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "set: " );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.prevExpression, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.prevExpression, locale );
 		rv.append( " ===> " );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.nextExpression, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.nextExpression, locale );
 		return rv;
 	}
 

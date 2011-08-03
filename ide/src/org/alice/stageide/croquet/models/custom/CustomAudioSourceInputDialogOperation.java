@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomAudioSourceInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
+public class CustomAudioSourceInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< org.lgna.project.ast.InstanceCreation > {
 	private static class SingletonHolder {
 		private static CustomAudioSourceInputDialogOperation instance = new CustomAudioSourceInputDialogOperation();
 	}

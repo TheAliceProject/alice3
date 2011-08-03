@@ -45,12 +45,12 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > {
-	public FieldItemSelectionOperation( int selectedIndex, edu.cmu.cs.dennisc.alice.ast.AbstractField... fields ) {
-		super( java.util.UUID.fromString( "8a59686c-1c12-493d-bdc8-8e053e7ff90b" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField.class ), selectedIndex, fields );
+public class FieldItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< org.lgna.project.ast.AbstractField > {
+	public FieldItemSelectionOperation( int selectedIndex, org.lgna.project.ast.AbstractField... fields ) {
+		super( java.util.UUID.fromString( "8a59686c-1c12-493d-bdc8-8e053e7ff90b" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractField.class ), selectedIndex, fields );
 	}
 	@Override
-	protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractField value) {
+	protected void handleSelectionChange(org.lgna.project.ast.AbstractField value) {
 		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( value ) );
 	}
 }

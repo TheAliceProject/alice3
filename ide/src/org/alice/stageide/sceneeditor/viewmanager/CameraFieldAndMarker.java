@@ -43,10 +43,10 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import org.lgna.project.ast.AbstractField;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.OrthographicCameraMarker;
 
-import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 
 public class CameraFieldAndMarker
 {

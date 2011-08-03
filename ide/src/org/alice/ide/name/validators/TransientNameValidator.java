@@ -44,9 +44,9 @@
 package org.alice.ide.name.validators;
 
 public abstract class TransientNameValidator extends NodeNameValidator {
-	private final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
-	private final edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
-	public TransientNameValidator( edu.cmu.cs.dennisc.alice.ast.Node node, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
+	private final org.lgna.project.ast.CodeDeclaredInAlice code;
+	private final org.lgna.project.ast.BlockStatement block;
+	public TransientNameValidator( org.lgna.project.ast.Node node, org.lgna.project.ast.CodeDeclaredInAlice code, org.lgna.project.ast.BlockStatement block ) {
 		super( node );
 //		assert code != null;
 //		assert block != null;
@@ -56,8 +56,8 @@ public abstract class TransientNameValidator extends NodeNameValidator {
 	@Override
 	protected boolean isNameAvailable( String name ) {
 		if( this.code != null ) {
-			edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
-			for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : this.code.getParamtersProperty() ) {
+			org.lgna.project.ast.Node node = this.getNode();
+			for( org.lgna.project.ast.ParameterDeclaredInAlice parameter : this.code.getParamtersProperty() ) {
 				if( parameter == node ) {
 					//pass
 				} else {
@@ -69,9 +69,9 @@ public abstract class TransientNameValidator extends NodeNameValidator {
 //			if( this.block != null ) {
 //				
 //			}
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice.class );
-			((edu.cmu.cs.dennisc.alice.ast.AbstractCode)this.code).crawl( crawler, false );
-			for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : crawler.getList() ) {
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.LocalDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.LocalDeclaredInAlice >( org.lgna.project.ast.LocalDeclaredInAlice.class );
+			((org.lgna.project.ast.AbstractCode)this.code).crawl( crawler, false );
+			for( org.lgna.project.ast.LocalDeclaredInAlice local : crawler.getList() ) {
 				if( local == node ) {
 					//pass
 				} else {

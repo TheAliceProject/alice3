@@ -46,7 +46,7 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration;
+	private org.lgna.project.ast.AbstractDeclaration declaration;
 
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -58,12 +58,12 @@ public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
 
 	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
 
-	public DeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration ) {
+	public DeclarationNameLabel( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		this.declaration = declaration;
 		this.updateText();
 		this.setForegroundColor( java.awt.Color.BLACK );
 	}
-	public DeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration, float fontScaleFactor ) {
+	public DeclarationNameLabel( org.lgna.project.ast.AbstractDeclaration declaration, float fontScaleFactor ) {
 		this( declaration );
 		this.scaleFont( fontScaleFactor );
 	}
@@ -88,7 +88,7 @@ public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
 		}
 		super.handleUndisplayable();
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration getDeclaration() {
+	protected org.lgna.project.ast.AbstractDeclaration getDeclaration() {
 		return this.declaration;
 	}
 	

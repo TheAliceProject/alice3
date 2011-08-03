@@ -46,9 +46,9 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, org.lgna.croquet.components.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, org.lgna.project.ast.AbstractType<?,?,?>, org.lgna.croquet.components.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static final byte PROTOTYPE = 0;
-	public static org.lgna.croquet.components.Component< ? > getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public static org.lgna.croquet.components.Component< ? > getComponentFor( Class< ? > cls, org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		org.lgna.croquet.components.Component< ? > rv = map.get( cls, type );
 		if( rv != null ) {
 			//pass
@@ -146,9 +146,9 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
 		instanceLabel.scaleFont( FONT_SCALAR );
 		
-		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField PROTOTYPE_FIELD;
+		final org.lgna.project.ast.FieldDeclaredInJavaWithField PROTOTYPE_FIELD;
 		try {
-			PROTOTYPE_FIELD = edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( MembersEditor.class.getField( "PROTOTYPE" ) );
+			PROTOTYPE_FIELD = org.lgna.project.ast.FieldDeclaredInJavaWithField.get( MembersEditor.class.getField( "PROTOTYPE" ) );
 		} catch( NoSuchFieldException nsfe ) {
 			throw new RuntimeException( nsfe );
 		}

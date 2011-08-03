@@ -47,10 +47,10 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class ReturnStatementInsertCascade extends StatementInsertCascade {
-	private static edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getReturnType( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
-		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+	private static org.lgna.project.ast.AbstractType<?,?,?> getReturnType( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		org.lgna.project.ast.AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
+		if( code instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+			org.lgna.project.ast.MethodDeclaredInAlice method = (org.lgna.project.ast.MethodDeclaredInAlice)code;
 			if( method.isFunction() ) {
 				return method.returnType.getValue();
 			}
@@ -75,7 +75,7 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+	protected org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.alice.ide.ast.NodeUtilities.createReturnStatement( getReturnType( this.getBlockStatementIndexPair() ), expressions[ 0 ] );
 	}
 }

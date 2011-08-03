@@ -45,12 +45,12 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteFieldOperation extends DeleteMemberOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, DeleteFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DeleteFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.project.ast.FieldDeclaredInAlice > {
+	private static java.util.Map< org.lgna.project.ast.FieldDeclaredInAlice, DeleteFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DeleteFieldOperation getInstance( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 		return getInstance( field, field.getDeclaringType() );
 	}
-	public static synchronized DeleteFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+	public static synchronized DeleteFieldOperation getInstance( org.lgna.project.ast.FieldDeclaredInAlice field, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		DeleteFieldOperation rv = map.get( field );
 		if( rv != null ) {
 			//pass
@@ -65,20 +65,20 @@ public class DeleteFieldOperation extends DeleteMemberOperation< edu.cmu.cs.denn
 	//note: instance not preserved and restored
 	//in the case where it is undone across sessions, it will not know what to pass to the scene editor
 	private transient Object instance = null;
-	private DeleteFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+	private DeleteFieldOperation( org.lgna.project.ast.FieldDeclaredInAlice field, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( java.util.UUID.fromString( "29e5416c-c0c4-4b6d-9146-5461d5c73c42" ), field, declaringType );
 	}
 	@Override
-	protected java.lang.Class< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > getNodeParameterType() {
-		return edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class;
+	protected java.lang.Class< org.lgna.project.ast.FieldDeclaredInAlice > getNodeParameterType() {
+		return org.lgna.project.ast.FieldDeclaredInAlice.class;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > getNodeListProperty( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+	protected org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.FieldDeclaredInAlice > getNodeListProperty( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		return declaringType.fields;
 	}
 	@Override
-	protected boolean isClearToDelete( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > references = this.getIDE().getFieldAccesses( field );
+	protected boolean isClearToDelete( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+		java.util.List< org.lgna.project.ast.FieldAccess > references = this.getIDE().getFieldAccesses( field );
 		final int N = references.size();
 		if( N > 0 ) {
 			StringBuffer sb = new StringBuffer();

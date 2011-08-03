@@ -43,7 +43,7 @@
 
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.alice.annotations.*;
+import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */

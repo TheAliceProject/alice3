@@ -47,8 +47,8 @@ package org.alice.ide.codeeditor;
  */
 class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea {
 //class CommentLine extends javax.swing.JTextArea {
-	private edu.cmu.cs.dennisc.alice.ast.Comment comment;
-	public CommentLine( edu.cmu.cs.dennisc.alice.ast.Comment comment ) {
+	private org.lgna.project.ast.Comment comment;
+	public CommentLine( org.lgna.project.ast.Comment comment ) {
 		this.setText( comment.text.getValue() );
 		this.setTextForBlankCondition( "enter your comment here" );
 		//super( comment.text.getValue() );
@@ -64,7 +64,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 				CommentLine.this.handleUpdate();
 			}
 		} );
-		this.setBackground( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.Comment.class ) );
+		this.setBackground( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.Comment.class ) );
 		this.setForeground( org.alice.ide.IDE.getActiveInstance().getTheme().getCommentForegroundColor() );
 		//this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
 		this.handleUpdate();
@@ -155,7 +155,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
  * @author Dennis Cosgrove
  */
 public class CommentPane extends org.alice.ide.common.AbstractStatementPane {
-	public CommentPane( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+	public CommentPane( org.alice.ide.common.Factory factory, org.lgna.project.ast.Comment comment, org.lgna.project.ast.StatementListProperty owner ) {
 		super( factory, comment, owner );
 		CommentLine commentLine = new CommentLine( comment );
 		this.addComponent( new org.lgna.croquet.components.SwingAdapter( commentLine ) );

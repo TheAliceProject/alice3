@@ -53,12 +53,12 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	private org.alice.ide.initializer.InitializerPane initializerPane;
 
 	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
-	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> initialType, edu.cmu.cs.dennisc.alice.ast.Expression initialExpression ) {
+	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator, org.lgna.project.ast.AbstractType<?,?,?> initialType, org.lgna.project.ast.Expression initialExpression ) {
 		this.nodeNameValidator = nodeNameValidator;
 		this.bogusNode = new org.alice.ide.initializer.BogusNode( initialType, false );
 		if( initialExpression != null ) {
-			if( initialExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation ) {
-				edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = (edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation)initialExpression;
+			if( initialExpression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
+				org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)initialExpression;
 				this.bogusNode.arrayExpressions.setValue( arrayInstanceCreation.expressions.getValue() );
 			} else {
 				this.bogusNode.componentExpression.setValue( initialExpression );
@@ -69,7 +69,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		this( nodeNameValidator, null, null );
 	}
 	
-	public void EPIC_HACK_setComponentType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> componentType ) {
+	public void EPIC_HACK_setComponentType( org.lgna.project.ast.AbstractType<?,?,?> componentType ) {
 		this.bogusNode.componentType.setValue( componentType );
 	}
 
@@ -118,7 +118,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		}
 	}
 	//todo: reduce to protected
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getValueType() {
 		if( this.typePane != null ) {
 			return this.typePane.getValueType();
 		} else {
@@ -131,7 +131,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	public final String getDeclarationName() {
 		return org.alice.ide.croquet.models.ast.DeclarationNameState.getInstance().getValue();
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
+	protected org.lgna.project.ast.Expression getInitializer() {
 		if( this.initializerPane != null ) {
 			return this.initializerPane.getInitializer();
 		} else {

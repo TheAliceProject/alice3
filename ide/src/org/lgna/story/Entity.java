@@ -46,7 +46,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-@edu.cmu.cs.dennisc.alice.annotations.ClassTemplate(isFollowToSuperClassDesired = false, isConsumptionBySubClassDesired=false)
+@org.lgna.project.annotations.ClassTemplate(isFollowToSuperClassDesired = false, isConsumptionBySubClassDesired=false)
 public abstract class Entity implements Rider {
 	private String name;
 	/*package-private*/ abstract org.lgna.story.implementation.EntityImplementation getImplementation();

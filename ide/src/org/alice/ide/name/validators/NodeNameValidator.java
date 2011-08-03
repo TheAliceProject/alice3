@@ -44,11 +44,11 @@
 package org.alice.ide.name.validators;
 
 public abstract class NodeNameValidator extends org.alice.ide.name.NameValidator {
-	private edu.cmu.cs.dennisc.alice.ast.Node node;
-	public NodeNameValidator( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+	private org.lgna.project.ast.Node node;
+	public NodeNameValidator( org.lgna.project.ast.Node node ) {
 		this.node = node;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Node getNode() {
+	public org.lgna.project.ast.Node getNode() {
 		return this.node;
 	}
 	@Override

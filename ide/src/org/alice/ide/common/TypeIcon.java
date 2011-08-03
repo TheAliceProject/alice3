@@ -46,12 +46,12 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class TypeIcon implements javax.swing.Icon {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+	private org.lgna.project.ast.AbstractType<?,?,?> type;
 	private TypeBorder border;
-	public static TypeIcon getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public static TypeIcon getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		return new TypeIcon( type );
 	}
-	public TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public TypeIcon( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
 	}

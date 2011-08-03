@@ -46,8 +46,8 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class ThisPane extends AccessiblePane {
-	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava TYPE_FOR_NULL = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Void.class );
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = TYPE_FOR_NULL;
+	private static final org.lgna.project.ast.TypeDeclaredInJava TYPE_FOR_NULL = org.lgna.project.ast.TypeDeclaredInJava.get( Void.class );
+	private org.lgna.project.ast.AbstractType<?,?,?> type = TYPE_FOR_NULL;
 	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
 		}
@@ -58,7 +58,7 @@ public class ThisPane extends AccessiblePane {
 
 	public ThisPane() {
 		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
+		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
 	}
 	@Override
 	protected void handleDisplayable() {
@@ -71,7 +71,7 @@ public class ThisPane extends AccessiblePane {
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().removeValueObserver( this.codeSelectionObserver );
 		super.handleUndisplayable();
 	}
-	private void updateBasedOnFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+	private void updateBasedOnFocusedCode( org.lgna.project.ast.AbstractCode code ) {
 		if( code != null ) {
 			this.type = code.getDeclaringType();
 		} else {
@@ -85,11 +85,11 @@ public class ThisPane extends AccessiblePane {
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.type;
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation.getInstance( expressionProperty );
 	}
 

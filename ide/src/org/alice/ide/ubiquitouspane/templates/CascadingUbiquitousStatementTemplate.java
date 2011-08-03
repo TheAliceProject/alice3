@@ -48,7 +48,7 @@ package org.alice.ide.ubiquitouspane.templates;
 public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	private UbiquitousStatementImplementor implementor;
 	private org.lgna.croquet.components.Label label;
-	public CascadingUbiquitousStatementTemplate( org.lgna.croquet.DragModel dragModel, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
+	public CascadingUbiquitousStatementTemplate( org.lgna.croquet.DragModel dragModel, Class< ? extends org.lgna.project.ast.Statement > cls, org.lgna.project.ast.Statement incompleteStatement ) {
 		super( dragModel, cls );
 		this.implementor = new UbiquitousStatementImplementor( incompleteStatement );
 	}
@@ -76,7 +76,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 			//pass
 		} else {
 			this.label = new org.lgna.croquet.components.Label( this.getLabelText() );
-			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
+			if( org.lgna.project.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
 				this.label.setForegroundColor( getIDE().getTheme().getCommentForegroundColor() );
 			}
 			//this.label.setFontToScaledFont( 1.2f );

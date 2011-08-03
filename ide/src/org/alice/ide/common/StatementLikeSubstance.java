@@ -46,16 +46,16 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class StatementLikeSubstance extends NodeLikeSubstance {
-	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls;
+	private Class< ? extends org.lgna.project.ast.Statement > statementCls;
 	private int axis;
-	protected static Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getClassFor( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	protected static Class< ? extends org.lgna.project.ast.Statement > getClassFor( org.lgna.project.ast.Statement statement ) {
 		if( statement != null ) {
 			return statement.getClass();
 		} else {
-			return edu.cmu.cs.dennisc.alice.ast.Statement.class;
+			return org.lgna.project.ast.Statement.class;
 		}
 	}
-	public StatementLikeSubstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls, int axis ) {
+	public StatementLikeSubstance( Class< ? extends org.lgna.project.ast.Statement > statementCls, int axis ) {
 		this.statementCls = statementCls;
 		this.axis = axis;
 	}
@@ -64,7 +64,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 		return new javax.swing.BoxLayout( jPanel, this.axis );
 	}
 	
-	public Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementCls() {
+	public Class< ? extends org.lgna.project.ast.Statement > getStatementCls() {
 		return this.statementCls;
 	}
 	private static final int INSET = 1;

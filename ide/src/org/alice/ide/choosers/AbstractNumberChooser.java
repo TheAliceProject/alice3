@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractNumberChooser<N extends edu.cmu.cs.dennisc.alice.ast.Expression> extends ValueChooser< N > {
+abstract class AbstractNumberChooser<N extends org.lgna.project.ast.Expression> extends ValueChooser< N > {
 	private org.alice.ide.croquet.models.numberpad.NumberModel<N> numberModel;
 	private org.lgna.croquet.components.JComponent< javax.swing.JTextField > view;
 	public AbstractNumberChooser( org.alice.ide.croquet.models.numberpad.NumberModel<N> numberModel ) {

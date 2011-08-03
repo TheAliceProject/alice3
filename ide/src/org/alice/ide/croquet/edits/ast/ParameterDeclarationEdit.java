@@ -46,39 +46,39 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class ParameterDeclarationEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation > {
-	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-	private transient java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty, edu.cmu.cs.dennisc.alice.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private org.lgna.project.ast.ParameterDeclaredInAlice parameter;
+	private transient java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private transient int index;
 
-	public ParameterDeclarationEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	public ParameterDeclarationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
 		super( completionStep );
 		this.parameter = parameter;
 	}
 	public ParameterDeclarationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.parameter = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).decodeValue( binaryDecoder );
+		this.parameter = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.ParameterDeclaredInAlice.class ).decodeValue( binaryDecoder );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class ).encodeValue( binaryEncoder, this.parameter );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.ParameterDeclaredInAlice.class ).encodeValue( binaryEncoder, this.parameter );
 	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = this.getModel().getCode();
+		org.lgna.project.ast.CodeDeclaredInAlice code = this.getModel().getCode();
 		this.index = code.getParamtersProperty().size();
 		org.alice.ide.ast.NodeUtilities.addParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
 	}
 	@Override
 	protected final void undoInternal() {
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = this.getModel().getCode();
+		org.lgna.project.ast.CodeDeclaredInAlice code = this.getModel().getCode();
 		org.alice.ide.ast.NodeUtilities.removeParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
 	}
 	@Override
 	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 		rv.append( "declare:" );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, parameter, locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, parameter, locale);
 		return rv;
 	}
 	@Override

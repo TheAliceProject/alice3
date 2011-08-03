@@ -42,14 +42,14 @@
  */
 package org.alice.ide.codeeditor;
 
-import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.ParameterDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< NodeListProperty< ParameterDeclaredInAlice >> {
-	public ParametersPane( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+	public ParametersPane( org.alice.ide.common.Factory factory, org.lgna.project.ast.CodeDeclaredInAlice code ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, code.getParamtersProperty() );
 	}
 	
@@ -57,13 +57,13 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 		return org.alice.ide.IDE.getActiveInstance();
 	}
 
-	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
-		return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)getProperty().getOwner();
+	private org.lgna.project.ast.CodeDeclaredInAlice getCode() {
+		return (org.lgna.project.ast.CodeDeclaredInAlice)getProperty().getOwner();
 	}
 
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createComponent( Object parameter ) {
-		return new TypedParameterPane( getProperty(), (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter );
+		return new TypedParameterPane( getProperty(), (org.lgna.project.ast.ParameterDeclaredInAlice)parameter );
 	}
 	@Override
 	protected void addPrefixComponents() {
@@ -99,10 +99,10 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	@Override
 	protected void addPostfixComponents() {
 		super.addPostfixComponents();
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = getCode();
+		org.lgna.project.ast.CodeDeclaredInAlice code = getCode();
 
-		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+		if( code instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+			org.lgna.project.ast.MethodDeclaredInAlice method = (org.lgna.project.ast.MethodDeclaredInAlice)code;
 			if( method.isSignatureLocked.getValue() ) {
 				//pass
 			} else {

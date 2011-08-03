@@ -46,7 +46,7 @@ package org.alice.stageide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractFieldTileActionOperation extends org.alice.ide.operations.ast.AbstractFieldActionOperation {
-	public AbstractFieldTileActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	public AbstractFieldTileActionOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId, field );
 	}
 	

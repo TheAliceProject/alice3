@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, DefaultExpressionPropertyCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DefaultExpressionPropertyCascade getInstance( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+	private static java.util.Map< org.lgna.project.ast.ExpressionProperty, DefaultExpressionPropertyCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DefaultExpressionPropertyCascade getInstance( org.lgna.croquet.Group group, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?,?,?> desiredType ) {
 		if( desiredType != null ) {
 			//pass
 		} else {
@@ -64,16 +64,16 @@ public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.mode
 		}
 		return rv;
 	}
-	public static synchronized DefaultExpressionPropertyCascade EPIC_HACK_createInstance( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+	public static synchronized DefaultExpressionPropertyCascade EPIC_HACK_createInstance( org.lgna.croquet.Group group, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?,?,?> desiredType ) {
 		return new DefaultExpressionPropertyCascade( group, expressionProperty, desiredType );
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType;
-	private DefaultExpressionPropertyCascade( org.lgna.croquet.Group group, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredType ) {
+	private final org.lgna.project.ast.AbstractType<?,?,?> desiredType;
+	private DefaultExpressionPropertyCascade( org.lgna.croquet.Group group, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?,?,?> desiredType ) {
 		super( group, java.util.UUID.fromString( "77532795-0674-4ba4-ad18-989ee9ca0507" ), expressionProperty, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( desiredType ) );
 		this.desiredType = desiredType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
 		assert expressions.length == 1;
 		return expressions[ 0 ];
 	}

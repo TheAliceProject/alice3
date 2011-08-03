@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class FloatChooser extends AbstractNumberChooser<edu.cmu.cs.dennisc.alice.ast.FloatLiteral> {
+public class FloatChooser extends AbstractNumberChooser<org.lgna.project.ast.FloatLiteral> {
 	public FloatChooser() {
 		super( org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() ); 
 //		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();

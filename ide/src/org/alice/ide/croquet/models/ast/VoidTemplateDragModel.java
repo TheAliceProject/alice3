@@ -51,7 +51,7 @@ public abstract class VoidTemplateDragModel extends TemplateDragModel {
 		super( id );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
+	protected final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
 }

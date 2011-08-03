@@ -46,46 +46,46 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice >() {
+	private org.lgna.project.ast.AbstractMethod method;
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.ParameterDeclaredInAlice > parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.ParameterDeclaredInAlice >() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > e ) {
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.ParameterDeclaredInAlice > e ) {
 		}
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > e ) {
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.ParameterDeclaredInAlice > e ) {
 			ProcedureInvocationTemplate.this.refresh();
 		}
 	};
-	/*package-private*/ ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	/*package-private*/ ProcedureInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
 		super( org.alice.ide.croquet.models.ast.MethodTemplateDragModel.getInstance( method ) );
 		this.method = method;
 		
-		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.MethodTemplateMenuModel.getInstance( (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method ).getPopupPrepModel() );
+		if( this.method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.MethodTemplateMenuModel.getInstance( (org.lgna.project.ast.MethodDeclaredInAlice)this.method ).getPopupPrepModel() );
 		}
 	}
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.addListPropertyListener( this.parameterAdapter );
+		if( this.method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+			((org.lgna.project.ast.MethodDeclaredInAlice)this.method).parameters.addListPropertyListener( this.parameterAdapter );
 			this.refresh();
 		}
 	}
 	@Override
 	protected void handleUndisplayable() {
-		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
+		if( this.method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+			((org.lgna.project.ast.MethodDeclaredInAlice)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
 		}
 		super.handleUndisplayable();
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
+	public org.lgna.project.ast.AbstractMethod getMethod() {
 		return this.method;
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.method );
 	}
 	@Override

@@ -193,7 +193,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		protected void addResource( org.alice.virtualmachine.Resource resource ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( ide != null ) {
-				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+				org.lgna.project.Project project = ide.getProject();
 				if( ide != null ) {
 					project.addResource( resource );
 					ResourceManagerPane.this.resetModel();
@@ -203,7 +203,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		protected void removeResource( org.alice.virtualmachine.Resource resource ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( ide != null ) {
-				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+				org.lgna.project.Project project = ide.getProject();
 				if( ide != null ) {
 					project.removeResource( resource );
 					ResourceManagerPane.this.resetModel();
@@ -603,13 +603,13 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 	private void resetModel() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+			org.lgna.project.Project project = ide.getProject();
 			if( project != null ) {
 
 				ide.ensureProjectCodeUpToDate();
 
 				org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( project.getResources(), org.alice.virtualmachine.Resource.class, true );
-				java.util.Set< org.alice.virtualmachine.Resource > referencedResources = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getReferencedResources( project );
+				java.util.Set< org.alice.virtualmachine.Resource > referencedResources = org.lgna.project.project.ProjectUtilities.getReferencedResources( project );
 				javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );
 				this.table.setModel( tableModel );
 				this.table.getColumn( this.table.getColumnName( ResourceTableModel.IS_REFERENCED_COLUMN_INDEX ) ).setCellRenderer( new ResourceIsReferencedTableCellRenderer() );

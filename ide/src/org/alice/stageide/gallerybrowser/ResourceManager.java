@@ -155,10 +155,10 @@ public class ResourceManager {
 		return getSmallIconFor( getLargeIconForGalleryClassName(className) );
 	}
 
-	private static java.net.URL getLargeIconResourceForType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	private static java.net.URL getLargeIconResourceForType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		String className;
 		if( type != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+			org.lgna.project.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
 			className = typeInJava.getClassReflectionProxy().getName();
 		} else {
 			className = null;
@@ -166,7 +166,7 @@ public class ResourceManager {
 		return getLargeIconResourceForGalleryClassName(className);
 	}
 
-	public static javax.swing.Icon getLargeIconForType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public static javax.swing.Icon getLargeIconForType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		java.net.URL url = getLargeIconResourceForType(type);
 		if( url != null ) {
 			return new javax.swing.ImageIcon( url );
@@ -175,17 +175,17 @@ public class ResourceManager {
 		}
 	}
 	
-	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static void registerSmallIcon( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava, javax.swing.Icon icon ) {
+	private static java.util.Map<org.lgna.project.ast.TypeDeclaredInJava, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static void registerSmallIcon( org.lgna.project.ast.TypeDeclaredInJava typeInJava, javax.swing.Icon icon ) {
 		map.put(typeInJava, icon);
 	}
 	public static void registerSmallIcon( Class<?> cls, javax.swing.Icon icon ) {
-		registerSmallIcon(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get(cls), icon);
+		registerSmallIcon(org.lgna.project.ast.TypeDeclaredInJava.get(cls), icon);
 	}
 	
-	public static javax.swing.Icon getSmallIconForType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public static javax.swing.Icon getSmallIconForType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+			org.lgna.project.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
 			if( map.containsKey( typeInJava ) ) {
 				return map.get( typeInJava );
 			} else {

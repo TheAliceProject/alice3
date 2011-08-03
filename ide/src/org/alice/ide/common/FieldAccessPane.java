@@ -47,12 +47,12 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	private edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess;
+	private org.lgna.project.ast.FieldAccess fieldAccess;
 
-	public FieldAccessPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+	public FieldAccessPane( Factory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
 		this.fieldAccess = fieldAccess;
 		boolean isExpressionDesired;
-		if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+		if( this.fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
 			isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired();
 		} else {
 			isExpressionDesired = true;
@@ -65,9 +65,9 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 				this.addComponent( new org.lgna.croquet.components.Label( "." ) );
 			}
 		}
-		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls = edu.cmu.cs.dennisc.alice.ast.FieldAccess.class;
+		Class< ? extends org.lgna.project.ast.Expression > cls = org.lgna.project.ast.FieldAccess.class;
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( cls ) );
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.fieldAccess.field.getValue();
+		org.lgna.project.ast.AbstractField field = this.fieldAccess.field.getValue();
 		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		//nodeNameLabel.scaleFont( 1.2f );
 		//nodeNameLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
@@ -93,7 +93,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		if( this.fieldAccess != null ) {
-			if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+			if( this.fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
 				return super.isExpressionTypeFeedbackDesired();
 			} else {
 				if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.fieldAccess ) ) {
@@ -107,7 +107,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
 		if( this.fieldAccess != null ) {
 			return this.fieldAccess.field.getValue().getValueType();
 		} else {

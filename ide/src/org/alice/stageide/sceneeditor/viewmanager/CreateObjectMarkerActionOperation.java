@@ -44,9 +44,9 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.IDE;
+import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.TypeDeclaredInAlice;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 
 public class CreateObjectMarkerActionOperation extends AbstractSceneDeclareFieldOperation {

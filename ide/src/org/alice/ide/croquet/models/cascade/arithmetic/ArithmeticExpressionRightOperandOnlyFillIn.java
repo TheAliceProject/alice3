@@ -46,32 +46,32 @@ package org.alice.ide.croquet.models.cascade.arithmetic;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
-	private final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression transientValue;
-	public ArithmeticExpressionRightOperandOnlyFillIn( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> resultType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
+public abstract class ArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< org.lgna.project.ast.ArithmeticInfixExpression > {
+	private final org.lgna.project.ast.ArithmeticInfixExpression transientValue;
+	public ArithmeticExpressionRightOperandOnlyFillIn( java.util.UUID id, org.lgna.project.ast.AbstractType<?,?,?> resultType, org.lgna.project.ast.AbstractType<?,?,?> leftOperandType, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?,?,?> rightOperandType ) {
 		super( id );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( rightOperandType ) );
-		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( 
+		this.transientValue = new org.lgna.project.ast.ArithmeticInfixExpression( 
 				new org.alice.ide.ast.PreviousValueExpression( leftOperandType ), 
 				operator, 
 				new org.alice.ide.ast.EmptyExpression( rightOperandType ), 
 				resultType 
 		);
 	}
-	public ArithmeticExpressionRightOperandOnlyFillIn( java.util.UUID id, Class<?> resultCls, Class<?> leftOperandCls, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
-		this( id, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( resultCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ) );
+	public ArithmeticExpressionRightOperandOnlyFillIn( java.util.UUID id, Class<?> resultCls, Class<?> leftOperandCls, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
+		this( id, org.lgna.project.ast.TypeDeclaredInJava.get( resultCls ), org.lgna.project.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, org.lgna.project.ast.TypeDeclaredInJava.get( rightOperandCls ) );
 	}
 //	@Override
 //	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression, edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
 //		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, this.transientValue.leftOperand.getValue().getType() );
 //	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	protected org.lgna.project.ast.ArithmeticInfixExpression createValue( org.lgna.project.ast.Expression previousExpression, org.lgna.project.ast.Expression[] expressions ) {
 		assert expressions.length == 1;
-		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( previousExpression, this.transientValue.operator.getValue(), expressions[ 0 ], this.transientValue.getType() );
+		return new org.lgna.project.ast.ArithmeticInfixExpression( previousExpression, this.transientValue.operator.getValue(), expressions[ 0 ], this.transientValue.getType() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public org.lgna.project.ast.ArithmeticInfixExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ArithmeticInfixExpression,org.lgna.project.ast.Expression > step ) {
 		return this.transientValue;
 	}
 }

@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.numberpad;
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerModel extends NumberModel<edu.cmu.cs.dennisc.alice.ast.Expression> {
+public class IntegerModel extends NumberModel<org.lgna.project.ast.Expression> {
 	private static class SingletonHolder {
 		private static IntegerModel instance = new IntegerModel();
 	}
@@ -60,24 +60,24 @@ public class IntegerModel extends NumberModel<edu.cmu.cs.dennisc.alice.ast.Expre
 		return false;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression valueOf( String s ) {
+	protected org.lgna.project.ast.Expression valueOf( String s ) {
 		long l = Long.parseLong( s );
 		if( l > Integer.MAX_VALUE ) {
-			return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( 
-					new edu.cmu.cs.dennisc.alice.ast.TypeExpression( 
-							edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE 
+			return new org.lgna.project.ast.FieldAccess( 
+					new org.lgna.project.ast.TypeExpression( 
+							org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE 
 					), 
-					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get(Integer.class, "MAX_VALUE" ) 
+					org.lgna.project.ast.FieldDeclaredInJavaWithField.get(Integer.class, "MAX_VALUE" ) 
 			);
 		} else if( l < Integer.MIN_VALUE ) {
-			return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( 
-					new edu.cmu.cs.dennisc.alice.ast.TypeExpression( 
-							edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE 
+			return new org.lgna.project.ast.FieldAccess( 
+					new org.lgna.project.ast.TypeExpression( 
+							org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE 
 					), 
-					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get(Integer.class, "MIN_VALUE" ) 
+					org.lgna.project.ast.FieldDeclaredInJavaWithField.get(Integer.class, "MIN_VALUE" ) 
 			);
 		} else {
-			return new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( (int)l );
+			return new org.lgna.project.ast.IntegerLiteral( (int)l );
 		}
 	}
 }

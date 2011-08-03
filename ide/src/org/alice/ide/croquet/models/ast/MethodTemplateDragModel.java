@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class MethodTemplateDragModel extends TemplateDragModel {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, MethodTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodTemplateDragModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractMethod, MethodTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized MethodTemplateDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		MethodTemplateDragModel rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -58,18 +58,18 @@ public class MethodTemplateDragModel extends TemplateDragModel {
 		}
 		return rv;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private MethodTemplateDragModel( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private org.lgna.project.ast.AbstractMethod method;
+	private MethodTemplateDragModel( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ) );
 		this.method = method;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getExpressionType() {
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
 		return this.method.getReturnType();
 	}
 	@Override
 	protected org.lgna.croquet.resolvers.CodableResolver< MethodTemplateDragModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateDragModel >( this, this.method, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateDragModel >( this, this.method, org.lgna.project.ast.AbstractMethod.class );
 	}
 	@Override
 	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {

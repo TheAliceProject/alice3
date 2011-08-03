@@ -46,33 +46,33 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class EditFieldOperation extends AbstractEditFieldOperation {
-	public EditFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	public EditFieldOperation( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "66bf123b-f047-4cba-86ea-04d3a0a1f689" ), "<html>Edit <strong>" + field.getName() + "</strong>...</html>", field );
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		final java.util.Set< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-		final java.util.Set< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		final java.util.Set< org.lgna.project.ast.FieldDeclaredInAlice > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		final java.util.Set< org.lgna.project.ast.FieldDeclaredInAlice > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		org.lgna.project.Project project = ide.getProject();
 		if( project != null ) {
-			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.getField();
+			final org.lgna.project.ast.FieldDeclaredInAlice field = this.getField();
 			ide.ensureProjectCodeUpToDate();
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
+			org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess >( org.lgna.project.ast.FieldAccess.class ) {
 				@Override
-				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+				protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
 					return fieldAccess.field.getValue() == field;
 				}
 			};
 			programType.crawl( crawler, true );
-			java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > fieldAccesses = crawler.getList();
+			java.util.List< org.lgna.project.ast.FieldAccess > fieldAccesses = crawler.getList();
 			if( fieldAccesses.size() > 0 ) {
 				referencedFields.add( field );
-				for( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess : fieldAccesses ) {
-					edu.cmu.cs.dennisc.alice.ast.Node parent = fieldAccess.getParent();
-					if( parent instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
-						edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression = (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)parent;
+				for( org.lgna.project.ast.FieldAccess fieldAccess : fieldAccesses ) {
+					org.lgna.project.ast.Node parent = fieldAccess.getParent();
+					if( parent instanceof org.lgna.project.ast.AssignmentExpression ) {
+						org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)parent;
 						if( assignmentExpression.leftHandSide.getValue() == fieldAccess ) {
 							reassignedFields.add( field );
 							break;

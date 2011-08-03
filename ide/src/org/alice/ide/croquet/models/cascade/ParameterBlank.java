@@ -47,9 +47,9 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class ParameterBlank extends ExpressionBlank {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, ParameterBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< org.lgna.project.ast.AbstractParameter, ParameterBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized ParameterBlank getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+	public static synchronized ParameterBlank getInstance( org.lgna.project.ast.AbstractParameter parameter ) {
 		assert parameter != null;
 		ParameterBlank rv = map.get( parameter );
 		if( rv != null ) {
@@ -61,14 +61,14 @@ public class ParameterBlank extends ExpressionBlank {
 		return rv;
 	}
 
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
+	private final org.lgna.project.ast.AbstractParameter parameter;
 
-	private ParameterBlank( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+	private ParameterBlank( org.lgna.project.ast.AbstractParameter parameter ) {
 		super( java.util.UUID.fromString( "84524eb1-7dbe-4481-8037-005d6402dbf3" ), parameter.getDesiredValueType() );
 		this.parameter = parameter;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
 		rv.add( ParameterNameSeparator.getInstance( this.parameter ) );
 		return super.updateChildren( rv, blankNode );
 	}

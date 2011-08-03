@@ -52,11 +52,11 @@ public interface Theme {
 	public java.awt.Color getFieldColor();
 	public java.awt.Color getLocalColor();
 	public java.awt.Color getParameterColor();
-	public java.awt.Paint getPaintFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int x, int y, int width, int height );
-	public java.awt.Color getColorFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls );
-	public java.awt.Color getColorFor( edu.cmu.cs.dennisc.alice.ast.Node node );
+	public java.awt.Paint getPaintFor( Class< ? extends org.lgna.project.ast.Statement > cls, int x, int y, int width, int height );
+	public java.awt.Color getColorFor( Class< ? extends org.lgna.project.ast.Node > cls );
+	public java.awt.Color getColorFor( org.lgna.project.ast.Node node );
 	public java.awt.Color getCommentForegroundColor();
-	public java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code );
+	public java.awt.Color getCodeDeclaredInAliceColor( org.lgna.project.ast.AbstractCode code );
 	public java.awt.Color getSelectedColor();
 	public java.awt.Color getUnselectedColor();
 	public java.awt.Color getPrimaryBackgroundColor();

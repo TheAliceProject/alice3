@@ -46,14 +46,14 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.declarationpanes.AbstractCreateFieldPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType;
-	private edu.cmu.cs.dennisc.alice.ast.Expression initializer;
+	private org.lgna.project.ast.AbstractType<?,?,?> valueType;
+	private org.lgna.project.ast.Expression initializer;
 
-	public CreateLargelyPredeterminedFieldPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
+	public CreateLargelyPredeterminedFieldPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType, Class< ? > cls, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType );
 		if( cls != null ) {
 			assert valueType == null;
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls );
+			org.lgna.project.ast.TypeDeclaredInJava typeDeclaredInJava = org.lgna.project.ast.TypeDeclaredInJava.get( cls );
 			this.valueType = this.getTypeDeclaredInAliceFor( typeDeclaredInJava );
 		} else {
 			assert valueType != null;
@@ -62,7 +62,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 		this.initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( this.valueType );
 	}
 	
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava ) {
+	protected org.lgna.project.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( org.lgna.project.ast.TypeDeclaredInJava typeDeclaredInJava ) {
 		return getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
 	}
 	
@@ -71,7 +71,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
 	}
 
-	private static String getAvailableFieldName( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, String baseName ) {
+	private static String getAvailableFieldName( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType, String baseName ) {
 		org.alice.ide.name.validators.FieldNameValidator validator = new org.alice.ide.name.validators.FieldNameValidator( declaringType );
 
 		if( validator.isNameValid( baseName ) ) {
@@ -90,9 +90,9 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 		return rv;
 	}
 
-	private String getPotentialInstanceNameFor( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
+	private String getPotentialInstanceNameFor( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
 		if( valueType != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+			org.lgna.project.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 			if( typeInJava != null ) {
 				if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
 					String typeName = typeInJava.getName();
@@ -114,11 +114,11 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getValueType() {
 		return this.valueType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
+	protected org.lgna.project.ast.Expression getInitializer() {
 		return this.initializer;
 	}
 
@@ -153,7 +153,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	protected org.lgna.croquet.components.Component< ? > createValueTypeComponent() {
 		org.lgna.croquet.components.LineAxisPanel valueTypeLine = new org.lgna.croquet.components.LineAxisPanel();
 		valueTypeLine.addComponent( org.alice.ide.common.TypeComponent.createInstance( CreateLargelyPredeterminedFieldPane.this.valueType ) );
-		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
 			valueTypeLine.addComponent( new org.lgna.croquet.components.Label( " which extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			valueTypeLine.addComponent( org.alice.ide.common.TypeComponent.createInstance( CreateLargelyPredeterminedFieldPane.this.valueType.getSuperType() ) );
 //			valueTypeLine.add( zoot.ZLabel.acquire( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );

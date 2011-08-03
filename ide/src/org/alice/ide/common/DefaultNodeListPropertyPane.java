@@ -46,13 +46,13 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
-	public DefaultNodeListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
+public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< org.lgna.project.ast.NodeListProperty<?> > {
+	public DefaultNodeListPropertyPane( Factory factory, org.lgna.project.ast.NodeListProperty<?> property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
-		return this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.AbstractNode)instance );
+		return this.getFactory().createComponent( (org.lgna.project.ast.AbstractNode)instance );
 	}
 }
 

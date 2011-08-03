@@ -45,12 +45,12 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennisc.alice.ast.ResourceProperty> {
+public class ResourcePropertyPane extends AbstractPropertyPane<org.lgna.project.ast.ResourceProperty> {
 	private static java.text.NumberFormat durationFormat = new java.text.DecimalFormat( "0.00" );
 	private org.lgna.croquet.components.Label label;
 	private org.alice.virtualmachine.Resource prevResource;
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
-	public ResourcePropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ResourceProperty property ) {
+	public ResourcePropertyPane( Factory factory, org.lgna.project.ast.ResourceProperty property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	

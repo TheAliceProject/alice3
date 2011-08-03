@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type;
-	public RelationalObjectCascadeMenu( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu< org.lgna.project.ast.RelationalInfixExpression > {
+	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
+	public RelationalObjectCascadeMenu( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		super( java.util.UUID.fromString( "056d67c7-2cea-41d9-b6f0-750b2ab6a51e" ) );
 		this.type = type;
 	}
@@ -57,9 +57,9 @@ public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu< edu.cmu.
 		return "Relational (" + this.type.getName() + ") { ==, != }";
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > step ) {
-		rv.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.EQUALS ) );
-		rv.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.NOT_EQUALS ) );
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.RelationalInfixExpression > step ) {
+		rv.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, org.lgna.project.ast.RelationalInfixExpression.Operator.EQUALS ) );
+		rv.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, org.lgna.project.ast.RelationalInfixExpression.Operator.NOT_EQUALS ) );
 		return rv;
 	}
 }

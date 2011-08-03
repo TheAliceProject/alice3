@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, StaticFieldAccessFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static StaticFieldAccessFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField value ) {
+public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< org.lgna.project.ast.FieldAccess > {
+	private static java.util.Map< org.lgna.project.ast.AbstractField, StaticFieldAccessFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static StaticFieldAccessFillIn getInstance( org.lgna.project.ast.AbstractField value ) {
 		synchronized( map ) {
 			StaticFieldAccessFillIn rv = map.get( value );
 			if( rv != null ) {
@@ -60,34 +60,34 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< edu.
 			return rv;
 		}
 	}
-	public static StaticFieldAccessFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type, String fieldName ) {
+	public static StaticFieldAccessFillIn getInstance( org.lgna.project.ast.AbstractType type, String fieldName ) {
 		return getInstance( type.findField( fieldName ) );
 	}
 	public static StaticFieldAccessFillIn getInstance( java.lang.reflect.Field fld ) {
-		return getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( fld ) );
+		return getInstance( org.lgna.project.ast.FieldDeclaredInJavaWithField.get( fld ) );
 	}
 	public static StaticFieldAccessFillIn getInstance( Class<?> cls, String fieldName ) {
-		return getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), fieldName );
+		return getInstance( org.lgna.project.ast.TypeDeclaredInJava.get( cls ), fieldName );
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.FieldAccess transientValue;
-	private StaticFieldAccessFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private final org.lgna.project.ast.FieldAccess transientValue;
+	private StaticFieldAccessFillIn( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "dff6296d-9651-4c0a-98a1-57cd62ea2010" ) );
 		this.transientValue = this.createValue( field );
 	}
-	private edu.cmu.cs.dennisc.alice.ast.FieldAccess createValue( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( field.getDeclaringType() ), field );
+	private org.lgna.project.ast.FieldAccess createValue( org.lgna.project.ast.AbstractField field ) {
+		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ), field );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.FieldAccess createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.FieldAccess,Void > step ) {
+	public org.lgna.project.ast.FieldAccess createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.FieldAccess,Void > step ) {
 		return this.createValue( this.transientValue.field.getValue() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.FieldAccess,Void > step ) {
+	public org.lgna.project.ast.FieldAccess getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.FieldAccess,Void > step ) {
 		return this.transientValue;
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue(), edu.cmu.cs.dennisc.alice.ast.AbstractField.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue(), org.lgna.project.ast.AbstractField.class );
 	}
 	
 	@Override

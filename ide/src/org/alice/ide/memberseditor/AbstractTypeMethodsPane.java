@@ -46,17 +46,17 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
-	public AbstractTypeMethodsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public AbstractTypeMethodsPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
-	protected abstract org.lgna.croquet.components.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
-	protected abstract org.lgna.croquet.components.Component< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
+	protected abstract org.lgna.croquet.components.Component< ? > createProcedureTemplate( org.lgna.project.ast.AbstractMethod method );
+	protected abstract org.lgna.croquet.components.Component< ? > createFunctionTemplate( org.lgna.project.ast.AbstractMethod method );
 
 	@Override
-	protected Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+	protected Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member ) {
 		org.lgna.croquet.components.Component< ? > component;
-		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)member;
+		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
+			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
 			if( method.getNextShorterInChain() != null ) {
 				component = null;
 			} else {
@@ -78,8 +78,8 @@ public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				//pass
 			} else {
-				if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractCode ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractCode code = (edu.cmu.cs.dennisc.alice.ast.AbstractCode)member;
+				if( member instanceof org.lgna.project.ast.AbstractCode ) {
+					org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)member;
 					if( code.isDeclaredInAlice() ) {
 						org.lgna.croquet.components.LineAxisPanel line = new org.lgna.croquet.components.LineAxisPanel();
 						line.addComponent( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( code ).createButton() );

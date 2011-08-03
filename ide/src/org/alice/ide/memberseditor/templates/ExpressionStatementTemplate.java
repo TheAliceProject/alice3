@@ -47,9 +47,9 @@ package org.alice.ide.memberseditor.templates;
  */
 /*package-private*/ abstract class ExpressionStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	public ExpressionStatementTemplate( org.lgna.croquet.DragModel dragAndDropModel ) {
-		super( dragAndDropModel, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
+		super( dragAndDropModel, org.lgna.project.ast.ExpressionStatement.class );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
+	protected abstract org.lgna.project.ast.Expression createIncompleteExpression();
 	
 	private boolean isInitialized = false;
 	@Override
@@ -69,7 +69,7 @@ package org.alice.ide.memberseditor.templates;
 	}
 	protected void refresh() {
 		this.removeAllComponents();
-		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
+		org.lgna.project.ast.Expression incompleteExpression = this.createIncompleteExpression();
 		this.setBackgroundColor( getIDE().getTheme().getColorFor( incompleteExpression ) );
 		this.addComponent( getIDE().getTemplatesFactory().createExpressionPane( incompleteExpression ) );
 	}

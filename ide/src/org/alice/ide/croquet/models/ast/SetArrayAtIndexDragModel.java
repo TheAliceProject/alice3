@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class SetArrayAtIndexDragModel extends VoidTemplateDragModel {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, SetArrayAtIndexDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized SetArrayAtIndexDragModel getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractField, SetArrayAtIndexDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized SetArrayAtIndexDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
 		SetArrayAtIndexDragModel rv = map.get( field );
 		if( rv != null ) {
 			//pass
@@ -58,14 +58,14 @@ public class SetArrayAtIndexDragModel extends VoidTemplateDragModel {
 		}
 		return rv;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private SetArrayAtIndexDragModel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private org.lgna.project.ast.AbstractField field;
+	private SetArrayAtIndexDragModel( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "099819b6-500a-4f77-b53f-9067f8bb9e75" ) );
 		this.field = field;
 	}
 	@Override
 	protected org.lgna.croquet.resolvers.CodableResolver< SetArrayAtIndexDragModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SetArrayAtIndexDragModel >( this, this.field, edu.cmu.cs.dennisc.alice.ast.AbstractField.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SetArrayAtIndexDragModel >( this, this.field, org.lgna.project.ast.AbstractField.class );
 	}
 	@Override
 	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {

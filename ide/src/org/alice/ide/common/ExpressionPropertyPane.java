@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty > {
+public class ExpressionPropertyPane extends AbstractPropertyPane< org.lgna.project.ast.ExpressionProperty > {
 //	private javax.swing.JComponent prefixPane;
 
 	//	public ExpressionPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired, javax.swing.JComponent prefixPane ) {
@@ -53,7 +53,7 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.den
 	//		this.prefixPane = prefixPane;
 	//		this.refresh();
 	//	}
-	public ExpressionPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property ) {
+	public ExpressionPropertyPane( Factory factory, org.lgna.project.ast.ExpressionProperty property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 

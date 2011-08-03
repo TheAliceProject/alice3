@@ -45,7 +45,7 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement> {
+public class CreateLocalPane extends CreateDeclarationPane<org.lgna.project.ast.LocalDeclarationStatement> {
 	
 	@Override
 	protected boolean isEditableValueTypeComponentDesired() {
@@ -63,7 +63,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
-		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = this.getInputValue();
+		org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = this.getInputValue();
 		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createStatementPane( localDeclarationStatement );
 //		pane.setLeftButtonPressOperation( null );
 //		pane.setDragAndDropOperation( null );
@@ -76,23 +76,23 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getInputValue() {
+	public org.lgna.project.ast.LocalDeclarationStatement getInputValue() {
 		String name = this.getDeclarationName();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getValueType();
+		org.lgna.project.ast.AbstractType<?,?,?> type = this.getValueType();
 		boolean isFinal = this.isReassignable() == false;
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = this.getInitializer();
-		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement rv;
+		org.lgna.project.ast.Expression initializer = this.getInitializer();
+		org.lgna.project.ast.LocalDeclarationStatement rv;
 		if( isFinal ) {
-			rv = new edu.cmu.cs.dennisc.alice.ast.ConstantDeclarationStatement(
-					new edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice(
+			rv = new org.lgna.project.ast.ConstantDeclarationStatement(
+					new org.lgna.project.ast.ConstantDeclaredInAlice(
 							name,
 							type
 					),
 					initializer
 			);
 		} else {
-			rv = new edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement(
-					new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice(
+			rv = new org.lgna.project.ast.VariableDeclarationStatement(
+					new org.lgna.project.ast.VariableDeclaredInAlice(
 							name,
 							type
 					),

@@ -42,34 +42,34 @@
  */
 package org.alice.ide.operations.ast;
 
-import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.ParameterDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove
  */
 public class DeleteParameterOperation extends AbstractCodeParameterOperation {
-	public DeleteParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	public DeleteParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
 		super( java.util.UUID.fromString( "853fb6a3-ea7b-4575-93d6-547f687a7033" ), parametersProperty, parameter );
 		this.setName( "Delete" );
 	}
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		final java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty, edu.cmu.cs.dennisc.alice.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+		final java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		final org.lgna.project.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), org.lgna.project.ast.MethodDeclaredInAlice.class );
 		final int index = method.parameters.indexOf( this.getParameter() );
 		if( method != null && index >= 0 ) {
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ParameterAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ParameterAccess >( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) {
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ParameterAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ParameterAccess >( org.lgna.project.ast.ParameterAccess.class ) {
 				@Override
-				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.ParameterAccess parameterAccess ) {
+				protected boolean isAcceptable( org.lgna.project.ast.ParameterAccess parameterAccess ) {
 					return parameterAccess.parameter.getValue() == getParameter();
 				}
 			};
 			method.crawl( crawler, false );
-			java.util.List< edu.cmu.cs.dennisc.alice.ast.ParameterAccess > parameterAccesses = crawler.getList();
+			java.util.List< org.lgna.project.ast.ParameterAccess > parameterAccesses = crawler.getList();
 			final int N_ACCESSES = parameterAccesses.size();
 
-			java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
+			java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
 			final int N_INVOCATIONS = methodInvocations.size();
 			if( N_ACCESSES > 0 ) {
 				StringBuffer sb = new StringBuffer();
@@ -139,7 +139,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					@Override
 					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 						rv.append( "delete:" );
-						edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), locale);
+						org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), locale);
 						return rv;
 					}
 				} );

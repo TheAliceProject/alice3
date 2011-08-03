@@ -47,17 +47,17 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public final class BlockStatementIndexPair implements org.lgna.croquet.RetargetableDropSite {
-	private final edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
+	private final org.lgna.project.ast.BlockStatement blockStatement;
 	private final int index;
-	public BlockStatementIndexPair( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
+	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
 		this.blockStatement = blockStatement;
 		this.index = index;
 	}
 	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		org.lgna.project.Project project = ide.getProject();
 		java.util.UUID id = binaryDecoder.decodeId();
-		this.blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, id );
+		this.blockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( project, id );
 		this.index = binaryDecoder.decodeInt(); 
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -65,7 +65,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.Retargeta
 		binaryEncoder.encode( this.index );
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlockStatement() {
+	public org.lgna.project.ast.BlockStatement getBlockStatement() {
 		return this.blockStatement;
 	}
 	public int getIndex() {
@@ -73,7 +73,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.Retargeta
 	}
 	
 	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
 		return new BlockStatementIndexPair( replacementBlockStatement, this.index );
 	}
 

@@ -46,13 +46,13 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
-	public static final Class<?>[] CONSTRUCTOR_PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class, edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE };
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement fromBlockStatement;
+	public static final Class<?>[] CONSTRUCTOR_PARAMETER_TYPES = new Class[] { org.lgna.project.ast.BlockStatement.class, Integer.TYPE, org.lgna.project.ast.Statement.class, org.lgna.project.ast.BlockStatement.class, Integer.TYPE };
+	private org.lgna.project.ast.BlockStatement fromBlockStatement;
 	private int fromIndex;
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement toBlockStatement;
+	private org.lgna.project.ast.Statement statement;
+	private org.lgna.project.ast.BlockStatement toBlockStatement;
 	private int toIndex;
-	public MoveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.BlockStatement fromBlockStatement, int fromIndex, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.BlockStatement toBlockStatement, int toIndex ) {
+	public MoveStatementActionOperation( org.lgna.project.ast.BlockStatement fromBlockStatement, int fromIndex, org.lgna.project.ast.Statement statement, org.lgna.project.ast.BlockStatement toBlockStatement, int toIndex ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "8c06bb7d-b35f-4f37-97fc-a30a097f42a2" ) );
 		this.fromBlockStatement = fromBlockStatement;
 		this.fromIndex = fromIndex;
@@ -79,9 +79,9 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 		java.util.UUID toBlockStatementId = binaryDecoder.decodeId();
 		int toIndex = binaryDecoder.decodeInt();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement fromBlockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), fromBlockStatementId );
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement toBlockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), toBlockStatementId );
+		org.lgna.project.ast.BlockStatement fromBlockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), fromBlockStatementId );
+		org.lgna.project.ast.Statement statement = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
+		org.lgna.project.ast.BlockStatement toBlockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), toBlockStatementId );
 		return new Object[] { fromBlockStatement, fromIndex, statement, toBlockStatement, toIndex };
 	}
 	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -138,7 +138,7 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "move: " );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
 		return rv;
 	}
 	

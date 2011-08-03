@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class WhileLoopTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public WhileLoopTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.WhileLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop() );
+		super( org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteWhileLoop() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

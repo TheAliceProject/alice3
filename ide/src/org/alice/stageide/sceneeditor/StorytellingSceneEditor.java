@@ -49,6 +49,10 @@ import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
+import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.StatementListProperty;
+import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.virtualmachine.InstanceInAlice;
 import org.lgna.story.BookmarkCameraMarker;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.ObjectMarker;
@@ -56,10 +60,6 @@ import org.lgna.story.implementation.EntityImplementation;
 import org.lgna.story.implementation.MarkerImplementation;
 import org.lgna.story.implementation.ProgramImplementation;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.StatementListProperty;
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
@@ -125,7 +125,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
 	}
 	
-	protected void setSceneCamera(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField)
+	protected void setSceneCamera(org.lgna.project.ast.FieldDeclaredInAlice cameraField)
 	{
 		this.sceneCameraImplementation = getImplementation(cameraField);
 
@@ -285,21 +285,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	@Override
-	protected void setActiveScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
+	protected void setActiveScene( org.lgna.project.ast.FieldDeclaredInAlice sceneField ) {
 		super.setActiveScene(sceneField);
 		
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setOnscreenLookingGlass(this.onscreenLookingGlass);
 
-		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneAliceInstance = getActiveSceneInstance();
+		org.lgna.project.virtualmachine.InstanceInAlice sceneAliceInstance = getActiveSceneInstance();
 		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getInstanceInJava();
 		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 		
-		for (edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneField.getDesiredValueType().getDeclaredFields())
+		for (org.lgna.project.ast.AbstractField field : sceneField.getDesiredValueType().getDeclaredFields())
 		{
 			if( field.getDesiredValueType().isAssignableTo(org.lgna.story.Camera.class)) 
 			{
-				this.setSceneCamera((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field);
+				this.setSceneCamera((org.lgna.project.ast.FieldDeclaredInAlice)field);
 			}
 		}
 		
@@ -337,7 +337,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return null;
 	}
 
-	private void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field) {
+	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field) {
 		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaVMForField(field), this.getActiveSceneInstance() );
 	}
 	
@@ -348,9 +348,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 //		EntityImplementation cameraParent = this.sceneCameraImplementation.getVehicle();
 //		cameraParent.setTransformation(this.openingSceneMarker.getTransformation(AsSeenBy.SCENE), this.scene.getSGReferenceFrame());
 		
-		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+		org.lgna.project.ast.AbstractField sceneField = this.getSceneField();
 		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.getActiveSceneType() .getDeclaredFields() ) {
+		for( org.lgna.project.ast.AbstractField field : this.getActiveSceneType() .getDeclaredFields() ) {
 			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
 		}
 		

@@ -46,7 +46,7 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
-	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
+	public MethodHeaderPane( org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
 		super( methodDeclaredInAlice, parametersPane, isPreview );
 //		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
@@ -109,7 +109,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			declaringType = methodDeclaredInAlice.getDeclaringType();
 		}
 		if( declaringType != null ) {
-			if( declaringType instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
+			if( declaringType instanceof org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice ) {
 				//pass
 			} else {
 				this.addComponent( new org.lgna.croquet.components.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
@@ -117,7 +117,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			}
 		}
 	}
-	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
+	public MethodHeaderPane( org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
 		this( methodDeclaredInAlice, parametersPane, isPreview, null );
 	}
 }

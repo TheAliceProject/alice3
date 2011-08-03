@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.literals;
 /**
  * @author Dennis Cosgrove
  */
-public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.StringLiteral > {
+public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.StringLiteral > {
 	private static java.util.Map< String, StringLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static StringLiteralFillIn getInstance( String value ) {
 		synchronized( map ) {
@@ -60,18 +60,18 @@ public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.Ex
 			return rv;
 		}
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.StringLiteral transientValue;
+	private final org.lgna.project.ast.StringLiteral transientValue;
 	private StringLiteralFillIn( String value ) {
 		super( java.util.UUID.fromString( "06ad5690-dccf-4e7d-bfff-fe9bf1fd5499" ) );
-		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.StringLiteral( value );
+		this.transientValue = new org.lgna.project.ast.StringLiteral( value );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.StringLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.StringLiteral,Void > step ) {
+	public org.lgna.project.ast.StringLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.StringLiteral,Void > step ) {
 		return this.transientValue;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.StringLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.StringLiteral,Void > step ) {
-		return new edu.cmu.cs.dennisc.alice.ast.StringLiteral( this.transientValue.value.getValue() );
+	public org.lgna.project.ast.StringLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.StringLiteral,Void > step ) {
+		return new org.lgna.project.ast.StringLiteral( this.transientValue.value.getValue() );
 	}
 	
 	@Override

@@ -48,14 +48,14 @@ package org.alice.stageide;
  */
 public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurationManager {
 	SINGLETON {
-		public boolean isInstanceFactoryDesiredForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+		public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 			return type.isAssignableTo( org.lgna.story.Entity.class );
 		}
 		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
 			return null;
 		}
-		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type = field.getValueType();
+		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.FieldDeclaredInAlice field ) {
+			org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
 			if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
 				return org.alice.stageide.instancefactory.BipedJointMenuModel.getInstance( field );
 			} else {

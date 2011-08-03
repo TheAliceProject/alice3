@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
+public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.InstanceCreation > {
 	private static class SingletonHolder {
 		private static KeyAdapterFillIn instance = new KeyAdapterFillIn();
 	}
@@ -54,30 +54,30 @@ public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.Expre
 	public static KeyAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.InstanceCreation transientValue;
+	private final org.lgna.project.ast.InstanceCreation transientValue;
 	private KeyAdapterFillIn() {
 		super( java.util.UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ) );
 		this.transientValue = this.createValue();
 	}
-	private edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue() { 
-		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] { 
-				new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.lgna.story.event.KeyEvent.class ) 
+	private org.lgna.project.ast.InstanceCreation createValue() { 
+		org.lgna.project.ast.ParameterDeclaredInAlice[] parameters = new org.lgna.project.ast.ParameterDeclaredInAlice[] { 
+				new org.lgna.project.ast.ParameterDeclaredInAlice( "e", org.lgna.story.event.KeyEvent.class ) 
 		};
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement body = new edu.cmu.cs.dennisc.alice.ast.BlockStatement();
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( "keyPressed", Void.TYPE, parameters, body );
+		org.lgna.project.ast.BlockStatement body = new org.lgna.project.ast.BlockStatement();
+		org.lgna.project.ast.MethodDeclaredInAlice method = new org.lgna.project.ast.MethodDeclaredInAlice( "keyPressed", Void.TYPE, parameters, body );
 		method.isSignatureLocked.setValue( true );
-		edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type = new edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice();
-		type.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.event.KeyListener.class ) );
+		org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice type = new org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice();
+		type.superType.setValue( org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.event.KeyListener.class ) );
 		type.methods.add( method );
-		edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor = edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor.get( type );
-		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
+		org.lgna.project.ast.AnonymousConstructor constructor = org.lgna.project.ast.AnonymousConstructor.get( type );
+		return new org.lgna.project.ast.InstanceCreation( constructor );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation,Void > step ) {
+	public org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation,Void > step ) {
 		return this.createValue();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation,Void > step ) {
+	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation,Void > step ) {
 		return this.transientValue;
 	}
 }

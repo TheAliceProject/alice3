@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
 * @author Dennis Cosgrove
 */
 //todo
-/*package-private*/ abstract class EditCodeOperation<N extends edu.cmu.cs.dennisc.alice.ast.AbstractCode> extends org.alice.ide.operations.ActionOperation {
+/*package-private*/ abstract class EditCodeOperation<N extends org.lgna.project.ast.AbstractCode> extends org.alice.ide.operations.ActionOperation {
 	private N code;
 	public EditCodeOperation( java.util.UUID id, N code ) {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, id );

@@ -47,8 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactoryFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ThisFieldAccessMethodInvocationFactoryFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.FieldDeclaredInAlice, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactoryFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ThisFieldAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.FieldDeclaredInAlice field, org.lgna.project.ast.AbstractMethod method ) {
 		assert field != null;
 		ThisFieldAccessMethodInvocationFactoryFillIn rv = mapToMap.get( field, method );
 		if( rv != null ) {
@@ -59,11 +59,11 @@ public class ThisFieldAccessMethodInvocationFactoryFillIn extends InstanceFactor
 		}
 		return rv;
 	}
-	public static ThisFieldAccessMethodInvocationFactoryFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Class<?> declaringCls, String name ) {
-		return getInstance( field, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( declaringCls, name ) );
+	public static ThisFieldAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.FieldDeclaredInAlice field, Class<?> declaringCls, String name ) {
+		return getInstance( field, org.lgna.project.ast.MethodDeclaredInJava.get( declaringCls, name ) );
 	}
 	
-	private ThisFieldAccessMethodInvocationFactoryFillIn( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private ThisFieldAccessMethodInvocationFactoryFillIn( org.lgna.project.ast.FieldDeclaredInAlice field, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "ccd03251-addf-4f26-b777-3ff8c3151a38" ), ThisFieldAccessMethodInvocationFactory.getInstance( field, method ) );
 	}
 	@Override

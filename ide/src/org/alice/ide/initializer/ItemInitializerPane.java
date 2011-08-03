@@ -46,8 +46,8 @@ package org.alice.ide.initializer;
  * @author Dennis Cosgrove
  */
 public class ItemInitializerPane extends org.lgna.croquet.components.FlowPanel {
-	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty;
-	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
+	private final org.lgna.project.ast.ExpressionProperty initializerProperty;
+	public ItemInitializerPane( org.lgna.project.ast.ExpressionProperty initializerProperty ) {
 		super( Alignment.LEADING );
 		this.initializerProperty = initializerProperty;
 		this.refresh();

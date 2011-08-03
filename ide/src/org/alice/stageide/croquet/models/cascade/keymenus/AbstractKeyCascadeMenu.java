@@ -46,17 +46,17 @@ package org.alice.stageide.croquet.models.cascade.keymenus;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractKeyCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
+public abstract class AbstractKeyCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< org.lgna.project.ast.FieldAccess > {
 	private final org.lgna.story.Key[] keys;
 	public AbstractKeyCascadeMenu( java.util.UUID id, org.lgna.story.Key... keys ) {
 		super( id );
 		this.keys = keys;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.FieldAccess > context ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class );
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.FieldAccess > context ) {
+		org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class );
 		for( org.lgna.story.Key key : this.keys ) {
- 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( key.name() );
+ 			org.lgna.project.ast.AbstractField field = type.getDeclaredField( key.name() );
  			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
  			rv.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
  		}

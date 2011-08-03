@@ -46,7 +46,7 @@ package org.alice.stageide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class TransformableFieldTileActionOperation extends AbstractFieldTileActionOperation {
-	public TransformableFieldTileActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	public TransformableFieldTileActionOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractField field ) {
 		super( individualId, field );
 	}
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lgna.story.implementation.TransformableImplementation transformableImp );

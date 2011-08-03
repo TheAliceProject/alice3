@@ -63,7 +63,7 @@ public class DoInThreadInsertOperation extends StatementInsertOperation {
 		super( java.util.UUID.fromString( "3a3c15b6-adf7-4665-a45e-8fc0d19e9489" ), blockStatementIndexPair );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement() {
+	protected final org.lgna.project.ast.Statement createStatement() {
 		return org.alice.ide.ast.NodeUtilities.createDoInThread();
 	}
 }

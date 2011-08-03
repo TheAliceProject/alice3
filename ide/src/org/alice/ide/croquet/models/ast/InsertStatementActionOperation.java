@@ -46,12 +46,12 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class InsertStatementActionOperation extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
-	public static final Class<?>[] CONSTRUCTOR_PARAMETER_TYPES = new Class[] { edu.cmu.cs.dennisc.alice.ast.BlockStatement.class, Integer.TYPE, edu.cmu.cs.dennisc.alice.ast.Statement.class };
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement;
+	public static final Class<?>[] CONSTRUCTOR_PARAMETER_TYPES = new Class[] { org.lgna.project.ast.BlockStatement.class, Integer.TYPE, org.lgna.project.ast.Statement.class };
+	private org.lgna.project.ast.BlockStatement blockStatement;
 	private int index;
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	private org.lgna.project.ast.Statement statement;
 
-	public InsertStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public InsertStatementActionOperation( org.lgna.project.ast.BlockStatement blockStatement, int index, org.lgna.project.ast.Statement statement ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "a6aa2cea-f205-434a-8ec8-c068c9fb3b83" ) );
 		this.blockStatement = blockStatement;
 		this.index = index;
@@ -73,8 +73,8 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		int index = binaryDecoder.decodeInt();
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), blockStatementId );
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
+		org.lgna.project.ast.BlockStatement blockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), blockStatementId );
+		org.lgna.project.ast.Statement statement = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
 		return new Object[] { blockStatement, index, statement };
 	}
 	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -129,7 +129,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	}
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.blockStatement = retargeter.retarget( this.blockStatement );
-		edu.cmu.cs.dennisc.alice.ast.Statement originalStatement = this.statement;
+		org.lgna.project.ast.Statement originalStatement = this.statement;
 		this.statement = retargeter.retarget( originalStatement );
 //		edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = getMethodInvocation( this.statement );
 //		if( methodInvocation != null ) {
@@ -141,7 +141,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "create: " );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
 		return rv;
 	}
 	

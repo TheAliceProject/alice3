@@ -45,13 +45,13 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantPane extends LocalPane< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > {
-	public ConstantPane( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
+public class ConstantPane extends LocalPane< org.lgna.project.ast.ConstantDeclaredInAlice > {
+	public ConstantPane( org.lgna.project.ast.ConstantDeclaredInAlice constant ) {
 		super( constant );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
+		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( org.lgna.project.ast.ConstantAccess.class ) );
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.ConstantAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

@@ -57,7 +57,7 @@ public class ReduceToRightOperandInPreviousConditionalExpressionFillIn extends R
 		super( java.util.UUID.fromString( "56cba468-e24c-461d-acdd-163bb2e6dbb0" ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getOperand( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditional ) {
+	protected org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ConditionalInfixExpression previousConditional ) {
 		return previousConditional.rightOperand.getValue();
 	}
 }

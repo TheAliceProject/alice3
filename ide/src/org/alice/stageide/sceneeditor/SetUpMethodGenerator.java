@@ -46,68 +46,68 @@ package org.alice.stageide.sceneeditor;
  * @author Dennis Cosgrove
  */
 public class SetUpMethodGenerator {
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression( boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression thisExpression = new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
+	private static org.lgna.project.ast.Expression createInstanceExpression( boolean isThis, org.lgna.project.ast.AbstractField field ) {
+		org.lgna.project.ast.Expression thisExpression = new org.lgna.project.ast.ThisExpression();
 		if( isThis ) {
 			return thisExpression;
 		} else {
-			return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( thisExpression, field );
+			return new org.lgna.project.ast.FieldAccess( thisExpression, field );
 		}
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( Double d ) {
-		return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( d );
+	private static org.lgna.project.ast.Expression createExpression( Double d ) {
+		return new org.lgna.project.ast.DoubleLiteral( d );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( String s ) {
-		return new edu.cmu.cs.dennisc.alice.ast.StringLiteral( s );
+	private static org.lgna.project.ast.Expression createExpression( String s ) {
+		return new org.lgna.project.ast.StringLiteral( s );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( Enum e ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( e.getClass() );
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, e.name() );
-		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
+	private static org.lgna.project.ast.Expression createExpression( Enum e ) {
+		org.lgna.project.ast.TypeDeclaredInJava type = org.lgna.project.ast.TypeDeclaredInJava.get( e.getClass() );
+		org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, e.name() );
+		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lgna.story.font.Attribute attribute ) {
+	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.font.Attribute attribute ) {
 		if( attribute instanceof Enum ) {
 			return createExpression( (Enum)attribute );
 		} else {
 			throw new RuntimeException( "todo handle org.lookingglassandalice.storytelling.font.Attribute that is not an Enum" );
 		}
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lgna.story.ImageSource imageSource ) {
+	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.ImageSource imageSource ) {
 		if( imageSource != null ) {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.lgna.story.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
-			edu.cmu.cs.dennisc.alice.ast.Expression arg0Expression;
+			org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( org.lgna.story.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
+			org.lgna.project.ast.Expression arg0Expression;
 			org.alice.virtualmachine.resources.ImageResource imageResource = imageSource.getImageResource();
 			if( imageResource != null ) {
-				arg0Expression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.ImageResource.class, imageResource );
+				arg0Expression = new org.lgna.project.ast.ResourceExpression( org.alice.virtualmachine.resources.ImageResource.class, imageResource );
 			} else {
-				arg0Expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+				arg0Expression = new org.lgna.project.ast.NullLiteral();
 			}
 			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression );
 		} else {
-			return new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+			return new org.lgna.project.ast.NullLiteral();
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lgna.story.Color color ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression rv = null;
+	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Color color ) {
+		org.lgna.project.ast.Expression rv = null;
 		Class< ? > cls = org.lgna.story.Color.class;
 		for( java.lang.reflect.Field fld : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( cls, cls ) ) {
 			if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null ).equals( color ) ) {
-				edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression = new edu.cmu.cs.dennisc.alice.ast.TypeExpression( cls );
-				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( fld );
-				rv = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( typeExpression, field );
+				org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( cls );
+				org.lgna.project.ast.FieldDeclaredInJavaWithField field = org.lgna.project.ast.FieldDeclaredInJavaWithField.get( fld );
+				rv = new org.lgna.project.ast.FieldAccess( typeExpression, field );
 				break;
 			}
 		}
 		if( rv != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
+			org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
 			rv = org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( color.getRed() ), createExpression( color.getGreen() ), createExpression( color.getBlue() ) );
 		}
 		return rv;
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lgna.story.Paint paint ) {
+	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Paint paint ) {
 		if( paint != null ) {
 			if( paint instanceof org.lgna.story.Color ) {
 				org.lgna.story.Color color = (org.lgna.story.Color)paint;
@@ -119,43 +119,43 @@ public class SetUpMethodGenerator {
 				return null;
 			}
 		} else {
-			return new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+			return new org.lgna.project.ast.NullLiteral();
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lgna.story.Position position ) {
+	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Position position ) {
 		Class< ? > cls = org.lgna.story.Position.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
+		org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( position.getRight() ), createExpression( position.getUp() ), createExpression( position.getBackward() ) );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lgna.story.Scale scale ) {
+	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Scale scale ) {
 		Class< ? > cls = org.lgna.story.Scale.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
+		org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( scale.getLeftToRight() ), createExpression( scale.getBottomToTop() ), createExpression( scale.getFrontToBack() ) );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lgna.story.Orientation orientation ) {
+	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Orientation orientation ) {
 		edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = org.lgna.story.ImplementationAccessor.getOrthogonalMatrix3x3( orientation );
 		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( axes );
 		Class< ? > cls = org.lgna.story.Orientation.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class, Number.class);
+		org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class, Number.class);
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.lgna.story.Font font ) {
+	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Font font ) {
 		Class< ? > cls = org.lgna.story.Font.class;
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.lgna.story.font.Attribute[].class );
+		org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, org.lgna.story.font.Attribute[].class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( font.getFamily() ), createExpression( font.getWeight() ), createExpression( font.getPosture() ) );
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? > parameterCls, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterCls );
+	private static org.lgna.project.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? > parameterCls, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression argumentExpression ) {
+		org.lgna.project.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterCls );
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpression );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? >[] parameterClses, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterClses );
+	private static org.lgna.project.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? >[] parameterClses, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... argumentExpressions ) {
+		org.lgna.project.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterClses );
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
 	}
 
-	public static void fillInAutomaticPointOfViewAssignment(edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractField pointOfViewField)
+	public static void fillInAutomaticPointOfViewAssignment(org.lgna.project.ast.StatementListProperty bodyStatementsProperty, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField pointOfViewField)
 	{
 		if (pointOfViewField != null)
 		{
@@ -163,7 +163,7 @@ public class SetUpMethodGenerator {
 		}
 	}
 	
-	public static void fillInAutomaticVehicleAssignment(edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField, boolean isVehicleScene)
+	public static void fillInAutomaticVehicleAssignment(org.lgna.project.ast.StatementListProperty bodyStatementsProperty, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField vehicleField, boolean isVehicleScene)
 	{
 		if (vehicleField != null)
 		{
@@ -171,7 +171,7 @@ public class SetUpMethodGenerator {
 		}
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createSetVehicleStatement(edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField, boolean isVehicleScene)
+	public static org.lgna.project.ast.ExpressionStatement createSetVehicleStatement(org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField vehicleField, boolean isVehicleScene)
 	{
 		if (vehicleField != null || isVehicleScene)
 		{
@@ -180,7 +180,7 @@ public class SetUpMethodGenerator {
 		return null;
 	}
 	
-	public static void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance, edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstance ) {
+	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.InstanceInAlice sceneInstance ) {
 		if( instance instanceof org.lgna.story.Entity ) {
 			org.lgna.story.Entity entity = (org.lgna.story.Entity)instance;
 			String name = field.getName();
@@ -200,7 +200,7 @@ public class SetUpMethodGenerator {
 					org.lgna.story.Entity vehicle = entity.getVehicle();
 					boolean isVehicleScene = (vehicle instanceof org.lgna.story.Scene);
 		
-					edu.cmu.cs.dennisc.alice.ast.AbstractField vehicleField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(vehicle);
+					org.lgna.project.ast.AbstractField vehicleField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(vehicle);
 					bodyStatementsProperty.add( 
 							createStatement( 
 									org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.Entity.class, 

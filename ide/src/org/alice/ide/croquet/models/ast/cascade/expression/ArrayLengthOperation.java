@@ -47,12 +47,12 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public abstract class ArrayLengthOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	public ArrayLengthOperation( java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public ArrayLengthOperation( java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( id, expressionProperty );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression();
+	protected abstract org.lgna.project.ast.Expression createAccessExpression();
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayLength( this.createAccessExpression() );
+	protected final org.lgna.project.ast.Expression createExpression() {
+		return new org.lgna.project.ast.ArrayLength( this.createAccessExpression() );
 	}
 }

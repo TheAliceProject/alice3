@@ -50,7 +50,7 @@ public class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 	@Override
-	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	protected AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		return new TypeFieldsPane( type );
 	}
 }

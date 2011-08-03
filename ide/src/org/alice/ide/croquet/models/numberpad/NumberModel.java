@@ -45,15 +45,15 @@ package org.alice.ide.croquet.models.numberpad;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberModel< N extends edu.cmu.cs.dennisc.alice.ast.Expression > /* extends edu.cmu.cs.dennisc.croquet.StringState */ {
+public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /* extends edu.cmu.cs.dennisc.croquet.StringState */ {
 	@Deprecated
 	/*package-private*/ final static org.lgna.croquet.Group NUMBER_PAD_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
 	
 	private static String getInitialText() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = ide.getCascadeManager().createCopyOfPreviousExpression();
-			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral ) {
+			org.lgna.project.ast.Expression previousExpression = ide.getCascadeManager().createCopyOfPreviousExpression();
+			if( previousExpression instanceof org.lgna.project.ast.AbstractValueLiteral ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle previous expression; replace selected text later." );
 //				edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral valueLiteral = (edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)previousExpression;
 //				return valueLiteral.getValueProperty().getValue().toString();
@@ -156,7 +156,7 @@ public abstract class NumberModel< N extends edu.cmu.cs.dennisc.alice.ast.Expres
 			final int N = document.getLength();
 			if( N > 0 ) {
 				try {
-					edu.cmu.cs.dennisc.alice.ast.Expression rv = this.valueOf( document.getText( 0, N ) );
+					org.lgna.project.ast.Expression rv = this.valueOf( document.getText( 0, N ) );
 					if( rv != null ) {
 						return null;
 					} else {

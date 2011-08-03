@@ -48,8 +48,8 @@ package org.alice.ide.editorstabbedpane;
  * @author Dennis Cosgrove
  */
 public class CodeComposite extends org.lgna.croquet.Composite {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, CodeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CodeComposite getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractCode, CodeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CodeComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
 		CodeComposite rv = map.get( code );
 		if( rv != null ) {
 			//pass
@@ -60,12 +60,12 @@ public class CodeComposite extends org.lgna.croquet.Composite {
 		return rv;
 	}
 
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
-	public CodeComposite( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+	private final org.lgna.project.ast.AbstractCode code;
+	public CodeComposite( org.lgna.project.ast.AbstractCode code ) {
 		super( java.util.UUID.fromString( "db2c8eb1-cc2f-4a23-8836-59af43de82fb" ) );
 		this.code = code;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
+	public org.lgna.project.ast.AbstractCode getCode() {
 		return this.code;
 	}
 	@Override

@@ -57,17 +57,17 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			} );
 		}
 	};
-	public ExpressionStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+	public ExpressionStatementPane( Factory factory, org.lgna.project.ast.ExpressionStatement expressionStatement, org.lgna.project.ast.StatementListProperty owner ) {
 		super( factory, expressionStatement, owner );
 		this.refresh();
 	}
 
 	@Override
 	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {
-		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+		final org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)getStatement();
+		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+		if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+			org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 			if( methodInvocation.isValid() ) {
 				//pass
 			} else {
@@ -90,15 +90,15 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 
 	private void refresh() {
 		this.forgetAndRemoveAllComponents();
-		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
-			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression ) );
+		final org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)getStatement();
+		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+		if( expression instanceof org.lgna.project.ast.AssignmentExpression ) {
+			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (org.lgna.project.ast.AssignmentExpression)expression ) );
 		} else {
 			org.lgna.croquet.components.JComponent< ? > expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
 			this.addComponent( expressionPane );
-			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) { 
-				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+			if( expression instanceof org.lgna.project.ast.MethodInvocation ) { 
+				final org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 				assert methodInvocation.getParent() == expressionStatement;
 				
 				if( this.getFactory() == org.alice.ide.IDE.getActiveInstance().getPreviewFactory() || methodInvocation.isValid() ) {
@@ -107,10 +107,10 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					this.setBackgroundColor( java.awt.Color.RED );
 				}
 				
-				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
+				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 				//todo:
 				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
+					org.lgna.project.ast.AbstractMember nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
 						this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 						org.lgna.croquet.components.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupButton< org.lgna.croquet.PopupPrepModel >( org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation ).getRoot().getPopupPrepModel() );
@@ -172,8 +172,8 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 //		}
 //	}
 	
-	protected edu.cmu.cs.dennisc.alice.ast.ExpressionStatement getExpressionStatement() {
-		return (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.getStatement();
+	protected org.lgna.project.ast.ExpressionStatement getExpressionStatement() {
+		return (org.lgna.project.ast.ExpressionStatement)this.getStatement();
 	}
 	
 //	@Override

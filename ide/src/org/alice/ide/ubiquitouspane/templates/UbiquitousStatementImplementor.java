@@ -46,15 +46,15 @@ package org.alice.ide.ubiquitouspane.templates;
  * @author Dennis Cosgrove
  */
 public class UbiquitousStatementImplementor { //todo: needs a better name
-	private edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement;
+	private org.lgna.project.ast.Statement incompleteStatement;
 	private org.lgna.croquet.components.Component< ? > incompleteStatementPane;
 	private String labelText;
 	private javax.swing.JToolTip toolTip;
 
-	public UbiquitousStatementImplementor( edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
+	public UbiquitousStatementImplementor( org.lgna.project.ast.Statement incompleteStatement ) {
 		this.incompleteStatement = incompleteStatement;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Statement getIncompleteStatement() {
+	public org.lgna.project.ast.Statement getIncompleteStatement() {
 		return this.incompleteStatement;
 	}
 	public org.lgna.croquet.components.Component< ? > getIncompleteStatementPane() {

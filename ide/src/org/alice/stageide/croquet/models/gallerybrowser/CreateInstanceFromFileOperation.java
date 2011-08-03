@@ -62,7 +62,7 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 		sb.append( " is able to create instances from class files saved by " );
 		sb.append( getIDE().getApplicationName() );
 		sb.append( ".\n\nLook for files with an " );
-		sb.append( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION );
+		sb.append( org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION );
 		sb.append( " extension." );
 		this.getIDE().showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 	}
@@ -71,16 +71,16 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane rv = null;
 		java.io.File directory = this.getInitialDirectory();
-		java.io.File file = this.getIDE().showOpenFileDialog( directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false );
+		java.io.File file = this.getIDE().showOpenFileDialog( directory, null, org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION, false );
 		if( file != null ) {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2c" ) ) {
 				this.getIDE().showMessageDialog( "Alice3 does not load Alice2 characters", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
-			} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() ) ) {
-				this.getIDE().showMessageDialog( file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION + " extension.",
+			} else if( lcFilename.endsWith( org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() ) ) {
+				this.getIDE().showMessageDialog( file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION + " extension.",
 						"Incorrect File Type", org.lgna.croquet.MessageType.INFORMATION );
 			} else {
-				boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() );
+				boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() );
 				java.util.zip.ZipFile zipFile;
 				try {
 					zipFile = new java.util.zip.ZipFile( file );
@@ -93,9 +93,9 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 					}
 				}
 				if( zipFile != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+					org.lgna.project.ast.AbstractType<?,?,?> type;
 					try {
-						edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > tuple = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readType( zipFile );
+						edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > tuple = org.lgna.project.project.ProjectUtilities.readType( zipFile );
 						type = tuple.getA();
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
 					} catch( java.io.IOException ioe ) {
@@ -116,10 +116,10 @@ abstract class CreateInstanceFromFileOperation extends AbstractGalleryDeclareFie
 	}
 	
 	@Deprecated
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = context.getMainPanel();
 		//todo: dialog title: "Create New Instance"
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.getInputValue();
+		org.lgna.project.ast.FieldDeclaredInAlice field = createFieldPane.getInputValue();
 		if( field != null ) {
 			Object instanceInJava = createFieldPane.createInstanceInJavaForArguments();
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, instanceInJava );

@@ -57,7 +57,7 @@ public class ReduceToRightOperandInPreviousArithmeticExpressionFillIn extends Re
 		super( java.util.UUID.fromString( "3c5115ea-d67f-4ccb-89b5-c414c87fe3ed" ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getOperand( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression previousArithmetic ) {
+	protected org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ArithmeticInfixExpression previousArithmetic ) {
 		return previousArithmetic.rightOperand.getValue();
 	}
 }

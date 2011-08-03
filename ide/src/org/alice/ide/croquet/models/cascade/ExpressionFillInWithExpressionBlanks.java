@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillInWithExpressionBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends ExpressionFillInWithBlanks< F, edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class ExpressionFillInWithExpressionBlanks< F extends org.lgna.project.ast.Expression > extends ExpressionFillInWithBlanks< F, org.lgna.project.ast.Expression > {
 	public ExpressionFillInWithExpressionBlanks( java.util.UUID id ) {
-		super( id, edu.cmu.cs.dennisc.alice.ast.Expression.class );
+		super( id, org.lgna.project.ast.Expression.class );
 	}
 }

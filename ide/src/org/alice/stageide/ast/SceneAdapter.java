@@ -47,16 +47,16 @@ package org.alice.stageide.ast;
  * @author Dennis Cosgrove
  */
 public class SceneAdapter extends org.lgna.story.Scene {
-	private final edu.cmu.cs.dennisc.alice.virtualmachine.Context context;
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type; 
-	public SceneAdapter( edu.cmu.cs.dennisc.alice.virtualmachine.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type, Object[] arguments ) {
+	private final org.lgna.project.virtualmachine.Context context;
+	private final org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type; 
+	public SceneAdapter( org.lgna.project.virtualmachine.Context context, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type, Object[] arguments ) {
 		this.context = context;
 		this.type = type;
 		assert arguments.length == 0;
 	}
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = type.getDeclaredMethod( "handleActiveChanged", Boolean.class, Integer.class );
+		org.lgna.project.ast.MethodDeclaredInAlice method = type.getDeclaredMethod( "handleActiveChanged", Boolean.class, Integer.class );
 		this.context.invokeEntryPoint( method, isActive, activeCount );
 	}
 	@Override

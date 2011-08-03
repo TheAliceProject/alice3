@@ -43,7 +43,7 @@
 package org.alice.ide;
 
 import org.lgna.croquet.components.JComponent;
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.TypeDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove
@@ -135,9 +135,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 
 		this.addProjectObserver( new ProjectObserver() {
-			public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+			public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
 			}
-			public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+			public void projectOpened( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
 				getRunOperation().setEnabled( nextProject != null );
 			}
 		} );
@@ -184,8 +184,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
 		if( dropSite instanceof org.alice.ide.codeeditor.BlockStatementIndexPair ) {
 			org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.codeeditor.BlockStatementIndexPair)dropSite;
-			edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
-			edu.cmu.cs.dennisc.alice.ast.AbstractCode code = blockStatement.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+			org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
+			org.lgna.project.ast.AbstractCode code = blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 			System.err.println( "todo: getDropReceptor: " + dropSite );
 			return getCodeEditorInFocus();
 		}
@@ -244,24 +244,24 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void loadProjectFrom( java.net.URI uri ) {
 		super.loadProjectFrom( uri );
 		this.mapUUIDToNode.clear();
-		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = getSceneField();
+		org.lgna.project.ast.AbstractField sceneField = getSceneField();
 		if( sceneField != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
+			org.lgna.project.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
 			setFocusedCode( runMethod );
 		}
 	}
 
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createPredeterminedExpressionIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+	protected org.lgna.project.ast.Expression createPredeterminedExpressionIfAppropriate( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		return null;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Expression[] createPredeterminedExpressionsIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] types ) {
+	public org.lgna.project.ast.Expression[] createPredeterminedExpressionsIfAppropriate( org.lgna.project.ast.AbstractType< ?, ?, ? >[] types ) {
 		if( types == null || types.length == 0 ) {
-			return new edu.cmu.cs.dennisc.alice.ast.Expression[] {};
+			return new org.lgna.project.ast.Expression[] {};
 		} else {
 			if( types.length == 1 ) {
-				edu.cmu.cs.dennisc.alice.ast.Expression predeterminedExpression = org.alice.ide.IDE.getActiveInstance().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
+				org.lgna.project.ast.Expression predeterminedExpression = org.alice.ide.IDE.getActiveInstance().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
 				if( predeterminedExpression != null ) {
-					return new edu.cmu.cs.dennisc.alice.ast.Expression[] { predeterminedExpression };
+					return new org.lgna.project.ast.Expression[] { predeterminedExpression };
 				} else {
 					return null;
 				}
@@ -283,8 +283,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		GETTER_AND_SETTER, ACCESS_AND_ASSIGNMENT
 	}
 
-	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > declaringType = field.getDeclaringType();
+	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle( org.lgna.project.ast.AbstractField field ) {
+		org.lgna.project.ast.AbstractType< ?, ?, ? > declaringType = field.getDeclaringType();
 		if( declaringType != null && declaringType.isDeclaredInAlice() ) {
 			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
 		} else {
@@ -293,10 +293,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
+	public org.lgna.project.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {
+		org.lgna.project.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
 		if( sceneType != null ) {
-			for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : sceneType.methods ) {
+			for( org.lgna.project.ast.MethodDeclaredInAlice method : sceneType.methods ) {
 				if( IDE.performSceneEditorGeneratedSetUpMethodNameSet.contains( method.name.getValue() ) ) {
 					return method;
 				}
@@ -305,58 +305,58 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = this.getProgramType();
+	public org.lgna.project.ast.TypeDeclaredInAlice getStrippedProgramType() {
+		org.lgna.project.ast.TypeDeclaredInAlice rv = this.getProgramType();
 		if( rv != null ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpMethod = this.getPerformEditorGeneratedSetUpMethod();
+			org.lgna.project.ast.MethodDeclaredInAlice setUpMethod = this.getPerformEditorGeneratedSetUpMethod();
 			setUpMethod.body.getValue().statements.clear();
 		}
 		return rv;
 	}
-	public java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > getFieldAccesses( final edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+	public java.util.List< org.lgna.project.ast.FieldAccess > getFieldAccesses( final org.lgna.project.ast.AbstractField field ) {
+		org.lgna.project.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
 		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess >( org.lgna.project.ast.FieldAccess.class ) {
 			@Override
-			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+			protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
 				return fieldAccess.field.getValue() == field;
 			}
 		};
 		programType.crawl( crawler, true );
 		return crawler.getList();
 	}
-	public java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > getMethodInvocations( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+	public java.util.List< org.lgna.project.ast.MethodInvocation > getMethodInvocations( final org.lgna.project.ast.AbstractMethod method ) {
+		org.lgna.project.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
 		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >(
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.MethodInvocation >(
+				org.lgna.project.ast.MethodInvocation.class ) {
 			@Override
-			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+			protected boolean isAcceptable( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 				return methodInvocation.method.getValue() == method;
 			}
 		};
 		programType.crawl( crawler, true );
 		return crawler.getList();
 	}
-	public java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > getArgumentLists( final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+	public java.util.List< org.lgna.project.ast.ArgumentListProperty > getArgumentLists( final org.lgna.project.ast.CodeDeclaredInAlice code ) {
+		org.lgna.project.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
 		assert programType != null;
 		class ArgumentListCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-			private final java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			private final java.util.List< org.lgna.project.ast.ArgumentListProperty > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
-					edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)crawlable;
+				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
+					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
 					if( methodInvocation.method.getValue() == code ) {
 						this.list.add( methodInvocation.arguments );
 					}
-				} else if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
-					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)crawlable;
+				} else if( crawlable instanceof org.lgna.project.ast.InstanceCreation ) {
+					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)crawlable;
 					if( instanceCreation.constructor.getValue() == code ) {
 						this.list.add( instanceCreation.arguments );
 					}
 				}
 			}
-			public java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > getList() {
+			public java.util.List< org.lgna.project.ast.ArgumentListProperty > getList() {
 				return this.list;
 			}
 		}
@@ -394,65 +394,65 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 	}
 
-	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > aliceTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public org.lgna.project.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( org.lgna.project.ast.TypeDeclaredInJava superType ) {
+		java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > aliceTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addAliceTypes( aliceTypes, true );
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type : aliceTypes ) {
+		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : aliceTypes ) {
 			assert type != null;
 			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
-				return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
+				return (org.lgna.project.ast.TypeDeclaredInAlice)type;
 			}
 		}
 		String name = "My" + superType.getName();
 		return org.alice.ide.ast.NodeUtilities.createType( name, superType );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( Class< ? > superCls ) {
-		return getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( superCls ) );
+	public org.lgna.project.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( Class< ? > superCls ) {
+		return getTypeDeclaredInAliceFor( org.lgna.project.ast.TypeDeclaredInJava.get( superCls ) );
 
 	}
 
-	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, org.lgna.project.ast.Expression expression ) {
 		return null;
 	}
 
-	public boolean isDropDownDesiredForFieldInitializer( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	public boolean isDropDownDesiredForFieldInitializer( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 		return true;
 	}
-	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		return (expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression || expression instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression) == false;
+	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
+		return (expression instanceof org.lgna.project.ast.TypeExpression || expression instanceof org.lgna.project.ast.ResourceExpression) == false;
 	}
-	public org.alice.ide.common.TypeComponent getComponentFor( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+	public org.alice.ide.common.TypeComponent getComponentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		//todo:
 		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
-	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+	public String getTextFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		return null;
 	}
 
-	protected java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > addPrimeTimeJavaTypes( java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv ) {
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ) );
+	protected java.util.List< ? super org.lgna.project.ast.TypeDeclaredInJava > addPrimeTimeJavaTypes( java.util.List< ? super org.lgna.project.ast.TypeDeclaredInJava > rv ) {
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
+		rv.add( org.lgna.project.ast.TypeDeclaredInJava.get( String.class ) );
 		return rv;
 	}
-	protected java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > addSecondaryJavaTypes( java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv ) {
+	protected java.util.List< ? super org.lgna.project.ast.TypeDeclaredInJava > addSecondaryJavaTypes( java.util.List< ? super org.lgna.project.ast.TypeDeclaredInJava > rv ) {
 		return rv;
 	}
 
-	protected boolean isInclusionOfTypeDesired( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > valueTypeInAlice ) {
+	protected boolean isInclusionOfTypeDesired( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > valueTypeInAlice ) {
 		return true;
 		//return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
 	}
 
-	protected java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > addAliceTypes( java.util.List< ? super edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
+	protected java.util.List< ? super org.lgna.project.ast.TypeDeclaredInAlice > addAliceTypes( java.util.List< ? super org.lgna.project.ast.TypeDeclaredInAlice > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
+		org.lgna.project.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
 		if( sceneType != null ) {
 			rv.add( sceneType );
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
-				if( valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueTypeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)valueType;
+			for( org.lgna.project.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+				org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
+				if( valueType instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
+					org.lgna.project.ast.TypeDeclaredInAlice valueTypeInAlice = (org.lgna.project.ast.TypeDeclaredInAlice)valueType;
 					if( rv.contains( valueType ) ) {
 						//pass
 					} else {
@@ -466,18 +466,18 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv;
 	}
 
-	public java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > getPrimeTimeSelectableTypesDeclaredInJava() {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public java.util.List< org.lgna.project.ast.TypeDeclaredInJava > getPrimeTimeSelectableTypesDeclaredInJava() {
+		java.util.List< org.lgna.project.ast.TypeDeclaredInJava > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addPrimeTimeJavaTypes( rv );
 		return rv;
 	}
-	public java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > getSecondarySelectableTypesDeclaredInJava() {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public java.util.List< org.lgna.project.ast.TypeDeclaredInJava > getSecondarySelectableTypesDeclaredInJava() {
+		java.util.List< org.lgna.project.ast.TypeDeclaredInJava > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addSecondaryJavaTypes( rv );
 		return rv;
 	}
-	public java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > getTypesDeclaredInAlice() {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > getTypesDeclaredInAlice() {
+		java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addAliceTypes( rv, true );
 		return rv;
 	}
@@ -503,13 +503,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
 
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory > mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory > mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 			if( nextValue != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractCode code = IDE.this.getFocusedCode();
+				org.lgna.project.ast.AbstractCode code = IDE.this.getFocusedCode();
 				if( code != null ) {
 					mapCodeToInstanceFactory.put( code, nextValue );
 				}
@@ -572,7 +572,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	@Override
 	protected String getVersionText() {
-		return edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText();
+		return org.lgna.project.Version.getCurrentVersionText();
 	}
 	@Override
 	protected String getVersionAdornment() {
@@ -693,7 +693,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
 
-	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
 		if( codeEditor != null ) {
 			this.holes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -782,38 +782,38 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.enableRendering();
 	}
 
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.FieldDeclaredInAlice >() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 			IDE.this.refreshAccessibles();
 		}
 
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 			IDE.this.refreshAccessibles();
 		}
 
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 			IDE.this.refreshAccessibles();
 		}
 
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 			IDE.this.refreshAccessibles();
 		}
 	};
 
-	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
+	private org.lgna.project.ast.FieldDeclaredInAlice rootField;
 
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
-		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
+	private org.lgna.project.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
+		return (org.lgna.project.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
 	}
-	protected boolean isAccessibleDesired( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
 		return accessible.getValueType().isArray() == false;
 	}
 
@@ -875,7 +875,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //		}
 	}
 	
-	private void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
+	private void setRootField( org.lgna.project.ast.FieldDeclaredInAlice rootField ) {
 		if( this.rootField != null ) {
 			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
 		}
@@ -891,7 +891,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 	}
 	@Override
-	public void setProject( edu.cmu.cs.dennisc.alice.Project project ) {
+	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
 		this.isRespondingToRefreshAccessibles = false;
 		try {
@@ -902,13 +902,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public <N extends edu.cmu.cs.dennisc.alice.ast.AbstractNode> N createCopy( N original ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice root = this.getProgramType();
-		java.util.Set< edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > abstractDeclarations = root.createDeclarationSet();
+	public <N extends org.lgna.project.ast.AbstractNode> N createCopy( N original ) {
+		org.lgna.project.ast.TypeDeclaredInAlice root = this.getProgramType();
+		java.util.Set< org.lgna.project.ast.AbstractDeclaration > abstractDeclarations = root.createDeclarationSet();
 		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
-		java.util.Map< Integer, edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > map = edu.cmu.cs.dennisc.alice.ast.AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
+		java.util.Map< Integer, org.lgna.project.ast.AbstractDeclaration > map = org.lgna.project.ast.AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
-		edu.cmu.cs.dennisc.alice.ast.AbstractNode dst = edu.cmu.cs.dennisc.alice.ast.AbstractNode.decode( xmlDocument, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), map, false );
+		org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.Version.getCurrentVersionText(), map, false );
 
 		//		if( original.isEquivalentTo( dst ) ) {
 		//			return dst;
@@ -918,12 +918,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: check copy" );
 		return (N)dst;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Comment commentThatWantsFocus = null;
+	private org.lgna.project.ast.Comment commentThatWantsFocus = null;
 
-	public edu.cmu.cs.dennisc.alice.ast.Comment getCommentThatWantsFocus() {
+	public org.lgna.project.ast.Comment getCommentThatWantsFocus() {
 		return this.commentThatWantsFocus;
 	}
-	public void setCommentThatWantsFocus( edu.cmu.cs.dennisc.alice.ast.Comment commentThatWantsFocus ) {
+	public void setCommentThatWantsFocus( org.lgna.project.ast.Comment commentThatWantsFocus ) {
 		this.commentThatWantsFocus = commentThatWantsFocus;
 	}
 
@@ -1000,19 +1000,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //		}
 //	}
 
-	private static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > getVariables( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice.class );
+	private static Iterable< org.lgna.project.ast.VariableDeclaredInAlice > getVariables( org.lgna.project.ast.AbstractCode codeInFocus ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.VariableDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.VariableDeclaredInAlice >( org.lgna.project.ast.VariableDeclaredInAlice.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}
-	private static Iterable< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > getConstants( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice.class );
+	private static Iterable< org.lgna.project.ast.ConstantDeclaredInAlice > getConstants( org.lgna.project.ast.AbstractCode codeInFocus ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ConstantDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ConstantDeclaredInAlice >( org.lgna.project.ast.ConstantDeclaredInAlice.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}
 
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getTypeInScope() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = this.getFocusedCode();
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getTypeInScope() {
+		org.lgna.project.ast.AbstractCode codeInFocus = this.getFocusedCode();
 		if( codeInFocus != null ) {
 			return codeInFocus.getDeclaringType();
 		} else {
@@ -1020,12 +1020,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
-	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {
-		return new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
+	private org.lgna.project.virtualmachine.VirtualMachine vmForSceneEditor;
+	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {
+		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 	}
-	protected abstract void registerAdapters( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm );
-	public final edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVirtualMachineForSceneEditor() {
+	protected abstract void registerAdapters( org.lgna.project.virtualmachine.VirtualMachine vm );
+	public final org.lgna.project.virtualmachine.VirtualMachine getVirtualMachineForSceneEditor() {
 		if( this.vmForSceneEditor != null ) {
 			//pass
 		} else {
@@ -1035,11 +1035,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.vmForSceneEditor;
 	}
 
-	public edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine createVirtualMachineForRuntimeProgram() {
-		return new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
+	public org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForRuntimeProgram() {
+		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getFocusedCode() {
+	public org.lgna.project.ast.AbstractCode getFocusedCode() {
 		if( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().getValue() ) {
 			return this.getPerformEditorGeneratedSetUpMethod();
 		} else {
@@ -1047,7 +1047,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			return item != null ? item.getCode() : null;
 		}
 	}
-	public void setFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode ) {
+	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
 		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().edit( nextFocusedCode, false );
 	}
 
@@ -1058,16 +1058,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private static final String GENERATED_CODE_WARNING = "DO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT\n\nThis code is automatically generated.  Any work you perform in this method will be overwritten.\n\nDO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT";
 	private void generateCodeForSceneSetUp() {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getPerformEditorGeneratedSetUpMethod();
-		edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
+		org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getPerformEditorGeneratedSetUpMethod();
+		org.lgna.project.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
 		bodyStatementsProperty.clear();
-		bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
+		bodyStatementsProperty.add( new org.lgna.project.ast.Comment( GENERATED_CODE_WARNING ) );
 		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
 	}
 
 	@Deprecated
-	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
-		edu.cmu.cs.dennisc.alice.Project project = this.getProject();
+	public org.lgna.project.ast.TypeDeclaredInAlice getProgramType() {
+		org.lgna.project.Project project = this.getProject();
 		if( project != null ) {
 			return project.getProgramType();
 		} else {
@@ -1075,15 +1075,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	@Deprecated
-	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = getProgramType();
+	public org.lgna.project.ast.FieldDeclaredInAlice getSceneField() {
+		org.lgna.project.ast.TypeDeclaredInAlice programType = getProgramType();
 		return getSceneFieldFromProgramType( programType );
 	}
 
 	@Deprecated
-	protected static edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneFieldFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > programType ) {
-		if( programType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programAliceType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)programType;
+	protected static org.lgna.project.ast.FieldDeclaredInAlice getSceneFieldFromProgramType( org.lgna.project.ast.AbstractType< ?, ?, ? > programType ) {
+		if( programType instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
+			org.lgna.project.ast.TypeDeclaredInAlice programAliceType = (org.lgna.project.ast.TypeDeclaredInAlice)programType;
 			if( programAliceType.fields.size() > 0 ) {
 				return programAliceType.fields.get( 0 );
 			} else {
@@ -1094,34 +1094,34 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	@Deprecated
-	protected static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getSceneTypeFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > programType ) {
-		if( programType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = getSceneFieldFromProgramType( programType );
-			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
+	protected static org.lgna.project.ast.TypeDeclaredInAlice getSceneTypeFromProgramType( org.lgna.project.ast.AbstractType< ?, ?, ? > programType ) {
+		if( programType instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
+			org.lgna.project.ast.FieldDeclaredInAlice sceneField = getSceneFieldFromProgramType( programType );
+			return (org.lgna.project.ast.TypeDeclaredInAlice)sceneField.getValueType();
 		} else {
 			return null;
 		}
 	}
 
 	@Deprecated
-	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getSceneType() {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = getSceneField();
+	public org.lgna.project.ast.TypeDeclaredInAlice getSceneType() {
+		org.lgna.project.ast.FieldDeclaredInAlice sceneField = getSceneField();
 		if( sceneField != null ) {
-			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
+			return (org.lgna.project.ast.TypeDeclaredInAlice)sceneField.getValueType();
 		} else {
 			return null;
 		}
 	}
 
-	public String getInstanceTextForAccessible( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+	public String getInstanceTextForAccessible( org.lgna.project.ast.Accessible accessible ) {
 		String text;
 		if( accessible != null ) {
-			if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)accessible;
+			if( accessible instanceof org.lgna.project.ast.AbstractField ) {
+				org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)accessible;
 				text = field.getName();
-				edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = getFocusedCode();
+				org.lgna.project.ast.AbstractCode focusedCode = getFocusedCode();
 				if( focusedCode != null ) {
-					edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > scopeType = focusedCode.getDeclaringType();
+					org.lgna.project.ast.AbstractType< ?, ?, ? > scopeType = focusedCode.getDeclaringType();
 					if( field.getValueType() == scopeType ) {
 						text = "this";
 					} else if( field.getDeclaringType() == scopeType ) {
@@ -1139,13 +1139,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return text;
 	}
 
-	public final edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
+	public final org.lgna.project.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
 		return org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression();
 	}
 
 	
 	@Deprecated
-	public final boolean isAccessibleInScope( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+	public final boolean isAccessibleInScope( org.lgna.project.ast.Accessible accessible ) {
 		return true;
 	}
 	@Deprecated
@@ -1159,8 +1159,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.currentDropReceptorComponent = null;
 	}
 
-	private static <E extends edu.cmu.cs.dennisc.alice.ast.Node> E getAncestor( edu.cmu.cs.dennisc.alice.ast.Node node, Class< E > cls ) {
-		edu.cmu.cs.dennisc.alice.ast.Node ancestor = node.getParent();
+	private static <E extends org.lgna.project.ast.Node> E getAncestor( org.lgna.project.ast.Node node, Class< E > cls ) {
+		org.lgna.project.ast.Node ancestor = node.getParent();
 		while( ancestor != null ) {
 			if( cls.isAssignableFrom( ancestor.getClass() ) ) {
 				break;
@@ -1171,24 +1171,24 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return (E)ancestor;
 	}
 
-	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
+	private java.util.Map< java.util.UUID, org.lgna.project.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, org.lgna.project.ast.Node >();
 
-	protected void ensureNodeVisible( edu.cmu.cs.dennisc.alice.ast.Node node ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode = getAncestor( node, edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+	protected void ensureNodeVisible( org.lgna.project.ast.Node node ) {
+		org.lgna.project.ast.AbstractCode nextFocusedCode = getAncestor( node, org.lgna.project.ast.AbstractCode.class );
 		if( nextFocusedCode != null ) {
 			this.setFocusedCode( nextFocusedCode );
 		}
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Node getNodeForUUID( java.util.UUID uuid ) {
-		edu.cmu.cs.dennisc.alice.ast.Node rv = mapUUIDToNode.get( uuid );
+	private org.lgna.project.ast.Node getNodeForUUID( java.util.UUID uuid ) {
+		org.lgna.project.ast.Node rv = mapUUIDToNode.get( uuid );
 		if( rv != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getProgramType();
+			org.lgna.project.ast.TypeDeclaredInAlice type = this.getProgramType();
 			type.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
 				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-					if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-						edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)crawlable;
+					if( crawlable instanceof org.lgna.project.ast.Node ) {
+						org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)crawlable;
 						mapUUIDToNode.put( node.getUUID(), node );
 					}
 				}
@@ -1198,13 +1198,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv;
 	}
 
-	public org.lgna.croquet.components.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+	public org.lgna.croquet.components.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
 
-	public org.lgna.croquet.components.Component< ? > getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node, boolean scrollToVisible ) {
-		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
-			final edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
+	public org.lgna.croquet.components.Component< ? > getComponentForNode( org.lgna.project.ast.Node node, boolean scrollToVisible ) {
+		if( node instanceof org.lgna.project.ast.Statement ) {
+			final org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
 			ensureNodeVisible( node );
 			org.alice.ide.common.AbstractStatementPane rv = getCodeFactory().lookup( statement );
 			if( scrollToVisible ) {
@@ -1239,18 +1239,18 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv.replaceAll( " ", "" );
 	}
 	public java.io.File getMyTypesDirectory() {
-		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyTypesDirectory( this.getSubPath() );
+		return org.lgna.project.project.ProjectUtilities.getMyTypesDirectory( this.getSubPath() );
 	}
 
 	public boolean isInstanceLineDesired() {
 		return true;
 	}
 
-	public abstract boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice );
-	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType, int frameRate );
+	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.TypeDeclaredInAlice typeInAlice );
+	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.TypeDeclaredInAlice programType, int frameRate );
 
 	public java.util.Set< org.alice.virtualmachine.Resource > getResources() {
-		edu.cmu.cs.dennisc.alice.Project project = this.getProject();
+		org.lgna.project.Project project = this.getProject();
 		if( project != null ) {
 			return project.getResources();
 		} else {

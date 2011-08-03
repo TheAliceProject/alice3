@@ -47,16 +47,16 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAxisPanel {
-	private edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression;
-	public AssignmentExpressionPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression ) {
+	private org.lgna.project.ast.AssignmentExpression assignmentExpression;
+	public AssignmentExpressionPane( Factory factory, org.lgna.project.ast.AssignmentExpression assignmentExpression ) {
 		this.assignmentExpression = assignmentExpression;
-		edu.cmu.cs.dennisc.alice.ast.Expression left = this.assignmentExpression.leftHandSide.getValue();
+		org.lgna.project.ast.Expression left = this.assignmentExpression.leftHandSide.getValue();
 		
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> desiredValueType;
-		edu.cmu.cs.dennisc.alice.ast.Expression expression;
+		org.lgna.project.ast.AbstractType<?,?,?> desiredValueType;
+		org.lgna.project.ast.Expression expression;
 		org.lgna.croquet.components.AxisPanel parent;
-		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
-			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
+		if( left instanceof org.lgna.project.ast.ArrayAccess ) {
+			org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)left;
 			parent = new org.lgna.croquet.components.LineAxisPanel();
 			this.addComponent( parent );
 			expression = arrayAccess.array.getValue();
@@ -66,11 +66,11 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 		}
 
 		boolean isSetter = false;
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
+		if( expression instanceof org.lgna.project.ast.FieldAccess ) {
+			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
 			org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( fieldAccess.field.getValue() );
 //			nameLabel.setFontToScaledFont( 1.5f );
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 			org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
 			isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 			desiredValueType = field.getDesiredValueType();
@@ -89,24 +89,24 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 					parent.addComponent( new org.lgna.croquet.components.Label( "( " ) );
 				}
 			}
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
-			edu.cmu.cs.dennisc.alice.ast.VariableAccess variableAccess = (edu.cmu.cs.dennisc.alice.ast.VariableAccess)expression;
-			edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = variableAccess.variable.getValue();
+		} else if( expression instanceof org.lgna.project.ast.VariableAccess ) {
+			org.lgna.project.ast.VariableAccess variableAccess = (org.lgna.project.ast.VariableAccess)expression;
+			org.lgna.project.ast.VariableDeclaredInAlice variable = variableAccess.variable.getValue();
 			//todo?
 			//desiredValueType = variable.getDesiredValueType();
 			desiredValueType = null;
 			parent.addComponent( new VariablePane( variable ) );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ParameterAccess ) {
-			edu.cmu.cs.dennisc.alice.ast.ParameterAccess parameterAccess = (edu.cmu.cs.dennisc.alice.ast.ParameterAccess)expression;
-			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
+		} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
+			org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)expression;
+			org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
 			desiredValueType = parameter.getDesiredValueType();
-			parent.addComponent( new ParameterPane( null, (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter ) );
+			parent.addComponent( new ParameterPane( null, (org.lgna.project.ast.ParameterDeclaredInAlice)parameter ) );
 		} else {
 			desiredValueType = null;
 			parent.addComponent( new org.lgna.croquet.components.Label( "TODO" ) );
 		}
-		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
-			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
+		if( left instanceof org.lgna.project.ast.ArrayAccess ) {
+			org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)left;
 			parent.addComponent( new org.lgna.croquet.components.Label( "[ " ) );
 			parent.addComponent( factory.createExpressionPropertyPane( arrayAccess.index, null ) );
 			parent.addComponent( new org.lgna.croquet.components.Label( " ]" ) );

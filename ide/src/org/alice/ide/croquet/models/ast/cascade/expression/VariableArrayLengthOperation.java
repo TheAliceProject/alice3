@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class VariableArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, VariableArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized VariableArrayLengthOperation getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.VariableDeclaredInAlice, org.lgna.project.ast.ExpressionProperty, VariableArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized VariableArrayLengthOperation getInstance( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert variable != null;
 		assert expressionProperty != null;
 		VariableArrayLengthOperation rv = map.get( variable, expressionProperty );
@@ -60,13 +60,13 @@ public class VariableArrayLengthOperation extends ArrayLengthOperation {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	private VariableArrayLengthOperation( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.VariableDeclaredInAlice variable;
+	private VariableArrayLengthOperation( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
 		this.variable = variable;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
+	protected org.lgna.project.ast.Expression createAccessExpression() {
+		return new org.lgna.project.ast.VariableAccess( this.variable );
 	}
 }

@@ -45,9 +45,9 @@ package org.alice.ide.croquet.models.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public class RenameFieldOperation extends RenameDeclarationOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, RenameFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameFieldOperation getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+public class RenameFieldOperation extends RenameDeclarationOperation< org.lgna.project.ast.FieldDeclaredInAlice > {
+	private static java.util.Map< org.lgna.project.ast.FieldDeclaredInAlice, RenameFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameFieldOperation getInstance( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 		RenameFieldOperation rv = map.get( field );
 		if( rv != null ) {
 			//pass
@@ -58,11 +58,11 @@ public class RenameFieldOperation extends RenameDeclarationOperation< edu.cmu.cs
 		return rv;
 	}
 
-	private RenameFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	private RenameFieldOperation( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 		super( java.util.UUID.fromString( "acdff8cd-51f0-4708-92b7-c05827409ac8" ), field, new org.alice.ide.name.validators.FieldNameValidator( field ) );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation >( this, this.getDeclaration(), edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation >( this, this.getDeclaration(), org.lgna.project.ast.FieldDeclaredInAlice.class );
 	}
 }

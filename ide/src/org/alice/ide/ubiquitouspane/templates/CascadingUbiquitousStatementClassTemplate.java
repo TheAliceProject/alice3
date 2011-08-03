@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  * @author Dennis Cosgrove
  */
 public abstract class CascadingUbiquitousStatementClassTemplate extends CascadingUbiquitousStatementTemplate {
-	public CascadingUbiquitousStatementClassTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
+	public CascadingUbiquitousStatementClassTemplate( Class< ? extends org.lgna.project.ast.Statement > cls, org.lgna.project.ast.Statement incompleteStatement ) {
 		super( org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel.getInstance( cls ), cls, incompleteStatement );
 	}
 }

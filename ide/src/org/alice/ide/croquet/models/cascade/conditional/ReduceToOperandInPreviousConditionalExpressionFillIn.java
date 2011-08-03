@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.conditional;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ReduceToOperandInPreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class ReduceToOperandInPreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< org.lgna.project.ast.Expression > {
 	public ReduceToOperandInPreviousConditionalExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}
@@ -54,11 +54,11 @@ public abstract class ReduceToOperandInPreviousConditionalExpressionFillIn exten
 //	protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< edu.cmu.cs.dennisc.alice.ast.Expression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
 //		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression;
 //	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression getOperand( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditional );
+	protected abstract org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ConditionalInfixExpression previousConditional );
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Expression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		assert previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression;
-		edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditional = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)previousExpression;
+	protected final org.lgna.project.ast.Expression createValue( org.lgna.project.ast.Expression previousExpression ) {
+		assert previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
+		org.lgna.project.ast.ConditionalInfixExpression previousConditional = (org.lgna.project.ast.ConditionalInfixExpression)previousExpression;
 		return this.getOperand( previousConditional );
 	}
 }

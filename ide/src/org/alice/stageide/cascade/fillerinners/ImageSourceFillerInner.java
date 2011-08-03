@@ -51,11 +51,11 @@ public class ImageSourceFillerInner extends SourceFillerInner< org.alice.virtual
 	}
 
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, ? > getImportFillIn() {
+	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getImportFillIn() {
 		return new org.alice.stageide.croquet.models.cascade.source.ImportNewImageSourceFillIn();
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, ? > getResourceFillIn( org.alice.virtualmachine.resources.ImageResource resource ) {
+	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getResourceFillIn( org.alice.virtualmachine.resources.ImageResource resource ) {
 		return new org.alice.stageide.croquet.models.cascade.source.ImageSourceFillIn( resource );
 	}
 }

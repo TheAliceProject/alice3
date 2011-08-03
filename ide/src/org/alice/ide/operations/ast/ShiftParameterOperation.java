@@ -42,8 +42,8 @@
  */
 package org.alice.ide.operations.ast;
 
-import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.ParameterDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove
@@ -59,7 +59,7 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 	}
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+		final org.lgna.project.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), org.lgna.project.ast.MethodDeclaredInAlice.class );
 		final int aIndex = this.getIndexA();
 		final int bIndex = aIndex + 1;
 		if( method != null ) {
@@ -83,14 +83,14 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 			throw new RuntimeException();
 		}
 	}
-	private void swap( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, int aIndex, int bIndex ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
-		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice aParam = method.parameters.get( aIndex );
-		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice bParam = method.parameters.get( bIndex );
+	private void swap( org.lgna.project.ast.MethodDeclaredInAlice method, int aIndex, int bIndex ) {
+		java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
+		org.lgna.project.ast.ParameterDeclaredInAlice aParam = method.parameters.get( aIndex );
+		org.lgna.project.ast.ParameterDeclaredInAlice bParam = method.parameters.get( bIndex );
 		method.parameters.set( aIndex, bParam, aParam );
-		for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
-			edu.cmu.cs.dennisc.alice.ast.Argument aArg = methodInvocation.arguments.get( aIndex );
-			edu.cmu.cs.dennisc.alice.ast.Argument bArg = methodInvocation.arguments.get( bIndex );
+		for( org.lgna.project.ast.MethodInvocation methodInvocation : methodInvocations ) {
+			org.lgna.project.ast.Argument aArg = methodInvocation.arguments.get( aIndex );
+			org.lgna.project.ast.Argument bArg = methodInvocation.arguments.get( bIndex );
 			assert aArg.parameter.getValue() == aParam;
 			assert bArg.parameter.getValue() == bParam;
 			methodInvocation.arguments.set( aIndex, bArg, aArg );

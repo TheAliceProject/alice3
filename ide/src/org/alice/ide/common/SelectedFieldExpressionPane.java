@@ -81,7 +81,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		this.addComponent( this.label );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
 		if( instanceFactory != null ) {
 			return instanceFactory.getValueType();
@@ -105,12 +105,12 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		}
 		this.updateLabel();
 	}
-	private void handleCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+	private void handleCodeChanged( org.lgna.project.ast.AbstractCode code ) {
 		this.updateLabel();
 	}
 	
 	private void updateLabel() {
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( this.instanceFactory != null ? edu.cmu.cs.dennisc.alice.ast.FieldAccess.class : edu.cmu.cs.dennisc.alice.ast.NullLiteral.class ) );
+		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( this.instanceFactory != null ? org.lgna.project.ast.FieldAccess.class : org.lgna.project.ast.NullLiteral.class ) );
 		this.label.setText( this.instanceFactory != null ? this.instanceFactory.getRepr() : "<unset>" );
 		this.label.revalidateAndRepaint();
 	}

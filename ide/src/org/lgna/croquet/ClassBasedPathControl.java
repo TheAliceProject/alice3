@@ -47,8 +47,8 @@ import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.PopupButton;
 import org.lgna.croquet.components.ViewController;
+import org.lgna.project.ast.TypeDeclaredInAlice;
 
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 
 /**
  * @author dculyba

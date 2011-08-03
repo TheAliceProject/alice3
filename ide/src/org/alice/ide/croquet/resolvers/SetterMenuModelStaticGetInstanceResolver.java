@@ -47,7 +47,7 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class, edu.cmu.cs.dennisc.alice.ast.AbstractField.class };
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class, org.lgna.project.ast.AbstractField.class };
 	public SetterMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade instance ) {
 		super( instance );
 	}
@@ -62,7 +62,7 @@ public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.r
 		//arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
 		
 		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.codeeditor.BlockStatementIndexPair)arguments[ 0 ];
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
+		org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
 		blockStatement = retargeter.retarget( blockStatement );
 		int index = blockStatementIndexPair.getIndex();
 		
@@ -92,7 +92,7 @@ public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.r
 		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
+		org.lgna.project.ast.AbstractField field = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
 		return new Object[] { blockStatementIndexPair, field };
 	}
 	@Override

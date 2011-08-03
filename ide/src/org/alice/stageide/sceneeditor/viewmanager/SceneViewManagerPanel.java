@@ -45,8 +45,8 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.MutableList;
+import org.lgna.project.ast.FieldDeclaredInAlice;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 
 /**
  * @author David Culyba

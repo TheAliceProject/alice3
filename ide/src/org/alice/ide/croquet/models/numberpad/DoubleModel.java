@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.numberpad;
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleModel extends NumberModel<edu.cmu.cs.dennisc.alice.ast.DoubleLiteral> {
+public class DoubleModel extends NumberModel<org.lgna.project.ast.DoubleLiteral> {
 	private static class SingletonHolder {
 		private static DoubleModel instance = new DoubleModel();
 	}
@@ -60,12 +60,12 @@ public class DoubleModel extends NumberModel<edu.cmu.cs.dennisc.alice.ast.Double
 		return true;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.DoubleLiteral valueOf( String s ) {
+	protected org.lgna.project.ast.DoubleLiteral valueOf( String s ) {
 		double d = Double.parseDouble( s );
 		if( Double.isNaN( d ) ) {
 			return null;
 		} else {
-			return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( d );
+			return new org.lgna.project.ast.DoubleLiteral( d );
 		}
 	}
 }

@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparator {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, ParameterNameSeparator > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ParameterNameSeparator getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractParameter, ParameterNameSeparator > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ParameterNameSeparator getInstance( org.lgna.project.ast.AbstractParameter parameter ) {
 		assert parameter != null;
 		ParameterNameSeparator rv = map.get( parameter );
 		if( rv != null ) {
@@ -59,8 +59,8 @@ public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparat
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
-	private ParameterNameSeparator( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+	private final org.lgna.project.ast.AbstractParameter parameter;
+	private ParameterNameSeparator( org.lgna.project.ast.AbstractParameter parameter ) {
 		super( java.util.UUID.fromString( "39d27239-d4c8-4c98-9194-fdafc189da72" ) );
 		this.parameter = parameter;
 	}
@@ -77,6 +77,6 @@ public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparat
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator >( this, this.parameter, edu.cmu.cs.dennisc.alice.ast.AbstractParameter.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator >( this, this.parameter, org.lgna.project.ast.AbstractParameter.class );
 	}
 }

@@ -42,7 +42,7 @@
  */
 package org.alice.ide.initializer;
 
-import edu.cmu.cs.dennisc.alice.ast.Expression;
+import org.lgna.project.ast.Expression;
 
 abstract class FauxItem extends org.lgna.croquet.components.JComponent< javax.swing.AbstractButton > {
 	//private static org.alice.ide.codeeditor.Factory factory = new org.alice.ide.codeeditor.Factory();
@@ -51,12 +51,12 @@ abstract class FauxItem extends org.lgna.croquet.components.JComponent< javax.sw
 	private static java.awt.Color SELECTION_BACKGROUND = new java.awt.Color( 57, 105, 138 );
 //	private static java.awt.Color SELECTION_ROLLOVER_BACKGROUND = SELECTION_BACKGROUND.brighter();;
 	private int index;
-	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	public FauxItem( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
+	private org.lgna.project.ast.ExpressionListProperty expressionListProperty;
+	public FauxItem( int index, org.lgna.project.ast.ExpressionListProperty expressionListProperty ) {
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType();
+	protected abstract org.lgna.project.ast.AbstractType<?,?,?> getFillInType();
 	
 	public int getIndex() {
 		return this.index;
@@ -161,10 +161,10 @@ class MutableList extends org.lgna.croquet.components.PageAxisPanel {
 		}
 	};
 
-	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty;
+	private org.lgna.project.ast.ExpressionListProperty expressionListProperty;
+	private org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > componentTypeProperty;
 
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.Expression > expressionListPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<edu.cmu.cs.dennisc.alice.ast.Expression>() {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.Expression > expressionListPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.Expression>() {
 		public void adding(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<Expression> e) {
 		}
 		public void added(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<Expression> e) {
@@ -200,7 +200,7 @@ class MutableList extends org.lgna.croquet.components.PageAxisPanel {
 	};
 	
 	private org.lgna.croquet.components.ViewController< ?,? > buttonToScrollToVisibleOnAdd;
-	public MutableList( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, org.lgna.croquet.components.ViewController< ?,? > buttonToScrollToVisibleOnAdd ) {
+	public MutableList( org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > componentTypeProperty, org.lgna.project.ast.ExpressionListProperty expressionListProperty, org.lgna.croquet.components.ViewController< ?,? > buttonToScrollToVisibleOnAdd ) {
         this.componentTypeProperty = componentTypeProperty;
         this.expressionListProperty = expressionListProperty;
         this.buttonToScrollToVisibleOnAdd = buttonToScrollToVisibleOnAdd;
@@ -344,7 +344,7 @@ class MutableList extends org.lgna.croquet.components.PageAxisPanel {
 	private void addTileFor( int index ) {
     	final FauxItem fauxItem = new FauxItem( index, this.expressionListProperty ) {
 			@Override
-			protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType() {
+			protected org.lgna.project.ast.AbstractType<?,?,?> getFillInType() {
 				return MutableList.this.componentTypeProperty.getValue();
 			}
 			@Override
@@ -402,7 +402,7 @@ class MutableList extends org.lgna.croquet.components.PageAxisPanel {
 }
 
 public class ArrayInitializerPane extends org.lgna.croquet.components.BorderPanel {
-    public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > componentTypeProperty, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
+    public ArrayInitializerPane( org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > componentTypeProperty, org.lgna.project.ast.ExpressionListProperty arrayExpressions ) {
         org.alice.ide.croquet.models.ast.cascade.AddExpressionCascade model = new org.alice.ide.croquet.models.ast.cascade.AddExpressionCascade( componentTypeProperty, arrayExpressions );
         org.lgna.croquet.components.PopupButton button = model.getRoot().getPopupPrepModel().createPopupButton();
 

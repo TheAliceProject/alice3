@@ -46,335 +46,335 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class NodeUtilities {
-	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createMethod( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> returnType ) {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( name, returnType, new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	public static org.lgna.project.ast.MethodDeclaredInAlice createMethod( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
+		return new org.lgna.project.ast.MethodDeclaredInAlice( name, returnType, new org.lgna.project.ast.ParameterDeclaredInAlice[] {}, new org.lgna.project.ast.BlockStatement() );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createFunction( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> returnType ) {
+	public static org.lgna.project.ast.MethodDeclaredInAlice createFunction( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
 		return createMethod( name, returnType );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createProcedure( String name ) {
-		return createMethod( name, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE );
+	public static org.lgna.project.ast.MethodDeclaredInAlice createProcedure( String name ) {
+		return createMethod( name, org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createType( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> superType ) {
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = new edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice();
-		constructor.body.setValue( new edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement() );
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice();
+	public static org.lgna.project.ast.TypeDeclaredInAlice createType( String name, org.lgna.project.ast.AbstractType<?,?,?> superType ) {
+		org.lgna.project.ast.ConstructorDeclaredInAlice constructor = new org.lgna.project.ast.ConstructorDeclaredInAlice();
+		constructor.body.setValue( new org.lgna.project.ast.ConstructorBlockStatement() );
+		org.lgna.project.ast.TypeDeclaredInAlice rv = new org.lgna.project.ast.TypeDeclaredInAlice();
 		rv.name.setValue( name );
 		rv.superType.setValue( superType );
 		rv.constructors.add( constructor );
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.DoInOrder createDoInOrder() {
-		return new edu.cmu.cs.dennisc.alice.ast.DoInOrder( new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	public static org.lgna.project.ast.DoInOrder createDoInOrder() {
+		return new org.lgna.project.ast.DoInOrder( new org.lgna.project.ast.BlockStatement() );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.DoTogether createDoTogether() {
-		return new edu.cmu.cs.dennisc.alice.ast.DoTogether( new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	public static org.lgna.project.ast.DoTogether createDoTogether() {
+		return new org.lgna.project.ast.DoTogether( new org.lgna.project.ast.BlockStatement() );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.DoInThread createDoInThread() {
-		return new edu.cmu.cs.dennisc.alice.ast.DoInThread( new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	public static org.lgna.project.ast.DoInThread createDoInThread() {
+		return new org.lgna.project.ast.DoInThread( new org.lgna.project.ast.BlockStatement() );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.Comment createComment() {
-		return new edu.cmu.cs.dennisc.alice.ast.Comment();
+	public static org.lgna.project.ast.Comment createComment() {
+		return new org.lgna.project.ast.Comment();
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), expressionType );
+	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( org.lgna.project.ast.Expression leftOperand, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?,?,?> rightOperandType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
+		return new org.lgna.project.ast.ArithmeticInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), expressionType );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
-		return createIncompleteArithmeticInfixExpression( leftOperand, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( expressionCls ) );
+	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( org.lgna.project.ast.Expression leftOperand, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
+		return createIncompleteArithmeticInfixExpression( leftOperand, operator, org.lgna.project.ast.TypeDeclaredInJava.get( rightOperandCls ), org.lgna.project.ast.TypeDeclaredInJava.get( expressionCls ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> expressionType ) {
+	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( org.lgna.project.ast.AbstractType<?,?,?> leftOperandType, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?,?,?> rightOperandType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
 		return createIncompleteArithmeticInfixExpression( new org.alice.ide.ast.EmptyExpression( rightOperandType ), operator, rightOperandType, expressionType );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( Class<?> leftOperandCls, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
-		return createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( expressionCls ) );
+	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( Class<?> leftOperandCls, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
+		return createIncompleteArithmeticInfixExpression( org.lgna.project.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, org.lgna.project.ast.TypeDeclaredInJava.get( rightOperandCls ), org.lgna.project.ast.TypeDeclaredInJava.get( expressionCls ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+	public static org.lgna.project.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( org.lgna.project.ast.Expression leftOperand, org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
+		return new org.lgna.project.ast.ConditionalInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
-		return createIncompleteConditionalInfixExpression( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ), operator );
+	public static org.lgna.project.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
+		return createIncompleteConditionalInfixExpression( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ), operator );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> leftOperandType, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rightOperandType ) {
-		return new edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression( new org.alice.ide.ast.EmptyExpression( rightOperandType ), operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), leftOperandType, rightOperandType );
+	public static org.lgna.project.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( org.lgna.project.ast.AbstractType<?,?,?> leftOperandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?,?,?> rightOperandType ) {
+		return new org.lgna.project.ast.RelationalInfixExpression( new org.alice.ide.ast.EmptyExpression( rightOperandType ), operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), leftOperandType, rightOperandType );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( Class<?> leftOperandCls, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, Class<?> rightOperandCls ) {
-		return createIncompleteRelationalInfixExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ) );
+	public static org.lgna.project.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( Class<?> leftOperandCls, org.lgna.project.ast.RelationalInfixExpression.Operator operator, Class<?> rightOperandCls ) {
+		return createIncompleteRelationalInfixExpression( org.lgna.project.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, org.lgna.project.ast.TypeDeclaredInJava.get( rightOperandCls ) );
 	}
 
-	public static edu.cmu.cs.dennisc.alice.ast.LogicalComplement createIncompleteLogicalComplement() {
-		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+	public static org.lgna.project.ast.LogicalComplement createIncompleteLogicalComplement() {
+		return new org.lgna.project.ast.LogicalComplement( new EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement createVariableDeclarationStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.Expression initializerExpression ) {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement(
+	public static org.lgna.project.ast.VariableDeclarationStatement createVariableDeclarationStatement( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.Expression initializerExpression ) {
+		return new org.lgna.project.ast.VariableDeclarationStatement(
 				variable,
 				initializerExpression 
 		);
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement createIncompleteVariableDeclarationStatement() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
-		return createVariableDeclarationStatement( new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( "???", type ), new org.alice.ide.ast.EmptyExpression( type ) );
+	public static org.lgna.project.ast.VariableDeclarationStatement createIncompleteVariableDeclarationStatement() {
+		org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE;
+		return createVariableDeclarationStatement( new org.lgna.project.ast.VariableDeclaredInAlice( "???", type ), new org.alice.ide.ast.EmptyExpression( type ) );
 	}
 
-	public static edu.cmu.cs.dennisc.alice.ast.CountLoop createCountLoop( edu.cmu.cs.dennisc.alice.ast.Expression count ) {
-		return new edu.cmu.cs.dennisc.alice.ast.CountLoop(
-				new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( null, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ),
-				new edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice( null, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ),
+	public static org.lgna.project.ast.CountLoop createCountLoop( org.lgna.project.ast.Expression count ) {
+		return new org.lgna.project.ast.CountLoop(
+				new org.lgna.project.ast.VariableDeclaredInAlice( null, org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ),
+				new org.lgna.project.ast.ConstantDeclaredInAlice( null, org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ),
 				count, 
-				new edu.cmu.cs.dennisc.alice.ast.BlockStatement() 
+				new org.lgna.project.ast.BlockStatement() 
 		);
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.CountLoop createIncompleteCountLoop() {
-		return createCountLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) );
+	public static org.lgna.project.ast.CountLoop createIncompleteCountLoop() {
+		return createCountLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.WhileLoop createWhileLoop( edu.cmu.cs.dennisc.alice.ast.Expression conditional ) {
-		return new edu.cmu.cs.dennisc.alice.ast.WhileLoop(
+	public static org.lgna.project.ast.WhileLoop createWhileLoop( org.lgna.project.ast.Expression conditional ) {
+		return new org.lgna.project.ast.WhileLoop(
 				conditional, 
-				new edu.cmu.cs.dennisc.alice.ast.BlockStatement() 
+				new org.lgna.project.ast.BlockStatement() 
 		);
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.WhileLoop createIncompleteWhileLoop() {
-		return createWhileLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+	public static org.lgna.project.ast.WhileLoop createIncompleteWhileLoop() {
+		return createWhileLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ConditionalStatement createConditionalStatement( edu.cmu.cs.dennisc.alice.ast.Expression conditional ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ConditionalStatement(
-				new edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair[] {
-						new edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair( 
+	public static org.lgna.project.ast.ConditionalStatement createConditionalStatement( org.lgna.project.ast.Expression conditional ) {
+		return new org.lgna.project.ast.ConditionalStatement(
+				new org.lgna.project.ast.BooleanExpressionBodyPair[] {
+						new org.lgna.project.ast.BooleanExpressionBodyPair( 
 								conditional, 
-								new edu.cmu.cs.dennisc.alice.ast.BlockStatement()
+								new org.lgna.project.ast.BlockStatement()
 						)
 				}, 
-				new edu.cmu.cs.dennisc.alice.ast.BlockStatement() 
+				new org.lgna.project.ast.BlockStatement() 
 		);
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ConditionalStatement createIncompleteConditionalStatement() {
-		return createConditionalStatement( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+	public static org.lgna.project.ast.ConditionalStatement createIncompleteConditionalStatement() {
+		return createConditionalStatement( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
 	}
 
-	public static edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop createForEachInArrayLoop( edu.cmu.cs.dennisc.alice.ast.Expression arrayExpression ) {
-		edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( null, arrayExpression.getType().getComponentType() );
-		return new edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop(
+	public static org.lgna.project.ast.ForEachInArrayLoop createForEachInArrayLoop( org.lgna.project.ast.Expression arrayExpression ) {
+		org.lgna.project.ast.VariableDeclaredInAlice variable = new org.lgna.project.ast.VariableDeclaredInAlice( null, arrayExpression.getType().getComponentType() );
+		return new org.lgna.project.ast.ForEachInArrayLoop(
 				variable,
 				arrayExpression, 
-				new edu.cmu.cs.dennisc.alice.ast.BlockStatement() 
+				new org.lgna.project.ast.BlockStatement() 
 		);
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop createIncompleteForEachInArrayLoop() {
-		return createForEachInArrayLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) ) );
+	public static org.lgna.project.ast.ForEachInArrayLoop createIncompleteForEachInArrayLoop() {
+		return createForEachInArrayLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.get( Object[].class ) ) );
 	}
 
-	public static edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether createEachInArrayTogether( edu.cmu.cs.dennisc.alice.ast.Expression arrayExpression ) {
-		edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( null, arrayExpression.getType().getComponentType() );
-		return new edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether(
+	public static org.lgna.project.ast.EachInArrayTogether createEachInArrayTogether( org.lgna.project.ast.Expression arrayExpression ) {
+		org.lgna.project.ast.VariableDeclaredInAlice variable = new org.lgna.project.ast.VariableDeclaredInAlice( null, arrayExpression.getType().getComponentType() );
+		return new org.lgna.project.ast.EachInArrayTogether(
 				variable,
 				arrayExpression, 
-				new edu.cmu.cs.dennisc.alice.ast.BlockStatement() 
+				new org.lgna.project.ast.BlockStatement() 
 		);
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether createIncompleteEachInArrayTogether() {
-		return createEachInArrayTogether( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) ) );
+	public static org.lgna.project.ast.EachInArrayTogether createIncompleteEachInArrayTogether() {
+		return createEachInArrayTogether( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.get( Object[].class ) ) );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncompleteMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
+	public static org.lgna.project.ast.MethodInvocation createIncompleteMethodInvocation( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
+		org.lgna.project.ast.MethodInvocation rv = new org.lgna.project.ast.MethodInvocation();
 		rv.expression.setValue( expression );
 		rv.method.setValue( method );
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
-			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, new EmptyExpression( parameter.getDesiredValueType() ) );
+		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
+			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, new EmptyExpression( parameter.getDesiredValueType() ) );
 			rv.arguments.add( argument );
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncompleteMethodInvocation( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	public static org.lgna.project.ast.MethodInvocation createIncompleteMethodInvocation( org.lgna.project.ast.AbstractMethod method ) {
 		return NodeUtilities.createIncompleteMethodInvocation( new SelectedFieldExpression( method.getDeclaringType() ), method );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncompleteStaticMethodInvocation( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		return NodeUtilities.createIncompleteMethodInvocation( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( method.getDeclaringType() ), method );
+	public static org.lgna.project.ast.MethodInvocation createIncompleteStaticMethodInvocation( org.lgna.project.ast.AbstractMethod method ) {
+		return NodeUtilities.createIncompleteMethodInvocation( new org.lgna.project.ast.TypeExpression( method.getDeclaringType() ), method );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createStaticMethodInvocation( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
-		return NodeUtilities.createMethodInvocation( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( method.getDeclaringType() ), method, argumentExpressions );
+	public static org.lgna.project.ast.MethodInvocation createStaticMethodInvocation( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
+		return NodeUtilities.createMethodInvocation( new org.lgna.project.ast.TypeExpression( method.getDeclaringType() ), method, argumentExpressions );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createFieldAccess( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldAccess rv = new edu.cmu.cs.dennisc.alice.ast.FieldAccess();
+	public static org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
+		org.lgna.project.ast.FieldAccess rv = new org.lgna.project.ast.FieldAccess();
 		rv.expression.setValue( expression );
 		rv.field.setValue( field );
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createStaticFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	public static org.lgna.project.ast.FieldAccess createStaticFieldAccess( org.lgna.project.ast.AbstractField field ) {
 		assert field.isStatic();
-		return createFieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( field.getDeclaringType() ), field );
+		return createFieldAccess( new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ), field );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createStaticFieldAccess( Class<?> cls, String fieldName ) {
+	public static org.lgna.project.ast.FieldAccess createStaticFieldAccess( Class<?> cls, String fieldName ) {
 		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredField( cls, fieldName );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( fld );
+		org.lgna.project.ast.FieldDeclaredInJavaWithField field = org.lgna.project.ast.FieldDeclaredInJavaWithField.get( fld );
 		return createStaticFieldAccess( field );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createIncompleteFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	public static org.lgna.project.ast.FieldAccess createIncompleteFieldAccess( org.lgna.project.ast.AbstractField field ) {
 		return NodeUtilities.createFieldAccess( new SelectedFieldExpression( field.getDeclaringType() ), field );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.AssignmentExpression createIncompleteAssignmentExpression( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = NodeUtilities.createFieldAccess( expression, field );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
-		return new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( valueType, fieldAccess, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
+	private static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
+		org.lgna.project.ast.FieldAccess fieldAccess = NodeUtilities.createFieldAccess( expression, field );
+		org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
+		return new org.lgna.project.ast.AssignmentExpression( valueType, fieldAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.AssignmentExpression createIncompleteAssignmentExpression( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	public static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.AbstractField field ) {
 		return NodeUtilities.createIncompleteAssignmentExpression( new SelectedFieldExpression( field.getDeclaringType() ), field );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createNextMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextMethod ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
+	public static org.lgna.project.ast.MethodInvocation createNextMethodInvocation( org.lgna.project.ast.MethodInvocation prevMethodInvocation, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod nextMethod ) {
+		org.lgna.project.ast.MethodInvocation rv = new org.lgna.project.ast.MethodInvocation();
 		rv.expression.setValue( prevMethodInvocation.expression.getValue() );
 		rv.method.setValue( nextMethod );
-		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextMethod.getParameters();
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getParameters();
 		final int N = parameters.size();
 		for( int i=0; i<N-1; i++ ) {
-			rv.arguments.add( new edu.cmu.cs.dennisc.alice.ast.Argument( parameters.get( i ), prevMethodInvocation.arguments.get( i ).expression.getValue() ) );
+			rv.arguments.add( new org.lgna.project.ast.Argument( parameters.get( i ), prevMethodInvocation.arguments.get( i ).expression.getValue() ) );
 		}
-		rv.arguments.add( new edu.cmu.cs.dennisc.alice.ast.Argument( parameters.get( N-1 ), expression ) );
+		rv.arguments.add( new org.lgna.project.ast.Argument( parameters.get( N-1 ), expression ) );
 		return rv;
 	}
 
 	//todo: remove
-	public static edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getDesiredParameterValueTypes( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] rv = new edu.cmu.cs.dennisc.alice.ast.AbstractType[ parameters.size() ];
+	public static org.lgna.project.ast.AbstractType<?,?,?>[] getDesiredParameterValueTypes( org.lgna.project.ast.AbstractMethod method ) {
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
+		org.lgna.project.ast.AbstractType<?,?,?>[] rv = new org.lgna.project.ast.AbstractType[ parameters.size() ];
 		int i = 0;
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : parameters ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : parameters ) {
 			rv[ i ] = parameter.getDesiredValueType();
 			i++;
 		}
 		return rv;
 	}
-	public static java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > getDesiredParameterValueTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > rv, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : parameters ) {
+	public static java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > getDesiredParameterValueTypes( java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > rv, org.lgna.project.ast.AbstractMethod method ) {
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
+		for( org.lgna.project.ast.AbstractParameter parameter : parameters ) {
 			rv.add( parameter.getDesiredValueType() );
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation completeMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
+	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... argumentExpressions ) {
 		rv.expression.setValue( instanceExpression );
 		int i = 0;
-		for( edu.cmu.cs.dennisc.alice.ast.Argument argument : rv.arguments ) {
+		for( org.lgna.project.ast.Argument argument : rv.arguments ) {
 			argument.expression.setValue( argumentExpressions[ i ] );
 			i ++;
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation completeMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
+	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression... argumentExpressions ) {
 		return completeMethodInvocation( rv, org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), argumentExpressions );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
+	public static org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
+		org.lgna.project.ast.MethodInvocation rv = new org.lgna.project.ast.MethodInvocation();
 		rv.expression.setValue( instanceExpression );
 		rv.method.setValue( method );
 		int i = 0;
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
-			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, argumentExpressions[ i ] );
+		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
+			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, argumentExpressions[ i ] );
 			rv.arguments.add( argument );
 			i++;
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createMethodInvocationStatement( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( createMethodInvocation( instanceExpression, method, argumentExpressions ) );
+	public static org.lgna.project.ast.ExpressionStatement createMethodInvocationStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
+		return new org.lgna.project.ast.ExpressionStatement( createMethodInvocation( instanceExpression, method, argumentExpressions ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.TypeExpression createTypeExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
-		return new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type );
+	public static org.lgna.project.ast.TypeExpression createTypeExpression( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		return new org.lgna.project.ast.TypeExpression( type );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.TypeExpression createTypeExpression( Class<?> cls ) {
-		return createTypeExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	public static org.lgna.project.ast.TypeExpression createTypeExpression( Class<?> cls ) {
+		return createTypeExpression( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
-		edu.cmu.cs.dennisc.alice.ast.InstanceCreation rv = new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
+	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.Expression... argumentExpressions ) {
+		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
 		int i = 0;
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : constructor.getParameters() ) {
-			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, argumentExpressions[ i ] );
+		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getParameters() ) {
+			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, argumentExpressions[ i ] );
 			rv.arguments.add( argument );
 			i++;
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		return createInstanceCreation( type.getDeclaredConstructor() );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( Class<?> cls, Class<?>[] parameterClses, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
-		return createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, parameterClses ), argumentExpressions );
+	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( Class<?> cls, Class<?>[] parameterClses, org.lgna.project.ast.Expression... argumentExpressions ) {
+		return createInstanceCreation( org.lgna.project.ast.ConstructorDeclaredInJava.get( cls, parameterClses ), argumentExpressions );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( Class<?> cls ) {
-		return createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( Class<?> cls ) {
+		return createInstanceCreation( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( org.lgna.project.ast.AbstractType<?,?,?> arrayType, org.lgna.project.ast.Expression... expressions ) {
 		Integer[] lengths = { expressions.length };
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation( arrayType, lengths, expressions );
+		return new org.lgna.project.ast.ArrayInstanceCreation( arrayType, lengths, expressions );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( arrayCls ), expressions );
+	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, org.lgna.project.ast.Expression... expressions ) {
+		return createArrayInstanceCreation( org.lgna.project.ast.TypeDeclaredInJava.get( arrayCls ), expressions );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType, java.util.Collection< edu.cmu.cs.dennisc.alice.ast.Expression > expressions ) {
-		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, edu.cmu.cs.dennisc.alice.ast.Expression.class ) );
+	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( org.lgna.project.ast.AbstractType<?,?,?> arrayType, java.util.Collection< org.lgna.project.ast.Expression > expressions ) {
+		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, java.util.Collection< edu.cmu.cs.dennisc.alice.ast.Expression > expressions ) {
-		return createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( arrayCls ), edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, edu.cmu.cs.dennisc.alice.ast.Expression.class ) );
+	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, java.util.Collection< org.lgna.project.ast.Expression > expressions ) {
+		return createArrayInstanceCreation( org.lgna.project.ast.TypeDeclaredInJava.get( arrayCls ), edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
 	}
 
-	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {
-		return edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( cls, methodName, parameterTypes );
+	public static org.lgna.project.ast.MethodDeclaredInJava lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {
+		return org.lgna.project.ast.MethodDeclaredInJava.get( cls, methodName, parameterTypes );
 	}
 
 	
-	public static edu.cmu.cs.dennisc.alice.ast.ReturnStatement createIncompleteReturnStatement( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public static org.lgna.project.ast.ReturnStatement createIncompleteReturnStatement( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		return createReturnStatement( type, new EmptyExpression( type ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ReturnStatement createReturnStatement( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ReturnStatement( type, expression );
+	public static org.lgna.project.ast.ReturnStatement createReturnStatement( org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.Expression expression ) {
+		return new org.lgna.project.ast.ReturnStatement( type, expression );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.Expression createVariableAssignment( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.Expression valueExpression ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression variableAccess = new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable ); 
-		return new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( variable.valueType.getValue(), variableAccess, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+	public static org.lgna.project.ast.Expression createVariableAssignment( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.Expression valueExpression ) {
+		org.lgna.project.ast.Expression variableAccess = new org.lgna.project.ast.VariableAccess( variable ); 
+		return new org.lgna.project.ast.AssignmentExpression( variable.valueType.getValue(), variableAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createVariableAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.Expression valueExpression ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( createVariableAssignment( variable, valueExpression) );
+	public static org.lgna.project.ast.ExpressionStatement createVariableAssignmentStatement( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.Expression valueExpression ) {
+		return new org.lgna.project.ast.ExpressionStatement( createVariableAssignment( variable, valueExpression) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createIncompleteVariableAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteVariableAssignmentStatement( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
 		return createVariableAssignmentStatement( variable, new EmptyExpression( variable.valueType.getValue() ) );
 	}
 
-	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createVariableArrayAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.Expression indexExpression, edu.cmu.cs.dennisc.alice.ast.Expression valueExpression ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression variableAccess = new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable ); 
-		edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( variable.valueType.getValue(), variableAccess, indexExpression ); 
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( variable.valueType.getValue().getComponentType(), arrayAccess, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
-		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
+	public static org.lgna.project.ast.ExpressionStatement createVariableArrayAssignmentStatement( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
+		org.lgna.project.ast.Expression variableAccess = new org.lgna.project.ast.VariableAccess( variable ); 
+		org.lgna.project.ast.ArrayAccess arrayAccess = new org.lgna.project.ast.ArrayAccess( variable.valueType.getValue(), variableAccess, indexExpression ); 
+		org.lgna.project.ast.Expression expression = new org.lgna.project.ast.AssignmentExpression( variable.valueType.getValue().getComponentType(), arrayAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+		return new org.lgna.project.ast.ExpressionStatement( expression );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createIncompleteVariableArrayAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		return createVariableArrayAssignmentStatement( variable, new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), new EmptyExpression( variable.valueType.getValue().getComponentType() ) );
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteVariableArrayAssignmentStatement( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
+		return createVariableArrayAssignmentStatement( variable, new EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), new EmptyExpression( variable.valueType.getValue().getComponentType() ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createParameterArrayAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.Expression indexExpression, edu.cmu.cs.dennisc.alice.ast.Expression valueExpression ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression parameterAccess = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ); 
-		edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( parameter.valueType.getValue(), parameterAccess, indexExpression ); 
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( parameter.valueType.getValue().getComponentType(), arrayAccess, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
-		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
+	public static org.lgna.project.ast.ExpressionStatement createParameterArrayAssignmentStatement( org.lgna.project.ast.ParameterDeclaredInAlice parameter, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
+		org.lgna.project.ast.Expression parameterAccess = new org.lgna.project.ast.ParameterAccess( parameter ); 
+		org.lgna.project.ast.ArrayAccess arrayAccess = new org.lgna.project.ast.ArrayAccess( parameter.valueType.getValue(), parameterAccess, indexExpression ); 
+		org.lgna.project.ast.Expression expression = new org.lgna.project.ast.AssignmentExpression( parameter.valueType.getValue().getComponentType(), arrayAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+		return new org.lgna.project.ast.ExpressionStatement( expression );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createIncompleteParameterArrayAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		return createParameterArrayAssignmentStatement( parameter, new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteParameterArrayAssignmentStatement( org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
+		return createParameterArrayAssignmentStatement( parameter, new EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
 	}
 
 	
-	public static edu.cmu.cs.dennisc.alice.ast.StringConcatenation createStringConcatenation( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.Expression right ) {
-		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( left, right );
+	public static org.lgna.project.ast.StringConcatenation createStringConcatenation( org.lgna.project.ast.Expression left, org.lgna.project.ast.Expression right ) {
+		return new org.lgna.project.ast.StringConcatenation( left, right );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.StringConcatenation createIncompleteStringConcatenation( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand ) {
-		return createStringConcatenation( leftOperand, new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
+	public static org.lgna.project.ast.StringConcatenation createIncompleteStringConcatenation( org.lgna.project.ast.Expression leftOperand ) {
+		return createStringConcatenation( leftOperand, new EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.StringConcatenation createIncompleteStringConcatenation() {
-		return createIncompleteStringConcatenation( new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
+	public static org.lgna.project.ast.StringConcatenation createIncompleteStringConcatenation() {
+		return createIncompleteStringConcatenation( new EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
 	}
 
 //	public static edu.cmu.cs.dennisc.alice.ast.AbstractParameter getNextParameter( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
@@ -385,28 +385,28 @@ public class NodeUtilities {
 //		return parameters.get( parameters.size()-1 );
 //	}
 	
-	public static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty, edu.cmu.cs.dennisc.alice.ast.Argument > removeParameter( java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty, edu.cmu.cs.dennisc.alice.ast.Argument > rv, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > argumentListProperties ) {
+	public static java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > removeParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > rv, org.lgna.project.ast.CodeDeclaredInAlice code, org.lgna.project.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
 		assert rv != null;
 		assert code.getParamtersProperty().get( index ) == parameterDeclaredInAlice;
 		rv.clear();
 		code.getParamtersProperty().remove( index );
-		for( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
-			edu.cmu.cs.dennisc.alice.ast.Argument argument = argumentListProperty.remove( index );
+		for( org.lgna.project.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
+			org.lgna.project.ast.Argument argument = argumentListProperty.remove( index );
 			if( argument != null ) {
 				rv.put( argumentListProperty, argument );
 			}
 		}
 		return rv;
 	}
-	public static void addParameter( java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty, edu.cmu.cs.dennisc.alice.ast.Argument > map, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > argumentListProperties ) {
+	public static void addParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > map, org.lgna.project.ast.CodeDeclaredInAlice code, org.lgna.project.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
 		code.getParamtersProperty().add( index, parameterDeclaredInAlice );
-		for( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
-			edu.cmu.cs.dennisc.alice.ast.Argument argument = map.get( code );
+		for( org.lgna.project.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
+			org.lgna.project.ast.Argument argument = map.get( code );
 			if( argument != null ) {
 				//pass
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addParameter" );
-				argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameterDeclaredInAlice, new edu.cmu.cs.dennisc.alice.ast.NullLiteral() );
+				argument = new org.lgna.project.ast.Argument( parameterDeclaredInAlice, new org.lgna.project.ast.NullLiteral() );
 			}
 			argumentListProperty.add( index, argument );
 		}

@@ -55,7 +55,7 @@ public class ResourceNameValidator extends org.alice.ide.name.NameValidator {
 	protected boolean isNameAvailable( String name ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+			org.lgna.project.Project project = ide.getProject();
 			if( project != null ) {
 				java.util.Set< org.alice.virtualmachine.Resource > resources = project.getResources();
 				if( resources != null ) {

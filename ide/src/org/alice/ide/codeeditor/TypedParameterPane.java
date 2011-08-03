@@ -42,14 +42,14 @@
  */
 package org.alice.ide.codeeditor;
 
-import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.ParameterDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove
  */
 public class TypedParameterPane extends org.alice.ide.common.TypedDeclarationPane {
-	public TypedParameterPane( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	public TypedParameterPane( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
 		super( org.alice.ide.common.TypeComponent.createInstance( parameter.getValueType() ), new org.alice.ide.common.ParameterPane( parametersProperty, parameter ) );
 	}
 }

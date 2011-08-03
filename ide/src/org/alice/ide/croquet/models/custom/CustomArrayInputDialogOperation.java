@@ -45,9 +45,9 @@ package org.alice.ide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomArrayInputDialogOperation extends CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >, CustomArrayInputDialogOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CustomArrayInputDialogOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > componentType ) {
+public class CustomArrayInputDialogOperation extends CustomInputDialogOperation< org.lgna.project.ast.ArrayInstanceCreation > {
+	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, CustomArrayInputDialogOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CustomArrayInputDialogOperation getInstance( org.lgna.project.ast.AbstractType< ?,?,? > componentType ) {
 		CustomArrayInputDialogOperation rv = map.get( componentType );
 		if( rv != null ) {
 			//pass
@@ -57,13 +57,13 @@ public class CustomArrayInputDialogOperation extends CustomInputDialogOperation<
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > componentType;
-	private CustomArrayInputDialogOperation( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > componentType ) {
+	private final org.lgna.project.ast.AbstractType< ?,?,? > componentType;
+	private CustomArrayInputDialogOperation( org.lgna.project.ast.AbstractType< ?,?,? > componentType ) {
 		super( java.util.UUID.fromString( "e4101f45-9c74-478e-b406-f8726a7b706a" ), null );
 		this.componentType = componentType;
 	}
 	@Override
-	protected org.alice.ide.croquet.models.custom.CustomInputPane< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > EPIC_HACK_createCustomInputPane() {
-		return new CustomInputPane< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation >( new org.alice.ide.choosers.ArrayChooser( this.componentType ) );
+	protected org.alice.ide.croquet.models.custom.CustomInputPane< org.lgna.project.ast.ArrayInstanceCreation > EPIC_HACK_createCustomInputPane() {
+		return new CustomInputPane< org.lgna.project.ast.ArrayInstanceCreation >( new org.alice.ide.choosers.ArrayChooser( this.componentType ) );
 	}
 }

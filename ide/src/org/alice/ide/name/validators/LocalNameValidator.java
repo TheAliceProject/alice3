@@ -44,20 +44,20 @@
 package org.alice.ide.name.validators;
 
 public class LocalNameValidator extends TransientNameValidator {
-	private static edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+	private static org.lgna.project.ast.CodeDeclaredInAlice getCode( org.lgna.project.ast.LocalDeclaredInAlice local ) {
 		return getCode( getBlock( local ) );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
+	private static org.lgna.project.ast.CodeDeclaredInAlice getCode( org.lgna.project.ast.BlockStatement block ) {
 		if( block != null ) {
-			return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)block.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+			return (org.lgna.project.ast.CodeDeclaredInAlice)block.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 		} else {
 			return null;
 		}
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlock( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
-		return local.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.BlockStatement.class );
+	private static org.lgna.project.ast.BlockStatement getBlock( org.lgna.project.ast.LocalDeclaredInAlice local ) {
+		return local.getFirstAncestorAssignableTo( org.lgna.project.ast.BlockStatement.class );
 	}
-	public LocalNameValidator( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+	public LocalNameValidator( org.lgna.project.ast.LocalDeclaredInAlice local ) {
 		super( local, getCode( local ), getBlock( local ) );
 	}
 	public LocalNameValidator( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

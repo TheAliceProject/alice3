@@ -45,16 +45,16 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.ast.AbstractMember > extends org.alice.ide.operations.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
+public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.AbstractMember > extends org.alice.ide.operations.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
 	private N member;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> delaringType;
+	private org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> delaringType;
 	
 	//todo
 	//note: index not preserved and restored
 	//in the case where it is undone across sessions, it will not know where to insert the declaration
 	private transient int index = -1;
 	
-	public DeleteMemberOperation( java.util.UUID individualId, N node, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> delaringType ) {
+	public DeleteMemberOperation( java.util.UUID individualId, N node, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> delaringType ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		this.member = node;
 		this.delaringType = delaringType;
@@ -68,7 +68,7 @@ public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.
 	public Class<?>[] getStaticGetInstanceParameterTypes() {
 		return new Class[] {
 				this.getNodeParameterType(),
-				edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class,
+				org.lgna.project.ast.AbstractTypeDeclaredInAlice.class,
 				Integer.TYPE
 		};
 	}
@@ -87,8 +87,8 @@ public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.
 		java.util.UUID declaringTypeId = binaryDecoder.decodeId();
 		int index = binaryDecoder.decodeInt();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement member = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), memberId );
-		edu.cmu.cs.dennisc.alice.ast.Statement declaringType = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( ide.getProject(), declaringTypeId );
+		org.lgna.project.ast.BlockStatement member = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), memberId );
+		org.lgna.project.ast.Statement declaringType = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), declaringTypeId );
 		return new Object[] { member, declaringType, index };
 	}
 	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -101,16 +101,16 @@ public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.
 	protected N getMember() {
 		return this.member;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.NodeListProperty<N> getNodeListProperty( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType );
+	protected abstract org.lgna.project.ast.NodeListProperty<N> getNodeListProperty( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType );
 	protected abstract boolean isClearToDelete( N node );
 	
 	public void doOrRedoInternal( boolean isDo ) {
-		edu.cmu.cs.dennisc.alice.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.delaringType );
+		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.delaringType );
 		this.index = owner.indexOf( this.member );
 		owner.remove( index );
 	}
 	public void undoInternal() {
-		edu.cmu.cs.dennisc.alice.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.delaringType );
+		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.delaringType );
 		if( this.index == -1 ) {
 			this.index += owner.size();
 		}
@@ -131,7 +131,7 @@ public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.
 	}
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "delete: " );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, member, locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, member, locale);
 		return rv;
 	}
 	

@@ -52,8 +52,8 @@ import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.operations.PredeterminedSetOrthographicPicturePlaneActionOperation;
+import org.lgna.project.Project;
 
-import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;

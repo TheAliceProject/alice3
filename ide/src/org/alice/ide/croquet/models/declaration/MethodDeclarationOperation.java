@@ -46,12 +46,12 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodDeclarationOperation extends DeclarationOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+public abstract class MethodDeclarationOperation extends DeclarationOperation< org.lgna.project.ast.MethodDeclaredInAlice > {
 	public MethodDeclarationOperation(
 			java.util.UUID id, 
-			edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> initialDeclaringType,
+			org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> initialDeclaringType,
 			boolean isDeclaringTypeEditable,
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> initialValueComponentType,
+			org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType,
 			boolean isValueComponentTypeEditable,
 			boolean initialIsArrayValueType,
 			boolean isIsArrayValueTypeEditable,
@@ -69,16 +69,16 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< e
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createPreviewDeclaration() {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice();
+	public org.lgna.project.ast.MethodDeclaredInAlice createPreviewDeclaration() {
+		org.lgna.project.ast.MethodDeclaredInAlice rv = new org.lgna.project.ast.MethodDeclaredInAlice();
 		rv.name.setValue( this.getDeclarationName() );
 		rv.returnType.setValue( this.getValueType() );
 		return rv;
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
 		assert initializer == null;
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = org.alice.ide.ast.NodeUtilities.createMethod( declarationName, valueType );
+		org.lgna.project.ast.MethodDeclaredInAlice method = org.alice.ide.ast.NodeUtilities.createMethod( declarationName, valueType );
 		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( step, declaringType, method );
 	}
 }

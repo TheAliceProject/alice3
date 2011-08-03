@@ -48,32 +48,32 @@ import org.alice.ide.memberseditor.templates.TemplateFactory;
  * @author Dennis Cosgrove
  */
 public class TypeFieldsPane extends AbstractTypeMembersPane {
-	public TypeFieldsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public TypeFieldsPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.fields };
 	}
 	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		return org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ).createButton();
 	}
 	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		return null;
 	}
 	@Override
-	protected Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+	protected Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member ) {
 		java.util.List< org.lgna.croquet.components.Component< ? > > rv;
-		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
+		if( member instanceof org.lgna.project.ast.AbstractField ) {
 			rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
+			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)member;
 			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				//pass
 			} else {
-				if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field;
+				if( field instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
+					org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)field;
 					org.lgna.croquet.components.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getTemplatesFactory(), fieldInAlice);
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add popup menu to field declaration pane" );
 //					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 

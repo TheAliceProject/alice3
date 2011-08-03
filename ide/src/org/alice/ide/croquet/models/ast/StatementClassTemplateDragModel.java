@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class StatementClassTemplateDragModel extends VoidTemplateDragModel {
-	private static java.util.Map< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement >, StatementClassTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized StatementClassTemplateDragModel getInstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	private static java.util.Map< Class< ? extends org.lgna.project.ast.Statement >, StatementClassTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized StatementClassTemplateDragModel getInstance( Class< ? extends org.lgna.project.ast.Statement > cls ) {
 		StatementClassTemplateDragModel rv = map.get( cls );
 		if( rv != null ) {
 			//pass
@@ -58,8 +58,8 @@ public class StatementClassTemplateDragModel extends VoidTemplateDragModel {
 		}
 		return rv;
 	}
-	private Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls;
-	private StatementClassTemplateDragModel( Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	private Class<? extends org.lgna.project.ast.Statement > cls;
+	private StatementClassTemplateDragModel( Class<? extends org.lgna.project.ast.Statement > cls ) {
 		super( java.util.UUID.fromString( "cd416904-2217-4de7-8bb2-c85c9b29d323" ) );
 		this.cls = cls;
 	}

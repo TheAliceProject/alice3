@@ -63,8 +63,8 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {
 		return true;
 	}
-	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty );
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
+	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
+	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
 		return null;
 	}
 //	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );

@@ -46,7 +46,7 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 class ConstructorHeaderPane extends AbstractCodeHeaderPane {
-	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
+	public ConstructorHeaderPane( org.lgna.project.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
 		super( constructorDeclaredInAlice, parametersPane, isPreview );
 		if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );

@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class VariableArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, VariableArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized VariableArrayAccessCascade getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.VariableDeclaredInAlice, org.lgna.project.ast.ExpressionProperty, VariableArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized VariableArrayAccessCascade getInstance( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert variable != null;
 		assert expressionProperty != null;
 		VariableArrayAccessCascade rv = map.get( variable, expressionProperty );
@@ -60,17 +60,17 @@ public class VariableArrayAccessCascade extends ArrayAccessCascade {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	private VariableArrayAccessCascade( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.VariableDeclaredInAlice variable;
+	private VariableArrayAccessCascade( org.lgna.project.ast.VariableDeclaredInAlice variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
 		this.variable = variable;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
+	protected org.lgna.project.ast.Expression createAccessExpression() {
+		return new org.lgna.project.ast.VariableAccess( this.variable );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getArrayType() {
 		return this.variable.getValueType();
 	}
 }

@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.cascade.array;
  * @author Dennis Cosgrove
  */
 public class VariableArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized VariableArrayLengthFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+	private static java.util.Map< org.lgna.project.ast.VariableDeclaredInAlice, VariableArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized VariableArrayLengthFillIn getInstance( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
 		assert variable != null;
 		VariableArrayLengthFillIn rv = map.get( variable );
 		if( rv != null ) {
@@ -59,13 +59,13 @@ public class VariableArrayLengthFillIn extends ArrayLengthFillIn {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	private VariableArrayLengthFillIn( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+	private final org.lgna.project.ast.VariableDeclaredInAlice variable;
+	private VariableArrayLengthFillIn( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
 		super( java.util.UUID.fromString( "007ec992-c623-4a2b-afcc-5642dfd7be75" ) );
 		this.variable = variable;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
+	protected org.lgna.project.ast.Expression createAccessExpression() {
+		return new org.lgna.project.ast.VariableAccess( this.variable );
 	}
 }

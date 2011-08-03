@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, ProcedureDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ProcedureDeclarationOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declarationType ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? >, ProcedureDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ProcedureDeclarationOperation getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declarationType ) {
 		synchronized( map ) {
 			ProcedureDeclarationOperation rv = map.get( declarationType );
 			if( rv != null ) {
@@ -60,11 +60,11 @@ public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
 			return rv;
 		}
 	}
-	private ProcedureDeclarationOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declarationType ) {
+	private ProcedureDeclarationOperation( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declarationType ) {
 		super( 
 				java.util.UUID.fromString( "dbfbd9df-8a8d-457b-8b02-c358eb9e9124" ), 
 				declarationType, true, 
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE, false,
+				org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE, false,
 				false, false, 
 				"", true 
 		);

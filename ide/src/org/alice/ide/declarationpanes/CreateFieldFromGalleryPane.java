@@ -66,19 +66,19 @@ import org.lgna.croquet.components.BorderPanel.Constraint;
 public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldPane {
 	//private GalleryLabel galleryIcon;
 	
-	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, Class<?> cls, javax.swing.Icon icon, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
+	private CreateFieldFromGalleryPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType, Class<?> cls, javax.swing.Icon icon, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
 		super( declaringType, cls, valueType );
 		if( icon != null ) {
 			this.addComponent( new org.lgna.croquet.components.Label( icon ), Constraint.LINE_END );
 		}
 	}
-	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, Class<?> cls ) {
+	public CreateFieldFromGalleryPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType, Class<?> cls ) {
 		this( declaringType, cls, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconForGalleryClassName( cls.getName() ), null );
 	}
-	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
+	public CreateFieldFromGalleryPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		this( declaringType, org.alice.stageide.gallerybrowser.ResourceManager.getGalleryCls(treeNode), org.alice.stageide.gallerybrowser.ResourceManager.getLargeIcon(treeNode), null );
 	}
-	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType ) {
+	public CreateFieldFromGalleryPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
 		this( declaringType, null, org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconForGalleryClassName( valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName() ), valueType );
 	}
 

@@ -115,11 +115,11 @@ public class AliceFormatter extends Formatter {
 	}
 
 	@Override
-	protected String getTextForParameterDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava parameterInJava ) {
+	protected String getTextForParameterDeclaredInJava( org.lgna.project.ast.ParameterDeclaredInJava parameterInJava ) {
 		return this.getLocalizedText( parameterInJava.getName() );
 	}
 	@Override
-	protected String getTextForMethodReflectionProxy( edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy methodReflectionProxy ) {
+	protected String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy ) {
 		return this.getLocalizedText( methodReflectionProxy.getName() );
 	}
 	

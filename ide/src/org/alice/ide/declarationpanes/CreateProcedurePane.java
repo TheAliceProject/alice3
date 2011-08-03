@@ -46,7 +46,7 @@ package org.alice.ide.declarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateProcedurePane extends CreateMethodPane {
-	public CreateProcedurePane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+	public CreateProcedurePane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( declaringType );
 		this.setBackgroundColor( getIDE().getTheme().getProcedureColor() );
 	}
@@ -55,8 +55,8 @@ public class CreateProcedurePane extends CreateMethodPane {
 		return false;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
-		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
+	public org.lgna.project.ast.AbstractType<?,?,?> getValueType() {
+		return org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
 }
 

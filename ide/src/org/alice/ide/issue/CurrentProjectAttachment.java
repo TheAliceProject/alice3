@@ -56,9 +56,9 @@ public class CurrentProjectAttachment implements edu.cmu.cs.dennisc.issue.Attach
 		} else {
 			try {
 				org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+				org.lgna.project.Project project = ide.getProject();
 				java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-				edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeProject( baos, project );
+				org.lgna.project.project.ProjectUtilities.writeProject( baos, project );
 				baos.flush();
 				this.bytes = baos.toByteArray();
 				this.isCreateSuccessful = true;

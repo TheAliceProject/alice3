@@ -48,7 +48,7 @@ package org.alice.ide.memberseditor;
 public abstract class AbstractTypeMembersPane extends org.lgna.croquet.components.PageAxisPanel {
 	private static final int INDENT = 16;
 
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+	private org.lgna.project.ast.AbstractType<?,?,?> type;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
 		}
@@ -91,31 +91,31 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesObserver );
 		super.handleUndisplayable();
 	}
-	public AbstractTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public AbstractTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
-		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			for( edu.cmu.cs.dennisc.property.ListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > listProperty : this.getListPropertiesToListenTo( (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.type ) ) {
+		if( this.type instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
+			for( edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice > listProperty : this.getListPropertiesToListenTo( (org.lgna.project.ast.TypeDeclaredInAlice)this.type ) ) {
 				listProperty.addListPropertyListener( this.listPropertyAdapter );
 			}
 		}
 		this.refresh();
 	}
-	protected abstract edu.cmu.cs.dennisc.property.ListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
-	private static boolean isInclusionDesired( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
-		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)member;
+	protected abstract edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.MemberDeclaredInAlice >[] getListPropertiesToListenTo( org.lgna.project.ast.TypeDeclaredInAlice type );
+	private static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
+		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
+			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
 			if( method.isStatic() ) {
 				return false;
 			}
-		} else if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
+		} else if( member instanceof org.lgna.project.ast.AbstractField ) {
+			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)member;
 			if( field.isStatic() ) {
 				return false;
 			}
 		}
 		if( member.isPublicAccess() || member.isDeclaredInAlice() ) {
-			edu.cmu.cs.dennisc.alice.annotations.Visibility visibility = member.getVisibility();
-			return visibility == null || visibility.equals( edu.cmu.cs.dennisc.alice.annotations.Visibility.PRIME_TIME );
+			org.lgna.project.annotations.Visibility visibility = member.getVisibility();
+			return visibility == null || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
 		} else {
 			return false;
 		}
@@ -123,14 +123,14 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getActiveInstance();
 	}
-	protected abstract Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
+	protected abstract Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member );
 
-	protected abstract org.lgna.croquet.components.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
-	protected abstract org.lgna.croquet.components.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.TypeDeclaredInAlice type );
+	protected abstract org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.TypeDeclaredInAlice type );
 	protected void refresh() {
 		this.removeAllComponents();
 		org.lgna.croquet.components.PageAxisPanel page = new org.lgna.croquet.components.PageAxisPanel();
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
+		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {
 				Iterable< org.lgna.croquet.components.Component< ? > > templates = this.createTemplates( field );
 				if( templates != null ) {
@@ -141,9 +141,9 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 				}
 			}
 		}
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+		for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 			if( isInclusionDesired( method ) ) {
-				method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getShortestInChain();
+				method = (org.lgna.project.ast.AbstractMethod)method.getShortestInChain();
 				Iterable< org.lgna.croquet.components.Component< ? > > templates = this.createTemplates( method );
 				if( templates != null ) {
 					for( org.lgna.croquet.components.Component< ? > template : templates ) {
@@ -153,8 +153,8 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 				}
 			}
 		}
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() == false && this.type instanceof org.lgna.project.ast.TypeDeclaredInAlice ) {
+			org.lgna.project.ast.TypeDeclaredInAlice typeInAlice = (org.lgna.project.ast.TypeDeclaredInAlice)type;
 			org.lgna.croquet.components.Button createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
 			org.lgna.croquet.components.Button editConstructorButton = this.createEditConstructorButton( typeInAlice );
 			if( createAndAddMemberButton != null ) {

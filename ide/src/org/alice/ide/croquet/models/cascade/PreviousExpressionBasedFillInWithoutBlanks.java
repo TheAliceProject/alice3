@@ -46,11 +46,11 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression > extends ExpressionFillInWithoutBlanks< F > {
+public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.lgna.project.ast.Expression > extends ExpressionFillInWithoutBlanks< F > {
 	public PreviousExpressionBasedFillInWithoutBlanks( java.util.UUID id ) {
 		super( id );
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+	private org.lgna.project.ast.Expression getPreviousExpression() {
 		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
 	}
 //	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
@@ -59,7 +59,7 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends edu.
 //		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 //		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
 //	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression cleanExpression;
+	private org.lgna.project.ast.Expression cleanExpression;
 	@Override
 	protected void markClean() {
 		super.markClean();
@@ -71,7 +71,7 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends edu.
 		return super.isDirty() || isPrevExpressionChanged;
 	}
 
-	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
+	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression );
 	@Override
 	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 		return this.createValue( this.getPreviousExpression() );

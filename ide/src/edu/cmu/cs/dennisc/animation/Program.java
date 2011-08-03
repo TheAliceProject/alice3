@@ -163,7 +163,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	}
 	public void perform( Animation animation, AnimationObserver animationObserver ) {
 		if( this.isClosed() ) {
-			throw new edu.cmu.cs.dennisc.alice.ProgramClosedException();
+			throw new org.lgna.project.ProgramClosedException();
 		}
 		if( this.animator != null ) {
 			this.animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );

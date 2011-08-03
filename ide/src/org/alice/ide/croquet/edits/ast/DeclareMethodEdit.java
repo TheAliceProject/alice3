@@ -46,32 +46,32 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.croquet.models.declaration.MethodDeclarationOperation> {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
+	private org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType;
+	private org.lgna.project.ast.MethodDeclaredInAlice method;
 	
-	private transient edu.cmu.cs.dennisc.alice.ast.AbstractCode prevFocusedCode;
+	private transient org.lgna.project.ast.AbstractCode prevFocusedCode;
 
-	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType, org.lgna.project.ast.MethodDeclaredInAlice method ) {
 		super( completionStep );
 		this.declaringType = declaringType;
 		this.method = method;
 	}
 	public DeclareMethodEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).decodeValue( binaryDecoder );
-		this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).decodeValue( binaryDecoder );
+		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice.class ).decodeValue( binaryDecoder );
+		this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.MethodDeclaredInAlice.class ).decodeValue( binaryDecoder );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ).encodeValue( binaryEncoder, this.declaringType );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ).encodeValue( binaryEncoder, this.method );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice.class ).encodeValue( binaryEncoder, this.declaringType );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.MethodDeclaredInAlice.class ).encodeValue( binaryEncoder, this.method );
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	public org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
 		return this.declaringType;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethod() {
+	public org.lgna.project.ast.MethodDeclaredInAlice getMethod() {
 		return this.method;
 	}
 
@@ -97,14 +97,14 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 	@Override
 	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 		rv.append( "declare: " );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, this.method, locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method, locale);
 		return rv;
 	}
 	
 	@Override
 	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.UserInformation userInformation ) {
 		rv.append( "declare " );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, this.method, userInformation.getLocale() );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method, userInformation.getLocale() );
 		return rv;
 	}
 
@@ -113,8 +113,8 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 		if( replacementCandidate instanceof DeclareMethodEdit ) {
 			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
 			if( this.method != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > originalReturnType = this.method.getReturnType();
-				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > replacementReturnType = declareMethodEdit.method.getReturnType();
+				org.lgna.project.ast.AbstractType< ?,?,? > originalReturnType = this.method.getReturnType();
+				org.lgna.project.ast.AbstractType< ?,?,? > replacementReturnType = declareMethodEdit.method.getReturnType();
 				if( originalReturnType == replacementReturnType ) {
 					String originalName = this.method.getName();
 					String replacementName = declareMethodEdit.method.getName();

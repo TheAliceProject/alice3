@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class ConstantArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ConstantArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ConstantArrayAccessCascade getInstance( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.ConstantDeclaredInAlice, org.lgna.project.ast.ExpressionProperty, ConstantArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ConstantArrayAccessCascade getInstance( org.lgna.project.ast.ConstantDeclaredInAlice constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert constant != null;
 		assert expressionProperty != null;
 		ConstantArrayAccessCascade rv = map.get( constant, expressionProperty );
@@ -60,17 +60,17 @@ public class ConstantArrayAccessCascade extends ArrayAccessCascade {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
-	private ConstantArrayAccessCascade( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.ConstantDeclaredInAlice constant;
+	private ConstantArrayAccessCascade( org.lgna.project.ast.ConstantDeclaredInAlice constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "bad422f3-67ca-4ecf-871e-07eae04a2881" ), expressionProperty );
 		this.constant = constant;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
+	protected org.lgna.project.ast.Expression createAccessExpression() {
+		return new org.lgna.project.ast.ConstantAccess( this.constant );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getArrayType() {
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getArrayType() {
 		return this.constant.getValueType();
 	}
 }

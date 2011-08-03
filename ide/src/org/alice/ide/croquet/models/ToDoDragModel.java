@@ -52,7 +52,7 @@ public class ToDoDragModel extends CodeDragModel {
 		super( java.util.UUID.fromString( "18c35df3-fc24-434c-b451-94090f13310e" ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getExpressionType() {
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
 		return null;
 		//return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 	}

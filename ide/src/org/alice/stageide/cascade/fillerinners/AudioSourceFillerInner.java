@@ -50,15 +50,15 @@ public class AudioSourceFillerInner extends SourceFillerInner< org.alice.virtual
 		super( org.lgna.story.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class );
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, ? > getImportFillIn() {
+	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getImportFillIn() {
 		return new org.alice.stageide.croquet.models.cascade.source.ImportNewAudioSourceFillIn();
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, ? > getResourceFillIn( org.alice.virtualmachine.resources.AudioResource resource ) {
+	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getResourceFillIn( org.alice.virtualmachine.resources.AudioResource resource ) {
 		return new org.alice.stageide.croquet.models.cascade.source.AudioSourceFillIn( resource );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		super.addItems( rv, isTop, prevExpression );
 		if( org.alice.ide.IDE.getActiveInstance().getCascadeManager().isPreviousExpressionSet() ) {
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCascadeMenu< T extends edu.cmu.cs.dennisc.alice.ast.Expression > extends org.lgna.croquet.CascadeMenuModel< T > {
+public abstract class ExpressionCascadeMenu< T extends org.lgna.project.ast.Expression > extends org.lgna.croquet.CascadeMenuModel< T > {
 	public ExpressionCascadeMenu( java.util.UUID id ) {
 		super( id );
 	}

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.string;
 /**
  * @author Dennis Cosgrove
  */
-public class StringConcatinationLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
+public class StringConcatinationLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< org.lgna.project.ast.StringConcatenation > {
 	private static class SingletonHolder {
 		private static StringConcatinationLeftAndRightOperandsFillIn instance = new StringConcatinationLeftAndRightOperandsFillIn();
 	}
@@ -54,7 +54,7 @@ public class StringConcatinationLeftAndRightOperandsFillIn extends org.alice.ide
 		return SingletonHolder.instance;
 	}
 
-	private final edu.cmu.cs.dennisc.alice.ast.StringConcatenation transientValue;
+	private final org.lgna.project.ast.StringConcatenation transientValue;
 	private StringConcatinationLeftAndRightOperandsFillIn() {
 		super( java.util.UUID.fromString( "58068432-cef0-4f9d-bfef-c841ea165172" ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
@@ -62,12 +62,12 @@ public class StringConcatinationLeftAndRightOperandsFillIn extends org.alice.ide
 		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteStringConcatenation();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.StringConcatenation createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	protected org.lgna.project.ast.StringConcatenation createValue( org.lgna.project.ast.Expression[] expressions ) {
 		assert expressions.length == 2;
-		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( expressions[ 0 ], expressions[ 1 ] );
+		return new org.lgna.project.ast.StringConcatenation( expressions[ 0 ], expressions[ 1 ] );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.StringConcatenation,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public org.lgna.project.ast.StringConcatenation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.StringConcatenation,org.lgna.project.ast.Expression > step ) {
 		return this.transientValue;
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+	public ArgumentListPropertyPane( Factory factory, org.lgna.project.ast.ArgumentListProperty property ) {
 		super( factory, property );
 	}
 	@Override
@@ -54,7 +54,7 @@ package org.alice.ide.memberseditor;
 		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
 		rv.setBackgroundColor( new java.awt.Color( 255, 255, 255, 127 ) );
 		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.OutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
-		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
+		org.lgna.project.ast.Argument argument = (org.lgna.project.ast.Argument)instance;
 		
 		String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( argument.parameter.getValue() );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );

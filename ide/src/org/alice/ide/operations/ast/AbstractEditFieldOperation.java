@@ -42,18 +42,18 @@
  */
 package org.alice.ide.operations.ast;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.FieldDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
+public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.FieldDeclaredInAlice> {
 	private FieldDeclaredInAlice field;
 
-	private edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> prevValueType;
+	private org.lgna.project.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither;
+	private org.lgna.project.ast.AbstractType<?,?,?> prevValueType;
 	private String prevName;
-	private edu.cmu.cs.dennisc.alice.ast.Expression prevInitializer;
+	private org.lgna.project.ast.Expression prevInitializer;
 	
 	public AbstractEditFieldOperation( org.lgna.croquet.Group group, java.util.UUID individualId, String name, FieldDeclaredInAlice field ) {
 		super( group, individualId );
@@ -82,10 +82,10 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 			org.alice.ide.declarationpanes.EditFieldPane editFieldPane = step.getMainPanel();
 			FieldDeclaredInAlice tempField = editFieldPane.getInputValue();
 			if( tempField != null ) {
-				final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither nextFinalVolatileOrNeither = tempField.finalVolatileOrNeither.getValue();
-				final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> nextValueType = tempField.valueType.getValue();
+				final org.lgna.project.ast.FieldModifierFinalVolatileOrNeither nextFinalVolatileOrNeither = tempField.finalVolatileOrNeither.getValue();
+				final org.lgna.project.ast.AbstractType<?,?,?> nextValueType = tempField.valueType.getValue();
 				final String nextName = tempField.getName();
-				final edu.cmu.cs.dennisc.alice.ast.Expression nextInitializer = tempField.initializer.getValue();
+				final org.lgna.project.ast.Expression nextInitializer = tempField.initializer.getValue();
 				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
@@ -104,7 +104,7 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.m
 					@Override
 					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 						rv.append( "edit: " );
-						edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, field, locale );
+						org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, field, locale );
 						return rv;
 					}
 				} );

@@ -46,12 +46,12 @@ package org.alice.stageide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class IngredientFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public IngredientFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public IngredientFillerInner( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		super( type );
 	}
 	protected abstract Class<?>[] getClses( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender );
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 //		org.lookingglassandalice.storytelling.LifeStage[] lifeStages = { org.lookingglassandalice.storytelling.LifeStage.ADULT, org.lookingglassandalice.storytelling.LifeStage.CHILD }; 
 //		for( final org.lookingglassandalice.storytelling.LifeStage lifeStage : lifeStages ) {
 //			for( final org.lookingglassandalice.storytelling.Gender gender : org.lookingglassandalice.storytelling.Gender.values() ) {

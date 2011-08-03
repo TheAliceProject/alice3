@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty > extends AbstractPropertyPane< E > {
+public class NodePropertyPane< E extends org.lgna.project.ast.NodeProperty > extends AbstractPropertyPane< E > {
 //	public NodePropertyPane( Factory factory ) {
 //		super( factory, javax.swing.BoxLayout.LINE_AXIS );
 //	}
@@ -56,8 +56,8 @@ public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProper
 	protected void refresh() {
 		this.forgetAndRemoveAllComponents();
 		Object value = getProperty().getValue();
-		if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractNode ) {
-			this.addComponent( this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.AbstractNode)value ) );
+		if( value instanceof org.lgna.project.ast.AbstractNode ) {
+			this.addComponent( this.getFactory().createComponent( (org.lgna.project.ast.AbstractNode)value ) );
 		}
 	}
 }

@@ -48,12 +48,12 @@ import javax.swing.ImageIcon;
 
 import org.alice.ide.IDE;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.FieldDeclaredInAlice;
 import org.lgna.story.ObjectMarker;
 import org.lgna.story.Turnable;
 import org.lgna.story.implementation.ObjectMarkerImplementation;
 
-import edu.cmu.cs.dennisc.alice.ast.AbstractField;
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
 
 public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
@@ -121,7 +121,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		}
 		if (this.selectedField != null)
 		{
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
+			org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
 			Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( valueType );
 			if (icon != null)
 			{

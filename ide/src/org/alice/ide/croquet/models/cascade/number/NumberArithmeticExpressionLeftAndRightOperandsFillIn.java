@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.cascade.number;
  * @author Dennis Cosgrove
  */
 public class NumberArithmeticExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionLeftAndRightOperandsFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator, NumberArithmeticExpressionLeftAndRightOperandsFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static NumberArithmeticExpressionLeftAndRightOperandsFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+	private static java.util.Map< org.lgna.project.ast.ArithmeticInfixExpression.Operator, NumberArithmeticExpressionLeftAndRightOperandsFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static NumberArithmeticExpressionLeftAndRightOperandsFillIn getInstance( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			NumberArithmeticExpressionLeftAndRightOperandsFillIn rv = map.get( operator );
 			if( rv != null ) {
@@ -60,7 +60,7 @@ public class NumberArithmeticExpressionLeftAndRightOperandsFillIn extends org.al
 			return rv;
 		}
 	}
-	private NumberArithmeticExpressionLeftAndRightOperandsFillIn( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator ) {
+	private NumberArithmeticExpressionLeftAndRightOperandsFillIn( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "04658765-3fc8-4874-ba9d-789265bb1b47" ), Double.class, Number.class, operator, Number.class );
 	}
 }

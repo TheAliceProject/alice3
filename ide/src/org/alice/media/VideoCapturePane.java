@@ -76,8 +76,8 @@ import javax.swing.filechooser.FileFilter;
 import org.alice.media.encoder.EncoderListener;
 import org.alice.media.encoder.ImagesToMOVEncoder;
 import org.jdesktop.swingworker.SwingWorker;
+import org.lgna.project.Project;
 
-import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Program;
 import edu.cmu.cs.dennisc.inputpane.FileSelectionPane;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;

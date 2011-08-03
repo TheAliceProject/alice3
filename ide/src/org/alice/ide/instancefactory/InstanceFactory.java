@@ -47,8 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public interface InstanceFactory {
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getValueType(); 
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression();
+	public org.lgna.project.ast.AbstractType< ?,?,? > getValueType(); 
+	public org.lgna.project.ast.Expression createExpression();
 	public String getRepr();
 	@Deprecated
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();

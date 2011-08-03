@@ -46,19 +46,19 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionFillerInner {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-	public ExpressionFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	private org.lgna.project.ast.AbstractType<?,?,?> type;
+	public ExpressionFillerInner( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
 	}
 	public ExpressionFillerInner( Class<?> cls ) {
-		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+		this( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
 	}
 
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getType() {
+	protected org.lgna.project.ast.AbstractType<?,?,?> getType() {
 		return this.type;
 	}
-	public boolean isAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public boolean isAssignableTo( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		return this.type.isAssignableTo( type );
 	}
-	public abstract java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
+	public abstract java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, org.lgna.project.ast.Expression prevExpression );
 }

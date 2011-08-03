@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRowsPaneChooser<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends ValueChooser< E > {
+public abstract class AbstractRowsPaneChooser<E extends org.lgna.project.ast.Expression> extends ValueChooser< E > {
 	private static final String[] LABEL_TEXTS = { "value:" };
 	protected String[] getLabelTexts() {
 		return LABEL_TEXTS;

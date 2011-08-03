@@ -68,11 +68,11 @@ public class JavaFormatter extends Formatter {
 		return "this";
 	}
 	@Override
-	protected java.lang.String getTextForParameterDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava parameterInJava ) {
+	protected java.lang.String getTextForParameterDeclaredInJava( org.lgna.project.ast.ParameterDeclaredInJava parameterInJava ) {
 		return parameterInJava.getName();
 	}
 	@Override
-	protected String getTextForMethodReflectionProxy( edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy methodReflectionProxy ) {
+	protected String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy ) {
 		return methodReflectionProxy.getName();
 	}
 	@Override

@@ -47,8 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisMethodInvocationFactory implements InstanceFactory {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, ThisMethodInvocationFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ThisMethodInvocationFactory getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ThisMethodInvocationFactory getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		assert method != null;
 		assert method.getParameters().size() == 0;
 		ThisMethodInvocationFactory rv = map.get( method );
@@ -60,20 +60,20 @@ public class ThisMethodInvocationFactory implements InstanceFactory {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private ThisMethodInvocationFactory( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private final org.lgna.project.ast.AbstractMethod method;
+	private ThisMethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
 		this.method = method;
 	}
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
+	public org.lgna.project.ast.AbstractMethod getMethod() {
 		return this.method;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), this.method );
+	public org.lgna.project.ast.Expression createExpression() {
+		return new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.ThisExpression(), this.method );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getValueType() {
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return this.method.getReturnType();
 	}
 	public String getRepr() {

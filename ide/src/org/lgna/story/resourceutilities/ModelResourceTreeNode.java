@@ -45,9 +45,9 @@ package org.lgna.story.resourceutilities;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import org.lgna.project.ast.TypeDeclaredInAlice;
 import org.lgna.story.resources.ModelResource;
 
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 
 
 /**

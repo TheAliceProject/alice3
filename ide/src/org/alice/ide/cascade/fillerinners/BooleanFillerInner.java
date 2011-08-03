@@ -46,20 +46,20 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class BooleanFillerInner extends ExpressionFillerInner {
-	private final java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > > relationalTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< org.lgna.project.ast.AbstractType< ?,?,? > > relationalTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public BooleanFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
+		super( org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
 	}
-	public void addRelationalType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type ) {
+	public void addRelationalType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		this.relationalTypes.add( type );
 	}
 
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		if( isTop && prevExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		if( isTop && prevExpression instanceof org.lgna.project.ast.ConditionalInfixExpression ) {
 			// previous conditional
-			edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression conditionalInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)prevExpression;
-			for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
+			org.lgna.project.ast.ConditionalInfixExpression conditionalInfixExpression = (org.lgna.project.ast.ConditionalInfixExpression)prevExpression;
+			for( org.lgna.project.ast.ConditionalInfixExpression.Operator operator : org.lgna.project.ast.ConditionalInfixExpression.Operator.values() ) {
 				if( operator == conditionalInfixExpression.operator.getValue() ) {
 					//pass
 				} else {
@@ -72,7 +72,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
 
-		if( isTop && prevExpression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
+		if( isTop && prevExpression instanceof org.lgna.project.ast.LogicalComplement ) {
 			// previous logical complement
 			rv.add( org.alice.ide.croquet.models.cascade.logicalcomplement.ReduceToInnerOperandInPreviousLogicalComplementFillIn.getInstance() );
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
@@ -95,10 +95,10 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		}
 
 		if( isTop && prevExpression != null ) {
-			for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
+			for( org.lgna.project.ast.ConditionalInfixExpression.Operator operator : org.lgna.project.ast.ConditionalInfixExpression.Operator.values() ) {
 				rv.add( org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 			}
-			for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
+			for( org.lgna.project.ast.ConditionalInfixExpression.Operator operator : org.lgna.project.ast.ConditionalInfixExpression.Operator.values() ) {
 				rv.add( org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 			}
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
@@ -107,7 +107,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		if( isTop && prevExpression != null ) {
 			rv.add( org.alice.ide.croquet.models.cascade.RelationalNumberCascadeMenu.getInstance() );
 			rv.add( org.alice.ide.croquet.models.cascade.RelationalIntegerCascadeMenu.getInstance() );
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type : this.relationalTypes ) {
+			for( org.lgna.project.ast.AbstractType< ?,?,? > type : this.relationalTypes ) {
 				rv.add( new org.alice.ide.croquet.models.cascade.RelationalObjectCascadeMenu( type ) );
 			}
 		}

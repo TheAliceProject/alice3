@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models.cascade.conditional;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator, ConditionalExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ConditionalExpressionRightOperandOnlyFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
+public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< org.lgna.project.ast.ConditionalInfixExpression > {
+	private static java.util.Map< org.lgna.project.ast.ConditionalInfixExpression.Operator, ConditionalExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ConditionalExpressionRightOperandOnlyFillIn getInstance( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			ConditionalExpressionRightOperandOnlyFillIn rv = map.get( operator );
 			if( rv != null ) {
@@ -60,11 +60,11 @@ public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.c
 			return rv;
 		}
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression transientValue;
-	private ConditionalExpressionRightOperandOnlyFillIn( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
+	private final org.lgna.project.ast.ConditionalInfixExpression transientValue;
+	private ConditionalExpressionRightOperandOnlyFillIn( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "d59dd098-3426-453e-927f-84dbf3687824" ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ) );
-		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression(
+		this.transientValue = new org.lgna.project.ast.ConditionalInfixExpression(
 				new org.alice.ide.ast.PreviousValueExpression( Boolean.class ),
 				operator,
 				new org.alice.ide.ast.EmptyExpression( Boolean.class )
@@ -75,12 +75,12 @@ public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.c
 //		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
 //	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	protected org.lgna.project.ast.ConditionalInfixExpression createValue( org.lgna.project.ast.Expression previousExpression, org.lgna.project.ast.Expression[] expressions ) {
 		assert expressions.length == 1;
-		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( previousExpression, this.transientValue.operator.getValue(), expressions[ 0 ] );
+		return new org.lgna.project.ast.ConditionalInfixExpression( previousExpression, this.transientValue.operator.getValue(), expressions[ 0 ] );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression,edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public org.lgna.project.ast.ConditionalInfixExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ConditionalInfixExpression,org.lgna.project.ast.Expression > step ) {
 		return this.transientValue;
 	}
 }

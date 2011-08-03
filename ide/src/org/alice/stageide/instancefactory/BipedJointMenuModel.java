@@ -69,8 +69,8 @@ public class BipedJointMenuModel extends org.lgna.croquet.CascadeMenuModel<org.a
 		"getLeftElbow",
 		"getLeftWrist"
 	};
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, BipedJointMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static BipedJointMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice value ) {
+	private static java.util.Map< org.lgna.project.ast.FieldDeclaredInAlice, BipedJointMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static BipedJointMenuModel getInstance( org.lgna.project.ast.FieldDeclaredInAlice value ) {
 		synchronized( map ) {
 			BipedJointMenuModel rv = map.get( value );
 			if( rv != null ) {
@@ -82,8 +82,8 @@ public class BipedJointMenuModel extends org.lgna.croquet.CascadeMenuModel<org.a
 			return rv;
 		}
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-	private BipedJointMenuModel( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	private final org.lgna.project.ast.FieldDeclaredInAlice field;
+	private BipedJointMenuModel( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 		super( java.util.UUID.fromString( "36fc18a7-7ff7-4bb6-8e29-2e39b15400f1" ) );
 		this.field = field;
 	}

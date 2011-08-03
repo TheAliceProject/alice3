@@ -46,8 +46,8 @@ package org.alice.ide.ubiquitouspane.templates;
  * @author Dennis Cosgrove
  */
 public class ParameterArrayAssignmentStatementTemplate extends ArrayAssignmentStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-	public ParameterArrayAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	private org.lgna.project.ast.ParameterDeclaredInAlice parameter;
+	public ParameterArrayAssignmentStatementTemplate( org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
 		super( org.alice.ide.ast.NodeUtilities.createIncompleteParameterArrayAssignmentStatement( parameter ) );
 		this.parameter = parameter;
 	}
@@ -56,7 +56,7 @@ public class ParameterArrayAssignmentStatementTemplate extends ArrayAssignmentSt
 		return this.parameter.getName();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getTransientComponentType() {
+	protected org.lgna.project.ast.AbstractType<?,?,?> getTransientComponentType() {
 		return this.parameter.valueType.getValue().getComponentType();
 	}
 	@Override

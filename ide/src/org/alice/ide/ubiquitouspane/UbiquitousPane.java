@@ -48,8 +48,8 @@ class ReturnStatementWrapper extends org.lgna.croquet.components.LineAxisPanel {
 	private ReturnStatementTemplate re = new ReturnStatementTemplate();
 	public void refresh() {
 		this.removeAllComponents();
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( code, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
+		org.lgna.project.ast.AbstractCode code = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
+		org.lgna.project.ast.AbstractMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( code, org.lgna.project.ast.AbstractMethod.class );
 		if( method != null && method.isFunction() ) {
 			this.addComponent( re );
 		}
@@ -58,10 +58,10 @@ class ReturnStatementWrapper extends org.lgna.croquet.components.LineAxisPanel {
 }
 
 class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPanel {
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate > mapVariableToVariableAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate >();
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate > mapVariableToVariableArrayAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate >();
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate > mapParameterToParameterAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate >();
-	private VariableAssignmentStatementTemplate getVariableAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+	private java.util.Map< org.lgna.project.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate > mapVariableToVariableAssignmentStatementTemplate = new java.util.HashMap< org.lgna.project.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate >();
+	private java.util.Map< org.lgna.project.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate > mapVariableToVariableArrayAssignmentStatementTemplate = new java.util.HashMap< org.lgna.project.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate >();
+	private java.util.Map< org.lgna.project.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate > mapParameterToParameterAssignmentStatementTemplate = new java.util.HashMap< org.lgna.project.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate >();
+	private VariableAssignmentStatementTemplate getVariableAssignmentStatementTemplate( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
 		VariableAssignmentStatementTemplate rv = this.mapVariableToVariableAssignmentStatementTemplate.get( variable );
 		if( rv != null ) {
 			//pass
@@ -71,7 +71,7 @@ class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPan
 		}
 		return rv;
 	}
-	private VariableArrayAssignmentStatementTemplate getVariableArrayAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+	private VariableArrayAssignmentStatementTemplate getVariableArrayAssignmentStatementTemplate( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
 		VariableArrayAssignmentStatementTemplate rv = this.mapVariableToVariableArrayAssignmentStatementTemplate.get( variable );
 		if( rv != null ) {
 			//pass
@@ -81,7 +81,7 @@ class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPan
 		}
 		return rv;
 	}
-	private ParameterArrayAssignmentStatementTemplate getParameterArrayAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	private ParameterArrayAssignmentStatementTemplate getParameterArrayAssignmentStatementTemplate( org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
 		ParameterArrayAssignmentStatementTemplate rv = this.mapParameterToParameterAssignmentStatementTemplate.get( parameter );
 		if( rv != null ) {
 			//pass
@@ -94,23 +94,23 @@ class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPan
 	
 	public void refresh() {
 		this.removeAllComponents();
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
+		org.lgna.project.ast.AbstractCode code = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
 		if( code != null ) {
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : code.getParameters() ) {
-				if( parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice ) {
-					edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterInAlice = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter;
-					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = parameterInAlice.getValueType();
+			for( org.lgna.project.ast.AbstractParameter parameter : code.getParameters() ) {
+				if( parameter instanceof org.lgna.project.ast.ParameterDeclaredInAlice ) {
+					org.lgna.project.ast.ParameterDeclaredInAlice parameterInAlice = (org.lgna.project.ast.ParameterDeclaredInAlice)parameter;
+					org.lgna.project.ast.AbstractType<?,?,?> type = parameterInAlice.getValueType();
 					if( type.isArray() ) {
 						this.addComponent( this.getParameterArrayAssignmentStatementTemplate( parameterInAlice ) );
 					}
 				}
 			}
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement >( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement.class );
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.VariableDeclarationStatement > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.VariableDeclarationStatement >( org.lgna.project.ast.VariableDeclarationStatement.class );
 			code.crawl( crawler, false );
-			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement variableDeclarationStatement : crawler.getList() ) {
-				edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = variableDeclarationStatement.variable.getValue();
+			for( org.lgna.project.ast.VariableDeclarationStatement variableDeclarationStatement : crawler.getList() ) {
+				org.lgna.project.ast.VariableDeclaredInAlice variable = variableDeclarationStatement.variable.getValue();
 				this.addComponent( this.getVariableAssignmentStatementTemplate( variable ) );
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = variable.valueType.getValue();
+				org.lgna.project.ast.AbstractType<?,?,?> type = variable.valueType.getValue();
 				if( type.isArray() ) {
 					this.addComponent( this.getVariableArrayAssignmentStatementTemplate( variable ) );
 				}

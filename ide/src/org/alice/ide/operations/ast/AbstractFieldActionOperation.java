@@ -46,12 +46,12 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractFieldActionOperation extends org.alice.ide.operations.ActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public AbstractFieldActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private org.lgna.project.ast.AbstractField field;
+	public AbstractFieldActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, org.lgna.project.ast.AbstractField field ) {
 		super( group, individualId );
 		this.field = field;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
+	public org.lgna.project.ast.AbstractField getField() {
 		return this.field;
 	}
 //	public void setField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {

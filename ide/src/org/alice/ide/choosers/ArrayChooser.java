@@ -45,24 +45,24 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
+public class ArrayChooser extends AbstractRowsPaneChooser< org.lgna.project.ast.ArrayInstanceCreation > {
 	private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( null, false );
 	private org.alice.ide.declarationpanes.TypePane typePane;
 	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane;
 	private static final String[] LABEL_TEXTS = { "type:", "value:" };
 	private org.lgna.croquet.components.Component< ? >[] components;
 	
-	public ArrayChooser(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> arrayComponentType) {
+	public ArrayChooser(org.lgna.project.ast.AbstractType<?, ?, ?> arrayComponentType) {
 		bogusNode.isArray.setValue( true );
-		edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getPreviousExpression(), edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class );
+		org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getPreviousExpression(), org.lgna.project.ast.ArrayInstanceCreation.class );
 		boolean isComponentTypeEnabled = arrayInstanceCreation != null;
 		boolean isArrayEnabled = false;
 		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, isComponentTypeEnabled, isArrayEnabled );
 		if( arrayInstanceCreation != null ) {
 			//typePane.setAndLockType( arrayInstanceCreation.arrayType.getValue() );
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = arrayInstanceCreation.arrayType.getValue().getComponentType();
+			org.lgna.project.ast.AbstractType<?,?,?> type = arrayInstanceCreation.arrayType.getValue().getComponentType();
 			bogusNode.componentType.setValue( type );
-			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : arrayInstanceCreation.expressions ) {
+			for( org.lgna.project.ast.Expression expression : arrayInstanceCreation.expressions ) {
 				bogusNode.arrayExpressions.add( expression );
 			}
 		} else {
@@ -113,9 +113,9 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 		}
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> EPIC_HACK_getArrayComponentType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> EPIC_HACK_getArrayComponentType() {
 		if( this.typePane != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> arrayType = this.typePane.getValueType();
+			org.lgna.project.ast.AbstractType<?,?,?> arrayType = this.typePane.getValueType();
 			if( arrayType != null ) {
 				return arrayType.getComponentType();
 			} else {
@@ -144,8 +144,8 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 		return this.components;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation getValue() {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.Expression > expressions = this.bogusNode.arrayExpressions.getValue();
+	public org.lgna.project.ast.ArrayInstanceCreation getValue() {
+		java.util.List< org.lgna.project.ast.Expression > expressions = this.bogusNode.arrayExpressions.getValue();
 		return org.alice.ide.ast.NodeUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );
 	}
 }

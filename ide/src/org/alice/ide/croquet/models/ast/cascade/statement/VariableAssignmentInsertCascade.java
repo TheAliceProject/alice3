@@ -47,13 +47,13 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class VariableAssignmentInsertCascade extends ExpressionStatementInsertCascade {
-	private final edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	public VariableAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+	private final org.lgna.project.ast.VariableDeclaredInAlice variable;
+	public VariableAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.VariableDeclaredInAlice variable ) {
 		super( java.util.UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( variable.getValueType() ) );
 		this.variable = variable;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
 		return org.alice.ide.ast.NodeUtilities.createVariableAssignment( this.variable, expressions[ 0 ] );
 	}
 }

@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class ConstantAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, ConstantAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ConstantAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.ConstantDeclaredInAlice, org.lgna.project.ast.ExpressionProperty, ConstantAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ConstantAccessOperation getInstance( org.lgna.project.ast.ConstantDeclaredInAlice constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert constant != null;
 		assert expressionProperty != null;
 		ConstantAccessOperation rv = map.get( constant, expressionProperty );
@@ -60,13 +60,13 @@ public class ConstantAccessOperation extends org.alice.ide.croquet.models.ast.ca
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
-	private ConstantAccessOperation( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.ConstantDeclaredInAlice constant;
+	private ConstantAccessOperation( org.lgna.project.ast.ConstantDeclaredInAlice constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "96bc22e4-9d7c-4ed7-abc2-130a56b0d5b9" ), expressionProperty );
 		this.constant = constant;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
+	protected org.lgna.project.ast.Expression createExpression() {
+		return new org.lgna.project.ast.ConstantAccess( this.constant );
 	}
 }

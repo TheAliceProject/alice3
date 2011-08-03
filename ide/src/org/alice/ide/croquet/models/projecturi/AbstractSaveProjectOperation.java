@@ -55,7 +55,7 @@ public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation
 	}
 	@Override
 	protected String getExtension() {
-		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION;
+		return org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION;
 	}
 	@Override
 	protected String getInitialFilename() {

@@ -50,12 +50,12 @@ import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.lgna.croquet.components.DragComponent;
+import org.lgna.project.ast.TypeDeclaredInAlice;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 import org.alice.stageide.gallerybrowser.ClassBasedGalleryDragComponent;
 import org.alice.stageide.gallerybrowser.GalleryDragComponent;
 
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;

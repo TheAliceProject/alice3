@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class FieldAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty, FieldAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized FieldAccessOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized FieldAccessOperation getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert field != null;
 		assert expressionProperty != null;
 		FieldAccessOperation rv = map.get( field, expressionProperty );
@@ -60,13 +60,13 @@ public class FieldAccessOperation extends org.alice.ide.croquet.models.ast.casca
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private FieldAccessOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private final org.lgna.project.ast.AbstractField field;
+	private FieldAccessOperation( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "bf8b616d-d1ab-4798-8be2-60a107e9e762" ), expressionProperty );
 		this.field = field;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
+	protected org.lgna.project.ast.Expression createExpression() {
 		return org.alice.ide.ast.NodeUtilities.createFieldAccess(
 				org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), 
 				this.field

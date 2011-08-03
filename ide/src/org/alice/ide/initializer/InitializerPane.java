@@ -121,11 +121,11 @@ public class InitializerPane extends org.lgna.croquet.components.CardPanel {
 	// //this.getCurrentCard().handleTypeChange( type );
 	// }
 	// }
-	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
+	public org.lgna.project.ast.Expression getInitializer() {
 		if (this.itemInitializerPane.isVisible()) {
 			return this.bogusNode.componentExpression.getValue();
 		} else {
-			java.util.List<edu.cmu.cs.dennisc.alice.ast.Expression> expressions = this.bogusNode.arrayExpressions.getValue();
+			java.util.List<org.lgna.project.ast.Expression> expressions = this.bogusNode.arrayExpressions.getValue();
 			return org.alice.ide.ast.NodeUtilities.createArrayInstanceCreation(this.bogusNode.getType(), expressions);
 		}
 	}

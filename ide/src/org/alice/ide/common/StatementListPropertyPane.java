@@ -45,13 +45,13 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
+public class StatementListPropertyPane extends AbstractListPropertyPane< org.lgna.project.ast.StatementListProperty > {
 	private static final int INDENT = 8;
 	private static final int INTRASTICIAL_MIDDLE = 1;
 	public static final int INTRASTICIAL_PAD = INTRASTICIAL_MIDDLE*2+1;
 	
 //	private static final int INTRASTICIAL_PAD = 0;
-	public StatementListPropertyPane( Factory factory, final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
+	public StatementListPropertyPane( Factory factory, final org.lgna.project.ast.StatementListProperty property ) {
 		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
@@ -87,7 +87,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 	@Override
 	protected int getBoxLayoutPad() {
 		int rv;
-		if( this.getProperty().getOwner() instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
+		if( this.getProperty().getOwner() instanceof org.lgna.project.ast.DoTogether ) {
 			rv = 0;
 		} else {
 			rv = INTRASTICIAL_PAD;
@@ -227,23 +227,23 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		}
 	}
 	
-	private edu.cmu.cs.dennisc.alice.ast.Node getOwningBlockStatementOwningNode() {
+	private org.lgna.project.ast.Node getOwningBlockStatementOwningNode() {
 		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.getProperty().getOwner();
-		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
-			edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)owner;
+		if( owner instanceof org.lgna.project.ast.BlockStatement ) {
+			org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)owner;
 			return blockStatement.getParent();
 		} else {
 			return null;
 		}
 	}
-	private static boolean isOwnedByIf( edu.cmu.cs.dennisc.alice.ast.Node owningNode ) {
-		return owningNode instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair;
+	private static boolean isOwnedByIf( org.lgna.project.ast.Node owningNode ) {
+		return owningNode instanceof org.lgna.project.ast.BooleanExpressionBodyPair;
 	}
-	private static boolean isOwnedByElse( edu.cmu.cs.dennisc.alice.ast.Node owningNode ) {
-		return owningNode instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement;
+	private static boolean isOwnedByElse( org.lgna.project.ast.Node owningNode ) {
+		return owningNode instanceof org.lgna.project.ast.ConditionalStatement;
 	}
 	public java.awt.Rectangle getDropBounds( DefaultStatementPane statementAncestor ) {
-		edu.cmu.cs.dennisc.alice.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+		org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
 		boolean isIf = isOwnedByIf( owningNode );
 		boolean isElse = isOwnedByElse( owningNode );
 		java.awt.Rectangle rv = this.getBounds( statementAncestor );
@@ -276,7 +276,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 	
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)instance;
+		org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)instance;
 		return this.getFactory().createStatementPane( statement, getProperty() );
 	}
 	
@@ -285,13 +285,13 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		super.refresh();
 		int bottom;
 		if( this.getComponentCount() == 0 ) {
-			edu.cmu.cs.dennisc.alice.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
-			edu.cmu.cs.dennisc.alice.ast.StatementListProperty alternateListProperty;
-			if( owningNode instanceof edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair ) {
-				edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = (edu.cmu.cs.dennisc.alice.ast.ConditionalStatement)owningNode.getParent();
+			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+			org.lgna.project.ast.StatementListProperty alternateListProperty;
+			if( owningNode instanceof org.lgna.project.ast.BooleanExpressionBodyPair ) {
+				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode.getParent();
 				alternateListProperty = conditionalStatement.elseBody.getValue().statements;
-			} else if ( owningNode instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
-				edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = (edu.cmu.cs.dennisc.alice.ast.ConditionalStatement)owningNode;
+			} else if ( owningNode instanceof org.lgna.project.ast.ConditionalStatement ) {
+				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode;
 				alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue().statements;
 			} else {
 				alternateListProperty = null;
@@ -299,11 +299,11 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getProperty(), alternateListProperty ) );
 			bottom = 0;
 		} else {
-			edu.cmu.cs.dennisc.alice.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
 			//boolean isIf = isOwnedByIf( owningNode );
 			boolean isElse = isOwnedByElse( owningNode );
-			boolean isDoInOrder = owningNode instanceof edu.cmu.cs.dennisc.alice.ast.DoInOrder;
-			boolean isDoTogether = owningNode instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether;
+			boolean isDoInOrder = owningNode instanceof org.lgna.project.ast.DoInOrder;
+			boolean isDoTogether = owningNode instanceof org.lgna.project.ast.DoTogether;
 			if( /*isIf ||*/ isElse || isDoInOrder || isDoTogether ) {
 				bottom = 8;
 			} else {

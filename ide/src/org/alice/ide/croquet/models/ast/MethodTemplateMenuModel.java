@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, MethodTemplateMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodTemplateMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	private static java.util.Map< org.lgna.project.ast.MethodDeclaredInAlice, MethodTemplateMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized MethodTemplateMenuModel getInstance( org.lgna.project.ast.MethodDeclaredInAlice method ) {
 		MethodTemplateMenuModel rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -58,8 +58,8 @@ public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuM
 		return rv;
 	}
 
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	private MethodTemplateMenuModel( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	private org.lgna.project.ast.MethodDeclaredInAlice method;
+	private MethodTemplateMenuModel( org.lgna.project.ast.MethodDeclaredInAlice method ) {
 		super( java.util.UUID.fromString(  "96831579-1fb6-4c15-a509-ccdcc51458a8" ),
 				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( method ).getMenuItemPrepModel(),
 				org.alice.ide.operations.ast.FocusCodeOperation.getInstance( method ).getMenuItemPrepModel(),
@@ -70,6 +70,6 @@ public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuM
 	}
 	@Override
 	protected org.lgna.croquet.resolvers.CodableResolver< MethodTemplateMenuModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateMenuModel >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateMenuModel >( this, this.method, org.lgna.project.ast.MethodDeclaredInAlice.class );
 	}
 }

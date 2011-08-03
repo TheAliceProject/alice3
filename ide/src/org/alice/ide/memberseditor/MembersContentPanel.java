@@ -64,13 +64,13 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 		super.handleUndisplayable();
 	}
 	
-	protected abstract void refresh( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types );
+	protected abstract void refresh( java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types );
 	
 	private void refresh() {
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( instanceFactory != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();
+			org.lgna.project.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();
 			while( type != null ) {
 				types.add( type );
 				if( type.isFollowToSuperClassDesired() ) {

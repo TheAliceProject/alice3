@@ -46,19 +46,19 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
-	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner;
+	private org.lgna.project.ast.StatementListProperty prevOwner;
 	private int prevActualIndex;
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner;
+	private org.lgna.project.ast.Statement statement;
+	private org.lgna.project.ast.StatementListProperty nextOwner;
 	private int nextSpecifiedIndex;
 	private int nextActualIndex;
 
 	public MoveStatementEdit(
 			org.lgna.croquet.history.OperationStep< ? > step,
-			edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner,
+			org.lgna.project.ast.StatementListProperty prevOwner,
 			int prevIndex, 
-			edu.cmu.cs.dennisc.alice.ast.Statement statement,
-			edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner,
+			org.lgna.project.ast.Statement statement,
+			org.lgna.project.ast.StatementListProperty nextOwner,
 			int nextIndex) {
 		super( step );
 		this.prevOwner = prevOwner;
@@ -106,7 +106,7 @@ public class MoveStatementEdit extends org.alice.ide.ToDoEdit {
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		// super.updatePresentation( rv, locale );
 		rv.append("move: ");
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, this.statement, locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.statement, locale);
 		return rv;
 	}
 }

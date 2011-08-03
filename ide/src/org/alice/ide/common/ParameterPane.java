@@ -45,14 +45,14 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty;
+public class ParameterPane extends TransientPane<org.lgna.project.ast.ParameterDeclaredInAlice> {
+	private org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.ParameterDeclaredInAlice > parametersProperty;
 
-	public ParameterPane( edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty, final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	public ParameterPane( org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.ParameterDeclaredInAlice > parametersProperty, final org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
 		super( parameter );
 		this.parametersProperty = parametersProperty;
 		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( parameter ) );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
+		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( org.lgna.project.ast.ParameterAccess.class ) );
 		if( this.parametersProperty != null ) {
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, parameter );
 			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, parameter );
@@ -79,7 +79,7 @@ public class ParameterPane extends TransientPane<edu.cmu.cs.dennisc.alice.ast.Pa
 		}
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.ParameterAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

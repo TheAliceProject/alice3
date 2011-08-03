@@ -46,22 +46,22 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclareFieldActionOperation extends org.alice.ide.operations.ActionOperation {
-	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
+	protected abstract org.lgna.project.ast.TypeDeclaredInAlice getOwnerType();
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.FieldDeclaredInAlice, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, org.lgna.project.ast.TypeDeclaredInAlice ownerType );
 	protected abstract boolean isInstanceValid();
 	public AbstractDeclareFieldActionOperation( java.util.UUID individualId ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
 	@Override
 	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
+		org.lgna.project.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
 		if( ownerType != null ) {
-			final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( step, ownerType );
+			final edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.FieldDeclaredInAlice, ? extends Object> tuple = this.createFieldAndInstance( step, ownerType );
 			if( tuple != null ) {
-				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
+				org.lgna.project.ast.FieldDeclaredInAlice field = tuple.getA();
 				if( field != null ) {
-					edu.cmu.cs.dennisc.alice.ast.Statement[] doStatements = {}; //TODO: make this something for real
-					edu.cmu.cs.dennisc.alice.ast.Statement[] undoStatements = {}; //TODO: make this something for real
+					org.lgna.project.ast.Statement[] doStatements = {}; //TODO: make this something for real
+					org.lgna.project.ast.Statement[] undoStatements = {}; //TODO: make this something for real
 					step.commitAndInvokeDo( new DeclareFieldEdit( step, ownerType, field, doStatements, undoStatements ));
 				} else {
 					step.cancel();

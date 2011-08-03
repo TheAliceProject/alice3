@@ -45,9 +45,9 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.AbstractType, Void > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, TypeFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized TypeFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.AbstractType, Void > {
+	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, TypeFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TypeFillIn getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		TypeFillIn rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -57,33 +57,33 @@ public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< edu.cmu.cs.denni
 		}
 		return rv;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-	private TypeFillIn( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	private org.lgna.project.ast.AbstractType<?,?,?> type;
+	private TypeFillIn( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		super( java.util.UUID.fromString( "8f3e1f74-d1fd-4484-98e0-bc37da452005" ) );
 		this.type = type;
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeFillIn > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeFillIn >( this, this.type, edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeFillIn >( this, this.type, org.lgna.project.ast.AbstractType.class );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
+	public org.lgna.project.ast.AbstractType createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType, java.lang.Void > step ) {
 		return this.type;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
+	public org.lgna.project.ast.AbstractType getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType, java.lang.Void > step ) {
 		return this.type;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType, java.lang.Void > step ) {
 		throw new AssertionError();
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType, java.lang.Void > step ) {
 		return org.alice.ide.common.TypeIcon.getInstance( this.type );
 	}
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.AbstractType, java.lang.Void > step ) {
+	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType, java.lang.Void > step ) {
 		return org.alice.ide.IDE.getActiveInstance().getTextFor( type );
 	}
 }

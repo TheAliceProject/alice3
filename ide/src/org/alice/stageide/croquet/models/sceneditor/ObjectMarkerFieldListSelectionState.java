@@ -44,7 +44,7 @@
 package org.alice.stageide.croquet.models.sceneditor;
 
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.FieldDeclaredInAlice;
 
 public class ObjectMarkerFieldListSelectionState extends org.lgna.croquet.DefaultListSelectionState< FieldDeclaredInAlice > {
 	private static class SingletonHolder {

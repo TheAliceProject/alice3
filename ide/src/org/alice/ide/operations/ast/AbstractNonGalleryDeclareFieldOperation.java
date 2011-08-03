@@ -48,13 +48,13 @@ package org.alice.ide.operations.ast;
 //todo: remove
 @Deprecated
 abstract class AbstractNonGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
-	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
+	private final org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType;
+	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
 		super( individualId );
 		this.declaringType = declaringType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+	protected org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
 		return this.declaringType;
 	}
 }

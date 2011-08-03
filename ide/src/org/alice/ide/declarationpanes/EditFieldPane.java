@@ -45,12 +45,12 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
-	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldDeclaredInAlice;
+public class EditFieldPane extends AbstractDeclarationPane< org.lgna.project.ast.FieldDeclaredInAlice > {
+	private org.lgna.project.ast.FieldDeclaredInAlice fieldDeclaredInAlice;
 	private boolean isReferenced;
 	private boolean isReassigned;
 	private boolean isDropDownForFieldInitializerDesired;
-	public EditFieldPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldDeclaredInAlice, boolean isReferenced, boolean isReassigned ) {
+	public EditFieldPane( org.lgna.project.ast.FieldDeclaredInAlice fieldDeclaredInAlice, boolean isReferenced, boolean isReassigned ) {
 		super( new org.alice.ide.name.validators.FieldNameValidator( fieldDeclaredInAlice ), fieldDeclaredInAlice.valueType.getValue(), fieldDeclaredInAlice.initializer.getValue() );
 		this.fieldDeclaredInAlice = fieldDeclaredInAlice;
 		this.isReferenced = isReferenced;
@@ -83,7 +83,7 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getValueType() {
 		if( this.isDropDownForFieldInitializerDesired ) {
 			return super.getValueType();
 		} else {
@@ -92,7 +92,7 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
+	protected org.lgna.project.ast.Expression getInitializer() {
 		if( this.isDropDownForFieldInitializerDesired ) {
 			return super.getInitializer();
 		} else {
@@ -105,16 +105,16 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), this.getInputValue() );
 	}
 	@Override
-	public final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getInputValue() {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
-		edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither value;
+	public final org.lgna.project.ast.FieldDeclaredInAlice getInputValue() {
+		org.lgna.project.ast.FieldDeclaredInAlice rv = new org.lgna.project.ast.FieldDeclaredInAlice( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
+		org.lgna.project.ast.FieldModifierFinalVolatileOrNeither value;
 		if( this.isReassignable() ) {
-			value = edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.NEITHER;
+			value = org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.NEITHER;
 		} else {
-			value = edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL;
+			value = org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL;
 		}
 		rv.finalVolatileOrNeither.setValue( value );
-		rv.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+		rv.access.setValue( org.lgna.project.ast.Access.PRIVATE );
 		return rv;
 	}
 	@Override

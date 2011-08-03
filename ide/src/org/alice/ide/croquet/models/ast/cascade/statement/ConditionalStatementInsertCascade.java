@@ -63,7 +63,7 @@ public class ConditionalStatementInsertCascade extends StatementInsertCascade {
 		super( java.util.UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.alice.ide.ast.NodeUtilities.createConditionalStatement( expressions[ 0 ] );
 	}
 }

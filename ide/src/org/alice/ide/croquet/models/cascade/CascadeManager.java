@@ -61,10 +61,10 @@ public class CascadeManager {
 		}
 		return rv;
 	}
-	public static ExpressionBlank getBlankForType( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
+	public static ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		Class<?> cls;
 		if( type != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = type.getFirstTypeEncounteredDeclaredInJava();
+			org.lgna.project.ast.TypeDeclaredInJava typeDeclaredInJava = type.getFirstTypeEncounteredDeclaredInJava();
 			assert typeDeclaredInJava != null : type;
 			cls = typeDeclaredInJava.getClassReflectionProxy().getReification();
 		} else {
@@ -73,7 +73,7 @@ public class CascadeManager {
 		return getBlankForType( cls );
 	}
 
-	public static ExpressionBlank[] createBlanks( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? >... types ) {
+	public static ExpressionBlank[] createBlanks( org.lgna.project.ast.AbstractType< ?,?,? >... types ) {
 		ExpressionBlank[] rv = new ExpressionBlank[ types.length ];
 		for( int i=0; i<rv.length; i++ ) {
 			rv[ i ] = getBlankForType( types[ i ] );
@@ -81,6 +81,6 @@ public class CascadeManager {
 		return rv;
 	}
 	public static org.alice.ide.croquet.models.cascade.ExpressionBlank[] createBlanks( Class<?>... clses ) {
-		return createBlanks( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( clses ) );
+		return createBlanks( org.lgna.project.ast.TypeDeclaredInJava.get( clses ) );
 	}
 }

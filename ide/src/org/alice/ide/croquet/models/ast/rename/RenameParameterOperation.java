@@ -45,9 +45,9 @@ package org.alice.ide.croquet.models.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public class RenameParameterOperation extends RenameDeclarationOperation< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, RenameParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameParameterOperation getInstance( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+public class RenameParameterOperation extends RenameDeclarationOperation< org.lgna.project.ast.ParameterDeclaredInAlice > {
+	private static java.util.Map< org.lgna.project.ast.ParameterDeclaredInAlice, RenameParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameParameterOperation getInstance( org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
 		RenameParameterOperation rv = map.get( parameter );
 		if( rv != null ) {
 			//pass
@@ -58,11 +58,11 @@ public class RenameParameterOperation extends RenameDeclarationOperation< edu.cm
 		return rv;
 	}
 
-	private RenameParameterOperation( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+	private RenameParameterOperation( org.lgna.project.ast.ParameterDeclaredInAlice parameter ) {
 		super( java.util.UUID.fromString( "a5ea865d-495f-4962-99a6-b481d4ca3eb9" ), parameter, new org.alice.ide.name.validators.ParameterNameValidator( parameter ) );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation >( this, this.getDeclaration(), edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation >( this, this.getDeclaration(), org.lgna.project.ast.ParameterDeclaredInAlice.class );
 	}
 }

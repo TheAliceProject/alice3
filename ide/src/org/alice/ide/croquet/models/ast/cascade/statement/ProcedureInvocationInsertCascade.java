@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.codeeditor.BlockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod, ProcedureInvocationInsertCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ProcedureInvocationInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.codeeditor.BlockStatementIndexPair, org.lgna.project.ast.AbstractMethod, ProcedureInvocationInsertCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ProcedureInvocationInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractMethod method ) {
 		ProcedureInvocationInsertCascade rv = mapToMap.get( blockStatementIndexPair, method );
 		if( rv != null ) {
 			//pass
@@ -58,16 +58,16 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private ProcedureInvocationInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	private final org.lgna.project.ast.AbstractMethod method;
+	private ProcedureInvocationInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "d8ea7244-f0eb-4c3a-a9fa-a92182ed221a" ), blockStatementIndexPair, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
 		this.method = method;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod() {
+	public org.lgna.project.ast.AbstractMethod getMethod() {
 		return this.method;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( instanceExpression, this.method, expressions );
 	}
 	@Override

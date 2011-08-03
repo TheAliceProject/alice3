@@ -61,34 +61,34 @@ class IsArrayState extends org.lgna.croquet.BooleanState {
 	}
 }
 
-class TypePropertyItemState extends org.lgna.croquet.CustomItemState< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
-	private final edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty;
-	public TypePropertyItemState( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "1818f209-d305-431c-8fea-bcb8698ba908" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), org.alice.ide.croquet.models.ast.declaration.TypeBlank.getInstance() );
+class TypePropertyItemState extends org.lgna.croquet.CustomItemState< org.lgna.project.ast.AbstractType > {
+	private final org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > typeProperty;
+	public TypePropertyItemState( org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > typeProperty ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "1818f209-d305-431c-8fea-bcb8698ba908" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), org.alice.ide.croquet.models.ast.declaration.TypeBlank.getInstance() );
 		this.typeProperty = typeProperty;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValue() {
+	public org.lgna.project.ast.AbstractType getValue() {
 		return this.typeProperty.getValue();
 	}
 	@Override
-	protected void handleValueChange( edu.cmu.cs.dennisc.alice.ast.AbstractType value ) {
+	protected void handleValueChange( org.lgna.project.ast.AbstractType value ) {
 		this.typeProperty.setValue( value );
 	}
 }
 
 public class TypePane extends org.lgna.croquet.components.BorderPanel {
-	private edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty;
+	private org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > typeProperty;
 	private IsArrayState isArrayStateState;
 	
-	private class TypeDropDownPane extends org.lgna.croquet.components.ItemDropDown< edu.cmu.cs.dennisc.alice.ast.AbstractType, TypePropertyItemState > {
+	private class TypeDropDownPane extends org.lgna.croquet.components.ItemDropDown< org.lgna.project.ast.AbstractType, TypePropertyItemState > {
 		public TypeDropDownPane( TypePropertyItemState model ) {
 			super( model );
 			this.update( model.getValue() );
 			this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 		}
-		private void update( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		private void update( org.lgna.project.ast.AbstractType type ) {
 			this.getAction().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) {
 				@Override
 				protected java.awt.Color getTextColor(java.awt.Component c) {
@@ -98,12 +98,12 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 		}
 		
 		@Override
-		protected void handleChanged( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.AbstractType > state, edu.cmu.cs.dennisc.alice.ast.AbstractType prevValue, edu.cmu.cs.dennisc.alice.ast.AbstractType nextValue, boolean isAdjusting ) {
+		protected void handleChanged( org.lgna.croquet.State< org.lgna.project.ast.AbstractType > state, org.lgna.project.ast.AbstractType prevValue, org.lgna.project.ast.AbstractType nextValue, boolean isAdjusting ) {
 			this.update( nextValue );
 		}
 	};
 	
-	public TypePane( edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isTypeComboBoxEnabled, boolean isArrayCheckBoxEnabled ) {
+	public TypePane( org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isTypeComboBoxEnabled, boolean isArrayCheckBoxEnabled ) {
 		assert typeProperty != null;
 		this.typeProperty = typeProperty;
 		final TypeDropDownPane typeDropDownPane = new TypeDropDownPane( new TypePropertyItemState( typeProperty ) );
@@ -117,8 +117,8 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 		this.addComponent( isArrayCheckBox, Constraint.LINE_END );
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getValueType() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> rv = this.typeProperty.getValue();
+	public org.lgna.project.ast.AbstractType<?,?,?> getValueType() {
+		org.lgna.project.ast.AbstractType<?,?,?> rv = this.typeProperty.getValue();
 		if( rv != null ) {
 			if( this.isArrayStateState.getValue() ) {
 				rv = rv.getArrayType();

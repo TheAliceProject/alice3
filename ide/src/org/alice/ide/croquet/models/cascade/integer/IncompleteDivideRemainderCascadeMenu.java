@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.integer;
 /**
  * @author Dennis Cosgrove
  */
-public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > {
+public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< org.lgna.project.ast.ArithmeticInfixExpression > {
 	private static class SingletonHolder {
 		private static IncompleteDivideRemainderCascadeMenu instance = new IncompleteDivideRemainderCascadeMenu();
 	}
@@ -57,8 +57,8 @@ public class IncompleteDivideRemainderCascadeMenu extends org.alice.ide.croquet.
 		super( java.util.UUID.fromString( "a0289f52-a603-42a2-8afd-438b88ba54a4" ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression > context ) {
-		for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.ArithmeticInfixExpression > context ) {
+		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
 			rv.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 		return rv;

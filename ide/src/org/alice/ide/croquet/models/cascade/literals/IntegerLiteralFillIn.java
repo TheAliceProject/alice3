@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.literals;
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.IntegerLiteral > {
+public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.IntegerLiteral > {
 	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static IntegerLiteralFillIn getInstance( int value ) {
 		synchronized( map ) {
@@ -60,18 +60,18 @@ public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 			return rv;
 		}
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.IntegerLiteral transientValue;
+	private final org.lgna.project.ast.IntegerLiteral transientValue;
 	private IntegerLiteralFillIn( int value ) {
 		super( java.util.UUID.fromString( "db052fcb-b0e3-482a-aad9-13b9a2efc370" ) );
-		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( value );
+		this.transientValue = new org.lgna.project.ast.IntegerLiteral( value );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.IntegerLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.IntegerLiteral,Void > step ) {
+	public org.lgna.project.ast.IntegerLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > step ) {
 		return this.transientValue;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.IntegerLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.IntegerLiteral,Void > step ) {
-		return new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( this.transientValue.value.getValue() );
+	public org.lgna.project.ast.IntegerLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > step ) {
+		return new org.lgna.project.ast.IntegerLiteral( this.transientValue.value.getValue() );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver createCodableResolver() {

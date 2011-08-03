@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.cascade.array;
  * @author Dennis Cosgrove
  */
 public class ConstantArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice, ConstantArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ConstantArrayLengthFillIn getInstance( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
+	private static java.util.Map< org.lgna.project.ast.ConstantDeclaredInAlice, ConstantArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ConstantArrayLengthFillIn getInstance( org.lgna.project.ast.ConstantDeclaredInAlice constant ) {
 		assert constant != null;
 		ConstantArrayLengthFillIn rv = map.get( constant );
 		if( rv != null ) {
@@ -59,13 +59,13 @@ public class ConstantArrayLengthFillIn extends ArrayLengthFillIn {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
-	private ConstantArrayLengthFillIn( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
+	private final org.lgna.project.ast.ConstantDeclaredInAlice constant;
+	private ConstantArrayLengthFillIn( org.lgna.project.ast.ConstantDeclaredInAlice constant ) {
 		super( java.util.UUID.fromString( "b9ef605a-403e-4b18-b495-c4cf5782870a" ) );
 		this.constant = constant;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
+	protected org.lgna.project.ast.Expression createAccessExpression() {
+		return new org.lgna.project.ast.ConstantAccess( this.constant );
 	}
 }

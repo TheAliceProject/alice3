@@ -43,8 +43,8 @@
 package org.alice.stageide.gallerybrowser;
 
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
+import org.lgna.project.ast.TypeDeclaredInAlice;
 
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove

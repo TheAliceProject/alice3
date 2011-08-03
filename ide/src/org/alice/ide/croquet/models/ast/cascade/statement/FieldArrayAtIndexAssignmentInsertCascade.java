@@ -47,13 +47,13 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public FieldArrayAtIndexAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private final org.lgna.project.ast.AbstractField field;
+	public FieldArrayAtIndexAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "9097fa73-b622-47a0-8f69-3c4bfaf55d71" ), blockStatementIndexPair, field.getDesiredValueType() );
 		this.field = field;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createAccessExpression() {
+	protected org.lgna.project.ast.Expression createAccessExpression() {
 		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
 				org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), 
 				field

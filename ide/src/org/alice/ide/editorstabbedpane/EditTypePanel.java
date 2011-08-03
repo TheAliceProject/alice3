@@ -47,15 +47,15 @@ package org.alice.ide.editorstabbedpane;
  * @author Dennis Cosgrove
  */
 public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
-	interface MemberFilter< M extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > {
+	interface MemberFilter< M extends org.lgna.project.ast.MemberDeclaredInAlice > {
 		public boolean isAcceptable( M member );
 	}
-	interface MethodFilter extends MemberFilter< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	interface MethodFilter extends MemberFilter< org.lgna.project.ast.MethodDeclaredInAlice > {
 	}
-	interface FieldFilter extends MemberFilter< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+	interface FieldFilter extends MemberFilter< org.lgna.project.ast.FieldDeclaredInAlice > {
 	}
 	
-	class TypeMembersListModel< M extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.javax.swing.models.AbstractReorderableListModel< M > { //javax.swing.DefaultListModel { //javax.swing.AbstractListModel implements javax.swing.MutableComboBoxModel {
+	class TypeMembersListModel< M extends org.lgna.project.ast.MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.javax.swing.models.AbstractReorderableListModel< M > { //javax.swing.DefaultListModel { //javax.swing.AbstractListModel implements javax.swing.MutableComboBoxModel {
 		private java.util.List< M > list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		private edu.cmu.cs.dennisc.property.event.ListPropertyListener listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener() {
 			public void adding(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e) {
@@ -79,33 +79,33 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 				refresh();
 			}
 		};
-		private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+		private org.lgna.project.ast.TypeDeclaredInAlice type;
 		private MemberFilter<M> memberFilter;
 		private Class<M> cls;
-		public TypeMembersListModel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, MemberFilter<M> memberFilter, Class<M> cls ) {
+		public TypeMembersListModel( org.lgna.project.ast.TypeDeclaredInAlice type, MemberFilter<M> memberFilter, Class<M> cls ) {
 			this.type = type;
 			this.memberFilter = memberFilter;
 			this.cls = cls;
-			if (this.cls.isAssignableFrom(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class)) {
+			if (this.cls.isAssignableFrom(org.lgna.project.ast.MethodDeclaredInAlice.class)) {
 				this.type.methods.addListPropertyListener(this.listPropertyListener);
 			}
-			if (this.cls.isAssignableFrom(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class)) {
+			if (this.cls.isAssignableFrom(org.lgna.project.ast.FieldDeclaredInAlice.class)) {
 				this.type.fields.addListPropertyListener(this.listPropertyListener);
 			}
 			this.refresh();
 		}
 		private void refresh() {
 			this.list.clear();
-			if (cls.isAssignableFrom(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class)) {
-				for (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods) {
+			if (cls.isAssignableFrom(org.lgna.project.ast.MethodDeclaredInAlice.class)) {
+				for (org.lgna.project.ast.MethodDeclaredInAlice method : this.type.methods) {
 					M m = cls.cast(method);
 					if (memberFilter.isAcceptable(m)) {
 						this.list.add(m);
 					}
 				}
 			}
-			if (cls.isAssignableFrom(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class)) {
-				for (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields) {
+			if (cls.isAssignableFrom(org.lgna.project.ast.FieldDeclaredInAlice.class)) {
+				for (org.lgna.project.ast.FieldDeclaredInAlice field : this.type.fields) {
 					M m = cls.cast(field);
 					if (memberFilter.isAcceptable(m)) {
 						this.list.add(m);
@@ -146,29 +146,29 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 		
 		
 	}
-	class TypeMethodsListModel extends TypeMembersListModel< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
-		public TypeMethodsListModel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, MemberFilter<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> methodFilter ) {
-			super( type, methodFilter, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+	class TypeMethodsListModel extends TypeMembersListModel< org.lgna.project.ast.MethodDeclaredInAlice > {
+		public TypeMethodsListModel( org.lgna.project.ast.TypeDeclaredInAlice type, MemberFilter<org.lgna.project.ast.MethodDeclaredInAlice> methodFilter ) {
+			super( type, methodFilter, org.lgna.project.ast.MethodDeclaredInAlice.class );
 		}
 	}
-	class TypeFieldsListModel extends TypeMembersListModel< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
-		public TypeFieldsListModel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, MemberFilter<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> fieldFilter ) {
-			super( type, fieldFilter, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice.class );
+	class TypeFieldsListModel extends TypeMembersListModel< org.lgna.project.ast.FieldDeclaredInAlice > {
+		public TypeFieldsListModel( org.lgna.project.ast.TypeDeclaredInAlice type, MemberFilter<org.lgna.project.ast.FieldDeclaredInAlice> fieldFilter ) {
+			super( type, fieldFilter, org.lgna.project.ast.FieldDeclaredInAlice.class );
 		}
 	}
 	
 	private static final MethodFilter ALL_PROCEDURES_FILTER = new MethodFilter() { 
-		public boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		public boolean isAcceptable( org.lgna.project.ast.MethodDeclaredInAlice method ) {
 			return method.isProcedure();
 		}
 	};
 	private static final MethodFilter ALL_FUNCTIONS_FILTER = new MethodFilter() { 
-		public boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		public boolean isAcceptable( org.lgna.project.ast.MethodDeclaredInAlice method ) {
 			return method.isFunction();
 		}
 	};
 	private static final FieldFilter ALL_FIELDS_FILTER = new FieldFilter() { 
-		public boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		public boolean isAcceptable( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 			return true;
 		}
 	};
@@ -353,9 +353,9 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 		}
 	}
 	
-	static class MethodList extends EditableList< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	static class MethodList extends EditableList< org.lgna.project.ast.MethodDeclaredInAlice > {
 		@Override
-		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(org.lgna.project.ast.MethodDeclaredInAlice item) {
 			if( item.isSignatureLocked.getValue() ) {
 				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( item.getName() + " is locked and therefore cannot be renamed." );
 				return null;
@@ -364,14 +364,14 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 			}
 		}
 		@Override
-		protected org.lgna.croquet.Operation<?> getPopupTriggerOperation(edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getPopupTriggerOperation(org.lgna.project.ast.MethodDeclaredInAlice item) {
 			return null;
 		}
 	}
-	static class FieldList extends EditableList< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+	static class FieldList extends EditableList< org.lgna.project.ast.FieldDeclaredInAlice > {
 		@Override
-		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice item) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = item.getValueType();
+		protected org.lgna.croquet.Operation<?> getDoubleClickOperation(org.lgna.project.ast.FieldDeclaredInAlice item) {
+			org.lgna.project.ast.AbstractType<?,?,?> valueType = item.getValueType();
 			if( valueType.isAssignableTo( org.lgna.story.CameraMarker.class ) ) {
 				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Currently, camera markers cannot be renamed." );
 				return null;
@@ -380,14 +380,14 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 			}
 		}
 		@Override
-		protected org.lgna.croquet.Operation<?> getPopupTriggerOperation(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice item) {
+		protected org.lgna.croquet.Operation<?> getPopupTriggerOperation(org.lgna.project.ast.FieldDeclaredInAlice item) {
 			return null;
 		}
 	}
 	
 	
 	class Title extends org.lgna.croquet.components.FlowPanel {
-		public Title( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		public Title( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 			super( Alignment.LEADING );
 			this.addComponent( new org.lgna.croquet.components.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
@@ -406,26 +406,26 @@ public class EditTypePanel extends org.lgna.croquet.components.BorderPanel {
 	}
 
 	private int historyIndex;
-	public EditTypePanel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, int historyIndex ) {
+	public EditTypePanel( org.lgna.project.ast.TypeDeclaredInAlice type, int historyIndex ) {
 		this.historyIndex = historyIndex;
-		javax.swing.ListCellRenderer procedureListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >() {
+		javax.swing.ListCellRenderer procedureListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.project.ast.MethodDeclaredInAlice >() {
 			@Override
-			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
+			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.MethodDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
 				rv.setText( value.getName() );
 				return rv;
 			}
 		};
-		javax.swing.ListCellRenderer functionListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >() {
+		javax.swing.ListCellRenderer functionListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.project.ast.MethodDeclaredInAlice >() {
 			@Override
-			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
+			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.MethodDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
 				rv.setText( value.getName() );
 				rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getReturnType() ) );
 				return rv;
 			}
 		};
-		javax.swing.ListCellRenderer fieldListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
+		javax.swing.ListCellRenderer fieldListCellRenderer = new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.project.ast.FieldDeclaredInAlice >() {
 			@Override
-			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
+			protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.FieldDeclaredInAlice value, int index, boolean isSelected, boolean cellHasFocus ) {
 				rv.setText( value.getName() );
 				rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getValueType() ) );
 				return rv;

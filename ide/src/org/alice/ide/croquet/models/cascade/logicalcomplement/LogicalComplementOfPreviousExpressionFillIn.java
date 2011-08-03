@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.logicalcomplement;
 /**
  * @author Dennis Cosgrove
  */
-public class LogicalComplementOfPreviousExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.LogicalComplement > {
+public class LogicalComplementOfPreviousExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< org.lgna.project.ast.LogicalComplement > {
 	private static class SingletonHolder {
 		private static LogicalComplementOfPreviousExpressionFillIn instance = new LogicalComplementOfPreviousExpressionFillIn();
 	}
@@ -61,7 +61,7 @@ public class LogicalComplementOfPreviousExpressionFillIn extends org.alice.ide.c
 //		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
 //	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.LogicalComplement createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( previousExpression );
+	protected org.lgna.project.ast.LogicalComplement createValue( org.lgna.project.ast.Expression previousExpression ) {
+		return new org.lgna.project.ast.LogicalComplement( previousExpression );
 	}
 }

@@ -47,15 +47,15 @@ package org.alice.ide.memberseditor;
  */
 abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 	@Override
-	protected void refresh( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> > types ) {
+	protected void refresh( java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types ) {
 		this.removeAllComponents();
 		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
 
 		if( types.size() > 0 ) {
-			boolean isSeparatorDesired = types.get( 0 ) instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type : types ) {
+			boolean isSeparatorDesired = types.get( 0 ) instanceof org.lgna.project.ast.TypeDeclaredInAlice;
+			for( org.lgna.project.ast.AbstractType<?,?,?> type : types ) {
 				boolean isFirstNonConsumedTypeEncounteredInJava = false;
-				if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
+				if( type instanceof org.lgna.project.ast.TypeDeclaredInJava ) {
 					if( isSeparatorDesired ) {
 						this.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
 						this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
@@ -75,7 +75,7 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 				if( type.isConsumptionBySubClassDesired() ) {
 					//pass
 				} else {
-					if( /*org.alice.ide.IDE.getActiveInstance().isEmphasizingClasses() ||*/ type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
+					if( /*org.alice.ide.IDE.getActiveInstance().isEmphasizingClasses() ||*/ type instanceof org.lgna.project.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
 						this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
 					}
 				}
@@ -85,9 +85,9 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 		this.revalidateAndRepaint();
 	}
 
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, AbstractTypeMembersPane >();
-	protected abstract AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type );
-	protected AbstractTypeMembersPane getTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	private java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< org.lgna.project.ast.AbstractType<?,?,?>, AbstractTypeMembersPane >();
+	protected abstract AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type );
+	protected AbstractTypeMembersPane getTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		AbstractTypeMembersPane rv = this.mapTypeToPane.get( type );
 		if( rv != null ) {
 			//todo?

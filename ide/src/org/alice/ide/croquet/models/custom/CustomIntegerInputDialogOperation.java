@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomIntegerInputDialogOperation extends CustomInputDialogOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class CustomIntegerInputDialogOperation extends CustomInputDialogOperation< org.lgna.project.ast.Expression > {
 	private static class SingletonHolder {
 		private static CustomIntegerInputDialogOperation instance = new CustomIntegerInputDialogOperation();
 	}

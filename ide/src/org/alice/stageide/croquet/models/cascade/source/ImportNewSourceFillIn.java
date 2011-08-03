@@ -45,39 +45,39 @@ package org.alice.stageide.croquet.models.cascade.source;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImportNewSourceFillIn< E, R extends org.alice.virtualmachine.Resource > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
-	private final edu.cmu.cs.dennisc.alice.ast.InstanceCreation transientValue;
+public abstract class ImportNewSourceFillIn< E, R extends org.alice.virtualmachine.Resource > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.InstanceCreation > {
+	private final org.lgna.project.ast.InstanceCreation transientValue;
 	public ImportNewSourceFillIn( java.util.UUID id ) {
 		super( id );
 		this.transientValue = this.createValue( new org.alice.ide.ast.EmptyExpression( this.getResourceClass() ) );
 	}
 	
-	private edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( getSourceClass(), getResourceClass() );
-		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-		edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, expression );
-		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 );
+	private org.lgna.project.ast.InstanceCreation createValue( org.lgna.project.ast.Expression expression ) {
+		org.lgna.project.ast.ConstructorDeclaredInJava constructor = org.lgna.project.ast.ConstructorDeclaredInJava.get( getSourceClass(), getResourceClass() );
+		org.lgna.project.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
+		org.lgna.project.ast.Argument argument0 = new org.lgna.project.ast.Argument( parameter0, expression );
+		return new org.lgna.project.ast.InstanceCreation( constructor, argument0 );
 	}
 	
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, java.lang.Void > step ) {
 		return new javax.swing.JLabel( this.getMenuText() );
 	}
 	@Override
-	public final edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
+	public final org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, java.lang.Void > step ) {
 		return this.transientValue;
 	}
 	@Override
-	public final edu.cmu.cs.dennisc.alice.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.InstanceCreation, java.lang.Void > step ) {
+	public final org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, java.lang.Void > step ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		try {
 			R resource = this.getResourcePrompter().promptUserForResource( ide.getFrame() );
 			if( resource != null ) {
-				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+				org.lgna.project.Project project = ide.getProject();
 				if( project != null ) {
 					project.addResource( resource );
 				}
-				return this.createValue( new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( getResourceClass(), resource ) );
+				return this.createValue( new org.lgna.project.ast.ResourceExpression( getResourceClass(), resource ) );
 			} else {
 				throw new org.lgna.croquet.CancelException( "" );
 			}

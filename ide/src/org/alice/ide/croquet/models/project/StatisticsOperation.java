@@ -58,14 +58,14 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 	@Override
 	protected org.lgna.croquet.components.Container<?> createContentPane(org.lgna.croquet.history.InformationDialogOperationStep step, org.lgna.croquet.components.Dialog dialog) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = ide.getStrippedProgramType();
+		org.lgna.project.ast.TypeDeclaredInAlice programType = ide.getStrippedProgramType();
 		if( programType != null ) {
 			class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-				private java.util.Map< Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement>, Integer > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap(); 
+				private java.util.Map< Class<? extends org.lgna.project.ast.Statement>, Integer > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap(); 
 				public void visit(edu.cmu.cs.dennisc.pattern.Crawlable crawlable) {
-					if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
-						edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)crawlable;
-						Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls = statement.getClass();
+					if( crawlable instanceof org.lgna.project.ast.Statement ) {
+						org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
+						Class<? extends org.lgna.project.ast.Statement> cls = statement.getClass();
 						Integer count = this.map.get( cls );
 						if( count != null ) {
 							count += 1;
@@ -75,7 +75,7 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 						this.map.put( cls, count );
 					}
 				}
-				public int getCount( Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> cls ) {
+				public int getCount( Class<? extends org.lgna.project.ast.Statement> cls ) {
 					Integer count = this.map.get( cls );
 					if( count != null ) {
 						return count;
@@ -88,18 +88,18 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 			programType.crawl(crawler, true);
 			
 			Class[] clses = { 
-				edu.cmu.cs.dennisc.alice.ast.DoInOrder.class,
-				edu.cmu.cs.dennisc.alice.ast.CountLoop.class,
-				edu.cmu.cs.dennisc.alice.ast.WhileLoop.class,
-				edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop.class,
-				edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class,
-				edu.cmu.cs.dennisc.alice.ast.DoTogether.class,
-				edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class,
-				edu.cmu.cs.dennisc.alice.ast.DoInThread.class,
-				edu.cmu.cs.dennisc.alice.ast.Comment.class,
-				edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement.class,
-				edu.cmu.cs.dennisc.alice.ast.ConstantDeclarationStatement.class,
-				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class
+				org.lgna.project.ast.DoInOrder.class,
+				org.lgna.project.ast.CountLoop.class,
+				org.lgna.project.ast.WhileLoop.class,
+				org.lgna.project.ast.ForEachInArrayLoop.class,
+				org.lgna.project.ast.ConditionalStatement.class,
+				org.lgna.project.ast.DoTogether.class,
+				org.lgna.project.ast.EachInArrayTogether.class,
+				org.lgna.project.ast.DoInThread.class,
+				org.lgna.project.ast.Comment.class,
+				org.lgna.project.ast.VariableDeclarationStatement.class,
+				org.lgna.project.ast.ConstantDeclarationStatement.class,
+				org.lgna.project.ast.ExpressionStatement.class
 			};
 			
 			StringBuilder sb = new StringBuilder();

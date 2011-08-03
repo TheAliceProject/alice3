@@ -47,139 +47,139 @@ package org.alice.stageide.ast;
  * @author Dennis Cosgrove
  */
 public class BootstrapUtilties {
-	private static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createType( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > superType ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice();
+	private static org.lgna.project.ast.TypeDeclaredInAlice createType( String name, org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
+		org.lgna.project.ast.TypeDeclaredInAlice rv = new org.lgna.project.ast.TypeDeclaredInAlice();
 		rv.name.setValue( name );
 		rv.superType.setValue( superType );
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = new edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice();
-		edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement constructorBlockStatement = new edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement();
-		edu.cmu.cs.dennisc.alice.ast.SuperConstructorInvocationStatement superConstructorInvocationStatement = new edu.cmu.cs.dennisc.alice.ast.SuperConstructorInvocationStatement();
+		org.lgna.project.ast.ConstructorDeclaredInAlice constructor = new org.lgna.project.ast.ConstructorDeclaredInAlice();
+		org.lgna.project.ast.ConstructorBlockStatement constructorBlockStatement = new org.lgna.project.ast.ConstructorBlockStatement();
+		org.lgna.project.ast.SuperConstructorInvocationStatement superConstructorInvocationStatement = new org.lgna.project.ast.SuperConstructorInvocationStatement();
 		superConstructorInvocationStatement.contructor.setValue( superType.getDeclaredConstructor() );
 		constructorBlockStatement.constructorInvocationStatement.setValue( superConstructorInvocationStatement );
 		constructor.body.setValue( constructorBlockStatement );
 		rv.constructors.add( constructor );
 		return rv;
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createType( String name, Class<?> superCls ) {
-		return createType( name, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( superCls ) );
+	private static org.lgna.project.ast.TypeDeclaredInAlice createType( String name, Class<?> superCls ) {
+		return createType( name, org.lgna.project.ast.TypeDeclaredInJava.get( superCls ) );
 	}
 	
-	private static edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createPrivateFinalField( edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > valueType, String name ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice();
-		rv.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
-		rv.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+	private static org.lgna.project.ast.FieldDeclaredInAlice createPrivateFinalField( org.lgna.project.ast.AbstractType< ?,?,? > valueType, String name ) {
+		org.lgna.project.ast.FieldDeclaredInAlice rv = new org.lgna.project.ast.FieldDeclaredInAlice();
+		rv.access.setValue( org.lgna.project.ast.Access.PRIVATE );
+		rv.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		rv.valueType.setValue( valueType );
 		rv.name.setValue( name );
 		rv.initializer.setValue( org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType ) );
 		return rv;
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createPrivateFinalField( Class< ? > cls, String name ) {
-		return createPrivateFinalField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), name );
+	private static org.lgna.project.ast.FieldDeclaredInAlice createPrivateFinalField( Class< ? > cls, String name ) {
+		return createPrivateFinalField( org.lgna.project.ast.TypeDeclaredInJava.get( cls ), name );
 	}
 	
-	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createMethod( edu.cmu.cs.dennisc.alice.ast.Access access, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > returnType, String name ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice();
+	private static org.lgna.project.ast.MethodDeclaredInAlice createMethod( org.lgna.project.ast.Access access, org.lgna.project.ast.AbstractType< ?,?,? > returnType, String name ) {
+		org.lgna.project.ast.MethodDeclaredInAlice rv = new org.lgna.project.ast.MethodDeclaredInAlice();
 		rv.access.setValue( access );
 		rv.returnType.setValue( returnType );
 		rv.name.setValue( name );
-		rv.body.setValue( new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+		rv.body.setValue( new org.lgna.project.ast.BlockStatement() );
 		return rv;
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createMethod( edu.cmu.cs.dennisc.alice.ast.Access access, Class< ? > cls, String name ) {
-		return createMethod( access, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), name );
+	private static org.lgna.project.ast.MethodDeclaredInAlice createMethod( org.lgna.project.ast.Access access, Class< ? > cls, String name ) {
+		return createMethod( access, org.lgna.project.ast.TypeDeclaredInJava.get( cls ), name );
 	}
 	
-	private static edu.cmu.cs.dennisc.alice.ast.FieldAccess createThisFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
+	private static org.lgna.project.ast.FieldAccess createThisFieldAccess( org.lgna.project.ast.AbstractField field ) {
+		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createMethodInvocationStatement( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
+	private static org.lgna.project.ast.ExpressionStatement createMethodInvocationStatement( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( expression, method, argumentExpressions );
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement createVariableDeclarationStatementInitializedByInstanceCreation( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
-		edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( name, type );
-		return org.alice.ide.ast.NodeUtilities.createVariableDeclarationStatement( variable, new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( type.getDeclaredConstructor() ) );
+	private static org.lgna.project.ast.VariableDeclarationStatement createVariableDeclarationStatementInitializedByInstanceCreation( String name, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		org.lgna.project.ast.VariableDeclaredInAlice variable = new org.lgna.project.ast.VariableDeclaredInAlice( name, type );
+		return org.alice.ide.ast.NodeUtilities.createVariableDeclarationStatement( variable, new org.lgna.project.ast.InstanceCreation( type.getDeclaredConstructor() ) );
 	}
 	
-	private static edu.cmu.cs.dennisc.alice.ast.FieldAccess createFieldAccess( Enum<?> value ) {
+	private static org.lgna.project.ast.FieldAccess createFieldAccess( Enum<?> value ) {
 		return org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createProgramType( org.lgna.story.Ground.Appearance appearance ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
+	public static org.lgna.project.ast.TypeDeclaredInAlice createProgramType( org.lgna.story.Ground.Appearance appearance ) {
+		org.lgna.project.ast.FieldDeclaredInAlice sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
+		org.lgna.project.ast.FieldDeclaredInAlice groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
+		org.lgna.project.ast.FieldDeclaredInAlice cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
 
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice myFirstMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PUBLIC, Void.TYPE, "myFirstMethod" );
+		org.lgna.project.ast.MethodDeclaredInAlice myFirstMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "myFirstMethod" );
 
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice performGeneratedSetupMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE, Void.TYPE, org.alice.ide.IDE.GENERATED_SET_UP_METHOD_NAME );
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
+		org.lgna.project.ast.MethodDeclaredInAlice performGeneratedSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, org.alice.ide.IDE.GENERATED_SET_UP_METHOD_NAME );
+		org.lgna.project.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 		
-		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] { cameraField, sunField, groundField } ) {
+		for( org.lgna.project.ast.FieldDeclaredInAlice field : new org.lgna.project.ast.FieldDeclaredInAlice[] { cameraField, sunField, groundField } ) {
 			java.lang.reflect.Method mthd;
 			try {
-				mthd = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)field.getValueType()).getClassReflectionProxy().getReification().getMethod( "setVehicle", org.lgna.story.Entity.class );
+				mthd = ((org.lgna.project.ast.TypeDeclaredInJava)field.getValueType()).getClassReflectionProxy().getReification().getMethod( "setVehicle", org.lgna.story.Entity.class );
 			} catch( NoSuchMethodException nsme ) {
 				throw new RuntimeException( nsme );
 			}
-			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( mthd );
+			org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.MethodDeclaredInJava.get( mthd );
 			//edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lookingglassandalice.storytelling.Entity.class );
 
 			performGeneratedSetupBody.statements.add( 
 					createMethodInvocationStatement( 
 							createThisFieldAccess( field ), 
 							method, 
-							new edu.cmu.cs.dennisc.alice.ast.ThisExpression() 
+							new org.lgna.project.ast.ThisExpression() 
 					) 
 			);
 		}
 		
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava setAppearanceMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( org.lgna.story.Ground.class, "setAppearance", org.lgna.story.Ground.Appearance.class );
+		org.lgna.project.ast.MethodDeclaredInJava setAppearanceMethod = org.lgna.project.ast.MethodDeclaredInJava.get( org.lgna.story.Ground.class, "setAppearance", org.lgna.story.Ground.Appearance.class );
 		
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setAppearanceMethod, createFieldAccess( appearance ) ) );
 
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice performCustomSetupMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE, Void.TYPE, "performCustomSetup" );
+		org.lgna.project.ast.MethodDeclaredInAlice performCustomSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, "performCustomSetup" );
 
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice handleActiveChangedMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PROTECTED, Void.TYPE, "handleActiveChanged" );
-		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice isActiveParameter = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "isActive", Boolean.class );
-		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice activeCountParameter = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "activeCount", Integer.class );
+		org.lgna.project.ast.MethodDeclaredInAlice handleActiveChangedMethod = createMethod( org.lgna.project.ast.Access.PROTECTED, Void.TYPE, "handleActiveChanged" );
+		org.lgna.project.ast.ParameterDeclaredInAlice isActiveParameter = new org.lgna.project.ast.ParameterDeclaredInAlice( "isActive", Boolean.class );
+		org.lgna.project.ast.ParameterDeclaredInAlice activeCountParameter = new org.lgna.project.ast.ParameterDeclaredInAlice( "activeCount", Integer.class );
 		handleActiveChangedMethod.parameters.add( isActiveParameter );
 		handleActiveChangedMethod.parameters.add( activeCountParameter );
 
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement handleActiveChangedBody = handleActiveChangedMethod.body.getValue();
+		org.lgna.project.ast.BlockStatement handleActiveChangedBody = handleActiveChangedMethod.body.getValue();
 		
-		edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ifOuter = org.alice.ide.ast.NodeUtilities.createConditionalStatement( 
-				new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( isActiveParameter ) 
+		org.lgna.project.ast.ConditionalStatement ifOuter = org.alice.ide.ast.NodeUtilities.createConditionalStatement( 
+				new org.lgna.project.ast.ParameterAccess( isActiveParameter ) 
 		);
-		edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ifInner = org.alice.ide.ast.NodeUtilities.createConditionalStatement( 
-				new edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression( 
-						new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( activeCountParameter ), 
-						edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.EQUALS, 
-						new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 1 ), 
+		org.lgna.project.ast.ConditionalStatement ifInner = org.alice.ide.ast.NodeUtilities.createConditionalStatement( 
+				new org.lgna.project.ast.RelationalInfixExpression( 
+						new org.lgna.project.ast.ParameterAccess( activeCountParameter ), 
+						org.lgna.project.ast.RelationalInfixExpression.Operator.EQUALS, 
+						new org.lgna.project.ast.IntegerLiteral( 1 ), 
 						Integer.class, 
 						Integer.class 
 				)
 		);
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement ifOuterTrueBody = ifOuter.booleanExpressionBodyPairs.get( 0 ).body.getValue(); 
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement ifInnerTrueBody = ifInner.booleanExpressionBodyPairs.get( 0 ).body.getValue(); 
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement ifInnerFalseBody = ifInner.elseBody.getValue(); 
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement ifOuterFalseBody = ifOuter.elseBody.getValue(); 
+		org.lgna.project.ast.BlockStatement ifOuterTrueBody = ifOuter.booleanExpressionBodyPairs.get( 0 ).body.getValue(); 
+		org.lgna.project.ast.BlockStatement ifInnerTrueBody = ifInner.booleanExpressionBodyPairs.get( 0 ).body.getValue(); 
+		org.lgna.project.ast.BlockStatement ifInnerFalseBody = ifInner.elseBody.getValue(); 
+		org.lgna.project.ast.BlockStatement ifOuterFalseBody = ifOuter.elseBody.getValue(); 
 
 		ifOuterTrueBody.statements.add( ifInner );
 
-		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), performGeneratedSetupMethod ) );
-		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), performGeneratedSetupMethod ) );
+		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performGeneratedSetupMethod ) );
+		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performGeneratedSetupMethod ) );
 
 		Class< ? > sceneCls = org.lgna.story.Scene.class;
 		
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava preserveVehiclesAndVantagePointsMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( sceneCls, "preserveVehiclesAndVantagePoints" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava restoreVehiclesAndVantagePointsMethod = edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( sceneCls, "restoreVehiclesAndVantagePoints" );
-		ifInnerFalseBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), restoreVehiclesAndVantagePointsMethod ) );
-		ifOuterFalseBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), preserveVehiclesAndVantagePointsMethod ) );
+		org.lgna.project.ast.MethodDeclaredInJava preserveVehiclesAndVantagePointsMethod = org.lgna.project.ast.MethodDeclaredInJava.get( sceneCls, "preserveVehiclesAndVantagePoints" );
+		org.lgna.project.ast.MethodDeclaredInJava restoreVehiclesAndVantagePointsMethod = org.lgna.project.ast.MethodDeclaredInJava.get( sceneCls, "restoreVehiclesAndVantagePoints" );
+		ifInnerFalseBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), restoreVehiclesAndVantagePointsMethod ) );
+		ifOuterFalseBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), preserveVehiclesAndVantagePointsMethod ) );
 
 		handleActiveChangedBody.statements.add( ifOuter );
 		
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = createType( "MyScene", org.lgna.story.Scene.class );
+		org.lgna.project.ast.TypeDeclaredInAlice sceneType = createType( "MyScene", org.lgna.story.Scene.class );
 		sceneType.fields.add( sunField );
 		sceneType.fields.add( groundField );
 		sceneType.fields.add( cameraField );
@@ -188,13 +188,13 @@ public class BootstrapUtilties {
 		sceneType.methods.add( handleActiveChangedMethod );
 		sceneType.methods.add( myFirstMethod );
 
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = createPrivateFinalField( sceneType, "myScene" );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice playOutStoryMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PUBLIC, Void.TYPE, "playOutStory" );
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement playOutStoryBody = playOutStoryMethod.body.getValue();
+		org.lgna.project.ast.FieldDeclaredInAlice sceneField = createPrivateFinalField( sceneType, "myScene" );
+		org.lgna.project.ast.MethodDeclaredInAlice playOutStoryMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "playOutStory" );
+		org.lgna.project.ast.BlockStatement playOutStoryBody = playOutStoryMethod.body.getValue();
 		playOutStoryBody.statements.add( 
 				createMethodInvocationStatement( 
-						new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), 
-						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
+						new org.lgna.project.ast.ThisExpression(), 
+						org.lgna.project.ast.MethodDeclaredInJava.get( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
 						createThisFieldAccess( sceneField )
 				)
 		);
@@ -206,24 +206,24 @@ public class BootstrapUtilties {
 		);
 		
 		
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = createType( "MyProgram", org.lgna.story.Program.class );
+		org.lgna.project.ast.TypeDeclaredInAlice rv = createType( "MyProgram", org.lgna.story.Program.class );
 		rv.fields.add( sceneField );
 		rv.methods.add( playOutStoryMethod );
 
 		
 		
-		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice argsParameter = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "args", String[].class );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice mainMethod = createMethod( edu.cmu.cs.dennisc.alice.ast.Access.PUBLIC, Void.TYPE, "main" );
+		org.lgna.project.ast.ParameterDeclaredInAlice argsParameter = new org.lgna.project.ast.ParameterDeclaredInAlice( "args", String[].class );
+		org.lgna.project.ast.MethodDeclaredInAlice mainMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "main" );
 		mainMethod.parameters.add( argsParameter );
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement mainBody = mainMethod.body.getValue();
+		org.lgna.project.ast.BlockStatement mainBody = mainMethod.body.getValue();
 
 		mainMethod.isStatic.setValue( true );
 		
-		edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement variableDeclarationStatement = createVariableDeclarationStatementInitializedByInstanceCreation( "story", rv );
-		edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice storyVariable = variableDeclarationStatement.variable.getValue();
+		org.lgna.project.ast.VariableDeclarationStatement variableDeclarationStatement = createVariableDeclarationStatementInitializedByInstanceCreation( "story", rv );
+		org.lgna.project.ast.VariableDeclaredInAlice storyVariable = variableDeclarationStatement.variable.getValue();
 		mainBody.statements.add( variableDeclarationStatement );
-		mainBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.VariableAccess( storyVariable ), rv.findMethod( "initializeInFrame", String[].class ), new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( argsParameter ) ) );
-		mainBody.statements.add( createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.VariableAccess( storyVariable ), playOutStoryMethod ) );
+		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.VariableAccess( storyVariable ), rv.findMethod( "initializeInFrame", String[].class ), new org.lgna.project.ast.ParameterAccess( argsParameter ) ) );
+		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.VariableAccess( storyVariable ), playOutStoryMethod ) );
 		rv.methods.add( mainMethod );
 		
 		return rv;

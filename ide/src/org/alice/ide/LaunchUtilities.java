@@ -142,7 +142,7 @@ public class LaunchUtilities {
 				for( String path : new String[] { "classinfos.zip", "classinfos" } ) {
 					java.io.File file = new java.io.File( applicationRootDirectory, path );
 					if( file.exists() ) {
-						edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.addClassInfosFrom( file );
+						org.lgna.project.reflect.ClassInfoManager.addClassInfosFrom( file );
 						break;
 					}
 				}

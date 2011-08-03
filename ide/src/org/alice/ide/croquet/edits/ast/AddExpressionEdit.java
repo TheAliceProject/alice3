@@ -45,11 +45,11 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.Cascade<edu.cmu.cs.dennisc.alice.ast.Expression> > {
-	private final edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	private final edu.cmu.cs.dennisc.alice.ast.Expression expression;
+public class AddExpressionEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> > {
+	private final org.lgna.project.ast.ExpressionListProperty expressionListProperty;
+	private final org.lgna.project.ast.Expression expression;
 	private transient int index;
-	public AddExpressionEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public AddExpressionEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.ExpressionListProperty expressionListProperty, org.lgna.project.ast.Expression expression ) {
 		super( completionStep );
 		this.expressionListProperty = expressionListProperty;
 		this.expression = expression;
@@ -58,13 +58,13 @@ public class AddExpressionEdit extends org.lgna.croquet.edits.Edit< org.lgna.cro
 		super( binaryDecoder, step );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: decode expressionListProperty" );
 		this.expressionListProperty = null;
-		this.expression = org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).decodeValue( binaryDecoder );
+		this.expression = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ).decodeValue( binaryDecoder );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: encode expressionListProperty" );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ).encodeValue( binaryEncoder, this.expression );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ).encodeValue( binaryEncoder, this.expression );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
@@ -78,7 +78,7 @@ public class AddExpressionEdit extends org.lgna.croquet.edits.Edit< org.lgna.cro
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "add: " );
-		edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, this.expression, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.expression, locale );
 		return rv;
 	}
 }

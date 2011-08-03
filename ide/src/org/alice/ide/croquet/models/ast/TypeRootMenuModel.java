@@ -58,9 +58,9 @@ public class TypeRootMenuModel extends org.lgna.croquet.MenuModel {
 	@Override
 	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		super.handleShowing( menuItemContainer, e );
-		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = project.getProgramType();
-		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getTypes( project ) ) {
+		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		final org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
+		for( org.lgna.project.ast.TypeDeclaredInAlice type : org.lgna.project.project.ProjectUtilities.getTypes( project ) ) {
 			if( type == programType ) {
 				//pass
 			} else {

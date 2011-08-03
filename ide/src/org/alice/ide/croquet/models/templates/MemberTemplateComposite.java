@@ -50,7 +50,7 @@ public abstract class MemberTemplateComposite extends TemplateComposite {
 	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
-			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type; 
+			org.lgna.project.ast.AbstractType< ?, ?, ? > type; 
 			if( instanceFactory != null ) {
 				type = instanceFactory.getValueType();
 			} else {

@@ -44,15 +44,15 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.memberseditor.templates.GetterTemplate;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.ThisExpression;
 
-import edu.cmu.cs.dennisc.alice.ast.AbstractField;
-import edu.cmu.cs.dennisc.alice.ast.ThisExpression;
 
 public class CameraViewFieldComponent extends GetterTemplate {
 	
 	protected AbstractField field;
 	
-	public CameraViewFieldComponent(edu.cmu.cs.dennisc.alice.ast.AbstractField field) {
+	public CameraViewFieldComponent(org.lgna.project.ast.AbstractField field) {
 		super(field);
 		this.field = field;
 	}
@@ -69,7 +69,7 @@ public class CameraViewFieldComponent extends GetterTemplate {
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.NodeUtilities.createFieldAccess(new ThisExpression(), this.field );
 	}
 

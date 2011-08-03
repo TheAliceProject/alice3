@@ -46,9 +46,9 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionDropDown< M extends org.lgna.croquet.CustomItemState< edu.cmu.cs.dennisc.alice.ast.Expression > > extends org.lgna.croquet.components.ItemDropDown< edu.cmu.cs.dennisc.alice.ast.Expression, M > {
+public class ExpressionDropDown< M extends org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > > extends org.lgna.croquet.components.ItemDropDown< org.lgna.project.ast.Expression, M > {
 	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
-		private void refresh( edu.cmu.cs.dennisc.alice.ast.Expression nextValue ) {
+		private void refresh( org.lgna.project.ast.Expression nextValue ) {
 			this.forgetAndRemoveAllComponents();
 			this.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( nextValue ), Constraint.CENTER );
 			this.revalidateAndRepaint();
@@ -61,7 +61,7 @@ public class ExpressionDropDown< M extends org.lgna.croquet.CustomItemState< edu
 		this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 	}
 	@Override
-	protected void handleChanged( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Expression > state, edu.cmu.cs.dennisc.alice.ast.Expression prevValue, edu.cmu.cs.dennisc.alice.ast.Expression nextValue, boolean isAdjusting ) {
+	protected void handleChanged( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		this.mainComponent.refresh( nextValue );
 	}
 };

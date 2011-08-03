@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameDeclarationOperation< N extends edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > extends RenameNodeOperation {
+public abstract class RenameDeclarationOperation< N extends org.lgna.project.ast.AbstractDeclaration > extends RenameNodeOperation {
 	private N declaration;
 	public RenameDeclarationOperation( java.util.UUID individualId, N declaration, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		super( individualId, declaration.getNamePropertyIfItExists(), nodeNameValidator );

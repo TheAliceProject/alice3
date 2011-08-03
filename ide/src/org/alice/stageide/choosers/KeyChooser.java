@@ -45,7 +45,7 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< edu.cmu.cs.dennisc.alice.ast.FieldAccess > {
+public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< org.lgna.project.ast.FieldAccess > {
 	//	private javax.swing.JLabel keyReceiver = zoot.ZLabel.acquire( "<press any key>", zoot.font.ZTextWeight.LIGHT );
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed( java.awt.event.KeyEvent e ) {
@@ -78,12 +78,12 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 	public KeyChooser() {
 		this.keyReceiver.setFocusable( true );
 		this.keyReceiver.setFocusTraversalKeysEnabled( false );
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)previousExpression;
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = fieldAccess.getType();
-			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class ) ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
+		if( previousExpression instanceof org.lgna.project.ast.FieldAccess ) {
+			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)previousExpression;
+			org.lgna.project.ast.AbstractType<?,?,?> type = fieldAccess.getType();
+			if( type == org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class ) ) {
+				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field != null ) {
 					this.updateKey( Enum.valueOf( org.lgna.story.Key.class, field.getName() ) );
 				}
@@ -109,12 +109,12 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 		return this.components;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getValue() {
+	public org.lgna.project.ast.FieldAccess getValue() {
 		if( this.key != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class );
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
+			org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.TypeDeclaredInJava.get( org.lgna.story.Key.class );
+			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
 			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
-			return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
+			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
 		} else {
 			return null;
 		}

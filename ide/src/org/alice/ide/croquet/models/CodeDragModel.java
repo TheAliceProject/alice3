@@ -50,7 +50,7 @@ public abstract class CodeDragModel extends IdeDragModel {
 	public CodeDragModel( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > getExpressionType();
+	protected abstract org.lgna.project.ast.AbstractType< ?,?,? > getExpressionType();
 	@Override
 	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
 		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -58,7 +58,7 @@ public abstract class CodeDragModel extends IdeDragModel {
 		if( ide != null ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
 			if( codeEditor != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > expressionType = this.getExpressionType();
+				org.lgna.project.ast.AbstractType< ?,?,? > expressionType = this.getExpressionType();
 				if( expressionType != null ) {
 					codeEditor.addPotentialDropReceptors( rv, expressionType );
 				} else {

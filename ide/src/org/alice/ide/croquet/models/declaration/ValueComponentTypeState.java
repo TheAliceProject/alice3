@@ -46,21 +46,21 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemState< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.AbstractType > {
 	private final DeclarationOperation<?> owner;
-	public ValueComponentTypeState( DeclarationOperation<?> owner, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "7b2413e0-a945-49d1-800b-4fba4f0bc741" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), initialValue );
+	public ValueComponentTypeState( DeclarationOperation<?> owner, org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "7b2413e0-a945-49d1-800b-4fba4f0bc741" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), initialValue );
 		this.owner = owner;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.AbstractType > blankNode ) {
-		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type : org.alice.ide.IDE.getActiveInstance().getPrimeTimeSelectableTypesDeclaredInJava() ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
+		for( org.lgna.project.ast.TypeDeclaredInJava type : org.alice.ide.IDE.getActiveInstance().getPrimeTimeSelectableTypesDeclaredInJava() ) {
 			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
 		}
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > types = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getTypes( project );
-		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : types ) {
+		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
+		for( org.lgna.project.ast.TypeDeclaredInAlice type : types ) {
 			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
 		}
 		return rv;

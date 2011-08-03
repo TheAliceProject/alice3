@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterDeclarationOperation extends DeclarationOperation< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice >{
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice, ParameterDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ParameterDeclarationOperation getInstance( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+public class ParameterDeclarationOperation extends DeclarationOperation< org.lgna.project.ast.ParameterDeclaredInAlice >{
+	private static java.util.Map< org.lgna.project.ast.CodeDeclaredInAlice, ParameterDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ParameterDeclarationOperation getInstance( org.lgna.project.ast.CodeDeclaredInAlice code ) {
 		synchronized( map ) {
 			ParameterDeclarationOperation rv = map.get( code );
 			if( rv != null ) {
@@ -60,8 +60,8 @@ public class ParameterDeclarationOperation extends DeclarationOperation< edu.cmu
 			return rv;
 		}
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
-	private ParameterDeclarationOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+	private final org.lgna.project.ast.CodeDeclaredInAlice code;
+	private ParameterDeclarationOperation( org.lgna.project.ast.CodeDeclaredInAlice code ) {
 		super( 
 				java.util.UUID.fromString( "ebaf5680-4b33-449d-aa07-f96b25b74c02" ), 
 				null, false,
@@ -73,7 +73,7 @@ public class ParameterDeclarationOperation extends DeclarationOperation< edu.cmu
 		this.code = code;
 	}
 
-	public edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
+	public org.lgna.project.ast.CodeDeclaredInAlice getCode() {
 		return this.code;
 	}
 	@Override
@@ -81,15 +81,15 @@ public class ParameterDeclarationOperation extends DeclarationOperation< edu.cmu
 		return new org.alice.ide.croquet.components.declaration.ParameterDeclarationPanel( this );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice createPreviewDeclaration() {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
+	public org.lgna.project.ast.ParameterDeclaredInAlice createPreviewDeclaration() {
+		return new org.lgna.project.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
 		assert declaringType == null;
 		assert valueType != null;
 		assert declarationName != null;
 		assert initializer == null;
-		return new org.alice.ide.croquet.edits.ast.ParameterDeclarationEdit( step, new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( declarationName, valueType ) );
+		return new org.alice.ide.croquet.edits.ast.ParameterDeclarationEdit( step, new org.lgna.project.ast.ParameterDeclaredInAlice( declarationName, valueType ) );
 	}
 }

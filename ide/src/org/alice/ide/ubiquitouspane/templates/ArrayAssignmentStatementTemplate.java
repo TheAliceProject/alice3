@@ -46,12 +46,12 @@ package org.alice.ide.ubiquitouspane.templates;
  * @author Dennis Cosgrove
  */
 public abstract class ArrayAssignmentStatementTemplate extends CascadingUbiquitousStatementTemplate {
-	public ArrayAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
-		super( new org.alice.ide.croquet.models.ToDoDragModel(), edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class, incompleteStatement );
+	public ArrayAssignmentStatementTemplate( org.lgna.project.ast.Statement incompleteStatement ) {
+		super( new org.alice.ide.croquet.models.ToDoDragModel(), org.lgna.project.ast.ExpressionStatement.class, incompleteStatement );
 	}
 	
 	protected abstract String getTransientName();
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getTransientComponentType();
+	protected abstract org.lgna.project.ast.AbstractType<?,?,?> getTransientComponentType();
 	@Override
 	protected String getLabelText() {
 		return this.getTransientName() + "[\u2423]\u2190\u2423";

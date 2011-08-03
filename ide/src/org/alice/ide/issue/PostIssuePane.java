@@ -159,7 +159,7 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 
 	@Override
 	protected String[] getAffectsVersions() {
-		return new String[] { edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() };
+		return new String[] { org.lgna.project.Version.getCurrentVersionText() };
 	}
 
 	@Override

@@ -53,9 +53,9 @@ import org.lgna.croquet.components.Button;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 
-public class FieldNameAdapter extends AbstractNamePropertyAdapter<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
+public class FieldNameAdapter extends AbstractNamePropertyAdapter<org.lgna.project.ast.FieldDeclaredInAlice> {
 	
-	public FieldNameAdapter(edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice instance)
+	public FieldNameAdapter(org.lgna.project.ast.FieldDeclaredInAlice instance)
 	{
 		super(instance);
 	}

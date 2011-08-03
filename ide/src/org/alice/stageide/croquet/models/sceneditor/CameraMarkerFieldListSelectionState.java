@@ -42,7 +42,7 @@
  */
 package org.alice.stageide.croquet.models.sceneditor;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.FieldDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove

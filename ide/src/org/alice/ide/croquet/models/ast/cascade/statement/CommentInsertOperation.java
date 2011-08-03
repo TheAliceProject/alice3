@@ -63,8 +63,8 @@ public class CommentInsertOperation extends StatementInsertOperation {
 		super( java.util.UUID.fromString( "363d6a9e-b926-4355-a644-2f3b8e65c5c3" ), blockStatementIndexPair );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement() {
-		edu.cmu.cs.dennisc.alice.ast.Comment rv = org.alice.ide.ast.NodeUtilities.createComment();
+	protected final org.lgna.project.ast.Statement createStatement() {
+		org.lgna.project.ast.Comment rv = org.alice.ide.ast.NodeUtilities.createComment();
 		org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( rv );
 		return rv;
 	}

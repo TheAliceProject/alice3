@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.literals;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< edu.cmu.cs.dennisc.alice.ast.BooleanLiteral > {
+public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.BooleanLiteral > {
 	private static BooleanLiteralFillIn trueLiteral = new BooleanLiteralFillIn( true );
 	private static BooleanLiteralFillIn falseLiteral = new BooleanLiteralFillIn( false );
 	public static BooleanLiteralFillIn getInstance( boolean value ) {
@@ -56,17 +56,17 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 			return falseLiteral;
 		}
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.BooleanLiteral transientValue;
+	private final org.lgna.project.ast.BooleanLiteral transientValue;
 	private BooleanLiteralFillIn( boolean value ) {
 		super( java.util.UUID.fromString( "85b65750-aded-4a5f-a41d-d30fa2914115" ) );
-		this.transientValue = new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( value );
+		this.transientValue = new org.lgna.project.ast.BooleanLiteral( value );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.BooleanLiteral,Void > step ) {
-		return new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( this.transientValue.value.getValue() );
+	public org.lgna.project.ast.BooleanLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.BooleanLiteral,Void > step ) {
+		return new org.lgna.project.ast.BooleanLiteral( this.transientValue.value.getValue() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.BooleanLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.BooleanLiteral,Void > step ) {
+	public org.lgna.project.ast.BooleanLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.BooleanLiteral,Void > step ) {
 		return this.transientValue;
 	}
 	@Override

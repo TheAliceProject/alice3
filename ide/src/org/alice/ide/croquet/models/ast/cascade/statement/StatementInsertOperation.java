@@ -55,14 +55,14 @@ public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOp
 	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement();
+	protected abstract org.lgna.project.ast.Statement createStatement();
 	@Override
 	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.CodableResolver< M > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
 	}
 	@Override
 	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = this.createStatement();
+		org.lgna.project.ast.Statement statement = this.createStatement();
 		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement ) );
 	}
 }

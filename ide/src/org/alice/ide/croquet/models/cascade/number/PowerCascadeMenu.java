@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade.number;
 /**
  * @author Dennis Cosgrove
  */
-public class PowerCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public class PowerCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< org.lgna.project.ast.Expression > {
 	private static class SingletonHolder {
 		private static PowerCascadeMenu instance = new PowerCascadeMenu();
 	}
@@ -57,7 +57,7 @@ public class PowerCascadeMenu extends org.alice.ide.croquet.models.cascade.Expre
 		super( java.util.UUID.fromString( "2d1bbbdb-cf33-406d-98a9-4ba421bfd10e" ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > context ) {
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "sqrt", java.lang.Double.TYPE ) );
 		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
 		return rv;

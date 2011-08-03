@@ -46,9 +46,9 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.operations.ActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	private org.lgna.project.ast.Statement statement;
 
-	public AbstractIsEnabledStatementOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public AbstractIsEnabledStatementOperation( org.lgna.project.ast.Statement statement ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "340f585a-80de-4930-9b53-6c71a5f5c2be" ) );
 		this.statement = statement;
 	}

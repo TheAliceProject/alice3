@@ -54,17 +54,17 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 	}
 	private boolean isVoid() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = getExpressionType();
-		return type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
+		org.lgna.project.ast.AbstractType<?,?,?> type = getExpressionType();
+		return type == org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
 	protected boolean isExpressionTypeFeedbackDesired() {
 		return org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() || isKnurlDesired();
 	}
-	protected static boolean isExpressionTypeFeedbackSurpressedBasedOnParentClass( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
+	protected static boolean isExpressionTypeFeedbackSurpressedBasedOnParentClass( org.lgna.project.ast.Expression e ) {
 		if( e != null ) {
-			edu.cmu.cs.dennisc.alice.ast.Node parent = e.getParent();
+			org.lgna.project.ast.Node parent = e.getParent();
 			if( parent != null ) {
-				if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( parent.getClass(), edu.cmu.cs.dennisc.alice.ast.ArrayAccess.class, edu.cmu.cs.dennisc.alice.ast.ArrayLength.class ) ) {
+				if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( parent.getClass(), org.lgna.project.ast.ArrayAccess.class, org.lgna.project.ast.ArrayLength.class ) ) {
 					return true;
 				}
 			}
@@ -116,11 +116,11 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	}
 
 	protected edu.cmu.cs.dennisc.java.awt.BeveledShape createBoundsShape( int x, int y, int width, int height ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getExpressionType();
+		org.lgna.project.ast.AbstractType<?,?,?> type = this.getExpressionType();
 		if( type != null ) {
 //			assert type != edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 		} else {
-			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
+			type = org.lgna.project.ast.TypeDeclaredInJava.OBJECT_TYPE;
 		}
 //		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
 		int left = this.getDockInsetLeft();
@@ -165,7 +165,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		return false;
 	}
 
-	public abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType();
+	public abstract org.lgna.project.ast.AbstractType<?,?,?> getExpressionType();
 	
 	//	@Override
 	//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {

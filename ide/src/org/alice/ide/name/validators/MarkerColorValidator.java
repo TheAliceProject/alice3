@@ -47,10 +47,10 @@ import org.lgna.story.Marker;
 
 public class MarkerColorValidator extends MemberNameValidator {
 
-	public MarkerColorValidator( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+	public MarkerColorValidator( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 		super( field, field.getDeclaringType() );
 	}
-	public MarkerColorValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type ) {
+	public MarkerColorValidator( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type ) {
 		super( null, type );
 	}
 	
@@ -75,10 +75,10 @@ public class MarkerColorValidator extends MemberNameValidator {
 	protected boolean isNameAvailable( String name ) {
 		String suffix = getColorAndNumberSuffix(name);
 		
-		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
-		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type = this.getType();
+		org.lgna.project.ast.Node node = this.getNode();
+		org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type = this.getType();
 		if( type != null ) {
-			for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : type.fields ) {
+			for( org.lgna.project.ast.FieldDeclaredInAlice field : type.fields ) {
 				assert field != null;
 				if( field == node) {
 					//pass

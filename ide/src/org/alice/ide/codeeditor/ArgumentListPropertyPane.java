@@ -47,17 +47,17 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+	public ArgumentListPropertyPane( org.alice.ide.common.Factory factory, org.lgna.project.ast.ArgumentListProperty property ) {
 		super( factory, property );
 	}
-	protected boolean isNameDesired( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+	protected boolean isNameDesired( org.lgna.project.ast.AbstractParameter parameter ) {
 		boolean rv;
 		if( parameter.getName() != null ) {
-			if( parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod ) {
-				edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod parameterDeclaredInJavaMethod = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod)parameter;
-				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava methodDeclaredInJava = parameterDeclaredInJavaMethod.getMethod();
+			if( parameter instanceof org.lgna.project.ast.ParameterDeclaredInJavaMethod ) {
+				org.lgna.project.ast.ParameterDeclaredInJavaMethod parameterDeclaredInJavaMethod = (org.lgna.project.ast.ParameterDeclaredInJavaMethod)parameter;
+				org.lgna.project.ast.MethodDeclaredInJava methodDeclaredInJava = parameterDeclaredInJavaMethod.getMethod();
 				rv = methodDeclaredInJava.isParameterInShortestChainedMethod( parameterDeclaredInJavaMethod ) == false;
-			} else if( parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor ) {
+			} else if( parameter instanceof org.lgna.project.ast.ParameterDeclaredInJavaConstructor ) {
 				//todo
 
 //				edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor)parameter;
@@ -75,12 +75,12 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
+		org.lgna.project.ast.Argument argument = (org.lgna.project.ast.Argument)instance;
 		org.lgna.croquet.components.Component< ? > prefixPane;
 		if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 			prefixPane = null;
 		} else {
-			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = argument.parameter.getValue();
+			org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
 			boolean isNameDesired = this.isNameDesired( parameter );
 			if( isNameDesired ) {
 				org.alice.ide.common.DeclarationNameLabel label = new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() );

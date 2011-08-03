@@ -49,11 +49,11 @@ import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.Model;
+import org.lgna.project.ast.FieldDeclaredInAlice;
 import org.lgna.story.Entity;
 import org.lgna.story.Scene;
 import org.lgna.story.Turnable;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
@@ -66,10 +66,10 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	{
 		public SetVehicleOperation( Entity value, String name) {
 			super( TransformableVehicleAdapter.this, value, name, java.util.UUID.fromString( "981768b7-f40b-4363-b64f-34264be73651" ) );
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(value);
+			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(value);
 			if (field != null)
 			{
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
+				org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
 				this.setSmallIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( valueType ) );
 			}
 		}
@@ -189,10 +189,10 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	{
 		if (vehicle != null)
 		{
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
+			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
+				org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
 				return field.getName();
 			}
 			else
@@ -210,10 +210,10 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	{
 		if (vehicle != null)
 		{
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
+			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = field.getValueType();
+				org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
 				return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType(valueType);
 			}
 		}

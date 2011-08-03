@@ -45,9 +45,9 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
-	public CreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTypePane< org.lgna.project.ast.MethodDeclaredInAlice > {
+	private org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
+	public CreateMethodPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( new org.alice.ide.name.validators.MethodNameValidator( declaringType ) );
 		this.declaringType = declaringType;
 	}
@@ -70,7 +70,7 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getDeclarationName(), this.getValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	public org.lgna.project.ast.MethodDeclaredInAlice getInputValue() {
+		return new org.lgna.project.ast.MethodDeclaredInAlice( this.getDeclarationName(), this.getValueType(), new org.lgna.project.ast.ParameterDeclaredInAlice[] {}, new org.lgna.project.ast.BlockStatement() );
 	}
 }

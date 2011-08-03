@@ -51,11 +51,11 @@ abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.c
 	}
 
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractNode node = Clipboard.getInstance().peek();
+	protected final org.lgna.project.ast.Statement createStatement() {
+		org.lgna.project.ast.AbstractNode node = Clipboard.getInstance().peek();
 		//todo: recast if necessary
-		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
-			edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
+		if( node instanceof org.lgna.project.ast.Statement ) {
+			org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
 			if( isCopy ) {
 				return org.alice.ide.IDE.getActiveInstance().createCopy( statement );
 			} else {
@@ -106,8 +106,8 @@ class PasteFromClipboardOperation extends FromClipboardOperation {
 
 
 class CopyToClipboardOperation extends org.alice.ide.operations.ActionOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractNode, CopyToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CopyToClipboardOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractNode node ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractNode, CopyToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CopyToClipboardOperation getInstance( org.lgna.project.ast.AbstractNode node ) {
 		assert node != null;
 		CopyToClipboardOperation rv = map.get( node );
 		if( rv != null ) {
@@ -118,8 +118,8 @@ class CopyToClipboardOperation extends org.alice.ide.operations.ActionOperation 
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractNode node;
-	private CopyToClipboardOperation( edu.cmu.cs.dennisc.alice.ast.AbstractNode node ) {
+	private final org.lgna.project.ast.AbstractNode node;
+	private CopyToClipboardOperation( org.lgna.project.ast.AbstractNode node ) {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
 		this.node = org.alice.ide.IDE.getActiveInstance().createCopy( node );
 	}
@@ -131,13 +131,13 @@ class CopyToClipboardOperation extends org.alice.ide.operations.ActionOperation 
 }
 
 class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement originalBlockStatement;
+	private org.lgna.project.ast.Statement statement;
+	private org.lgna.project.ast.BlockStatement originalBlockStatement;
 	private int originalIndex;
-	public CutToClipboardEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	public CutToClipboardEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement ) {
 		super( completionStep );
 		this.statement = statement;
-		this.originalBlockStatement = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)this.statement.getParent();;
+		this.originalBlockStatement = (org.lgna.project.ast.BlockStatement)this.statement.getParent();;
 		assert this.originalBlockStatement != null;
 		this.originalIndex = this.originalBlockStatement.statements.indexOf( this.statement );
 		assert this.originalIndex != -1;
@@ -145,11 +145,11 @@ class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 	public CutToClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		org.lgna.project.Project project = ide.getProject();
 		java.util.UUID statementId = binaryDecoder.decodeId();
-		this.statement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, statementId );
+		this.statement = org.lgna.project.project.ProjectUtilities.lookupNode( project, statementId );
 		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		this.originalBlockStatement = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.lookupNode( project, blockStatementId );
+		this.originalBlockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( project, blockStatementId );
 		this.originalIndex = binaryDecoder.decodeInt();
 	}
 	@Override
@@ -177,8 +177,8 @@ class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 }
 
 class CutToClipboardOperation extends org.alice.ide.operations.ActionOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Statement, CutToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CutToClipboardOperation getInstance( edu.cmu.cs.dennisc.alice.ast.Statement node ) {
+	private static java.util.Map< org.lgna.project.ast.Statement, CutToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CutToClipboardOperation getInstance( org.lgna.project.ast.Statement node ) {
 		assert node != null;
 		CutToClipboardOperation rv = map.get( node );
 		if( rv != null ) {
@@ -189,8 +189,8 @@ class CutToClipboardOperation extends org.alice.ide.operations.ActionOperation {
 		}
 		return rv;
 	}
-	private final edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	private CutToClipboardOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+	private final org.lgna.project.ast.Statement statement;
+	private CutToClipboardOperation( org.lgna.project.ast.Statement statement ) {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
 		this.statement = statement;
 	}
@@ -220,12 +220,12 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			super( java.util.UUID.fromString( "d6c25f14-7ed2-4cb8-90dd-f621af830060" ) );
 		}
 		@Override
-		protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getExpressionType() {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
+		protected org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+			return org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
 		}
 	}
 
-	private final java.util.Stack< edu.cmu.cs.dennisc.alice.ast.AbstractNode > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack< org.lgna.project.ast.AbstractNode > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private static class SingletonHolder {
 		private static Clipboard instance = new Clipboard();
 	}
@@ -274,28 +274,28 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			this.setToolTipText( null );
 		} else {
 			this.setToolTipText( "" );
-			edu.cmu.cs.dennisc.alice.ast.AbstractNode node = this.stack.peek();
-			if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
-				edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
+			org.lgna.project.ast.AbstractNode node = this.stack.peek();
+			if( node instanceof org.lgna.project.ast.Statement ) {
+				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
 				subject.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createStatementPane( statement ) );
 				subject.revalidateAndRepaint();
 			}
 		}
 		this.repaint();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractNode peek() {
+	public org.lgna.project.ast.AbstractNode peek() {
 		if( this.stack.size() > 0  ) {
 			return this.stack.peek();
 		} else {
 			return null;
 		}
 	}
-	public void push( edu.cmu.cs.dennisc.alice.ast.AbstractNode node ) {
+	public void push( org.lgna.project.ast.AbstractNode node ) {
 		this.stack.push( node );
 		this.refresh();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractNode pop() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractNode rv = this.stack.pop();
+	public org.lgna.project.ast.AbstractNode pop() {
+		org.lgna.project.ast.AbstractNode rv = this.stack.pop();
 		this.refresh();
 		return rv;
 	}
@@ -319,7 +319,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 	}
 	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep step ) {
 		org.alice.ide.common.AbstractStatementPane pane = (org.alice.ide.common.AbstractStatementPane)step.getDragSource();
-		edu.cmu.cs.dennisc.alice.ast.Statement statement = pane.getStatement();
+		org.lgna.project.ast.Statement statement = pane.getStatement();
 		boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
 		if( isCopy ) {
 			return CopyToClipboardOperation.getInstance( statement );

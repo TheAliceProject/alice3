@@ -45,6 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
 import org.lgna.croquet.history.InputDialogOperationStep;
+import org.lgna.project.ast.TypeDeclaredInAlice;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.EntityImplementation;
@@ -53,7 +54,6 @@ import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
@@ -96,7 +96,7 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 		super.fillInEpilogueData(rv, step);
 		
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
+		org.lgna.project.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {
 			
 			rv.addDoStatement(SetUpMethodGenerator.createSetVehicleStatement(field, null, true));
@@ -149,9 +149,9 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 	}
 	
 
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
+		org.lgna.project.ast.FieldDeclaredInAlice field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {
 			ModelResource resource = ((ModelResourceTreeNode)this.treeNode).getModelResource();
 			Object fieldObject = createFieldFromGalleryPane.createInstanceInJavaForArguments(resource);

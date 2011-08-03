@@ -46,32 +46,32 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class AccessFieldArrayAtIndexTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public AccessFieldArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private org.lgna.project.ast.AbstractField field;
+	public AccessFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
 		this.field = field;
-		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
+		if( this.field instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
+			org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)this.field;
 			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
+		return new org.lgna.project.ast.ArrayAccess( 
 				field.getValueType(), 
 				org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ), 
-				new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
+				new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
 		);
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
 		return field.getValueType().getComponentType();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
-		return new edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE };
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
+		return new org.lgna.project.ast.AbstractType< ?, ?, ? >[] { org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE };
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
 	}
 //	@Override

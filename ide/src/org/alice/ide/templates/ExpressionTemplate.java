@@ -62,7 +62,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 //		return true;
 //	}
 	
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
+	protected abstract org.lgna.project.ast.Expression createIncompleteExpression();
 	private boolean isInitialized = false;
 	@Override
 	protected void handleDisplayable() {
@@ -81,7 +81,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	}
 	protected void refresh() {
 		this.removeAllComponents();
-		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
+		org.lgna.project.ast.Expression incompleteExpression = this.createIncompleteExpression();
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( incompleteExpression ) );
 		this.addComponent( getIDE().getTemplatesFactory().createComponent( incompleteExpression ) );
 	}

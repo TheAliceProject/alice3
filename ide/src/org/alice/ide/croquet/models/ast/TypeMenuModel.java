@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class TypeMenuModel extends org.lgna.croquet.MenuModel {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice, TypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized TypeMenuModel getInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	private static java.util.Map< org.lgna.project.ast.TypeDeclaredInAlice, TypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TypeMenuModel getInstance( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		TypeMenuModel rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -58,8 +58,8 @@ public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 		return rv;
 	}
 
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	private TypeMenuModel( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	private org.lgna.project.ast.TypeDeclaredInAlice type;
+	private TypeMenuModel( org.lgna.project.ast.TypeDeclaredInAlice type ) {
 		super( java.util.UUID.fromString( "90a5b2c2-1182-4c05-ac90-a1dc405a7a2f" ) );
 		this.type = type;
 		//this.setName( type.getName() );
@@ -72,7 +72,7 @@ public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeMenuModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeMenuModel >( this, this.type, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeMenuModel >( this, this.type, org.lgna.project.ast.TypeDeclaredInAlice.class );
 	}
 
 	@Override
@@ -93,13 +93,13 @@ public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditConstructorOperation.getInstance( this.type.getDeclaredConstructor() ).getMenuItemPrepModel() );
 		menuItemContainer.addSeparator();
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( this.type ).getMenuItemPrepModel() );
-		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
+		for( org.lgna.project.ast.MethodDeclaredInAlice method : this.type.methods ) {
 			if( method.isProcedure() ) {
 				org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditMethodOperation.getInstance( method ).getMenuItemPrepModel() );
 			}
 		}
 		menuItemContainer.addSeparator();
-		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.type.methods ) {
+		for( org.lgna.project.ast.MethodDeclaredInAlice method : this.type.methods ) {
 			if( method.isFunction() ) {
 				org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, EditMethodOperation.getInstance( method ).getMenuItemPrepModel() );
 			}
@@ -107,7 +107,7 @@ public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( this.type ).getMenuItemPrepModel() );
 		menuItemContainer.addSeparator();
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( this.type ).getMenuItemPrepModel() );
-		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.type.fields ) {
+		for( org.lgna.project.ast.FieldDeclaredInAlice field : this.type.fields ) {
 			org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.EditFieldOperation( field ).getMenuItemPrepModel() );
 		}
 	}

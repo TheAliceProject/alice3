@@ -46,21 +46,21 @@ package org.alice.ide.initializer;
  * @author Dennis Cosgrove
  */
 public class ExpressionUtilities {
-	public static edu.cmu.cs.dennisc.alice.ast.Expression getNextExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+	public static org.lgna.project.ast.Expression getNextExpression( org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.Expression previousExpression ) {
 		//todo: check to see if acceptable
-		edu.cmu.cs.dennisc.alice.ast.Expression rv;
-		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) {
-			rv = new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( false );
-		} else if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
-			rv = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 );
-		} else if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) {
-			rv = new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 0 );
+		org.lgna.project.ast.Expression rv;
+		if( type == org.lgna.project.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) {
+			rv = new org.lgna.project.ast.BooleanLiteral( false );
+		} else if( type == org.lgna.project.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
+			rv = new org.lgna.project.ast.DoubleLiteral( 0.0 );
+		} else if( type == org.lgna.project.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) {
+			rv = new org.lgna.project.ast.IntegerLiteral( 0 );
 		} else {
-			rv = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+			rv = new org.lgna.project.ast.NullLiteral();
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.Expression createDefaultExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public static org.lgna.project.ast.Expression createDefaultExpression( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		return getNextExpression( type, null );
 	}
 }

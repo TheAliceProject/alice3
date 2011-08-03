@@ -42,16 +42,16 @@
  */
 package org.lgna.story.resourceutilities;
 
-import edu.cmu.cs.dennisc.alice.ast.AbstractConstructor;
-import edu.cmu.cs.dennisc.alice.ast.AbstractParameter;
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractParameter;
 
 /**
  * @author dculyba
  *
  */
 public class ConstructorParameterPair {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
+	private org.lgna.project.ast.AbstractConstructor constructor;
+	private org.lgna.project.ast.AbstractParameter parameter;
 	
 	public ConstructorParameterPair(AbstractConstructor constructor, AbstractParameter parameter)
 	{

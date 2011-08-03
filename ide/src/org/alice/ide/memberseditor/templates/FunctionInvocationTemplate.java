@@ -46,53 +46,53 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 /*package-private*/ class FunctionInvocationTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice >() {
+	private org.lgna.project.ast.AbstractMethod method;
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.ParameterDeclaredInAlice > parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.ParameterDeclaredInAlice >() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > e ) {
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.ParameterDeclaredInAlice > e ) {
 		}
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > e ) {
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.ParameterDeclaredInAlice > e ) {
 			FunctionInvocationTemplate.this.refresh();
 		}
 	};
-	public FunctionInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	public FunctionInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
 		this.method = method;
-		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+		if( method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+			org.lgna.project.ast.MethodDeclaredInAlice methodInAlice = (org.lgna.project.ast.MethodDeclaredInAlice)method;
 			this.setPopupPrepModel( new MethodPopupMenuModel( methodInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.method );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.method.getReturnType();
 	}
 	
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+		if( this.method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
 			this.refresh();
-			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.addListPropertyListener( this.parameterAdapter );
+			((org.lgna.project.ast.MethodDeclaredInAlice)this.method).parameters.addListPropertyListener( this.parameterAdapter );
 		}
 	}
 	@Override
 	protected void handleUndisplayable() {
-		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
+		if( this.method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+			((org.lgna.project.ast.MethodDeclaredInAlice)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
 		}
 		super.handleUndisplayable();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
 		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( this.method );
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade.getInstance( this.method, expressionProperty ).getRoot().getPopupPrepModel();
 	}
 }

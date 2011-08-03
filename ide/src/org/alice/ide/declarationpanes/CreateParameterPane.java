@@ -46,15 +46,15 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
-	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+public abstract class CreateParameterPane extends CreateDeclarationPane<org.lgna.project.ast.ParameterDeclaredInAlice> {
+	private org.lgna.project.ast.CodeDeclaredInAlice code;
+	public CreateParameterPane( org.lgna.project.ast.CodeDeclaredInAlice code ) {
 		super( new org.alice.ide.name.validators.ParameterNameValidator( code ) );
 		this.code = code;
 		this.setBackgroundColor( getIDE().getTheme().getParameterColor() );
 		
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
+	protected org.lgna.project.ast.CodeDeclaredInAlice getCode() {
 		return this.code;
 	}
 	@Override
@@ -82,7 +82,7 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, this.getInputValue() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
+	public org.lgna.project.ast.ParameterDeclaredInAlice getInputValue() {
+		return new org.lgna.project.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
 	}
 }

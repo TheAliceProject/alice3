@@ -46,8 +46,8 @@ package org.alice.ide.ubiquitouspane.templates;
  * @author Dennis Cosgrove
  */
 public class VariableArrayAssignmentStatementTemplate extends ArrayAssignmentStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	public VariableArrayAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+	private org.lgna.project.ast.VariableDeclaredInAlice variable;
+	public VariableArrayAssignmentStatementTemplate( org.lgna.project.ast.VariableDeclaredInAlice variable ) {
 		super( org.alice.ide.ast.NodeUtilities.createIncompleteVariableArrayAssignmentStatement( variable ) );
 		this.variable = variable;
 	}
@@ -56,7 +56,7 @@ public class VariableArrayAssignmentStatementTemplate extends ArrayAssignmentSta
 		return this.variable.getName();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getTransientComponentType() {
+	protected org.lgna.project.ast.AbstractType<?,?,?> getTransientComponentType() {
 		return this.variable.valueType.getValue().getComponentType();
 	}
 	@Override

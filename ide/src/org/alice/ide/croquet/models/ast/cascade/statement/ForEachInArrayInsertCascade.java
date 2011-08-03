@@ -63,7 +63,7 @@ public class ForEachInArrayInsertCascade extends StatementInsertCascade {
 		super( java.util.UUID.fromString( "b5764acd-4d2a-4967-a695-beffc7ea19a8" ), blockStatementIndexPair, ArrayBlank.getInstance() );
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.alice.ide.ast.NodeUtilities.createForEachInArrayLoop( expressions[ 0 ] );
 	}
 }

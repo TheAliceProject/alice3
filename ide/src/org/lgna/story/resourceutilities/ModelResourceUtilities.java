@@ -61,34 +61,34 @@ import javax.imageio.ImageIO;
 
 import org.alice.ide.ast.NodeUtilities;
 import org.lgna.croquet.components.AbstractTabbedPane;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractMember;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Access;
+import org.lgna.project.ast.Argument;
+import org.lgna.project.ast.ConstructorBlockStatement;
+import org.lgna.project.ast.ConstructorDeclaredInAlice;
+import org.lgna.project.ast.ConstructorDeclaredInJava;
+import org.lgna.project.ast.ConstructorInvocationStatement;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.FieldDeclaredInJava;
+import org.lgna.project.ast.FieldDeclaredInJavaWithField;
+import org.lgna.project.ast.MethodDeclaredInAlice;
+import org.lgna.project.ast.PackageDeclaredInAlice;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.ParameterDeclaredInJava;
+import org.lgna.project.ast.ParameterDeclaredInJavaConstructor;
+import org.lgna.project.ast.SuperConstructorInvocationStatement;
+import org.lgna.project.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.TypeDeclaredInJava;
 import org.lgna.story.resources.ModelResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import edu.cmu.cs.dennisc.alice.annotations.Visibility;
-import edu.cmu.cs.dennisc.alice.ast.AbstractConstructor;
-import edu.cmu.cs.dennisc.alice.ast.AbstractMember;
-import edu.cmu.cs.dennisc.alice.ast.AbstractParameter;
-import edu.cmu.cs.dennisc.alice.ast.AbstractType;
-import edu.cmu.cs.dennisc.alice.ast.Access;
-import edu.cmu.cs.dennisc.alice.ast.Argument;
-import edu.cmu.cs.dennisc.alice.ast.ConstructorBlockStatement;
-import edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava;
-import edu.cmu.cs.dennisc.alice.ast.ConstructorInvocationStatement;
-import edu.cmu.cs.dennisc.alice.ast.FieldAccess;
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJava;
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField;
-import edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.PackageDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.ParameterAccess;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor;
-import edu.cmu.cs.dennisc.alice.ast.SuperConstructorInvocationStatement;
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
@@ -403,8 +403,8 @@ public class ModelResourceUtilities {
 	
 	public static Class<?> getModelClassForResourceClass(Class<?> resourceClass)
 	{
-		if( resourceClass.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ResourceTemplate.class ) ) {
-			edu.cmu.cs.dennisc.alice.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ResourceTemplate.class );
+		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
+			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
 			return resourceTemplate.modelClass();
 		}
 		return null;

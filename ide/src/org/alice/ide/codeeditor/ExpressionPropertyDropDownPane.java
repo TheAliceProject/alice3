@@ -45,13 +45,13 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupButton< org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > > implements org.lgna.croquet.DropReceptor {
-	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadePopupPrepModel< edu.cmu.cs.dennisc.alice.ast.Expression > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupButton< org.lgna.croquet.CascadePopupPrepModel< org.lgna.project.ast.Expression > > implements org.lgna.croquet.DropReceptor {
+	private org.lgna.project.ast.ExpressionProperty expressionProperty;
+	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadePopupPrepModel< org.lgna.project.ast.Expression > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+	public org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
 
@@ -130,12 +130,12 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 
 	@Override
 	protected boolean isInactiveFeedbackDesired() {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.expressionProperty.getValue();
+		org.lgna.project.ast.Expression expression = this.expressionProperty.getValue();
 		if( expression != null ) {
-			edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
-			if( parent instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || parent instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) { 
-				edu.cmu.cs.dennisc.alice.ast.Node grandparent = parent.getParent();
-				return grandparent instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation || grandparent instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression || grandparent instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess; 
+			org.lgna.project.ast.Node parent = expression.getParent();
+			if( parent instanceof org.lgna.project.ast.InfixExpression || parent instanceof org.lgna.project.ast.LogicalComplement ) { 
+				org.lgna.project.ast.Node grandparent = parent.getParent();
+				return grandparent instanceof org.lgna.project.ast.MethodInvocation || grandparent instanceof org.lgna.project.ast.AssignmentExpression || grandparent instanceof org.lgna.project.ast.ArrayAccess; 
 			}
 		}
 		return super.isInactiveFeedbackDesired();

@@ -46,14 +46,14 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithBlanks< F extends edu.cmu.cs.dennisc.alice.ast.Expression, B > extends ExpressionFillInWithBlanks< F,B > {
+public abstract class PreviousExpressionBasedFillInWithBlanks< F extends org.lgna.project.ast.Expression, B > extends ExpressionFillInWithBlanks< F,B > {
 	public PreviousExpressionBasedFillInWithBlanks( java.util.UUID id, Class<B> cls ) {
 		super( id, cls );
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+	private org.lgna.project.ast.Expression getPreviousExpression() {
 		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
 	}
-	private edu.cmu.cs.dennisc.alice.ast.Expression cleanExpression;
+	private org.lgna.project.ast.Expression cleanExpression;
 	@Override
 	protected void markClean() {
 		super.markClean();
@@ -70,7 +70,7 @@ public abstract class PreviousExpressionBasedFillInWithBlanks< F extends edu.cmu
 //		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 //		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
 //	}
-	protected abstract F createValue( edu.cmu.cs.dennisc.alice.ast.Expression previousExpression, B[] expressions);
+	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression, B[] expressions);
 	@Override
 	protected final F createValue( B[] expressions ) {
 		return this.createValue( this.getPreviousExpression(), expressions );

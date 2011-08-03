@@ -58,9 +58,9 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 			AbstractStatementPane.this.repaint();
 		}
 	}; 
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
-	public AbstractStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+	private org.lgna.project.ast.Statement statement;
+	private org.lgna.project.ast.StatementListProperty owner;
+	public AbstractStatementPane( Factory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
 		super( org.alice.ide.common.StatementLikeSubstance.getClassFor(statement), javax.swing.BoxLayout.LINE_AXIS );
 		this.factory = factory;
 		this.statement = statement;
@@ -79,10 +79,10 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		this.factory.getStatementMap().remove( this.statement );
 		super.handleUndisplayable();
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
+	public org.lgna.project.ast.Statement getStatement() {
 		return this.statement;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getOwner() {
+	public org.lgna.project.ast.StatementListProperty getOwner() {
 		return this.owner;
 	}
 	

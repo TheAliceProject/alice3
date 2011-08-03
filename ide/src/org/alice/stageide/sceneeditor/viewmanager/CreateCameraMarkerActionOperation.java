@@ -42,8 +42,9 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.TypeDeclaredInAlice;
+
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 
 /**

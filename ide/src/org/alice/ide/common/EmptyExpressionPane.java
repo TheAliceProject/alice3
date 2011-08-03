@@ -62,7 +62,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 		this.setEnabledBackgroundPaint( new java.awt.Color( 191, 191, 255 ) );
 		return new java.awt.GradientPaint( 0, y, TOP_COLOR, 0, y+height, BOTTOM_COLOR );
 	}
-	public EmptyExpressionPane( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public EmptyExpressionPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		this( new EmptyExpression( type ) );
 	}
 	
@@ -75,7 +75,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 		return 1;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
 		return this.emptyExpression.getType();
 	}
 	@Override

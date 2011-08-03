@@ -43,8 +43,8 @@
 package org.alice.ide.sceneeditor;
 
 class TreeModel implements javax.swing.tree.TreeModel {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField root;
-	public TreeModel( edu.cmu.cs.dennisc.alice.ast.AbstractField root ) {
+	private org.lgna.project.ast.AbstractField root;
+	public TreeModel( org.lgna.project.ast.AbstractField root ) {
 		this.root = root;
 	}
 	public Object getChild( Object parent, int index ) {
@@ -78,8 +78,8 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 	@Override
 	public java.awt.Component getTreeCellRendererComponent( javax.swing.JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
-		if( value instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)value;
+		if( value instanceof org.lgna.project.ast.AbstractField ) {
+			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)value;
 			this.setText( field.getName() );
 		}
 		return rv;
@@ -93,19 +93,19 @@ class LookingGlass extends org.lgna.croquet.components.CornerSpringPanel {
 	}
 }
 
-class FieldTreeSelectionState extends org.lgna.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField>> {
+class FieldTreeSelectionState extends org.lgna.croquet.TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<org.lgna.project.ast.AbstractField>> {
 	public FieldTreeSelectionState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "89223cff-76d3-4cb7-baf3-3a5e990bcaff" ), new org.lgna.croquet.ItemCodec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<edu.cmu.cs.dennisc.alice.ast.AbstractField> >() {
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "89223cff-76d3-4cb7-baf3-3a5e990bcaff" ), new org.lgna.croquet.ItemCodec< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<org.lgna.project.ast.AbstractField> >() {
 			public Class getValueClass() {
 				return edu.cmu.cs.dennisc.javax.swing.models.TreeNode.class;
 			}
-			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< org.lgna.project.ast.AbstractField > decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
-			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > value ) {
+			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< org.lgna.project.ast.AbstractField > value ) {
 				throw new RuntimeException( "todo" );
 			}
-			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > value, java.util.Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< org.lgna.project.ast.AbstractField > value, java.util.Locale locale ) {
 				throw new RuntimeException( "todo" );
 			}
 		}, null, null );
@@ -125,17 +125,17 @@ public class SplitSceneEditor extends org.lgna.croquet.components.BorderPanel {
 	private FieldTreeSelectionState treeSelectionState = new FieldTreeSelectionState();
 	private LookingGlass lookingGlass = new LookingGlass();
 	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
-		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
 		}
-		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> programType = nextProject.getProgramType();
-			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = programType.getDeclaredFields().get( 0 );
+		public void projectOpened( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
+			org.lgna.project.ast.AbstractType<?,?,?> programType = nextProject.getProgramType();
+			org.lgna.project.ast.AbstractField sceneField = programType.getDeclaredFields().get( 0 );
 			treeSelectionState.setSwingTreeModel( new TreeModel( sceneField ) );
 		}
 	};
 
 	public SplitSceneEditor() {
-		org.lgna.croquet.components.Tree< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.alice.ast.AbstractField > > tree = this.treeSelectionState.createTree();
+		org.lgna.croquet.components.Tree< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< org.lgna.project.ast.AbstractField > > tree = this.treeSelectionState.createTree();
 		tree.setCellRenderer( new TreeCellRenderer() );
 		this.root.setLeftComponent( new org.lgna.croquet.components.ScrollPane( tree ) );
 		this.root.setRightComponent( this.lookingGlass );

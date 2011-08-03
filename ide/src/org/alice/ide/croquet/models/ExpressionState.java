@@ -46,17 +46,17 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionState extends org.lgna.croquet.DefaultCustomItemState< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private final edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type;
-	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.Expression initialValue, edu.cmu.cs.dennisc.alice.ast.AbstractType< ?,?,? > type ) {
-		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Expression.class ), initialValue );
+public abstract class ExpressionState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.Expression > {
+	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
+	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue );
 		this.type = type;
 	}
-	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, edu.cmu.cs.dennisc.alice.ast.Expression initialValue, Class<?> cls ) {
-		this( group, id, initialValue, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue, Class<?> cls ) {
+		this( group, id, initialValue, org.lgna.project.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.Expression > blankNode ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
 		org.alice.ide.IDE.getActiveInstance().getCascadeManager().updateChildren( rv, blankNode, this.type );
 		return rv;
 	}

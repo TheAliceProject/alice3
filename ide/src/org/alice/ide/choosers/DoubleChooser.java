@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleChooser extends AbstractNumberChooser< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
+public class DoubleChooser extends AbstractNumberChooser< org.lgna.project.ast.DoubleLiteral > {
 	public DoubleChooser() {
 		super( org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() ); 
 	}

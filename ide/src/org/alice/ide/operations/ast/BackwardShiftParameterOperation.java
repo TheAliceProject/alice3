@@ -42,8 +42,8 @@
  */
 package org.alice.ide.operations.ast;
 
-import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.ParameterDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove

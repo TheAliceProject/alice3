@@ -46,12 +46,12 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class TypeComponent extends org.lgna.croquet.components.JComponent< javax.swing.JLabel > {
-	public static TypeComponent createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	public static TypeComponent createInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		TypeComponent rv = new TypeComponent(type);
 		return rv;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
-	private TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	private org.lgna.project.ast.AbstractType<?,?,?> type;
+	private TypeComponent( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
 	}
 	@Override

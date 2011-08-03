@@ -45,46 +45,46 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
+public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.FieldDeclaredInAlice> {
 	protected static class EpilogueData {
-		private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType;
-		private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-		private java.util.List< edu.cmu.cs.dennisc.alice.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private java.util.List< edu.cmu.cs.dennisc.alice.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType;
+		private org.lgna.project.ast.FieldDeclaredInAlice field;
+		private java.util.List< org.lgna.project.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private java.util.List< org.lgna.project.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
 		public boolean isValid() {
 			return this.declaringType != null && this.field != null;
 		}
-		public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
+		public org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType() {
 			return this.declaringType;
 		}
-		public void setDeclaringType( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+		public void setDeclaringType( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 			this.declaringType = declaringType;
 		}
-		public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getField() {
+		public org.lgna.project.ast.FieldDeclaredInAlice getField() {
 			return this.field;
 		}
-		public void setField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		public void setField( org.lgna.project.ast.FieldDeclaredInAlice field ) {
 			this.field = field;
 		}
-		public void addDoStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		public void addDoStatement( org.lgna.project.ast.Statement statement ) {
 			this.doStatements.add( statement );
 		}
-		public edu.cmu.cs.dennisc.alice.ast.Statement[] getDoStatements() {
-			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.doStatements, edu.cmu.cs.dennisc.alice.ast.Statement.class );
+		public org.lgna.project.ast.Statement[] getDoStatements() {
+			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.doStatements, org.lgna.project.ast.Statement.class );
 		}
-		public void addUndoStatement( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		public void addUndoStatement( org.lgna.project.ast.Statement statement ) {
 			this.undoStatements.add( statement );
 		}
-		public edu.cmu.cs.dennisc.alice.ast.Statement[] getUndoStatements() {
-			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.undoStatements, edu.cmu.cs.dennisc.alice.ast.Statement.class );
+		public org.lgna.project.ast.Statement[] getUndoStatements() {
+			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.undoStatements, org.lgna.project.ast.Statement.class );
 		}
 	}
 	public AbstractDeclareFieldInputDialogOperation( java.util.UUID individualId ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
 	
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType();
+	protected abstract org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > getDeclaringType();
 	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData fillInEpilogueData( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
 		rv.setDeclaringType( this.getDeclaringType() );
 		return rv;

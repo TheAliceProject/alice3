@@ -58,17 +58,17 @@ public abstract class Formatter {
 	}
 	
 	
-	protected abstract String getTextForMethodReflectionProxy( edu.cmu.cs.dennisc.alice.ast.MethodReflectionProxy methodReflectionProxy );
-	protected abstract String getTextForParameterDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava parameterInJava );
-	public String getNameForDeclaration( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration ) {
-		if (declaration instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava methodInJava = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava) declaration;
+	protected abstract String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy );
+	protected abstract String getTextForParameterDeclaredInJava( org.lgna.project.ast.ParameterDeclaredInJava parameterInJava );
+	public String getNameForDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		if (declaration instanceof org.lgna.project.ast.MethodDeclaredInJava) {
+			org.lgna.project.ast.MethodDeclaredInJava methodInJava = (org.lgna.project.ast.MethodDeclaredInJava) declaration;
 			return this.getTextForMethodReflectionProxy( methodInJava.getMethodReflectionProxy() );
-		} else if( declaration instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava ) {
-			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava parameterInJava = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJava)declaration;
+		} else if( declaration instanceof org.lgna.project.ast.ParameterDeclaredInJava ) {
+			org.lgna.project.ast.ParameterDeclaredInJava parameterInJava = (org.lgna.project.ast.ParameterDeclaredInJava)declaration;
 			return this.getTextForParameterDeclaredInJava( parameterInJava );
-		} else if( declaration instanceof edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = (edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>)declaration;
+		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
+			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
 			return this.getTextForType( type );
 		} else {
 			return declaration.getName();
@@ -83,13 +83,13 @@ public abstract class Formatter {
 	public abstract String getTextForThis();
 	public abstract String getTextForNull();
 	protected abstract String getTextForCls( Class<?> cls );
-	public String getTextForType(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> type) {
+	public String getTextForType(org.lgna.project.ast.AbstractType<?, ?, ?> type) {
 		if( type != null ) {
 			if( type.isArray() ) {
 				return this.getTextForType( type.getComponentType() ) + "[]";
 			} else {
-				if (type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava) {
-					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava) type;
+				if (type instanceof org.lgna.project.ast.TypeDeclaredInJava) {
+					org.lgna.project.ast.TypeDeclaredInJava typeInJava = (org.lgna.project.ast.TypeDeclaredInJava) type;
 					Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
 					return this.getTextForCls( cls );
 				} else {

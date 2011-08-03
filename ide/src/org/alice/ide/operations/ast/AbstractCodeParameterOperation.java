@@ -42,8 +42,8 @@
  */
 package org.alice.ide.operations.ast;
 
-import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.ParameterDeclaredInAlice;
 
 /**
  * @author Dennis Cosgrove
@@ -56,7 +56,7 @@ public abstract class AbstractCodeParameterOperation extends AbstractCodeActionO
 		this.parametersProperty = parametersProperty;
 		this.parameter = parameter;
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getParameter() {
+	protected org.lgna.project.ast.ParameterDeclaredInAlice getParameter() {
 		return this.parameter;
 	}
 	protected int getIndex() {
@@ -66,7 +66,7 @@ public abstract class AbstractCodeParameterOperation extends AbstractCodeActionO
 		return this.parametersProperty.size();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
-		return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.parameter.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+	protected org.lgna.project.ast.CodeDeclaredInAlice getCode() {
+		return (org.lgna.project.ast.CodeDeclaredInAlice)this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 	}
 }

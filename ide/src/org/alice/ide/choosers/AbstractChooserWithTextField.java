@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooserWithTextField<E extends edu.cmu.cs.dennisc.alice.ast.Expression> extends AbstractRowsPaneChooser<E> {
+public abstract class AbstractChooserWithTextField<E extends org.lgna.project.ast.Expression> extends AbstractRowsPaneChooser<E> {
 	private org.lgna.croquet.StringState stringState = new org.lgna.croquet.StringState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "6213f5a4-b4b4-4c49-a5e3-2db644edb2cd" ), "" ) {};
 	private org.lgna.croquet.components.TextField textField = stringState.createTextField();
 	private org.lgna.croquet.components.Component< ? >[] components = { this.textField };

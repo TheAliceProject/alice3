@@ -46,17 +46,17 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice > {
+public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.AbstractTypeDeclaredInAlice > {
 	private final DeclarationOperation<?> owner;
-	public DeclaringTypeState( DeclarationOperation<?> owner, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "20e50e4f-b627-4f5c-9851-5cbc18b5a5ee" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class ), initialValue );
+	public DeclaringTypeState( DeclarationOperation<?> owner, org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> initialValue ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "20e50e4f-b627-4f5c-9851-5cbc18b5a5ee" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice.class ), initialValue );
 		this.owner = owner;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice > blankNode ) {
-		edu.cmu.cs.dennisc.alice.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > types = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getTypes( project );
-		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : types ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractTypeDeclaredInAlice > blankNode ) {
+		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		java.util.List< org.lgna.project.ast.TypeDeclaredInAlice > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
+		for( org.lgna.project.ast.TypeDeclaredInAlice type : types ) {
 			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
 		}
 		return rv;
@@ -88,10 +88,10 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 			}
 		}
 		awtButton.setIcon( new TypeDropDownIcon() );
-		this.addValueObserver( new ValueObserver< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice >() {
-			public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice> state, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice nextValue, boolean isAdjusting ) {
+		this.addValueObserver( new ValueObserver< org.lgna.project.ast.AbstractTypeDeclaredInAlice >() {
+			public void changing( org.lgna.croquet.State< org.lgna.project.ast.AbstractTypeDeclaredInAlice> state, org.lgna.project.ast.AbstractTypeDeclaredInAlice prevValue, org.lgna.project.ast.AbstractTypeDeclaredInAlice nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice> state, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< org.lgna.project.ast.AbstractTypeDeclaredInAlice> state, org.lgna.project.ast.AbstractTypeDeclaredInAlice prevValue, org.lgna.project.ast.AbstractTypeDeclaredInAlice nextValue, boolean isAdjusting ) {
 				rv.revalidateAndRepaint();
 			}
 		} );

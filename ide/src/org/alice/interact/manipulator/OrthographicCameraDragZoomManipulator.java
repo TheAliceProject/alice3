@@ -52,8 +52,8 @@ import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.ImageBasedManipulationHandle2D;
 import org.alice.interact.operations.PredeterminedSetOrthographicPicturePlaneActionOperation;
+import org.lgna.project.Project;
 
-import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;

@@ -47,19 +47,19 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillIn< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Expression > {
-	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation transientValue;
-	public TrimmedMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > {
+	private final org.lgna.project.ast.MethodInvocation transientValue;
+	public TrimmedMethodInvocationFillIn( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "4efeb642-4a7c-4de7-a736-9f8950f2836a" ) );
 		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( expression, method );
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
 			ParameterBlank parameterBlank = ParameterBlank.getInstance( parameter );
 			this.addBlank( parameterBlank );
 		}
 	}
 	private static final String MAC_LOOK_AND_FEEL_DESCRIPTION = "Aqua Look and Feel for Mac OS X";
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
 		if( MAC_LOOK_AND_FEEL_DESCRIPTION.equals( javax.swing.UIManager.getLookAndFeel().getDescription() ) ) {
 			return this.transientValue.method.getValue().getName();
 		} else {
@@ -71,7 +71,7 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 		return null;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
 		throw new AssertionError();
 //		javax.swing.JLabel label = new javax.swing.JLabel( this.transientValue.method.getValue().getName() );
 //		javax.swing.JPanel panel = new javax.swing.JPanel();
@@ -81,15 +81,15 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 //		return null;
 	}
 	
-	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( edu.cmu.cs.dennisc.alice.ast.Expression[] expressions ) {
+	private org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( this.transientValue.expression.getValue(), this.transientValue.method.getValue(), expressions );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
-		return this.createValue( this.createFromBlanks( step, edu.cmu.cs.dennisc.alice.ast.Expression.class ) );
+	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
+		return this.createValue( this.createFromBlanks( step, org.lgna.project.ast.Expression.class ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Expression > step ) {
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
 		return this.transientValue;
 	}
 }
