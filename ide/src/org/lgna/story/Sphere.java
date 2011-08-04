@@ -53,6 +53,7 @@ public class Sphere extends Shape {
 		return this.implementation;
 	}
 	
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Double getRadius() {
 		return this.implementation.getRadius();
 	}

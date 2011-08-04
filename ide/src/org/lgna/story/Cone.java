@@ -53,12 +53,14 @@ public class Cone extends Shape {
 		return this.implementation;
 	}
 	
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Double getBaseRadius() {
 		return this.implementation.getBaseRadius();
 	}
 	public void setBaseRadius( Number baseRadius ) {
 		this.implementation.setBaseRadius( baseRadius.doubleValue() );
 	}
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Double getLength() {
 		return this.implementation.getLength();
 	}

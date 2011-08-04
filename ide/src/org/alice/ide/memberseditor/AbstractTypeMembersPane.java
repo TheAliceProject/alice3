@@ -123,6 +123,7 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getActiveInstance();
 	}
+	protected abstract Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair );
 	protected abstract Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member );
 
 	protected abstract org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type );
@@ -145,6 +146,18 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 			if( isInclusionDesired( method ) ) {
 				method = (org.lgna.project.ast.AbstractMethod)method.getShortestInChain();
 				Iterable< org.lgna.croquet.components.Component< ? > > templates = this.createTemplates( method );
+				if( templates != null ) {
+					for( org.lgna.croquet.components.Component< ? > template : templates ) {
+						page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );
+						page.addComponent( template );
+					}
+				}
+			}
+		}
+		if( this.type instanceof org.lgna.project.ast.JavaType ) {
+			org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)this.type;
+			for( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair : javaType.getGetterSetterPairs() ) { 
+				Iterable< org.lgna.croquet.components.Component< ? > > templates = this.createTemplates( getterSetterPair );
 				if( templates != null ) {
 					for( org.lgna.croquet.components.Component< ? > template : templates ) {
 						page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );

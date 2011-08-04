@@ -64,6 +64,13 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 		return null;
 	}
 	@Override
+	protected java.lang.Iterable< org.lgna.croquet.components.Component< ? >> createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair ) {
+		java.util.List< org.lgna.croquet.components.Component< ? > > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		rv.add( org.alice.ide.memberseditor.templates.TemplateFactory.getFunctionInvocationTemplate( getterSetterPair.getGetter() ) );
+		rv.add( org.alice.ide.memberseditor.templates.TemplateFactory.getProcedureInvocationTemplate( getterSetterPair.getSetter() ) );
+		return rv;
+	}
+	@Override
 	protected Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member ) {
 		java.util.List< org.lgna.croquet.components.Component< ? > > rv;
 		if( member instanceof org.lgna.project.ast.AbstractField ) {

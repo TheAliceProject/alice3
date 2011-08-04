@@ -52,12 +52,14 @@ public class Text extends Model {
 		return this.implementation;
 	}
 	
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public String getValue() {
 		return this.implementation.getValue();
 	}
 	public void setValue( String text ) {
 		this.implementation.setValue( text );
 	}
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Font getFont() {
 		return new Font( this.implementation.getFont() );
 	}

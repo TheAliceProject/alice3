@@ -92,12 +92,14 @@ public abstract class Scene extends Entity {
 		this.implementation.restoreVehiclesAndVantagePoints();
 	}
 	
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Color getAtmosphereColor() {
 		return Color.createInstance( this.implementation.getAtmosphereColor() );
 	}
 	public void setAtmosphereColor( Color color ) {
 		this.implementation.setAtmosphereColor( color.getInternal() );
 	}
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Color getAmbientLightColor() {
 		return Color.createInstance( this.implementation.getAmbientLightColor() );
 	}

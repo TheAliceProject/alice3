@@ -53,6 +53,10 @@ public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 	protected abstract org.lgna.croquet.components.Component< ? > createFunctionTemplate( org.lgna.project.ast.AbstractMethod method );
 
 	@Override
+	protected Iterable< org.lgna.croquet.components.Component< ? >> createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair ) {
+		return null;
+	}
+	@Override
 	protected Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member ) {
 		org.lgna.croquet.components.Component< ? > component;
 		if( member instanceof org.lgna.project.ast.AbstractMethod ) {

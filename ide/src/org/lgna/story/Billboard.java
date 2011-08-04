@@ -52,12 +52,14 @@ public class Billboard extends Model {
 	/*package-private*/ org.lgna.story.implementation.BillboardImplementation getImplementation() {
 		return this.implementation;
 	}
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Paint getFrontPaint() {
 		return this.implementation.getFrontPaint();
 	}
 	public void setFrontPaint( Paint frontPaint ) {
 		this.implementation.setFrontPaint( frontPaint );
 	}
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Paint getBackPaint() {
 		return this.implementation.getBackPaint();
 	}

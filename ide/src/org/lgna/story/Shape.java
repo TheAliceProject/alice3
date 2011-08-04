@@ -47,6 +47,7 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public abstract class Shape extends Model {
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Color getColor() {
 		return Color.createInstance( this.getImplementation().getColor() );
 	}

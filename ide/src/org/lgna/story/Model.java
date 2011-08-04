@@ -49,6 +49,7 @@ package org.lgna.story;
 public abstract class Model extends MovableTurnable implements Resizable, Visual {
 	@Override
 	/*package-private*/ abstract org.lgna.story.implementation.ModelImplementation getImplementation();
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Double getOpacity() {
 		return (double)this.getImplementation().getOpacity();
 	}
