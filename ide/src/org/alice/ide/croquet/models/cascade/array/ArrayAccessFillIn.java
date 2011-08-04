@@ -50,7 +50,7 @@ public class ArrayAccessFillIn extends org.alice.ide.croquet.models.cascade.Expr
 	private final org.lgna.project.ast.ArrayAccess transientValue;
 	public ArrayAccessFillIn( org.lgna.project.ast.Expression arrayExpression ) {
 		super( java.util.UUID.fromString( "a626aca1-094f-4618-af7b-2dcb4f63fa96" ) );
-		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Integer.class ) );
+		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Integer.class, org.lgna.project.annotations.ArrayIndexDetails.SINGLETON ) );
 		this.transientValue = new org.lgna.project.ast.ArrayAccess();
 		org.lgna.project.ast.AbstractType<?,?,?> arrayType = arrayExpression.getType();
 		this.transientValue.arrayType.setValue( arrayType );

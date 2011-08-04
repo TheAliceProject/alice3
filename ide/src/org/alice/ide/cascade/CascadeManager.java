@@ -281,7 +281,7 @@ public abstract class CascadeManager {
 		return true;
 	}
 	
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type, org.lgna.project.annotations.ValueDetails< ? > details ) {
 		if( type != null ) {
 //			org.lgna.croquet.steps.Transaction transaction = step.getParent();
 //			org.lgna.croquet.steps.TransactionHistory transactionHistory = transaction.getParent();
@@ -334,6 +334,9 @@ public abstract class CascadeManager {
 //			rv.add( org.alice.ide.croquet.models.cascade.TypeUnsetCancelFillIn.getInstance() );
 		}
 		return rv;
+	}
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		return this.updateChildren( rv, blankNode, type, null );
 	}
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, Class<?> cls ) {
 		return this.updateChildren( rv, blankNode, org.lgna.project.ast.JavaType.getInstance( cls ) );

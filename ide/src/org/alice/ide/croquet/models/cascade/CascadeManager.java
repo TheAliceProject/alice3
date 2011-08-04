@@ -50,16 +50,19 @@ public class CascadeManager {
 	private CascadeManager() {
 		throw new AssertionError();
 	}
-	public static ExpressionBlank getBlankForType( Class<?> cls ) {
+	public static <T> ExpressionBlank getBlankForType( Class<T> cls, org.lgna.project.annotations.ValueDetails< T > details) {
 		ExpressionBlank rv;
 		if( cls != null ) {
-			rv = new ExpressionBlank( java.util.UUID.fromString( "d03f9c80-7371-4d78-8579-63e392d18557" ), cls ) {
+			rv = new ExpressionBlank( java.util.UUID.fromString( "d03f9c80-7371-4d78-8579-63e392d18557" ), cls, details ) {
 			};
 			///todo: UnhandledBlank
 		} else {
 			rv = org.alice.ide.croquet.models.cascade.blanks.TypeUnsetBlank.getInstance();
 		}
 		return rv;
+	}
+	public static <T> ExpressionBlank getBlankForType( Class<T> cls ) {
+		return getBlankForType( cls, null );
 	}
 	public static ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		Class<?> cls;

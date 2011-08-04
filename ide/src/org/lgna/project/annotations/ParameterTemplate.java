@@ -48,5 +48,5 @@ package org.lgna.project.annotations;
 @java.lang.annotation.Documented
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 public @interface ParameterTemplate {
-	Class<?> preferredArgumentClass();
+	Class<? extends Enum<? extends ValueDetails<?>>> detailsEnumCls();
 }

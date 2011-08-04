@@ -48,13 +48,18 @@ package org.alice.ide.croquet.models.cascade;
  */
 public abstract class ExpressionBlank extends org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression > {
 	private final org.lgna.project.ast.AbstractType< ?, ?, ? > valueType;
+	private final org.lgna.project.annotations.ValueDetails< ? > details;
 
-	public ExpressionBlank( java.util.UUID id, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType ) {
+	public ExpressionBlank( java.util.UUID id, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, org.lgna.project.annotations.ValueDetails< ? > details ) {
 		super( id );
 		this.valueType = valueType;
+		this.details = details;
 	}
-	public ExpressionBlank( java.util.UUID id, Class< ? > cls ) {
-		this( id, org.lgna.project.ast.JavaType.getInstance( cls ) );
+	public <T> ExpressionBlank( java.util.UUID id, Class< T > cls, org.lgna.project.annotations.ValueDetails< T > details ) {
+		this( id, org.lgna.project.ast.JavaType.getInstance( cls ), details );
+	}
+	public <T> ExpressionBlank( java.util.UUID id, Class< T > cls ) {
+		this( id, cls, null );
 	}
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return this.valueType;
@@ -62,7 +67,7 @@ public abstract class ExpressionBlank extends org.lgna.croquet.CascadeBlank< org
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		ide.getCascadeManager().updateChildren( rv, blankNode, this.valueType );
+		ide.getCascadeManager().updateChildren( rv, blankNode, this.valueType, this.details );
 		return rv;
 	}
 }
