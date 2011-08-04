@@ -94,6 +94,7 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 				initialExpression, isInitializerEditable
 		);
 	}
+	protected abstract boolean isFieldFinal();
 	protected abstract EditCustomization customize( EditCustomization rv );
 	@Override
 	public org.lgna.project.ast.UserField createPreviewDeclaration() {
@@ -107,6 +108,9 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 	@Override
 	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
 		org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
+		if( this.isFieldFinal() ) {
+			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+		}
 		field.valueType.setValue( valueType );
 		field.name.setValue( declarationName );
 		field.initializer.setValue( initializer );
