@@ -43,6 +43,7 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
@@ -92,18 +93,30 @@ public abstract class Scene extends Entity {
 		this.implementation.restoreVehiclesAndVantagePoints();
 	}
 	
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Color getAtmosphereColor() {
 		return Color.createInstance( this.implementation.getAtmosphereColor() );
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void setAtmosphereColor( Color color ) {
-		this.implementation.setAtmosphereColor( color.getInternal() );
+		this.setAtmosphereColor( color, new AnimationDetails() );
 	}
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void setAtmosphereColor( Color color, AnimationDetails details ) {
+		this.implementation.animateAtmosphereColor( color.getInternal(), details.getDuration(), details.getStyle() );
+	}
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Color getAmbientLightColor() {
 		return Color.createInstance( this.implementation.getAmbientLightColor() );
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void setAmbientLightColor( Color color ) {
-		this.implementation.setAmbientLightColor( color.getInternal() );
+		this.setAmbientLightColor( color, new AnimationDetails() );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void setAmbientLightColor( Color color, AnimationDetails details ) {
+		this.implementation.animateAmbientLightColor( color.getInternal(), details.getDuration(), details.getStyle() );
 	}
 }
