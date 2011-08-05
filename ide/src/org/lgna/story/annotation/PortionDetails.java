@@ -40,31 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
+
+package org.lgna.story.annotation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VolumeLevel extends Number {
-	protected double m_value;
-
-	public VolumeLevel( Number value ) {
-		m_value = value.doubleValue();
+public enum PortionDetails implements org.lgna.project.annotations.NumberValueDetails {
+	SINGLETON;
+	public Class< Number > getSupportedCls() {
+		return Number.class;
 	}
-	@Override 
-	public double doubleValue() {
-		return m_value;
+	public Double getMinimumValue() {
+		return 0.0;
 	}
-	@Override
-	public float floatValue() {
-		return (float)m_value;
+	public Double getMaximumValue() {
+		return 1.0;
 	}
-	@Override
-	public int intValue() {
-		return (int)m_value;
-	}
-	@Override
-	public long longValue() {
-		return (long)m_value;
+	public double[] getRepresentativeValues() {
+		return new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
 	}
 }

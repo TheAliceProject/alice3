@@ -43,18 +43,16 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.*;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Ground extends Entity implements MutableRider, Visual {
 	public static enum Appearance {
-		GRASS( "grass" ),
-		DIRT( "dirt" ),
-		SAND( "sand" ),
-		SNOW( "snow" ),
-		WATER( "water" ),
-		MOON( "moon" );
+		GRASS("grass"), DIRT("dirt"), SAND("sand"), SNOW("snow"), WATER("water"), MOON("moon");
 		private String resourceName;
+
 		Appearance( String resourceName ) {
 			this.resourceName = resourceName;
 		}
@@ -62,30 +60,28 @@ public class Ground extends Entity implements MutableRider, Visual {
 			return Ground.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
 		}
 	}
+
 	private final org.lgna.story.implementation.GroundImplementation implementation = new org.lgna.story.implementation.GroundImplementation( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.GroundImplementation getImplementation() {
+	/*package-private*/org.lgna.story.implementation.GroundImplementation getImplementation() {
 		return this.implementation;
 	}
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
-	public Color getColor() {
-		return Color.createInstance( this.getImplementation().color.getValue() );
-	}
-	public void setColor( Color color ) {
-		this.setColor( color, new AnimationDetails() );
-	}
-	public void setColor( Color color, AnimationDetails details ) {
-		this.getImplementation().color.animateValue( Color.getInternal( color ), details.getDuration(), details.getStyle() );
-	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@GetterTemplate(isPersistent = true)
+	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
+	@MethodTemplate(visibility = Visibility.CHAINED)
 	public void setOpacity( Number opacity ) {
 		this.setOpacity( opacity, new AnimationDetails() );
 	}
-	public void setOpacity( Number opacity, AnimationDetails details ) {
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void setOpacity( Number opacity, org.lgna.story.AnimationDetails details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 	public Appearance getAppearance() {

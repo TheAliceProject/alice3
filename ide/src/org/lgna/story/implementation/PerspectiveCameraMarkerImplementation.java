@@ -46,10 +46,7 @@ package org.lgna.story.implementation;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.lgna.story.AngleInDegrees;
-
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector3f;
@@ -284,7 +281,7 @@ public class PerspectiveCameraMarkerImplementation extends CameraMarkerImplement
 		sgLaserLineVisual.setParent( this.getSgComposite() );
 		sgDetailedComponents.add(sgLaserLineVisual);
 		
-		setViewingAngle(new AngleInDegrees(90), new AngleInDegrees(45));
+		setViewingAngle(new edu.cmu.cs.dennisc.math.AngleInDegrees(90), new edu.cmu.cs.dennisc.math.AngleInDegrees(45));
 		
 		
 

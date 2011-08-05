@@ -40,73 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
+
+package org.lgna.story.annotation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AngleInRevolutions extends Angle {
-	private double m_revolutions;
-	public AngleInRevolutions( Number other ) {
-		if( other instanceof edu.cmu.cs.dennisc.math.Angle ) {
-			setAsRevolutions( ((edu.cmu.cs.dennisc.math.Angle)other).getAsRevolutions() );
-		} else {
-			setAsRevolutions( other.doubleValue() );
-		}
+public enum AngleDetails implements org.lgna.project.annotations.NumberValueDetails {
+	SINGLETON;
+	public Class< Number > getSupportedCls() {
+		return Number.class;
 	}
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof Angle ) {
-			Angle a = (Angle)obj;
-			return m_revolutions == a.getAsRevolutions();
-		} else {
-			return false;
-		}
+	public Double getMinimumValue() {
+		return null;
 	}
-	public boolean isNaN() {
-		return Double.isNaN( m_revolutions );
+	public Double getMaximumValue() {
+		return null;
 	}
-	public void setNaN() {
-		m_revolutions = Double.NaN;
-	}
-	public double getAsRadians() {
-		return edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToRadians( m_revolutions );
-	}
-	public double getAsDegrees() {
-		return edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToDegrees( m_revolutions );
-	}
-	public double getAsRevolutions() {
-		return m_revolutions;
-	}
-	public void setAsRadians( double radians ) {
-		m_revolutions = edu.cmu.cs.dennisc.math.AngleUtilities.radiansToRevolutions( radians );
-	}
-	public void setAsDegrees( double degrees ) {
-		m_revolutions = edu.cmu.cs.dennisc.math.AngleUtilities.degreesToRevolutions( degrees );
-	}
-	public void setAsRevolutions( double revolutions ) {
-		m_revolutions = revolutions;
-	}
-
-	public Angle createCopy() {
-		return new AngleInDegrees( this );
-	}
-	
-	public void set( edu.cmu.cs.dennisc.math.Angle other ) {
-		setAsRevolutions( other.getAsRevolutions() );
-	}
-	
-	public void setToInterpolation(edu.cmu.cs.dennisc.math.Angle a0, edu.cmu.cs.dennisc.math.Angle a1, double portion) {
-		setAsRevolutions( edu.cmu.cs.dennisc.math.InterpolationUtilities.interpolate( a0.getAsRevolutions(), a1.getAsRevolutions(), portion ) );
-	}
-
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( getClass().getName() );
-		sb.append( "[" );
-		sb.append( m_revolutions );
-		sb.append( "]" );
-		return sb.toString();
+	public double[] getRepresentativeValues() {
+		return new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0 };
 	}
 }

@@ -64,7 +64,13 @@ public final class AudioSource {
 	private final Double stopTime;
 
 	@ConstructorTemplate(visibility = Visibility.PRIME_TIME)
-	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, @org.lgna.project.annotations.ParameterTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) Number volume, Number startTime, Number stopTime ) {
+	public AudioSource( 
+			org.alice.virtualmachine.resources.AudioResource audioResource, 
+			@org.lgna.project.annotations.ValueTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) 
+			Number volume, 
+			Number startTime, 
+			Number stopTime 
+	) {
 		this.audioResource = audioResource;
 		this.volume = volume.doubleValue();
 		if( startTime != null ) {
@@ -79,11 +85,20 @@ public final class AudioSource {
 		}
 	}
 	@ConstructorTemplate(visibility = Visibility.CHAINED)
-	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, @org.lgna.project.annotations.ParameterTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) Number volume, Number startTime ) {
+	public AudioSource( 
+			org.alice.virtualmachine.resources.AudioResource audioResource, 
+			@org.lgna.project.annotations.ValueTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) 
+			Number volume, 
+			Number startTime 
+	) {
 		this( audioResource, volume, startTime, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_STOP_TIME );
 	}
 	@ConstructorTemplate(visibility = Visibility.CHAINED)
-	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, @org.lgna.project.annotations.ParameterTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) Number volume ) {
+	public AudioSource( 
+			org.alice.virtualmachine.resources.AudioResource audioResource, 
+			@org.lgna.project.annotations.ValueTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) 
+			Number volume 
+	) {
 		this( audioResource, volume, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME );
 	}
 	@ConstructorTemplate(visibility = Visibility.CHAINED)

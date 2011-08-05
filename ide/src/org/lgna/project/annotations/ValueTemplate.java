@@ -40,19 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.fillerinners;
 
+package org.lgna.project.annotations;
 
-//todo: extend NumberFillerInner
 /**
  * @author Dennis Cosgrove
  */
-public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.AbstractDoubleFillerInner {
-	public AngleFillerInner() {
-		super( org.lgna.story.AngleInRevolutions.class, new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0 } );
-	}
-	@Override
-	protected org.lgna.croquet.CascadeItem getCustomItem() {
-		return org.alice.stageide.croquet.models.custom.CustomAngleInputDialogOperation.getInstance().getFillIn();
-	}
+@java.lang.annotation.Documented
+@java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+public @interface ValueTemplate {
+	Class<? extends Enum<? extends ValueDetails<?>>> detailsEnumCls();
 }
