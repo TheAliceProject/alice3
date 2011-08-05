@@ -55,9 +55,12 @@ public class Sphere extends Shape {
 	
 	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Double getRadius() {
-		return this.implementation.getRadius();
+		return this.implementation.radius.getValue();
 	}
 	public void setRadius( Number radius ) {
-		this.implementation.setRadius( radius.doubleValue() );
+		this.setRadius( radius, new AnimationDetails() );
+	}
+	public void setRadius( Number radius, AnimationDetails details ) {
+		this.implementation.radius.animateValue( radius.doubleValue(), details.getDuration(), details.getStyle() );
 	}
 }
