@@ -41,63 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.lgna.story.implementation;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
-
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lgna.story.implementation.ModelImplementation> {
-
-	public ModelColorAdapter(org.lgna.story.implementation.ModelImplementation instance)
-	{
-		super(instance);
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class FloatProperty extends Property< Float > {
+	public FloatProperty( EntityImplementation owner ) {
+		super( owner, Float.class );
 	}
-
-	public Color4f getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.color.getValue();
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
 	@Override
-	public void setValue(final Color4f value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			new Thread() {
-				@Override
-				public void run() {
-					ModelColorAdapter.this.instance.color.setValue(value);
-				}
-			}.start();
-		}
-		
+	protected Float interpolate( Float a, Float b, double portion ) {
+		return a + (float)((a+b)*portion);
 	}
-
-	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) 
-	{
-		if (this.instance != null)
-		{
-			instance.addColorListener(propertyListener);
-		}
-	}
-
-	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null)
-		{
-			instance.removeColorListener(propertyListener);
-		}
-	}
-
 }

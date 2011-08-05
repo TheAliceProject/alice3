@@ -58,6 +58,12 @@ public abstract class EntityImplementation implements ReferenceFrame {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstance( sgElement ), cls );
 	}
 	
+	public Property<?> getPropertyForAbstractionGetter( java.lang.reflect.Method getterMthd ) {
+		String propertyName = edu.cmu.cs.dennisc.property.PropertyUtilities.getPropertyNameForGetter( getterMthd );
+		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField( this.getClass(), propertyName );
+		return (Property<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, this );
+	}
+	
 	public abstract org.lgna.story.Entity getAbstraction();
 	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
 	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {

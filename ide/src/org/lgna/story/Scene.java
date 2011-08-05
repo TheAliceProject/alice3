@@ -96,7 +96,7 @@ public abstract class Scene extends Entity {
 	@GetterTemplate(isPersistent=true)
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Color getAtmosphereColor() {
-		return Color.createInstance( this.implementation.getAtmosphereColor() );
+		return Color.createInstance( this.implementation.atmosphereColor.getValue() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void setAtmosphereColor( Color color ) {
@@ -104,12 +104,12 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void setAtmosphereColor( Color color, AnimationDetails details ) {
-		this.implementation.animateAtmosphereColor( color.getInternal(), details.getDuration(), details.getStyle() );
+		this.implementation.atmosphereColor.animateValue( color.getInternal(), details.getDuration(), details.getStyle() );
 	}
 	@GetterTemplate(isPersistent=true)
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Color getAmbientLightColor() {
-		return Color.createInstance( this.implementation.getAmbientLightColor() );
+		return Color.createInstance( this.implementation.ambientLightColor.getValue() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void setAmbientLightColor( Color color ) {
@@ -117,6 +117,6 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void setAmbientLightColor( Color color, AnimationDetails details ) {
-		this.implementation.animateAmbientLightColor( color.getInternal(), details.getDuration(), details.getStyle() );
+		this.implementation.ambientLightColor.animateValue( color.getInternal(), details.getDuration(), details.getStyle() );
 	}
 }

@@ -52,7 +52,7 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Double getOpacity() {
-		return (double)this.getImplementation().getOpacity();
+		return (double)this.getImplementation().opacity.getValue();
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void setOpacity( Number opacity ) {
@@ -60,7 +60,7 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void setOpacity( java.lang.Number opacity, org.lgna.story.AnimationDetails details ) {
-		this.getImplementation().animateOpacity( opacity.floatValue(), details.getDuration(), details.getStyle() );
+		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 	
 	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )

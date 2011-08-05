@@ -41,63 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.lgna.story.implementation;
 
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
-
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lgna.story.implementation.ModelImplementation> {
-
-	public ModelColorAdapter(org.lgna.story.implementation.ModelImplementation instance)
-	{
-		super(instance);
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class ColorProperty extends Property< edu.cmu.cs.dennisc.color.Color4f > {
+	private edu.cmu.cs.dennisc.color.Color4f value;
+	public ColorProperty( EntityImplementation owner ) {
+		super( owner, edu.cmu.cs.dennisc.color.Color4f.class );
 	}
-
-	public Color4f getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.color.getValue();
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
 	@Override
-	public void setValue(final Color4f value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			new Thread() {
-				@Override
-				public void run() {
-					ModelColorAdapter.this.instance.color.setValue(value);
-				}
-			}.start();
-		}
-		
+	public edu.cmu.cs.dennisc.color.Color4f getValue() {
+		return this.value;
 	}
-
 	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) 
-	{
-		if (this.instance != null)
-		{
-			instance.addColorListener(propertyListener);
-		}
+	protected void handleSetValue( edu.cmu.cs.dennisc.color.Color4f value ) {
+		this.value = value;
 	}
-
 	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null)
-		{
-			instance.removeColorListener(propertyListener);
-		}
+	protected edu.cmu.cs.dennisc.color.Color4f interpolate( edu.cmu.cs.dennisc.color.Color4f a, edu.cmu.cs.dennisc.color.Color4f b, double portion ) {
+		edu.cmu.cs.dennisc.color.Color4f rv = edu.cmu.cs.dennisc.color.Color4f.createNaN();
+		rv.interpolate( a, b, (float)portion );
+		return rv;
 	}
-
 }

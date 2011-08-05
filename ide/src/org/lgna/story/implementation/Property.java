@@ -50,16 +50,74 @@ public abstract class Property<T> {
 	public static interface Listener<T> {
 		public void propertyChanged( T prevValue, T nextValue );
 	}
+	public static String getPropertyNameForGetter( java.lang.reflect.Method method ) {
+		Class< ? > valueClass = method.getReturnType();
+		boolean isBoolean = valueClass.equals( Boolean.TYPE ) || valueClass.equals( Boolean.class );
+		String prefix;
+		if( isBoolean ) {
+			prefix = "is";
+		} else {
+			prefix = "get";
+		}
+		String name = method.getName();
+		if( name.startsWith( prefix ) ) {
+			if( isBoolean ) {
+				return name;
+			} else {
+				return name.substring( prefix.length() );
+			}
+		} else {
+			return null;
+		}
+	}
+
 	private final java.util.List< Listener< T > > listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final EntityImplementation owner;
+	private final Class<T> valueCls;
+	public Property( EntityImplementation owner, Class<T> valueCls ) {
+		this.owner = owner;
+		this.valueCls = valueCls;
+	}
+	public EntityImplementation getOwner() {
+		return this.owner;
+	}
+	public Class<T> getValueCls() {
+		return this.valueCls;
+	}
 	public abstract T getValue();
 	protected abstract void handleSetValue( T value );
-	private void setValue( T value ) {
+	protected abstract T interpolate( T a, T b, double portion );
+	public final void setValue( T value ) {
 		T prevValue = this.getValue();
 		this.handleSetValue( value );
 		this.fireChanged( prevValue, value );
 	}
-	public void animateValue( T value, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.setValue( value );
+	public void animateValue( final T value, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		duration = this.owner.adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, EntityImplementation.RIGHT_NOW ) ) {
+			this.setValue( value );
+		} else {
+			final T value0 = this.getValue(); 
+			this.owner.perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration, style ) {
+				@Override
+				protected void prologue() {
+				}
+				@Override
+				protected void setPortion( double portion ) {
+					Property.this.setValue( Property.this.interpolate( value0, value, portion ) );
+				}
+				@Override
+				protected void epilogue() {
+					Property.this.setValue( value );
+				}
+			} );
+		}
+	}
+	public void animateValue( T value, double duration ) {
+		this.animateValue( value, duration, EntityImplementation.DEFAULT_STYLE );
+	}
+	public void animateValue( T value ) {
+		this.animateValue( value, EntityImplementation.DEFAULT_DURATION );
 	}
 	protected void fireChanged( T prevValue, T nextValue ) {
 		for( Listener< T > listener : listeners ) {

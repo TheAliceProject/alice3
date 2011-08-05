@@ -59,7 +59,7 @@ public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.lgna.st
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getColor();
+			return this.instance.color.getValue();
 		}
 		else
 		{
@@ -76,7 +76,7 @@ public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.lgna.st
 			new Thread() {
 				@Override
 				public void run() {
-					MarkerColorAdapter.this.instance.setColor(value);
+					MarkerColorAdapter.this.instance.color.setValue(value);
 				}
 			}.start();
 		}

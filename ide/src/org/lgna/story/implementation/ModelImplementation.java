@@ -43,61 +43,38 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ModelImplementation extends TransformableImplementation {
+	public final ColorProperty color = new ColorProperty( ModelImplementation.this ) {
+		@Override
+		public edu.cmu.cs.dennisc.color.Color4f getValue() {
+			return ModelImplementation.this.getSgAppearances()[ 0 ].diffuseColor.getValue();
+		}
+		@Override
+		protected void handleSetValue(edu.cmu.cs.dennisc.color.Color4f value) {
+			for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : ModelImplementation.this.getSgAppearances() ) {
+				sgAppearance.diffuseColor.setValue( value );
+			}
+		}
+	};
+	public final FloatProperty opacity = new FloatProperty( ModelImplementation.this ) {
+		@Override
+		public Float getValue() {
+			return ModelImplementation.this.getSgAppearances()[ 0 ].opacity.getValue();
+		}
+		@Override
+		protected void handleSetValue( Float value ) {
+			for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : ModelImplementation.this.getSgAppearances() ) {
+				sgAppearance.opacity.setValue( value );
+			}
+		}
+	};
 	
 	protected abstract edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
-	
-	public final edu.cmu.cs.dennisc.color.Color4f getColor() {
-		return this.getSgAppearances()[ 0 ].diffuseColor.getValue();
-	}
-	public final void setColor( edu.cmu.cs.dennisc.color.Color4f color ) {
-		for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : this.getSgAppearances() ) {
-			sgAppearance.diffuseColor.setValue( color );
-		}
-	}
-	public final void animateColor( edu.cmu.cs.dennisc.color.Color4f color, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		duration = adjustDurationIfNecessary( duration );
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			this.setColor( color );
-		} else {
-			perform( new edu.cmu.cs.dennisc.color.animation.Color4fAnimation( duration, style, this.getColor(), color ) {
-				@Override
-				protected void updateValue( edu.cmu.cs.dennisc.color.Color4f c ) {
-					ModelImplementation.this.setColor( c );
-				}
-			} );
-		}
-	}
-	
-	public final float getOpacity() {
-		return this.getSgAppearances()[ 0 ].opacity.getValue();
-	}
-	public final void setOpacity( float opacity ) {
-		for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : this.getSgAppearances() ) {
-			sgAppearance.opacity.setValue( opacity );
-		}
-	}
-	public final void animateOpacity( float opacity, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		duration = adjustDurationIfNecessary( duration );
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			this.setOpacity( opacity );
-		} else {
-			this.perform( new edu.cmu.cs.dennisc.animation.interpolation.FloatAnimation( duration, style, this.getOpacity(), opacity ) {
-				@Override
-				protected void updateValue( Float globalBrightness ) {
-					ModelImplementation.this.setOpacity( globalBrightness );
-				}
-			} );
-		}
-	}
-	
+		
 	
 	public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
 		for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : this.getSgAppearances() ) {
@@ -105,36 +82,40 @@ public abstract class ModelImplementation extends TransformableImplementation {
 		}
 	}
 	
-	public void addColorListener(PropertyListener listener)
+	@Deprecated
+	public void addColorListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener)
 	{
 		this.getSgAppearances()[ 0 ].diffuseColor.addPropertyListener(listener);
 	}
 	
-	public void removeColorListener(PropertyListener listener)
+	@Deprecated
+	public void removeColorListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener)
 	{
 		this.getSgAppearances()[ 0 ].diffuseColor.removePropertyListener(listener);
 	}
 	
-	public void addOpacityListener(PropertyListener listener)
+	@Deprecated
+	public void addOpacityListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener)
 	{
 		this.getSgAppearances()[ 0 ].opacity.addPropertyListener(listener);
 	}
 	
-	public void removeOpacityListener(PropertyListener listener)
+	@Deprecated
+	public void removeOpacityListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener)
 	{
 		this.getSgAppearances()[ 0 ].opacity.removePropertyListener(listener);
 	}
 	
-	public void addScaleListener(PropertyListener listener){
+	public void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener){
 		this.getSgVisuals()[0].scale.addPropertyListener(listener);
 	}
 	
-	public void removeScaleListener(PropertyListener listener){
+	public void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener){
 		this.getSgVisuals()[0].scale.removePropertyListener(listener);
 	}
 	
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		return new Dimension3( 1.0, 1.0, 1.0 );
+		return new edu.cmu.cs.dennisc.math.Dimension3( 1.0, 1.0, 1.0 );
 	}
 	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
 	}
