@@ -46,6 +46,7 @@ import java.awt.event.InputEvent;
 
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.ManipulationHandle;
+import org.lgna.story.implementation.EntityImplementation;
 
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -379,8 +380,7 @@ public class InputState {
 		{
 			return null;
 		}
-		Object bonusData = object.getBonusDataFor( PickHint.PICK_HINT_KEY );
-		if ( bonusData instanceof PickHint)
+		if ( EntityImplementation.getInstance(object) != null )
 		{
 			return object;
 		}
