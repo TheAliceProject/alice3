@@ -49,6 +49,16 @@ package org.lgna.story.implementation;
 public class SphereImplementation extends ShapeImplementation {
 	private final edu.cmu.cs.dennisc.scenegraph.Sphere sgSphere = new edu.cmu.cs.dennisc.scenegraph.Sphere();
 	private final org.lgna.story.Sphere abstraction;
+	public final DoubleProperty radius = new DoubleProperty( SphereImplementation.this ) {
+		@Override
+		public Double getValue() {
+			return SphereImplementation.this.sgSphere.radius.getValue();
+		}
+		@Override
+		protected void handleSetValue( Double value ) {
+			SphereImplementation.this.sgSphere.radius.setValue( value );
+		}
+	};
 	public SphereImplementation( org.lgna.story.Sphere abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgSphere } );
@@ -57,14 +67,8 @@ public class SphereImplementation extends ShapeImplementation {
 	public org.lgna.story.Sphere getAbstraction() {
 		return this.abstraction;
 	}
-	public double getRadius() {
-		return this.sgSphere.radius.getValue();
-	}
-	public void setRadius( double radius ) {
-		this.sgSphere.radius.setValue( radius );
-	}
 	@Override
 	protected double getBoundingSphereRadius() {
-		return this.getRadius();
+		return this.radius.getValue();
 	}
 }

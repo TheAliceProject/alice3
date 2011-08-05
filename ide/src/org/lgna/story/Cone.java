@@ -55,16 +55,22 @@ public class Cone extends Shape {
 	
 	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Double getBaseRadius() {
-		return this.implementation.getBaseRadius();
+		return this.implementation.baseRadius.getValue();
 	}
 	public void setBaseRadius( Number baseRadius ) {
-		this.implementation.setBaseRadius( baseRadius.doubleValue() );
+		this.setBaseRadius( baseRadius, new AnimationDetails() );
+	}
+	public void setBaseRadius( Number baseRadius, AnimationDetails details ) {
+		this.implementation.baseRadius.animateValue( baseRadius.doubleValue(), details.getDuration(), details.getStyle() );
 	}
 	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Double getLength() {
-		return this.implementation.getLength();
+		return this.implementation.length.getValue();
 	}
-	public void setLength( Number baseRadius ) {
-		this.implementation.setLength( baseRadius.doubleValue() );
+	public void setLength( Number length ) {
+		this.setLength( length, new AnimationDetails() );
+	}
+	public void setLength( Number length, AnimationDetails details ) {
+		this.implementation.length.animateValue( length.doubleValue(), details.getDuration(), details.getStyle() );
 	}
 }
