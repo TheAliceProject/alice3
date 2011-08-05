@@ -52,5 +52,5 @@ public interface Visual {
 //	public void setColor( Color color, AnimationDetails details );
 	public Double getOpacity();
 	public void setOpacity( Number opacity );
-	public void setOpacity( Number opacity, AnimationDetails details );
+	public void setOpacity( Number opacity, SetPropertyDetails.Value details );
 }

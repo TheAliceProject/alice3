@@ -47,9 +47,17 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class JavaParameter extends AbstractParameter {
-	private java.lang.annotation.Annotation[] m_annotations;
+	private final java.lang.annotation.Annotation[] annotations;
+	private org.lgna.project.annotations.ValueDetails<?> details;
 	public JavaParameter( java.lang.annotation.Annotation[] annotations ) {
-		m_annotations = annotations;
+		this.annotations = annotations;
+		if( this.annotations != null ) {
+			for( java.lang.annotation.Annotation annotation : this.annotations ) {
+				if( annotation instanceof org.lgna.project.annotations.ValueTemplate ) {
+					this.setValueTemplate( (org.lgna.project.annotations.ValueTemplate)annotation );
+				}
+			}
+		}
 	}
 	@Override
 	public boolean isDeclaredInAlice() {
@@ -61,7 +69,7 @@ public abstract class JavaParameter extends AbstractParameter {
 	}
 	@Override
 	public boolean isVariableLength() {
-		for( java.lang.annotation.Annotation annotation : m_annotations ) {
+		for( java.lang.annotation.Annotation annotation : this.annotations ) {
 			if( annotation instanceof edu.cmu.cs.dennisc.java.lang.ParameterAnnotation ) {
 				edu.cmu.cs.dennisc.java.lang.ParameterAnnotation parameterAnnotation = (edu.cmu.cs.dennisc.java.lang.ParameterAnnotation)annotation;
 				return parameterAnnotation.isVariable();
@@ -75,17 +83,12 @@ public abstract class JavaParameter extends AbstractParameter {
 	}
 	@Override
 	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
-		if( m_annotations != null ) {
-			for( java.lang.annotation.Annotation annotation : m_annotations ) {
-				if( annotation instanceof org.lgna.project.annotations.ValueTemplate ) {
-					org.lgna.project.annotations.ValueTemplate parameterTemplate = (org.lgna.project.annotations.ValueTemplate)annotation;
-					Class< ? extends Enum< ? extends org.lgna.project.annotations.ValueDetails<?> > > detailsEnumCls = parameterTemplate.detailsEnumCls();
-					Enum< ? extends org.lgna.project.annotations.ValueDetails<?> >[] details = detailsEnumCls.getEnumConstants();
-					assert details.length == 1;
-					return (org.lgna.project.annotations.ValueDetails<?>)details[ 0 ];
-				}
-			}
-		}
-		return null;
+		return this.details;
+	}
+	/*package-private*/ void setValueTemplate( org.lgna.project.annotations.ValueTemplate valueTemplate ) {
+		Class< ? extends Enum< ? extends org.lgna.project.annotations.ValueDetails<?> > > detailsEnumCls = valueTemplate.detailsEnumCls();
+		Enum< ? extends org.lgna.project.annotations.ValueDetails<?> >[] details = detailsEnumCls.getEnumConstants();
+		assert details.length == 1;
+		this.details = (org.lgna.project.annotations.ValueDetails<?>)details[ 0 ];
 	}
 }

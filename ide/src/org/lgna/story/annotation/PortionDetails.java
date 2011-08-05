@@ -57,7 +57,7 @@ public enum PortionDetails implements org.lgna.project.annotations.NumberValueDe
 	public Double getMaximumValue() {
 		return 1.0;
 	}
-	public double[] getRepresentativeValues() {
+	public double[] getLiterals() {
 		return new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
 	}
 }

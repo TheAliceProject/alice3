@@ -103,6 +103,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 
 	public abstract boolean isFollowToSuperClassDesired();
 	public abstract boolean isConsumptionBySubClassDesired();
+	public abstract AbstractType<?,?,?> getKeywordFactoryType();
 	public abstract AbstractPackage getPackage();
 	public abstract AbstractType<?,?,?> getSuperType();
 	public abstract java.util.ArrayList< C > getDeclaredConstructors();

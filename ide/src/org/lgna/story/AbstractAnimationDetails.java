@@ -46,13 +46,13 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class AbstractAnimationDetails {
+/*package-private*/ class AbstractAnimationDetails {
 	protected double duration = 1.0;
-	protected Style style = TraditionalStyle.BEGIN_AND_END_GENTLY;
+	protected org.lgna.story.Style style = org.lgna.story.TraditionalStyle.BEGIN_AND_END_GENTLY;
 	/*package-private*/ double getDuration() {
 		return this.duration;
 	}
-	/*package-private*/ Style getStyle() {
+	/*package-private*/ org.lgna.story.Style getStyle() {
 		return this.style;
 	}
 }

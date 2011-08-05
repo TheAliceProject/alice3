@@ -50,9 +50,15 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		super( Integer.class );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		super.addItems( rv, isTop, prevExpression );
-		for( int i=0; i<4; i++ ) {
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		super.addItems( rv, details, isTop, prevExpression );
+		int[] literals;
+		if( details instanceof org.lgna.project.annotations.IntegerValueDetails ) {
+			literals = ((org.lgna.project.annotations.IntegerValueDetails)details).getLiterals();
+		} else {
+			literals = new int[] { 0, 1, 2, 3 };
+		}
+		for( int i : literals ) {
 			rv.add( org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( i ) );
 		}
 		if( isTop && prevExpression != null ) {

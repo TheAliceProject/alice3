@@ -69,7 +69,20 @@ public class ParameterBlank extends ExpressionBlank {
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
-		rv.add( ParameterNameSeparator.getInstance( this.parameter ) );
-		return super.updateChildren( rv, blankNode );
+		org.lgna.project.ast.AbstractType< ?,?,? > valueType = this.parameter.getValueType();
+		org.lgna.project.ast.AbstractType< ?,?,? > keywordFactoryType = valueType.getKeywordFactoryType();
+		if( keywordFactoryType != null ) {
+			Class<?> cls = ((org.lgna.project.ast.JavaType)keywordFactoryType).getClassReflectionProxy().getReification();
+			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
+				org.lgna.project.ast.JavaType returnType = org.lgna.project.ast.JavaType.getInstance( mthd.getReturnType() );
+				if( returnType == valueType ) {
+					rv.add( KeywordMenuModel.getInstance( org.lgna.project.ast.JavaMethod.getInstance( mthd ) ) );
+				}
+			}
+			return rv;
+		} else {
+			rv.add( ParameterNameSeparator.getInstance( this.parameter ) );
+			return super.updateChildren( rv, blankNode );
+		}
 	}
 }

@@ -46,21 +46,45 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class SetDimensionAnimationDetails extends AbstractAnimationDetails {
-	protected SetDimensionPolicy policy = SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
-	public SetDimensionAnimationDetails policy( SetDimensionPolicy value ) {
-		this.policy = value;
-		return this;
+public class VantagePointWithAsSeenByDetails {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=VantagePointWithAsSeenByDetails.class )
+	public static class Value extends AbstractAnimationDetails {
+		protected org.lgna.story.Entity asSeenBy = null;
+		/*package-private*/ Value() {
+		}
+		public Value asSeenBy( org.lgna.story.Entity value ) {
+			this.asSeenBy = value;
+			return this;
+		}
+		public Value duration( Number value ) {
+			this.duration = value.doubleValue();
+			return this;
+		}
+		public Value style( org.lgna.story.Style value ) {
+			this.style = value;
+			return this;
+		}
+		/*package-private*/ org.lgna.story.Entity getAsSeenBy( org.lgna.story.Entity valueIfNull ) {
+			return this.asSeenBy != null ? this.asSeenBy : valueIfNull;
+		}
 	}
-	public SetDimensionAnimationDetails duration( Number value ) {
-		this.duration = value.doubleValue();
-		return this;
+	private VantagePointWithAsSeenByDetails() {
+		throw new AssertionError();
 	}
-	public SetDimensionAnimationDetails style( Style value ) {
-		this.style = value;
-		return this;
+	public static Value asSeenBy( Entity value ) {
+		Value rv = new Value();
+		rv.asSeenBy( value );
+		return rv;
 	}
-	/*package-private*/ SetDimensionPolicy getPolicy() {
-		return this.policy;
+	public static Value duration( Number value ) {
+		Value rv = new Value();
+		rv.duration( value );
+		return rv;
+	}
+	public static Value style( Style value ) {
+		Value rv = new Value();
+		rv.style( value );
+		return rv;
 	}
 }
+

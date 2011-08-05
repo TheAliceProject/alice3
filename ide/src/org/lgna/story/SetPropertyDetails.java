@@ -46,24 +46,30 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class RelativeVantagePointAnimationDetailsFactory {
-	private RelativeVantagePointAnimationDetailsFactory() {
+public class SetPropertyDetails {
+	public static class Value extends AbstractAnimationDetails {
+		/*package-private*/ Value() {
+		}
+		public Value duration( Number value ) {
+			this.duration = value.doubleValue();
+			return this;
+		}
+		public Value style( org.lgna.story.Style value ) {
+			this.style = value;
+			return this;
+		}
+	}
+	private SetPropertyDetails() {
 		throw new AssertionError();
 	}
-	public static RelativeVantagePointAnimationDetails asSeenBy( Entity value ) {
-		RelativeVantagePointAnimationDetails rv = new RelativeVantagePointAnimationDetails();
-		rv.asSeenBy( value );
-		return rv;
-	}
-	public static RelativeVantagePointAnimationDetails duration( Number value ) {
-		RelativeVantagePointAnimationDetails rv = new RelativeVantagePointAnimationDetails();
+	public static Value duration( Number value ) {
+		Value rv = new Value();
 		rv.duration( value );
 		return rv;
 	}
-	public static RelativeVantagePointAnimationDetails style( Style value ) {
-		RelativeVantagePointAnimationDetails rv = new RelativeVantagePointAnimationDetails();
+	public static Value style( Style value ) {
+		Value rv = new Value();
 		rv.style( value );
 		return rv;
 	}
 }
-

@@ -46,12 +46,30 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleFillerInner extends AbstractDoubleFillerInner {
+public class DoubleFillerInner extends AbstractNumberFillerInner {
 	public DoubleFillerInner() {
-		super( Double.class, new double[] { 0.0, 0.25, 0.5, 1.0, 2.0, 10.0 } );
+		super( Double.class );
 	}
 	@Override
-	protected org.lgna.croquet.CascadeItem getCustomItem() {
-		return org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn();
+	public final java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		super.addItems( rv, details, isTop, prevExpression );
+		double[] literals;
+		if( details instanceof org.lgna.project.annotations.NumberValueDetails ) {
+			literals = ((org.lgna.project.annotations.NumberValueDetails)details).getLiterals();
+		} else {
+			literals = new double[] { 0.25, 0.5, 1.0, 2.0, 10.0 };
+		}
+		for( double d : literals ) {
+			rv.add( org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn.getInstance( d ) );
+		}
+		if( isTop && prevExpression != null ) {
+			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			rv.add( org.alice.ide.croquet.models.cascade.number.RandomCascadeMenu.getInstance() );
+			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			rv.add( org.alice.ide.croquet.models.cascade.number.MathCascadeMenu.getInstance() );
+		}
+		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
+		return rv;
 	}
 }

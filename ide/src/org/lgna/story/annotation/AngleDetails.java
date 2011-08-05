@@ -57,7 +57,7 @@ public enum AngleDetails implements org.lgna.project.annotations.NumberValueDeta
 	public Double getMaximumValue() {
 		return null;
 	}
-	public double[] getRepresentativeValues() {
+	public double[] getLiterals() {
 		return new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0 };
 	}
 }

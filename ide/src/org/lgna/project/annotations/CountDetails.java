@@ -57,7 +57,7 @@ public enum CountDetails implements IntegerValueDetails {
 	public java.lang.Integer getMaximumValue() {
 		return null;
 	}
-	public int[] getRepresentativeValues() {
+	public int[] getLiterals() {
 		return new int[] { 1, 2, 3 };
 	}
 }

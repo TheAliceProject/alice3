@@ -49,6 +49,5 @@ package org.lgna.project.annotations;
 public interface IntegerValueDetails extends ValueDetails< Integer > {
 	public Integer getMinimumValue();
 	public Integer getMaximumValue();
-	//todo: rename
-	public int[] getRepresentativeValues();
+	public int[] getLiterals();
 }

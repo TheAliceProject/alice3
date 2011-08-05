@@ -49,52 +49,34 @@ import org.lgna.project.annotations.*;
  */
 public abstract class Turnable extends Entity implements MutableRider {
 	@Override
-	/*package-private*/ abstract org.lgna.story.implementation.AbstractTransformableImplementation getImplementation();
+	/*package-private*/abstract org.lgna.story.implementation.AbstractTransformableImplementation getImplementation();
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 
-	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void turn( 
-			TurnDirection direction,
-			@ValueTemplate(detailsEnumCls=org.lgna.story.annotation.AngleDetails.class)
-			Number amount 
-	) {
-		this.turn( direction, amount, new RelativeVantagePointAnimationDetails() );
+	@MethodTemplate(isFollowedByLongerMethod = true)
+	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount ) {
+		this.turn( direction, amount, new VantagePointWithAsSeenByDetails.Value() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void turn( 
-			TurnDirection direction, 
-			@ValueTemplate(detailsEnumCls=org.lgna.story.annotation.AngleDetails.class)
-			Number amount, 
-			RelativeVantagePointAnimationDetails details 
-	) {
+	@MethodTemplate()
+	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, VantagePointWithAsSeenByDetails.Value details ) {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void roll( 
-			RollDirection direction, 
-			@ValueTemplate(detailsEnumCls=org.lgna.story.annotation.AngleDetails.class)
-			Number amount 
-	) {
-		this.roll( direction, amount, new RelativeVantagePointAnimationDetails() );
+	@MethodTemplate(isFollowedByLongerMethod = true)
+	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount ) {
+		this.roll( direction, amount, new VantagePointWithAsSeenByDetails.Value() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void roll( 
-			RollDirection direction, 
-			@ValueTemplate(detailsEnumCls=org.lgna.story.annotation.AngleDetails.class)
-			Number amount, 
-			RelativeVantagePointAnimationDetails details 
-	) {
+	@MethodTemplate()
+	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, VantagePointWithAsSeenByDetails.Value details ) {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
-	
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public Orientation getOrientationRelativeToVehicle() {
-		return Orientation.createInstance( this.getImplementation().getLocalOrientation() ); 
+		return Orientation.createInstance( this.getImplementation().getLocalOrientation() );
 	}
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public void setOrientationRelativeToVehicle( Orientation position ) {
-		this.getImplementation().setLocalOrientation( position.getInternal() ); 
+		this.getImplementation().setLocalOrientation( position.getInternal() );
 	}
 }

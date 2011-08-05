@@ -44,33 +44,34 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class MovableTurnable extends Turnable {
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public Position getPositionRelativeToVehicle() {
-		return Position.createInstance( this.getImplementation().getLocalPosition() ); 
+		return Position.createInstance( this.getImplementation().getLocalPosition() );
 	}
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public void setPositionRelativeToVehicle( Position position ) {
-		this.getImplementation().setLocalPosition( position.getInternal() ); 
+		this.getImplementation().setLocalPosition( position.getInternal() );
 	}
 
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate( isFollowedByLongerMethod=true )
 	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new RelativeVantagePointAnimationDetails() );
+		this.move( direction, amount, new VantagePointWithAsSeenByDetails.Value() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void move( MoveDirection direction, Number amount, RelativeVantagePointAnimationDetails details ) {
+	@MethodTemplate()
+	public void move( MoveDirection direction, Number amount, VantagePointWithAsSeenByDetails.Value details ) {
 		this.getImplementation().animateApplyTranslation( direction.createTranslation( amount.doubleValue() ), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveToward( Entity target, Number amount ) {
-		this.moveToward( target, amount, new AnimationDetails() );
+		this.moveToward( target, amount, new VantagePointDetails.Value() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void moveToward( Entity target, Number amount, AnimationDetails details ) {
+	@MethodTemplate()
+	public void moveToward( Entity target, Number amount, VantagePointDetails.Value details ) {
 		edu.cmu.cs.dennisc.math.Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
 		edu.cmu.cs.dennisc.math.Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
 		edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( tTarget, tThis );
@@ -82,28 +83,28 @@ public abstract class MovableTurnable extends Turnable {
 		}
 		this.getImplementation().animateApplyTranslation( v.x, v.y, v.z, org.lgna.story.implementation.AsSeenBy.SCENE, details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveAwayFrom( Entity target, Number amount ) {
-		this.moveAwayFrom( target, amount, new AnimationDetails() );
+		this.moveAwayFrom( target, amount, new VantagePointDetails.Value() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void moveAwayFrom( Entity target, Number amount, AnimationDetails details ) {
+	@MethodTemplate()
+	public void moveAwayFrom( Entity target, Number amount, VantagePointDetails.Value details ) {
 		this.moveToward( target, -amount.doubleValue(), details );
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveTo( Entity target ) {
-		this.moveTo( target, new AnimationDetails() );
+		this.moveTo( target, new VantagePointDetails.Value() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void moveTo( Entity target, AnimationDetails details ) {
+	@MethodTemplate()
+	public void moveTo( Entity target, VantagePointDetails.Value details ) {
 		this.getImplementation().animatePositionOnly( target.getImplementation(), null, details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveAndOrientTo( Entity target ) {
-		this.moveAndOrientTo( target, new AnimationDetails() );
+		this.moveAndOrientTo( target, new VantagePointDetails.Value() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void moveAndOrientTo( Entity target, AnimationDetails details ) {
+	@MethodTemplate()
+	public void moveAndOrientTo( Entity target, VantagePointDetails.Value details ) {
 		this.getImplementation().animateTransformation( target.getImplementation(), null, details.getDuration(), details.getStyle() );
 	}
 }

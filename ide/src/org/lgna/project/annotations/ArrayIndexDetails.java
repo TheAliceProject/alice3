@@ -57,7 +57,7 @@ public enum ArrayIndexDetails implements IntegerValueDetails {
 	public java.lang.Integer getMaximumValue() {
 		return null;
 	}
-	public int[] getRepresentativeValues() {
+	public int[] getLiterals() {
 		return new int[] { 0, 1, 2, 3, 4 };
 	}
 }

@@ -52,9 +52,9 @@ public abstract class Shape extends Model {
 		return Color.createInstance( this.getImplementation().color.getValue() );
 	}
 	public void setColor( Color color ) {
-		this.setColor( color, new AnimationDetails() );
+		this.setColor( color, new SetPropertyDetails.Value() );
 	}
-	public void setColor( org.lgna.story.Color color, org.lgna.story.AnimationDetails details ) {
+	public void setColor( org.lgna.story.Color color, SetPropertyDetails.Value details ) {
 		this.getImplementation().color.animateValue( Color.getInternal( color ), details.getDuration(), details.getStyle() );
 	}
 }

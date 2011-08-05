@@ -295,11 +295,11 @@ public abstract class CascadeManager {
 			this.addCustomFillIns( rv, blankNode, type );
 			type = getTypeFor( type );
 			if( type == org.lgna.project.ast.JavaType.getInstance( Object.class ) ) {
-				this.assumingStringConcatenationObjectFillerInner.addItems( rv, isRoot, this.previousExpression );
+				this.assumingStringConcatenationObjectFillerInner.addItems( rv, details, isRoot, this.previousExpression );
 			} else {
 				for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
 					if( expressionFillerInner.isAssignableTo( type ) ) {
-						expressionFillerInner.addItems( rv, isRoot, this.previousExpression );
+						expressionFillerInner.addItems( rv, details, isRoot, this.previousExpression );
 					}
 				}
 			}
@@ -316,7 +316,7 @@ public abstract class CascadeManager {
 			}
 			if( enumType != null && this.areEnumConstantsDesired( enumType ) ) {
 				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( enumType ).addItems( rv, isRoot, this.previousExpression );
+				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( enumType ).addItems( rv, details, isRoot, this.previousExpression );
 			}
 
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );

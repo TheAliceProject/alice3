@@ -41,28 +41,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ResizeDimensionAnimationDetailsFactory {
-	private ResizeDimensionAnimationDetailsFactory() {
-		throw new AssertionError();
+public class KeywordMenuModel extends org.lgna.croquet.CascadeMenuModel< org.lgna.project.ast.Expression > {
+	private static java.util.Map< org.lgna.project.ast.AbstractMethod, KeywordMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static KeywordMenuModel getInstance( org.lgna.project.ast.AbstractMethod value ) {
+		synchronized( map ) {
+			KeywordMenuModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new KeywordMenuModel( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
 	}
-	public static ResizeDimensionAnimationDetails isVolumePreserved( Boolean value ) {
-		ResizeDimensionAnimationDetails rv = new ResizeDimensionAnimationDetails();
-		rv.isVolumePreserved( value );
-		return rv;
+	private final org.lgna.project.ast.AbstractMethod method;
+	private KeywordMenuModel( org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "86b5a4aa-57cf-4f0c-9247-7a63083e1b37" ) );
+		this.method = method;
 	}
-	public static ResizeDimensionAnimationDetails duration( Number value ) {
-		ResizeDimensionAnimationDetails rv = new ResizeDimensionAnimationDetails();
-		rv.duration( value );
-		return rv;
+	@Override
+	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression > step ) {
+		return this.method.getName();
 	}
-	public static ResizeDimensionAnimationDetails style( Style value ) {
-		ResizeDimensionAnimationDetails rv = new ResizeDimensionAnimationDetails();
-		rv.style( value );
+	@Override
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression > step ) {
+		return null;
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+		org.lgna.project.ast.AbstractParameter parameter = this.method.getParameters().get( 0 );
+		org.alice.ide.IDE.getActiveInstance().getCascadeManager().updateChildren( rv, blankNode, parameter.getValueType() );
 		return rv;
 	}
 }

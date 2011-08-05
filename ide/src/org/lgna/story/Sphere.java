@@ -55,16 +55,16 @@ public class Sphere extends Shape {
 	}
 	
 	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate()
 	public Double getRadius() {
 		return this.implementation.radius.getValue();
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate( isFollowedByLongerMethod=true )
 	public void setRadius( Number radius ) {
-		this.setRadius( radius, new AnimationDetails() );
+		this.setRadius( radius, new SetPropertyDetails.Value() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void setRadius( Number radius, AnimationDetails details ) {
+	@MethodTemplate()
+	public void setRadius( Number radius, SetPropertyDetails.Value details ) {
 		this.implementation.radius.animateValue( radius.doubleValue(), details.getDuration(), details.getStyle() );
 	}
 }

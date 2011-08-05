@@ -40,67 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractBoundedValue extends Number {
-	protected abstract Double getMinimum();
-	protected abstract Double getMaximum();
-	private double value;
-	
-	public AbstractBoundedValue() {
-		this.value = Double.NaN;
-	}
-	public AbstractBoundedValue( Number value ) {
-		this.value = value.doubleValue();
-	}
-	public AbstractBoundedValue( AbstractBoundedValue other ) {
-		if( other != null ) {
-			this.value = other.value;
-		} else {
-			this.value = Double.NaN;
+public class ResizeDimensionDetails {
+	public static class Value extends AbstractAnimationDetails {
+		private Boolean isVolumePreserved = true;
+		/*package-private*/ Value() {
+		}
+		public Value isVolumePreserved( Boolean value ) {
+			this.isVolumePreserved = value;
+			return this;
+		}
+		public Value duration( Number value ) {
+			this.duration = value.doubleValue();
+			return this;
+		}
+		public Value style( org.lgna.story.Style value ) {
+			this.style = value;
+			return this;
+		}
+		/*package-private*/ Boolean isVolumePreserved() {
+			return this.isVolumePreserved;
 		}
 	}
-
-	protected void set( AbstractBoundedValue other ) {
-		this.value = other.value;
+	private ResizeDimensionDetails() {
+		throw new AssertionError();
 	}
-	@Override
-	public double doubleValue() {
-		return this.value;
-	}
-	@Override
-	public float floatValue() {
-		return (float)this.value;
-	}
-	@Override
-	public int intValue() {
-		return (int)this.value;
-	}
-	@Override
-	public long longValue() {
-		return (long)this.value;
-	}
-	
-	//todo: NaN
-	
-	public Double getValue() {
-		return this.value;
-	}
-	public void setValue( Number value ) {
-		assert value.doubleValue() >= getMinimum();
-		assert value.doubleValue() <= getMaximum();
-		this.value = value.doubleValue();
-	}
-	
-	//Random
-	public static AbstractBoundedValue setReturnValueToRandom( AbstractBoundedValue rv ) {
-		rv.value = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( rv.getMinimum(), rv.getMaximum() );
+	public static Value isVolumePreserved( Boolean value ) {
+		Value rv = new Value();
+		rv.isVolumePreserved( value );
 		return rv;
 	}
-	public void setRandom() {
-		setReturnValueToRandom( this );
+	public static Value duration( Number value ) {
+		Value rv = new Value();
+		rv.duration( value );
+		return rv;
+	}
+	public static Value style( Style value ) {
+		Value rv = new Value();
+		rv.style( value );
+		return rv;
 	}
 }

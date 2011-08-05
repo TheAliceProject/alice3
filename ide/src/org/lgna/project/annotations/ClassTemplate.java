@@ -48,6 +48,8 @@ package org.lgna.project.annotations;
 @java.lang.annotation.Documented
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 public @interface ClassTemplate {
-	boolean isFollowToSuperClassDesired();
-	boolean isConsumptionBySubClassDesired();
+	public static final Class<?> VOID_ACTS_AS_NULL = Void.class;
+	boolean isFollowToSuperClassDesired() default true;
+	boolean isConsumptionBySubClassDesired() default false;
+	Class<?> keywordFactoryCls() default Void.class;
 }

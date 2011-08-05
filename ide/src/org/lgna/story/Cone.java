@@ -54,30 +54,30 @@ public class Cone extends Shape {
 		return this.implementation;
 	}
 	
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate()
 	public Double getBaseRadius() {
 		return this.implementation.baseRadius.getValue();
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setBaseRadius( Number baseRadius ) {
-		this.setBaseRadius( baseRadius, new AnimationDetails() );
+		this.setBaseRadius( baseRadius, new SetPropertyDetails.Value() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void setBaseRadius( Number baseRadius, AnimationDetails details ) {
+	@MethodTemplate()
+	public void setBaseRadius( Number baseRadius, SetPropertyDetails.Value details ) {
 		this.implementation.baseRadius.animateValue( baseRadius.doubleValue(), details.getDuration(), details.getStyle() );
 	}
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate()
 	public Double getLength() {
 		return this.implementation.length.getValue();
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setLength( Number length ) {
-		this.setLength( length, new AnimationDetails() );
+		this.setLength( length, new SetPropertyDetails.Value() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void setLength( Number length, AnimationDetails details ) {
+	@MethodTemplate()
+	public void setLength( Number length, SetPropertyDetails.Value details ) {
 		this.implementation.length.animateValue( length.doubleValue(), details.getDuration(), details.getStyle() );
 	}
 }

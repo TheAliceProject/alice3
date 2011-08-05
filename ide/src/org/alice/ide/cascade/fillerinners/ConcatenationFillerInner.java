@@ -50,7 +50,7 @@ public abstract class ConcatenationFillerInner extends ExpressionFillerInner {
 	public ConcatenationFillerInner( Class<?> cls ) {
 		super( cls );
 	}
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addConcatenationItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addConcatenationItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		if( isTop ) {
 			if( prevExpression != null ) {
 				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );

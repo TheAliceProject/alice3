@@ -70,18 +70,18 @@ public class Ground extends Entity implements MutableRider, Visual {
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@MethodTemplate()
 	@GetterTemplate(isPersistent = true)
 	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
-	@MethodTemplate(visibility = Visibility.CHAINED)
+	@MethodTemplate( isFollowedByLongerMethod = true )
 	public void setOpacity( Number opacity ) {
-		this.setOpacity( opacity, new AnimationDetails() );
+		this.setOpacity( opacity, new SetPropertyDetails.Value() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void setOpacity( Number opacity, org.lgna.story.AnimationDetails details ) {
+	@MethodTemplate()
+	public void setOpacity( Number opacity, SetPropertyDetails.Value details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 	public Appearance getAppearance() {

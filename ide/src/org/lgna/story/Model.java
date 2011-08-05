@@ -44,25 +44,24 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Model extends MovableTurnable implements Resizable, Visual {
 	@Override
 	/*package-private*/abstract org.lgna.story.implementation.ModelImplementation getImplementation();
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@MethodTemplate()
 	@GetterTemplate(isPersistent = true)
 	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
-	@MethodTemplate(visibility = Visibility.CHAINED)
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setOpacity( Number opacity ) {
-		this.setOpacity( opacity, new AnimationDetails() );
+		this.setOpacity( opacity, new SetPropertyDetails.Value() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void setOpacity( Number opacity, org.lgna.story.AnimationDetails details ) {
+	@MethodTemplate()
+	public void setOpacity( Number opacity, SetPropertyDetails.Value details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 
@@ -70,12 +69,12 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 	public Scale getScale() {
 		return Scale.createInstance( this.getImplementation().getScale() );
 	}
-	@MethodTemplate(visibility = Visibility.CHAINED)
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY, isFollowedByLongerMethod = true)
 	public void setScale( Scale scale ) {
-		this.setScale( scale, new AnimationDetails() );
+		this.setScale( scale, new SetPropertyDetails.Value() );
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setScale( Scale scale, AnimationDetails details ) {
+	public void setScale( Scale scale, SetPropertyDetails.Value details ) {
 		this.getImplementation().animateSetScale( Scale.getInternal( scale ), details.getDuration(), details.getStyle() );
 	}
 
@@ -83,83 +82,83 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 	public Size getSize() {
 		return Size.createInstance( this.getImplementation().getSize() );
 	}
-	@MethodTemplate(visibility = Visibility.CHAINED)
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY, isFollowedByLongerMethod = true)
 	public void setSize( Size size ) {
-		this.setSize( size, new AnimationDetails() );
+		this.setSize( size, new SetPropertyDetails.Value() );
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setSize( Size size, AnimationDetails details ) {
+	public void setSize( Size size, SetPropertyDetails.Value details ) {
 		this.getImplementation().animateSetSize( Size.getInternal( size ), details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@MethodTemplate()
 	public Double getWidth() {
 		return this.getImplementation().getSize().x;
 	}
-	@MethodTemplate(visibility = Visibility.CHAINED)
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setWidth( Number width ) {
-		this.setWidth( width, new SetDimensionAnimationDetails() );
+		this.setWidth( width, new SetDimensionDetails.Value() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void setWidth( Number width, SetDimensionAnimationDetails details ) {
+	@MethodTemplate()
+	public void setWidth( Number width, SetDimensionDetails.Value details ) {
 		SetDimensionPolicy policy = details.getPolicy();
 		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@MethodTemplate()
 	public Double getHeight() {
 		return this.getImplementation().getSize().y;
 	}
-	@MethodTemplate(visibility = Visibility.CHAINED)
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setHeight( Number height ) {
-		this.setHeight( height, new SetDimensionAnimationDetails() );
+		this.setHeight( height, new SetDimensionDetails.Value() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void setHeight( Number height, SetDimensionAnimationDetails details ) {
+	@MethodTemplate()
+	public void setHeight( Number height, SetDimensionDetails.Value details ) {
 		SetDimensionPolicy policy = details.getPolicy();
 		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@MethodTemplate()
 	public Double getDepth() {
 		return this.getImplementation().getSize().z;
 	}
-	@MethodTemplate(visibility = Visibility.CHAINED)
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setDepth( Number depth ) {
-		this.setDepth( depth, new SetDimensionAnimationDetails() );
+		this.setDepth( depth, new SetDimensionDetails.Value() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void setDepth( Number depth, SetDimensionAnimationDetails details ) {
+	@MethodTemplate()
+	public void setDepth( Number depth, SetDimensionDetails.Value details ) {
 		SetDimensionPolicy policy = details.getPolicy();
 		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void resize( Number factor ) {
-		this.resize( factor, new AnimationDetails() );
+		this.resize( factor, new SetPropertyDetails.Value() );
 	}
-	@MethodTemplate(visibility = Visibility.CHAINED)
-	public void resize( Number factor, AnimationDetails details ) {
+	@MethodTemplate()
+	public void resize( Number factor, SetPropertyDetails.Value details ) {
 		this.getImplementation().animateResize( factor.doubleValue(), details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void resizeWidth( Number factor ) {
-		this.resizeWidth( factor, new ResizeDimensionAnimationDetails() );
+		this.resizeWidth( factor, new ResizeDimensionDetails.Value() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void resizeWidth( Number factor, ResizeDimensionAnimationDetails details ) {
+	@MethodTemplate()
+	public void resizeWidth( Number factor, ResizeDimensionDetails.Value details ) {
 		this.getImplementation().animateResizeWidth( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate(visibility = Visibility.CHAINED)
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void resizeHeight( Number factor ) {
-		this.resizeHeight( factor, new ResizeDimensionAnimationDetails() );
+		this.resizeHeight( factor, new ResizeDimensionDetails.Value() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void resizeHeight( Number factor, ResizeDimensionAnimationDetails details ) {
+	@MethodTemplate()
+	public void resizeHeight( Number factor, ResizeDimensionDetails.Value details ) {
 		this.getImplementation().animateResizeHeight( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
 	}
-	@MethodTemplate(visibility = Visibility.CHAINED)
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void resizeDepth( Number factor ) {
-		this.resizeDepth( factor, new ResizeDimensionAnimationDetails() );
+		this.resizeDepth( factor, new ResizeDimensionDetails.Value() );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void resizeDepth( Number factor, ResizeDimensionAnimationDetails details ) {
+	@MethodTemplate()
+	public void resizeDepth( Number factor, ResizeDimensionDetails.Value details ) {
 		this.getImplementation().animateResizeDepth( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
 	}
 }
