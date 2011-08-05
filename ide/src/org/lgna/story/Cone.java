@@ -61,10 +61,10 @@ public class Cone extends Shape {
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setBaseRadius( Number baseRadius ) {
-		this.setBaseRadius( baseRadius, new AnimationDetails() );
+		this.setBaseRadius( baseRadius, new org.lgna.story.details.AnimationDetails() );
 	}
 	@MethodTemplate()
-	public void setBaseRadius( Number baseRadius, AnimationDetails details ) {
+	public void setBaseRadius( Number baseRadius, org.lgna.story.details.AnimationDetails details ) {
 		this.implementation.baseRadius.animateValue( baseRadius.doubleValue(), details.getDuration(), details.getStyle() );
 	}
 	@GetterTemplate(isPersistent=true)
@@ -74,10 +74,10 @@ public class Cone extends Shape {
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setLength( Number length ) {
-		this.setLength( length, new AnimationDetails() );
+		this.setLength( length, new org.lgna.story.details.AnimationDetails() );
 	}
 	@MethodTemplate()
-	public void setLength( Number length, AnimationDetails details ) {
+	public void setLength( Number length, org.lgna.story.details.AnimationDetails details ) {
 		this.implementation.length.animateValue( length.doubleValue(), details.getDuration(), details.getStyle() );
 	}
 }

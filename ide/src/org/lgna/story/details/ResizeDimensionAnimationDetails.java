@@ -40,67 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
+
+package org.lgna.story.details;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractBoundedValue extends Number {
-	protected abstract Double getMinimum();
-	protected abstract Double getMaximum();
-	private double value;
-	
-	public AbstractBoundedValue() {
-		this.value = Double.NaN;
+public class ResizeDimensionAnimationDetails extends AbstractAnimationDetails {
+	protected Boolean isVolumePreserved = true;
+	public ResizeDimensionAnimationDetails isVolumePreserved( Boolean value ) {
+		this.isVolumePreserved = value;
+		return this;
 	}
-	public AbstractBoundedValue( Number value ) {
-		this.value = value.doubleValue();
+	public ResizeDimensionAnimationDetails duration( Number value ) {
+		this.duration = value.doubleValue();
+		return this;
 	}
-	public AbstractBoundedValue( AbstractBoundedValue other ) {
-		if( other != null ) {
-			this.value = other.value;
-		} else {
-			this.value = Double.NaN;
-		}
+	public ResizeDimensionAnimationDetails style( org.lgna.story.Style value ) {
+		this.style = value;
+		return this;
 	}
-
-	protected void set( AbstractBoundedValue other ) {
-		this.value = other.value;
-	}
-	@Override
-	public double doubleValue() {
-		return this.value;
-	}
-	@Override
-	public float floatValue() {
-		return (float)this.value;
-	}
-	@Override
-	public int intValue() {
-		return (int)this.value;
-	}
-	@Override
-	public long longValue() {
-		return (long)this.value;
-	}
-	
-	//todo: NaN
-	
-	public Double getValue() {
-		return this.value;
-	}
-	public void setValue( Number value ) {
-		assert value.doubleValue() >= getMinimum();
-		assert value.doubleValue() <= getMaximum();
-		this.value = value.doubleValue();
-	}
-	
-	//Random
-	public static AbstractBoundedValue setReturnValueToRandom( AbstractBoundedValue rv ) {
-		rv.value = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( rv.getMinimum(), rv.getMaximum() );
-		return rv;
-	}
-	public void setRandom() {
-		setReturnValueToRandom( this );
+	public Boolean isVolumePreserved() {
+		return this.isVolumePreserved;
 	}
 }

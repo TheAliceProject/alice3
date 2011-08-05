@@ -41,26 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package org.lgna.story.details;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ResizeDimensionAnimationDetails extends AbstractAnimationDetails {
-	protected Boolean isVolumePreserved = true;
-	public ResizeDimensionAnimationDetails isVolumePreserved( Boolean value ) {
-		this.isVolumePreserved = value;
-		return this;
+public class AbstractAnimationDetails {
+	protected double duration = 1.0;
+	protected org.lgna.story.Style style = org.lgna.story.TraditionalStyle.BEGIN_AND_END_GENTLY;
+	public double getDuration() {
+		return this.duration;
 	}
-	public ResizeDimensionAnimationDetails duration( Number value ) {
-		this.duration = value.doubleValue();
-		return this;
-	}
-	public ResizeDimensionAnimationDetails style( Style value ) {
-		this.style = value;
-		return this;
-	}
-	/*package-private*/ Boolean isVolumePreserved() {
-		return this.isVolumePreserved;
+	public org.lgna.story.Style getStyle() {
+		return this.style;
 	}
 }

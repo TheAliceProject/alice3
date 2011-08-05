@@ -44,7 +44,6 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -57,18 +56,18 @@ public abstract class Turnable extends Entity implements MutableRider {
 
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount ) {
-		this.turn( direction, amount, new RelativeVantagePointAnimationDetails() );
+		this.turn( direction, amount, new org.lgna.story.details.RelativeVantagePointAnimationDetails() );
 	}
 	@MethodTemplate()
-	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, RelativeVantagePointAnimationDetails details ) {
+	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, org.lgna.story.details.RelativeVantagePointAnimationDetails details ) {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount ) {
-		this.roll( direction, amount, new RelativeVantagePointAnimationDetails() );
+		this.roll( direction, amount, new org.lgna.story.details.RelativeVantagePointAnimationDetails() );
 	}
 	@MethodTemplate()
-	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, RelativeVantagePointAnimationDetails details ) {
+	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, org.lgna.story.details.RelativeVantagePointAnimationDetails details ) {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
 

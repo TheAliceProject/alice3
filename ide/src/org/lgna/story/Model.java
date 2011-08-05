@@ -44,7 +44,6 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -59,10 +58,10 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setOpacity( Number opacity ) {
-		this.setOpacity( opacity, new AnimationDetails() );
+		this.setOpacity( opacity, new org.lgna.story.details.AnimationDetails() );
 	}
 	@MethodTemplate()
-	public void setOpacity( Number opacity, org.lgna.story.AnimationDetails details ) {
+	public void setOpacity( Number opacity, org.lgna.story.details.AnimationDetails details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 
@@ -72,10 +71,10 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY, isFollowedByLongerMethod = true)
 	public void setScale( Scale scale ) {
-		this.setScale( scale, new AnimationDetails() );
+		this.setScale( scale, new org.lgna.story.details.AnimationDetails() );
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setScale( Scale scale, AnimationDetails details ) {
+	public void setScale( Scale scale, org.lgna.story.details.AnimationDetails details ) {
 		this.getImplementation().animateSetScale( Scale.getInternal( scale ), details.getDuration(), details.getStyle() );
 	}
 
@@ -85,10 +84,10 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY, isFollowedByLongerMethod = true)
 	public void setSize( Size size ) {
-		this.setSize( size, new AnimationDetails() );
+		this.setSize( size, new org.lgna.story.details.AnimationDetails() );
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setSize( Size size, AnimationDetails details ) {
+	public void setSize( Size size, org.lgna.story.details.AnimationDetails details ) {
 		this.getImplementation().animateSetSize( Size.getInternal( size ), details.getDuration(), details.getStyle() );
 	}
 	@MethodTemplate()
@@ -97,10 +96,10 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setWidth( Number width ) {
-		this.setWidth( width, new SetDimensionAnimationDetails() );
+		this.setWidth( width, new org.lgna.story.details.SetDimensionAnimationDetails() );
 	}
 	@MethodTemplate()
-	public void setWidth( Number width, SetDimensionAnimationDetails details ) {
+	public void setWidth( Number width, org.lgna.story.details.SetDimensionAnimationDetails details ) {
 		SetDimensionPolicy policy = details.getPolicy();
 		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
 	}
@@ -110,10 +109,10 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setHeight( Number height ) {
-		this.setHeight( height, new SetDimensionAnimationDetails() );
+		this.setHeight( height, new org.lgna.story.details.SetDimensionAnimationDetails() );
 	}
 	@MethodTemplate()
-	public void setHeight( Number height, SetDimensionAnimationDetails details ) {
+	public void setHeight( Number height, org.lgna.story.details.SetDimensionAnimationDetails details ) {
 		SetDimensionPolicy policy = details.getPolicy();
 		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
 	}
@@ -123,43 +122,43 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setDepth( Number depth ) {
-		this.setDepth( depth, new SetDimensionAnimationDetails() );
+		this.setDepth( depth, new org.lgna.story.details.SetDimensionAnimationDetails() );
 	}
 	@MethodTemplate()
-	public void setDepth( Number depth, SetDimensionAnimationDetails details ) {
+	public void setDepth( Number depth, org.lgna.story.details.SetDimensionAnimationDetails details ) {
 		SetDimensionPolicy policy = details.getPolicy();
 		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void resize( Number factor ) {
-		this.resize( factor, new AnimationDetails() );
+		this.resize( factor, new org.lgna.story.details.AnimationDetails() );
 	}
 	@MethodTemplate()
-	public void resize( Number factor, AnimationDetails details ) {
+	public void resize( Number factor, org.lgna.story.details.AnimationDetails details ) {
 		this.getImplementation().animateResize( factor.doubleValue(), details.getDuration(), details.getStyle() );
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void resizeWidth( Number factor ) {
-		this.resizeWidth( factor, new ResizeDimensionAnimationDetails() );
+		this.resizeWidth( factor, new org.lgna.story.details.ResizeDimensionAnimationDetails() );
 	}
 	@MethodTemplate()
-	public void resizeWidth( Number factor, ResizeDimensionAnimationDetails details ) {
+	public void resizeWidth( Number factor, org.lgna.story.details.ResizeDimensionAnimationDetails details ) {
 		this.getImplementation().animateResizeWidth( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void resizeHeight( Number factor ) {
-		this.resizeHeight( factor, new ResizeDimensionAnimationDetails() );
+		this.resizeHeight( factor, new org.lgna.story.details.ResizeDimensionAnimationDetails() );
 	}
 	@MethodTemplate()
-	public void resizeHeight( Number factor, ResizeDimensionAnimationDetails details ) {
+	public void resizeHeight( Number factor, org.lgna.story.details.ResizeDimensionAnimationDetails details ) {
 		this.getImplementation().animateResizeHeight( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void resizeDepth( Number factor ) {
-		this.resizeDepth( factor, new ResizeDimensionAnimationDetails() );
+		this.resizeDepth( factor, new org.lgna.story.details.ResizeDimensionAnimationDetails() );
 	}
 	@MethodTemplate()
-	public void resizeDepth( Number factor, ResizeDimensionAnimationDetails details ) {
+	public void resizeDepth( Number factor, org.lgna.story.details.ResizeDimensionAnimationDetails details ) {
 		this.getImplementation().animateResizeDepth( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
 	}
 }

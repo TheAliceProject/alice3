@@ -49,28 +49,28 @@ package org.lgna.story;
 public interface Resizable {
 	public Scale getScale();
 	public void setScale( Scale size );
-	public void setScale( Scale size, AnimationDetails details );
+	public void setScale( Scale size, org.lgna.story.details.AnimationDetails details );
 	
 	public Size getSize();
 	public void setSize( Size size );
-	public void setSize( Size size, AnimationDetails details );
+	public void setSize( Size size, org.lgna.story.details.AnimationDetails details );
 
 	public Double getWidth();
 	public void setWidth( Number width );
-	public void setWidth( Number width, SetDimensionAnimationDetails details );
+	public void setWidth( Number width, org.lgna.story.details.SetDimensionAnimationDetails details );
 	public Double getHeight();
 	public void setHeight( Number height );
-	public void setHeight( Number height, SetDimensionAnimationDetails details );
+	public void setHeight( Number height, org.lgna.story.details.SetDimensionAnimationDetails details );
 	public Double getDepth();
 	public void setDepth( Number depth );
-	public void setDepth( Number depth, SetDimensionAnimationDetails details );
+	public void setDepth( Number depth, org.lgna.story.details.SetDimensionAnimationDetails details );
 	
 	public void resize( Number factor );
-	public void resize( Number factor, AnimationDetails details );
+	public void resize( Number factor, org.lgna.story.details.AnimationDetails details );
 	public void resizeWidth( Number factor );
-	public void resizeWidth( Number factor, ResizeDimensionAnimationDetails details );
+	public void resizeWidth( Number factor, org.lgna.story.details.ResizeDimensionAnimationDetails details );
 	public void resizeHeight( Number factor );
-	public void resizeHeight( Number factor, ResizeDimensionAnimationDetails details );
+	public void resizeHeight( Number factor, org.lgna.story.details.ResizeDimensionAnimationDetails details );
 	public void resizeDepth( Number factor );
-	public void resizeDepth( Number factor, ResizeDimensionAnimationDetails details );
+	public void resizeDepth( Number factor, org.lgna.story.details.ResizeDimensionAnimationDetails details );
 }

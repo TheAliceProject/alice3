@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.story.details.ResizeDimensionAnimationDetails;
+
 /**
  * @author Dennis Cosgrove
  */

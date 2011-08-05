@@ -78,10 +78,10 @@ public class Ground extends Entity implements MutableRider, Visual {
 	}
 	@MethodTemplate( isFollowedByLongerMethod = true )
 	public void setOpacity( Number opacity ) {
-		this.setOpacity( opacity, new AnimationDetails() );
+		this.setOpacity( opacity, new org.lgna.story.details.AnimationDetails() );
 	}
 	@MethodTemplate()
-	public void setOpacity( Number opacity, org.lgna.story.AnimationDetails details ) {
+	public void setOpacity( Number opacity, org.lgna.story.details.AnimationDetails details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 	public Appearance getAppearance() {

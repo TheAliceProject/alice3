@@ -44,7 +44,6 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -56,10 +55,10 @@ public class Camera extends MovableTurnable {
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveAndOrientToAGoodVantagePointOf( Entity entity ) {
-		this.moveAndOrientToAGoodVantagePointOf( entity, new AnimationDetails() );
+		this.moveAndOrientToAGoodVantagePointOf( entity, new org.lgna.story.details.AnimationDetails() );
 	}
 	@MethodTemplate()
-	public void moveAndOrientToAGoodVantagePointOf( Entity entity, AnimationDetails animationDetails ) {
+	public void moveAndOrientToAGoodVantagePointOf( Entity entity, org.lgna.story.details.AnimationDetails animationDetails ) {
 		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), animationDetails.getDuration(), animationDetails.getStyle() );
 	}
 }
