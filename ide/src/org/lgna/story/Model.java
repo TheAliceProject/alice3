@@ -42,6 +42,7 @@
  */
 
 package org.lgna.story;
+
 import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
@@ -55,11 +56,18 @@ public abstract class Model extends MovableTurnable implements Resizable, Visual
 		return (double)this.getImplementation().opacity.getValue();
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void setOpacity( Number opacity ) {
+	public void setOpacity( 
+			@ParameterTemplate(detailsEnumCls=org.lgna.story.annotation.PortionDetails.class)
+			Number opacity 
+	) {
 		this.setOpacity( opacity, new AnimationDetails() );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void setOpacity( java.lang.Number opacity, org.lgna.story.AnimationDetails details ) {
+	public void setOpacity( 
+			@ParameterTemplate(detailsEnumCls=org.lgna.story.annotation.PortionDetails.class)
+			Number opacity, 
+			org.lgna.story.AnimationDetails details 
+	) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 	

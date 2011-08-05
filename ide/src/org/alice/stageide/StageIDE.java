@@ -262,9 +262,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
 
-	private static final org.lgna.project.ast.JavaConstructor REVOLUTIONS_CONSTRUCTOR = org.lgna.project.ast.JavaConstructor.getInstance( org.lgna.story.AngleInRevolutions.class, Number.class );
-	private static final org.lgna.project.ast.JavaConstructor PORTION_CONSTRUCTOR = org.lgna.project.ast.JavaConstructor.getInstance( org.lgna.story.Portion.class, Number.class );
-
 	protected org.alice.ide.common.DeclarationNameLabel createDeclarationNameLabel( org.lgna.project.ast.AbstractField field ) {
 		//todo: better name
 		class ThisFieldAccessNameLabel extends org.alice.ide.common.DeclarationNameLabel {
@@ -298,20 +295,6 @@ public class StageIDE extends org.alice.ide.IDE {
 								return true;
 							}
 						};
-					}
-				}
-			}
-		} else {
-			if( this.isJava() ) {
-				//pass
-			} else {
-				if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
-					org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
-						return new org.lgna.croquet.components.LineAxisPanel( factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), new org.lgna.croquet.components.Label( " revolutions" ) );
-					} else if( constructor == PORTION_CONSTRUCTOR ) {
-						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );
 					}
 				}
 			}

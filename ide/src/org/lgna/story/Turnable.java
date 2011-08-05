@@ -55,19 +55,37 @@ public abstract class Turnable extends Entity implements MutableRider {
 	}
 
 	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void turn( TurnDirection direction, Number amount ) {
+	public void turn( 
+			TurnDirection direction,
+			@ParameterTemplate(detailsEnumCls=org.lgna.story.annotation.AngleDetails.class)
+			Number amount 
+	) {
 		this.turn( direction, amount, new RelativeVantagePointAnimationDetails() );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void turn( TurnDirection direction, Number amount, RelativeVantagePointAnimationDetails details ) {
+	public void turn( 
+			TurnDirection direction, 
+			@ParameterTemplate(detailsEnumCls=org.lgna.story.annotation.AngleDetails.class)
+			Number amount, 
+			RelativeVantagePointAnimationDetails details 
+	) {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void roll( RollDirection direction, Number amount ) {
+	public void roll( 
+			RollDirection direction, 
+			@ParameterTemplate(detailsEnumCls=org.lgna.story.annotation.AngleDetails.class)
+			Number amount 
+	) {
 		this.roll( direction, amount, new RelativeVantagePointAnimationDetails() );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void roll( RollDirection direction, Number amount, RelativeVantagePointAnimationDetails details ) {
+	public void roll( 
+			RollDirection direction, 
+			@ParameterTemplate(detailsEnumCls=org.lgna.story.annotation.AngleDetails.class)
+			Number amount, 
+			RelativeVantagePointAnimationDetails details 
+	) {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
 	

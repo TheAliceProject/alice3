@@ -43,6 +43,7 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
@@ -70,22 +71,23 @@ public class Ground extends Entity implements MutableRider, Visual {
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
-	public Color getColor() {
-		return Color.createInstance( this.getImplementation().color.getValue() );
-	}
-	public void setColor( Color color ) {
-		this.setColor( color, new AnimationDetails() );
-	}
-	public void setColor( Color color, AnimationDetails details ) {
-		this.getImplementation().color.animateValue( Color.getInternal( color ), details.getDuration(), details.getStyle() );
-	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
-	public void setOpacity( Number opacity ) {
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void setOpacity( 
+			@ParameterTemplate(detailsEnumCls=org.lgna.story.annotation.PortionDetails.class)
+			Number opacity 
+	) {
 		this.setOpacity( opacity, new AnimationDetails() );
 	}
-	public void setOpacity( Number opacity, AnimationDetails details ) {
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void setOpacity( 
+			@ParameterTemplate(detailsEnumCls=org.lgna.story.annotation.PortionDetails.class)
+			Number opacity, 
+			org.lgna.story.AnimationDetails details 
+	) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 	public Appearance getAppearance() {

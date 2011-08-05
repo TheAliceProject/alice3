@@ -48,10 +48,7 @@ package org.alice.stageide.cascade;
 public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	public CascadeManager() {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.AudioSourceFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.VolumeLevelFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ImageSourceFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.MouseButtonListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner() );
@@ -72,30 +69,6 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseSkinTone.class );
 		} else {
 			return super.getEnumTypeForInterfaceType( interfaceType );
-		}
-	}
-
-	//	@Override
-	//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-	//		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.EyeColor.class ) ) {
-	//			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseEyeColor.class );
-	//		} else if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.SkinTone.class ) ) {
-	//			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseSkinTone.class );
-	//		} else {
-	//			return super.getTypeFor( type );
-	//		}
-	//	}
-
-	@Override
-	protected org.lgna.project.ast.AbstractType<?,?,?> getActualTypeForDesiredParameterType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		if( type.isAssignableTo( org.lgna.story.Angle.class ) ) {
-			return org.lgna.project.ast.JavaType.NUMBER_OBJECT_TYPE;
-		} else if( type.isAssignableTo( org.lgna.story.Portion.class ) ) {
-			return org.lgna.project.ast.JavaType.NUMBER_OBJECT_TYPE;
-		} else if( type.isAssignableTo( org.lgna.story.VolumeLevel.class ) ) {
-			return org.lgna.project.ast.JavaType.NUMBER_OBJECT_TYPE;
-		} else {
-			return super.getActualTypeForDesiredParameterType( type );
 		}
 	}
 
