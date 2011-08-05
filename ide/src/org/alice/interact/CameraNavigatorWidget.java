@@ -105,7 +105,7 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 			this.cameraDriver.addCondition( new ManipulationEventCriteria(
 					event.getType(),
 					event.getMovementDescription(),
-					PickHint.PERSPECTIVE_CAMERA ) );
+					PickHint.PickType.PERSPECTIVE_CAMERA.pickHint() ) );
 		}
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.cameraDriver );
@@ -126,7 +126,7 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 			this.cameraControlUpDown.addCondition( new ManipulationEventCriteria(
 					event.getType(),
 					event.getMovementDescription(),
-					PickHint.PERSPECTIVE_CAMERA ) );
+					PickHint.PickType.PERSPECTIVE_CAMERA.pickHint() ) );
 		}
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.cameraControlUpDown );
@@ -147,7 +147,7 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 			this.cameraControlStrafe.addCondition( new ManipulationEventCriteria(
 					event.getType(),
 					event.getMovementDescription(),
-					PickHint.PERSPECTIVE_CAMERA ) );
+					PickHint.PickType.PERSPECTIVE_CAMERA.pickHint() ) );
 		}
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.cameraControlStrafe );
@@ -159,7 +159,7 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 		//The dragAdapter will automatically activate the correct manipulator based on which handle was clicked
 		strafeManipulator.setDragAdapter( this.dragAdapter );
 		ManipulatorConditionSet mouseHandleDrag_Shift = new ManipulatorConditionSet( strafeManipulator );
-		MouseDragCondition handleShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.TWO_D_HANDLES ), new ModifierMask( ModifierKey.SHIFT ));
+		MouseDragCondition handleShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TWO_D_HANDLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ));
 		mouseHandleDrag_Shift.addCondition( handleShiftCondition );
 		this.dragAdapter.addManipulator( mouseHandleDrag_Shift );
 		
@@ -179,7 +179,7 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 			this.orthographicCameraControlStrafe.addCondition( new ManipulationEventCriteria(
 					event.getType(),
 					event.getMovementDescription(),
-					PickHint.ORTHOGRAPHIC_CAMERA ) );
+					PickHint.PickType.ORTHOGRAPHIC_CAMERA.pickHint() ) );
 		}
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.orthographicCameraControlStrafe );
@@ -200,7 +200,7 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 			this.orthographicCameraControlZoom.addCondition( new ManipulationEventCriteria(
 					event.getType(),
 					event.getMovementDescription(),
-					PickHint.ORTHOGRAPHIC_CAMERA ) );
+					PickHint.PickType.ORTHOGRAPHIC_CAMERA.pickHint() ) );
 		}
 		//Set the handle to listen to the relevant events so it can update its appearance as things happen
 		this.dragAdapter.addManipulationListener( this.orthographicCameraControlZoom );

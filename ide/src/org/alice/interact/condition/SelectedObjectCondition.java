@@ -42,6 +42,7 @@
  */
 package org.alice.interact.condition;
 
+import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 
@@ -56,7 +57,7 @@ public class SelectedObjectCondition extends InputCondition {
 		IGNORE_SWITCH,
 	}
 	
-	PickHint acceptableType = PickHint.EVERYTHING;
+	PickHint acceptableType = PickHint.ANYTHING;
 	
 	protected boolean isNot = false;
 	private ObjectSwitchBehavior switchBehavior = ObjectSwitchBehavior.END_ON_SWITCH;
@@ -79,7 +80,7 @@ public class SelectedObjectCondition extends InputCondition {
 		{
 			return false;
 		}
-		boolean isValid = this.acceptableType.intersects( PickCondition.getPickType( state.getCurrentlySelectedObject() ) );
+		boolean isValid = this.acceptableType.intersects( state.getCurrentlySelectedObjectPickHint() );
 		if (isNot)
 		{
 			return !isValid;

@@ -230,7 +230,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		Transformable clickedHandle = PickHint.THREE_D_HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
+		Transformable clickedHandle = PickHint.PickType.THREE_D_HANDLE.pickHint().getMatchingTransformable( startInput.getClickPickedTransformable(true) );
 		if (clickedHandle instanceof LinearDragHandle)
 		{
 			this.linearHandle = (LinearDragHandle)clickedHandle;

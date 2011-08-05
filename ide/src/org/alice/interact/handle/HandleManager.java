@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.PickHint;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.event.ManipulationEvent;
@@ -165,10 +166,10 @@ public class HandleManager implements ManipulationListener{
 		}
 	}
 	
-	public static boolean canHaveHandles(Transformable object)
+	public static boolean isSelectable(Transformable object)
 	{
-		PickHint objectPickHint = PickCondition.getPickType(object);
-		if ( objectPickHint.intersects( PickHint.MOVEABLE_OBJECTS) )
+		PickHint objectPickHint = AbstractDragAdapter.getPickType(object);
+		if ( objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint()) )
 		{
 			return true;
 		}

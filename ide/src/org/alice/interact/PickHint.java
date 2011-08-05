@@ -55,26 +55,31 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 public class PickHint extends BitSet{
 
 	public enum PickType {
-		NOTHING(0),
-		MOVEABLE_OBJECT(1),
-		GROUND(2),
-		THREE_D_HANDLE(3),
-		CAMERA(4),
-		LIGHT(5),
-		TWO_D_HANDLE(6),
-		MARKER(7),
-		ORTHOGRAPHIC(8),
-		PERSPECTIVE(9)
-		;
+		NOTHING,
+		VIEWABLE,
+		SELECTABLE,
+		MOVEABLE,
+		TURNABLE,
+		RESIZABLE,
+		TWO_D_HANDLE,
+		THREE_D_HANDLE,
+		CAMERA_MARKER,
+		OBJECT_MARKER,
+		ORTHOGRAPHIC_CAMERA,
+		PERSPECTIVE_CAMERA;
 		
-		public int index;
+		private PickHint pickHint;
 		
-		private PickType( int index )
+		private PickType()
 		{
-			this.index = index;
+			this.pickHint = new PickHint(this);
 		}
 		
-		
+		public PickHint pickHint()
+		{
+			return this.pickHint;
+		}
+	
 	}
 	
 	
@@ -82,22 +87,14 @@ public class PickHint extends BitSet{
 	
 	protected static final int NUM_TYPES = PickType.values().length;
 	
+
+	public static final PickHint MARKERS = new PickHint( PickType.CAMERA_MARKER, PickType.OBJECT_MARKER );
+	public static final PickHint ANYTHING = createEverythingHint();
 	
-	public static final PickHint NOTHING = new PickHint( PickType.NOTHING );
-	public static final PickHint THREE_D_HANDLES = new PickHint( PickType.THREE_D_HANDLE );
-	public static final PickHint GROUND = new PickHint( PickType.GROUND );
-	public static final PickHint LIGHT = new PickHint( PickType.LIGHT );
-	public static final PickHint CAMERA = new PickHint( PickType.CAMERA );
-	public static final PickHint PERSPECTIVE_CAMERA = new PickHint( PickType.CAMERA, PickType.PERSPECTIVE );
-	public static final PickHint ORTHOGRAPHIC_CAMERA = new PickHint( PickType.CAMERA, PickType.ORTHOGRAPHIC );
-	public static final PickHint TWO_D_HANDLES = new PickHint( PickType.TWO_D_HANDLE );
-	public static final PickHint MARKERS = new PickHint( PickType.MARKER );
-	public static final PickHint EVERYTHING = createEverythingHint();
-	
-	public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT, PickType.MARKER );
+//	public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT, PickType.MARKER );
 	
 	public static final PickHint ALL_HANDLES = new PickHint( PickType.TWO_D_HANDLE, PickType.THREE_D_HANDLE );
-	public static final PickHint NON_INTERACTIVE = new PickHint( PickType.NOTHING, PickType.GROUND ,PickType.LIGHT, PickType.CAMERA);
+	public static final PickHint NON_INTERACTIVE = new PickHint( PickType.NOTHING );
 	
 	public PickHint()
 	{
@@ -109,7 +106,7 @@ public class PickHint extends BitSet{
 		super(NUM_TYPES);
 		for (PickType pickType : pickTypes)
 		{
-			this.set( pickType.index );
+			this.set( pickType.ordinal() );
 		}
 	}
 	
@@ -125,7 +122,7 @@ public class PickHint extends BitSet{
 	
 	public boolean get( PickType pickType )
 	{
-		return this.get( pickType.index );
+		return this.get( pickType.ordinal() );
 	}
 	
 	public Transformable getMatchingTransformable( Composite composite )
@@ -148,43 +145,22 @@ public class PickHint extends BitSet{
 	
 	@Override
 	public String toString() {
-		if (this.intersects(NOTHING))
+		StringBuilder sb = new StringBuilder();
+		sb.append("pick: ");
+		boolean matches = false;
+		for (PickType pickType : PickType.values())
 		{
-			return "pick:NOTHING";
+			if (this.intersects(pickType.pickHint()))
+			{
+				matches = true;
+				sb.append(pickType.toString()+" ");
+			}
 		}
-		if (this.intersects(MOVEABLE_OBJECTS))
+		if (!matches)
 		{
-			return "pick:MOVEABLE_OBJECTS";
+			sb.append("No Matches");
 		}
-		if (this.intersects(THREE_D_HANDLES))
-		{
-			return "pick:THREE_D_HANDLES";
-		}
-		if (this.intersects(GROUND))
-		{
-			return "pick:GROUND";
-		}
-		if (this.intersects(LIGHT))
-		{
-			return "pick:LIGHT";
-		}
-		if (this.intersects(CAMERA))
-		{
-			return "pick:CAMERA";
-		}
-		if (this.intersects(PERSPECTIVE_CAMERA))
-		{
-			return "pick:PERSPECTIVE_CAMERA";
-		}
-		if (this.intersects(ORTHOGRAPHIC_CAMERA))
-		{
-			return "pick:ORTHOGRAPHIC_CAMERA";
-		}
-		if (this.intersects(TWO_D_HANDLES))
-		{
-			return "pick:TWO_D_HANDLES";
-		}
-		return "pick:UNKNOWN";
+		return sb.toString();
 	}
 	
 }

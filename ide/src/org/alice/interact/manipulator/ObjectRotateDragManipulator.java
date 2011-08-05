@@ -217,7 +217,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		Transformable clickedHandle = PickHint.THREE_D_HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
+		Transformable clickedHandle = PickHint.PickType.THREE_D_HANDLE.pickHint().getMatchingTransformable( startInput.getClickPickedTransformable(true) );
 		if (clickedHandle instanceof RotationRingHandle)
 		{
 			this.initManipulator( (RotationRingHandle)clickedHandle, startInput );

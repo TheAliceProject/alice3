@@ -93,12 +93,12 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
 //		PrintUtilities.println("SelectObjectDragManipulator!!!");
-		PickHint clickedObjectType = startInput.getClickPickType();
-		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) || clickedObjectType.intersects(PickHint.GROUND))
+		PickHint clickedObjectType = startInput.getClickPickHint();
+		if ( clickedObjectType.intersects( PickHint.PickType.SELECTABLE.pickHint() ))
 		{
 			this.globalDragAdapter.triggerSgObjectSelection( startInput.getClickPickedTransformable(true) );
 		}
-		else if (clickedObjectType.intersects( PickHint.THREE_D_HANDLES) )
+		else if (clickedObjectType.intersects( PickHint.PickType.THREE_D_HANDLE.pickHint() ) )
 		{
 			Transformable pickedHandle = startInput.getClickPickedTransformable(true);
 			if (pickedHandle instanceof RotationRingHandle)
@@ -106,7 +106,7 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 				this.globalDragAdapter.triggerSgObjectSelection( ((RotationRingHandle)pickedHandle).getManipulatedObject() );
 			}
 		}
-		else if (clickedObjectType.intersects( PickHint.TWO_D_HANDLES) )
+		else if (clickedObjectType.intersects( PickHint.PickType.TWO_D_HANDLE.pickHint() ) )
 		{
 			//Do nothing since the 2D handles don't select anything right now
 		}

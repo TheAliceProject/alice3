@@ -45,9 +45,6 @@ package org.alice.interact.condition;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author David Culyba
@@ -76,61 +73,6 @@ public class PickCondition {
 		this.nextCondition = nextCondition;
 	}
 	
-	public static PickHint getPickType( edu.cmu.cs.dennisc.lookingglass.PickResult pickObject )
-	{
-		boolean isNull = pickObject == null || pickObject.getGeometry() == null || pickObject.getVisual() == null;
-		if (isNull)
-		{
-			return PickHint.NOTHING;
-		}
-		else
-		{
-			PickHint pickType = getPickType( pickObject.getVisual() );
-			return pickType;
-		}
-	}
-	
-	public static PickHint getPickType( edu.cmu.cs.dennisc.scenegraph.Component pickedObject )
-	{
-		if (pickedObject == null)
-		{
-			return PickHint.NOTHING;
-		}
-		else
-		{
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = null;
-			if (pickedObject instanceof edu.cmu.cs.dennisc.scenegraph.Composite)
-			{
-				for(edu.cmu.cs.dennisc.scenegraph.Component c : ((edu.cmu.cs.dennisc.scenegraph.Composite)pickedObject).getComponents())
-				{
-					if (c instanceof edu.cmu.cs.dennisc.scenegraph.AbstractCamera)
-					{
-						camera = (edu.cmu.cs.dennisc.scenegraph.AbstractCamera)c;
-					}
-				}
-			}
-			if (camera instanceof SymmetricPerspectiveCamera)
-			{
-				return PickHint.PERSPECTIVE_CAMERA;
-			}
-			else if (camera instanceof OrthographicCamera)
-			{
-				return PickHint.ORTHOGRAPHIC_CAMERA;
-			}
-			else
-			{
-				Object bonusData = pickedObject.getBonusDataFor( PickHint.PICK_HINT_KEY );
-				if (bonusData instanceof PickHint)
-				{
-					return (PickHint)bonusData;
-				}
-				else
-				{
-					return getPickType(pickedObject.getParent());
-				}
-			}
-		}
-	}
 	
 	public boolean evaluateObject( InputState input )
 	{
@@ -148,7 +90,7 @@ public class PickCondition {
 		}
 		else
 		{
-			PickHint clickedType = input.getClickPickType();
+			PickHint clickedType = input.getClickPickHint();
 			result = this.pickHint.intersects( clickedType );
 		}
 		if (isNot)
@@ -175,7 +117,7 @@ public class PickCondition {
 		}
 		else
 		{
-			PickHint clickedType = input.getClickPickType();
+			PickHint clickedType = input.getClickPickHint();
 			System.out.println("Clicked on "+clickedType+", looking for "+this.pickHint);
 			result = this.pickHint.intersects( clickedType );
 		}
@@ -184,28 +126,6 @@ public class PickCondition {
 			result = !result;
 		}
 		return result;
-	}
-	
-	public boolean evaluateObject(edu.cmu.cs.dennisc.lookingglass.PickResult pickObject)
-	{
-		boolean result = this.pickHint.intersects( getPickType( pickObject ) );
-		if (isNot)
-		{
-			result = !result;
-		}
-		return result;
-	}
-	
-	public boolean evalutateChain(edu.cmu.cs.dennisc.lookingglass.PickResult pickObject)
-	{
-		if ( this.nextCondition == null )
-		{
-			return this.evaluateObject( pickObject );
-		}
-		else
-		{
-			return this.evaluateObject( pickObject ) && this.nextCondition.evalutateChain( pickObject ) ;
-		}
 	}
 	
 	public boolean evalutateChain(InputState input)

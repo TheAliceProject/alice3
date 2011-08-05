@@ -42,6 +42,7 @@
  */
 package org.alice.interact.event;
 
+import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.PickHint;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
@@ -65,7 +66,7 @@ public class ManipulationEventCriteria {
 	public boolean matches( ManipulationEvent event )
 	{
 		boolean isValidEventType = event.getType() == this.eventType;
-		boolean isValidTarget = this.targetCriteria.intersects( PickCondition.getPickType( event.getTarget() ) );
+		boolean isValidTarget = this.targetCriteria.intersects( event.getTargetPickHint() );
 		boolean isValidMovement = event.getMovementDescription().equals(this.description);
 		return isValidEventType && isValidTarget && isValidMovement;
 	}

@@ -111,7 +111,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			if( c == null )
 				return false;
 			Object bonusData = c.getBonusDataFor( PickHint.PICK_HINT_KEY );
-			if( bonusData instanceof PickHint && ((PickHint)bonusData).intersects( PickHint.THREE_D_HANDLES ) )
+			if( bonusData instanceof PickHint && ((PickHint)bonusData).intersects( PickHint.PickType.THREE_D_HANDLE.pickHint() ) )
 				return true;
 			else
 				return isHandle( c.getParent() );
@@ -330,7 +330,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		sgFrontFacingAppearance.opacity.setValue( new Float(this.getDesiredOpacity(renderState)) );
 		sgVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
 		sgVisual.setParent( this );
-		this.putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.THREE_D_HANDLES );
+		this.putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.PickType.THREE_D_HANDLE.pickHint() );
 		this.addAbsoluteTransformationListener(this.absoluteTransformationListener);
 	}
 
@@ -771,7 +771,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	public PickHint getPickHint()
 	{
-		return PickCondition.getPickType( this );
+		return PickHint.PickType.THREE_D_HANDLE.pickHint();
 	}
 	
 	@Override
