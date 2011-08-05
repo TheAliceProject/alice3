@@ -48,5 +48,6 @@ package org.lgna.project.annotations;
 @java.lang.annotation.Documented
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 public @interface ConstructorTemplate {
-	Visibility visibility();
+	Visibility visibility() default Visibility.PRIME_TIME;
+	boolean isFollowedByLongerConstructor() default false;
 }

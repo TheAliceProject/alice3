@@ -116,8 +116,18 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 					if( propertyGetterTemplate != null ) {
 						java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
 						if( sttr != null ) {
-							JavaMethod setter = JavaMethod.getInstance( sttr );
-							rv.getterSetterPairs.add( new JavaGetterSetterPair( method, (JavaMethod)setter.getLongestInChain() ) );
+							JavaMethod setter = (JavaMethod)JavaMethod.getInstance( sttr ).getLongestInChain();
+							rv.getterSetterPairs.add( new JavaGetterSetterPair( method, setter ) );
+
+							org.lgna.project.annotations.ValueTemplate valueTemplate = mthd.getAnnotation( org.lgna.project.annotations.ValueTemplate.class );
+							if( valueTemplate != null ) {
+								JavaMethod m = setter;
+								while( m != null ) {
+									JavaMethodParameter parameter0 = (JavaMethodParameter)m.getParameters().get( 0 );
+									parameter0.setValueTemplate( valueTemplate );
+									m = (JavaMethod)m.getNextShorterInChain();
+								}
+							}
 						}
 					}
 				}
@@ -264,24 +274,28 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		int modifiers = mthd.getModifiers();
 		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) /*&& isNotMask( modifiers, java.lang.reflect.Modifier.STATIC )*/) {
 			JavaMethod methodDeclaredInJava = JavaMethod.getInstance( mthd );
-			org.lgna.project.annotations.Visibility visibility = methodDeclaredInJava.getVisibility();
-
-			if( visibility == org.lgna.project.annotations.Visibility.PRIME_TIME ) {
-				JavaMethod longer = methodDeclaredInJava;
-				java.lang.reflect.Method _mthd = mthd;
-				while( true ) {
-					_mthd = getNextShorterInChain( _mthd );
-					if( _mthd != null ) {
-						JavaMethod shorter = JavaMethod.getInstance( _mthd );
-						if( shorter.getVisibility() == org.lgna.project.annotations.Visibility.CHAINED ) {
-							longer.setNextShorterInChain( shorter );
-							shorter.setNextLongerInChain( longer );
-							longer = shorter;
+			if( mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
+				org.lgna.project.annotations.MethodTemplate methodTemplate = mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
+				if( methodTemplate.visibility() == org.lgna.project.annotations.Visibility.PRIME_TIME && methodTemplate.isFollowedByLongerMethod() == false ) {
+					JavaMethod longer = methodDeclaredInJava;
+					java.lang.reflect.Method _mthd = mthd;
+					while( true ) {
+						_mthd = getNextShorterInChain( _mthd );
+						if( _mthd != null ) {
+							JavaMethod shorter = JavaMethod.getInstance( _mthd );
+							if( _mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
+								org.lgna.project.annotations.MethodTemplate shorterMethodTemplate =_mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
+								if( shorterMethodTemplate.isFollowedByLongerMethod() ) {
+									longer.setNextShorterInChain( shorter );
+									shorter.setNextLongerInChain( longer );
+									longer = shorter;
+								} else {
+									break;
+								}
+							}
 						} else {
 							break;
 						}
-					} else {
-						break;
 					}
 				}
 			}

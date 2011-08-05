@@ -54,11 +54,7 @@ public abstract class JavaParameter extends AbstractParameter {
 		if( this.annotations != null ) {
 			for( java.lang.annotation.Annotation annotation : this.annotations ) {
 				if( annotation instanceof org.lgna.project.annotations.ValueTemplate ) {
-					org.lgna.project.annotations.ValueTemplate parameterTemplate = (org.lgna.project.annotations.ValueTemplate)annotation;
-					Class< ? extends Enum< ? extends org.lgna.project.annotations.ValueDetails<?> > > detailsEnumCls = parameterTemplate.detailsEnumCls();
-					Enum< ? extends org.lgna.project.annotations.ValueDetails<?> >[] details = detailsEnumCls.getEnumConstants();
-					assert details.length == 1;
-					this.details = (org.lgna.project.annotations.ValueDetails<?>)details[ 0 ];
+					this.setValueTemplate( (org.lgna.project.annotations.ValueTemplate)annotation );
 				}
 			}
 		}
@@ -89,7 +85,10 @@ public abstract class JavaParameter extends AbstractParameter {
 	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
 		return this.details;
 	}
-	/*package-private*/ void setDetails( org.lgna.project.annotations.ValueDetails<?> details ) {
-		this.details = details;
+	/*package-private*/ void setValueTemplate( org.lgna.project.annotations.ValueTemplate valueTemplate ) {
+		Class< ? extends Enum< ? extends org.lgna.project.annotations.ValueDetails<?> > > detailsEnumCls = valueTemplate.detailsEnumCls();
+		Enum< ? extends org.lgna.project.annotations.ValueDetails<?> >[] details = detailsEnumCls.getEnumConstants();
+		assert details.length == 1;
+		this.details = (org.lgna.project.annotations.ValueDetails<?>)details[ 0 ];
 	}
 }

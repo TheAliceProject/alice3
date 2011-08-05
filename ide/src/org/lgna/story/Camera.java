@@ -54,11 +54,11 @@ public class Camera extends MovableTurnable {
 	/*package-private*/ org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation getImplementation() {
 		return this.implementation;
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveAndOrientToAGoodVantagePointOf( Entity entity ) {
 		this.moveAndOrientToAGoodVantagePointOf( entity, new AnimationDetails() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate()
 	public void moveAndOrientToAGoodVantagePointOf( Entity entity, AnimationDetails animationDetails ) {
 		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), animationDetails.getDuration(), animationDetails.getStyle() );
 	}

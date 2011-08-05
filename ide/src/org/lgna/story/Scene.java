@@ -44,6 +44,7 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +52,7 @@ public abstract class Scene extends Entity {
 	private final org.lgna.story.implementation.SceneImplementation implementation = new org.lgna.story.implementation.SceneImplementation( this );
 
 	@Override
-	/*package-private*/ org.lgna.story.implementation.SceneImplementation getImplementation() {
+	/*package-private*/org.lgna.story.implementation.SceneImplementation getImplementation() {
 		return this.implementation;
 	}
 
@@ -66,9 +67,11 @@ public abstract class Scene extends Entity {
 		}
 		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
 	}
+
 	private int activeCount;
 	private int deactiveCount;
-	/*package-private*/ void activate( Program program ) {
+
+	/*package-private*/void activate( Program program ) {
 		assert deactiveCount == activeCount;
 		activeCount++;
 		this.implementation.setProgram( program.getImplementation() );
@@ -76,46 +79,46 @@ public abstract class Scene extends Entity {
 		this.changeActiveStatus( program, true, activeCount );
 		this.implementation.animateGlobalBrightness( 1.0f, 1.0, TraditionalStyle.BEGIN_AND_END_GENTLY );
 	}
-	/*package-private*/ void deactivate( Program program ) {
+	/*package-private*/void deactivate( Program program ) {
 		deactiveCount++;
 		assert deactiveCount == activeCount;
 		this.implementation.animateGlobalBrightness( 0.0f, 0.5, TraditionalStyle.BEGIN_AND_END_GENTLY );
 		this.changeActiveStatus( program, false, activeCount );
 		this.implementation.setProgram( null );
 	}
-	
+
 	protected abstract void handleActiveChanged( Boolean isActive, Integer activeCount );
-	
+
 	protected void preserveVehiclesAndVantagePoints() {
 		this.implementation.preserveVehiclesAndVantagePoints();
 	}
 	protected void restoreVehiclesAndVantagePoints() {
 		this.implementation.restoreVehiclesAndVantagePoints();
 	}
-	
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+
+	@GetterTemplate(isPersistent = true)
+	@MethodTemplate()
 	public Color getAtmosphereColor() {
 		return Color.createInstance( this.implementation.atmosphereColor.getValue() );
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setAtmosphereColor( Color color ) {
 		this.setAtmosphereColor( color, new AnimationDetails() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate()
 	public void setAtmosphereColor( Color color, AnimationDetails details ) {
 		this.implementation.atmosphereColor.animateValue( color.getInternal(), details.getDuration(), details.getStyle() );
 	}
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@GetterTemplate(isPersistent = true)
+	@MethodTemplate()
 	public Color getAmbientLightColor() {
 		return Color.createInstance( this.implementation.ambientLightColor.getValue() );
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setAmbientLightColor( Color color ) {
 		this.setAmbientLightColor( color, new AnimationDetails() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate()
 	public void setAmbientLightColor( Color color, AnimationDetails details ) {
 		this.implementation.ambientLightColor.animateValue( color.getInternal(), details.getDuration(), details.getStyle() );
 	}

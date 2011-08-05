@@ -57,7 +57,7 @@ public enum VolumeLevelDetails implements org.lgna.project.annotations.NumberVal
 	public Double getMaximumValue() {
 		return null;
 	}
-	public double[] getRepresentativeValues() {
+	public double[] getLiterals() {
 		return new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 };
 	}
 }

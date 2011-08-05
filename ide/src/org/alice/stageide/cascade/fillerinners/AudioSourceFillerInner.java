@@ -58,8 +58,8 @@ public class AudioSourceFillerInner extends SourceFillerInner< org.alice.virtual
 		return new org.alice.stageide.croquet.models.cascade.source.AudioSourceFillIn( resource );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		super.addItems( rv, isTop, prevExpression );
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		super.addItems( rv, details, isTop, prevExpression );
 		if( org.alice.ide.IDE.getActiveInstance().getCascadeManager().isPreviousExpressionSet() ) {
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );

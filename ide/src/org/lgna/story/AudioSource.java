@@ -63,7 +63,7 @@ public final class AudioSource {
 	private final Double startTime;
 	private final Double stopTime;
 
-	@ConstructorTemplate(visibility = Visibility.PRIME_TIME)
+	@ConstructorTemplate()
 	public AudioSource( 
 			org.alice.virtualmachine.resources.AudioResource audioResource, 
 			@org.lgna.project.annotations.ValueTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) 
@@ -84,7 +84,7 @@ public final class AudioSource {
 			this.stopTime = Double.NaN;
 		}
 	}
-	@ConstructorTemplate(visibility = Visibility.CHAINED)
+	@ConstructorTemplate()
 	public AudioSource( 
 			org.alice.virtualmachine.resources.AudioResource audioResource, 
 			@org.lgna.project.annotations.ValueTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) 
@@ -93,7 +93,7 @@ public final class AudioSource {
 	) {
 		this( audioResource, volume, startTime, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_STOP_TIME );
 	}
-	@ConstructorTemplate(visibility = Visibility.CHAINED)
+	@ConstructorTemplate()
 	public AudioSource( 
 			org.alice.virtualmachine.resources.AudioResource audioResource, 
 			@org.lgna.project.annotations.ValueTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) 
@@ -101,7 +101,7 @@ public final class AudioSource {
 	) {
 		this( audioResource, volume, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME );
 	}
-	@ConstructorTemplate(visibility = Visibility.CHAINED)
+	@ConstructorTemplate( isFollowedByLongerConstructor=true )
 	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource ) {
 		this( audioResource, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME );
 	}

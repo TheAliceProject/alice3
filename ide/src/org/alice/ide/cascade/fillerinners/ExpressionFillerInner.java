@@ -60,5 +60,5 @@ public abstract class ExpressionFillerInner {
 	public boolean isAssignableTo( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		return this.type.isAssignableTo( type );
 	}
-	public abstract java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, boolean isTop, org.lgna.project.ast.Expression prevExpression );
+	public abstract java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression );
 }
