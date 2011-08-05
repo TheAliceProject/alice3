@@ -43,40 +43,16 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Turnable extends Entity implements MutableRider {
-	@Override
-	/*package-private*/abstract org.lgna.story.implementation.AbstractTransformableImplementation getImplementation();
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+public class AbstractAnimationDetails {
+	protected double duration = 1.0;
+	protected org.lgna.story.Style style = org.lgna.story.TraditionalStyle.BEGIN_AND_END_GENTLY;
+	/*package-private*/ double getDuration() {
+		return this.duration;
 	}
-
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount ) {
-		this.turn( direction, amount, new RelativeVantagePointAnimationDetailsFactory.Value() );
-	}
-	@MethodTemplate()
-	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, RelativeVantagePointAnimationDetailsFactory.Value details ) {
-		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
-	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount ) {
-		this.roll( direction, amount, new RelativeVantagePointAnimationDetailsFactory.Value() );
-	}
-	@MethodTemplate()
-	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, RelativeVantagePointAnimationDetailsFactory.Value details ) {
-		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
-	}
-
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public Orientation getOrientationRelativeToVehicle() {
-		return Orientation.createInstance( this.getImplementation().getLocalOrientation() );
-	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setOrientationRelativeToVehicle( Orientation position ) {
-		this.getImplementation().setLocalOrientation( position.getInternal() );
+	/*package-private*/ org.lgna.story.Style getStyle() {
+		return this.style;
 	}
 }

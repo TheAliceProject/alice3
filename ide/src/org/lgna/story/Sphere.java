@@ -61,10 +61,10 @@ public class Sphere extends Shape {
 	}
 	@MethodTemplate( isFollowedByLongerMethod=true )
 	public void setRadius( Number radius ) {
-		this.setRadius( radius, new org.lgna.story.details.AnimationDetails() );
+		this.setRadius( radius, new AnimationDetailsFactory.Value() );
 	}
 	@MethodTemplate()
-	public void setRadius( Number radius, org.lgna.story.details.AnimationDetails details ) {
+	public void setRadius( Number radius, AnimationDetailsFactory.Value details ) {
 		this.implementation.radius.animateValue( radius.doubleValue(), details.getDuration(), details.getStyle() );
 	}
 }

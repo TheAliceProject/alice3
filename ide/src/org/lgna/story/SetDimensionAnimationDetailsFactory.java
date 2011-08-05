@@ -43,27 +43,45 @@
 
 package org.lgna.story;
 
-import org.lgna.story.details.SetDimensionAnimationDetails;
-
 /**
  * @author Dennis Cosgrove
  */
 public class SetDimensionAnimationDetailsFactory {
-	private SetDimensionAnimationDetailsFactory() {
+	public static class Value extends AbstractAnimationDetails {
+		protected org.lgna.story.SetDimensionPolicy policy = org.lgna.story.SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
+		/*package-private*/ Value() {
+		}
+		public Value policy( org.lgna.story.SetDimensionPolicy value ) {
+			this.policy = value;
+			return this;
+		}
+		public Value duration( Number value ) {
+			this.duration = value.doubleValue();
+			return this;
+		}
+		public Value style( org.lgna.story.Style value ) {
+			this.style = value;
+			return this;
+		}
+		/*package-private*/ org.lgna.story.SetDimensionPolicy getPolicy() {
+			return this.policy;
+		}
+	}
+	/*package-private*/ SetDimensionAnimationDetailsFactory() {
 		throw new AssertionError();
 	}
-	public static SetDimensionAnimationDetails policy( SetDimensionPolicy value ) {
-		SetDimensionAnimationDetails rv = new SetDimensionAnimationDetails();
+	public static Value policy( SetDimensionPolicy value ) {
+		Value rv = new Value();
 		rv.policy( value );
 		return rv;
 	}
-	public static SetDimensionAnimationDetails duration( Number value ) {
-		SetDimensionAnimationDetails rv = new SetDimensionAnimationDetails();
+	public static Value duration( Number value ) {
+		Value rv = new Value();
 		rv.duration( value );
 		return rv;
 	}
-	public static SetDimensionAnimationDetails style( Style value ) {
-		SetDimensionAnimationDetails rv = new SetDimensionAnimationDetails();
+	public static Value style( Style value ) {
+		Value rv = new Value();
 		rv.style( value );
 		return rv;
 	}

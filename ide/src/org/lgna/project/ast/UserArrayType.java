@@ -123,6 +123,10 @@ public class UserArrayType extends AbstractType {
 		}
 	}
 	@Override
+	public AbstractType< ?, ?, ? > getKeywordFactoryType() {
+		return null;
+	}
+	@Override
 	public boolean isFollowToSuperClassDesired() {
 		//todo?
 		return m_leafType.isFollowToSuperClassDesired();

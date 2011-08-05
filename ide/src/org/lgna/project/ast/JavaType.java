@@ -177,6 +177,25 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	}
 
 	@Override
+	public AbstractType< ?, ?, ? > getKeywordFactoryType() {
+		Class< ? > cls = this.classReflectionProxy.getReification();
+		if( cls != null ) {
+			if( cls.isAnnotationPresent( org.lgna.project.annotations.ClassTemplate.class ) ) {
+				org.lgna.project.annotations.ClassTemplate classTemplate = cls.getAnnotation( org.lgna.project.annotations.ClassTemplate.class );
+				Class<?> keywordFactoryCls = classTemplate.keywordFactoryCls();
+				if( keywordFactoryCls == org.lgna.project.annotations.ClassTemplate.VOID_ACTS_AS_NULL ) {
+					return null;
+				} else {
+					return JavaType.getInstance( keywordFactoryCls );
+				}
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+	@Override
 	public boolean isFollowToSuperClassDesired() {
 		Class< ? > cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {

@@ -43,6 +43,8 @@
 
 package org.lgna.story.details;
 
+import org.lgna.story.AbstractAnimationDetails;
+
 /**
  * @author Dennis Cosgrove
  */

@@ -127,6 +127,10 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 	}
 	
 	@Override
+	public AbstractType< ?, ?, ? > getKeywordFactoryType() {
+		return null;
+	}
+	@Override
 	public final boolean isFollowToSuperClassDesired() {
 		return true;
 	}

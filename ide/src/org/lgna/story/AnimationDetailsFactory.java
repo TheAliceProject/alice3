@@ -43,22 +43,32 @@
 
 package org.lgna.story;
 
-import org.lgna.story.details.AnimationDetails;
-
 /**
  * @author Dennis Cosgrove
  */
 public class AnimationDetailsFactory {
+	public static class Value extends AbstractAnimationDetails {
+		/*package-private*/ Value() {
+		}
+		public Value duration( Number value ) {
+			this.duration = value.doubleValue();
+			return this;
+		}
+		public Value style( org.lgna.story.Style value ) {
+			this.style = value;
+			return this;
+		}
+	}
 	private AnimationDetailsFactory() {
 		throw new AssertionError();
 	}
-	public static AnimationDetails duration( Number value ) {
-		AnimationDetails rv = new AnimationDetails();
+	public static Value duration( Number value ) {
+		Value rv = new Value();
 		rv.duration( value );
 		return rv;
 	}
-	public static AnimationDetails style( Style value ) {
-		AnimationDetails rv = new AnimationDetails();
+	public static Value style( Style value ) {
+		Value rv = new Value();
 		rv.style( value );
 		return rv;
 	}
