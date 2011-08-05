@@ -66,6 +66,9 @@ public interface BipedResource extends ModelResource{
 		
 		NECK( SPINE_UPPER ),
 		HEAD( NECK ),
+		MOUTH(HEAD),
+		LEFT_EYE(HEAD),
+		RIGHT_EYE(HEAD),
 		
 		RIGHT_CLAVICLE( SPINE_UPPER ),
 		RIGHT_SHOULDER( RIGHT_CLAVICLE ),

@@ -47,6 +47,20 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class Joint extends Turnable {
+	
+	/*package-private*/ static Joint getJoint( org.lgna.story.resources.JointId jointId, org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, java.util.Map< org.lgna.story.resources.JointId, Joint > map ) {
+		synchronized( map ) {
+			Joint rv = map.get( jointId );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = org.lgna.story.Joint.getInstance( jointedModelImplementation, jointId );
+				map.put(jointId, rv);
+			}
+			return rv;
+		}
+	}
+	
 	/*package-private*/ static Joint getInstance( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
 		org.lgna.story.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
 		Joint rv = implementation.getAbstraction();

@@ -230,41 +230,41 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		Transformable clickedHandle = PickHint.PickType.THREE_D_HANDLE.pickHint().getMatchingTransformable( startInput.getClickPickedTransformable(true) );
-		if (clickedHandle instanceof LinearDragHandle)
+		if ( startInput.getClickPickHint().intersects(PickHint.PickType.THREE_D_HANDLE.pickHint()))
 		{
-			this.linearHandle = (LinearDragHandle)clickedHandle;
-			this.manipulatedTransformable = this.linearHandle.getManipulatedObject();
-			this.initializeEventMessages();
-			this.absoluteDragAxis = this.linearHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.linearHandle.getDragAxis() );
-			
-			startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
-			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
-			
-			Vector3 toCamera = Vector3.createSubtraction( this.getCamera().getAbsoluteTransformation().translation, this.manipulatedTransformable.getAbsoluteTransformation().translation );
-			toCamera.normalize();
-			Vector3 axisAlignedNormal = null;
-			if (Math.abs(Vector3.calculateDotProduct( toCamera, this.absoluteDragAxis )) > .99d)
+			Transformable clickedHandle = startInput.getClickPickedTransformable(true);
+			if (clickedHandle instanceof LinearDragHandle)
 			{
-				axisAlignedNormal = toCamera;
+				this.linearHandle = (LinearDragHandle)clickedHandle;
+				this.manipulatedTransformable = this.linearHandle.getManipulatedObject();
+				this.initializeEventMessages();
+				this.absoluteDragAxis = this.linearHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.linearHandle.getDragAxis() );
+				
+				startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
+				startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
+				
+				Vector3 toCamera = Vector3.createSubtraction( this.getCamera().getAbsoluteTransformation().translation, this.manipulatedTransformable.getAbsoluteTransformation().translation );
+				toCamera.normalize();
+				Vector3 axisAlignedNormal = null;
+				if (Math.abs(Vector3.calculateDotProduct( toCamera, this.absoluteDragAxis )) > .99d)
+				{
+					axisAlignedNormal = toCamera;
+				}
+				else
+				{
+					Vector3 axisAlignedCameraVector = VectorUtilities.projectOntoVector( toCamera, this.absoluteDragAxis );
+					Vector3 awayFromAxis = Vector3.createSubtraction( toCamera, axisAlignedCameraVector );
+					awayFromAxis.normalize();
+					axisAlignedNormal = awayFromAxis;
+				}
+				this.handleAlignedPlane = new Plane(this.linearHandle.getAbsoluteTransformation().translation, axisAlignedNormal);
+				this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
+				this.originalOrigin = this.manipulatedTransformable.getAbsoluteTransformation().translation; 
+				this.initialDistanceAlongAxis = getDistanceAlongAxisBasedOnMouse( startInput.getMouseLocation() );
+				return true;
 			}
-			else
-			{
-				Vector3 axisAlignedCameraVector = VectorUtilities.projectOntoVector( toCamera, this.absoluteDragAxis );
-				Vector3 awayFromAxis = Vector3.createSubtraction( toCamera, axisAlignedCameraVector );
-				awayFromAxis.normalize();
-				axisAlignedNormal = awayFromAxis;
-			}
-			this.handleAlignedPlane = new Plane(this.linearHandle.getAbsoluteTransformation().translation, axisAlignedNormal);
-			this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
-			this.originalOrigin = this.manipulatedTransformable.getAbsoluteTransformation().translation; 
-			this.initialDistanceAlongAxis = getDistanceAlongAxisBasedOnMouse( startInput.getMouseLocation() );
-			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 	
 	@Override

@@ -308,7 +308,7 @@ public class ModelResourceUtilities {
 	}
 	
 	//The Stack<Class<?>> classes is a stack of classes representing the hierarchy of the classes, with the parent class at the top of the stack
-	private static ModelResourceTreeNode addNodes(Stack<Class<?>> classes, ModelResourceTreeNode root)
+	private static ModelResourceTreeNode addNodes(ModelResourceTreeNode root, Stack<Class<?>> classes)
 	{
 		Class<?> rootClass = null;
 		ModelResourceTreeNode currentNode = root;
@@ -398,13 +398,16 @@ public class ModelResourceUtilities {
 			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
 			return resourceTemplate.modelClass();
 		}
-		return null;
+		else
+		{
+			return null;
+		}
 	}
 	
 	
 	public static ModelResourceTreeNode createClassTree(List<Class<?>> classes)
 	{
-		ModelResourceTreeNode classNodes = null;
+		ModelResourceTreeNode topNode = new ModelResourceTreeNode(null, null);
 		for (Class<?> cls : classes)
 		{
 			Class<?> currentClass = cls;
@@ -433,11 +436,9 @@ public class ModelResourceUtilities {
 					currentClass = null;
 				}
 			}
-			classNodes = addNodes(classStack, classNodes);
+			addNodes(topNode, classStack);
 		}
-		ModelResourceTreeNode topNode = new ModelResourceTreeNode(null, null);
-		classNodes.setParent(topNode);
-		classNodes.printTree();
+		topNode.printTree();
 		return topNode;
 	}
 	
