@@ -46,7 +46,7 @@ package org.lgna.story.annotation;
 /**
  * @author Dennis Cosgrove
  */
-public enum VolumeLevelDetails implements org.lgna.project.annotations.NumberValueDetails {
+public enum PortionDetails implements org.lgna.project.annotations.NumberValueDetails {
 	SINGLETON;
 	public Class< Number > getSupportedCls() {
 		return Number.class;
@@ -55,9 +55,9 @@ public enum VolumeLevelDetails implements org.lgna.project.annotations.NumberVal
 		return 0.0;
 	}
 	public Double getMaximumValue() {
-		return null;
+		return 1.0;
 	}
 	public double[] getRepresentativeValues() {
-		return new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 };
+		return new double[] { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
 	}
 }

@@ -46,18 +46,18 @@ package org.lgna.story.annotation;
 /**
  * @author Dennis Cosgrove
  */
-public enum VolumeLevelDetails implements org.lgna.project.annotations.NumberValueDetails {
+public enum AngleDetails implements org.lgna.project.annotations.NumberValueDetails {
 	SINGLETON;
 	public Class< Number > getSupportedCls() {
 		return Number.class;
 	}
 	public Double getMinimumValue() {
-		return 0.0;
+		return null;
 	}
 	public Double getMaximumValue() {
 		return null;
 	}
 	public double[] getRepresentativeValues() {
-		return new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 };
+		return new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0 };
 	}
 }
