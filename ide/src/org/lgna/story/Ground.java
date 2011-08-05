@@ -44,18 +44,15 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Ground extends Entity implements MutableRider, Visual {
 	public static enum Appearance {
-		GRASS( "grass" ),
-		DIRT( "dirt" ),
-		SAND( "sand" ),
-		SNOW( "snow" ),
-		WATER( "water" ),
-		MOON( "moon" );
+		GRASS("grass"), DIRT("dirt"), SAND("sand"), SNOW("snow"), WATER("water"), MOON("moon");
 		private String resourceName;
+
 		Appearance( String resourceName ) {
 			this.resourceName = resourceName;
 		}
@@ -63,31 +60,28 @@ public class Ground extends Entity implements MutableRider, Visual {
 			return Ground.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
 		}
 	}
+
 	private final org.lgna.story.implementation.GroundImplementation implementation = new org.lgna.story.implementation.GroundImplementation( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.GroundImplementation getImplementation() {
+	/*package-private*/org.lgna.story.implementation.GroundImplementation getImplementation() {
 		return this.implementation;
 	}
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@GetterTemplate(isPersistent = true)
+	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void setOpacity( 
-			@ParameterTemplate(detailsEnumCls=org.lgna.story.annotation.PortionDetails.class)
-			Number opacity 
-	) {
+	@MethodTemplate(visibility = Visibility.CHAINED)
+	public void setOpacity( Number opacity ) {
 		this.setOpacity( opacity, new AnimationDetails() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void setOpacity( 
-			@ParameterTemplate(detailsEnumCls=org.lgna.story.annotation.PortionDetails.class)
-			Number opacity, 
-			org.lgna.story.AnimationDetails details 
-	) {
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void setOpacity( Number opacity, org.lgna.story.AnimationDetails details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
 	}
 	public Appearance getAppearance() {

@@ -77,8 +77,8 @@ public abstract class JavaParameter extends AbstractParameter {
 	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
 		if( m_annotations != null ) {
 			for( java.lang.annotation.Annotation annotation : m_annotations ) {
-				if( annotation instanceof org.lgna.project.annotations.ParameterTemplate ) {
-					org.lgna.project.annotations.ParameterTemplate parameterTemplate = (org.lgna.project.annotations.ParameterTemplate)annotation;
+				if( annotation instanceof org.lgna.project.annotations.ValueTemplate ) {
+					org.lgna.project.annotations.ValueTemplate parameterTemplate = (org.lgna.project.annotations.ValueTemplate)annotation;
 					Class< ? extends Enum< ? extends org.lgna.project.annotations.ValueDetails<?> > > detailsEnumCls = parameterTemplate.detailsEnumCls();
 					Enum< ? extends org.lgna.project.annotations.ValueDetails<?> >[] details = detailsEnumCls.getEnumConstants();
 					assert details.length == 1;

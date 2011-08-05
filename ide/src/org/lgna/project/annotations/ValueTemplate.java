@@ -40,6 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.project.annotations;
 
 /**
@@ -47,6 +48,6 @@ package org.lgna.project.annotations;
  */
 @java.lang.annotation.Documented
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-public @interface ParameterTemplate {
+public @interface ValueTemplate {
 	Class<? extends Enum<? extends ValueDetails<?>>> detailsEnumCls();
 }
