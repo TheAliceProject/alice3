@@ -48,6 +48,7 @@ package org.lgna.story;
  */
 public class Biped extends Model implements Articulable {
 	private final org.lgna.story.implementation.BipedImplementation implementation;
+	private java.util.Map< org.lgna.story.resources.JointId, Joint > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	@Override
 	/*package-private*/ org.lgna.story.implementation.BipedImplementation getImplementation() {
 		return this.implementation;
@@ -61,81 +62,68 @@ public class Biped extends Model implements Articulable {
 	public void touch( Entity entity ) {
 	}
 	
-	private java.util.Map< org.lgna.story.resources.JointId, Joint > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private Joint getJoint( org.lgna.story.resources.JointId jointId ) {
-		synchronized( this.map ) {
-			Joint rv = this.map.get( jointId );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = org.lgna.story.Joint.getInstance( this.implementation, jointId );
-			}
-			return rv;
-		}
-	}
-
 	public Joint getPelvisForLowerBody() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.PELVIS_LOWER_BODY );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.PELVIS_LOWER_BODY, this.implementation, this.map );
 	}
 	public Joint getPelvisForUpperBody() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.PELVIS_LOWER_BODY );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.PELVIS_LOWER_BODY, this.implementation, this.map );
 	}
 
 	public Joint getSpineMiddle() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.SPINE_MIDDLE );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.SPINE_MIDDLE, this.implementation, this.map );
 	}
 	public Joint getSpineUpper() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.SPINE_UPPER );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.SPINE_UPPER, this.implementation, this.map );
 	}
 	public Joint getNeck() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.NECK );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.NECK, this.implementation, this.map );
 	}
 	public Joint getHead() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.HEAD );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.HEAD, this.implementation, this.map );
 	}
 	
 	public Joint getRightHip() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_HIP );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_HIP, this.implementation, this.map );
 	}
 	public Joint getRightKnee() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_KNEE );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_KNEE, this.implementation, this.map );
 	}
 	public Joint getRightAnkle() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_ANKLE );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_ANKLE, this.implementation, this.map );
 	}
 	public Joint getLeftHip() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_HIP );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_HIP, this.implementation, this.map );
 	}
 	public Joint getLeftKnee() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_KNEE );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_KNEE, this.implementation, this.map );
 	}
 	public Joint getLeftAnkle() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_ANKLE );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_ANKLE, this.implementation, this.map );
 	}
 
 	
 	public Joint getRightClavicle() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_CLAVICLE );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_CLAVICLE, this.implementation, this.map );
 	}
 	public Joint getRightShoulder() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_SHOULDER );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_SHOULDER, this.implementation, this.map );
 	}
 	public Joint getRightElbow() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_ELBOW );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_ELBOW, this.implementation, this.map );
 	}
 	public Joint getRightWrist() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_WRIST );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.RIGHT_WRIST, this.implementation, this.map );
 	}
 	public Joint getLeftClavicle() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_CLAVICLE );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_CLAVICLE, this.implementation, this.map );
 	}
 	public Joint getLeftShoulder() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_SHOULDER );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_SHOULDER, this.implementation, this.map );
 	}
 	public Joint getLeftElbow() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_ELBOW );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_ELBOW, this.implementation, this.map );
 	}
 	public Joint getLeftWrist() {
-		return this.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_WRIST );
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.BipedResource.BipedJointId.LEFT_WRIST, this.implementation, this.map );
 	}
 }

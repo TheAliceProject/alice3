@@ -125,24 +125,6 @@ public class PickHint extends BitSet{
 		return this.get( pickType.ordinal() );
 	}
 	
-	public Transformable getMatchingTransformable( Composite composite )
-	{
-		if (composite == null)
-		{
-			return null;
-		}
-		Object pickHintObject = composite.getBonusDataFor( PickHint.PICK_HINT_KEY );
-		if (pickHintObject instanceof PickHint)
-		{
-			PickHint pickHint = (PickHint)pickHintObject;
-			if (this.intersects( pickHint ) && composite instanceof Transformable)
-			{
-				return (Transformable)composite;
-			}
-		}
-		return getMatchingTransformable( composite.getParent() );
-	}
-	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

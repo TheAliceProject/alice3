@@ -60,13 +60,4 @@ public abstract class BipedImplementation extends JointedModelImplementation {
 	protected double getBoundingSphereRadius() {
 		return 1.0;
 	}
-//	public void setResource( org.lookingglassandalice.storytelling.resources.PersonResource resource ) {
-//		if( this.resource != null ) {
-//			this.resource.removePerson( this );
-//		}
-//		this.resource = resource;
-//		if( this.resource != null ) {
-//			this.resource.addPerson( this );
-//		}
-//	}
 }
