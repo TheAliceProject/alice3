@@ -183,8 +183,8 @@ public class UbiquitousPane extends org.lgna.croquet.components.ViewPanel {
 		this.addSliver();
 		this.addComponent( this.doTogetherTemplate );
 		this.addComponent( this.eachInArrayTogetherTemplate );
-//		this.addSliver();
-//		this.addComponent( this.doInThreadTemplate );
+		this.addSliver();
+		this.addComponent( this.doInThreadTemplate );
 		this.addSliver();
 		this.addComponent( this.declareLocalTemplate );
 		this.addComponent( this.transientStatementsWrapper );

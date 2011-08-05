@@ -111,7 +111,7 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 		return this.isSuccessfullyCompleted;
 	}
 	public boolean isCanceled() {
-		return this.isPending() && this.isSuccessfullyCompleted() == false;
+		return this.isPending() == false && this.isSuccessfullyCompleted() == false;
 	}
 
 	public org.lgna.croquet.edits.Edit< ? > getEdit() {
