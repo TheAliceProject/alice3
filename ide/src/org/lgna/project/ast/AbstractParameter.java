@@ -48,7 +48,7 @@ package org.lgna.project.ast;
  */
 public abstract class AbstractParameter extends AbstractTransient {
 	public abstract boolean isVariableLength();
-	public abstract AbstractType<?,?,?> getDesiredValueType();
+	public abstract org.lgna.project.annotations.ValueDetails<?> getDetails();
 	public String getValidName( Node context ) {
 		return this.getName();
 	}

@@ -64,7 +64,7 @@ public class ParameterBlank extends ExpressionBlank {
 	private final org.lgna.project.ast.AbstractParameter parameter;
 
 	private ParameterBlank( org.lgna.project.ast.AbstractParameter parameter ) {
-		super( java.util.UUID.fromString( "84524eb1-7dbe-4481-8037-005d6402dbf3" ), parameter.getDesiredValueType() );
+		super( java.util.UUID.fromString( "84524eb1-7dbe-4481-8037-005d6402dbf3" ), parameter.getValueType(), parameter.getDetails() );
 		this.parameter = parameter;
 	}
 	@Override

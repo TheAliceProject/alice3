@@ -182,7 +182,7 @@ public class NodeUtilities {
 		rv.expression.setValue( expression );
 		rv.method.setValue( method );
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
-			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, new EmptyExpression( parameter.getDesiredValueType() ) );
+			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, new EmptyExpression( parameter.getValueType() ) );
 			rv.arguments.add( argument );
 		}
 		return rv;
@@ -237,24 +237,6 @@ public class NodeUtilities {
 		return rv;
 	}
 
-	//todo: remove
-	public static org.lgna.project.ast.AbstractType<?,?,?>[] getDesiredParameterValueTypes( org.lgna.project.ast.AbstractMethod method ) {
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
-		org.lgna.project.ast.AbstractType<?,?,?>[] rv = new org.lgna.project.ast.AbstractType[ parameters.size() ];
-		int i = 0;
-		for( org.lgna.project.ast.AbstractParameter parameter : parameters ) {
-			rv[ i ] = parameter.getDesiredValueType();
-			i++;
-		}
-		return rv;
-	}
-	public static java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > getDesiredParameterValueTypes( java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > rv, org.lgna.project.ast.AbstractMethod method ) {
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
-		for( org.lgna.project.ast.AbstractParameter parameter : parameters ) {
-			rv.add( parameter.getDesiredValueType() );
-		}
-		return rv;
-	}
 	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... argumentExpressions ) {
 		rv.expression.setValue( instanceExpression );
 		int i = 0;
@@ -412,4 +394,14 @@ public class NodeUtilities {
 		}
 	}
 	
+	public static org.lgna.project.ast.AbstractType<?,?,?>[] getParameterValueTypes( org.lgna.project.ast.AbstractMethod method ) {
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
+		org.lgna.project.ast.AbstractType<?,?,?>[] rv = new org.lgna.project.ast.AbstractType[ parameters.size() ];
+		int i = 0;
+		for( org.lgna.project.ast.AbstractParameter parameter : parameters ) {
+			rv[ i ] = parameter.getValueType();
+			i++;
+		}
+		return rv;
+	}
 }

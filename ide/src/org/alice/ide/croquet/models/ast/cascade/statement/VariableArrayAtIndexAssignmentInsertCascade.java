@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 public class VariableArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
 	private final org.lgna.project.ast.UserVariable variable;
 	public VariableArrayAtIndexAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserVariable variable ) {
-		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, variable.getValueType() );
+		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, variable.getValueType(), null );
 		this.variable = variable;
 	}
 	@Override

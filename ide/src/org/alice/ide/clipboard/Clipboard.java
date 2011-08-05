@@ -120,7 +120,7 @@ class CopyToClipboardOperation extends org.alice.ide.operations.ActionOperation 
 	}
 	private final org.lgna.project.ast.AbstractNode node;
 	private CopyToClipboardOperation( org.lgna.project.ast.AbstractNode node ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "86025bf5-1f1f-4f2d-8182-190574a3c3d0" ) );
 		this.node = org.alice.ide.IDE.getActiveInstance().createCopy( node );
 	}
 	@Override
@@ -191,7 +191,7 @@ class CutToClipboardOperation extends org.alice.ide.operations.ActionOperation {
 	}
 	private final org.lgna.project.ast.Statement statement;
 	private CutToClipboardOperation( org.lgna.project.ast.Statement statement ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
 		this.statement = statement;
 	}
 	@Override

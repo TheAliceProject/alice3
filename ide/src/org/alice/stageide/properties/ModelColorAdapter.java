@@ -59,7 +59,7 @@ public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lgna.sto
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getColor();
+			return this.instance.color.getValue();
 		}
 		else
 		{
@@ -76,7 +76,7 @@ public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lgna.sto
 			new Thread() {
 				@Override
 				public void run() {
-					ModelColorAdapter.this.instance.setColor(value);
+					ModelColorAdapter.this.instance.color.setValue(value);
 				}
 			}.start();
 		}

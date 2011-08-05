@@ -52,7 +52,8 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 		this.assignmentExpression = assignmentExpression;
 		org.lgna.project.ast.Expression left = this.assignmentExpression.leftHandSide.getValue();
 		
-		org.lgna.project.ast.AbstractType<?,?,?> desiredValueType;
+		org.lgna.project.ast.AbstractType<?,?,?> valueType;
+		org.lgna.project.annotations.ValueDetails< ? > details = null;
 		org.lgna.project.ast.Expression expression;
 		org.lgna.croquet.components.AxisPanel parent;
 		if( left instanceof org.lgna.project.ast.ArrayAccess ) {
@@ -73,7 +74,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 			org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
 			isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
-			desiredValueType = field.getDesiredValueType();
+			valueType = field.getDesiredValueType();
 			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, null, field.getDeclaringType() ) );
 			if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 				parent.addComponent( new org.lgna.croquet.components.Label( " . " ) );
@@ -94,15 +95,16 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 			org.lgna.project.ast.UserVariable variable = variableAccess.variable.getValue();
 			//todo?
 			//desiredValueType = variable.getDesiredValueType();
-			desiredValueType = null;
+			valueType = null;
 			parent.addComponent( new VariablePane( variable ) );
 		} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
 			org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)expression;
 			org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
-			desiredValueType = parameter.getDesiredValueType();
+			valueType = parameter.getValueType();
+			details = parameter.getDetails();
 			parent.addComponent( new ParameterPane( null, (org.lgna.project.ast.UserParameter)parameter ) );
 		} else {
-			desiredValueType = null;
+			valueType = null;
 			parent.addComponent( new org.lgna.croquet.components.Label( "TODO" ) );
 		}
 		if( left instanceof org.lgna.project.ast.ArrayAccess ) {
@@ -121,7 +123,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 				parent.addComponent( new org.alice.ide.common.GetsPane( true ) );
 			}
 		}
-		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, null, desiredValueType ) );
+		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, null, valueType ) );
 		if( isSetter ) {
 			if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 				parent.addComponent( new org.lgna.croquet.components.Label( " )" ) );

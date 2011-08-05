@@ -49,12 +49,12 @@ package org.lgna.story;
 public abstract class Shape extends Model {
 	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	public Color getColor() {
-		return Color.createInstance( this.getImplementation().getColor() );
+		return Color.createInstance( this.getImplementation().color.getValue() );
 	}
 	public void setColor( Color color ) {
 		this.setColor( color, new AnimationDetails() );
 	}
 	public void setColor( org.lgna.story.Color color, org.lgna.story.AnimationDetails details ) {
-		this.getImplementation().animateColor( Color.getInternal( color ), details.getDuration(), details.getStyle() );
+		this.getImplementation().color.animateValue( Color.getInternal( color ), details.getDuration(), details.getStyle() );
 	}
 }

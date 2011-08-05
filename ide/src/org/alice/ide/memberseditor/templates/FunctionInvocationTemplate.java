@@ -89,7 +89,7 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	protected org.lgna.project.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
-		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( this.method );
+		return org.alice.ide.ast.NodeUtilities.getParameterValueTypes( this.method );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {

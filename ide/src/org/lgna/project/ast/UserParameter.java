@@ -75,8 +75,8 @@ public class UserParameter extends AbstractParameter {
 		return valueType.getValue();
 	}
 	@Override
-	public AbstractType<?,?,?> getDesiredValueType() {
-		return getValueType();
+	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
+		return null;
 	}
 	@Override
 	public boolean isVariableLength() {

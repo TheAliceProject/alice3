@@ -73,6 +73,37 @@ public class SceneImplementation extends EntityImplementation {
 	private ProgramImplementation program;
 	private final org.lgna.story.Scene abstraction;
 	
+	public final ColorProperty atmosphereColor = new ColorProperty( SceneImplementation.this ) {
+		@Override
+		public edu.cmu.cs.dennisc.color.Color4f getValue() {
+			return SceneImplementation.this.sgBackground.color.getValue();
+		}
+		@Override
+		protected void handleSetValue(edu.cmu.cs.dennisc.color.Color4f value) {
+			SceneImplementation.this.sgBackground.color.setValue( value );
+		}
+	};
+	public final ColorProperty ambientLightColor = new ColorProperty( SceneImplementation.this ) {
+		@Override
+		public edu.cmu.cs.dennisc.color.Color4f getValue() {
+			return SceneImplementation.this.sgAmbientLight.color.getValue();
+		}
+		@Override
+		protected void handleSetValue(edu.cmu.cs.dennisc.color.Color4f value) {
+			SceneImplementation.this.sgAmbientLight.color.setValue( value );
+		}
+	};
+	public final FloatProperty globalLightBrightness = new FloatProperty( SceneImplementation.this ) {
+		@Override
+		public Float getValue() {
+			return SceneImplementation.this.sgScene.globalBrightness.getValue();
+		}
+		@Override
+		protected void handleSetValue( Float value ) {
+			SceneImplementation.this.sgScene.globalBrightness.setValue( value );
+		}
+	};
+
 	public SceneImplementation( org.lgna.story.Scene abstraction ) {
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
@@ -150,58 +181,4 @@ public class SceneImplementation extends EntityImplementation {
 			} );
 		}
 	}
-	
-	public edu.cmu.cs.dennisc.color.Color4f getAmbientLightColor() {
-		return this.sgBackground.color.getValue();
-	}
-	public void setAmbientLightColor( edu.cmu.cs.dennisc.color.Color4f color ) {
-		this.sgBackground.color.setValue( color );
-	}
-	public void animateAmbientLightColor( edu.cmu.cs.dennisc.color.Color4f color, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		duration = adjustDurationIfNecessary( duration );
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			this.sgAmbientLight.color.setValue( color );
-		} else {
-			perform( new edu.cmu.cs.dennisc.color.animation.Color4fAnimation( duration, style, getAmbientLightColor(), color ) {
-				@Override
-				protected void updateValue( edu.cmu.cs.dennisc.color.Color4f c ) {
-					SceneImplementation.this.sgAmbientLight.color.setValue( c );
-				}
-			} );
-		}
-	}
-	public void animateAmbientLightColor( edu.cmu.cs.dennisc.color.Color4f color, double duration ) {
-		this.animateAmbientLightColor( color, duration, DEFAULT_STYLE );
-	}
-	public void animateAmbientLightColor( edu.cmu.cs.dennisc.color.Color4f color ) {
-		this.animateAmbientLightColor( color, DEFAULT_DURATION );
-	}
-
-	public edu.cmu.cs.dennisc.color.Color4f getAtmosphereColor() {
-		return this.sgBackground.color.getValue();
-	}
-	public void setAtmosphereColor( edu.cmu.cs.dennisc.color.Color4f color ) {
-		this.sgBackground.color.setValue( color );
-	}
-	public void animateAtmosphereColor( edu.cmu.cs.dennisc.color.Color4f color, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		duration = adjustDurationIfNecessary( duration );
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			this.sgBackground.color.setValue( color );
-		} else {
-			perform( new edu.cmu.cs.dennisc.color.animation.Color4fAnimation( duration, style, getAtmosphereColor(), color ) {
-				@Override
-				protected void updateValue( edu.cmu.cs.dennisc.color.Color4f c ) {
-					SceneImplementation.this.sgBackground.color.setValue( c );
-				}
-			} );
-		}
-	}
-	public void animateAtmosphereColor( edu.cmu.cs.dennisc.color.Color4f color, double duration ) {
-		this.animateAtmosphereColor( color, duration, DEFAULT_STYLE );
-	}
-	public void animateAtmosphereColor( edu.cmu.cs.dennisc.color.Color4f color ) {
-		this.animateAtmosphereColor( color, DEFAULT_DURATION );
-	}
-
-	
 }

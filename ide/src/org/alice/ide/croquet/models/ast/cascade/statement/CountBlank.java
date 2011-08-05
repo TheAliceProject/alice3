@@ -55,7 +55,7 @@ public class CountBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 		return SingletonHolder.instance;
 	}
 	private CountBlank() {
-		super( java.util.UUID.fromString( "8dde36e7-5d10-46fa-9539-c52ed6495661" ), Integer.class );
+		super( java.util.UUID.fromString( "8dde36e7-5d10-46fa-9539-c52ed6495661" ), Integer.class, org.lgna.project.annotations.CountDetails.SINGLETON );
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {

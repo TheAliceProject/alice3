@@ -48,9 +48,11 @@ import org.lgna.project.annotations.*;
  * @author Dennis Cosgrove
  */
 public abstract class MovableTurnable extends Turnable {
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public Position getPositionRelativeToVehicle() {
 		return Position.createInstance( this.getImplementation().getLocalPosition() ); 
 	}
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public void setPositionRelativeToVehicle( Position position ) {
 		this.getImplementation().setLocalPosition( position.getInternal() ); 
 	}

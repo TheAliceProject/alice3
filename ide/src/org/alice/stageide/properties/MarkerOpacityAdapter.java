@@ -60,7 +60,7 @@ public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgn
 	{
 		if (this.instance != null)
 		{
-			return (double)this.instance.getOpacity();
+			return (double)this.instance.opacity.getValue();
 		}
 		else
 		{
@@ -77,7 +77,7 @@ public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgn
 			new Thread() {
 				@Override
 				public void run() {
-					MarkerOpacityAdapter.this.instance.setOpacity(value.floatValue());
+					MarkerOpacityAdapter.this.instance.opacity.setValue(value.floatValue());
 				}
 			}.start();
 		}

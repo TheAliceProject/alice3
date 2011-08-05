@@ -41,51 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.project.ast;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JavaParameter extends AbstractParameter {
-	private java.lang.annotation.Annotation[] m_annotations;
-	public JavaParameter( java.lang.annotation.Annotation[] annotations ) {
-		m_annotations = annotations;
+public abstract class ColorProperty extends Property< edu.cmu.cs.dennisc.color.Color4f > {
+	private edu.cmu.cs.dennisc.color.Color4f value;
+	public ColorProperty( EntityImplementation owner ) {
+		super( owner, edu.cmu.cs.dennisc.color.Color4f.class );
 	}
 	@Override
-	public boolean isDeclaredInAlice() {
-		return false;
+	public edu.cmu.cs.dennisc.color.Color4f getValue() {
+		return this.value;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
+	protected void handleSetValue( edu.cmu.cs.dennisc.color.Color4f value ) {
+		this.value = value;
 	}
 	@Override
-	public boolean isVariableLength() {
-		for( java.lang.annotation.Annotation annotation : m_annotations ) {
-			if( annotation instanceof edu.cmu.cs.dennisc.java.lang.ParameterAnnotation ) {
-				edu.cmu.cs.dennisc.java.lang.ParameterAnnotation parameterAnnotation = (edu.cmu.cs.dennisc.java.lang.ParameterAnnotation)annotation;
-				return parameterAnnotation.isVariable();
-			}
-		}
-		return false;
-	}
-	
-	public JavaType getValueTypeDeclaredInJava() {
-		return (JavaType)getValueType();
-	}
-	@Override
-	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
-		if( m_annotations != null ) {
-			for( java.lang.annotation.Annotation annotation : m_annotations ) {
-				if( annotation instanceof org.lgna.project.annotations.ParameterTemplate ) {
-					org.lgna.project.annotations.ParameterTemplate parameterTemplate = (org.lgna.project.annotations.ParameterTemplate)annotation;
-					Class< ? extends Enum< ? extends org.lgna.project.annotations.ValueDetails<?> > > detailsEnumCls = parameterTemplate.detailsEnumCls();
-					Enum< ? extends org.lgna.project.annotations.ValueDetails<?> >[] details = detailsEnumCls.getEnumConstants();
-					assert details.length == 1;
-					return (org.lgna.project.annotations.ValueDetails<?>)details[ 0 ];
-				}
-			}
-		}
-		return null;
+	protected edu.cmu.cs.dennisc.color.Color4f interpolate( edu.cmu.cs.dennisc.color.Color4f a, edu.cmu.cs.dennisc.color.Color4f b, double portion ) {
+		edu.cmu.cs.dennisc.color.Color4f rv = edu.cmu.cs.dennisc.color.Color4f.createNaN();
+		rv.interpolate( a, b, (float)portion );
+		return rv;
 	}
 }

@@ -41,51 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.project.ast;
+package org.lgna.project.annotations;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JavaParameter extends AbstractParameter {
-	private java.lang.annotation.Annotation[] m_annotations;
-	public JavaParameter( java.lang.annotation.Annotation[] annotations ) {
-		m_annotations = annotations;
+public enum CountDetails implements IntegerValueDetails {
+	SINGLETON;
+	public Class< Integer > getSupportedCls() {
+		return Integer.class;
 	}
-	@Override
-	public boolean isDeclaredInAlice() {
-		return false;
+	public java.lang.Integer getMinimumValue() {
+		return 0;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
+	public java.lang.Integer getMaximumValue() {
+		return Integer.MAX_VALUE;
 	}
-	@Override
-	public boolean isVariableLength() {
-		for( java.lang.annotation.Annotation annotation : m_annotations ) {
-			if( annotation instanceof edu.cmu.cs.dennisc.java.lang.ParameterAnnotation ) {
-				edu.cmu.cs.dennisc.java.lang.ParameterAnnotation parameterAnnotation = (edu.cmu.cs.dennisc.java.lang.ParameterAnnotation)annotation;
-				return parameterAnnotation.isVariable();
-			}
-		}
-		return false;
-	}
-	
-	public JavaType getValueTypeDeclaredInJava() {
-		return (JavaType)getValueType();
-	}
-	@Override
-	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
-		if( m_annotations != null ) {
-			for( java.lang.annotation.Annotation annotation : m_annotations ) {
-				if( annotation instanceof org.lgna.project.annotations.ParameterTemplate ) {
-					org.lgna.project.annotations.ParameterTemplate parameterTemplate = (org.lgna.project.annotations.ParameterTemplate)annotation;
-					Class< ? extends Enum< ? extends org.lgna.project.annotations.ValueDetails<?> > > detailsEnumCls = parameterTemplate.detailsEnumCls();
-					Enum< ? extends org.lgna.project.annotations.ValueDetails<?> >[] details = detailsEnumCls.getEnumConstants();
-					assert details.length == 1;
-					return (org.lgna.project.annotations.ValueDetails<?>)details[ 0 ];
-				}
-			}
-		}
-		return null;
+	public int[] getRepresentativeValues() {
+		return new int[] { 1, 2, 3 };
 	}
 }

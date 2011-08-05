@@ -41,51 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.project.ast;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JavaParameter extends AbstractParameter {
-	private java.lang.annotation.Annotation[] m_annotations;
-	public JavaParameter( java.lang.annotation.Annotation[] annotations ) {
-		m_annotations = annotations;
+public abstract class FloatProperty extends Property< Float > {
+	public FloatProperty( EntityImplementation owner ) {
+		super( owner, Float.class );
 	}
 	@Override
-	public boolean isDeclaredInAlice() {
-		return false;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
-	@Override
-	public boolean isVariableLength() {
-		for( java.lang.annotation.Annotation annotation : m_annotations ) {
-			if( annotation instanceof edu.cmu.cs.dennisc.java.lang.ParameterAnnotation ) {
-				edu.cmu.cs.dennisc.java.lang.ParameterAnnotation parameterAnnotation = (edu.cmu.cs.dennisc.java.lang.ParameterAnnotation)annotation;
-				return parameterAnnotation.isVariable();
-			}
-		}
-		return false;
-	}
-	
-	public JavaType getValueTypeDeclaredInJava() {
-		return (JavaType)getValueType();
-	}
-	@Override
-	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
-		if( m_annotations != null ) {
-			for( java.lang.annotation.Annotation annotation : m_annotations ) {
-				if( annotation instanceof org.lgna.project.annotations.ParameterTemplate ) {
-					org.lgna.project.annotations.ParameterTemplate parameterTemplate = (org.lgna.project.annotations.ParameterTemplate)annotation;
-					Class< ? extends Enum< ? extends org.lgna.project.annotations.ValueDetails<?> > > detailsEnumCls = parameterTemplate.detailsEnumCls();
-					Enum< ? extends org.lgna.project.annotations.ValueDetails<?> >[] details = detailsEnumCls.getEnumConstants();
-					assert details.length == 1;
-					return (org.lgna.project.annotations.ValueDetails<?>)details[ 0 ];
-				}
-			}
-		}
-		return null;
+	protected Float interpolate( Float a, Float b, double portion ) {
+		return a + (float)((a+b)*portion);
 	}
 }

@@ -59,7 +59,7 @@ public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna
 	{
 		if (this.instance != null)
 		{
-			return (double)this.instance.getOpacity();
+			return (double)this.instance.opacity.getValue();
 		}
 		else
 		{
@@ -76,7 +76,7 @@ public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna
 			new Thread() {
 				@Override
 				public void run() {
-					ModelOpacityAdapter.this.instance.setOpacity(value.floatValue());
+					ModelOpacityAdapter.this.instance.opacity.setValue(value.floatValue());
 				}
 			}.start();
 		}

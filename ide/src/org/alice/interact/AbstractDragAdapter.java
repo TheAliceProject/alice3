@@ -413,7 +413,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.fireSelecting( new SelectionEvent(this, selected) );
 			if (this.selectedCameraMarker != null)
 			{
-				this.selectedCameraMarker.animateOpacity(.3f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
+				this.selectedCameraMarker.opacity.animateValue(.3f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
 				if (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImplementation)
 				{
 					((PerspectiveCameraMarkerImplementation)this.selectedCameraMarker).setDetailedViewShowing(false);
@@ -422,7 +422,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.selectedCameraMarker = selected;
 			if (this.selectedCameraMarker != null)
 			{
-				this.selectedCameraMarker.animateOpacity(1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
+				this.selectedCameraMarker.opacity.animateValue(1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
 				if (this.sceneEditor != null && this.selectedCameraMarker instanceof PerspectiveCameraMarkerImplementation)
 				{
 					//TODO: Resolve the issue of showing the selection details of an active camera mark (active meaning it's currently attached to the camera)
@@ -443,12 +443,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.fireSelecting( new SelectionEvent(this, selected) );
 			if (this.selectedObjectMarker != null)
 			{
-				this.selectedObjectMarker.animateOpacity(.3f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
+				this.selectedObjectMarker.opacity.animateValue(.3f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
 			}
 			this.selectedObjectMarker = selected;
 			if (this.selectedObjectMarker != null)
 			{
-				this.selectedObjectMarker.animateOpacity(1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
+				this.selectedObjectMarker.opacity.animateValue(1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
 			}
 		}
 	}
