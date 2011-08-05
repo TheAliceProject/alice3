@@ -60,9 +60,6 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		for( org.lgna.story.resources.sims2.LifeStage lifeStage : lifeStages ) {
 			map.put( lifeStage, new org.lgna.story.implementation.sims2.SimsBipedImplementation( null, lifeStage ) );
 		}
-		for( org.lgna.story.implementation.sims2.SimsBipedImplementation person : map.values() ) {
-			person.getSgComposite().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
-		}
 
 		org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.story.resources.sims2.LifeStage>() {
 			public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.LifeStage > state, org.lgna.story.resources.sims2.LifeStage prevValue, org.lgna.story.resources.sims2.LifeStage nextValue, boolean isAdjusting ) {

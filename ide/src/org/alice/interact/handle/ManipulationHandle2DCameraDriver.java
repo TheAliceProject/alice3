@@ -87,7 +87,7 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 	
 	@Override
 	public PickHint getPickHint() {
-		return PickHint.TWO_D_HANDLES;
+		return PickHint.PickType.TWO_D_HANDLE.pickHint();
 	}
 	
 	@Override

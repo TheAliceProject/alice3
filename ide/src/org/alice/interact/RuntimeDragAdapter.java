@@ -62,17 +62,17 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 	protected void setUpControls()
 	{
 		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
-		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseTranslateObject.addCondition( moveableObject );
 		this.manipulators.add( mouseTranslateObject );
 		
 		ManipulatorConditionSet mouseUpDownTranslateObject = new ManipulatorConditionSet( new ObjectUpDownDragManipulator() );
-		MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierKey.SHIFT ));
+		MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ));
 		mouseUpDownTranslateObject.addCondition( moveableObjectWithShift );
 		this.manipulators.add( mouseUpDownTranslateObject );
 		
 		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator(MovementDirection.UP) );
-		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierKey.CONTROL ));
+		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierKey.CONTROL ));
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 		this.manipulators.add( mouseRotateObjectLeftRight );
 		

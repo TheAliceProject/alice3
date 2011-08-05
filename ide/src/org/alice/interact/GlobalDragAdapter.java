@@ -181,7 +181,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		ManipulatorConditionSet objectTranslate = new ManipulatorConditionSet( new ObjectTranslateKeyManipulator( movementKeys ) );
 		for (int i=0; i<movementKeys.length; i++)
 		{
-			AndInputCondition keyAndSelected = new AndInputCondition( new KeyPressCondition( movementKeys[i].keyValue ), new SelectedObjectCondition( PickHint.MOVEABLE_OBJECTS ) );
+			AndInputCondition keyAndSelected = new AndInputCondition( new KeyPressCondition( movementKeys[i].keyValue ), new SelectedObjectCondition( PickHint.PickType.MOVEABLE.pickHint() ) );
 			objectTranslate.addCondition( keyAndSelected );
 		}
 		this.manipulators.add( objectTranslate );
@@ -198,7 +198,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1 , new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		MouseDragCondition leftAndShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1 , new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.JUST_SHIFT ));
 		MouseDragCondition leftAndControl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1 , new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.JUST_CONTROL ));
-		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2 , new PickCondition( PickHint.EVERYTHING ) );
+		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2 , new PickCondition( PickHint.ANYTHING ) );
 		MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.NON_INTERACTIVE ) );
 		
 		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
@@ -227,36 +227,39 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		dragFromGallery.addCondition( new DragAndDropCondition() );
 		this.manipulators.add( dragFromGallery );
 		
+		MouseDragCondition leftClickMoveableObjects = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		MouseDragCondition leftClickTurnableObjects = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		MouseDragCondition leftClickResizableObjects = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.RESIZABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		
 		ManipulatorConditionSet leftClickMouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator(), "Mouse Translate" );
-		MouseDragCondition leftClickMoveableObjects = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		leftClickMouseTranslateObject.addCondition( leftClickMoveableObjects );
 		this.manipulators.add( leftClickMouseTranslateObject );
 		
 		ManipulatorConditionSet leftClickMouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator(MovementDirection.UP) );
-		leftClickMouseRotateObjectLeftRight.addCondition( leftClickMoveableObjects );
+		leftClickMouseRotateObjectLeftRight.addCondition( leftClickTurnableObjects );
 		//This manipulation is used only when the "rotation" interaction group is selected. Disabled by default.
 		leftClickMouseRotateObjectLeftRight.setEnabled(false);
 		this.manipulators.add( leftClickMouseRotateObjectLeftRight );
 		
 		ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator() );
-		leftClickMouseResizeObject.addCondition( leftClickMoveableObjects );
-		//This manipulation is used only when the "rotation" interaction group is selected. Disabled by default.
+		leftClickMouseResizeObject.addCondition( leftClickResizableObjects );
+		//This manipulation is used only when the "resize" interaction group is selected. Disabled by default.
 		leftClickMouseResizeObject.setEnabled(false);
 		this.manipulators.add( leftClickMouseResizeObject );
 		
 		ManipulatorConditionSet mouseUpDownTranslateObject = new ManipulatorConditionSet( new ObjectUpDownDragManipulator() );
-		MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierKey.SHIFT ));
+		MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ));
 		mouseUpDownTranslateObject.addCondition( moveableObjectWithShift );
 		this.manipulators.add( mouseUpDownTranslateObject );
 		
 		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator(MovementDirection.UP) );
-		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierKey.CONTROL ));
+		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierKey.CONTROL ));
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 		this.manipulators.add( mouseRotateObjectLeftRight );
 		
 		ManipulatorConditionSet mouseHandleDrag = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );
-		MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.THREE_D_HANDLES), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
-		MouseCondition handleObjectClickCondition = new MouseCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.TWO_D_HANDLES), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.THREE_D_HANDLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		MouseCondition handleObjectClickCondition = new MouseCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TWO_D_HANDLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseHandleDrag.addCondition( handleObjectCondition );
 		mouseHandleDrag.addCondition( handleObjectClickCondition );
 		this.manipulators.add( mouseHandleDrag );
@@ -268,11 +271,11 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 //		this.manipulators.add( mouseHandleClick );
 		
 		ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new SelectObjectDragManipulator(this) );
-		selectObject.addCondition( new MousePressCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.EVERYTHING)) );
+		selectObject.addCondition( new MousePressCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() )) );
 		this.manipulators.add( selectObject );
 		
 		ManipulatorConditionSet getAGoodLookAtObject = new ManipulatorConditionSet( new GetAGoodLookAtManipulator());
-		getAGoodLookAtObject.addCondition( new DoubleClickedObjectCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS)) );
+		getAGoodLookAtObject.addCondition( new DoubleClickedObjectCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.VIEWABLE.pickHint())) );
 		this.manipulators.add( getAGoodLookAtObject );
 		
 		ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( new CameraZoomMouseWheelManipulator() );
@@ -297,11 +300,11 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		rotateAboutYAxis.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Rotate,
 				new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.TURNABLE.pickHint() ) );
 		rotateAboutYAxis.addCondition( 
 				new ManipulationEventCriteria(ManipulationEvent.EventType.Rotate,
 				new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.TURNABLE.pickHint() ) );
 		this.manipulationEventManager.addManipulationListener( rotateAboutYAxis );
 		rotateAboutYAxis.setDragAdapterAndAddHandle( this );
 		
@@ -328,19 +331,19 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		translateDown.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		translateUp.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		translateDown.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.DOWN, MovementType.ABSOLUTE),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		translateUp.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		this.manipulationEventManager.addManipulationListener( translateUp );
 		this.manipulationEventManager.addManipulationListener( translateDown );
 		translateDown.setDragAdapterAndAddHandle( this );
@@ -358,19 +361,19 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		translateXAxisLeft.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.LEFT, MovementType.STOOD_UP),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		translateXAxisRight.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.RIGHT, MovementType.STOOD_UP),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		translateXAxisLeft.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.LEFT, MovementType.ABSOLUTE),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		translateXAxisRight.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.RIGHT, MovementType.ABSOLUTE),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		this.manipulationEventManager.addManipulationListener( translateXAxisRight );
 		this.manipulationEventManager.addManipulationListener( translateXAxisLeft );
 		translateXAxisRight.setDragAdapterAndAddHandle( this );
@@ -387,19 +390,19 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		translateBackward.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.BACKWARD, MovementType.STOOD_UP),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		translateForward.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.FORWARD, MovementType.STOOD_UP),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		translateBackward.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.BACKWARD, MovementType.ABSOLUTE),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		translateForward.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Translate,
 				new MovementDescription(MovementDirection.FORWARD, MovementType.ABSOLUTE),
-				PickHint.MOVEABLE_OBJECTS ) );
+				PickHint.PickType.MOVEABLE.pickHint() ) );
 		this.manipulationEventManager.addManipulationListener( translateForward );
 		this.manipulationEventManager.addManipulationListener( translateBackward );
 		translateForward.setDragAdapterAndAddHandle( this );
@@ -409,24 +412,40 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		scaleAxis.setManipulation( new ScaleDragManipulator() );
 		scaleAxis.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxis.addToGroups( HandleSet.HandleGroup.RESIZE_AXIS, HandleSet.HandleGroup.VISUALIZATION );
+		scaleAxis.addCondition( new ManipulationEventCriteria(
+				ManipulationEvent.EventType.Scale,
+				new MovementDescription(MovementDirection.RESIZE, MovementType.STOOD_UP),
+				PickHint.PickType.RESIZABLE.pickHint() ) );
 		scaleAxis.setDragAdapterAndAddHandle( this );
 		
 		ManipulationHandleIndirection scaleAxisX = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.STOOD_UP), Color4f.MAGENTA, true));
 		scaleAxisX.setManipulation( new ScaleDragManipulator() );
 		scaleAxisX.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxisX.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION );
+		scaleAxisX.addCondition( new ManipulationEventCriteria(
+				ManipulationEvent.EventType.Scale,
+				new MovementDescription(MovementDirection.RIGHT, MovementType.STOOD_UP),
+				PickHint.PickType.RESIZABLE.pickHint() ) );
 		scaleAxisX.setDragAdapterAndAddHandle( this );
 		
 		ManipulationHandleIndirection scaleAxisY = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), Color4f.YELLOW, true));
 		scaleAxisY.setManipulation( new ScaleDragManipulator() );
 		scaleAxisY.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxisY.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
+		scaleAxisY.addCondition( new ManipulationEventCriteria(
+				ManipulationEvent.EventType.Scale,
+				new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP),
+				PickHint.PickType.RESIZABLE.pickHint() ) );
 		scaleAxisY.setDragAdapterAndAddHandle( this );
 		
 		ManipulationHandleIndirection scaleAxisZ = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.STOOD_UP), Color4f.CYAN, true));
 		scaleAxisZ.setManipulation( new ScaleDragManipulator() );
 		scaleAxisZ.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxisZ.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
+		scaleAxisZ.addCondition( new ManipulationEventCriteria(
+				ManipulationEvent.EventType.Scale,
+				new MovementDescription(MovementDirection.FORWARD, MovementType.STOOD_UP),
+				PickHint.PickType.RESIZABLE.pickHint() ) );
 		scaleAxisZ.setDragAdapterAndAddHandle( this );
 
 		

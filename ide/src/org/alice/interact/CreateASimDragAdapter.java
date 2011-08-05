@@ -114,7 +114,7 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 		this.manipulators.add( objectRotate );
 		
 		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator(MovementDirection.UP) );
-		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.EVERYTHING));
+		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.ANYTHING));
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 		this.manipulators.add( mouseRotateObjectLeftRight );
 

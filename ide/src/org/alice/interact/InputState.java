@@ -248,8 +248,8 @@ public class InputState {
 	{
 		this.clickPickResult = pickResult;
 		Transformable picked = this.getClickPickedTransformable( true );
-		PickHint clickedObjectType = PickCondition.getPickType( this.clickPickResult );
-		if ( !clickedObjectType.intersects( PickHint.NOTHING) )
+		PickHint clickedObjectType = AbstractDragAdapter.getPickType( this.clickPickResult );
+		if ( !clickedObjectType.intersects( PickHint.PickType.NOTHING.pickHint()) )
 		{
 			this.setClickPickTransformable( picked );
 		}
@@ -276,7 +276,19 @@ public class InputState {
 		return this.clickPickResult;
 	}
 	
-	public PickHint getClickPickType()
+	public PickHint getCurrentlySelectedObjectPickHint()
+	{
+		if ( this.getCurrentlySelectedObject() != null )
+		{
+			return AbstractDragAdapter.getPickType(this.getCurrentlySelectedObject()); 
+		}
+		else
+		{
+			return PickHint.PickType.NOTHING.pickHint();
+		}
+	}
+	
+	public PickHint getClickPickHint()
 	{
 		//Evaluate handles first since they may be overlayed on the scene
 		if ( this.clickHandle != null )
@@ -285,19 +297,19 @@ public class InputState {
 		}
 		else if (this.getClickPickResult() != null)
 		{
-			return PickCondition.getPickType(this.getClickPickResult());
+			return AbstractDragAdapter.getPickType(this.getClickPickResult());
 		}
 		else
 		{
-			return PickHint.NOTHING;
+			return PickHint.PickType.NOTHING.pickHint();
 		}
 	}
 	
-	public PickHint getRolloverPickType()
+	public PickHint getRolloverPickHint()
 	{
 		if (this.getRolloverPickResult() != null)
 		{
-			return PickCondition.getPickType(this.getRolloverPickResult());
+			return AbstractDragAdapter.getPickType(this.getRolloverPickResult());
 		}
 		else if ( this.rolloverHandle != null )
 		{
@@ -305,7 +317,7 @@ public class InputState {
 		}
 		else
 		{
-			return PickHint.NOTHING;
+			return PickHint.PickType.NOTHING.pickHint();
 		}
 	}
 	
@@ -326,8 +338,8 @@ public class InputState {
 			}
 				
 		}
-		PickHint rolloverObjectType = PickCondition.getPickType( this.rolloverPickResult );
-		if ( validPick && !rolloverObjectType.intersects( PickHint.NOTHING) )
+		PickHint rolloverObjectType = AbstractDragAdapter.getPickType( this.rolloverPickResult );
+		if ( validPick && !rolloverObjectType.intersects( PickHint.PickType.NOTHING.pickHint() ) )
 		{
 			this.setRolloverPickTransformable( picked );
 		}

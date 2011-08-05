@@ -181,7 +181,7 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 	}
 
 	public PickHint getPickHint() {
-		return PickHint.TWO_D_HANDLES;
+		return PickHint.PickType.TWO_D_HANDLE.pickHint();
 	}
 
 	public void setManipulation(AbstractManipulator manipulation)
