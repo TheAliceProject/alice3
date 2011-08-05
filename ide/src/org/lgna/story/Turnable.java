@@ -56,18 +56,18 @@ public abstract class Turnable extends Entity implements MutableRider {
 
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount ) {
-		this.turn( direction, amount, new RelativeVantagePointAnimationDetailsFactory.Value() );
+		this.turn( direction, amount, new VantagePointWithAsSeenByDetails.Value() );
 	}
 	@MethodTemplate()
-	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, RelativeVantagePointAnimationDetailsFactory.Value details ) {
+	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, VantagePointWithAsSeenByDetails.Value details ) {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount ) {
-		this.roll( direction, amount, new RelativeVantagePointAnimationDetailsFactory.Value() );
+		this.roll( direction, amount, new VantagePointWithAsSeenByDetails.Value() );
 	}
 	@MethodTemplate()
-	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, RelativeVantagePointAnimationDetailsFactory.Value details ) {
+	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, VantagePointWithAsSeenByDetails.Value details ) {
 		this.getImplementation().animateApplyRotationInRevolutions( direction.getAxis(), amount.doubleValue(), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
 

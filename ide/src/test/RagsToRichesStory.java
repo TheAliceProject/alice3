@@ -49,7 +49,7 @@ import org.lgna.story.Cone;
 import org.lgna.story.Ground;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.Program;
-import org.lgna.story.RelativeVantagePointAnimationDetailsFactory;
+import org.lgna.story.VantagePointWithAsSeenByDetails;
 import org.lgna.story.RollDirection;
 import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
@@ -208,9 +208,9 @@ class SnowScene extends Scene {
 					SnowScene.this.blueCone.move( MoveDirection.UP, 1.0 );
 				}
 			} );
-			this.redCone.move( MoveDirection.DOWN, 1.0, RelativeVantagePointAnimationDetailsFactory.duration( 0.333 ) );
-			this.greenCone.move( MoveDirection.DOWN, 1.0, RelativeVantagePointAnimationDetailsFactory.duration( 0.333 ) );
-			this.blueCone.move( MoveDirection.DOWN, 1.0, RelativeVantagePointAnimationDetailsFactory.duration( 0.333 ) );
+			this.redCone.move( MoveDirection.DOWN, 1.0, VantagePointWithAsSeenByDetails.duration( 0.333 ) );
+			this.greenCone.move( MoveDirection.DOWN, 1.0, VantagePointWithAsSeenByDetails.duration( 0.333 ) );
+			this.blueCone.move( MoveDirection.DOWN, 1.0, VantagePointWithAsSeenByDetails.duration( 0.333 ) );
 		}
 	}
 }

@@ -46,14 +46,9 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class ResizeDimensionAnimationDetailsFactory {
+public class SetPropertyDetails {
 	public static class Value extends AbstractAnimationDetails {
-		private Boolean isVolumePreserved = true;
 		/*package-private*/ Value() {
-		}
-		public Value isVolumePreserved( Boolean value ) {
-			this.isVolumePreserved = value;
-			return this;
 		}
 		public Value duration( Number value ) {
 			this.duration = value.doubleValue();
@@ -63,17 +58,9 @@ public class ResizeDimensionAnimationDetailsFactory {
 			this.style = value;
 			return this;
 		}
-		/*package-private*/ Boolean isVolumePreserved() {
-			return this.isVolumePreserved;
-		}
 	}
-	private ResizeDimensionAnimationDetailsFactory() {
+	private SetPropertyDetails() {
 		throw new AssertionError();
-	}
-	public static Value isVolumePreserved( Boolean value ) {
-		Value rv = new Value();
-		rv.isVolumePreserved( value );
-		return rv;
 	}
 	public static Value duration( Number value ) {
 		Value rv = new Value();

@@ -46,9 +46,15 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class AnimationDetailsFactory {
+public class VantagePointWithAsSeenByDetails {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=VantagePointWithAsSeenByDetails.class )
 	public static class Value extends AbstractAnimationDetails {
+		protected org.lgna.story.Entity asSeenBy = null;
 		/*package-private*/ Value() {
+		}
+		public Value asSeenBy( org.lgna.story.Entity value ) {
+			this.asSeenBy = value;
+			return this;
 		}
 		public Value duration( Number value ) {
 			this.duration = value.doubleValue();
@@ -58,9 +64,17 @@ public class AnimationDetailsFactory {
 			this.style = value;
 			return this;
 		}
+		/*package-private*/ org.lgna.story.Entity getAsSeenBy( org.lgna.story.Entity valueIfNull ) {
+			return this.asSeenBy != null ? this.asSeenBy : valueIfNull;
+		}
 	}
-	private AnimationDetailsFactory() {
+	private VantagePointWithAsSeenByDetails() {
 		throw new AssertionError();
+	}
+	public static Value asSeenBy( Entity value ) {
+		Value rv = new Value();
+		rv.asSeenBy( value );
+		return rv;
 	}
 	public static Value duration( Number value ) {
 		Value rv = new Value();
@@ -73,3 +87,4 @@ public class AnimationDetailsFactory {
 		return rv;
 	}
 }
+

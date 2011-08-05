@@ -60,18 +60,18 @@ public abstract class MovableTurnable extends Turnable {
 
 	@MethodTemplate( isFollowedByLongerMethod=true )
 	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new RelativeVantagePointAnimationDetailsFactory.Value() );
+		this.move( direction, amount, new VantagePointWithAsSeenByDetails.Value() );
 	}
 	@MethodTemplate()
-	public void move( MoveDirection direction, Number amount, RelativeVantagePointAnimationDetailsFactory.Value details ) {
+	public void move( MoveDirection direction, Number amount, VantagePointWithAsSeenByDetails.Value details ) {
 		this.getImplementation().animateApplyTranslation( direction.createTranslation( amount.doubleValue() ), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveToward( Entity target, Number amount ) {
-		this.moveToward( target, amount, new AnimationDetailsFactory.Value() );
+		this.moveToward( target, amount, new VantagePointDetails.Value() );
 	}
 	@MethodTemplate()
-	public void moveToward( Entity target, Number amount, AnimationDetailsFactory.Value details ) {
+	public void moveToward( Entity target, Number amount, VantagePointDetails.Value details ) {
 		edu.cmu.cs.dennisc.math.Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
 		edu.cmu.cs.dennisc.math.Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
 		edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( tTarget, tThis );
@@ -85,26 +85,26 @@ public abstract class MovableTurnable extends Turnable {
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveAwayFrom( Entity target, Number amount ) {
-		this.moveAwayFrom( target, amount, new AnimationDetailsFactory.Value() );
+		this.moveAwayFrom( target, amount, new VantagePointDetails.Value() );
 	}
 	@MethodTemplate()
-	public void moveAwayFrom( Entity target, Number amount, AnimationDetailsFactory.Value details ) {
+	public void moveAwayFrom( Entity target, Number amount, VantagePointDetails.Value details ) {
 		this.moveToward( target, -amount.doubleValue(), details );
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveTo( Entity target ) {
-		this.moveTo( target, new AnimationDetailsFactory.Value() );
+		this.moveTo( target, new VantagePointDetails.Value() );
 	}
 	@MethodTemplate()
-	public void moveTo( Entity target, AnimationDetailsFactory.Value details ) {
+	public void moveTo( Entity target, VantagePointDetails.Value details ) {
 		this.getImplementation().animatePositionOnly( target.getImplementation(), null, details.getDuration(), details.getStyle() );
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveAndOrientTo( Entity target ) {
-		this.moveAndOrientTo( target, new AnimationDetailsFactory.Value() );
+		this.moveAndOrientTo( target, new VantagePointDetails.Value() );
 	}
 	@MethodTemplate()
-	public void moveAndOrientTo( Entity target, AnimationDetailsFactory.Value details ) {
+	public void moveAndOrientTo( Entity target, VantagePointDetails.Value details ) {
 		this.getImplementation().animateTransformation( target.getImplementation(), null, details.getDuration(), details.getStyle() );
 	}
 }

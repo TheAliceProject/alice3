@@ -55,10 +55,10 @@ public class Camera extends MovableTurnable {
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void moveAndOrientToAGoodVantagePointOf( Entity entity ) {
-		this.moveAndOrientToAGoodVantagePointOf( entity, new AnimationDetailsFactory.Value() );
+		this.moveAndOrientToAGoodVantagePointOf( entity, new VantagePointDetails.Value() );
 	}
 	@MethodTemplate()
-	public void moveAndOrientToAGoodVantagePointOf( Entity entity, AnimationDetailsFactory.Value animationDetails ) {
+	public void moveAndOrientToAGoodVantagePointOf( Entity entity, VantagePointDetails.Value animationDetails ) {
 		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), animationDetails.getDuration(), animationDetails.getStyle() );
 	}
 }

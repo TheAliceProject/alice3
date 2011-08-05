@@ -102,10 +102,10 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setAtmosphereColor( Color color ) {
-		this.setAtmosphereColor( color, new AnimationDetailsFactory.Value() );
+		this.setAtmosphereColor( color, new SetPropertyDetails.Value() );
 	}
 	@MethodTemplate()
-	public void setAtmosphereColor( Color color, AnimationDetailsFactory.Value details ) {
+	public void setAtmosphereColor( Color color, SetPropertyDetails.Value details ) {
 		this.implementation.atmosphereColor.animateValue( color.getInternal(), details.getDuration(), details.getStyle() );
 	}
 	@GetterTemplate(isPersistent = true)
@@ -115,10 +115,10 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setAmbientLightColor( Color color ) {
-		this.setAmbientLightColor( color, new AnimationDetailsFactory.Value() );
+		this.setAmbientLightColor( color, new SetPropertyDetails.Value() );
 	}
 	@MethodTemplate()
-	public void setAmbientLightColor( Color color, AnimationDetailsFactory.Value details ) {
+	public void setAmbientLightColor( Color color, SetPropertyDetails.Value details ) {
 		this.implementation.ambientLightColor.animateValue( color.getInternal(), details.getDuration(), details.getStyle() );
 	}
 }

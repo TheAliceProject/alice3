@@ -46,14 +46,13 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class RelativeVantagePointAnimationDetailsFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=RelativeVantagePointAnimationDetailsFactory.class )
+public class ResizeDimensionDetails {
 	public static class Value extends AbstractAnimationDetails {
-		protected org.lgna.story.Entity asSeenBy = null;
+		private Boolean isVolumePreserved = true;
 		/*package-private*/ Value() {
 		}
-		public Value asSeenBy( org.lgna.story.Entity value ) {
-			this.asSeenBy = value;
+		public Value isVolumePreserved( Boolean value ) {
+			this.isVolumePreserved = value;
 			return this;
 		}
 		public Value duration( Number value ) {
@@ -64,16 +63,16 @@ public class RelativeVantagePointAnimationDetailsFactory {
 			this.style = value;
 			return this;
 		}
-		/*package-private*/ org.lgna.story.Entity getAsSeenBy( org.lgna.story.Entity valueIfNull ) {
-			return this.asSeenBy != null ? this.asSeenBy : valueIfNull;
+		/*package-private*/ Boolean isVolumePreserved() {
+			return this.isVolumePreserved;
 		}
 	}
-	private RelativeVantagePointAnimationDetailsFactory() {
+	private ResizeDimensionDetails() {
 		throw new AssertionError();
 	}
-	public static Value asSeenBy( Entity value ) {
+	public static Value isVolumePreserved( Boolean value ) {
 		Value rv = new Value();
-		rv.asSeenBy( value );
+		rv.isVolumePreserved( value );
 		return rv;
 	}
 	public static Value duration( Number value ) {
@@ -87,4 +86,3 @@ public class RelativeVantagePointAnimationDetailsFactory {
 		return rv;
 	}
 }
-

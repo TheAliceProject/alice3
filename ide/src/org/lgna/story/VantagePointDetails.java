@@ -46,14 +46,9 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class SetDimensionAnimationDetailsFactory {
+public class VantagePointDetails {
 	public static class Value extends AbstractAnimationDetails {
-		protected org.lgna.story.SetDimensionPolicy policy = org.lgna.story.SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
 		/*package-private*/ Value() {
-		}
-		public Value policy( org.lgna.story.SetDimensionPolicy value ) {
-			this.policy = value;
-			return this;
 		}
 		public Value duration( Number value ) {
 			this.duration = value.doubleValue();
@@ -63,17 +58,9 @@ public class SetDimensionAnimationDetailsFactory {
 			this.style = value;
 			return this;
 		}
-		/*package-private*/ org.lgna.story.SetDimensionPolicy getPolicy() {
-			return this.policy;
-		}
 	}
-	/*package-private*/ SetDimensionAnimationDetailsFactory() {
+	private VantagePointDetails() {
 		throw new AssertionError();
-	}
-	public static Value policy( SetDimensionPolicy value ) {
-		Value rv = new Value();
-		rv.policy( value );
-		return rv;
 	}
 	public static Value duration( Number value ) {
 		Value rv = new Value();

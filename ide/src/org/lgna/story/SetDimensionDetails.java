@@ -43,28 +43,46 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public class Sphere extends Shape {
-	private final org.lgna.story.implementation.SphereImplementation implementation = new org.lgna.story.implementation.SphereImplementation( this );
-	@Override
-	/*package-private*/ org.lgna.story.implementation.SphereImplementation getImplementation() {
-		return this.implementation;
+public class SetDimensionDetails {
+	public static class Value extends AbstractAnimationDetails {
+		protected org.lgna.story.SetDimensionPolicy policy = org.lgna.story.SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
+		/*package-private*/ Value() {
+		}
+		public Value policy( org.lgna.story.SetDimensionPolicy value ) {
+			this.policy = value;
+			return this;
+		}
+		public Value duration( Number value ) {
+			this.duration = value.doubleValue();
+			return this;
+		}
+		public Value style( org.lgna.story.Style value ) {
+			this.style = value;
+			return this;
+		}
+		/*package-private*/ org.lgna.story.SetDimensionPolicy getPolicy() {
+			return this.policy;
+		}
 	}
-	
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	@MethodTemplate()
-	public Double getRadius() {
-		return this.implementation.radius.getValue();
+	/*package-private*/ SetDimensionDetails() {
+		throw new AssertionError();
 	}
-	@MethodTemplate( isFollowedByLongerMethod=true )
-	public void setRadius( Number radius ) {
-		this.setRadius( radius, new SetPropertyDetails.Value() );
+	public static Value policy( SetDimensionPolicy value ) {
+		Value rv = new Value();
+		rv.policy( value );
+		return rv;
 	}
-	@MethodTemplate()
-	public void setRadius( Number radius, SetPropertyDetails.Value details ) {
-		this.implementation.radius.animateValue( radius.doubleValue(), details.getDuration(), details.getStyle() );
+	public static Value duration( Number value ) {
+		Value rv = new Value();
+		rv.duration( value );
+		return rv;
+	}
+	public static Value style( Style value ) {
+		Value rv = new Value();
+		rv.style( value );
+		return rv;
 	}
 }
