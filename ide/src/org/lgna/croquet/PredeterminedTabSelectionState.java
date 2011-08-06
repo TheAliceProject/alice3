@@ -64,6 +64,9 @@ public abstract class PredeterminedTabSelectionState<T extends PredeterminedTab>
 		public void customizeTitleComponent( BooleanState booleanState, AbstractButton< ?, BooleanState > button, T item ) {
 			item.customizeTitleComponent( booleanState, button );
 		}
+        public void releaseTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item ) {
+        	item.releaseTitleComponent( booleanState, button );
+        }
 		public final ScrollPane createScrollPane( T item ) {
 			return item.createScrollPane();
 		}

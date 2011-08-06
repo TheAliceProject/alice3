@@ -300,6 +300,9 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 				}
 			}
 		}
+		public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.alice.ide.editorstabbedpane.CodeComposite item ) {
+			//todo
+		}
 //		public org.lgna.croquet.JComponent< ? > createInnerTitleComponent( CodeComposite item ) {
 //			org.lgna.croquet.Label rv = new org.lgna.croquet.Label( code.getName() );
 //			rv.scaleFont( 1.5f );

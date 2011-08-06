@@ -41,27 +41,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.croquet.models.typeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite extends org.lgna.croquet.Composite {
-	public TemplateComposite( java.util.UUID id ) {
-		super( id );
+public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< DeclarationComposite > {
+	private static class SingletonHolder {
+		private static DeclarationTabState instance = new DeclarationTabState();
 	}
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-//		button.getAwtComponent().setIcon( ICON );
-//		button.getAwtComponent().setText( this.getClass().getName() );
-//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
-
-		button.scaleFont( 1.5f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		booleanState.setTextForBothTrueAndFalse( this.getTextForTabTitle() );
-	}
-	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
+	public static DeclarationTabState getInstance() {
+		return SingletonHolder.instance;
 	}
 	
-	public abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
-	protected abstract String getTextForTabTitle();
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+			DeclarationTabState.this.handleTypeChanged( nextValue );
+		}
+	};
+	private DeclarationTabState() {
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
+		TypeState.getInstance().addAndInvokeValueObserver( this.typeObserver );
+	}
+	private void handleTypeChanged( org.lgna.project.ast.NamedUserType type ) {
+		this.pushAtomic();
+		this.clear();
+		if( type != null ) {
+			this.addItem( DeclarationComposite.getInstance( type ) );
+			for( org.lgna.project.ast.UserMethod method : type.methods ) {
+				if( method.isPublicAccess() ) {
+					this.addItem( DeclarationComposite.getInstance( method ) );
+				}
+			}
+			this.setSelectedIndex( 0 );
+		} else {
+			this.setSelectedIndex( -1 );
+		}
+		this.popAtomic();
+	}
 }

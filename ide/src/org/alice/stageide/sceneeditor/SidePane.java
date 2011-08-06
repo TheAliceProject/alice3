@@ -337,6 +337,9 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	            button.setFont(edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( button.getAwtComponent(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
 //	            button.getAwtComponent().revalidate();
 	        }
+	        public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.lgna.croquet.PredeterminedTab item ) {
+	        	item.releaseTitleComponent( booleanState, button );
+	        }
 	        public final ScrollPane createScrollPane( PredeterminedTab item ) {
 	            return item.createScrollPane();
 	        }

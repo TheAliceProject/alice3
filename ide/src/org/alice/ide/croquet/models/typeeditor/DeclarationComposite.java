@@ -41,27 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.croquet.models.typeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite extends org.lgna.croquet.Composite {
-	public TemplateComposite( java.util.UUID id ) {
-		super( id );
+public class DeclarationComposite extends org.lgna.croquet.Composite {
+	private static java.util.Map< org.lgna.project.ast.AbstractDeclaration, DeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DeclarationComposite getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		DeclarationComposite rv = map.get( declaration );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeclarationComposite( declaration );
+			map.put( declaration, rv );
+		}
+		return rv;
 	}
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-//		button.getAwtComponent().setIcon( ICON );
-//		button.getAwtComponent().setText( this.getClass().getName() );
-//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
-
-		button.scaleFont( 1.5f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		booleanState.setTextForBothTrueAndFalse( this.getTextForTabTitle() );
+	private final org.lgna.project.ast.AbstractDeclaration declaration;
+	public DeclarationComposite( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		super( java.util.UUID.fromString( "291f2cd6-893e-4c7f-a6fd-16c718576d7a" ) );
+		this.declaration = declaration;
 	}
-	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
+	public org.lgna.project.ast.AbstractDeclaration getDeclaration() {
+		return this.declaration;
 	}
-	
-	public abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
-	protected abstract String getTextForTabTitle();
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		System.err.println( "todo: DeclarationComposite contains" );
+		return false;
+	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		rv.append( this.declaration.getName() );
+		return rv;
+	}
 }

@@ -120,7 +120,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.left.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
 
 		//this.right.addComponent( this.ubiquitousPane, org.lgna.croquet.BorderPanel.Constraint.PAGE_START );
-		this.right.addComponent( tabbedPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		//this.right.addComponent( tabbedPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		
+		this.right.addComponent( new org.alice.ide.typeeditor.TypeEditor(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		
+		
+		
 		//this.right.addComponent( new org.lgna.croquet.Label( "hello" ), org.lgna.croquet.BorderPanel.Constraint.CENTER );
 
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addAndInvokeValueObserver( this.isAlwaysShowingBlocksObserver );

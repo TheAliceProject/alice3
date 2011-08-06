@@ -41,27 +41,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.croquet.models.typeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite extends org.lgna.croquet.Composite {
-	public TemplateComposite( java.util.UUID id ) {
-		super( id );
+public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.NamedUserType, Void > {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, TypeFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TypeFillIn getInstance( org.lgna.project.ast.NamedUserType type ) {
+		TypeFillIn rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new TypeFillIn( type );
+			map.put( type, rv );
+		}
+		return rv;
 	}
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-//		button.getAwtComponent().setIcon( ICON );
-//		button.getAwtComponent().setText( this.getClass().getName() );
-//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
-
-		button.scaleFont( 1.5f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		booleanState.setTextForBothTrueAndFalse( this.getTextForTabTitle() );
+	private org.lgna.project.ast.NamedUserType type;
+	private TypeFillIn( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "cc1fda14-598c-475f-afed-19cc7c5feb92" ) );
+		this.type = type;
 	}
-	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
+	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, java.lang.Void > step ) {
+		throw new AssertionError();
 	}
-	
-	public abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
-	protected abstract String getTextForTabTitle();
+	@Override
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, java.lang.Void > step ) {
+		return org.alice.ide.common.TypeIcon.getInstance( this.type );
+	}
+	@Override
+	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, java.lang.Void > step ) {
+		return null;
+	}
+	@Override
+	public org.lgna.project.ast.NamedUserType createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, java.lang.Void > step ) {
+		return this.type;
+	}
+	@Override
+	public org.lgna.project.ast.NamedUserType getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, java.lang.Void > step ) {
+		return this.type;
+	}
 }

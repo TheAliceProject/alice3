@@ -62,6 +62,7 @@ public class TabSelectionState< T extends Composite > extends DefaultListSelecti
 	public interface TabCreator<T> {
 		public java.util.UUID getId( T item );
 		public void customizeTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item );
+		public void releaseTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item );
 		public org.lgna.croquet.components.JComponent< ? > createMainComponent( T item );
 		public org.lgna.croquet.components.ScrollPane createScrollPane( T item );
 		public boolean isCloseable( T item );

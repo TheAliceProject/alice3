@@ -168,6 +168,9 @@ public class TemplatesTabSelectionState extends org.lgna.croquet.TabSelectionSta
 			public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.alice.ide.croquet.models.templates.TemplateComposite item ) {
 				item.customizeTitleComponent( booleanState, button );
 			}
+			public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+				item.releaseTitleComponent( booleanState, button );
+			}
 			public java.util.UUID getId( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
 				return java.util.UUID.randomUUID();
 			}

@@ -41,27 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.typeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite extends org.lgna.croquet.Composite {
-	public TemplateComposite( java.util.UUID id ) {
-		super( id );
+public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
+	public TypeEditor() {
+		org.lgna.croquet.components.FolderTabbedPane< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > tabbedPane = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().createFolderTabbedPane( DeclarationTabCreator.SINGLETON );
+		tabbedPane.setHeaderLeadingComponent( org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton() );
+		this.addComponent( tabbedPane, Constraint.CENTER );
 	}
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-//		button.getAwtComponent().setIcon( ICON );
-//		button.getAwtComponent().setText( this.getClass().getName() );
-//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
-
-		button.scaleFont( 1.5f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		booleanState.setTextForBothTrueAndFalse( this.getTextForTabTitle() );
-	}
-	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-	}
-	
-	public abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
-	protected abstract String getTextForTabTitle();
 }

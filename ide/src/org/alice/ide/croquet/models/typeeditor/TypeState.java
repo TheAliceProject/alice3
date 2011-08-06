@@ -41,27 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.croquet.models.typeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite extends org.lgna.croquet.Composite {
-	public TemplateComposite( java.util.UUID id ) {
-		super( id );
+public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.NamedUserType > {
+	private static class SingletonHolder {
+		private static TypeState instance = new TypeState();
 	}
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-//		button.getAwtComponent().setIcon( ICON );
-//		button.getAwtComponent().setText( this.getClass().getName() );
-//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
-
-		button.scaleFont( 1.5f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		booleanState.setTextForBothTrueAndFalse( this.getTextForTabTitle() );
+	public static TypeState getInstance() {
+		return SingletonHolder.instance;
 	}
-	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
+	private TypeState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "99019283-9a9e-4500-95a4-c4748d762137" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.NamedUserType.class ), null );
 	}
-	
-	public abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
-	protected abstract String getTextForTabTitle();
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.NamedUserType > blankNode ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.Project project = ide.getProject();
+		for( org.lgna.project.ast.NamedUserType type : org.lgna.project.project.ProjectUtilities.getTypes( project ) ) {
+			rv.add( TypeFillIn.getInstance( type ) );
+		}
+		return rv;
+	}
 }

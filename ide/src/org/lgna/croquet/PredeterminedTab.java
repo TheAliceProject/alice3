@@ -90,6 +90,10 @@ public abstract class PredeterminedTab extends Composite {
 		this.updateTitleText();
 		this.updateTitleIcon();
 	}
+    public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
+    }
+	
+	
 	protected abstract JComponent<?> createMainComponent();
 	public JComponent<?> getMainComponent() {
 		if( this.mainComponent != null ) {
