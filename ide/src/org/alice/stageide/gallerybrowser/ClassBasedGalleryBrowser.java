@@ -76,7 +76,7 @@ import org.lgna.story.resourceutilities.ModelResourceUtilities;
  */
 public class ClassBasedGalleryBrowser extends BorderPanel {
 
-	private static org.lgna.croquet.ClassBasedPathControl.Initializer initializer = new org.lgna.croquet.ClassBasedPathControl.Initializer() {
+	private static org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl.Initializer initializer = new org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl.Initializer() {
 		public ActionOperation configure(ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode) {
 			javax.swing.Icon icon;
 			NamedUserType classValue = treeNode.getValue();
@@ -300,7 +300,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		createTypeFromPersonResourceOperation.setSmallIcon(new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/create_person.png")));
 
 		LineAxisPanel pathControlPanel = new LineAxisPanel();
-		pathControlPanel.addComponent( this.treeSelectionState.createClassBasedPathControl( this.createInitializer() ) );
+		pathControlPanel.addComponent( new org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl( this.treeSelectionState, this.createInitializer() ) );
 		pathControlPanel.addComponent( BoxUtilities.createHorizontalGlue() );
 		pathControlPanel.addComponent( filterTextField );
 		
@@ -357,8 +357,8 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		}
 	}
 
-	private org.lgna.croquet.ClassBasedPathControl.Initializer createInitializer() {
-		return new org.lgna.croquet.ClassBasedPathControl.Initializer() {
+	private org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl.Initializer createInitializer() {
+		return new org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl.Initializer() {
 			public ActionOperation configure(ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode) {
 //				if (treeNode instanceof edu.cmu.cs.dennisc.zip.ZipTreeNode) {
 //					edu.cmu.cs.dennisc.zip.ZipTreeNode zipTreeNode = (edu.cmu.cs.dennisc.zip.ZipTreeNode) treeNode;

@@ -40,8 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.alice.stageide.croquet.components.gallerybrowser;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.croquet.SelectClassActionOperation;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.TreeSelectionState;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.croquet.components.Button;
@@ -157,9 +162,11 @@ public class ClassBasedPathControl extends ViewController< javax.swing.JComponen
 	//private java.util.Map< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<Class>, DirectoryControl > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	private Initializer initializer;
-	/*package-private*/ ClassBasedPathControl( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>> model, Initializer initializer ) {
+	public ClassBasedPathControl( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>> model, Initializer initializer ) {
 		super( model );
 		this.initializer = initializer;
+		this.setSwingTreeModel( model.getTreeModel() );
+		this.setSwingTreeSelectionModel( model.getTreeSelectionModel() );
 	}
 	
 	private void refresh() {

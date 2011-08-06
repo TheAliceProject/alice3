@@ -42,6 +42,7 @@
  */
 package org.lgna.croquet;
 
+import org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl;
 import org.lgna.project.ast.NamedUserType;
 
 
@@ -121,13 +122,4 @@ public abstract class TreeSelectionState<E> extends ItemState<E> {
 		assert initializer != null;
 		return new org.lgna.croquet.components.PathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>)this, initializer );
 	}
-	
-	public ClassBasedPathControl createClassBasedPathControl( ClassBasedPathControl.Initializer initializer ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: createPathControl" );
-		ClassBasedPathControl rv = new ClassBasedPathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>>)this, initializer );
-		rv.setSwingTreeModel( this.treeModel );
-		rv.setSwingTreeSelectionModel( this.treeSelectionModel );
-		return rv;
-	}
-	
 }

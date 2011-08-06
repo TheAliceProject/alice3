@@ -42,6 +42,7 @@
  */
 package org.lgna.croquet;
 
+import org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl;
 import org.lgna.project.ast.NamedUserType;
 
 
