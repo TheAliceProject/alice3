@@ -61,11 +61,35 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 			DeclarationTabState.this.handleTypeChanged( nextValue );
 		}
 	};
+	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserMethod > methodsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserMethod >() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserMethod > e ) {
+		}
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserMethod > e ) {
+			DeclarationTabState.this.refresh();
+		}
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserMethod > e ) {
+		}
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserMethod > e ) {
+			DeclarationTabState.this.refresh();
+		}
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserMethod > e ) {
+		}
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserMethod > e ) {
+			DeclarationTabState.this.refresh();
+		}
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserMethod > e ) {
+		}
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserMethod > e ) {
+			DeclarationTabState.this.refresh();
+		}
+	};
+	
+	private org.lgna.project.ast.NamedUserType type;
 	private DeclarationTabState() {
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
 		TypeState.getInstance().addAndInvokeValueObserver( this.typeObserver );
 	}
-	private void handleTypeChanged( org.lgna.project.ast.NamedUserType type ) {
+	private void refresh() {
 		this.pushAtomic();
 		this.clear();
 		if( type != null ) {
@@ -80,5 +104,17 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 			this.setSelectedIndex( -1 );
 		}
 		this.popAtomic();
+	}
+	private void handleTypeChanged( org.lgna.project.ast.NamedUserType type ) {
+		if( this.type != type ) {
+			if( this.type != null ) {
+				this.type.methods.removeListPropertyListener( this.methodsListener );
+			}
+			this.type = type;
+			this.refresh();
+			if( this.type != null ) {
+				this.type.methods.addListPropertyListener( this.methodsListener );
+			}
+		}
 	}
 }
