@@ -50,7 +50,6 @@ import org.lgna.project.ast.NamedUserType;
  */
 public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final org.lgna.croquet.Group RUN_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
-	public static final org.lgna.croquet.Group PROGRAMMING_LANGUAGE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "1fc6d8ce-3ce8-4b8d-91be-bc74d0d02c3e" ), "PROGRAMMING_LANGUAGE_GROUP" );
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
 	public static final String DEBUG_DRAW_PROPERTY_KEY = "org.alice.ide.DebugDrawMode";
@@ -91,6 +90,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
 	}
 
+	private final org.alice.ide.typeeditor.TypeEditor typeEditor = new org.alice.ide.typeeditor.TypeEditor();
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -112,19 +112,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.membersEditor = this.createClassMembersEditor();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
-		org.lgna.croquet.components.AbstractTabbedPane tabbedPane = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().createEditorsFolderTabbedPane();
-		tabbedPane.scaleFont( 2.0f );
-
 		final int MINIMUM_SIZE = 24;
 		this.right.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
 		this.left.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
 
-		//this.right.addComponent( this.ubiquitousPane, org.lgna.croquet.BorderPanel.Constraint.PAGE_START );
-		//this.right.addComponent( tabbedPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		
-		this.right.addComponent( new org.alice.ide.typeeditor.TypeEditor(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		
-		
+		this.right.addComponent( this.typeEditor, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 		
 		//this.right.addComponent( new org.lgna.croquet.Label( "hello" ), org.lgna.croquet.BorderPanel.Constraint.CENTER );
 
@@ -147,10 +139,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		} );
 
-		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-			public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
+			public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 				refreshAccessibles();
 			}
 		} );
@@ -582,11 +574,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	protected String getVersionAdornment() {
 		return " 3 BETA ";
-	}
-	//	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
-
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getCodeEditorInFocus();
 	}
 
 	private ComponentStencil stencil;
@@ -1045,17 +1032,41 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 	}
 	
-	public org.lgna.project.ast.AbstractCode getFocusedCode() {
+	public org.lgna.project.ast.AbstractDeclaration getFocusedDeclaration() {
 		if( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().getValue() ) {
 			return this.getPerformEditorGeneratedSetUpMethod();
 		} else {
-			org.alice.ide.editorstabbedpane.CodeComposite item = org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().getSelectedItem();
-			return item != null ? item.getCode() : null;
+			org.alice.ide.croquet.models.typeeditor.DeclarationComposite item = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getSelectedItem();
+			if( item != null ) {
+				return item.getDeclaration();
+			} else {
+				return null;
+			}
+		}
+	}
+	public org.lgna.project.ast.AbstractCode getFocusedCode() {
+		org.lgna.project.ast.AbstractDeclaration declaration = this.getFocusedDeclaration();
+		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			return (org.lgna.project.ast.AbstractCode)declaration;
+		} else {
+			return null;
 		}
 	}
 	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
-		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().edit( nextFocusedCode, false );
+		if( nextFocusedCode != null ) {
+			org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValue( (NamedUserType)nextFocusedCode.getDeclaringType() );
+			org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().setSelectedItem( org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( nextFocusedCode ) );
+		}
 	}
+	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
+		org.lgna.project.ast.AbstractCode code = this.getFocusedCode();
+		if( code != null ) {
+			return this.typeEditor.getCodeEditorInFocus();
+		} else {
+			return null;
+		}
+	}
+	
 
 	@Override
 	public void ensureProjectCodeUpToDate() {

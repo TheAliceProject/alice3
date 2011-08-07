@@ -426,7 +426,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 			org.lgna.project.ast.NamedUserType sceneType = getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
-				org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().edit( sceneType.findMethod( "myFirstMethod" ), false );
+				this.setFocusedCode( sceneType.findMethod( "myFirstMethod" ) );
 			}
 		}
 	}

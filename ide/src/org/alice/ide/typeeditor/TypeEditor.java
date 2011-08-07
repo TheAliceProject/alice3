@@ -47,9 +47,20 @@ package org.alice.ide.typeeditor;
  * @author Dennis Cosgrove
  */
 public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
+	private final org.lgna.croquet.components.FolderTabbedPane< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > tabbedPane;
 	public TypeEditor() {
-		org.lgna.croquet.components.FolderTabbedPane< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > tabbedPane = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().createFolderTabbedPane( DeclarationTabCreator.SINGLETON );
-		tabbedPane.setHeaderLeadingComponent( org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton() );
+		this.tabbedPane = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().createFolderTabbedPane( DeclarationTabCreator.SINGLETON );
+		this.tabbedPane.setHeaderLeadingComponent( org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton() );
 		this.addComponent( tabbedPane, Constraint.CENTER );
+	}
+	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
+		org.alice.ide.croquet.models.typeeditor.DeclarationComposite item = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getSelectedItem();
+		if( item != null ) {
+			org.lgna.croquet.components.Component< ? > component = this.tabbedPane.getMainComponentFor( item );
+			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
+				return (org.alice.ide.codeeditor.CodeEditor)component;
+			}
+		}
+		return null;
 	}
 }

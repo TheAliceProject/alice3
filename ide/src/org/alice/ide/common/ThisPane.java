@@ -48,11 +48,11 @@ package org.alice.ide.common;
 public class ThisPane extends AccessiblePane {
 	private static final org.lgna.project.ast.JavaType TYPE_FOR_NULL = org.lgna.project.ast.JavaType.getInstance( Void.class );
 	private org.lgna.project.ast.AbstractType<?,?,?> type = TYPE_FOR_NULL;
-	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
-			ThisPane.this.updateBasedOnFocusedCode( nextValue != null ? nextValue.getCode() : null );
+		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+			ThisPane.this.updateBasedOnFocusedDeclaration( nextValue != null ? nextValue.getDeclaration() : null );
 		}
 	};
 
@@ -63,17 +63,23 @@ public class ThisPane extends AccessiblePane {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.updateBasedOnFocusedCode( org.alice.ide.IDE.getActiveInstance().getFocusedCode() );
-		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( this.codeSelectionObserver );
+		this.updateBasedOnFocusedDeclaration( org.alice.ide.IDE.getActiveInstance().getFocusedDeclaration() );
+		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( this.codeSelectionObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().removeValueObserver( this.codeSelectionObserver );
+		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().removeValueObserver( this.codeSelectionObserver );
 		super.handleUndisplayable();
 	}
-	private void updateBasedOnFocusedCode( org.lgna.project.ast.AbstractCode code ) {
-		if( code != null ) {
-			this.type = code.getDeclaringType();
+	private void updateBasedOnFocusedDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		if( declaration != null ) {
+			if( declaration instanceof org.lgna.project.ast.AbstractMember ) {
+				this.type = ((org.lgna.project.ast.AbstractMember)declaration).getDeclaringType();
+			} else if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ){
+				this.type = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
+			} else {
+				this.type = null;
+			}
 		} else {
 			this.type = null;
 		}

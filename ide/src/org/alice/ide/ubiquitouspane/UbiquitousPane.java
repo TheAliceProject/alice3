@@ -135,7 +135,6 @@ class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPan
  */
 public class UbiquitousPane extends org.lgna.croquet.components.ViewPanel {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
-//	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();
 	private WhileLoopTemplate whileLoopTemplate = new WhileLoopTemplate();
 	private ForEachInArrayLoopTemplate forEachInArrayLoopTemplate = new ForEachInArrayLoopTemplate();
@@ -149,10 +148,10 @@ public class UbiquitousPane extends org.lgna.croquet.components.ViewPanel {
 	private ReturnStatementWrapper returnStatementWrapper = new ReturnStatementWrapper();
 	private TransientStatementsWrapper transientStatementsWrapper = new TransientStatementsWrapper();
 
-	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite > selectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.editorstabbedpane.CodeComposite >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > selectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.editorstabbedpane.CodeComposite > state, org.alice.ide.editorstabbedpane.CodeComposite prevValue, org.alice.ide.editorstabbedpane.CodeComposite nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 			UbiquitousPane.this.refresh();
 		}
 	};
@@ -222,13 +221,13 @@ public class UbiquitousPane extends org.lgna.croquet.components.ViewPanel {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().addAndInvokeValueObserver( this.selectionObserver );
+		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( this.selectionObserver );
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueObserver( this.isAlwaysShowingBlocksObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().removeValueObserver( this.isAlwaysShowingBlocksObserver );
-		org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance().removeValueObserver( this.selectionObserver );
+		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().removeValueObserver( this.selectionObserver );
 		super.handleUndisplayable();
 	}
 

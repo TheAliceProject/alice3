@@ -81,24 +81,32 @@ public enum DeclarationTabCreator implements org.lgna.croquet.TabSelectionState.
 	
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, final org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.alice.ide.croquet.models.typeeditor.DeclarationComposite item ) {
 		org.lgna.project.ast.AbstractDeclaration declaration = item.getDeclaration();
-		booleanState.setTextForBothTrueAndFalse( declaration.getName() );
-		button.scaleFont( 1.5f );
+//		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			booleanState.setTextForBothTrueAndFalse( declaration.getName() );
+			button.scaleFont( 1.5f );
 
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = declaration.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			NamePropertyListener namePropertyListener = new NamePropertyListener( booleanState );
-			nameProperty.addPropertyListener( namePropertyListener );
-			map.put( booleanState, namePropertyListener );
-		}
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = declaration.getNamePropertyIfItExists();
+			if( nameProperty != null ) {
+				NamePropertyListener namePropertyListener = new NamePropertyListener( booleanState );
+				nameProperty.addPropertyListener( namePropertyListener );
+				map.put( booleanState, namePropertyListener );
+			}
+//		} else if( declaration instanceof org.lgna.project.ast.NamedUserType ){
+//			button.getAwtComponent().getAction().putValue( javax.swing.Action.SMALL_ICON, org.alice.ide.common.TypeIcon.getInstance( (org.lgna.project.ast.NamedUserType)declaration ) );
+//		} else {
+//			//todo
+//		}
 	}
 	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.alice.ide.croquet.models.typeeditor.DeclarationComposite item ) {
 		org.lgna.project.ast.AbstractDeclaration declaration = item.getDeclaration();
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = declaration.getNamePropertyIfItExists();
-		if( nameProperty != null ) {
-			NamePropertyListener namePropertyListener = map.get( booleanState );
-			nameProperty.removePropertyListener( namePropertyListener );
-			map.remove( booleanState );
-		}
+//		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = declaration.getNamePropertyIfItExists();
+			if( nameProperty != null ) {
+				NamePropertyListener namePropertyListener = map.get( booleanState );
+				nameProperty.removePropertyListener( namePropertyListener );
+				map.remove( booleanState );
+			}
+//		}
 	}
 	public boolean isCloseable( org.alice.ide.croquet.models.typeeditor.DeclarationComposite item ) {
 		return item.getDeclaration() instanceof org.lgna.project.ast.AbstractCode;
