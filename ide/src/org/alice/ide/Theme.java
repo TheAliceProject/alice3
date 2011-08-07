@@ -46,6 +46,7 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public interface Theme {
+	public java.awt.Color getTypeColor();
 	public java.awt.Color getProcedureColor();
 	public java.awt.Color getFunctionColor();
 	public java.awt.Color getConstructorColor();

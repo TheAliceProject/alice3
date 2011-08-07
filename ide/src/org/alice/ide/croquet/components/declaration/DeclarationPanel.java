@@ -59,6 +59,20 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 	protected boolean isValueTypeRowDesired() {
 		return true;
 	}
+	
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		javax.swing.JTextField jTextField = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findFirstMatch( this.getAwtComponent(), javax.swing.JTextField.class );
+		if( jTextField != null ) {
+			jTextField.requestFocus();
+		}
+	}
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+	}
+
 	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, M model ) {
 		if( this.isValueTypeRowDesired() ) {
 			if( model.getComponentValueTypeState() != null ) {
@@ -97,6 +111,9 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		}
 		return rv;
 	}
+	private boolean isDeclaringTypeAffordanceDesired() {
+		return false;
+	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createMainComponent() {
 		final M model = this.getModel();
@@ -108,7 +125,7 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		}
 		DetailsPanel detailsPanel = new DetailsPanel();
 		org.lgna.croquet.components.Component< ? > rv;
-		if( model.getDeclaringTypeState() != null ) {
+		if( this.isDeclaringTypeAffordanceDesired() && model.getDeclaringTypeState() != null ) {
 			org.lgna.croquet.components.PageAxisPanel panel = new org.lgna.croquet.components.PageAxisPanel();
 			if( model.isDeclaringTypeEditable() ) {
 				panel.addComponent( model.getDeclaringTypeState().createComponent() );

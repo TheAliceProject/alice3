@@ -145,6 +145,7 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.UserParameter activeCountParameter = new org.lgna.project.ast.UserParameter( "activeCount", Integer.class );
 		handleActiveChangedMethod.parameters.add( isActiveParameter );
 		handleActiveChangedMethod.parameters.add( activeCountParameter );
+		handleActiveChangedMethod.isSignatureLocked.setValue( true );
 
 		org.lgna.project.ast.BlockStatement handleActiveChangedBody = handleActiveChangedMethod.body.getValue();
 		
@@ -218,6 +219,7 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.BlockStatement mainBody = mainMethod.body.getValue();
 
 		mainMethod.isStatic.setValue( true );
+		mainMethod.isSignatureLocked.setValue( true );
 		
 		org.lgna.project.ast.VariableDeclarationStatement variableDeclarationStatement = createVariableDeclarationStatementInitializedByInstanceCreation( "story", rv );
 		org.lgna.project.ast.UserVariable storyVariable = variableDeclarationStatement.variable.getValue();

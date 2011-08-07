@@ -72,7 +72,8 @@ public enum DeclarationTabCreator implements org.lgna.croquet.TabSelectionState.
 		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
 			return org.alice.ide.codeeditor.CodeEditor.getInstance( (org.lgna.project.ast.AbstractCode)declaration );
 		} else if( declaration instanceof org.lgna.project.ast.NamedUserType ){
-			return new org.alice.ide.editorstabbedpane.EditTypePanel( (org.lgna.project.ast.NamedUserType)declaration, -1 );
+			//return new org.alice.ide.editorstabbedpane.EditTypePanel( (org.lgna.project.ast.NamedUserType)declaration, -1 );
+			return new TypeDeclarationPane( (org.lgna.project.ast.NamedUserType)declaration );
 		} else {
 			return new org.lgna.croquet.components.Label( "todo" );
 		}

@@ -889,6 +889,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
 		}
 		this.refreshAccessibles();
+		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValue( (NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON );

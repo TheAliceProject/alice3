@@ -48,6 +48,7 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class DefaultTheme implements Theme {
+	private static final java.awt.Color DEFAULT_TYPE_COLOR = new java.awt.Color( 0xe2ba84 );
 	private static final java.awt.Color DEFAULT_PROCEDURE_COLOR = new java.awt.Color( 0xb2b7d9 );
 	private static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xb0c9a4 );
 	private static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xadc0ab );
@@ -57,6 +58,9 @@ public class DefaultTheme implements Theme {
 	private static final java.awt.Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new java.awt.Color(173, 167, 208);
 	private static final java.awt.Color DEFAULT_SECONDARY_BACKGROUND_COLOR = new java.awt.Color(201, 201, 218);
 
+	public java.awt.Color getTypeColor() {
+		return DEFAULT_TYPE_COLOR;
+	}
 	public java.awt.Color getProcedureColor() {
 		return DEFAULT_PROCEDURE_COLOR;
 	}
