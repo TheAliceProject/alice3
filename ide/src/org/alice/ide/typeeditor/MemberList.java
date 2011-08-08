@@ -79,7 +79,7 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 					if( this.getModel().isRollover() ) {
 						color = java.awt.Color.DARK_GRAY;
 					} else {
-						color = java.awt.Color.GRAY;
+						color = MemberList.this.getBackgroundColor().darker();
 					}
 					g.setColor( color );
 					edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight() - 5 );
@@ -88,7 +88,7 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 				}
 			};
 			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
-			rv.setLayout( new java.awt.BorderLayout() );
+			rv.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 			rv.setRolloverEnabled( true );
 			return rv;
 		}

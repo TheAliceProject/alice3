@@ -41,44 +41,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
-
-/*package-private*/ class MethodItemDetails extends MemberItemDetails< org.lgna.project.ast.UserMethod, MethodItemDetails, MethodList > {
-	public MethodItemDetails( MethodList panel, org.lgna.project.ast.UserMethod item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
-		super( panel, item, button );
-	}
-}
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMethod, MethodItemDetails > {
-	public MethodList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserMethod > model, org.lgna.croquet.Operation< ? > operation ) {
-		super( model, operation );
+public class NonGalleryFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation {
+	private static java.util.Map< org.lgna.project.ast.UserType< ? >, NonGalleryFieldDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static NonGalleryFieldDeclarationOperation getInstance( org.lgna.project.ast.UserType< ? > declarationType ) {
+		synchronized( map ) {
+			NonGalleryFieldDeclarationOperation rv = map.get( declarationType );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new NonGalleryFieldDeclarationOperation( declarationType );
+				map.put( declarationType, rv );
+			}
+			return rv;
+		}
+	}
+	private NonGalleryFieldDeclarationOperation( org.lgna.project.ast.UserType< ? > declarationType ) {
+		super( 
+				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ), 
+				declarationType, false,
+				null, true, 
+				false, true, 
+				null, true, 
+				null, true 
+		);
 	}
 	@Override
-	protected org.alice.ide.typeeditor.MethodItemDetails createItemDetails( org.lgna.project.ast.UserMethod item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
-		org.lgna.croquet.components.LineAxisPanel lineStart = new org.lgna.croquet.components.LineAxisPanel(
-				org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton(),
-				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton()
-		);
-		button.addComponent( lineStart, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( item, 1.5f );
-		org.lgna.croquet.components.Component< ? > component;
-		if( item.isProcedure() ) {
-			component = nameLabel;
-		} else {
-			component = new org.lgna.croquet.components.LineAxisPanel( 
-					org.alice.ide.common.TypeComponent.createInstance( item.getReturnType() ),
-					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-					nameLabel
-			);
-		}
-		button.addComponent( 
-				component,
-				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
-		);
-		button.addComponent( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-		return new MethodItemDetails( this, item, button );
+	protected boolean isFieldFinal() {
+		return false;
+	}
+	@Override
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.croquet.components.declaration.FieldDeclarationPanel( this ) {
+			
+		};
+	}
+	@Override
+	protected org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization rv ) {
+		return rv;
 	}
 }

@@ -54,7 +54,8 @@ package org.alice.ide.typeeditor;
  */
 public class FieldList extends MemberList< org.lgna.project.ast.UserField, FieldItemDetails > {
 	public FieldList( org.lgna.project.ast.NamedUserType type ) {
-		super( FieldState.getInstance( type ), null );
+		super( FieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.NonGalleryFieldDeclarationOperation.getInstance( type ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 	@Override
 	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
@@ -62,6 +63,7 @@ public class FieldList extends MemberList< org.lgna.project.ast.UserField, Field
 		button.addComponent( 
 				new org.lgna.croquet.components.LineAxisPanel( 
 						org.alice.ide.common.TypeComponent.createInstance( item.getValueType() ),
+						org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
 						new org.alice.ide.common.DeclarationNameLabel( item, 1.5f )
 				),
 				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 

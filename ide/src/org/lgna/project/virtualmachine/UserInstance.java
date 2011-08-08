@@ -115,7 +115,9 @@ public class UserInstance {
 	}
 
 	public Object createAndSetFieldInstance( VirtualMachine vm, UserField field ) {
-		Object rv = vm.evaluate( field.initializer.getValue() );
+		Expression expression = field.initializer.getValue();
+		assert expression != null;
+		Object rv = vm.evaluate( expression );
 		this.setFieldValue( field, rv );
 		//System.err.println( field + " " + rv );
 		return rv;
