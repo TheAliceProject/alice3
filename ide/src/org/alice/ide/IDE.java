@@ -1056,7 +1056,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
 		if( nextFocusedCode != null ) {
 			org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValue( (NamedUserType)nextFocusedCode.getDeclaringType() );
-			org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().setSelectedItem( org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( nextFocusedCode ) );
+			org.alice.ide.croquet.models.typeeditor.DeclarationComposite composite = org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( nextFocusedCode );
+			if( org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().containsItem( composite ) ) {
+				//pass
+			} else {
+				org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addItem( composite );
+			}
+			org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().setSelectedItem( composite );
 		}
 	}
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
