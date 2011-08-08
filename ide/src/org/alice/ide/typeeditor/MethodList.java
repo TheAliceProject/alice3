@@ -41,24 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.components;
+package org.alice.ide.typeeditor;
 
-/*package-private*/ class RadioButtonItemDetails<E> extends ItemDetails<E, RadioButtonItemDetails<E>, AbstractRadioButtons<E>> {
-	public RadioButtonItemDetails( AbstractRadioButtons< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button ) {
-		super( panel, item, button );
+/*package-private*/ class MethodItemDetails extends MemberItemDetails< org.lgna.project.ast.UserMethod, MethodItemDetails, MethodList > {
+	public MethodItemDetails( MethodList panel, org.lgna.project.ast.UserMethod item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button, org.lgna.croquet.components.Component< ? > component ) {
+		super( panel, item, button, component );
 	}
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRadioButtons< E > extends ItemSelectablePanel< E, RadioButtonItemDetails<E> > {
-	/*package-private*/ AbstractRadioButtons( org.lgna.croquet.ListSelectionState<E> model ) {
-		super( model );
+public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMethod, MethodItemDetails > {
+	public MethodList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserMethod > model, org.lgna.croquet.Operation< ? > operation ) {
+		super( model, operation );
 	}
-	protected abstract BooleanStateButton<?> createBooleanStateButton( E item, org.lgna.croquet.BooleanState booleanState );
 	@Override
-	protected final RadioButtonItemDetails<E> createItemDetails( E item, org.lgna.croquet.BooleanState booleanState ) {
-		return new RadioButtonItemDetails<E>( this, item, this.createBooleanStateButton( item, booleanState ) );
-	};
+	protected org.alice.ide.typeeditor.MethodItemDetails createItemDetails( org.lgna.project.ast.UserMethod item, org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
+		return new MethodItemDetails( this, item, button, new org.lgna.croquet.components.Label( "todo" ) );
+	}
 }

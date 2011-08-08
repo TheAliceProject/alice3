@@ -43,22 +43,55 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/ class RadioButtonItemDetails<E> extends ItemDetails<E, RadioButtonItemDetails<E>, AbstractRadioButtons<E>> {
-	public RadioButtonItemDetails( AbstractRadioButtons< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button ) {
-		super( panel, item, button );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRadioButtons< E > extends ItemSelectablePanel< E, RadioButtonItemDetails<E> > {
-	/*package-private*/ AbstractRadioButtons( org.lgna.croquet.ListSelectionState<E> model ) {
-		super( model );
-	}
-	protected abstract BooleanStateButton<?> createBooleanStateButton( E item, org.lgna.croquet.BooleanState booleanState );
-	@Override
-	protected final RadioButtonItemDetails<E> createItemDetails( E item, org.lgna.croquet.BooleanState booleanState ) {
-		return new RadioButtonItemDetails<E>( this, item, this.createBooleanStateButton( item, booleanState ) );
+public class ItemDetails<E,D extends ItemDetails<E,D,J>, J extends ItemSelectablePanel<E,D>>  {
+	private final J panel;
+	private final E item;
+	private final BooleanStateButton< ? extends javax.swing.AbstractButton > button;
+	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+		public void itemStateChanged(java.awt.event.ItemEvent e) {
+			if( ItemDetails.this.panel.getSwingComboBoxModel().getSelectedItem() != ItemDetails.this.item ) {
+				if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+					int index = ItemDetails.this.panel.getModel().indexOf( item );
+					ItemDetails.this.panel.getSwingListSelectionModel().setSelectionInterval( index, index );
+				}
+			}
+		}
 	};
+	public ItemDetails( J panel, E item, BooleanStateButton<? extends javax.swing.AbstractButton> button ) {
+		this.panel = panel;
+		this.item = item;
+		this.button = button;
+	}
+	public J getPanel() {
+		return this.panel;
+	}
+	public E getItem() {
+		return this.item;
+	}
+	public TrackableShape getTrackableShape() {
+		return this.getButton();
+	}
+	public BooleanStateButton< ? extends javax.swing.AbstractButton > getButton() {
+		return this.button;
+	}
+	public void add( javax.swing.ButtonGroup buttonGroup ) {
+		this.button.getAwtComponent().addItemListener( this.itemListener );
+		buttonGroup.add( this.button.getAwtComponent() );
+	}
+
+	// note: does not seem to be called
+	public void remove( javax.swing.ButtonGroup buttonGroup ) {
+		//note: should already be removed by removeAllComponents()
+		assert this.button.getParent() == null;
+		this.button.getAwtComponent().removeItemListener( this.itemListener );
+		buttonGroup.remove( this.button.getAwtComponent() );
+	}
+	public void setSelected( boolean isSelected ) {
+		if( this.button.getAwtComponent().isSelected() != isSelected ) {
+			this.button.getAwtComponent().setSelected( isSelected );
+		}
+	}
 }

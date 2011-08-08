@@ -43,25 +43,23 @@
 
 package org.alice.ide.typeeditor;
 
+/*package-private*/ class MemberItemDetails<E,D extends MemberItemDetails<E,D,J>, J extends MemberList<E,D> > extends org.lgna.croquet.components.ItemDetails<E,D,J> {
+	private final org.lgna.croquet.components.Component< ? > component;
+	public MemberItemDetails( J panel, E item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button, org.lgna.croquet.components.Component< ? > component ) {
+		super( panel, item, button );
+		this.component = component;
+	}
+	public org.lgna.croquet.components.Component< ? > getComponent() {
+		return this.component;
+	}
+}
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableList<E> extends org.lgna.croquet.components.ItemSelectablePanel< E, MutableList.Details > {
-	/*package-private*/ class Details extends org.lgna.croquet.components.ItemSelectablePanel.ItemDetails { 
-		public Details( E item, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-			super( item, button );
-		}
-	}
-
-	private static java.awt.Color DEFAULT_SELECTED_BACKGROUND = new java.awt.Color( 57, 105, 138 );
-	private static java.awt.Color DEFAULT_UNSELECTED_BACKGROUND = new java.awt.Color( 214, 217, 223 );
-
-	private java.awt.Color selectedBackgroundColor = DEFAULT_SELECTED_BACKGROUND;
-	private java.awt.Color unselectedBackgroundColor = DEFAULT_UNSELECTED_BACKGROUND;
-
-	private class MutableListButton extends org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > {
-		public MutableListButton( org.lgna.croquet.BooleanState booleanState ) {
+public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends org.lgna.croquet.components.ItemSelectablePanel< E, D > {
+	private class MemberButton extends org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > {
+		public MemberButton( org.lgna.croquet.BooleanState booleanState ) {
 			super( booleanState );
 		}
 		@Override
@@ -78,10 +76,10 @@ public abstract class MutableList<E> extends org.lgna.croquet.components.ItemSel
 					//super.paintComponent(g);
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 					Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-					g.setColor( MutableList.this.getUnselectedBackgroundColor() );
+					g.setColor( MemberList.this.getUnselectedBackgroundColor() );
 					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 					if( this.isSelected() ) {
-						java.awt.Color color = MutableList.this.getSelectedBackgroundColor();
+						java.awt.Color color = MemberList.this.getSelectedBackgroundColor();
 						g.setColor( color );
 						g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 						g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), 8, 8 );
@@ -103,9 +101,15 @@ public abstract class MutableList<E> extends org.lgna.croquet.components.ItemSel
 		}
 	}
 
+	private static java.awt.Color DEFAULT_SELECTED_BACKGROUND = new java.awt.Color( 57, 105, 138 );
+	private static java.awt.Color DEFAULT_UNSELECTED_BACKGROUND = new java.awt.Color( 214, 217, 223 );
+
+	private java.awt.Color selectedBackgroundColor = DEFAULT_SELECTED_BACKGROUND;
+	private java.awt.Color unselectedBackgroundColor = DEFAULT_UNSELECTED_BACKGROUND;
+
 	private org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 
-	public MutableList( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Operation< ? > operation ) {
+	public MemberList( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Operation< ? > operation ) {
 		super( model );
 		this.internalAddComponent( pageAxisPanel, java.awt.BorderLayout.CENTER );
 		if( operation != null ) {
@@ -116,10 +120,16 @@ public abstract class MutableList<E> extends org.lgna.croquet.components.ItemSel
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
+	protected abstract D createItemDetails( E item, org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button );
+	@Override
+	protected final D createItemDetails(E item, org.lgna.croquet.BooleanState booleanState) {
+		return this.createItemDetails( item, booleanState, new MemberButton( booleanState ) );
+	}
+
 	@Override
 	protected void removeAllDetails() {
-		for( Details details : this.getAllItemDetails() ) {
-			details.getButton().setVisible( false );
+		for( D details : this.getAllItemDetails() ) {
+			details.getComponent().setVisible( false );
 		}
 	}
 
@@ -129,14 +139,14 @@ public abstract class MutableList<E> extends org.lgna.croquet.components.ItemSel
 	protected void addPrologue( int count ) {
 		//this.pageAxisPanel.internalRemoveAllComponents();
 		this.index = 0;
-		for( Details details : this.getAllItemDetails() ) {
-			details.getButton().setVisible( false );
+		for( D details : this.getAllItemDetails() ) {
+			details.getComponent().setVisible( false );
 		}
 	}
 	@Override
-	protected void addItem( MutableList.Details itemDetails ) {
+	protected void addItem( D itemDetails ) {
 		this.index++;
-		itemDetails.getButton().setVisible( true );
+		itemDetails.getComponent().setVisible( true );
 	}
 	@Override
 	protected void addEpilogue() {

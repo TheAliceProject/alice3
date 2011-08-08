@@ -174,7 +174,7 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		if( rv != null ) {
 			//pass
 		} else {
-			org.lgna.croquet.components.AbstractTabbedPane<?,?> tabbedPane;
+			org.lgna.croquet.components.AbstractTabbedPane<?,?,?> tabbedPane;
 			if( isAlwaysShowingBlocks ) {
 				tabbedPane = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance().createDefaultFolderTabbedPane();
 			} else {

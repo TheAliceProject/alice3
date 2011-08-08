@@ -43,51 +43,51 @@
 
 package org.lgna.croquet.components;
 
+/*package-private*/ class MutableListItemDetails<E> extends ItemDetails<E, MutableListItemDetails< E >, MutableList<E>> {
+	private Component< ? > leadingComponent;
+	private Component< ? > mainComponent;
+	private Component< ? > trailingComponent;
+
+	public MutableListItemDetails( MutableList<E> panel, E item, BooleanStateButton< javax.swing.AbstractButton > button, Component< ? > leadingComponent, Component< ? > mainComponent, Component< ? > trailingComponent, java.awt.event.ActionListener actionListener ) {
+		super( panel, item, button );
+		this.leadingComponent = leadingComponent;
+		this.mainComponent = mainComponent;
+		this.trailingComponent = trailingComponent;
+
+		if( this.leadingComponent != null ) {
+			button.internalAddComponent( this.leadingComponent, java.awt.BorderLayout.LINE_START );
+		}
+		if( this.mainComponent != null ) {
+			button.internalAddComponent( this.mainComponent, java.awt.BorderLayout.CENTER );
+		}
+		if( actionListener != null ) {
+			//todo
+			assert this.trailingComponent == null;
+			edu.cmu.cs.dennisc.javax.swing.components.JCloseButton jCloseButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
+			jCloseButton.addActionListener( actionListener );
+			button.getAwtComponent().add( jCloseButton, java.awt.BorderLayout.LINE_END );
+		} else {
+			if( this.trailingComponent != null ) {
+				button.internalAddComponent( this.trailingComponent, java.awt.BorderLayout.LINE_END );
+			}
+		}
+
+	}
+	public Component< ? > getLeadingComponent() {
+		return this.leadingComponent;
+	}
+	public Component< ? > getMainComponent() {
+		return this.mainComponent;
+	}
+	public Component< ? > getTrailingComponent() {
+		return this.trailingComponent;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
-public final class MutableList<E> extends ItemSelectablePanel< E, MutableList.MutableListItemDetails > {
-	class MutableListItemDetails extends ItemSelectablePanel.ItemDetails {
-		private Component< ? > leadingComponent;
-		private Component< ? > mainComponent;
-		private Component< ? > trailingComponent;
-
-		public MutableListItemDetails( E item, AbstractButton< ?, org.lgna.croquet.BooleanState > button, Component< ? > leadingComponent, Component< ? > mainComponent, Component< ? > trailingComponent, java.awt.event.ActionListener actionListener ) {
-			super( item, button );
-			this.leadingComponent = leadingComponent;
-			this.mainComponent = mainComponent;
-			this.trailingComponent = trailingComponent;
-
-			if( this.leadingComponent != null ) {
-				button.internalAddComponent( this.leadingComponent, java.awt.BorderLayout.LINE_START );
-			}
-			if( this.mainComponent != null ) {
-				button.internalAddComponent( this.mainComponent, java.awt.BorderLayout.CENTER );
-			}
-			if( actionListener != null ) {
-				//todo
-				assert this.trailingComponent == null;
-				edu.cmu.cs.dennisc.javax.swing.components.JCloseButton jCloseButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
-				jCloseButton.addActionListener( actionListener );
-				button.getAwtComponent().add( jCloseButton, java.awt.BorderLayout.LINE_END );
-			} else {
-				if( this.trailingComponent != null ) {
-					button.internalAddComponent( this.trailingComponent, java.awt.BorderLayout.LINE_END );
-				}
-			}
-
-		}
-		public Component< ? > getLeadingComponent() {
-			return this.leadingComponent;
-		}
-		public Component< ? > getMainComponent() {
-			return this.mainComponent;
-		}
-		public Component< ? > getTrailingComponent() {
-			return this.trailingComponent;
-		}
-	}
-
+public final class MutableList<E> extends ItemSelectablePanel< E, MutableListItemDetails<E> > {
 	public static interface Factory<E> {
 		public Component< ? > createLeadingComponent();
 		public Component< ? > createMainComponent();
@@ -206,7 +206,7 @@ public final class MutableList<E> extends ItemSelectablePanel< E, MutableList.Mu
 		}
 	}
 	@Override
-	protected void addItem( MutableList.MutableListItemDetails itemDetails ) {
+	protected void addItem( MutableListItemDetails<E> itemDetails ) {
 		factory.update( itemDetails.getLeadingComponent(), itemDetails.getMainComponent(), itemDetails.getTrailingComponent(), this.index, (E)itemDetails.getItem() );
 		this.index++;
 		//this.pageAxisPanel.internalAddComponent( itemDetails.getButton() );
@@ -224,7 +224,7 @@ public final class MutableList<E> extends ItemSelectablePanel< E, MutableList.Mu
 		}
 	}
 	@Override
-	protected final MutableList.MutableListItemDetails createItemDetails( final E item, org.lgna.croquet.BooleanState booleanState ) {
+	protected final MutableListItemDetails<E> createItemDetails( final E item, org.lgna.croquet.BooleanState booleanState ) {
 		java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				MutableList.this.getModel().removeItem( item );
@@ -233,7 +233,7 @@ public final class MutableList<E> extends ItemSelectablePanel< E, MutableList.Mu
 
 		MutableListButton mutableListButton = new MutableListButton( booleanState );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MUTABLE_LIST_BOOLEAN_STATE" );
-		MutableListItemDetails rv = new MutableListItemDetails( item, mutableListButton, factory.createLeadingComponent(), factory.createMainComponent(), factory.createTrailingComponent(), actionListener );
+		MutableListItemDetails rv = new MutableListItemDetails<E>( this, item, mutableListButton, factory.createLeadingComponent(), factory.createMainComponent(), factory.createTrailingComponent(), actionListener );
 		AbstractButton< ?, ? > button = rv.getButton();
 		button.setVisible( false );
 		this.pageAxisPanel.addComponent( button );

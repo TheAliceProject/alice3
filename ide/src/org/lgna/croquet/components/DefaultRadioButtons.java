@@ -49,7 +49,7 @@ import org.lgna.croquet.ListSelectionState;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
+public class DefaultRadioButtons<E> extends AbstractRadioButtons< E > {
 	private static final java.awt.GridBagConstraints GBC_VERTICAL;
 	private static final java.awt.GridBagConstraints GBC_HORIZONTAL;
 	static {
@@ -65,24 +65,25 @@ public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
 		GBC_HORIZONTAL.weightx = 0.0f;
 	}
 	private final boolean isVertical;
-	public DefaultRadioButtons( ListSelectionState<E> model, boolean isVertical ) {
+
+	public DefaultRadioButtons( ListSelectionState< E > model, boolean isVertical ) {
 		super( model );
 		this.isVertical = isVertical;
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.GridBagLayout();
 	}
 	@Override
-	protected org.lgna.croquet.components.BooleanStateButton<?> createBooleanStateButton( E item, BooleanState booleanState ) {
+	protected org.lgna.croquet.components.BooleanStateButton< ? > createBooleanStateButton( E item, BooleanState booleanState ) {
 		booleanState.setTextForBothTrueAndFalse( item.toString() );
-		return booleanState.createRadioButton(); 
+		return booleanState.createRadioButton();
 	}
 	@Override
 	protected void removeAllDetails() {
 		this.internalRemoveAllComponents();
 	}
-	
+
 	private java.awt.GridBagConstraints getGridBagConstraints() {
 		if( isVertical ) {
 			return GBC_VERTICAL;
@@ -91,10 +92,10 @@ public class DefaultRadioButtons< E > extends AbstractRadioButtons< E > {
 		}
 	}
 	@Override
-	protected void addPrologue(int count) {
+	protected void addPrologue( int count ) {
 	}
 	@Override
-	protected void addItem(ItemSelectablePanel.ItemDetails itemDetails) {
+	protected void addItem( RadioButtonItemDetails< E > itemDetails ) {
 		this.internalAddComponent( itemDetails.getButton(), this.getGridBagConstraints() );
 	}
 	@Override
