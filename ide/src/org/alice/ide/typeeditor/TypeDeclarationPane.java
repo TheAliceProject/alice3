@@ -53,84 +53,18 @@ public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getTypeColor() );
 
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		
-		
-		class ConstructorFactory implements org.lgna.croquet.components.MutableList.Factory< org.lgna.project.ast.NamedUserConstructor > {
-			public org.lgna.croquet.Operation getAddItemOperation() {
-				return null;
-			}
-			public org.lgna.croquet.components.Component createLeadingComponent() {
-				return null;
-			}
-			public org.lgna.croquet.components.Component createMainComponent() {
-				return new org.lgna.croquet.components.Label( "constructor" );
-			}
-			public org.lgna.croquet.components.Component createTrailingComponent() {
-				return null;
-			}
-			public void update( org.lgna.croquet.components.Component< ? > leadingComponent, org.lgna.croquet.components.Component< ? > mainComponent, org.lgna.croquet.components.Component< ? > trailingComponent, int index, org.lgna.project.ast.NamedUserConstructor item ) {
-			}
-			public void updateSelection( org.lgna.croquet.components.Component leadingComponent, org.lgna.croquet.components.Component mainComponent, org.lgna.croquet.components.Component trailingComponent, boolean isSelected ) {
-			}
-		}
-		abstract class MethodFactory implements org.lgna.croquet.components.MutableList.Factory< org.lgna.project.ast.UserMethod > {
-			public org.lgna.croquet.components.Component createLeadingComponent() {
-				return null;
-			}
-			public org.lgna.croquet.components.Component createMainComponent() {
-				return new org.lgna.croquet.components.Label();
-			}
-			public org.lgna.croquet.components.Component createTrailingComponent() {
-				return null;
-			}
-			public void update( org.lgna.croquet.components.Component< ? > leadingComponent, org.lgna.croquet.components.Component< ? > mainComponent, org.lgna.croquet.components.Component< ? > trailingComponent, int index, org.lgna.project.ast.UserMethod item ) {
-				((org.lgna.croquet.components.Label)mainComponent).setText( item.getName() );
-			}
-			public void updateSelection( org.lgna.croquet.components.Component leadingComponent, org.lgna.croquet.components.Component mainComponent, org.lgna.croquet.components.Component trailingComponent, boolean isSelected ) {
-			}
-		}
 
-		class ProcedureFactory extends MethodFactory {
-			public org.lgna.croquet.Operation getAddItemOperation() {
-				return org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( TypeDeclarationPane.this.type );
-			}
-		}
-		class FunctionFactory extends MethodFactory {
-			public org.lgna.croquet.Operation getAddItemOperation() {
-				return org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( TypeDeclarationPane.this.type );
-			}
-		}
-		
-		class FieldFactory implements org.lgna.croquet.components.MutableList.Factory< org.lgna.project.ast.UserField > {
-			public org.lgna.croquet.Operation< ? > getAddItemOperation() {
-				return null;
-			}
-			public org.lgna.croquet.components.Component createLeadingComponent() {
-				return null;
-			}
-			public org.lgna.croquet.components.Component createMainComponent() {
-				return new org.lgna.croquet.components.Label();
-			}
-			public org.lgna.croquet.components.Component createTrailingComponent() {
-				return null;
-			}
-			public void update( org.lgna.croquet.components.Component< ? > leadingComponent, org.lgna.croquet.components.Component< ? > mainComponent, org.lgna.croquet.components.Component< ? > trailingComponent, int index, org.lgna.project.ast.UserField item ) {
-				((org.lgna.croquet.components.Label)mainComponent).setText( item.getName() );
-			}
-			public void updateSelection( org.lgna.croquet.components.Component leadingComponent, org.lgna.croquet.components.Component mainComponent, org.lgna.croquet.components.Component trailingComponent, boolean isSelected ) {
-			}
-		}
-		
-		org.lgna.croquet.components.ToolPalette constructorsToolPalette = org.alice.ide.croquet.models.typeeditor.ConstructorTabState.getInstance( type ).createToolPalette( ConstructorState.getInstance( type ).createMutableList( new ConstructorFactory() ) );
+		org.lgna.croquet.components.ToolPalette constructorsToolPalette = org.alice.ide.croquet.models.typeeditor.ConstructorTabState.getInstance( type ).createToolPalette( new ConstructorList( type ) );
 		constructorsToolPalette.setBackgroundColor( ide.getTheme().getConstructorColor() );
 
-		org.lgna.croquet.components.ToolPalette proceduresToolPalette = org.alice.ide.croquet.models.typeeditor.ProceduresTabState.getInstance( type ).createToolPalette( ProcedureState.getInstance( type ).createMutableList( new ProcedureFactory() ) );
+		//org.lgna.croquet.components.ToolPalette proceduresToolPalette = org.alice.ide.croquet.models.typeeditor.ProceduresTabState.getInstance( type ).createToolPalette( ProcedureState.getInstance( type ).createMutableList( new ProcedureFactory() ) );
+		org.lgna.croquet.components.ToolPalette proceduresToolPalette = org.alice.ide.croquet.models.typeeditor.ProceduresTabState.getInstance( type ).createToolPalette( new ProcedureList( type ) );
 		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
 
-		org.lgna.croquet.components.ToolPalette functionsToolPalette = org.alice.ide.croquet.models.typeeditor.FunctionsTabState.getInstance( type ).createToolPalette( FunctionState.getInstance( type ).createMutableList( new FunctionFactory() ) );
+		org.lgna.croquet.components.ToolPalette functionsToolPalette = org.alice.ide.croquet.models.typeeditor.FunctionsTabState.getInstance( type ).createToolPalette( new FunctionList( type ) );
 		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
 
-		org.lgna.croquet.components.ToolPalette fieldsToolPalette = org.alice.ide.croquet.models.typeeditor.FieldsTabState.getInstance( type ).createToolPalette( FieldState.getInstance( type ).createMutableList( new FieldFactory() ) );
+		org.lgna.croquet.components.ToolPalette fieldsToolPalette = org.alice.ide.croquet.models.typeeditor.FieldsTabState.getInstance( type ).createToolPalette( new FieldList( type ) );
 		fieldsToolPalette.setBackgroundColor( ide.getTheme().getFieldColor() );
 
 		proceduresToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );

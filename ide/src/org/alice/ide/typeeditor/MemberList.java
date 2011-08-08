@@ -44,13 +44,11 @@
 package org.alice.ide.typeeditor;
 
 /*package-private*/ class MemberItemDetails<E,D extends MemberItemDetails<E,D,J>, J extends MemberList<E,D> > extends org.lgna.croquet.components.ItemDetails<E,D,J> {
-	private final org.lgna.croquet.components.Component< ? > component;
-	public MemberItemDetails( J panel, E item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button, org.lgna.croquet.components.Component< ? > component ) {
+	public MemberItemDetails( J panel, E item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
 		super( panel, item, button );
-		this.component = component;
 	}
 	public org.lgna.croquet.components.Component< ? > getComponent() {
-		return this.component;
+		return this.getButton();
 	}
 }
 
@@ -58,7 +56,7 @@ package org.alice.ide.typeeditor;
  * @author Dennis Cosgrove
  */
 public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends org.lgna.croquet.components.ItemSelectablePanel< E, D > {
-	private class MemberButton extends org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > {
+	protected class MemberButton extends org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > {
 		public MemberButton( org.lgna.croquet.BooleanState booleanState ) {
 			super( booleanState );
 		}
@@ -76,21 +74,16 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 					//super.paintComponent(g);
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 					Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-					g.setColor( MemberList.this.getUnselectedBackgroundColor() );
-					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-					if( this.isSelected() ) {
-						java.awt.Color color = MemberList.this.getSelectedBackgroundColor();
-						g.setColor( color );
-						g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-						g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), 8, 8 );
-						if( this.getModel().isRollover() ) {
-							color = java.awt.Color.LIGHT_GRAY;
-						} else {
-							color = java.awt.Color.GRAY;
-						}
-						g.setColor( color );
-						edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight() - 5 );
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+					java.awt.Color color;
+					if( this.getModel().isRollover() ) {
+						color = java.awt.Color.DARK_GRAY;
+					} else {
+						color = java.awt.Color.GRAY;
 					}
+					g.setColor( color );
+					edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight() - 5 );
+					g.drawRoundRect( 0, 0, this.getWidth()-1, this.getHeight()-1, 8, 8 );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 				}
 			};
@@ -99,31 +92,33 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 			rv.setRolloverEnabled( true );
 			return rv;
 		}
+		public void addComponent( org.lgna.croquet.components.Component< ? > component, org.lgna.croquet.components.BorderPanel.Constraint constraint ) {
+			this.internalAddComponent( component, constraint.getInternal() );
+		}
 	}
-
-	private static java.awt.Color DEFAULT_SELECTED_BACKGROUND = new java.awt.Color( 57, 105, 138 );
-	private static java.awt.Color DEFAULT_UNSELECTED_BACKGROUND = new java.awt.Color( 214, 217, 223 );
-
-	private java.awt.Color selectedBackgroundColor = DEFAULT_SELECTED_BACKGROUND;
-	private java.awt.Color unselectedBackgroundColor = DEFAULT_UNSELECTED_BACKGROUND;
-
 	private org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 
 	public MemberList( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Operation< ? > operation ) {
 		super( model );
-		this.internalAddComponent( pageAxisPanel, java.awt.BorderLayout.CENTER );
+		this.internalAddComponent( pageAxisPanel );
 		if( operation != null ) {
-			this.internalAddComponent( operation.createButton(), java.awt.BorderLayout.PAGE_END );
+			this.internalAddComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
+			//this.internalAddComponent( new org.lgna.croquet.components.HorizontalSeparator() );
+			this.internalAddComponent( operation.createButton() );
 		}
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 16, 4, 4 ) );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
-	protected abstract D createItemDetails( E item, org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button );
+	protected abstract D createItemDetails( E item, org.lgna.croquet.BooleanState booleanState, MemberButton button );
 	@Override
 	protected final D createItemDetails(E item, org.lgna.croquet.BooleanState booleanState) {
-		return this.createItemDetails( item, booleanState, new MemberButton( booleanState ) );
+		D rv = this.createItemDetails( item, booleanState, new MemberButton( booleanState ) );
+		rv.getComponent().setVisible( false );
+		this.pageAxisPanel.addComponent( rv.getComponent() );
+		return rv;
 	}
 
 	@Override
@@ -150,21 +145,5 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 	}
 	@Override
 	protected void addEpilogue() {
-	}
-
-	public void setSelectedBackgroundColor( java.awt.Color color ) {
-		this.selectedBackgroundColor = color;
-	}
-
-	public java.awt.Color getSelectedBackgroundColor() {
-		return this.selectedBackgroundColor;
-	}
-
-	public void setUnselectedBackgroundColor( java.awt.Color color ) {
-		this.unselectedBackgroundColor = color;
-	}
-
-	public java.awt.Color getUnselectedBackgroundColor() {
-		return this.unselectedBackgroundColor;
 	}
 }

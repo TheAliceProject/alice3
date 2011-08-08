@@ -40,56 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
 
-//class CheckMarkIcon implements javax.swing.Icon {
-//	@Override
-//	public int getIconWidth() {
-//		return 16;
-//	}
-//	@Override
-//	public int getIconHeight() {
-//		return 16;
-//	}
-//	@Override
-//	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-//		g.setColor( java.awt.Color.RED );
-//		g.fillRect( x, y, 16, 16 );
-//	}
-//}
+package org.alice.ide.typeeditor;
+
 /**
-* @author Dennis Cosgrove
-*/
-public class EditMethodOperation extends EditCodeOperation< org.lgna.project.ast.UserMethod > {
-//	private static CheckMarkIcon checkMarkIcon = new CheckMarkIcon();
-
-	private static java.util.Map< org.lgna.project.ast.UserMethod, EditMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized EditMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
-		EditMethodOperation rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new EditMethodOperation( method );
-			map.put( method, rv );
-		}
-		return rv;
-	}
-	private EditMethodOperation( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "4a6e51f7-630a-4f36-b7db-5fa37c62eb54" ), method );
-//		StringBuilder sb = new StringBuilder();
-//		sb.append( "<html>" );
-//		sb.append( "Edit " );
-//		sb.append( "<strong>" );
-//		sb.append( method.getName() );
-//		if( method == org.alice.ide.IDE.getActiveInstance().getFocusedCode() ) {
-//			sb.append( " <font color=007F00>&#x2713;</font>" );
-//		}
-//		sb.append( "</strong>" );
-//		sb.append( "</html>" );
-//		this.setName( sb.toString() );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation >( this, this.getCode(), org.lgna.project.ast.UserMethod.class );
+ * @author Dennis Cosgrove
+ */
+public class ProcedureList extends MethodList {
+	public ProcedureList( org.lgna.project.ast.NamedUserType type ) {
+		super( ProcedureState.getInstance( type ), org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( type ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
 	}
 }

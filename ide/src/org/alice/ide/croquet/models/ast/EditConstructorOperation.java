@@ -59,7 +59,7 @@ public class EditConstructorOperation extends EditCodeOperation< org.lgna.projec
 	}
 	private EditConstructorOperation( org.lgna.project.ast.NamedUserConstructor constructor ) {
 		super( java.util.UUID.fromString( "4dce50a6-c637-490c-b1ff-3cd3028dd8ac" ), constructor );
-		this.setName( "<html>Edit <strong>constructor</strong></html>" );
+//		this.setName( "<html>Edit <strong>constructor</strong></html>" );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditConstructorOperation > createCodableResolver() {

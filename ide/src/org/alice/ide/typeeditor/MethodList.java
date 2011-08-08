@@ -44,8 +44,8 @@
 package org.alice.ide.typeeditor;
 
 /*package-private*/ class MethodItemDetails extends MemberItemDetails< org.lgna.project.ast.UserMethod, MethodItemDetails, MethodList > {
-	public MethodItemDetails( MethodList panel, org.lgna.project.ast.UserMethod item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button, org.lgna.croquet.components.Component< ? > component ) {
-		super( panel, item, button, component );
+	public MethodItemDetails( MethodList panel, org.lgna.project.ast.UserMethod item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
+		super( panel, item, button );
 	}
 }
 
@@ -57,7 +57,27 @@ public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMe
 		super( model, operation );
 	}
 	@Override
-	protected org.alice.ide.typeeditor.MethodItemDetails createItemDetails( org.lgna.project.ast.UserMethod item, org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
-		return new MethodItemDetails( this, item, button, new org.lgna.croquet.components.Label( "todo" ) );
+	protected org.alice.ide.typeeditor.MethodItemDetails createItemDetails( org.lgna.project.ast.UserMethod item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
+		org.lgna.croquet.components.LineAxisPanel lineStart = new org.lgna.croquet.components.LineAxisPanel(
+				org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton(),
+				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton()
+		);
+		button.addComponent( lineStart, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( item, 1.5f );
+		org.lgna.croquet.components.Component< ? > component;
+		if( item.isProcedure() ) {
+			component = nameLabel;
+		} else {
+			component = new org.lgna.croquet.components.LineAxisPanel( 
+					org.alice.ide.common.TypeComponent.createInstance( item.getReturnType() ),
+					nameLabel
+			);
+		}
+		button.addComponent( 
+				component,
+				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
+		);
+		button.addComponent( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+		return new MethodItemDetails( this, item, button );
 	}
 }

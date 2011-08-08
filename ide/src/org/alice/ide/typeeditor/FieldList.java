@@ -40,56 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
 
-//class CheckMarkIcon implements javax.swing.Icon {
-//	@Override
-//	public int getIconWidth() {
-//		return 16;
-//	}
-//	@Override
-//	public int getIconHeight() {
-//		return 16;
-//	}
-//	@Override
-//	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-//		g.setColor( java.awt.Color.RED );
-//		g.fillRect( x, y, 16, 16 );
-//	}
-//}
-/**
-* @author Dennis Cosgrove
-*/
-public class EditMethodOperation extends EditCodeOperation< org.lgna.project.ast.UserMethod > {
-//	private static CheckMarkIcon checkMarkIcon = new CheckMarkIcon();
+package org.alice.ide.typeeditor;
 
-	private static java.util.Map< org.lgna.project.ast.UserMethod, EditMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized EditMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
-		EditMethodOperation rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new EditMethodOperation( method );
-			map.put( method, rv );
-		}
-		return rv;
+/*package-private*/ class FieldItemDetails extends MemberItemDetails< org.lgna.project.ast.UserField, FieldItemDetails, FieldList > {
+	public FieldItemDetails( FieldList panel, org.lgna.project.ast.UserField item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
+		super( panel, item, button );
 	}
-	private EditMethodOperation( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "4a6e51f7-630a-4f36-b7db-5fa37c62eb54" ), method );
-//		StringBuilder sb = new StringBuilder();
-//		sb.append( "<html>" );
-//		sb.append( "Edit " );
-//		sb.append( "<strong>" );
-//		sb.append( method.getName() );
-//		if( method == org.alice.ide.IDE.getActiveInstance().getFocusedCode() ) {
-//			sb.append( " <font color=007F00>&#x2713;</font>" );
-//		}
-//		sb.append( "</strong>" );
-//		sb.append( "</html>" );
-//		this.setName( sb.toString() );
+}
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class FieldList extends MemberList< org.lgna.project.ast.UserField, FieldItemDetails > {
+	public FieldList( org.lgna.project.ast.NamedUserType type ) {
+		super( FieldState.getInstance( type ), null );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation >( this, this.getCode(), org.lgna.project.ast.UserMethod.class );
+	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
+		button.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		button.addComponent( 
+				new org.lgna.croquet.components.LineAxisPanel( 
+						org.alice.ide.common.TypeComponent.createInstance( item.getValueType() ),
+						new org.alice.ide.common.DeclarationNameLabel( item, 1.5f )
+				),
+				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
+		);
+		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isFieldDeletable( item ) ) {
+			button.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+		}
+		return new FieldItemDetails( this, item, button );
 	}
 }

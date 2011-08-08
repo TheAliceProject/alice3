@@ -51,7 +51,7 @@ public abstract class RenameNodeOperation extends AbstractRenameNodeOperation {
 	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
 	public RenameNodeOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
-		this.setName( "<html>Rename <strong>" + nameProperty.getValue() + "</strong>...</html>" );
+		//this.setName( "<html>Rename <strong>" + nameProperty.getValue() + "</strong>...</html>" );
 		this.nameProperty = nameProperty;
 		this.nodeNameValidator = nodeNameValidator;
 	}

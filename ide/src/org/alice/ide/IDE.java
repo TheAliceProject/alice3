@@ -316,6 +316,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess >( org.lgna.project.ast.FieldAccess.class ) {
 			@Override
 			protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( fieldAccess.field.getValue() );
 				return fieldAccess.field.getValue() == field;
 			}
 		};
