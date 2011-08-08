@@ -41,38 +41,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.declaration;
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SceneFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation {
-	public SceneFieldDeclarationOperation( 
-			java.util.UUID id, 
-			org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType,
-			boolean isValueComponentTypeEditable,
-			boolean initialIsArrayValueType,
-			boolean isIsArrayValueTypeEditable,
-			String initialName,
-			boolean isNameEditable,
-			org.lgna.project.ast.Expression initialExpression,
-			boolean isInitializerEditable
-		) {
-		super( 
-				id, 
-				null, false, 
-				initialValueComponentType, isValueComponentTypeEditable, 
-				initialIsArrayValueType, isIsArrayValueTypeEditable, 
-				initialName, isNameEditable, 
-				initialExpression, isInitializerEditable
-		);
+public abstract class DeclareFieldEdit< M extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation > extends org.lgna.croquet.edits.Edit< M > {
+	private final org.lgna.project.ast.UserType<?> declaringType;
+	private final org.lgna.project.ast.UserField field;
+	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep< M > step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
+		super( step );
+		this.declaringType = declaringType;
+		this.field = field;
 	}
-	@Override
-	protected boolean isFieldFinal() {
-		return true;
+	public DeclareFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
+		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
 	}
+	
+	protected org.lgna.project.ast.UserType< ? > getDeclaringType() {
+		return this.declaringType;
+	}
+	protected org.lgna.project.ast.UserField getField() {
+		return this.field;
+	}
+	
 	@Override
-	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
-		return org.alice.ide.IDE.getActiveInstance().getSceneType();
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).encodeValue( binaryEncoder, this.field );
+	}
+
+	@Override
+	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+		rv.append("declare:");
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, field, locale);
+		return rv;
 	}
 }

@@ -40,31 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.typeeditor;
-
-/*package-private*/ class MethodItemDetails extends MemberItemDetails< org.lgna.project.ast.UserMethod, MethodItemDetails, MethodList > {
-	public MethodItemDetails( MethodList panel, org.lgna.project.ast.UserMethod item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
-		super( panel, item, button );
-	}
-}
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMethod, MethodItemDetails > {
-	public MethodList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserMethod > model, org.lgna.croquet.Operation< ? > operation ) {
-		super( model, operation );
+public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit< org.alice.ide.croquet.models.declaration.NonGalleryFieldDeclarationOperation > {
+	private transient int index;
+	public DeclareNonGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
+		super( step, declaringType, field );
 	}
+	public DeclareNonGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+	}
+	
 	@Override
-	protected org.alice.ide.typeeditor.MethodItemDetails createItemDetails( org.lgna.project.ast.UserMethod item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
-		org.lgna.croquet.components.LineAxisPanel lineStart = new org.lgna.croquet.components.LineAxisPanel(
-				org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton(),
-				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton()
-		);
-		button.addComponent( lineStart, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		button.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( item, null, true, item.getDeclaringType() ), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		button.addComponent( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-		return new MethodItemDetails( this, item, button );
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.index = this.getDeclaringType().fields.size(); 
+		this.getDeclaringType().fields.add(this.index, this.getField());
+	}
+
+	@Override
+	protected final void undoInternal() {
+		if (this.getDeclaringType().fields.get(this.index) == this.getField()) {
+			this.getDeclaringType().fields.remove(this.index);
+		} else {
+			throw new javax.swing.undo.CannotUndoException();
+		}
 	}
 }

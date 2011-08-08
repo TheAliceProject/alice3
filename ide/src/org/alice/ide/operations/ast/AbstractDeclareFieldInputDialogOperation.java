@@ -42,6 +42,8 @@
  */
 package org.alice.ide.operations.ast;
 
+import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -98,7 +100,7 @@ public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice
 			EpilogueData data = new EpilogueData();
 			this.fillInEpilogueData( data, step );
 			if( data.isValid() ) {
-				step.commitAndInvokeDo( new DeclareFieldEdit( step, data.getDeclaringType(), data.getField(), data.getDoStatements(), data.getUndoStatements() ) );
+				step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( step, data.getDeclaringType(), data.getField(), data.getDoStatements(), data.getUndoStatements() ) );
 			} else {
 				step.cancel();
 			}

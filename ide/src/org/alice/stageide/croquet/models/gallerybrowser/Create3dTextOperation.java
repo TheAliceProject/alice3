@@ -392,9 +392,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 				org.lgna.project.ast.UserField field = tuple.getA();
 				if( field != null ) {
 					org.lgna.project.ast.UserType<?> ownerType = this.getOwnerType();
-					org.lgna.project.ast.Statement[] doStatements = null; //todo
-					org.lgna.project.ast.Statement[] undoStatements = null; //todo
-					step.commitAndInvokeDo( new org.alice.ide.operations.ast.DeclareFieldEdit( step, ownerType, field, doStatements, undoStatements ) );
+					step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, ownerType, field ) );
 				} else {
 					step.cancel();
 				}

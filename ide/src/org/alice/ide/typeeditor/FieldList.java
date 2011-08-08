@@ -61,11 +61,7 @@ public class FieldList extends MemberList< org.lgna.project.ast.UserField, Field
 	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
 		button.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		button.addComponent( 
-				new org.lgna.croquet.components.LineAxisPanel( 
-						org.alice.ide.common.TypeComponent.createInstance( item.getValueType() ),
-						org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-						new org.alice.ide.common.DeclarationNameLabel( item, 1.5f )
-				),
+				new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), item ),
 				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
 		);
 		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isFieldDeletable( item ) ) {

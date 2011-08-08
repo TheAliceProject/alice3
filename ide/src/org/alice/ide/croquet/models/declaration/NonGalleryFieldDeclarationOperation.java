@@ -81,7 +81,7 @@ public class NonGalleryFieldDeclarationOperation extends org.alice.ide.croquet.m
 		};
 	}
 	@Override
-	protected org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.FieldDeclarationOperation.EditCustomization rv ) {
-		return rv;
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
+		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
 	}
 }

@@ -155,7 +155,8 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 	
-	public void addField( org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
+	public void addField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
+		assert declaringType == this.getActiveSceneType();
 		this.getActiveSceneType().fields.add(field);
 		this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField(this.getActiveSceneInstance(), field);
 		for (org.lgna.project.ast.Statement statement : statements)
@@ -164,7 +165,8 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 	
-	public void removeField( org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
+	public void removeField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
+		assert declaringType == this.getActiveSceneType();
 	
 	}
 	

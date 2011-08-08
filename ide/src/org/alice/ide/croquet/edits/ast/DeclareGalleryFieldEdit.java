@@ -40,29 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
-	private final org.lgna.project.ast.UserType<?> declaringType;
-	private final org.lgna.project.ast.UserField field;
+public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
 	private final org.lgna.project.ast.Statement[] doStatements;
 	private final org.lgna.project.ast.Statement[] undoStatements;
 
-	private transient int index;
-	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> ownerType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement[] doStatements, org.lgna.project.ast.Statement[] undoStatements ) {
-		super( step );
-		this.declaringType = ownerType;
-		this.field = field;
+	public DeclareGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement[] doStatements, org.lgna.project.ast.Statement[] undoStatements ) {
+		super( step, declaringType, field );
 		this.doStatements = doStatements;
 		this.undoStatements = undoStatements;
 	}
-	public DeclareFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DeclareGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
-		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
 		assert false : "todo";
 		this.doStatements = null;
 		this.undoStatements = null;
@@ -71,32 +65,16 @@ public class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).encodeValue( binaryEncoder, this.field );
-		binaryEncoder.encode( this.index );
+		assert false : "todo";
 	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( this.field, this.doStatements );
-//		this.index = this.declaringType.fields.size(); 
-//		this.declaringType.fields.add(this.index, this.field);
+		org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( this.getDeclaringType(), this.getField(), this.doStatements );
 	}
 
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( this.field, this.undoStatements );
-//		if (this.declaringType.fields.get(this.index) == this.field) {
-//			this.declaringType.fields.remove(this.index);
-//		} else {
-//			throw new javax.swing.undo.CannotUndoException();
-//		}
-	}
-
-	@Override
-	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-		rv.append("declare:");
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, field, locale);
-		return rv;
+		org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( this.getDeclaringType(), this.getField(), this.undoStatements );
 	}
 }

@@ -62,7 +62,7 @@ public abstract class AbstractDeclareFieldActionOperation extends org.alice.ide.
 				if( field != null ) {
 					org.lgna.project.ast.Statement[] doStatements = {}; //TODO: make this something for real
 					org.lgna.project.ast.Statement[] undoStatements = {}; //TODO: make this something for real
-					step.commitAndInvokeDo( new DeclareFieldEdit( step, ownerType, field, doStatements, undoStatements ));
+					step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( step, ownerType, field, doStatements, undoStatements ));
 				} else {
 					step.cancel();
 				}
