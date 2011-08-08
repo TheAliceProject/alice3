@@ -41,37 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurationManager {
-	SINGLETON {
-		public boolean isFieldDeletable( org.lgna.project.ast.UserField field ) {
-			if( field.getValueType().isAssignableTo( org.lgna.story.Camera.class ) ) {
-				if( field.getDeclaringType().isAssignableTo( org.lgna.story.Scene.class ) ) {
-					return false;
-				}
-			}
-			return true;
-		}
-		public boolean isDeclaringTypeForGalleryFields( org.lgna.project.ast.UserType< ? > type ) {
-			return type.isAssignableTo( org.lgna.story.Scene.class );
-		}
-		public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-			return type.isAssignableTo( org.lgna.story.Entity.class );
-		}
-		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
+public class UnspecifiedValueTypeGalleryFieldDeclarationOperation extends org.lgna.croquet.InformationDialogOperation {
+	private static class SingletonHolder {
+		private static UnspecifiedValueTypeGalleryFieldDeclarationOperation instance = new UnspecifiedValueTypeGalleryFieldDeclarationOperation();
+	}
+	public static UnspecifiedValueTypeGalleryFieldDeclarationOperation getInstance( org.lgna.project.ast.UserType< ? > type ) {
+		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForGalleryFields( type ) ) {
+			return SingletonHolder.instance;
+		} else {
 			return null;
 		}
-		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
-			if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
-				return org.alice.stageide.instancefactory.BipedJointMenuModel.getInstance( field );
-			} else {
-				return null;
-			}
-		}
-	};
+	}
+	private UnspecifiedValueTypeGalleryFieldDeclarationOperation() {
+		super( java.util.UUID.fromString( "d1c50593-a5ef-40af-9643-f66b87530fcf" ) );
+	}
+	@Override
+	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.InformationDialogOperationStep context, org.lgna.croquet.components.Dialog dialog ) {
+		org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label( "for now, please edit scene", 2.0f );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		return rv;
+	}
+	@Override
+	protected void releaseContentPane( org.lgna.croquet.history.InformationDialogOperationStep context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	}
 }

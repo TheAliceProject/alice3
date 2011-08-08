@@ -99,7 +99,10 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		if( model.getInitializerState() != null ) {
 			org.lgna.croquet.components.Component< ? > component;
 			if( model.isInitializerEditable() ) {
-				component = model.getInitializerState().getCascadeRoot().getPopupPrepModel().createPopupButton();
+				component = new org.lgna.croquet.components.LineAxisPanel( 
+						new org.alice.ide.croquet.components.ExpressionDropDown( model.getInitializerState() ),
+						org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
+				);
 			} else {
 				component = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( model.getInitializerState().getValue() );
 			}

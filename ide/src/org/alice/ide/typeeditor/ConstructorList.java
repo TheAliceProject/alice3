@@ -54,7 +54,7 @@ package org.alice.ide.typeeditor;
  */
 public class ConstructorList extends MemberList< org.lgna.project.ast.NamedUserConstructor, ConstructorItemDetails > {
 	public ConstructorList( org.lgna.project.ast.NamedUserType type ) {
-		super( ConstructorState.getInstance( type ), null );
+		super( ConstructorState.getInstance( type ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getConstructorColor() );
 	}
 	@Override
