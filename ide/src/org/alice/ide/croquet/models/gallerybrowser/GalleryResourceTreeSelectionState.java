@@ -54,7 +54,7 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 		return SingletonHolder.instance;
 	}
 	private GalleryResourceTreeSelectionState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "78e41376-f478-4cba-823a-26f949314702" ), NodeCodec.SINGLETON, null );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "78e41376-f478-4cba-823a-26f949314702" ), NodeCodec.SINGLETON, RootAdapter.SINGLETON );
 	}
 
 	@Override
@@ -75,10 +75,10 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 	}
 	@Override
 	protected Node getRoot() {
-		return null;
+		return RootAdapter.SINGLETON;
 	}
 	@Override
 	protected boolean isLeaf( Node node ) {
-		return node instanceof org.lgna.project.ast.AbstractField;
+		return node instanceof FieldAdapter;
 	}
 }
