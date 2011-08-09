@@ -1,5 +1,6 @@
 package org.alice.ide;
 
+
 public class ResourcePathManager {
 	
 	public static String AUDIO_RESOURCE_KEY = "org.alice.ide.audioResourcePath";
@@ -70,6 +71,25 @@ public class ResourcePathManager {
 			}
 		}
 		resourcePathMap.put(pathKey, validPaths);
+	}
+	
+	public static boolean addPath(String key, java.io.File path)
+	{
+		if (!resourcePathMap.containsKey(key))
+		{
+			return false;
+		}
+		java.io.File validPath = getValidPath(path.getAbsolutePath());
+		if (validPath != null)
+		{
+			java.util.List<java.io.File> existingPaths = resourcePathMap.get(key);
+			if (!existingPaths.contains(validPath))
+			{
+				existingPaths.add(validPath);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static java.util.List<java.io.File> getPaths(String key)

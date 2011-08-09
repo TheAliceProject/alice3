@@ -19,16 +19,16 @@
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="lib" path="lib/tools/tools.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/Armoire.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/BlueTang.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/Chicken.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/ClownFish.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/Dolphin.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/Lion.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/Ogre.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/Orca.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/Owl.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/PajamaFish.jar"/>
-	<classpathentry kind="lib" path="share/application/assets/alice/Shark.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/Armoire.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/BlueTang.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/Chicken.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/ClownFish.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/Dolphin.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/Lion.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/Ogre.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/Orca.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/Owl.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/PajamaFish.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/Shark.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

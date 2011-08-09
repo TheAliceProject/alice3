@@ -1,8 +1,11 @@
 package org.lgna.story.resourceutilities;
 
+
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.alice.ide.IDE;
 import org.alice.ide.ResourcePathManager;
 
 public class StorytellingResources {
@@ -13,12 +16,97 @@ public class StorytellingResources {
 		return SingletonHolder.instance;
 	}
 	
+	private static final String SIMS_RESOURCE_INSTALL_PATH = "gallery/assets/sims";
+	private static final String ALICE_RESOURCE_INSTALL_PATH = "gallery/assets/alice";
+	
 	private final ModelResourceTree galleryTree;
+	private final List<File> simsPathsLoaded = new LinkedList<File>();
+	
+	private File findResourcePath(String relativePath)
+	{
+		File rootInstall = IDE.getActiveInstance().getApplicationRootDirectory();
+		if (rootInstall != null && rootInstall.exists())
+		{
+			File path = new File(rootInstall, relativePath);
+			if (path.exists())
+			{
+				return path;
+			}
+		}
+		return null;
+	}
+	
+	private List<File> findSimsBundles()
+	{
+		File simsPath = findResourcePath(SIMS_RESOURCE_INSTALL_PATH);
+		if (simsPath != null)
+		{
+			ResourcePathManager.addPath(ResourcePathManager.SIMS_RESOURCE_KEY, simsPath);
+			return ResourcePathManager.getPaths(ResourcePathManager.SIMS_RESOURCE_KEY);
+		}
+		else
+		{
+			return new LinkedList<File>();
+		}
+	}
+	
+	private List<File> findAliceResources()
+	{
+		File alicePath = findResourcePath(ALICE_RESOURCE_INSTALL_PATH);
+		if (alicePath != null)
+		{
+			ResourcePathManager.addPath(ResourcePathManager.MODEL_RESOURCE_KEY, alicePath);
+			return ResourcePathManager.getPaths(ResourcePathManager.MODEL_RESOURCE_KEY);
+		}
+		else
+		{
+			return new LinkedList<File>();
+		}
+	}
 	
 	private StorytellingResources(){
 		List<File> resourcePaths = ResourcePathManager.getPaths(ResourcePathManager.MODEL_RESOURCE_KEY);
+		if (resourcePaths.size() == 0)
+		{
+			resourcePaths = findAliceResources();
+		}
 		List<Class<?>> modelResourceClasses = ModelResourceUtilities.getAndLoadModelResourceClasses(resourcePaths);
 		this.galleryTree = new ModelResourceTree(modelResourceClasses);
+		if (resourcePaths.size() == 0)
+		{
+			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find the Alice gallery resources." );
+		}
+	}
+	
+	
+	public void loadSimsBundles()
+	{
+		List<File> resourcePaths = ResourcePathManager.getPaths(ResourcePathManager.SIMS_RESOURCE_KEY);
+		if (resourcePaths.size() == 0)
+		{
+			resourcePaths = findSimsBundles();
+		}
+		for (File path : resourcePaths)
+		{
+			for( java.io.File file : path.listFiles() ) {
+				if (!simsPathsLoaded.contains(file))
+				{
+					try {
+						if( file.getName().endsWith( "txt" ) ) {
+							//pass
+						} else {
+							edu.cmu.cs.dennisc.nebulous.Manager.addBundle( file );
+							simsPathsLoaded.add(file);
+						}
+					} catch( Throwable t ) {
+						t.printStackTrace();
+					}
+				}
+			}
+		}
+		if (simsPathsLoaded.size() == 0){
+			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find The Sims (TM) 2 Art Assets." );
+		}
 	}
 	
 	public List< org.lgna.project.ast.UserType<?> > getTopLevelGalleryTypes() {
@@ -33,16 +121,19 @@ public class StorytellingResources {
 	
 	public List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) 
 	{
+		System.out.println("Getting children for type: "+type);
 		java.util.List<org.lgna.project.ast.AbstractDeclaration> toReturn = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		java.util.List<? extends ModelResourceTreeNode> nodes = this.galleryTree.getGalleryResourceChildrenForJavaType(type);
 		for (ModelResourceTreeNode node : nodes)
 		{
 			if (node.isLeaf() && node.getJavaField() != null)
 			{
+				System.out.println("  Returning field: "+node.getJavaField());
 				toReturn.add(node.getJavaField());
 			}
 			else
 			{
+				System.out.println("  Returning type: "+node.getResourceJavaType());
 				toReturn.add(node.getResourceJavaType());
 			}
 		}
