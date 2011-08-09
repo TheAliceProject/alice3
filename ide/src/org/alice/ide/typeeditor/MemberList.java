@@ -87,7 +87,6 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 				}
 			};
-			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
 			rv.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 			rv.setRolloverEnabled( true );
 			return rv;
@@ -107,7 +106,6 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 				this.internalAddComponent( operation.createButton() );
 			}
 		}
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 16, 4, 4 ) );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

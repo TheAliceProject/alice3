@@ -64,13 +64,29 @@ public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel
 		org.lgna.croquet.components.ToolPalette functionsToolPalette = org.alice.ide.croquet.models.typeeditor.FunctionsTabState.getInstance( type ).createToolPalette( new FunctionList( type ) );
 		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
 
-		org.lgna.croquet.components.ToolPalette fieldsToolPalette = org.alice.ide.croquet.models.typeeditor.FieldsTabState.getInstance( type ).createToolPalette( new FieldList( type ) );
+		org.lgna.croquet.components.JComponent< ? > fieldPanel;
+		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
+			fieldPanel = new org.lgna.croquet.components.PageAxisPanel(
+					new org.lgna.croquet.components.Label( "managed", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
+					new ManagedFieldList( type ),
+					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 16 ),
+					new org.lgna.croquet.components.Label( "unmanaged", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
+					new UnmanagedFieldList( type )
+			);
+		} else {
+			fieldPanel = new UnmanagedFieldList( type );
+		}
+		org.lgna.croquet.components.ToolPalette fieldsToolPalette = org.alice.ide.croquet.models.typeeditor.FieldsTabState.getInstance( type ).createToolPalette( fieldPanel );
 		fieldsToolPalette.setBackgroundColor( ide.getTheme().getFieldColor() );
 
 		proceduresToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		functionsToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		fieldsToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 
+		proceduresToolPalette.getMainComponent().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
+		functionsToolPalette.getMainComponent().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
+		fieldsToolPalette.getMainComponent().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
+		
 		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 		pageAxisPanel.addComponent( constructorsToolPalette );
 		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );

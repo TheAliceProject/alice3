@@ -41,33 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.declaration;
+package org.alice.ide.typeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnspecifiedValueTypeGalleryFieldDeclarationOperation extends GalleryFieldDeclarationOperation {
-	private static class SingletonHolder {
-		private static UnspecifiedValueTypeGalleryFieldDeclarationOperation instance = new UnspecifiedValueTypeGalleryFieldDeclarationOperation();
-	}
-	public static UnspecifiedValueTypeGalleryFieldDeclarationOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private UnspecifiedValueTypeGalleryFieldDeclarationOperation() {
-		super( 
-				java.util.UUID.fromString( "3806ae94-e254-483b-a1b4-5aa5fb7c2a7f" ), 
-				null, false, 
-				false, false, 
-				"", true, 
-				null, true 
-		);
-	}
-	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.ide.croquet.components.declaration.GalleryFieldDeclarationPanel( this );
-	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.GalleryFieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.GalleryFieldDeclarationOperation.EditCustomization rv ) {
-		return rv;
+public class ManagedFieldList extends FieldList {
+	public ManagedFieldList( org.lgna.project.ast.NamedUserType type ) {
+		super( ManagedFieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance() );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 }

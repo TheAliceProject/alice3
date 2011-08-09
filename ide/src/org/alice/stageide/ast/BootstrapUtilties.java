@@ -109,6 +109,11 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.UserField sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
 		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
 		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
+		cameraField.isDeletionAllowed.setValue( false );
+
+		sunField.isManaged.setValue( true );
+		groundField.isManaged.setValue( true );
+		cameraField.isManaged.setValue( true );
 
 		org.lgna.project.ast.UserMethod myFirstMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "myFirstMethod" );
 

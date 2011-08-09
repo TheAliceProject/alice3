@@ -46,23 +46,8 @@ package org.alice.ide.typeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldState extends FilteredMemberState< org.lgna.project.ast.UserField > {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, FieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		FieldState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldState( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
-	private FieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "adc99e89-98d1-47ae-b3ba-cbfdd6745ed0" ), org.lgna.project.ast.UserField.class, type.fields );
-	}
-	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return true;
+public abstract class FieldState extends FilteredMemberState< org.lgna.project.ast.UserField > {
+	public FieldState( java.util.UUID id, org.lgna.project.ast.NamedUserType type ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, id, org.lgna.project.ast.UserField.class, type.fields );
 	}
 }

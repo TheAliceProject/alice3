@@ -46,8 +46,8 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.alice.ide.croquet.models.declaration.GalleryFieldDeclarationOperation > {
-	public GalleryFieldDeclarationPanel( org.alice.ide.croquet.models.declaration.GalleryFieldDeclarationOperation model ) {
+public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation > {
+	public GalleryFieldDeclarationPanel( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation model ) {
 		super( model );
 	}
 }

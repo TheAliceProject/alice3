@@ -47,8 +47,7 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public interface ApiConfigurationManager {
-	public boolean isFieldDeletable( org.lgna.project.ast.UserField field );
-	public boolean isDeclaringTypeForGalleryFields( org.lgna.project.ast.UserType< ? > type );
+	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type );
 	public Iterable< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getTopLevelGalleryTypes();
 	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis();

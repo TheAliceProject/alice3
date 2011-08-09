@@ -41,52 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
-
-import org.lgna.story.resourceutilities.StorytellingResources;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurationManager {
-	SINGLETON {
-		public boolean isFieldDeletable( org.lgna.project.ast.UserField field ) {
-			if( field.getValueType().isAssignableTo( org.lgna.story.Camera.class ) ) {
-				if( field.getDeclaringType().isAssignableTo( org.lgna.story.Scene.class ) ) {
-					return false;
-				}
-			}
-			return true;
-		}
-		public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
-			return type.isAssignableTo( org.lgna.story.Scene.class );
-		}
-		public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-			return type.isAssignableTo( org.lgna.story.Entity.class );
-		}
-		public Iterable< ? extends org.lgna.project.ast.AbstractType< ?, ?, ? > > getTopLevelGalleryTypes() {
-			return StorytellingResources.getInstance().getTopLevelGalleryTypes();
-		}
-		public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<?> getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-			if (type instanceof org.lgna.project.ast.JavaType)
-			{
-				return StorytellingResources.getInstance().getGalleryResourceTreeNodeForJavaType(type);
-			}
-			else
-			{
-				return StorytellingResources.getInstance().getGalleryResourceTreeNodeForUserType(type);
-			}
-		}
-		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
-			return null;
-		}
-		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
-			if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
-				return org.alice.stageide.instancefactory.BipedJointMenuModel.getInstance( field );
-			} else {
-				return null;
-			}
-		}
-	};
+public class UnspecifiedValueTypeManagedFieldDeclarationOperation extends ManagedFieldDeclarationOperation {
+	private static class SingletonHolder {
+		private static UnspecifiedValueTypeManagedFieldDeclarationOperation instance = new UnspecifiedValueTypeManagedFieldDeclarationOperation();
+	}
+	public static UnspecifiedValueTypeManagedFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private UnspecifiedValueTypeManagedFieldDeclarationOperation() {
+		super( 
+				java.util.UUID.fromString( "3806ae94-e254-483b-a1b4-5aa5fb7c2a7f" ), 
+				null, false, 
+				false, false, 
+				"", true, 
+				null, true 
+		);
+	}
+	@Override
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.croquet.components.declaration.GalleryFieldDeclarationPanel( this );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		return rv;
+	}
 }

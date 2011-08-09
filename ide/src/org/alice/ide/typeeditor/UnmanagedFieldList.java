@@ -41,52 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
-
-import org.lgna.story.resourceutilities.StorytellingResources;
+package org.alice.ide.typeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurationManager {
-	SINGLETON {
-		public boolean isFieldDeletable( org.lgna.project.ast.UserField field ) {
-			if( field.getValueType().isAssignableTo( org.lgna.story.Camera.class ) ) {
-				if( field.getDeclaringType().isAssignableTo( org.lgna.story.Scene.class ) ) {
-					return false;
-				}
-			}
-			return true;
-		}
-		public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
-			return type.isAssignableTo( org.lgna.story.Scene.class );
-		}
-		public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-			return type.isAssignableTo( org.lgna.story.Entity.class );
-		}
-		public Iterable< ? extends org.lgna.project.ast.AbstractType< ?, ?, ? > > getTopLevelGalleryTypes() {
-			return StorytellingResources.getInstance().getTopLevelGalleryTypes();
-		}
-		public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<?> getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-			if (type instanceof org.lgna.project.ast.JavaType)
-			{
-				return StorytellingResources.getInstance().getGalleryResourceTreeNodeForJavaType(type);
-			}
-			else
-			{
-				return StorytellingResources.getInstance().getGalleryResourceTreeNodeForUserType(type);
-			}
-		}
-		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
-			return null;
-		}
-		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
-			if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
-				return org.alice.stageide.instancefactory.BipedJointMenuModel.getInstance( field );
-			} else {
-				return null;
-			}
-		}
-	};
+public class UnmanagedFieldList extends FieldList {
+	public UnmanagedFieldList( org.lgna.project.ast.NamedUserType type ) {
+		super( UnmanagedFieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation.getInstance( type ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+	}
 }

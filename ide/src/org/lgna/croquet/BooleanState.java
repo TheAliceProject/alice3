@@ -236,7 +236,7 @@ public abstract class BooleanState extends State< Boolean > {
 		return new org.lgna.croquet.components.PushButton( this );
 	}
 	//todo: convert to composite
-	public org.lgna.croquet.components.ToolPalette createToolPalette( org.lgna.croquet.components.Component< ? > component ) {
+	public org.lgna.croquet.components.ToolPalette createToolPalette( org.lgna.croquet.components.JComponent< ? > component ) {
 		return new org.lgna.croquet.components.ToolPalette( this, component );
 	}
 }
