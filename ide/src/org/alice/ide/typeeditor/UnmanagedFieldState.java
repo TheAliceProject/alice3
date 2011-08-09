@@ -41,13 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.typeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation > {
-	public GalleryFieldDeclarationPanel( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation model ) {
-		super( model );
+public class UnmanagedFieldState extends FieldState {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, UnmanagedFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized UnmanagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		UnmanagedFieldState rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new UnmanagedFieldState( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+	private UnmanagedFieldState( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "97e016de-d944-4305-8fd5-acf5507778e3" ), type );
+	}
+	@Override
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
+		return value.isManaged.getValue() == false;
 	}
 }

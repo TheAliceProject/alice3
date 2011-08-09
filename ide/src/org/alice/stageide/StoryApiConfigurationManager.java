@@ -56,7 +56,7 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 			}
 			return true;
 		}
-		public boolean isDeclaringTypeForGalleryFields( org.lgna.project.ast.UserType< ? > type ) {
+		public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
 			return type.isAssignableTo( org.lgna.story.Scene.class );
 		}
 		public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {

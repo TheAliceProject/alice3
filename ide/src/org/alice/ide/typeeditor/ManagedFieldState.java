@@ -41,47 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.declaration;
+package org.alice.ide.typeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NonGalleryFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation {
-	private static java.util.Map< org.lgna.project.ast.UserType< ? >, NonGalleryFieldDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static NonGalleryFieldDeclarationOperation getInstance( org.lgna.project.ast.UserType< ? > declarationType ) {
-		synchronized( map ) {
-			NonGalleryFieldDeclarationOperation rv = map.get( declarationType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new NonGalleryFieldDeclarationOperation( declarationType );
-				map.put( declarationType, rv );
-			}
-			return rv;
+public class ManagedFieldState extends FieldState {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ManagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		ManagedFieldState rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ManagedFieldState( type );
+			map.put( type, rv );
 		}
+		return rv;
 	}
-	private NonGalleryFieldDeclarationOperation( org.lgna.project.ast.UserType< ? > declarationType ) {
-		super( 
-				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ), 
-				declarationType, false,
-				null, true, 
-				false, true, 
-				null, true, 
-				null, true 
-		);
+	private ManagedFieldState( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe" ), type );
 	}
 	@Override
-	protected boolean isFieldFinal() {
-		return false;
-	}
-	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.ide.croquet.components.declaration.FieldDeclarationPanel( this ) {
-			
-		};
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
-		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
+		return value.isManaged.getValue();
 	}
 }

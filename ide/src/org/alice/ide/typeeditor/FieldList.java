@@ -52,9 +52,9 @@ package org.alice.ide.typeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldList extends MemberList< org.lgna.project.ast.UserField, FieldItemDetails > {
-	public FieldList( org.lgna.project.ast.NamedUserType type ) {
-		super( FieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.NonGalleryFieldDeclarationOperation.getInstance( type ), org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeGalleryFieldDeclarationOperation.getInstance() );
+public abstract class FieldList extends MemberList< org.lgna.project.ast.UserField, FieldItemDetails > {
+	public FieldList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserField > model, org.lgna.croquet.Operation< ? > operation ) {
+		super( model, operation );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 	@Override
@@ -64,7 +64,7 @@ public class FieldList extends MemberList< org.lgna.project.ast.UserField, Field
 				new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), item ),
 				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
 		);
-		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isFieldDeletable( item ) ) {
+		if( item.isDeletionAllowed.getValue() ) {
 			button.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 		}
 		return new FieldItemDetails( this, item, button );

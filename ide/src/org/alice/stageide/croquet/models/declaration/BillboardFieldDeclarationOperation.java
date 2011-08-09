@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.GalleryFieldDeclarationOperation {
+public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
 	private static class SingletonHolder {
 		private static BillboardFieldDeclarationOperation instance = new BillboardFieldDeclarationOperation();
 	}
@@ -89,7 +89,7 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 		return new org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel( this );
 	}
 	@Override
-	protected org.alice.ide.croquet.models.declaration.GalleryFieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.GalleryFieldDeclarationOperation.EditCustomization rv ) {
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		//rv.addDoStatement();
 		return rv;
 	}

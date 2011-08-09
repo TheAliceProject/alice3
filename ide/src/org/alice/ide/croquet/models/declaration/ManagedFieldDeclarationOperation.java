@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryFieldDeclarationOperation extends FieldDeclarationOperation {
+public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationOperation {
 	protected static class EditCustomization {
 		private final java.util.List< org.lgna.project.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private final java.util.List< org.lgna.project.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -72,7 +72,7 @@ public abstract class GalleryFieldDeclarationOperation extends FieldDeclarationO
 		}
 	}
 
-	public GalleryFieldDeclarationOperation( 
+	public ManagedFieldDeclarationOperation( 
 			java.util.UUID id, 
 			org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType, boolean isValueComponentTypeEditable,
 			boolean initialIsArrayValueType, boolean isIsArrayValueTypeEditable,

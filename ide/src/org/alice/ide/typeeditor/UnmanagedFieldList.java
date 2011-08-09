@@ -41,13 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.typeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation > {
-	public GalleryFieldDeclarationPanel( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation model ) {
-		super( model );
+public class UnmanagedFieldList extends FieldList {
+	public UnmanagedFieldList( org.lgna.project.ast.NamedUserType type ) {
+		super( UnmanagedFieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation.getInstance( type ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 }

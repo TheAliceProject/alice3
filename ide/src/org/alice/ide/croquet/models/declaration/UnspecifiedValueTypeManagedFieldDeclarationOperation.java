@@ -41,13 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation > {
-	public GalleryFieldDeclarationPanel( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation model ) {
-		super( model );
+public class UnspecifiedValueTypeManagedFieldDeclarationOperation extends ManagedFieldDeclarationOperation {
+	private static class SingletonHolder {
+		private static UnspecifiedValueTypeManagedFieldDeclarationOperation instance = new UnspecifiedValueTypeManagedFieldDeclarationOperation();
+	}
+	public static UnspecifiedValueTypeManagedFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private UnspecifiedValueTypeManagedFieldDeclarationOperation() {
+		super( 
+				java.util.UUID.fromString( "3806ae94-e254-483b-a1b4-5aa5fb7c2a7f" ), 
+				null, false, 
+				false, false, 
+				"", true, 
+				null, true 
+		);
+	}
+	@Override
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.croquet.components.declaration.GalleryFieldDeclarationPanel( this );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		return rv;
 	}
 }
