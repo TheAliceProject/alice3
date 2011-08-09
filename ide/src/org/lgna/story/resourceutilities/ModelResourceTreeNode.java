@@ -171,8 +171,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 	
 	public ModelResourceTreeNode getChildWithJavaType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		for( ModelResourceTreeNode child : this.children ) {
-			if( type != null && child.resourceJavaType != null && type.isAssignableTo(child.resourceJavaType)) {
-				System.out.println(type +" isAssignableTo "+ child.resourceJavaType +" = "+type.isAssignableTo(child.resourceJavaType));
+			if( type != null && child.resourceJavaType != null && type.isAssignableFrom(child.resourceJavaType)) {
 				return child;
 			}
 		}
