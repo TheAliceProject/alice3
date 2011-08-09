@@ -40,61 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+
+package org.alice.ide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeSelectionState<T> extends ItemState<T> {
-	public static interface SelectionObserver<E> {
-		public void selectionChanged(E nextValue);
-	};
-	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
-	}
-	private final SingleTreeSelectionModel treeSelectionModel;
-	public TreeSelectionState(Group group, java.util.UUID id, ItemCodec< T > itemCodec ) {
-		super(group, id, itemCodec);
-		this.treeSelectionModel = new SingleTreeSelectionModel();
-		this.treeSelectionModel.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
-			public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
-				T prevValue = getValue();
-				T nextValue = getSelection();
-				System.err.println( "changing from " + prevValue + " to " + nextValue );
-				fireChanged( prevValue, nextValue, false );
-			}
-		} );
-	}
-
-	@Override
-	protected void localize() {
-	}
-	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel();
-	public javax.swing.tree.TreeSelectionModel getTreeSelectionModel() {
-		return this.treeSelectionModel;
-	}
-	public T getSelection() {
-		javax.swing.tree.TreePath path = this.treeSelectionModel.getSelectionPath();
-		if( path != null ) {
-			return (T)path.getLastPathComponent();
-		} else {
+public enum RootAdapter implements Node {
+	SINGLETON {
+		public Node getParent() {
 			return null;
 		}
-	}
-	public void setSelection( T e ) {
-		this.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
-	}
-
-	@Override
-	public T getValue() {
-		return this.getSelection();
-	}
-	
-	public org.lgna.croquet.components.Tree<T> createTree() {
-		return new org.lgna.croquet.components.Tree<T>( this );
-	}
-
-	public org.lgna.croquet.components.PathControl createPathControl( org.lgna.croquet.components.PathControl.Initializer initializer ) {
-		assert initializer != null;
-		return new org.lgna.croquet.components.PathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>)this, initializer );
 	}
 }

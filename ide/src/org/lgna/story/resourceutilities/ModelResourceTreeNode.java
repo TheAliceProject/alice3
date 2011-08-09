@@ -279,7 +279,8 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 	}
 	@Override
 	public String toString() {
-		return this.getValue().getName();
+		JavaType value = this.getValue();
+		return value != null ? value.getName() : null;
 	}
 	
 	public void printTree()
