@@ -46,27 +46,27 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceBlank< B > extends org.lgna.croquet.CascadeBlank< B > {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, GalleryResourceBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static GalleryResourceBlank getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
-		synchronized( map ) {
-			GalleryResourceBlank rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new GalleryResourceBlank( value );
-				map.put( value, rv );
+public class GalleryResourceUtilities {
+	private GalleryResourceUtilities() {
+		throw new AssertionError();
+	}
+	public static <B> java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< B > blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		javax.swing.tree.TreeNode treeNode = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceTreeNodeFor( type );
+		if( treeNode != null ) {
+			final int N = treeNode.getChildCount();
+			for( int i=0; i<N; i++ ) {
+				Object child = treeNode.getChildAt( i );
+				if( child instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {		
+					org.lgna.project.ast.AbstractType< ?,?,? > childType = (org.lgna.project.ast.AbstractType< ?,?,? >)child;
+					rv.add( GalleryResourceMenu.getInstance( childType ) );
+				} else if( child instanceof org.lgna.project.ast.AbstractField ) {
+					org.lgna.project.ast.AbstractField childField = (org.lgna.project.ast.AbstractField)child;
+					rv.add( GalleryResourceFillIn.getInstance( childField ) );
+				} else {
+					throw new AssertionError();
+				}
 			}
-			return rv;
 		}
-	}
-	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
-	private GalleryResourceBlank( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		super( java.util.UUID.fromString( "083cebd0-a212-4b77-8bb3-a05f893ff2dd" ) );
-		this.type = type;
-	}
-	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< B > blankNode ) {
-		return GalleryResourceUtilities.updateChildren( rv, blankNode, this.type );
+		return rv;
 	}
 }

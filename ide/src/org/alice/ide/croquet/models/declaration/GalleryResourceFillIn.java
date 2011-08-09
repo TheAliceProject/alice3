@@ -46,27 +46,35 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceBlank< B > extends org.lgna.croquet.CascadeBlank< B > {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, GalleryResourceBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static GalleryResourceBlank getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
-		synchronized( map ) {
-			GalleryResourceBlank rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new GalleryResourceBlank( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class GalleryResourceFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.Expression > {
+	private static java.util.Map< org.lgna.project.ast.AbstractField, GalleryResourceFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized GalleryResourceFillIn getInstance( org.lgna.project.ast.AbstractField field ) {
+		GalleryResourceFillIn rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new GalleryResourceFillIn( field );
+			map.put( field, rv );
 		}
+		return rv;
 	}
-	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
-	private GalleryResourceBlank( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		super( java.util.UUID.fromString( "083cebd0-a212-4b77-8bb3-a05f893ff2dd" ) );
-		this.type = type;
+	private final org.lgna.project.ast.FieldAccess transientValue;
+	private GalleryResourceFillIn( org.lgna.project.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "a45b7262-4553-4b3f-ad1f-7be7871a1d86" ) );
+		this.transientValue = createValue( field );
+	}
+	private static org.lgna.project.ast.FieldAccess createValue( org.lgna.project.ast.AbstractField field ) {
+		return new org.lgna.project.ast.FieldAccess(
+				new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ),
+				field
+		);
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< B > blankNode ) {
-		return GalleryResourceUtilities.updateChildren( rv, blankNode, this.type );
+	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, java.lang.Void > step ) {
+		return createValue( this.transientValue.field.getValue() );
+	}
+	@Override
+	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, java.lang.Void > step ) {
+		return this.transientValue;
 	}
 }

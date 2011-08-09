@@ -46,27 +46,25 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceBlank< B > extends org.lgna.croquet.CascadeBlank< B > {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, GalleryResourceBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static GalleryResourceBlank getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
-		synchronized( map ) {
-			GalleryResourceBlank rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new GalleryResourceBlank( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class GalleryResourceMenu extends org.lgna.croquet.CascadeMenuModel< org.lgna.project.ast.Expression > {
+	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, GalleryResourceMenu > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized GalleryResourceMenu getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		GalleryResourceMenu rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new GalleryResourceMenu( type );
+			map.put( type, rv );
 		}
+		return rv;
 	}
-	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
-	private GalleryResourceBlank( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		super( java.util.UUID.fromString( "083cebd0-a212-4b77-8bb3-a05f893ff2dd" ) );
+	private final org.lgna.project.ast.AbstractType<?,?,?> type;
+	private GalleryResourceMenu( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		super( java.util.UUID.fromString( "10f4d191-6bdd-4333-a8c9-0d617fa8ea64" ) );
 		this.type = type;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< B > blankNode ) {
-		return GalleryResourceUtilities.updateChildren( rv, blankNode, this.type );
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+		return rv;
 	}
 }
