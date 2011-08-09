@@ -88,6 +88,11 @@ public abstract class GalleryFieldDeclarationOperation extends FieldDeclarationO
 				initialExpression, isInitializerEditable
 		);
 	}
+	
+	@Override
+	protected org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > createInitializerState( org.lgna.project.ast.Expression initialValue ) {
+		return new InstanceCreationInitializerState( this, initialValue );
+	}
 	protected abstract EditCustomization customize( EditCustomization rv );
 	@Override
 	protected boolean isFieldFinal() {

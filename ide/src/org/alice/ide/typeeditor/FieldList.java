@@ -54,7 +54,7 @@ package org.alice.ide.typeeditor;
  */
 public class FieldList extends MemberList< org.lgna.project.ast.UserField, FieldItemDetails > {
 	public FieldList( org.lgna.project.ast.NamedUserType type ) {
-		super( FieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.NonGalleryFieldDeclarationOperation.getInstance( type ), org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeGalleryFieldDeclarationOperation.getInstance( type ) );
+		super( FieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.NonGalleryFieldDeclarationOperation.getInstance( type ), org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeGalleryFieldDeclarationOperation.getInstance() );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 	@Override

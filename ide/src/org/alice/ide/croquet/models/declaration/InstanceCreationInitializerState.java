@@ -41,17 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ApiConfigurationManager {
-	public boolean isFieldDeletable( org.lgna.project.ast.UserField field );
-	public boolean isDeclaringTypeForGalleryFields( org.lgna.project.ast.UserType< ? > type );
-	public Iterable< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getTopLevelGalleryTypes();
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis();
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
-	public javax.swing.tree.TreeNode getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
+public class InstanceCreationInitializerState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.Expression > {
+	private final DeclarationOperation<?> owner;
+	public InstanceCreationInitializerState( DeclarationOperation<?> owner, org.lgna.project.ast.Expression initialValue ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "1e753e61-b420-4315-b654-c7f030537923" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue );
+		this.owner = owner;
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+		for( org.lgna.project.ast.AbstractType< ?,?,? > type : org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes() ) {
+			rv.add( InstanceCreationFillIn.getInstance( type.getDeclaredConstructors().get( 0 ) ) );
+		}
+		return rv;
+	}
 }

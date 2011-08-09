@@ -62,6 +62,15 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 			return type.isAssignableTo( org.lgna.story.Entity.class );
 		}
+		public Iterable< ? extends org.lgna.project.ast.AbstractType< ?, ?, ? > > getTopLevelGalleryTypes() {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+					org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class ),
+					org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Swimmer.class )
+			);
+		}
+		public javax.swing.tree.TreeNode getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+			return null;
+		}
 		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
 			return null;
 		}

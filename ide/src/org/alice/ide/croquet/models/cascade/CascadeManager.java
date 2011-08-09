@@ -50,10 +50,10 @@ public class CascadeManager {
 	private CascadeManager() {
 		throw new AssertionError();
 	}
-	public static <T> ExpressionBlank getBlankForType( Class<T> cls, org.lgna.project.annotations.ValueDetails< T > details) {
+	public static <T> ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType< ?,?,? > type, org.lgna.project.annotations.ValueDetails< T > details ) {
 		ExpressionBlank rv;
-		if( cls != null ) {
-			rv = new ExpressionBlank( java.util.UUID.fromString( "d03f9c80-7371-4d78-8579-63e392d18557" ), cls, details ) {
+		if( type != null ) {
+			rv = new ExpressionBlank( java.util.UUID.fromString( "d03f9c80-7371-4d78-8579-63e392d18557" ), type, details ) {
 			};
 			///todo: UnhandledBlank
 		} else {
@@ -61,21 +61,43 @@ public class CascadeManager {
 		}
 		return rv;
 	}
-	public static <T> ExpressionBlank getBlankForType( Class<T> cls ) {
+	public static <T> ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		return getBlankForType( type, null );
+	}
+	public static <T> ExpressionBlank getBlankForType( Class< T > cls, org.lgna.project.annotations.ValueDetails< T > details ) {
+		return getBlankForType( org.lgna.project.ast.JavaType.getInstance( cls ), details );
+	}
+	public static <T> ExpressionBlank getBlankForType( Class< T > cls ) {
 		return getBlankForType( cls, null );
 	}
-	public static ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		Class<?> cls;
-		if( type != null ) {
-			org.lgna.project.ast.JavaType typeDeclaredInJava = type.getFirstTypeEncounteredDeclaredInJava();
-			assert typeDeclaredInJava != null : type;
-			cls = typeDeclaredInJava.getClassReflectionProxy().getReification();
-		} else {
-			cls = null;
-		}
-		return getBlankForType( cls );
-	}
 
+//	public static <T> ExpressionBlank getBlankForType( Class<T> cls, org.lgna.project.annotations.ValueDetails< T > details) {
+//		ExpressionBlank rv;
+//		if( cls != null ) {
+//			rv = new ExpressionBlank( java.util.UUID.fromString( "d03f9c80-7371-4d78-8579-63e392d18557" ), cls, details ) {
+//			};
+//			///todo: UnhandledBlank
+//		} else {
+//			rv = org.alice.ide.croquet.models.cascade.blanks.TypeUnsetBlank.getInstance();
+//		}
+//		return rv;
+//	}
+//	public static <T> ExpressionBlank getBlankForType( Class<T> cls ) {
+//		return getBlankForType( cls, null );
+//	}
+//	public static ExpressionBlank getBlankForType( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+//		Class<?> cls;
+//		if( type != null ) {
+//			org.lgna.project.ast.JavaType typeDeclaredInJava = type.getFirstTypeEncounteredDeclaredInJava();
+//			assert typeDeclaredInJava != null : type;
+//			cls = typeDeclaredInJava.getClassReflectionProxy().getReification();
+//		} else {
+//			cls = null;
+//		}
+//		return getBlankForType( cls );
+//	}
+
+	
 	public static ExpressionBlank[] createBlanks( org.lgna.project.ast.AbstractType< ?,?,? >... types ) {
 		ExpressionBlank[] rv = new ExpressionBlank[ types.length ];
 		for( int i=0; i<rv.length; i++ ) {

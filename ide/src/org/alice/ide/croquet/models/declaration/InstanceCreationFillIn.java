@@ -41,17 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ApiConfigurationManager {
-	public boolean isFieldDeletable( org.lgna.project.ast.UserField field );
-	public boolean isDeclaringTypeForGalleryFields( org.lgna.project.ast.UserType< ? > type );
-	public Iterable< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getTopLevelGalleryTypes();
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis();
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
-	public javax.swing.tree.TreeNode getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
+public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< org.lgna.project.ast.InstanceCreation > {
+	private static java.util.Map< org.lgna.project.ast.AbstractConstructor, InstanceCreationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized InstanceCreationFillIn getInstance( org.lgna.project.ast.AbstractConstructor constructor ) {
+		InstanceCreationFillIn rv = map.get( constructor );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new InstanceCreationFillIn( constructor );
+			map.put( constructor, rv );
+		}
+		return rv;
+	}
+	private final org.lgna.project.ast.InstanceCreation transientValue;
+	private InstanceCreationFillIn( org.lgna.project.ast.AbstractConstructor constructor ) {
+		super( java.util.UUID.fromString( "98dde1d1-ad25-463a-bbbf-67e96e11f87f" ) );
+		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getParameters() ) {
+			this.addBlank( GalleryResourceBlank.getInstance( parameter.getValueType() ) );
+		}
+		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteInstanceCreation( constructor );
+	}
+	@Override
+	protected org.lgna.project.ast.InstanceCreation createValue(org.lgna.project.ast.Expression[] expressions) {
+		return null;
+	}
+	@Override
+	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
+		return this.transientValue;
+	}
 }

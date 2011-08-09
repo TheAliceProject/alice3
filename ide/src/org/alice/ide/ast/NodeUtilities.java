@@ -292,6 +292,15 @@ public class NodeUtilities {
 		return createInstanceCreation( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	
+	public static org.lgna.project.ast.InstanceCreation createIncompleteInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor ) {
+		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
+		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getParameters() ) {
+			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, new EmptyExpression( parameter.getValueType() ) );
+			rv.arguments.add( argument );
+		}
+		return rv;
+	}
+	
 	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( org.lgna.project.ast.AbstractType<?,?,?> arrayType, org.lgna.project.ast.Expression... expressions ) {
 		Integer[] lengths = { expressions.length };
 		return new org.lgna.project.ast.ArrayInstanceCreation( arrayType, lengths, expressions );

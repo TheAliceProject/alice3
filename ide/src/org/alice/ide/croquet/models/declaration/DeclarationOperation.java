@@ -51,7 +51,7 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 	private final ValueComponentTypeState valueComponentTypeState;
 	private final IsArrayValueTypeState isArrayValueTypeState;
 	private final NameState nameState;
-	private final InitializerState initializerState;
+	private final org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > initializerState;
 	private final boolean isDeclaringTypeEditable;
 	private final boolean isValueComponentTypeEditable;
 	private final boolean isIsArrayValueTypeEditable;
@@ -82,7 +82,6 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 			this.declaringTypeState = null;
 		}
 		
-		assert initialValueComponentType != null || isValueComponentTypeEditable;
 		this.valueComponentTypeState = new ValueComponentTypeState( this, initialValueComponentType );
 		this.isArrayValueTypeState = new IsArrayValueTypeState( this, initialIsArrayValueType );
 		
@@ -92,7 +91,7 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 			this.nameState = null;
 		}
 		if( initialExpression != null || isInitializerEditable ) {
-			this.initializerState = new InitializerState( this, initialExpression );
+			this.initializerState = this.createInitializerState( initialExpression );
 		} else {
 			this.initializerState = null;
 		}
@@ -104,6 +103,9 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 		this.isInitializerEditable = isInitializerEditable;
 		
 		this.isArrayValueTypeState.setEnabled( this.isIsArrayValueTypeEditable );
+	}
+	protected org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > createInitializerState( org.lgna.project.ast.Expression initialValue ) {
+		return new InitializerState( this, initialValue );
 	}
 	@Override
 	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
@@ -153,7 +155,7 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 	public NameState getNameState() {
 		return this.nameState;
 	}
-	public InitializerState getInitializerState() {
+	public org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > getInitializerState() {
 		return this.initializerState;
 	}
 	

@@ -46,27 +46,28 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class UnspecifiedValueTypeGalleryFieldDeclarationOperation extends org.lgna.croquet.InformationDialogOperation {
+public class UnspecifiedValueTypeGalleryFieldDeclarationOperation extends GalleryFieldDeclarationOperation {
 	private static class SingletonHolder {
 		private static UnspecifiedValueTypeGalleryFieldDeclarationOperation instance = new UnspecifiedValueTypeGalleryFieldDeclarationOperation();
 	}
-	public static UnspecifiedValueTypeGalleryFieldDeclarationOperation getInstance( org.lgna.project.ast.UserType< ? > type ) {
-		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForGalleryFields( type ) ) {
-			return SingletonHolder.instance;
-		} else {
-			return null;
-		}
+	public static UnspecifiedValueTypeGalleryFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
 	}
 	private UnspecifiedValueTypeGalleryFieldDeclarationOperation() {
-		super( java.util.UUID.fromString( "d1c50593-a5ef-40af-9643-f66b87530fcf" ) );
+		super( 
+				java.util.UUID.fromString( "3806ae94-e254-483b-a1b4-5aa5fb7c2a7f" ), 
+				null, false, 
+				false, false, 
+				"", true, 
+				null, true 
+		);
 	}
 	@Override
-	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.InformationDialogOperationStep context, org.lgna.croquet.components.Dialog dialog ) {
-		org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label( "for now, please edit scene", 2.0f );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.croquet.components.declaration.GalleryFieldDeclarationPanel( this );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.declaration.GalleryFieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.GalleryFieldDeclarationOperation.EditCustomization rv ) {
 		return rv;
-	}
-	@Override
-	protected void releaseContentPane( org.lgna.croquet.history.InformationDialogOperationStep context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 	}
 }

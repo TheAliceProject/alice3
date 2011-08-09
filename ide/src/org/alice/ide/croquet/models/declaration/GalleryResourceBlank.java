@@ -41,17 +41,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ApiConfigurationManager {
-	public boolean isFieldDeletable( org.lgna.project.ast.UserField field );
-	public boolean isDeclaringTypeForGalleryFields( org.lgna.project.ast.UserType< ? > type );
-	public Iterable< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getTopLevelGalleryTypes();
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis();
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
-	public javax.swing.tree.TreeNode getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
+public class GalleryResourceBlank< B > extends org.lgna.croquet.CascadeBlank< B > {
+	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, GalleryResourceBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static GalleryResourceBlank getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
+		synchronized( map ) {
+			GalleryResourceBlank rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new GalleryResourceBlank( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
+	}
+	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
+	private GalleryResourceBlank( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		super( java.util.UUID.fromString( "083cebd0-a212-4b77-8bb3-a05f893ff2dd" ) );
+		this.type = type;
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< B > blankNode ) {
+		javax.swing.tree.TreeNode treeNode = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceTreeNodeFor( this.type );
+		if( treeNode != null ) {
+			final int N = treeNode.getChildCount();
+			for( int i=0; i<N; i++ ) {
+				Object child = treeNode.getChildAt( i );
+				if( child instanceof Class<?> ) {		
+					Class<?> cls = (Class<?>)child;
+				}
+			}
+		}
+		return rv;
+	}
 }
