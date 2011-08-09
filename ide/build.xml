@@ -92,93 +92,93 @@
     </target>
     <target name="StressTestTutorial">
         <java classname="org.alice.stageide.tutorial.StressTestTutorial" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot;"/>
+            <jvmarg line="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot;"/>
             <arg line="&quot;${project_loc:ide}/share/application/projects/templates/GrassyProject.a3p&quot;"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="StressTestTutorial (1.6)">
         <java classname="org.alice.stageide.tutorial.StressTestTutorial" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot;"/>
+            <jvmarg line="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot;"/>
             <arg line="&quot;${project_loc:ide}/share/application/projects/templates/GrassyProject.a3p&quot; 0 0 1280 1024"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IntroductionTutorial">
         <java classname="org.alice.stageide.tutorial.IntroductionTutorial" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot;"/>
+            <jvmarg line="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot;"/>
             <arg line="&quot;${project_loc:ide}/share/application/projects/tutorials/SkateRoutine.a3p&quot;"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IntroductionTutorial (1.6)">
         <java classname="org.alice.stageide.tutorial.IntroductionTutorial" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot;"/>
+            <jvmarg line="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot;"/>
             <arg line="&quot;${project_loc:ide}/share/application/projects/tutorials/SkateRoutine.a3p&quot; 0 0 1280 1024"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IDE">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dcom.apple.mrj.application.apple.menu.about.name=Alice3Beta -Dapple.laf.useScreenMenuBar=true"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot; -Dcom.apple.mrj.application.apple.menu.about.name=Alice3Beta -Dapple.laf.useScreenMenuBar=true"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IDE (scene) (a)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.IDE.isSceneEditorExpanded=true"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot; -Dorg.alice.ide.IDE.isSceneEditorExpanded=true"/>
             <arg line="&quot;${system_property:user.home}/My Documents/Alice3/MyProjects/a.a3p&quot; 0 0 1280 1024"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IDE (scene) (a) (1.6)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.IDE.isSceneEditorExpanded=true"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot; -Dorg.alice.ide.IDE.isSceneEditorExpanded=true"/>
             <arg line="&quot;${system_property:user.home}/My Documents/Alice3/MyProjects/a.a3p&quot; 0 0 1280 1024"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IDE (debug)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.DebugMode=&quot;true&quot; -Dorg.alice.ide.IDE.isSceneEditorExpanded=&quot;true&quot;"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot; -Dorg.alice.ide.DebugMode=&quot;true&quot; -Dorg.alice.ide.IDE.isSceneEditorExpanded=&quot;true&quot;"/>
             <arg line="null 0 0 1024 768"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IDE (clearAllPreferences)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.clearAllPreferences=true"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot; -Dorg.alice.clearAllPreferences=true"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IDE (a)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot;"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot;"/>
             <arg line="&quot;${system_property:user.home}/My Documents/Alice3/MyProjects/a.a3p&quot; 0 0 1280 1024"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IDE (1.6)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true -Dorg.lgna.croquet.Element.isIdCheckDesired=true -Dcom.apple.mrj.application.apple.menu.about.name=Alice3Beta"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot; -Dorg.alice.ide.internalTesting=true -Dorg.lgna.croquet.Element.isIdCheckDesired=true -Dcom.apple.mrj.application.apple.menu.about.name=Alice3Beta"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IDE (1.6) (taiwanese)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Duser.language=zh -Duser.country=TW"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot; -Duser.language=zh -Duser.country=TW"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IDE (1.6) (spanish)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Duser.language=es"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot; -Duser.language=es"/>
             <classpath refid="ide.classpath"/>
         </java>
     </target>
     <target name="IDE (1.6) (a)">
         <java classname="org.alice.stageide.EntryPoint" failonerror="true" fork="yes">
-            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true -Dorg.lgna.croquet.Element.isIdCheckDesired=true -Dcom.apple.mrj.application.apple.menu.about.name=Alice3Beta"/>
+            <jvmarg line="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/application/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/application/assets/alice&quot; -Dorg.alice.ide.internalTesting=true -Dorg.lgna.croquet.Element.isIdCheckDesired=true -Dcom.apple.mrj.application.apple.menu.about.name=Alice3Beta"/>
             <arg line="&quot;${system_property:user.home}/My Documents/Alice3/MyProjects/a.a3p&quot; 0 0 1280 720"/>
             <classpath refid="ide.classpath"/>
         </java>
