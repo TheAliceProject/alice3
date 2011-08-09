@@ -48,14 +48,6 @@ package org.alice.stageide;
  */
 public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurationManager {
 	SINGLETON {
-		public boolean isFieldDeletable( org.lgna.project.ast.UserField field ) {
-			if( field.getValueType().isAssignableTo( org.lgna.story.Camera.class ) ) {
-				if( field.getDeclaringType().isAssignableTo( org.lgna.story.Scene.class ) ) {
-					return false;
-				}
-			}
-			return true;
-		}
 		public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
 			return type.isAssignableTo( org.lgna.story.Scene.class );
 		}
