@@ -10,9 +10,11 @@ package edu.cmu.cs.dennisc.nebulous;
 public class Person extends Model {
 	static {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Person.class, PersonAdapter.class );
+		
 	}
 
 	public Person( Object o ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+		System.out.println(System.getProperty("java.library.path"));
 		initialize( o );
 	}
 	private native void initialize( Object o );

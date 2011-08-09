@@ -59,6 +59,7 @@ import java.util.zip.ZipFile;
 
 import javax.imageio.ImageIO;
 
+import org.alice.ide.ResourcePathManager;
 import org.alice.ide.ast.NodeUtilities;
 import org.lgna.project.ast.Argument;
 import org.lgna.project.ast.ConstructorBlockStatement;
@@ -80,6 +81,7 @@ import org.lgna.story.resources.ModelResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
@@ -90,6 +92,7 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
 public class ModelResourceUtilities {
 	
 	public static String DEFAULT_PACKAGE = "";
+	
 	
 	public static String getName(Class<?> modelResource)
 	{
@@ -200,8 +203,39 @@ public class ModelResourceUtilities {
 		{
 			e.printStackTrace();
 		}
-		
 		return classes;
+	}
+	
+	public static List<Class<?>> getAndLoadModelResourceClasses(List<File> resourcePaths)
+	{
+		List<Class<?>> galleryClasses = new LinkedList<Class<?>>();
+		for (File modelPath : resourcePaths)
+		{
+			try {
+				File[] jarFiles = FileUtilities.listDescendants(modelPath, "jar");
+				for (File f : jarFiles)
+				{
+					galleryClasses.addAll( ModelResourceUtilities.loadResourceJarFile(f) );
+				}
+			}
+			catch (Exception e)
+			{
+				System.err.println("Failed to load resources on path: '"+modelPath+"'");
+			}
+		}
+		return galleryClasses;
+	}
+	
+	public static Class<?> getModelClassForResourceClass(Class<?> resourceClass)
+	{
+		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
+			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
+			return resourceTemplate.modelClass();
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public static String getAliceClassName(Class<?> resourceClass)
@@ -214,6 +248,18 @@ public class ModelResourceUtilities {
 		}
 		name = getClassNameFromName(name);
 		return name;
+	}
+	
+	public static String getClassNameFromName(String name)
+	{
+		StringBuilder sb = new StringBuilder();
+		String[] nameParts = name.split("[_ ]");
+		for (String part : nameParts)
+		{
+			sb.append(part.substring(0, 1).toUpperCase());
+			sb.append(part.substring(1).toLowerCase());
+		}
+		return sb.toString();
 	}
 	
 	public static UserPackage getAlicePackage(Class<?> resourceClass, Class<?> rootClass)
@@ -257,7 +303,7 @@ public class ModelResourceUtilities {
 		return constructor ;
 	}
 	
-	private static ConstructorParameterPair getConstructorAndParameterForAliceClass(NamedUserType aliceType)
+	public static ConstructorParameterPair getConstructorAndParameterForAliceClass(NamedUserType aliceType)
 	{
 		for (int i=0; i<aliceType.constructors.size(); i++)
 		{
@@ -274,7 +320,7 @@ public class ModelResourceUtilities {
 		return null;
 	}
 	
-	private static ConstructorParameterPair getConstructorAndParameterForJavaClass(Class<?> javaClass)
+	public static ConstructorParameterPair getConstructorAndParameterForJavaClass(Class<?> javaClass)
 	{
 		JavaType javeType = JavaType.getInstance(javaClass);
 		List<JavaConstructor> constructors = javeType.getDeclaredConstructors();
@@ -293,155 +339,6 @@ public class ModelResourceUtilities {
 		}
 		return null;
 	}
-	
-	private static String getClassNameFromName(String name)
-	{
-		StringBuilder sb = new StringBuilder();
-		String[] nameParts = name.split("[_ ]");
-		for (String part : nameParts)
-		{
-			sb.append(part.substring(0, 1).toUpperCase());
-			sb.append(part.substring(1).toLowerCase());
-		}
-		return sb.toString();
-		
-	}
-	
-	//The Stack<Class<?>> classes is a stack of classes representing the hierarchy of the classes, with the parent class at the top of the stack
-	private static ModelResourceTreeNode addNodes(ModelResourceTreeNode root, Stack<Class<?>> classes)
-	{
-		Class<?> rootClass = null;
-		ModelResourceTreeNode currentNode = root;
-		while (!classes.isEmpty())
-		{
-			Class<?> currentClass = classes.pop();
-			//The root class is the one at the top of the stack, so grab it the first time around
-			if (rootClass == null)
-			{
-				rootClass = currentClass;
-			}
-			ModelResourceTreeNode parentNode = currentNode;
-			ModelResourceTreeNode classNode = null;
-			if (resourceClassToNodeMap.containsKey(currentClass))
-			{
-				classNode = resourceClassToNodeMap.get(currentClass);
-			}
-			//Build a new ModelResourceTreeNode for the current class
-			if (classNode == null)
-			{
-				NamedUserType aliceType = null;
-				String aliceClassName = getAliceClassName(currentClass);
-				UserPackage packageName = getAlicePackage(currentClass, rootClass);
-				UserMethod[] methods = {};
-				UserField[] fields = {};
-				if (parentNode == null || parentNode.getTypeDeclaredInAlice() == null)
-				{
-					Class<?> parentClass = getModelClassForResourceClass(currentClass);
-					ConstructorParameterPair parentConstructorAndParameter = getConstructorAndParameterForJavaClass(parentClass);
-					NamedUserConstructor constructor = createConstructorForResourceClass(currentClass, parentConstructorAndParameter);
-					NamedUserConstructor[] constructors = {constructor};
-					aliceType = new NamedUserType(aliceClassName, packageName, parentClass, constructors, methods, fields);
-				}
-				else
-				{
-					NamedUserType parentType = parentNode.getTypeDeclaredInAlice();
-					ConstructorParameterPair parentConstructorAndParameter = getConstructorAndParameterForAliceClass(parentType);
-					NamedUserConstructor constructor = createConstructorForResourceClass(currentClass, parentConstructorAndParameter);
-					NamedUserConstructor[] constructors = {constructor};
-					aliceType = new NamedUserType(aliceClassName, packageName, parentType, constructors, methods, fields);
-				}
-				classNode = new ModelResourceTreeNode(aliceType, currentClass);
-				resourceClassToNodeMap.put(currentClass, classNode);
-				if (root == null) //if the root node passed in is null, assign it to be the node from the first class we process
-				{
-					root = classNode;
-				}
-				Field[] resourceConstants = currentClass.getFields();
-				if (resourceConstants.length != 0)
-				{
-					for (Field f : resourceConstants)
-					{
-						String fieldClassName = getClassNameFromName(f.getName())+aliceClassName;
-						NamedUserType parentType = classNode.getTypeDeclaredInAlice();
-						ConstructorParameterPair parentConstructorAndParameter = getConstructorAndParameterForAliceClass(parentType);
-						NamedUserConstructor constructor = createConstructorForResourceField(f, parentConstructorAndParameter);
-						NamedUserConstructor[] constructors = {constructor};
-						NamedUserType fieldType = new NamedUserType(fieldClassName, packageName, parentType, constructors, methods, fields);
-						ModelResourceTreeNode fieldNode = new ModelResourceTreeNode(fieldType, currentClass);
-						try
-						{
-							ModelResource resource = (ModelResource)f.get(null);
-							fieldNode.setModelResource(resource);
-						}
-						catch (Exception e)
-						{
-							e.printStackTrace();
-						}
-						fieldNode.setParent(classNode);
-						resourceClassToNodeMap.put(f, fieldNode);
-					}
-				}
-				
-			}
-			classNode.setParent(parentNode);
-			currentNode = classNode;
-		}
-		return root;
-	}
-	
-	private static Map<Class<?>, Class<?>> resourceClassToModelClassMap = new HashMap<Class<?>, Class<?>>();
-	private static Map<Object, ModelResourceTreeNode> resourceClassToNodeMap = new HashMap<Object, ModelResourceTreeNode>();
-	
-	public static Class<?> getModelClassForResourceClass(Class<?> resourceClass)
-	{
-		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
-			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
-			return resourceTemplate.modelClass();
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	
-	public static ModelResourceTreeNode createClassTree(List<Class<?>> classes)
-	{
-		ModelResourceTreeNode topNode = new ModelResourceTreeNode(null, null);
-		for (Class<?> cls : classes)
-		{
-			Class<?> currentClass = cls;
-			Stack<Class<?>> classStack = new Stack<Class<?>>();			
-			Class<?>[] interfaces = null;
-			while (currentClass != null)
-			{
-				classStack.push(currentClass);
-				Class<?> modelClass = getModelClassForResourceClass(currentClass);
-				if (modelClass != null)
-				{
-					if (!resourceClassToModelClassMap.containsKey(currentClass))
-					{
-						resourceClassToModelClassMap.put(currentClass, modelClass);
-					}
-					break;
-				}
-				
-				interfaces = currentClass.getInterfaces();
-				if (interfaces != null && interfaces.length > 0)
-				{
-					currentClass = interfaces[0];
-				}
-				else
-				{
-					currentClass = null;
-				}
-			}
-			addNodes(topNode, classStack);
-		}
-		topNode.printTree();
-		return topNode;
-	}
-	
 
 	
 }

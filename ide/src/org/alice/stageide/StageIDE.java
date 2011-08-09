@@ -47,13 +47,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.stageide.ast.SceneAdapter;
+import org.lgna.croquet.components.JComponent;
+import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.virtualmachine.VirtualMachine;
 import org.lgna.story.Scene;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
+import org.lgna.story.resourceutilities.StorytellingResources;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
 
 public class StageIDE extends org.alice.ide.IDE {
 	public static StageIDE getActiveInstance() {
@@ -447,28 +451,16 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.CameraMarker.class ) );
 		return rv;
 	}
+	
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> root ) {
-		return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( root );
+	protected JComponent<?> createClassGalleryBrowser(TreeNode<JavaType> root) {
+		assert root instanceof ModelResourceTreeNode;
+		return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( (ModelResourceTreeNode)root );
 	}
-
+	
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> getClassGalleryRoot() {
-		try {
-			String rootGalleryPath = this.getApplicationRootDirectory() + "/assets/newAPI";
-
-			File[] jarFiles = FileUtilities.listDescendants(rootGalleryPath, "jar");
-			List<Class<?>> galleryClasses = new LinkedList<Class<?>>();
-			for (File f : jarFiles)
-			{
-				galleryClasses.addAll( ModelResourceUtilities.loadResourceJarFile(f) );
-			}
-			
-			ModelResourceTreeNode galleryTree = ModelResourceUtilities.createClassTree(galleryClasses);
-			return galleryTree;
-		} catch( Exception e ) {
-			throw new RuntimeException( e );
-		}
+	public ModelResourceTreeNode getClassGalleryRoot() {
+		return StorytellingResources.getInstance().getGalleryTree();
 	}
 	
 //	@Override
@@ -550,4 +542,5 @@ public class StageIDE extends org.alice.ide.IDE {
 		//rv.add( new edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > >( "Key", org.lookingglassandalice.storytelling.Key.class ) );
 		return rv;
 	}
+
 }

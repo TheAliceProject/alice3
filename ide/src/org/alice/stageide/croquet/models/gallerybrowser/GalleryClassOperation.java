@@ -45,6 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
 import org.lgna.croquet.history.InputDialogOperationStep;
+import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
@@ -64,8 +65,8 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation {
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 desiredTransformation = null;
 	
-	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>, GalleryClassOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static GalleryClassOperation getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode ) {
+	private static java.util.Map<ModelResourceTreeNode, GalleryClassOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static GalleryClassOperation getInstance( ModelResourceTreeNode treeNode ) {
 		GalleryClassOperation rv = map.get( treeNode );
 		if( rv != null ) {
 			//pass
@@ -76,14 +77,14 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 		return rv;
 	}
 
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode;
-	private GalleryClassOperation(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode) {
+	private ModelResourceTreeNode treeNode;
+	private GalleryClassOperation(ModelResourceTreeNode treeNode) {
 		super( java.util.UUID.fromString( "98886117-99d3-4c9a-b08d-78a2c95acb2d" ) );
 		this.treeNode = treeNode;
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.CreateFieldFromGalleryPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getDeclaringType(), this.treeNode.getValue());
+		return new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(this.getDeclaringType(), this.treeNode.getUserType());
 	}
 	
 	public void setDesiredTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 desiredTransformation )
@@ -153,7 +154,7 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
 		org.lgna.project.ast.UserField field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {
-			ModelResource resource = ((ModelResourceTreeNode)this.treeNode).getModelResource();
+			ModelResource resource = this.treeNode.getModelResource();
 			Object fieldObject = createFieldFromGalleryPane.createInstanceInJavaForArguments(resource);
 			AffineMatrix4x4 objectTransform = null;
 			if (this.desiredTransformation != null)
@@ -164,17 +165,14 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 			}
 			else
 			{
-				if (this.treeNode instanceof ModelResourceTreeNode)
-				{
-					Class<?> resourceClass = ((ModelResourceTreeNode)this.treeNode).getResourceClass();
-					edu.cmu.cs.dennisc.math.AxisAlignedBox box = ModelResourceUtilities.getBoundingBox(resourceClass);
-					if (box.isNaN())
-                    {
-                        System.err.println("TODO: fix broken bounding box for "+this.treeNode.getValue());
-                    }
-					objectTransform = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getGoodPointOfViewInSceneForObject(box);
-					
-				}
+
+				Class<?> resourceClass = this.treeNode.getResourceClass();
+				edu.cmu.cs.dennisc.math.AxisAlignedBox box = ModelResourceUtilities.getBoundingBox(resourceClass);
+				if (box.isNaN())
+                {
+                    System.err.println("TODO: fix broken bounding box for "+this.treeNode.getValue());
+                }
+				objectTransform = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getGoodPointOfViewInSceneForObject(box);
 			}
 			if (objectTransform != null)
 			{
