@@ -45,6 +45,7 @@ package org.lgna.story.resourceutilities;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;
@@ -63,7 +64,9 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 	private NamedUserType userType;
 	private Class<?> resourceClass;
 	private JavaType resourceJavaType;
-	private ModelResource modelResource;
+	
+	private JavaField resourceJavaField = null;
+	private ModelResource modelResourceInstance = null;
 	private String name;
 	private boolean isSorted = false;
 	
@@ -92,16 +95,6 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		}
 	}
 	
-	public NamedUserType getTypeDeclaredInAlice()
-	{
-		return this.userType;
-	}
-	
-	public void setTypeDeclaredInAlice(NamedUserType type)
-	{
-		this.userType = type;
-	}
-	
 	public boolean getAllowsChildren() {
 		return true;
 	}
@@ -113,6 +106,10 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 			this.isSorted = true;
 		}
 		return this.children;
+	}
+	
+	public java.util.List< ? extends ModelResourceTreeNode > childrenList() {
+		return this.getSortedChildren();
 	}
 	
 	public java.util.Enumeration< ? extends ModelResourceTreeNode > children() {
@@ -230,6 +227,11 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return null;
 	}
 	
+	public void setUserType(NamedUserType type)
+	{
+		this.userType = type;
+	}
+	
 	public NamedUserType getUserType()
 	{
 		return this.userType;
@@ -252,14 +254,24 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return this.resourceJavaType;
 	}
 	
-	public void setModelResource(ModelResource modelResource)
+	public void setModelResourceInstance(ModelResource modelResource)
 	{
-		this.modelResource = modelResource;
+		this.modelResourceInstance = modelResource;
 	}
 	
-	public ModelResource getModelResource()
+	public ModelResource getModelResourceInstance()
 	{
-		return this.modelResource;
+		return this.modelResourceInstance;
+	}
+	
+	public void setJavaField(JavaField field)
+	{
+		this.resourceJavaField = field;
+	}
+	
+	public JavaField getJavaField()
+	{
+		return this.resourceJavaField;
 	}
 	
 	public int compareTo(ModelResourceTreeNode other) {

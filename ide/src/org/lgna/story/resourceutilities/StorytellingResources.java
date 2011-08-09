@@ -31,6 +31,25 @@ public class StorytellingResources {
 		return rootTypes;
 	}
 	
+	public List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) 
+	{
+		java.util.List<org.lgna.project.ast.AbstractDeclaration> toReturn = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		java.util.List<? extends ModelResourceTreeNode> nodes = this.galleryTree.getGalleryResourceChildrenForJavaType(type);
+		for (ModelResourceTreeNode node : nodes)
+		{
+			if (node.isLeaf() && node.getJavaField() != null)
+			{
+				toReturn.add(node.getJavaField());
+			}
+			else
+			{
+				toReturn.add(node.getResourceJavaType());
+			}
+		}
+		return toReturn;
+		
+	}
+	
 	public ModelResourceTreeNode getGalleryResourceTreeNodeForJavaType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) 
 	{
 		return this.galleryTree.getGalleryResourceTreeNodeForJavaType(type);

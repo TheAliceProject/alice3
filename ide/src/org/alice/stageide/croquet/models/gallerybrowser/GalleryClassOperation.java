@@ -154,7 +154,7 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
 		org.lgna.project.ast.UserField field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {
-			ModelResource resource = this.treeNode.getModelResource();
+			ModelResource resource = this.treeNode.getModelResourceInstance();
 			Object fieldObject = createFieldFromGalleryPane.createInstanceInJavaForArguments(resource);
 			AffineMatrix4x4 objectTransform = null;
 			if (this.desiredTransformation != null)

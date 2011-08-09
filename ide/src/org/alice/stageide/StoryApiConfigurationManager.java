@@ -61,8 +61,7 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 			return StorytellingResources.getInstance().getTopLevelGalleryTypes();
 		}
 		public Iterable< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-			//todo
-			return java.util.Collections.emptyList();
+			return StorytellingResources.getInstance().getGalleryResourceChildrenFor(type);
 		}
 //		public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<?> getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 //			if (type instanceof org.lgna.project.ast.JavaType)
