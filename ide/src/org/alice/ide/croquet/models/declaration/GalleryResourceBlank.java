@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceBlank< B > extends org.lgna.croquet.CascadeBlank< B > {
+public class GalleryResourceBlank extends org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression > {
 	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, GalleryResourceBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static GalleryResourceBlank getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
 		synchronized( map ) {
@@ -66,7 +66,7 @@ public class GalleryResourceBlank< B > extends org.lgna.croquet.CascadeBlank< B 
 		this.type = type;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< B > blankNode ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
 		return GalleryResourceUtilities.updateChildren( rv, blankNode, this.type );
 	}
 }

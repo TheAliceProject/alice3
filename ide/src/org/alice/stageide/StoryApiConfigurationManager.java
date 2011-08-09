@@ -60,16 +60,20 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		public Iterable< ? extends org.lgna.project.ast.AbstractType< ?, ?, ? > > getTopLevelGalleryTypes() {
 			return StorytellingResources.getInstance().getTopLevelGalleryTypes();
 		}
-		public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<?> getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-			if (type instanceof org.lgna.project.ast.JavaType)
-			{
-				return StorytellingResources.getInstance().getGalleryResourceTreeNodeForJavaType(type);
-			}
-			else
-			{
-				return StorytellingResources.getInstance().getGalleryResourceTreeNodeForUserType(type);
-			}
+		public Iterable< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+			//todo
+			return java.util.Collections.emptyList();
 		}
+//		public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<?> getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+//			if (type instanceof org.lgna.project.ast.JavaType)
+//			{
+//				return StorytellingResources.getInstance().getGalleryResourceTreeNodeForJavaType(type);
+//			}
+//			else
+//			{
+//				return StorytellingResources.getInstance().getGalleryResourceTreeNodeForUserType(type);
+//			}
+//		}
 		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
 			return null;
 		}
