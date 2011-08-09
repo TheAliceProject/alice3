@@ -40,37 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class SetArrayAtIndexTemplate extends ExpressionStatementTemplate {
-	private org.lgna.project.ast.AbstractField field;
-	public SetArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.croquet.models.ast.SetArrayAtIndexDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
+public class FieldInitializerState extends org.alice.ide.croquet.models.ExpressionState {
+	private static java.util.Map< org.lgna.project.ast.UserField, FieldInitializerState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FieldInitializerState getInstance( org.lgna.project.ast.UserField field ) {
+		FieldInitializerState rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldInitializerState( field );
+			map.put( field, rv );
 		}
+		return rv;
+	}
+	private final org.lgna.project.ast.UserField field;
+	private FieldInitializerState( org.lgna.project.ast.UserField field ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7df7024e-5eef-4ed0-b463-da3719955e7a" ), field.initializer.getValue() );
+		this.field = field;
 	}
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return new org.lgna.project.ast.AssignmentExpression( 
-				this.field.getValueType().getComponentType(), 
-				new org.lgna.project.ast.ArrayAccess( 
-						field.getValueType(), 
-						org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( this.field ), 
-						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
-				), 
-				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 
-				new org.alice.ide.ast.EmptyExpression( this.field.getValueType().getComponentType() )
-		);
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+		return this.field.getValueType();
 	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		//todo
-		return new org.alice.ide.croquet.models.ast.cascade.statement.FieldArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.field ).getRoot().getPopupPrepModel();
-	}
+
 }

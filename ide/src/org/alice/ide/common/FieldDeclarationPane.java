@@ -61,15 +61,13 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.addComponent( new org.alice.ide.common.GetsPane( true ) );
 		
-		//todo
-		//boolean isDropDownPotentiallyDesired = factory instanceof org.alice.ide.memberseditor.Factory;
-		
-		org.lgna.croquet.components.Component< ? > component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
-//		if( factory instanceof org.alice.ide.memberseditor.Factory ) {
-//			if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredForFieldInitializer( field ) ) {
-//				component = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane(null, component, field.initializer, field.getDesiredValueType() );
-//			}
-//		}
+		boolean isDropDownDesired = factory instanceof org.alice.ide.memberseditor.Factory && field.isManaged.getValue() == false;
+		org.lgna.croquet.components.Component< ? > component;
+		if( isDropDownDesired ) {
+			component = org.alice.ide.croquet.models.ast.FieldInitializerState.getInstance( this.field ).createComponent();
+		} else {
+			component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
+		}
 		this.addComponent( component );
 	}
 

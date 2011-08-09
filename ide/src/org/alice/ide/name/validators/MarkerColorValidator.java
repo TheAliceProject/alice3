@@ -82,7 +82,7 @@ public class MarkerColorValidator extends MemberNameValidator {
 				assert field != null;
 				if( field == node) {
 					//pass
-				} else if (field.getDesiredValueType().isAssignableTo(Marker.class)){
+				} else if (field.getValueType().isAssignableTo(Marker.class)){
 					String fieldSuffix = getColorAndNumberSuffix(field.name.getValue());
 					if( suffix.equals( fieldSuffix ) ) {
 						return false;

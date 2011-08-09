@@ -55,7 +55,7 @@ public class EditFieldPane extends AbstractDeclarationPane< org.lgna.project.ast
 		this.fieldDeclaredInAlice = fieldDeclaredInAlice;
 		this.isReferenced = isReferenced;
 		this.isReassigned = isReassigned;
-		this.isDropDownForFieldInitializerDesired = this.getIDE().isDropDownDesiredForFieldInitializer( this.fieldDeclaredInAlice );
+		this.isDropDownForFieldInitializerDesired = this.fieldDeclaredInAlice.isManaged.getValue() == false;
 	}
 	@Override
 	protected String getDefaultNameText() {
