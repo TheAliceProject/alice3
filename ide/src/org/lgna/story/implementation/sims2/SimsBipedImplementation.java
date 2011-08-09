@@ -43,10 +43,32 @@
 
 package org.lgna.story.implementation.sims2;
 
+
 /**
  * @author Dennis Cosgrove
  */
 public class SimsBipedImplementation extends org.lgna.story.implementation.BipedImplementation {
+	
+	static {
+//		java.io.File root = GalleryRootUtilities.calculateGalleryRootDirectory( Model.class, "/Alice3Beta/gallery", "gallery", "assets", "org.alice.apis.stage", "The Sims (TM) 2 Art Assets", "Alice" );
+//		java.io.File directory = new java.io.File( root, "assets/org.alice.apis.stage" ); 
+//		if( directory.exists() ) {
+//			for( java.io.File file : directory.listFiles() ) {
+//				try {
+//					if( file.getName().endsWith( "txt" ) ) {
+//						//pass
+//					} else {
+//						edu.cmu.cs.dennisc.nebulous.Manager.addBundle( file );
+//					}
+//				} catch( Throwable t ) {
+//					t.printStackTrace();
+//				}
+//			}
+//		} else {
+//			javax.swing.JOptionPane.showMessageDialog( null, "cannot find The Sims (TM) 2 Art Assets" );
+//		}
+	}
+	
 	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
 	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
 	private org.lgna.story.resources.sims2.Gender gender;

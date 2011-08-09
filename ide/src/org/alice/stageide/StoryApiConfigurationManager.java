@@ -43,6 +43,8 @@
 
 package org.alice.stageide;
 
+import org.lgna.story.resourceutilities.StorytellingResources;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -63,13 +65,17 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 			return type.isAssignableTo( org.lgna.story.Entity.class );
 		}
 		public Iterable< ? extends org.lgna.project.ast.AbstractType< ?, ?, ? > > getTopLevelGalleryTypes() {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
-					org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class ),
-					org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Swimmer.class )
-			);
+			return StorytellingResources.getInstance().getTopLevelGalleryTypes();
 		}
-		public javax.swing.tree.TreeNode getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-			return null;
+		public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<?> getGalleryResourceTreeNodeFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+			if (type instanceof org.lgna.project.ast.JavaType)
+			{
+				return StorytellingResources.getInstance().getGalleryResourceTreeNodeForJavaType(type);
+			}
+			else
+			{
+				return StorytellingResources.getInstance().getGalleryResourceTreeNodeForUserType(type);
+			}
 		}
 		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
 			return null;

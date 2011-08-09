@@ -52,6 +52,7 @@ import org.lgna.project.virtualmachine.VirtualMachine;
 import org.lgna.story.Scene;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
+import org.lgna.story.resourceutilities.StorytellingResources;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
@@ -476,21 +477,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> getClassGalleryRoot() {
-		try {
-			String rootGalleryPath = this.getApplicationRootDirectory() + "/assets/newAPI";
-
-			File[] jarFiles = FileUtilities.listDescendants(rootGalleryPath, "jar");
-			List<Class<?>> galleryClasses = new LinkedList<Class<?>>();
-			for (File f : jarFiles)
-			{
-				galleryClasses.addAll( ModelResourceUtilities.loadResourceJarFile(f) );
-			}
-			
-			ModelResourceTreeNode galleryTree = ModelResourceUtilities.createClassTree(galleryClasses);
-			return galleryTree;
-		} catch( Exception e ) {
-			throw new RuntimeException( e );
-		}
+		return StorytellingResources.getInstance().getGalleryTree();
 	}
 	
 //	@Override
