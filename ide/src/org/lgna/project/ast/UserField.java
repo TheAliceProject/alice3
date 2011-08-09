@@ -90,10 +90,6 @@ public class UserField extends AbstractField implements UserMember {
 	public AbstractType<?,?,?> getValueType() {
 		return valueType.getValue();
 	}
-	@Override
-	public AbstractType<?,?,?> getDesiredValueType() {
-		return getValueType();
-	}
 
 	@Override
 	public UserType<?> getDeclaringType() {

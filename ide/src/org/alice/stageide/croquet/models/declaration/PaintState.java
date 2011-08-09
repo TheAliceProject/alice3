@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PaintState extends org.alice.ide.croquet.models.ExpressionState {
+public abstract class PaintState extends org.alice.ide.croquet.models.PredeterminedTypeExpressionState {
 	public PaintState( java.util.UUID id ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, id, null, org.lgna.story.Paint.class );
 	}

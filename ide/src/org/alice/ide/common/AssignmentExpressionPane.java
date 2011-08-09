@@ -74,7 +74,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 			org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
 			isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
-			valueType = field.getDesiredValueType();
+			valueType = field.getValueType();
 			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, null, field.getDeclaringType() ) );
 			if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 				parent.addComponent( new org.lgna.croquet.components.Label( " . " ) );

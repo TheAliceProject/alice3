@@ -295,9 +295,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getInstanceInJava();
 		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 		
-		for (org.lgna.project.ast.AbstractField field : sceneField.getDesiredValueType().getDeclaredFields())
+		for (org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields())
 		{
-			if( field.getDesiredValueType().isAssignableTo(org.lgna.story.Camera.class)) 
+			if( field.getValueType().isAssignableTo(org.lgna.story.Camera.class)) 
 			{
 				this.setSceneCamera((org.lgna.project.ast.UserField)field);
 			}

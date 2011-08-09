@@ -111,10 +111,6 @@ public class JavaField extends AbstractField {
 		assert fld != null;
 		return JavaType.getInstance( fld.getType() );
 	}
-	@Override
-	public JavaType getDesiredValueType() {
-		return getValueType();
-	}
 	
 	@Override
 	public Access getAccess() {

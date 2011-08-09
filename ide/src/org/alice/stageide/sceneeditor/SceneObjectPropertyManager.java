@@ -267,7 +267,7 @@ public class SceneObjectPropertyManager extends GridBagPanel implements org.lgna
 			//Setup the primary properties
 			if (this.selectedField != null)
             {
-                this.classLabel.setText(this.selectedField.getDesiredValueType().getName());
+                this.classLabel.setText(this.selectedField.getValueType().getName());
             }
             else
             {
