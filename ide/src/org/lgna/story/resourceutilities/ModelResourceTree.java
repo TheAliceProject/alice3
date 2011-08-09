@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.alice.ide.ResourcePathManager;
+import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
@@ -58,6 +59,16 @@ public class ModelResourceTree {
 		return this.galleryTree.getDescendantOfJavaType(type);
 	}
 	
+	public List<? extends ModelResourceTreeNode> getGalleryResourceChildrenForJavaType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) 
+	{
+		ModelResourceTreeNode node = this.galleryTree.getDescendantOfJavaType(type);
+		if (node != null)
+		{
+			return node.childrenList();
+		}
+		return new LinkedList<ModelResourceTreeNode>();
+	}
+	
 	//The Stack<Class<?>> classes is a stack of classes representing the hierarchy of the classes, with the parent class at the top of the stack
 	private ModelResourceTreeNode addNodes(ModelResourceTreeNode root, Stack<Class<?>> classes)
 	{
@@ -85,7 +96,7 @@ public class ModelResourceTree {
 				UserPackage packageName = ModelResourceUtilities.getAlicePackage(currentClass, rootClass);
 				UserMethod[] methods = {};
 				UserField[] fields = {};
-				if (parentNode == null || parentNode.getTypeDeclaredInAlice() == null)
+				if (parentNode == null || parentNode.getUserType() == null)
 				{
 					Class<?> parentClass = ModelResourceUtilities.getModelClassForResourceClass(currentClass);
 					ConstructorParameterPair parentConstructorAndParameter = ModelResourceUtilities.getConstructorAndParameterForJavaClass(parentClass);
@@ -95,7 +106,7 @@ public class ModelResourceTree {
 				}
 				else
 				{
-					NamedUserType parentType = parentNode.getTypeDeclaredInAlice();
+					NamedUserType parentType = parentNode.getUserType();
 					ConstructorParameterPair parentConstructorAndParameter = ModelResourceUtilities.getConstructorAndParameterForAliceClass(parentType);
 					NamedUserConstructor constructor = ModelResourceUtilities.createConstructorForResourceClass(currentClass, parentConstructorAndParameter);
 					NamedUserConstructor[] constructors = {constructor};
@@ -113,7 +124,7 @@ public class ModelResourceTree {
 					for (Field f : resourceConstants)
 					{
 						String fieldClassName = ModelResourceUtilities.getClassNameFromName(f.getName())+aliceClassName;
-						NamedUserType parentType = classNode.getTypeDeclaredInAlice();
+						NamedUserType parentType = classNode.getUserType();
 						ConstructorParameterPair parentConstructorAndParameter = ModelResourceUtilities.getConstructorAndParameterForAliceClass(parentType);
 						NamedUserConstructor constructor = ModelResourceUtilities.createConstructorForResourceField(f, parentConstructorAndParameter);
 						NamedUserConstructor[] constructors = {constructor};
@@ -122,7 +133,9 @@ public class ModelResourceTree {
 						try
 						{
 							ModelResource resource = (ModelResource)f.get(null);
-							fieldNode.setModelResource(resource);
+							fieldNode.setModelResourceInstance(resource);
+							JavaField javaField = JavaField.getInstance(f);
+							fieldNode.setJavaField(javaField);
 						}
 						catch (Exception e)
 						{
