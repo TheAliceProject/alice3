@@ -43,6 +43,7 @@
 package org.alice.ide;
 
 import org.lgna.croquet.components.JComponent;
+import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 
 /**
@@ -480,8 +481,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv;
 	}
 
-	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> getClassGalleryRoot();
-	protected abstract JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> root );
+	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getClassGalleryRoot();
+	protected abstract JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> root );
 	
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();

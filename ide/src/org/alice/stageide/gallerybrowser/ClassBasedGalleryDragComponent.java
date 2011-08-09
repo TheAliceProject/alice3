@@ -48,7 +48,6 @@ import javax.swing.ImageIcon;
 
 import org.alice.ide.common.NodeLikeSubstance;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
@@ -58,8 +57,8 @@ import org.lgna.story.resourceutilities.ModelResourceUtilities;
  *
  */
 public class ClassBasedGalleryDragComponent extends NodeLikeSubstance {
-	private static java.util.Map<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType>, ClassBasedGalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ClassBasedGalleryDragComponent getInstance( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode ) {
+	private static java.util.Map<ModelResourceTreeNode, ClassBasedGalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ClassBasedGalleryDragComponent getInstance( ModelResourceTreeNode treeNode ) {
 		ClassBasedGalleryDragComponent rv = map.get( treeNode );
 		if( rv != null ) {
 			//pass
@@ -70,20 +69,16 @@ public class ClassBasedGalleryDragComponent extends NodeLikeSubstance {
 		return rv;
 	}
 	
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode;
-	private ClassBasedGalleryDragComponent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> treeNode ) {
+	private ModelResourceTreeNode treeNode;
+	private ClassBasedGalleryDragComponent( ModelResourceTreeNode treeNode ) {
 		this.treeNode = treeNode;
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-		
-		NamedUserType classValue = treeNode.getValue();
-		if (treeNode instanceof ModelResourceTreeNode)
-		{
-			Class<?> resourceClass = ((ModelResourceTreeNode)treeNode).getResourceClass();
-			BufferedImage thumbnail = ModelResourceUtilities.getThumbnail(resourceClass);
-			ImageIcon icon = new ImageIcon(thumbnail);
-			label.setIcon( icon );
-		}
-		
+	
+		Class<?> resourceClass = treeNode.getResourceClass();
+		BufferedImage thumbnail = ModelResourceUtilities.getThumbnail(resourceClass);
+		ImageIcon icon = new ImageIcon(thumbnail);
+		label.setIcon( icon );
+
 		label.setText( ClassBasedGalleryBrowser.getTextFor( this.treeNode, false ) );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
@@ -95,7 +90,7 @@ public class ClassBasedGalleryDragComponent extends NodeLikeSubstance {
 		this.getAwtComponent().setOpaque( false );
 	}
 	
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<NamedUserType> getTreeNode() {
+	public ModelResourceTreeNode getTreeNode() {
 		return this.treeNode;
 	}
 

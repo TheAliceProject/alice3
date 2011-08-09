@@ -26,7 +26,7 @@ public class StorytellingResources {
 		List< org.lgna.project.ast.UserType<?> > rootTypes = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		for (ModelResourceTreeNode node : rootNodes)
 		{
-			rootTypes.add(node.getValue());
+			rootTypes.add(node.getUserType());
 		}
 		return rootTypes;
 	}

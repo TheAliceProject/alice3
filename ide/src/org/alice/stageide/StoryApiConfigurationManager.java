@@ -43,6 +43,7 @@
 
 package org.alice.stageide;
 
+import org.lgna.project.ast.UserType;
 import org.lgna.story.resourceutilities.StorytellingResources;
 
 /**
