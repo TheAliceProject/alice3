@@ -413,9 +413,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public boolean isDropDownDesiredForFieldInitializer( org.lgna.project.ast.UserField field ) {
-		return true;
-	}
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
 		return (expression instanceof org.lgna.project.ast.TypeExpression || expression instanceof org.lgna.project.ast.ResourceExpression) == false;
 	}

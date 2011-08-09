@@ -50,14 +50,12 @@ public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel
 	private final org.lgna.project.ast.NamedUserType type;
 	public TypeDeclarationPane( org.lgna.project.ast.NamedUserType type ) {
 		this.type = type;
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getTypeColor() );
-
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		this.setBackgroundColor( ide.getTheme().getTypeColor() );
 
 		org.lgna.croquet.components.ToolPalette constructorsToolPalette = org.alice.ide.croquet.models.typeeditor.ConstructorTabState.getInstance( type ).createToolPalette( new ConstructorList( type ) );
 		constructorsToolPalette.setBackgroundColor( ide.getTheme().getConstructorColor() );
 
-		//org.lgna.croquet.components.ToolPalette proceduresToolPalette = org.alice.ide.croquet.models.typeeditor.ProceduresTabState.getInstance( type ).createToolPalette( ProcedureState.getInstance( type ).createMutableList( new ProcedureFactory() ) );
 		org.lgna.croquet.components.ToolPalette proceduresToolPalette = org.alice.ide.croquet.models.typeeditor.ProceduresTabState.getInstance( type ).createToolPalette( new ProcedureList( type ) );
 		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
 
@@ -65,12 +63,14 @@ public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel
 		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
 
 		org.lgna.croquet.components.JComponent< ? > fieldPanel;
-		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
+		if( ide.getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
 			fieldPanel = new org.lgna.croquet.components.PageAxisPanel(
-					new org.lgna.croquet.components.Label( "managed", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
+					new org.lgna.croquet.components.Label( "managed", 1.2f ),
+					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ),
 					new ManagedFieldList( type ),
-					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 16 ),
-					new org.lgna.croquet.components.Label( "unmanaged", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
+					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 24 ),
+					new org.lgna.croquet.components.Label( "unmanaged", 1.2f ),
+					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ),
 					new UnmanagedFieldList( type )
 			);
 		} else {
@@ -79,13 +79,11 @@ public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel
 		org.lgna.croquet.components.ToolPalette fieldsToolPalette = org.alice.ide.croquet.models.typeeditor.FieldsTabState.getInstance( type ).createToolPalette( fieldPanel );
 		fieldsToolPalette.setBackgroundColor( ide.getTheme().getFieldColor() );
 
-		proceduresToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-		functionsToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-		fieldsToolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-
-		proceduresToolPalette.getMainComponent().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
-		functionsToolPalette.getMainComponent().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
-		fieldsToolPalette.getMainComponent().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
+		for( org.lgna.croquet.components.ToolPalette toolPalette : new org.lgna.croquet.components.ToolPalette[] { constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette } ) {
+			toolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+			toolPalette.getTitle().scaleFont( 1.5f );
+			toolPalette.getMainComponent().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
+		}
 		
 		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 		pageAxisPanel.addComponent( constructorsToolPalette );
@@ -95,7 +93,6 @@ public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel
 		pageAxisPanel.addComponent( functionsToolPalette );
 		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
 		pageAxisPanel.addComponent( fieldsToolPalette );
-//		pageAxisPanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() );
 		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,14,0,0 ) );
 		pageAxisPanel.setBackgroundColor( this.getBackgroundColor() );
 

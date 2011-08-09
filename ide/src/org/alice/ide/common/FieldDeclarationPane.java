@@ -65,11 +65,14 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		//boolean isDropDownPotentiallyDesired = factory instanceof org.alice.ide.memberseditor.Factory;
 		
 		org.lgna.croquet.components.Component< ? > component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
-//		if( factory instanceof org.alice.ide.memberseditor.Factory ) {
-//			if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredForFieldInitializer( field ) ) {
-//				component = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane(null, component, field.initializer, field.getDesiredValueType() );
-//			}
-//		}
+		if( factory instanceof org.alice.ide.memberseditor.Factory ) {
+			if( field.isManaged.getValue() ) {
+				//pass
+			} else {
+				//component = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane(null, component, field.initializer, field.getDesiredValueType() );
+				component.makeStandOut();
+			}
+		}
 		this.addComponent( component );
 	}
 

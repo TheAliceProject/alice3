@@ -302,28 +302,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		return super.getOverrideComponent( factory, expression );
 	}
 	@Override
-	public boolean isDropDownDesiredForFieldInitializer( org.lgna.project.ast.UserField field ) {
-		org.lgna.project.ast.AbstractType declaringType = field.getDeclaringType();
-		if( declaringType != null ) {
-			if( declaringType.isAssignableTo( org.lgna.story.Scene.class ) ) {
-				org.lgna.project.ast.Expression initializer = field.initializer.getValue();
-				if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
-					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
-					org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-					if( constructor != null ) {
-						org.lgna.project.ast.AbstractType type = constructor.getDeclaringType();
-						if( type != null ) {
-							if( type.isAssignableTo( org.lgna.story.Turnable.class ) ) {
-								return false;
-							}
-						}
-					}
-				}
-			}
-		}
-		return super.isDropDownDesiredForFieldInitializer( field );
-	}
-	@Override
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
 		if( super.isDropDownDesiredFor( expression ) ) {
 			if( expression != null ) {
