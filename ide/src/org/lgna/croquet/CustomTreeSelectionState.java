@@ -40,61 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeSelectionState<T> extends ItemState<T> {
-	public static interface SelectionObserver<E> {
-		public void selectionChanged(E nextValue);
-	};
-	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
-	}
-	private final SingleTreeSelectionModel treeSelectionModel;
-	public TreeSelectionState(Group group, java.util.UUID id, ItemCodec< T > itemCodec ) {
-		super(group, id, itemCodec);
-		this.treeSelectionModel = new SingleTreeSelectionModel();
-		this.treeSelectionModel.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
-			public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
-				T prevValue = getValue();
-				T nextValue = getSelection();
-				System.err.println( "changing from " + prevValue + " to " + nextValue );
-				fireChanged( prevValue, nextValue, false );
-			}
-		} );
-	}
-
-	@Override
-	protected void localize() {
-	}
-	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel();
-	public javax.swing.tree.TreeSelectionModel getTreeSelectionModel() {
-		return this.treeSelectionModel;
-	}
-	public T getSelection() {
-		javax.swing.tree.TreePath path = this.treeSelectionModel.getSelectionPath();
-		if( path != null ) {
-			return (T)path.getLastPathComponent();
-		} else {
-			return null;
+public abstract class CustomTreeSelectionState<T> extends TreeSelectionState< T > {
+	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractTreeModel< T >() {
+		public int getChildCount( Object parent ) {
+			return CustomTreeSelectionState.this.getChildCount( (T)parent );
 		}
+		public T getChild( Object parent, int index ) {
+			return CustomTreeSelectionState.this.getChild( (T)parent, index );
+		}
+		public int getIndexOfChild( Object parent, Object child ) {
+			return CustomTreeSelectionState.this.getIndexOfChild( (T)parent, (T)child );
+		}
+		public T getRoot() {
+			return CustomTreeSelectionState.this.getRoot();
+		}
+		public boolean isLeaf( Object node ) {
+			return CustomTreeSelectionState.this.isLeaf( (T)node );
+		}
+		private Object[] getPathToRoot( T node ) {
+			java.util.List< T > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			T n = node;
+			T root = this.getRoot();
+			while( n != root ) {
+				T parent = CustomTreeSelectionState.this.getParent( n );
+				if( parent != null ) {
+					list.add( parent );
+					n = parent;
+				} else {
+					break;
+				}
+			}
+			return list.toArray();
+		}
+		public javax.swing.tree.TreePath getTreePath( Object node ) {
+			Object[] nodes = this.getPathToRoot( (T)node );
+			javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
+			return path;
+		}
+	};
+	public CustomTreeSelectionState(Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialSelection ) {
+		super( group, id, itemCodec );
+		this.setSelection( initialSelection );
 	}
-	public void setSelection( T e ) {
-		this.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
-	}
-
+	protected abstract int getChildCount( T parent );
+	protected abstract T getChild( T parent, int index );
+	protected abstract int getIndexOfChild( T parent, T child );
+	protected abstract boolean isLeaf( T node );
+	protected abstract T getRoot();
+	protected abstract T getParent( T node );
 	@Override
-	public T getValue() {
-		return this.getSelection();
-	}
-	
-	public org.lgna.croquet.components.Tree<T> createTree() {
-		return new org.lgna.croquet.components.Tree<T>( this );
-	}
-
-	public org.lgna.croquet.components.PathControl createPathControl( org.lgna.croquet.components.PathControl.Initializer initializer ) {
-		assert initializer != null;
-		return new org.lgna.croquet.components.PathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>)this, initializer );
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > getTreeModel() {
+		return this.treeModel;
 	}
 }

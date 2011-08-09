@@ -54,7 +54,7 @@ import org.lgna.croquet.Operation;
 import org.lgna.croquet.State;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.TreeSelectionState;
+import org.lgna.croquet.DefaultTreeSelectionState;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Button;
@@ -117,8 +117,10 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 	}
 
 	class DirectoryView extends LineAxisPanel {
-		private org.lgna.croquet.TreeSelectionState.SelectionObserver<ModelResourceTreeNode> selectionObserver = new org.lgna.croquet.TreeSelectionState.SelectionObserver<ModelResourceTreeNode>() {
-			public void selectionChanged(ModelResourceTreeNode nextValue) {
+		private org.lgna.croquet.TreeSelectionState.ValueObserver<ModelResourceTreeNode> selectionObserver = new org.lgna.croquet.TreeSelectionState.ValueObserver<ModelResourceTreeNode>() {
+			public void changing( org.lgna.croquet.State< org.lgna.story.resourceutilities.ModelResourceTreeNode > state, org.lgna.story.resourceutilities.ModelResourceTreeNode prevValue, org.lgna.story.resourceutilities.ModelResourceTreeNode nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< org.lgna.story.resourceutilities.ModelResourceTreeNode > state, org.lgna.story.resourceutilities.ModelResourceTreeNode prevValue, org.lgna.story.resourceutilities.ModelResourceTreeNode nextValue, boolean isAdjusting ) {
 				DirectoryView.this.handleSelectionChanged( nextValue );
 			}
 		};
@@ -137,13 +139,13 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
-			treeSelectionState.addAndInvokeSelectionObserver(this.selectionObserver);
+			treeSelectionState.addAndInvokeValueObserver(this.selectionObserver);
 			filterState.addAndInvokeValueObserver( this.filterObserver );
 		}
 		@Override
 		protected void handleUndisplayable() {
 			filterState.removeValueObserver( this.filterObserver );
-			treeSelectionState.removeSelectionObserver(this.selectionObserver);
+			treeSelectionState.removeValueObserver(this.selectionObserver);
 			super.handleUndisplayable();
 		}
 		
@@ -225,7 +227,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/folder.png"));
 	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/folder24.png"));
 	
-	private TreeSelectionState< ModelResourceTreeNode > treeSelectionState;
+	private DefaultTreeSelectionState< ModelResourceTreeNode > treeSelectionState;
 	private StringState filterState;
 
 	public ClassBasedGalleryBrowser( ModelResourceTreeNode root ) {
@@ -248,15 +250,21 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 				throw new RuntimeException( "todo" );
 			}
 		};
-		this.treeSelectionState = new TreeSelectionState<ModelResourceTreeNode>( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "d374d9cd-fd27-46da-ba27-8ccdab4f2b67" ), 
+		this.treeSelectionState = new DefaultTreeSelectionState<ModelResourceTreeNode>( 
+				org.alice.ide.IDE.UI_STATE_GROUP, 
+				java.util.UUID.fromString( "d374d9cd-fd27-46da-ba27-8ccdab4f2b67" ), 
 				itemCodec, 
-				treeModel, 
-				treeModel.getRoot() ){};
+				treeModel.getRoot(), 
+				treeModel 
+		);
 		
 		this.filterState = new StringState( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "62d9d56d-6145-4c58-a20c-4b5d9797ef39" ), "" ) {};
 		
-		this.treeSelectionState.addSelectionObserver( new TreeSelectionState.SelectionObserver<ModelResourceTreeNode>() {
-			public void selectionChanged(ModelResourceTreeNode nextValue) {
+		this.treeSelectionState.addValueObserver( new DefaultTreeSelectionState.ValueObserver< ModelResourceTreeNode >() {
+			public void changing(org.lgna.croquet.State<ModelResourceTreeNode> state, ModelResourceTreeNode prevValue, ModelResourceTreeNode nextValue, boolean isAdjusting) {
+				
+			}
+			public void changed(org.lgna.croquet.State<ModelResourceTreeNode> state, ModelResourceTreeNode prevValue, ModelResourceTreeNode nextValue, boolean isAdjusting) {
 				filterState.setValue( "" );
 			}
 		} );

@@ -40,61 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+
+package org.alice.ide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeSelectionState<T> extends ItemState<T> {
-	public static interface SelectionObserver<E> {
-		public void selectionChanged(E nextValue);
-	};
-	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
+public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState< Node > {
+	private static class SingletonHolder {
+		private static GalleryResourceTreeSelectionState instance = new GalleryResourceTreeSelectionState();
 	}
-	private final SingleTreeSelectionModel treeSelectionModel;
-	public TreeSelectionState(Group group, java.util.UUID id, ItemCodec< T > itemCodec ) {
-		super(group, id, itemCodec);
-		this.treeSelectionModel = new SingleTreeSelectionModel();
-		this.treeSelectionModel.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
-			public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
-				T prevValue = getValue();
-				T nextValue = getSelection();
-				System.err.println( "changing from " + prevValue + " to " + nextValue );
-				fireChanged( prevValue, nextValue, false );
-			}
-		} );
+	public static GalleryResourceTreeSelectionState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private GalleryResourceTreeSelectionState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "78e41376-f478-4cba-823a-26f949314702" ), NodeCodec.SINGLETON, RootAdapter.SINGLETON );
 	}
 
 	@Override
-	protected void localize() {
+	protected Node getChild( Node parent, int index ) {
+		return null;
 	}
-	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel();
-	public javax.swing.tree.TreeSelectionModel getTreeSelectionModel() {
-		return this.treeSelectionModel;
-	}
-	public T getSelection() {
-		javax.swing.tree.TreePath path = this.treeSelectionModel.getSelectionPath();
-		if( path != null ) {
-			return (T)path.getLastPathComponent();
-		} else {
-			return null;
-		}
-	}
-	public void setSelection( T e ) {
-		this.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
-	}
-
 	@Override
-	public T getValue() {
-		return this.getSelection();
+	protected int getChildCount( Node parent ) {
+		return 0;
 	}
-	
-	public org.lgna.croquet.components.Tree<T> createTree() {
-		return new org.lgna.croquet.components.Tree<T>( this );
+	@Override
+	protected int getIndexOfChild( Node parent, Node child ) {
+		return 0;
 	}
-
-	public org.lgna.croquet.components.PathControl createPathControl( org.lgna.croquet.components.PathControl.Initializer initializer ) {
-		assert initializer != null;
-		return new org.lgna.croquet.components.PathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>)this, initializer );
+	@Override
+	protected Node getParent( Node node ) {
+		return node.getParent();
+	}
+	@Override
+	protected Node getRoot() {
+		return RootAdapter.SINGLETON;
+	}
+	@Override
+	protected boolean isLeaf( Node node ) {
+		return node instanceof FieldAdapter;
 	}
 }
