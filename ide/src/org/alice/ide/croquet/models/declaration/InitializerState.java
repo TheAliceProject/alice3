@@ -46,18 +46,15 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class InitializerState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.Expression > {
+public class InitializerState extends org.alice.ide.croquet.models.StandardExpressionState {
 	private final DeclarationOperation<?> owner;
 	public InitializerState( DeclarationOperation<?> owner, org.lgna.project.ast.Expression initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4edd354e-da3c-400d-9c55-66da924c09a7" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4edd354e-da3c-400d-9c55-66da924c09a7" ), initialValue );
 		this.owner = owner;
 	}
+	
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > valueType = this.owner.getValueType();
-		if( valueType != null ) {
-			org.alice.ide.IDE.getActiveInstance().getCascadeManager().updateChildren( rv, blankNode, valueType );
-		}
-		return rv;
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+		return this.owner.getValueType();
 	}
 }

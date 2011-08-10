@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldInitializerState extends org.alice.ide.croquet.models.ExpressionState {
+public class FieldInitializerState extends org.alice.ide.croquet.models.StandardExpressionState {
 	private static java.util.Map< org.lgna.project.ast.UserField, FieldInitializerState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized FieldInitializerState getInstance( org.lgna.project.ast.UserField field ) {
 		FieldInitializerState rv = map.get( field );

@@ -90,8 +90,12 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 	}
 	
 	@Override
-	protected org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > createInitializerState( org.lgna.project.ast.Expression initialValue ) {
-		return new InstanceCreationInitializerState( this, initialValue );
+	protected InstanceCreationInitializerState createInitializerState( org.lgna.project.ast.Expression initialValue ) {
+		return new InstanceCreationInitializerState( this, (org.lgna.project.ast.InstanceCreation)initialValue );
+	}
+	@Override
+	public InstanceCreationInitializerState getInitializerState() {
+		return (InstanceCreationInitializerState)super.getInitializerState();
 	}
 	protected abstract EditCustomization customize( EditCustomization rv );
 	@Override

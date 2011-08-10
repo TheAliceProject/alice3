@@ -41,15 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.ide.croquet.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeAdapter implements Node {
-	public Node getParent() {
-		//todo: handle returning root if appropriate
-		//return this.type.getSuperType();
-		return null;
+public abstract class StandardExpressionState extends ExpressionState< org.lgna.project.ast.Expression > {
+	public StandardExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue ) {
+		super( group, id, org.lgna.project.ast.Expression.class, initialValue );
+	}
+	protected abstract org.lgna.project.ast.AbstractType< ?, ?, ? > getType();
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+		org.alice.ide.IDE.getActiveInstance().getCascadeManager().updateChildren( rv, blankNode, this.getType() );
+		return rv;
 	}
 }

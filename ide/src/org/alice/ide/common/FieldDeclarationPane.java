@@ -64,7 +64,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		boolean isDropDownDesired = factory instanceof org.alice.ide.memberseditor.Factory && field.isManaged.getValue() == false;
 		org.lgna.croquet.components.Component< ? > component;
 		if( isDropDownDesired ) {
-			component = org.alice.ide.croquet.models.ast.FieldInitializerState.getInstance( this.field ).createComponent();
+			component = org.alice.ide.croquet.models.ast.FieldInitializerState.getInstance( this.field ).createEditor();
 		} else {
 			component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
 		}

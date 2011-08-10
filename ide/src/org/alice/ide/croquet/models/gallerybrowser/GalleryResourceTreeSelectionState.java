@@ -59,15 +59,15 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 
 	@Override
 	protected Node getChild( Node parent, int index ) {
-		return null;
+		throw new RuntimeException();
 	}
 	@Override
 	protected int getChildCount( Node parent ) {
-		return 0;
+		throw new RuntimeException();
 	}
 	@Override
 	protected int getIndexOfChild( Node parent, Node child ) {
-		return 0;
+		throw new RuntimeException();
 	}
 	@Override
 	protected Node getParent( Node node ) {
