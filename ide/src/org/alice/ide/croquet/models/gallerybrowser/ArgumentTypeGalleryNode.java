@@ -41,16 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide;
+package org.alice.ide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ApiConfigurationManager {
-	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type );
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis();
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
-	public java.util.List< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getTopLevelGalleryTypes();
-	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
+public class ArgumentTypeGalleryNode extends TypeGalleryNode {
+	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ArgumentTypeGalleryNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ArgumentTypeGalleryNode getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		ArgumentTypeGalleryNode rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ArgumentTypeGalleryNode( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+	private ArgumentTypeGalleryNode( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( type );
+	}
+	@Override
+	protected java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {
+		return api.getGalleryResourceChildrenFor( this.getDeclaration() );
+	}
 }

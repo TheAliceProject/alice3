@@ -46,10 +46,26 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public enum RootAdapter implements Node {
-	SINGLETON {
-		public Node getParent() {
-			return null;
-		}
+public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractType< ?,?,? > > {
+	public TypeGalleryNode( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( type );
+	}
+	public GalleryNode getParent() {
+		//note: root case must be handled elsewhere
+		return getDeclarationInstance( this.getDeclaration().getSuperType() );
+	}
+
+	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
+	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
+		return this.getDeclarationChildren( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
+	}
+	public int getChildCount() {
+		return this.getDeclarationChildren().size();
+	}
+	public GalleryNode getChild( int index ) {
+		return getDeclarationInstance( this.getDeclarationChildren().get( index ) );
+	}
+	public int getIndexOfChild( GalleryNode child ) {
+		return this.getDeclarationChildren().indexOf( ((DeclarationGalleryNode<?>)child).getDeclaration() );
 	}
 }

@@ -46,9 +46,36 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAdapter implements Node {
-	public Node getParent() {
-		//return this.field.getDeclaringType();
+public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.AbstractDeclaration > implements GalleryNode {
+	public static DeclarationGalleryNode<?> getDeclarationInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
+			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
+			if( TopLevelTypeGalleryNode.hasInstance( type ) ) {
+				return TopLevelTypeGalleryNode.getInstance( type );
+			} else {
+				return ArgumentTypeGalleryNode.getInstance( type );
+			}
+		} else if( declaration instanceof org.lgna.project.ast.AbstractField ) {
+			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)declaration;
+			return FieldGalleryNode.getInstance( field );
+		} else if( declaration == null ) {
+			return null;
+		} else {
+			throw new AssertionError();
+		}
+	}
+	private final D declaration;
+	public DeclarationGalleryNode( D declaration ) {
+		this.declaration = declaration;
+	}
+	public D getDeclaration() {
+		return this.declaration;
+	}
+	public org.lgna.croquet.DragModel getDragModel() {
 		return null;
+	}
+	@Override
+	public String toString() {
+		return this.declaration.getName();
 	}
 }

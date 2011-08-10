@@ -455,7 +455,8 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected JComponent<?> createClassGalleryBrowser(TreeNode<JavaType> root) {
 		assert root instanceof ModelResourceTreeNode;
-		return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( (ModelResourceTreeNode)root );
+		//return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( (ModelResourceTreeNode)root );
+		return new org.alice.stageide.gallerybrowser.GalleryBrowser();
 	}
 	
 	@Override

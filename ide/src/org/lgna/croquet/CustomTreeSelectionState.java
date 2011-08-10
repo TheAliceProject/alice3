@@ -76,6 +76,7 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState< T 
 					break;
 				}
 			}
+			list.add( root );
 			return list.toArray();
 		}
 		public javax.swing.tree.TreePath getTreePath( Object node ) {

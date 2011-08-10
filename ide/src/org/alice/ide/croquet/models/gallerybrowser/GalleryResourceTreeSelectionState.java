@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState< Node > {
+public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState< GalleryNode > {
 	private static class SingletonHolder {
 		private static GalleryResourceTreeSelectionState instance = new GalleryResourceTreeSelectionState();
 	}
@@ -54,31 +54,31 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 		return SingletonHolder.instance;
 	}
 	private GalleryResourceTreeSelectionState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "78e41376-f478-4cba-823a-26f949314702" ), NodeCodec.SINGLETON, RootAdapter.SINGLETON );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "78e41376-f478-4cba-823a-26f949314702" ), NodeCodec.SINGLETON, RootGalleryNode.SINGLETON );
 	}
 
 	@Override
-	protected Node getChild( Node parent, int index ) {
-		throw new RuntimeException();
+	protected int getChildCount( GalleryNode parent ) {
+		return parent.getChildCount();
 	}
 	@Override
-	protected int getChildCount( Node parent ) {
-		throw new RuntimeException();
+	protected GalleryNode getChild( GalleryNode parent, int index ) {
+		return parent.getChild( index );
 	}
 	@Override
-	protected int getIndexOfChild( Node parent, Node child ) {
-		throw new RuntimeException();
+	protected int getIndexOfChild( GalleryNode parent, GalleryNode child ) {
+		return parent.getIndexOfChild( child );
 	}
 	@Override
-	protected Node getParent( Node node ) {
+	protected GalleryNode getParent( GalleryNode node ) {
 		return node.getParent();
 	}
 	@Override
-	protected Node getRoot() {
-		return RootAdapter.SINGLETON;
+	protected GalleryNode getRoot() {
+		return RootGalleryNode.SINGLETON;
 	}
 	@Override
-	protected boolean isLeaf( Node node ) {
-		return node instanceof FieldAdapter;
+	protected boolean isLeaf( GalleryNode node ) {
+		return node instanceof FieldGalleryNode;
 	}
 }

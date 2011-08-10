@@ -46,6 +46,29 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public interface Node {
-	public Node getParent();
+public class TopLevelTypeGalleryNode extends TypeGalleryNode {
+	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, TopLevelTypeGalleryNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static boolean hasInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		return map.containsKey( type );
+	}
+	public static TopLevelTypeGalleryNode getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		TopLevelTypeGalleryNode rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new TopLevelTypeGalleryNode( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+	private TopLevelTypeGalleryNode( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( type );
+	}
+	@Override
+	protected java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > type = this.getDeclaration();
+		org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
+		org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
+		return api.getGalleryResourceChildrenFor( parameter.getValueType() );
+	}
 }

@@ -41,16 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide;
+package org.alice.ide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ApiConfigurationManager {
-	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type );
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis();
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
-	public java.util.List< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getTopLevelGalleryTypes();
-	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
+public enum RootGalleryNode implements GalleryNode {
+	SINGLETON {
+		public GalleryNode getParent() {
+			return null;
+		}
+		public org.lgna.croquet.DragModel getDragModel() {
+			return null;
+		}
+		private java.util.List< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getChildren() {
+			return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
+		}
+		public int getChildCount() {
+			return this.getChildren().size();
+		}
+		public GalleryNode getChild( int index ) {
+			return TopLevelTypeGalleryNode.getInstance( this.getChildren().get( index ) );
+		}
+		public int getIndexOfChild( GalleryNode child ) {
+			return this.getChildren().indexOf( ((TypeGalleryNode)child).getDeclaration() );
+		}
+	}
 }

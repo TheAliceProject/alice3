@@ -41,16 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide;
+package org.alice.ide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ApiConfigurationManager {
-	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type );
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis();
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
-	public java.util.List< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getTopLevelGalleryTypes();
-	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
+public interface GalleryNode {
+	public org.lgna.croquet.DragModel getDragModel();
+	public GalleryNode getParent();
+	public GalleryNode getChild( int index );
+	public int getChildCount();
+	public int getIndexOfChild( GalleryNode child );
 }

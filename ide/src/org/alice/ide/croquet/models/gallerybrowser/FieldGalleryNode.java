@@ -46,10 +46,31 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeAdapter implements Node {
-	public Node getParent() {
-		//todo: handle returning root if appropriate
-		//return this.type.getSuperType();
+public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractField > {
+	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldGalleryNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static FieldGalleryNode getInstance( org.lgna.project.ast.AbstractField field ) {
+		FieldGalleryNode rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldGalleryNode( field );
+			map.put( field, rv );
+		}
+		return rv;
+	}
+	private FieldGalleryNode( org.lgna.project.ast.AbstractField field ) {
+		super( field );
+	}
+	public GalleryNode getParent() {
+		return getDeclarationInstance( this.getDeclaration().getDeclaringType() );
+	}
+	public int getChildCount() {
+		return 0;
+	}
+	public GalleryNode getChild( int index ) {
 		return null;
+	}
+	public int getIndexOfChild( GalleryNode child ) {
+		return 0;
 	}
 }

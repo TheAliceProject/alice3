@@ -46,18 +46,18 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public enum NodeCodec implements org.lgna.croquet.ItemCodec< Node > {
+public enum NodeCodec implements org.lgna.croquet.ItemCodec< GalleryNode > {
 	SINGLETON {
-		public Class< Node > getValueClass() {
-			return Node.class;
+		public Class< GalleryNode > getValueClass() {
+			return GalleryNode.class;
 		}
-		public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Node value ) {
+		public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, GalleryNode value ) {
 			throw new AssertionError();
 		}
-		public Node decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		public GalleryNode decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			throw new AssertionError();
 		}
-		public StringBuilder appendRepresentation( StringBuilder rv, Node value, java.util.Locale locale ) {
+		public StringBuilder appendRepresentation( StringBuilder rv, GalleryNode value, java.util.Locale locale ) {
 			rv.append( value );
 			return rv;
 		}
