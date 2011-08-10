@@ -41,42 +41,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
-
-/*package-private*/ class FieldItemDetails extends MemberItemDetails< org.lgna.project.ast.UserField, FieldItemDetails, FieldList > {
-	public FieldItemDetails( FieldList panel, org.lgna.project.ast.UserField item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
-		super( panel, item, button );
-	}
-}
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldList extends MemberList< org.lgna.project.ast.UserField, FieldItemDetails > {
-	public FieldList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserField > model, org.lgna.croquet.Operation< ? > operation ) {
-		super( model, operation );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+public class TypeView<T extends org.lgna.project.ast.AbstractType<?,?,?>> extends org.lgna.croquet.components.ViewController< javax.swing.JLabel, org.lgna.croquet.ItemState< T > > {
+	private final org.lgna.croquet.State.ValueObserver< T > valueObserver = new org.lgna.croquet.State.ValueObserver< T >() {
+		public void changing( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting ) {
+			TypeView.this.getAwtComponent().setIcon( org.alice.ide.common.TypeIcon.getInstance( nextValue ) );
+		}
+	};
+	private final boolean isArray;
+	public TypeView( org.lgna.croquet.ItemState< T > model, boolean isArray ) {
+		super( model );
+		this.isArray = isArray;
+	}
+	private void handleTypeChange( T nextValue ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > type;
+		if( this.isArray ) {
+			type = nextValue.getArrayType();
+		} else {
+			type = nextValue;
+		}
+		this.getAwtComponent().setIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
 	}
 	@Override
-	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
-		org.lgna.croquet.components.LineAxisPanel lineStartPanel = new org.lgna.croquet.components.LineAxisPanel();
-		if( item.isManaged.getValue() ) {
-			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
-			label.setToolTipText( "managed by the scene editor" );
-			label.setForegroundColor( java.awt.Color.GRAY );
-			label.scaleFont( 2.0f );
-			label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-			lineStartPanel.addComponent( label );
-		}
-		lineStartPanel.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton() );
-		button.addComponent( lineStartPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		button.addComponent( 
-				new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), item, item.isManaged.getValue()==false ),
-				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
-		);
-		if( item.isDeletionAllowed.getValue() ) {
-			button.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-		}
-		return new FieldItemDetails( this, item, button );
+	protected javax.swing.JLabel createAwtComponent() {
+		javax.swing.JLabel rv = new javax.swing.JLabel();
+		return rv;
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().addAndInvokeValueObserver( valueObserver );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.getModel().removeValueObserver( valueObserver );
+		super.handleUndisplayable();
 	}
 }

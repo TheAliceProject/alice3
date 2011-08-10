@@ -74,6 +74,7 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 		return rv;
 	}
 
+	protected abstract boolean isFieldManaged();
 	protected abstract boolean isFieldFinal();
 	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field );
 	@Override
@@ -82,6 +83,7 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 		if( this.isFieldFinal() ) {
 			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		}
+		field.isManaged.setValue( this.isFieldManaged() );
 		field.valueType.setValue( valueType );
 		field.name.setValue( declarationName );
 		field.initializer.setValue( initializer );

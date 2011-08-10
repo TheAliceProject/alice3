@@ -87,7 +87,7 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 						//todo? this case is not currently supported
 						component = null;
 					} else {
-						component = org.alice.ide.common.TypeComponent.createInstance( model.getValueType() );
+						component = new org.alice.ide.croquet.components.TypeView( model.getComponentValueTypeState(), model.getIsArrayState().getValue() );
 					}
 				}
 				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueTypeLabelText() + ":", component ) );

@@ -81,7 +81,8 @@ public class UnspecifiedValueTypeManagedFieldDeclarationOperation extends Manage
 		return new org.alice.ide.croquet.components.declaration.GalleryFieldDeclarationPanel( this );
 	}
 	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true));
 		return rv;
 	}
 }
