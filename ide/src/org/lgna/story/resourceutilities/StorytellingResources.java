@@ -120,8 +120,16 @@ public class StorytellingResources {
 	}
 	
 	public  org.lgna.project.ast.AbstractType< ?, ?, ? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		//todo
-		return null;
+		ModelResourceTreeNode child = this.getGalleryResourceTreeNodeForJavaType(type);
+		if (child != null)
+		{
+			ModelResourceTreeNode parent = (ModelResourceTreeNode)child.getParent();
+			return parent.getResourceJavaType();
+		}
+		else
+		{
+			return null;
+		}
 	}
 	public List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) 
 	{
