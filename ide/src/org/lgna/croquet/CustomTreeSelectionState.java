@@ -64,20 +64,20 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState< T 
 			return CustomTreeSelectionState.this.isLeaf( (T)node );
 		}
 		private Object[] getPathToRoot( T node ) {
-			java.util.List< T > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List< T > collection = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			T n = node;
 			T root = this.getRoot();
 			while( n != root ) {
 				T parent = CustomTreeSelectionState.this.getParent( n );
 				if( parent != null ) {
-					list.add( parent );
+					collection.add( 0, parent );
 					n = parent;
 				} else {
 					break;
 				}
 			}
-			list.add( root );
-			return list.toArray();
+			collection.add( 0, root );
+			return collection.toArray();
 		}
 		public javax.swing.tree.TreePath getTreePath( Object node ) {
 			Object[] nodes = this.getPathToRoot( (T)node );

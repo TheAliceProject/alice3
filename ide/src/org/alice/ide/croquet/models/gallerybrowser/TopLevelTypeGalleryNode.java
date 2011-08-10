@@ -64,6 +64,9 @@ public class TopLevelTypeGalleryNode extends TypeGalleryNode {
 	private TopLevelTypeGalleryNode( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		super( type );
 	}
+	public GalleryNode getParent() {
+		return RootGalleryNode.SINGLETON;
+	}
 	@Override
 	protected java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = this.getDeclaration();

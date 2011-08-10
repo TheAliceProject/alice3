@@ -62,7 +62,7 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 		super( field );
 	}
 	public GalleryNode getParent() {
-		return getDeclarationInstance( this.getDeclaration().getDeclaringType() );
+		return getDeclarationNodeInstance( this.getDeclaration().getDeclaringType() );
 	}
 	public int getChildCount() {
 		return 0;

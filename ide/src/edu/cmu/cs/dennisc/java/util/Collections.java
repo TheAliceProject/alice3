@@ -70,6 +70,11 @@ public class Collections {
 		CollectionUtilities.set( rv, array );
 		return rv;
 	}
+	public static <E> java.util.ArrayList<E> newArrayListWithMinimumCapacity( int minCapacity ) {
+		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
+		rv.ensureCapacity( minCapacity );
+		return rv;
+	}
 	public static <E> java.util.ArrayList<E> newArrayList() {
 		return new java.util.ArrayList< E >();
 	}

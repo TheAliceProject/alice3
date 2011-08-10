@@ -47,16 +47,17 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
-	private static class Initializer implements org.lgna.croquet.components.PathControl.Initializer {
-		public org.lgna.croquet.ActionOperation configure( org.lgna.croquet.ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
+	private static class Initializer implements org.lgna.croquet.components.PathControl.Initializer< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > {
+		public org.lgna.croquet.ActionOperation configure( org.lgna.croquet.ActionOperation rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode ) {
+			rv.setName( treeNode.toString() );
 			return rv;
 		}
-		public org.lgna.croquet.Operation< ? > getOperationForLeaf( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
+		public org.lgna.croquet.Operation< ? > getOperationForLeaf( org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode ) {
 			return null;
 		}
 	}
 	public GalleryBrowser() {
-		//this.addComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().createPathControl( new Initializer() ), Constraint.CENTER );
-		this.addComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().createTree(), Constraint.CENTER );
+		this.addComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().createPathControl( new Initializer() ), Constraint.CENTER );
+		//this.addComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().createTree(), Constraint.CENTER );
 	}
 }

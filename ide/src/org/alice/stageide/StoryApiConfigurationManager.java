@@ -60,6 +60,9 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		public java.util.List< ? extends org.lgna.project.ast.AbstractType< ?, ?, ? > > getTopLevelGalleryTypes() {
 			return StorytellingResources.getInstance().getTopLevelGalleryTypes();
 		}
+		public org.lgna.project.ast.AbstractType< ?, ?, ? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+			return StorytellingResources.getInstance().getGalleryResourceParentFor( type );
+		}
 		public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 			return StorytellingResources.getInstance().getGalleryResourceChildrenFor(type);
 		}
@@ -76,6 +79,7 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
 			return null;
 		}
+		
 		public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
 			org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
 			if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {

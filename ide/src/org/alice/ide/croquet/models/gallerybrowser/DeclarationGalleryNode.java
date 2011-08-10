@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.AbstractDeclaration > implements GalleryNode {
-	public static DeclarationGalleryNode<?> getDeclarationInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
+	public static DeclarationGalleryNode<?> getDeclarationNodeInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
 			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
 			if( TopLevelTypeGalleryNode.hasInstance( type ) ) {

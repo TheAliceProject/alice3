@@ -119,6 +119,10 @@ public class StorytellingResources {
 		return rootTypes;
 	}
 	
+	public  org.lgna.project.ast.AbstractType< ?, ?, ? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+		//todo
+		return null;
+	}
 	public List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) 
 	{
 		System.out.println("Getting children for type: "+type);
