@@ -75,6 +75,10 @@ public class UnmanagedFieldDeclarationOperation extends org.alice.ide.croquet.mo
 		return false;
 	}
 	@Override
+	protected boolean isFieldManaged() {
+		return false;
+	}
+	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		return new org.alice.ide.croquet.components.declaration.FieldDeclarationPanel( this ) {
 			

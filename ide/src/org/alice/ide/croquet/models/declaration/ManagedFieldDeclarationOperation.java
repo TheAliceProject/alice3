@@ -90,12 +90,20 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 	}
 	
 	@Override
-	protected org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > createInitializerState( org.lgna.project.ast.Expression initialValue ) {
-		return new InstanceCreationInitializerState( this, initialValue );
+	protected InstanceCreationInitializerState createInitializerState( org.lgna.project.ast.Expression initialValue ) {
+		return new InstanceCreationInitializerState( this, (org.lgna.project.ast.InstanceCreation)initialValue );
 	}
-	protected abstract EditCustomization customize( EditCustomization rv );
+	@Override
+	public InstanceCreationInitializerState getInitializerState() {
+		return (InstanceCreationInitializerState)super.getInitializerState();
+	}
+	protected abstract EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, EditCustomization rv );
 	@Override
 	protected boolean isFieldFinal() {
+		return true;
+	}
+	@Override
+	protected boolean isFieldManaged() {
 		return true;
 	}
 	@Override
@@ -115,7 +123,7 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 	@Override
 	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
 		EditCustomization customization = new EditCustomization();
-		this.customize( customization );
+		this.customize( step, declaringType, field, customization );
 		return new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( step, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );
 	}
 

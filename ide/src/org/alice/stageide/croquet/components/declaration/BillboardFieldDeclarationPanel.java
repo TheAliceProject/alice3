@@ -71,8 +71,8 @@ public class BillboardFieldDeclarationPanel extends org.alice.ide.croquet.compon
 	@Override
 	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation model ) {
 		super.updateComponentRows( rv, model );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getFrontPaintLabelText()+":", model.getFrontPaintState().createComponent() ) );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getBackPaintLabelText()+":", model.getBackPaintState().createComponent() ) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getFrontPaintLabelText()+":", model.getFrontPaintState().createEditor() ) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getBackPaintLabelText()+":", model.getBackPaintState().createEditor() ) );
 		return rv;
 	}
 }

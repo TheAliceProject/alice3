@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionDropDown< M extends org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > > extends org.lgna.croquet.components.ItemDropDown< org.lgna.project.ast.Expression, M > {
+public class ExpressionDropDown< M extends org.lgna.project.ast.Expression > extends org.lgna.croquet.components.ItemDropDown< M, org.lgna.croquet.CustomItemState< M > > {
 	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
 		private void refresh( org.lgna.project.ast.Expression nextValue ) {
 			this.forgetAndRemoveAllComponents();
@@ -55,13 +55,13 @@ public class ExpressionDropDown< M extends org.lgna.croquet.CustomItemState< org
 		}
 	};
 	private final MainComponent mainComponent = new MainComponent();
-	public ExpressionDropDown( M model ) {
+	public ExpressionDropDown( org.lgna.croquet.CustomItemState< M > model ) {
 		super( model );
 		this.setMainComponent( this.mainComponent );
 		this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 	}
 	@Override
-	protected void handleChanged( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+	protected void handleChanged( org.lgna.croquet.State< M > state, M prevValue, M nextValue, boolean isAdjusting ) {
 		this.mainComponent.refresh( nextValue );
 	}
 };

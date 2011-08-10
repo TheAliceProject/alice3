@@ -89,8 +89,7 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 		return new org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel( this );
 	}
 	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
-		//rv.addDoStatement();
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		return rv;
 	}
 }

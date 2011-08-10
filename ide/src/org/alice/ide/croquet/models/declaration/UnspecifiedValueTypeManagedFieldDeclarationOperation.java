@@ -53,6 +53,19 @@ public class UnspecifiedValueTypeManagedFieldDeclarationOperation extends Manage
 	public static UnspecifiedValueTypeManagedFieldDeclarationOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.InstanceCreation > initializerObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.InstanceCreation >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.InstanceCreation > state, org.lgna.project.ast.InstanceCreation prevValue, org.lgna.project.ast.InstanceCreation nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.InstanceCreation > state, org.lgna.project.ast.InstanceCreation prevValue, org.lgna.project.ast.InstanceCreation nextValue, boolean isAdjusting ) {
+			org.lgna.project.ast.AbstractType< ?,?,? > type;
+			if( nextValue != null ) {
+				type = nextValue.constructor.getValue().getDeclaringType();
+			} else {
+				type = null;
+			}
+			UnspecifiedValueTypeManagedFieldDeclarationOperation.this.getComponentValueTypeState().setValue( type );
+		}
+	};
 	private UnspecifiedValueTypeManagedFieldDeclarationOperation() {
 		super( 
 				java.util.UUID.fromString( "3806ae94-e254-483b-a1b4-5aa5fb7c2a7f" ), 
@@ -61,13 +74,15 @@ public class UnspecifiedValueTypeManagedFieldDeclarationOperation extends Manage
 				"", true, 
 				null, true 
 		);
+		this.getInitializerState().addAndInvokeValueObserver( initializerObserver );
 	}
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		return new org.alice.ide.croquet.components.declaration.GalleryFieldDeclarationPanel( this );
 	}
 	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true));
 		return rv;
 	}
 }

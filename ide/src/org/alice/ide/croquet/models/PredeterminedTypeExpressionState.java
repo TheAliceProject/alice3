@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PredeterminedTypeExpressionState extends ExpressionState {
+public abstract class PredeterminedTypeExpressionState extends StandardExpressionState {
 	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
 	public PredeterminedTypeExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		super( group, id, initialValue );

@@ -87,7 +87,7 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 						//todo? this case is not currently supported
 						component = null;
 					} else {
-						component = org.alice.ide.common.TypeComponent.createInstance( model.getValueType() );
+						component = new org.alice.ide.croquet.components.TypeView( model.getComponentValueTypeState(), model.getIsArrayState().getValue() );
 					}
 				}
 				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueTypeLabelText() + ":", component ) );
@@ -100,11 +100,11 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 			org.lgna.croquet.components.Component< ? > component;
 			if( model.isInitializerEditable() ) {
 				component = new org.lgna.croquet.components.LineAxisPanel( 
-						new org.alice.ide.croquet.components.ExpressionDropDown( model.getInitializerState() ),
+						model.getInitializerState().createEditor(),
 						org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
 				);
 			} else {
-				component = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( model.getInitializerState().getValue() );
+				component = model.getInitializerState().createView();
 			}
 			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerLabelText() + ":", component ) );
 		}

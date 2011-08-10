@@ -41,15 +41,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeAdapter implements Node {
-	public Node getParent() {
-		//todo: handle returning root if appropriate
-		//return this.type.getSuperType();
-		return null;
+public class TypeView<T extends org.lgna.project.ast.AbstractType<?,?,?>> extends org.lgna.croquet.components.ViewController< javax.swing.JLabel, org.lgna.croquet.ItemState< T > > {
+	private final org.lgna.croquet.State.ValueObserver< T > valueObserver = new org.lgna.croquet.State.ValueObserver< T >() {
+		public void changing( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting ) {
+			TypeView.this.getAwtComponent().setIcon( org.alice.ide.common.TypeIcon.getInstance( nextValue ) );
+		}
+	};
+	private final boolean isArray;
+	public TypeView( org.lgna.croquet.ItemState< T > model, boolean isArray ) {
+		super( model );
+		this.isArray = isArray;
+	}
+	private void handleTypeChange( T nextValue ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > type;
+		if( this.isArray ) {
+			type = nextValue.getArrayType();
+		} else {
+			type = nextValue;
+		}
+		this.getAwtComponent().setIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+	}
+	@Override
+	protected javax.swing.JLabel createAwtComponent() {
+		javax.swing.JLabel rv = new javax.swing.JLabel();
+		return rv;
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().addAndInvokeValueObserver( valueObserver );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.getModel().removeValueObserver( valueObserver );
+		super.handleUndisplayable();
 	}
 }

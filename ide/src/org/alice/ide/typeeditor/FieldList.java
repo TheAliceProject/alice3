@@ -71,7 +71,7 @@ public abstract class FieldList extends MemberList< org.lgna.project.ast.UserFie
 		lineStartPanel.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton() );
 		button.addComponent( lineStartPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		button.addComponent( 
-				new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getTemplatesFactory(), item ),
+				new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), item, item.isManaged.getValue()==false ),
 				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
 		);
 		if( item.isDeletionAllowed.getValue() ) {

@@ -51,7 +51,7 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 	private final ValueComponentTypeState valueComponentTypeState;
 	private final IsArrayValueTypeState isArrayValueTypeState;
 	private final NameState nameState;
-	private final org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > initializerState;
+	private final org.alice.ide.croquet.models.ExpressionState< ? extends org.lgna.project.ast.Expression > initializerState;
 	private final boolean isDeclaringTypeEditable;
 	private final boolean isValueComponentTypeEditable;
 	private final boolean isIsArrayValueTypeEditable;
@@ -104,7 +104,7 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 		
 		this.isArrayValueTypeState.setEnabled( this.isIsArrayValueTypeEditable );
 	}
-	protected org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > createInitializerState( org.lgna.project.ast.Expression initialValue ) {
+	protected org.alice.ide.croquet.models.ExpressionState< ? extends org.lgna.project.ast.Expression > createInitializerState( org.lgna.project.ast.Expression initialValue ) {
 		return new InitializerState( this, initialValue );
 	}
 	@Override
@@ -155,7 +155,7 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 	public NameState getNameState() {
 		return this.nameState;
 	}
-	public org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > getInitializerState() {
+	public org.alice.ide.croquet.models.ExpressionState< ? extends org.lgna.project.ast.Expression > getInitializerState() {
 		return this.initializerState;
 	}
 	
