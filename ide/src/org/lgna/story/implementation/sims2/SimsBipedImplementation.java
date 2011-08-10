@@ -45,6 +45,9 @@ package org.lgna.story.implementation.sims2;
 
 import org.lgna.story.resourceutilities.StorytellingResources;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Dimension3;
+
 
 /**
  * @author Dennis Cosgrove
@@ -138,6 +141,20 @@ public class SimsBipedImplementation extends org.lgna.story.implementation.Biped
 		this.eyeColor = eyeColor;
 		this.nebPerson.setEyeColor( this.eyeColor );
 	}
+	@Override
+	public Dimension3 getSize() {
+		AxisAlignedBox aabb = this.nebPerson.getAxisAlignedMinimumBoundingBox();
+		if (!aabb.isNaN())
+		{
+			return new Dimension3(aabb.getWidth(), aabb.getHeight(), aabb.getDepth());
+		}
+		else
+		{
+			return new Dimension3(1, 2, 1);
+		}
+		
+	}
+	
 	@Override
 	protected JointImplementation createJointImplementation( org.lgna.story.resources.JointId jointId ) {
 		return new JointImplementation( this, new NebulousJoint( this.nebPerson, jointId ) );
