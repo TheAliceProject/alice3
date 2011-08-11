@@ -28,7 +28,7 @@ public class Person extends Model {
 	public native void getLocalTransformationForBodyPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
 	public native void setLocalTransformationForBodyPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
 	public native void getAbsoluteTransformationForBodyPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
-	public native void setAbsoluteTransformationForBodyPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
 		double[] buffer = new double[ 12 ];
 		getLocalTransformationForBodyPartNamed( buffer, joint );
