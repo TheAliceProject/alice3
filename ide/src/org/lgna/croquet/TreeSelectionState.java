@@ -93,6 +93,24 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 		return new org.lgna.croquet.components.Tree<T>( this );
 	}
 
+	public java.util.List< T > getChildren( T node ) {
+		edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel = this.getTreeModel();
+		final int N = treeModel.getChildCount( node );
+		java.util.List< T > rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( N );
+		for( int i=0; i<N; i++ ) {
+			rv.add( treeModel.getChild( node, i ) );
+		}
+		return rv;
+	}
+	
+	public ActionOperation getSelectionOperationFor( T node ) {
+		return TreeNodeSelectionOperation.getInstance( this, node );
+	}
+	
+	public java.util.List< T > getChildrenOfSelectedValue() {
+		return this.getChildren( this.getValue() );
+	}
+	
 	public org.lgna.croquet.components.PathControl createPathControl( org.lgna.croquet.components.PathControl.Initializer initializer ) {
 		assert initializer != null;
 		return new org.lgna.croquet.components.PathControl( (TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>)this, initializer );

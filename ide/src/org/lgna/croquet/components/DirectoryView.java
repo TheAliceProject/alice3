@@ -41,40 +41,61 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.components;
 
-import org.lgna.croquet.components.PathControl;
-
-public class SelectDirectoryActionOperation<T> extends ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<Object, PathControl.Initializer, SelectDirectoryActionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static <T> SelectDirectoryActionOperation<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode, PathControl.Initializer<T> initializer ) {
-		assert initializer != null;
-		SelectDirectoryActionOperation<T> rv = mapToMap.get(treeNode, initializer);
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SelectDirectoryActionOperation<T>(treeSelectionState, treeNode, initializer);
-			mapToMap.put( treeNode, initializer, rv );
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class DirectoryView< T > extends ViewController< javax.swing.JPanel, org.lgna.croquet.TreeSelectionState< T > > {
+	private final org.lgna.croquet.State.ValueObserver< T > valueObserver = new org.lgna.croquet.State.ValueObserver< T >() {
+		public void changing(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
 		}
-		return rv;
-	}
-
-	private final TreeSelectionState<T> treeSelectionState;
-	private final T treeNode;
-	
-	private SelectDirectoryActionOperation( TreeSelectionState<T> treeSelectionState, T treeNode, PathControl.Initializer<T> initializer ) {
-		super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ca407baf-13b1-4530-bf35-67764efbf5f0" ) );
-		this.treeSelectionState = treeSelectionState;
-		this.treeNode = treeNode;
-		if( initializer != null ) {
-			initializer.configure( this, this.treeNode );
+		public void changed(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
+			DirectoryView.this.handleSelectionChange( nextValue );
 		}
+	};
+	public DirectoryView( org.lgna.croquet.TreeSelectionState< T > model ) {
+		super( model );
 	}
-
 	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		//todo: create edit
-		this.treeSelectionState.setSelection( this.treeNode );
-		step.finish();
+	protected javax.swing.JPanel createAwtComponent() {
+		class DirectoryViewPanel extends javax.swing.JPanel {
+			public DirectoryViewPanel() {
+				this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+			}
+		}
+		return new DirectoryViewPanel();
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().addValueObserver( this.valueObserver );
+		this.refresh();
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.getModel().removeValueObserver( this.valueObserver );
+		super.handleUndisplayable();
+	}
+	protected abstract JComponent< ? > getComponentFor( T value );
+	protected java.util.List< T > getChildren() {
+		org.lgna.croquet.TreeSelectionState< T > model = this.getModel();
+		return model.getChildrenOfSelectedValue();
+	}
+	protected void refresh() {
+		this.internalRemoveAllComponents();
+		java.util.List< T > children = this.getChildren();
+		if( children != null ) {
+			for( T child : children ) {
+				JComponent< ? > component = this.getComponentFor( child );
+				if( component != null ) {
+					this.internalAddComponent( component );
+				}
+			}
+		}
+		this.revalidateAndRepaint();
+	}
+	protected void handleSelectionChange( T nextValue ) {
+		this.refresh();
 	}
 }

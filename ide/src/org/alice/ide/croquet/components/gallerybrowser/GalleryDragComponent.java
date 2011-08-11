@@ -41,52 +41,55 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.ide.croquet.components.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum RootGalleryNode implements GalleryNode {
-	SINGLETON;
-	public GalleryNode getParent() {
-		return null;
+public class GalleryDragComponent extends org.lgna.croquet.components.DragComponent {
+	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode node ) {
+		this.setDragModel( node.getDragModel() );
+		org.lgna.project.ast.AbstractField field = node.getDeclaration();
+		org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
+		org.lgna.project.ast.AbstractConstructor constructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.SINGLETON.getConstructorForArgumentType( valueType );
+		this.setLeftButtonClickModel( org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field ) );
+		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
+		label.setText( node.getText() );
+		label.setIcon( node.getLargeIcon() );
+		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
+		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+		this.addComponent( label );
 	}
-	public org.lgna.croquet.DragModel getDragModel() {
-		return null;
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 	}
-	private java.util.List< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getDeclarationChildren() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
+	@Override
+	protected int getInsetBottom() {
+		return 0;
 	}
-	public int getChildCount() {
-		return this.getDeclarationChildren().size();
+	@Override
+	protected int getInsetTop() {
+		return 0;
 	}
-	public GalleryNode getChild( int index ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > type = this.getDeclarationChildren().get( index );
-		org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-		org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
-		return ArgumentTypeGalleryNode.getInstance( parameter.getValueType() );
+	@Override
+	protected int getInsetLeft() {
+		return 0;
 	}
-	public int getIndexOfChild( GalleryNode child ) {
-		return this.getDeclarationChildren().indexOf( ((TypeGalleryNode)child).getDeclaration() );
+	@Override
+	protected int getInsetRight() {
+		return 0;
 	}
-	
-	public org.lgna.project.ast.AbstractConstructor getConstructorForArgumentType( org.lgna.project.ast.AbstractType< ?,?,? > argumentType ) {
-		for( org.lgna.project.ast.AbstractType< ?,?,? > type : this.getDeclarationChildren() ) {
-			org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-			org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
-			if( parameter.getValueType().isAssignableFrom( argumentType ) ) {
-				return constructor;
-			}
-		}
-		return null;
+	@Override
+	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.fillRect( x, y, width, height );
 	}
-	public String getText() {
-		return "root";
+	@Override
+	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.setPaint( java.awt.Color.WHITE );
+		fillBounds( g2, x, y, width, height );
 	}
-	public javax.swing.Icon getSmallIcon() {
-		return null;
-	}
-	public javax.swing.Icon getLargeIcon() {
-		return null;
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 	}
 }

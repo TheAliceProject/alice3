@@ -46,47 +46,10 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public enum RootGalleryNode implements GalleryNode {
-	SINGLETON;
-	public GalleryNode getParent() {
-		return null;
-	}
-	public org.lgna.croquet.DragModel getDragModel() {
-		return null;
-	}
-	private java.util.List< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getDeclarationChildren() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
-	}
-	public int getChildCount() {
-		return this.getDeclarationChildren().size();
-	}
-	public GalleryNode getChild( int index ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > type = this.getDeclarationChildren().get( index );
-		org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-		org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
-		return ArgumentTypeGalleryNode.getInstance( parameter.getValueType() );
-	}
-	public int getIndexOfChild( GalleryNode child ) {
-		return this.getDeclarationChildren().indexOf( ((TypeGalleryNode)child).getDeclaration() );
-	}
-	
-	public org.lgna.project.ast.AbstractConstructor getConstructorForArgumentType( org.lgna.project.ast.AbstractType< ?,?,? > argumentType ) {
-		for( org.lgna.project.ast.AbstractType< ?,?,? > type : this.getDeclarationChildren() ) {
-			org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-			org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
-			if( parameter.getValueType().isAssignableFrom( argumentType ) ) {
-				return constructor;
-			}
-		}
-		return null;
-	}
-	public String getText() {
-		return "root";
-	}
-	public javax.swing.Icon getSmallIcon() {
-		return null;
-	}
-	public javax.swing.Icon getLargeIcon() {
-		return null;
+public class FieldGalleryDragModel extends GalleryDragModel {
+	private final FieldGalleryNode node;
+	/*package-private*/ FieldGalleryDragModel( FieldGalleryNode node ) {
+		super( java.util.UUID.fromString( "46674492-a79c-4f4e-be58-ca98711f7589" ) );
+		this.node = node;
 	}
 }

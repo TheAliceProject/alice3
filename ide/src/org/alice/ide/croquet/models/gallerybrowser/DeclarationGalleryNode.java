@@ -71,11 +71,7 @@ public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.Abs
 	public D getDeclaration() {
 		return this.declaration;
 	}
-	public org.lgna.croquet.DragModel getDragModel() {
-		return null;
-	}
-	@Override
-	public String toString() {
+	public String getText() {
 		return this.declaration.getName();
 	}
 }

@@ -65,7 +65,9 @@ import org.lgna.croquet.*;
 					list.add( leafOperation.getMenuItemPrepModel() );
 				}
 			} else {
-				list.add( SelectDirectoryActionOperation.getInstance(treeSelectionState, child, initializer ).getMenuItemPrepModel() );
+				ActionOperation operation = treeSelectionState.getSelectionOperationFor( child );
+				initializer.configure( operation, child );
+				list.add( operation.getMenuItemPrepModel() );
 			}
 		}
 		return list;
@@ -112,7 +114,10 @@ import org.lgna.croquet.*;
 		} else {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
 		}
-		this.addComponent( SelectDirectoryActionOperation.getInstance( treeSelectionState, treeNode, initializer ).createButton(), Constraint.CENTER );
+		ActionOperation operation = treeSelectionState.getSelectionOperationFor( treeNode );
+		initializer.configure( operation, treeNode );
+		Button button = operation.createButton();
+		this.addComponent( button, Constraint.CENTER );
 		this.addComponent( selectChildButton, Constraint.LINE_END );
 	}
 
@@ -132,7 +137,6 @@ import org.lgna.croquet.*;
  */
 public class PathControl<T> extends ViewController< javax.swing.JComponent, TreeSelectionState<T> > {
 	private javax.swing.tree.TreeSelectionModel treeSelectionModel;
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel;
 	private javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
 		public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
 			PathControl.this.refresh();
@@ -151,13 +155,9 @@ public class PathControl<T> extends ViewController< javax.swing.JComponent, Tree
 	public PathControl( TreeSelectionState<T> model, Initializer<T> initializer ) {
 		super( model );
 		this.initializer = initializer;
-		this.setSwingTreeModel( model.getTreeModel() );
 		this.setSwingTreeSelectionModel( model.getTreeSelectionModel() );
 	}
 
-	private void setSwingTreeModel( edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel ) {
-		this.treeModel = treeModel;
-	}
 	private void setSwingTreeSelectionModel( javax.swing.tree.TreeSelectionModel treeSelectionModel ) {
 		if( this.treeSelectionModel != null ) {
 			this.treeSelectionModel.removeTreeSelectionListener( this.treeSelectionListener );

@@ -41,52 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum RootGalleryNode implements GalleryNode {
-	SINGLETON;
-	public GalleryNode getParent() {
-		return null;
+public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryView< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > {
+	public GalleryDirectoryView() {
+		super( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() );
 	}
-	public org.lgna.croquet.DragModel getDragModel() {
-		return null;
-	}
-	private java.util.List< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getDeclarationChildren() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
-	}
-	public int getChildCount() {
-		return this.getDeclarationChildren().size();
-	}
-	public GalleryNode getChild( int index ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > type = this.getDeclarationChildren().get( index );
-		org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-		org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
-		return ArgumentTypeGalleryNode.getInstance( parameter.getValueType() );
-	}
-	public int getIndexOfChild( GalleryNode child ) {
-		return this.getDeclarationChildren().indexOf( ((TypeGalleryNode)child).getDeclaration() );
-	}
-	
-	public org.lgna.project.ast.AbstractConstructor getConstructorForArgumentType( org.lgna.project.ast.AbstractType< ?,?,? > argumentType ) {
-		for( org.lgna.project.ast.AbstractType< ?,?,? > type : this.getDeclarationChildren() ) {
-			org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-			org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
-			if( parameter.getValueType().isAssignableFrom( argumentType ) ) {
-				return constructor;
-			}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > getComponentFor( org.alice.ide.croquet.models.gallerybrowser.GalleryNode value ) {
+		org.lgna.croquet.components.JComponent< ? > component;
+		if( value instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
+			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)value;
+			component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( fieldGalleryNode );
+		} else {
+			org.lgna.croquet.components.Button button = this.getModel().getSelectionOperationFor( value ).createButton();
+			button.setIcon( value.getLargeIcon() );
+			button.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
+			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+			component = button;
 		}
-		return null;
-	}
-	public String getText() {
-		return "root";
-	}
-	public javax.swing.Icon getSmallIcon() {
-		return null;
-	}
-	public javax.swing.Icon getLargeIcon() {
-		return null;
+		component.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
+		return component;
 	}
 }

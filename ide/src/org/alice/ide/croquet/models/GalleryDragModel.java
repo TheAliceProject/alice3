@@ -42,9 +42,6 @@
  */
 package org.alice.ide.croquet.models;
 
-import javax.activation.UnsupportedDataTypeException;
-
-
 /**
  * @author Dennis Cosgrove
  */

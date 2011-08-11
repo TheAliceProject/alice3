@@ -52,4 +52,7 @@ public interface GalleryNode {
 	public GalleryNode getChild( int index );
 	public int getChildCount();
 	public int getIndexOfChild( GalleryNode child );
+	public String getText();
+	public javax.swing.Icon getSmallIcon();
+	public javax.swing.Icon getLargeIcon();
 }

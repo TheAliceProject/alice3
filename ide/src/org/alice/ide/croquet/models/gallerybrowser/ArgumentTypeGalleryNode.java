@@ -77,4 +77,15 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 	protected java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {
 		return api.getGalleryResourceChildrenFor( this.getDeclaration() );
 	}
+	private static final javax.swing.Icon SMALL_ICON = new javax.swing.ImageIcon( ArgumentTypeGalleryNode.class.getResource( "images/folder24.png" ) );
+	private static final javax.swing.Icon LARGE_ICON = new javax.swing.ImageIcon( ArgumentTypeGalleryNode.class.getResource( "images/folder.png" ) );
+	public javax.swing.Icon getSmallIcon() {
+		return SMALL_ICON;
+	}
+	public javax.swing.Icon getLargeIcon() {
+		return LARGE_ICON;
+	}
+	public org.lgna.croquet.DragModel getDragModel() {
+		return null;
+	}
 }

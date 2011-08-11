@@ -58,8 +58,18 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 		}
 		return rv;
 	}
+	private final FieldGalleryDragModel dragModel;
+	private final javax.swing.Icon largeIcon;
 	private FieldGalleryNode( org.lgna.project.ast.AbstractField field ) {
 		super( field );
+		this.dragModel = new FieldGalleryDragModel( this );
+		Class<?> resourceClass = ((org.lgna.project.ast.JavaType)this.getDeclaration().getValueType()).getClassReflectionProxy().getReification();
+		java.awt.image.BufferedImage thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(resourceClass);
+		if( thumbnail != null ) {
+			this.largeIcon = new javax.swing.ImageIcon(thumbnail);
+		} else {
+			this.largeIcon = null;
+		}
 	}
 	public GalleryNode getParent() {
 		return getDeclarationNodeInstance( this.getDeclaration().getDeclaringType() );
@@ -73,4 +83,15 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 	public int getIndexOfChild( GalleryNode child ) {
 		return 0;
 	}
+	
+	public javax.swing.Icon getSmallIcon() {
+		return null;
+	}
+	public javax.swing.Icon getLargeIcon() {
+		return this.largeIcon;
+	}
+	public FieldGalleryDragModel getDragModel() {
+		return this.dragModel;
+	}
+	
 }

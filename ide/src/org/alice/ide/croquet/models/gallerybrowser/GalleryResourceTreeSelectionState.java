@@ -81,4 +81,8 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 	protected boolean isLeaf( GalleryNode node ) {
 		return node instanceof FieldGalleryNode;
 	}
+	
+	public org.lgna.croquet.DragModel getDragModelFor( FieldGalleryNode node ) {
+		return null;
+	}
 }
