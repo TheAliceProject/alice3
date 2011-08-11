@@ -44,12 +44,13 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * @author Dennis Cosgrove
  */
 public class RenderContext extends Context {
-	private int m_lastTime_nextLightID = GL.GL_LIGHT0;
+	private int m_lastTime_nextLightID = GL2.GL_LIGHT0;
 	private int m_nextLightID;
 	private boolean m_isFogEnabled;
 
@@ -57,9 +58,9 @@ public class RenderContext extends Context {
 	private java.nio.FloatBuffer m_ambientBuffer = java.nio.FloatBuffer.wrap( m_ambient );
 
 	private java.util.HashMap< GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry >, Integer > m_displayListMap = new java.util.HashMap< GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry >, Integer >();
-	private java.util.HashMap< TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture >, com.sun.opengl.util.texture.Texture > m_textureBindingMap = new java.util.HashMap< TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture >, com.sun.opengl.util.texture.Texture >();
+	private java.util.HashMap< TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture >, com.jogamp.opengl.util.texture.Texture > m_textureBindingMap = new java.util.HashMap< TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture >, com.jogamp.opengl.util.texture.Texture >();
 
-	private java.util.List< com.sun.opengl.util.texture.Texture > m_toBeForgottenTextures = new java.util.LinkedList< com.sun.opengl.util.texture.Texture >();
+	private java.util.List< com.jogamp.opengl.util.texture.Texture > m_toBeForgottenTextures = new java.util.LinkedList< com.jogamp.opengl.util.texture.Texture >();
 	private java.util.List< Integer > m_toBeForgottenDisplayLists = new java.util.LinkedList< Integer >();
 
 	private TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > m_currDiffuseColorTextureAdapter;
@@ -131,9 +132,9 @@ public class RenderContext extends Context {
 			if( rvDepth != null ) {
 				byte[] color = ((java.awt.image.DataBufferByte)dataBuffer).getData();
 				java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( color );
-				gl.glReadPixels( 0, 0, width, height, GL.GL_ABGR_EXT, GL.GL_UNSIGNED_BYTE, buffer );
+				gl.glReadPixels( 0, 0, width, height, GL2.GL_ABGR_EXT, GL.GL_UNSIGNED_BYTE, buffer );
 				
-				gl.glReadPixels( 0, 0, width, height, GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, rvDepth );
+				gl.glReadPixels( 0, 0, width, height, GL2.GL_DEPTH_COMPONENT, GL.GL_FLOAT, rvDepth );
 				
 				final byte ON = (byte)0;
 				final byte OFF = (byte)255;
@@ -159,7 +160,7 @@ public class RenderContext extends Context {
 				
 				//int format = GL.GL_RGB;
 				//int format = GL.GL_RGBA;
-				int format = GL.GL_ABGR_EXT;
+				int format = GL2.GL_ABGR_EXT;
 				//int format = GL.GL_BGRA;
 				
 				//int type = GL.GL_UNSIGNED_INT;
@@ -186,7 +187,7 @@ public class RenderContext extends Context {
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "unable to capture back buffer:", description );
 				}
 			}
-			com.sun.opengl.util.ImageUtil.flipImageVertically( rvColor );
+			com.jogamp.opengl.util.awt.ImageUtil.flipImageVertically( rvColor );
 		} else {
 			throw new RuntimeException( "todo" );
 		}
@@ -243,7 +244,7 @@ public class RenderContext extends Context {
 		m_ambient[ 1 ] = 0;
 		m_ambient[ 2 ] = 0;
 		m_ambient[ 3 ] = 1;
-		m_nextLightID = GL.GL_LIGHT0;
+		m_nextLightID = GL2.GL_LIGHT0;
 
 		m_isFogEnabled = false;
 
@@ -255,20 +256,20 @@ public class RenderContext extends Context {
 		m_ambient[ 2 ] *= m_globalBrightness;
 		m_ambient[ 3 ] *= m_globalBrightness;
 
-		gl.glLightModelfv( GL.GL_LIGHT_MODEL_AMBIENT, m_ambientBuffer );
+		gl.glLightModelfv( GL2.GL_LIGHT_MODEL_AMBIENT, m_ambientBuffer );
 		for( int id = m_nextLightID; id < m_lastTime_nextLightID; id++ ) {
 			gl.glDisable( id );
 		}
 		if( m_isFogEnabled ) {
-			gl.glEnable( GL.GL_FOG );
+			gl.glEnable( GL2.GL_FOG );
 		} else {
-			gl.glDisable( GL.GL_FOG );
+			gl.glDisable( GL2.GL_FOG );
 		}
 
 		m_lastTime_nextLightID = m_nextLightID;
 
 		gl.glEnable( GL.GL_DEPTH_TEST );
-		gl.glEnable( GL.GL_COLOR_MATERIAL );
+		gl.glEnable( GL2.GL_COLOR_MATERIAL );
 		gl.glEnable( GL.GL_CULL_FACE );
 		//		gl.glCullFace( GL.GL_BACK );
 	}
@@ -299,8 +300,8 @@ public class RenderContext extends Context {
 			s_color[ 1 ] = color[ 1 ] * brightness * m_globalBrightness;
 			s_color[ 2 ] = color[ 2 ] * brightness * m_globalBrightness;
 			s_color[ 3 ] = color[ 3 ] * brightness * m_globalBrightness;
-			gl.glLightfv( id, GL.GL_DIFFUSE, s_colorBuffer );
-			gl.glLightfv( id, GL.GL_SPECULAR, s_colorBuffer );
+			gl.glLightfv( id, GL2.GL_DIFFUSE, s_colorBuffer );
+			gl.glLightfv( id, GL2.GL_SPECULAR, s_colorBuffer );
 		}
 	}
 	public void setFogColor( float[] fogColor ) {
@@ -309,7 +310,7 @@ public class RenderContext extends Context {
 			s_color[ 1 ] = fogColor[ 1 ] * m_globalBrightness;
 			s_color[ 2 ] = fogColor[ 2 ] * m_globalBrightness;
 			s_color[ 3 ] = fogColor[ 3 ] * m_globalBrightness;
-			gl.glFogfv( GL.GL_FOG_COLOR, s_colorBuffer );
+			gl.glFogfv( GL2.GL_FOG_COLOR, s_colorBuffer );
 		}
 	}
 	public void setColor( float[] color, float opacity ) {
@@ -408,7 +409,7 @@ public class RenderContext extends Context {
 		forgetGeometryAdapter( geometryAdapter, true );
 	}
 
-	private void forgetTextureBindingID( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, com.sun.opengl.util.texture.Texture value, boolean removeFromMap ) {
+	private void forgetTextureBindingID( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, com.jogamp.opengl.util.texture.Texture value, boolean removeFromMap ) {
 		if( value != null ) {
 			m_toBeForgottenTextures.add( value );
 			if( removeFromMap ) {
@@ -441,7 +442,7 @@ public class RenderContext extends Context {
 	}
 
 	//todo: better name
-	public void put( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, com.sun.opengl.util.texture.Texture glTexture ) {
+	public void put( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, com.jogamp.opengl.util.texture.Texture glTexture ) {
 		m_textureBindingMap.put( textureAdapter, glTexture );
 	}
 
@@ -449,10 +450,10 @@ public class RenderContext extends Context {
 		if( diffuseColorTextureAdapter != null && diffuseColorTextureAdapter.isValid() ) {
 			gl.glEnable( GL.GL_TEXTURE_2D );
 			if( m_currDiffuseColorTextureAdapter != diffuseColorTextureAdapter ) {
-				com.sun.opengl.util.texture.Texture texture = diffuseColorTextureAdapter.getTexture( this );
+				com.jogamp.opengl.util.texture.Texture texture = diffuseColorTextureAdapter.getTexture( this );
 				texture.bind();
 				texture.enable();
-				int value = isDiffuseColorTextureClamped ? GL.GL_CLAMP : GL.GL_REPEAT;
+				int value = isDiffuseColorTextureClamped ? GL2.GL_CLAMP : GL.GL_REPEAT;
 				gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, value );
 				gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, value );
 				m_currDiffuseColorTextureAdapter = diffuseColorTextureAdapter;
@@ -481,9 +482,9 @@ public class RenderContext extends Context {
 			// gl.glEnable( GL.GL_LIGHTING );
 			// }
 
-			gl.glEnable( GL.GL_LIGHTING );
+			gl.glEnable( GL2.GL_LIGHTING );
 		} else {
-			gl.glDisable( GL.GL_LIGHTING );
+			gl.glDisable( GL2.GL_LIGHTING );
 		}
 	}
 

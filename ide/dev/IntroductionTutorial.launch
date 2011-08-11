@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/ide/src/org/alice/stageide/tutorial/IntroductionTutorial.java"/>
+<listEntry value="/ide"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-<listEntry value="1"/>
+<listEntry value="4"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.alice.stageide.tutorial.IntroductionTutorial"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;${project_loc:ide}/share/application/projects/tutorials/SkateRoutine.a3p&quot;"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ide"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/flite/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/gallery/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/gallery/assets/alice&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/dev/jogl2/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/flite/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/gallery/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/gallery/assets/alice&quot;"/>
 </launchConfiguration>

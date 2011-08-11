@@ -44,13 +44,14 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 /**
  * @author Dennis Cosgrove
  */
 class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter {
-	private GL m_gl;
+	private GL2 m_gl;
 	private GLU m_glu;
 	private double m_xOffset;
 	private double m_yOffset;
@@ -79,7 +80,7 @@ class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter
 		}
 	}
 
-	public void set( GL gl, GLU glu, double xOffset, double yOffset, double z, boolean isFront ) {
+	public void set( GL2 gl, GLU glu, double xOffset, double yOffset, double z, boolean isFront ) {
 		m_gl = gl;
 		m_glu = glu;
 		m_xOffset = xOffset;
@@ -137,19 +138,19 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 
 			s_tessAdapter.set( context.gl, context.glu, xOffset, yOffset, z, isFront );
 
-			javax.media.opengl.glu.GLUtessellator tesselator = context.glu.gluNewTess();
-			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_END, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, s_tessAdapter );
+			javax.media.opengl.glu.GLUtessellator tesselator = GLU.gluNewTess();
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, s_tessAdapter );
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, s_tessAdapter );
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_END, s_tessAdapter );
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, s_tessAdapter );
 			//			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE_DATA, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, s_tessAdapter );
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, s_tessAdapter );
 			//			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR_DATA, s_tessAdapter );
 			try {
-				context.glu.gluBeginPolygon( tesselator );
+				GLU.gluBeginPolygon( tesselator );
 				try {
 					for( java.util.Vector< edu.cmu.cs.dennisc.math.Point2f > faceContour : faceContours ) {
-						context.glu.gluTessBeginContour( tesselator );
+						GLU.gluTessBeginContour( tesselator );
 						try {
 							int n = faceContour.size();
 							for( int i = 0; i < n; i++ ) {
@@ -160,14 +161,14 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 									p = faceContour.elementAt( i );
 								}
 								double[] xyz = { p.x, p.y, 0 };
-								context.glu.gluTessVertex( tesselator, xyz, 0, xyz );
+								GLU.gluTessVertex( tesselator, xyz, 0, xyz );
 							}
 						} finally {
-							context.glu.gluTessEndContour( tesselator );
+							GLU.gluTessEndContour( tesselator );
 						}
 					}
 				} finally {
-					context.glu.gluTessEndPolygon( tesselator );
+					GLU.gluTessEndPolygon( tesselator );
 				}
 			} finally {
 				m_element.getGlyphVector().releaseFaceContours();
@@ -187,7 +188,7 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 			java.util.Vector< java.util.Vector< edu.cmu.cs.dennisc.math.Point2f >> outlineLines = m_element.getGlyphVector().acquireOutlineLines();
 			try {
 				for( java.util.Vector< edu.cmu.cs.dennisc.math.Point2f > outlineLine : outlineLines ) {
-					context.gl.glBegin( GL.GL_QUAD_STRIP );
+					context.gl.glBegin( GL2.GL_QUAD_STRIP );
 					edu.cmu.cs.dennisc.math.Point2f prev = null;
 					for( edu.cmu.cs.dennisc.math.Point2f curr : outlineLine ) {
 						if( prev == null ) {
@@ -230,10 +231,10 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 		ambientColor[ 0 ] += globalBrightness * AMBIENT_BOOST;
 		ambientColor[ 1 ] += globalBrightness * AMBIENT_BOOST;
 		ambientColor[ 2 ] += globalBrightness * AMBIENT_BOOST;
-		rc.gl.glLightModelfv( GL.GL_LIGHT_MODEL_AMBIENT, ambientBuffer );
+		rc.gl.glLightModelfv( GL2.GL_LIGHT_MODEL_AMBIENT, ambientBuffer );
 		glText( rc, true );
 		rc.getAmbient( ambientColor );
-		rc.gl.glLightModelfv( GL.GL_LIGHT_MODEL_AMBIENT, ambientBuffer );
+		rc.gl.glLightModelfv( GL2.GL_LIGHT_MODEL_AMBIENT, ambientBuffer );
 	}
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {

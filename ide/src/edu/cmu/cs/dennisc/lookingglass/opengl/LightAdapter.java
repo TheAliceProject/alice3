@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * @author Dennis Cosgrove
@@ -100,7 +101,7 @@ public abstract class LightAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Ligh
 			s_ambientBlackBuffer.put( 1 );
 			s_ambientBlackBuffer.rewind();
 		}
-		rc.gl.glLightfv( id, GL.GL_AMBIENT, s_ambientBlackBuffer );
+		rc.gl.glLightfv( id, GL2.GL_AMBIENT, s_ambientBlackBuffer );
 		
 
 		//todo: should lights' diffuse and specular colors be separated in the scenegraph?
@@ -111,17 +112,17 @@ public abstract class LightAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Ligh
 
 		synchronized( s_position ) {
 			getPosition( s_position );
-			rc.gl.glLightfv( id, GL.GL_POSITION, s_positionBuffer );
+			rc.gl.glLightfv( id, GL2.GL_POSITION, s_positionBuffer );
 		}
 		synchronized( s_spotDirection ) {
 			getSpotDirection( s_spotDirection );
-			rc.gl.glLightfv( id, GL.GL_SPOT_DIRECTION, s_spotDirectionBuffer );
+			rc.gl.glLightfv( id, GL2.GL_SPOT_DIRECTION, s_spotDirectionBuffer );
 		}
-		rc.gl.glLightf( id, GL.GL_SPOT_EXPONENT, getSpotExponent() );
-		rc.gl.glLightf( id, GL.GL_SPOT_CUTOFF, getSpotCutoff() );
-		rc.gl.glLightf( id, GL.GL_CONSTANT_ATTENUATION, getConstantAttenuation() );
-		rc.gl.glLightf( id, GL.GL_LINEAR_ATTENUATION, getLinearAttenuation() );
-		rc.gl.glLightf( id, GL.GL_QUADRATIC_ATTENUATION, getQuadraticAttenuation() );
+		rc.gl.glLightf( id, GL2.GL_SPOT_EXPONENT, getSpotExponent() );
+		rc.gl.glLightf( id, GL2.GL_SPOT_CUTOFF, getSpotCutoff() );
+		rc.gl.glLightf( id, GL2.GL_CONSTANT_ATTENUATION, getConstantAttenuation() );
+		rc.gl.glLightf( id, GL2.GL_LINEAR_ATTENUATION, getLinearAttenuation() );
+		rc.gl.glLightf( id, GL2.GL_QUADRATIC_ATTENUATION, getQuadraticAttenuation() );
 	}
 	@Override
 	public void setup( RenderContext rc ) {

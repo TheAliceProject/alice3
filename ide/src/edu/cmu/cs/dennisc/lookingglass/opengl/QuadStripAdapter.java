@@ -49,11 +49,11 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 public class QuadStripAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.QuadStrip > {
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
-    	renderPrimative( rc, javax.media.opengl.GL.GL_QUAD_STRIP );
+    	renderPrimative( rc, javax.media.opengl.GL2.GL_QUAD_STRIP );
     }
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-    	pickPrimative( pc, javax.media.opengl.GL.GL_QUAD_STRIP );
+    	pickPrimative( pc, javax.media.opengl.GL2.GL_QUAD_STRIP );
 	}    
 	@Override
 	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {

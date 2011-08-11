@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * @author Dennis Cosgrove
@@ -80,21 +81,22 @@ public class ConformanceTestResults {
 	private boolean isValid;
 
 	private ConformanceTestResults() {
-		javax.media.opengl.GLDrawableFactory factory = javax.media.opengl.GLDrawableFactory.getFactory();
-		if (factory.canCreateGLPbuffer()) {
-			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities();
-			javax.media.opengl.GLPbuffer glPbuffer = factory.createGLPbuffer(glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null);
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getDesktopFactory();
+		if (glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() )) {
+			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities( glProfile );
+			javax.media.opengl.GLPbuffer glPbuffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null);
 			javax.media.opengl.GLContext glContext = glPbuffer.getContext();
 			glContext.makeCurrent();
-			GL gl = glPbuffer.getGL();
+			GL2 gl = glPbuffer.getGL().getGL2();
 			inititialize( gl );
 		}
 	}
-	public ConformanceTestResults( GL gl ) {
+	public ConformanceTestResults( GL2 gl ) {
 		inititialize( gl );
 	}
 
-	private void inititialize( GL gl ) {
+	private void inititialize( GL2 gl ) {
 		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer();
 		timer.start();
 		timer.mark( gl );
@@ -119,7 +121,7 @@ public class ConformanceTestResults {
 		final int KEY = 11235;
 
 		gl.glSelectBuffer(SELECTION_CAPACITY, selectionAsIntBuffer);
-		gl.glRenderMode(GL.GL_SELECT);
+		gl.glRenderMode(GL2.GL_SELECT);
 
 		gl.glClearDepth(1.0f);
 		gl.glDepthFunc( GL.GL_LEQUAL );
@@ -130,18 +132,18 @@ public class ConformanceTestResults {
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glInitNames();
 
-		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		gl.glOrtho(-1, +1, -1, +1, -1, +1);
 		gl.glViewport(0, 0, 1, 1);
 
 		gl.glLoadIdentity();
-		gl.glMatrixMode(GL.GL_MODELVIEW);
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
 
 		gl.glPushName(KEY);
 
-		gl.glBegin(GL.GL_QUAD_STRIP);
+		gl.glBegin(GL2.GL_QUAD_STRIP);
 		gl.glVertex3f(-XY, -XY, Z);
 		gl.glVertex3f(+XY, -XY, Z);
 		gl.glVertex3f(+XY, +XY, Z);
@@ -155,7 +157,7 @@ public class ConformanceTestResults {
 		timer.mark( "picked" );
 
 		selectionAsIntBuffer.rewind();
-		int length = gl.glRenderMode(GL.GL_RENDER);
+		int length = gl.glRenderMode(GL2.GL_RENDER);
 
 		if (length == 1) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println("length", length);

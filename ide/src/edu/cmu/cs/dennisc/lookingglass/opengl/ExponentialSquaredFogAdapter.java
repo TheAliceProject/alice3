@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * @author Dennis Cosgrove
@@ -54,8 +55,8 @@ public class ExponentialSquaredFogAdapter extends FogAdapter< edu.cmu.cs.dennisc
 	@Override
 	public void setup( RenderContext rc ) {
 		super.setup( rc );
-		rc.gl.glFogi( GL.GL_FOG_MODE, GL.GL_EXP2 );
-		rc.gl.glFogf( GL.GL_FOG_DENSITY, m_density );
+		rc.gl.glFogi( GL2.GL_FOG_MODE, GL2.GL_EXP2 );
+		rc.gl.glFogf( GL2.GL_FOG_DENSITY, m_density );
 	}
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {

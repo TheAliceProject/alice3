@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 public class IndexedQuadrilateralArrayAdapter extends IndexedPolygonArrayAdapter< edu.cmu.cs.dennisc.scenegraph.IndexedQuadrilateralArray > {
 	@Override
 	protected int getMode() {
-		return javax.media.opengl.GL.GL_QUADS;
+		return javax.media.opengl.GL2.GL_QUADS;
 	}
 	@Override
 	protected int getIndicesPerPolygon() {

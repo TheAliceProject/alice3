@@ -49,7 +49,7 @@ public class PivotFigureAdapter extends AdornmentAdapter {
 	private static final float FULL = 1.0f;
 	private static final float ZERO = 0.0f;
 
-	private static void glPivotFigure( javax.media.opengl.GL gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> parent ) {
+	private static void glPivotFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> parent ) {
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );
@@ -89,7 +89,7 @@ public class PivotFigureAdapter extends AdornmentAdapter {
 	}
 	@Override
 	protected void actuallyRender( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter adornmentRootAdapter ) {
-		rc.gl.glDisable( javax.media.opengl.GL.GL_LIGHTING );
+		rc.gl.glDisable( javax.media.opengl.GL2.GL_LIGHTING );
 		glPivotFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );
 	}
 }

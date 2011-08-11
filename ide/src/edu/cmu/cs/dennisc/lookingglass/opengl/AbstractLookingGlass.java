@@ -43,9 +43,6 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCapabilities;
-
 //class TextureGraphicsCommit {
 //	private TextureAdapter m_textureAdapter;
 //	private java.awt.Graphics2D m_g;
@@ -215,7 +212,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		if( m_glEventAdapter.isListening() ) {
 			//pass
 		} else {
-			GLAutoDrawable glAutoDrawable = this.getGLAutoDrawable();
+			javax.media.opengl.GLAutoDrawable glAutoDrawable = this.getGLAutoDrawable();
 			m_glEventAdapter.startListening( glAutoDrawable );
 		}
 	}
@@ -486,7 +483,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 
 
 	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
-		GLCapabilities glCapabilities = this.getGLAutoDrawable().getChosenGLCapabilities();
+		//javax.media.opengl.GLCapabilitiesImmutable glCapabilities = this.getGLAutoDrawable().getChosenGLCapabilities();
 		//PrintUtilities.println( "glCapabilities", glCapabilities );
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getCameraAtPixel( xPixel, yPixel );
 		edu.cmu.cs.dennisc.lookingglass.PickResult rv;

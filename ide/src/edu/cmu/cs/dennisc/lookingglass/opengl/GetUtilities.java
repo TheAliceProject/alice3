@@ -61,7 +61,7 @@ public class GetUtilities {
 		gl.glGetFloatv( which, tmp, 0 );
 		return tmp[ 0 ];
 	}
-	public static double getDouble( javax.media.opengl.GL gl, int which ) {
+	public static double getDouble( javax.media.opengl.GL2 gl, int which ) {
 		double[] tmp = new double[ 1 ];
 		gl.glGetDoublev( which, tmp, 0 );
 		return tmp[ 0 ];

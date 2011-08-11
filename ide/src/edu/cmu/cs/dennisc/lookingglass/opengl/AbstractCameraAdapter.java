@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * @author Dennis Cosgrove
@@ -104,7 +105,7 @@ public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.sceneg
 		SceneAdapter sceneAdapter = getSceneAdapter();
 		if( sceneAdapter != null ) {
 			java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), width, height );
-			rc.gl.glMatrixMode( GL.GL_PROJECTION );
+			rc.gl.glMatrixMode( GL2.GL_PROJECTION );
 			rc.gl.glLoadIdentity();
 			setupProjection( rc, actualViewport );
 			rc.setViewportAndAddToClearRect( actualViewport );
@@ -125,7 +126,7 @@ public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.sceneg
 
 			pc.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
 			
-			pc.gl.glMatrixMode( GL.GL_PROJECTION );
+			pc.gl.glMatrixMode( GL2.GL_PROJECTION );
 			pc.gl.glLoadIdentity();
 
 			double tx = actualViewport.width  - 2 * ( pickParameters.getX()                        - actualViewport.x );

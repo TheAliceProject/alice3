@@ -48,6 +48,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLException;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -103,8 +104,8 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
     
     public static void renderMesh(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
     {
-        int maxIndices = GetUtilities.getInteger(rc.gl, javax.media.opengl.GL.GL_MAX_ELEMENTS_INDICES);
-        int maxVertices = GetUtilities.getInteger(rc.gl, javax.media.opengl.GL.GL_MAX_ELEMENTS_VERTICES);
+        int maxIndices = GetUtilities.getInteger(rc.gl, javax.media.opengl.GL2.GL_MAX_ELEMENTS_INDICES);
+        int maxVertices = GetUtilities.getInteger(rc.gl, javax.media.opengl.GL2.GL_MAX_ELEMENTS_VERTICES);
         if (vertexBuffer.capacity() / 3 >= maxVertices || indexBuffer.capacity() >= maxIndices)
         {
             renderMeshAsArrays(rc, vertexBuffer, normalBuffer, textCoordBuffer, indexBuffer);
@@ -117,13 +118,13 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
     
     public static void renderMeshWithBuffers( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
     {
-        rc.gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
+        rc.gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
         vertexBuffer.rewind();
-        rc.gl.glVertexPointer(3, GL.GL_DOUBLE, 0, vertexBuffer);
-        rc.gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
+        rc.gl.glVertexPointer(3, GL2.GL_DOUBLE, 0, vertexBuffer);
+        rc.gl.glEnableClientState(GL2.GL_NORMAL_ARRAY);
         normalBuffer.rewind();
         rc.gl.glNormalPointer(GL.GL_FLOAT, 0, normalBuffer);
-        rc.gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+        rc.gl.glEnableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
         textCoordBuffer.rewind();
         rc.gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, textCoordBuffer);
         
@@ -154,8 +155,8 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
     
     public static void pickMesh( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer )
     {
-        int maxIndices = GetUtilities.getInteger(pc.gl, GL.GL_MAX_ELEMENTS_INDICES);
-        int maxVertices = GetUtilities.getInteger(pc.gl, GL.GL_MAX_ELEMENTS_VERTICES);
+        int maxIndices = GetUtilities.getInteger(pc.gl, GL2.GL_MAX_ELEMENTS_INDICES);
+        int maxVertices = GetUtilities.getInteger(pc.gl, GL2.GL_MAX_ELEMENTS_VERTICES);
         if (vertexBuffer.capacity() / 3 >= maxVertices || indexBuffer.capacity() >= maxIndices)
         {
             pickMeshAsArrays(pc, vertexBuffer, indexBuffer);
@@ -169,9 +170,9 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
     public static void pickMeshWithBuffers( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer)
     {
         pc.gl.glPushName( -1 );
-        pc.gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
+        pc.gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
         vertexBuffer.rewind();
-        pc.gl.glVertexPointer(3, GL.GL_DOUBLE, 0, vertexBuffer);
+        pc.gl.glVertexPointer(3, GL2.GL_DOUBLE, 0, vertexBuffer);
         indexBuffer.rewind();
         pc.gl.glDrawElements(GL.GL_TRIANGLES, indexBuffer.remaining(), GL.GL_UNSIGNED_INT, indexBuffer);
         pc.gl.glPopName();

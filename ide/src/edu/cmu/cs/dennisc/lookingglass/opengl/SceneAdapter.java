@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * @author Dennis Cosgrove
@@ -150,7 +151,7 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 	}
 
 	public void renderScene( RenderContext rc, AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, BackgroundAdapter backgroundAdapter ) {
-		rc.gl.glMatrixMode( GL.GL_MODELVIEW );
+		rc.gl.glMatrixMode( GL2.GL_MODELVIEW );
 		synchronized( cameraAdapter ) {
 			rc.gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
 		}
@@ -178,7 +179,7 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 				rc.gl.glColorMask( true, true, true, true );
 				rc.gl.glStencilFunc( GL.GL_EQUAL, 1, 1 );
 				rc.gl.glStencilOp( GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP );
-				rc.gl.glEnable( GL.GL_CLIP_PLANE0 );
+				rc.gl.glEnable( GL2.GL_CLIP_PLANE0 );
 				rc.gl.glPushMatrix();
 				planarReflectorAdapter.applyReflection( rc );
 				rc.gl.glFrontFace( GL.GL_CW );
@@ -186,7 +187,7 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 				renderScene( rc );
 				rc.gl.glFrontFace( GL.GL_CCW );
 				rc.gl.glPopMatrix();
-				rc.gl.glDisable( GL.GL_CLIP_PLANE0 );
+				rc.gl.glDisable( GL2.GL_CLIP_PLANE0 );
 				rc.gl.glDisable( GL.GL_STENCIL_TEST );
 				setup( rc );
 				rc.gl.glEnable( GL.GL_BLEND );

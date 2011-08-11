@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * @author Dennis Cosgrove
@@ -97,7 +98,7 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
     			setIsGeometryChanged( true );
     		}
     		if( isDisplayListInNeedOfRefresh( rc ) || rc.gl.glIsList( id ) == false ) {
-    			rc.gl.glNewList( id, GL.GL_COMPILE_AND_EXECUTE );
+    			rc.gl.glNewList( id, GL2.GL_COMPILE_AND_EXECUTE );
     			try {
             		renderGeometry( rc );
     			} finally {

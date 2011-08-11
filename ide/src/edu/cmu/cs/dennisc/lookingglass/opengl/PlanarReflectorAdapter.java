@@ -143,7 +143,7 @@ public class PlanarReflectorAdapter extends VisualAdapter< edu.cmu.cs.dennisc.sc
 
 		edu.cmu.cs.dennisc.math.Plane plane = new edu.cmu.cs.dennisc.math.Plane( m );
 		plane.getEquation( m_equation );
-		rc.gl.glClipPlane( javax.media.opengl.GL.GL_CLIP_PLANE0, m_equationBuffer );
+		rc.gl.glClipPlane( javax.media.opengl.GL2.GL_CLIP_PLANE0, m_equationBuffer );
 		
 		edu.cmu.cs.dennisc.math.Point3 p = m.translation;
 		edu.cmu.cs.dennisc.math.Vector3 v = new edu.cmu.cs.dennisc.math.Vector3( -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );

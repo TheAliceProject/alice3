@@ -81,7 +81,8 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 
 	static {
 		try {
-			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
+			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
 		} catch( UnsatisfiedLinkError ule ) {
 			String platformText = System.getProperty( "os.name" ) + "-" + System.getProperty( "os.arch" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "platform:", platformText );
@@ -98,6 +99,9 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "all properties" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "--- ----------" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertiesAsXMLString() );
+			
+			ule.printStackTrace();
+			
 			System.exit( 0 );
 		}
 	}
@@ -126,7 +130,8 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	private int automaticDisplayCount = 0;
 	//private GLCapabilities glCapabilities;
 	/*package-private*/ static javax.media.opengl.GLCapabilities createDesiredGLCapabilities() {
-		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
+		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities( profile );
 		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
 //		if( chooser instanceof edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
 //			rv.setHardwareAccelerated( false );
@@ -168,16 +173,17 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return glCapabilitiesChooser;
 	}
 	
-	/*package-private*/ javax.media.opengl.GLCanvas createGLCanvas() {
-		return new javax.media.opengl.GLCanvas( createDesiredGLCapabilities(), getGLCapabilitiesChooser(), null, null );
+	/*package-private*/ javax.media.opengl.awt.GLCanvas createGLCanvas() {
+		return new javax.media.opengl.awt.GLCanvas( createDesiredGLCapabilities(), getGLCapabilitiesChooser(), null, null );
 	}
-	/*package-private*/ javax.media.opengl.GLJPanel createGLJPanel() {
-		return new javax.media.opengl.GLJPanel( createDesiredGLCapabilities(), getGLCapabilitiesChooser(), null );
+	/*package-private*/ javax.media.opengl.awt.GLJPanel createGLJPanel() {
+		return new javax.media.opengl.awt.GLJPanel( createDesiredGLCapabilities(), getGLCapabilitiesChooser(), null );
 	}
 	/*package-private*/ javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, javax.media.opengl.GLContext share ) {
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-		if (glDrawableFactory.canCreateGLPbuffer()) {
-			return glDrawableFactory.createGLPbuffer(createDesiredGLCapabilities(), getGLCapabilitiesChooser(), width, height, share);
+		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+		if (glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() )) {
+			return glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), createDesiredGLCapabilities(), getGLCapabilitiesChooser(), width, height, share);
 		} else {
 			throw new RuntimeException("cannot create pbuffer");
 		}

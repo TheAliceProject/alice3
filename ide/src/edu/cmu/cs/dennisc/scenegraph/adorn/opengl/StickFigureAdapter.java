@@ -50,7 +50,7 @@ public class StickFigureAdapter extends AdornmentAdapter {
 	private static final int TRANSLATION_Y_INDEX = 13;
 	private static final int TRANSLATION_Z_INDEX = 14;
 	private static final float[] COLOR = { 1.0f, 1.0f, 0.0f, 1.0f }; 
-	private static void glStickFigure( javax.media.opengl.GL gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter parent ) {
+	private static void glStickFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter parent ) {
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );
@@ -77,7 +77,7 @@ public class StickFigureAdapter extends AdornmentAdapter {
 	}
 	@Override
 	protected void actuallyRender( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter adornmentRootAdapter ) {
-		rc.gl.glDisable( javax.media.opengl.GL.GL_LIGHTING );
+		rc.gl.glDisable( javax.media.opengl.GL2.GL_LIGHTING );
 		rc.setColor( COLOR, 1.0f );
 		glStickFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );
 	}

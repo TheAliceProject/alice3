@@ -8,8 +8,6 @@
 	<classpathentry kind="lib" path="lib/jira/jira-soapclient-4.0-with-dependencies.jar"/>
 	<classpathentry kind="lib" path="lib/jmf/JMF-2.1.1e/lib/jmf.jar"/>
 	<classpathentry kind="lib" path="lib/jmfmp3/lib/ext/mp3plugin.jar"/>
-	<classpathentry kind="lib" path="lib/jogl/lib/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="lib/jogl/lib/jogl.jar"/>
 	<classpathentry kind="lib" path="lib/mail/mail.jar"/>
 	<classpathentry kind="lib" path="lib/rpc/xmlrpc-client-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/swingworker/swing-worker-1.2.jar"/>
@@ -19,16 +17,21 @@
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="lib" path="lib/tools/tools.jar"/>
+	<classpathentry kind="lib" path="share/gallery/resources/mtwtGalleryBoxes.jar"/>
+	<classpathentry kind="lib" path="share/gallery/resources/mtwtGalleryLargeIcons.jar"/>
+	<classpathentry kind="lib" path="share/gallery/resources/stagePersonEditorLargeIcons.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/Ogre.jar"/>
+	<classpathentry kind="lib" path="lib/jogl2/gluegen-gl.jar"/>
+	<classpathentry kind="lib" path="lib/jogl2/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="lib/jogl2/jogl.all.jar"/>
+	<classpathentry kind="lib" path="lib/jogl2/nativewindow.all.jar"/>
+	<classpathentry kind="lib" path="lib/jogl2/newt.all.jar"/>
 	<classpathentry kind="lib" path="share/gallery/assets/alice/Chicken.jar"/>
 	<classpathentry kind="lib" path="share/gallery/assets/alice/ClownFish.jar"/>
 	<classpathentry kind="lib" path="share/gallery/assets/alice/Lion.jar"/>
-	<classpathentry kind="lib" path="share/gallery/assets/alice/Ogre.jar"/>
 	<classpathentry kind="lib" path="share/gallery/assets/alice/Orca.jar"/>
 	<classpathentry kind="lib" path="share/gallery/assets/alice/Owl.jar"/>
 	<classpathentry kind="lib" path="share/gallery/assets/alice/PajamaFish.jar"/>
 	<classpathentry kind="lib" path="share/gallery/assets/alice/Shark.jar"/>
-	<classpathentry kind="lib" path="share/gallery/resources/mtwtGalleryBoxes.jar"/>
-	<classpathentry kind="lib" path="share/gallery/resources/mtwtGalleryLargeIcons.jar"/>
-	<classpathentry kind="lib" path="share/gallery/resources/stagePersonEditorLargeIcons.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

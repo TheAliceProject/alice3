@@ -67,7 +67,7 @@ public class OldMeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegra
 	public boolean isAlphaBlended() {
 		return false;
 	}
-	private void glDraw( javax.media.opengl.GL gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
+	private void glDraw( javax.media.opengl.GL2 gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
 		final int N = xyzIndices != null ? xyzIndices.length : 0;
 		if( N > 0 ) {
 			gl.glBegin( mode );
@@ -85,12 +85,12 @@ public class OldMeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegra
 			}
 		}
 	}
-	private void glDrawElements( javax.media.opengl.GL gl, int mode, boolean b ) {
+	private void glDrawElements( javax.media.opengl.GL2 gl, int mode, boolean b ) {
 		if( b ) {
 			short[] xyzIndices;
 			if( mode == javax.media.opengl.GL.GL_TRIANGLES ) {
 				xyzIndices = this.xyzTriangleIndices;
-			} else if( mode == javax.media.opengl.GL.GL_QUADS ) {
+			} else if( mode == javax.media.opengl.GL2.GL_QUADS ) {
 				xyzIndices = this.xyzQuadrangleIndices;
 			} else {
 				throw new AssertionError();
@@ -111,18 +111,16 @@ public class OldMeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegra
 				if( this.triangleIndexBuffer != null ) {
 					//pass
 				} else {
-					this.triangleIndexBuffer = com.sun.opengl.util.BufferUtil.newShortBuffer( this.xyzTriangleIndices.length );
-					this.triangleIndexBuffer.put( this.xyzTriangleIndices );
+					this.triangleIndexBuffer = edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectShortBuffer( this.xyzTriangleIndices );
 				}
 				this.triangleIndexBuffer.rewind();
 				
 				gl.glDrawElements( mode, this.xyzTriangleIndices.length/3, javax.media.opengl.GL.GL_SHORT, this.triangleIndexBuffer );
-			} else if( mode == javax.media.opengl.GL.GL_QUADS ) {
+			} else if( mode == javax.media.opengl.GL2.GL_QUADS ) {
 				if( this.quadrangleIndexBuffer != null ) {
 					//pass
 				} else {
-					this.quadrangleIndexBuffer = com.sun.opengl.util.BufferUtil.newShortBuffer( this.xyzQuadrangleIndices.length );
-					this.quadrangleIndexBuffer.put( this.xyzQuadrangleIndices );
+					this.quadrangleIndexBuffer = edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectShortBuffer( this.xyzQuadrangleIndices );
 					this.quadrangleIndexBuffer.rewind();
 				}
 				gl.glDrawElements( mode, this.xyzQuadrangleIndices.length/4, javax.media.opengl.GL.GL_SHORT, this.quadrangleIndexBuffer );
@@ -132,47 +130,44 @@ public class OldMeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegra
 		}
 	}
 
-	private void glGeometry( javax.media.opengl.GL gl, boolean isArrayRenderingDesired ) {
+	private void glGeometry( javax.media.opengl.GL2 gl, boolean isArrayRenderingDesired ) {
 		if( isArrayRenderingDesired == false || this.ijkTriangleIndices != null || this.uvTriangleIndices != null || this.ijkQuadrangleIndices != null || this.uvQuadrangleIndices != null ) {
 			glDraw( gl, javax.media.opengl.GL.GL_TRIANGLES, this.xyzTriangleIndices, this.ijkTriangleIndices, this.uvTriangleIndices );
-			glDraw( gl, javax.media.opengl.GL.GL_QUADS, this.xyzQuadrangleIndices, this.ijkQuadrangleIndices, this.uvQuadrangleIndices );
+			glDraw( gl, javax.media.opengl.GL2.GL_QUADS, this.xyzQuadrangleIndices, this.ijkQuadrangleIndices, this.uvQuadrangleIndices );
 		} else {
 			if( this.xyzBuffer != null ) {
 				//pass
 			} else {
-				this.xyzBuffer = com.sun.opengl.util.BufferUtil.newDoubleBuffer( xyzs.length );
-				this.xyzBuffer.put( this.xyzs );
+				this.xyzBuffer = edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectDoubleBuffer( xyzs );
 			}
 			this.xyzBuffer.rewind();
 			if( this.ijkBuffer != null ) {
 				//pass
 			} else {
-				this.ijkBuffer = com.sun.opengl.util.BufferUtil.newFloatBuffer( ijks.length );
-				this.ijkBuffer.put( this.ijks );
+				this.ijkBuffer = edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectFloatBuffer( ijks );
 			}
 			this.ijkBuffer.rewind();
 			if( this.uvBuffer != null ) {
 				//pass
 			} else {
-				this.uvBuffer = com.sun.opengl.util.BufferUtil.newFloatBuffer( uvs.length );
-				this.uvBuffer.put( this.uvs );
+				this.uvBuffer = edu.cmu.cs.dennisc.java.util.BufferUtilities.createDirectFloatBuffer( uvs );
 			}
 			this.uvBuffer.rewind();
-			gl.glEnableClientState( javax.media.opengl.GL.GL_VERTEX_ARRAY );
-			gl.glEnableClientState( javax.media.opengl.GL.GL_NORMAL_ARRAY );
-			gl.glEnableClientState( javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY );
+			gl.glEnableClientState( javax.media.opengl.GL2.GL_VERTEX_ARRAY );
+			gl.glEnableClientState( javax.media.opengl.GL2.GL_NORMAL_ARRAY );
+			gl.glEnableClientState( javax.media.opengl.GL2.GL_TEXTURE_COORD_ARRAY );
 			try {
-				gl.glVertexPointer( 3, javax.media.opengl.GL.GL_DOUBLE, 0, this.xyzBuffer );
+				gl.glVertexPointer( 3, javax.media.opengl.GL2.GL_DOUBLE, 0, this.xyzBuffer );
 				gl.glNormalPointer( javax.media.opengl.GL.GL_FLOAT, 0, this.ijkBuffer );
 				gl.glTexCoordPointer( 2, javax.media.opengl.GL.GL_FLOAT, 0, this.uvBuffer );
 				
 				boolean b = true;
 				glDrawElements( gl, javax.media.opengl.GL.GL_TRIANGLES, b );
-				glDrawElements( gl, javax.media.opengl.GL.GL_QUADS, b );
+				glDrawElements( gl, javax.media.opengl.GL2.GL_QUADS, b );
 			} finally {
-				gl.glDisableClientState( javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY );
-				gl.glDisableClientState( javax.media.opengl.GL.GL_NORMAL_ARRAY );
-				gl.glDisableClientState( javax.media.opengl.GL.GL_VERTEX_ARRAY );
+				gl.glDisableClientState( javax.media.opengl.GL2.GL_TEXTURE_COORD_ARRAY );
+				gl.glDisableClientState( javax.media.opengl.GL2.GL_NORMAL_ARRAY );
+				gl.glDisableClientState( javax.media.opengl.GL2.GL_VERTEX_ARRAY );
 			}
 		}
 	}

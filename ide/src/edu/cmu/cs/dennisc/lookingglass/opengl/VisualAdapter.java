@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 /**
  * @author Dennis Cosgrove
@@ -154,13 +155,13 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 
         
         if( m_isScaleIdentity ) {
-            rc.gl.glDisable( GL.GL_NORMALIZE );
+            rc.gl.glDisable( GL2.GL_NORMALIZE );
         } else {
             rc.gl.glPushMatrix();
             rc.gl.glMultMatrixd( m_scaleBuffer );
 
             //todo: what if scale is supposed to affect lighting?
-            rc.gl.glEnable( GL.GL_NORMALIZE );
+            rc.gl.glEnable( GL2.GL_NORMALIZE );
         }
 
         
