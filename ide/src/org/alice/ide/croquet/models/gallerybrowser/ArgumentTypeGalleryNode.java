@@ -65,7 +65,13 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 		return api.getGalleryResourceParentFor( this.getDeclaration() );
 	}
 	public final GalleryNode getParent() {
-		return getDeclarationNodeInstance( this.getParentDeclaration( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() ) );
+		org.lgna.project.ast.AbstractType< ?,?,? > parentType = this.getParentDeclaration( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
+		if( parentType != null ) {
+			return ArgumentTypeGalleryNode.getInstance( parentType );
+		} else {
+			return RootGalleryNode.SINGLETON;
+		}
+		//return getDeclarationNodeInstance( this.getParentDeclaration( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() ) );
 	}
 	@Override
 	protected java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {

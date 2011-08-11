@@ -97,7 +97,6 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 	public InstanceCreationInitializerState getInitializerState() {
 		return (InstanceCreationInitializerState)super.getInitializerState();
 	}
-	protected abstract EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, EditCustomization rv );
 	@Override
 	protected boolean isFieldFinal() {
 		return true;
@@ -120,6 +119,11 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 		return rv;
 	}
 	
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true));
+		return rv;
+	}
+
 	@Override
 	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
 		EditCustomization customization = new EditCustomization();

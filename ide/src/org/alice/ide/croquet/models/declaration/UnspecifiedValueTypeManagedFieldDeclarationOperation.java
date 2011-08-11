@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class UnspecifiedValueTypeManagedFieldDeclarationOperation extends ManagedFieldDeclarationOperation {
+public class UnspecifiedValueTypeManagedFieldDeclarationOperation extends InitializerManagedFieldDeclarationOperation {
 	private static class SingletonHolder {
 		private static UnspecifiedValueTypeManagedFieldDeclarationOperation instance = new UnspecifiedValueTypeManagedFieldDeclarationOperation();
 	}
@@ -69,20 +69,7 @@ public class UnspecifiedValueTypeManagedFieldDeclarationOperation extends Manage
 	private UnspecifiedValueTypeManagedFieldDeclarationOperation() {
 		super( 
 				java.util.UUID.fromString( "3806ae94-e254-483b-a1b4-5aa5fb7c2a7f" ), 
-				null, false, 
-				false, false, 
-				"", true, 
-				null, true 
+				null 
 		);
-		this.getInitializerState().addAndInvokeValueObserver( initializerObserver );
-	}
-	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.ide.croquet.components.declaration.GalleryFieldDeclarationPanel( this );
-	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
-		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true));
-		return rv;
 	}
 }

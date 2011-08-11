@@ -46,32 +46,19 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class TopLevelTypeGalleryNode extends TypeGalleryNode {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, TopLevelTypeGalleryNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static boolean hasInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		return map.containsKey( type );
+public enum GalleryNodeCodec implements org.lgna.croquet.ItemCodec< GalleryNode > {
+	SINGLETON;
+	public Class< GalleryNode > getValueClass() {
+		return GalleryNode.class;
 	}
-	public static TopLevelTypeGalleryNode getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		TopLevelTypeGalleryNode rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new TopLevelTypeGalleryNode( type );
-			map.put( type, rv );
-		}
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, GalleryNode value ) {
+		throw new AssertionError();
+	}
+	public GalleryNode decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new AssertionError();
+	}
+	public StringBuilder appendRepresentation( StringBuilder rv, GalleryNode value, java.util.Locale locale ) {
+		rv.append( value );
 		return rv;
-	}
-	private TopLevelTypeGalleryNode( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( type );
-	}
-	public GalleryNode getParent() {
-		return RootGalleryNode.SINGLETON;
-	}
-	@Override
-	protected java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > type = this.getDeclaration();
-		org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-		org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
-		return api.getGalleryResourceChildrenFor( parameter.getValueType() );
 	}
 }

@@ -50,11 +50,11 @@ public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.Abs
 	public static DeclarationGalleryNode<?> getDeclarationNodeInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
 			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
-			if( TopLevelTypeGalleryNode.hasInstance( type ) ) {
-				return TopLevelTypeGalleryNode.getInstance( type );
-			} else {
+//			if( TopLevelTypeGalleryNode.hasInstance( type ) ) {
+//				return TopLevelTypeGalleryNode.getInstance( type );
+//			} else {
 				return ArgumentTypeGalleryNode.getInstance( type );
-			}
+//			}
 		} else if( declaration instanceof org.lgna.project.ast.AbstractField ) {
 			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)declaration;
 			return FieldGalleryNode.getInstance( field );

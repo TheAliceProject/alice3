@@ -41,25 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum NodeCodec implements org.lgna.croquet.ItemCodec< GalleryNode > {
-	SINGLETON {
-		public Class< GalleryNode > getValueClass() {
-			return GalleryNode.class;
+public class InitializerManagedFieldDeclarationOperation  extends ManagedFieldDeclarationOperation {
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.InstanceCreation > initializerObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.InstanceCreation >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.InstanceCreation > state, org.lgna.project.ast.InstanceCreation prevValue, org.lgna.project.ast.InstanceCreation nextValue, boolean isAdjusting ) {
 		}
-		public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, GalleryNode value ) {
-			throw new AssertionError();
-		}
-		public GalleryNode decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			throw new AssertionError();
-		}
-		public StringBuilder appendRepresentation( StringBuilder rv, GalleryNode value, java.util.Locale locale ) {
-			rv.append( value );
-			return rv;
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.InstanceCreation > state, org.lgna.project.ast.InstanceCreation prevValue, org.lgna.project.ast.InstanceCreation nextValue, boolean isAdjusting ) {
+			org.lgna.project.ast.AbstractType< ?,?,? > type;
+			if( nextValue != null ) {
+				type = nextValue.constructor.getValue().getDeclaringType();
+			} else {
+				type = null;
+			}
+			InitializerManagedFieldDeclarationOperation.this.getComponentValueTypeState().setValue( type );
 		}
 	};
+	public InitializerManagedFieldDeclarationOperation( java.util.UUID id, org.lgna.project.ast.Expression initialExpression ) {
+		super( 
+				id, 
+				null, false, 
+				false, false, 
+				"", true, 
+				initialExpression, true 
+		);
+		this.getInitializerState().addAndInvokeValueObserver( initializerObserver );
+	}
+	@Override
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.croquet.components.declaration.GalleryFieldDeclarationPanel( this );
+	}
 }

@@ -41,41 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
-
-import org.lgna.project.ast.UserType;
-import org.lgna.story.resourceutilities.StorytellingResources;
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurationManager {
-	SINGLETON;
-	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
-		return type.isAssignableTo( org.lgna.story.Scene.class );
-	}
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return type.isAssignableTo( org.lgna.story.Entity.class );
-	}
-	public java.util.List< ? extends org.lgna.project.ast.AbstractType< ?, ?, ? > > getTopLevelGalleryTypes() {
-		return StorytellingResources.getInstance().getTopLevelGalleryTypes();
-	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return StorytellingResources.getInstance().getGalleryResourceParentFor( type );
-	}
-	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return StorytellingResources.getInstance().getGalleryResourceChildrenFor(type);
-	}
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
-		return null;
-	}
-	
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
-		if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
-			return org.alice.stageide.instancefactory.BipedJointMenuModel.getInstance( field );
+public class SpecifiedManagedFieldDeclarationOperation extends InitializerManagedFieldDeclarationOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractConstructor, org.lgna.project.ast.AbstractField, SpecifiedManagedFieldDeclarationOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static SpecifiedManagedFieldDeclarationOperation getInstance( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {
+		SpecifiedManagedFieldDeclarationOperation rv = mapToMap.get( constructor, field );
+		if( rv != null ) {
+			//pass
 		} else {
-			return null;
+			rv = new SpecifiedManagedFieldDeclarationOperation( constructor, field );
+			mapToMap.put( constructor, field, rv );
 		}
+		return rv;
+	}
+	//private final org.lgna.project.ast.AbstractConstructor constructor;
+	private final org.lgna.project.ast.AbstractField field;
+	private SpecifiedManagedFieldDeclarationOperation( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {
+		super( 
+				java.util.UUID.fromString( "a207504f-0f28-4e18-91ec-b7c3f26078fe" ), 
+				org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( field ) ) 
+		);
+		//this.constructor = constructor;
+		this.field = field;
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setName( this.field.getName() );
 	}
 }

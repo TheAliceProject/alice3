@@ -53,7 +53,11 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 			return rv;
 		}
 		public org.lgna.croquet.Operation< ? > getOperationForLeaf( org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode ) {
-			return null;
+			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)treeNode;
+			org.lgna.project.ast.AbstractField field = fieldGalleryNode.getDeclaration();
+			org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
+			org.lgna.project.ast.AbstractConstructor constructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.SINGLETON.getConstructorForArgumentType( valueType );
+			return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field );
 		}
 	}
 	public GalleryBrowser() {
