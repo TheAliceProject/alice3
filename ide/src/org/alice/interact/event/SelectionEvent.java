@@ -47,7 +47,6 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.TransformableImplementation;
 
 import edu.cmu.cs.dennisc.pattern.event.Event;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba

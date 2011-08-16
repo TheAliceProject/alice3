@@ -4,10 +4,6 @@
 
 package edu.cmu.cs.dennisc.nebulous;
 
-import org.alice.ide.IDE;
-
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-
 /**
  * @author Dennis Cosgrove
  */

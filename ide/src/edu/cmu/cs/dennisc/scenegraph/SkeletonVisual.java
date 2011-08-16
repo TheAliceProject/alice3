@@ -43,12 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.pattern.Tuple2;
 
 public class SkeletonVisual extends Visual {
 	

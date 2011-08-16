@@ -50,8 +50,6 @@ import org.alice.ide.IDE;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.UserField;
-import org.lgna.story.ObjectMarker;
-import org.lgna.story.Turnable;
 import org.lgna.story.implementation.ObjectMarkerImplementation;
 
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;

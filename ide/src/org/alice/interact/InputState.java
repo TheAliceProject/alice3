@@ -44,7 +44,6 @@ package org.alice.interact;
 
 import java.awt.event.InputEvent;
 
-import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.ManipulationHandle;
 import org.lgna.story.implementation.EntityImplementation;
 

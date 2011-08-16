@@ -42,9 +42,6 @@
  */
 package org.lgna.story.event;
 
-import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.implementation.SceneImplementation;
-
 /**
  * @author Dennis Cosgrove
  */

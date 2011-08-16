@@ -43,7 +43,6 @@
 package org.alice.stageide.gallerybrowser;
 
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 
 

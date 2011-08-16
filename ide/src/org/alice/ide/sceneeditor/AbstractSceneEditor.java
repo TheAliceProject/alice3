@@ -43,7 +43,6 @@
 package org.alice.ide.sceneeditor;
 
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
-import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.story.ImplementationAccessor;
 
 /**

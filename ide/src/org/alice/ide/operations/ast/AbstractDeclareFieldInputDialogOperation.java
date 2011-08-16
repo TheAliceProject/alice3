@@ -42,8 +42,6 @@
  */
 package org.alice.ide.operations.ast;
 
-import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
-
 /**
  * @author Dennis Cosgrove
  */

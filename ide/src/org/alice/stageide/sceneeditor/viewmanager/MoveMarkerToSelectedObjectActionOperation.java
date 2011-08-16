@@ -46,12 +46,11 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.UserField;
-import org.lgna.story.Turnable;
-import org.lgna.story.implementation.CameraMarkerImplementation;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.implementation.CameraMarkerImplementation;
 
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
 

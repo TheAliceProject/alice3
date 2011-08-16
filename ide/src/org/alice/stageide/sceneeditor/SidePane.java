@@ -49,14 +49,14 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 
+import org.alice.ide.IDE;
+import org.alice.ide.swing.BasicTreeNodeViewerPanel;
+import org.alice.interact.handle.HandleSet;
 import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.croquet.models.sceneditor.PropertyAndMarkerPanelSelectionState;
 import org.alice.stageide.sceneeditor.snap.SnapControlPanel;
 import org.alice.stageide.sceneeditor.snap.SnapState;
-import org.alice.ide.IDE;
-import org.alice.ide.swing.BasicTreeNodeViewerPanel;
-import org.alice.interact.handle.HandleSet;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.PredeterminedTab;
@@ -69,8 +69,6 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.PushButton;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.ToolPaletteTabbedPane;
-import org.lgna.story.ImplementationAccessor;
-
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;

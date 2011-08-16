@@ -42,10 +42,6 @@
  */
 package org.alice.interact.handle;
 
-import java.awt.Dimension;
-
-import javax.swing.JLabel;
-
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;

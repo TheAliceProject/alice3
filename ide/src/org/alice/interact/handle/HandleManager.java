@@ -48,7 +48,6 @@ import java.util.Stack;
 
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.PickHint;
-import org.alice.interact.condition.PickCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;

@@ -44,24 +44,20 @@ package org.alice.stageide.sceneeditor;
 
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.StatementListProperty;
+import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.BookmarkCameraMarker;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.ObjectMarker;
-import org.lgna.story.implementation.EntityImplementation;
 import org.lgna.story.implementation.MarkerImplementation;
 import org.lgna.story.implementation.ProgramImplementation;
 
-import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
-import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;

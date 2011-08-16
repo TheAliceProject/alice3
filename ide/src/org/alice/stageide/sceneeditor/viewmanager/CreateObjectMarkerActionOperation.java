@@ -43,9 +43,8 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.ide.IDE;
-import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
 
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 

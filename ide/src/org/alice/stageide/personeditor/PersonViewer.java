@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.personeditor;
 
-import org.lgna.story.resources.sims2.*;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 
 /**

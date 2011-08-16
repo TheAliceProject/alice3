@@ -42,21 +42,14 @@
  */
 package org.alice.stageide;
 
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.alice.stageide.ast.SceneAdapter;
 import org.lgna.croquet.components.JComponent;
 import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.virtualmachine.VirtualMachine;
 import org.lgna.story.Scene;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
-import org.lgna.story.resourceutilities.ModelResourceUtilities;
 import org.lgna.story.resourceutilities.StorytellingResources;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
 
 public class StageIDE extends org.alice.ide.IDE {

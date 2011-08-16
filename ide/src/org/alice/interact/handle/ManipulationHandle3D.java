@@ -42,17 +42,16 @@
  */
 package org.alice.interact.handle;
 
-import org.lgna.story.TraditionalStyle;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
-import org.alice.interact.condition.PickCondition;
 import org.alice.interact.event.EventCriteriaManager;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.stageide.utilities.BoundingBoxUtilities;
+import org.lgna.story.TraditionalStyle;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
@@ -70,8 +69,8 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
-import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;

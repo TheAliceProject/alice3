@@ -43,10 +43,7 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-
 import org.lgna.story.CameraMarker;
-import org.lgna.story.OrthographicCameraMarker;
-import org.lgna.story.PerspectiveCameraMarker;
 import org.lgna.story.implementation.CameraMarkerImplementation;
 import org.lgna.story.implementation.OrthographicCameraMarkerImplementation;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImplementation;

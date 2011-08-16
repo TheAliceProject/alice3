@@ -42,10 +42,8 @@
  */
 package org.alice.interact.event;
 
-import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.PickHint;
 import org.alice.interact.condition.MovementDescription;
-import org.alice.interact.condition.PickCondition;
 
 /**
  * @author David Culyba

@@ -42,10 +42,6 @@
  */
 package org.alice.interact;
 
-import java.awt.LayoutManager;
-
-import javax.swing.JPanel;
-
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.ManipulatorConditionSet;

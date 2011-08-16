@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class ForwardAndUpGuide implements Orientation, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public class ForwardAndUpGuide implements Orientation {
 	public final Vector3 forward = new Vector3();
 	public final Vector3 upGuide = new Vector3();
 

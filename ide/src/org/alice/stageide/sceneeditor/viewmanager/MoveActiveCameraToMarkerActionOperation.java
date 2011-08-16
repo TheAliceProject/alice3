@@ -43,17 +43,11 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.lgna.project.ast.UserField;
-import org.lgna.story.CameraMarker;
-import org.lgna.story.Entity;
-import org.lgna.story.OrthographicCameraMarker;
-import org.lgna.story.implementation.CameraMarkerImplementation;
-import org.lgna.story.implementation.OrthographicCameraMarkerImplementation;
 import org.alice.ide.IDE;
 import org.alice.ide.operations.ActionOperation;
-import org.alice.ide.sceneeditor.AbstractSceneEditor;
-
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.implementation.CameraMarkerImplementation;
+import org.lgna.story.implementation.OrthographicCameraMarkerImplementation;
 
 public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
 	

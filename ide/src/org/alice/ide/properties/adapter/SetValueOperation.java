@@ -43,8 +43,6 @@
 
 package org.alice.ide.properties.adapter;
 
-import org.lgna.project.Project;
-
 public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation 
 {
 	protected PropertyAdapter <P, ?> propertyAdapter;

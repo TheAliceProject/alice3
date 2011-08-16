@@ -43,16 +43,11 @@
 package org.alice.stageide.croquet.components.gallerybrowser;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.PredeterminedMenuModel;
 import org.lgna.croquet.SelectClassActionOperation;
-import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.croquet.TreeSelectionState;
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.BorderPanel.Constraint;
-import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.PopupButton;
 import org.lgna.croquet.components.ViewController;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 
 

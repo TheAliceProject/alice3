@@ -42,11 +42,8 @@
  */
 package org.alice.stageide.croquet.models.gallerybrowser;
 
-import org.alice.ide.IDE;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
 import org.lgna.croquet.history.InputDialogOperationStep;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.EntityImplementation;

@@ -43,21 +43,15 @@
 
 package org.lgna.story.resources.alice;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
-import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
-import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
-import edu.cmu.cs.dennisc.texture.Texture;
 
 
 /**

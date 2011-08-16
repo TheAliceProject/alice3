@@ -43,14 +43,10 @@
 
 package org.alice.interact.manipulator;
 
-import org.lgna.story.Camera;
-import org.lgna.story.Entity;
-import org.lgna.story.Model;
-import org.lgna.story.implementation.CameraImplementation;
-import org.lgna.story.implementation.EntityImplementation;
-import org.alice.interact.InputState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
+import org.lgna.story.implementation.EntityImplementation;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
