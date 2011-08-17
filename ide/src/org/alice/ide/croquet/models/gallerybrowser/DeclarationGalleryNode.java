@@ -74,4 +74,8 @@ public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.Abs
 	public String getText() {
 		return this.declaration.getName();
 	}
+	@Override
+	public String toString() {
+		return this.getText();
+	}
 }

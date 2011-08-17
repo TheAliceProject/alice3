@@ -49,10 +49,7 @@ package org.alice.ide.croquet.components.gallerybrowser;
 public class GalleryDragComponent extends org.lgna.croquet.components.DragComponent {
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode node ) {
 		this.setDragModel( node.getDragModel() );
-		org.lgna.project.ast.AbstractField field = node.getDeclaration();
-		org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
-		org.lgna.project.ast.AbstractConstructor constructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.SINGLETON.getConstructorForArgumentType( valueType );
-		this.setLeftButtonClickModel( org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field ) );
+		this.setLeftButtonClickModel( node.getOperation() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		label.setText( node.getText() );
 		label.setIcon( node.getLargeIcon() );

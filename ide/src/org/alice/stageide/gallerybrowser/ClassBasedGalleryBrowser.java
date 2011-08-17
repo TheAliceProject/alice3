@@ -178,7 +178,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 				}
 				iterable = list;
 			} else {
-				Object i = treeSelectionState.getSelection();
+				Object i = treeSelectionState.getSelectedNode();
 				iterable = (Iterable<ModelResourceTreeNode>)i;
 			}
 			if( iterable != null ) {
