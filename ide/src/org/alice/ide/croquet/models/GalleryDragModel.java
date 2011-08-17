@@ -45,6 +45,7 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class GalleryDragModel extends IdeDragModel {
 	public GalleryDragModel() {
 		super( java.util.UUID.fromString( "377a4edf-e0ff-43f7-9c1b-ff4d6a3e8539" ) );
@@ -61,5 +62,9 @@ public class GalleryDragModel extends IdeDragModel {
 			return null;
 //			throw new UnsupportedDataTypeException("Active scene editor type does not support Drag and Drop");
 		}
+	}
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		throw new RuntimeException( "todo" );
 	}
 }

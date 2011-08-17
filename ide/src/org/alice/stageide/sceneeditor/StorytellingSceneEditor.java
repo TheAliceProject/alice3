@@ -463,16 +463,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return null;
 	}
 
-	public org.lgna.croquet.Model dragDropped(
-			org.lgna.croquet.history.DragStep dragAndDropContext) {
-		DragComponent dragSource = dragAndDropContext.getDragSource();
-		if (isDropLocationOverLookingGlass(dragAndDropContext)) {
-			org.lgna.croquet.Model model = dragSource.getLeftButtonClickModel();
-			if (model instanceof GalleryClassOperation) {
-				// AffineMatrix4x4 dropTargetPosition =
-				// this.globalDragAdapter.getDropTargetTransformation();
-				// ((GalleryClassOperation)model).setDesiredTransformation(dropTargetPosition);
-			}
+	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep dragStep ) {
+		if (isDropLocationOverLookingGlass(dragStep)) {
+			org.lgna.croquet.DropSite dropSite = null;
+			org.lgna.croquet.Model model = dragStep.getModel().getDropModel( dragStep, dropSite );
+//			if (model instanceof GalleryClassOperation) {
+//				// AffineMatrix4x4 dropTargetPosition =
+//				// this.globalDragAdapter.getDropTargetTransformation();
+//				// ((GalleryClassOperation)model).setDesiredTransformation(dropTargetPosition);
+//			}
 			return model;
 		}
 		return null;
