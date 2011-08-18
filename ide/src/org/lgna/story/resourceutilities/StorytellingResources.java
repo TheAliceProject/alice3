@@ -16,18 +16,27 @@ public class StorytellingResources {
 		return SingletonHolder.instance;
 	}
 	
-	private static final String SIMS_RESOURCE_INSTALL_PATH = "gallery/assets/sims";
-	private static final String ALICE_RESOURCE_INSTALL_PATH = "gallery/assets/alice";
+	private static final String SIMS_RESOURCE_INSTALL_PATH = "assets/sims";
+	private static final String ALICE_RESOURCE_INSTALL_PATH = "assets/alice";
 	
 	private final ModelResourceTree galleryTree;
 	private final List<File> simsPathsLoaded = new LinkedList<File>();
 	
+	
 	private File findResourcePath(String relativePath)
 	{
-		File rootInstall = IDE.getActiveInstance().getApplicationRootDirectory();
-		if (rootInstall != null && rootInstall.exists())
+		File rootGallery = null;
+		if (IDE.getActiveInstance() != null)
 		{
-			File path = new File(rootInstall, relativePath);
+			rootGallery = IDE.getActiveInstance().getGalleryRootDirectory();	
+		}
+		else
+		{
+			rootGallery =  IDE.getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery", "required/gallery/" + org.lgna.project.Version.getCurrentVersionText() } );
+		}
+		if (rootGallery != null && rootGallery.exists())
+		{
+			File path = new File(rootGallery, relativePath);
 			if (path.exists())
 			{
 				return path;

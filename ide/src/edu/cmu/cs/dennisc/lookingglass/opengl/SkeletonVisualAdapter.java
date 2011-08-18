@@ -156,56 +156,56 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         //DEBUG RENDERING
         if (edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY))
         {
-//            edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = this.m_element.getAxisAlignedMinimumBoundingBox();
-//            
-//            if (boundingBox != null)
-//            {
-//                rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
-//                edu.cmu.cs.dennisc.math.Point3 min = boundingBox.getMinimum();
-//                edu.cmu.cs.dennisc.math.Point3 max = boundingBox.getMaximum();
-//                
-//                //Bottom
-//                rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
-//                rc.gl.glVertex3d( min.x, min.y, min.z );
-//                rc.gl.glVertex3d( min.x, min.y, max.z );
-//                rc.gl.glVertex3d( max.x, min.y, max.z );
-//                rc.gl.glVertex3d( max.x, min.y, min.z );
-//                rc.gl.glEnd();
-//                
-//                //Top
-//                rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
-//                rc.gl.glVertex3d( min.x, max.y, min.z );
-//                rc.gl.glVertex3d( min.x, max.y, max.z );
-//                rc.gl.glVertex3d( max.x, max.y, max.z );
-//                rc.gl.glVertex3d( max.x, max.y, min.z );
-//                rc.gl.glEnd();
-//                
-//                //Sides
-//                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
-//                rc.gl.glVertex3d( min.x, min.y, min.z );
-//                rc.gl.glVertex3d( min.x, max.y, min.z );
-//                rc.gl.glEnd();
-//                
-//                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
-//                rc.gl.glVertex3d( max.x, min.y, min.z );
-//                rc.gl.glVertex3d( max.x, max.y, min.z );
-//                rc.gl.glEnd();
-//                
-//                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
-//                rc.gl.glVertex3d( min.x, min.y, max.z );
-//                rc.gl.glVertex3d( min.x, max.y, max.z );
-//                rc.gl.glEnd();
-//                
-//                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
-//                rc.gl.glVertex3d( max.x, min.y, max.z );
-//                rc.gl.glVertex3d( max.x, max.y, max.z );
-//                rc.gl.glEnd();
-//            }
-//     
-//            if( this.currentSkeleton != null) 
-//            {
-//                this.currentSkeleton.renderVisualization(rc);
-//            }
+            edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = this.m_element.getAxisAlignedMinimumBoundingBox();
+            
+            if (boundingBox != null)
+            {
+                rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+                edu.cmu.cs.dennisc.math.Point3 min = boundingBox.getMinimum();
+                edu.cmu.cs.dennisc.math.Point3 max = boundingBox.getMaximum();
+                
+                //Bottom
+                rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
+                rc.gl.glVertex3d( min.x, min.y, min.z );
+                rc.gl.glVertex3d( min.x, min.y, max.z );
+                rc.gl.glVertex3d( max.x, min.y, max.z );
+                rc.gl.glVertex3d( max.x, min.y, min.z );
+                rc.gl.glEnd();
+                
+                //Top
+                rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
+                rc.gl.glVertex3d( min.x, max.y, min.z );
+                rc.gl.glVertex3d( min.x, max.y, max.z );
+                rc.gl.glVertex3d( max.x, max.y, max.z );
+                rc.gl.glVertex3d( max.x, max.y, min.z );
+                rc.gl.glEnd();
+                
+                //Sides
+                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                rc.gl.glVertex3d( min.x, min.y, min.z );
+                rc.gl.glVertex3d( min.x, max.y, min.z );
+                rc.gl.glEnd();
+                
+                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                rc.gl.glVertex3d( max.x, min.y, min.z );
+                rc.gl.glVertex3d( max.x, max.y, min.z );
+                rc.gl.glEnd();
+                
+                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                rc.gl.glVertex3d( min.x, min.y, max.z );
+                rc.gl.glVertex3d( min.x, max.y, max.z );
+                rc.gl.glEnd();
+                
+                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                rc.gl.glVertex3d( max.x, min.y, max.z );
+                rc.gl.glVertex3d( max.x, max.y, max.z );
+                rc.gl.glEnd();
+            }
+     
+            if( this.currentSkeleton != null) 
+            {
+                this.currentSkeleton.renderVisualization(rc);
+            }
         }
         //END DEBUG RENDERING
         
