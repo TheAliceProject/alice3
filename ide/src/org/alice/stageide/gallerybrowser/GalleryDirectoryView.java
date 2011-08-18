@@ -52,17 +52,18 @@ public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryV
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > getComponentFor( org.alice.ide.croquet.models.gallerybrowser.GalleryNode value ) {
-		org.lgna.croquet.components.JComponent< ? > component;
-		if( value instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
-			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)value;
-			component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( fieldGalleryNode );
-		} else {
-			org.lgna.croquet.components.Button button = this.getModel().getSelectionOperationFor( value ).createButton();
-			button.setIcon( value.getLargeIcon() );
-			button.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
-			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-			component = button;
-		}
+//		org.lgna.croquet.components.JComponent< ? > component;
+//		if( value instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
+//			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)value;
+//			component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( fieldGalleryNode );
+//		} else {
+//			org.lgna.croquet.components.Button button = this.getModel().getSelectionOperationFor( value ).createButton();
+//			button.setIcon( value.getLargeIcon() );
+//			button.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
+//			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+//			component = button;
+//		}
+		org.lgna.croquet.components.JComponent< ? > component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( value );
 		component.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 		return component;
 	}

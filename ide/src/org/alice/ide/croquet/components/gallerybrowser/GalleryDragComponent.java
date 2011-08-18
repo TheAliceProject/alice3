@@ -47,7 +47,7 @@ package org.alice.ide.croquet.components.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponent extends org.lgna.croquet.components.DragComponent {
-	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode node ) {
+	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryNode node ) {
 		this.setDragModel( node );
 		this.setLeftButtonClickModel( node.getLeftButtonClickModel() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
