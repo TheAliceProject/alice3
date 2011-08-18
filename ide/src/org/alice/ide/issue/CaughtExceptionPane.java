@@ -77,7 +77,7 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 		message.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 16 ) );
 		
 		
-		javax.swing.ImageIcon icon = new javax.swing.ImageIcon( CaughtExceptionPane.class.getResource( "images/meanQueen.png" ) );
+		javax.swing.ImageIcon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( CaughtExceptionPane.class.getResource( "images/meanQueen.png" ) );
 		javax.swing.JLabel meanQueen = new javax.swing.JLabel( icon );
 		
 		

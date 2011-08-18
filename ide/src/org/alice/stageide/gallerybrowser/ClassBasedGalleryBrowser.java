@@ -220,8 +220,8 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 	}
 
 	private static final int GAP = 4;
-	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/folder.png"));
-	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/folder24.png"));
+	private static final javax.swing.ImageIcon FOLDER_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(ClassBasedGalleryBrowser.class.getResource("images/folder.png"));
+	private static final javax.swing.ImageIcon FOLDER_SMALL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(ClassBasedGalleryBrowser.class.getResource("images/folder24.png"));
 	
 	private DefaultTreeSelectionState< ModelResourceTreeNode > treeSelectionState;
 	private StringState filterState;
@@ -308,7 +308,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		createPersonButton.setHorizontalTextPosition( HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( VerticalTextPosition.BOTTOM );
 
-		createTypeFromPersonResourceOperation.setSmallIcon(new javax.swing.ImageIcon(ClassBasedGalleryBrowser.class.getResource("images/create_person.png")));
+		createTypeFromPersonResourceOperation.setSmallIcon(edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(ClassBasedGalleryBrowser.class.getResource("images/create_person.png")));
 
 		LineAxisPanel pathControlPanel = new LineAxisPanel();
 		pathControlPanel.addComponent( new org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl( this.treeSelectionState, this.createInitializer() ) );

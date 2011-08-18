@@ -50,8 +50,8 @@ public class RecycleBin extends org.lgna.croquet.components.JComponent< javax.sw
 	private static final java.awt.Image OPEN_IMAGE;
 	private static final java.awt.Image CLOSED_IMAGE;
 	static {
-		OPEN_IMAGE = new javax.swing.ImageIcon( RecycleBin.class.getResource( "images/open.png" ) ).getImage();
-		CLOSED_IMAGE = new javax.swing.ImageIcon( RecycleBin.class.getResource( "images/closed.png" ) ).getImage();
+		OPEN_IMAGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RecycleBin.class.getResource( "images/open.png" ) ).getImage();
+		CLOSED_IMAGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RecycleBin.class.getResource( "images/closed.png" ) ).getImage();
 	}
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryDragComponent extends org.lgna.croquet.components.DragComponent {
+public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance {
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryNode node ) {
 		this.setDragModel( node );
 		this.setLeftButtonClickModel( node.getLeftButtonClickModel() );
@@ -55,38 +55,47 @@ public class GalleryDragComponent extends org.lgna.croquet.components.DragCompon
 		label.setIcon( node.getLargeIcon() );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+		this.setBackgroundColor( null );
+		this.setEnabledBackgroundPaint( new java.awt.Color( 0xf7e4b6 ) );
 		this.addComponent( label );
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
+		return new java.awt.geom.RoundRectangle2D.Float( x, y, width-1, height-1, 8, 8 );
 	}
+	@Override
+	protected void fillBounds(java.awt.Graphics2D g2, int x, int y, int width, int height) {
+		g2.fill( this.createShape(x, y, width, height));
+	}
+
+	@Override
+	protected int getDockInsetLeft() {
+		return 0;
+	}
+
+	@Override
+	protected int getInternalInsetLeft() {
+		return 0;
+	}
+
 	@Override
 	protected int getInsetBottom() {
-		return 0;
+		return 8;
 	}
-	@Override
-	protected int getInsetTop() {
-		return 0;
-	}
-	@Override
-	protected int getInsetLeft() {
-		return 0;
-	}
+
 	@Override
 	protected int getInsetRight() {
 		return 0;
 	}
+
 	@Override
-	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		g2.fillRect( x, y, width, height );
+	protected int getInsetTop() {
+		return 0;
 	}
+
 	@Override
-	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		g2.setPaint( java.awt.Color.WHITE );
-		fillBounds( g2, x, y, width, height );
-	}
-	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void paintPrologue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
+		java.awt.geom.RoundRectangle2D rr = new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 );
+		g2.fill( rr );
 	}
 }

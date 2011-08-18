@@ -40,57 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.gallerybrowser;
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
+ *
  */
-public class ArgumentTypeGalleryNode extends TypeGalleryNode {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ArgumentTypeGalleryNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ArgumentTypeGalleryNode getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		ArgumentTypeGalleryNode rv = map.get( type );
-		if( rv != null ) {
-			//pass
+public class IconUtilities {
+	private IconUtilities() {
+		throw new AssertionError();
+	}
+	public static javax.swing.ImageIcon createImageIcon( java.net.URL url ) {
+		if( url != null ) {
+			return new javax.swing.ImageIcon( url );
 		} else {
-			rv = new ArgumentTypeGalleryNode( type );
-			map.put( type, rv );
+			return null;
 		}
-		return rv;
-	}
-	private ArgumentTypeGalleryNode( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( java.util.UUID.fromString( "22829f96-159f-49c7-805e-80e9587a174f" ), type );
-	}
-	private org.lgna.project.ast.AbstractType< ?,?,? > getParentDeclaration( org.alice.ide.ApiConfigurationManager api ) {
-		return api.getGalleryResourceParentFor( this.getDeclaration() );
-	}
-	@Override
-	public final GalleryNode getParent() {
-		org.lgna.project.ast.AbstractType< ?,?,? > parentType = this.getParentDeclaration( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
-		if( parentType != null ) {
-			return ArgumentTypeGalleryNode.getInstance( parentType );
-		} else {
-			return RootGalleryNode.getInstance();
-		}
-	}
-	@Override
-	protected java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {
-		return api.getGalleryResourceChildrenFor( this.getDeclaration() );
-	}
-	@Override
-	public javax.swing.Icon getSmallIcon() {
-		return FolderIconUtilities.SMALL_ICON;
-	}
-	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return FolderIconUtilities.LARGE_ICON;
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		return ResourceCascade.getInstance( this.getDeclaration() );
-	}
-	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().getSelectionOperationFor( this );
 	}
 }

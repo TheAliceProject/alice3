@@ -184,7 +184,7 @@ class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rend
 					name = "canceled";
 				}
 			}
-			rv.setIcon( new javax.swing.ImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
+			rv.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
 		}
 		return rv;
 	}	

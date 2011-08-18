@@ -40,57 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
+ *
  */
-public class ArgumentTypeGalleryNode extends TypeGalleryNode {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ArgumentTypeGalleryNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ArgumentTypeGalleryNode getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		ArgumentTypeGalleryNode rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ArgumentTypeGalleryNode( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
-	private ArgumentTypeGalleryNode( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( java.util.UUID.fromString( "22829f96-159f-49c7-805e-80e9587a174f" ), type );
-	}
-	private org.lgna.project.ast.AbstractType< ?,?,? > getParentDeclaration( org.alice.ide.ApiConfigurationManager api ) {
-		return api.getGalleryResourceParentFor( this.getDeclaration() );
-	}
-	@Override
-	public final GalleryNode getParent() {
-		org.lgna.project.ast.AbstractType< ?,?,? > parentType = this.getParentDeclaration( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
-		if( parentType != null ) {
-			return ArgumentTypeGalleryNode.getInstance( parentType );
-		} else {
-			return RootGalleryNode.getInstance();
+public class ResourceCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
+	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ResourceCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ResourceCascade getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		synchronized( map ) {
+			ResourceCascade rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ResourceCascade( type );
+				map.put( type, rv );
+			}
+			return rv;
 		}
 	}
-	@Override
-	protected java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {
-		return api.getGalleryResourceChildrenFor( this.getDeclaration() );
+	private ResourceCascade( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "53db430a-0d90-47d2-ad03-487e1dffb47d" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.declaration.GalleryResourceBlank.getInstance( type ) );
 	}
 	@Override
-	public javax.swing.Icon getSmallIcon() {
-		return FolderIconUtilities.SMALL_ICON;
-	}
-	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return FolderIconUtilities.LARGE_ICON;
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		return ResourceCascade.getInstance( this.getDeclaration() );
-	}
-	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().getSelectionOperationFor( this );
+	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > completionStep,
+			org.lgna.project.ast.Expression[] values ) {
+		return null;
 	}
 }

@@ -48,7 +48,7 @@ package org.lgna.cheshire.docwizardsesque;
  */
 public class OffTrackPanel extends org.lgna.croquet.components.LineAxisPanel {
 	public OffTrackPanel() {
-		javax.swing.Icon icon = new javax.swing.ImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/offTrack.png" ) );
+		javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.lgna.cheshire.Presentation.class.getResource( "images/offTrack.png" ) );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "off course", icon );
 		label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		label.scaleFont( 1.5f );

@@ -115,7 +115,7 @@ class TreeNodeMenu<T> extends CascadeMenuModel< T > {
 	private final TreeSelectionState< T > model;
 	private final T node;
 	private TreeNodeMenu( TreeSelectionState< T > model, T node ) {
-		super( java.util.UUID.fromString( "10f4d191-6bdd-4333-a8c9-0d617fa8ea64" ) );
+		super( java.util.UUID.fromString( "3836e893-73c9-4490-9a2a-1cb8a50311e0" ) );
 		this.model = model;
 		this.node = node;
 	}

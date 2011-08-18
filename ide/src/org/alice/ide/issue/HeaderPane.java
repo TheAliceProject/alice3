@@ -48,7 +48,7 @@ public class HeaderPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineA
 		this.setOpaque( true );
 
 		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink hyperlink = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://bugs.alice.org:8080/" );
-		hyperlink.setIcon( new javax.swing.ImageIcon( HeaderPane.class.getResource( "images/logo.png" ) ) );
+		hyperlink.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) ) );
 		hyperlink.setDefaultColor( java.awt.Color.LIGHT_GRAY );
 		hyperlink.setArmedColor( java.awt.Color.YELLOW );
 		hyperlink.setForeground( hyperlink.getDefaultColor() );
