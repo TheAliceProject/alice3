@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.AbstractDeclaration > implements GalleryNode {
+public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.AbstractDeclaration > extends GalleryNode {
 	public static DeclarationGalleryNode<?> getDeclarationNodeInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
 			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
@@ -65,17 +65,15 @@ public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.Abs
 		}
 	}
 	private final D declaration;
-	public DeclarationGalleryNode( D declaration ) {
+	public DeclarationGalleryNode( java.util.UUID id, D declaration ) {
+		super( id );
 		this.declaration = declaration;
 	}
 	public D getDeclaration() {
 		return this.declaration;
 	}
+	@Override
 	public String getText() {
 		return this.declaration.getName();
-	}
-	@Override
-	public String toString() {
-		return this.getText();
 	}
 }

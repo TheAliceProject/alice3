@@ -58,11 +58,9 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 		}
 		return rv;
 	}
-	private final FieldGalleryDragModel dragModel;
 	private final javax.swing.Icon largeIcon;
 	private FieldGalleryNode( org.lgna.project.ast.AbstractField field ) {
-		super( field );
-		this.dragModel = new FieldGalleryDragModel( this );
+		super( java.util.UUID.fromString( "4c21c31c-49a5-46dd-82d6-28f0055c30b4" ), field );
 		Class<?> resourceClass = ((org.lgna.project.ast.JavaType)this.getDeclaration().getValueType()).getClassReflectionProxy().getReification();
 		java.awt.image.BufferedImage thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(resourceClass);
 		if( thumbnail != null ) {
@@ -71,26 +69,41 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 			this.largeIcon = null;
 		}
 	}
+	@Override
 	public GalleryNode getParent() {
 		return getDeclarationNodeInstance( this.getDeclaration().getDeclaringType() );
 	}
+	@Override
 	public int getChildCount() {
 		return 0;
 	}
+	@Override
 	public GalleryNode getChild( int index ) {
 		return null;
 	}
+	@Override
 	public int getIndexOfChild( GalleryNode child ) {
 		return 0;
 	}
 	
+	@Override
 	public javax.swing.Icon getSmallIcon() {
 		return null;
 	}
+	@Override
 	public javax.swing.Icon getLargeIcon() {
 		return this.largeIcon;
 	}
-	public FieldGalleryDragModel getDragModel() {
-		return this.dragModel;
+
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		org.lgna.project.ast.AbstractField field = this.getDeclaration();
+		org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
+		org.lgna.project.ast.AbstractConstructor constructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( valueType );
+		return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field );
+	}
+	@Override
+	public org.lgna.croquet.Model getLeftButtonClickModel() {
+		return this.getDropModel( null, null );
 	}
 }

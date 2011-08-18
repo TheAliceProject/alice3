@@ -47,20 +47,23 @@ package org.alice.ide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractType< ?,?,? > > {
-	public TypeGalleryNode( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( type );
+	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( id, type );
 	}
 	
 	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
 	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
 		return this.getDeclarationChildren( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
 	}
+	@Override
 	public int getChildCount() {
 		return this.getDeclarationChildren().size();
 	}
+	@Override
 	public GalleryNode getChild( int index ) {
 		return getDeclarationNodeInstance( this.getDeclarationChildren().get( index ) );
 	}
+	@Override
 	public int getIndexOfChild( GalleryNode child ) {
 		return this.getDeclarationChildren().indexOf( ((DeclarationGalleryNode<?>)child).getDeclaration() );
 	}
