@@ -1,6 +1,5 @@
 package org.lgna.story.resourceutilities;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.alice.ide.ResourcePathManager;
 import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;

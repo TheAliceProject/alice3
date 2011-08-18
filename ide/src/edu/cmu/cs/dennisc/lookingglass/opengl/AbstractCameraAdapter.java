@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 /**

@@ -52,4 +52,15 @@ public class FieldGalleryDragModel extends GalleryDragModel {
 		super( java.util.UUID.fromString( "46674492-a79c-4f4e-be58-ca98711f7589" ) );
 		this.node = node;
 	}
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		org.lgna.project.ast.AbstractField field = this.node.getDeclaration();
+		org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
+		org.lgna.project.ast.AbstractConstructor constructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.SINGLETON.getConstructorForArgumentType( valueType );
+		return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field );
+	}
+	@Override
+	public org.lgna.croquet.Model getLeftButtonClickModel() {
+		return this.getDropModel( null, null );
+	}
 }

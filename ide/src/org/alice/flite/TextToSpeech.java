@@ -43,22 +43,16 @@
 
 package org.alice.flite;
 
-import java.applet.AudioClip;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.Line;
 
-import org.lgna.story.AudioSource;
 import org.alice.virtualmachine.resources.AudioResource;
+import org.lgna.story.AudioSource;
 
 public class TextToSpeech 
 {

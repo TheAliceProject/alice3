@@ -42,13 +42,9 @@
  */
 package org.lgna.story.resourceutilities;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
 import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserType;
 import org.lgna.story.resources.ModelResource;
 
 

@@ -58,6 +58,33 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 	}
 
 	@Override
+	protected javax.swing.Icon getIconForNode( GalleryNode node ) {
+		return node.getSmallIcon();
+	}
+	@Override
+	protected java.lang.String getTextForNode( GalleryNode node ) {
+		return node.getText();
+	}
+	
+	@Override
+	protected boolean isComboDesired( org.alice.ide.croquet.models.gallerybrowser.GalleryNode childNode ) {
+		if( childNode.getChild( 0 ) instanceof FieldGalleryNode ) {
+			return false;
+		} else {
+			return super.isComboDesired( childNode );
+		}
+	}
+//	@Override
+//	protected org.lgna.croquet.CascadeBlankChild< GalleryNode > getBlankChildFor( GalleryNode childNode ) {
+//		if( childNode instanceof FieldGalleryNode ) {
+//			FieldGalleryNode fieldGalleryNode = (FieldGalleryNode)childNode;
+//			//return fieldGalleryNode.getOperation().getFillIn();
+//			return null;
+//		} else {
+//			return super.getBlankChildFor( childNode );
+//		}
+//	}
+	@Override
 	protected int getChildCount( GalleryNode parent ) {
 		return parent.getChildCount();
 	}
@@ -78,10 +105,9 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 		return RootGalleryNode.SINGLETON;
 	}
 	@Override
-	protected boolean isLeaf( GalleryNode node ) {
+	public boolean isLeaf( GalleryNode node ) {
 		return node instanceof FieldGalleryNode;
 	}
-	
 	public org.lgna.croquet.DragModel getDragModelFor( FieldGalleryNode node ) {
 		return null;
 	}

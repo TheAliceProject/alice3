@@ -42,7 +42,6 @@
  */
 package org.alice.interact.condition;
 
-import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 

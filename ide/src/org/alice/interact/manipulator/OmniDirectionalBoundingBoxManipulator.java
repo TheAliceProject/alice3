@@ -49,16 +49,11 @@ import java.awt.Point;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
+import org.alice.stageide.gallerybrowser.ClassBasedGalleryDragComponent;
 import org.lgna.croquet.components.DragComponent;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
-import org.alice.stageide.gallerybrowser.ClassBasedGalleryDragComponent;
-import org.alice.stageide.gallerybrowser.GalleryDragComponent;
 
-import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
-import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;

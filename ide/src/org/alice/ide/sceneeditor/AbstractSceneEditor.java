@@ -42,10 +42,6 @@
  */
 package org.alice.ide.sceneeditor;
 
-import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
-import org.lgna.croquet.components.BorderPanel.Constraint;
-import org.lgna.story.ImplementationAccessor;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -109,7 +105,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		
 	}
 	protected void initializeObservers(){
-		IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver(this.editorExpandedObserver);
+		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver(this.editorExpandedObserver);
 	}
 	
 	
@@ -147,7 +143,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		org.lgna.story.Entity entity = getInstanceInJavaVMForField(field, org.lgna.story.Entity.class);
 		if (entity != null)
 		{
-			return ImplementationAccessor.getImplementation(entity);
+			return org.lgna.story.ImplementationAccessor.getImplementation(entity);
 		}
 		else
 		{
@@ -195,7 +191,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		org.lgna.story.Entity entity = getInstanceInJavaVMForField(getActiveSceneField(), org.lgna.story.Entity.class);
 		if (entity != null)
 		{
-			return ImplementationAccessor.getImplementation(entity);
+			return org.lgna.story.ImplementationAccessor.getImplementation(entity);
 		}
 		else
 		{

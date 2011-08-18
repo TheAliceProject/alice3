@@ -49,12 +49,10 @@ import java.nio.IntBuffer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.GLException;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.nebulous.Model;
 import edu.cmu.cs.dennisc.scenegraph.Indices;
 import edu.cmu.cs.dennisc.scenegraph.Mesh;
 

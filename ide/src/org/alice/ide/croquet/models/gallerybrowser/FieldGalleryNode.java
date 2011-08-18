@@ -93,5 +93,4 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 	public FieldGalleryDragModel getDragModel() {
 		return this.dragModel;
 	}
-	
 }

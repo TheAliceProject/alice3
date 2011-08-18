@@ -42,8 +42,6 @@
  */
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
-
 /**
  * @author David Culyba
  */

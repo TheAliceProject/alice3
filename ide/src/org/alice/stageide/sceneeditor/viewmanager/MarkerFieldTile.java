@@ -45,8 +45,6 @@ package org.alice.stageide.sceneeditor.viewmanager;
 
 import javax.swing.BorderFactory;
 
-
-import org.alice.ide.IDE;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.project.ast.UserField;

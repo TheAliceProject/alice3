@@ -76,9 +76,7 @@ import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.story.Camera;
 import org.lgna.story.Entity;
-import org.lgna.story.Turnable;
 import org.lgna.story.implementation.CameraMarkerImplementation;
 import org.lgna.story.implementation.EntityImplementation;
 import org.lgna.story.implementation.ObjectMarkerImplementation;
@@ -86,7 +84,6 @@ import org.lgna.story.implementation.PerspectiveCameraMarkerImplementation;
 import org.lgna.story.implementation.TransformableImplementation;
 
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;

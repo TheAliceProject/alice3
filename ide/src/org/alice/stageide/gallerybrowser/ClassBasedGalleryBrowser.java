@@ -50,11 +50,11 @@ import org.alice.stageide.croquet.models.gallerybrowser.Create3dTextOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.DefaultTreeSelectionState;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.State;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.DefaultTreeSelectionState;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Button;
@@ -68,10 +68,6 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceTreeNodeModel;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
-
-import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
-
-
 
 /**
  * @author dculyba
@@ -182,7 +178,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 				}
 				iterable = list;
 			} else {
-				Object i = treeSelectionState.getSelection();
+				Object i = treeSelectionState.getSelectedNode();
 				iterable = (Iterable<ModelResourceTreeNode>)i;
 			}
 			if( iterable != null ) {

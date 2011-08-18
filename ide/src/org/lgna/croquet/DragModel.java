@@ -69,11 +69,14 @@ public abstract class DragModel extends PrepModel {
 		return true;
 	}
 	
+	
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource );
 	public abstract void handleDragStarted( org.lgna.croquet.history.DragStep step );
 	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step );
 	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step );
 	public abstract void handleDragStopped( org.lgna.croquet.history.DragStep step );
+	
+	public abstract Model getDropModel( org.lgna.croquet.history.DragStep step, DropSite dropSite );
 	
 	@Override
 	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {

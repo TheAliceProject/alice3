@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.java.util;
 
-import java.util.List;
-
 /**
  * @author Dennis Cosgrove
  */

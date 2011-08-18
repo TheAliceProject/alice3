@@ -84,9 +84,9 @@ public enum RootGalleryNode implements GalleryNode {
 		return "root";
 	}
 	public javax.swing.Icon getSmallIcon() {
-		return null;
+		return FolderIconUtilities.SMALL_ICON;
 	}
 	public javax.swing.Icon getLargeIcon() {
-		return null;
+		return FolderIconUtilities.LARGE_ICON;
 	}
 }

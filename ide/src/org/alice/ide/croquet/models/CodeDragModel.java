@@ -84,4 +84,8 @@ public abstract class CodeDragModel extends IdeDragModel {
 		}
 		return rv;
 	}
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		throw new RuntimeException( "todo" );
+	}
 }

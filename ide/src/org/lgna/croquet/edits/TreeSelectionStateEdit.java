@@ -41,40 +41,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
-
-import org.lgna.story.resourceutilities.StorytellingResources;
+package org.lgna.croquet.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurationManager {
-	SINGLETON;
-	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
-		return type.isAssignableTo( org.lgna.story.Scene.class );
+public class TreeSelectionStateEdit<T> extends ItemStateEdit<org.lgna.croquet.TreeSelectionState<T>,T> {
+	private final org.lgna.croquet.TreeSelectionState<T> model;
+	public TreeSelectionStateEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.croquet.TreeSelectionState<T> model, T prevValue, T nextValue ) {
+		super( completionStep, prevValue, nextValue );
+		this.model = model;
 	}
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return type.isAssignableTo( org.lgna.story.Entity.class );
+	public TreeSelectionStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.TreeSelectionState<T> > completionStep, T prevValue, T nextValue ) {
+		this( completionStep, null, prevValue, nextValue );
 	}
-	public java.util.List< ? extends org.lgna.project.ast.AbstractType< ?, ?, ? > > getTopLevelGalleryTypes() {
-		return StorytellingResources.getInstance().getTopLevelGalleryTypes();
+	public TreeSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		//todo:
+		this.model = null;
 	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return StorytellingResources.getInstance().getGalleryResourceParentFor( type );
-	}
-	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return StorytellingResources.getInstance().getGalleryResourceChildrenFor(type);
-	}
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
-		return null;
-	}
-	
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
-		if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
-			return org.alice.stageide.instancefactory.BipedJointMenuModel.getInstance( field );
+	@Override
+	public org.lgna.croquet.TreeSelectionState< T > getModel() {
+		if( this.model != null ) {
+			return this.model;
 		} else {
-			return null;
+			return super.getModel();
 		}
+	}
+	@Override
+	public boolean canRedo() {
+		return this.getModel() != null;
+	}
+	@Override
+	public boolean canUndo() {
+		return this.getModel() != null;
+	}
+
+//	@Override
+//	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
+//		super.addKeyValuePairs( retargeter, replacementEdit );
+//		ListSelectionStateEdit listSelectionStateEdit = (ListSelectionStateEdit)replacementEdit;
+//		retargeter.addKeyValuePair( this.prevValue, listSelectionStateEdit.prevValue );
+//		retargeter.addKeyValuePair( this.nextValue, listSelectionStateEdit.nextValue );
+//	}
+
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.getModel().setSelectedNode( this.getNextValue() );
+	}
+	@Override
+	protected final void undoInternal() {
+		this.getModel().setSelectedNode( this.getPreviousValue() );
 	}
 }

@@ -1,12 +1,5 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
-import edu.cmu.cs.dennisc.texture.Texture;
-
 public class SimpleAppearance extends Appearance {
 
 	public final edu.cmu.cs.dennisc.color.property.Color4fProperty ambientColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, new edu.cmu.cs.dennisc.color.Color4f( Float.NaN, Float.NaN, Float.NaN, Float.NaN ), true ) {

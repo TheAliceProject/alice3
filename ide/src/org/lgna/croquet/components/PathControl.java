@@ -45,77 +45,21 @@ package org.lgna.croquet.components;
 
 import org.lgna.croquet.*;
 
-/*package-private*/ class SelectChildDirectoryMenuModel<T> extends org.lgna.croquet.PredeterminedMenuModel {
-	public static <T> SelectChildDirectoryMenuModel<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode, PathControl.Initializer initializer ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectChildDirectoryPopupMenuOperation.getInstance()" );
-		return new SelectChildDirectoryMenuModel<T>(treeSelectionState, treeNode, initializer);
-	}
-
-	private static final int ARROW_SIZE = 10;
-	private static final int ARROW_BORDER_HALF_SIZE = 3;
-	private static <T> java.util.List< StandardMenuItemPrepModel > createModels( TreeSelectionState<T> treeSelectionState, T treeNode, PathControl.Initializer<T> initializer ) {
-		edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel = treeSelectionState.getTreeModel();
-		final int N = treeModel.getChildCount( treeNode );
-		java.util.List< StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( N );
-		for( int i=0; i<N; i++ ) {
-			T child = treeModel.getChild( treeNode, i );
-			if( treeModel.isLeaf( child ) ) {
-				Operation<?> leafOperation = initializer.getOperationForLeaf( child );
-				if( leafOperation != null ) {
-					list.add( leafOperation.getMenuItemPrepModel() );
-				}
-			} else {
-				ActionOperation operation = treeSelectionState.getSelectionOperationFor( child );
-				initializer.configure( operation, child );
-				list.add( operation.getMenuItemPrepModel() );
-			}
-		}
-		return list;
-	}
-	private SelectChildDirectoryMenuModel( TreeSelectionState<T> treeSelectionState, T treeNode, PathControl.Initializer<T> initializer ) {
-		super( java.util.UUID.fromString( "cc6a0de7-91b1-4a2b-86ff-21ca9de14bed" ), createModels( treeSelectionState, treeNode, initializer ) );
-		javax.swing.Icon icon = new javax.swing.Icon() {
-			public int getIconHeight() {
-				return ARROW_SIZE + ARROW_BORDER_HALF_SIZE + ARROW_BORDER_HALF_SIZE;
-			}
-
-			public int getIconWidth() {
-				return ARROW_SIZE + ARROW_BORDER_HALF_SIZE + ARROW_BORDER_HALF_SIZE;
-			}
-
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				if( c instanceof javax.swing.AbstractButton ) {
-					javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading heading;
-					if( button.getModel().isPressed() ) {
-						heading = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH;
-					} else {
-						heading = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST;
-					}
-					g.setColor( java.awt.Color.BLACK );
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, heading, x + ARROW_BORDER_HALF_SIZE, y + ARROW_BORDER_HALF_SIZE, ARROW_SIZE, ARROW_SIZE );
-				}
-			}
-		};
-		this.setSmallIcon( icon );
-	}
-}
-
 /*package-private*/ class DirectoryControl<T> extends BorderPanel {
-	public static <T> DirectoryControl<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode, PathControl.Initializer<T> initializer ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DirectoryControl.getInstance()" );
-		return new DirectoryControl<T>( treeSelectionState, treeNode, initializer );
+	public static <T> DirectoryControl<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode ) {
+		return new DirectoryControl<T>( treeSelectionState, treeNode );
 	}
 
-	private DirectoryControl( TreeSelectionState<T> treeSelectionState, T treeNode, PathControl.Initializer<T> initializer ) {
-		PopupButton selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupPrepModel().createPopupButton();
+	private DirectoryControl( TreeSelectionState<T> treeSelectionState, T treeNode ) {
+		//PopupButton selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupPrepModel().createPopupButton();
+		PopupButton selectChildButton = treeSelectionState.getCascadeFor( treeNode ).getRoot().getPopupPrepModel().createPopupButton();
 		if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
 		} else {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
 		}
 		ActionOperation operation = treeSelectionState.getSelectionOperationFor( treeNode );
-		initializer.configure( operation, treeNode );
+		//initializer.configure( operation, treeNode );
 		Button button = operation.createButton();
 		this.addComponent( button, Constraint.CENTER );
 		this.addComponent( selectChildButton, Constraint.LINE_END );
@@ -131,7 +75,6 @@ import org.lgna.croquet.*;
 		};
 	}
 }
-
 /**
  * @author Dennis Cosgrove
  */
@@ -142,19 +85,8 @@ public class PathControl<T> extends ViewController< javax.swing.JComponent, Tree
 			PathControl.this.refresh();
 		}
 	};
-	
-	//todo: better name
-	public interface Initializer<T> {
-		public ActionOperation configure( ActionOperation rv, T treeNode );
-		public Operation<?> getOperationForLeaf( T treeNode );
-	}
-
-	//private java.util.Map< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, DirectoryControl > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
-	private final Initializer<T> initializer;
-	public PathControl( TreeSelectionState<T> model, Initializer<T> initializer ) {
+	public PathControl( TreeSelectionState<T> model ) {
 		super( model );
-		this.initializer = initializer;
 		this.setSwingTreeSelectionModel( model.getTreeSelectionModel() );
 	}
 
@@ -180,7 +112,7 @@ public class PathControl<T> extends ViewController< javax.swing.JComponent, Tree
 				if( treeModel.isLeaf( treeNode ) ) {
 					//pass
 				} else {
-					this.internalAddComponent( DirectoryControl.getInstance( this.getModel(), treeNode, this.initializer) );
+					this.internalAddComponent( DirectoryControl.getInstance( this.getModel(), treeNode ) );
 				}
 			}
 		}

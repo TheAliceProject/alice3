@@ -66,41 +66,15 @@ public class TreeNodeSelectionOperation<T> extends ActionOperation {
 	}
 
 	@Override
+	protected void localize() {
+		super.localize();
+		this.setName( this.treeSelectionState.getTextForNode( this.treeNode ) );
+		this.setSmallIcon( this.treeSelectionState.getIconForNode( this.treeNode ) );
+	}
+	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		//todo: create edit
-		this.treeSelectionState.setSelection( this.treeNode );
+		this.treeSelectionState.setSelectedNode( this.treeNode );
 		step.finish();
 	}
-	
-//	private static edu.cmu.cs.dennisc.map.MapToMap<Object, PathControl.Initializer, SelectDirectoryActionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-//	public static <T> SelectDirectoryActionOperation<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode, PathControl.Initializer<T> initializer ) {
-//		assert initializer != null;
-//		SelectDirectoryActionOperation<T> rv = mapToMap.get(treeNode, initializer);
-//		if( rv != null ) {
-//			//pass
-//		} else {
-//			rv = new SelectDirectoryActionOperation<T>(treeSelectionState, treeNode, initializer);
-//			mapToMap.put( treeNode, initializer, rv );
-//		}
-//		return rv;
-//	}
-//
-//	private final TreeSelectionState<T> treeSelectionState;
-//	private final T treeNode;
-//	
-//	private SelectDirectoryActionOperation( TreeSelectionState<T> treeSelectionState, T treeNode, PathControl.Initializer<T> initializer ) {
-//		super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ca407baf-13b1-4530-bf35-67764efbf5f0" ) );
-//		this.treeSelectionState = treeSelectionState;
-//		this.treeNode = treeNode;
-//		if( initializer != null ) {
-//			initializer.configure( this, this.treeNode );
-//		}
-//	}
-//
-//	@Override
-//	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-//		//todo: create edit
-//		this.treeSelectionState.setSelection( this.treeNode );
-//		step.finish();
-//	}
 }

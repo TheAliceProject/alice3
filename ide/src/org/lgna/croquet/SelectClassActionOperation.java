@@ -43,7 +43,6 @@
 package org.lgna.croquet;
 
 import org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 
 
@@ -80,7 +79,7 @@ public class SelectClassActionOperation extends ActionOperation {
 	@Override
 	protected void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		//todo: create edit
-		this.treeSelectionState.setSelection( this.treeNode );
+		this.treeSelectionState.setSelectedNode( this.treeNode );
 		step.finish();
 	}
 

@@ -44,11 +44,6 @@ package org.alice.interact;
 
 import java.util.BitSet;
 
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-
-
-
 /**
  * @author David Culyba
  */

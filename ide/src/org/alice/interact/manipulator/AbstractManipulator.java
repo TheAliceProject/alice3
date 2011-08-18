@@ -46,8 +46,6 @@ package org.alice.interact.manipulator;
 import java.util.List;
 import java.util.Vector;
 
-import org.lgna.story.Entity;
-import org.lgna.story.Marker;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
@@ -56,7 +54,6 @@ import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOp
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.scenegraph.Element;
 
 
 //adding comment for testing tags

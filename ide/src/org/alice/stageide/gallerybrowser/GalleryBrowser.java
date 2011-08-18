@@ -47,22 +47,22 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
-	private static class Initializer implements org.lgna.croquet.components.PathControl.Initializer< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > {
-		public org.lgna.croquet.ActionOperation configure( org.lgna.croquet.ActionOperation rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode ) {
-			rv.setName( treeNode.getText() );
-			rv.setSmallIcon( treeNode.getSmallIcon() );
-			return rv;
-		}
-		public org.lgna.croquet.Operation< ? > getOperationForLeaf( org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode ) {
-			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)treeNode;
-			org.lgna.project.ast.AbstractField field = fieldGalleryNode.getDeclaration();
-			org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
-			org.lgna.project.ast.AbstractConstructor constructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.SINGLETON.getConstructorForArgumentType( valueType );
-			return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field );
-		}
-	}
+//	private static class Initializer implements org.lgna.croquet.components.PathControl.Initializer< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > {
+//		public org.lgna.croquet.ActionOperation configure( org.lgna.croquet.ActionOperation rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode ) {
+//			rv.setName( treeNode.getText() );
+//			rv.setSmallIcon( treeNode.getSmallIcon() );
+//			return rv;
+//		}
+//		public org.lgna.croquet.Operation< ? > getOperationForLeaf( org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode ) {
+//			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)treeNode;
+//			org.lgna.project.ast.AbstractField field = fieldGalleryNode.getDeclaration();
+//			org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
+//			org.lgna.project.ast.AbstractConstructor constructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.SINGLETON.getConstructorForArgumentType( valueType );
+//			return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field );
+//		}
+//	}
 	public GalleryBrowser() {
-		this.addComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().createPathControl( new Initializer() ), Constraint.NORTH );
+		this.addComponent( new org.lgna.croquet.components.PathControl( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.NORTH );
 		this.addComponent( new GalleryDirectoryView(), Constraint.CENTER );
 	}
 }

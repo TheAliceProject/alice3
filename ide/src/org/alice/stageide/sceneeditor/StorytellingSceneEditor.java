@@ -44,24 +44,20 @@ package org.alice.stageide.sceneeditor;
 
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.ide.sceneeditor.FieldAndInstanceMapper;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.StatementListProperty;
+import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.BookmarkCameraMarker;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.ObjectMarker;
-import org.lgna.story.implementation.EntityImplementation;
 import org.lgna.story.implementation.MarkerImplementation;
 import org.lgna.story.implementation.ProgramImplementation;
 
-import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
-import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
@@ -467,16 +463,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return null;
 	}
 
-	public org.lgna.croquet.Model dragDropped(
-			org.lgna.croquet.history.DragStep dragAndDropContext) {
-		DragComponent dragSource = dragAndDropContext.getDragSource();
-		if (isDropLocationOverLookingGlass(dragAndDropContext)) {
-			org.lgna.croquet.Model model = dragSource.getLeftButtonClickModel();
-			if (model instanceof GalleryClassOperation) {
-				// AffineMatrix4x4 dropTargetPosition =
-				// this.globalDragAdapter.getDropTargetTransformation();
-				// ((GalleryClassOperation)model).setDesiredTransformation(dropTargetPosition);
-			}
+	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep dragStep ) {
+		if (isDropLocationOverLookingGlass(dragStep)) {
+			org.lgna.croquet.DropSite dropSite = null;
+			org.lgna.croquet.Model model = dragStep.getModel().getDropModel( dragStep, dropSite );
+//			if (model instanceof GalleryClassOperation) {
+//				// AffineMatrix4x4 dropTargetPosition =
+//				// this.globalDragAdapter.getDropTargetTransformation();
+//				// ((GalleryClassOperation)model).setDesiredTransformation(dropTargetPosition);
+//			}
 			return model;
 		}
 		return null;

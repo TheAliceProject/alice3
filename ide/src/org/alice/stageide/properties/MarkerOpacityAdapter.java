@@ -45,7 +45,6 @@ package org.alice.stageide.properties;
 
 import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
 
-import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna.story.implementation.MarkerImplementation> {

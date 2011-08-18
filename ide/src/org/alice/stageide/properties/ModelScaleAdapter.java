@@ -45,15 +45,10 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import org.alice.ide.IDE;
 import org.alice.ide.properties.adapter.AbstractScaleAdapter;
-import org.alice.interact.handle.ManipulationHandle3D;
 import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 public class ModelScaleAdapter extends AbstractScaleAdapter<org.lgna.story.implementation.ModelImplementation>

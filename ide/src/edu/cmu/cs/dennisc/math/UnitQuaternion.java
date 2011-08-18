@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.print.Printable {
+public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Printable {
 	public double x = Double.NaN;
 	public double y = Double.NaN;
 	public double z = Double.NaN;

@@ -47,12 +47,10 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 
-import org.lgna.story.Entity;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
 import org.alice.stageide.properties.TransformableVehicleAdapter;
-
-import edu.cmu.cs.dennisc.scenegraph.Composite;
+import org.lgna.story.Entity;
 
 public class CompositePropertyController extends LabelBasedPropertyController<Entity>{
 

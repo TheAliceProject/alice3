@@ -44,7 +44,6 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.property.DoubleBufferProperty;
-import edu.cmu.cs.dennisc.property.EnumProperty;
 import edu.cmu.cs.dennisc.property.FloatBufferProperty;
 import edu.cmu.cs.dennisc.property.IntBufferProperty;
 

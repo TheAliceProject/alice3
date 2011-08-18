@@ -59,4 +59,5 @@ public abstract class GalleryDragModel extends org.alice.ide.croquet.models.IdeD
 			return null;
 		}
 	}
+	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
 }
