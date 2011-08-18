@@ -518,6 +518,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private java.io.File applicationDirectory = null;
+	private java.io.File galleryDirectory = null;
 
 	protected java.io.File getDefaultApplicationRootDirectory() {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
@@ -526,7 +527,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			return new java.io.File( "/Program Files/" + this.getApplicationName() + "3Beta/application" );
 		}
 	}
-	private java.io.File getApplicationRootDirectory( String[] propertyKeys, String[] subPaths ) {
+	protected java.io.File getDefaultGalleryRootDirectory() {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			return new java.io.File( "/Applications/" + this.getApplicationName() + ".app/Contents/Resources/Java/gallery" );
+		} else {
+			return new java.io.File( "/Program Files/" + this.getApplicationName() + "3Beta/gallery" );
+		}
+	}
+	public static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
 		for( String propertyKey : propertyKeys ) {
 			for( String subPath : subPaths ) {
 				java.io.File rv = new java.io.File( System.getProperty( propertyKey ), subPath );
@@ -542,7 +550,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.applicationDirectory != null ) {
 			//pass
 		} else {
-			this.applicationDirectory = getApplicationRootDirectory( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "application", "required/application/" + this.getVersionText() } );
+			this.applicationDirectory = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "application", "required/application/" + this.getVersionText() } );
 			if( this.applicationDirectory != null ) {
 				//pass
 			} else {
@@ -550,6 +558,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		}
 		return this.applicationDirectory;
+	}
+	public java.io.File getGalleryRootDirectory() {
+		if( this.galleryDirectory != null ) {
+			//pass
+		} else {
+			this.galleryDirectory = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery", "required/gallery/" + this.getVersionText() } );
+			if( this.galleryDirectory != null ) {
+				//pass
+			} else {
+				this.galleryDirectory = this.getDefaultGalleryRootDirectory();
+			}
+		}
+		return this.galleryDirectory;
 	}
 
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {

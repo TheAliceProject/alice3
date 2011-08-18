@@ -53,7 +53,7 @@ public class Mesh extends Geometry
     public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty(this, (java.nio.DoubleBuffer)null);
     public final FloatBufferProperty normalBuffer = new FloatBufferProperty(this, (java.nio.FloatBuffer)null);
     public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty(this, (java.nio.FloatBuffer)null);
-    public final IntBufferProperty indexBuffer = new IntBufferProperty(this, (java.nio.IntBuffer)null);
+	public final IntBufferProperty indexBuffer = new IntBufferProperty(this, (java.nio.IntBuffer)null);
     
     public Mesh()
     {

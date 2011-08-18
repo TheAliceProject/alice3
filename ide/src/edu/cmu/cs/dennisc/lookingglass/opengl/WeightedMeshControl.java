@@ -114,7 +114,7 @@ public class WeightedMeshControl
     
     public void process( edu.cmu.cs.dennisc.scenegraph.Joint joint, AffineMatrix4x4 oTransformation ) 
     {
-        InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());;
+        InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
         if (iatwp != null)
         {
             AffineMatrix4x4 oDelta = AffineMatrix4x4.createMultiplication( oTransformation, iatwp.getInverseAbsoluteTransformation());
@@ -139,6 +139,7 @@ public class WeightedMeshControl
             if( 0.999f < weight && weight < 1.001f ) {
                 //pass
             } else if (weight != 0){
+            	AffineMatrix4x4 am = this.affineMatrices[i];
                 this.affineMatrices[ i ].multiply(1.0/weight);
             }
         }
