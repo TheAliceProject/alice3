@@ -60,7 +60,7 @@ public enum HandleStyle {
 	{
 	    if (iconName != null)
 	    {
-	        this.icon = new javax.swing.ImageIcon(HandleStyle.class.getResource("images/"+iconName));
+	        this.icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(HandleStyle.class.getResource("images/"+iconName));
 	    }
 	    this.toolTipText = toolTipText;
 	}

@@ -81,12 +81,7 @@ public class ResourceManager {
 		}
 	}
 	public static javax.swing.Icon getLargeIcon(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
-		java.net.URL url = getLargeIconResource(treeNode);
-		if( url != null ) {
-			return new javax.swing.ImageIcon( url );
-		} else {
-			return null;
-		}
+		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( getLargeIconResource(treeNode) );
 	}
 	public static javax.swing.Icon getSmallIcon(edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
 		return getSmallIconFor( getLargeIcon(treeNode) );
@@ -144,12 +139,7 @@ public class ResourceManager {
 		}
 	}
 	public static javax.swing.Icon getLargeIconForGalleryClassName( String className ) {
-		java.net.URL url = getLargeIconResourceForGalleryClassName(className);
-		if( url != null ) {
-			return new javax.swing.ImageIcon( url );
-		} else {
-			return null;
-		}
+		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( getLargeIconResourceForGalleryClassName(className) );
 	}
 	public static javax.swing.Icon getSmallIconForGalleryClassName(String className) {
 		return getSmallIconFor( getLargeIconForGalleryClassName(className) );
@@ -167,12 +157,7 @@ public class ResourceManager {
 	}
 
 	public static javax.swing.Icon getLargeIconForType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		java.net.URL url = getLargeIconResourceForType(type);
-		if( url != null ) {
-			return new javax.swing.ImageIcon( url );
-		} else {
-			return null;
-		}
+		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( getLargeIconResourceForType(type) );
 	}
 	
 	private static java.util.Map<org.lgna.project.ast.JavaType, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

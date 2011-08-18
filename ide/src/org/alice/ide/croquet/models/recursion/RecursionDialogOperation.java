@@ -144,7 +144,7 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 
 		borderPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder(0,16,0,0));
 		this.addComponent( borderPanel, Constraint.CENTER );
-		this.addComponent( new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( RecursionPanel.class.getResource( "images/key.png" ) ) ), Constraint.LINE_START );
+		this.addComponent( new org.lgna.croquet.components.Label( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RecursionPanel.class.getResource( "images/key.png" ) ) ), Constraint.LINE_START );
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 	}

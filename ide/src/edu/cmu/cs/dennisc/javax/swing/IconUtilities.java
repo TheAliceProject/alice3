@@ -40,24 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.history;
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
+ *
  */
-public class UndoOperation extends HistoryOperation {
-	private static class SingletonHolder {
-		private static UndoOperation instance = new UndoOperation();
+public class IconUtilities {
+	private IconUtilities() {
+		throw new AssertionError();
 	}
-	public static UndoOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private UndoOperation() {
-		super( java.util.UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ) );
-		this.setSmallIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/undo.png" ) ) );
-	}
-	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.history.HistoryManager historyManager) {
-		historyManager.performUndo();
+	public static javax.swing.ImageIcon createImageIcon( java.net.URL url ) {
+		if( url != null ) {
+			return new javax.swing.ImageIcon( url );
+		} else {
+			return null;
+		}
 	}
 }

@@ -96,7 +96,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 				rv.setBackground( PersonInfo.SELECTED_COLOR );
 			}
 			
-			javax.swing.Icon icon = new javax.swing.ImageIcon( urlForIcon );
+			javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
 			if( icon != null ) {
 				rv.setIcon( icon );
 				rv.setText( "" );
