@@ -129,6 +129,10 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
         indexBuffer.rewind();
 
         rc.gl.glDrawElements(GL.GL_TRIANGLES, indexBuffer.remaining(), GL.GL_UNSIGNED_INT, indexBuffer);
+        
+        rc.gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+        rc.gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
+        rc.gl.glDisableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
     }
     
     //This is really slow in debug mode
@@ -173,6 +177,7 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
         pc.gl.glVertexPointer(3, GL2.GL_DOUBLE, 0, vertexBuffer);
         indexBuffer.rewind();
         pc.gl.glDrawElements(GL.GL_TRIANGLES, indexBuffer.remaining(), GL.GL_UNSIGNED_INT, indexBuffer);
+        pc.gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
         pc.gl.glPopName();
     }
     
