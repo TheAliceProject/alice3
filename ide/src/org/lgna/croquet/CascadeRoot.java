@@ -102,7 +102,11 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 	public final void handleCompletion( CS completionStep, T[] values ) {
 		try {
 			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep, values );
-			completionStep.commitAndInvokeDo( edit );
+			if( edit != null ) {
+				completionStep.commitAndInvokeDo( edit );
+			} else {
+				completionStep.cancel();
+			}
 		} finally {
 			this.getPopupPrepModel().handleFinally();
 		}

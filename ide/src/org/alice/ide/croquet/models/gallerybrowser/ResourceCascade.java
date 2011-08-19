@@ -60,12 +60,16 @@ public class ResourceCascade extends org.lgna.croquet.Cascade< org.lgna.project.
 			return rv;
 		}
 	}
+	private final org.lgna.project.ast.AbstractConstructor constructor;
 	private ResourceCascade( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "53db430a-0d90-47d2-ad03-487e1dffb47d" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.declaration.GalleryResourceBlank.getInstance( type ) );
+		this.constructor = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceConstructorFor( type );
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > completionStep,
-			org.lgna.project.ast.Expression[] values ) {
+	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > completionStep, org.lgna.project.ast.Expression[] values ) {
+		org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)values[ 0 ];
+		org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( this.constructor, fieldAccess.field.getValue() ).fire();
+		//todo
 		return null;
 	}
 }

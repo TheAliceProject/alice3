@@ -77,4 +77,18 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 			return null;
 		}
 	}
+
+	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?, ?, ? > argumentType ) {
+		java.util.List< ? extends org.lgna.project.ast.AbstractType< ?, ?, ? > > types = getTopLevelGalleryTypes();
+		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : getTopLevelGalleryTypes() ) {
+			org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
+			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = constructor.getParameters();
+			if( parameters.size() == 1 ) {
+				if( parameters.get( 0 ).getValueType().isAssignableFrom( argumentType ) ) {
+					return constructor;
+				}
+			}
+		}
+		return null;
+	}
 }

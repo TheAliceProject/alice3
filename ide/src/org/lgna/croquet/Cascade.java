@@ -66,7 +66,7 @@ public abstract class Cascade<T> extends CompletionModel {
 	}
 	@Override
 	public org.lgna.croquet.history.Step< ? > fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		return null;
+		throw new RuntimeException();
 	}
 	@Override
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
