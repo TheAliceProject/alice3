@@ -40,22 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+
+package org.alice.stageide.person.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.Hair > {
-	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
-	}
-	public static HairListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
-	private HairListCellRenderer() {
-	}
-	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+public class HorizontalWrapList< T > extends org.lgna.croquet.components.List< T > {
+	public HorizontalWrapList( org.lgna.croquet.ListSelectionState< T > model, int visibleRowCount ) {
+		super( model );
+		this.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
+		this.setVisibleRowCount( visibleRowCount );
+		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		//rv.getAwtComponent().setOpaque( false );
 	}
 }

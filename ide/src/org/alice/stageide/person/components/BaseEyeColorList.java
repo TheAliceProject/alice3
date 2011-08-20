@@ -40,22 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+
+package org.alice.stageide.person.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.Hair > {
-	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
-	}
-	public static HairListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
-	private HairListCellRenderer() {
-	}
-	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+public class BaseEyeColorList extends HorizontalWrapList< org.lgna.story.resources.sims2.BaseEyeColor > {
+	public BaseEyeColorList() {
+		super( org.alice.stageide.person.models.BaseEyeColorState.getInstance(), 1 );
+		this.setCellRenderer( org.alice.stageide.person.components.SimpleListCellRenderer.SINGLETON );
 	}
 }

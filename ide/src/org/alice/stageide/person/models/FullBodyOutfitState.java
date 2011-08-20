@@ -40,22 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.Hair > {
+public class FullBodyOutfitState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit> {
 	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
+		private static FullBodyOutfitState instance = new FullBodyOutfitState();
 	}
-	public static HairListCellRenderer getInstance() {
+	public static FullBodyOutfitState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private HairListCellRenderer() {
+	private FullBodyOutfitState() {
+		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit >(){
+			public Class< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > getValueClass() {
+				return org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit.class;
+			}
+			public org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+				throw new RuntimeException( "todo" );
+			}
+			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit t ) {
+				throw new RuntimeException( "todo" );
+			}
+			public StringBuilder appendRepresentation( StringBuilder rv, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit value, java.util.Locale locale ) {
+				rv.append( value );
+				return rv;
+			}
+		} );
 	}
-	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+	
+	public void handleCataclysmicChange( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+		this.setListData( -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
+				edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
+						org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+						null 
+				),
+				org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit.class
+		) );
 	}
 }

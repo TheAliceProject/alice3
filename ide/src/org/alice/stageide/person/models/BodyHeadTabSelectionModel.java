@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.models;
 
 /*package-private*/ abstract class ContentTab extends org.lgna.croquet.PredeterminedTab {
 	public ContentTab(java.util.UUID id, String title) {
@@ -60,18 +60,18 @@ package org.alice.stageide.croquet.models.personeditor;
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.lgna.croquet.components.List< ? > list = org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().createList();
+		org.lgna.croquet.components.List< ? > list = new org.alice.stageide.person.components.FullBodyOutfitList();
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
 		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
-		org.lgna.croquet.components.Slider slider = FitnessModel.getInstance().createSlider();
+		org.lgna.croquet.components.Slider slider = ObesityState.getInstance().createSlider();
 		slider.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		
 		org.lgna.croquet.components.BorderPanel fitnessLevelPane = new org.lgna.croquet.components.BorderPanel();
-		fitnessLevelPane.addComponent( SetFitnessToOutOfShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		fitnessLevelPane.addComponent( SetObesityToInShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		fitnessLevelPane.addComponent( slider, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		fitnessLevelPane.addComponent( SetFitnessToInShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+		fitnessLevelPane.addComponent( SetObesityToOutOfShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel( 8, 8 );
 		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
@@ -91,9 +91,9 @@ package org.alice.stageide.croquet.models.personeditor;
 		org.lgna.croquet.components.RowsSpringPanel rv = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
 			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
-				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "hair:", HairColorSelectionState.getInstance().createList() ) );
-				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, HairSelectionState.getInstance().createList() ) );
-				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "eye color:", BaseEyeColorSelectionState.getInstance().createList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "hair:", new org.alice.stageide.person.components.HairColorList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, new org.alice.stageide.person.components.HairList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "eye color:", new org.alice.stageide.person.components.BaseEyeColorList() ) );
 				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, org.lgna.croquet.components.BoxUtilities.createGlue() ) );
 				return rv;
 			}

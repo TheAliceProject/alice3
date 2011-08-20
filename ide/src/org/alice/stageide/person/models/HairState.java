@@ -40,19 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairSelectionState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.resources.sims2.Hair> {
+public class HairState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.resources.sims2.Hair> {
 	private static class SingletonHolder {
-		private static HairSelectionState instance = new HairSelectionState();
+		private static HairState instance = new HairState();
 	}
-	public static HairSelectionState getInstance() {
+	public static HairState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private HairSelectionState() {
+	private HairState() {
 		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new org.lgna.croquet.ItemCodec< org.lookingglassandalice.storytelling.resources.sims2.Hair >(){
 			public Class< org.lookingglassandalice.storytelling.resources.sims2.Hair > getValueClass() {
 				return org.lookingglassandalice.storytelling.resources.sims2.Hair.class;
@@ -83,15 +83,5 @@ public class HairSelectionState extends AbstractListSelectionState<org.lookinggl
 						org.lookingglassandalice.storytelling.resources.sims2.Hair.class
 				) 
 		);
-	}
-	@Override
-	protected int getVisibleRowCount() {
-		return -1;
-	}
-	@Override
-	public org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.resources.sims2.Hair> createList() {
-		org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.resources.sims2.Hair> rv = super.createList();
-		rv.setCellRenderer( new org.alice.stageide.personeditor.HairListCellRenderer() );
-		return rv;
 	}
 }

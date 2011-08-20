@@ -40,25 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.personeditor;
+
+package org.alice.stageide.person.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GenderSelectionState extends AbstractListSelectionState< org.lgna.story.resources.sims2.Gender > {
-	private static class SingletonHolder {
-		private static GenderSelectionState instance = new GenderSelectionState();
-	}
-	public static GenderSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private GenderSelectionState() {
-		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.Gender.class ), org.lgna.story.resources.sims2.Gender.values() );
-	}
-	@Override
-	public org.lgna.croquet.components.List<org.lgna.story.resources.sims2.Gender> createList() {
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.Gender> rv = super.createList();
-		rv.setCellRenderer( org.alice.stageide.personeditor.SimpleListCellRenderer.SINGLETON );
-		return rv;
+public class GenderList extends HorizontalWrapList< org.lgna.story.resources.sims2.Gender > {
+	public GenderList() {
+		super( org.alice.stageide.person.models.GenderState.getInstance(), 1 );
+		this.setCellRenderer( org.alice.stageide.person.components.SimpleListCellRenderer.SINGLETON );
 	}
 }

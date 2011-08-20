@@ -63,7 +63,7 @@ public class SimsBipedImplementation extends org.lgna.story.implementation.Biped
 	private org.lgna.story.resources.sims2.Gender gender;
 	private org.lookingglassandalice.storytelling.resources.sims2.Outfit outfit;
 	private org.lgna.story.resources.sims2.SkinTone skinTone;
-	private double fitnessLevel;
+	private double obesityLevel;
 	private org.lookingglassandalice.storytelling.resources.sims2.Hair hair;
 	private org.lgna.story.resources.sims2.EyeColor eyeColor;
 
@@ -120,12 +120,12 @@ public class SimsBipedImplementation extends org.lgna.story.implementation.Biped
 		this.skinTone = skinTone;
 		this.nebPerson.setSkinTone( this.skinTone );
 	}
-	public double getFitnessLevel() {
-		return this.fitnessLevel;
+	public double getObesityLevel() {
+		return this.obesityLevel;
 	}
-	public void setFitnessLevel( double fitnessLevel ) {
-		this.fitnessLevel = fitnessLevel;
-		this.nebPerson.setFitnessLevel( this.fitnessLevel );
+	public void setObesityLevel( double obesityLevel ) {
+		this.obesityLevel = obesityLevel;
+		this.nebPerson.setFitnessLevel( 1.0-this.obesityLevel );
 	}
 	public org.lookingglassandalice.storytelling.resources.sims2.Hair getHair() {
 		return this.hair;

@@ -42,12 +42,18 @@
  */
 package org.alice.stageide.personeditor;
 
-
-
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer {
+public class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > {
+	private static class SingletonHolder {
+		private static FullBodyOutfitListCellRenderer instance = new FullBodyOutfitListCellRenderer();
+	}
+	public static FullBodyOutfitListCellRenderer getInstance() {
+		return SingletonHolder.instance;
+	}
+	private FullBodyOutfitListCellRenderer() {
+	}
 	@Override
 	protected String getSubPath() {
 		return "fullbodyoutfit_pictures";

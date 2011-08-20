@@ -40,20 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetFitnessToInShapeOperation extends SetFitnessOperation {
+public class LifeStageState extends AbstractListSelectionState< org.lgna.story.resources.sims2.LifeStage > {
 	private static class SingletonHolder {
-		private static SetFitnessToInShapeOperation instance = new SetFitnessToInShapeOperation();
+		private static LifeStageState instance = new LifeStageState();
 	}
-	public static SetFitnessToInShapeOperation getInstance() {
+	public static LifeStageState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private SetFitnessToInShapeOperation() {
-		super( FitnessModel.getInstance().getMaximum(), "in shape", java.util.UUID.fromString( "692a245e-41b0-4639-992e-7016f4631d9b" ) );
+	private LifeStageState() {
+		super( java.util.UUID.fromString( "ee61b76d-b154-4e45-a07c-fb2eac906895" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), org.lgna.story.resources.sims2.LifeStage.CHILD, org.lgna.story.resources.sims2.LifeStage.ADULT );
 	}
 }

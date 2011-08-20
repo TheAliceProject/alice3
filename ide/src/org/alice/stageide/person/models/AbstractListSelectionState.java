@@ -40,22 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.Hair > {
-	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
-	}
-	public static HairListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
-	private HairListCellRenderer() {
-	}
-	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+abstract class AbstractListSelectionState<E> extends org.lgna.croquet.DefaultListSelectionState< E > {
+	public AbstractListSelectionState( java.util.UUID individualId, org.lgna.croquet.ItemCodec< E > codec, E... elements ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, -1, elements );
 	}
 }

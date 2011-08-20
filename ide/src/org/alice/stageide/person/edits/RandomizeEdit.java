@@ -41,19 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetFitnessToOutOfShapeOperation extends SetFitnessOperation {
-	private static class SingletonHolder {
-		private static SetFitnessToOutOfShapeOperation instance = new SetFitnessToOutOfShapeOperation();
+public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
+	private final org.alice.stageide.personeditor.PersonInfo prevState;
+	private final org.alice.stageide.personeditor.PersonInfo nextState;
+	public RandomizeEdit( org.lgna.croquet.history.CompletionStep step ) {
+		super( step );
+		this.prevState = org.alice.stageide.personeditor.PersonEditor.getInstance().getPersonInfo();
+		this.nextState = org.alice.stageide.personeditor.PersonInfo.createRandom();
 	}
-	public static SetFitnessToOutOfShapeOperation getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		org.alice.stageide.personeditor.PersonEditor.getInstance().setPersonInfo( this.nextState );
 	}
-	private SetFitnessToOutOfShapeOperation() {
-		super( FitnessModel.getInstance().getMinimum(), "out of shape", java.util.UUID.fromString( "bf8fedb3-15cf-4729-ba43-ca92940674e3" ) );
+	@Override
+	protected final void undoInternal() {
+		org.alice.stageide.personeditor.PersonEditor.getInstance().setPersonInfo( this.prevState );
+	}
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "randomize" );
+		return rv;
 	}
 }

@@ -40,25 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BaseEyeColorSelectionState extends AbstractListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> {
+public class HairColorState extends AbstractListSelectionState< String > {
+	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
+	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
 	private static class SingletonHolder {
-		private static BaseEyeColorSelectionState instance = new BaseEyeColorSelectionState();
+		private static HairColorState instance = new HairColorState();
 	}
-	public static BaseEyeColorSelectionState getInstance() {
+	public static HairColorState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private BaseEyeColorSelectionState() {
-		super(java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.BaseEyeColor.class ), org.lgna.story.resources.sims2.BaseEyeColor.values() );
+	private HairColorState() {
+		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON, EXCLUDE_GREY );
 	}
-	@Override
-	public org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BaseEyeColor> createList() {
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BaseEyeColor> rv = super.createList();
-		rv.setCellRenderer( org.alice.stageide.personeditor.SimpleListCellRenderer.SINGLETON );
-		return rv;
+	public void handleCataclysmicChange( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+//		if( lifeStage == org.lookingglassandalice.storytelling.LifeStage.ADULT ) {
+//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND", "GREY" );
+//		} else {
+//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND" );
+//		}
 	}
 }

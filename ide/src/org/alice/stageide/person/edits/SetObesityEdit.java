@@ -40,22 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+
+package org.alice.stageide.person.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.Hair > {
-	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
-	}
-	public static HairListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
-	private HairListCellRenderer() {
+public class SetObesityEdit extends org.lgna.croquet.edits.Edit {
+	public SetObesityEdit( org.lgna.croquet.history.CompletionStep step ) {
+		super( step );
 	}
 	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+	protected final void doOrRedoInternal( boolean isDo ) {
+		throw new RuntimeException( "todo" );
+	}
+	@Override
+	protected final void undoInternal() {
+		throw new RuntimeException( "todo" );
+	}
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "randomize" );
+		return rv;
 	}
 }

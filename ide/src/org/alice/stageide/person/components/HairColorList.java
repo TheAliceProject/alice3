@@ -41,26 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetFitnessOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private int value;
-
-	public SetFitnessOperation( int value, String name ) {
-		this(value, name, java.util.UUID.fromString( "979d9be8-c24c-4921-93d4-23747bdf079d" ));
-	}
-	
-	protected SetFitnessOperation( int value, String name, java.util.UUID uuid ) {
-		super( uuid );
-		this.value = value;
-		this.setName( name );
-	}
-	
-	@Override
-	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
-		FitnessModel.getInstance().setValue( this.value );
+public class HairColorList extends HorizontalWrapList< String > {
+	public HairColorList() {
+		super( org.alice.stageide.person.models.HairColorState.getInstance(), 1 );
+		this.setCellRenderer( org.alice.stageide.person.components.SimpleListCellRenderer.SINGLETON );
 	}
 }

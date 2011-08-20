@@ -40,25 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.personeditor;
+
+package org.alice.stageide.person.components;
+
+import org.alice.stageide.personeditor.HairListCellRenderer;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractListSelectionState<E> extends org.lgna.croquet.DefaultListSelectionState< E > {
-	public AbstractListSelectionState( java.util.UUID individualId, org.lgna.croquet.ItemCodec< E > codec, E... elements ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, -1, elements );
+public class HairList extends HorizontalWrapList< org.lookingglassandalice.storytelling.resources.sims2.Hair > {
+	public HairList() {
+		super( org.alice.stageide.person.models.HairState.getInstance(), -1 );
+		this.setCellRenderer( HairListCellRenderer.getInstance() );
 	}
-	protected int getVisibleRowCount() {
-		return 1;
-	}
-	@Override
-	public org.lgna.croquet.components.List<E> createList() {
-		org.lgna.croquet.components.List<E> rv = super.createList();
-		rv.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		rv.setVisibleRowCount( this.getVisibleRowCount() );
-		rv.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		//rv.getAwtComponent().setOpaque( false );
-		return rv;
-	}	
 }

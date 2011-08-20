@@ -42,19 +42,17 @@
  */
 package org.alice.stageide.croquet.models.gallerybrowser;
 
-import org.alice.stageide.croquet.models.personeditor.PersonInfo;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class PersonOperation extends org.lgna.croquet.InputDialogOperation {
-	protected abstract PersonInfo getInitialPersonInfo();
+	protected abstract org.alice.stageide.personeditor.PersonInfo getInitialPersonInfo();
 	public PersonOperation( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
 	@Override
 	protected org.alice.stageide.personeditor.PersonEditor prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		PersonInfo personInfo = this.getInitialPersonInfo();
+		org.alice.stageide.personeditor.PersonInfo personInfo = this.getInitialPersonInfo();
 		org.alice.stageide.personeditor.PersonEditor rv = org.alice.stageide.personeditor.PersonEditor.getInstance();
 		rv.initialize( this.getInitialPersonInfo() );
 		return rv;

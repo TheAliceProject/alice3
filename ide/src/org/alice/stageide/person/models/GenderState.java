@@ -40,34 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorSelectionState extends AbstractListSelectionState< String > {
-	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
-	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
+public class GenderState extends AbstractListSelectionState< org.lgna.story.resources.sims2.Gender > {
 	private static class SingletonHolder {
-		private static HairColorSelectionState instance = new HairColorSelectionState();
+		private static GenderState instance = new GenderState();
 	}
-	public static HairColorSelectionState getInstance() {
+	public static GenderState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private HairColorSelectionState() {
-		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON, EXCLUDE_GREY );
-	}
-	public void handleCataclysmicChange( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-//		if( lifeStage == org.lookingglassandalice.storytelling.LifeStage.ADULT ) {
-//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND", "GREY" );
-//		} else {
-//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND" );
-//		}
-	}
-	@Override
-	public org.lgna.croquet.components.List<String> createList() {
-		org.lgna.croquet.components.List<String> rv = super.createList();
-		rv.setCellRenderer( org.alice.stageide.personeditor.SimpleListCellRenderer.SINGLETON );
-		return rv;
+	private GenderState() {
+		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.Gender.class ), org.lgna.story.resources.sims2.Gender.values() );
 	}
 }

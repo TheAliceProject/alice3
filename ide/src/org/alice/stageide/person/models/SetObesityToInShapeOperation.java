@@ -40,22 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.Hair > {
+public class SetObesityToInShapeOperation extends SetObesityOperation {
 	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
+		private static SetObesityToInShapeOperation instance = new SetObesityToInShapeOperation();
 	}
-	public static HairListCellRenderer getInstance() {
+	public static SetObesityToInShapeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private HairListCellRenderer() {
-	}
-	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+	private SetObesityToInShapeOperation() {
+		super( java.util.UUID.fromString( "692a245e-41b0-4639-992e-7016f4631d9b" ), ObesityState.getInstance().getMinimum() );
 	}
 }

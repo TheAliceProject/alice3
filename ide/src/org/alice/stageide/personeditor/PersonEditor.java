@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.personeditor;
 
-import org.alice.stageide.croquet.models.personeditor.PersonInfo;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -61,21 +59,21 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 			map.put( lifeStage, new org.lgna.story.implementation.sims2.SimsBipedImplementation( null, lifeStage ) );
 		}
 
-		org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.story.resources.sims2.LifeStage>() {
+		org.alice.stageide.person.models.LifeStageState.getInstance().addValueObserver( new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.LifeStage>() {
 			public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.LifeStage > state, org.lgna.story.resources.sims2.LifeStage prevValue, org.lgna.story.resources.sims2.LifeStage nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< org.lgna.story.resources.sims2.LifeStage > state, org.lgna.story.resources.sims2.LifeStage prevValue, org.lgna.story.resources.sims2.LifeStage nextValue, boolean isAdjusting ) {
 				handleCataclysm( true, false, false );
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.story.resources.sims2.Gender>() {
+		org.alice.stageide.person.models.GenderState.getInstance().addValueObserver( new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.Gender>() {
 			public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.Gender > state, org.lgna.story.resources.sims2.Gender prevValue, org.lgna.story.resources.sims2.Gender nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< org.lgna.story.resources.sims2.Gender > state, org.lgna.story.resources.sims2.Gender prevValue, org.lgna.story.resources.sims2.Gender nextValue, boolean isAdjusting ) {
 				handleCataclysm( false, true, false );
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<String>() {
+		org.alice.stageide.person.models.HairColorState.getInstance().addValueObserver( new org.lgna.croquet.State.ValueObserver<String>() {
 			public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
@@ -83,28 +81,28 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 			}
 		} );
 		
-		org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit>() {
+		org.alice.stageide.person.models.FullBodyOutfitState.getInstance().addValueObserver( new org.lgna.croquet.State.ValueObserver<org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit>() {
 			public void changing( org.lgna.croquet.State< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > state, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit prevValue, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > state, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit prevValue, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lookingglassandalice.storytelling.resources.sims2.Hair>() {
+		org.alice.stageide.person.models.HairState.getInstance().addValueObserver( new org.lgna.croquet.State.ValueObserver<org.lookingglassandalice.storytelling.resources.sims2.Hair>() {
 			public void changing( org.lgna.croquet.State< org.lookingglassandalice.storytelling.resources.sims2.Hair > state, org.lookingglassandalice.storytelling.resources.sims2.Hair prevValue, org.lookingglassandalice.storytelling.resources.sims2.Hair nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< org.lookingglassandalice.storytelling.resources.sims2.Hair > state, org.lookingglassandalice.storytelling.resources.sims2.Hair prevValue, org.lookingglassandalice.storytelling.resources.sims2.Hair nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().addValueObserver( new org.lgna.croquet.BoundedRangeIntegerState.ValueObserver<Integer>() {
+		org.alice.stageide.person.models.ObesityState.getInstance().addValueObserver( new org.lgna.croquet.State.ValueObserver<Integer>() {
 			public void changing( org.lgna.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
 				updatePerson();
 			}
 		} );
-		org.alice.stageide.croquet.models.personeditor.BaseEyeColorSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.story.resources.sims2.BaseEyeColor>() {
+		org.alice.stageide.person.models.BaseEyeColorState.getInstance().addValueObserver( new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.BaseEyeColor>() {
 			public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseEyeColor > state, org.lgna.story.resources.sims2.BaseEyeColor prevValue, org.lgna.story.resources.sims2.BaseEyeColor nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseEyeColor > state, org.lgna.story.resources.sims2.BaseEyeColor prevValue, org.lgna.story.resources.sims2.BaseEyeColor nextValue, boolean isAdjusting ) {
@@ -113,10 +111,10 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		} );
 
 
-		final org.lgna.croquet.components.FolderTabbedPane<?> tabbedPane = org.alice.stageide.croquet.models.personeditor.BodyHeadTabSelectionModel.getInstance().createDefaultFolderTabbedPane();
+		final org.lgna.croquet.components.FolderTabbedPane<?> tabbedPane = org.alice.stageide.person.models.BodyHeadTabSelectionModel.getInstance().createDefaultFolderTabbedPane();
 		tabbedPane.scaleFont( 1.5f );
 
-		org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.story.resources.sims2.BaseSkinTone>() {
+		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueObserver( new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.BaseSkinTone>() {
 			public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseSkinTone > state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseSkinTone > state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
@@ -127,13 +125,13 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		
 
 		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel();
-		northPane.addComponent( org.alice.stageide.croquet.models.personeditor.RandomPersonActionOperation.getInstance().createButton(), Constraint.PAGE_START );
+		northPane.addComponent( org.alice.stageide.person.models.RandomizeOperation.getInstance().createButton(), Constraint.PAGE_START );
 		org.lgna.croquet.components.RowsSpringPanel ubiquitousPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
 			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
-				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "life stage:", org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().createList() ) );
-				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "gender:", org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().createList() ) );
-				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "skin tone:", org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().createList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "life stage:", new org.alice.stageide.person.components.LifeStageList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "gender:", new org.alice.stageide.person.components.GenderList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "skin tone:", new org.alice.stageide.person.components.BaseSkinToneList() ) );
 				return rv;
 			}
 		};
@@ -150,11 +148,11 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		splitPane.setDividerLocation( 400 );
 		this.addComponent( splitPane, Constraint.CENTER );
 
-		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<Integer>() {
+		org.alice.stageide.person.models.ObesityState.getInstance().addValueObserver( new org.lgna.croquet.State.ValueObserver<Integer>() {
 			public void changing( org.lgna.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
-				PersonViewer.getSingleton().getPerson().setFitnessLevel( nextValue*0.01 );
+				PersonViewer.getSingleton().getPerson().setObesityLevel( nextValue*0.01 );
 			}
 		} );
 
@@ -165,7 +163,7 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 //		} );
 	}
 
-	private org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.croquet.PredeterminedTab> tabChangeAdapter = new org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.croquet.PredeterminedTab>() {
+	private org.lgna.croquet.State.ValueObserver<org.lgna.croquet.PredeterminedTab> tabChangeAdapter = new org.lgna.croquet.State.ValueObserver<org.lgna.croquet.PredeterminedTab>() {
 		public void changing( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
@@ -173,7 +171,7 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		}
 	};
 	
-	public void initialize( org.alice.stageide.croquet.models.personeditor.PersonInfo personInfo ) {
+	public void initialize( PersonInfo personInfo ) {
 		this.setPersonInfo( personInfo );
 		this.handleCataclysm( true, true, true );
 	}
@@ -185,29 +183,29 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		} else {
 			this.isAlreadyHandlingCataclysm = true;
 			try {
-				org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().getSelectedItem();
-				org.lgna.story.resources.sims2.Gender gender = org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().getSelectedItem();
-				String hairColor = org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().getSelectedItem();
+				org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.stageide.person.models.LifeStageState.getInstance().getSelectedItem();
+				org.lgna.story.resources.sims2.Gender gender = org.alice.stageide.person.models.GenderState.getInstance().getSelectedItem();
+				String hairColor = org.alice.stageide.person.models.HairColorState.getInstance().getSelectedItem();
 				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-					org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().handleCataclysmicChange( lifeStage, gender, hairColor );
+					org.alice.stageide.person.models.HairState.getInstance().handleCataclysmicChange( lifeStage, gender, hairColor );
 				}
 				if( isLifeStageChange || isGenderChange ) {
-					org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().handleCataclysmicChange( lifeStage, gender );
+					org.alice.stageide.person.models.FullBodyOutfitState.getInstance().handleCataclysmicChange( lifeStage, gender );
 				}
 				if( isLifeStageChange ) {
-					org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().handleCataclysmicChange( lifeStage );
+					org.alice.stageide.person.models.HairColorState.getInstance().handleCataclysmicChange( lifeStage );
 				}
 				this.updatePerson();
 				org.lgna.story.implementation.sims2.SimsBipedImplementation person = PersonViewer.getSingleton().getPerson();
 				org.lookingglassandalice.storytelling.resources.sims2.Hair hair = person.getHair();
 				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-					org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().setSelectedItem( hair );
+					org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
 				}
 				if( isLifeStageChange || isGenderChange ) {
-					org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().setSelectedItem( (org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit)person.getOutfit() );
+					org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setSelectedItem( (org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit)person.getOutfit() );
 				}
 				if( isLifeStageChange ) {
-					org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
+					org.alice.stageide.person.models.HairColorState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
 				}
 			} finally {
 				this.isAlreadyHandlingCataclysm = false;
@@ -223,15 +221,15 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 			this.isAlreadyUpdating = true;
 			//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().acquireRenderingLock();
 			try {
-				org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().getSelectedItem();
-				org.lgna.story.resources.sims2.Gender gender = org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().getSelectedItem();
-				String hairColor = org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().getSelectedItem();
+				org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.stageide.person.models.LifeStageState.getInstance().getSelectedItem();
+				org.lgna.story.resources.sims2.Gender gender = org.alice.stageide.person.models.GenderState.getInstance().getSelectedItem();
+				String hairColor = org.alice.stageide.person.models.HairColorState.getInstance().getSelectedItem();
 
-				org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit fullBodyOutfit = org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().getSelectedItem();
-				org.lgna.story.resources.sims2.BaseEyeColor baseEyeColor = org.alice.stageide.croquet.models.personeditor.BaseEyeColorSelectionState.getInstance().getSelectedItem();
-				org.lgna.story.resources.sims2.BaseSkinTone baseSkinTone = org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().getSelectedItem();
-				org.lookingglassandalice.storytelling.resources.sims2.Hair hair = org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().getSelectedItem();
-				double fitnessLevel = org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().getValue()*0.01;
+				org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit fullBodyOutfit = org.alice.stageide.person.models.FullBodyOutfitState.getInstance().getSelectedItem();
+				org.lgna.story.resources.sims2.BaseEyeColor baseEyeColor = org.alice.stageide.person.models.BaseEyeColorState.getInstance().getSelectedItem();
+				org.lgna.story.resources.sims2.BaseSkinTone baseSkinTone = org.alice.stageide.person.models.BaseSkinToneState.getInstance().getSelectedItem();
+				org.lookingglassandalice.storytelling.resources.sims2.Hair hair = org.alice.stageide.person.models.HairState.getInstance().getSelectedItem();
+				double fitnessLevel = org.alice.stageide.person.models.ObesityState.getInstance().getValue()*0.01;
 				
 				assert lifeStage != null;
 				org.lgna.story.implementation.sims2.SimsBipedImplementation person = this.map.get( lifeStage );
@@ -241,7 +239,7 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 					}
 					if( baseSkinTone != null ) {
 						person.setSkinTone( baseSkinTone );
-						person.setFitnessLevel( fitnessLevel );
+						person.setObesityLevel( fitnessLevel );
 						if( fullBodyOutfit != null && org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
 							//pass
 						} else {
@@ -283,15 +281,15 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		return PersonInfo.createFromPerson( PersonViewer.getSingleton().getPerson() );
 	}
 	public void setPersonInfo( PersonInfo personInfo ) {
-		org.alice.stageide.croquet.models.personeditor.LifeStageSelectionState.getInstance().setSelectedItem( personInfo.getLifeStage() );
-		org.alice.stageide.croquet.models.personeditor.GenderSelectionState.getInstance().setSelectedItem( personInfo.getGender() );
-		org.alice.stageide.croquet.models.personeditor.BaseEyeColorSelectionState.getInstance().setSelectedItem( personInfo.getBaseEyeColor() );
-		org.alice.stageide.croquet.models.personeditor.BaseSkinToneSelectionState.getInstance().setSelectedItem( personInfo.getBaseSkinTone() );
-		org.alice.stageide.croquet.models.personeditor.FullBodyOutfitSelectionState.getInstance().setSelectedItem( personInfo.getFullBodyOutfit() );
+		org.alice.stageide.person.models.LifeStageState.getInstance().setSelectedItem( personInfo.getLifeStage() );
+		org.alice.stageide.person.models.GenderState.getInstance().setSelectedItem( personInfo.getGender() );
+		org.alice.stageide.person.models.BaseEyeColorState.getInstance().setSelectedItem( personInfo.getBaseEyeColor() );
+		org.alice.stageide.person.models.BaseSkinToneState.getInstance().setSelectedItem( personInfo.getBaseSkinTone() );
+		org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setSelectedItem( personInfo.getFullBodyOutfit() );
 		
 		org.lookingglassandalice.storytelling.resources.sims2.Hair hair = personInfo.getHair();
-		org.alice.stageide.croquet.models.personeditor.HairSelectionState.getInstance().setSelectedItem( hair );
-		org.alice.stageide.croquet.models.personeditor.HairColorSelectionState.getInstance().setSelectedItem( hair.toString() );
-		org.alice.stageide.croquet.models.personeditor.FitnessModel.getInstance().setValue( (int)(personInfo.getFitnessLevel()*100) );
+		org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
+		org.alice.stageide.person.models.HairColorState.getInstance().setSelectedItem( hair.toString() );
+		org.alice.stageide.person.models.ObesityState.getInstance().setValue( (int)(personInfo.getFitnessLevel()*100) );
 	}
 }

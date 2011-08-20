@@ -40,25 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BaseSkinToneSelectionState extends AbstractListSelectionState< org.lgna.story.resources.sims2.BaseSkinTone > {
-	private static class SingletonHolder {
-		private static BaseSkinToneSelectionState instance = new BaseSkinToneSelectionState();
+public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
+	SINGLETON;
+	private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
+	private javax.swing.JLabel label = new javax.swing.JLabel();
+	private SimpleListCellRenderer() {
+		label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
+		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
+		label.setOpaque( true );
+		pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
+		pane.setOpaque( false );
+		pane.add( label, java.awt.BorderLayout.CENTER );
 	}
-	public static BaseSkinToneSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private BaseSkinToneSelectionState() {
-		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.BaseSkinTone.class ), org.lgna.story.resources.sims2.BaseSkinTone.values() );
-	}
-	@Override
-	public org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BaseSkinTone> createList() {
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BaseSkinTone> rv = super.createList();
-		rv.setCellRenderer( org.alice.stageide.personeditor.SimpleListCellRenderer.SINGLETON );
-		return rv;
+	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		this.label.setText( value.toString() );
+		if( isSelected ) {
+			this.label.setBackground( org.alice.stageide.personeditor.PersonInfo.SELECTED_COLOR );
+		} else {
+			this.label.setBackground( org.alice.stageide.personeditor.PersonInfo.UNSELECTED_COLOR );
+		}
+		return this.pane;
 	}
 }

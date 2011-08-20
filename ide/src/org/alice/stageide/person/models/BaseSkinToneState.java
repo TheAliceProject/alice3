@@ -40,40 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RandomPersonActionOperation extends org.alice.ide.operations.ActionOperation {
+public class BaseSkinToneState extends AbstractListSelectionState< org.lgna.story.resources.sims2.BaseSkinTone > {
 	private static class SingletonHolder {
-		private static RandomPersonActionOperation instance = new RandomPersonActionOperation();
+		private static BaseSkinToneState instance = new BaseSkinToneState();
 	}
-	public static RandomPersonActionOperation getInstance() {
+	public static BaseSkinToneState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private RandomPersonActionOperation() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "9ea00a57-0ea7-4c53-ac53-1e07220e76b9" ) );
-		this.setName( "Generate Random Selection" );
-	}
-	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		final PersonInfo prevState = org.alice.stageide.personeditor.PersonEditor.getInstance().getPersonInfo();
-		final PersonInfo nextState = org.alice.stageide.croquet.models.personeditor.PersonInfo.createRandom();
-		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
-			@Override
-			protected final void doOrRedoInternal( boolean isDo ) {
-				org.alice.stageide.personeditor.PersonEditor.getInstance().setPersonInfo( nextState );
-			}
-			@Override
-			protected final void undoInternal() {
-				org.alice.stageide.personeditor.PersonEditor.getInstance().setPersonInfo( prevState );
-			}
-			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-				rv.append( "randomize person" );
-				return rv;
-			}
-		} );
+	private BaseSkinToneState() {
+		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.BaseSkinTone.class ), org.lgna.story.resources.sims2.BaseSkinTone.values() );
 	}
 }

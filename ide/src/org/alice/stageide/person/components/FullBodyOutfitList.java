@@ -40,33 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
 
-import org.alice.stageide.croquet.models.personeditor.PersonInfo;
+package org.alice.stageide.person.components;
 
+import org.alice.stageide.personeditor.FullBodyOutfitListCellRenderer;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
-	SINGLETON;
-	private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
-	private javax.swing.JLabel label = new javax.swing.JLabel();
-	private SimpleListCellRenderer() {
-		label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
-		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
-		label.setOpaque( true );
-		pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
-		pane.setOpaque( false );
-		pane.add( label, java.awt.BorderLayout.CENTER );
-	}
-	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		this.label.setText( value.toString() );
-		if( isSelected ) {
-			this.label.setBackground( PersonInfo.SELECTED_COLOR );
-		} else {
-			this.label.setBackground( PersonInfo.UNSELECTED_COLOR );
-		}
-		return this.pane;
+public class FullBodyOutfitList extends HorizontalWrapList< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > {
+	public FullBodyOutfitList() {
+		super( org.alice.stageide.person.models.FullBodyOutfitState.getInstance(), -1 );
+		this.setCellRenderer( FullBodyOutfitListCellRenderer.getInstance() );
 	}
 }

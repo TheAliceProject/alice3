@@ -40,22 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.Hair > {
+public class RandomizeOperation extends org.alice.ide.operations.ActionOperation {
 	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
+		private static RandomizeOperation instance = new RandomizeOperation();
 	}
-	public static HairListCellRenderer getInstance() {
+	public static RandomizeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private HairListCellRenderer() {
+	private RandomizeOperation() {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "9ea00a57-0ea7-4c53-ac53-1e07220e76b9" ) );
+		this.setName( "Generate Random Selection" );
 	}
 	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+		step.commitAndInvokeDo( new org.alice.stageide.person.edits.RandomizeEdit( step ) );
 	}
 }

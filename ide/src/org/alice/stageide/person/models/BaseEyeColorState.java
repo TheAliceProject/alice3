@@ -40,53 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitSelectionState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit> {
+public class BaseEyeColorState extends AbstractListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> {
 	private static class SingletonHolder {
-		private static FullBodyOutfitSelectionState instance = new FullBodyOutfitSelectionState();
+		private static BaseEyeColorState instance = new BaseEyeColorState();
 	}
-	public static FullBodyOutfitSelectionState getInstance() {
+	public static BaseEyeColorState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private FullBodyOutfitSelectionState() {
-		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit >(){
-			public Class< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > getValueClass() {
-				return org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit.class;
-			}
-			public org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-				throw new RuntimeException( "todo" );
-			}
-			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit t ) {
-				throw new RuntimeException( "todo" );
-			}
-			public StringBuilder appendRepresentation( StringBuilder rv, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit value, java.util.Locale locale ) {
-				rv.append( value );
-				return rv;
-			}
-		} );
-	}
-	
-	public void handleCataclysmicChange( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		this.setListData( -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
-				edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-						org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-						null 
-				),
-				org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit.class
-		) );
-	}
-	@Override
-	protected int getVisibleRowCount() {
-		return -1;
-	}
-	@Override
-	public org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit> createList() {
-		org.lgna.croquet.components.List<org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit> rv = super.createList();
-		rv.setCellRenderer( new org.alice.stageide.personeditor.FullBodyOutfitListCellRenderer() );
-		return rv;
+	private BaseEyeColorState() {
+		super( java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.BaseEyeColor.class ), org.lgna.story.resources.sims2.BaseEyeColor.values() );
 	}
 }

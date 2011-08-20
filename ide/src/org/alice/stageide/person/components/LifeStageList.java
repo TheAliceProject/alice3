@@ -41,19 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.personeditor;
+package org.alice.stageide.person.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FitnessModel extends org.lgna.croquet.BoundedRangeIntegerState {
-	private static class SingletonHolder {
-		private static FitnessModel instance = new FitnessModel();
-	}
-	public static FitnessModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private FitnessModel() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
+public class LifeStageList extends HorizontalWrapList< org.lgna.story.resources.sims2.LifeStage > {
+	public LifeStageList() {
+		super( org.alice.stageide.person.models.LifeStageState.getInstance(), 1 );
+		this.setCellRenderer( org.alice.stageide.person.components.SimpleListCellRenderer.SINGLETON );
 	}
 }
