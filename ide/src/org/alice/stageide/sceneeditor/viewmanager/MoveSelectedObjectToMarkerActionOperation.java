@@ -71,7 +71,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 	private MoveToImageIcon imageIcon;
 
 	private MoveSelectedObjectToMarkerActionOperation() {
-		super(edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "f7f7c4f7-4b12-472a-9fac-77bed71a7de2" ));
+		super(org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "f7f7c4f7-4b12-472a-9fac-77bed71a7de2" ));
 		this.markerField = null;
 		this.selectedField = null;
 		this.setToolTipText("Move the camera to this marker.");

@@ -49,9 +49,4 @@ public abstract class CreateDeclarationWithDeclaringTypePane<E> extends CreateDe
 	public CreateDeclarationWithDeclaringTypePane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		super( nodeNameValidator );
 	}
-	protected abstract String getDeclarationText();
-	@Override
-	public String getDialogTitle() {
-		return "Declare " + this.getDeclarationText();
-	}
 }

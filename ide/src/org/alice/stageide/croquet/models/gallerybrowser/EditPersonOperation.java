@@ -60,7 +60,7 @@ public class EditPersonOperation extends PersonOperation {
 	}
 
 	private EditPersonOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "bbbc5715-a41a-4740-b3fe-41ee20b1f9c5" ) );
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "bbbc5715-a41a-4740-b3fe-41ee20b1f9c5" ) );
 		this.field = field;
 	}
 	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
@@ -104,7 +104,7 @@ public class EditPersonOperation extends PersonOperation {
 //public class EditPersonActionOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.stageide.personeditor.PersonEditor> {
 //	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 //	public EditPersonActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-//		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ad113b0e-acb2-4e43-8196-eba6a4961dc8" ) );
+//		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "ad113b0e-acb2-4e43-8196-eba6a4961dc8" ) );
 //		this.setName( "Edit..." );
 //		this.field = field;
 //	}

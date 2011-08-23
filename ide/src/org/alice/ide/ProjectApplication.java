@@ -47,6 +47,7 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectApplication extends org.lgna.croquet.Application {
+	public static final org.lgna.croquet.Group PROJECT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" ), "PROJECT_GROUP" );
 	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
@@ -62,7 +63,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 			public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
 			}
 			public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
-				updateTitle();
+				ProjectApplication.this.handleInsertionIndexChanged( e );
 			}
 			public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
 			}
@@ -71,6 +72,20 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		} );
 	}
 
+	private void updateUndoRedoEnabled() {
+		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
+		int index = historyManager.getInsertionIndex();
+		int size = historyManager.getStack().size();
+		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( index > 0 );
+		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( index < size );
+	}
+	protected void handleInsertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+		this.updateTitle();
+		edu.cmu.cs.dennisc.history.HistoryManager source = e.getTypedSource();
+		if( source.getGroup() == PROJECT_GROUP ) {
+			this.updateUndoRedoEnabled();
+		}
+	}
 	protected abstract org.alice.ide.openprojectpane.TabContentPanel createTemplatesTabContentPane();
 
 	public abstract String getApplicationName();
@@ -170,7 +185,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	private edu.cmu.cs.dennisc.alice.Project project = null;
 	
 	public final edu.cmu.cs.dennisc.history.HistoryManager getProjectHistoryManager() {
-		return edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP );
+		return edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
 	}
 	
 	private int projectHistoryInsertionIndexOfCurrentFile = 0;
@@ -257,6 +272,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = this.getProjectHistoryManager();
 		projectHistoryManager.performClear();
 		this.updateHistoryLengthAtLastFileOperation();
+		this.updateUndoRedoEnabled();
 		this.restoreProjectProperties();
 		setUri( uri );
 	}

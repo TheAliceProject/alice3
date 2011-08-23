@@ -69,7 +69,7 @@ public class MoreCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.al
 	private final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	private final edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
 	private MoreCascade( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), edu.cmu.cs.dennisc.alice.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
 		this.expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.methodInvocation.getParent();
@@ -88,7 +88,7 @@ public class MoreCascade extends org.lgna.croquet.Cascade< edu.cmu.cs.dennisc.al
 
 //	@Override
 //	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-//		return edu.cmu.cs.dennisc.alice.Project.GROUP;
+//		return org.alice.ide.IDE.PROJECT_GROUP;
 //	}
 
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionStatement getExpressionStatement() {

@@ -604,6 +604,11 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	}
 	
 	//todo: handleItemRemoved
+	@Override
+	protected void handleItemRemoved( org.alice.ide.editorstabbedpane.CodeComposite item ) {
+		super.handleItemRemoved( item );
+		this.setSelectedIndex( this.getItemCount()-1 );
+	}
 	
 	@Override
 	public void clear() {

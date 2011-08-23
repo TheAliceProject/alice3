@@ -46,13 +46,15 @@ package org.alice.ide.initializer;
  * @author Dennis Cosgrove
  */
 public class ItemInitializerPane extends org.lgna.croquet.components.FlowPanel {
+	private final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty;
 	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
 		super( Alignment.LEADING );
-		this.addComponent( org.alice.ide.IDE.getActiveInstance().getCodeFactory().createExpressionPropertyPane( initializerProperty, null, null, org.lgna.croquet.Application.INHERIT_GROUP ) );
+		this.initializerProperty = initializerProperty;
+		this.refresh();
+	}
+	public void refresh() {
+		this.forgetAndRemoveAllComponents();
+		this.addComponent( org.alice.ide.IDE.getActiveInstance().getCodeFactory().createExpressionPropertyPane( initializerProperty, null, initializerProperty.getExpressionType(), org.lgna.croquet.Application.INHERIT_GROUP, true ) );
+		this.revalidateAndRepaint();
 	}
 }
-//public class ItemInitializerPane extends org.alice.ide.codeeditor.ExpressionPropertyDropDownPane {
-//	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
-//		super( null, new org.alice.ide.common.ExpressionPropertyPane( org.alice.ide.IDE.getActiveInstance().getCodeFactory(), initializerProperty ), initializerProperty );
-//	}
-//}

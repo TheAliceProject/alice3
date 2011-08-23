@@ -55,7 +55,7 @@ public abstract class DeleteMemberOperation< N extends edu.cmu.cs.dennisc.alice.
 	private transient int index = -1;
 	
 	public DeleteMemberOperation( java.util.UUID individualId, N node, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> delaringType ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, individualId );
+		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		this.member = node;
 		this.delaringType = delaringType;
 	}

@@ -101,12 +101,6 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 	}
 	
 	@Override
-	public String getDialogTitle() {
-		return "Edit Field";
-	}
-	
-	
-	@Override
 	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), this.getInputValue() );
 	}

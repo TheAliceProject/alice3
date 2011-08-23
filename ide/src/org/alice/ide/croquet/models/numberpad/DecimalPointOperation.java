@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.numberpad;
  * @author Dennis Cosgrove
  */
 public class DecimalPointOperation extends NumberPadOperation {
-	private static java.util.Map< NumberModel, DecimalPointOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DecimalPointOperation getInstance( NumberModel model ) {
+	private static java.util.Map< NumberModel<?>, DecimalPointOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DecimalPointOperation getInstance( NumberModel<?> model ) {
 		DecimalPointOperation rv = map.get( model );
 		if( rv != null ) {
 			//pass
@@ -58,7 +58,7 @@ public class DecimalPointOperation extends NumberPadOperation {
 		return rv;
 	}
 
-	private DecimalPointOperation( NumberModel model ) {
+	private DecimalPointOperation( NumberModel<?> model ) {
 		super( java.util.UUID.fromString( "45fb7f55-166b-421c-9e6d-cf781b562936" ), model );
 		this.setName( "." );
 	}

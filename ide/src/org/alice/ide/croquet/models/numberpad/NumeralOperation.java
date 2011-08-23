@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.numberpad;
  * @author Dennis Cosgrove
  */
 public class NumeralOperation extends NumberPadOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< NumberModel, Short, NumeralOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized NumeralOperation getInstance( NumberModel numberModel, short numeral ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< NumberModel<?>, Short, NumeralOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized NumeralOperation getInstance( NumberModel<?> numberModel, short numeral ) {
 		NumeralOperation rv = map.get( numberModel, numeral );
 		if( rv != null ) {
 			//pass
@@ -58,17 +58,12 @@ public class NumeralOperation extends NumberPadOperation {
 		return rv;
 	}
 
-	private NumeralOperation( NumberModel numberModel, short numeral ) {
+	private NumeralOperation( NumberModel<?> numberModel, short numeral ) {
 		super( java.util.UUID.fromString( "a08d5953-dc32-49a8-bfd6-02cecb45ccf2" ), numberModel );
 		this.numeral = numeral;
 	}
 
 	private short numeral;
-	public NumeralOperation( java.util.UUID id, NumberModel numberModel, short numeral ) {
-		super( id, numberModel );
-		this.numeral = numeral;
-		this.setName( Short.toString( this.numeral ) );
-	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver< NumeralOperation > createCodableResolver() {
 		return new org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver< NumeralOperation >( this, this.numberModel, this.numeral );
@@ -84,21 +79,3 @@ public class NumeralOperation extends NumberPadOperation {
 		step.finish();
 	}
 }
-//
-//public abstract class NumeralOperation extends NumberPadOperation {
-//	private short numeral;
-//	public NumeralOperation( java.util.UUID id, NumberModel numberModel, short numeral ) {
-//		super( id, numberModel );
-//		this.numeral = numeral;
-//		this.setName( Short.toString( this.numeral ) );
-//	}
-//	@Override
-//	protected void localize() {
-//		//super.localize();
-//	}
-//	@Override
-//	protected void perform( edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
-//		this.numberModel.append( this.numeral );
-//		context.finish();
-//	}
-//}

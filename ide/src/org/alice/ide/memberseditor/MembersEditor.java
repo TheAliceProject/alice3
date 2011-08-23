@@ -71,7 +71,7 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 	private final java.util.Map< Boolean, org.lgna.croquet.components.CardPanel.Key > keys = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public MembersEditor() {
 		final float FONT_SCALAR = 1.4f;
-		org.lgna.croquet.components.ComboBox< edu.cmu.cs.dennisc.alice.ast.Accessible > comboBox = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getPrepModel().createComboBox();
+		final org.lgna.croquet.components.ComboBox< edu.cmu.cs.dennisc.alice.ast.Accessible > comboBox = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getPrepModel().createComboBox();
 		comboBox.scaleFont( FONT_SCALAR );
 		//comboBox.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		
@@ -168,7 +168,7 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		} catch( NoSuchFieldException nsfe ) {
 			throw new RuntimeException( nsfe );
 		}
-		org.lgna.croquet.components.ComboBox<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partComboBox = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getPrepModel().createComboBox();
+		final org.lgna.croquet.components.ComboBox<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField> partComboBox = org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getPrepModel().createComboBox();
 		partComboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractField >() {
 			@Override
 			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -228,11 +228,27 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 //			}
 //		} );
 		
+		
+		//todo: remove this EPIC_HACK
+		javax.swing.plaf.ComboBoxUI comboBoxUI = comboBox.getAwtComponent().getUI();
+		if( comboBoxUI instanceof javax.swing.plaf.metal.MetalComboBoxUI ) {
+			 org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getListSelectionModel().addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+				public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+					comboBox.getAwtComponent().setPrototypeDisplayValue( comboBox.getAwtComponent().getSelectedItem() );
+				}
+			 } );
+			 org.alice.ide.croquet.models.members.PartSelectionState.getInstance().getListSelectionModel().addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+				public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+					partComboBox.getAwtComponent().setPrototypeDisplayValue( partComboBox.getAwtComponent().getSelectedItem() );
+				}
+			 } );
+		}
+		
 		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
 		instancePanel.addComponent( instanceLabel );
 		instancePanel.addComponent( comboBox );
 		instancePanel.addComponent( partComboBox );
-		//instancePanel.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() );
+		//instancePanel.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
 
 		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( cardPanel, Constraint.CENTER );

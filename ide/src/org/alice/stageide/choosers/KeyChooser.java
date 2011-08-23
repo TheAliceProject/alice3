@@ -91,6 +91,10 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 		}
 	}
 
+	@Override
+	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		this.updateKey( null );
+	}
 	private void updateKey( org.alice.apis.moveandturn.Key key ) {
 		this.key = key;
 		if( this.key != null ) {
@@ -98,11 +102,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 		} else {
 			this.keyReceiver.setText( NULL_TEXT );
 		}
-		throw new RuntimeException( "todo" );
-//		edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel = this.getInputPanel();
-//		if( inputPanel != null ) {
-//			inputPanel.updateOKButton();
-//		}
+		org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( null );
 	}
 	@Override
 	public org.lgna.croquet.components.Component< ? >[] getComponents() {
@@ -110,10 +110,14 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.FieldAccess getValue() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class );
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
-		assert field.isPublicAccess() && field.isStatic() && field.isFinal();
-		return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
+		if( this.key != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class );
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
+			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
+			return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
+		} else {
+			return null;
+		}
 	}
 	
 	@Override
@@ -123,9 +127,5 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 		} else {
 			return "value not set";
 		}
-	}
-	@Override
-	public String getTitleDefault() {
-		return "Press Key on Keyboard To Enter Custom Key";
 	}
 }

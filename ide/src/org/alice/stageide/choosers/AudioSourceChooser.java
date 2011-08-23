@@ -238,6 +238,11 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		} );
 	}
 	@Override
+	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		//todo?
+	}
+	
+	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
 		if( resourceExpression != null ) {

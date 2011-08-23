@@ -54,7 +54,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
 
-import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 
@@ -279,7 +278,7 @@ public abstract class AbstractManipulator {
 			{
 				System.out.println("boom");
 			}
-			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
+			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(org.alice.ide.IDE.PROJECT_GROUP, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
 			undoOperation.fire();
 		}
 	}

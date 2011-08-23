@@ -52,7 +52,13 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
 		}
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
-			AbstractListPropertyPane.this.refresh();
+			//todo
+			//AbstractListPropertyPane.this.refresh();
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					AbstractListPropertyPane.this.refresh();
+				}
+			} );
 		}
 
 

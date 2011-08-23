@@ -54,9 +54,10 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 	
 	public ArrayChooser(edu.cmu.cs.dennisc.alice.ast.AbstractType<?, ?, ?> arrayComponentType) {
 		bogusNode.isArray.setValue( true );
-		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, true, false );
-
 		edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getPreviousExpression(), edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class );
+		boolean isComponentTypeEnabled = arrayInstanceCreation != null;
+		boolean isArrayEnabled = false;
+		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, isComponentTypeEnabled, isArrayEnabled );
 		if( arrayInstanceCreation != null ) {
 			//typePane.setAndLockType( arrayInstanceCreation.arrayType.getValue() );
 			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = arrayInstanceCreation.arrayType.getValue().getComponentType();
@@ -64,7 +65,8 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : arrayInstanceCreation.expressions ) {
 				bogusNode.arrayExpressions.add( expression );
 			}
-			typePane.disableComboBox();
+		} else {
+			bogusNode.componentType.setValue(arrayComponentType);
 		}
 
 		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.componentType, bogusNode.arrayExpressions );
@@ -72,7 +74,6 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 		if (arrayComponentType.isAssignableFrom(Object.class)) {
 			this.components = new org.lgna.croquet.components.Component< ? >[] { this.typePane, this.arrayInitializerPane };
 		} else {
-			bogusNode.componentType.setValue(arrayComponentType);
 			org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
 			String typeName = formatter.getTextForType( arrayComponentType ) + " [ ]";
 			org.lgna.croquet.components.Label typeLabel = new org.lgna.croquet.components.Label( typeName );
@@ -97,6 +98,11 @@ public class ArrayChooser extends AbstractRowsPaneChooser< edu.cmu.cs.dennisc.al
 //		} );
 	}
 	
+	@Override
+	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		//todo?
+	}
+		
 	//todo
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createLabel( String text ) {

@@ -93,7 +93,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 //					}
 //					@Override
 //					protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-//						return edu.cmu.cs.dennisc.alice.Project.GROUP;
+//						return org.alice.ide.IDE.PROJECT_GROUP;
 //					}
 //					@Override
 //					protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
@@ -215,7 +215,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 //					}
 //					@Override
 //					protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-//						return edu.cmu.cs.dennisc.alice.Project.GROUP;
+//						return org.alice.ide.IDE.PROJECT_GROUP;
 //					}
 //					public edu.cmu.cs.dennisc.cascade.CascadingEdit< ? > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 //						edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionCreatorPane.this.createExpression( (edu.cmu.cs.dennisc.alice.ast.Expression)value ); 

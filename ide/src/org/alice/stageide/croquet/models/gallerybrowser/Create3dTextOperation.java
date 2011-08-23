@@ -340,7 +340,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		return SingletonHolder.instance;
 	}
 	private Create3dTextOperation() {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "37c0a6d6-a21b-4abb-829b-bd3621cada8d" ) );
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "37c0a6d6-a21b-4abb-829b-bd3621cada8d" ) );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: extend AbstractGalleryDeclareFieldOperation" );
 	}
 	

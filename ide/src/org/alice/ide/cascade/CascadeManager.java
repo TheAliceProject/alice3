@@ -193,6 +193,9 @@ public abstract class CascadeManager {
 						if( type.isAssignableFrom( parameterArrayComponentType ) ) {
 							rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ) ) );
 						}
+						if( arrayLengthFillIns != null ) {
+							arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.ParameterArrayLengthFillIn.getInstance( parameter ) );
+						}
 					}
 				}
 				for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( this.contextBlockStatementIndexPair.getBlockStatement(), this.contextBlockStatementIndexPair.getIndex() ) ) {
