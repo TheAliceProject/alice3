@@ -40,14 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.math.rungekutta;
+
+package org.lgna.story.implementation.visualization;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Function<E extends Derivative > extends Cloneable {
-	public E evaluate( double t );
-	public E evaluate( double t, double dt, E derivative );
-	public void update( E a, E b, E c, E d, double dt );
-	public void update();
+public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter< JointedModelVisualization > {
+	private void gl( final edu.cmu.cs.dennisc.lookingglass.opengl.Context context ) {
+		final org.lgna.story.implementation.JointedModelImplementation implementation = this.m_element.getImplementation();
+		final double[] array = new double[ 16 ];
+		final java.nio.DoubleBuffer buffer = java.nio.DoubleBuffer.wrap( array );
+		final double radius = 0.05;
+		final int SLICES = 20;
+		final int STACKS = 20;
+		implementation.walk( new org.lgna.story.implementation.JointedModelImplementation.WalkObserver() {
+			public void pushJoint( org.lgna.story.implementation.JointImplementation joint ) {
+				edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = joint.getTransformation( implementation );
+				m.getAsColumnMajorArray16( array );
+				context.gl.glPushMatrix();
+				context.gl.glMultMatrixd( buffer );
+				context.gl.glColor3f( 0.0f, 1.0f, 0.0f );
+				context.glu.gluSphere( context.getQuadric(), radius, SLICES, STACKS );
+			}
+			public void handleBone( org.lgna.story.implementation.JointImplementation parent, org.lgna.story.implementation.JointImplementation child ) {
+				edu.cmu.cs.dennisc.math.Point3 xyz = child.getLocalPosition();
+				context.gl.glColor3f( 1.0f, 0.0f, 0.0f );
+				context.gl.glBegin( javax.media.opengl.GL2.GL_LINES );
+				context.gl.glVertex3d( 0.0, 0.0, 0.0 );
+				context.gl.glVertex3d( xyz.x, xyz.y, xyz.z );
+				context.gl.glEnd();
+			}
+			public void popJoint(org.lgna.story.implementation.JointImplementation joint) {
+				context.gl.glPopMatrix();
+			}
+		} );
+	}
+	@Override
+	public void pick( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters, edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults conformanceTestResults ) {
+	}
+	@Override
+	public void renderGhost( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.GhostAdapter root ) {
+	}
+	@Override
+	public void renderOpaque( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
+		this.gl( rc );
+	}
+	@Override
+	public void setup( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
+	}
 }

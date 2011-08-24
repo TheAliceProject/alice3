@@ -80,6 +80,7 @@ public interface BipedResource extends ModelResource{
 		LEFT_ELBOW( LEFT_SHOULDER ),
 		LEFT_WRIST( LEFT_ELBOW );
 		
+		private static BipedJointId[] roots = { PELVIS_LOWER_BODY, PELVIS_UPPER_BODY };
 		private BipedJointId parent;
 		private java.util.List< JointId > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private BipedJointId( BipedJointId parent ) {
@@ -93,6 +94,9 @@ public interface BipedResource extends ModelResource{
 		}
 		public Iterable< JointId > getChildren() {
 			return this.children;
+		}
+		public static BipedJointId[] getRoots() {
+			return roots;
 		}
 	};
 	public org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction );

@@ -19,7 +19,7 @@ public interface SwimmerResource extends ModelResource {
 		TOP_TAIL_FIN(SPINE_UPPER),
 		BOTTOM_TAIL_FIN(SPINE_UPPER);
 		
-		
+		private static SwimmerJointId[] roots = { NECK, PELVIS_UPPER_BODY };
 		private SwimmerJointId parent;
 		private java.util.List< JointId > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private SwimmerJointId( SwimmerJointId parent ) {
@@ -33,6 +33,9 @@ public interface SwimmerResource extends ModelResource {
 		}
 		public Iterable< JointId > getChildren() {
 			return this.children;
+		}
+		public static SwimmerJointId[] getRoots() {
+			return roots;
 		}
 	};
 	public org.lgna.story.implementation.SwimmerImplementation createImplementation( org.lgna.story.Swimmer abstraction );
