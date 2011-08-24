@@ -47,44 +47,82 @@ package org.lgna.story.implementation.visualization;
  * @author Dennis Cosgrove
  */
 public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter< JointedModelVisualization > {
-	private void gl( final edu.cmu.cs.dennisc.lookingglass.opengl.Context context ) {
-		final org.lgna.story.implementation.JointedModelImplementation implementation = this.m_element.getImplementation();
-		final double[] array = new double[ 16 ];
-		final java.nio.DoubleBuffer buffer = java.nio.DoubleBuffer.wrap( array );
-		final double radius = 0.05;
-		final int SLICES = 20;
-		final int STACKS = 20;
-		implementation.walk( new org.lgna.story.implementation.JointedModelImplementation.WalkObserver() {
-			public void pushJoint( org.lgna.story.implementation.JointImplementation joint ) {
-				edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = joint.getTransformation( implementation );
-				m.getAsColumnMajorArray16( array );
-				context.gl.glPushMatrix();
-				context.gl.glMultMatrixd( buffer );
-				context.gl.glColor3f( 0.0f, 1.0f, 0.0f );
-				context.glu.gluSphere( context.getQuadric(), radius, SLICES, STACKS );
-			}
-			public void handleBone( org.lgna.story.implementation.JointImplementation parent, org.lgna.story.implementation.JointImplementation child ) {
-				edu.cmu.cs.dennisc.math.Point3 xyz = child.getLocalPosition();
-				context.gl.glColor3f( 1.0f, 0.0f, 0.0f );
-				context.gl.glBegin( javax.media.opengl.GL2.GL_LINES );
-				context.gl.glVertex3d( 0.0, 0.0, 0.0 );
-				context.gl.glVertex3d( xyz.x, xyz.y, xyz.z );
-				context.gl.glEnd();
-			}
-			public void popJoint(org.lgna.story.implementation.JointImplementation joint) {
-				context.gl.glPopMatrix();
-			}
-		} );
+	private static abstract class GlWalkObserver<C extends edu.cmu.cs.dennisc.lookingglass.opengl.Context> implements org.lgna.story.implementation.JointedModelImplementation.WalkObserver {
+		private final C context;
+		private final org.lgna.story.implementation.ReferenceFrame asSeenBy;
+		private final double[] array = new double[ 16 ];
+		private final java.nio.DoubleBuffer buffer = java.nio.DoubleBuffer.wrap( array );
+		private static final double radius = 0.05;
+		private static final int SLICES = 20;
+		private static final int STACKS = 20;
+
+		public GlWalkObserver( C context, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
+			this.context = context;
+			this.asSeenBy = asSeenBy;
+		}
+		
+		protected C getContext() {
+			return this.context;
+		}
+		
+		protected abstract void preJoint();
+		protected abstract void preBone();
+		public void pushJoint( org.lgna.story.implementation.JointImplementation joint ) {
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = joint.getTransformation( this.asSeenBy );
+			m.getAsColumnMajorArray16( array );
+			this.context.gl.glPushMatrix();
+			this.context.gl.glMultMatrixd( buffer );
+			this.preJoint();
+			this.context.glu.gluSphere( context.getQuadric(), radius, SLICES, STACKS );
+		}
+		public void handleBone( org.lgna.story.implementation.JointImplementation parent, org.lgna.story.implementation.JointImplementation child ) {
+			edu.cmu.cs.dennisc.math.Point3 xyz = child.getLocalPosition();
+			this.preBone();
+			context.gl.glBegin( javax.media.opengl.GL2.GL_LINES );
+			context.gl.glVertex3d( 0.0, 0.0, 0.0 );
+			context.gl.glVertex3d( xyz.x, xyz.y, xyz.z );
+			context.gl.glEnd();
+		}
+		public void popJoint(org.lgna.story.implementation.JointImplementation joint) {
+			context.gl.glPopMatrix();
+		}
+	}
+	private static class RenderWalkObserver extends GlWalkObserver<edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext> {
+		public RenderWalkObserver( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
+			super( rc, asSeenBy );
+		}
+		@Override
+		protected void preJoint() {
+			this.getContext().gl.glColor3f( 0.0f, 1.0f, 0.0f );
+		}
+		@Override
+		protected void preBone() {
+			this.getContext().gl.glColor3f( 1.0f, 0.0f, 0.0f );
+		}
+	}
+	private static class PickWalkObserver extends GlWalkObserver<edu.cmu.cs.dennisc.lookingglass.opengl.PickContext> {
+		public PickWalkObserver( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
+			super( pc, asSeenBy );
+		}
+		@Override
+		protected void preJoint() {
+		}
+		@Override
+		protected void preBone() {
+		}
 	}
 	@Override
 	public void pick( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters, edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults conformanceTestResults ) {
+		org.lgna.story.implementation.JointedModelImplementation implementation = this.m_element.getImplementation();
+		implementation.walk( new PickWalkObserver( pc, implementation ) );
 	}
 	@Override
 	public void renderGhost( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.GhostAdapter root ) {
 	}
 	@Override
 	public void renderOpaque( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
-		this.gl( rc );
+		org.lgna.story.implementation.JointedModelImplementation implementation = this.m_element.getImplementation();
+		implementation.walk( new RenderWalkObserver( rc, implementation ) );
 	}
 	@Override
 	public void setup( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
