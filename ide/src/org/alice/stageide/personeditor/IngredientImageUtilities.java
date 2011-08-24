@@ -40,30 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.person.components;
+
+package org.alice.stageide.personeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
-	SINGLETON;
-	private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
-	private javax.swing.JLabel label = new javax.swing.JLabel();
-	private SimpleListCellRenderer() {
-		label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
-		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
-		label.setOpaque( true );
-		pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
-		pane.setOpaque( false );
-		pane.add( label, java.awt.BorderLayout.CENTER );
+public class IngredientImageUtilities {
+	private IngredientImageUtilities() {
+		throw new AssertionError();
 	}
-	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		this.label.setText( value.toString() );
-		if( isSelected ) {
-			this.label.setBackground( org.alice.stageide.personeditor.PersonInfo.SELECTED_COLOR );
-		} else {
-			this.label.setBackground( org.alice.stageide.personeditor.PersonInfo.UNSELECTED_COLOR );
-		}
-		return this.pane;
+	public static java.net.URL getResource( String path ) {
+		return IngredientImageUtilities.class.getResource( path );
 	}
 }

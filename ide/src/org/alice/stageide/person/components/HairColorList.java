@@ -49,6 +49,6 @@ package org.alice.stageide.person.components;
 public class HairColorList extends HorizontalWrapList< String > {
 	public HairColorList() {
 		super( org.alice.stageide.person.models.HairColorState.getInstance(), 1 );
-		this.setCellRenderer( org.alice.stageide.person.components.SimpleListCellRenderer.SINGLETON );
+		this.setCellRenderer( org.alice.stageide.person.components.renderers.SimpleListCellRenderer.SINGLETON );
 	}
 }

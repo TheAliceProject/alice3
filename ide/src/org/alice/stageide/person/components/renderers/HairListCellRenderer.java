@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.person.components.renderers;
 
 /**
  * @author Dennis Cosgrove

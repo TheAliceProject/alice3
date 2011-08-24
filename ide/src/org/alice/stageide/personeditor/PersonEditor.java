@@ -46,6 +46,9 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
+	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
+	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+
 	private static class SingletonHolder {
 		private static PersonEditor instance = new PersonEditor();
 	}
@@ -278,7 +281,8 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		}
 	}
 	public PersonInfo getPersonInfo() {
-		return PersonInfo.createFromPerson( PersonViewer.getSingleton().getPerson() );
+		return PersonInfo.createFromStates();
+		//return PersonInfo.createFromPerson( PersonViewer.getSingleton().getPerson() );
 	}
 	public void setPersonInfo( PersonInfo personInfo ) {
 		org.alice.stageide.person.models.LifeStageState.getInstance().setSelectedItem( personInfo.getLifeStage() );
@@ -290,6 +294,6 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		org.lookingglassandalice.storytelling.resources.sims2.Hair hair = personInfo.getHair();
 		org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
 		org.alice.stageide.person.models.HairColorState.getInstance().setSelectedItem( hair.toString() );
-		org.alice.stageide.person.models.ObesityState.getInstance().setValue( (int)(personInfo.getFitnessLevel()*100) );
+		org.alice.stageide.person.models.ObesityState.getInstance().setValue( (int)(personInfo.getObesityLevel()*100) );
 	}
 }

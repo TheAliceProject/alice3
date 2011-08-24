@@ -66,6 +66,8 @@ public class SimsBipedImplementation extends org.lgna.story.implementation.Biped
 	private double obesityLevel;
 	private org.lookingglassandalice.storytelling.resources.sims2.Hair hair;
 	private org.lgna.story.resources.sims2.EyeColor eyeColor;
+	
+	private int atomicCount = 0;
 
 	public SimsBipedImplementation( org.lgna.story.Biped abstraction, org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		super( abstraction, new edu.cmu.cs.dennisc.scenegraph.Visual() );
@@ -99,6 +101,21 @@ public class SimsBipedImplementation extends org.lgna.story.implementation.Biped
 	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
 		return this.lifeStage;
 	}
+	
+	public void pushAtomic() {
+		if( this.atomicCount == 0 ) {
+			
+		}
+		this.atomicCount++;
+	}
+	public void popAtomic() {
+		this.atomicCount--;
+		if( this.atomicCount == 0 ) {
+			//this.nebPerson.setAll( this.gender, this.skinTone, this.eyeColor, this.hair, this.outfit, this.obesityLevel );
+		}
+	}
+	
+	
 	public org.lgna.story.resources.sims2.Gender getGender() {
 		return this.gender;
 	}

@@ -59,76 +59,10 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		return PersonViewer.singleton;
 	}
 
-//	private IngredientsPane ingredientsPane;
 	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
 	private PersonViewer() {
 //		this.setState( PersonViewer.generateRandomState( LifeStage.ADULT, Gender.getRandom() ) );
 	}
-
-//	public static edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> generateRandomState( LifeStage lifeStage, Gender gender ) {
-//		return new edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double>( 
-//				lifeStage,
-//				gender,
-//				BaseSkinTone.getRandom(),
-//				BaseEyeColor.getRandom(),
-//				FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
-//				HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
-//				Math.random()
-//		);
-//	}
-//	public edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> getState() {
-//		return new edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double>( this.lifeStage, this.gender, this.baseSkinTone, this.baseEyeColor, this.fullBodyOutfit, this.hair, this.fitnessLevel );
-//	}
-//	public void setState( edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> state ) {
-//		boolean isUpdateDesired = this.lifeStage != null && this.gender != null;
-//		//this.lifeStage = LifeStage.getRandom();
-//		this.lifeStage = state.getA();
-//		this.gender = state.getB();
-//		this.baseSkinTone = state.getC();
-//		this.baseEyeColor = state.getD();
-//		this.fullBodyOutfit = state.getE();
-//		this.hair = state.getF();
-//		this.fitnessLevel = state.getG();
-//		if( isUpdateDesired ) {
-//			this.updatePerson();
-//		}
-//	}
-
-//	public void initializeValues( Person person ) {
-//		if( person != null ) {
-//			this.lifeStage = person.getLifeStage();
-//			this.gender = person.getGender();
-//			this.baseSkinTone = (BaseSkinTone)person.getSkinTone();
-//			this.baseEyeColor = (BaseEyeColor)person.getEyeColor();
-//			this.fullBodyOutfit = (FullBodyOutfit)person.getOutfit();
-//			this.hair = person.getHair();
-//			this.fitnessLevel = person.getFitnessLevel();
-//			this.updatePerson();
-//		}
-//	}
-//
-//	public void handleTabSelection( int index, double duration ) {
-//		Person person = this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
-//		this.positionAndOrientCamera( person.getHeight(), index, duration );
-//	}
-	
-//	public IngredientsPane getIngredientsPane() {
-//		return this.ingredientsPane;
-//	}
-//	public void setIngredientsPane( IngredientsPane ingredientsPane ) {
-//		this.ingredientsPane = ingredientsPane;
-//		if( this.ingredientsPane != null ) {
-//			this.ingredientsPane.refresh();
-//		}
-//	}
-	
-//	public org.alice.apis.stage.Person getPerson() {
-//		if( this.lifeStage != null && this.gender != null ) {
-//			return this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
-//		} else {
-//			return null;
-//		}
-//	}
 
 	private void positionAndOrientCamera( double height, int index, double duration ) {
 		double xzFactor;

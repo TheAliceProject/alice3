@@ -49,6 +49,6 @@ package org.alice.stageide.person.components;
 public class BaseEyeColorList extends HorizontalWrapList< org.lgna.story.resources.sims2.BaseEyeColor > {
 	public BaseEyeColorList() {
 		super( org.alice.stageide.person.models.BaseEyeColorState.getInstance(), 1 );
-		this.setCellRenderer( org.alice.stageide.person.components.SimpleListCellRenderer.SINGLETON );
+		this.setCellRenderer( org.alice.stageide.person.components.renderers.SimpleListCellRenderer.SINGLETON );
 	}
 }

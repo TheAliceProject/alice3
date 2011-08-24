@@ -43,7 +43,7 @@
 
 package org.alice.stageide.person.components;
 
-import org.alice.stageide.personeditor.HairListCellRenderer;
+import org.alice.stageide.person.components.renderers.HairListCellRenderer;
 
 /**
  * @author Dennis Cosgrove

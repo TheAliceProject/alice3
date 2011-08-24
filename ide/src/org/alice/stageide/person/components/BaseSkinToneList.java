@@ -49,6 +49,6 @@ package org.alice.stageide.person.components;
 public class BaseSkinToneList extends HorizontalWrapList< org.lgna.story.resources.sims2.BaseSkinTone > {
 	public BaseSkinToneList() {
 		super( org.alice.stageide.person.models.BaseSkinToneState.getInstance(), 1 );
-		this.setCellRenderer( org.alice.stageide.person.components.SimpleListCellRenderer.SINGLETON );
+		this.setCellRenderer( org.alice.stageide.person.components.renderers.SimpleListCellRenderer.SINGLETON );
 	}
 }

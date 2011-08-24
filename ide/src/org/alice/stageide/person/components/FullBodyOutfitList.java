@@ -43,7 +43,7 @@
 
 package org.alice.stageide.person.components;
 
-import org.alice.stageide.personeditor.FullBodyOutfitListCellRenderer;
+import org.alice.stageide.person.components.renderers.FullBodyOutfitListCellRenderer;
 
 /**
  * @author Dennis Cosgrove

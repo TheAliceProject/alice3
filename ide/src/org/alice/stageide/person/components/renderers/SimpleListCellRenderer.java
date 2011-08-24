@@ -40,22 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.person.components.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > {
-	private static class SingletonHolder {
-		private static FullBodyOutfitListCellRenderer instance = new FullBodyOutfitListCellRenderer();
+public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
+	SINGLETON;
+	private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
+	private javax.swing.JLabel label = new javax.swing.JLabel();
+	private SimpleListCellRenderer() {
+		label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
+		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
+		label.setOpaque( true );
+		pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
+		pane.setOpaque( false );
+		pane.add( label, java.awt.BorderLayout.CENTER );
 	}
-	public static FullBodyOutfitListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
-	private FullBodyOutfitListCellRenderer() {
-	}
-	@Override
-	protected String getSubPath() {
-		return "fullbodyoutfit_pictures";
+	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		this.label.setText( value.toString() );
+		if( isSelected ) {
+			this.label.setBackground( org.alice.stageide.personeditor.PersonEditor.SELECTED_COLOR );
+		} else {
+			this.label.setBackground( org.alice.stageide.personeditor.PersonEditor.UNSELECTED_COLOR );
+		}
+		return this.pane;
 	}
 }

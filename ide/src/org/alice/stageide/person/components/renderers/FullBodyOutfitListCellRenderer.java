@@ -40,53 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+package org.alice.stageide.person.components.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientsPane extends org.lgna.croquet.components.BorderPanel {
-///	protected abstract void handleTabSelection( int tabIndex );
-//	protected abstract void handleLifeStageSelection( int tabIndex );
-//	protected abstract void handleGenderSelection( int tabIndex );
-//
-//	@Override
-//	protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-//		super.handleAddedTo( parent );
-//		this.tabbedPaneSelection.addValueObserver( this.tabChangeAdapter );
-//	}
-//	@Override
-//	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-//		this.tabbedPaneSelection.removeValueObserver( this.tabChangeAdapter );
-//		super.handleRemovedFrom( parent );
-//	}
-//
-//	public void refresh() {
-//		final PersonViewer personViewer = PersonViewer.getSingleton();
-//		org.alice.apis.stage.LifeStage lifeStage = personViewer.getLifeStage();
-//		org.alice.apis.stage.Gender gender = personViewer.getGender();
-//		org.alice.apis.stage.Hair hair = personViewer.getHair();
-//		if( hair != null ) {
-//			String hairColor = hair.toString();
-//			this.lifeStageSelection.setValue( lifeStage );
-//			this.genderSelection.setValue( gender );
-//			
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: IngredientsPane investigate ordering" );
-//			this.fullBodyOutfitCardPanel.handleEpicChange( lifeStage, gender, hairColor );
-//			this.hairCardPanel.handleEpicChange( lifeStage, gender, hairColor );
-//			
-//			this.hairCardPanel.setValue( hair );
-//			
-//			this.hairColorCardPanel.handleEpicChange( lifeStage, gender, hairColor );
-//			
-//			this.hairColorCardPanel.setValue( hairColor );
-//			this.fullBodyOutfitCardPanel.setValue( personViewer.getFullBodyOutfit() );
-//			
-//			this.baseSkinToneSelection.setValue( personViewer.getBaseSkinTone() );
-//			this.baseEyeColorSelection.setValue( personViewer.getBaseEyeColor() );
-//			this.fitnessLevelPane.setFitnessLevel( personViewer.getFitnessLevel() );
-//		} else {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "hair is null" );
-//		}
-//	}
+public class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > {
+	private static class SingletonHolder {
+		private static FullBodyOutfitListCellRenderer instance = new FullBodyOutfitListCellRenderer();
+	}
+	public static FullBodyOutfitListCellRenderer getInstance() {
+		return SingletonHolder.instance;
+	}
+	private FullBodyOutfitListCellRenderer() {
+	}
+	@Override
+	protected String getSubPath() {
+		return "fullbodyoutfit_pictures";
+	}
 }

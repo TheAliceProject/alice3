@@ -49,6 +49,6 @@ package org.alice.stageide.person.components;
 public class LifeStageList extends HorizontalWrapList< org.lgna.story.resources.sims2.LifeStage > {
 	public LifeStageList() {
 		super( org.alice.stageide.person.models.LifeStageState.getInstance(), 1 );
-		this.setCellRenderer( org.alice.stageide.person.components.SimpleListCellRenderer.SINGLETON );
+		this.setCellRenderer( org.alice.stageide.person.components.renderers.SimpleListCellRenderer.SINGLETON );
 	}
 }

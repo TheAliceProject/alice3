@@ -49,51 +49,49 @@ public class PersonInfo {
 	//public static final org.lgna.croquet.Group PERSON_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "2d7d725d-1806-40d1-ac2b-d9cd48cb0abb" ), "PERSON_GROUP" );
 
 	///*package-private*/ static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
-	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
-	public static PersonInfo createFromPerson( org.lgna.story.implementation.sims2.SimsBipedImplementation person ) {
-		return new PersonInfo( 
-				person.getLifeStage(), 
-				person.getGender(), 
-				(org.lgna.story.resources.sims2.BaseSkinTone)person.getSkinTone(), 
-				(org.lgna.story.resources.sims2.BaseEyeColor)person.getEyeColor(), 
-				(org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit)person.getOutfit(), 
-				person.getHair(), 
-				person.getObesityLevel()
-		);
+//	public static PersonInfo createFromPerson( org.lgna.story.implementation.sims2.SimsBipedImplementation person ) {
+//		return new PersonInfo( 
+//				person.getLifeStage(), 
+//				person.getGender(), 
+//				(org.lgna.story.resources.sims2.BaseSkinTone)person.getSkinTone(), 
+//				(org.lgna.story.resources.sims2.BaseEyeColor)person.getEyeColor(), 
+//				(org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit)person.getOutfit(), 
+//				person.getHair(), 
+//				person.getObesityLevel()
+//		);
+//	}
+	public static PersonInfo createFromStates() {
+		return new PersonInfo();
 	}
 	public static PersonInfo createRandom() {
 		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
 		org.lgna.story.resources.sims2.LifeStage lifeStage = edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( potentialLifeStages );
 		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
-		return new PersonInfo( 
-				lifeStage, 
-				gender,
-				org.lgna.story.resources.sims2.BaseSkinTone.getRandom(),
-				org.lgna.story.resources.sims2.BaseEyeColor.getRandom(),
-				org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
-				org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
-				edu.cmu.cs.dennisc.random.RandomUtilities.nextDouble()
-		);
+		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
+		org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
+		org.lookingglassandalice.storytelling.resources.sims2.Outfit outfit = org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		org.lookingglassandalice.storytelling.resources.sims2.Hair hair = org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		double obesityLevel = edu.cmu.cs.dennisc.random.RandomUtilities.nextDouble();
+		return new PersonInfo();
 	}
 
-	private org.lgna.story.resources.sims2.LifeStage lifeStage;
-	private org.lgna.story.resources.sims2.Gender gender;
-	private org.lgna.story.resources.sims2.BaseSkinTone baseSkinTone;
-	private org.lgna.story.resources.sims2.BaseEyeColor baseEyeColor;
-	private org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit fullBodyOutfit;
-	private org.lookingglassandalice.storytelling.resources.sims2.Hair hair;
-	private double fitnessLevel;
+	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
+	private final org.lgna.story.resources.sims2.Gender gender;
+	private final org.lgna.story.resources.sims2.BaseSkinTone baseSkinTone;
+	private final org.lgna.story.resources.sims2.BaseEyeColor baseEyeColor;
+	private final org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit fullBodyOutfit;
+	private final org.lookingglassandalice.storytelling.resources.sims2.Hair hair;
+	private final double obesityLevel;
 
-	private PersonInfo( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender, org.lgna.story.resources.sims2.BaseSkinTone baseSkinTone, org.lgna.story.resources.sims2.BaseEyeColor baseEyeColor, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit fullBodyOutfit, org.lookingglassandalice.storytelling.resources.sims2.Hair hair, double fitnessLevel ) {
-		this.lifeStage = lifeStage;
-		this.gender = gender;
-		this.baseSkinTone = baseSkinTone;
-		this.baseEyeColor = baseEyeColor;
-		this.fullBodyOutfit = fullBodyOutfit;
-		this.hair = hair;
-		this.fitnessLevel = fitnessLevel;
+	private PersonInfo() {
+		this.lifeStage = org.alice.stageide.person.models.LifeStageState.getInstance().getValue();
+		this.gender = org.alice.stageide.person.models.GenderState.getInstance().getValue();
+		this.baseSkinTone = org.alice.stageide.person.models.BaseSkinToneState.getInstance().getValue();
+		this.baseEyeColor = org.alice.stageide.person.models.BaseEyeColorState.getInstance().getValue();
+		this.fullBodyOutfit = org.alice.stageide.person.models.FullBodyOutfitState.getInstance().getValue();
+		this.hair = org.alice.stageide.person.models.HairState.getInstance().getValue();
+		this.obesityLevel = org.alice.stageide.person.models.ObesityState.getInstance().getValue();
 	}
 	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
 		return this.lifeStage;
@@ -113,14 +111,14 @@ public class PersonInfo {
 	public org.lookingglassandalice.storytelling.resources.sims2.Hair getHair() {
 		return this.hair;
 	}
-	public double getFitnessLevel() {
-		return this.fitnessLevel;
+	public double getObesityLevel() {
+		return this.obesityLevel;
 	}
 	
 	public org.lgna.story.resources.sims2.PersonResource createPersonResource() {
 		org.lgna.story.resources.sims2.PersonResource rv;
 		if( this.lifeStage != null ) {
-			rv = this.lifeStage.createPersonResource( this.gender, this.baseSkinTone, this.baseEyeColor, this.hair, this.fitnessLevel, this.fullBodyOutfit );
+			rv = this.lifeStage.createPersonResource( this.gender, this.baseSkinTone, this.baseEyeColor, this.hair, this.obesityLevel, this.fullBodyOutfit );
 		} else {
 			rv = null;
 		}

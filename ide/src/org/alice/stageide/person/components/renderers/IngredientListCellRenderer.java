@@ -40,8 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
-
+package org.alice.stageide.person.components.renderers;
 
 /**
  * @author Dennis Cosgrove
@@ -60,7 +59,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 		sb.append( "." );
 		sb.append( enumConstantName );
 		sb.append( ".png" );
-		java.net.URL rv = IngredientListCellRenderer.class.getResource( sb.toString() );
+		java.net.URL rv = org.alice.stageide.personeditor.IngredientImageUtilities.getResource( sb.toString() );
 		assert rv != null : sb;
 		return rv;
 	}
@@ -91,7 +90,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 
 			rv.setOpaque( isSelected );
 			if( isSelected ) {
-				rv.setBackground( org.alice.stageide.personeditor.PersonInfo.SELECTED_COLOR );
+				rv.setBackground( org.alice.stageide.personeditor.PersonEditor.SELECTED_COLOR );
 			}
 			
 			javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );

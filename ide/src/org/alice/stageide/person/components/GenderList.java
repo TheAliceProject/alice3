@@ -49,6 +49,6 @@ package org.alice.stageide.person.components;
 public class GenderList extends HorizontalWrapList< org.lgna.story.resources.sims2.Gender > {
 	public GenderList() {
 		super( org.alice.stageide.person.models.GenderState.getInstance(), 1 );
-		this.setCellRenderer( org.alice.stageide.person.components.SimpleListCellRenderer.SINGLETON );
+		this.setCellRenderer( org.alice.stageide.person.components.renderers.SimpleListCellRenderer.SINGLETON );
 	}
 }
