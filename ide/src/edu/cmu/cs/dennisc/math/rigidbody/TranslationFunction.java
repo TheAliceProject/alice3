@@ -55,14 +55,14 @@ public abstract class TranslationFunction< E extends TranslationDerivative > imp
 	private double m_inverseMass = 1.0;
 	
 
-//	@Override
-//	protected Object clone() throws CloneNotSupportedException {
-//		TranslationFunction<E> pf = (TranslationFunction<E>)super.clone();
-//		pf.m_translation = new edu.cmu.cs.dennisc.math.Point3( m_translation );
-//		pf.m_momentum = new edu.cmu.cs.dennisc.math.Vector3( m_momentum );
-//		pf.m_velocity = new edu.cmu.cs.dennisc.math.Vector3( m_velocity );
-//		return pf;
-//	}
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		TranslationFunction<E> pf = (TranslationFunction<E>)super.clone();
+		pf.m_translation = new edu.cmu.cs.dennisc.math.Point3( m_translation );
+		pf.m_momentum = new edu.cmu.cs.dennisc.math.Vector3( m_momentum );
+		pf.m_velocity = new edu.cmu.cs.dennisc.math.Vector3( m_velocity );
+		return pf;
+	}
 
 	public edu.cmu.cs.dennisc.math.Point3 accessTranslation() {
 		return m_translation;

@@ -48,7 +48,6 @@ package org.lgna.story.implementation;
  */
 public abstract class JointedModelImplementation extends SingleVisualModelImplementation {
 	private final java.util.Map< org.lgna.story.resources.JointId, JointImplementation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	protected abstract JointImplementation createJointImplementation( org.lgna.story.resources.JointId jointId );
 	public JointedModelImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
 		super( sgVisual );
 	}
@@ -62,6 +61,49 @@ public abstract class JointedModelImplementation extends SingleVisualModelImplem
 				this.map.put( jointId, rv );
 			}
 			return rv;
+		}
+	}
+	protected abstract JointImplementation createJointImplementation( org.lgna.story.resources.JointId jointId );
+	protected abstract org.lgna.story.resources.JointId[] getRootJointIds();
+	
+	private org.lgna.story.implementation.visualization.JointedModelVisualization visualization;
+	private org.lgna.story.implementation.visualization.JointedModelVisualization getVisualization() {
+		if( this.visualization != null ) {
+			//pass
+		} else {
+			this.visualization = new org.lgna.story.implementation.visualization.JointedModelVisualization( this );
+		}
+		return this.visualization;
+	}
+	public void showVisualization() {
+		this.getVisualization().setParent( this.getSgComposite() );
+	}
+	public void hideVisualization() {
+		if( this.visualization != null ) {
+			this.visualization.setParent( null );
+		}
+	}
+	
+	public static interface WalkObserver {
+		public void pushJoint( JointImplementation joint );
+		public void handleBone( JointImplementation parent, JointImplementation child );
+		public void popJoint( JointImplementation joint );
+	}
+	
+	private void walk( org.lgna.story.resources.JointId parentId, WalkObserver observer ) {
+		JointImplementation parentImpl = this.getJointImplementation( parentId );
+		observer.pushJoint( parentImpl );
+		for( org.lgna.story.resources.JointId childId : parentId.getChildren() ) {
+			observer.handleBone( parentImpl, this.getJointImplementation( childId ) );
+		}
+		observer.popJoint( parentImpl );
+		for( org.lgna.story.resources.JointId childId : parentId.getChildren() ) {
+			walk( childId, observer );
+		}
+	}
+	public void walk( WalkObserver observer ) {
+		for( org.lgna.story.resources.JointId root : this.getRootJointIds() ) {
+			this.walk( root, observer );
 		}
 	}
 }

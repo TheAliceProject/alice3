@@ -60,4 +60,8 @@ public abstract class BipedImplementation extends JointedModelImplementation {
 	protected double getBoundingSphereRadius() {
 		return 1.0;
 	}
+	@Override
+	protected org.lgna.story.resources.JointId[] getRootJointIds() {
+		return org.lgna.story.resources.BipedResource.BipedJointId.getRoots();
+	}
 }

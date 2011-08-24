@@ -11,6 +11,10 @@ public abstract class SwimmerImplementation extends JointedModelImplementation {
 		return this.abstraction;
 	}
 	@Override
+	protected org.lgna.story.resources.JointId[] getRootJointIds() {
+		return org.lgna.story.resources.SwimmerResource.SwimmerJointId.getRoots();
+	}
+	@Override
 	protected double getBoundingSphereRadius() {
 		return 1.0;
 	}
