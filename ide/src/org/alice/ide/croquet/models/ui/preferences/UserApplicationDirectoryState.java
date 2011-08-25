@@ -1,5 +1,8 @@
 package org.alice.ide.croquet.models.ui.preferences;
 
+/**
+ * @author Kyle Harms, Dennis Cosgrove
+ */
 public class UserApplicationDirectoryState extends DirectoryState {
 	public static final String KEY = "${user_application_documents}";
 	private static final java.util.regex.Pattern KEY_PATTERN = java.util.regex.Pattern.compile( java.util.regex.Pattern.quote( KEY ) );

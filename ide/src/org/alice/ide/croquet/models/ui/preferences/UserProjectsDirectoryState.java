@@ -1,5 +1,8 @@
 package org.alice.ide.croquet.models.ui.preferences;
 
+/**
+ * @author Kyle Harms, Dennis Cosgrove
+ */
 public class UserProjectsDirectoryState extends DirectoryState {
 	private static class SingletonHolder {
 		private static UserProjectsDirectoryState instance = new UserProjectsDirectoryState();
