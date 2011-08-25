@@ -74,15 +74,16 @@ public class CascadeMenuItem extends ViewController< javax.swing.JMenuItem, org.
 		return new javax.swing.JMenuItem() {
 			@Override
 			public javax.swing.Icon getIcon() {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
+				//note: much of the cascading menu system leverages icons
+//				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
 					if( CascadeMenuItem.this.isIconSet() ) {
 						return CascadeMenuItem.this.getSetIcon();
 					} else {
 						return super.getIcon();
 					}
-				} else {
-					return null;
-				}
+//				} else {
+//					return null;
+//				}
 			}
 		};
 	}

@@ -69,12 +69,13 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 		this.setIconSet( true );
 		this.setIcon = icon;
 	}
+	protected abstract boolean areIconsDisplayedInMenus();
 	@Override
 	protected javax.swing.JMenu createAwtComponent() {
 		return new javax.swing.JMenu() {
 			@Override
 			public javax.swing.Icon getIcon() {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
+				if( AbstractMenu.this.areIconsDisplayedInMenus() ) {
 					if( AbstractMenu.this.isIconSet() ) {
 						return AbstractMenu.this.getSetIcon();
 					} else {
