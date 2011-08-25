@@ -325,7 +325,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	}
 
 	public java.io.File getMyProjectsDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectory();
+		return org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 
 	public abstract void ensureProjectCodeUpToDate();

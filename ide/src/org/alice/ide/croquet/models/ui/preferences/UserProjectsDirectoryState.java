@@ -1,6 +1,6 @@
 package org.alice.ide.croquet.models.ui.preferences;
 
-public class UserProjectsDirectoryState extends org.lgna.croquet.StringState {
+public class UserProjectsDirectoryState extends DirectoryState {
 	private static class SingletonHolder {
 		private static UserProjectsDirectoryState instance = new UserProjectsDirectoryState();
 	}
@@ -11,15 +11,12 @@ public class UserProjectsDirectoryState extends org.lgna.croquet.StringState {
 		super( 
 				org.lgna.croquet.Application.UI_STATE_GROUP, 
 				java.util.UUID.fromString( "b6cf8508-35ce-46b5-a208-b53784ebeca6" ), 
-				UserApplicationDirectoryState.getInstance().getValue() + java.io.File.separator + "MyProjects"
+				UserApplicationDirectoryState.KEY + java.io.File.separator + "MyProjects"
 		);
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
-
-		// Create the directory
-		new java.io.File(this.getValue()).mkdir();
 	}
-	
-	public java.io.File getDirectory() {
-		return new java.io.File(this.getValue());
+	@Override
+	protected String getPath() {
+		return UserApplicationDirectoryState.getInstance().substituteKeyIfNecessary( this.getValue() );
 	}
 }

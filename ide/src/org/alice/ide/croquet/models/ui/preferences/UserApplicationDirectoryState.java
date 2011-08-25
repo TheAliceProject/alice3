@@ -1,6 +1,18 @@
 package org.alice.ide.croquet.models.ui.preferences;
 
-public class UserApplicationDirectoryState extends org.lgna.croquet.StringState {
+public class UserApplicationDirectoryState extends DirectoryState {
+	public static final String KEY = "${user_application_documents}";
+	private static final java.util.regex.Pattern KEY_PATTERN = java.util.regex.Pattern.compile( java.util.regex.Pattern.quote( KEY ) );
+	public String substituteKeyIfNecessary( String value ) {
+		java.util.regex.Matcher matcher = KEY_PATTERN.matcher( value );
+		return matcher.replaceAll( this.getValue() );
+	}
+	private static String getInitialValue() {
+		java.io.File defaultDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+		java.io.File directory = new java.io.File( defaultDirectory, org.alice.ide.IDE.getActiveInstance().getApplicationSubPath() );
+		java.net.URI uri = directory.toURI();
+		return uri.toString();
+	}
 	private static class SingletonHolder {
 		private static UserApplicationDirectoryState instance = new UserApplicationDirectoryState();
 	}
@@ -11,15 +23,12 @@ public class UserApplicationDirectoryState extends org.lgna.croquet.StringState 
 		super( 
 				org.lgna.croquet.Application.UI_STATE_GROUP, 
 				java.util.UUID.fromString( "5f80de2f-5119-4131-96d0-c0b80919a589" ), 
-				edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + java.io.File.separator + org.alice.ide.IDE.getActiveInstance().getApplicationSubPath() 
+				getInitialValue() 
 		);
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
-
-		// Create the directory
-		new java.io.File(this.getValue()).mkdir();
 	}
-	
-	public java.io.File getDirectory() {
-		return new java.io.File(this.getValue());
+	@Override
+	protected String getPath() {
+		return this.getValue();
 	}
 }
