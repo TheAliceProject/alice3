@@ -54,6 +54,6 @@ public abstract class SetObesityOperation extends org.alice.ide.operations.Incon
 	}
 	@Override
 	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
-		ObesityState.getInstance().setValue( this.value );
+		ObesityPercentState.getInstance().setValue( this.value );
 	}
 }

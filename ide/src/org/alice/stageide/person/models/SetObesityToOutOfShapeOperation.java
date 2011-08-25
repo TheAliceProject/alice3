@@ -54,6 +54,6 @@ public class SetObesityToOutOfShapeOperation extends SetObesityOperation {
 		return SingletonHolder.instance;
 	}
 	private SetObesityToOutOfShapeOperation() {
-		super( java.util.UUID.fromString( "bf8fedb3-15cf-4729-ba43-ca92940674e3" ), ObesityState.getInstance().getMaximum() );
+		super( java.util.UUID.fromString( "bf8fedb3-15cf-4729-ba43-ca92940674e3" ), ObesityPercentState.getInstance().getMaximum() );
 	}
 }

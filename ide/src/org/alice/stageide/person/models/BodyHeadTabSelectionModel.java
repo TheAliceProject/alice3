@@ -65,7 +65,7 @@ package org.alice.stageide.person.models;
 		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
-		org.lgna.croquet.components.Slider slider = ObesityState.getInstance().createSlider();
+		org.lgna.croquet.components.Slider slider = ObesityPercentState.getInstance().createSlider();
 		slider.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		
 		org.lgna.croquet.components.BorderPanel fitnessLevelPane = new org.lgna.croquet.components.BorderPanel();

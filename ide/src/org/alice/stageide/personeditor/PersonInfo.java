@@ -73,6 +73,16 @@ public class PersonInfo {
 		org.lookingglassandalice.storytelling.resources.sims2.Outfit outfit = org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 		org.lookingglassandalice.storytelling.resources.sims2.Hair hair = org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 		double obesityLevel = edu.cmu.cs.dennisc.random.RandomUtilities.nextDouble();
+		
+		org.alice.stageide.person.models.LifeStageState.getInstance().setSelectedItem( lifeStage );
+		org.alice.stageide.person.models.GenderState.getInstance().setSelectedItem( gender );
+		org.alice.stageide.person.models.BaseSkinToneState.getInstance().setSelectedItem( (org.lgna.story.resources.sims2.BaseSkinTone)skinTone );
+		org.alice.stageide.person.models.BaseEyeColorState.getInstance().setSelectedItem( (org.lgna.story.resources.sims2.BaseEyeColor)eyeColor );
+		org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setSelectedItem( (org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit)outfit );
+		org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
+		org.alice.stageide.person.models.HairColorNameState.getInstance().setSelectedItem( hair.toString() );
+		org.alice.stageide.person.models.ObesityPercentState.getInstance().setValue( (int)(obesityLevel * 100) );
+		
 		return new PersonInfo();
 	}
 
@@ -91,7 +101,7 @@ public class PersonInfo {
 		this.baseEyeColor = org.alice.stageide.person.models.BaseEyeColorState.getInstance().getValue();
 		this.fullBodyOutfit = org.alice.stageide.person.models.FullBodyOutfitState.getInstance().getValue();
 		this.hair = org.alice.stageide.person.models.HairState.getInstance().getValue();
-		this.obesityLevel = org.alice.stageide.person.models.ObesityState.getInstance().getValue();
+		this.obesityLevel = org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue() * 0.01;
 	}
 	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
 		return this.lifeStage;

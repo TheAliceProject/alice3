@@ -40,28 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorState extends AbstractListSelectionState< String > {
-	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
-	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
+public class ObesityPercentState extends org.lgna.croquet.BoundedRangeIntegerState {
 	private static class SingletonHolder {
-		private static HairColorState instance = new HairColorState();
+		private static ObesityPercentState instance = new ObesityPercentState();
 	}
-	public static HairColorState getInstance() {
+	public static ObesityPercentState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private HairColorState() {
-		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON, EXCLUDE_GREY );
-	}
-	public void handleCataclysmicChange( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-//		if( lifeStage == org.lookingglassandalice.storytelling.LifeStage.ADULT ) {
-//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND", "GREY" );
-//		} else {
-//			this.setListData( 0, "BLACK", "BROWN", "RED", "BLOND" );
-//		}
+	private ObesityPercentState() {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
 	}
 }
