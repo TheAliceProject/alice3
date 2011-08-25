@@ -47,11 +47,43 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class CascadeMenuItem extends ViewController< javax.swing.JMenuItem, org.lgna.croquet.CascadeItem< ?,? > > {
+	private boolean isIconSet;
+	private javax.swing.Icon setIcon;
 	public CascadeMenuItem( org.lgna.croquet.CascadeItem< ?,? > model ) {
 		super( model );
 	}
+	
+	protected javax.swing.Icon getSetIcon() {
+		return this.setIcon;
+	}
+	public boolean isIconSet() {
+		return this.isIconSet;
+	}
+	public void setIconSet( boolean isIconSet ) {
+		this.isIconSet = isIconSet;
+	}
+	public javax.swing.Icon getIcon() {
+		return this.getAwtComponent().getIcon();
+	}
+	public void setIcon( javax.swing.Icon icon ) {
+		this.setIconSet( true );
+		this.setIcon = icon;
+	}
 	@Override
 	protected javax.swing.JMenuItem createAwtComponent() {
-		return new javax.swing.JMenuItem();
+		return new javax.swing.JMenuItem() {
+			@Override
+			public javax.swing.Icon getIcon() {
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
+					if( CascadeMenuItem.this.isIconSet() ) {
+						return CascadeMenuItem.this.getSetIcon();
+					} else {
+						return super.getIcon();
+					}
+				} else {
+					return null;
+				}
+			}
+		};
 	}
 }

@@ -55,10 +55,14 @@ public class MenuItem extends OperationButton< javax.swing.JMenuItem, org.lgna.c
 		return new javax.swing.JMenuItem() {
 			@Override
 			public javax.swing.Icon getIcon() {
-				if( MenuItem.this.isIconSet() ) {
-					return MenuItem.this.getSetIcon();
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
+					if( MenuItem.this.isIconSet() ) {
+						return MenuItem.this.getSetIcon();
+					} else {
+						return super.getIcon();
+					}
 				} else {
-					return super.getIcon();
+					return null;
 				}
 			}
 		};
