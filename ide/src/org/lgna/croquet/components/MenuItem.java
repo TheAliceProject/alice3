@@ -52,7 +52,16 @@ public class MenuItem extends OperationButton< javax.swing.JMenuItem, org.lgna.c
 	}
 	@Override
 	protected javax.swing.JMenuItem createAwtComponent() {
-		return new javax.swing.JMenuItem();
+		return new javax.swing.JMenuItem() {
+			@Override
+			public javax.swing.Icon getIcon() {
+				if( MenuItem.this.isIconSet() ) {
+					return MenuItem.this.getSetIcon();
+				} else {
+					return super.getIcon();
+				}
+			}
+		};
 	}
 //	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
 //		Application application = Application.getSingleton();
