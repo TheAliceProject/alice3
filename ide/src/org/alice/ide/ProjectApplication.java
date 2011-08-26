@@ -329,18 +329,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	public void saveProjectTo( String path ) throws java.io.IOException {
 		saveProjectTo( new java.io.File( path ) );
 	}
-	
 
-	//todo: remove
-	private String getSubPath() {
-		String rv = getApplicationName();
-		if( "Alice".equals( rv ) ) {
-			rv = "Alice3";
-		}
-		return rv.replaceAll( " ", "" );
-	}
 	public java.io.File getMyProjectsDirectory() {
-		return org.lgna.project.project.ProjectUtilities.getMyProjectsDirectory( this.getSubPath() );
+		return org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 
 	public abstract void ensureProjectCodeUpToDate();
