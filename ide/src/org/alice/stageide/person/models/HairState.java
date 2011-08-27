@@ -45,7 +45,7 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class HairState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.resources.sims2.Hair> {
+public class HairState extends AbstractListSelectionState<org.lgna.story.resources.sims2.Hair> {
 	private static class SingletonHolder {
 		private static HairState instance = new HairState();
 	}
@@ -53,17 +53,17 @@ public class HairState extends AbstractListSelectionState<org.lookingglassandali
 		return SingletonHolder.instance;
 	}
 	private HairState() {
-		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new org.lgna.croquet.ItemCodec< org.lookingglassandalice.storytelling.resources.sims2.Hair >(){
-			public Class< org.lookingglassandalice.storytelling.resources.sims2.Hair > getValueClass() {
-				return org.lookingglassandalice.storytelling.resources.sims2.Hair.class;
+		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new org.lgna.croquet.ItemCodec< org.lgna.story.resources.sims2.Hair >(){
+			public Class< org.lgna.story.resources.sims2.Hair > getValueClass() {
+				return org.lgna.story.resources.sims2.Hair.class;
 			}
-			public org.lookingglassandalice.storytelling.resources.sims2.Hair decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			public org.lgna.story.resources.sims2.Hair decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
-			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lookingglassandalice.storytelling.resources.sims2.Hair t ) {
+			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.Hair t ) {
 				throw new RuntimeException( "todo" );
 			}
-			public StringBuilder appendRepresentation( StringBuilder rv, org.lookingglassandalice.storytelling.resources.sims2.Hair value, java.util.Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.Hair value, java.util.Locale locale ) {
 				rv.append( value );
 				return rv;
 			}
@@ -74,13 +74,13 @@ public class HairState extends AbstractListSelectionState<org.lookingglassandali
 				edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
 						edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
 								org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-								new edu.cmu.cs.dennisc.pattern.Criterion< org.lookingglassandalice.storytelling.resources.sims2.Hair >() {
-									public boolean accept( org.lookingglassandalice.storytelling.resources.sims2.Hair hair ) {
+								new edu.cmu.cs.dennisc.pattern.Criterion< org.lgna.story.resources.sims2.Hair >() {
+									public boolean accept( org.lgna.story.resources.sims2.Hair hair ) {
 										return hair.toString().equals( hairColor );
 									}
 								} 
 						),
-						org.lookingglassandalice.storytelling.resources.sims2.Hair.class
+						org.lgna.story.resources.sims2.Hair.class
 				) 
 		);
 	}

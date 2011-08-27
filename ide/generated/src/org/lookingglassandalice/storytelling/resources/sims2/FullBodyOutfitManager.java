@@ -43,6 +43,8 @@
 package org.lookingglassandalice.storytelling.resources.sims2;
 
 import org.lgna.story.IngredientManager;
+import org.lgna.story.resources.sims2.ChildFullBodyOutfit;
+import org.lgna.story.resources.sims2.FullBodyOutfit;
 import org.lgna.story.resources.sims2.Gender;
 import org.lgna.story.resources.sims2.LifeStage;
 

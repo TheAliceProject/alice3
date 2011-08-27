@@ -65,7 +65,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 	}
 
 	private org.lgna.story.resources.sims2.BaseSkinTone getBaseSkinTone() {
-		org.lgna.story.implementation.sims2.SimsBipedImplementation person = org.alice.stageide.personeditor.PersonViewer.getSingleton().getPerson();
+		org.lgna.story.implementation.sims2.SimsBipedImplementation person = org.alice.stageide.person.components.PersonViewer.getSingleton().getPerson();
 		if( person != null ) {
 			org.lgna.story.resources.sims2.SkinTone skinTone = person.getSkinTone();
 			if( skinTone instanceof org.lgna.story.resources.sims2.BaseSkinTone ) {
@@ -90,7 +90,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 
 			rv.setOpaque( isSelected );
 			if( isSelected ) {
-				rv.setBackground( org.alice.stageide.personeditor.PersonEditor.SELECTED_COLOR );
+				rv.setBackground( org.alice.stageide.person.components.MainPanel.SELECTED_COLOR );
 			}
 			
 			javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );

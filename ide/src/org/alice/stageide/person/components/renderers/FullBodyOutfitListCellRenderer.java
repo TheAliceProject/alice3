@@ -45,7 +45,7 @@ package org.alice.stageide.person.components.renderers;
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > {
+public class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer< org.lgna.story.resources.sims2.FullBodyOutfit > {
 	private static class SingletonHolder {
 		private static FullBodyOutfitListCellRenderer instance = new FullBodyOutfitListCellRenderer();
 	}

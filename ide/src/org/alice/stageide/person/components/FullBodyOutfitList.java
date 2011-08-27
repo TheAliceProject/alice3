@@ -48,7 +48,7 @@ import org.alice.stageide.person.components.renderers.FullBodyOutfitListCellRend
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitList extends HorizontalWrapList< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > {
+public class FullBodyOutfitList extends HorizontalWrapList< org.lgna.story.resources.sims2.FullBodyOutfit > {
 	public FullBodyOutfitList() {
 		super( org.alice.stageide.person.models.FullBodyOutfitState.getInstance(), -1 );
 		this.setCellRenderer( FullBodyOutfitListCellRenderer.getInstance() );

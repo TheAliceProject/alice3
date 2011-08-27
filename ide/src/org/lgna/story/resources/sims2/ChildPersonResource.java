@@ -40,6 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lookingglassandalice.storytelling.resources.sims2;
-public interface FullBodyOutfit extends Outfit {
+
+package org.lgna.story.resources.sims2;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class ChildPersonResource extends PersonResource {
+	public ChildPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
+	}
+	@Override
+	public LifeStage getLifeStage() {
+		return LifeStage.ADULT;
+	}
 }

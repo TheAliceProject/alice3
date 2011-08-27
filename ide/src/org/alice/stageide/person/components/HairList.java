@@ -48,7 +48,7 @@ import org.alice.stageide.person.components.renderers.HairListCellRenderer;
 /**
  * @author Dennis Cosgrove
  */
-public class HairList extends HorizontalWrapList< org.lookingglassandalice.storytelling.resources.sims2.Hair > {
+public class HairList extends HorizontalWrapList< org.lgna.story.resources.sims2.Hair > {
 	public HairList() {
 		super( org.alice.stageide.person.models.HairState.getInstance(), -1 );
 		this.setCellRenderer( HairListCellRenderer.getInstance() );

@@ -45,7 +45,7 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitState extends AbstractListSelectionState<org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit> {
+public class FullBodyOutfitState extends AbstractListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> {
 	private static class SingletonHolder {
 		private static FullBodyOutfitState instance = new FullBodyOutfitState();
 	}
@@ -53,17 +53,17 @@ public class FullBodyOutfitState extends AbstractListSelectionState<org.lookingg
 		return SingletonHolder.instance;
 	}
 	private FullBodyOutfitState() {
-		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit >(){
-			public Class< org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit > getValueClass() {
-				return org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit.class;
+		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec< org.lgna.story.resources.sims2.FullBodyOutfit >(){
+			public Class< org.lgna.story.resources.sims2.FullBodyOutfit > getValueClass() {
+				return org.lgna.story.resources.sims2.FullBodyOutfit.class;
 			}
-			public org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			public org.lgna.story.resources.sims2.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
-			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit t ) {
+			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.FullBodyOutfit t ) {
 				throw new RuntimeException( "todo" );
 			}
-			public StringBuilder appendRepresentation( StringBuilder rv, org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit value, java.util.Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.FullBodyOutfit value, java.util.Locale locale ) {
 				rv.append( value );
 				return rv;
 			}
@@ -76,7 +76,7 @@ public class FullBodyOutfitState extends AbstractListSelectionState<org.lookingg
 						org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
 						null 
 				),
-				org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfit.class
+				org.lgna.story.resources.sims2.FullBodyOutfit.class
 		) );
 	}
 }

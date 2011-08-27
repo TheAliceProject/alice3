@@ -61,10 +61,10 @@ public class SimsBipedImplementation extends org.lgna.story.implementation.Biped
 	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
 	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
 	private org.lgna.story.resources.sims2.Gender gender;
-	private org.lookingglassandalice.storytelling.resources.sims2.Outfit outfit;
+	private org.lgna.story.resources.sims2.Outfit outfit;
 	private org.lgna.story.resources.sims2.SkinTone skinTone;
 	private double obesityLevel;
-	private org.lookingglassandalice.storytelling.resources.sims2.Hair hair;
+	private org.lgna.story.resources.sims2.Hair hair;
 	private org.lgna.story.resources.sims2.EyeColor eyeColor;
 	
 	private int atomicCount = 0;
@@ -123,10 +123,10 @@ public class SimsBipedImplementation extends org.lgna.story.implementation.Biped
 		this.gender = gender;
 		this.nebPerson.setGender( this.gender );
 	}
-	public org.lookingglassandalice.storytelling.resources.sims2.Outfit getOutfit() {
+	public org.lgna.story.resources.sims2.Outfit getOutfit() {
 		return this.outfit;
 	}
-	public void setOutfit( org.lookingglassandalice.storytelling.resources.sims2.Outfit outfit ) {
+	public void setOutfit( org.lgna.story.resources.sims2.Outfit outfit ) {
 		this.outfit = outfit;
 		this.nebPerson.setOutfit( this.outfit );
 	}
@@ -144,10 +144,10 @@ public class SimsBipedImplementation extends org.lgna.story.implementation.Biped
 		this.obesityLevel = obesityLevel;
 		this.nebPerson.setFitnessLevel( 1.0-this.obesityLevel );
 	}
-	public org.lookingglassandalice.storytelling.resources.sims2.Hair getHair() {
+	public org.lgna.story.resources.sims2.Hair getHair() {
 		return this.hair;
 	}
-	public void setHair( org.lookingglassandalice.storytelling.resources.sims2.Hair hair ) {
+	public void setHair( org.lgna.story.resources.sims2.Hair hair ) {
 		this.hair = hair;
 		this.nebPerson.setHair( this.hair );
 	}

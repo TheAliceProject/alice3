@@ -40,6 +40,6 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lookingglassandalice.storytelling.resources.sims2;
+package org.lgna.story.resources.sims2;
 public interface Hair extends Ingredient {
 }

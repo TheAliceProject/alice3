@@ -40,21 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
+
+package org.alice.stageide.person.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
+public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
 	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
-	private static class SingletonHolder {
-		private static PersonEditor instance = new PersonEditor();
-	}
-	public static PersonEditor getInstance() {
-		return SingletonHolder.instance;
-	}
 	private final org.lgna.croquet.components.FolderTabbedPane<?> tabbedPane;
 	private final org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneObserver = new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.BaseSkinTone>() {
 		public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseSkinTone > state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
@@ -63,9 +58,17 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 			tabbedPane.repaint();
 		}
 	};
-	private PersonEditor() {
+	private org.lgna.croquet.State.ValueObserver<org.lgna.croquet.PredeterminedTab> tabChangeAdapter = new org.lgna.croquet.State.ValueObserver<org.lgna.croquet.PredeterminedTab>() {
+		public void changing( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
+			//todo
+		}
+	};
+	public MainPanel() {
 		this.tabbedPane = org.alice.stageide.person.models.BodyHeadTabSelectionModel.getInstance().createDefaultFolderTabbedPane();
 		this.tabbedPane.scaleFont( 1.5f );
+
 		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel();
 		northPane.addComponent( org.alice.stageide.person.models.RandomizeOperation.getInstance().createButton(), Constraint.PAGE_START );
 		org.lgna.croquet.components.RowsSpringPanel ubiquitousPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
@@ -89,35 +92,5 @@ public class PersonEditor extends org.lgna.croquet.components.BorderPanel {
 		splitPane.setDividerLocation( 400 );
 		this.addComponent( splitPane, Constraint.CENTER );
 		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueObserver( this.baseSkinToneObserver );
-	}
-
-	private org.lgna.croquet.State.ValueObserver<org.lgna.croquet.PredeterminedTab> tabChangeAdapter = new org.lgna.croquet.State.ValueObserver<org.lgna.croquet.PredeterminedTab>() {
-		public void changing( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
-			//todo
-		}
-	};
-	
-	public void initialize( PersonInfo personInfo ) {
-		this.setPersonInfo( personInfo );
-		org.alice.stageide.person.PersonResourceManager.SINGLETON.push();
-	}
-	
-	public PersonInfo getPersonInfo() {
-		return PersonInfo.createFromStates();
-		//return PersonInfo.createFromPerson( PersonViewer.getSingleton().getPerson() );
-	}
-	public void setPersonInfo( PersonInfo personInfo ) {
-		org.alice.stageide.person.models.LifeStageState.getInstance().setSelectedItem( personInfo.getLifeStage() );
-		org.alice.stageide.person.models.GenderState.getInstance().setSelectedItem( personInfo.getGender() );
-		org.alice.stageide.person.models.BaseEyeColorState.getInstance().setSelectedItem( personInfo.getBaseEyeColor() );
-		org.alice.stageide.person.models.BaseSkinToneState.getInstance().setSelectedItem( personInfo.getBaseSkinTone() );
-		org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setSelectedItem( personInfo.getFullBodyOutfit() );
-		
-		org.lookingglassandalice.storytelling.resources.sims2.Hair hair = personInfo.getHair();
-		org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
-		org.alice.stageide.person.models.HairColorNameState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
-		org.alice.stageide.person.models.ObesityPercentState.getInstance().setValue( (int)(personInfo.getObesityLevel()*100) );
 	}
 }

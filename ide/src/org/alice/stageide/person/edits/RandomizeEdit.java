@@ -47,20 +47,20 @@ package org.alice.stageide.person.edits;
  * @author Dennis Cosgrove
  */
 public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
-	private final org.alice.stageide.personeditor.PersonInfo prevState;
-	private final org.alice.stageide.personeditor.PersonInfo nextState;
+	private final org.lgna.story.resources.sims2.PersonResource prevState;
+	private final org.lgna.story.resources.sims2.PersonResource nextState;
 	public RandomizeEdit( org.lgna.croquet.history.CompletionStep step ) {
 		super( step );
-		this.prevState = org.alice.stageide.personeditor.PersonEditor.getInstance().getPersonInfo();
-		this.nextState = org.alice.stageide.personeditor.PersonInfo.createRandom();
+		this.prevState = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
+		this.nextState = org.alice.stageide.person.PersonResourceManager.SINGLETON.createRandomResource();
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.stageide.personeditor.PersonEditor.getInstance().setPersonInfo( this.nextState );
+		 org.alice.stageide.person.PersonResourceManager.SINGLETON.setStates( this.nextState );
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.stageide.personeditor.PersonEditor.getInstance().setPersonInfo( this.prevState );
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.setStates( this.prevState );
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

@@ -47,10 +47,10 @@ package org.alice.stageide.cascade.fillerinners;
  */
 public class HairFillerInner extends IngredientFillerInner {
 	public HairFillerInner() {
-		super( org.lgna.project.ast.JavaType.getInstance( org.lookingglassandalice.storytelling.resources.sims2.Hair.class ) );
+		super( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.Hair.class ) );
 	}
 	@Override
-	protected Class<? extends org.lookingglassandalice.storytelling.resources.sims2.Ingredient>[] getClses( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+	protected Class<? extends org.lgna.story.resources.sims2.Ingredient>[] getClses( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
 		return org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getImplementingClasses( lifeStage, gender );
 	}
 }

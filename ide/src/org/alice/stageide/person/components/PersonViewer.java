@@ -40,9 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personeditor;
-
-import org.alice.interact.AbstractDragAdapter.CameraView;
+package org.alice.stageide.person.components;
 
 /**
  * @author Dennis Cosgrove
@@ -109,7 +107,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	protected void initialize() {
 		super.initialize();
 		this.dragAdapter.setOnscreenLookingGlass( this.getOnscreenLookingGlass() );
-		this.dragAdapter.addCameraView( CameraView.MAIN, this.getCamera().getSgCamera(), null );
+		this.dragAdapter.addCameraView( org.alice.interact.AbstractDragAdapter.CameraView.MAIN, this.getCamera().getSgCamera(), null );
 		this.dragAdapter.makeCameraActive( this.getCamera().getSgCamera() );
 	}
 }
