@@ -45,9 +45,9 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ClearanceRequiringUriCompositeOperation extends UriCompositeOperation {
+public abstract class ClearanceRequiringUriSerialOperation extends UriSerialOperation {
 	private final org.lgna.croquet.SingleThreadOperation<?> otherOperation;
-	public ClearanceRequiringUriCompositeOperation( java.util.UUID individualUUID, org.lgna.croquet.SingleThreadOperation<?> otherOperation ) {
+	public ClearanceRequiringUriSerialOperation( java.util.UUID individualUUID, org.lgna.croquet.SingleThreadOperation<?> otherOperation ) {
 		super( individualUUID );
 		this.otherOperation = otherOperation;
 	}

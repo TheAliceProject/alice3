@@ -46,15 +46,15 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateTypeFromPersonResourceOperation extends PersonResourceOperation {
+public class CreatePersonResourceOperation extends PersonResourceOperation {
 	private static class SingletonHolder {
-		private static CreateTypeFromPersonResourceOperation instance = new CreateTypeFromPersonResourceOperation();
+		private static CreatePersonResourceOperation instance = new CreatePersonResourceOperation();
 	}
-	public static CreateTypeFromPersonResourceOperation getInstance() {
+	public static CreatePersonResourceOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private CreateTypeFromPersonResourceOperation() {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "3ac22606-3b37-4b75-9613-89994c873782" ) );
+	private CreatePersonResourceOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ) );
 	}
 	@Override
 	protected org.lgna.story.resources.sims2.PersonResource createInitialPersonResource() {

@@ -45,14 +45,11 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class ClearanceCheckingExitOperation extends ClearanceRequiringUriSerialOperation {
-	private static class SingletonHolder {
-		private static ClearanceCheckingExitOperation instance = new ClearanceCheckingExitOperation();
+public abstract class UriSerialOperation extends org.lgna.croquet.SerialOperation {
+	public UriSerialOperation( java.util.UUID individualUUID ) {
+		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}
-	public static ClearanceCheckingExitOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ClearanceCheckingExitOperation() {
-		super( java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), SystemExitOperation.getInstance() );
+	protected org.alice.ide.ProjectApplication getProjectApplication() {
+		return org.alice.ide.ProjectApplication.getActiveInstance();
 	}
 }

@@ -40,16 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+
+package org.alice.stageide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriCompositeOperation extends org.lgna.croquet.SerialOperation {
-	public UriCompositeOperation( java.util.UUID individualUUID ) {
-		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
+public class CreateFieldFromPersonResourceOperation extends org.lgna.croquet.SerialOperation {
+	private static class SingletonHolder {
+		private static CreateFieldFromPersonResourceOperation instance = new CreateFieldFromPersonResourceOperation();
 	}
-	protected org.alice.ide.ProjectApplication getProjectApplication() {
-		return org.alice.ide.ProjectApplication.getActiveInstance();
+	public static CreateFieldFromPersonResourceOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CreateFieldFromPersonResourceOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "3ac22606-3b37-4b75-9613-89994c873782" ) );
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.SingleThreadOperation< ? >> getOperations() {
+		java.util.List< org.lgna.croquet.SingleThreadOperation< ? >> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( 2 );
+		rv.add( CreatePersonResourceOperation.getInstance() );
+		return rv;
 	}
 }
