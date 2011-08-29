@@ -53,6 +53,10 @@ public class CustomPortionInputDialogOperation extends org.alice.ide.croquet.mod
 		return SingletonHolder.instance;
 	}
 	private CustomPortionInputDialogOperation() {
-		super( java.util.UUID.fromString( "a200dbc2-5a16-4931-8a5d-2a793973e053" ), new org.alice.stageide.choosers.PortionChooser() );
+		super( java.util.UUID.fromString( "a200dbc2-5a16-4931-8a5d-2a793973e053" ) );
+	}
+	@Override
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.DoubleLiteral > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.stageide.choosers.PortionChooser();
 	}
 }

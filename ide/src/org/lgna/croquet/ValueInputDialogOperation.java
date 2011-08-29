@@ -40,45 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.eula;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EULAUtilities extends Exception {
-	public static void promptUserToAcceptEULAIfNecessary( Class<?> preferencesCls, String preferencesKey, String title, String license, String name ) throws LicenseRejectedException {
-		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( preferencesCls );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
-			try {
-				userPreferences.clear();
-			} catch( java.util.prefs.BackingStoreException bse ) {
-				throw new RuntimeException( bse );
-			}
-		}
-		boolean isLicenseAccepted = userPreferences.getBoolean( preferencesKey, false );
-		if( isLicenseAccepted ) {
+public abstract class ValueInputDialogOperation<T> extends InputDialogOperation< T > {
+	public ValueInputDialogOperation( org.lgna.croquet.Group group, java.util.UUID id ) {
+		super( group, id );
+	}
+	private CascadeValueInputDialogOperationFillIn<T> cascadeFillIn;
+	public synchronized CascadeValueInputDialogOperationFillIn<T> getFillIn() {
+		if( this.cascadeFillIn != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.ui.eula.EULAPane pane = new edu.cmu.cs.dennisc.ui.eula.EULAPane( license );
-			java.awt.Component owner = null;
-			while( true ) {
-				isLicenseAccepted = pane.showInJDialog( owner, title ) == Boolean.TRUE;
-				if( isLicenseAccepted ) {
-					break;
-				} else {
-					String message = "You must accept the license agreement in order to use " + name + ".\n\nWould you like to return to the license agreement?";
-					if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( owner, message, "Return to license agreement?", javax.swing.JOptionPane.YES_NO_OPTION ) ) {
-						//pass
-					} else {
-						break;
-					}
-				}
-			}
+			this.cascadeFillIn = new CascadeValueInputDialogOperationFillIn<T>( this );
 		}
-		if( isLicenseAccepted ) {
-			userPreferences.putBoolean( preferencesKey, true );
+		return this.cascadeFillIn;
+	}
+	protected abstract T createValue( org.lgna.croquet.history.InputDialogOperationStep step );
+	@Override
+	protected final void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isCommit ) {
+		if( isCommit ) {
+			T value = this.createValue( step );
+			if( value != null ) {
+				step.finish();
+			} else {
+				step.cancel();
+			}
 		} else {
-			throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
+			step.cancel();
 		}
 	}
 }

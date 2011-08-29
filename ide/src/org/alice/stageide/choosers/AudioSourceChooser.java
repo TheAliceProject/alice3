@@ -238,11 +238,6 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		} );
 	}
 	@Override
-	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		//todo?
-	}
-	
-	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		org.lgna.project.ast.ResourceExpression resourceExpression = (org.lgna.project.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
 		if( resourceExpression != null ) {
@@ -265,7 +260,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 				"stop marker:" };
 	}
 	@Override
-	public org.lgna.croquet.components.Component< ? >[] getComponents() {
+	public org.lgna.croquet.components.Component< ? >[] getRowComponents() {
 		return new org.lgna.croquet.components.Component< ? >[] { 
 				this.dropDown, 
 				new org.lgna.croquet.components.LineAxisPanel( 

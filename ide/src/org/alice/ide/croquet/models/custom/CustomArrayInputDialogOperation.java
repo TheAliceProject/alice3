@@ -59,11 +59,11 @@ public class CustomArrayInputDialogOperation extends CustomInputDialogOperation<
 	}
 	private final org.lgna.project.ast.AbstractType< ?,?,? > componentType;
 	private CustomArrayInputDialogOperation( org.lgna.project.ast.AbstractType< ?,?,? > componentType ) {
-		super( java.util.UUID.fromString( "e4101f45-9c74-478e-b406-f8726a7b706a" ), null );
+		super( java.util.UUID.fromString( "e4101f45-9c74-478e-b406-f8726a7b706a" ) );
 		this.componentType = componentType;
 	}
 	@Override
-	protected org.alice.ide.croquet.models.custom.CustomInputPane< org.lgna.project.ast.ArrayInstanceCreation > EPIC_HACK_createCustomInputPane() {
-		return new CustomInputPane< org.lgna.project.ast.ArrayInstanceCreation >( new org.alice.ide.choosers.ArrayChooser( this.componentType ) );
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.ArrayInstanceCreation > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.choosers.ArrayChooser( this.componentType );
 	}
 }

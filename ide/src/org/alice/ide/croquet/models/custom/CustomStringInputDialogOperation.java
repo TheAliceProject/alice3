@@ -53,6 +53,10 @@ public class CustomStringInputDialogOperation extends CustomInputDialogOperation
 		return SingletonHolder.instance;
 	}
 	private CustomStringInputDialogOperation() {
-		super( java.util.UUID.fromString( "5e6422df-8145-404b-a34d-e8fe9eea6e76" ), new org.alice.ide.choosers.StringChooser() );
+		super( java.util.UUID.fromString( "5e6422df-8145-404b-a34d-e8fe9eea6e76" ) );
+	}
+	@Override
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.StringLiteral > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.choosers.StringChooser();
 	}
 }
