@@ -59,7 +59,6 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 
 	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
 	private PersonViewer() {
-//		this.setState( PersonViewer.generateRandomState( LifeStage.ADULT, Gender.getRandom() ) );
 	}
 
 	private void positionAndOrientCamera( double height, int index, double duration ) {

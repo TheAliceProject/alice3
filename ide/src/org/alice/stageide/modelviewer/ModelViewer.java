@@ -42,80 +42,10 @@
  */
 package org.alice.stageide.modelviewer;
 
-
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractViewer extends org.lgna.croquet.components.BorderPanel {
-	//todo: should this be heavyweight?
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
-	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	private org.lgna.story.implementation.SceneImplementation scene = new org.lgna.story.implementation.SceneImplementation( null );
-	private org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation camera = new org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation( null );
-	private org.lgna.story.implementation.SunImplementation sunLight = new org.lgna.story.implementation.SunImplementation( null );
-	private org.lgna.croquet.components.Component<?> adapter;
-
-	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
-			animator.update();
-		}
-	};
-	public AbstractViewer() {
-		this.camera.setVehicle( this.scene );
-		this.sunLight.setVehicle( this.scene );
-		this.sunLight.applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3.accessNegativeXAxis(), 0.25 );
-	}
-	private boolean isInitialized = false;
-	protected void initialize() {
-		this.onscreenLookingGlass.addCamera( this.camera.getSgCamera() );
-		
-		this.adapter = new org.lgna.croquet.components.Component<java.awt.Component>() {
-			@Override
-			protected java.awt.Component createAwtComponent() {
-				return AbstractViewer.this.onscreenLookingGlass.getAWTComponent();
-			}
-		};
-	}
-	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
-	}
-	protected org.lgna.story.implementation.SceneImplementation getScene() {
-		return this.scene;
-	}
-	protected org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation getCamera() {
-		return this.camera;
-	}
-	protected org.lgna.story.implementation.SunImplementation getSunLight() {
-		return this.sunLight;
-	}
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.isInitialized ) {
-			//pass
-		} else {
-			this.initialize();
-			this.isInitialized = true;
-		}
-		this.addComponent( this.adapter, Constraint.CENTER );
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
-	}
-	@Override
-	protected void handleUndisplayable() {
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
-		this.removeComponent( this.adapter );
-		super.handleUndisplayable();
-	}
-	protected edu.cmu.cs.dennisc.animation.Animator getAnimator() {
-		return this.animator;
-	}
-}
-/**
- * @author Dennis Cosgrove
- */
-public class ModelViewer extends AbstractViewer {
+public class ModelViewer extends Viewer {
 	private org.lgna.story.implementation.ModelImplementation model = null;
 	public org.lgna.story.implementation.ModelImplementation getModel() {
 		return this.model;

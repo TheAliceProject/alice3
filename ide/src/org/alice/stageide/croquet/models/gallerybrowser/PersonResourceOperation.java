@@ -55,6 +55,7 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.InputDial
 	protected org.alice.stageide.person.components.MainPanel prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		org.lgna.story.resources.sims2.PersonResource personResource = this.createInitialPersonResource();
 		org.alice.stageide.person.PersonResourceManager.SINGLETON.setStates( personResource );
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.push();
 		org.alice.stageide.person.components.MainPanel rv = new org.alice.stageide.person.components.MainPanel();
 		return rv;
 	}
@@ -65,10 +66,16 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.InputDial
 	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.story.resources.sims2.PersonResource personResource );
 	@Override
 	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isCommit ) {
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.pop();
 		if( isCommit ) {
 			org.lgna.story.resources.sims2.PersonResource personResource = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
 			if( personResource != null ) {
-				step.commitAndInvokeDo( this.createEdit( personResource ) );
+				org.lgna.croquet.edits.Edit edit = this.createEdit( personResource );
+				if( edit != null ) {
+					step.commitAndInvokeDo( edit );
+				} else { 
+					step.cancel();
+				}
 			}
 		} else {
 			step.cancel();
