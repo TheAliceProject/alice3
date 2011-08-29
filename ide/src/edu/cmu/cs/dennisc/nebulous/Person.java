@@ -14,7 +14,6 @@ public class Person extends Model {
 	}
 
 	public Person( Object o ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
-		System.out.println(System.getProperty("java.library.path"));
 		initialize( o );
 	}
 	private native void initialize( Object o );
@@ -25,19 +24,7 @@ public class Person extends Model {
 	public native void setEyeColor( Object o );
 	public native void setHair( Object o );
 
-	public native void getLocalTransformationForBodyPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
-	public native void setLocalTransformationForBodyPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
-	public native void getAbsoluteTransformationForBodyPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
-		double[] buffer = new double[ 12 ];
-		getLocalTransformationForBodyPartNamed( buffer, joint );
-		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
-	}
-
-	public void setLocalTransformationForJoint( org.lgna.story.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTrans ) {
-		setLocalTransformationForBodyPartNamed( joint, localTrans.getAsColumnMajorArray12() );
-	}
 	
 	@Deprecated
 	public void applyRotationToJointAboutArbitraryAxisInRadians( org.lgna.story.resources.JointId joint, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {

@@ -6,14 +6,40 @@ package edu.cmu.cs.dennisc.nebulous;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
+public class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	
     public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
         Manager.initializeIfNecessary();
     }
     
+    public Model(Object o) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+        this();
+        initialize(o);
+    }
+    
     public native void render();
     public native void pick();
+    private native void initialize( Object o );
+    public native void setTexture( String textureName );
+    public native void getLocalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
+	public native void setLocalTransformationForPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
+	public native void getAbsoluteTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
+
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
+		double[] buffer = new double[ 12 ];
+		getLocalTransformationForPartNamed( buffer, joint );
+		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
+	}
+
+	public void setLocalTransformationForJoint( org.lgna.story.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTrans ) {
+		setLocalTransformationForPartNamed( joint, localTrans.getAsColumnMajorArray12() );
+	}
+	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformationForJoint( org.lgna.story.resources.JointId joint ) {
+		double[] buffer = new double[ 12 ];
+		getAbsoluteTransformationForPartNamed( buffer, joint );
+		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
+	}
 	
 	@Override
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {

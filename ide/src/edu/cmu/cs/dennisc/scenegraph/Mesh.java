@@ -53,7 +53,9 @@ public class Mesh extends Geometry
     public final FloatBufferProperty normalBuffer = new FloatBufferProperty(this, (java.nio.FloatBuffer)null);
     public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty(this, (java.nio.FloatBuffer)null);
 	public final IntBufferProperty indexBuffer = new IntBufferProperty(this, (java.nio.IntBuffer)null);
-    
+	public final edu.cmu.cs.dennisc.property.IntegerProperty textureId = new edu.cmu.cs.dennisc.property.IntegerProperty(this, -1);
+	public final edu.cmu.cs.dennisc.property.BooleanProperty cullBackfaces = new edu.cmu.cs.dennisc.property.BooleanProperty(this, Boolean.TRUE);
+	
     public Mesh()
     {
     }
