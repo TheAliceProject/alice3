@@ -61,16 +61,6 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 	public org.lgna.croquet.history.InputDialogOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
 		return org.lgna.croquet.history.TransactionManager.addInputDialogOperationStep( this, trigger );
 	}
-	private CascadeInputDialogOperationFillIn<T> cascadeFillIn;
-	public synchronized CascadeInputDialogOperationFillIn<T> getFillIn() {
-		if( this.cascadeFillIn != null ) {
-			//pass
-		} else {
-			this.cascadeFillIn = new CascadeInputDialogOperationFillIn<T>( this );
-		}
-		return this.cascadeFillIn;
-	}
-	
 	@Override
 	protected Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep step, Dialog dialog ) {
 		Button okButton = this.getCompleteOperation().createButton();

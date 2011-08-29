@@ -51,11 +51,7 @@ public abstract class AbstractChooserWithTextField<E extends org.lgna.project.as
 	private org.lgna.croquet.components.Component< ? >[] components = { this.textField };
 
 	@Override
-	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		this.stringState.setValue( "" );
-	}
-	@Override
-	public org.lgna.croquet.components.Component< ? >[] getComponents() {
+	public org.lgna.croquet.components.Component< ? >[] getRowComponents() {
 		return this.components;
 	}
 	protected abstract E valueOf( String text );

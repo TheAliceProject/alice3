@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomDoubleInputDialogOperation extends CustomInputDialogOperation< org.lgna.project.ast.DoubleLiteral > {
+public class CustomDoubleInputDialogOperation extends CustomNumberInputDialogOperation< org.lgna.project.ast.DoubleLiteral > {
 	private static class SingletonHolder {
 		private static CustomDoubleInputDialogOperation instance = new CustomDoubleInputDialogOperation();
 	}
@@ -53,6 +53,10 @@ public class CustomDoubleInputDialogOperation extends CustomInputDialogOperation
 		return SingletonHolder.instance;
 	}
 	private CustomDoubleInputDialogOperation() {
-		super( java.util.UUID.fromString( "0779ccae-00b6-4c8d-b8cf-9830983238a2" ), new org.alice.ide.choosers.DoubleChooser() );
+		super( java.util.UUID.fromString( "0779ccae-00b6-4c8d-b8cf-9830983238a2" ) );
+	}
+	@Override
+	protected org.alice.ide.choosers.DoubleChooser prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.choosers.DoubleChooser();
 	}
 }

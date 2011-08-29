@@ -91,10 +91,10 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 		}
 	}
 
-	@Override
-	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		this.updateKey( null );
-	}
+//	@Override
+//	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+//		this.updateKey( null );
+//	}
 	private void updateKey( org.lgna.story.Key key ) {
 		this.key = key;
 		if( this.key != null ) {
@@ -105,7 +105,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 		org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( null );
 	}
 	@Override
-	public org.lgna.croquet.components.Component< ? >[] getComponents() {
+	public org.lgna.croquet.components.Component< ? >[] getRowComponents() {
 		return this.components;
 	}
 	@Override

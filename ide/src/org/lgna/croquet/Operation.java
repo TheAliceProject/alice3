@@ -48,23 +48,6 @@ import org.lgna.croquet.edits.Edit;
  * @author Dennis Cosgrove
  */
 public abstract class Operation< S extends org.lgna.croquet.history.OperationStep<? extends Operation<?>>> extends CompletionModel {
-//	private class ButtonActionListener implements java.awt.event.ActionListener {
-//		private AbstractButton< ?,? > button;
-//		public ButtonActionListener( AbstractButton< ?,? > button ) {
-//			this.button = button;
-//		}
-//		public void actionPerformed( java.awt.event.ActionEvent e ) {
-//			Operation.this.fire( e, this.button );
-//		}
-//	}
-//	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	
-//	private final java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
-//		public void actionPerformed( java.awt.event.ActionEvent e ) {
-//			Operation.this.fire( e );
-//		}
-//	};
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			Operation.this.fire( e );
@@ -77,10 +60,6 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	public javax.swing.Action getAction() {
 		return this.action;
 	}
-//	public java.awt.event.ActionListener getActionListener() {
-//		return this.actionListener;
-//	}
-	
 	@Override
 	protected void localize() {
 		String name = this.getDefaultLocalizedText();

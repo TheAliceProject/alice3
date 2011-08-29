@@ -40,49 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.custom;
+package edu.cmu.cs.dennisc.eula;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomInputPane<E extends org.lgna.project.ast.Expression> extends org.alice.ide.preview.PanelWithPreview< E > {
-	private org.alice.ide.choosers.ValueChooser< E > chooser;
-	public CustomInputPane( org.alice.ide.choosers.ValueChooser< E > chooser ) {
-		this.chooser = chooser;
-	}
-
-	@Deprecated
-	public void handlePrologue(org.lgna.croquet.history.InputDialogOperationStep step) {
-		this.chooser.handlePrologue( step );
-	}
-	
-	@Override
-	public String getExplanationIfOkButtonShouldBeDisabled() {
-		return this.chooser.getExplanationIfOkButtonShouldBeDisabled();
-	}
-	
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
-		org.lgna.project.ast.Expression expression;
-		try {
-			expression = this.getInputValue();
-		} catch( RuntimeException re ) {
-			//re.printStackTrace();
-			expression = new org.lgna.project.ast.NullLiteral();
+public class EulaUtilities extends Exception {
+	public static void promptUserToAcceptEULAIfNecessary( Class<?> preferencesCls, String preferencesKey, String title, String license, String name ) throws LicenseRejectedException {
+		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( preferencesCls );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+			try {
+				userPreferences.clear();
+			} catch( java.util.prefs.BackingStoreException bse ) {
+				throw new RuntimeException( bse );
+			}
 		}
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		return rv;
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createMainComponent() {
-		return this.chooser.createMainComponent();
-	}
-	public org.alice.ide.choosers.ValueChooser< E > getValueChooser() {
-		return this.chooser;
-	}
-	@Override
-	public E getInputValue() {
-		return this.chooser.getValue();
+		boolean isLicenseAccepted = userPreferences.getBoolean( preferencesKey, false );
+		if( isLicenseAccepted ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.ui.eula.EULAPane pane = new edu.cmu.cs.dennisc.ui.eula.EULAPane( license );
+			java.awt.Component owner = null;
+			while( true ) {
+				isLicenseAccepted = pane.showInJDialog( owner, title ) == Boolean.TRUE;
+				if( isLicenseAccepted ) {
+					break;
+				} else {
+					String message = "You must accept the license agreement in order to use " + name + ".\n\nWould you like to return to the license agreement?";
+					if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( owner, message, "Return to license agreement?", javax.swing.JOptionPane.YES_NO_OPTION ) ) {
+						//pass
+					} else {
+						break;
+					}
+				}
+			}
+		}
+		if( isLicenseAccepted ) {
+			userPreferences.putBoolean( preferencesKey, true );
+		} else {
+			throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
+		}
 	}
 }

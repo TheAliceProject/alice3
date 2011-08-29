@@ -60,11 +60,6 @@ abstract class AbstractNumberChooser<N extends org.lgna.project.ast.Expression> 
 	public N getValue() {
 		return this.numberModel.getExpressionValue();
 	}
-	@Override
-	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		this.view.getAwtComponent().setText( "" );
-		//this.view.getAwtComponent().selectAll();
-	}
 	
 	@Override
 	public org.lgna.croquet.components.Component< ? > createMainComponent() {

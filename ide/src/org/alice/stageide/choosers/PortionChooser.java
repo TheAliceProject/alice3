@@ -61,12 +61,8 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 		}
 	}
 	@Override
-	public org.lgna.croquet.components.Component< ? >[] getComponents() {
+	public org.lgna.croquet.components.Component< ? >[] getRowComponents() {
 		return this.components;
-	}
-	@Override
-	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		//todo?
 	}
 	@Override
 	public org.lgna.project.ast.DoubleLiteral getValue() {

@@ -40,36 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.custom;
+
+package org.alice.ide.croquet.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomInputDialogOperation< E extends org.lgna.project.ast.Expression > extends org.alice.ide.croquet.models.ValueInputDialogOperationWithPreview<E> {
-	public CustomInputDialogOperation( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, id );
+public abstract class ValueInputDialogOperationWithPreview<T> extends org.lgna.croquet.ValueInputDialogOperation< T > {
+	public ValueInputDialogOperationWithPreview( org.lgna.croquet.Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 	@Override
-	protected abstract org.alice.ide.choosers.ValueChooser< E > prologue( org.lgna.croquet.history.InputDialogOperationStep step );
-	@Override
-	protected final E createValue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		org.alice.ide.choosers.ValueChooser< E > chooser = step.getMainPanel();
-		return chooser.getValue();
+	protected void updateExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		super.updateExplanation( step );
+		org.alice.ide.croquet.components.PanelWithPreview< ? > panelWithPreview = step.getMainPanel();
+		if( panelWithPreview != null ) {
+			panelWithPreview.updatePreview();
+		}
 	}
-
-//	@Override
-//	protected StringBuilder updateTutorialStepText( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-////		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-////		if( successfulCompletionEvent != null ) {
-//		if( edit != null ) {
-//			//org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
-//			rv.append( "1) Enter " );
-//			rv.append( "<strong>" );
-//			rv.append( "fill_in_expression_value_here" );
-//			rv.append( "</strong>" );
-//			rv.append( "<br>" );
-//			rv.append( "2) Press <strong>OK</strong>." );
-//		}
-//		return rv;
-//	}
+	@Override
+	protected abstract org.alice.ide.croquet.components.PanelWithPreview< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step );
 }

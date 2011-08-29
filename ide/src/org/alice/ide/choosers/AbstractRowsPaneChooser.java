@@ -53,10 +53,10 @@ public abstract class AbstractRowsPaneChooser<E extends org.lgna.project.ast.Exp
 	protected org.lgna.croquet.components.Component<?> createLabel( String text ) {
 		return org.lgna.croquet.components.SpringUtilities.createTrailingLabel( text );
 	}
-	protected abstract org.lgna.croquet.components.Component< ? >[] getComponents();
+	protected abstract org.lgna.croquet.components.Component< ? >[] getRowComponents();
 	public java.util.List< org.lgna.croquet.components.Component< ? >[] > updateRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
 		String[] labelTexts = this.getLabelTexts();
-		org.lgna.croquet.components.Component< ? >[] components = this.getComponents();
+		org.lgna.croquet.components.Component< ? >[] components = this.getRowComponents();
 		final int N = labelTexts.length;
 		for( int i=0; i<N; i++ ) {
 			rv.add( 

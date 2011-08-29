@@ -98,11 +98,6 @@ public class ArrayChooser extends AbstractRowsPaneChooser< org.lgna.project.ast.
 //		} );
 	}
 	
-	@Override
-	public void handlePrologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		//todo?
-	}
-		
 	//todo
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createLabel( String text ) {
@@ -140,7 +135,7 @@ public class ArrayChooser extends AbstractRowsPaneChooser< org.lgna.project.ast.
 		return LABEL_TEXTS;
 	}
 	@Override
-	public org.lgna.croquet.components.Component< ? >[] getComponents() {
+	public org.lgna.croquet.components.Component< ? >[] getRowComponents() {
 		return this.components;
 	}
 	@Override

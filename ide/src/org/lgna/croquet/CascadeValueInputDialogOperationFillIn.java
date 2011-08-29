@@ -46,33 +46,33 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F, Void > {
-	public static class CascadeInputDialogOperationFillInResolver<F> implements org.lgna.croquet.resolvers.CodableResolver< CascadeInputDialogOperationFillIn<F> > {
-		private final CascadeInputDialogOperationFillIn<F> model;
+public final class CascadeValueInputDialogOperationFillIn<F> extends CascadeFillIn< F, Void > {
+	public static class CascadeInputDialogOperationFillInResolver<F> implements org.lgna.croquet.resolvers.CodableResolver< CascadeValueInputDialogOperationFillIn<F> > {
+		private final CascadeValueInputDialogOperationFillIn<F> model;
 
-		public CascadeInputDialogOperationFillInResolver( CascadeInputDialogOperationFillIn<F> model ) {
+		public CascadeInputDialogOperationFillInResolver( CascadeValueInputDialogOperationFillIn<F> model ) {
 			this.model = model;
 		}
 		public CascadeInputDialogOperationFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.lgna.croquet.resolvers.CodableResolver< InputDialogOperation<F>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			InputDialogOperation<F> inputDialogOperation = resolver.getResolved();
+			org.lgna.croquet.resolvers.CodableResolver< ValueInputDialogOperation<F>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			ValueInputDialogOperation<F> inputDialogOperation = resolver.getResolved();
 			this.model = inputDialogOperation.getFillIn();
 		}
-		public org.lgna.croquet.CascadeInputDialogOperationFillIn<F> getResolved() {
+		public org.lgna.croquet.CascadeValueInputDialogOperationFillIn<F> getResolved() {
 			return this.model;
 		}
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver< InputDialogOperation<F>> resolver = this.model.inputDialogOperation.getCodableResolver();
+			org.lgna.croquet.resolvers.CodableResolver< InputDialogOperation<F>> resolver = this.model.valueInputDialogOperation.getCodableResolver();
 			binaryEncoder.encode( resolver );
 		}
 	}
-	private final InputDialogOperation<F> inputDialogOperation;
-	/*package-private*/ CascadeInputDialogOperationFillIn( InputDialogOperation<F> inputDialogOperation ) {
+	private final ValueInputDialogOperation<F> valueInputDialogOperation;
+	/*package-private*/ CascadeValueInputDialogOperationFillIn( ValueInputDialogOperation<F> valueInputDialogOperation ) {
 		super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
-		this.inputDialogOperation = inputDialogOperation;
+		this.valueInputDialogOperation = valueInputDialogOperation;
 	}
-	public InputDialogOperation<F> getInputDialogOperation() {
-		return this.inputDialogOperation;
+	public ValueInputDialogOperation<F> getInputDialogOperation() {
+		return this.valueInputDialogOperation;
 	}
 	@Override
 	protected CascadeInputDialogOperationFillInResolver<F> createCodableResolver() {
@@ -80,18 +80,17 @@ public final class CascadeInputDialogOperationFillIn<F> extends CascadeFillIn< F
 	}
 	@Override
 	protected String getTutorialItemText() {
-		return this.inputDialogOperation.getDefaultLocalizedText();
+		return this.valueInputDialogOperation.getDefaultLocalizedText();
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 		return new javax.swing.JLabel( this.getTutorialItemText() );
 	}
 	@Override
-	public F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
-		org.lgna.croquet.history.InputDialogOperationStep inputDialogStep = this.inputDialogOperation.fire();
+	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+		org.lgna.croquet.history.InputDialogOperationStep inputDialogStep = this.valueInputDialogOperation.fire();
 		if( inputDialogStep.isSuccessfullyCompleted() ) {
-			org.lgna.croquet.components.CascadeInputDialogPanel<F> panel = inputDialogStep.getMainPanel();
-			return panel.getInputValue();
+			return this.valueInputDialogOperation.createValue( inputDialogStep );
 		} else {
 			throw new CancelException();
 		}
