@@ -51,6 +51,10 @@ public class Menu extends AbstractMenu< org.lgna.croquet.AbstractMenuModel > {
 		super( model );
 	}
 	@Override
+	protected boolean areIconsDisplayedInMenus() {
+		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus();
+	}
+	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getModel().addPopupMenuListener( this );

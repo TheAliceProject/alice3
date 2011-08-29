@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class ClearanceCheckingExitOperation extends ClearanceRequiringUriCompositeOperation {
+public class ClearanceCheckingExitOperation extends ClearanceRequiringUriSerialOperation {
 	private static class SingletonHolder {
 		private static ClearanceCheckingExitOperation instance = new ClearanceCheckingExitOperation();
 	}

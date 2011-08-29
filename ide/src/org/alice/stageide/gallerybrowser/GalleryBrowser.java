@@ -64,5 +64,14 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 	public GalleryBrowser() {
 		this.addComponent( new org.lgna.croquet.components.PathControl( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.NORTH );
 		this.addComponent( new GalleryDirectoryView(), Constraint.CENTER );
+
+		org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
+		org.lgna.croquet.components.Button createPersonButton = createTypeFromPersonResourceOperation.createButton();
+		createPersonButton.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+		createPersonButton.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
+
+		createTypeFromPersonResourceOperation.setSmallIcon(edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(ClassBasedGalleryBrowser.class.getResource("images/create_person.png")));
+		
+		this.addComponent( createPersonButton, Constraint.LINE_START );
 	}
 }

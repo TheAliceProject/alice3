@@ -41,5 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lookingglassandalice.storytelling.resources.sims2;
+
+import org.lgna.story.resources.sims2.AdultFullBodyOutfit;
+
 public interface UnisexAdultFullBodyOutfit extends AdultFullBodyOutfit {
 }

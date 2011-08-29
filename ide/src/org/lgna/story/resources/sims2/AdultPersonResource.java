@@ -43,9 +43,6 @@
 
 package org.lgna.story.resources.sims2;
 
-import org.lookingglassandalice.storytelling.resources.sims2.Hair;
-import org.lookingglassandalice.storytelling.resources.sims2.Outfit;
-
 /**
  * @author Dennis Cosgrove
  */

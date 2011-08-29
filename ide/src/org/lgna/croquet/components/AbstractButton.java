@@ -48,8 +48,28 @@ package org.lgna.croquet.components;
  */
 public abstract class AbstractButton< J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Model > extends ViewController< J, M > {
 	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
+
+	private boolean isIconSet;
+	private javax.swing.Icon setIcon;
 	public AbstractButton( M model ) {
 		super( model );
+	}
+	
+	protected javax.swing.Icon getSetIcon() {
+		return this.setIcon;
+	}
+	public boolean isIconSet() {
+		return this.isIconSet;
+	}
+	public void setIconSet( boolean isIconSet ) {
+		this.isIconSet = isIconSet;
+	}
+	public javax.swing.Icon getIcon() {
+		return this.getAwtComponent().getIcon();
+	}
+	public void setIcon( javax.swing.Icon icon ) {
+		this.setIconSet( true );
+		this.setIcon = icon;
 	}
 
 	/*package-private*/ void setSwingButtonModel( javax.swing.ButtonModel model ) {

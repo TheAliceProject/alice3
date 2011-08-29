@@ -47,9 +47,6 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class Button extends OperationButton< javax.swing.JButton, org.lgna.croquet.Operation<?> > {
-	private boolean isIconSet;
-	private javax.swing.Icon icon;
-	
 	public Button( org.lgna.croquet.Operation<?> model ) {
 		super( model );
 	}
@@ -58,25 +55,12 @@ public class Button extends OperationButton< javax.swing.JButton, org.lgna.croqu
 		return new javax.swing.JButton() {
 			@Override
 			public javax.swing.Icon getIcon() {
-				if( isIconSet ) {
-					return icon;
+				if( Button.this.isIconSet() ) {
+					return Button.this.getSetIcon();
 				} else {
 					return super.getIcon();
 				}
 			}
 		};
-	}
-	public boolean isIconSet() {
-		return this.isIconSet;
-	}
-	public void setIconSet( boolean isIconSet ) {
-		this.isIconSet = isIconSet;
-	}
-	public javax.swing.Icon getIcon() {
-		return this.getAwtComponent().getIcon();
-	}
-	public void setIcon( javax.swing.Icon icon ) {
-		this.setIconSet( true );
-		this.icon = icon;
 	}
 }

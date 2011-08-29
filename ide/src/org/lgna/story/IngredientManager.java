@@ -43,8 +43,8 @@
 package org.lgna.story;
 
 import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.Ingredient;
 import org.lgna.story.resources.sims2.LifeStage;
-import org.lookingglassandalice.storytelling.resources.sims2.Ingredient;
 
 public abstract class IngredientManager<E extends Ingredient> {
 	private java.util.Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

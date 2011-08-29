@@ -303,7 +303,7 @@ public class ClassBasedGalleryBrowser extends BorderPanel {
 		
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
-		org.alice.stageide.croquet.models.gallerybrowser.CreateTypeFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateTypeFromPersonResourceOperation.getInstance();
+		org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
 		Button createPersonButton = createTypeFromPersonResourceOperation.createButton();
 		createPersonButton.setHorizontalTextPosition( HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( VerticalTextPosition.BOTTOM );

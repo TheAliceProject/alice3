@@ -77,7 +77,7 @@ public abstract class EntityImplementation implements ReferenceFrame {
 	}
 	public void setVehicle( EntityImplementation vehicle ) {
 		assert vehicle != this;
-		this.getSgComposite().setParent( vehicle.getSgComposite() );
+		this.getSgComposite().setParent( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 	
 	protected SceneImplementation getScene() {

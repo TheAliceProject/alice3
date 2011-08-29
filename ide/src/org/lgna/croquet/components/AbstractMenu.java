@@ -47,16 +47,51 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends ViewController< javax.swing.JMenu, M > implements MenuItemContainer {
+	private boolean isIconSet;
+	private javax.swing.Icon setIcon;
 	public AbstractMenu( M model ) {
 		super( model );
 	}
+	
+	protected javax.swing.Icon getSetIcon() {
+		return this.setIcon;
+	}
+	public boolean isIconSet() {
+		return this.isIconSet;
+	}
+	public void setIconSet( boolean isIconSet ) {
+		this.isIconSet = isIconSet;
+	}
+	public javax.swing.Icon getIcon() {
+		return this.getAwtComponent().getIcon();
+	}
+	public void setIcon( javax.swing.Icon icon ) {
+		this.setIconSet( true );
+		this.setIcon = icon;
+	}
+	protected abstract boolean areIconsDisplayedInMenus();
+	@Override
+	protected javax.swing.JMenu createAwtComponent() {
+		return new javax.swing.JMenu() {
+			@Override
+			public javax.swing.Icon getIcon() {
+				if( AbstractMenu.this.areIconsDisplayedInMenus() ) {
+					if( AbstractMenu.this.isIconSet() ) {
+						return AbstractMenu.this.getSetIcon();
+					} else {
+						return super.getIcon();
+					}
+				} else {
+					return null;
+				}
+			}
+		};
+	}
+
 	public final org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 		return this;
 	}
-	@Override
-	protected final javax.swing.JMenu createAwtComponent() {
-		return new javax.swing.JMenu();
-	}
+	
 	public void addPopupMenuListener(javax.swing.event.PopupMenuListener listener) {
 		this.getAwtComponent().getPopupMenu().addPopupMenuListener( listener );
 	}

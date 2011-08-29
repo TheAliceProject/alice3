@@ -50,21 +50,32 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.InputDial
 	public PersonResourceOperation( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+	protected abstract org.lgna.story.resources.sims2.PersonResource createInitialPersonResource();
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		org.alice.stageide.personeditor.PersonEditor rv = org.alice.stageide.personeditor.PersonEditor.getInstance();
-		rv.initialize( org.alice.stageide.croquet.models.personeditor.PersonInfo.createRandom() );
+	protected org.alice.stageide.person.components.MainPanel prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		org.lgna.story.resources.sims2.PersonResource personResource = this.createInitialPersonResource();
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.setStates( personResource );
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.push();
+		org.alice.stageide.person.components.MainPanel rv = new org.alice.stageide.person.components.MainPanel();
 		return rv;
+	}
+	@Override
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		dialog.setSize( 1000, 700 );
 	}
 	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.story.resources.sims2.PersonResource personResource );
 	@Override
 	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isCommit ) {
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.pop();
 		if( isCommit ) {
-			org.alice.stageide.personeditor.PersonEditor personEditor = step.getMainPanel();
-			org.alice.stageide.croquet.models.personeditor.PersonInfo personInfo = personEditor.getPersonInfo();
-			org.lgna.story.resources.sims2.PersonResource personResource = personInfo.createPersonResource();
+			org.lgna.story.resources.sims2.PersonResource personResource = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
 			if( personResource != null ) {
-				step.commitAndInvokeDo( this.createEdit( personResource ) );
+				org.lgna.croquet.edits.Edit edit = this.createEdit( personResource );
+				if( edit != null ) {
+					step.commitAndInvokeDo( edit );
+				} else { 
+					step.cancel();
+				}
 			}
 		} else {
 			step.cancel();
