@@ -50,7 +50,6 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
-import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
 
