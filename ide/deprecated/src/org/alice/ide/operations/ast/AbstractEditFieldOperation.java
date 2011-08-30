@@ -42,30 +42,28 @@
  */
 package org.alice.ide.operations.ast;
 
-import org.lgna.project.ast.UserField;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.UserField> {
-	private UserField field;
+public abstract class AbstractEditFieldOperation extends org.alice.ide.croquet.models.InputDialogOperationWithPreview<org.lgna.project.ast.UserField> {
+	private org.lgna.project.ast.UserField field;
 
 	private org.lgna.project.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither;
 	private org.lgna.project.ast.AbstractType<?,?,?> prevValueType;
 	private String prevName;
 	private org.lgna.project.ast.Expression prevInitializer;
 	
-	public AbstractEditFieldOperation( org.lgna.croquet.Group group, java.util.UUID individualId, String name, UserField field ) {
+	public AbstractEditFieldOperation( org.lgna.croquet.Group group, java.util.UUID individualId, String name, org.lgna.project.ast.UserField field ) {
 		super( group, individualId );
 		this.setName( name );
 		this.field = field;
 		
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: AbstractEditFieldOperation" );
 	}
-	protected UserField getField() {
+	protected org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}
-	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step, java.util.Set< UserField > referencedFields, java.util.Set< UserField > reassignedFields ) {
+	protected org.alice.ide.declarationpanes.EditFieldPane prologue( org.lgna.croquet.history.InputDialogOperationStep step, java.util.Set< org.lgna.project.ast.UserField > referencedFields, java.util.Set< org.lgna.project.ast.UserField > reassignedFields ) {
 		if( this.field != null ) {
 			this.prevFinalVolatileOrNeither = field.finalVolatileOrNeither.getValue();
 			this.prevValueType = field.valueType.getValue();

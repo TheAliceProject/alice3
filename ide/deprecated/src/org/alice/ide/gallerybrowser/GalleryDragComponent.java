@@ -42,16 +42,12 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
-import org.lgna.story.resourceutilities.ModelResourceTreeNode;
-
-
 /**
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance {
-	private static java.util.Map<ModelResourceTreeNode , GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static GalleryDragComponent getInstance( ModelResourceTreeNode  treeNode ) {
+	private static java.util.Map<org.lgna.story.resourceutilities.ModelResourceTreeNode, GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static GalleryDragComponent getInstance( org.lgna.story.resourceutilities.ModelResourceTreeNode treeNode ) {
 		GalleryDragComponent rv = map.get( treeNode );
 		if( rv != null ) {
 			//pass
@@ -62,24 +58,24 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 		return rv;
 	}
 	
-	private ModelResourceTreeNode  treeNode;
-	private GalleryDragComponent( ModelResourceTreeNode treeNode ) {
+	private final org.lgna.story.resourceutilities.ModelResourceTreeNode treeNode;
+	private GalleryDragComponent( org.lgna.story.resourceutilities.ModelResourceTreeNode treeNode ) {
 		this.treeNode = treeNode;
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 //		label.setIcon( ResourceManager.getLargeIcon( this.treeNode ) );
-		label.setText( ClassBasedGalleryBrowser.getTextFor( this.treeNode, false ) );
+		label.setText( GalleryBrowser.getTextFor( this.treeNode, false ) );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 		this.setEnabledBackgroundPaint( new java.awt.Color( 0xf7e4b6 ) );
 		this.addComponent( label );
 		
-		this.setLeftButtonClickModel( GalleryClassOperation.getInstance(treeNode) );
+		this.setLeftButtonClickModel( GalleryBrowser.getInstance(treeNode) );
 		this.setDragModel( new org.alice.ide.croquet.models.GalleryDragModel() );
 		this.getAwtComponent().setOpaque( false );
 	}
 	
-	public ModelResourceTreeNode  getTreeNode() {
+	public org.lgna.story.resourceutilities.ModelResourceTreeNode getTreeNode() {
 		return this.treeNode;
 	}
 

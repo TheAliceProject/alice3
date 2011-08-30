@@ -45,7 +45,6 @@ package org.alice.stageide.sceneeditor;
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter.CameraView;
-import org.alice.stageide.croquet.models.gallerybrowser.GalleryClassOperation;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.project.ast.NamedUserType;
@@ -414,19 +413,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 
 	public boolean isPotentiallyAcceptingOf(DragComponent source) {
-		return source instanceof org.alice.stageide.gallerybrowser.ClassBasedGalleryDragComponent;
+		return source instanceof org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent;
 	}
 
 	public org.lgna.croquet.components.JComponent<?> getViewController() {
 		return this;
 	}
 
-	public void dragStarted(org.lgna.croquet.history.DragStep dragAndDropContext) {
-		DragComponent dragSource = dragAndDropContext.getDragSource();
+	public void dragStarted(org.lgna.croquet.history.DragStep step) {
+		org.lgna.croquet.DragModel model = step.getModel();
+		DragComponent dragSource = step.getDragSource();
 		dragSource.showDragProxy();
-		org.lgna.croquet.Model model = dragSource.getLeftButtonClickModel();
-		if (model instanceof GalleryClassOperation) {
-			((GalleryClassOperation) model).setDesiredTransformation(null);
+		if (model instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryNode) {
+			org.alice.ide.croquet.models.gallerybrowser.GalleryNode galleryNode = (org.alice.ide.croquet.models.gallerybrowser.GalleryNode)model;
+			System.err.println( "galleryNode.setDesiredTransformation(null);" );
+			//galleryNode.setDesiredTransformation(null);
 		}
 	}
 

@@ -40,30 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.declaration;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.AbstractType > {
-	private final DeclarationLikeSubstanceOperation<?> owner;
-	public ValueComponentTypeState( DeclarationLikeSubstanceOperation<?> owner, org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "7b2413e0-a945-49d1-800b-4fba4f0bc741" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), initialValue );
-		this.owner = owner;
+public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDialogOperationWithPreview<org.lgna.project.ast.LocalDeclarationStatement> {
+	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
+	public DeclareLocalOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "09dfabbc-eda3-4a92-8a44-6d013c9c2a92" ) );
+		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
-		for( org.lgna.project.ast.JavaType type : org.alice.ide.IDE.getActiveInstance().getPrimeTimeSelectableTypesDeclaredInJava() ) {
-			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+	protected org.alice.ide.declarationpanes.CreateLocalPane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+		return new org.alice.ide.declarationpanes.CreateLocalPane( this.blockStatementIndexPair );
+	}
+	@Override
+	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
+		if( isOk ) {
+			org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = step.getMainPanel();
+			org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = createLocalPane.getInputValue();
+			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, localDeclarationStatement ) );
+		} else {
+			step.cancel();
 		}
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.List< org.lgna.project.ast.NamedUserType > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
-		for( org.lgna.project.ast.NamedUserType type : types ) {
-			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
-		}
-		return rv;
 	}
 }
-

@@ -58,6 +58,6 @@ public class CreateMyInstanceOperation extends CreateInstanceFromFileOperation {
 
 	@Override
 	protected java.io.File getInitialDirectory() {
-		return this.getIDE().getMyTypesDirectory();
+		return org.alice.ide.IDE.getActiveInstance().getMyTypesDirectory();
 	}
 }

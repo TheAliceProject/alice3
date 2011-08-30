@@ -41,29 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.declaration;
+package org.alice.ide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.AbstractType > {
-	private final DeclarationLikeSubstanceOperation<?> owner;
-	public ValueComponentTypeState( DeclarationLikeSubstanceOperation<?> owner, org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "7b2413e0-a945-49d1-800b-4fba4f0bc741" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), initialValue );
-		this.owner = owner;
+public class LocalDeclarationPanel extends DeclarationPanel< org.alice.ide.croquet.models.declaration.LocalDeclarationStatementOperation > {
+	public LocalDeclarationPanel( org.alice.ide.croquet.models.declaration.LocalDeclarationStatementOperation model ) {
+		super( model );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getLocalColor() );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
-		for( org.lgna.project.ast.JavaType type : org.alice.ide.IDE.getActiveInstance().getPrimeTimeSelectableTypesDeclaredInJava() ) {
-			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
-		}
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.List< org.lgna.project.ast.NamedUserType > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
-		for( org.lgna.project.ast.NamedUserType type : types ) {
-			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
-		}
-		return rv;
+	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
+		org.alice.ide.croquet.models.declaration.LocalDeclarationStatementOperation model = this.getModel();
+		org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = model.createPreviewDeclaration();
+		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createStatementPane( localDeclarationStatement );
+		return pane;
 	}
 }
-

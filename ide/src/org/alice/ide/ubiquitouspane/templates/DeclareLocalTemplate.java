@@ -67,6 +67,6 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	}
 	@Override
 	public org.lgna.croquet.Operation< ? > getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.operations.ast.DeclareLocalOperation( blockStatementIndexPair );
+		return org.alice.ide.croquet.models.declaration.LocalDeclarationStatementOperation.getInstance( blockStatementIndexPair );
 	}
 }

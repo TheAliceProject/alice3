@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class InitializerState extends org.alice.ide.croquet.models.StandardExpressionState {
-	private final DeclarationOperation<?> owner;
-	public InitializerState( DeclarationOperation<?> owner, org.lgna.project.ast.Expression initialValue ) {
+	private final DeclarationLikeSubstanceOperation<?> owner;
+	public InitializerState( DeclarationLikeSubstanceOperation<?> owner, org.lgna.project.ast.Expression initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4edd354e-da3c-400d-9c55-66da924c09a7" ), initialValue );
 		this.owner = owner;
 	}

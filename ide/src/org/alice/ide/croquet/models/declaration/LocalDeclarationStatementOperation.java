@@ -40,29 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+
+package org.alice.ide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.LocalDeclarationStatement> {
+public class LocalDeclarationStatementOperation extends DeclarationLikeSubstanceOperation< org.lgna.project.ast.LocalDeclarationStatement >{
+	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, LocalDeclarationStatementOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static LocalDeclarationStatementOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		synchronized( map ) {
+			LocalDeclarationStatementOperation rv = map.get( blockStatementIndexPair );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new LocalDeclarationStatementOperation( blockStatementIndexPair );
+				map.put( blockStatementIndexPair, rv );
+			}
+			return rv;
+		}
+	}
 	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public DeclareLocalOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "09dfabbc-eda3-4a92-8a44-6d013c9c2a92" ) );
+	private LocalDeclarationStatementOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( 
+				java.util.UUID.fromString( "5f7fa2bf-5c39-4699-85b9-736a1f8dfbb0" ), 
+				null, false,
+				null, true, 
+				false, true, 
+				"", true,
+				null, true
+		);
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
-	@Override
-	protected org.alice.ide.declarationpanes.CreateLocalPane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
-		return new org.alice.ide.declarationpanes.CreateLocalPane( this.blockStatementIndexPair );
+
+	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+		return this.blockStatementIndexPair;
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
-		if( isOk ) {
-			org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = step.getMainPanel();
-			org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = createLocalPane.getInputValue();
-			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, localDeclarationStatement ) );
-		} else {
-			step.cancel();
-		}
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.ide.croquet.components.declaration.LocalDeclarationPanel( this );
+	}
+	private org.lgna.project.ast.LocalDeclarationStatement createLocalDeclarationStatement() {
+		org.lgna.project.ast.UserVariable variable = new org.lgna.project.ast.UserVariable( this.getDeclarationName(), this.getValueType() );
+		return new org.lgna.project.ast.VariableDeclarationStatement( variable, this.getInitializer() );
+	}
+	@Override
+	public org.lgna.project.ast.LocalDeclarationStatement createPreviewDeclaration() {
+		return this.createLocalDeclarationStatement();
+	}
+	@Override
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, this.createLocalDeclarationStatement() );
 	}
 }

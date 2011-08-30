@@ -49,7 +49,6 @@ import java.awt.Point;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
-import org.alice.stageide.gallerybrowser.ClassBasedGalleryDragComponent;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
@@ -205,15 +204,19 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			this.orthographicPickPlane = new Plane( new Point3(0,0,0), cameraFacingNormal );
 			addPlaneTransitionPointSphereToScene();
 			
-			DragComponent dragSource = startInput.getDragAndDropContext().getDragSource();
+			org.lgna.croquet.history.DragStep dragStep = startInput.getDragAndDropContext();
+			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
+			DragComponent dragSource = dragStep.getDragSource();
 			dragSource.hideDragProxy();
 			edu.cmu.cs.dennisc.math.AxisAlignedBox box = null;
-			if (dragSource instanceof ClassBasedGalleryDragComponent)
+			if (dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryNode)
 			{
-				ClassBasedGalleryDragComponent galleryDragComponent = (ClassBasedGalleryDragComponent)dragSource;
-				ModelResourceTreeNode treeNode = galleryDragComponent.getTreeNode();
-				Class<?> resourceClass = ((ModelResourceTreeNode)treeNode).getResourceClass();
-				box = ModelResourceUtilities.getBoundingBox(resourceClass);
+				org.alice.ide.croquet.models.gallerybrowser.GalleryNode galleryNode = (org.alice.ide.croquet.models.gallerybrowser.GalleryNode)dragModel;
+				System.err.println( "todo: galleryNode.getResourceClass();" );
+				Class<?> resourceClass = null;//galleryNode.getResourceClass();
+				if( resourceClass != null ) {
+					box = ModelResourceUtilities.getBoundingBox(resourceClass);
+				}
 			}
 			if (box == null)
 			{

@@ -57,7 +57,7 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 	}
 	@Override
 	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type ) {
-		return org.alice.ide.operations.ast.DeclareFieldOperation.getInstance( type ).createButton();
+		return org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation.getInstance( type ).createButton();
 	}
 	@Override
 	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
@@ -83,22 +83,22 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 					org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)field;
 					org.lgna.croquet.components.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getTemplatesFactory(), fieldInAlice);
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add popup menu to field declaration pane" );
-//					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 
-//						public EditFieldDeclarationOperation() {
-//							super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "cb8936e6-a011-427a-bc64-0a4e646dc869" ) );
-//							this.setName( "Edit..." );
-//						}
-//						@Override
-//						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-//							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "todo" );
-//						}
-//					}
-					rv.add( new org.lgna.croquet.components.LineAxisPanel(
-								new org.alice.ide.operations.ast.EditFieldOperation( fieldInAlice ).createButton(),
-								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-								declarationPane
-							) 
-					);
+////					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 
+////						public EditFieldDeclarationOperation() {
+////							super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "cb8936e6-a011-427a-bc64-0a4e646dc869" ) );
+////							this.setName( "Edit..." );
+////						}
+////						@Override
+////						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+////							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "todo" );
+////						}
+////					}
+//					rv.add( new org.lgna.croquet.components.LineAxisPanel(
+//								new org.alice.ide.operations.ast.EditFieldOperation( fieldInAlice ).createButton(),
+//								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+//								declarationPane
+//							) 
+//					);
 				}
 			}
 			rv.add( TemplateFactory.getAccessorTemplate( field ) );

@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.UserType > {
-	private final DeclarationOperation<?> owner;
-	public DeclaringTypeState( DeclarationOperation<?> owner, org.lgna.project.ast.UserType<?> initialValue ) {
+	private final DeclarationLikeSubstanceOperation<?> owner;
+	public DeclaringTypeState( DeclarationLikeSubstanceOperation<?> owner, org.lgna.project.ast.UserType<?> initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "20e50e4f-b627-4f5c-9851-5cbc18b5a5ee" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ), initialValue );
 		this.owner = owner;
 	}
