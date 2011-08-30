@@ -46,26 +46,39 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsState extends org.alice.ide.openprojectpane.models.UriSelectionState {
+public class RecentProjectsUriSelectionState extends org.alice.ide.openprojectpane.models.UriSelectionState {
 	private static class SingletonHolder {
-		private static RecentProjectsState instance = new RecentProjectsState();
+		private static RecentProjectsUriSelectionState instance = new RecentProjectsUriSelectionState();
 	}
-	public static RecentProjectsState getInstance() {
+	public static RecentProjectsUriSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private RecentProjectsState() {
+	private final java.util.List< java.net.URI > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private RecentProjectsUriSelectionState() {
 		super( java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ) );
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 	@Override
 	protected java.net.URI[] createArray() {
-		return new java.net.URI[ 0 ];
+		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.list, java.net.URI.class );
 	}
 	
-	public void add( java.io.File file ) {
-		this.addItem( file.toURI() );
+	private void addFile( java.io.File file ) {
+		this.list.add( file.toURI() );
+		this.refresh();
 		System.err.println( "todo: add " + file );
+		this.setListData( 0, this.toArray() );
 //		int desiredRecentProjectCount = org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.getValue();
 //		org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.add( file, desiredRecentProjectCount );
+	}
+	public void handleOpen( java.io.File file ) {
+		if( file != null ) {
+			this.addFile( file );
+		} else {
+			this.setSelectedIndex( -1 );
+		}
+	}
+	public void handleSave( java.io.File file ) {
+		this.addFile( file );
 	}
 }

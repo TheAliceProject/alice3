@@ -138,7 +138,7 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 	}
 	public void refresh() {
 		//todo
-		org.alice.ide.croquet.models.openproject.RecentProjectsState.getInstance().refresh();
+		org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().refresh();
 	}
 	
 	public java.net.URI getSelectedURI() {
