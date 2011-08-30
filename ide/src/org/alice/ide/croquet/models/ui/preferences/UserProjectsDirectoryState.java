@@ -14,7 +14,7 @@ public class UserProjectsDirectoryState extends DirectoryState {
 		super( 
 				org.lgna.croquet.Application.UI_STATE_GROUP, 
 				java.util.UUID.fromString( "b6cf8508-35ce-46b5-a208-b53784ebeca6" ), 
-				UserApplicationDirectoryState.KEY + java.io.File.separator + "MyProjects"
+				UserApplicationDirectoryState.KEY + DO_NOT_USE_FILE_SEPARATOR_IT_IS_BAD_FOR_YOUR_HEALTH + "MyProjects"
 		);
 		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}

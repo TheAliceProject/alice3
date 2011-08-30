@@ -47,12 +47,14 @@ package org.alice.ide.croquet.models.ui.preferences;
  * @author Dennis Cosgrove
  */
 public abstract class DirectoryState extends org.lgna.croquet.StringState {
+	protected static final String DO_NOT_USE_FILE_SEPARATOR_IT_IS_BAD_FOR_YOUR_HEALTH = "/"; // do not use java.io.File.separator
 	public DirectoryState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
 		super( group, id, initialValue );
 	}
 	protected abstract String getPath();
 	private java.io.File getDirectory() {
-		return new java.io.File( this.getPath() );
+		String path = this.getPath();
+		return new java.io.File( path );
 	}
 	public java.io.File getDirectoryEnsuringExistance() {
 		java.io.File rv = this.getDirectory();

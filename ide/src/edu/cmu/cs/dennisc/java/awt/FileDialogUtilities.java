@@ -148,14 +148,16 @@ public class FileDialogUtilities {
 			return new AwtFileDialog( root, title, mode );
 		}
 	}
-	private static java.io.File showFileDialog( java.awt.Component component, String title, int mode, String directoryPath, String filename, String extension, boolean isSharingDesired ) {
+
+	private static final String NULL_KEY = "null";
+	private static java.io.File showFileDialog( java.awt.Component component, String title, int mode, String directoryKey, String filename, String extension, boolean isSharingDesired ) {
 		FileDialog fileDialog;
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( component );
 		String secondaryKey;
-		if( directoryPath != null ) {
-			secondaryKey = directoryPath;
+		if( directoryKey != null ) {
+			secondaryKey = directoryKey;
 		} else {
-			secondaryKey = "null";
+			secondaryKey = NULL_KEY;
 		}
 		edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, FileDialog> mapPathToFileDialog;
 		if( mode == java.awt.FileDialog.LOAD ) {
@@ -189,9 +191,10 @@ public class FileDialogUtilities {
 		if( path != null ) {
 			//pass
 		} else {
-			path = directoryPath;
+			path = directoryKey;
 		}
 		if( path != null ) {
+			String s = new java.io.File( path ).getPath();
 			fileDialog.setDirectory( path );
 		}
 		
@@ -217,16 +220,16 @@ public class FileDialogUtilities {
 		}
 		return rv;
 	}
+	public static java.io.File showOpenFileDialog( java.awt.Component component, java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
+		return showOpenFileDialog( component, directory.getAbsolutePath(), filename, extension, isSharingDesired ); 
+	}
+	public static java.io.File showSaveFileDialog( java.awt.Component component, java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
+		return showSaveFileDialog( component, directory.getAbsolutePath(), filename, extension, isSharingDesired ); 
+	}
 	public static java.io.File showOpenFileDialog( java.awt.Component component, String directoryPath, String filename, String extension, boolean isSharingDesired ) {
 		return showFileDialog( component, "Open...", java.awt.FileDialog.LOAD, directoryPath, filename, extension, isSharingDesired ); 
 	}
 	public static java.io.File showSaveFileDialog( java.awt.Component component, String directoryPath, String filename, String extension, boolean isSharingDesired ) {
 		return showFileDialog( component, "Save...", java.awt.FileDialog.SAVE, directoryPath, filename, extension, isSharingDesired ); 
-	}
-	public static java.io.File showOpenFileDialog( java.awt.Component component, java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return showOpenFileDialog( component, edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( directory ), filename, extension, isSharingDesired ); 
-	}
-	public static java.io.File showSaveFileDialog( java.awt.Component component, java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return showSaveFileDialog( component, edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( directory ), filename, extension, isSharingDesired ); 
 	}
 }
