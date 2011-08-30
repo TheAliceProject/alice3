@@ -54,12 +54,16 @@ public abstract class DirectoryState extends org.lgna.croquet.StringState {
 	protected abstract String getPath();
 	private java.io.File getDirectory() {
 		String path = this.getPath();
+		java.io.File rv;
 		try {
 			java.net.URI uri = new java.net.URI( path );
-			return new java.io.File( uri );
+			rv = new java.io.File( uri );
 		} catch( java.net.URISyntaxException urise ) {
-			throw new RuntimeException( path, urise );
+			//throw new RuntimeException( path, urise );
+			System.err.println( "warning: URI failure: " + path );
+			rv = new java.io.File( path );
 		}
+		return rv;
 	}
 	public java.io.File getDirectoryEnsuringExistance() {
 		java.io.File rv = this.getDirectory();
