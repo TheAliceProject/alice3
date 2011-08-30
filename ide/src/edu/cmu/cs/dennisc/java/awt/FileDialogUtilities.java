@@ -194,7 +194,6 @@ public class FileDialogUtilities {
 			path = directoryKey;
 		}
 		if( path != null ) {
-			String s = new java.io.File( path ).getPath();
 			fileDialog.setDirectory( path );
 		}
 		
