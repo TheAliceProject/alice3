@@ -46,31 +46,13 @@ package org.alice.ide.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-abstract class DirectoryListContentPanel extends ListContentPanel {
+public final class DirectoryListContentPanel extends ListContentPanel< org.alice.ide.openprojectpane.models.DirectoryUriSelectionState > {
+	public DirectoryListContentPanel( org.alice.ide.openprojectpane.models.DirectoryUriSelectionState state ) {
+		super( state );
+	}
 	@Override
 	protected String getTextForZeroProjects() {
-		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.getDirectory() );
+		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.getState().getDirectory() );
 		return "there are no projects in " + path;
-	}
-	protected abstract java.io.File getDirectory();
-	@Override
-	protected java.net.URI[] getURIs() {
-		java.io.File directory = this.getDirectory();
-		java.net.URI[] rv;
-		if( directory != null ) {
-			java.io.File[] files = org.lgna.project.project.ProjectUtilities.listProjectFiles( this.getDirectory() );
-			final int N = files.length;
-			rv = new java.net.URI[ N ];
-			for( int i=0; i<N; i++ ) {
-				if( files[ i ] != null ) {
-					rv[ i ] = files[ i ].toURI();
-				} else {
-					rv[ i ] = null;
-				}
-			}
-		} else {
-			rv = new java.net.URI[ 0 ];
-		}
-		return rv;
 	}
 }

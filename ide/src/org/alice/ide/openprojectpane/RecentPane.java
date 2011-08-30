@@ -43,25 +43,13 @@
 
 package org.alice.ide.openprojectpane;
 
-public class RecentPane extends ListContentPanel {
+public class RecentPane extends ListContentPanel< org.alice.ide.croquet.models.openproject.RecentProjectsState > {
+	public RecentPane() {
+		super( org.alice.ide.croquet.models.openproject.RecentProjectsState.getInstance() );
+	}
 	@Override
 	protected String getTextForZeroProjects() {
 		return "there are no recent projects";
-	}
-	@Override
-	protected java.net.URI[] getURIs() {
-		java.util.List< String > paths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
-		java.net.URI[] rv;
-		if( paths != null ) {
-			final int N = paths.size();
-			rv = new java.net.URI[ N ];
-			for( int i=0; i<N; i++ ) {
-				rv[ i ] = new java.io.File( paths.get( i ) ).toURI();
-			}
-		} else {
-			rv = new java.net.URI[ 0 ];
-		}
-		return rv;
 	}
 }
 

@@ -41,53 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.ide.croquet.models.openproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.models.UriSelectionState > extends TabContentPanel {
-	private final M state;
-	public ListContentPanel( M state ) {
-		this.state = state;
-		final org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
-		list.setBackgroundColor( null );
-		list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
-		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		list.setVisibleRowCount( -1 );
-		
-		edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-			@Override
-			protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-				if( quoteClickCountUnquote == 2 ) {
-					org.lgna.croquet.components.Button defaultButton = list.getRoot().getDefaultButton();
-					if( defaultButton != null ) {
-						defaultButton.doClick();
-					}
-				}
-			}
-		};
-		list.addMouseListener( mouseAdapter );
-		list.addMouseMotionListener( mouseAdapter );
-		list.addKeyListener( new java.awt.event.KeyListener() {
-			public void keyPressed( java.awt.event.KeyEvent e ) {
-				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_F5 ) {
-					ListContentPanel.this.state.refresh();
-				}
-			}
-			public void keyReleased( java.awt.event.KeyEvent e ) {
-			}
-			public void keyTyped( java.awt.event.KeyEvent e ) {
-			}
-		} );
-		this.addComponent(  list, Constraint.CENTER );
+public class RecentProjectsState extends org.alice.ide.openprojectpane.models.UriSelectionState {
+	private static class SingletonHolder {
+		private static RecentProjectsState instance = new RecentProjectsState();
 	}
-	protected M getState() {
-		return this.getState();
+	public static RecentProjectsState getInstance() {
+		return SingletonHolder.instance;
 	}
-	protected abstract String getTextForZeroProjects();
+	private RecentProjectsState() {
+		super( java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ) );
+		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
+	}
 	@Override
-	public java.net.URI getSelectedURI() {
-		return this.state.getSelectedItem();
+	protected java.net.URI[] createArray() {
+		return new java.net.URI[ 0 ];
+	}
+	
+	public void add( java.io.File file ) {
+		this.addItem( file.toURI() );
+		System.err.println( "todo: add " + file );
+//		int desiredRecentProjectCount = org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.getValue();
+//		org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.add( file, desiredRecentProjectCount );
 	}
 }

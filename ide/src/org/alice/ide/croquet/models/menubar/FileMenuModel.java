@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.models.menubar;
 
+import org.alice.ide.croquet.models.openproject.RecentProjectsState;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +53,7 @@ public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
 				org.lgna.croquet.MenuModel.SEPARATOR, 
-				RecentProjectsMenuModel.getInstance(), 
+				RecentProjectsState.getInstance().getMenuModel(), 
 				org.lgna.croquet.MenuModel.SEPARATOR, 
 				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(), 

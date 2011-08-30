@@ -65,8 +65,8 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 	public static final java.util.UUID TEMPLATES_TAB_ID = java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" );
 	public static final java.util.UUID MY_PROJECTS_TAB_ID = java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" );
 	public static final java.util.UUID RECENT_TAB_ID = java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" );
-	public static final java.util.UUID TUTORIAL_TAB_ID = java.util.UUID.fromString( "f4ff59f1-cf15-4301-a17a-2d80a4ea6fa4" );
-	public static final java.util.UUID TEXTBOOK_TAB_ID = java.util.UUID.fromString( "033afcdf-29b9-4fbf-b9f5-fb5c496a7860" );
+//	public static final java.util.UUID TUTORIAL_TAB_ID = java.util.UUID.fromString( "f4ff59f1-cf15-4301-a17a-2d80a4ea6fa4" );
+//	public static final java.util.UUID TEXTBOOK_TAB_ID = java.util.UUID.fromString( "033afcdf-29b9-4fbf-b9f5-fb5c496a7860" );
 	public static final java.util.UUID FILE_SYSTEM_TAB_ID = java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" );
 
 	private static class ContentPredeterminedTabCodec extends org.lgna.croquet.PredeterminedTabCodec< ContentTab > {
@@ -84,13 +84,13 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 		map.put( TEMPLATES_TAB_ID, new ContentTab( TEMPLATES_TAB_ID, "Templates" ) {
 			@Override
 			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-				return new org.alice.stageide.openprojectpane.templates.TemplatesTabContentPane();
+				return new org.alice.stageide.openprojectpane.components.TemplatesTabContentPane();
 			}
 		} );
 		map.put( MY_PROJECTS_TAB_ID, new ContentTab( MY_PROJECTS_TAB_ID, "My Projects" ) {
 			@Override
 			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-				return new org.alice.ide.openprojectpane.MyProjectsPane();
+				return new org.alice.ide.openprojectpane.DirectoryListContentPanel( org.alice.ide.openprojectpane.models.MyProjectsUriSelectionState.getInstance() );
 			}
 		} );
 		map.put( RECENT_TAB_ID, new ContentTab( RECENT_TAB_ID, "Recent" ) {
@@ -99,18 +99,18 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 				return new org.alice.ide.openprojectpane.RecentPane();
 			}
 		} );
-		map.put( TUTORIAL_TAB_ID, new ContentTab( TUTORIAL_TAB_ID, "Tutorial" ) {
-			@Override
-			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-				return new org.alice.ide.openprojectpane.TutorialPane();
-			}
-		} );
-		map.put( TEXTBOOK_TAB_ID, new ContentTab( TEXTBOOK_TAB_ID, "Textbook" ) {
-			@Override
-			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-				return new org.alice.ide.openprojectpane.TextbookPane();
-			}
-		} );
+//		map.put( TUTORIAL_TAB_ID, new ContentTab( TUTORIAL_TAB_ID, "Tutorial" ) {
+//			@Override
+//			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+//				return new org.alice.ide.openprojectpane.TutorialPane();
+//			}
+//		} );
+//		map.put( TEXTBOOK_TAB_ID, new ContentTab( TEXTBOOK_TAB_ID, "Textbook" ) {
+//			@Override
+//			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+//				return new org.alice.ide.openprojectpane.TextbookPane();
+//			}
+//		} );
 		map.put( FILE_SYSTEM_TAB_ID, new ContentTab( FILE_SYSTEM_TAB_ID, "File System" ) {
 			@Override
 			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
@@ -137,7 +137,8 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 		);
 	}
 	public void refresh() {
-		((org.alice.ide.openprojectpane.MyProjectsPane)map.get( MY_PROJECTS_TAB_ID ).getMainComponent()).refresh();
+		//todo
+		org.alice.ide.croquet.models.openproject.RecentProjectsState.getInstance().refresh();
 	}
 	
 	public java.net.URI getSelectedURI() {

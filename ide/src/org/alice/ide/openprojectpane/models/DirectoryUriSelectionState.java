@@ -40,46 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.openprojectpane.templates;
 
-public class TemplatesTabContentPane extends org.alice.ide.openprojectpane.ListContentPanel {
-	private static java.net.URI[] uris;
-	private static enum Template {
-		GRASS,
-		DIRT,
-		SAND,
-		SNOW,
-		WATER,
-		MOON;
-//		private org.lookingglassandalice.storytelling.Ground.Appearance getAppearance() {
-//			for( java.lang.reflect.Field fld : this.getClass().getFields() ) {
-//				if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null ) == this ) {
-//					return org.lookingglassandalice.storytelling.Ground.Appearance.valueOf( fld.getName() );
-//				}
-//			}
-//			return null;
-//		}
-		public java.net.URI getUri() {
-			try {
-				return new java.net.URI( this.name() );
-			} catch( java.net.URISyntaxException urise ) {
-				throw new RuntimeException( urise );
+package org.alice.ide.openprojectpane.models;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class DirectoryUriSelectionState extends UriSelectionState {
+	private final java.io.File directory;
+	public DirectoryUriSelectionState( java.util.UUID id, java.io.File directory ) {
+		super( id );
+		this.directory = directory;
+	}
+	public java.io.File getDirectory() {
+		return this.directory;
+	}
+	@Override
+	protected java.net.URI[] createArray() {
+		java.net.URI[] rv;
+		if( directory != null ) {
+			java.io.File[] files = org.lgna.project.project.ProjectUtilities.listProjectFiles( this.directory );
+			final int N = files.length;
+			rv = new java.net.URI[ N ];
+			for( int i=0; i<N; i++ ) {
+				if( files[ i ] != null ) {
+					rv[ i ] = files[ i ].toURI();
+				} else {
+					rv[ i ] = null;
+				}
 			}
+		} else {
+			rv = new java.net.URI[ 0 ];
 		}
-	};
-	static {
-		Template[] templates = Template.values();
-		TemplatesTabContentPane.uris = new java.net.URI[ templates.length ];
-		for( int i=0; i<templates.length; i++ ) {
-			uris[ i ] = templates[ i ].getUri();
-		}
-	}
-	@Override
-	protected String getTextForZeroProjects() {
-		return "there are no template projects.";
-	}
-	@Override
-	protected java.net.URI[] getURIs() {
-		return TemplatesTabContentPane.uris;
+		return rv;
 	}
 }

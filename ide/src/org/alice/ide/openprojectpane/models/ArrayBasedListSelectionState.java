@@ -41,53 +41,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.ide.openprojectpane.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.models.UriSelectionState > extends TabContentPanel {
-	private final M state;
-	public ListContentPanel( M state ) {
-		this.state = state;
-		final org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
-		list.setBackgroundColor( null );
-		list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
-		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		list.setVisibleRowCount( -1 );
-		
-		edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-			@Override
-			protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-				if( quoteClickCountUnquote == 2 ) {
-					org.lgna.croquet.components.Button defaultButton = list.getRoot().getDefaultButton();
-					if( defaultButton != null ) {
-						defaultButton.doClick();
-					}
-				}
-			}
-		};
-		list.addMouseListener( mouseAdapter );
-		list.addMouseMotionListener( mouseAdapter );
-		list.addKeyListener( new java.awt.event.KeyListener() {
-			public void keyPressed( java.awt.event.KeyEvent e ) {
-				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_F5 ) {
-					ListContentPanel.this.state.refresh();
-				}
-			}
-			public void keyReleased( java.awt.event.KeyEvent e ) {
-			}
-			public void keyTyped( java.awt.event.KeyEvent e ) {
-			}
-		} );
-		this.addComponent(  list, Constraint.CENTER );
+public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.ListSelectionState< E > {
+	private boolean isRefreshNecessary = true;
+	private E[] array;
+	public ArrayBasedListSelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< E > itemCodec, int selectionIndex ) {
+		super( group, id, itemCodec, selectionIndex );
 	}
-	protected M getState() {
-		return this.getState();
+	protected abstract E[] createArray();
+	private void refreshIfNecessary() {
+		if( this.isRefreshNecessary ) {
+			this.array = this.createArray();
+			this.isRefreshNecessary = false;
+		}
 	}
-	protected abstract String getTextForZeroProjects();
+	public final void refresh() {
+		this.isRefreshNecessary = true;
+		System.err.println( "todo: this.fireListDataChange();" );
+	}
 	@Override
-	public java.net.URI getSelectedURI() {
-		return this.state.getSelectedItem();
+	public final E getItemAt( int index ) {
+		return this.array[ index ];
+	}
+	@Override
+	public final int getItemCount() {
+		this.refreshIfNecessary();
+		return this.array.length;
+	}
+	@Override
+	public final int indexOf( E item ) {
+		return java.util.Arrays.asList( this.array ).indexOf( item );
+	}
+	@Override
+	protected final void internalAddItem( E item ) {
+		throw new AssertionError();
+	}
+	@Override
+	protected final void internalRemoveItem( E item ) {
+		throw new AssertionError();
+	}
+	@Override
+	protected final void internalSetItems( java.util.Collection< E > items ) {
+		throw new AssertionError();
+	}
+	public final java.util.Iterator< E > iterator() {
+		this.refreshIfNecessary();
+		return java.util.Arrays.asList( this.array ).iterator();
+	}
+	@Override
+	public final E[] toArray( Class< E > componentType ) {
+		this.refreshIfNecessary();
+		return this.array;
 	}
 }

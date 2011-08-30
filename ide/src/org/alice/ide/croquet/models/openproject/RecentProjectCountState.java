@@ -41,53 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.ide.croquet.models.openproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.models.UriSelectionState > extends TabContentPanel {
-	private final M state;
-	public ListContentPanel( M state ) {
-		this.state = state;
-		final org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
-		list.setBackgroundColor( null );
-		list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
-		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		list.setVisibleRowCount( -1 );
-		
-		edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-			@Override
-			protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-				if( quoteClickCountUnquote == 2 ) {
-					org.lgna.croquet.components.Button defaultButton = list.getRoot().getDefaultButton();
-					if( defaultButton != null ) {
-						defaultButton.doClick();
-					}
-				}
-			}
-		};
-		list.addMouseListener( mouseAdapter );
-		list.addMouseMotionListener( mouseAdapter );
-		list.addKeyListener( new java.awt.event.KeyListener() {
-			public void keyPressed( java.awt.event.KeyEvent e ) {
-				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_F5 ) {
-					ListContentPanel.this.state.refresh();
-				}
-			}
-			public void keyReleased( java.awt.event.KeyEvent e ) {
-			}
-			public void keyTyped( java.awt.event.KeyEvent e ) {
-			}
-		} );
-		this.addComponent(  list, Constraint.CENTER );
+public class RecentProjectCountState extends org.lgna.croquet.BoundedRangeIntegerState {
+	private static class SingletonHolder {
+		private static RecentProjectCountState instance = new RecentProjectCountState();
 	}
-	protected M getState() {
-		return this.getState();
+	public static RecentProjectCountState getInstance() {
+		return SingletonHolder.instance;
 	}
-	protected abstract String getTextForZeroProjects();
-	@Override
-	public java.net.URI getSelectedURI() {
-		return this.state.getSelectedItem();
+	private RecentProjectCountState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "15c030d1-d6c7-4415-ac20-e1b5bc6993de" ), 0, 10, 100 );
 	}
 }
