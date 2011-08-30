@@ -61,6 +61,7 @@ public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.L
 	}
 	public final void refresh() {
 		this.isRefreshNecessary = true;
+		this.refreshIfNecessary();
 		System.err.println( "todo: this.fireListDataChange();" );
 	}
 	@Override
@@ -86,7 +87,6 @@ public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.L
 	}
 	@Override
 	protected final void internalSetItems( java.util.Collection< E > items ) {
-		throw new AssertionError();
 	}
 	public final java.util.Iterator< E > iterator() {
 		this.refreshIfNecessary();

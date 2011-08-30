@@ -54,6 +54,6 @@ public class IsPromptIncludingTypeAndInitializerState extends org.lgna.croquet.B
 	}
 	private IsPromptIncludingTypeAndInitializerState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "fc13ea25-fda8-4ba4-8a8e-3f287d711664" ), true );
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}
 }

@@ -63,45 +63,96 @@ public class PreferenceManager {
 	private static String getKey( org.lgna.croquet.Model model ) {
 		return model.getId().toString();
 	}
-	private static <T> T decode( byte[] data, org.lgna.croquet.ItemCodec< T > codec ) {
+	private static <T> T decodeItem( byte[] data, org.lgna.croquet.ItemCodec< T > codec ) {
 		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
 		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
 		return codec.decodeValue( decoder );
 	}
-	private static <T> byte[] encode( T value, org.lgna.croquet.ItemCodec< T > codec ) {
+	private static <T> byte[] encodeItem( T value, org.lgna.croquet.ItemCodec< T > codec ) {
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
 		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
 		codec.encodeValue( encoder, value );
 		encoder.flush();
 		return baos.toByteArray();
 	}
-	private static <E> org.lgna.croquet.ListSelectionState< E > decode( org.lgna.croquet.ListSelectionState< E > rv, java.util.prefs.Preferences userPreferences ) {
+	private static <T> T[] decodeArray( byte[] data, org.lgna.croquet.ItemCodec< T > codec ) {
+		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
+		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
+		boolean isNotNull = decoder.decodeBoolean();
+		if( isNotNull ) {
+			final int N = decoder.decodeInt();
+			Class<T> componentType = codec.getValueClass();
+			T[] rv = (T[])java.lang.reflect.Array.newInstance( componentType, N );
+			for( int i=0; i<rv.length; i++ ) {
+				rv[ i ] = codec.decodeValue( decoder );
+			}
+			return rv;
+		} else {
+			return null;
+		}
+	}
+	private static <T> byte[] encodeArray( T[] value, org.lgna.croquet.ItemCodec< T > codec ) {
+		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
+		boolean isNotNull = value != null;
+		encoder.encode( isNotNull );
+		if( isNotNull ) {
+			encoder.encode( value.length );
+			for( int i=0; i<value.length; i++ ) {
+				codec.encodeValue( encoder, value[ i ] );
+			}
+		}
+		encoder.flush();
+		return baos.toByteArray();
+	}
+	private static <E> org.lgna.croquet.ListSelectionState< E > decodeSelection( org.lgna.croquet.ListSelectionState< E > rv, java.util.prefs.Preferences userPreferences ) {
 		org.lgna.croquet.ItemCodec< E > codec = rv.getItemCodec();
 		E defaultValue = rv.getSelectedItem();
-		byte[] defaultEncoding = encode( defaultValue, codec );
+		byte[] defaultEncoding = encodeItem( defaultValue, codec );
 		String key = getKey( rv );
 		byte[] encoding = userPreferences.getByteArray( key, defaultEncoding );
 		if( java.util.Arrays.equals( defaultEncoding, encoding ) ) {
 			//pass
 		} else {
-			E value = decode( encoding, codec );
+			E value = decodeItem( encoding, codec );
 			rv.setSelectedItem( value );
 		}
 		return rv;
 	}
-	private static <E> void encode( org.lgna.croquet.ListSelectionState< E > listSelectionState, java.util.prefs.Preferences userPreferences ) {
+	private static <E> org.lgna.croquet.ListSelectionState< E > decodeData( org.lgna.croquet.ListSelectionState< E > rv, java.util.prefs.Preferences userPreferences ) {
+		org.lgna.croquet.ItemCodec< E > codec = rv.getItemCodec();
+		E[] defaultValue = rv.toArray();
+		byte[] defaultEncoding = encodeArray( defaultValue, codec );
+		String key = getKey( rv );
+		byte[] encoding = userPreferences.getByteArray( key, defaultEncoding );
+		if( java.util.Arrays.equals( defaultEncoding, encoding ) ) {
+			//pass
+		} else {
+			E[] value = decodeArray( encoding, codec );
+			rv.setListData( -1, value );
+		}
+		return rv;
+	}
+	private static <E> void encodeSelection( org.lgna.croquet.ListSelectionState< E > listSelectionState, java.util.prefs.Preferences userPreferences ) {
 		org.lgna.croquet.ItemCodec< E > codec = listSelectionState.getItemCodec();
 		E value = listSelectionState.getSelectedItem();
-		byte[] encoding = encode( value, codec );
+		byte[] encoding = encodeItem( value, codec );
 		String key = getKey( listSelectionState );
 		userPreferences.putByteArray( key, encoding );
 	}
-
+	private static <E> void encodeData( org.lgna.croquet.ListSelectionState< E > listSelectionState, java.util.prefs.Preferences userPreferences ) {
+		org.lgna.croquet.ItemCodec< E > codec = listSelectionState.getItemCodec();
+		E[] value = listSelectionState.toArray();
+		byte[] encoding = encodeArray( value, codec );
+		String key = getKey( listSelectionState );
+		userPreferences.putByteArray( key, encoding );
+	}
 	private static java.util.List< org.lgna.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private static java.util.List< org.lgna.croquet.StringState > stringStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > listSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > selectionOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
-	public static void registerAndInitializePreference( org.lgna.croquet.BooleanState booleanState ) {
+	public static void registerAndInitializeBooleanState( org.lgna.croquet.BooleanState booleanState ) {
 		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
@@ -114,7 +165,7 @@ public class PreferenceManager {
 			System.err.println( "registerAndInitializePreference: " + booleanState );
 		}
 	}
-	public static void registerAndInitializePreference( org.lgna.croquet.StringState stringState ) {
+	public static void registerAndInitializeStringState( org.lgna.croquet.StringState stringState ) {
 		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
@@ -127,17 +178,32 @@ public class PreferenceManager {
 			System.err.println( "registerAndInitializePreference: " + stringState );
 		}
 	}
-	public static void registerAndInitializePreference( org.lgna.croquet.ListSelectionState< ? > listSelectionState ) {
+	public static void registerAndInitializeSelectionOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState< ? > listSelectionState ) {
 		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
 			clearAllPreferencesIfRequested( userPreferences );
 			try {
-				decode( listSelectionState, userPreferences );
+				decodeSelection( listSelectionState, userPreferences );
 			} catch( Throwable t ) {
 				t.printStackTrace();
 			}
-			listSelectionStatePreferences.add( listSelectionState );
+			selectionOfListSelectionStatePreferences.add( listSelectionState );
+		} else {
+			System.err.println( "registerAndInitializePreference: " + listSelectionState );
+		}
+	}
+	public static void registerAndInitializeDataOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState< ? > listSelectionState ) {
+		IDE ide = IDE.getActiveInstance();
+		if( ide != null ) {
+			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
+			clearAllPreferencesIfRequested( userPreferences );
+			try {
+				decodeData( listSelectionState, userPreferences );
+			} catch( Throwable t ) {
+				t.printStackTrace();
+			}
+			dataOfListSelectionStatePreferences.add( listSelectionState );
 		} else {
 			System.err.println( "registerAndInitializePreference: " + listSelectionState );
 		}
@@ -152,9 +218,16 @@ public class PreferenceManager {
 			for( org.lgna.croquet.StringState stringState : stringStatePreferences ) {
 				userPreferences.put( stringState.getId().toString(), stringState.getValue() );
 			}
-			for( org.lgna.croquet.ListSelectionState< ? > listSelectionState : listSelectionStatePreferences ) {
+			for( org.lgna.croquet.ListSelectionState< ? > listSelectionState : selectionOfListSelectionStatePreferences ) {
 				try {
-					encode( listSelectionState, userPreferences );
+					encodeSelection( listSelectionState, userPreferences );
+				} catch( Throwable t ) {
+					t.printStackTrace();
+				}
+			}
+			for( org.lgna.croquet.ListSelectionState< ? > listSelectionState : dataOfListSelectionStatePreferences ) {
+				try {
+					encodeData( listSelectionState, userPreferences );
 				} catch( Throwable t ) {
 					t.printStackTrace();
 				}

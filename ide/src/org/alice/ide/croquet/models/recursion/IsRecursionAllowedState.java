@@ -54,6 +54,6 @@ public class IsRecursionAllowedState extends org.lgna.croquet.BooleanState {
 	}
 	private IsRecursionAllowedState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "d3bbfe60-166d-4fa0-a98b-5992998dfca9" ), false );
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}
 }

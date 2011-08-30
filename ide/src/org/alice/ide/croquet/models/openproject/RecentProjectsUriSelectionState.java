@@ -56,7 +56,7 @@ public class RecentProjectsUriSelectionState extends org.alice.ide.openprojectpa
 	private final java.util.List< java.net.URI > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private RecentProjectsUriSelectionState() {
 		super( java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ) );
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializeDataOnlyOfListSelectionState( this );
 	}
 	@Override
 	protected java.net.URI[] createArray() {

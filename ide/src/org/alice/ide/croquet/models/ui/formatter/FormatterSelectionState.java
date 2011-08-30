@@ -59,6 +59,6 @@ public class FormatterSelectionState extends org.lgna.croquet.DefaultListSelecti
 				org.alice.ide.formatter.AliceFormatter.getInstance(), 
 				org.alice.ide.formatter.JavaFormatter.getInstance()
 		);
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
 	}
 }
