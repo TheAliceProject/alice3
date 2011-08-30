@@ -49,12 +49,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.media.opengl.GL;
+
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.Mesh;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -66,6 +69,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
     private boolean skeletonIsDirty = true;
     private Joint currentSkeleton = null;
     protected Map<TexturedAppearanceAdapter, WeightedMeshControl[]> appearanceToMeshControllersMap = new HashMap<TexturedAppearanceAdapter, WeightedMeshControl[]>();
+    protected Map<TexturedAppearanceAdapter, MeshAdapter<Mesh>[]> appearanceToGeometryAdapaters = new HashMap<TexturedAppearanceAdapter, MeshAdapter<Mesh>[]>();
     private boolean isDataDirty = true;
     
     public SkeletonVisualAdapter()
@@ -102,6 +106,8 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                 this.setListeningOnSkeleton(this.currentSkeleton, true);
                 this.skeletonIsDirty = true;
             }
+            appearanceToGeometryAdapaters.clear();
+            appearanceToMeshControllersMap.clear();
             for (TexturedAppearance ta : this.m_element.textures.getValue())
             {
             	List<WeightedMeshControl> controls = new LinkedList<WeightedMeshControl>();
@@ -113,9 +119,21 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 	            		control.initialize(weightedMesh);
 	            		controls.add(control);
 	            	}
-	            	
 	            }
 	            appearanceToMeshControllersMap.put(AdapterFactory.getAdapterFor(ta), controls.toArray(new WeightedMeshControl[controls.size()]));
+	            List<MeshAdapter<Mesh>> meshAdapters = new LinkedList<MeshAdapter<Mesh>>();
+	            for (GeometryAdapter adapter : this.m_geometryAdapters)
+	            {
+	            	if (adapter instanceof MeshAdapter<?>)
+	            	{
+	            		MeshAdapter<Mesh> ma = (MeshAdapter<Mesh>)adapter;
+		            	if (((Mesh)ma.m_element).textureId.getValue() == ta.textureId.getValue())
+		            	{
+		            		meshAdapters.add(ma);
+		            	}
+	            	}
+	            }
+	            appearanceToGeometryAdapaters.put(AdapterFactory.getAdapterFor(ta), meshAdapters.toArray(new MeshAdapter[meshAdapters.size()]));
             }
         }
         this.isDataDirty = false;
@@ -209,14 +227,42 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         }
         //END DEBUG RENDERING
         
-        super.renderGeometry(rc);
+//        super.renderGeometry(rc);
         for (Entry<TexturedAppearanceAdapter, WeightedMeshControl[]> controlEntry : this.appearanceToMeshControllersMap.entrySet())
         {
         	controlEntry.getKey().setTexturePipelineState(rc);
         	for (WeightedMeshControl wmc : controlEntry.getValue())
             {
+        		if (!wmc.weightedMesh.cullBackfaces.getValue())
+        		{
+        			rc.gl.glDisable( GL.GL_CULL_FACE );
+        		}
+        		else
+        		{
+        			rc.gl.glEnable( GL.GL_CULL_FACE );
+        			rc.gl.glCullFace( GL.GL_BACK );
+        		}
                 wmc.renderGeometry(rc);
+                rc.gl.glEnable( GL.GL_CULL_FACE );
             }
+        	MeshAdapter[] meshAdapters = this.appearanceToGeometryAdapaters.get(controlEntry.getKey());
+        	if (meshAdapters != null)
+        	{
+        		for (MeshAdapter ma : meshAdapters)
+        		{
+        			if (!((Mesh)ma.m_element).cullBackfaces.getValue())
+            		{
+            			rc.gl.glDisable( GL.GL_CULL_FACE );
+            		}
+            		else
+            		{
+            			rc.gl.glEnable( GL.GL_CULL_FACE );
+            			rc.gl.glCullFace( GL.GL_BACK );
+            		}
+        			ma.render(rc);
+        			rc.gl.glEnable( GL.GL_CULL_FACE );
+        		}
+        	}
         }
     }
     

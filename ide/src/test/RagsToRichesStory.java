@@ -60,6 +60,9 @@ import org.lgna.story.resources.PersonResource;
 import org.lgna.story.resources.sims2.*;
 import org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultHairBraids;
+import org.lookingglassandalice.storytelling.resources.sims2.MaleAdultFullBodyOutfit;
+import org.lookingglassandalice.storytelling.resources.sims2.MaleAdultFullBodyOutfitAmbulanceDriver;
+import org.lookingglassandalice.storytelling.resources.sims2.MaleAdultHairBald;
 
 abstract class CustomPerson extends Biped {
 	public CustomPerson( BipedResource resource ) {
@@ -77,7 +80,7 @@ class DesertScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground desert = new Ground();
 	private final Sphere sphere = new Sphere();
-	private final CustomAdult fellowLaborer = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
+//	private final CustomAdult fellowLaborer = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
 	private final Camera camera;
 	private final CustomAdult ogre;
 	public DesertScene( Camera camera, CustomAdult ogre ) {
@@ -92,10 +95,10 @@ class DesertScene extends Scene {
 		this.camera.setVehicle( this );
 		this.sphere.setVehicle( this );
 		this.ogre.setVehicle( this );
-		this.fellowLaborer.setVehicle( this );
+//		this.fellowLaborer.setVehicle( this );
 
 		this.ogre.move( MoveDirection.LEFT, 1.0 );
-		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
+//		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
 		
 		this.desert.setAppearance( Ground.Appearance.SAND );
 		this.sphere.setRadius( 0.1 );
@@ -229,7 +232,16 @@ class RagsToRichesStory extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final CustomAdult ogre = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
+//	private final CustomAdult ogre = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
+	private final CustomAdult ogre = new CustomAdult( 
+			new AdultPersonResource(
+					Gender.MALE,
+					BaseSkinTone.getRandom(),
+					BaseEyeColor.getRandom(),
+					MaleAdultHairBald.BARE,
+					0.5,
+					MaleAdultFullBodyOutfitAmbulanceDriver.BLUE
+	) );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	public void playOutStory() {

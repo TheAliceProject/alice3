@@ -4,7 +4,7 @@
 package edu.cmu.cs.dennisc.nebulous;
 
 /**
- * @author Dennis Cosgrove
+ * @author Dennis Cosgrove 
  */
 public class Thing extends Model {
 	static {

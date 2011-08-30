@@ -47,11 +47,11 @@ package org.lgna.story.implementation.sims2;
  * @author Dennis Cosgrove
  */
 public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable {
-	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
+	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
 	private final org.lgna.story.resources.JointId jointId;
 	private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTransformation = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
-	public NebulousJoint( edu.cmu.cs.dennisc.nebulous.Person nebPerson, org.lgna.story.resources.JointId jointId ) {
-		this.nebPerson = nebPerson;
+	public NebulousJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lgna.story.resources.JointId jointId ) {
+		this.nebModel = nebModel;
 		this.jointId = jointId;
 	}
 	public org.lgna.story.resources.JointId getJointId() {
@@ -59,11 +59,11 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation() {
-		return this.nebPerson.getLocalTransformationForJoint( this.jointId );
+		return this.nebModel.getLocalTransformationForJoint( this.jointId );
 	}
 	@Override
 	protected void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
-		this.nebPerson.setLocalTransformationForJoint( this.jointId, m );
+		this.nebModel.setLocalTransformationForJoint( this.jointId, m );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.Composite getVehicle() {
