@@ -64,9 +64,21 @@ public class RecentProjectsUriSelectionState extends org.alice.ide.openprojectpa
 	}
 	
 	private void addFile( java.io.File file ) {
-		this.list.add( file.toURI() );
+		final int N = RecentProjectCountState.getInstance().getValue();
+		if( N > 0 ) {
+			java.net.URI uri = file.toURI();
+			if( this.list.contains( uri ) ) {
+				this.list.remove( uri );
+			}
+			this.list.add( 0, uri );
+			while( this.list.size() > N ) {
+				this.list.remove( this.list.size()-1 );
+			}
+		} else {
+			this.list.clear();
+		}
 		this.refresh();
-		System.err.println( "todo: add " + file );
+		System.err.println( "todo: addFile " + file );
 		this.setListData( 0, this.toArray() );
 //		int desiredRecentProjectCount = org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.getValue();
 //		org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.add( file, desiredRecentProjectCount );
