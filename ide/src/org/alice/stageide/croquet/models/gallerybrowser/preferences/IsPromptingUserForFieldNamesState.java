@@ -54,6 +54,6 @@ public class IsPromptingUserForFieldNamesState extends org.lgna.croquet.BooleanS
 	}
 	private IsPromptingUserForFieldNamesState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "ed88aee1-3edf-42b7-bb2d-9424769a075b" ), true );
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}
 }

@@ -158,7 +158,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 							try {
 //								long t0 = System.currentTimeMillis();
 								if( file != null && file.canWrite() ) {
-									org.alice.ide.croquet.models.openproject.RecentProjectsState.getInstance().add( file );
+									org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
 								}
 //								long tDelta = System.currentTimeMillis() - t0;
 //								edu.cmu.cs.dennisc.print.PrintUtilities.println( "time to store preference (msec):", tDelta );
