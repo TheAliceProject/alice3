@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
+public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
 	public DeclarationPanel( M model ) {
 		super( model );
 		final int INSET = 16;

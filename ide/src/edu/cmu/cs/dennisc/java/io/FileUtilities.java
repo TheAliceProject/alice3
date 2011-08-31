@@ -403,41 +403,41 @@ public class FileUtilities {
 		delete( new java.io.File( path ) );
 	}
 
-//	public static java.io.File toFile( java.net.URL url ) {
-//		if( url != null ) {
-//			try {
-//				return toFile( url.toURI() );
-//			} catch( java.net.URISyntaxException urise ) {
-//				throw new RuntimeException( urise );
-//			}
-//		} else {
-//			return null;
-//		}
-//	}
-//	public static java.io.File toFile( java.net.URI uri ) {
-//		if( uri != null ) {
-//			return new java.io.File( uri );
-//		} else {
-//			return null;
-//		}
-//	}
-//	public static java.net.URI toURI( java.io.File file ) {
-//		if( file != null ) {
-//			return file.toURI();
-//		} else {
-//			return null;
-//		}
-//	}
-//	public static java.net.URL toURL( java.io.File file ) {
-//		java.net.URI uri = toURI( file );
-//		if( uri != null ) {
-//			try {
-//				return uri.toURL();
-//			} catch( java.net.MalformedURLException murle ) {
-//				throw new RuntimeException( murle );
-//			}
-//		} else {
-//			return null;
-//		}
-//	}
+
+	public static java.io.File toFile( java.net.URL url ) {
+		if( url != null ) {
+			try {
+				return toFile( url.toURI() );
+			} catch( java.net.URISyntaxException urise ) {
+				throw new RuntimeException( urise );
+			}
+		} else {
+			return null;
+		}
+	}
+	public static java.io.File toFile( java.net.URI uri ) {
+		if( uri != null ) {
+			return new java.io.File( uri );
+		} else {
+			return null;
+		}
+	}
+	public static java.net.URI toUri( java.io.File file ) {
+		if( file != null ) {
+			return file.toURI();
+		} else {
+			return null;
+		}
+	}
+	public static java.net.URL toUrl( java.io.File file ) {
+		if( file != null ) {
+			try {
+				return file.toURL();
+			} catch( java.net.MalformedURLException murle ) {
+				throw new RuntimeException( murle );
+			}
+		} else {
+			return null;
+		}
+	}
 }

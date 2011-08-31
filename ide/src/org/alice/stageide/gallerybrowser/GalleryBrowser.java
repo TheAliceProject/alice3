@@ -70,8 +70,12 @@ public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 		createPersonButton.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 
-		createTypeFromPersonResourceOperation.setSmallIcon(edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(ClassBasedGalleryBrowser.class.getResource("images/create_person.png")));
+		createTypeFromPersonResourceOperation.setSmallIcon(edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
 		
 		this.addComponent( createPersonButton, Constraint.LINE_START );
+		
+		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
+		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton(), Constraint.PAGE_START );
+		this.addComponent( lineEndPanel, Constraint.LINE_END );
 	}
 }

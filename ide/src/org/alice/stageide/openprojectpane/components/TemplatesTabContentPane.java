@@ -40,29 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.stageide.openprojectpane.components;
 
-/**
- * @author Dennis Cosgrove
- */
-public class DeclareLocalOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.LocalDeclarationStatement> {
-	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public DeclareLocalOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "09dfabbc-eda3-4a92-8a44-6d013c9c2a92" ) );
-		this.blockStatementIndexPair = blockStatementIndexPair;
+public class TemplatesTabContentPane extends org.alice.ide.openprojectpane.ListContentPanel< org.alice.stageide.openprojectpane.models.TemplateUriSelectionState > {
+	public TemplatesTabContentPane() {
+		super( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getInstance() );
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateLocalPane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
-		return new org.alice.ide.declarationpanes.CreateLocalPane( this.blockStatementIndexPair );
-	}
-	@Override
-	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
-		if( isOk ) {
-			org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = step.getMainPanel();
-			org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = createLocalPane.getInputValue();
-			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, localDeclarationStatement ) );
-		} else {
-			step.cancel();
-		}
+	protected String getTextForZeroProjects() {
+		return "there are no template projects.";
 	}
 }

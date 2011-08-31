@@ -46,85 +46,11 @@ package org.alice.ide.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel extends TabContentPanel {
-	private class UriSelectionState extends org.lgna.croquet.ListSelectionState<java.net.URI> {
-		private boolean isRefreshRequired = true;
-		private java.net.URI[] uris = new java.net.URI[] {};
-		public UriSelectionState() {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "68a17b6d-353d-4473-abd3-1c78ff88e1cd" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1 );
-		}
-		
-		private void updateUrisIfNecessary() {
-			if( this.isRefreshRequired ) {
-				this.uris = ListContentPanel.this.getURIs();
-				this.isRefreshRequired = false;
-			}
-		}
-		
-		public java.util.Iterator< java.net.URI > iterator() {
-			this.updateUrisIfNecessary();
-			return java.util.Arrays.asList( this.uris ).iterator();
-		}
-		@Override
-		public java.net.URI getItemAt( int index ) {
-			//todo?
-			//this.updateUrisIfNecessary();
-			return this.uris[ index ];
-		}
-		@Override
-		public int getItemCount() {
-			this.updateUrisIfNecessary();
-			return this.uris.length;
-		}
-		@Override
-		public int indexOf( java.net.URI item ) {
-			return java.util.Arrays.asList( this.uris ).indexOf( item );
-		}
-		@Override
-		public java.net.URI[] toArray( Class< java.net.URI > componentType ) {
-			return this.uris;
-		}
-		@Override
-		protected void internalAddItem( java.net.URI item ) {
-			this.isRefreshRequired = true;
-		}
-		@Override
-		protected void internalRemoveItem( java.net.URI item ) {
-			this.isRefreshRequired = true;
-		}
-		@Override
-		protected void internalSetItems( java.util.Collection< java.net.URI > items ) {
-			this.isRefreshRequired = true;
-		}
-	}
-	private UriSelectionState uriSelection = new UriSelectionState();
-//	register( new edu.cmu.cs.dennisc.croquet.List<java.net.URI>() {
-//		@Override
-//		protected javax.swing.JList createAwtComponent() {
-//			javax.swing.JList rv = new javax.swing.JList() {
-//				@Override
-//				public void paint(java.awt.Graphics g) {
-//					super.paint( g );
-//					if( this.getModel().getSize() > 0 ) {
-//						//pass
-//					} else {
-//						java.awt.Font font = this.getFont();
-//						font = font.deriveFont( java.awt.Font.ITALIC );
-//						g.setFont( font );
-//						edu.cmu.cs.dennisc.awt.GraphicsUtilities.drawCenteredText( g, ListContentPanel.this.getTextForZeroProjects(), this.getSize() );
-//					}
-//				}
-//			};
-//			//rv.setVisibleRowCount( -1 );
-//			return rv;
-//		}
-//	} );
-
-//	private edu.cmu.cs.dennisc.croquet.List<java.net.URI> list = new edu.cmu.cs.dennisc.croquet.List<java.net.URI>();
-	
-	public ListContentPanel() {
-		this.refresh();
-		final org.lgna.croquet.components.List<java.net.URI> list = this.uriSelection.createList();
+public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.models.UriSelectionState > extends TabContentPanel {
+	private final M state;
+	public ListContentPanel( M state ) {
+		this.state = state;
+		final org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
 		list.setBackgroundColor( null );
 		list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
 		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
@@ -146,7 +72,7 @@ public abstract class ListContentPanel extends TabContentPanel {
 		list.addKeyListener( new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {
 				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_F5 ) {
-					ListContentPanel.this.refresh();
+					ListContentPanel.this.state.refresh();
 				}
 			}
 			public void keyReleased( java.awt.event.KeyEvent e ) {
@@ -154,26 +80,14 @@ public abstract class ListContentPanel extends TabContentPanel {
 			public void keyTyped( java.awt.event.KeyEvent e ) {
 			}
 		} );
-//		list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-//			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-//					ListContentPanel.this.updateOKButton();
-//				}
-//			}
-//		} );
 		this.addComponent(  list, Constraint.CENTER );
 	}
-	protected abstract String getTextForZeroProjects();
-	
-	protected abstract java.net.URI[] getURIs();
-	public void refresh() {
-		this.uriSelection.setListData( -1, this.getURIs() );
+	protected M getState() {
+		return this.getState();
 	}
+	protected abstract String getTextForZeroProjects();
 	@Override
 	public java.net.URI getSelectedURI() {
-		return this.uriSelection.getSelectedItem();
+		return this.state.getSelectedItem();
 	}
 }
-

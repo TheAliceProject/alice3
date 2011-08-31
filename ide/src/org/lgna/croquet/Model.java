@@ -76,31 +76,35 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
 	private static String findLocalizedText( Class<? extends Model> cls, Class<? extends Model> clsRoot, String subKey ) {
-		String bundleName = cls.getPackage().getName() + ".croquet";
-		try {
-			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
-			String key = cls.getSimpleName();
-			
-			//todo?
-			//if( cls.isMemberClass() ) {
-			//}
-			
-			
-			if( subKey != null ) {
-				StringBuilder sb = new StringBuilder();
-				sb.append( key );
-				sb.append( "." );
-				sb.append( subKey );
-				key = sb.toString();
+		if( cls != null ) {
+			String bundleName = cls.getPackage().getName() + ".croquet";
+			try {
+				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+				String key = cls.getSimpleName();
+				
+				//todo?
+				//if( cls.isMemberClass() ) {
+				//}
+				
+				
+				if( subKey != null ) {
+					StringBuilder sb = new StringBuilder();
+					sb.append( key );
+					sb.append( "." );
+					sb.append( subKey );
+					key = sb.toString();
+				}
+				String rv = resourceBundle.getString( key );
+				return rv;
+			} catch( java.util.MissingResourceException mre ) {
+				if( cls == clsRoot ) {
+					return null;
+				} else {
+					return findLocalizedText( (Class<? extends Model>)cls.getSuperclass(), clsRoot, subKey );
+				}
 			}
-			String rv = resourceBundle.getString( key );
-			return rv;
-		} catch( java.util.MissingResourceException mre ) {
-			if( cls == clsRoot ) {
-				return null;
-			} else {
-				return findLocalizedText( (Class<? extends Model>)cls.getSuperclass(), clsRoot, subKey );
-			}
+		} else {
+			return null;
 		}
 	}
 	private static String getLocalizedText( Class<? extends Model> cls, String subKey ) {

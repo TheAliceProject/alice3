@@ -80,7 +80,7 @@ public class LocaleSelectionState extends org.lgna.croquet.DefaultListSelectionS
 				new java.util.Locale( "zh" ),
 				new java.util.Locale( "ko" )
 		);
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
+		org.alice.ide.PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
 		this.addValueObserver( new ValueObserver< java.util.Locale >() {
 			public void changing( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 			}

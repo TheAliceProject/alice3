@@ -54,10 +54,6 @@ import edu.cmu.cs.dennisc.math.Dimension3;
  */
 public class SimsBipedImplementation extends org.lgna.story.implementation.BipedImplementation {
 	
-	static {
-		StorytellingResources.getInstance().loadSimsBundles();
-	}
-	
 	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
 	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
 	private org.lgna.story.resources.sims2.Gender gender;

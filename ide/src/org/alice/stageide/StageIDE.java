@@ -527,7 +527,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	@Override
 	protected org.alice.ide.openprojectpane.TabContentPanel createTemplatesTabContentPane() {
-		return new org.alice.stageide.openprojectpane.templates.TemplatesTabContentPane();
+		return new org.alice.stageide.openprojectpane.components.TemplatesTabContentPane();
 	}
 
 	@Override

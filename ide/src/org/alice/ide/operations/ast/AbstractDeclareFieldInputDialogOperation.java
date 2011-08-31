@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.UserField> {
+public abstract class AbstractDeclareFieldInputDialogOperation extends org.alice.ide.croquet.models.InputDialogOperationWithPreview<org.lgna.project.ast.UserField> {
 	protected static class EpilogueData {
 		private org.lgna.project.ast.UserType<?> declaringType;
 		private org.lgna.project.ast.UserField field;
