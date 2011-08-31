@@ -399,6 +399,9 @@ public class ModelResourceExporter {
 	
 	public File export(String sourceDirectory, String outputDir)
 	{
+		if (!sourceDirectory.endsWith("/") && !sourceDirectory.endsWith("\\")) {
+			sourceDirectory += File.separator;
+        }
 		File javaFile = createJavaCode(sourceDirectory);
 		
 		String[] args = new String[]{javaFile.getAbsolutePath(), "-classpath", System.getProperty("java.class.path")};
@@ -411,6 +414,7 @@ public class ModelResourceExporter {
 		File outputFile = new File(outputDir+this.name+".jar");
 		try
 		{
+			FileUtilities.createParentDirectoriesIfNecessary(outputFile);
 			FileOutputStream fos = new FileOutputStream(outputFile);
 			JarOutputStream jos = new JarOutputStream(fos);
 			add(new File(sourceDirectory), jos);
