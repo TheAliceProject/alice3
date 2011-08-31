@@ -43,6 +43,12 @@
 
 package org.lgna.story.implementation;
 
+import java.awt.Color;
+
+import javax.swing.JComponent;
+
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -116,6 +122,9 @@ public class ProgramImplementation {
 	}
 	public void initializeInAwtContainer( java.awt.Container container ) {
 		container.add( ProgramImplementation.this.getOnscreenLookingGlass().getAWTComponent() );
+		if (container instanceof JComponent	) {
+			((JComponent) container).revalidate();
+		}
 		this.startAnimator();
 	}
 	public void initializeInFrame( javax.swing.JFrame frame ) {

@@ -13,5 +13,12 @@ public class Vehicle extends Model {
 	
 	public void driveTo( Entity entity ) {
 	}
+	
+	public Joint getRightDoor() {
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.VehicleResource.VehicleJointId.RIGHT_DOOR, this.implementation, this.map );
+	}
 
+	public Joint getLeftDoor() {
+		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.VehicleResource.VehicleJointId.LEFT_DOOR, this.implementation, this.map );
+	}
 }
