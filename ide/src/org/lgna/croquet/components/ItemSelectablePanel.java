@@ -51,10 +51,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 	private static class ImplementationBooleanState extends org.lgna.croquet.BooleanState {
 		public ImplementationBooleanState() {
 			super( ITEM_SELECTABLE_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "f0faf391-1b41-417d-98a9-ab9ba1a20335" ), false );
-		}
-		@Override
-		public boolean isToBeIgnored() {
-			return true;
+			this.pushIgnore();  //note: we do not pop
 		}
 	}
 	public ItemSelectablePanel( org.lgna.croquet.ListSelectionState<E> model ) {

@@ -59,13 +59,13 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		}
 		return this.cascadeFillIn;
 	}
-	protected abstract T createValue( org.lgna.croquet.history.InputDialogOperationStep step );
+	protected abstract T createValue( org.lgna.croquet.history.InputDialogOperationStep< T > step );
 	@Override
-	protected final void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isCommit ) {
+	protected final void epilogue( org.lgna.croquet.history.InputDialogOperationStep< T > step, boolean isCommit ) {
 		if( isCommit ) {
 			T value = this.createValue( step );
 			if( value != null ) {
-				step.finish();
+				step.commitValue( value );
 			} else {
 				step.cancel();
 			}

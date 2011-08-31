@@ -73,7 +73,7 @@ public class HairState extends AbstractListSelectionState<org.lgna.story.resourc
 		this.setListData( -1, 
 				edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
 						edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-								org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+								org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
 								new edu.cmu.cs.dennisc.pattern.Criterion< org.lgna.story.resources.sims2.Hair >() {
 									public boolean accept( org.lgna.story.resources.sims2.Hair hair ) {
 										return hair.toString().equals( hairColor );

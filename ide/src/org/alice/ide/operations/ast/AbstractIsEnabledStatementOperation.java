@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.operations.ActionOperation {
+public abstract class AbstractIsEnabledStatementOperation extends org.lgna.croquet.ActionOperation {
 	private org.lgna.project.ast.Statement statement;
 
 	public AbstractIsEnabledStatementOperation( org.lgna.project.ast.Statement statement ) {

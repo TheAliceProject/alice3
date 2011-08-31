@@ -56,7 +56,7 @@ public abstract class AbstractSceneDeclareFieldOperation extends AbstractDeclare
 	
 	@Override
 	protected final org.lgna.project.ast.NamedUserType getOwnerType() {
-		return this.getIDE().getSceneType();
+		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
 	@Override
 	protected boolean isInstanceValid() {

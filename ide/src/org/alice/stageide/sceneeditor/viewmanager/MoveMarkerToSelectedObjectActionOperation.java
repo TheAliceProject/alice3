@@ -47,14 +47,13 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.alice.ide.IDE;
-import org.alice.ide.operations.ActionOperation;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraMarkerImplementation;
 
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
 
-public class MoveMarkerToSelectedObjectActionOperation extends ActionOperation {
+public class MoveMarkerToSelectedObjectActionOperation extends org.lgna.croquet.ActionOperation {
 
 	private static class SingletonHolder {
 		private static MoveMarkerToSelectedObjectActionOperation instance = new MoveMarkerToSelectedObjectActionOperation();

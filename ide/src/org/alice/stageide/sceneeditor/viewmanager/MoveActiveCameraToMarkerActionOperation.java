@@ -44,12 +44,11 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.IDE;
-import org.alice.ide.operations.ActionOperation;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraMarkerImplementation;
 import org.lgna.story.implementation.OrthographicCameraMarkerImplementation;
 
-public class MoveActiveCameraToMarkerActionOperation extends ActionOperation {
+public class MoveActiveCameraToMarkerActionOperation extends org.lgna.croquet.ActionOperation {
 	
 	private static class SingletonHolder {
 		private static MoveActiveCameraToMarkerActionOperation instance = new MoveActiveCameraToMarkerActionOperation();

@@ -89,7 +89,7 @@ public abstract class PersonResource implements org.lgna.story.resources.PersonR
 		rv.setOutfit( this.getOutfit() );
 		rv.setSkinTone( this.getSkinTone() );
 		rv.setObesityLevel( this.getObesityLevel() );
-		rv.setHair( org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultHairBraids.BLACK );
+		rv.setHair( org.lgna.story.resources.sims2.FemaleAdultHairBraids.BLACK );
 		rv.setEyeColor( org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
 		return rv;
 	}

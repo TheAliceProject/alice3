@@ -105,7 +105,7 @@ class PasteFromClipboardOperation extends FromClipboardOperation {
 }
 
 
-class CopyToClipboardOperation extends org.alice.ide.operations.ActionOperation {
+class CopyToClipboardOperation extends org.lgna.croquet.ActionOperation {
 	private static java.util.Map< org.lgna.project.ast.AbstractNode, CopyToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized CopyToClipboardOperation getInstance( org.lgna.project.ast.AbstractNode node ) {
 		assert node != null;
@@ -176,7 +176,7 @@ class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 	}
 }
 
-class CutToClipboardOperation extends org.alice.ide.operations.ActionOperation {
+class CutToClipboardOperation extends org.lgna.croquet.ActionOperation {
 	private static java.util.Map< org.lgna.project.ast.Statement, CutToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized CutToClipboardOperation getInstance( org.lgna.project.ast.Statement node ) {
 		assert node != null;

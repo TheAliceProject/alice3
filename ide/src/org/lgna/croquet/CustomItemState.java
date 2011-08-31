@@ -85,6 +85,10 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 	@Override
 	protected void localize() {
 	}
+	@Override
+	protected void commitStateEdit(T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger) {
+		//todo
+	}
 	protected abstract void handleValueChange( T value );
 	public final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
 		this.fireChanging( prevValue, nextValue, isAdjusting );

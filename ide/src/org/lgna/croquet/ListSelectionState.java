@@ -42,12 +42,12 @@
  */
 package org.lgna.croquet;
 
-/*package-private*/ class ComboBoxModel<E> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
-	private final ListSelectionState< E > listSelectionState;
-	public ComboBoxModel( ListSelectionState< E > listSelectionState ) {
+/*package-private*/ class ComboBoxModel<T> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+	private final ListSelectionState< T > listSelectionState;
+	public ComboBoxModel( ListSelectionState< T > listSelectionState ) {
 		this.listSelectionState = listSelectionState;
 	}
-	public E getSelectedItem() {
+	public T getSelectedItem() {
 		return this.listSelectionState.getSelectedItem();
 	}
 	public void setSelectedItem( Object item ) {
@@ -55,7 +55,7 @@ package org.lgna.croquet;
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, this.getSelectedItem() ) ) {
 				throw new RuntimeException();
 			}
-			this.listSelectionState.setSelectionFromSwing( (E)item );
+			this.listSelectionState.setSelectionFromSwing( (T)item );
 			this.fireContentsChanged( this, -1, -1 );
 		}
 	}
@@ -78,12 +78,12 @@ package org.lgna.croquet;
 }
 
 
-/*package-private*/ class ListSelectionModel<E> implements javax.swing.ListSelectionModel {
-	private final ListSelectionState< E > listSelectionState;
+/*package-private*/ class ListSelectionModel<T> implements javax.swing.ListSelectionModel {
+	private final ListSelectionState< T > listSelectionState;
 	private java.util.List< javax.swing.event.ListSelectionListener > listSelectionListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private boolean isAdjusting;
 
-	public ListSelectionModel( ListSelectionState< E > listSelectionState ) {
+	public ListSelectionModel( ListSelectionState< T > listSelectionState ) {
 		this.listSelectionState = listSelectionState;
 	}
 
@@ -164,75 +164,23 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListSelectionState<E> extends ItemState< E > implements Iterable< E >/*, java.util.List<E>*/{
-	private final ComboBoxModel< E > comboBoxModel = new ComboBoxModel< E >( this );
-	private final ListSelectionModel< E > listSelectionModel = new ListSelectionModel< E >( this );
+public abstract class ListSelectionState<T> extends ItemState< T > implements Iterable< T >/*, java.util.List<E>*/{
+	private final ComboBoxModel< T > comboBoxModel = new ComboBoxModel< T >( this );
+	private final ListSelectionModel< T > listSelectionModel = new ListSelectionModel< T >( this );
 	
 	/*package-private*/ void setSelectionIndexFromSwing( int index ) {
 		this.pushAtomic();
 		this.index = index;
 		this.popAtomic();
 	}
-	/*package-private*/ void setSelectionFromSwing( E item ) {
+	/*package-private*/ void setSelectionFromSwing( T item ) {
 		this.pushAtomic();
 		this.index = this.indexOf( item );
 		this.popAtomic();
 	}
 	
 	private int index = -1;
-//	private int indexOfLastPerform = -1;
-
-	private org.lgna.croquet.components.ViewController< ?, ? > mostRecentViewController;
-	private java.awt.event.MouseEvent mostRecentEvent;
-	public void setMostRecentEventAndViewController( java.awt.event.MouseEvent mostRecentEvent, org.lgna.croquet.components.ViewController< ?, ? > mostRecentViewController ) {
-		this.mostRecentEvent = mostRecentEvent;
-		this.mostRecentViewController = mostRecentViewController;
-	}
-
-	private int pushCount = 0;
-	private E prevAtomicSelectedValue;
-	public boolean isInMidstOfAtomic() {
-		return this.pushCount > 0;
-	}
-	public void pushAtomic() {
-		if( this.isInMidstOfAtomic() ) {
-			//pass
-		} else {
-			this.prevAtomicSelectedValue = this.getValue();
-			//todo?
-			this.setMostRecentEventAndViewController( null, null );
-		}
-		this.pushCount++;
-	}
-	public void popAtomic() {
-		this.pushCount--;
-		if( this.pushCount == 0 ) {
-			E nextSelectedValue = this.getValue();
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
-				//pass
-			} else {
-				boolean isAdjusting = false;
-				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
-
-				this.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.listSelectionModel.getValueIsAdjusting() );
-				this.comboBoxModel.ACCESS_fireContentsChanged( this, this.index, this.index );
-				if( Manager.isInTheMidstOfUndoOrRedo() ) {
-					//pass
-				} else {
-					this.commitEdit( this.prevAtomicSelectedValue, nextSelectedValue, new org.lgna.croquet.triggers.MouseEventTrigger( this.mostRecentViewController, this.mostRecentEvent ) );
-					//						ListSelectionStateContext< E > childContext = ContextManager.createAndPushItemSelectionStateContext( ListSelectionState.this, this.mostRecentEvent, this.mostRecentViewController /*, prevIndex, prevSelection, nextIndex, nextSelection*/ );
-					//						childContext.commitAndInvokeDo( new ListSelectionStateEdit<E>( this.mostRecentEvent, prevSelection, nextSelection ) );
-					//						ModelContext< ? > popContext = ContextManager.popContext();
-					//						assert popContext == childContext;
-				}
-
-				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
-				this.mostRecentEvent = null;
-				this.mostRecentViewController = null;
-			}
-		}
-	}
-	public ListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec, int selectionIndex ) {
+	public ListSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex ) {
 		super( group, id, codec );
 		this.index = selectionIndex;
 	}
@@ -240,17 +188,17 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 	protected void localize() {
 	}
 
-	private ListSelectionStatePrepModel< E > prepModel;
-	public synchronized ListSelectionStatePrepModel< E > getPrepModel() {
+	private ListSelectionStatePrepModel< T > prepModel;
+	public synchronized ListSelectionStatePrepModel< T > getPrepModel() {
 		if( this.prepModel != null ) {
 			//pass
 		} else {
-			this.prepModel = new ListSelectionStatePrepModel< E >( this );
+			this.prepModel = new ListSelectionStatePrepModel< T >( this );
 		}
 		return this.prepModel;
 	}
 
-	public javax.swing.Action createActionForItem( final E item ) {
+	public javax.swing.Action createActionForItem( final T item ) {
 		javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				ListSelectionState.this.setSelectionFromSwing( item );
@@ -269,7 +217,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 	}
 
 	@Override
-	public E getValue() {
+	public T getValue() {
 		return this.getSelectedItem();
 	}
 
@@ -281,7 +229,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 	}
 	
 
-	public E getSelectedItem() {
+	public T getSelectedItem() {
 		if( this.index >= 0 ) {
 			if( this.index < this.getItemCount() ) {
 				return this.getItemAt( index );
@@ -294,7 +242,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 			return null;
 		}
 	}
-	public void setSelectedItem( E selectedItem ) {
+	public void setSelectedItem( T selectedItem ) {
 		this.setSelectedIndex( this.indexOf( selectedItem ) );
 	}
 	public int getSelectedIndex() {
@@ -309,27 +257,27 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		this.setSelectedIndex( -1 );
 	}
 
-	public abstract E getItemAt( int index );
+	public abstract T getItemAt( int index );
 	public abstract int getItemCount();
-	public abstract E[] toArray( Class< E > componentType );
-	public final E[] toArray() {
+	public abstract T[] toArray( Class< T > componentType );
+	public final T[] toArray() {
 		return this.toArray( this.getItemCodec().getValueClass() );
 	}
 	
-	public abstract int indexOf( E item );
-	public boolean containsItem( E item ) {
+	public abstract int indexOf( T item );
+	public boolean containsItem( T item ) {
 		return indexOf( item ) != -1;
 	}
 
-	protected void handleItemAdded( E item ) {
+	protected void handleItemAdded( T item ) {
 	}
-	protected void handleItemRemoved( E item ) {
+	protected void handleItemRemoved( T item ) {
 	}
-	protected abstract void internalAddItem( E item );
-	protected abstract void internalRemoveItem( E item );
-	protected abstract void internalSetItems( java.util.Collection< E > items );
+	protected abstract void internalAddItem( T item );
+	protected abstract void internalRemoveItem( T item );
+	protected abstract void internalSetItems( java.util.Collection< T > items );
 
-	public final void addItem( E item ) {
+	public final void addItem( T item ) {
 		this.pushAtomic();
 		try {
 			this.internalAddItem( item );
@@ -341,7 +289,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 			this.popAtomic();
 		}
 	}
-	public final void removeItem( E item ) {
+	public final void removeItem( T item ) {
 		this.pushAtomic();
 		try {
 			int index = this.indexOf( item );
@@ -353,22 +301,22 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		}
 	}
 	
-	public final void setItems( java.util.Collection< E > items ) {
+	public final void setItems( java.util.Collection< T > items ) {
 		this.pushAtomic();
 		try {
-			java.util.Set< E > previous = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( this.toArray() );
-			java.util.Set< E > next = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( items );
-			java.util.List< E > added = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.List< E > removed = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.Set< T > previous = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( this.toArray() );
+			java.util.Set< T > next = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( items );
+			java.util.List< T > added = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List< T > removed = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			
-			for( E item : previous ) {
+			for( T item : previous ) {
 				if( next.contains( item ) ) {
 					//pass
 				} else {
 					removed.add( item );
 				}
 			}
-			for( E item : next ) {
+			for( T item : next ) {
 				if( previous.contains( item ) ) {
 					//pass
 				} else {
@@ -376,7 +324,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 				}
 			}
 			
-			E previousSelectedValue = this.getValue();
+			T previousSelectedValue = this.getValue();
 			
 			this.internalSetItems( items );
 			
@@ -387,10 +335,10 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 //			}
 
 			this.comboBoxModel.ACCESS_fireContentsChanged( this, 0, this.getItemCount() );
-			for( E item : removed ) {
+			for( T item : removed ) {
 				this.handleItemRemoved( item );
 			}
-			for( E item : added ) {
+			for( T item : added ) {
 				this.handleItemAdded( item );
 			}
 
@@ -399,16 +347,31 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 			this.popAtomic();
 		}
 	}
+	
+	@Override
+	protected void commitStateEdit(T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger) {
+		org.lgna.croquet.history.ListSelectionStateChangeStep< T > step = org.lgna.croquet.history.TransactionManager.addListSelectionStateChangeStep( this, trigger );
+		org.lgna.croquet.edits.ListSelectionStateEdit< T > edit = new org.lgna.croquet.edits.ListSelectionStateEdit< T >( step, prevValue, nextValue );
+		step.commitAndInvokeDo( edit );
+	}	
+	
+	//todo
+	@Override
+	protected void fireChanging(T prevValue, T nextValue, boolean isAdjusting) {
+		super.fireChanging( prevValue, nextValue, isAdjusting );
+		this.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.listSelectionModel.getValueIsAdjusting() );
+		this.comboBoxModel.ACCESS_fireContentsChanged( this, this.index, this.index );
+	}
 
-	public final void setItems( E... items ) {
+	public final void setItems( T... items ) {
 		this.setItems( java.util.Arrays.asList( items ) );
 	}
 	public void clear() {
-		java.util.Collection< E > items = java.util.Collections.emptyList();
+		java.util.Collection< T > items = java.util.Collections.emptyList();
 		this.setListData( -1, items );
 	}
 	@Deprecated
-	public void setListData( int selectedIndex, E... items ) {
+	public void setListData( int selectedIndex, T... items ) {
 		this.pushAtomic();
 		try {
 			this.setItems( items );
@@ -418,7 +381,7 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		}
 	}
 	@Deprecated
-	public void setListData( int selectedIndex, java.util.Collection< E > items ) {
+	public void setListData( int selectedIndex, java.util.Collection< T > items ) {
 		this.pushAtomic();
 		try {
 			this.setItems( items );
@@ -439,35 +402,29 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		this.setSelectedIndex( i );
 	}
 	
-	protected String getMenuText( E item ) {
+	protected String getMenuText( T item ) {
 		if( item != null ) {
 			return item.toString();
 		} else {
 			return null;
 		}
 	}
-	protected javax.swing.Icon getMenuSmallIcon( E item ) {
+	protected javax.swing.Icon getMenuSmallIcon( T item ) {
 		return null;
 	}
 	
-	protected void commitEdit( E prevValue, E nextValue, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.ListSelectionStateChangeStep< E > step = org.lgna.croquet.history.TransactionManager.addListSelectionStateChangeStep( this, trigger );
-		org.lgna.croquet.edits.ListSelectionStateEdit< E > edit = new org.lgna.croquet.edits.ListSelectionStateEdit< E >( step, prevValue, nextValue );
-		step.commitAndInvokeDo( edit );
-	}
-
 	@Override
-	public org.lgna.croquet.edits.ListSelectionStateEdit< E > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	public org.lgna.croquet.edits.ListSelectionStateEdit< T > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof org.lgna.croquet.edits.ListSelectionStateEdit;
-		org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)originalEdit;
-		this.commitEdit( listSelectionStateEdit.getPreviousValue(), listSelectionStateEdit.getNextValue(), new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.edits.ListSelectionStateEdit< T > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< T >)originalEdit;
+		this.commitStateEdit( listSelectionStateEdit.getPreviousValue(), listSelectionStateEdit.getNextValue(), false, new org.lgna.croquet.triggers.SimulatedTrigger() );
 		return listSelectionStateEdit;
 	}
 
 	@Override
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		if( edit instanceof org.lgna.croquet.edits.ListSelectionStateEdit ) {
-			org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)edit;
+			org.lgna.croquet.edits.ListSelectionStateEdit< T > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< T >)edit;
 			rv.append( "Select " );
 			rv.append( "<strong>" );
 			this.getItemCodec().appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
@@ -475,21 +432,21 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		}
 		return rv;
 	}
-	public org.lgna.croquet.components.List< E > createList() {
-		return new org.lgna.croquet.components.List< E >( this );
+	public org.lgna.croquet.components.List< T > createList() {
+		return new org.lgna.croquet.components.List< T >( this );
 	}
-	public org.lgna.croquet.components.DefaultRadioButtons< E > createVerticalDefaultRadioButtons() {
-		return new org.lgna.croquet.components.DefaultRadioButtons< E >( this, true );
+	public org.lgna.croquet.components.DefaultRadioButtons< T > createVerticalDefaultRadioButtons() {
+		return new org.lgna.croquet.components.DefaultRadioButtons< T >( this, true );
 	}
-	public org.lgna.croquet.components.DefaultRadioButtons< E > createHorizontalDefaultRadioButtons() {
-		return new org.lgna.croquet.components.DefaultRadioButtons< E >( this, false );
+	public org.lgna.croquet.components.DefaultRadioButtons< T > createHorizontalDefaultRadioButtons() {
+		return new org.lgna.croquet.components.DefaultRadioButtons< T >( this, false );
 	}
-	public org.lgna.croquet.components.MutableList< E > createMutableList( org.lgna.croquet.components.MutableList.Factory< E > factory ) {
-		return new org.lgna.croquet.components.MutableList< E >( this, factory );
+	public org.lgna.croquet.components.MutableList< T > createMutableList( org.lgna.croquet.components.MutableList.Factory< T > factory ) {
+		return new org.lgna.croquet.components.MutableList< T >( this, factory );
 	}
 
-	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( E item ) {
-		org.lgna.croquet.components.ItemSelectable< ?, E > itemSelectable = this.getFirstComponent( org.lgna.croquet.components.ItemSelectable.class );
+	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( T item ) {
+		org.lgna.croquet.components.ItemSelectable< ?, T > itemSelectable = this.getFirstComponent( org.lgna.croquet.components.ItemSelectable.class );
 		if( itemSelectable != null ) {
 			return itemSelectable.getTrackableShapeFor( item );
 		} else {
@@ -548,13 +505,13 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 		}
 	}
 
-	private ListSelectionMenuModel< E > menuModel;
+	private ListSelectionMenuModel< T > menuModel;
 
-	public synchronized ListSelectionMenuModel< E > getMenuModel() {
+	public synchronized ListSelectionMenuModel< T > getMenuModel() {
 		if( this.menuModel != null ) {
 			//pass
 		} else {
-			this.menuModel = new ListSelectionMenuModel< E >( this );
+			this.menuModel = new ListSelectionMenuModel< T >( this );
 		}
 		return this.menuModel;
 	}

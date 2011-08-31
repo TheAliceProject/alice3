@@ -215,6 +215,11 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 	public void setSelectedNode( T e ) {
 		this.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
 	}
+	
+	@Override
+	protected void commitStateEdit(T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger) {
+		//todo
+	}
 
 	@Override
 	public T getValue() {

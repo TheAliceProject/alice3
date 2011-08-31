@@ -48,6 +48,7 @@ package org.alice.ide.croquet.models.openproject;
 		super( id );
 		this.setTitleText( title );
 	}
+	public abstract java.net.URI getSelectedUri();
 	@Override
 	public org.lgna.croquet.components.ScrollPane createScrollPane() {
 		org.lgna.croquet.components.ScrollPane rv = super.createScrollPane();
@@ -83,17 +84,29 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 	static {
 		map.put( TEMPLATES_TAB_ID, new ContentTab( TEMPLATES_TAB_ID, "Templates" ) {
 			@Override
+			public java.net.URI getSelectedUri() {
+				return org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getInstance().getSelectedItem();
+			}
+			@Override
 			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 				return new org.alice.stageide.openprojectpane.components.TemplatesTabContentPane();
 			}
 		} );
 		map.put( MY_PROJECTS_TAB_ID, new ContentTab( MY_PROJECTS_TAB_ID, "My Projects" ) {
 			@Override
+			public java.net.URI getSelectedUri() {
+				return org.alice.ide.openprojectpane.models.MyProjectsUriSelectionState.getInstance().getSelectedItem();
+			}
+			@Override
 			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 				return new org.alice.ide.openprojectpane.DirectoryListContentPanel( org.alice.ide.openprojectpane.models.MyProjectsUriSelectionState.getInstance() );
 			}
 		} );
 		map.put( RECENT_TAB_ID, new ContentTab( RECENT_TAB_ID, "Recent" ) {
+			@Override
+			public java.net.URI getSelectedUri() {
+				return org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().getSelectedItem();
+			}
 			@Override
 			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 				return new org.alice.ide.openprojectpane.RecentPane();
@@ -113,7 +126,11 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 //		} );
 		map.put( FILE_SYSTEM_TAB_ID, new ContentTab( FILE_SYSTEM_TAB_ID, "File System" ) {
 			@Override
-			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+			public java.net.URI getSelectedUri() {
+				return ((org.alice.ide.openprojectpane.FileSystemPane)this.getMainComponent()).getSelectedURI();
+			}
+			@Override
+			protected org.alice.ide.openprojectpane.FileSystemPane createMainComponent() {
 				return new org.alice.ide.openprojectpane.FileSystemPane();
 			}
 		} );
@@ -142,9 +159,9 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 	}
 	
 	public java.net.URI getSelectedURI() {
-		org.lgna.croquet.PredeterminedTab current = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedItem();
-		if( current != null ) {
-			return ((org.alice.ide.openprojectpane.TabContentPanel)(current.getMainComponent())).getSelectedURI();
+		ContentTab contentTab = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedItem();
+		if( contentTab != null ) {
+			return contentTab.getSelectedUri();
 		} else {
 			return null;
 		}

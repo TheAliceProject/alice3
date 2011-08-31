@@ -88,9 +88,9 @@ public final class CascadeValueInputDialogOperationFillIn<F> extends CascadeFill
 	}
 	@Override
 	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
-		org.lgna.croquet.history.InputDialogOperationStep inputDialogStep = this.valueInputDialogOperation.fire();
-		if( inputDialogStep.isSuccessfullyCompleted() ) {
-			return this.valueInputDialogOperation.createValue( inputDialogStep );
+		org.lgna.croquet.history.InputDialogOperationStep<F> inputDialogStep = this.valueInputDialogOperation.fire();
+		if( inputDialogStep.isValueCommitted() ) {
+			return inputDialogStep.getCommittedValue();
 		} else {
 			throw new CancelException();
 		}

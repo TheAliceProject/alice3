@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.project.ast.Node > extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< T > {
+public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.project.ast.Node > extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< Void > {
 	private final DeclaringTypeState declaringTypeState;
 	private final ValueComponentTypeState valueComponentTypeState;
 	private final IsArrayValueTypeState isArrayValueTypeState;

@@ -74,7 +74,7 @@ public class DeleteMethodOperation extends DeleteMemberOperation< org.lgna.proje
 	}
 	@Override
 	protected boolean isClearToDelete( org.lgna.project.ast.UserMethod method ) {
-		java.util.List< org.lgna.project.ast.MethodInvocation > references = this.getIDE().getMethodInvocations( method );
+		java.util.List< org.lgna.project.ast.MethodInvocation > references = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
 		final int N = references.size();
 		if( N > 0 ) {
 			StringBuffer sb = new StringBuffer();
@@ -103,7 +103,7 @@ public class DeleteMethodOperation extends DeleteMemberOperation< org.lgna.proje
 			sb.append( method.name.getValue() );
 			sb.append( "\" ." );
 
-			this.getIDE().showMessageDialog( sb.toString() );
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString() );
 			return false;
 		} else {
 			return true;

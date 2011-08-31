@@ -45,20 +45,20 @@ package org.alice.ide.croquet.models.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.InputDialogOperation {
+public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.InputDialogOperation<Void> {
 	public AbstractRenameNodeOperation( org.lgna.croquet.Group group, java.util.UUID individualId ) {
 		super( group, individualId );
 	}
 	@Override
-	protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.InputDialogOperationStep<Void> step) {
 		org.alice.ide.name.RenamePane renamePane = new org.alice.ide.name.RenamePane();
 		renamePane.setAndSelectNameText( this.getNameProperty().getValue() );
 		return renamePane;
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep<Void> step, boolean isOk) {
 		if( isOk ) {
-			org.alice.ide.name.RenamePane renamePane = step.getMainPanel();
+			org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getMainPanel();
 			final String nextValue = renamePane.getNameText();
 			final edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();
 			final String prevValue = nameProperty.getValue();
@@ -93,8 +93,8 @@ public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.Input
 	protected abstract org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator();
 	
 	@Override
-	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		org.alice.ide.name.RenamePane renamePane = step.getMainPanel();
+	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep<Void> step ) {
+		org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getMainPanel();
 		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = this.getNodeNameValidator();
 		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( renamePane.getNameText() );
 		if( rv != null ) {

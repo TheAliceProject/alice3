@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateFieldFromPersonResourceOperation extends org.lgna.croquet.SerialOperation {
+public class CreateFieldFromPersonResourceOperation extends org.alice.ide.croquet.models.declaration.InitializerManagedFieldDeclarationOperation {
 	private static class SingletonHolder {
 		private static CreateFieldFromPersonResourceOperation instance = new CreateFieldFromPersonResourceOperation();
 	}
@@ -54,12 +54,20 @@ public class CreateFieldFromPersonResourceOperation extends org.lgna.croquet.Ser
 		return SingletonHolder.instance;
 	}
 	private CreateFieldFromPersonResourceOperation() {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "3ac22606-3b37-4b75-9613-89994c873782" ) );
+		super( 
+				java.util.UUID.fromString( "3ac22606-3b37-4b75-9613-89994c873782" ),
+				null
+		);
 	}
+	
 	@Override
-	protected java.util.List< org.lgna.croquet.SingleThreadOperation< ? >> getOperations() {
-		java.util.List< org.lgna.croquet.SingleThreadOperation< ? >> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( 2 );
-		rv.add( CreatePersonResourceOperation.getInstance() );
-		return rv;
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = CreatePersonResourceOperation.getInstance().fire();
+		if( subStep.isValueCommitted() ) {
+			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getCommittedValue();
+			return super.prologue( step );
+		} else {
+			return null;
+		}
 	}
 }

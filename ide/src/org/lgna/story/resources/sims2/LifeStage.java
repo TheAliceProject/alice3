@@ -42,18 +42,18 @@
  */
 package org.lgna.story.resources.sims2;
 
-import org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultHair;
-import org.lookingglassandalice.storytelling.resources.sims2.FemaleChildFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.FemaleChildHair;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleAdultFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleAdultHair;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleChildFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleChildHair;
-import org.lookingglassandalice.storytelling.resources.sims2.UnisexAdultFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.UnisexAdultHair;
-import org.lookingglassandalice.storytelling.resources.sims2.UnisexChildFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.UnisexChildHair;
+import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfit;
+import org.lgna.story.resources.sims2.FemaleAdultHair;
+import org.lgna.story.resources.sims2.FemaleChildFullBodyOutfit;
+import org.lgna.story.resources.sims2.FemaleChildHair;
+import org.lgna.story.resources.sims2.MaleAdultFullBodyOutfit;
+import org.lgna.story.resources.sims2.MaleAdultHair;
+import org.lgna.story.resources.sims2.MaleChildFullBodyOutfit;
+import org.lgna.story.resources.sims2.MaleChildHair;
+import org.lgna.story.resources.sims2.UnisexAdultFullBodyOutfit;
+import org.lgna.story.resources.sims2.UnisexAdultHair;
+import org.lgna.story.resources.sims2.UnisexChildFullBodyOutfit;
+import org.lgna.story.resources.sims2.UnisexChildHair;
 
 /**
  * @author Dennis Cosgrove

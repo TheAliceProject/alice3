@@ -96,6 +96,6 @@ public class ShowSystemPropertiesOperation extends org.alice.ide.operations.Inco
 //			new javax.swing.JButton( new AllSystemPropertiesOperation() ),
 //			javax.swing.Box.createVerticalStrut( 8 )
 //		);
-		this.getIDE().showMessageDialog( formPane, "System Properties", org.lgna.croquet.MessageType.INFORMATION ); 
+		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( formPane, "System Properties", org.lgna.croquet.MessageType.INFORMATION ); 
 	}
 }

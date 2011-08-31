@@ -42,7 +42,7 @@
  */
 package org.alice.ide.codeeditor;
 
-abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.operations.ActionOperation {
+abstract class ConvertStatementWithBodyActionOperation extends org.lgna.croquet.ActionOperation {
 	private org.lgna.project.ast.StatementListProperty property;
 	private org.lgna.project.ast.AbstractStatementWithBody original;
 	private org.lgna.project.ast.AbstractStatementWithBody replacement;
@@ -65,7 +65,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 					replacement.body.setValue( body );
 					property.add( index, replacement );
 					//todo: remove
-					getIDE().refreshUbiquitousPane();
+					org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 				}
 				@Override
 				protected final void undoInternal() {
@@ -74,7 +74,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 					original.body.setValue( body );
 					property.add( index, original );
 					//todo: remove
-					getIDE().refreshUbiquitousPane();
+					org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 				}
 				@Override
 				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
@@ -111,7 +111,7 @@ class ConvertDoTogetherToDoInOrderActionOperation extends ConvertStatementWithBo
 	}
 }
 
-class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOperation {
+class DissolveStatementActionOperation extends org.lgna.croquet.ActionOperation {
 	private org.lgna.project.ast.StatementListProperty property;
 	private org.lgna.project.ast.AbstractStatementWithBody abstractStatementWithBody;
 	public DissolveStatementActionOperation( org.lgna.project.ast.StatementListProperty property, org.lgna.project.ast.AbstractStatementWithBody abstractStatementWithBody ) {
@@ -135,7 +135,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 					property.remove( index );
 					property.add( index, statements );
 					//todo: remove
-					getIDE().refreshUbiquitousPane();
+					org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 				}
 				@Override
 				protected final void undoInternal() {
@@ -144,7 +144,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 					}
 					property.add( index, abstractStatementWithBody );
 					//todo: remove
-					getIDE().refreshUbiquitousPane();
+					org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 				}
 				@Override
 				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
@@ -159,7 +159,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.ActionOp
 	}
 }
 
-class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOperation {
+class DeleteStatementActionOperation extends org.lgna.croquet.ActionOperation {
 	private org.lgna.project.ast.StatementListProperty property;
 	private org.lgna.project.ast.Statement statement;
 
@@ -187,13 +187,13 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.ActionOper
 				protected final void doOrRedoInternal( boolean isDo ) {
 					property.remove( index );
 					//todo: remove
-					getIDE().refreshUbiquitousPane();
+					org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 				}
 				@Override
 				protected final void undoInternal() {
 					property.add( index, statement );
 					//todo: remove
-					getIDE().refreshUbiquitousPane();
+					org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 				}
 				@Override
 				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

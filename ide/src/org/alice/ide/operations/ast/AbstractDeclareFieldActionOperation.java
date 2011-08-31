@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclareFieldActionOperation extends org.alice.ide.operations.ActionOperation {
+public abstract class AbstractDeclareFieldActionOperation extends org.lgna.croquet.ActionOperation {
 	protected abstract org.lgna.project.ast.NamedUserType getOwnerType();
 	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, ? extends Object> createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, org.lgna.project.ast.NamedUserType ownerType );
 	protected abstract boolean isInstanceValid();

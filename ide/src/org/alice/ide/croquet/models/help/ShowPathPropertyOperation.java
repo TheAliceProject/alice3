@@ -82,6 +82,6 @@ public abstract class ShowPathPropertyOperation extends org.alice.ide.operations
 				return rv;
 			}
 		};
-		this.getIDE().showMessageDialog( formPane, "System Property: " + this.propertyName, org.lgna.croquet.MessageType.INFORMATION ); 
+		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( formPane, "System Property: " + this.propertyName, org.lgna.croquet.MessageType.INFORMATION ); 
 	}
 }

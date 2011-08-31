@@ -58,6 +58,6 @@ public class AboutOperation extends org.alice.ide.operations.InconsequentialActi
 	@Override
 	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
-		this.getIDE().showMessageDialog( aboutPane, "About " + org.alice.ide.IDE.getActiveInstance().getApplicationName(), org.lgna.croquet.MessageType.PLAIN );
+		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( aboutPane, "About " + org.alice.ide.IDE.getActiveInstance().getApplicationName(), org.lgna.croquet.MessageType.PLAIN );
 	}
 }
