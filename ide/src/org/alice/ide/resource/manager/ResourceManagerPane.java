@@ -358,14 +358,14 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		}
 	}
 
-	class RenameResourceOperation extends org.lgna.croquet.InputDialogOperation {
+	class RenameResourceOperation extends org.lgna.croquet.InputDialogOperation<Void> {
 		private org.alice.virtualmachine.Resource resource;
 		public RenameResourceOperation() {
 			super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ) );
 			this.setName( "Rename..." );
 		}
 		@Override
-		protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+		protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.InputDialogOperationStep<Void> step) {
 			this.resource = ResourceManagerPane.this.getSelectedResource();
 			if( this.resource != null ) {
 				org.alice.ide.name.RenamePane rv;
@@ -386,7 +386,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			}
 		}
 		@Override
-		protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
+		protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep<Void> step, boolean isOk) {
 			if( isOk ) {
 				org.alice.ide.name.RenamePane renamePane = step.getMainPanel();
 				final String nextName = renamePane.getNameText();

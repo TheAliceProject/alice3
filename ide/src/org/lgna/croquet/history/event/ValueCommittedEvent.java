@@ -41,23 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models;
+package org.lgna.croquet.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueInputDialogOperationWithPreview<T> extends org.lgna.croquet.ValueInputDialogOperation< T > {
-	public ValueInputDialogOperationWithPreview( org.lgna.croquet.Group group, java.util.UUID id ) {
-		super( group, id );
+public class ValueCommittedEvent<T> extends Event< org.lgna.croquet.history.InputDialogOperationStep< T > > {
+	private final T value;
+	public ValueCommittedEvent( org.lgna.croquet.history.InputDialogOperationStep< T > step, T value ) {
+		super( step );
+		this.value = value;
 	}
-	@Override
-	protected void updateExplanation( org.lgna.croquet.history.InputDialogOperationStep< T > step ) {
-		super.updateExplanation( step );
-		org.alice.ide.croquet.components.PanelWithPreview< ? > panelWithPreview = step.getMainPanel();
-		if( panelWithPreview != null ) {
-			panelWithPreview.updatePreview();
-		}
+	public T getValue() {
+		return this.value;
 	}
-	@Override
-	protected abstract org.alice.ide.croquet.components.PanelWithPreview< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep< T > step );
 }

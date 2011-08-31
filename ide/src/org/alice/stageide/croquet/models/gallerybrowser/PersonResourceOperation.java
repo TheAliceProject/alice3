@@ -74,7 +74,7 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.InputDial
 				if( edit != null ) {
 					step.commitAndInvokeDo( edit );
 				} else { 
-					step.cancel();
+					step.commitValue( personResource );
 				}
 			}
 		} else {
