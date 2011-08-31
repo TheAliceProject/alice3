@@ -155,6 +155,48 @@ public class SetUpMethodGenerator {
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
 	}
 
+	public static org.lgna.project.ast.Expression createGenderExpression( org.lgna.story.resources.sims2.Gender gender ) {
+		return createExpression( (Enum)gender );
+	}
+	public static org.lgna.project.ast.Expression createSkinToneExpression( org.lgna.story.resources.sims2.SkinTone skinTone ) {
+		return createExpression( (Enum)skinTone );
+	}
+	public static org.lgna.project.ast.Expression createEyeColorExpression( org.lgna.story.resources.sims2.EyeColor eyeColor ) {
+		return createExpression( (Enum)eyeColor );
+	}
+	public static org.lgna.project.ast.Expression createHairExpression( org.lgna.story.resources.sims2.Hair hair ) {
+		return createExpression( (Enum)hair );
+	}
+	public static org.lgna.project.ast.Expression createOutfitExpression( org.lgna.story.resources.sims2.Outfit outfit ) {
+		return createExpression( (Enum)outfit );
+	}
+	public static org.lgna.project.ast.InstanceCreation createExpression( org.lgna.story.resources.sims2.PersonResource personResource ) {
+		Class<?>[] parameterClses = { 
+				org.lgna.story.resources.sims2.Gender.class, 
+				org.lgna.story.resources.sims2.SkinTone.class, 
+				org.lgna.story.resources.sims2.EyeColor.class, 
+				org.lgna.story.resources.sims2.Hair.class, 
+				Number.class, 
+				org.lgna.story.resources.sims2.Outfit.class 
+		};
+		org.lgna.project.ast.Expression[] arguments = {
+				createGenderExpression( personResource.getGender() ),
+				createSkinToneExpression( personResource.getSkinTone() ),
+				createEyeColorExpression( personResource.getEyeColor() ),
+				createHairExpression( personResource.getHair() ),
+				new org.lgna.project.ast.DoubleLiteral( personResource.getObesityLevel() ),
+				createOutfitExpression( personResource.getOutfit() )
+		};
+		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
+	}
+	
+	
+	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.story.resources.sims2.PersonResource personResource ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > type = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class );
+		org.lgna.project.ast.InstanceCreation rv = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );
+		return rv;
+	}
+	
 	public static void fillInAutomaticPointOfViewAssignment(org.lgna.project.ast.StatementListProperty bodyStatementsProperty, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField pointOfViewField)
 	{
 		if (pointOfViewField != null)

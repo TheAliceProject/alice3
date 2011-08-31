@@ -71,6 +71,7 @@ public class InputDialogOperationStep<T> extends GatedCommitDialogOperationStep<
 		
 		this.setSuccessfullyCompleted( true );
 		this.committedValue = value;
+		this.isValueCommitted = true;
 		this.setPending( false );
 
 		this.fireChanged( e );
