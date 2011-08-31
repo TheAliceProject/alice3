@@ -3,10 +3,17 @@
  */
 package edu.cmu.cs.dennisc.nebulous;
 
+import org.lgna.story.resourceutilities.StorytellingResources;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
+	
+	static {
+		StorytellingResources.getInstance().loadSimsBundles();
+	}
+	
 	
     public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
         Manager.initializeIfNecessary();
