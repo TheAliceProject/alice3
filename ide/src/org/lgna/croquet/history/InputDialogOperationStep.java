@@ -57,12 +57,12 @@ public class InputDialogOperationStep<T> extends GatedCommitDialogOperationStep<
 	}
 
 	private boolean isValueCommitted = false;
-	private T value;
+	private T committedValue;
 	public boolean isValueCommitted() {
 		return this.isValueCommitted;
 	}
-	public T getValue() {
-		return this.value;
+	public T getCommittedValue() {
+		return this.committedValue;
 	}
 	public void commitValue( T value ) {
 		org.lgna.croquet.history.event.ValueCommittedEvent<T> e = new org.lgna.croquet.history.event.ValueCommittedEvent<T>( this, value );
@@ -70,7 +70,7 @@ public class InputDialogOperationStep<T> extends GatedCommitDialogOperationStep<
 
 		
 		this.setSuccessfullyCompleted( true );
-		this.value = value;
+		this.committedValue = value;
 		this.setPending( false );
 
 		this.fireChanged( e );

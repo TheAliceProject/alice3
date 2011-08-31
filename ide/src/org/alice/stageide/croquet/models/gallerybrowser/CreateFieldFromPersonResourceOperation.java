@@ -64,7 +64,7 @@ public class CreateFieldFromPersonResourceOperation extends org.alice.ide.croque
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = CreatePersonResourceOperation.getInstance().fire();
 		if( subStep.isValueCommitted() ) {
-			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getValue();
+			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getCommittedValue();
 			return super.prologue( step );
 		} else {
 			return null;
