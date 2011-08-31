@@ -21,7 +21,7 @@ public class ModelClassData extends BaseModelClassData
 	public static final ModelClassData WHALE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.WhaleResource.class, "org.lgna.story.resources.whale", SWIMMER_BASE_CLASS_DATA);
 	
 	//Sims Definitions
-	public static final BaseModelClassData SIMS_VEHICLE_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.Vehicle.class, org.lgna.story.implementation.SwimmerImplementation.class, org.lgna.story.resources.sims2.VehicleImplementationFactory.class);
+	public static final BaseModelClassData SIMS_VEHICLE_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.Vehicle.class, org.lgna.story.implementation.VehicleImplementation.class, org.lgna.story.resources.sims2.VehicleImplementationFactory.class);
 	
 	public static final ModelClassData SIMS_VEHICLE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.VehicleResource.class, "org.lgna.story.resources.vehicle", SIMS_VEHICLE_BASE_CLASS_DATA);
 	

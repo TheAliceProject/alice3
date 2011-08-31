@@ -1,5 +1,6 @@
 package org.lgna.story.resources;
 
+@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Vehicle.class )
 public interface VehicleResource extends ModelResource {
 	public static enum VehicleJointId implements JointId {
 		PELVIS_LOWER_BODY( null ),
