@@ -58,11 +58,6 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.PersonResource;
 import org.lgna.story.resources.sims2.*;
-import org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
-import org.lookingglassandalice.storytelling.resources.sims2.FemaleAdultHairBraids;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleAdultFullBodyOutfit;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleAdultFullBodyOutfitAmbulanceDriver;
-import org.lookingglassandalice.storytelling.resources.sims2.MaleAdultHairBald;
 
 abstract class CustomPerson extends Biped {
 	public CustomPerson( BipedResource resource ) {

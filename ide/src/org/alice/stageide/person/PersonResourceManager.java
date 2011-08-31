@@ -168,8 +168,8 @@ public enum PersonResourceManager {
 		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
 		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
 		org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
-		org.lgna.story.resources.sims2.Outfit outfit = org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
-		org.lgna.story.resources.sims2.Hair hair = org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		org.lgna.story.resources.sims2.Outfit outfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		org.lgna.story.resources.sims2.Hair hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 		double obesityLevel = org.alice.random.RandomUtilities.nextDouble();
 		return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
 	}
@@ -238,14 +238,14 @@ public enum PersonResourceManager {
 					if( baseSkinTone != null ) {
 						person.setSkinTone( baseSkinTone );
 						person.setObesityLevel( fitnessLevel );
-						if( fullBodyOutfit != null && org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
+						if( fullBodyOutfit != null && org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
 							//pass
 						} else {
 //							org.lookingglassandalice.storytelling.Outfit outfit = person.getOutfit();
 //							if( outfit instanceof org.lookingglassandalice.storytelling.FullBodyOutfit ) {
 //								fullBodyOutfit = ( org.lookingglassandalice.storytelling.FullBodyOutfit )outfit;
 //							} else {
-								fullBodyOutfit = org.lookingglassandalice.storytelling.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+								fullBodyOutfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 //							}
 						}
 						person.setOutfit( fullBodyOutfit );
@@ -254,15 +254,15 @@ public enum PersonResourceManager {
 						person.setEyeColor( baseEyeColor );
 					}
 					if( gender != null ) {
-						if( hair != null && org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
+						if( hair != null && org.lgna.story.resources.sims2.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
 							//pass
 						} else {
 							try {
-								Class<? extends org.lgna.story.resources.sims2.Hair> cls = org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getRandomClass(lifeStage, gender);
+								Class<? extends org.lgna.story.resources.sims2.Hair> cls = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomClass(lifeStage, gender);
 								java.lang.reflect.Field field = cls.getField( hairColor );
 								hair = (org.lgna.story.resources.sims2.Hair)field.get( null );
 							} catch( Exception e ) {
-								hair = org.lookingglassandalice.storytelling.resources.sims2.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
+								hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
 							}
 						}
 						person.setHair( hair );
