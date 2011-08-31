@@ -51,11 +51,10 @@ public abstract class BoundedRangeIntegerState extends State< Integer > {
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		//private boolean previousValueIsAdjusting = false;
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			org.lgna.croquet.history.TransactionManager.handleBoundedRangeIntegerStateChanged( BoundedRangeIntegerState.this, e, boundedRangeModel.getValue(), boundedRangeModel.getValueIsAdjusting() );
-			fireChanged( previousValue, boundedRangeModel.getValue(), boundedRangeModel.getValueIsAdjusting() );
+			BoundedRangeIntegerState.this.handleStateChanged( e );
 		}
 	};
-	javax.swing.SpinnerModel spinnerModel = new javax.swing.AbstractSpinnerModel() {
+	private final javax.swing.SpinnerModel spinnerModel = new javax.swing.AbstractSpinnerModel() {
 		public Integer getNextValue() {
 			return this.getValue()+1;
 		}
@@ -79,6 +78,17 @@ public abstract class BoundedRangeIntegerState extends State< Integer > {
 		this.boundedRangeModel.addChangeListener( this.changeListener );
 	}
 
+	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
+		if( this.isAppropriateToComplete() ) {
+			this.commitStateEdit( this.previousValue, boundedRangeModel.getValue(), boundedRangeModel.getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
+		}
+		fireChanged( previousValue, boundedRangeModel.getValue(), boundedRangeModel.getValueIsAdjusting() );
+	}
+	@Override
+	protected void commitStateEdit( Integer prevValue, Integer nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.TransactionManager.handleBoundedRangeIntegerStateChanged( BoundedRangeIntegerState.this, nextValue, isAdjusting, trigger );
+	}
+	
 	@Override
 	protected void localize() {
 	}

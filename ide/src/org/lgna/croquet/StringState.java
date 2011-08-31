@@ -46,30 +46,16 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class StringState extends State<String> {
-	private javax.swing.text.Document document;
-	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
-		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
-			try {
-				javax.swing.text.Document document = e.getDocument();
-				String nextValue = document.getText( 0, document.getLength() );
-				String prevValue = StringState.this.previousValue;
-				boolean isAdjusting = false;
-				fireChanging( prevValue, nextValue, isAdjusting );
-				org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, e, prevValue, nextValue );
-				StringState.this.previousValue = nextValue;
-				fireChanged( prevValue, nextValue, isAdjusting );
-			} catch( javax.swing.text.BadLocationException ble ) {
-				throw new RuntimeException( ble );
-			}
-		}
+	private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
+	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		public void changedUpdate(javax.swing.event.DocumentEvent e) {
-			this.handleUpdate(e);
+			StringState.this.handleUpdate(e);
 		}
 		public void insertUpdate(javax.swing.event.DocumentEvent e) {
-			this.handleUpdate(e);
+			StringState.this.handleUpdate(e);
 		}
 		public void removeUpdate(javax.swing.event.DocumentEvent e) {
-			this.handleUpdate(e);
+			StringState.this.handleUpdate(e);
 		}
 	};
 
@@ -77,7 +63,6 @@ public abstract class StringState extends State<String> {
 	public StringState(Group group, java.util.UUID id, String initialState) {
 		super(group, id);
 		this.previousValue = initialState;
-		this.document = new javax.swing.text.PlainDocument();
 		try {
 			this.document.insertString(0, initialState, null);
 		} catch( javax.swing.text.BadLocationException ble ) {
@@ -86,10 +71,31 @@ public abstract class StringState extends State<String> {
 		this.document.addDocumentListener( this.documentListener );
 	}
 
+	private void handleUpdate( javax.swing.event.DocumentEvent e ) {
+		try {
+			javax.swing.text.Document document = e.getDocument();
+			String nextValue = document.getText( 0, document.getLength() );
+			String prevValue = this.previousValue;
+			boolean isAdjusting = false;
+			fireChanging( prevValue, nextValue, isAdjusting );
+			if( this.isAppropriateToComplete() ) {
+				this.commitStateEdit( prevValue, nextValue, isAdjusting, new org.lgna.croquet.triggers.DocumentEventTrigger( e ) );
+			}
+			StringState.this.previousValue = nextValue;
+			fireChanged( prevValue, nextValue, isAdjusting );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
+		}
+	}
+
 	@Override
 	protected void localize() {
 	}
 
+	@Override
+	protected void commitStateEdit( String prevValue, String nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
+	}
 	@Override
 	public String getValue() {
 		try {
@@ -99,11 +105,14 @@ public abstract class StringState extends State<String> {
 		}
 	}
 	public void setValue( String value ) {
+		this.pushAtomic();
 		try {
 			this.document.remove( 0, this.document.getLength() );
 			this.document.insertString( 0, value, null );
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
+		} finally {
+			this.popAtomic();
 		}
 	}
 	

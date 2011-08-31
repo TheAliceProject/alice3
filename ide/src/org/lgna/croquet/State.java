@@ -82,6 +82,50 @@ public abstract class State<T> extends CompletionModel {
 		}
 	}
 	
+	@Override
+	protected boolean isAppropriateToComplete() {
+		return super.isAppropriateToComplete() && this.isInMidstOfAtomic() == false;
+	}
+	
+	private int pushCount = 0;
+	private T prevAtomicSelectedValue;
+	private org.lgna.croquet.triggers.Trigger trigger;
+	public boolean isInMidstOfAtomic() {
+		return this.pushCount > 0;
+	}
+	public void pushAtomic( org.lgna.croquet.triggers.Trigger trigger ) {
+		if( this.isInMidstOfAtomic() ) {
+			//pass
+		} else {
+			this.prevAtomicSelectedValue = this.getValue();
+			this.trigger = trigger;
+		}
+		this.pushCount++;
+	}
+	public void pushAtomic() {
+		this.pushAtomic( null );
+	}
+	public void popAtomic() {
+		this.pushCount--;
+		if( this.pushCount == 0 ) {
+			T nextSelectedValue = this.getValue();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
+				//pass
+			} else {
+				boolean isAdjusting = false;
+				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
+				if( this.isAppropriateToComplete() ) {
+					this.commitStateEdit( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting, this.trigger );
+				}
+				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
+				this.trigger = null;
+			}
+		}
+	}
+	
+	protected abstract void commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger );
+	
+	
 	public abstract T getValue();
 	@Override
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {

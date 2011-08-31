@@ -75,7 +75,7 @@ public class TransactionManager {
 		return stack.pop();
 	}
 	
-	public static void handleDocumentEvent( StringState stringState, javax.swing.event.DocumentEvent documentEvent, String previousValue, String nextValue ) {
+	public static void handleDocumentEvent( StringState stringState, org.lgna.croquet.triggers.Trigger trigger, String previousValue, String nextValue ) {
 		Transaction transaction = getLastTransaction();
 		StringStateChangeStep stringStateChangeStep = null;
 		if( transaction != null ) {
@@ -88,11 +88,10 @@ public class TransactionManager {
 		} else {
 			transaction = getActiveTransaction();
 		}
-		org.lgna.croquet.triggers.DocumentEventTrigger trigger = new org.lgna.croquet.triggers.DocumentEventTrigger( documentEvent );
 		if( stringStateChangeStep != null ) {
 			stringStateChangeStep.pendDocumentEvent( trigger, nextValue );
 		} else {
-			stringStateChangeStep = StringStateChangeStep.createAndAddToTransaction( transaction, stringState, new org.lgna.croquet.triggers.DocumentEventTrigger( documentEvent ), previousValue, nextValue );
+			stringStateChangeStep = StringStateChangeStep.createAndAddToTransaction( transaction, stringState, trigger, previousValue, nextValue );
 		}
 	}
 
@@ -346,7 +345,7 @@ public class TransactionManager {
 		}
 	}
 
-	public static void handleBoundedRangeIntegerStateChanged( BoundedRangeIntegerState boundedRangeIntegerState, javax.swing.event.ChangeEvent changeEvent, int value, boolean isAdjusting ) {
+	public static void handleBoundedRangeIntegerStateChanged( BoundedRangeIntegerState boundedRangeIntegerState, int value, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		TransactionHistory transactionHistory = getActiveTransactionHistory();
 		Transaction transaction = transactionHistory.getActiveTransaction();
 		if( isAdjusting ) {
@@ -354,7 +353,7 @@ public class TransactionManager {
 			transaction.fireChanging( adjustEvent );
 			transaction.fireChanged( adjustEvent );
 		} else {
-			BoundedRangeIntegerStateChangeStep.createAndAddToTransaction( transaction, boundedRangeIntegerState, new org.lgna.croquet.triggers.ChangeEventTrigger( changeEvent ) );
+			BoundedRangeIntegerStateChangeStep.createAndAddToTransaction( transaction, boundedRangeIntegerState, trigger );
 		}
 //		org.lgna.croquet.steps.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
 //		org.lgna.croquet.steps.BoundedRangeIntegerStateChangeStep step;
@@ -383,16 +382,5 @@ public class TransactionManager {
 		org.lgna.croquet.edits.BooleanStateEdit rv = new org.lgna.croquet.edits.BooleanStateEdit( step, value );
 		step.commitAndInvokeDo( rv );
 		return rv;
-	}
-	public static void handleItemStateChanged( BooleanState booleanState, java.awt.event.ItemEvent e ) {
-		if( Manager.isInTheMidstOfUndoOrRedo() ) {
-			//pass
-		} else {
-			if( booleanState.isToBeIgnored() ) {
-				//pass
-			} else {
-				commitEdit( booleanState, e.getStateChange() == java.awt.event.ItemEvent.SELECTED, new org.lgna.croquet.triggers.ItemEventTrigger( e ) );
-			}
-		}
 	}
 }
