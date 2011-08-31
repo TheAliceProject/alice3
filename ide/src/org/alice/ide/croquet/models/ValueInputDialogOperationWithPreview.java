@@ -53,7 +53,7 @@ public abstract class ValueInputDialogOperationWithPreview<T> extends org.lgna.c
 	@Override
 	protected void updateExplanation( org.lgna.croquet.history.InputDialogOperationStep< T > step ) {
 		super.updateExplanation( step );
-		org.alice.ide.croquet.components.PanelWithPreview< ? > panelWithPreview = step.getMainPanel();
+		org.alice.ide.croquet.components.PanelWithPreview< ? > panelWithPreview = (org.alice.ide.croquet.components.PanelWithPreview< ? >)step.getMainPanel();
 		if( panelWithPreview != null ) {
 			panelWithPreview.updatePreview();
 		}

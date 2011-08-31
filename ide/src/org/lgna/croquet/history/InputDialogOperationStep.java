@@ -78,8 +78,8 @@ public class InputDialogOperationStep<T> extends GatedCommitDialogOperationStep<
 	}
 	
 	private org.lgna.croquet.components.JComponent<?> mainPanel;
-	public <J extends org.lgna.croquet.components.JComponent<?>> J getMainPanel() {
-		return (J)this.mainPanel;
+	public org.lgna.croquet.components.JComponent<?> getMainPanel() {
+		return this.mainPanel;
 	}
 	public void setMainPanel( org.lgna.croquet.components.JComponent<?> mainPanel ) {
 		this.mainPanel = mainPanel;

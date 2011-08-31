@@ -58,7 +58,7 @@ public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.Input
 	@Override
 	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep<Void> step, boolean isOk) {
 		if( isOk ) {
-			org.alice.ide.name.RenamePane renamePane = step.getMainPanel();
+			org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getMainPanel();
 			final String nextValue = renamePane.getNameText();
 			final edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();
 			final String prevValue = nameProperty.getValue();
@@ -94,7 +94,7 @@ public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.Input
 	
 	@Override
 	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep<Void> step ) {
-		org.alice.ide.name.RenamePane renamePane = step.getMainPanel();
+		org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getMainPanel();
 		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = this.getNodeNameValidator();
 		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( renamePane.getNameText() );
 		if( rv != null ) {

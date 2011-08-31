@@ -363,7 +363,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	
 	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep<Void> context ) {
 		//"Create Text"
-		CreateTextPane createTextPane = context.getMainPanel();
+		CreateTextPane createTextPane = (CreateTextPane)context.getMainPanel();
 		org.lgna.story.Text text = createTextPane.createText();
 		if( text != null ) {
 			org.lgna.project.ast.NamedUserType type = org.alice.ide.IDE.getActiveInstance().getTypeDeclaredInAliceFor( org.lgna.story.Text.class );

@@ -53,7 +53,7 @@ public abstract class CustomInputDialogOperation< E extends org.lgna.project.ast
 	protected abstract org.alice.ide.choosers.ValueChooser< E > prologue( org.lgna.croquet.history.InputDialogOperationStep<E> step );
 	@Override
 	protected final E createValue( org.lgna.croquet.history.InputDialogOperationStep<E> step ) {
-		org.alice.ide.choosers.ValueChooser< E > chooser = step.getMainPanel();
+		org.alice.ide.choosers.ValueChooser< E > chooser = (org.alice.ide.choosers.ValueChooser< E >)step.getMainPanel();
 		return chooser.getValue();
 	}
 
