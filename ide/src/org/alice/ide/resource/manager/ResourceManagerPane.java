@@ -167,7 +167,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice
  * @author Dennis Cosgrove
  */
 public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel {
-	abstract class ResourceOperation extends org.alice.ide.operations.ActionOperation {
+	abstract class ResourceOperation extends org.lgna.croquet.ActionOperation {
 		public ResourceOperation( java.util.UUID individualId ) {
 			super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		}
@@ -219,18 +219,19 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		}
 		@Override
 		public org.alice.virtualmachine.Resource selectResource() {
-			int result = javax.swing.JOptionPane.showOptionDialog( this.getIDE().getFrame().getAwtComponent(), "What type of resource would you like to import?", "Select Type", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, new String[] {
+			org.lgna.croquet.components.Frame frame = org.lgna.croquet.Application.getActiveInstance().getFrame();
+			int result = javax.swing.JOptionPane.showOptionDialog( frame.getAwtComponent(), "What type of resource would you like to import?", "Select Type", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, new String[] {
 					"Import Audio...", "Import Image..." }, null );
 			switch( result ) {
 			case javax.swing.JOptionPane.YES_OPTION:
 				try {
-					return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getFrame() );
+					return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( frame );
 				} catch( java.io.IOException ioe ) {
 					throw new RuntimeException( ioe );
 				}
 			case javax.swing.JOptionPane.NO_OPTION:
 				try {
-					return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getFrame() );
+					return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( frame );
 				} catch( java.io.IOException ioe ) {
 					throw new RuntimeException( ioe );
 				}
@@ -420,7 +421,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		}
 	}
 
-	class ReloadResourceOperation extends org.alice.ide.operations.ActionOperation {
+	class ReloadResourceOperation extends org.lgna.croquet.ActionOperation {
 		class Capsule<E extends org.alice.virtualmachine.Resource> {
 			private String originalFileName;
 			//private String name;
@@ -485,10 +486,11 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			if( resource != null ) {
 				final Capsule prevCapsule;
 				final Capsule nextCapsule;
+				org.lgna.croquet.components.Frame frame = org.lgna.croquet.Application.getActiveInstance().getFrame();
 				if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
 					org.alice.virtualmachine.resources.ImageResource prevImageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
 					try {
-						org.alice.virtualmachine.resources.ImageResource nextImageResource = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getFrame() );
+						org.alice.virtualmachine.resources.ImageResource nextImageResource = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( frame );
 						if( nextImageResource != null ) {
 							prevCapsule = new ImageCapsule( prevImageResource );
 							nextCapsule = new ImageCapsule( nextImageResource );
@@ -502,7 +504,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 				} else if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
 					org.alice.virtualmachine.resources.AudioResource prevAudioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
 					try {
-						org.alice.virtualmachine.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getFrame() );
+						org.alice.virtualmachine.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( frame );
 						if( nextAudioResource != null ) {
 							prevCapsule = new AudioCapsule( prevAudioResource );
 							nextCapsule = new AudioCapsule( nextAudioResource );

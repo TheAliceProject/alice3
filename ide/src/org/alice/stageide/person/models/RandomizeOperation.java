@@ -45,7 +45,7 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class RandomizeOperation extends org.alice.ide.operations.ActionOperation {
+public class RandomizeOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static RandomizeOperation instance = new RandomizeOperation();
 	}

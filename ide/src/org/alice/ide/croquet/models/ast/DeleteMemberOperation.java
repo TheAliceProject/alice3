@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.AbstractMember > extends org.alice.ide.operations.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
+public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.AbstractMember > extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
 	private N member;
 	private org.lgna.project.ast.UserType<?> delaringType;
 	

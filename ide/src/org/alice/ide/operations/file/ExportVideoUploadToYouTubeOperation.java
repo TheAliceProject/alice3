@@ -55,7 +55,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 	}
 	@Override
 	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
-		org.lgna.project.Project project = this.getIDE().getProject();
+		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 		if( project != null ) {
 			final int frameRate = 24;
 			//this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
@@ -64,7 +64,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 				@Override
 				protected edu.cmu.cs.dennisc.animation.Program createProgram( org.lgna.project.Project project )
 				{
-				    org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)ExportVideoUploadToYouTubeOperation.this.getIDE();
+				    org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
 			        ide.ensureProjectCodeUpToDate();
 					org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 					return ide.createRuntimeProgramForMovieEncoding( vm, project.getProgramType(), frameRate );
@@ -77,7 +77,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 				}
 			};
 
-			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, this.getIDE().getFrame().getAwtComponent(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 			dialog.setVisible( true );
 		}
 	}

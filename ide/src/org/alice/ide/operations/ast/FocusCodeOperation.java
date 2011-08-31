@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation {
+public class FocusCodeOperation extends org.lgna.croquet.ActionOperation {
 	private org.lgna.project.ast.AbstractCode nextCode;
 	
 	private static java.util.Map< org.lgna.project.ast.AbstractCode, FocusCodeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -73,15 +73,15 @@ public class FocusCodeOperation extends org.alice.ide.operations.ActionOperation
 	}
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		final org.lgna.project.ast.AbstractCode prevCode = getIDE().getFocusedCode();
+		final org.lgna.project.ast.AbstractCode prevCode = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
-				getIDE().setFocusedCode( nextCode );
+				org.alice.ide.IDE.getActiveInstance().setFocusedCode( nextCode );
 			}
 			@Override
 			protected final void undoInternal() {
-				getIDE().setFocusedCode( prevCode );
+				org.alice.ide.IDE.getActiveInstance().setFocusedCode( prevCode );
 			}
 			@Override
 			protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {

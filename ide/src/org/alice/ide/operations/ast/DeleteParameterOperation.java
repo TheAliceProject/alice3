@@ -69,7 +69,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			java.util.List< org.lgna.project.ast.ParameterAccess > parameterAccesses = crawler.getList();
 			final int N_ACCESSES = parameterAccesses.size();
 
-			java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
+			java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
 			final int N_INVOCATIONS = methodInvocations.size();
 			if( N_ACCESSES > 0 ) {
 				StringBuffer sb = new StringBuffer();
@@ -88,7 +88,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					sb.append( "accesses" );
 				}
 				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
-				this.getIDE().showMessageDialog( sb.toString() );
+				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString() );
 				step.cancel();
 			} else {
 				if( N_INVOCATIONS > 0 ) {
@@ -116,7 +116,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 						sb.append( "invocations" );
 					}
 					sb.append( "<br>Would you like to continue with the deletion?</body></html>" );
-					org.lgna.croquet.YesNoCancelOption result = this.getIDE().showYesNoCancelConfirmDialog(sb.toString(), "Delete Parameter");
+					org.lgna.croquet.YesNoCancelOption result = org.lgna.croquet.Application.getActiveInstance().showYesNoCancelConfirmDialog(sb.toString(), "Delete Parameter");
 					if( result == org.lgna.croquet.YesNoCancelOption.YES ){
 						//pass
 					} else {
@@ -130,11 +130,11 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
-						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, getParameter(), index, getIDE().getArgumentLists( method ) );
+						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, getParameter(), index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( method ) );
 					}
 					@Override
 					protected final void undoInternal() {
-						org.alice.ide.ast.NodeUtilities.addParameter( map, method, getParameter(), index, getIDE().getArgumentLists( method ) );
+						org.alice.ide.ast.NodeUtilities.addParameter( map, method, getParameter(), index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( method ) );
 					}
 					@Override
 					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

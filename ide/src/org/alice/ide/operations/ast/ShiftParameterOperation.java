@@ -84,7 +84,7 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		}
 	}
 	private void swap( org.lgna.project.ast.UserMethod method, int aIndex, int bIndex ) {
-		java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
+		java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
 		org.lgna.project.ast.UserParameter aParam = method.parameters.get( aIndex );
 		org.lgna.project.ast.UserParameter bParam = method.parameters.get( bIndex );
 		method.parameters.set( aIndex, bParam, aParam );

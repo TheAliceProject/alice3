@@ -45,7 +45,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodeActionOperation extends org.alice.ide.operations.ActionOperation {
+public abstract class AbstractCodeActionOperation extends org.lgna.croquet.ActionOperation {
 	public AbstractCodeActionOperation( java.util.UUID individualId ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}

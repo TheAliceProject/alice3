@@ -72,6 +72,6 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 		sb.append( "<li> dragging statements with the " );
 		sb.append( modifierText );
 		sb.append( " key pressed within the code editor.</li></ol></html>" );
-		this.getIDE().showMessageDialog( sb.toString(), title, org.lgna.croquet.MessageType.INFORMATION );
+		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString(), title, org.lgna.croquet.MessageType.INFORMATION );
 	}
 }

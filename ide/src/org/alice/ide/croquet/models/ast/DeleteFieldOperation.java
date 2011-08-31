@@ -78,7 +78,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 	}
 	@Override
 	protected boolean isClearToDelete( org.lgna.project.ast.UserField field ) {
-		java.util.List< org.lgna.project.ast.FieldAccess > references = this.getIDE().getFieldAccesses( field );
+		java.util.List< org.lgna.project.ast.FieldAccess > references = org.alice.ide.IDE.getActiveInstance().getFieldAccesses( field );
 		final int N = references.size();
 		if( N > 0 ) {
 			StringBuffer sb = new StringBuffer();
@@ -100,7 +100,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 			sb.append( " if you want to delete \"" );
 			sb.append( field.name.getValue() );
 			sb.append( "\" ." );
-			this.getIDE().showMessageDialog( sb.toString() );
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString() );
 			return false;
 		} else {
 			return true;
@@ -109,13 +109,13 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 	
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
-		this.instance = this.getIDE().getSceneEditor().getInstanceInJavaForUndo( this.getMember() );
+		this.instance = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaForUndo( this.getMember() );
 		super.doOrRedoInternal( isDo );
 	}
 	@Override
 	public void undoInternal() {
 		if( this.instance != null ) {
-			getIDE().getSceneEditor().putInstanceForInitializingPendingField( this.getMember(), this.instance );
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( this.getMember(), this.instance );
 		}
 		super.undoInternal();
 	}

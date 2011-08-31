@@ -80,6 +80,6 @@ public class ShowAllSystemPropertiesOperation extends org.alice.ide.operations.I
 		textArea.setFont( new java.awt.Font( "Monospaced", font.getStyle(), font.getSize() ) );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
 		scrollPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
-		this.getIDE().showMessageDialog( scrollPane, "System Properties", org.lgna.croquet.MessageType.INFORMATION ); 
+		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( scrollPane, "System Properties", org.lgna.croquet.MessageType.INFORMATION ); 
 	}
 }

@@ -59,6 +59,6 @@ public class PasteOperation extends org.alice.ide.operations.InconsequentialActi
 	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
 		String title = "Paste coming soon";
 		String message = "Insertion is not yet implemented.  Paste is limited to dragging statements from the clipboard in the top right corner.";
-		this.getIDE().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION ); 
+		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION ); 
 	}
 }

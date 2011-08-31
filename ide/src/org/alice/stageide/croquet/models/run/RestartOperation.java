@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.run;
 /**
  * @author Dennis Cosgrove
  */
-public class RestartOperation extends org.alice.ide.operations.ActionOperation {
+public class RestartOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static RestartOperation instance = new RestartOperation();
 	}

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
 * @author Dennis Cosgrove
 */
 //todo
-/*package-private*/ abstract class EditCodeOperation<N extends org.lgna.project.ast.AbstractCode> extends org.alice.ide.operations.ActionOperation {
+/*package-private*/ abstract class EditCodeOperation<N extends org.lgna.project.ast.AbstractCode> extends org.lgna.croquet.ActionOperation {
 	private N code;
 	public EditCodeOperation( java.util.UUID id, N code ) {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, id );
@@ -57,7 +57,7 @@ package org.alice.ide.croquet.models.ast;
 	}
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		this.getIDE().setFocusedCode( this.code );
+		org.alice.ide.IDE.getActiveInstance().setFocusedCode( this.code );
 		step.finish();
 	}
 }
