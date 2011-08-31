@@ -8,28 +8,15 @@ public class SimsVehicleImplementation extends VehicleImplementation {
 	
 	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
 	
-	public SimsVehicleImplementation( org.lgna.story.Vehicle abstraction, String vehicleName)
+	public SimsVehicleImplementation( org.lgna.story.Vehicle abstraction, String vehicleName, String textureName)
 	{
 		super( abstraction, new edu.cmu.cs.dennisc.scenegraph.Visual() );
 		try{
-			this.nebModel = new edu.cmu.cs.dennisc.nebulous.Model( vehicleName );
+			this.nebModel = new edu.cmu.cs.dennisc.nebulous.Model( vehicleName, textureName );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			throw new RuntimeException( lre );
 		}
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebModel } );
-	}
-	
-	public SimsVehicleImplementation( org.lgna.story.Vehicle abstraction, String vehicleName, String textureName)
-	{
-		this(abstraction, vehicleName);
-		if (textureName != null)
-		{
-			setTexture(textureName);
-		}
-	}
-	
-	public void setTexture( String textureName ) {
-		this.nebModel.setTexture(textureName);
 	}
 	
 	@Override

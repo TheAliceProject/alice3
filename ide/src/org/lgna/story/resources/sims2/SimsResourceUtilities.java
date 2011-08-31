@@ -8,11 +8,6 @@ public class SimsResourceUtilities {
 	public static String getTextureName(Object resource)
 	{
 		String textureName =  resource.toString();
-		int splitPoint = textureName.indexOf('_');
-		if (splitPoint != -1)
-		{
-			textureName = textureName.substring(splitPoint+1);
-		}
 		return textureName;
 	}
 

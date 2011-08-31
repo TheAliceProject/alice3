@@ -12,6 +12,7 @@ public class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	
 	static {
 		StorytellingResources.getInstance().loadSimsBundles();
+		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Model.class, ModelAdapter.class );
 	}
 	
 	
@@ -24,9 +25,15 @@ public class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
         initialize(o);
     }
     
+    public Model(Object o, String textureName) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+        this();
+        initializeWithTexture(o, textureName);
+    }
+    
     public native void render();
     public native void pick();
     private native void initialize( Object o );
+    private native void initializeWithTexture( Object o, String textureName );
     public native void setTexture( String textureName );
     public native void getLocalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
 	public native void setLocalTransformationForPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );

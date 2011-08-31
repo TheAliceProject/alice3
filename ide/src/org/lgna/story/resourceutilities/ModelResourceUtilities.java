@@ -316,7 +316,7 @@ public class ModelResourceUtilities {
 	
 	public static ConstructorParameterPair getConstructorAndParameterForJavaClass(Class<?> javaClass)
 	{
-		JavaType javeType = JavaType.getInstance(javaClass);
+ 		JavaType javeType = JavaType.getInstance(javaClass);
 		List<JavaConstructor> constructors = javeType.getDeclaredConstructors();
 		for (JavaConstructor constructor : constructors)
 		{

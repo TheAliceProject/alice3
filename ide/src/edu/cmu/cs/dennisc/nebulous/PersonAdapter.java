@@ -6,7 +6,7 @@ package edu.cmu.cs.dennisc.nebulous;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonAdapter extends ModelAdapter< Person > {
+public class PersonAdapter extends GenericModelAdapter< Person > {
 	@Override
 	protected void renderGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
 		super.renderGeometry( rc );
