@@ -41,47 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryNode extends org.alice.ide.croquet.models.IdeDragModel implements Iterable< GalleryNode > {
-	public GalleryNode( java.util.UUID id ) {
-		super( id );
+public class FilterStringState extends org.lgna.croquet.StringState {
+	private static class SingletonHolder {
+		private static FilterStringState instance = new FilterStringState();
 	}
-	public abstract GalleryNode getParent();
-	public abstract GalleryNode getChild( int index );
-	public abstract int getChildCount();
-	public abstract int getIndexOfChild( GalleryNode child );
-	public abstract String getText();
-	public abstract javax.swing.Icon getSmallIcon();
-	public abstract javax.swing.Icon getLargeIcon();
-	public java.util.Iterator< GalleryNode > iterator() {
-		return new java.util.Iterator< GalleryNode >() {
-			private int index = 0;
-			public boolean hasNext() {
-				return this.index < GalleryNode.this.getChildCount();
-			}
-			public GalleryNode next() {
-				GalleryNode rv = GalleryNode.this.getChild( this.index );
-				this.index++;
-				return rv;
-			}
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+	public static FilterStringState getInstance() {
+		return SingletonHolder.instance;
 	}
-
-	@Override
-	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
-		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
-		if( sceneEditor instanceof org.lgna.croquet.DropReceptor ) {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( (org.lgna.croquet.DropReceptor)sceneEditor );
-		} else {
-			return null;
-		}
+	private FilterStringState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "ecfb472a-c73f-4dda-9db7-757dfcab8a46" ), "" );
 	}
-	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
 }

@@ -176,9 +176,6 @@ class TreeNodeCascade<T> extends Cascade< T > {
  * @author Dennis Cosgrove
  */
 public abstract class TreeSelectionState<T> extends ItemState<T> {
-	public static interface SelectionObserver<E> {
-		public void selectionChanged(E nextValue);
-	};
 	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
 	}
 	private final SingleTreeSelectionModel treeSelectionModel;

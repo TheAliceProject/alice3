@@ -47,24 +47,95 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryView< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > {
+	private static enum Criterion {
+		STARTS_WITH {
+			@Override
+			public boolean accept( String lcName, String lcFilter ) {
+				return lcName.startsWith( lcFilter );
+			}
+		},
+		CONTAINS_BUT_DOES_NOT_START_WITH {
+			@Override
+			public boolean accept( String lcName, String lcFilter ) {
+				return lcName.startsWith( lcFilter ) == false && lcName.contains( lcFilter );
+			}
+		};
+		public abstract boolean accept( String lcName, String lcFilter );
+	}
+
+	
+	private final org.lgna.croquet.TreeSelectionState.ValueObserver< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > selectionObserver = new org.lgna.croquet.TreeSelectionState.ValueObserver< org.alice.ide.croquet.models.gallerybrowser.GalleryNode >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > state, org.alice.ide.croquet.models.gallerybrowser.GalleryNode prevValue, org.alice.ide.croquet.models.gallerybrowser.GalleryNode nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > state, org.alice.ide.croquet.models.gallerybrowser.GalleryNode prevValue, org.alice.ide.croquet.models.gallerybrowser.GalleryNode nextValue, boolean isAdjusting ) {
+			GalleryDirectoryView.this.handleSelectionChanged( nextValue );
+		}
+	};
+	private final org.lgna.croquet.StringState.ValueObserver< String > filterObserver = new org.lgna.croquet.StringState.ValueObserver< String >() {
+		public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
+			GalleryDirectoryView.this.handleFilterChanged( nextValue );
+		}
+	};
+
 	public GalleryDirectoryView() {
 		super( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() );
 	}
 	@Override
+	protected java.util.List< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > getChildren() {
+		String filter = FilterStringState.getInstance().getValue();
+		if( filter != null && filter.length() > 0 ) {
+			org.alice.ide.croquet.models.gallerybrowser.GalleryNode root = org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().getTreeModel().getRoot();
+			java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			String lcFilter = filter.toLowerCase();
+			this.update( rv, root, lcFilter, Criterion.STARTS_WITH );
+			if( lcFilter.length() > 1 ) {
+				this.update( rv, root, lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH );
+			}
+			return rv;
+		} else {
+			return super.getChildren();
+		}
+		
+	}
+	
+	private java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > update( java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode, String lcFilter, Criterion criterion ) {
+		String lcName = treeNode.getText().toLowerCase();
+		if( criterion.accept( lcName, lcFilter ) ) {
+			rv.add( treeNode );
+		}
+		for( org.alice.ide.croquet.models.gallerybrowser.GalleryNode child : treeNode ) {
+			update( rv, child, lcFilter, criterion );
+		}
+		return rv;
+	}
+	
+	@Override
 	protected org.lgna.croquet.components.JComponent< ? > getComponentFor( org.alice.ide.croquet.models.gallerybrowser.GalleryNode value ) {
-//		org.lgna.croquet.components.JComponent< ? > component;
-//		if( value instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
-//			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)value;
-//			component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( fieldGalleryNode );
-//		} else {
-//			org.lgna.croquet.components.Button button = this.getModel().getSelectionOperationFor( value ).createButton();
-//			button.setIcon( value.getLargeIcon() );
-//			button.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
-//			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-//			component = button;
-//		}
 		org.lgna.croquet.components.JComponent< ? > component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( value );
 		component.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 		return component;
+	}
+	
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().addValueObserver( this.selectionObserver );
+		FilterStringState.getInstance().addAndInvokeValueObserver( this.filterObserver );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		FilterStringState.getInstance().removeValueObserver( this.filterObserver );
+		org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().removeValueObserver( this.selectionObserver );
+		super.handleUndisplayable();
+	}
+	private void handleFilterChanged( String filter ) {
+		this.refresh();
+	}
+	private void handleSelectionChanged( org.alice.ide.croquet.models.gallerybrowser.GalleryNode nextValue ) {
+		//todo: does not handle case where user clicks on button hooked up to currently selected path node
+		FilterStringState.getInstance().setValue( "" );
+		this.refresh();
 	}
 }
