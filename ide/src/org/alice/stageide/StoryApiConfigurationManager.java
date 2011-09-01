@@ -71,8 +71,8 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 	
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
-		if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
-			return org.alice.stageide.instancefactory.BipedJointMenuModel.getInstance( field );
+		if( org.alice.stageide.instancefactory.JointedMenuModel.isJointed( type ) ) {
+			return org.alice.stageide.instancefactory.JointedMenuModel.getInstance( field );
 		} else {
 			return null;
 		}
@@ -80,7 +80,7 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 
 	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?, ?, ? > argumentType ) {
 		java.util.List< ? extends org.lgna.project.ast.AbstractType< ?, ?, ? > > types = getTopLevelGalleryTypes();
-		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : getTopLevelGalleryTypes() ) {
+		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : types ) {
 			org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
 			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = constructor.getParameters();
 			if( parameters.size() == 1 ) {

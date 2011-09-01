@@ -46,51 +46,70 @@ package org.alice.stageide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class BipedJointMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
-	private static final String[] JOINT_METHOD_NAMES = {
-		"getPelvisForLowerBody",
-		"getPelvisForUpperBody",
-		"getSpineMiddle",
-		"getSpineUpper",
-		"getNeck",
-		"getHead",
-		"getRightHip",
-		"getRightKnee",
-		"getRightAnkle",
-		"getLeftHip",
-		"getLeftKnee",
-		"getLeftAnkle",
-		"getRightClavicle",
-		"getRightShoulder",
-		"getRightElbow",
-		"getRightWrist",
-		"getLeftClavicle",
-		"getLeftShoulder",
-		"getLeftElbow",
-		"getLeftWrist"
-	};
-	private static java.util.Map< org.lgna.project.ast.UserField, BipedJointMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static BipedJointMenuModel getInstance( org.lgna.project.ast.UserField value ) {
+public class JointedMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
+	private static final org.lgna.project.ast.JavaType JOINT_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class );
+	private static boolean isJointGetter( org.lgna.project.ast.AbstractMethod method ) {
+		if( method.isPublicAccess() ) {
+			if( method.getReturnType() == JOINT_TYPE ) {
+				if( method.getName().startsWith( "get" ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	public static boolean isJointed( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		if( type != null ) {
+			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+				if( isJointGetter( method ) ) {
+					return true;
+				}
+			}
+			if( type.isFollowToSuperClassDesired() ) {
+				return isJointed( type.getSuperType() );
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	public static void updateJointGetters( java.util.List< org.lgna.project.ast.AbstractMethod > getters, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		if( type != null ) {
+			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+				if( isJointGetter( method ) ) {
+					getters.add( method );
+				}
+			}
+			if( type.isFollowToSuperClassDesired() ) {
+				updateJointGetters( getters, type.getSuperType() );
+			}
+		}
+	}
+	private static java.util.Map< org.lgna.project.ast.UserField, JointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static JointedMenuModel getInstance( org.lgna.project.ast.UserField value ) {
 		synchronized( map ) {
-			BipedJointMenuModel rv = map.get( value );
+			JointedMenuModel rv = map.get( value );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new BipedJointMenuModel( value );
+				rv = new JointedMenuModel( value );
 				map.put( value, rv );
 			}
 			return rv;
 		}
 	}
 	private final org.lgna.project.ast.UserField field;
-	private BipedJointMenuModel( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "36fc18a7-7ff7-4bb6-8e29-2e39b15400f1" ) );
+	private final java.util.List< org.lgna.project.ast.AbstractMethod > getters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private JointedMenuModel( org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "63b4f859-e44f-419f-a1bf-3ead76a52d6b" ) );
 		this.field = field;
+		updateJointGetters( getters, field.getValueType() );
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
-		for( String jointMethodName : JOINT_METHOD_NAMES ) {
-			rv.add( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lgna.story.Biped.class, jointMethodName ) );
+		for( org.lgna.project.ast.AbstractMethod method : this.getters ) {
+			rv.add( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, method ) );
 		}
 		return rv;
 	}
