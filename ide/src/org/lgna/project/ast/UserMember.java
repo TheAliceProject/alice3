@@ -49,4 +49,5 @@ package org.lgna.project.ast;
 public interface UserMember extends Node {
 	public UserType<?> getDeclaringType();
 	public void setDeclaringType( UserType<?> declaringType );
+	public ManagementLevel getManagementLevel();
 }

@@ -53,7 +53,7 @@ public class UserField extends AbstractField implements UserMember {
 	public edu.cmu.cs.dennisc.property.EnumProperty< FieldModifierFinalVolatileOrNeither > finalVolatileOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty< FieldModifierFinalVolatileOrNeither >( this, FieldModifierFinalVolatileOrNeither.NEITHER );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isTransient = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isManaged = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel > managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel >( this, ManagementLevel.NONE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 
 	public ExpressionProperty initializer = new ExpressionProperty( this ) {
@@ -86,6 +86,10 @@ public class UserField extends AbstractField implements UserMember {
 		return this.name;
 	}
 	
+	public org.lgna.project.ast.ManagementLevel getManagementLevel() {
+		return this.managementLevel.getValue();
+	}
+
 	@Override
 	public AbstractType<?,?,?> getValueType() {
 		return valueType.getValue();

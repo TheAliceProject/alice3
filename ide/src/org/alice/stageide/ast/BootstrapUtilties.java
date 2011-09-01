@@ -111,13 +111,14 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
 		cameraField.isDeletionAllowed.setValue( false );
 
-		sunField.isManaged.setValue( true );
-		groundField.isManaged.setValue( true );
-		cameraField.isManaged.setValue( true );
+		sunField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
+		groundField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
+		cameraField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 
 		org.lgna.project.ast.UserMethod myFirstMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "myFirstMethod" );
 
 		org.lgna.project.ast.UserMethod performGeneratedSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, org.alice.ide.IDE.GENERATED_SET_UP_METHOD_NAME );
+		performGeneratedSetupMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		org.lgna.project.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 		
 		for( org.lgna.project.ast.UserField field : new org.lgna.project.ast.UserField[] { cameraField, sunField, groundField } ) {
@@ -151,6 +152,7 @@ public class BootstrapUtilties {
 		handleActiveChangedMethod.parameters.add( isActiveParameter );
 		handleActiveChangedMethod.parameters.add( activeCountParameter );
 		handleActiveChangedMethod.isSignatureLocked.setValue( true );
+		handleActiveChangedMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 
 		org.lgna.project.ast.BlockStatement handleActiveChangedBody = handleActiveChangedMethod.body.getValue();
 		

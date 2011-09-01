@@ -63,6 +63,6 @@ public class UnmanagedFieldState extends FieldState {
 	}
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.isManaged.getValue() == false;
+		return value.managementLevel.getValue() != org.lgna.project.ast.ManagementLevel.MANAGED;
 	}
 }

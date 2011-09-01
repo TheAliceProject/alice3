@@ -52,8 +52,15 @@ public class JointedMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alic
 		if( method.isPublicAccess() ) {
 			if( method.getReturnType() == JOINT_TYPE ) {
 				if( method.getName().startsWith( "get" ) ) {
-					//todo: isJava and isNotAnnotatedOtherwise or isAlice and isGenerated
-					return true;
+					if( method instanceof org.lgna.project.ast.JavaMethod ) {
+						return true; //isNotAnnotatedOtherwise
+					} else if( method instanceof org.lgna.project.ast.UserMethod ) {
+						org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+						return userMethod.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.GENERATED;
+					} else {
+						//throw new AssertionError();
+						return false;
+					}
 				}
 			}
 		}

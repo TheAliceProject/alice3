@@ -50,7 +50,7 @@ public class Joint extends Turnable {
 
 	private static final edu.cmu.cs.dennisc.map.MapToMap< JointedModel, org.lgna.story.resources.JointId, Joint > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	/*package-private*/static Joint getJoint( JointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
+	/*package-private*/ static Joint getJoint( JointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
 		synchronized( mapToMap ) {
 			Joint rv = mapToMap.get( jointedModel, jointId );
 			if( rv != null ) {
@@ -63,7 +63,7 @@ public class Joint extends Turnable {
 			return rv;
 		}
 	}
-	/*package-private*/static Joint getInstance( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
+	private static Joint getInstance( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
 		org.lgna.story.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
 		Joint rv = implementation.getAbstraction();
 		if( rv != null ) {

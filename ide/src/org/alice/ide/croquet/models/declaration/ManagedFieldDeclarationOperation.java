@@ -102,8 +102,8 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 		return true;
 	}
 	@Override
-	protected boolean isFieldManaged() {
-		return true;
+	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
+		return org.lgna.project.ast.ManagementLevel.MANAGED;
 	}
 	@Override
 	public org.lgna.project.ast.UserType< ? > getDeclaringType() {

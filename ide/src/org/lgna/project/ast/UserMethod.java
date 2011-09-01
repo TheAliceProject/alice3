@@ -58,6 +58,7 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 	public NodeListProperty< UserParameter > parameters = new NodeListProperty< UserParameter >( this );
 	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
+	public edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel > managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel >( this, ManagementLevel.NONE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 
@@ -76,6 +77,9 @@ public class UserMethod extends AbstractMethod implements UserCode {
 		this( name, JavaType.getInstance( returnCls ), parameters, body );
 	}
 		
+	public org.lgna.project.ast.ManagementLevel getManagementLevel() {
+		return this.managementLevel.getValue();
+	}
 
 	public NodeProperty< BlockStatement > getBodyProperty() {
 		return this.body;

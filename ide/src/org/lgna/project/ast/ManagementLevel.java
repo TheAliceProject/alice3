@@ -41,51 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.declaration;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnmanagedFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation {
-	private static java.util.Map< org.lgna.project.ast.UserType< ? >, UnmanagedFieldDeclarationOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static UnmanagedFieldDeclarationOperation getInstance( org.lgna.project.ast.UserType< ? > declarationType ) {
-		synchronized( map ) {
-			UnmanagedFieldDeclarationOperation rv = map.get( declarationType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new UnmanagedFieldDeclarationOperation( declarationType );
-				map.put( declarationType, rv );
-			}
-			return rv;
-		}
-	}
-	private UnmanagedFieldDeclarationOperation( org.lgna.project.ast.UserType< ? > declarationType ) {
-		super( 
-				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ), 
-				declarationType, false,
-				null, true, 
-				false, true, 
-				null, true, 
-				null, true 
-		);
-	}
-	@Override
-	protected boolean isFieldFinal() {
-		return false;
-	}
-	@Override
-	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
-		return org.lgna.project.ast.ManagementLevel.NONE;
-	}
-	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.ide.croquet.components.declaration.FieldDeclarationPanel( this ) {
-			
-		};
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
-		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
-	}
+public enum ManagementLevel {
+	NONE,
+	GENERATED,
+	MANAGED
 }

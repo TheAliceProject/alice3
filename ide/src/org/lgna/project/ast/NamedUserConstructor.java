@@ -47,9 +47,10 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class NamedUserConstructor extends UserConstructor implements UserCode {
-	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
 	public NodeListProperty< UserParameter > parameters = new NodeListProperty< UserParameter >( this );
+	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
 	public NodeProperty< ConstructorBlockStatement > body = new NodeProperty< ConstructorBlockStatement >( this );
+	public edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel > managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel >( this, ManagementLevel.NONE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
@@ -80,6 +81,10 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 			}
 		}
 		return value;
+	}
+
+	public org.lgna.project.ast.ManagementLevel getManagementLevel() {
+		return this.managementLevel.getValue();
 	}
 
 	public NodeProperty< ConstructorBlockStatement > getBodyProperty() {

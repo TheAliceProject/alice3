@@ -60,7 +60,8 @@ public abstract class FieldList extends MemberList< org.lgna.project.ast.UserFie
 	@Override
 	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
 		org.lgna.croquet.components.LineAxisPanel lineStartPanel = new org.lgna.croquet.components.LineAxisPanel();
-		if( item.isManaged.getValue() ) {
+		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
+		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
 			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
 			label.setToolTipText( "managed by the scene editor" );
 			label.setForegroundColor( java.awt.Color.GRAY );
@@ -71,7 +72,7 @@ public abstract class FieldList extends MemberList< org.lgna.project.ast.UserFie
 		lineStartPanel.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton() );
 		button.addComponent( lineStartPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		button.addComponent( 
-				new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), item, item.isManaged.getValue()==false ),
+				new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getActiveInstance().getPreviewFactory(), item, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED ),
 				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
 		);
 		if( item.isDeletionAllowed.getValue() ) {
