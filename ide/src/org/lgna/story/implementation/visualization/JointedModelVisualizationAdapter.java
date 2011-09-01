@@ -47,7 +47,7 @@ package org.lgna.story.implementation.visualization;
  * @author Dennis Cosgrove
  */
 public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter< JointedModelVisualization > {
-	private static abstract class GlWalkObserver<C extends edu.cmu.cs.dennisc.lookingglass.opengl.Context> implements org.lgna.story.implementation.JointedModelImplementation.WalkObserver {
+	private static abstract class GlWalkObserver<C extends edu.cmu.cs.dennisc.lookingglass.opengl.Context> implements org.lgna.story.implementation.JointedModelImplementation.TreeWalkObserver {
 		private final C context;
 		private final org.lgna.story.implementation.ReferenceFrame asSeenBy;
 		private final double[] array = new double[ 16 ];
@@ -114,7 +114,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 	@Override
 	public void pick( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters, edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults conformanceTestResults ) {
 		org.lgna.story.implementation.JointedModelImplementation implementation = this.m_element.getImplementation();
-		implementation.walk( new PickWalkObserver( pc, implementation ) );
+		implementation.treeWalk( new PickWalkObserver( pc, implementation ) );
 	}
 	@Override
 	public void renderGhost( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.GhostAdapter root ) {
@@ -122,7 +122,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 	@Override
 	public void renderOpaque( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
 		org.lgna.story.implementation.JointedModelImplementation implementation = this.m_element.getImplementation();
-		implementation.walk( new RenderWalkObserver( rc, implementation ) );
+		implementation.treeWalk( new RenderWalkObserver( rc, implementation ) );
 	}
 	@Override
 	public void setup( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {

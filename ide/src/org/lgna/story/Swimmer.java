@@ -1,8 +1,7 @@
 package org.lgna.story;
 
-public class Swimmer extends Model{
+public class Swimmer extends JointedModel {
 	private final org.lgna.story.implementation.SwimmerImplementation implementation;
-	private java.util.Map< org.lgna.story.resources.JointId, Joint > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	@Override
 	/*package-private*/ org.lgna.story.implementation.SwimmerImplementation getImplementation() {
 		return this.implementation;
@@ -15,31 +14,31 @@ public class Swimmer extends Model{
 	}
 
 	public Joint getSpineMiddle() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.SwimmerResource.SwimmerJointId.SPINE_MIDDLE, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.SPINE_MIDDLE );
 	}
 	public Joint getTail() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.SwimmerResource.SwimmerJointId.SPINE_UPPER, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.SPINE_UPPER );
 	}
 	public Joint getNeck() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.SwimmerResource.SwimmerJointId.NECK, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.NECK );
 	}
 	public Joint getHead() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.SwimmerResource.SwimmerJointId.HEAD, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.HEAD );
 	}
 	public Joint getMouth() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.SwimmerResource.SwimmerJointId.MOUTH, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.MOUTH );
 	}
 	public Joint getLeftEye() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.SwimmerResource.SwimmerJointId.LEFT_EYE, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.LEFT_EYE );
 	}
 	public Joint getRightEye() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.SwimmerResource.SwimmerJointId.RIGHT_EYE, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.RIGHT_EYE );
 	}
 	public Joint getRightPectoralFin() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.SwimmerResource.SwimmerJointId.RIGHT_PECTORAL_FIN, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.RIGHT_PECTORAL_FIN );
 	}
 	public Joint getLeftPectoralFin() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.SwimmerResource.SwimmerJointId.LEFT_PECTORAL_FIN, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.LEFT_PECTORAL_FIN );
 	}
 }
 	

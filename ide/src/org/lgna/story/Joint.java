@@ -47,21 +47,23 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class Joint extends Turnable {
-	
-	/*package-private*/ static Joint getJoint( org.lgna.story.resources.JointId jointId, org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, java.util.Map< org.lgna.story.resources.JointId, Joint > map ) {
-		synchronized( map ) {
-			Joint rv = map.get( jointId );
+
+	private static final edu.cmu.cs.dennisc.map.MapToMap< JointedModel, org.lgna.story.resources.JointId, Joint > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
+	/*package-private*/static Joint getJoint( JointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
+		synchronized( mapToMap ) {
+			Joint rv = mapToMap.get( jointedModel, jointId );
 			if( rv != null ) {
 				//pass
 			} else {
+				org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation = ImplementationAccessor.getImplementation( jointedModel );
 				rv = org.lgna.story.Joint.getInstance( jointedModelImplementation, jointId );
-				map.put(jointId, rv);
+				mapToMap.put( jointedModel, jointId, rv );
 			}
 			return rv;
 		}
 	}
-	
-	/*package-private*/ static Joint getInstance( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
+	/*package-private*/static Joint getInstance( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
 		org.lgna.story.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
 		Joint rv = implementation.getAbstraction();
 		if( rv != null ) {
@@ -74,11 +76,12 @@ public class Joint extends Turnable {
 	}
 
 	private final org.lgna.story.implementation.JointImplementation implementation;
+
 	private Joint( org.lgna.story.implementation.JointImplementation implementation ) {
 		this.implementation = implementation;
 	}
 	@Override
-	/*package-private*/ org.lgna.story.implementation.JointImplementation getImplementation() {
+	/*package-private*/org.lgna.story.implementation.JointImplementation getImplementation() {
 		return this.implementation;
 	}
 }

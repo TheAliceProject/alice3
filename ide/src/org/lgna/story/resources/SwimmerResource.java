@@ -1,7 +1,7 @@
 package org.lgna.story.resources;
 
 @org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Swimmer.class )
-public interface SwimmerResource extends ModelResource {
+public interface SwimmerResource extends JointedModelResource {
 	public static enum SwimmerJointId implements JointId {
 		NECK( null ),
 		

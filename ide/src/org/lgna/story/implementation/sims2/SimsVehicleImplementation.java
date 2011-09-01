@@ -8,7 +8,7 @@ public class SimsVehicleImplementation extends VehicleImplementation {
 	
 	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
 	
-	public SimsVehicleImplementation( org.lgna.story.Vehicle abstraction, String vehicleName, String textureName)
+	public SimsVehicleImplementation( org.lgna.story.Vehicle abstraction, String vehicleName, String textureName )
 	{
 		super( abstraction, new edu.cmu.cs.dennisc.scenegraph.Visual() );
 		try{

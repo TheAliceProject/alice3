@@ -52,6 +52,7 @@ public class JointedMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alic
 		if( method.isPublicAccess() ) {
 			if( method.getReturnType() == JOINT_TYPE ) {
 				if( method.getName().startsWith( "get" ) ) {
+					//todo: isJava and isNotAnnotatedOtherwise or isAlice and isGenerated
 					return true;
 				}
 			}
@@ -60,13 +61,17 @@ public class JointedMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alic
 	}
 	public static boolean isJointed( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		if( type != null ) {
-			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-				if( isJointGetter( method ) ) {
-					return true;
+			if( type.isAssignableTo( org.lgna.story.JointedModel.class ) ) {
+				for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+					if( isJointGetter( method ) ) {
+						return true;
+					}
 				}
-			}
-			if( type.isFollowToSuperClassDesired() ) {
-				return isJointed( type.getSuperType() );
+				if( type.isFollowToSuperClassDesired() ) {
+					return isJointed( type.getSuperType() );
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}

@@ -48,8 +48,10 @@ package org.lgna.story.implementation;
  */
 public abstract class JointedModelImplementation extends SingleVisualModelImplementation {
 	private final java.util.Map< org.lgna.story.resources.JointId, JointImplementation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public JointedModelImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
+	private final org.lgna.story.resources.JointId[] rootJointIds;
+	public JointedModelImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, org.lgna.story.resources.JointId[] rootJointIds ) {
 		super( sgVisual );
+		this.rootJointIds = rootJointIds;
 	}
 	public JointImplementation getJointImplementation( org.lgna.story.resources.JointId jointId ) {
 		synchronized( this.map ) {
@@ -63,8 +65,13 @@ public abstract class JointedModelImplementation extends SingleVisualModelImplem
 			return rv;
 		}
 	}
+	
+//	private org.lgna.story.resources.JointId[] getAllJointIds() {
+//		//todo
+//		return this.rootJointIds[ 0 ].getClass().getEnumConstants();
+//	}
+	
 	protected abstract JointImplementation createJointImplementation( org.lgna.story.resources.JointId jointId );
-	protected abstract org.lgna.story.resources.JointId[] getRootJointIds();
 	
 	private org.lgna.story.implementation.visualization.JointedModelVisualization visualization;
 	private org.lgna.story.implementation.visualization.JointedModelVisualization getVisualization() {
@@ -84,13 +91,13 @@ public abstract class JointedModelImplementation extends SingleVisualModelImplem
 		}
 	}
 	
-	public static interface WalkObserver {
+	public static interface TreeWalkObserver {
 		public void pushJoint( JointImplementation joint );
 		public void handleBone( JointImplementation parent, JointImplementation child );
 		public void popJoint( JointImplementation joint );
 	}
 	
-	private void walk( org.lgna.story.resources.JointId parentId, WalkObserver observer ) {
+	private void treeWalk( org.lgna.story.resources.JointId parentId, TreeWalkObserver observer ) {
 		JointImplementation parentImpl = this.getJointImplementation( parentId );
 		observer.pushJoint( parentImpl );
 		for( org.lgna.story.resources.JointId childId : parentId.getChildren() ) {
@@ -98,12 +105,12 @@ public abstract class JointedModelImplementation extends SingleVisualModelImplem
 		}
 		observer.popJoint( parentImpl );
 		for( org.lgna.story.resources.JointId childId : parentId.getChildren() ) {
-			walk( childId, observer );
+			treeWalk( childId, observer );
 		}
 	}
-	public void walk( WalkObserver observer ) {
-		for( org.lgna.story.resources.JointId root : this.getRootJointIds() ) {
-			this.walk( root, observer );
+	public void treeWalk( TreeWalkObserver observer ) {
+		for( org.lgna.story.resources.JointId root : this.rootJointIds ) {
+			this.treeWalk( root, observer );
 		}
 	}
 }

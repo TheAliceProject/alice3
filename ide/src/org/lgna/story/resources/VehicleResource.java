@@ -1,7 +1,7 @@
 package org.lgna.story.resources;
 
 @org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Vehicle.class )
-public interface VehicleResource extends ModelResource {
+public interface VehicleResource extends JointedModelResource {
 	public static enum VehicleJointId implements JointId {
 		RIGHT_DOOR( null ),
 		LEFT_DOOR(null);

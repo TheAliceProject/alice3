@@ -48,8 +48,8 @@ package org.lgna.story.implementation;
  */
 public abstract class BipedImplementation extends JointedModelImplementation {
 	private final org.lgna.story.Biped abstraction;
-	public BipedImplementation( org.lgna.story.Biped abstraction, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual) {
-		super( sgVisual );
+	public BipedImplementation( org.lgna.story.Biped abstraction, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
+		super( sgVisual, org.lgna.story.resources.BipedResource.BipedJointId.getRoots() );
 		this.abstraction = abstraction;
 	}
 	@Override
@@ -59,9 +59,5 @@ public abstract class BipedImplementation extends JointedModelImplementation {
 	@Override
 	protected double getBoundingSphereRadius() {
 		return 1.0;
-	}
-	@Override
-	protected org.lgna.story.resources.JointId[] getRootJointIds() {
-		return org.lgna.story.resources.BipedResource.BipedJointId.getRoots();
 	}
 }

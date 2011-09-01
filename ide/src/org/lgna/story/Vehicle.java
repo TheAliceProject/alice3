@@ -1,8 +1,7 @@
 package org.lgna.story;
 
-public class Vehicle extends Model {
+public class Vehicle extends JointedModel {
 	private final org.lgna.story.implementation.VehicleImplementation implementation;
-	private java.util.Map< org.lgna.story.resources.JointId, Joint > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	@Override
 	/*package-private*/ org.lgna.story.implementation.VehicleImplementation getImplementation() {
 		return this.implementation;
@@ -15,10 +14,10 @@ public class Vehicle extends Model {
 	}
 	
 	public Joint getRightDoor() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.VehicleResource.VehicleJointId.RIGHT_DOOR, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.VehicleResource.VehicleJointId.RIGHT_DOOR );
 	}
 
 	public Joint getLeftDoor() {
-		return org.lgna.story.Joint.getJoint( org.lgna.story.resources.VehicleResource.VehicleJointId.LEFT_DOOR, this.implementation, this.map );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.VehicleResource.VehicleJointId.LEFT_DOOR );
 	}
 }

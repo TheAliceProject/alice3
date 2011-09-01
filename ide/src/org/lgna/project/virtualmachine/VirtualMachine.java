@@ -302,11 +302,15 @@ public abstract class VirtualMachine {
 	}
 	protected Object getFieldDeclaredInJavaWithField( org.lgna.project.ast.JavaField field, Object instance ) {
 		instance = UserInstance.getInstanceInJavaIfNecessary( instance );
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field.getFieldReflectionProxy().getReification(), instance );
+		java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
+		assert fld != null : field;
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, instance );
 	}
 	protected void setFieldDeclaredInJavaWithField( org.lgna.project.ast.JavaField field, Object instance, Object value ) {
 		instance = UserInstance.getInstanceInJavaIfNecessary( instance );
-		edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.set( field.getFieldReflectionProxy().getReification(), instance, value );
+		java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
+		assert fld != null : field;
+		edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.set( fld, instance, value );
 	}
 	
 	protected Object get( org.lgna.project.ast.AbstractField field, Object instance ) {
