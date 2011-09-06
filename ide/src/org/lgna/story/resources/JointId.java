@@ -43,10 +43,157 @@
 
 package org.lgna.story.resources;
 
+import java.util.Iterator;
+
+import javax.mail.MethodNotSupportedException;
+
+import org.lgna.story.resources.BipedResource.BipedJointId;
+import org.lgna.story.resources.BipedResource.OgreJointId;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface JointId {
-	public JointId getParent();
-	public Iterable< JointId > getChildren();
+public abstract class JointId {
+	
+	
+	private final JointId parent;
+	private final java.util.List< JointId > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	
+	private static final java.util.Map< Class, java.util.Map<JointId, java.util.List<JointId>> > externalChildrenMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
+	private static void addExternalChild(JointId parent, JointId child)
+	{
+		Class childClass = child.getClass();
+		java.util.Map<JointId, java.util.List<JointId>> childClassMap = null;
+		if (externalChildrenMap.containsKey(childClass))
+		{
+			childClassMap = externalChildrenMap.get(childClass);
+		}
+		else
+		{
+			childClassMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			externalChildrenMap.put(childClass, childClassMap);
+		}
+		java.util.List<JointId> externalChildList = null;
+		if (childClassMap.containsKey(parent))
+		{
+			externalChildList = childClassMap.get(parent);
+		}
+		else
+		{
+			externalChildList = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			childClassMap.put(parent, externalChildList);
+		}
+		externalChildList.add(child);
+	}
+	
+	private static java.util.List< JointId > getChildList( Class forClass, JointId forJoint )
+	{
+		if (forClass == null || forJoint == null)
+		{
+			return null;
+		}
+		if (externalChildrenMap.containsKey(forClass))
+		{
+			java.util.Map<JointId, java.util.List<JointId>> classMap = externalChildrenMap.get(forClass);
+			if (classMap.containsKey(forJoint))
+			{
+				return classMap.get(forJoint);
+			}
+		}
+		return null;
+	}
+	
+	protected JointId(JointId parent){
+		this.parent = parent;
+		if( this.parent != null ) {
+			if( this.parent.getClass() == this.getClass() ) {
+				this.parent.children.add( this );
+			} else {
+				JointId.addExternalChild( parent, this );
+			}
+		}
+	}
+	
+	protected JointId getParent()
+	{
+		return this.parent;
+	}
+	
+	protected Iterable< JointId > getDeclaredChildren()
+	{
+		return this.children;
+	}
+	
+	private static class ExternalChildrenIterator implements java.util.Iterator<JointId>
+	{
+		private final JointId forJoint;
+		private Class currentClass;
+		private Iterator<JointId> currentIterator;
+		
+		public ExternalChildrenIterator(Class forClass, JointId forJoint)
+		{
+			this.forJoint = forJoint;
+			this.currentClass = forClass;
+			this.currentIterator = this.forJoint.getDeclaredChildren().iterator();
+		}
+
+		public boolean hasNext() {
+			if (currentIterator != null)
+			{
+				return currentIterator.hasNext();
+			}
+			return false;
+		}
+		
+		public JointId next() {
+			if (currentIterator != null)
+			{
+				JointId next = currentIterator.next();
+				if (!currentIterator.hasNext())
+				{
+					currentIterator = null;
+					while (currentClass != null)
+					{
+						currentClass = currentClass.getSuperclass();
+						java.util.List<JointId> jointList = JointId.getChildList(currentClass, forJoint);
+						if (jointList != null)
+						{
+							currentIterator = jointList.iterator();
+							break;
+						}
+					}
+				}
+				return next;
+			}
+			return null;
+		}
+
+		public void remove() {
+			//Not implemented
+		}
+	}
+	
+	private static class ExternalChildrenIterable implements java.lang.Iterable<JointId>
+	{
+		private final Class forClass;
+		private final JointId forJoint;
+		
+		public ExternalChildrenIterable(Class forClass, JointId forJoint)
+		{
+			this.forClass = forClass;
+			this.forJoint = forJoint;
+		}
+		
+		public Iterator<JointId> iterator() {
+			return new ExternalChildrenIterator(this.forClass, this.forJoint);
+		}
+		
+	}
+	
+	public static Iterable< JointId > getChildren( Class forClass, JointId forJoint )
+	{
+		return new ExternalChildrenIterable(forClass, forJoint);
+	}
+	
 }

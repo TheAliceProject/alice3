@@ -56,8 +56,4 @@ public abstract class BipedImplementation extends JointedModelImplementation {
 	public org.lgna.story.Biped getAbstraction() {
 		return this.abstraction;
 	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return 1.0;
-	}
 }

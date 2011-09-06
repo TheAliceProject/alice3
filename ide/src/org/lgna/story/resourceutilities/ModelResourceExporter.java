@@ -52,8 +52,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
@@ -70,6 +73,7 @@ import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
 public class ModelResourceExporter {
@@ -102,27 +106,29 @@ public class ModelResourceExporter {
 	private AxisAlignedBox boundingBox;
 	private File xmlFile;
 	private Image thumbnail;
-	private String packageString;
 	
-	private Class implementationFactoryClass;
-	private Class implementationClass;
-	private Class rootabstractionClass;
-	private Class superClass;
+	private ModelClassData classData;
+	private List<Tuple2<String, String>> jointList;
 	
-	public ModelResourceExporter(String name, String packageString, Class superClass, Class implementationFactoryClass, Class implementationClass, Class abstractionClass)
+	public ModelResourceExporter(String name, ModelClassData classData)
 	{
 		this.name = name;
 		if (Character.isLowerCase(this.name.charAt(0)))
 		{
 			this.name = this.name.substring(0, 1).toUpperCase() + this.name.substring(1);
 		}
-		this.packageString = packageString;
-		this.superClass = superClass;
-		this.implementationFactoryClass = implementationFactoryClass;
-		this.implementationClass = implementationClass;
-		this.rootabstractionClass = abstractionClass;
+		this.classData = classData;
 	}
 	
+	public ModelClassData getClassData()
+	{
+		return this.classData;
+	}
+	
+	public void setJointMap(List<Tuple2<String, String>> jointList)
+	{
+		this.jointList = jointList;
+	}
 	
 	public String getName()
 	{
@@ -131,7 +137,7 @@ public class ModelResourceExporter {
 	
 	public String getPackageString()
 	{
-		return this.packageString;
+		return this.classData.packageString;
 	}
 	
 	public void addTexture(String textureName)
@@ -202,15 +208,39 @@ public class ModelResourceExporter {
 		return sb.toString();
 	}
 	
+	private List<String> getExistingJointIds(Class resourceClass)
+	{
+		List<String> ids = new LinkedList<String>();
+		Class[] innerClasses = resourceClass.getDeclaredClasses();
+		for (Class c : innerClasses)
+		{
+			if (org.lgna.story.resources.JointId.class.isAssignableFrom(c))
+			{
+				Field[] fields = c.getDeclaredFields();
+				for (Field f : fields)
+				{
+					String fieldName = f.getName();
+					ids.add(fieldName);
+				}
+			}
+		}
+		Class[] interfaces = resourceClass.getInterfaces();
+		for (Class i : interfaces)
+		{
+			ids.addAll(getExistingJointIds(i));
+		}
+		return ids;
+	}
+	
 	private String createJavaCode()
 	{
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(getCopyrightComment());
 		sb.append("\n");
-		sb.append("package "+this.packageString+";\n\n");
+		sb.append("package "+this.classData.packageString+";\n\n");
 		
-		sb.append("public enum "+this.name+" implements "+this.superClass.getCanonicalName()+" {\n");
+		sb.append("public enum "+this.name+" implements "+this.classData.superClass.getCanonicalName()+" {\n");
 		for (int i=0; i<this.textures.size(); i++)
 		{
 			String texture = this.textures.get(i);
@@ -224,14 +254,92 @@ public class ModelResourceExporter {
 				sb.append(";\n");
 			}
 		}
-		sb.append("\tprivate final "+this.implementationFactoryClass.getCanonicalName()+" factory;\n");
+		List<String> existingIds = getExistingJointIds(this.classData.superClass);
+		String jointEnumName = this.name+"JointId";
+		boolean addedRoots = false;
+		if (this.jointList != null)
+		{
+			List<String> rootJoints = new LinkedList<String>();
+			sb.append("\tpublic static enum "+jointEnumName+" implements org.lgna.story.resources.JointId {\n");
+			boolean isFirst = true;
+			for (Tuple2<String, String> entry : this.jointList)
+			{
+				String jointString = entry.getA();
+				String parentString = entry.getB();
+				if (existingIds.contains(jointString))
+				{
+					continue;
+				}
+				if (parentString == null)
+				{
+					parentString = "null";
+					rootJoints.add(jointString);
+					addedRoots = true;
+				}
+				if (isFirst)
+				{
+					isFirst = false;
+				}
+				else
+				{
+					sb.append(",\n");
+				}
+				sb.append("\t\t"+jointString+"( "+parentString+" )");
+			}
+			if (!isFirst)
+			{
+				sb.append(";\n");
+			}
+			
+			if (addedRoots)
+			{
+				sb.append("\t\tprivate static "+jointEnumName+"[] roots = { ");
+				for (int i=0; i<rootJoints.size(); i++){
+					sb.append(rootJoints.get(i));
+					if (i < rootJoints.size()-1) { 
+						sb.append(", ");
+					}
+				}
+				sb.append(" };\n");
+			}
+			sb.append("\t\tprivate "+jointEnumName+" parent;\n");
+			sb.append("\t\tprivate java.util.List< org.lgna.story.resources.JointId > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();\n");
+			sb.append("\t\tprivate "+jointEnumName+"( "+jointEnumName+" parent ) {\n");
+			sb.append("\t\t\tthis.parent = parent;\n");
+			sb.append("\t\t\tif( this.parent != null ) {\n");
+			sb.append("\t\t\t\tthis.parent.children.add( this );\n");
+			sb.append("\t\t\t}\n");
+			sb.append("\t\t}\n");
+			sb.append("\t\tpublic org.lgna.story.resources.JointId getParent() {\n");
+			sb.append("\t\t\treturn this.parent;\n");
+			sb.append("\t\t}\n");
+			sb.append("\t\tpublic Iterable< org.lgna.story.resources.JointId > getChildren() {\n");
+			sb.append("\t\t\treturn this.children;\n");
+			sb.append("\t\t}\n");
+			if (addedRoots)
+			{
+				sb.append("\t\tpublic static "+jointEnumName+"[] getRoots() {\n");
+				sb.append("\t\t\treturn roots;\n");
+				sb.append("\t\t}\n");
+				sb.append("\t};\n");
+			}
+		}
+		
+		sb.append("\tprivate final "+this.classData.implementationFactoryClass.getCanonicalName()+" factory;\n");
 		sb.append("\tprivate "+this.name+"() {\n");
-		sb.append("\t\tthis.factory = "+this.implementationFactoryClass.getCanonicalName()+".getInstance(this);\n");
+		sb.append("\t\tthis.factory = "+this.classData.implementationFactoryClass.getCanonicalName()+".getInstance(this);\n");
 		sb.append("\t}\n");
-		sb.append("\tpublic "+this.implementationClass.getCanonicalName()+" createImplementation( "+this.rootabstractionClass.getCanonicalName()+" abstraction ) {\n");
-		sb.append("\t\treturn this.factory.createImplementation( abstraction );\n");
+		sb.append("\tpublic "+this.classData.implementationClass.getCanonicalName()+" createImplementation( "+this.classData.abstractionClass.getCanonicalName()+" abstraction ) {\n");
+		sb.append("\t\treturn this.factory.createImplementation( abstraction");
+		if (addedRoots)
+		{
+			sb.append(", "+jointEnumName+".getRoots()");
+		}
+		sb.append(" );\n");
 		sb.append("\t}\n");
 		sb.append("}\n");
+		
+		
 		return sb.toString();
 	}
 	
@@ -292,7 +400,7 @@ public class ModelResourceExporter {
 	
 	private File createJavaCode(String root)
 	{
-		String packageDirectory = getDirectoryStringForPackage(this.packageString);
+		String packageDirectory = getDirectoryStringForPackage(this.classData.packageString);
 		System.out.println(packageDirectory);
 		String javaCode = createJavaCode();
 		System.out.println(javaCode);
@@ -335,7 +443,7 @@ public class ModelResourceExporter {
 	
 	private File createXMLFile(String root)
 	{
-		String resourceDirectory = root + getDirectoryStringForPackage(this.packageString)+"resources/";
+		String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+"resources/";
         File outputFile = new File(resourceDirectory, this.name+".xml");
         try
         {
@@ -377,7 +485,7 @@ public class ModelResourceExporter {
 	{
 		if (this.thumbnail != null)
 		{
-			String resourceDirectory = root + getDirectoryStringForPackage(this.packageString)+"resources/";
+			String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+"resources/";
 	        File outputFile = new File(resourceDirectory, this.name+".png");
 	        try
 	        {
