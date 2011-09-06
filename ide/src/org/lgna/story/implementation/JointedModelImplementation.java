@@ -66,6 +66,10 @@ public abstract class JointedModelImplementation extends SingleVisualModelImplem
 		}
 	}
 	
+	public org.lgna.story.resources.JointId[] getRootJointIds() {
+		return this.rootJointIds;
+	}
+	
 //	private org.lgna.story.resources.JointId[] getAllJointIds() {
 //		//todo
 //		return this.rootJointIds[ 0 ].getClass().getEnumConstants();
