@@ -49,47 +49,39 @@ package org.lgna.story.resources;
  */
 @org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Biped.class )
 public interface BipedResource extends JointedModelResource {
-	public static class BipedJointId extends JointId {
-		public static final BipedJointId PELVIS_LOWER_BODY = new BipedJointId( null );
-		
-		public static final BipedJointId LEFT_HIP = new BipedJointId( PELVIS_LOWER_BODY );
-		public static final BipedJointId LEFT_KNEE = new BipedJointId( LEFT_HIP );
-		public static final BipedJointId LEFT_ANKLE = new BipedJointId( LEFT_KNEE );
-		
-		public static final BipedJointId RIGHT_HIP = new BipedJointId( PELVIS_LOWER_BODY );
-		public static final BipedJointId RIGHT_KNEE = new BipedJointId( RIGHT_HIP );
-		public static final BipedJointId RIGHT_ANKLE = new BipedJointId( RIGHT_KNEE );
-		
-		public static final BipedJointId PELVIS_UPPER_BODY = new BipedJointId( null );
-		
-		public static final BipedJointId SPINE_MIDDLE = new BipedJointId( PELVIS_UPPER_BODY );
-		public static final BipedJointId SPINE_UPPER = new BipedJointId( SPINE_MIDDLE );
-		
-		public static final BipedJointId NECK = new BipedJointId( SPINE_UPPER );
-		public static final BipedJointId HEAD = new BipedJointId( NECK );
-		public static final BipedJointId MOUTH = new BipedJointId(HEAD);
-		public static final BipedJointId LEFT_EYE = new BipedJointId(HEAD);
-		public static final BipedJointId RIGHT_EYE = new BipedJointId(HEAD);
-		
-		public static final BipedJointId RIGHT_CLAVICLE = new BipedJointId( SPINE_UPPER );
-		public static final BipedJointId RIGHT_SHOULDER = new BipedJointId( RIGHT_CLAVICLE );
-		public static final BipedJointId RIGHT_ELBOW = new BipedJointId( RIGHT_SHOULDER );
-		public static final BipedJointId RIGHT_WRIST = new BipedJointId( RIGHT_ELBOW );
-		
-		public static final BipedJointId LEFT_CLAVICLE = new BipedJointId( SPINE_UPPER );
-		public static final BipedJointId LEFT_SHOULDER = new BipedJointId( LEFT_CLAVICLE );
-		public static final BipedJointId LEFT_ELBOW = new BipedJointId( LEFT_SHOULDER );
-		public static final BipedJointId LEFT_WRIST = new BipedJointId( LEFT_ELBOW );
-		
-		private static BipedJointId[] roots = { PELVIS_LOWER_BODY, PELVIS_UPPER_BODY };
-
-		protected BipedJointId( JointId parent ) {
-			super(parent);
-		}
-		public static BipedJointId[] getRoots() {
-			return roots;
-		}
-	};
+	
+	public static final JointId PELVIS_LOWER_BODY = new JointId( null, BipedResource.class );
+	
+	public static final JointId LEFT_HIP = new JointId( PELVIS_LOWER_BODY, BipedResource.class );
+	public static final JointId LEFT_KNEE = new JointId( LEFT_HIP, BipedResource.class );
+	public static final JointId LEFT_ANKLE = new JointId( LEFT_KNEE, BipedResource.class );
+	
+	public static final JointId RIGHT_HIP = new JointId( PELVIS_LOWER_BODY, BipedResource.class );
+	public static final JointId RIGHT_KNEE = new JointId( RIGHT_HIP, BipedResource.class );
+	public static final JointId RIGHT_ANKLE = new JointId( RIGHT_KNEE, BipedResource.class );
+	
+	public static final JointId PELVIS_UPPER_BODY = new JointId( null, BipedResource.class );
+	
+	public static final JointId SPINE_MIDDLE = new JointId( PELVIS_UPPER_BODY, BipedResource.class );
+	public static final JointId SPINE_UPPER = new JointId( SPINE_MIDDLE, BipedResource.class );
+	
+	public static final JointId NECK = new JointId( SPINE_UPPER, BipedResource.class );
+	public static final JointId HEAD = new JointId( NECK, BipedResource.class );
+	public static final JointId MOUTH = new JointId(HEAD, BipedResource.class);
+	public static final JointId LEFT_EYE = new JointId(HEAD, BipedResource.class);
+	public static final JointId RIGHT_EYE = new JointId(HEAD, BipedResource.class);
+	
+	public static final JointId RIGHT_CLAVICLE = new JointId( SPINE_UPPER, BipedResource.class );
+	public static final JointId RIGHT_SHOULDER = new JointId( RIGHT_CLAVICLE, BipedResource.class );
+	public static final JointId RIGHT_ELBOW = new JointId( RIGHT_SHOULDER, BipedResource.class );
+	public static final JointId RIGHT_WRIST = new JointId( RIGHT_ELBOW, BipedResource.class );
+	
+	public static final JointId LEFT_CLAVICLE = new JointId( SPINE_UPPER, BipedResource.class );
+	public static final JointId LEFT_SHOULDER = new JointId( LEFT_CLAVICLE, BipedResource.class );
+	public static final JointId LEFT_ELBOW = new JointId( LEFT_SHOULDER, BipedResource.class );
+	public static final JointId LEFT_WRIST = new JointId( LEFT_ELBOW, BipedResource.class );
+	
+	public static final JointId[] JOINT_ID_ROOTS = { PELVIS_LOWER_BODY, PELVIS_UPPER_BODY };
 
 	public org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction );
 }

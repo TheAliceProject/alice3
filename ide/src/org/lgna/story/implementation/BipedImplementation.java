@@ -49,7 +49,7 @@ package org.lgna.story.implementation;
 public abstract class BipedImplementation extends JointedModelImplementation {
 	private final org.lgna.story.Biped abstraction;
 	public BipedImplementation( org.lgna.story.Biped abstraction, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
-		super( sgVisual, org.lgna.story.resources.BipedResource.BipedJointId.getRoots() );
+		super( sgVisual, org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS );
 		this.abstraction = abstraction;
 	}
 	@Override

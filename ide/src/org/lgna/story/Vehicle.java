@@ -14,10 +14,10 @@ public class Vehicle extends JointedModel {
 	}
 	
 	public Joint getRightDoor() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.VehicleResource.VehicleJointId.RIGHT_DOOR );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.VehicleResource.RIGHT_DOOR );
 	}
 
 	public Joint getLeftDoor() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.VehicleResource.VehicleJointId.LEFT_DOOR );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.VehicleResource.LEFT_DOOR );
 	}
 }

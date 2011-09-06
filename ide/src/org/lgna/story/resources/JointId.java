@@ -47,22 +47,21 @@ import java.util.Iterator;
 
 import javax.mail.MethodNotSupportedException;
 
-import org.lgna.story.resources.BipedResource.BipedJointId;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointId {
+public class JointId {
 	
 	
 	private final JointId parent;
+	private final Class< ? extends JointedModelResource > containingClass;
 	private final java.util.List< JointId > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	
-	private static final java.util.Map< Class, java.util.Map<JointId, java.util.List<JointId>> > externalChildrenMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map< Class< ? extends JointedModelResource >, java.util.Map<JointId, java.util.List<JointId>> > externalChildrenMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	private static void addExternalChild(JointId parent, JointId child)
 	{
-		Class childClass = child.getClass();
+		Class< ? extends JointedModelResource > childClass = child.getContainingClass();
 		java.util.Map<JointId, java.util.List<JointId>> childClassMap = null;
 		if (externalChildrenMap.containsKey(childClass))
 		{
@@ -86,7 +85,7 @@ public abstract class JointId {
 		externalChildList.add(child);
 	}
 	
-	private static java.util.List< JointId > getChildList( Class forClass, JointId forJoint )
+	private static java.util.List< JointId > getChildList( Class< ? extends JointedModelResource > forClass, JointId forJoint )
 	{
 		if (forClass == null || forJoint == null)
 		{
@@ -103,10 +102,11 @@ public abstract class JointId {
 		return null;
 	}
 	
-	protected JointId(JointId parent){
+	protected JointId(JointId parent, Class<? extends JointedModelResource> containingClass){
 		this.parent = parent;
+		this.containingClass = containingClass;
 		if( this.parent != null ) {
-			if( this.parent.getClass() == this.getClass() ) {
+			if( this.parent.getContainingClass() == this.getContainingClass() ) {
 				this.parent.children.add( this );
 			} else {
 				JointId.addExternalChild( parent, this );
@@ -119,6 +119,11 @@ public abstract class JointId {
 		return this.parent;
 	}
 	
+	protected Class<? extends JointedModelResource> getContainingClass()
+	{
+		return this.containingClass;
+	}
+	
 	protected Iterable< JointId > getDeclaredChildren()
 	{
 		return this.children;
@@ -127,10 +132,10 @@ public abstract class JointId {
 	private static class ExternalChildrenIterator implements java.util.Iterator<JointId>
 	{
 		private final JointId forJoint;
-		private Class currentClass;
+		private Class< ? extends JointedModelResource > currentClass;
 		private Iterator<JointId> currentIterator;
 		
-		public ExternalChildrenIterator(Class forClass, JointId forJoint)
+		public ExternalChildrenIterator(Class< ? extends JointedModelResource > forClass, JointId forJoint)
 		{
 			this.forJoint = forJoint;
 			this.currentClass = forClass;
@@ -154,7 +159,15 @@ public abstract class JointId {
 					currentIterator = null;
 					while (currentClass != null)
 					{
-						currentClass = currentClass.getSuperclass();
+						Class<?> superClass = currentClass.getSuperclass();
+						if (JointedModelResource.class.isAssignableFrom(superClass))
+						{
+							currentClass = (Class<? extends JointedModelResource>)superClass;
+						}
+						else
+						{
+							currentClass = null;
+						}
 						java.util.List<JointId> jointList = JointId.getChildList(currentClass, forJoint);
 						if (jointList != null)
 						{
@@ -175,10 +188,10 @@ public abstract class JointId {
 	
 	private static class ExternalChildrenIterable implements java.lang.Iterable<JointId>
 	{
-		private final Class forClass;
+		private final Class< ? extends JointedModelResource > forClass;
 		private final JointId forJoint;
 		
-		public ExternalChildrenIterable(Class forClass, JointId forJoint)
+		public ExternalChildrenIterable(Class< ? extends JointedModelResource > forClass, JointId forJoint)
 		{
 			this.forClass = forClass;
 			this.forJoint = forJoint;
@@ -190,7 +203,7 @@ public abstract class JointId {
 		
 	}
 	
-	public static Iterable< JointId > getChildren( Class forClass, JointId forJoint )
+	public static Iterable< JointId > getChildren( Class< ? extends JointedModelResource > forClass, JointId forJoint )
 	{
 		return new ExternalChildrenIterable(forClass, forJoint);
 	}

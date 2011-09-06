@@ -120,13 +120,13 @@ public abstract class JointedModelImplementation extends SingleVisualModelImplem
 	private void treeWalk( org.lgna.story.resources.JointId parentId, TreeWalkObserver observer ) {
 		org.lgna.story.implementation.JointImplementation parentImpl = this.getJointImplementation( parentId );
 		observer.pushJoint( parentImpl );
-		for( org.lgna.story.resources.JointId childId : parentId.getChildren() ) {
-			observer.handleBone( parentImpl, this.getJointImplementation( childId ) );
-		}
+//		for( org.lgna.story.resources.JointId childId : parentId.getChildren() ) {
+//			observer.handleBone( parentImpl, this.getJointImplementation( childId ) );
+//		}
 		observer.popJoint( parentImpl );
-		for( org.lgna.story.resources.JointId childId : parentId.getChildren() ) {
-			treeWalk( childId, observer );
-		}
+//		for( org.lgna.story.resources.JointId childId : parentId.getChildren() ) {
+//			treeWalk( childId, observer );
+//		}
 	}
 	public void treeWalk( TreeWalkObserver observer ) {
 		for( org.lgna.story.resources.JointId root : this.rootJointIds ) {

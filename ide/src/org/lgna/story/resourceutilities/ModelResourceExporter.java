@@ -260,7 +260,7 @@ public class ModelResourceExporter {
 		if (this.jointList != null)
 		{
 			List<String> rootJoints = new LinkedList<String>();
-			sb.append("\tpublic static enum "+jointEnumName+" implements org.lgna.story.resources.JointId {\n");
+			sb.append("\tpublic static class "+jointEnumName+" extends org.lgna.story.resources.JointId {\n");
 			boolean isFirst = true;
 			for (Tuple2<String, String> entry : this.jointList)
 			{
@@ -302,27 +302,16 @@ public class ModelResourceExporter {
 				}
 				sb.append(" };\n");
 			}
-			sb.append("\t\tprivate "+jointEnumName+" parent;\n");
-			sb.append("\t\tprivate java.util.List< org.lgna.story.resources.JointId > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();\n");
-			sb.append("\t\tprivate "+jointEnumName+"( "+jointEnumName+" parent ) {\n");
-			sb.append("\t\t\tthis.parent = parent;\n");
-			sb.append("\t\t\tif( this.parent != null ) {\n");
-			sb.append("\t\t\t\tthis.parent.children.add( this );\n");
-			sb.append("\t\t\t}\n");
-			sb.append("\t\t}\n");
-			sb.append("\t\tpublic org.lgna.story.resources.JointId getParent() {\n");
-			sb.append("\t\t\treturn this.parent;\n");
-			sb.append("\t\t}\n");
-			sb.append("\t\tpublic Iterable< org.lgna.story.resources.JointId > getChildren() {\n");
-			sb.append("\t\t\treturn this.children;\n");
+			sb.append("\t\tprivate "+jointEnumName+"( org.lgna.story.resources.JointId parent ) {\n");
+			sb.append("\t\t\tsuper(parent);\n");
 			sb.append("\t\t}\n");
 			if (addedRoots)
 			{
 				sb.append("\t\tpublic static "+jointEnumName+"[] getRoots() {\n");
 				sb.append("\t\t\treturn roots;\n");
 				sb.append("\t\t}\n");
-				sb.append("\t};\n");
 			}
+			sb.append("\t};\n");
 		}
 		
 		sb.append("\tprivate final "+this.classData.implementationFactoryClass.getCanonicalName()+" factory;\n");
