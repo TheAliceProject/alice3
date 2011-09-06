@@ -260,8 +260,7 @@ public class ModelResourceExporter {
 		if (this.jointList != null)
 		{
 			List<String> rootJoints = new LinkedList<String>();
-			sb.append("\tpublic static class "+jointEnumName+" extends org.lgna.story.resources.JointId {\n");
-			boolean isFirst = true;
+			sb.append("\n");
 			for (Tuple2<String, String> entry : this.jointList)
 			{
 				String jointString = entry.getA();
@@ -276,42 +275,20 @@ public class ModelResourceExporter {
 					rootJoints.add(jointString);
 					addedRoots = true;
 				}
-				if (isFirst)
-				{
-					isFirst = false;
-				}
-				else
-				{
-					sb.append(",\n");
-				}
-				sb.append("\t\t"+jointString+"( "+parentString+" )");
-			}
-			if (!isFirst)
-			{
-				sb.append(";\n");
+				sb.append("\tpublic static final org.lgna.story.resources.JointId "+jointString+" = new org.lgna.story.resources.JointId( "+parentString+", "+this.name+".class );\n");
 			}
 			
 			if (addedRoots)
 			{
-				sb.append("\t\tprivate static "+jointEnumName+"[] roots = { ");
+				sb.append("\n\tpublic static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ");
 				for (int i=0; i<rootJoints.size(); i++){
 					sb.append(rootJoints.get(i));
 					if (i < rootJoints.size()-1) { 
 						sb.append(", ");
 					}
 				}
-				sb.append(" };\n");
+				sb.append(" };\n\n");
 			}
-			sb.append("\t\tprivate "+jointEnumName+"( org.lgna.story.resources.JointId parent ) {\n");
-			sb.append("\t\t\tsuper(parent);\n");
-			sb.append("\t\t}\n");
-			if (addedRoots)
-			{
-				sb.append("\t\tpublic static "+jointEnumName+"[] getRoots() {\n");
-				sb.append("\t\t\treturn roots;\n");
-				sb.append("\t\t}\n");
-			}
-			sb.append("\t};\n");
 		}
 		
 		sb.append("\tprivate final "+this.classData.implementationFactoryClass.getCanonicalName()+" factory;\n");
@@ -322,7 +299,7 @@ public class ModelResourceExporter {
 		sb.append("\t\treturn this.factory.createImplementation( abstraction");
 		if (addedRoots)
 		{
-			sb.append(", "+jointEnumName+".getRoots()");
+			sb.append(", "+this.name+".JOINT_ID_ROOTS");
 		}
 		sb.append(" );\n");
 		sb.append("\t}\n");

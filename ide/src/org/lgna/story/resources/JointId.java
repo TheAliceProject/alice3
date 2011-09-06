@@ -129,6 +129,11 @@ public class JointId {
 		return this.children;
 	}
 	
+	public Iterable< JointId > getAllChildren( JointedModelResource forResource )
+	{
+		return JointId.getChildren(forResource.getClass(), this);
+	}
+	
 	private static class ExternalChildrenIterator implements java.util.Iterator<JointId>
 	{
 		private final JointId forJoint;
