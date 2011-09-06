@@ -176,10 +176,10 @@ public abstract class JointId {
 	
 	private static class ExternalChildrenIterable implements java.lang.Iterable<JointId>
 	{
-		private final Class forClass;
+		private final Class< ? extends JointedModelResource > forClass;
 		private final JointId forJoint;
 		
-		public ExternalChildrenIterable(Class forClass, JointId forJoint)
+		public ExternalChildrenIterable(Class< ? extends JointedModelResource > forClass, JointId forJoint)
 		{
 			this.forClass = forClass;
 			this.forJoint = forJoint;
@@ -191,9 +191,9 @@ public abstract class JointId {
 		
 	}
 	
-	public static Iterable< JointId > getChildren( Class forClass, JointId forJoint )
+	public Iterable< JointId > getChildren( JointedModelResource resource )
 	{
-		return new ExternalChildrenIterable(forClass, forJoint);
+		return new ExternalChildrenIterable( resource.getClass(), this );
 	}
 	
 }

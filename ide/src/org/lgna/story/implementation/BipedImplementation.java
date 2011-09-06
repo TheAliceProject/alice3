@@ -46,14 +46,8 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BipedImplementation extends JointedModelImplementation {
-	private final org.lgna.story.Biped abstraction;
-	public BipedImplementation( org.lgna.story.Biped abstraction, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
-		super( sgVisual, org.lgna.story.resources.BipedResource.BipedJointId.getRoots() );
-		this.abstraction = abstraction;
-	}
-	@Override
-	public org.lgna.story.Biped getAbstraction() {
-		return this.abstraction;
+public final class BipedImplementation extends JointedModelImplementation< org.lgna.story.Biped > {
+	public BipedImplementation( org.lgna.story.Biped abstraction, org.lgna.story.implementation.factories.JointedModelImplementationVisualFactory< org.lgna.story.resources.BipedResource > factory ) {
+		super( abstraction, factory, org.lgna.story.resources.BipedResource.BipedJointId.getRoots() );
 	}
 }
