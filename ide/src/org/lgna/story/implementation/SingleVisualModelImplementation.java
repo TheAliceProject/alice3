@@ -62,4 +62,8 @@ public abstract class SingleVisualModelImplementation extends ModelImplementatio
 	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
 		return this.sgAppearances;
 	}
+	@Override
+	protected double getBoundingSphereRadius() {
+		return this.getSgVisuals()[ 0 ].getBoundingSphere().radius;
+	}
 }

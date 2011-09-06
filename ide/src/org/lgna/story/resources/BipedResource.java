@@ -43,61 +43,65 @@
 
 package org.lgna.story.resources;
 
+
 /**
  * @author Dennis Cosgrove
  */
 @org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Biped.class )
 public interface BipedResource extends JointedModelResource {
-	public static enum BipedJointId implements JointId {
-		PELVIS_LOWER_BODY( null ),
+	public static class BipedJointId extends JointId {
+		public static final BipedJointId PELVIS_LOWER_BODY = new BipedJointId( null );
 		
-		LEFT_HIP( PELVIS_LOWER_BODY ),
-		LEFT_KNEE( LEFT_HIP ),
-		LEFT_ANKLE( LEFT_KNEE ),
+		public static final BipedJointId LEFT_HIP = new BipedJointId( PELVIS_LOWER_BODY );
+		public static final BipedJointId LEFT_KNEE = new BipedJointId( LEFT_HIP );
+		public static final BipedJointId LEFT_ANKLE = new BipedJointId( LEFT_KNEE );
 		
-		RIGHT_HIP( PELVIS_LOWER_BODY ),
-		RIGHT_KNEE( RIGHT_HIP ),
-		RIGHT_ANKLE( RIGHT_KNEE ),
+		public static final BipedJointId RIGHT_HIP = new BipedJointId( PELVIS_LOWER_BODY );
+		public static final BipedJointId RIGHT_KNEE = new BipedJointId( RIGHT_HIP );
+		public static final BipedJointId RIGHT_ANKLE = new BipedJointId( RIGHT_KNEE );
 		
-		PELVIS_UPPER_BODY( null ),
+		public static final BipedJointId PELVIS_UPPER_BODY = new BipedJointId( null );
 		
-		SPINE_MIDDLE( PELVIS_UPPER_BODY ),
-		SPINE_UPPER( SPINE_MIDDLE ),
+		public static final BipedJointId SPINE_MIDDLE = new BipedJointId( PELVIS_UPPER_BODY );
+		public static final BipedJointId SPINE_UPPER = new BipedJointId( SPINE_MIDDLE );
 		
-		NECK( SPINE_UPPER ),
-		HEAD( NECK ),
-		MOUTH(HEAD),
-		LEFT_EYE(HEAD),
-		RIGHT_EYE(HEAD),
+		public static final BipedJointId NECK = new BipedJointId( SPINE_UPPER );
+		public static final BipedJointId HEAD = new BipedJointId( NECK );
+		public static final BipedJointId MOUTH = new BipedJointId(HEAD);
+		public static final BipedJointId LEFT_EYE = new BipedJointId(HEAD);
+		public static final BipedJointId RIGHT_EYE = new BipedJointId(HEAD);
 		
-		RIGHT_CLAVICLE( SPINE_UPPER ),
-		RIGHT_SHOULDER( RIGHT_CLAVICLE ),
-		RIGHT_ELBOW( RIGHT_SHOULDER ),
-		RIGHT_WRIST( RIGHT_ELBOW ),
+		public static final BipedJointId RIGHT_CLAVICLE = new BipedJointId( SPINE_UPPER );
+		public static final BipedJointId RIGHT_SHOULDER = new BipedJointId( RIGHT_CLAVICLE );
+		public static final BipedJointId RIGHT_ELBOW = new BipedJointId( RIGHT_SHOULDER );
+		public static final BipedJointId RIGHT_WRIST = new BipedJointId( RIGHT_ELBOW );
 		
-		LEFT_CLAVICLE( SPINE_UPPER ),
-		LEFT_SHOULDER( LEFT_CLAVICLE ),
-		LEFT_ELBOW( LEFT_SHOULDER ),
-		LEFT_WRIST( LEFT_ELBOW );
+		public static final BipedJointId LEFT_CLAVICLE = new BipedJointId( SPINE_UPPER );
+		public static final BipedJointId LEFT_SHOULDER = new BipedJointId( LEFT_CLAVICLE );
+		public static final BipedJointId LEFT_ELBOW = new BipedJointId( LEFT_SHOULDER );
+		public static final BipedJointId LEFT_WRIST = new BipedJointId( LEFT_ELBOW );
 		
 		private static BipedJointId[] roots = { PELVIS_LOWER_BODY, PELVIS_UPPER_BODY };
-		private BipedJointId parent;
-		private java.util.List< JointId > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private BipedJointId( BipedJointId parent ) {
-			this.parent = parent;
-			if( this.parent != null ) {
-				this.parent.children.add( this );
-			}
-		}
-		public JointId getParent() {
-			return this.parent;
-		}
-		public Iterable< JointId > getChildren() {
-			return this.children;
+
+		protected BipedJointId( JointId parent ) {
+			super(parent);
 		}
 		public static BipedJointId[] getRoots() {
 			return roots;
 		}
 	};
+	
+	public static class OgreJointId extends BipedJointId {
+		public static final OgreJointId LEFT_HORN = new OgreJointId( BipedJointId.HEAD );
+		public static final OgreJointId RIGHT_HORN = new OgreJointId( BipedJointId.HEAD );
+		
+		public static final OgreJointId TAIL_A = new OgreJointId( BipedJointId.PELVIS_LOWER_BODY );
+		public static final OgreJointId AIL_B = new OgreJointId( TAIL_A );
+		
+		protected OgreJointId( JointId parent ) {
+			super(parent);
+		}
+	};
+
 	public org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction );
 }

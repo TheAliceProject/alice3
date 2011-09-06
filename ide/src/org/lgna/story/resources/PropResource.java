@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,64 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.resources.sims2;
-
-import java.util.Collections;
-
-import org.lgna.story.resources.JointId;
-
+package org.lgna.story.resources;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public abstract class PersonResource implements org.lgna.story.resources.PersonResource {
-	private final Gender gender;
-	private final SkinTone skinTone;
-	private final EyeColor eyeColor;
-	private final Hair hair;
-	private final double obesityLevel;
-	private final Outfit outfit; 
-	
-	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit ) {
-		this.gender = gender;
-		this.skinTone = skinTone;
-		this.eyeColor = eyeColor;
-		this.hair = hair;
-		this.obesityLevel = obesityLevel.doubleValue();
-		this.outfit = outfit;
-	}
-	public abstract LifeStage getLifeStage();
-	public Gender getGender() {
-		return this.gender;
-	}
-	public SkinTone getSkinTone() {
-		return this.skinTone;
-	}
-	public EyeColor getEyeColor() {
-		return this.eyeColor;
-	}
-	public Hair getHair() {
-		return this.hair;
-	}
-	public Double getObesityLevel() {
-		return this.obesityLevel;
-	}
-	public Outfit getOutfit() {
-		return this.outfit;
-	}
-	
-	public final org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction ) {
-		org.lgna.story.implementation.sims2.SimsBipedImplementation rv = new org.lgna.story.implementation.sims2.SimsBipedImplementation( abstraction, this.getLifeStage() );
-		rv.setGender( this.getGender() );
-		rv.setOutfit( this.getOutfit() );
-		rv.setSkinTone( this.getSkinTone() );
-		rv.setObesityLevel( this.getObesityLevel() );
-		rv.setHair( org.lgna.story.resources.sims2.FemaleAdultHairBraids.BLACK );
-		rv.setEyeColor( org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
-		return rv;
-	}
-	public Iterable<JointId> getAllChildren(JointId jointId) {
-		return JointId.getChildren(this.getClass(), jointId);
-	}
+@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Prop.class )
+public interface PropResource extends JointedModelResource {
+
+	public org.lgna.story.implementation.JointedModelImplementation createImplementation( org.lgna.story.Prop abstraction );
 }

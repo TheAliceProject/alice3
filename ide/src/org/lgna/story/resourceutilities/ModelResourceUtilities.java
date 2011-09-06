@@ -166,7 +166,7 @@ public class ModelResourceUtilities {
 			while (entries.hasMoreElements())
 			{
 				ZipEntry entry = entries.nextElement();
-				if (entry.getName().endsWith(".class"))
+				if (entry.getName().endsWith(".class") && !entry.getName().contains("$"))
 				{
 					String className = entry.getName().replace('/', '.');
 					int lastDot = className.lastIndexOf(".");
@@ -244,15 +244,51 @@ public class ModelResourceUtilities {
 		return name;
 	}
 	
+	public static List<String> splitOnCapitals(String s)
+    {
+        StringBuilder sb = new StringBuilder();
+        List<String> split = new LinkedList<String>();
+        for (int i=0; i<s.length(); i++)
+        {
+            if (Character.isUpperCase(s.charAt(i)))
+            {
+                split.add(sb.toString());
+                sb = new StringBuilder();
+            }
+            sb.append(s.charAt(i));
+        }
+        if (sb.length() > 0)
+        {
+            split.add(sb.toString());
+        }
+        return split;
+    }
+	
+    public static String uppercaseFirstLetter(String s)
+    {
+    	if (s == null)
+    	{
+    		return null;
+    	}
+    	if (s.length() <= 1)
+    	{
+    		return s.toUpperCase();
+    	}
+    	return s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
+    }
+    
 	public static String getClassNameFromName(String name)
 	{
 		StringBuilder sb = new StringBuilder();
-		String[] nameParts = name.split("[_ ]");
-		for (String part : nameParts)
-		{
-			sb.append(part.substring(0, 1).toUpperCase());
-			sb.append(part.substring(1).toLowerCase());
-		}
+		String[] nameParts = name.split("[_ -]");
+        for (String s : nameParts)
+        {
+            List<String> capitalSplit = splitOnCapitals(s);
+            for (String subS : capitalSplit)
+            {
+                sb.append(uppercaseFirstLetter(subS));
+            }
+        }
 		return sb.toString();
 	}
 	

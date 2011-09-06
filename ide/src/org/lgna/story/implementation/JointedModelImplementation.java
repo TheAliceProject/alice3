@@ -43,19 +43,21 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.story.implementation.JointImplementation;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class JointedModelImplementation extends SingleVisualModelImplementation {
-	private final java.util.Map< org.lgna.story.resources.JointId, JointImplementation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImplementation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final org.lgna.story.resources.JointId[] rootJointIds;
 	public JointedModelImplementation( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, org.lgna.story.resources.JointId[] rootJointIds ) {
 		super( sgVisual );
 		this.rootJointIds = rootJointIds;
 	}
-	public JointImplementation getJointImplementation( org.lgna.story.resources.JointId jointId ) {
+	public org.lgna.story.implementation.JointImplementation getJointImplementation( org.lgna.story.resources.JointId jointId ) {
 		synchronized( this.map ) {
-			JointImplementation rv = this.map.get( jointId );
+			org.lgna.story.implementation.JointImplementation rv = this.map.get( jointId );
 			if( rv != null ) {
 				//pass
 			} else {
@@ -75,7 +77,25 @@ public abstract class JointedModelImplementation extends SingleVisualModelImplem
 //		return this.rootJointIds[ 0 ].getClass().getEnumConstants();
 //	}
 	
-	protected abstract JointImplementation createJointImplementation( org.lgna.story.resources.JointId jointId );
+	public edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getSgSkeletonVisual() {
+		if (this.getSgVisuals()[ 0 ] instanceof edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)
+		{
+			return (edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)this.getSgVisuals()[ 0 ];
+		}
+		return null;
+	}
+	
+	protected org.lgna.story.implementation.JointImplementation createJointImplementation( org.lgna.story.resources.JointId jointId ) {
+		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = this.getSgSkeletonVisual();
+		if (sgSkeletonVisual != null)
+		{
+			String key = jointId.toString();
+			edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
+			edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
+			return new org.lgna.story.implementation.alice.JointImplementation( this, jointId, sgJoint );
+		}
+		return null;
+	}
 	
 	private org.lgna.story.implementation.visualization.JointedModelVisualization visualization;
 	private org.lgna.story.implementation.visualization.JointedModelVisualization getVisualization() {
@@ -102,7 +122,7 @@ public abstract class JointedModelImplementation extends SingleVisualModelImplem
 	}
 	
 	private void treeWalk( org.lgna.story.resources.JointId parentId, TreeWalkObserver observer ) {
-		JointImplementation parentImpl = this.getJointImplementation( parentId );
+		org.lgna.story.implementation.JointImplementation parentImpl = this.getJointImplementation( parentId );
 		observer.pushJoint( parentImpl );
 		for( org.lgna.story.resources.JointId childId : parentId.getChildren() ) {
 			observer.handleBone( parentImpl, this.getJointImplementation( childId ) );
