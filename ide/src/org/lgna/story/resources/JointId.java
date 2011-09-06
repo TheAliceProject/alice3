@@ -48,7 +48,6 @@ import java.util.Iterator;
 import javax.mail.MethodNotSupportedException;
 
 import org.lgna.story.resources.BipedResource.BipedJointId;
-import org.lgna.story.resources.BipedResource.OgreJointId;
 
 /**
  * @author Dennis Cosgrove

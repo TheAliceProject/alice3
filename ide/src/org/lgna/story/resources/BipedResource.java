@@ -90,18 +90,6 @@ public interface BipedResource extends JointedModelResource {
 			return roots;
 		}
 	};
-	
-	public static class OgreJointId extends BipedJointId {
-		public static final OgreJointId LEFT_HORN = new OgreJointId( BipedJointId.HEAD );
-		public static final OgreJointId RIGHT_HORN = new OgreJointId( BipedJointId.HEAD );
-		
-		public static final OgreJointId TAIL_A = new OgreJointId( BipedJointId.PELVIS_LOWER_BODY );
-		public static final OgreJointId AIL_B = new OgreJointId( TAIL_A );
-		
-		protected OgreJointId( JointId parent ) {
-			super(parent);
-		}
-	};
 
 	public org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction );
 }
