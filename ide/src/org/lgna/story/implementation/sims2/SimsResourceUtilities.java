@@ -1,4 +1,4 @@
-package org.lgna.story.resources.sims2;
+package org.lgna.story.implementation.sims2;
 
 public class SimsResourceUtilities {
 	

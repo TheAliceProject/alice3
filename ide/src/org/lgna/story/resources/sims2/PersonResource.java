@@ -43,11 +43,6 @@
 
 package org.lgna.story.resources.sims2;
 
-import java.util.Collections;
-
-import org.lgna.story.resources.JointId;
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -57,8 +52,8 @@ public abstract class PersonResource implements org.lgna.story.resources.PersonR
 	private final EyeColor eyeColor;
 	private final Hair hair;
 	private final double obesityLevel;
-	private final Outfit outfit; 
-	
+	private final Outfit outfit;
+
 	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit ) {
 		this.gender = gender;
 		this.skinTone = skinTone;
@@ -86,18 +81,16 @@ public abstract class PersonResource implements org.lgna.story.resources.PersonR
 	public Outfit getOutfit() {
 		return this.outfit;
 	}
-	
+
 	public final org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction ) {
-		org.lgna.story.implementation.sims2.SimsBipedImplementation rv = new org.lgna.story.implementation.sims2.SimsBipedImplementation( abstraction, this.getLifeStage() );
-		rv.setGender( this.getGender() );
-		rv.setOutfit( this.getOutfit() );
-		rv.setSkinTone( this.getSkinTone() );
-		rv.setObesityLevel( this.getObesityLevel() );
-		rv.setHair( org.lgna.story.resources.sims2.FemaleAdultHairBraids.BLACK );
-		rv.setEyeColor( org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
+		org.lgna.story.implementation.BipedImplementation rv = new org.lgna.story.implementation.BipedImplementation( abstraction, org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this ) );
+//		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)rv.getVisualData();
+//		visualData.setGender( this.getGender() );
+//		visualData.setOutfit( this.getOutfit() );
+//		visualData.setSkinTone( this.getSkinTone() );
+//		visualData.setObesityLevel( this.getObesityLevel() );
+//		visualData.setHair( org.lgna.story.resources.sims2.FemaleAdultHairBraids.BLACK );
+//		visualData.setEyeColor( org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
 		return rv;
-	}
-	public Iterable<JointId> getAllChildren(JointId jointId) {
-		return JointId.getChildren(this.getClass(), jointId);
 	}
 }

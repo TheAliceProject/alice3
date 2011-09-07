@@ -41,26 +41,81 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.implementation.alice;
+package org.lgna.ik;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementation extends org.lgna.story.implementation.JointImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Joint sgJoint;
-	private final org.lgna.story.resources.JointId jointId;
-	public JointImplementation( org.lgna.story.implementation.JointedModelImplementation<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
-		super( jointedModelImplementation );
-		assert sgJoint != null;
-		this.jointId = jointId;
-		this.sgJoint = sgJoint;
+public class Bone {
+	private static double[] createVelocities( boolean b, final int N ) {
+		if( b ) {
+			return new double[ N ];
+		} else {
+			return null;
+		}
 	}
-	@Override
+	public static Bone createTree( org.lgna.story.implementation.JointedModelImplementation jointedModelImp, org.lgna.story.resources.JointId jointId ) {
+		return new Bone( jointedModelImp, jointId, null );
+	}
+	
+	private final org.lgna.story.implementation.JointedModelImplementation jointedModelImp;
+	private final org.lgna.story.resources.JointId jointId;
+
+	private final Bone parent;
+	private final java.util.List< Bone > children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
+	private final edu.cmu.cs.dennisc.math.Vector3[] axes;
+	private final double[] angularVelocities;
+	private Bone( org.lgna.story.implementation.JointedModelImplementation jointedModelImp, org.lgna.story.resources.JointId jointId, Bone parent ) {
+		this.jointedModelImp = jointedModelImp;
+		this.jointId = jointId;
+		this.parent = parent;
+		for( org.lgna.story.resources.JointId childJointId : this.jointId.getChildren( this.jointedModelImp.getResource() ) ) {
+			this.children.add( new Bone( jointedModelImp, childJointId, this ) );
+		}
+		org.lgna.story.implementation.JointImplementation jointImp = this.jointedModelImp.getJointImplementation( this.jointId );
+		int degreesOfFreedom = 3; //jointImp.getDegreesOfFreedom();
+		this.axes = Solver.createAxes( true, degreesOfFreedom );
+		this.angularVelocities = createVelocities( true, degreesOfFreedom );
+	}
 	public org.lgna.story.resources.JointId getJointId() {
 		return this.jointId;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Joint getSgComposite() {
-		return this.sgJoint;
+	public edu.cmu.cs.dennisc.math.Vector3[] getAxes() {
+		return this.axes;
+	}
+	private boolean isDescendantOf( Bone other ) {
+		if( this.parent != null ) {
+			if( other == this.parent ) {
+				return true;
+			} else {
+				return this.parent.isDescendantOf( other );
+			}
+		} else {
+			return false;
+		}
+	}
+	public Bone getNextBoneTowards( Bone other ) {
+		for( Bone child : this.children ) { 
+			if( child == other || other.isDescendantOf( child ) ) {
+				return child;
+			}
+		}
+		return this.parent;
+	}
+	public Bone getParent() {
+		return this.parent;
+	}
+	public Iterable< Bone > getChildren() {
+		return this.children;
+	}
+	public static interface TreeWalkObserver {
+		public void handleBone( Bone bone );
+	}
+	public void treeWalk( TreeWalkObserver observer ) {
+		observer.handleBone( this );
+		for( Bone child : this.children ) {
+			child.treeWalk( observer );
+		}
 	}
 }

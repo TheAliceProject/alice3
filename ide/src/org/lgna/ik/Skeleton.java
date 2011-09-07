@@ -41,17 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.implementation;
+package org.lgna.ik;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class BipedImplementation extends JointedModelImplementation< org.lgna.story.Biped, org.lgna.story.resources.BipedResource > {
-	public BipedImplementation( org.lgna.story.Biped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
-		super( abstraction, factory );
+public class Skeleton {
+	public static Skeleton createInstance( org.lgna.story.implementation.JointedModelImplementation jointedModelImp ) {
+		java.util.List< Bone > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( org.lgna.story.resources.JointId rootJointId : jointedModelImp.getRootJointIds() ) {
+			Bone rootBone = Bone.createTree( jointedModelImp, rootJointId ); 
+			list.add( rootBone );
+		}
+		Bone[] array = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( list, Bone.class );
+		return new Skeleton( array );
 	}
-	@Override
-	public org.lgna.story.resources.JointId[] getRootJointIds() {
-		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
+	private final Bone[] rootBones;
+	private final java.util.Map< org.lgna.story.resources.JointId, Bone > mapJointIdToBone = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private Skeleton( Bone[] rootBones ) {
+		this.rootBones = rootBones;
+		for( Bone rootBone : this.rootBones ) {
+			rootBone.treeWalk( new Bone.TreeWalkObserver() {
+				public void handleBone( org.lgna.ik.Bone bone ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( bone );
+				}
+			} );
+		}
+	}
+	public Bone[] getRootBones() {
+		return this.rootBones;
+	}
+	public Chain getChain( org.lgna.story.resources.JointId baseId, org.lgna.story.resources.JointId endEffectorId ) {
+		Bone base = mapJointIdToBone.get( baseId );
+		Bone endEffector = mapJointIdToBone.get( endEffectorId );
+		return Chain.createInstance( base, endEffector );
 	}
 }

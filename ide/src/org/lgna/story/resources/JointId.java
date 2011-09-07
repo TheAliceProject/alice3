@@ -43,10 +43,6 @@
 
 package org.lgna.story.resources;
 
-import java.util.Iterator;
-
-import javax.mail.MethodNotSupportedException;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -129,16 +125,11 @@ public class JointId {
 		return this.children;
 	}
 	
-	public Iterable< JointId > getAllChildren( JointedModelResource forResource )
-	{
-		return JointId.getChildren(forResource.getClass(), this);
-	}
-	
 	private static class ExternalChildrenIterator implements java.util.Iterator<JointId>
 	{
 		private final JointId forJoint;
 		private Class< ? extends JointedModelResource > currentClass;
-		private Iterator<JointId> currentIterator;
+		private java.util.Iterator<JointId> currentIterator;
 		
 		public ExternalChildrenIterator(Class< ? extends JointedModelResource > forClass, JointId forJoint)
 		{
@@ -202,15 +193,14 @@ public class JointId {
 			this.forJoint = forJoint;
 		}
 		
-		public Iterator<JointId> iterator() {
+		public java.util.Iterator<JointId> iterator() {
 			return new ExternalChildrenIterator(this.forClass, this.forJoint);
 		}
 		
 	}
 	
-	public static Iterable< JointId > getChildren( Class< ? extends JointedModelResource > forClass, JointId forJoint )
-	{
-		return new ExternalChildrenIterable(forClass, forJoint);
+	public Iterable< JointId > getChildren( JointedModelResource resource ) {
+		return new ExternalChildrenIterable( resource.getClass(), this );
 	}
 	
 }

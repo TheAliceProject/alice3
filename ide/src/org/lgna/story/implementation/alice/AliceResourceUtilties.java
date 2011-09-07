@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.resources.alice;
+package org.lgna.story.implementation.alice;
 
 import java.io.File;
 import java.io.IOException;
@@ -183,7 +183,7 @@ public class AliceResourceUtilties {
 		return createCopy(original);
 	}
 	
-	public static TexturedAppearance[] getTexturedAppearance(Object resource)
+	public static TexturedAppearance[] getTexturedAppearances(Object resource)
 	{
 		URL resourceURL = getTextureURL(resource);
 		if (urlToTextureMap.containsKey(resourceURL))

@@ -41,14 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.implementation.alice;
+package org.lgna.story.implementation.sims2;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AliceBipedImplementation extends org.lgna.story.implementation.BipedImplementation {
-	public AliceBipedImplementation( org.lgna.story.Biped abstraction, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual, edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] texturedAppearances ) {
-		super( abstraction, sgSkeletonVisual );
-		sgSkeletonVisual.textures.setValue(texturedAppearances);
+public class NebulousVisualData< M extends edu.cmu.cs.dennisc.nebulous.Model> implements org.lgna.story.implementation.JointedModelImplementation.VisualData {
+	private final M nebModel;
+	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { new edu.cmu.cs.dennisc.scenegraph.Visual() };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] {};
+	public NebulousVisualData( M nebModel ) {
+		this.nebModel = nebModel;
+		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebModel } );
+	}
+	public edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
+		return this.sgAppearances;
+	}
+	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+		return this.sgVisuals;
+	}
+	public M getNebModel() {
+		return this.nebModel;
+	}
+	public double getBoundingSphereRadius() {
+		return 1.0;
 	}
 }

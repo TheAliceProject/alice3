@@ -41,40 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.resources.alice;
-
-import org.lgna.story.resources.BipedResource;
-
-
+package org.lgna.ik;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BipedImplementationFactory {
-	private static java.util.Map< BipedResource, BipedImplementationFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
-    public static BipedImplementationFactory getInstance( BipedResource resource ) {
-    	synchronized( map ) {
-    		BipedImplementationFactory rv = map.get( resource );
-    		if( rv != null ) {
-    			//pass
-    		} else {
-    			rv = new BipedImplementationFactory( resource );
-    			map.put( resource, rv );
-    		}
-    		return rv;
+public class Solver {
+	/*package-private*/ static edu.cmu.cs.dennisc.math.Vector3[] createAxes( boolean b, final int N ) {
+		if( b ) {
+			edu.cmu.cs.dennisc.math.Vector3[] rv = new edu.cmu.cs.dennisc.math.Vector3[ N ];
+			for( int i=0; i<N; i++ ) {
+				rv[ i ] = edu.cmu.cs.dennisc.math.Vector3.createZero();
+			}
+			return rv;
+		} else {
+			return null;
 		}
-    }
-	
-    private final BipedResource resource;
-    
-    private BipedImplementationFactory( BipedResource resource ) {
-    	this.resource = resource;
 	}
-    
-	public org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction ) {
-	    edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] texturedAppearances = AliceResourceUtilties.getTexturedAppearance( this.resource );
-	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( this.resource );
-		return new org.lgna.story.implementation.alice.AliceBipedImplementation( abstraction, sgSkeletonVisual, texturedAppearances );
+
+	private Chain activeChain;
+	public void setActiveChain( Chain activeChain ) {
+		this.activeChain = activeChain;
 	}
 }

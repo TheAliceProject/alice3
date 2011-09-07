@@ -43,18 +43,10 @@
 
 package org.lgna.story.implementation.sims2;
 
-import org.lgna.story.resourceutilities.StorytellingResources;
-
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Dimension3;
-
-
 /**
  * @author Dennis Cosgrove
  */
-public class SimsBipedImplementation extends org.lgna.story.implementation.BipedImplementation {
-	
-	private final edu.cmu.cs.dennisc.nebulous.Person nebPerson;
+public class NebulousPersonVisualData extends NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Person > {
 	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
 	private org.lgna.story.resources.sims2.Gender gender;
 	private org.lgna.story.resources.sims2.Outfit outfit;
@@ -64,35 +56,21 @@ public class SimsBipedImplementation extends org.lgna.story.implementation.Biped
 	private org.lgna.story.resources.sims2.EyeColor eyeColor;
 	
 	private int atomicCount = 0;
+	
+	public static NebulousPersonVisualData createInstance( org.lgna.story.resources.sims2.PersonResource personResource ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+		NebulousPersonVisualData rv = new NebulousPersonVisualData( personResource.getLifeStage() );
+		rv.setGender( personResource.getGender() );
+		rv.setOutfit( personResource.getOutfit() );
+		rv.setSkinTone( personResource.getSkinTone() );
+		rv.setObesityLevel( personResource.getObesityLevel() );
+		rv.setHair( personResource.getHair() );
+		rv.setEyeColor( personResource.getEyeColor() );
+		return rv;
+	}
 
-	public SimsBipedImplementation( org.lgna.story.Biped abstraction, org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		super( abstraction, new edu.cmu.cs.dennisc.scenegraph.Visual() );
+	private NebulousPersonVisualData( org.lgna.story.resources.sims2.LifeStage lifeStage ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+		super( new edu.cmu.cs.dennisc.nebulous.Person( lifeStage ) );
 		this.lifeStage = lifeStage;
-		try {
-			switch( this.lifeStage ) {
-			case ADULT:
-				this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lgna.story.resources.sims2.LifeStage.ADULT );
-				break;
-			case CHILD:
-				this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lgna.story.resources.sims2.LifeStage.CHILD );
-				break;
-			case ELDER:
-				this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lgna.story.resources.sims2.LifeStage.ELDER );
-				break;
-			case TEEN:
-				this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lgna.story.resources.sims2.LifeStage.TEEN );
-				break;
-			case TODDLER:
-				this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( org.lgna.story.resources.sims2.LifeStage.TODDLER );
-				break;
-			default:
-				this.nebPerson = null;
-				break;
-			}
-		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			throw new RuntimeException( lre );
-		}
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebPerson } );
 	}
 	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
 		return this.lifeStage;
@@ -117,59 +95,56 @@ public class SimsBipedImplementation extends org.lgna.story.implementation.Biped
 	}
 	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
 		this.gender = gender;
-		this.nebPerson.setGender( this.gender );
+		this.getNebModel().setGender( this.gender );
 	}
 	public org.lgna.story.resources.sims2.Outfit getOutfit() {
 		return this.outfit;
 	}
 	public void setOutfit( org.lgna.story.resources.sims2.Outfit outfit ) {
 		this.outfit = outfit;
-		this.nebPerson.setOutfit( this.outfit );
+		this.getNebModel().setOutfit( this.outfit );
 	}
 	public org.lgna.story.resources.sims2.SkinTone getSkinTone() {
 		return this.skinTone;
 	}
 	public void setSkinTone( org.lgna.story.resources.sims2.SkinTone skinTone ) {
 		this.skinTone = skinTone;
-		this.nebPerson.setSkinTone( this.skinTone );
+		this.getNebModel().setSkinTone( this.skinTone );
 	}
 	public double getObesityLevel() {
 		return this.obesityLevel;
 	}
 	public void setObesityLevel( double obesityLevel ) {
 		this.obesityLevel = obesityLevel;
-		this.nebPerson.setFitnessLevel( 1.0-this.obesityLevel );
+		this.getNebModel().setFitnessLevel( 1.0-this.obesityLevel );
 	}
 	public org.lgna.story.resources.sims2.Hair getHair() {
 		return this.hair;
 	}
 	public void setHair( org.lgna.story.resources.sims2.Hair hair ) {
 		this.hair = hair;
-		this.nebPerson.setHair( this.hair );
+		this.getNebModel().setHair( this.hair );
 	}
 	public org.lgna.story.resources.sims2.EyeColor getEyeColor() {
 		return this.eyeColor;
 	}
 	public void setEyeColor( org.lgna.story.resources.sims2.EyeColor eyeColor ) {
 		this.eyeColor = eyeColor;
-		this.nebPerson.setEyeColor( this.eyeColor );
+		this.getNebModel().setEyeColor( this.eyeColor );
 	}
-	@Override
-	public Dimension3 getSize() {
-		AxisAlignedBox aabb = this.nebPerson.getAxisAlignedMinimumBoundingBox();
-		if (!aabb.isNaN())
-		{
-			return new Dimension3(aabb.getWidth(), aabb.getHeight(), aabb.getDepth());
-		}
-		else
-		{
-			return new Dimension3(1, 2, 1);
-		}
-		
-	}
-	
-	@Override
-	protected JointImplementation createJointImplementation( org.lgna.story.resources.JointId jointId ) {
-		return new JointImplementation( this, new NebulousJoint( this.nebPerson, jointId ) );
-	}
+
+//	@Override
+//	public Dimension3 getSize() {
+//		AxisAlignedBox aabb = this.nebPerson.getAxisAlignedMinimumBoundingBox();
+//		if (!aabb.isNaN())
+//		{
+//			return new Dimension3(aabb.getWidth(), aabb.getHeight(), aabb.getDepth());
+//		}
+//		else
+//		{
+//			return new Dimension3(1, 2, 1);
+//		}
+//		
+//	}
+
 }
