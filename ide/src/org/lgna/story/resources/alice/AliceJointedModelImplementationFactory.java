@@ -24,6 +24,11 @@ private static java.util.Map< JointedModelResource, AliceJointedModelImplementat
     	this.resource = resource;
 	}
     
+    public org.lgna.story.implementation.JointedModelImplementation createImplementation( org.lgna.story.Model abstraction) {
+    	org.lgna.story.resources.JointId[] emptyArray = {};
+	    return this.createImplementation(abstraction, emptyArray );
+	}
+    
 	public org.lgna.story.implementation.JointedModelImplementation createImplementation( org.lgna.story.Model abstraction, org.lgna.story.resources.JointId[] rootJointIds) {
 	    edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] texturedAppearances = AliceResourceUtilties.getTexturedAppearance( this.resource );
 	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( this.resource );

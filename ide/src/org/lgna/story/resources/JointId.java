@@ -102,7 +102,7 @@ public class JointId {
 		return null;
 	}
 	
-	protected JointId(JointId parent, Class<? extends JointedModelResource> containingClass){
+	public JointId(JointId parent, Class<? extends JointedModelResource> containingClass){
 		this.parent = parent;
 		this.containingClass = containingClass;
 		if( this.parent != null ) {
@@ -114,7 +114,7 @@ public class JointId {
 		}
 	}
 	
-	protected JointId getParent()
+	public JointId getParent()
 	{
 		return this.parent;
 	}

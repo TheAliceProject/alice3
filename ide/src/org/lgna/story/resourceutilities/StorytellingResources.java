@@ -79,7 +79,7 @@ public class StorytellingResources {
 		{
 			resourcePaths = findAliceResources();
 		}
-		List<Class<?>> modelResourceClasses = ModelResourceUtilities.getAndLoadModelResourceClasses(resourcePaths);
+		List<Class<? extends org.lgna.story.resources.ModelResource>> modelResourceClasses = ModelResourceUtilities.getAndLoadModelResourceClasses(resourcePaths);
 		this.galleryTree = new ModelResourceTree(modelResourceClasses);
 		if (resourcePaths.size() == 0)
 		{

@@ -211,17 +211,13 @@ public class ModelResourceExporter {
 	private List<String> getExistingJointIds(Class resourceClass)
 	{
 		List<String> ids = new LinkedList<String>();
-		Class[] innerClasses = resourceClass.getDeclaredClasses();
-		for (Class c : innerClasses)
+		Field[] fields = resourceClass.getDeclaredFields();
+		for (Field f : fields)
 		{
-			if (org.lgna.story.resources.JointId.class.isAssignableFrom(c))
+			if (org.lgna.story.resources.JointId.class.isAssignableFrom(f.getType()))
 			{
-				Field[] fields = c.getDeclaredFields();
-				for (Field f : fields)
-				{
-					String fieldName = f.getName();
-					ids.add(fieldName);
-				}
+				String fieldName = f.getName();
+				ids.add(fieldName);
 			}
 		}
 		Class[] interfaces = resourceClass.getInterfaces();
@@ -255,7 +251,6 @@ public class ModelResourceExporter {
 			}
 		}
 		List<String> existingIds = getExistingJointIds(this.classData.superClass);
-		String jointEnumName = this.name+"JointId";
 		boolean addedRoots = false;
 		if (this.jointList != null)
 		{

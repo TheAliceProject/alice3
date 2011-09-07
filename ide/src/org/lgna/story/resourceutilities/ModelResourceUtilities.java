@@ -58,6 +58,8 @@ import javax.imageio.ImageIO;
 
 import org.alice.ide.ast.NodeUtilities;
 import org.lgna.project.ast.Argument;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.ClassReflectionProxy;
 import org.lgna.project.ast.ConstructorBlockStatement;
 import org.lgna.project.ast.ConstructorInvocationStatement;
 import org.lgna.project.ast.FieldAccess;
@@ -68,9 +70,12 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.ReturnStatement;
 import org.lgna.project.ast.SuperConstructorInvocationStatement;
+import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserPackage;
 import org.lgna.project.ast.UserParameter;
+import org.lgna.story.JointedModel;
 import org.lgna.story.resources.ModelResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -155,9 +160,9 @@ public class ModelResourceUtilities {
 		return null;
 	}
 	
-	public static List<Class<?>> loadResourceJarFile(File resourceJar)
+	public static List<Class<? extends org.lgna.story.resources.ModelResource>> loadResourceJarFile(File resourceJar)
 	{
-		List<Class<?>> classes = new LinkedList<Class<?>>();
+		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
 		List<String> classNames = new LinkedList<String>();
 		try
 		{
@@ -189,7 +194,10 @@ public class ModelResourceUtilities {
 			for (String className : classNames)
 			{
 				Class<?> cls = cl.loadClass(className);
-				classes.add(cls);
+				if (org.lgna.story.resources.ModelResource.class.isAssignableFrom(cls))
+				{
+					classes.add((Class<? extends org.lgna.story.resources.ModelResource>)cls);
+				}
 			}
 			
 		}
@@ -200,9 +208,9 @@ public class ModelResourceUtilities {
 		return classes;
 	}
 	
-	public static List<Class<?>> getAndLoadModelResourceClasses(List<File> resourcePaths)
+	public static List<Class<? extends org.lgna.story.resources.ModelResource>> getAndLoadModelResourceClasses(List<File> resourcePaths)
 	{
-		List<Class<?>> galleryClasses = new LinkedList<Class<?>>();
+		List<Class<? extends org.lgna.story.resources.ModelResource>> galleryClasses = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
 		for (File modelPath : resourcePaths)
 		{
 			try {
@@ -220,16 +228,35 @@ public class ModelResourceUtilities {
 		return galleryClasses;
 	}
 	
-	public static Class<?> getModelClassForResourceClass(Class<?> resourceClass)
+	public static Class<? extends org.lgna.story.Model> getModelClassForResourceClass(Class<? extends org.lgna.story.resources.ModelResource> resourceClass)
 	{
 		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
 			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
-			return resourceTemplate.modelClass();
+			Class<?> cls = resourceTemplate.modelClass();
+			if (org.lgna.story.Model.class.isAssignableFrom(cls))
+			{
+				return (Class<? extends org.lgna.story.Model>)cls;
+			}
+			else
+			{
+				return null;
+			}
 		}
 		else
 		{
 			return null;
 		}
+	}
+	
+	public static String getAliceMethodNameForEnum(String enumName)
+	{
+		StringBuilder sb = new StringBuilder();
+		String[] nameParts = enumName.split("_");
+		for (String s : nameParts)
+		{
+			sb.append(uppercaseFirstLetter(s));
+		}
+		return sb.toString();
 	}
 	
 	public static String getAliceClassName(Class<?> resourceClass)
@@ -290,6 +317,20 @@ public class ModelResourceUtilities {
             }
         }
 		return sb.toString();
+	}
+	
+	public static Field[] getFieldsOfType(Class<?> ownerClass, Class<?> ofType)
+	{
+		Field[] fields = ownerClass.getFields();
+		List<Field> fieldsOfType = new LinkedList<Field>();
+		for (Field f : fields)
+		{
+			if (f.getDeclaringClass() == ownerClass && ofType.isAssignableFrom(f.getType()))
+			{
+				fieldsOfType.add(f);
+			}
+		}
+		return fieldsOfType.toArray(new Field[fieldsOfType.size()]);
 	}
 	
 	public static UserPackage getAlicePackage(Class<?> resourceClass, Class<?> rootClass)
@@ -370,5 +411,42 @@ public class ModelResourceUtilities {
 		return null;
 	}
 
+	public static UserMethod getPartAccessorMethod(Field partField)
+	{
+		String methodName = "get"+getAliceMethodNameForEnum(partField.getName());
+		Class<?> returnClass = org.lgna.story.Joint.class;
+		UserParameter[] parameters = {};
+		org.lgna.project.ast.JavaType jointIdType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.JointId.class );
+		org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( org.lgna.story.Joint.class );
+		Class< ? >[] methodParameterClasses = { org.lgna.story.JointedModel.class, org.lgna.story.resources.JointId.class };
+		org.lgna.project.ast.JavaMethod methodExpression = org.lgna.project.ast.JavaMethod.getInstance(org.lgna.story.Joint.class, "getJoint", methodParameterClasses);
+		
+		org.lgna.project.ast.Argument thisArgument = new org.lgna.project.ast.Argument( methodExpression.getParameters().get(0), new org.lgna.project.ast.ThisExpression() );
+		
+		org.lgna.project.ast.FieldAccess jointField = new org.lgna.project.ast.FieldAccess( 
+				new org.lgna.project.ast.TypeExpression( jointIdType ), 
+				org.lgna.project.ast.JavaField.getInstance(partField.getDeclaringClass(), partField.getName() ) 
+		);
+		
+		org.lgna.project.ast.Argument jointArgument = new org.lgna.project.ast.Argument( methodExpression.getParameters().get(1), jointField );
+		
+		org.lgna.project.ast.Argument[] methodArguments = { thisArgument, jointArgument};
+		org.lgna.project.ast.MethodInvocation getJointMethodInvocation = new org.lgna.project.ast.MethodInvocation( typeExpression, methodExpression, methodArguments );
+		ReturnStatement returnStatement = new ReturnStatement(jointIdType, getJointMethodInvocation);
+		UserMethod newMethod = new UserMethod(methodName, returnClass, parameters, new BlockStatement(returnStatement));
+		return newMethod;
+	}
+	
+	
+	public static UserMethod[] getPartAccessorMethods( Class<? extends org.lgna.story.resources.ModelResource> forClass )
+	{
+		Field[] jointFields = ModelResourceUtilities.getFieldsOfType(forClass, org.lgna.story.resources.JointId.class);
+		List<UserMethod> methods = new LinkedList<UserMethod>();
+		for (Field f : jointFields)
+		{
+			methods.add(getPartAccessorMethod(f));
+		}
+		return methods.toArray(new UserMethod[methods.size()]);
+	}
 	
 }
