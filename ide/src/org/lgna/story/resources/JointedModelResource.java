@@ -47,5 +47,4 @@ package org.lgna.story.resources;
  * @author Dennis Cosgrove
  */
 public interface JointedModelResource extends ModelResource {
-	public Iterable< JointId > getAllChildren( JointId jointId );
 }

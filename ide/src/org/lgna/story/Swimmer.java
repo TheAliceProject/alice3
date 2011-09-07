@@ -14,31 +14,31 @@ public class Swimmer extends JointedModel {
 	}
 
 	public Joint getSpineMiddle() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.SPINE_MIDDLE );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_MIDDLE );
 	}
 	public Joint getTail() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.SPINE_UPPER );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_UPPER );
 	}
 	public Joint getNeck() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.NECK );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.NECK );
 	}
 	public Joint getHead() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.HEAD );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.HEAD );
 	}
 	public Joint getMouth() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.MOUTH );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.MOUTH );
 	}
 	public Joint getLeftEye() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.LEFT_EYE );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_EYE );
 	}
 	public Joint getRightEye() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.RIGHT_EYE );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_EYE );
 	}
 	public Joint getRightPectoralFin() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.RIGHT_PECTORAL_FIN );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_PECTORAL_FIN );
 	}
 	public Joint getLeftPectoralFin() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SwimmerJointId.LEFT_PECTORAL_FIN );
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_PECTORAL_FIN );
 	}
 }
 	

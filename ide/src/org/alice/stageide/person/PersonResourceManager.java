@@ -104,12 +104,19 @@ public enum PersonResourceManager {
 			updatePerson();
 		}
 	};
-	private java.util.Map<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.implementation.sims2.SimsBipedImplementation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.implementation.BipedImplementation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private int count = 0;
 	private PersonResourceManager() {
 		org.lgna.story.resources.sims2.LifeStage[] lifeStages = {  org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
 		for( org.lgna.story.resources.sims2.LifeStage lifeStage : lifeStages ) {
-			map.put( lifeStage, new org.lgna.story.implementation.sims2.SimsBipedImplementation( null, lifeStage ) );
+			org.lgna.story.resources.sims2.Gender gender = null;
+			org.lgna.story.resources.sims2.SkinTone skinTone = null;
+			org.lgna.story.resources.sims2.EyeColor eyeColor = null;
+			org.lgna.story.resources.sims2.Hair hair = null;
+			double obesityLevel = 0.0;
+			org.lgna.story.resources.sims2.Outfit outfit = null;
+			org.lgna.story.resources.sims2.PersonResource personResource = lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
+			map.put( lifeStage, personResource.createImplementation( null ) );
 		}
 	}	
 	public void push() {
@@ -194,7 +201,7 @@ public enum PersonResourceManager {
 					org.alice.stageide.person.models.HairColorNameState.getInstance().handleCataclysmicChange( lifeStage );
 				}
 				this.updatePerson();
-				org.lgna.story.implementation.sims2.SimsBipedImplementation person = org.alice.stageide.person.components.PersonViewer.getSingleton().getPerson();
+				org.lgna.story.implementation.sims2.NebulousPersonVisualData person = org.alice.stageide.person.components.PersonViewer.getSingleton().getPersonVisualData();
 				org.lgna.story.resources.sims2.Hair hair = person.getHair();
 				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
 					org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
@@ -230,14 +237,15 @@ public enum PersonResourceManager {
 				double fitnessLevel = org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue()*0.01;
 				
 				assert lifeStage != null;
-				org.lgna.story.implementation.sims2.SimsBipedImplementation person = this.map.get( lifeStage );
-				if( person != null ) {
+				org.lgna.story.implementation.BipedImplementation bipedImplementation = this.map.get( lifeStage );
+				org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)bipedImplementation.getVisualData();
+				if( visualData != null ) {
 					if( gender != null ) {
-						person.setGender( gender );
+						visualData.setGender( gender );
 					}
 					if( baseSkinTone != null ) {
-						person.setSkinTone( baseSkinTone );
-						person.setObesityLevel( fitnessLevel );
+						visualData.setSkinTone( baseSkinTone );
+						visualData.setObesityLevel( fitnessLevel );
 						if( fullBodyOutfit != null && org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
 							//pass
 						} else {
@@ -248,10 +256,10 @@ public enum PersonResourceManager {
 								fullBodyOutfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 //							}
 						}
-						person.setOutfit( fullBodyOutfit );
+						visualData.setOutfit( fullBodyOutfit );
 					}
 					if( baseEyeColor != null ) {
-						person.setEyeColor( baseEyeColor );
+						visualData.setEyeColor( baseEyeColor );
 					}
 					if( gender != null ) {
 						if( hair != null && org.lgna.story.resources.sims2.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
@@ -265,9 +273,9 @@ public enum PersonResourceManager {
 								hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
 							}
 						}
-						person.setHair( hair );
+						visualData.setHair( hair );
 					}
-					org.alice.stageide.person.components.PersonViewer.getSingleton().setPerson( person );
+					org.alice.stageide.person.components.PersonViewer.getSingleton().getVisualData( visualData );
 				}
 			} finally {
 				//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().releaseRenderingLock();

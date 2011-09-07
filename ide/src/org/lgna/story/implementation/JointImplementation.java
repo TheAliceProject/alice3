@@ -48,8 +48,8 @@ package org.lgna.story.implementation;
  */
 public abstract class JointImplementation extends AbstractTransformableImplementation {
 	private org.lgna.story.Joint abstraction;
-	private final JointedModelImplementation jointedModelImplementation;
-	public JointImplementation( JointedModelImplementation jointedModelImplementation ) {
+	private final JointedModelImplementation<?,?> jointedModelImplementation;
+	public JointImplementation( JointedModelImplementation<?,?> jointedModelImplementation ) {
 		this.jointedModelImplementation = jointedModelImplementation;
 	}
 	@Override

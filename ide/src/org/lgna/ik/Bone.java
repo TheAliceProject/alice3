@@ -70,7 +70,7 @@ public class Bone {
 		this.jointedModelImp = jointedModelImp;
 		this.jointId = jointId;
 		this.parent = parent;
-		for( org.lgna.story.resources.JointId childJointId : this.jointId.getChildren() ) {
+		for( org.lgna.story.resources.JointId childJointId : this.jointId.getChildren( this.jointedModelImp.getResource() ) ) {
 			this.children.add( new Bone( jointedModelImp, childJointId, this ) );
 		}
 		org.lgna.story.implementation.JointImplementation jointImp = this.jointedModelImp.getJointImplementation( this.jointId );

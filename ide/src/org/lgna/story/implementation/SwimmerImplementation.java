@@ -1,17 +1,11 @@
 package org.lgna.story.implementation;
 
-public abstract class SwimmerImplementation extends JointedModelImplementation {
-	private final org.lgna.story.Swimmer abstraction;
-	public SwimmerImplementation( org.lgna.story.Swimmer abstraction, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
-		super( sgVisual, org.lgna.story.resources.SwimmerResource.SwimmerJointId.getRoots() );
-		this.abstraction = abstraction;
+public final class SwimmerImplementation extends JointedModelImplementation< org.lgna.story.Swimmer, org.lgna.story.resources.SwimmerResource > {
+	public SwimmerImplementation( org.lgna.story.Swimmer abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.SwimmerResource > factory ) {
+		super( abstraction, factory );
 	}
 	@Override
-	public org.lgna.story.Swimmer getAbstraction() {
-		return this.abstraction;
-	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return 1.0;
+	public org.lgna.story.resources.JointId[] getRootJointIds() {
+		return org.lgna.story.resources.SwimmerResource.JOINT_ID_ROOTS;
 	}
 }

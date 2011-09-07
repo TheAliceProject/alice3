@@ -41,17 +41,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.implementation.factories;
+package org.lgna.story.implementation.sims2;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointedModelImplementationVisualFactory< R extends org.lgna.story.resources.JointedModelResource > {
-	private final R resource;
-	public JointedModelImplementationVisualFactory( R resource ) {
+public class JointImplementationAndVisualDataFactory implements org.lgna.story.implementation.JointedModelImplementation.JointImplementationAndVisualDataFactory {
+	private static java.util.Map< org.lgna.story.resources.JointedModelResource, JointImplementationAndVisualDataFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static JointImplementationAndVisualDataFactory getInstance( org.lgna.story.resources.JointedModelResource resource ) {
+		synchronized( map ) {
+			JointImplementationAndVisualDataFactory rv = map.get( resource );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new JointImplementationAndVisualDataFactory( resource );
+				map.put( resource, rv );
+			}
+			return rv;
+		}
+	}
+
+	private final org.lgna.story.resources.JointedModelResource resource;
+	private JointImplementationAndVisualDataFactory( org.lgna.story.resources.JointedModelResource resource ) {
 		this.resource = resource;
 	}
-	public R getResource() {
+	public org.lgna.story.resources.JointedModelResource getResource() {
 		return this.resource;
+	}
+	public org.lgna.story.implementation.JointImplementation createJointImplementation( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
+		edu.cmu.cs.dennisc.nebulous.Model nebModel = null;
+		return new JointImplementation( jointedModelImplementation, new NebulousJoint( nebModel, jointId ) );
+	}
+	public org.lgna.story.implementation.JointedModelImplementation.VisualData createVisualData( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation ) {
+		try {
+			if( this.resource instanceof org.lgna.story.resources.sims2.PersonResource ) {
+				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.resource;
+				return NebulousPersonVisualData.createInstance( personResource );
+			} else {
+				String modelName = SimsResourceUtilities.getModelName( this.resource );
+				String textureName = SimsResourceUtilities.getTextureName( this.resource );
+				return new NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Model >( new edu.cmu.cs.dennisc.nebulous.Model( modelName, textureName ) );
+			}
+		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
+			throw new RuntimeException( lre );
+		}
 	}
 }

@@ -49,10 +49,9 @@ package org.lgna.story.implementation.alice;
 public class JointImplementation extends org.lgna.story.implementation.JointImplementation {
 	private final edu.cmu.cs.dennisc.scenegraph.Joint sgJoint;
 	private final org.lgna.story.resources.JointId jointId;
-	public JointImplementation( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
+	public JointImplementation( org.lgna.story.implementation.JointedModelImplementation<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
 		super( jointedModelImplementation );
 		assert sgJoint != null;
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( sgJoint );
 		this.jointId = jointId;
 		this.sgJoint = sgJoint;
 	}
