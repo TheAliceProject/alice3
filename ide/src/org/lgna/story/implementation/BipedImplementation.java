@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.story.resources.JointId;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,8 +52,9 @@ public final class BipedImplementation extends JointedModelImplementation< org.l
 	public BipedImplementation( org.lgna.story.Biped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
 		super( abstraction, factory );
 	}
+
 	@Override
-	public org.lgna.story.resources.JointId[] getRootJointIds() {
+	public JointId[] getRootJointIds() {
 		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
 	}
 }

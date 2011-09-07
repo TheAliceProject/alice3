@@ -28,6 +28,8 @@ public class ModelResourceTree {
 	{
 		this.galleryTree = this.createClassTree(classes);
 		
+		this.galleryTree.printTree();
+		
 	}
 	
 	public ModelResourceTreeNode getTree()
@@ -199,7 +201,6 @@ public class ModelResourceTree {
 			}
 			addNodes(topNode, classStack);
 		}
-		topNode.printTree();
 		return topNode;
 	}
 

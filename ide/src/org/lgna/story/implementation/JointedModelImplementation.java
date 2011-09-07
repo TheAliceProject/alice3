@@ -100,6 +100,7 @@ public abstract class JointedModelImplementation< A extends org.lgna.story.Joint
 	}
 	
 	public abstract org.lgna.story.resources.JointId[] getRootJointIds();
+	
 	public edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getSgSkeletonVisual() {
 		if (this.getSgVisuals()[ 0 ] instanceof edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)
 		{

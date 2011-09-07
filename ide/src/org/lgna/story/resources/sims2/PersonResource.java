@@ -43,6 +43,9 @@
 
 package org.lgna.story.resources.sims2;
 
+import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.JointId;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -80,6 +83,9 @@ public abstract class PersonResource implements org.lgna.story.resources.PersonR
 	}
 	public Outfit getOutfit() {
 		return this.outfit;
+	}
+	public JointId[] getRootJointIds() {
+		return BipedResource.JOINT_ID_ROOTS;
 	}
 
 	public final org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction ) {

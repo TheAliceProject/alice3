@@ -47,7 +47,5 @@ package org.lgna.story.resources;
  *
  */
 @org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Prop.class )
-public interface PropResource extends JointedModelResource {
-
-	public org.lgna.story.implementation.JointedModelImplementation createImplementation( org.lgna.story.Prop abstraction );
+public interface PropResource extends BasicResource {
 }

@@ -79,6 +79,7 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
 public class ModelResourceExporter {
 
 	private static String COPYRIGHT_COMMENT = null;
+	private static String ROOT_IDS_FIELD_NAME = "JOINT_ID_ROOTS";
 	
 	private static String getCopyrightComment()
 	{
@@ -228,6 +229,57 @@ public class ModelResourceExporter {
 		return ids;
 	}
 	
+	private java.lang.reflect.Field getJointRootsField( Class<?> cls )
+	{
+		if (cls == null)
+		{
+			return null;
+		}
+		java.lang.reflect.Field[] rootFields = ModelResourceUtilities.getFieldsOfType(cls, org.lgna.story.resources.JointId[].class);
+		if (rootFields.length == 1)
+		{
+			return rootFields[0];
+		}
+		else{
+			Class[] interfaces = cls.getInterfaces();
+			for (Class i : interfaces)
+			{
+				java.lang.reflect.Field rootField = getJointRootsField(i);
+				if (rootField != null)
+				{
+					return rootField;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private boolean needsToDefineRootsMethod( Class<?> cls )
+	{
+		if (cls == null)
+		{
+			return false;
+		}
+		java.lang.reflect.Method[] methods = cls.getMethods();
+		for (java.lang.reflect.Method m : methods)
+		{
+			if (org.lgna.story.resources.JointId[].class.isAssignableFrom(m.getReturnType()))
+			{
+				return true;
+			}
+		}
+		Class[] interfaces = cls.getInterfaces();
+		for (Class i : interfaces)
+		{
+			boolean needToDefineMethod = needsToDefineRootsMethod(i);
+			if (needToDefineMethod)
+			{
+				return needToDefineMethod;
+			}
+		}
+		return false;
+	}
+	
 	private String createJavaCode()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -275,28 +327,42 @@ public class ModelResourceExporter {
 			
 			if (addedRoots)
 			{
-				sb.append("\n\tpublic static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ");
+				sb.append("\n\tpublic static org.lgna.story.resources.JointId[] "+ROOT_IDS_FIELD_NAME+" = { ");
 				for (int i=0; i<rootJoints.size(); i++){
 					sb.append(rootJoints.get(i));
 					if (i < rootJoints.size()-1) { 
 						sb.append(", ");
 					}
 				}
-				sb.append(" };\n\n");
+				sb.append(" };\n");
 			}
 		}
-		
-		sb.append("\tprivate final "+this.classData.implementationFactoryClass.getCanonicalName()+" factory;\n");
-		sb.append("\tprivate "+this.name+"() {\n");
-		sb.append("\t\tthis.factory = "+this.classData.implementationFactoryClass.getCanonicalName()+".getInstance(this);\n");
-		sb.append("\t}\n");
-		sb.append("\tpublic "+this.classData.implementationClass.getCanonicalName()+" createImplementation( "+this.classData.abstractionClass.getCanonicalName()+" abstraction ) {\n");
-		sb.append("\t\treturn this.factory.createImplementation( abstraction");
-		if (addedRoots)
+		sb.append("\n");
+		if (needsToDefineRootsMethod(this.classData.superClass))
 		{
-			sb.append(", "+this.name+".JOINT_ID_ROOTS");
+			sb.append("\tpublic org.lgna.story.resources.JointId[] getRootJointIds(){\n");
+			if (addedRoots)
+			{
+				sb.append("\t\treturn "+this.name+"."+ROOT_IDS_FIELD_NAME+";\n");
+			}
+			else
+			{
+				java.lang.reflect.Field rootsField = getJointRootsField(this.classData.superClass);
+				if (rootsField != null)
+				{
+					sb.append("\t\treturn "+rootsField.getDeclaringClass().getCanonicalName()+"."+rootsField.getName()+";\n");
+				}
+				else
+				{
+					sb.append("\t\treturn new org.lgna.story.resources.JointId[0];\n");
+				}
+			}
+			sb.append("\t}\n");
 		}
-		sb.append(" );\n");
+		sb.append("\tpublic "+this.classData.implementationClass.getCanonicalName()+" createImplementation( "+this.classData.abstractionClass.getCanonicalName()+" abstraction ) {\n");
+		sb.append("\t\treturn new "+this.classData.implementationClass.getCanonicalName() +"( abstraction, "+this.classData.implementationFactoryClass.getCanonicalName()+".getInstance( this ) );\n");
+		
+		
 		sb.append("\t}\n");
 		sb.append("}\n");
 		
@@ -478,6 +544,11 @@ public class ModelResourceExporter {
 		PrintWriter pw = new PrintWriter(System.out);
 		int status = com.sun.tools.javac.Main.compile(args, pw);
 		
+		if (status != 0)
+		{
+			System.out.println("BOOM!");
+		}
+		
 		File xmlFile = createXMLFile(sourceDirectory);
 		File thumbnailFile = createThumbnail(sourceDirectory);
 		File outputFile = new File(outputDir+this.name+".jar");
@@ -494,7 +565,6 @@ public class ModelResourceExporter {
 			e.printStackTrace();
 			return null;
 		}
-		System.out.println("status: "+status);
 		return outputFile;
 	}
 	

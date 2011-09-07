@@ -248,6 +248,65 @@ public class ModelResourceUtilities {
 		}
 	}
 	
+	public static String getAliceEnumNameForModelJoint( String modelJointName )
+	{
+		List<String> nameParts = new LinkedList<String>();
+		String[] parts = fullStringSplit(modelJointName);
+		boolean hasRight = false;
+		boolean hasLeft = false;
+		boolean hasBack = false;
+		boolean hasFront = false;
+		for (String part : parts)
+		{
+			if (part.equalsIgnoreCase("l"))
+			{
+				hasLeft = true;
+			}
+			else if (part.equalsIgnoreCase("r"))
+			{
+				hasRight = true;
+			}
+			else if (part.equalsIgnoreCase("f"))
+			{
+				hasFront = true;
+			}
+			else if (part.equalsIgnoreCase("b"))
+			{
+				hasBack = true;
+			}
+			else if (part.length() > 0)
+			{
+				nameParts.add(part);
+			}
+		}
+		if (hasRight)
+		{
+			nameParts.add(0, "RIGHT");
+		}
+		else if (hasLeft)
+		{
+			nameParts.add(0, "LEFT");
+		}
+		if (hasFront)
+		{
+			nameParts.add(0, "FRONT");
+		}
+		else if (hasBack)
+		{
+			nameParts.add(0, "BACK");
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<nameParts.size(); i++)
+		{
+			if (i != 0)
+			{
+				sb.append("_");
+			}
+			sb.append(nameParts.get(i).toUpperCase());
+		}
+		return sb.toString();
+	}
+	
 	public static String getAliceMethodNameForEnum(String enumName)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -271,15 +330,33 @@ public class ModelResourceUtilities {
 		return name;
 	}
 	
-	public static List<String> splitOnCapitals(String s)
+	public static List<String> splitOnCapitalsAndNumbers(String s)
     {
         StringBuilder sb = new StringBuilder();
         List<String> split = new LinkedList<String>();
+        boolean isOnNumber = false;
         for (int i=0; i<s.length(); i++)
         {
+        	boolean shouldRestart = false;
+        	if (Character.isDigit(s.charAt(i))) {
+        		if (!isOnNumber) {
+            		shouldRestart = true;   
+            	}
+        		isOnNumber = true;
+            }
+        	else {
+        		if (isOnNumber) {
+        			shouldRestart = true;
+        		}
+        		isOnNumber = false;
+        	}
             if (Character.isUpperCase(s.charAt(i)))
             {
-                split.add(sb.toString());
+            	shouldRestart = true;
+                
+            }
+            if (shouldRestart) {
+            	split.add(sb.toString());
                 sb = new StringBuilder();
             }
             sb.append(s.charAt(i));
@@ -304,17 +381,31 @@ public class ModelResourceUtilities {
     	return s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
     }
     
+    public static String[] fullStringSplit(String name)
+    {
+    	List<String> strings = new LinkedList<String>();
+    	String[] nameParts = name.split("[_ -]");
+        for (String s : nameParts)
+        {
+            List<String> capitalSplit = splitOnCapitalsAndNumbers(s);
+            for (String subS : capitalSplit)
+            {
+            	if (subS.length() > 0)
+            	{
+            		strings.add(subS);
+            	}
+            }
+        }
+        return strings.toArray(new String[strings.size()]);
+    }
+    
 	public static String getClassNameFromName(String name)
 	{
 		StringBuilder sb = new StringBuilder();
-		String[] nameParts = name.split("[_ -]");
+		String[] nameParts = fullStringSplit(name);
         for (String s : nameParts)
         {
-            List<String> capitalSplit = splitOnCapitals(s);
-            for (String subS : capitalSplit)
-            {
-                sb.append(uppercaseFirstLetter(subS));
-            }
+        	sb.append(uppercaseFirstLetter(s));
         }
 		return sb.toString();
 	}
@@ -325,7 +416,9 @@ public class ModelResourceUtilities {
 		List<Field> fieldsOfType = new LinkedList<Field>();
 		for (Field f : fields)
 		{
-			if (f.getDeclaringClass() == ownerClass && ofType.isAssignableFrom(f.getType()))
+			boolean matchesType = ofType.isAssignableFrom(f.getType());
+			boolean matchesOwner = f.getDeclaringClass() == ownerClass;
+			if (matchesType && matchesOwner)
 			{
 				fieldsOfType.add(f);
 			}
