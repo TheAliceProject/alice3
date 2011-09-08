@@ -203,4 +203,25 @@ public class JointId {
 		return new ExternalChildrenIterable( resource.getClass(), this );
 	}
 	
+	@Override
+	public String toString() {
+		for( java.lang.reflect.Field fld : this.containingClass.getFields() ) {
+			int modidiers = fld.getModifiers();
+			if( java.lang.reflect.Modifier.isPublic( modidiers ) ) {
+				if( java.lang.reflect.Modifier.isStatic( modidiers ) ) {
+					if( java.lang.reflect.Modifier.isFinal( modidiers ) ) {
+						try {
+							Object o = fld.get( null );
+							if( o == this ) {
+								return fld.getName();
+							}
+						} catch( IllegalAccessException iae ) {
+							//pass
+						}
+					}
+				}
+			}
+		}
+		return super.toString();
+	}
 }
