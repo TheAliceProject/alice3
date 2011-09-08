@@ -205,10 +205,14 @@ public class AliceResourceUtilties {
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
 
 	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual rv = new edu.cmu.cs.dennisc.scenegraph.SkeletonVisual();
-	    edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRootCopy = null;
+	    final edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRootCopy;
 	    if (sgSkeletonRoot != null)
 	    {
-	    	sgSkeletonRoot = (edu.cmu.cs.dennisc.scenegraph.Joint)sgSkeletonRoot.newCopy();
+	    	sgSkeletonRootCopy = (edu.cmu.cs.dennisc.scenegraph.Joint)sgSkeletonRoot.newCopy();
+	    }
+	    else
+	    {
+	    	sgSkeletonRootCopy = null;
 	    }
 
     	rv.skeleton.setValue( sgSkeletonRootCopy );
