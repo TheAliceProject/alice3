@@ -54,6 +54,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual;
 
 		public VisualData( org.lgna.story.resources.JointedModelResource resource ) {
+			assert resource != null;
 			this.texturedAppearances = AliceResourceUtilties.getTexturedAppearances( resource );
 			this.sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( resource );
 		}

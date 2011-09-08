@@ -66,16 +66,19 @@ public abstract class JointedModelImplementation< A extends org.lgna.story.Joint
 		this.abstraction = abstraction;
 		this.factory = factory;
 		this.visualData = this.factory.createVisualData( this );
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
+			sgVisual.setParent( this.getSgComposite() );
+		}
 	}
 	@Override
 	public A getAbstraction() {
 		return this.abstraction;
 	}
-	public VisualData getVisualData() {
-		return this.visualData;
-	}
 	public R getResource() {
 		return this.factory.getResource();
+	}
+	public VisualData getVisualData() {
+		return this.visualData;
 	}
 	@Override
 	protected final edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {

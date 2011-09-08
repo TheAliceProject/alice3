@@ -151,7 +151,6 @@ public class BillboardImplementation extends ModelImplementation {
 	private final Face sgBackFace = new Face( false );
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
-	private org.lgna.story.Paint backPaint;
 
 	private final org.lgna.story.Billboard abstraction;
 	public BillboardImplementation( org.lgna.story.Billboard abstraction ) {
