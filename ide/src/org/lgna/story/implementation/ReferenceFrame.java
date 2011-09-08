@@ -48,5 +48,5 @@ package org.lgna.story.implementation;
  */
 public interface ReferenceFrame {
 	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame();
-	public EntityImplementation getActualEntityImplementation( EntityImplementation ths );	
+	public EntityImp getActualEntityImplementation( EntityImp ths );	
 }

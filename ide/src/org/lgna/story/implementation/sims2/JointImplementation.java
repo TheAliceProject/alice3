@@ -1,8 +1,8 @@
 package org.lgna.story.implementation.sims2;
 
-public class JointImplementation extends org.lgna.story.implementation.JointImplementation {
+public class JointImplementation extends org.lgna.story.implementation.JointImp {
 	private final NebulousJoint sgJoint;
-	public JointImplementation( org.lgna.story.implementation.JointedModelImplementation<?,?> jointedModelImplementation, NebulousJoint sgJoint ) {
+	public JointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, NebulousJoint sgJoint ) {
 		super( jointedModelImplementation );
 		this.sgJoint = sgJoint;
 	}

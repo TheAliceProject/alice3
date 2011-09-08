@@ -51,9 +51,9 @@ import org.lgna.croquet.Operation;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class ModelScaleAdapter extends AbstractScaleAdapter<org.lgna.story.implementation.ModelImplementation>
+public class ModelScaleAdapter extends AbstractScaleAdapter<org.lgna.story.implementation.ModelImp>
 {
-	public ModelScaleAdapter(org.lgna.story.implementation.ModelImplementation instance)
+	public ModelScaleAdapter(org.lgna.story.implementation.ModelImp instance)
 	{
 		super("Size", instance);
 	}

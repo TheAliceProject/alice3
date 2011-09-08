@@ -48,9 +48,9 @@ import org.lgna.project.annotations.*;
  * @author Dennis Cosgrove
  */
 public class Camera extends MovableTurnable {
-	private final org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation implementation = new org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation( this );
+	private final org.lgna.story.implementation.SymmetricPerspectiveCameraImp implementation = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.SymmetricPerspectiveCameraImp getImplementation() {
 		return this.implementation;
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)

@@ -84,7 +84,7 @@ public class TransformableTranslationAdapter extends AbstractAbsolutePositionPro
 				duration = (dist - .02) / (.1 - .02);
 			}
 			
-			org.lgna.story.implementation.AbstractTransformableImplementation implementation = ImplementationAccessor.getImplementation(this.instance);
+			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
 			implementation.getSgComposite().setTranslationOnly(newValue, implementation.getSgComposite().getRoot());
 		}
 	}

@@ -42,7 +42,7 @@
  */
 package org.lgna.story;
 
-import org.lgna.story.implementation.JointedModelImplementation;
+import org.lgna.story.implementation.JointedModelImp;
 
 /**
  * @author dculyba
@@ -50,14 +50,14 @@ import org.lgna.story.implementation.JointedModelImplementation;
  */
 public class Prop extends JointedModel {
 
-	private final org.lgna.story.implementation.JointedModelImplementation implementation;
+	private final org.lgna.story.implementation.JointedModelImp implementation;
 	
 	public Prop( org.lgna.story.resources.PropResource resource ) {
 		this.implementation = resource.createImplementation( this );
 	}
 	
 	@Override
-	JointedModelImplementation getImplementation() {
+	JointedModelImp getImplementation() {
 		// TODO Auto-generated method stub
 		return implementation;
 	}

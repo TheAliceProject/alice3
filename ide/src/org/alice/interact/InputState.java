@@ -45,7 +45,7 @@ package org.alice.interact;
 import java.awt.event.InputEvent;
 
 import org.alice.interact.handle.ManipulationHandle;
-import org.lgna.story.implementation.EntityImplementation;
+import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -379,7 +379,7 @@ public class InputState {
 		{
 			return null;
 		}
-		if ( EntityImplementation.getInstance(object) != null )
+		if ( EntityImp.getInstance(object) != null )
 		{
 			return object;
 		}

@@ -139,7 +139,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(getInstanceInJavaVMForField(field), cls);
 	}
 	
-	public  <T extends org.lgna.story.implementation.EntityImplementation> T getImplementation( org.lgna.project.ast.AbstractField field ) {
+	public  <T extends org.lgna.story.implementation.EntityImp> T getImplementation( org.lgna.project.ast.AbstractField field ) {
 		org.lgna.story.Entity entity = getInstanceInJavaVMForField(field, org.lgna.story.Entity.class);
 		if (entity != null)
 		{
@@ -187,7 +187,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		return this.mapSceneFieldToInstance.get(activeSceneField);
 	}
 	
-	public  <T extends org.lgna.story.implementation.EntityImplementation> T getActiveSceneImplementation() {
+	public  <T extends org.lgna.story.implementation.EntityImp> T getActiveSceneImplementation() {
 		org.lgna.story.Entity entity = getInstanceInJavaVMForField(getActiveSceneField(), org.lgna.story.Entity.class);
 		if (entity != null)
 		{

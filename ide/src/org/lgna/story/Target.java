@@ -47,9 +47,9 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class Target extends MovableTurnable {
-	private final org.lgna.story.implementation.TargetImplementation implementation = new org.lgna.story.implementation.TargetImplementation( this );
+	private final org.lgna.story.implementation.TargetImp implementation = new org.lgna.story.implementation.TargetImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.TargetImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.TargetImp getImplementation() {
 		return this.implementation;
 	}
 }

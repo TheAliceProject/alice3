@@ -46,24 +46,67 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class StandInImplementation extends AbstractTransformableImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.StandIn sgStandIn = new edu.cmu.cs.dennisc.scenegraph.StandIn();
-	public StandInImplementation() {
-		this.putInstance( this.sgStandIn );
+public class GroundImp extends SimpleModelImp {
+	private final org.lgna.story.Ground abstraction;
+	private org.lgna.story.Ground.Appearance appearance = null;
+	public GroundImp( org.lgna.story.Ground abstraction ) {
+		this.abstraction = abstraction;
+		
+		edu.cmu.cs.dennisc.scenegraph.QuadArray plane = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
+		
+		double xzMin = -10.0;
+		double xzMax = +10.0;
+		double y = -1.0;
+
+		float i = 0.0f;
+		float j = 1.0f;
+		float k = 0.0f;
+		
+		float uvMin = -1.0f;
+		float uvMax = +1.0f;
+
+		plane.vertices.setValue(
+				new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
+						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMin, y, xzMax, i, j, k, uvMin, uvMax ),
+						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMax, y, xzMax, i, j, k, uvMax, uvMax ),
+						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMax, y, xzMin, i, j, k, uvMax, uvMin ),
+						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMin, y, xzMin, i, j, k, uvMin, uvMin )
+				}
+		);
+		
+		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { plane } );
 	}
 	@Override
-	public org.lgna.story.Entity getAbstraction() {
-		return null;
+	public org.lgna.story.Ground getAbstraction() {
+		return this.abstraction;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.scenegraph.StandIn getSgComposite() {
-		return this.sgStandIn;
+	public org.lgna.story.Ground.Appearance getAppearance() {
+		return this.appearance;
 	}
-	public void release() {
-		this.setVehicle( null );
+	public void setAppearance( org.lgna.story.Ground.Appearance appearance ) {
+		if( this.appearance != null ) {
+			
+		}
+		this.appearance = appearance;
+		edu.cmu.cs.dennisc.texture.BufferedImageTexture diffuseColorTexture;
+		if( this.appearance != null ) {
+			//todo
+			java.net.URL resource = this.appearance.getResource();
+			try {
+				java.awt.image.BufferedImage bufferedImage = javax.imageio.ImageIO.read( resource );
+				diffuseColorTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
+				diffuseColorTexture.setBufferedImage( bufferedImage );
+			} catch( java.io.IOException ioe ) {
+				throw new RuntimeException( ioe );
+			}
+		} else {
+			diffuseColorTexture = null;
+		}
+		this.setDiffuseColorTexture( diffuseColorTexture );
 	}
+	
 	@Override
 	protected double getBoundingSphereRadius() {
-		return 0;
+		return Double.POSITIVE_INFINITY;
 	}
 }

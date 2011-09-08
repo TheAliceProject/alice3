@@ -48,9 +48,9 @@ import org.lgna.project.annotations.*;
  * @author Dennis Cosgrove
  */
 public class Sphere extends Shape {
-	private final org.lgna.story.implementation.SphereImplementation implementation = new org.lgna.story.implementation.SphereImplementation( this );
+	private final org.lgna.story.implementation.SphereImp implementation = new org.lgna.story.implementation.SphereImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.SphereImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.SphereImp getImplementation() {
 		return this.implementation;
 	}
 	

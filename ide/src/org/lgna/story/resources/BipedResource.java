@@ -83,5 +83,5 @@ public interface BipedResource extends JointedModelResource {
 	
 	public static final JointId[] JOINT_ID_ROOTS = { PELVIS_LOWER_BODY, PELVIS_UPPER_BODY };
 
-	public org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction );
+	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.Biped abstraction );
 }

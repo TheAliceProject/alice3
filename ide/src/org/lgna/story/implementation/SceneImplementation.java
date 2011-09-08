@@ -46,12 +46,12 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneImplementation extends EntityImplementation {
+public class SceneImplementation extends EntityImp {
 	private static class Capsule {
-		private final TransformableImplementation transformable;
-		private EntityImplementation vehicle;
+		private final TransformableImp transformable;
+		private EntityImp vehicle;
 		private edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTransformation;
-		public Capsule( TransformableImplementation transformable ) {
+		public Capsule( TransformableImp transformable ) {
 			this.transformable = transformable;
 		}
 		public void preserve() {
@@ -70,7 +70,7 @@ public class SceneImplementation extends EntityImplementation {
 
 	private final java.util.List< Capsule > capsules = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
-	private ProgramImplementation program;
+	private ProgramImp program;
 	private final org.lgna.story.Scene abstraction;
 	
 	public final ColorProperty atmosphereColor = new ColorProperty( SceneImplementation.this ) {
@@ -126,10 +126,10 @@ public class SceneImplementation extends EntityImplementation {
 		return this;
 	}
 	@Override
-	protected org.lgna.story.implementation.ProgramImplementation getProgram() {
+	protected org.lgna.story.implementation.ProgramImp getProgram() {
 		return this.program;
 	}
-	public void setProgram( ProgramImplementation program ) {
+	public void setProgram( ProgramImp program ) {
 		this.program = program;
 	}
 
@@ -143,20 +143,20 @@ public class SceneImplementation extends EntityImplementation {
 //			this.pointOfViewMap.put( entity, null );
 //		}
 	}
-	public void addCamerasTo( ProgramImplementation program ) {
+	public void addCamerasTo( ProgramImp program ) {
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImplementation entityImplementation = EntityImplementation.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImplementation ) {
-				CameraImplementation cameraImplementation = (CameraImplementation)entityImplementation;
+			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
+			if( entityImplementation instanceof CameraImp ) {
+				CameraImp cameraImplementation = (CameraImp)entityImplementation;
 				program.getOnscreenLookingGlass().addCamera( cameraImplementation.getSgCamera() );
 			}
 		}
 	}
-	public void removeCamerasFrom( ProgramImplementation program ) {
+	public void removeCamerasFrom( ProgramImp program ) {
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImplementation entityImplementation = EntityImplementation.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImplementation ) {
-				CameraImplementation cameraImplementation = (CameraImplementation)entityImplementation;
+			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
+			if( entityImplementation instanceof CameraImp ) {
+				CameraImp cameraImplementation = (CameraImp)entityImplementation;
 				program.getOnscreenLookingGlass().removeCamera( cameraImplementation.getSgCamera() );
 			}
 		}

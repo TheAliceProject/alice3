@@ -1,9 +1,9 @@
 package org.lgna.story;
 
 public class Vehicle extends JointedModel {
-	private final org.lgna.story.implementation.VehicleImplementation implementation;
+	private final org.lgna.story.implementation.VehicleImp implementation;
 	@Override
-	/*package-private*/ org.lgna.story.implementation.VehicleImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.VehicleImp getImplementation() {
 		return this.implementation;
 	}
 	public Vehicle( org.lgna.story.resources.VehicleResource resource ) {

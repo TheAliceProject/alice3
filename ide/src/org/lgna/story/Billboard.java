@@ -47,9 +47,9 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class Billboard extends Model {
-	private final org.lgna.story.implementation.BillboardImplementation implementation = new org.lgna.story.implementation.BillboardImplementation( this );
+	private final org.lgna.story.implementation.BillboardImp implementation = new org.lgna.story.implementation.BillboardImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.BillboardImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.BillboardImp getImplementation() {
 		return this.implementation;
 	}
 	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)

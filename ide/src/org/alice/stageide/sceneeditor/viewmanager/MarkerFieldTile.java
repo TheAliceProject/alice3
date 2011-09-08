@@ -48,7 +48,7 @@ import javax.swing.BorderFactory;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.project.ast.UserField;
-import org.lgna.story.implementation.MarkerImplementation;
+import org.lgna.story.implementation.MarkerImp;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 
@@ -76,7 +76,7 @@ public class MarkerFieldTile extends LineAxisPanel
 	}
 	
 	public void setSelected( boolean isSelected ) {
-		MarkerImplementation marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField(field);
+		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField(field);
 		java.awt.Color foregroundColor = java.awt.Color.BLACK;
 		if( marker != null ) {
 			foregroundColor = marker.getMarkerColor().getAsAWTColor();
@@ -96,7 +96,7 @@ public class MarkerFieldTile extends LineAxisPanel
 		
 		this.textLabel.setText( this.field.getName() );
 		
-		MarkerImplementation marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField(field);
+		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField(field);
 		if (marker != null)
 		{
 			Color4f color = marker.getMarkerColor();

@@ -48,9 +48,9 @@ import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.lgna.story.implementation.MarkerImplementation> {
+public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.lgna.story.implementation.MarkerImp> {
 
-	public MarkerColorAdapter(org.lgna.story.implementation.MarkerImplementation instance)
+	public MarkerColorAdapter(org.lgna.story.implementation.MarkerImp instance)
 	{
 		super(instance);
 	}

@@ -47,9 +47,9 @@ import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
 
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna.story.implementation.ModelImplementation> {
+public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna.story.implementation.ModelImp> {
 
-	public ModelOpacityAdapter(org.lgna.story.implementation.ModelImplementation instance)
+	public ModelOpacityAdapter(org.lgna.story.implementation.ModelImp instance)
 	{
 		super(instance);
 	}

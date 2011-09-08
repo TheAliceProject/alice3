@@ -46,20 +46,12 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class SunImplementation extends TransformableImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgSun = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
-	private final org.lgna.story.Sun abstraction;
-	public SunImplementation( org.lgna.story.Sun abstraction ) {
-		this.abstraction = abstraction;
-		this.getSgComposite().addComponent( this.sgSun );
-		this.getSgComposite().applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRevolutions( 0.25 ) );
+public class OrthographicCameraImp extends CameraImp<edu.cmu.cs.dennisc.scenegraph.OrthographicCamera> {
+	public OrthographicCameraImp() {
+		super( new edu.cmu.cs.dennisc.scenegraph.OrthographicCamera() );
 	}
 	@Override
-	public org.lgna.story.Sun getAbstraction() {
-		return this.abstraction;
-	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return Double.parseDouble( "6.995E8" );
+	public org.lgna.story.Entity getAbstraction() {
+		return null;
 	}
 }

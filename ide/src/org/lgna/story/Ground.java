@@ -61,10 +61,10 @@ public class Ground extends Entity implements MutableRider, Visual {
 		}
 	}
 
-	private final org.lgna.story.implementation.GroundImplementation implementation = new org.lgna.story.implementation.GroundImplementation( this );
+	private final org.lgna.story.implementation.GroundImp implementation = new org.lgna.story.implementation.GroundImp( this );
 
 	@Override
-	/*package-private*/org.lgna.story.implementation.GroundImplementation getImplementation() {
+	/*package-private*/org.lgna.story.implementation.GroundImp getImplementation() {
 		return this.implementation;
 	}
 	public void setVehicle( Entity vehicle ) {

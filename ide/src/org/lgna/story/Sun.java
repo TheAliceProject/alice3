@@ -47,9 +47,9 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class Sun extends Turnable {
-	private final org.lgna.story.implementation.SunImplementation implementation = new org.lgna.story.implementation.SunImplementation( this );
+	private final org.lgna.story.implementation.SunImp implementation = new org.lgna.story.implementation.SunImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.SunImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.SunImp getImplementation() {
 		return this.implementation;
 	}
 }

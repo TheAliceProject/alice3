@@ -50,7 +50,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	private final org.lgna.project.ast.AbstractField field;
 	private final org.lgna.project.ast.AbstractMethod method;
 	private final org.lgna.project.ast.Expression[] argumentExpressions;
-	private transient org.lgna.story.implementation.AbstractTransformableImplementation transformable;
+	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
 	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
 	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		super( completionStep );

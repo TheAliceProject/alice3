@@ -72,13 +72,13 @@ public abstract class Property<T> {
 	}
 
 	private final java.util.List< Listener< T > > listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final EntityImplementation owner;
+	private final EntityImp owner;
 	private final Class<T> valueCls;
-	public Property( EntityImplementation owner, Class<T> valueCls ) {
+	public Property( EntityImp owner, Class<T> valueCls ) {
 		this.owner = owner;
 		this.valueCls = valueCls;
 	}
-	public EntityImplementation getOwner() {
+	public EntityImp getOwner() {
 		return this.owner;
 	}
 	public Class<T> getValueCls() {
@@ -94,7 +94,7 @@ public abstract class Property<T> {
 	}
 	public void animateValue( final T value, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = this.owner.adjustDurationIfNecessary( duration );
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, EntityImplementation.RIGHT_NOW ) ) {
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, EntityImp.RIGHT_NOW ) ) {
 			this.setValue( value );
 		} else {
 			final T value0 = this.getValue(); 
@@ -114,10 +114,10 @@ public abstract class Property<T> {
 		}
 	}
 	public void animateValue( T value, double duration ) {
-		this.animateValue( value, duration, EntityImplementation.DEFAULT_STYLE );
+		this.animateValue( value, duration, EntityImp.DEFAULT_STYLE );
 	}
 	public void animateValue( T value ) {
-		this.animateValue( value, EntityImplementation.DEFAULT_DURATION );
+		this.animateValue( value, EntityImp.DEFAULT_DURATION );
 	}
 	protected void fireChanged( T prevValue, T nextValue ) {
 		for( Listener< T > listener : listeners ) {

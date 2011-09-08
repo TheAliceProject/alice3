@@ -20,5 +20,5 @@ public interface SwimmerResource extends JointedModelResource {
 	
 	public static final JointId[] JOINT_ID_ROOTS = { NECK, PELVIS_UPPER_BODY };
 	
-	public org.lgna.story.implementation.SwimmerImplementation createImplementation( org.lgna.story.Swimmer abstraction );
+	public org.lgna.story.implementation.SwimmerImp createImplementation( org.lgna.story.Swimmer abstraction );
 }

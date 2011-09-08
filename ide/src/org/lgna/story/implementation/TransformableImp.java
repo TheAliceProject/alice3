@@ -40,15 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story.implementation;
 
-
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public abstract class CameraMarkerImplementation extends MarkerImplementation{
-	protected CameraMarkerImplementation(org.lgna.story.CameraMarker abstraction){
-		super(abstraction);
+public abstract class TransformableImp extends AbstractTransformableImp {
+	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+	public TransformableImp() {
+		this.putInstance( this.sgTransformable );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgComposite() {
+		return this.sgTransformable;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story.implementation;
 
-import org.lgna.story.resources.JointId;
-
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class BasicJointedModelImplementation extends JointedModelImplementation< org.lgna.story.JointedModel, org.lgna.story.resources.BasicResource > {
-	public BasicJointedModelImplementation( org.lgna.story.JointedModel abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BasicResource > factory ) {
-		super( abstraction, factory );
+public class StandInImp extends AbstractTransformableImp {
+	private final edu.cmu.cs.dennisc.scenegraph.StandIn sgStandIn = new edu.cmu.cs.dennisc.scenegraph.StandIn();
+	public StandInImp() {
+		this.putInstance( this.sgStandIn );
 	}
-
 	@Override
-	public JointId[] getRootJointIds() {
-		return this.getResource().getRootJointIds();
+	public org.lgna.story.Entity getAbstraction() {
+		return null;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.scenegraph.StandIn getSgComposite() {
+		return this.sgStandIn;
+	}
+	public void release() {
+		this.setVehicle( null );
+	}
+	@Override
+	protected double getBoundingSphereRadius() {
+		return 0;
 	}
 }

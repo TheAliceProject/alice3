@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story.implementation;
 
 import org.lgna.story.resources.JointId;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public final class BipedImplementation extends JointedModelImplementation< org.lgna.story.Biped, org.lgna.story.resources.BipedResource > {
-	public BipedImplementation( org.lgna.story.Biped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
+public class BasicJointedModelImp extends JointedModelImp< org.lgna.story.JointedModel, org.lgna.story.resources.BasicResource > {
+	public BasicJointedModelImp( org.lgna.story.JointedModel abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BasicResource > factory ) {
 		super( abstraction, factory );
 	}
 
 	@Override
 	public JointId[] getRootJointIds() {
-		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
+		return this.getResource().getRootJointIds();
 	}
 }

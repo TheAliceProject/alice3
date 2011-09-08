@@ -89,7 +89,7 @@ class IkScene extends Scene {
 	}
 	private void performCustomSetup() {
 		this.ogre.setOpacity( 0.25 );
-		org.lgna.story.implementation.JointedModelImplementation impl = ImplementationAccessor.getImplementation( this.ogre );
+		org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.ogre );
 		impl.showVisualization();
 	}
 	

@@ -45,8 +45,8 @@ package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.IDE;
 import org.lgna.project.ast.UserField;
-import org.lgna.story.implementation.CameraMarkerImplementation;
-import org.lgna.story.implementation.OrthographicCameraMarkerImplementation;
+import org.lgna.story.implementation.CameraMarkerImp;
+import org.lgna.story.implementation.OrthographicCameraMarkerImp;
 
 public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.ActionOperation {
 
@@ -59,7 +59,7 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 	}
 	
 	private UserField markerField;
-	private CameraMarkerImplementation cameraMarker;
+	private CameraMarkerImp cameraMarker;
 	private MoveToImageIcon imageIcon;
 
 	private MoveMarkerToActiveCameraActionOperation() {
@@ -77,7 +77,7 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 		if (this.markerField != null && this.cameraMarker != null)
 		{
 			this.setToolTipText("Move "+this.markerField.getName()+" to the current camera.");
-			if (this.cameraMarker instanceof OrthographicCameraMarkerImplementation)
+			if (this.cameraMarker instanceof OrthographicCameraMarkerImp)
 			{
 				this.setEnabled(false);
 			}
@@ -99,7 +99,7 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			CameraMarkerImplementation marker = IDE.getActiveInstance().getSceneEditor().getImplementation(this.markerField);
+			CameraMarkerImp marker = IDE.getActiveInstance().getSceneEditor().getImplementation(this.markerField);
 			if (marker != null)
 			{
 //				this.imageIcon.setLeftImage(marker.getIcon());				
@@ -108,7 +108,7 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 		this.updateBasedOnSettings();
 	}
 	
-	public void setCameraMarker(CameraMarkerImplementation cameraMarker)
+	public void setCameraMarker(CameraMarkerImp cameraMarker)
 	{
 		this.cameraMarker = cameraMarker;
 //		if (this.cameraMarker != null)
@@ -120,7 +120,7 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		final CameraMarkerImplementation cameraMarker;
+		final CameraMarkerImp cameraMarker;
 		final org.lgna.story.Camera camera;
 		final org.lgna.story.VantagePoint prevPOV;
 		final org.lgna.story.VantagePoint nextPOV;

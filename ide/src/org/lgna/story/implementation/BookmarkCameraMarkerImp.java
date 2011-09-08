@@ -40,50 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story.implementation;
 
+import org.lgna.story.BookmarkCameraMarker;
+
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class ConeImplementation extends ShapeImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
-	private final org.lgna.story.Cone abstraction;
-	public final DoubleProperty baseRadius = new DoubleProperty( ConeImplementation.this ) {
-		@Override
-		public Double getValue() {
-			return ConeImplementation.this.sgCylinder.bottomRadius.getValue();
-		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			ConeImplementation.this.sgCylinder.bottomRadius.setValue( value );
-		}
-	};
-	public final DoubleProperty length = new DoubleProperty( ConeImplementation.this ) {
-		@Override
-		public Double getValue() {
-			return ConeImplementation.this.sgCylinder.length.getValue();
-		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			ConeImplementation.this.sgCylinder.length.setValue( value );
-		}
-	};
+public class BookmarkCameraMarkerImp extends PerspectiveCameraMarkerImp{
 
-	public ConeImplementation( org.lgna.story.Cone abstraction ) {
-		this.abstraction = abstraction;
-		this.sgCylinder.topRadius.setValue( 0.0 );
-		this.sgCylinder.hasTopCap.setValue( false );
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
-	}
-	@Override
-	public org.lgna.story.Cone getAbstraction() {
-		return this.abstraction;
-	}
-	//todo: produce more tight bound by shifting center of bounding sphere
-	@Override
-	protected double getBoundingSphereRadius() {
-		return Math.max( this.length.getValue(), this.baseRadius.getValue());
+	public BookmarkCameraMarkerImp( BookmarkCameraMarker abstraction ) {
+		super(abstraction);
 	}
 
+	@Override
+	public float getDefaultMarkerOpacity() 
+	{
+		return .5f;
+	}
 }

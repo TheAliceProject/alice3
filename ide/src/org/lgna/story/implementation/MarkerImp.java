@@ -56,7 +56,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author dculyba
  *
  */
-public abstract class MarkerImplementation extends ModelImplementation {
+public abstract class MarkerImp extends ModelImp {
 	
 	private final org.lgna.story.Marker abstraction;
 	
@@ -64,7 +64,7 @@ public abstract class MarkerImplementation extends ModelImplementation {
 	protected boolean displayEnabled = true;
 	private AxisAlignedBox boundingBox;
 	
-	protected MarkerImplementation(org.lgna.story.Marker abstraction){
+	protected MarkerImp(org.lgna.story.Marker abstraction){
 		super();
 		this.abstraction = abstraction;
 		createVisuals();

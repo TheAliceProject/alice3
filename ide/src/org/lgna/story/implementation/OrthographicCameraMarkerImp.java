@@ -40,34 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story.implementation;
 
+import org.lgna.story.OrthographicCameraMarker;
+
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public abstract class JointImplementation extends AbstractTransformableImplementation {
-	private org.lgna.story.Joint abstraction;
-	private final JointedModelImplementation<?,?> jointedModelImplementation;
-	public JointImplementation( JointedModelImplementation<?,?> jointedModelImplementation ) {
-		this.jointedModelImplementation = jointedModelImplementation;
+public class OrthographicCameraMarkerImp extends CameraMarkerImp{
+
+	private ClippedZPlane picturePlane = new ClippedZPlane();
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = {};
+	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = {};
+	
+	public OrthographicCameraMarkerImp(OrthographicCameraMarker abstraction) {
+		super(abstraction);
 	}
+	
 	@Override
-	protected org.lgna.story.implementation.SceneImplementation getScene() {
-		return this.jointedModelImplementation.getScene();
+	protected void createVisuals()
+	{
+		//Do nothing
 	}
-	public abstract org.lgna.story.resources.JointId getJointId();
+	
+	public void setPicturePlane(ClippedZPlane picturePlane)
+	{
+		this.picturePlane.set(picturePlane);
+	}
+	
+	public ClippedZPlane getPicturePlane()
+	{
+		return this.picturePlane;
+	}
+
 	@Override
-	public final org.lgna.story.Joint getAbstraction() {
-		return this.abstraction;
+	protected TexturedAppearance[] getOpacityAppearances() {
+		return sgAppearances;
 	}
-	public final void setAbstraction( org.lgna.story.Joint abstraction ) {
-		assert abstraction != null;
-		assert this.abstraction == null : this.abstraction;
-		this.abstraction = abstraction;
-	}
+
 	@Override
-	protected double getBoundingSphereRadius() {
-		return 0;
+	protected TexturedAppearance[] getSgAppearances() {
+		return sgAppearances;
 	}
+
+	@Override
+	protected Visual[] getSgVisuals() {
+		return sgVisuals;
+	}
+
 }

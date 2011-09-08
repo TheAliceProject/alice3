@@ -46,5 +46,28 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShapeImplementation extends SimpleModelImplementation {
+public abstract class JointImp extends AbstractTransformableImp {
+	private org.lgna.story.Joint abstraction;
+	private final JointedModelImp<?,?> jointedModelImplementation;
+	public JointImp( JointedModelImp<?,?> jointedModelImplementation ) {
+		this.jointedModelImplementation = jointedModelImplementation;
+	}
+	@Override
+	protected org.lgna.story.implementation.SceneImplementation getScene() {
+		return this.jointedModelImplementation.getScene();
+	}
+	public abstract org.lgna.story.resources.JointId getJointId();
+	@Override
+	public final org.lgna.story.Joint getAbstraction() {
+		return this.abstraction;
+	}
+	public final void setAbstraction( org.lgna.story.Joint abstraction ) {
+		assert abstraction != null;
+		assert this.abstraction == null : this.abstraction;
+		this.abstraction = abstraction;
+	}
+	@Override
+	protected double getBoundingSphereRadius() {
+		return 0;
+	}
 }

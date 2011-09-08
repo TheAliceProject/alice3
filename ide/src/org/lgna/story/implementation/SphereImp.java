@@ -46,12 +46,29 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class OrthographicCameraImplementation extends CameraImplementation<edu.cmu.cs.dennisc.scenegraph.OrthographicCamera> {
-	public OrthographicCameraImplementation() {
-		super( new edu.cmu.cs.dennisc.scenegraph.OrthographicCamera() );
+public class SphereImp extends ShapeImp {
+	private final edu.cmu.cs.dennisc.scenegraph.Sphere sgSphere = new edu.cmu.cs.dennisc.scenegraph.Sphere();
+	private final org.lgna.story.Sphere abstraction;
+	public final DoubleProperty radius = new DoubleProperty( SphereImp.this ) {
+		@Override
+		public Double getValue() {
+			return SphereImp.this.sgSphere.radius.getValue();
+		}
+		@Override
+		protected void handleSetValue( Double value ) {
+			SphereImp.this.sgSphere.radius.setValue( value );
+		}
+	};
+	public SphereImp( org.lgna.story.Sphere abstraction ) {
+		this.abstraction = abstraction;
+		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgSphere } );
 	}
 	@Override
-	public org.lgna.story.Entity getAbstraction() {
-		return null;
+	public org.lgna.story.Sphere getAbstraction() {
+		return this.abstraction;
+	}
+	@Override
+	protected double getBoundingSphereRadius() {
+		return this.radius.getValue();
 	}
 }

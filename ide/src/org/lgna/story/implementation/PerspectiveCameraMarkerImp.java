@@ -66,7 +66,7 @@ import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
  * @author dculyba
  *
  */
-public class PerspectiveCameraMarkerImplementation extends CameraMarkerImplementation{
+public class PerspectiveCameraMarkerImp extends CameraMarkerImp{
 	
 	private static final double VIEW_LINES_DEFAULT_DISPLACEMENT = 3;
 	private static final double VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA = 3;
@@ -98,7 +98,7 @@ public class PerspectiveCameraMarkerImplementation extends CameraMarkerImplement
 	
 	protected boolean showDetail = false;
 	
-	public PerspectiveCameraMarkerImplementation( org.lgna.story.PerspectiveCameraMarker abstraction ) {
+	public PerspectiveCameraMarkerImp( org.lgna.story.PerspectiveCameraMarker abstraction ) {
 		super(abstraction);
 	}
 	

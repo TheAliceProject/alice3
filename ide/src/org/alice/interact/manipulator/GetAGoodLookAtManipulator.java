@@ -46,7 +46,7 @@ package org.alice.interact.manipulator;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
-import org.lgna.story.implementation.EntityImplementation;
+import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -82,11 +82,11 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 		Transformable toLookAt = endInput.getClickPickTransformable();
 		if (toLookAt != null && this.camera != null)
 		{
-			org.lgna.story.Entity cameraAbstraction  = EntityImplementation.getInstance(this.camera).getAbstraction();
+			org.lgna.story.Entity cameraAbstraction  = EntityImp.getInstance(this.camera).getAbstraction();
 			assert cameraAbstraction instanceof org.lgna.story.Camera;
 			org.lgna.story.Camera storytellingCamera = (org.lgna.story.Camera)cameraAbstraction;
 			
-			storytellingCamera.moveAndOrientToAGoodVantagePointOf(EntityImplementation.getInstance(toLookAt).getAbstraction());
+			storytellingCamera.moveAndOrientToAGoodVantagePointOf(EntityImp.getInstance(toLookAt).getAbstraction());
 		}
 	}
 

@@ -47,7 +47,7 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class DoubleProperty extends Property< Double > {
-	public DoubleProperty( EntityImplementation owner ) {
+	public DoubleProperty( EntityImp owner ) {
 		super( owner, Double.class );
 	}
 	@Override

@@ -83,7 +83,7 @@ public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Turnable
 		if (this.instance != null)
 		{
 			this.initializeTransformationListenersIfNecessary();
-			org.lgna.story.implementation.AbstractTransformableImplementation implementation = ImplementationAccessor.getImplementation(this.instance);
+			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
 			implementation.getSgComposite().addAbsoluteTransformationListener(this.absoluteTransformationListener);
 		}
 	}
@@ -93,7 +93,7 @@ public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Turnable
 	{
 		if (this.instance != null)
 		{
-			org.lgna.story.implementation.AbstractTransformableImplementation implementation = ImplementationAccessor.getImplementation(this.instance);
+			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
 			implementation.getSgComposite().removeAbsoluteTransformationListener(this.absoluteTransformationListener);
 		}
 	}

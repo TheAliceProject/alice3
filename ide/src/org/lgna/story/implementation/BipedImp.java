@@ -43,101 +43,18 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.story.resources.JointId;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TextImplementation extends SimpleModelImplementation {
-	private final org.lgna.story.Text abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.Text sgText = new edu.cmu.cs.dennisc.scenegraph.Text();
-	private StringBuffer sb = new StringBuffer();
-
-	public TextImplementation( org.lgna.story.Text abstraction ) {
-		this.abstraction = abstraction;
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgText } );
+public final class BipedImp extends JointedModelImp< org.lgna.story.Biped, org.lgna.story.resources.BipedResource > {
+	public BipedImp( org.lgna.story.Biped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
+		super( abstraction, factory );
 	}
-	@Override
-	public org.lgna.story.Text getAbstraction() {
-		return this.abstraction;
-	}
-	private void updateSGText() {
-		this.sgText.text.setValue( this.sb.toString() );
-	}
-	
-	public String getValue() {
-		return this.sb.toString();
-	}
-	public void setValue( String text ) {
-		this.sb = new StringBuffer( text );
-		updateSGText();
-	}
-
-	public java.awt.Font getFont() {
-		return this.sgText.font.getValue();
-	}
-	public void setFont( java.awt.Font font ) {
-		this.sgText.font.setValue( font );
-	}
-
-	public void append( Object value ) {
-		this.sb.append( value );
-		this.updateSGText();
-	}
-	
-	public char charAt( int index ) {
-		return this.sb.charAt( index );
-	}
-
-	public void delete( int start, int end ) {
-		this.sb.delete( start, end );
-		this.updateSGText();
-	}
-	public void deleteCharAt( int index ) {
-		this.sb.deleteCharAt( index );
-		this.updateSGText();
-	}
-
-	public int indexOf( String s ) {
-		return this.sb.indexOf( s );
-	}
-	public int indexOf( String s, int fromIndex ) {
-		return this.sb.indexOf( s, fromIndex );
-	}
-
-	public void insert( int offset, Object value ) {
-		this.sb.append( value );
-		this.updateSGText();
-	}
-
-	public int lastIndexOf( String s ) {
-		return this.sb.lastIndexOf( s );
-	}
-	public int lastIndexOf( String s, int fromIndex ) {
-		return this.sb.lastIndexOf( s, fromIndex );
-	}
-	
-	//todo: rename length?
-	public int getLength() {
-		return this.sb.length();
-	}
-
-	public void replace( int start, int end, String s ) {
-		this.sb.replace( start, end, s );
-		this.updateSGText();
-	}
-
-	public void setCharAt( int index, Character c ) {
-		this.sb.setCharAt( index, c );
-		this.updateSGText();
-	}
-	
-//	public void setLength( int length ) {
-//		this.sb.setLength( length );
-//		updateSGText();
-//	}
 
 	@Override
-	protected double getBoundingSphereRadius() {
-		//todo
-		return 1.0;
+	public JointId[] getRootJointIds() {
+		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
 	}
 }

@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  * @author dculyba
  * 
  */
-public class ObjectMarkerImplementation extends MarkerImplementation{
+public class ObjectMarkerImp extends MarkerImp{
 
 	private java.util.Map< Cylinder.BottomToTopAxis, TexturedAppearance > axisToSGAppearanceMap;
 	private double scale = 1.0;
@@ -69,7 +69,7 @@ public class ObjectMarkerImplementation extends MarkerImplementation{
 
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] opacityAppearances = {sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
 	
-	public ObjectMarkerImplementation(org.lgna.story.ObjectMarker abstraction){
+	public ObjectMarkerImp(org.lgna.story.ObjectMarker abstraction){
 		super(abstraction);
 	}
 	

@@ -1,9 +1,9 @@
 package org.lgna.story;
 
 public class Swimmer extends JointedModel {
-	private final org.lgna.story.implementation.SwimmerImplementation implementation;
+	private final org.lgna.story.implementation.SwimmerImp implementation;
 	@Override
-	/*package-private*/ org.lgna.story.implementation.SwimmerImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.SwimmerImp getImplementation() {
 		return this.implementation;
 	}
 	public Swimmer( org.lgna.story.resources.SwimmerResource resource ) {

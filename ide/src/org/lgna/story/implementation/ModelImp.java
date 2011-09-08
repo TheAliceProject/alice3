@@ -46,27 +46,27 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ModelImplementation extends TransformableImplementation {
-	public final ColorProperty color = new ColorProperty( ModelImplementation.this ) {
+public abstract class ModelImp extends TransformableImp {
+	public final ColorProperty color = new ColorProperty( ModelImp.this ) {
 		@Override
 		public edu.cmu.cs.dennisc.color.Color4f getValue() {
-			return ModelImplementation.this.getSgAppearances()[ 0 ].diffuseColor.getValue();
+			return ModelImp.this.getSgAppearances()[ 0 ].diffuseColor.getValue();
 		}
 		@Override
 		protected void handleSetValue(edu.cmu.cs.dennisc.color.Color4f value) {
-			for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : ModelImplementation.this.getSgAppearances() ) {
+			for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
 				sgAppearance.diffuseColor.setValue( value );
 			}
 		}
 	};
-	public final FloatProperty opacity = new FloatProperty( ModelImplementation.this ) {
+	public final FloatProperty opacity = new FloatProperty( ModelImp.this ) {
 		@Override
 		public Float getValue() {
-			return ModelImplementation.this.getSgAppearances()[ 0 ].opacity.getValue();
+			return ModelImp.this.getSgAppearances()[ 0 ].opacity.getValue();
 		}
 		@Override
 		protected void handleSetValue( Float value ) {
-			for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : ModelImplementation.this.getSgAppearances() ) {
+			for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
 				sgAppearance.opacity.setValue( value );
 			}
 		}

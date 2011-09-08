@@ -49,11 +49,11 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 	public TransformableFieldTileActionOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractField field ) {
 		super( individualId, field );
 	}
-	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lgna.story.implementation.TransformableImplementation transformableImp );
+	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lgna.story.implementation.TransformableImp transformableImp );
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		org.lgna.story.Turnable transformable = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.lgna.story.Turnable.class );
-		final org.lgna.story.implementation.TransformableImplementation transformableImp = org.lgna.story.ImplementationAccessor.getImplementation( transformable );
+		final org.lgna.story.implementation.TransformableImp transformableImp = org.lgna.story.ImplementationAccessor.getImplementation( transformable );
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV;
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV;
 		if( transformable != null ) {

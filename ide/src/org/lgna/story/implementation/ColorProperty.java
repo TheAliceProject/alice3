@@ -48,7 +48,7 @@ package org.lgna.story.implementation;
  */
 public abstract class ColorProperty extends Property< edu.cmu.cs.dennisc.color.Color4f > {
 	private edu.cmu.cs.dennisc.color.Color4f value;
-	public ColorProperty( EntityImplementation owner ) {
+	public ColorProperty( EntityImp owner ) {
 		super( owner, edu.cmu.cs.dennisc.color.Color4f.class );
 	}
 	@Override

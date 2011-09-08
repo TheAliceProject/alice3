@@ -54,11 +54,11 @@ public class Bone {
 			return null;
 		}
 	}
-	public static Bone createTree( org.lgna.story.implementation.JointedModelImplementation jointedModelImp, org.lgna.story.resources.JointId jointId ) {
+	public static Bone createTree( org.lgna.story.implementation.JointedModelImp jointedModelImp, org.lgna.story.resources.JointId jointId ) {
 		return new Bone( jointedModelImp, jointId, null );
 	}
 	
-	private final org.lgna.story.implementation.JointedModelImplementation jointedModelImp;
+	private final org.lgna.story.implementation.JointedModelImp jointedModelImp;
 	private final org.lgna.story.resources.JointId jointId;
 
 	private final Bone parent;
@@ -66,14 +66,14 @@ public class Bone {
 	
 	private final edu.cmu.cs.dennisc.math.Vector3[] axes;
 	private final double[] angularVelocities;
-	private Bone( org.lgna.story.implementation.JointedModelImplementation jointedModelImp, org.lgna.story.resources.JointId jointId, Bone parent ) {
+	private Bone( org.lgna.story.implementation.JointedModelImp jointedModelImp, org.lgna.story.resources.JointId jointId, Bone parent ) {
 		this.jointedModelImp = jointedModelImp;
 		this.jointId = jointId;
 		this.parent = parent;
 		for( org.lgna.story.resources.JointId childJointId : this.jointId.getChildren( this.jointedModelImp.getResource() ) ) {
 			this.children.add( new Bone( jointedModelImp, childJointId, this ) );
 		}
-		org.lgna.story.implementation.JointImplementation jointImp = this.jointedModelImp.getJointImplementation( this.jointId );
+		org.lgna.story.implementation.JointImp jointImp = this.jointedModelImp.getJointImplementation( this.jointId );
 		int degreesOfFreedom = 3; //jointImp.getDegreesOfFreedom();
 		this.axes = Solver.createAxes( true, degreesOfFreedom );
 		this.angularVelocities = createVelocities( true, degreesOfFreedom );

@@ -47,9 +47,9 @@ package org.lgna.story;
  */
 public class PerspectiveCameraMarker extends CameraMarker 
 {
-	private final org.lgna.story.implementation.PerspectiveCameraMarkerImplementation implementation = new org.lgna.story.implementation.PerspectiveCameraMarkerImplementation( this );
+	private final org.lgna.story.implementation.PerspectiveCameraMarkerImp implementation = new org.lgna.story.implementation.PerspectiveCameraMarkerImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.PerspectiveCameraMarkerImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.PerspectiveCameraMarkerImp getImplementation() {
 		return this.implementation;
 	}
 	

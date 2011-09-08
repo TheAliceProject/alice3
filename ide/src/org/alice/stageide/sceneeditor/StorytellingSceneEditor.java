@@ -54,8 +54,8 @@ import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.BookmarkCameraMarker;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.ObjectMarker;
-import org.lgna.story.implementation.MarkerImplementation;
-import org.lgna.story.implementation.ProgramImplementation;
+import org.lgna.story.implementation.MarkerImp;
+import org.lgna.story.implementation.ProgramImp;
 
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
@@ -107,7 +107,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
-	private org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation sceneCameraImplementation;
+	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImplementation;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.components.PushButton expandCollapseButton;
 	
@@ -115,7 +115,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	protected void setProgramInstance(UserInstance programInstance) 
 	{
 		super.setProgramInstance(programInstance);
-		ProgramImplementation programImplementation = ImplementationAccessor.getImplementation(getProgramInstanceInJava());
+		ProgramImp programImplementation = ImplementationAccessor.getImplementation(getProgramInstanceInJava());
 		programImplementation.setAnimator(this.animator);
 		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
 	}
@@ -513,7 +513,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	public AffineMatrix4x4 getGoodPointOfViewInSceneForObject( AxisAlignedBox box ) {
 		throw new RuntimeException( "todo" );
 	}
-	public MarkerImplementation getMarkerForField( UserField field ) {
+	public MarkerImp getMarkerForField( UserField field ) {
 		throw new RuntimeException( "todo" );
 	}
 	public SnapState getSnapState() {

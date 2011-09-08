@@ -47,9 +47,9 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class Biped extends JointedModel implements Articulable {
-	private final org.lgna.story.implementation.BipedImplementation implementation;
+	private final org.lgna.story.implementation.BipedImp implementation;
 	@Override
-	/*package-private*/ org.lgna.story.implementation.BipedImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.BipedImp getImplementation() {
 		return this.implementation;
 	}
 	public Biped( org.lgna.story.resources.BipedResource resource ) {

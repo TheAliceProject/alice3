@@ -47,7 +47,7 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class FloatProperty extends Property< Float > {
-	public FloatProperty( EntityImplementation owner ) {
+	public FloatProperty( EntityImp owner ) {
 		super( owner, Float.class );
 	}
 	@Override

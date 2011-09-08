@@ -46,22 +46,5 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class SymmetricPerspectiveCameraImplementation extends CameraImplementation< edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera > {
-	private final org.lgna.story.Camera abstraction;
-	public SymmetricPerspectiveCameraImplementation( org.lgna.story.Camera abstraction ) {
-		super( new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera() );
-		this.abstraction = abstraction;
-	}
-	@Override
-	public org.lgna.story.Camera getAbstraction() {
-		return this.abstraction;
-	}
-	public void setTransformationToAGoodVantagePointOf( EntityImplementation entityImplementation ) {
-		this.getSgComposite().setTranslationOnly( 2,4,-8, entityImplementation.getSgComposite() );
-		this.getSgComposite().setAxesOnlyToPointAt( entityImplementation.getSgComposite() );
-	}
-	public void animateSetTransformationToAGoodVantagePointOf( EntityImplementation entityImplementation, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		//todo
-		this.setTransformationToAGoodVantagePointOf( entityImplementation );
-	}
+public abstract class ShapeImp extends SimpleModelImp {
 }

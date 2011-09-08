@@ -47,10 +47,10 @@ package org.lgna.story.implementation.alice;
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementationAndVisualDataFactory implements org.lgna.story.implementation.JointedModelImplementation.JointImplementationAndVisualDataFactory {
+public class JointImplementationAndVisualDataFactory implements org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory {
 	private static java.util.Map< org.lgna.story.resources.JointedModelResource, JointImplementationAndVisualDataFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	private static class VisualData implements org.lgna.story.implementation.JointedModelImplementation.VisualData {
+	private static class VisualData implements org.lgna.story.implementation.JointedModelImp.VisualData {
 		private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] texturedAppearances;
 		private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual;
 
@@ -94,7 +94,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	public org.lgna.story.resources.JointedModelResource getResource() {
 		return this.resource;
 	}
-	public org.lgna.story.implementation.JointImplementation createJointImplementation( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
+	public org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
 		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = ((VisualData)jointedModelImplementation.getVisualData()).sgSkeletonVisual;
 		if( sgSkeletonVisual != null ) {
 			String key = jointId.toString();
@@ -105,7 +105,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			return null;
 		}
 	}
-	public org.lgna.story.implementation.JointedModelImplementation.VisualData createVisualData( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation ) {
+	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData( org.lgna.story.implementation.JointedModelImp jointedModelImplementation ) {
 		return new VisualData( this.resource );
 	}
 }

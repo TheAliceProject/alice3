@@ -46,15 +46,15 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EntityImplementation implements ReferenceFrame {
-	protected static final String KEY = EntityImplementation.class.getName() + ".KEY";
-	public static EntityImplementation getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
-		return sgElement != null ? (EntityImplementation)sgElement.getBonusDataFor( KEY ) : null;
+public abstract class EntityImp implements ReferenceFrame {
+	protected static final String KEY = EntityImp.class.getName() + ".KEY";
+	public static EntityImp getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+		return sgElement != null ? (EntityImp)sgElement.getBonusDataFor( KEY ) : null;
 	}
 	protected void putInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		sgElement.putBonusDataFor( KEY, this );
 	}
-	public static <T extends EntityImplementation> T getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
+	public static <T extends EntityImp> T getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstance( sgElement ), cls );
 	}
 	
@@ -69,22 +69,22 @@ public abstract class EntityImplementation implements ReferenceFrame {
 	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 		return this.getSgComposite();
 	}
-	public EntityImplementation getActualEntityImplementation( EntityImplementation ths ) {
+	public EntityImp getActualEntityImplementation( EntityImp ths ) {
 		return this;
 	}
-	public EntityImplementation getVehicle() {
+	public EntityImp getVehicle() {
 		return getInstance( this.getSgComposite().getParent() );
 	}
-	public void setVehicle( EntityImplementation vehicle ) {
+	public void setVehicle( EntityImp vehicle ) {
 		assert vehicle != this;
 		this.getSgComposite().setParent( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 	
 	protected SceneImplementation getScene() {
-		EntityImplementation vehicle = this.getVehicle();
+		EntityImp vehicle = this.getVehicle();
 		return vehicle != null ? vehicle.getScene() : null;
 	}
-	protected ProgramImplementation getProgram() {
+	protected ProgramImp getProgram() {
 		SceneImplementation scene = this.getScene();
 		return scene != null ? scene.getProgram() : null;
 	}
@@ -96,13 +96,13 @@ public abstract class EntityImplementation implements ReferenceFrame {
 		return this.getSgComposite().getTransformation( asSeenBy.getSgReferenceFrame() );
 	}
 
-	public StandInImplementation createStandIn() {
-		StandInImplementation rv = new StandInImplementation();
+	public StandInImp createStandIn() {
+		StandInImp rv = new StandInImp();
 		rv.setVehicle( this );
 		return rv;
 	}
-	public StandInImplementation createOffsetStandIn( double x, double y, double z ) {
-		StandInImplementation rv = this.createStandIn();
+	public StandInImp createOffsetStandIn( double x, double y, double z ) {
+		StandInImp rv = this.createStandIn();
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
 		m.translation.set( x, y, z );
 		rv.setLocalTransformation( m );
@@ -116,7 +116,7 @@ public abstract class EntityImplementation implements ReferenceFrame {
 //	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.THIS_AND_DESCENDANT_PARTS;
 	
 	private double getSimulationSpeedFactor() {
-		ProgramImplementation programImplementation = this.getProgram();
+		ProgramImp programImplementation = this.getProgram();
 		if( programImplementation != null ) {
 			return programImplementation.getSimulationSpeedFactor();
 		} else {
@@ -160,7 +160,7 @@ public abstract class EntityImplementation implements ReferenceFrame {
 	}
 		
 	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		ProgramImplementation programImplementation = this.getProgram();
+		ProgramImp programImplementation = this.getProgram();
 		if( programImplementation != null ) {
 			programImplementation.perform( animation, animationObserver );
 		} else {

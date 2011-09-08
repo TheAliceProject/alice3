@@ -56,15 +56,15 @@ public class Joint extends Turnable {
 			if( rv != null ) {
 				//pass
 			} else {
-				org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation = ImplementationAccessor.getImplementation( jointedModel );
+				org.lgna.story.implementation.JointedModelImp jointedModelImplementation = ImplementationAccessor.getImplementation( jointedModel );
 				rv = org.lgna.story.Joint.getInstance( jointedModelImplementation, jointId );
 				mapToMap.put( jointedModel, jointId, rv );
 			}
 			return rv;
 		}
 	}
-	private static Joint getInstance( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
-		org.lgna.story.implementation.JointImplementation implementation = jointedModelImplementation.getJointImplementation( jointId );
+	private static Joint getInstance( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
+		org.lgna.story.implementation.JointImp implementation = jointedModelImplementation.getJointImplementation( jointId );
 		Joint rv = implementation.getAbstraction();
 		if( rv != null ) {
 			//pass
@@ -75,13 +75,13 @@ public class Joint extends Turnable {
 		return rv;
 	}
 
-	private final org.lgna.story.implementation.JointImplementation implementation;
+	private final org.lgna.story.implementation.JointImp implementation;
 
-	private Joint( org.lgna.story.implementation.JointImplementation implementation ) {
+	private Joint( org.lgna.story.implementation.JointImp implementation ) {
 		this.implementation = implementation;
 	}
 	@Override
-	/*package-private*/org.lgna.story.implementation.JointImplementation getImplementation() {
+	/*package-private*/org.lgna.story.implementation.JointImp getImplementation() {
 		return this.implementation;
 	}
 }

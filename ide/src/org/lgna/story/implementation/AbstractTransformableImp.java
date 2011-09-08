@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTransformableImplementation extends EntityImplementation {
+public abstract class AbstractTransformableImp extends EntityImp {
 	@Override
 	public abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSgComposite();
 	
@@ -118,7 +118,7 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 					double yPortion = (this.y * portion) - this.ySum;
 					double zPortion = (this.z * portion) - this.zSum;
 
-					AbstractTransformableImplementation.this.applyTranslation( xPortion, yPortion, zPortion, this.asSeenBy );
+					AbstractTransformableImp.this.applyTranslation( xPortion, yPortion, zPortion, this.asSeenBy );
 
 					this.xSum += xPortion;
 					this.ySum += yPortion;
@@ -127,7 +127,7 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 				
 				@Override
 				protected void epilogue() {
-					AbstractTransformableImplementation.this.applyTranslation( this.x - this.xSum, this.y - this.ySum, this.z - this.zSum, this.asSeenBy );
+					AbstractTransformableImp.this.applyTranslation( this.x - this.xSum, this.y - this.ySum, this.z - this.zSum, this.asSeenBy );
 				}
 			}
 			this.perform( new TranslateAnimation( duration, style, translation, asSeenBy ) );
@@ -202,13 +202,13 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 				protected void setPortion( double portion ) {
 					double anglePortionInRadians = (this.angleInRadians * portion) - this.angleSumInRadians;
 
-					AbstractTransformableImplementation.this.applyRotationInRadians( this.axis, anglePortionInRadians, this.asSeenBy );
+					AbstractTransformableImp.this.applyRotationInRadians( this.axis, anglePortionInRadians, this.asSeenBy );
 
 					this.angleSumInRadians += anglePortionInRadians;
 				}
 				@Override
 				protected void epilogue() {
-					AbstractTransformableImplementation.this.applyRotationInRadians( this.axis, this.angleInRadians - this.angleSumInRadians, this.asSeenBy );
+					AbstractTransformableImp.this.applyRotationInRadians( this.axis, this.angleInRadians - this.angleSumInRadians, this.asSeenBy );
 				}
 			}
 			this.perform( new RotateAnimation( duration, style, axis, angleInRadians, asSeenBy ) );
@@ -252,13 +252,13 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 
 	
 	
-	public void setPositionOnly( EntityImplementation target, edu.cmu.cs.dennisc.math.Point3 offset ) {
+	public void setPositionOnly( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
 		this.getSgComposite().setTranslationOnly( offset != null ? offset : edu.cmu.cs.dennisc.math.Point3.ORIGIN, target.getSgComposite() );
 	}
-	public void setPositionOnly( EntityImplementation target ) {
+	public void setPositionOnly( EntityImp target ) {
 		this.setPositionOnly( target, edu.cmu.cs.dennisc.math.Point3.ORIGIN );
 	}
-	public void animatePositionOnly( final EntityImplementation target, edu.cmu.cs.dennisc.math.Point3 offset, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void animatePositionOnly( final EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
 			this.setPositionOnly( target, offset );
@@ -267,29 +267,29 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 			perform( new edu.cmu.cs.dennisc.math.animation.Point3Animation( adjustDurationIfNecessary( duration ), style, m0.translation, offset != null ? offset : edu.cmu.cs.dennisc.math.Point3.ORIGIN ) {
 				@Override
 				protected void updateValue( edu.cmu.cs.dennisc.math.Point3 t ) {
-					AbstractTransformableImplementation.this.setPositionOnly( target, t );
+					AbstractTransformableImp.this.setPositionOnly( target, t );
 				}
 			} );
 		}
 	}
-	public void animatePositionOnly( EntityImplementation target, edu.cmu.cs.dennisc.math.Point3 offset, double duration ) {
+	public void animatePositionOnly( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset, double duration ) {
 		this.animatePositionOnly( target, offset, duration, DEFAULT_STYLE );
 	}
-	public void animatePositionOnly( EntityImplementation target, edu.cmu.cs.dennisc.math.Point3 offset ) {
+	public void animatePositionOnly( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
 		this.animatePositionOnly( target, offset, DEFAULT_DURATION );
 	}
-	public void animatePositionOnly( EntityImplementation target ) {
+	public void animatePositionOnly( EntityImp target ) {
 		this.animatePositionOnly( target, edu.cmu.cs.dennisc.math.Point3.ORIGIN );
 	}
 	
 
-	public void setOrientationOnly( EntityImplementation target, edu.cmu.cs.dennisc.math.Orientation offset ) {
+	public void setOrientationOnly( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset ) {
 		this.getSgComposite().setAxesOnly( offset != null ? offset : edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.accessIdentity(), target.getSgComposite() );
 	}
-	public void setOrientationOnly( EntityImplementation target ) {
+	public void setOrientationOnly( EntityImp target ) {
 		this.setOrientationOnly( target, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.accessIdentity() );
 	}
-	public void animateOrientationOnly( final EntityImplementation target, edu.cmu.cs.dennisc.math.Orientation offset, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void animateOrientationOnly( final EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
 			this.setOrientationOnly( target, offset );
@@ -306,18 +306,18 @@ public abstract class AbstractTransformableImplementation extends EntityImplemen
 				@Override
 				protected void updateValue( edu.cmu.cs.dennisc.math.UnitQuaternion q ) {
 					buffer.setValue( q );
-					AbstractTransformableImplementation.this.setOrientationOnly( target, buffer );
+					AbstractTransformableImp.this.setOrientationOnly( target, buffer );
 				}
 			} );
 		}
 	}
-	public void animateOrientationOnly( EntityImplementation target, edu.cmu.cs.dennisc.math.Orientation offset, double duration ) {
+	public void animateOrientationOnly( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset, double duration ) {
 		this.animateOrientationOnly( target, offset, duration, DEFAULT_STYLE );
 	}
-	public void animateOrientationOnly( EntityImplementation target, edu.cmu.cs.dennisc.math.Orientation offset ) {
+	public void animateOrientationOnly( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset ) {
 		this.animateOrientationOnly( target, offset, DEFAULT_DURATION );
 	}
-	public void animateOrientationOnly( EntityImplementation target ) {
+	public void animateOrientationOnly( EntityImp target ) {
 		this.animateOrientationOnly( target, edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity() );
 	}
 

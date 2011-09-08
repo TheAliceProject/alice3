@@ -104,7 +104,7 @@ public enum PersonResourceManager {
 			updatePerson();
 		}
 	};
-	private java.util.Map<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.implementation.BipedImplementation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.implementation.BipedImp> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private int count = 0;
 	private PersonResourceManager() {
 		org.lgna.story.resources.sims2.LifeStage[] lifeStages = {  org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
@@ -237,7 +237,7 @@ public enum PersonResourceManager {
 				double fitnessLevel = org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue()*0.01;
 				
 				assert lifeStage != null;
-				org.lgna.story.implementation.BipedImplementation bipedImplementation = this.map.get( lifeStage );
+				org.lgna.story.implementation.BipedImp bipedImplementation = this.map.get( lifeStage );
 				org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)bipedImplementation.getVisualData();
 				if( visualData != null ) {
 					if( gender != null ) {

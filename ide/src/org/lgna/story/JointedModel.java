@@ -48,5 +48,5 @@ package org.lgna.story;
  */
 public abstract class JointedModel extends Model {
 	@Override
-	/*package-private*/abstract org.lgna.story.implementation.JointedModelImplementation getImplementation();
+	/*package-private*/abstract org.lgna.story.implementation.JointedModelImp getImplementation();
 }

@@ -51,7 +51,7 @@ public enum AsSeenBy implements ReferenceFrame {
 		public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 			return edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE;
 		}
-		public EntityImplementation getActualEntityImplementation( EntityImplementation ths ) {
+		public EntityImp getActualEntityImplementation( EntityImp ths ) {
 			return ths.getScene();
 		}
 	},
@@ -59,7 +59,7 @@ public enum AsSeenBy implements ReferenceFrame {
 		public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 			return edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT;
 		}
-		public EntityImplementation getActualEntityImplementation( EntityImplementation ths ) {
+		public EntityImp getActualEntityImplementation( EntityImp ths ) {
 			return ths.getVehicle();
 		}
 	},
@@ -67,7 +67,7 @@ public enum AsSeenBy implements ReferenceFrame {
 		public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 			return edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF;
 		}
-		public EntityImplementation getActualEntityImplementation( EntityImplementation ths ) {
+		public EntityImp getActualEntityImplementation( EntityImp ths ) {
 			return ths;
 		}
 	};

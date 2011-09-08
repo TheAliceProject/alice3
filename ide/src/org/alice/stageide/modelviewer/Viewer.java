@@ -51,8 +51,8 @@ abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.story.implementation.SceneImplementation scene = new org.lgna.story.implementation.SceneImplementation( null );
-	private org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation camera = new org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation( null );
-	private org.lgna.story.implementation.SunImplementation sunLight = new org.lgna.story.implementation.SunImplementation( null );
+	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp camera = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( null );
+	private org.lgna.story.implementation.SunImp sunLight = new org.lgna.story.implementation.SunImp( null );
 	private org.lgna.croquet.components.Component<?> adapter;
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
@@ -82,10 +82,10 @@ abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 	protected org.lgna.story.implementation.SceneImplementation getScene() {
 		return this.scene;
 	}
-	protected org.lgna.story.implementation.SymmetricPerspectiveCameraImplementation getCamera() {
+	protected org.lgna.story.implementation.SymmetricPerspectiveCameraImp getCamera() {
 		return this.camera;
 	}
-	protected org.lgna.story.implementation.SunImplementation getSunLight() {
+	protected org.lgna.story.implementation.SunImp getSunLight() {
 		return this.sunLight;
 	}
 	@Override

@@ -46,67 +46,98 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class GroundImplementation extends SimpleModelImplementation {
-	private final org.lgna.story.Ground abstraction;
-	private org.lgna.story.Ground.Appearance appearance = null;
-	public GroundImplementation( org.lgna.story.Ground abstraction ) {
+public class TextImp extends SimpleModelImp {
+	private final org.lgna.story.Text abstraction;
+	private final edu.cmu.cs.dennisc.scenegraph.Text sgText = new edu.cmu.cs.dennisc.scenegraph.Text();
+	private StringBuffer sb = new StringBuffer();
+
+	public TextImp( org.lgna.story.Text abstraction ) {
 		this.abstraction = abstraction;
-		
-		edu.cmu.cs.dennisc.scenegraph.QuadArray plane = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
-		
-		double xzMin = -10.0;
-		double xzMax = +10.0;
-		double y = -1.0;
-
-		float i = 0.0f;
-		float j = 1.0f;
-		float k = 0.0f;
-		
-		float uvMin = -1.0f;
-		float uvMax = +1.0f;
-
-		plane.vertices.setValue(
-				new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
-						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMin, y, xzMax, i, j, k, uvMin, uvMax ),
-						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMax, y, xzMax, i, j, k, uvMax, uvMax ),
-						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMax, y, xzMin, i, j, k, uvMax, uvMin ),
-						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMin, y, xzMin, i, j, k, uvMin, uvMin )
-				}
-		);
-		
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { plane } );
+		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgText } );
 	}
 	@Override
-	public org.lgna.story.Ground getAbstraction() {
+	public org.lgna.story.Text getAbstraction() {
 		return this.abstraction;
 	}
-	public org.lgna.story.Ground.Appearance getAppearance() {
-		return this.appearance;
-	}
-	public void setAppearance( org.lgna.story.Ground.Appearance appearance ) {
-		if( this.appearance != null ) {
-			
-		}
-		this.appearance = appearance;
-		edu.cmu.cs.dennisc.texture.BufferedImageTexture diffuseColorTexture;
-		if( this.appearance != null ) {
-			//todo
-			java.net.URL resource = this.appearance.getResource();
-			try {
-				java.awt.image.BufferedImage bufferedImage = javax.imageio.ImageIO.read( resource );
-				diffuseColorTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
-				diffuseColorTexture.setBufferedImage( bufferedImage );
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
-			}
-		} else {
-			diffuseColorTexture = null;
-		}
-		this.setDiffuseColorTexture( diffuseColorTexture );
+	private void updateSGText() {
+		this.sgText.text.setValue( this.sb.toString() );
 	}
 	
+	public String getValue() {
+		return this.sb.toString();
+	}
+	public void setValue( String text ) {
+		this.sb = new StringBuffer( text );
+		updateSGText();
+	}
+
+	public java.awt.Font getFont() {
+		return this.sgText.font.getValue();
+	}
+	public void setFont( java.awt.Font font ) {
+		this.sgText.font.setValue( font );
+	}
+
+	public void append( Object value ) {
+		this.sb.append( value );
+		this.updateSGText();
+	}
+	
+	public char charAt( int index ) {
+		return this.sb.charAt( index );
+	}
+
+	public void delete( int start, int end ) {
+		this.sb.delete( start, end );
+		this.updateSGText();
+	}
+	public void deleteCharAt( int index ) {
+		this.sb.deleteCharAt( index );
+		this.updateSGText();
+	}
+
+	public int indexOf( String s ) {
+		return this.sb.indexOf( s );
+	}
+	public int indexOf( String s, int fromIndex ) {
+		return this.sb.indexOf( s, fromIndex );
+	}
+
+	public void insert( int offset, Object value ) {
+		this.sb.append( value );
+		this.updateSGText();
+	}
+
+	public int lastIndexOf( String s ) {
+		return this.sb.lastIndexOf( s );
+	}
+	public int lastIndexOf( String s, int fromIndex ) {
+		return this.sb.lastIndexOf( s, fromIndex );
+	}
+	
+	//todo: rename length?
+	public int getLength() {
+		return this.sb.length();
+	}
+
+	public void replace( int start, int end, String s ) {
+		this.sb.replace( start, end, s );
+		this.updateSGText();
+	}
+
+	public void setCharAt( int index, Character c ) {
+		this.sb.setCharAt( index, c );
+		this.updateSGText();
+	}
+	
+//	public void setLength( int length ) {
+//		this.sb.setLength( length );
+//		updateSGText();
+//	}
+
 	@Override
 	protected double getBoundingSphereRadius() {
-		return Double.POSITIVE_INFINITY;
+		//todo
+		return 1.0;
 	}
 }

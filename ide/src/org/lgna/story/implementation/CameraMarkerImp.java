@@ -40,14 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story.implementation;
 
+
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public abstract class SimpleModelImplementation extends SingleVisualModelImplementation {
-	public SimpleModelImplementation() {
-		super( new edu.cmu.cs.dennisc.scenegraph.Visual() );
+public abstract class CameraMarkerImp extends MarkerImp{
+	protected CameraMarkerImp(org.lgna.story.CameraMarker abstraction){
+		super(abstraction);
 	}
 }

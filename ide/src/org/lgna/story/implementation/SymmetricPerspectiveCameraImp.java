@@ -46,17 +46,22 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class TargetImplementation extends TransformableImplementation {
-	private final org.lgna.story.Target abstraction;
-	public TargetImplementation( org.lgna.story.Target abstraction ) {
+public class SymmetricPerspectiveCameraImp extends CameraImp< edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera > {
+	private final org.lgna.story.Camera abstraction;
+	public SymmetricPerspectiveCameraImp( org.lgna.story.Camera abstraction ) {
+		super( new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera() );
 		this.abstraction = abstraction;
 	}
 	@Override
-	public org.lgna.story.Target getAbstraction() {
+	public org.lgna.story.Camera getAbstraction() {
 		return this.abstraction;
 	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return 0.0;
+	public void setTransformationToAGoodVantagePointOf( EntityImp entityImplementation ) {
+		this.getSgComposite().setTranslationOnly( 2,4,-8, entityImplementation.getSgComposite() );
+		this.getSgComposite().setAxesOnlyToPointAt( entityImplementation.getSgComposite() );
+	}
+	public void animateSetTransformationToAGoodVantagePointOf( EntityImp entityImplementation, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		//todo
+		this.setTransformationToAGoodVantagePointOf( entityImplementation );
 	}
 }

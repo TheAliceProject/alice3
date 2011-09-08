@@ -88,8 +88,8 @@ public abstract class PersonResource implements org.lgna.story.resources.PersonR
 		return BipedResource.JOINT_ID_ROOTS;
 	}
 
-	public final org.lgna.story.implementation.BipedImplementation createImplementation( org.lgna.story.Biped abstraction ) {
-		org.lgna.story.implementation.BipedImplementation rv = new org.lgna.story.implementation.BipedImplementation( abstraction, org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this ) );
+	public final org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.Biped abstraction ) {
+		org.lgna.story.implementation.BipedImp rv = new org.lgna.story.implementation.BipedImp( abstraction, org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this ) );
 //		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)rv.getVisualData();
 //		visualData.setGender( this.getGender() );
 //		visualData.setOutfit( this.getOutfit() );

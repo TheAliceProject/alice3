@@ -9,5 +9,5 @@ public interface VehicleResource extends JointedModelResource {
 	public static final JointId[] JOINT_ID_ROOTS = { RIGHT_DOOR, LEFT_DOOR };
 
 	
-	public org.lgna.story.implementation.VehicleImplementation createImplementation( org.lgna.story.Vehicle abstraction );
+	public org.lgna.story.implementation.VehicleImp createImplementation( org.lgna.story.Vehicle abstraction );
 }

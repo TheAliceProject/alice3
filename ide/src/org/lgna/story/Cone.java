@@ -48,9 +48,9 @@ import org.lgna.project.annotations.*;
  * @author Dennis Cosgrove
  */
 public class Cone extends Shape {
-	private final org.lgna.story.implementation.ConeImplementation implementation = new org.lgna.story.implementation.ConeImplementation( this );
+	private final org.lgna.story.implementation.ConeImp implementation = new org.lgna.story.implementation.ConeImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.ConeImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.ConeImp getImplementation() {
 		return this.implementation;
 	}
 	

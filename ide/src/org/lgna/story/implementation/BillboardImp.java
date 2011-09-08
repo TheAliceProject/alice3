@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardImplementation extends ModelImplementation {
+public class BillboardImp extends ModelImp {
 	private class Face extends edu.cmu.cs.dennisc.scenegraph.Visual {
 		private org.lgna.story.Paint paint;
 		private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
@@ -153,7 +153,7 @@ public class BillboardImplementation extends ModelImplementation {
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
 
 	private final org.lgna.story.Billboard abstraction;
-	public BillboardImplementation( org.lgna.story.Billboard abstraction ) {
+	public BillboardImp( org.lgna.story.Billboard abstraction ) {
 		this.abstraction = abstraction;
 	}
 	@Override

@@ -46,7 +46,7 @@ package org.lgna.story.implementation.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementationAndVisualDataFactory implements org.lgna.story.implementation.JointedModelImplementation.JointImplementationAndVisualDataFactory {
+public class JointImplementationAndVisualDataFactory implements org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory {
 	private static java.util.Map< org.lgna.story.resources.JointedModelResource, JointImplementationAndVisualDataFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static JointImplementationAndVisualDataFactory getInstance( org.lgna.story.resources.JointedModelResource resource ) {
@@ -69,11 +69,11 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	public org.lgna.story.resources.JointedModelResource getResource() {
 		return this.resource;
 	}
-	public org.lgna.story.implementation.JointImplementation createJointImplementation( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
+	public org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
 		edu.cmu.cs.dennisc.nebulous.Model nebModel = null;
 		return new JointImplementation( jointedModelImplementation, new NebulousJoint( nebModel, jointId ) );
 	}
-	public org.lgna.story.implementation.JointedModelImplementation.VisualData createVisualData( org.lgna.story.implementation.JointedModelImplementation jointedModelImplementation ) {
+	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData( org.lgna.story.implementation.JointedModelImp jointedModelImplementation ) {
 		try {
 			if( this.resource instanceof org.lgna.story.resources.sims2.PersonResource ) {
 				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.resource;

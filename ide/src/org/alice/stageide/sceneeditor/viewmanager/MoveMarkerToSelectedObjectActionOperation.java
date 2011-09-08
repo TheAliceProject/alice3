@@ -49,7 +49,7 @@ import javax.swing.ImageIcon;
 import org.alice.ide.IDE;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.UserField;
-import org.lgna.story.implementation.CameraMarkerImplementation;
+import org.lgna.story.implementation.CameraMarkerImp;
 
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
 
@@ -97,7 +97,7 @@ public class MoveMarkerToSelectedObjectActionOperation extends org.lgna.croquet.
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			CameraMarkerImplementation marker = IDE.getActiveInstance().getSceneEditor().getImplementation(this.markerField);
+			CameraMarkerImp marker = IDE.getActiveInstance().getSceneEditor().getImplementation(this.markerField);
 //			if (marker != null)
 //			{
 //				this.imageIcon.setLeftImage(marker.getIcon());				
@@ -143,7 +143,7 @@ public class MoveMarkerToSelectedObjectActionOperation extends org.lgna.croquet.
 
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		final CameraMarkerImplementation objectMarker;
+		final CameraMarkerImp objectMarker;
 		final org.lgna.story.VantagePoint prevPOV;
 		final org.lgna.story.VantagePoint nextPOV;
 		

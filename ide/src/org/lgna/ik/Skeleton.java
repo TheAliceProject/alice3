@@ -47,7 +47,7 @@ package org.lgna.ik;
  * @author Dennis Cosgrove
  */
 public class Skeleton {
-	public static Skeleton createInstance( org.lgna.story.implementation.JointedModelImplementation jointedModelImp ) {
+	public static Skeleton createInstance( org.lgna.story.implementation.JointedModelImp jointedModelImp ) {
 		java.util.List< Bone > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( org.lgna.story.resources.JointId rootJointId : jointedModelImp.getRootJointIds() ) {
 			Bone rootBone = Bone.createTree( jointedModelImp, rootJointId ); 

@@ -49,7 +49,7 @@ import org.lgna.project.annotations.*;
  */
 public abstract class Model extends MovableTurnable implements Resizable, Visual {
 	@Override
-	/*package-private*/abstract org.lgna.story.implementation.ModelImplementation getImplementation();
+	/*package-private*/abstract org.lgna.story.implementation.ModelImp getImplementation();
 	@MethodTemplate()
 	@GetterTemplate(isPersistent = true)
 	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)

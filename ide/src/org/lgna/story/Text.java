@@ -46,9 +46,9 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class Text extends Model {
-	private final org.lgna.story.implementation.TextImplementation implementation = new org.lgna.story.implementation.TextImplementation( this );
+	private final org.lgna.story.implementation.TextImp implementation = new org.lgna.story.implementation.TextImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.TextImplementation getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.TextImp getImplementation() {
 		return this.implementation;
 	}
 	

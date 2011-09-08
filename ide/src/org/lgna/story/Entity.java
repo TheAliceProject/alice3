@@ -49,7 +49,7 @@ package org.lgna.story;
 @org.lgna.project.annotations.ClassTemplate(isFollowToSuperClassDesired = false)
 public abstract class Entity implements Rider {
 	private String name;
-	/*package-private*/ abstract org.lgna.story.implementation.EntityImplementation getImplementation();
+	/*package-private*/ abstract org.lgna.story.implementation.EntityImp getImplementation();
 	public String getName() {
 		return this.name;
 	}
@@ -57,7 +57,7 @@ public abstract class Entity implements Rider {
 		this.name = name;
 	}
 	public Entity getVehicle() {
-		org.lgna.story.implementation.EntityImplementation vehicleImplementation = this.getImplementation().getVehicle();
+		org.lgna.story.implementation.EntityImp vehicleImplementation = this.getImplementation().getVehicle();
 		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
 	}
 	

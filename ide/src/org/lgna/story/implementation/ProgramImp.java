@@ -52,13 +52,13 @@ import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 /**
  * @author Dennis Cosgrove
  */
-public class ProgramImplementation {
+public class ProgramImp {
 	private final org.lgna.story.Program abstraction;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
 	
 	private double simulationSpeedFactor = 1.0; 
-	public ProgramImplementation( org.lgna.story.Program abstraction ) {
+	public ProgramImp( org.lgna.story.Program abstraction ) {
 		this.abstraction = abstraction;
 	}
 
@@ -98,7 +98,7 @@ public class ProgramImplementation {
 	
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
-			ProgramImplementation.this.getAnimator().update();
+			ProgramImp.this.getAnimator().update();
 		}
 	};
 	private void startAnimator() {
@@ -114,14 +114,14 @@ public class ProgramImplementation {
 	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				frame.getContentPane().add( ProgramImplementation.this.getOnscreenLookingGlass().getAWTComponent() );
+				frame.getContentPane().add( ProgramImp.this.getOnscreenLookingGlass().getAWTComponent() );
 				frame.setVisible( true );
 				runnable.run();
 			}
 		} );
 	}
 	public void initializeInAwtContainer( java.awt.Container container ) {
-		container.add( ProgramImplementation.this.getOnscreenLookingGlass().getAWTComponent() );
+		container.add( ProgramImp.this.getOnscreenLookingGlass().getAWTComponent() );
 		if (container instanceof JComponent	) {
 			((JComponent) container).revalidate();
 		}

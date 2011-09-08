@@ -46,13 +46,24 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TransformableImplementation extends AbstractTransformableImplementation {
-	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
-	public TransformableImplementation() {
-		this.putInstance( this.sgTransformable );
+public abstract class SingleVisualModelImp extends ModelImp {
+	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] { new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance() };
+	public SingleVisualModelImp( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
+		this.sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { sgVisual };
+		this.sgVisuals[ 0 ].frontFacingAppearance.setValue( this.sgAppearances[ 0 ] );
+		this.sgVisuals[ 0 ].setParent( this.getSgComposite() );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgComposite() {
-		return this.sgTransformable;
+	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+		return this.sgVisuals;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
+		return this.sgAppearances;
+	}
+	@Override
+	protected double getBoundingSphereRadius() {
+		return this.getSgVisuals()[ 0 ].getBoundingSphere().radius;
 	}
 }

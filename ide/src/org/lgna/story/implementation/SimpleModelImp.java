@@ -40,57 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story.implementation;
 
-import org.lgna.story.OrthographicCameraMarker;
-
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
-
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class OrthographicCameraMarkerImplementation extends CameraMarkerImplementation{
-
-	private ClippedZPlane picturePlane = new ClippedZPlane();
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = {};
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = {};
-	
-	public OrthographicCameraMarkerImplementation(OrthographicCameraMarker abstraction) {
-		super(abstraction);
+public abstract class SimpleModelImp extends SingleVisualModelImp {
+	public SimpleModelImp() {
+		super( new edu.cmu.cs.dennisc.scenegraph.Visual() );
 	}
-	
-	@Override
-	protected void createVisuals()
-	{
-		//Do nothing
-	}
-	
-	public void setPicturePlane(ClippedZPlane picturePlane)
-	{
-		this.picturePlane.set(picturePlane);
-	}
-	
-	public ClippedZPlane getPicturePlane()
-	{
-		return this.picturePlane;
-	}
-
-	@Override
-	protected TexturedAppearance[] getOpacityAppearances() {
-		return sgAppearances;
-	}
-
-	@Override
-	protected TexturedAppearance[] getSgAppearances() {
-		return sgAppearances;
-	}
-
-	@Override
-	protected Visual[] getSgVisuals() {
-		return sgVisuals;
-	}
-
 }

@@ -49,7 +49,7 @@ import org.lgna.project.annotations.*;
  */
 public abstract class Turnable extends Entity implements MutableRider {
 	@Override
-	/*package-private*/abstract org.lgna.story.implementation.AbstractTransformableImplementation getImplementation();
+	/*package-private*/abstract org.lgna.story.implementation.AbstractTransformableImp getImplementation();
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}

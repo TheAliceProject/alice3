@@ -40,23 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story.implementation;
 
-import org.lgna.story.BookmarkCameraMarker;
-
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class BookmarkCameraMarkerImplementation extends PerspectiveCameraMarkerImplementation{
-
-	public BookmarkCameraMarkerImplementation( BookmarkCameraMarker abstraction ) {
-		super(abstraction);
+public class TargetImp extends TransformableImp {
+	private final org.lgna.story.Target abstraction;
+	public TargetImp( org.lgna.story.Target abstraction ) {
+		this.abstraction = abstraction;
 	}
-
 	@Override
-	public float getDefaultMarkerOpacity() 
-	{
-		return .5f;
+	public org.lgna.story.Target getAbstraction() {
+		return this.abstraction;
+	}
+	@Override
+	protected double getBoundingSphereRadius() {
+		return 0.0;
 	}
 }
