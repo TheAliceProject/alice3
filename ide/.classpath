@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="lib/jogl2/jogl.all.jar"/>
 	<classpathentry kind="lib" path="lib/jogl2/nativewindow.all.jar"/>
 	<classpathentry kind="lib" path="lib/jogl2/newt.all.jar"/>
+	<classpathentry kind="lib" path="share/gallery/assets/alice/Ogre.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

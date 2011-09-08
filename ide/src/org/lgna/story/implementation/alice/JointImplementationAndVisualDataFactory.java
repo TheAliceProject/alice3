@@ -57,6 +57,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			assert resource != null;
 			this.texturedAppearances = AliceResourceUtilties.getTexturedAppearances( resource );
 			this.sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( resource );
+			this.sgSkeletonVisual.frontFacingAppearance.setValue( this.texturedAppearances[ 0 ] );
 		}
 		public edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
 			return this.texturedAppearances;
