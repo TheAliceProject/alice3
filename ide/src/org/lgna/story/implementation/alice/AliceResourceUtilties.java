@@ -203,7 +203,23 @@ public class AliceResourceUtilties {
 	    edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgTextureAppearances = sgOriginal.textures.getValue();
 	    edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgWeightedMeshes = sgOriginal.weightedMeshes.getValue();
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
-
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = sgOriginal.baseBoundingBox.getValue();
+		edu.cmu.cs.dennisc.math.Matrix3x3 scaleCopy = new edu.cmu.cs.dennisc.math.Matrix3x3(sgOriginal.scale.getValue());
+		edu.cmu.cs.dennisc.scenegraph.Appearance sgFrontAppearanceCopy;
+		if (sgOriginal.frontFacingAppearance.getValue() != null){
+			sgFrontAppearanceCopy = (edu.cmu.cs.dennisc.scenegraph.Appearance)sgOriginal.frontFacingAppearance.getValue().newCopy();
+		}
+		else{
+			sgFrontAppearanceCopy = null;
+		}
+		edu.cmu.cs.dennisc.scenegraph.Appearance sgBackAppearanceCopy;
+		if (sgOriginal.backFacingAppearance.getValue() != null){
+			sgBackAppearanceCopy = (edu.cmu.cs.dennisc.scenegraph.Appearance)sgOriginal.backFacingAppearance.getValue().newCopy();
+		}
+		else{
+			sgBackAppearanceCopy = null;
+		}
+		
 	    edu.cmu.cs.dennisc.scenegraph.SkeletonVisual rv = new edu.cmu.cs.dennisc.scenegraph.SkeletonVisual();
 	    final edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRootCopy;
 	    if (sgSkeletonRoot != null)
@@ -214,11 +230,16 @@ public class AliceResourceUtilties {
 	    {
 	    	sgSkeletonRootCopy = null;
 	    }
-
+	    
     	rv.skeleton.setValue( sgSkeletonRootCopy );
 		rv.geometries.setValue( sgGeometries );
 		rv.weightedMeshes.setValue( sgWeightedMeshes );
 		rv.textures.setValue( sgTextureAppearances );
+		rv.frontFacingAppearance.setValue(sgFrontAppearanceCopy);
+		rv.backFacingAppearance.setValue(sgBackAppearanceCopy);
+		rv.baseBoundingBox.setValue(bbox);
+		rv.isShowing.setValue(sgOriginal.isShowing.getValue());
+		rv.scale.setValue(scaleCopy);
 		return rv;
 	}
 }

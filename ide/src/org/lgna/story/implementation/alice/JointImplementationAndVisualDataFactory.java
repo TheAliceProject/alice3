@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation.alice;
 
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +58,10 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		public VisualData( org.lgna.story.resources.JointedModelResource resource ) {
 			assert resource != null;
 			this.texturedAppearances = AliceResourceUtilties.getTexturedAppearances( resource );
+			//Get the copy of the original geometry (this makes a new skeleton, appearance and whatnot, and keeps references to static data like the meshes)
 			this.sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( resource );
+			//Set the texture data to be the texture info specified by the resource
+			this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);
 		}
 		public edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
 			return this.texturedAppearances;

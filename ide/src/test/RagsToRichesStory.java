@@ -92,7 +92,7 @@ class DesertScene extends Scene {
 		this.ogre.setVehicle( this );
 //		this.fellowLaborer.setVehicle( this );
 
-		this.ogre.move( MoveDirection.LEFT, 1.0 );
+//		this.ogre.move( MoveDirection.LEFT, 1.0 );
 //		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
 		
 		this.desert.setAppearance( Ground.Appearance.SAND );
@@ -227,20 +227,20 @@ class RagsToRichesStory extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-//	private final CustomAdult ogre = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
-	private final CustomAdult ogre = new CustomAdult( 
-			new AdultPersonResource(
-					Gender.MALE,
-					BaseSkinTone.getRandom(),
-					BaseEyeColor.getRandom(),
-					MaleAdultHairBald.BARE,
-					0.5,
-					MaleAdultFullBodyOutfitAmbulanceDriver.BLUE
-	) );
+	private final CustomAdult ogre = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
+//	private final CustomAdult ogre = new CustomAdult( 
+//			new AdultPersonResource(
+//					Gender.MALE,
+//					BaseSkinTone.getRandom(),
+//					BaseEyeColor.getRandom(),
+//					MaleAdultHairBald.BARE,
+//					0.5,
+//					MaleAdultFullBodyOutfitAmbulanceDriver.BLUE
+//	) );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	public void playOutStory() {
-		this.setActiveScene( this.snowScene );
+		this.setActiveScene( this.desertScene );
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
