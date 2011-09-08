@@ -2,18 +2,16 @@ package org.lgna.story.resourceutilities;
 
 public class BaseModelClassData
 {
-	public final Class implementationFactoryClass;
 	public final Class implementationClass;
 	public final Class abstractionClass;
 	
 	public BaseModelClassData(BaseModelClassData other)
 	{
-		this(other.abstractionClass, other.implementationClass, other.implementationFactoryClass);
+		this(other.abstractionClass, other.implementationClass);
 	}
 	
-	public BaseModelClassData(Class absCls, Class implCls, Class implFactory )
+	public BaseModelClassData(Class absCls, Class implCls)
 	{
-		this.implementationFactoryClass = implFactory;
 		this.implementationClass = implCls;
 		this.abstractionClass = absCls;
 	}

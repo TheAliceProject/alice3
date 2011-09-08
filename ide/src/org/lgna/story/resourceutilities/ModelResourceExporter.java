@@ -108,17 +108,33 @@ public class ModelResourceExporter {
 	private File xmlFile;
 	private Image thumbnail;
 	
+	private String attributionName;
+	private String attributionYear;
+	
+	private Class<?> jointAndVisualFactory = org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory.class;
+	
 	private ModelClassData classData;
 	private List<Tuple2<String, String>> jointList;
 	
-	public ModelResourceExporter(String name, ModelClassData classData)
+	public ModelResourceExporter(String name)
 	{
 		this.name = name;
 		if (Character.isLowerCase(this.name.charAt(0)))
 		{
 			this.name = this.name.substring(0, 1).toUpperCase() + this.name.substring(1);
 		}
+	}
+	
+	public ModelResourceExporter(String name, ModelClassData classData)
+	{
+		this(name);
 		this.classData = classData;
+	}
+	
+	public ModelResourceExporter(String name, ModelClassData classData, Class<?> jointAndVisualFactoryClass)
+	{
+		this(name, classData);
+		this.jointAndVisualFactory = jointAndVisualFactoryClass;
 	}
 	
 	public ModelClassData getClassData()
@@ -126,9 +142,24 @@ public class ModelResourceExporter {
 		return this.classData;
 	}
 	
+	public void setJointAndVisualFactory(Class<?> jointAndVisualFactoryClass)
+	{
+		this.jointAndVisualFactory = jointAndVisualFactoryClass;
+	}
+	
 	public void setJointMap(List<Tuple2<String, String>> jointList)
 	{
 		this.jointList = jointList;
+		if (this.classData == null)
+		{
+			this.classData = ModelResourceExporter.getBestClassDataForJointList(jointList);
+		}
+	}
+	
+	public void addAttribution(String name, String year)
+	{
+		this.attributionName = name;
+		this.attributionYear = year;
 	}
 	
 	public String getName()
@@ -186,8 +217,16 @@ public class ModelResourceExporter {
             Document doc = XMLUtilities.createDocument();
             org.w3c.dom.Element modelRoot = doc.createElement("AliceModel");
             modelRoot.setAttribute("name", this.name);
+            if (this.attributionName != null && this.attributionName.length() > 0)
+            {
+            	modelRoot.setAttribute("creator", this.attributionName);
+            }
+            if (this.attributionYear != null && this.attributionYear.length() > 0)
+            {
+            	modelRoot.setAttribute("creationYear", this.attributionYear);
+            }
             doc.appendChild(modelRoot);
-            modelRoot.appendChild(this.createBoundingBoxElement(doc));
+            modelRoot.appendChild(this.createBoundingBoxElement(doc));         
             return doc;
         }
         catch (Exception e)
@@ -195,6 +234,58 @@ public class ModelResourceExporter {
         	e.printStackTrace();
         }
         return null;
+	}
+	
+	private static List<ModelClassData> POTENTIAL_MODEL_CLASS_DATA_OPTIONS = null;
+	
+	public static ModelClassData getBestClassDataForJointList( List<Tuple2<String, String>> jointList )
+	{
+		if (POTENTIAL_MODEL_CLASS_DATA_OPTIONS == null)
+		{
+			POTENTIAL_MODEL_CLASS_DATA_OPTIONS = new LinkedList<ModelClassData>();
+			Field[] dataFields = ModelResourceUtilities.getFieldsOfType(ModelClassData.class, ModelClassData.class);
+			for (Field f : dataFields)
+			{
+				ModelClassData data = null;
+				try {
+					Object o = f.get(null);
+					if (o != null && o instanceof ModelClassData)
+					{
+						data = (ModelClassData)o;
+					}
+				}
+				catch (Exception e) {}
+				if (data != null)
+				{
+					POTENTIAL_MODEL_CLASS_DATA_OPTIONS.add(data);
+				}
+			}
+		}
+		
+		int highScore = Integer.MIN_VALUE;
+		ModelClassData bestFit = null;
+		for (ModelClassData mcd : POTENTIAL_MODEL_CLASS_DATA_OPTIONS)
+		{
+			List<Tuple2<String, String>> modelDataJoints = getExistingJointIdPairs(mcd.superClass);
+			int score = -Math.abs(modelDataJoints.size() - jointList.size());
+			for (Tuple2<String, String> inputPair : jointList)
+			{
+				for (Tuple2<String, String> testPair : modelDataJoints)
+				{
+					if (inputPair.equals(testPair))
+					{
+						score++;
+						break;
+					}
+				}
+			}
+			if (score > highScore)
+			{
+				highScore = score;
+				bestFit = mcd;
+			}
+		}
+		return bestFit;
 	}
 	
 	public static String getDirectoryStringForPackage(String packageString)
@@ -209,7 +300,41 @@ public class ModelResourceExporter {
 		return sb.toString();
 	}
 	
-	private List<String> getExistingJointIds(Class resourceClass)
+	private static List<Tuple2<String, String>> getExistingJointIdPairs(Class<?> resourceClass)
+	{
+		List<Tuple2<String, String>> ids = new LinkedList<Tuple2<String, String>>();
+		Field[] fields = resourceClass.getDeclaredFields();
+		for (Field f : fields)
+		{
+			if (org.lgna.story.resources.JointId.class.isAssignableFrom(f.getType()))
+			{
+				String fieldName = f.getName();
+				String parentName = null;
+				org.lgna.story.resources.JointId fieldData = null;
+				try {
+					Object o = f.get(null);
+					if (o != null && o instanceof org.lgna.story.resources.JointId)
+					{
+						fieldData = (org.lgna.story.resources.JointId)o;
+					}
+				}
+				catch (Exception e) {}
+				if (fieldData != null && fieldData.getParent() != null) {
+					parentName = fieldData.getParent().toString();
+				}
+				
+				ids.add(Tuple2.createInstance(fieldName, parentName));
+			}
+		}
+		Class<?>[] interfaces = resourceClass.getInterfaces();
+		for (Class<?> i : interfaces)
+		{
+			ids.addAll(getExistingJointIdPairs(i));
+		}
+		return ids;
+	}
+	
+	private static List<String> getExistingJointIds(Class<?> resourceClass)
 	{
 		List<String> ids = new LinkedList<String>();
 		Field[] fields = resourceClass.getDeclaredFields();
@@ -221,8 +346,8 @@ public class ModelResourceExporter {
 				ids.add(fieldName);
 			}
 		}
-		Class[] interfaces = resourceClass.getInterfaces();
-		for (Class i : interfaces)
+		Class<?>[] interfaces = resourceClass.getInterfaces();
+		for (Class<?> i : interfaces)
 		{
 			ids.addAll(getExistingJointIds(i));
 		}
@@ -280,7 +405,20 @@ public class ModelResourceExporter {
 		return false;
 	}
 	
-	private String createJavaCode()
+	public static String getAccessorMethodsForResourceClass( Class<? extends org.lgna.story.resources.JointedModelResource> resourceClass )
+	{
+		StringBuilder sb = new StringBuilder();
+		List<String> jointIds = getExistingJointIds(resourceClass);
+		for (String id : jointIds)
+		{
+			sb.append( "public Joint get"+ModelResourceUtilities.getAliceMethodNameForEnum(id)+"() {\n");
+			sb.append( "\t return org.lgna.story.Joint.getJoint( this, "+resourceClass.getCanonicalName()+"."+id+");\n");
+			sb.append( "}\n");
+		}
+		return sb.toString();
+	}
+	
+	public String createJavaCode()
 	{
 		StringBuilder sb = new StringBuilder();
 		
@@ -360,7 +498,7 @@ public class ModelResourceExporter {
 			sb.append("\t}\n");
 		}
 		sb.append("\tpublic "+this.classData.implementationClass.getCanonicalName()+" createImplementation( "+this.classData.abstractionClass.getCanonicalName()+" abstraction ) {\n");
-		sb.append("\t\treturn new "+this.classData.implementationClass.getCanonicalName() +"( abstraction, "+this.classData.implementationFactoryClass.getCanonicalName()+".getInstance( this ) );\n");
+		sb.append("\t\treturn new "+this.classData.implementationClass.getCanonicalName() +"( abstraction, "+this.jointAndVisualFactory.getCanonicalName()+".getInstance( this ) );\n");
 		
 		
 		sb.append("\t}\n");
