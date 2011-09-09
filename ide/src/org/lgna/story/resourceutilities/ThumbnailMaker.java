@@ -78,10 +78,8 @@ public class ThumbnailMaker {
 		world.addComponent(this.sgModelTransformable);
 	}
 	
-	private AffineMatrix4x4 getThumbnailCameraOrientation(edu.cmu.cs.dennisc.scenegraph.Visual v)
+	private AffineMatrix4x4 getThumbnailCameraOrientation(AxisAlignedBox bbox)
 	{
-		AxisAlignedBox bbox = v.getAxisAlignedMinimumBoundingBox();
-
 		Vector3 cameraDir = new Vector3(1.0, -2.0, -3.0);
 		cameraDir.normalize();
 		
@@ -111,10 +109,11 @@ public class ThumbnailMaker {
 		AffineMatrix4x4 rv = new AffineMatrix4x4(pointAtOrientation, cameraLocation);
 		return rv;
 	}
-	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, int width, int height) throws Throwable {
+	
+	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int width, int height) throws Exception {
 		v.setParent(this.sgModelTransformable);
 		
-		world.getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(v));
+		world.getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox));
 		
 		int scaledWidth = ANTI_ALIAS_FACTOR * width;
 		int scaledHeight = ANTI_ALIAS_FACTOR * height;
@@ -163,7 +162,11 @@ public class ThumbnailMaker {
 		}
 	}
 	
-	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v) throws Throwable {
-		return createThumbnail(v, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v) throws Exception {
+		return createThumbnail(v, v.getAxisAlignedMinimumBoundingBox(), THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+	}
+	
+	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox) throws Exception {
+		return createThumbnail(v, bbox, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
 	}
 }
