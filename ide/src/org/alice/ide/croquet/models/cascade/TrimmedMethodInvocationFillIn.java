@@ -51,7 +51,7 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 	private final org.lgna.project.ast.MethodInvocation transientValue;
 	public TrimmedMethodInvocationFillIn( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "4efeb642-4a7c-4de7-a736-9f8950f2836a" ) );
-		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( expression, method );
+		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( expression, method );
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
 			ParameterBlank parameterBlank = ParameterBlank.getInstance( parameter );
 			this.addBlank( parameterBlank );
@@ -82,7 +82,7 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 	}
 	
 	private org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( this.transientValue.expression.getValue(), this.transientValue.method.getValue(), expressions );
+		return org.alice.ide.ast.AstUtilities.createMethodInvocation( this.transientValue.expression.getValue(), this.transientValue.method.getValue(), expressions );
 	}
 	@Override
 	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {

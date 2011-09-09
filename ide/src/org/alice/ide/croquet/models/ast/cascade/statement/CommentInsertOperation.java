@@ -64,7 +64,7 @@ public class CommentInsertOperation extends StatementInsertOperation {
 	}
 	@Override
 	protected final org.lgna.project.ast.Statement createStatement() {
-		org.lgna.project.ast.Comment rv = org.alice.ide.ast.NodeUtilities.createComment();
+		org.lgna.project.ast.Comment rv = org.alice.ide.ast.AstUtilities.createComment();
 		org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( rv );
 		return rv;
 	}

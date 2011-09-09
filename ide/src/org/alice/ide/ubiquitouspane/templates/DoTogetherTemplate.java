@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class DoTogetherTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public DoTogetherTemplate() {
-		super( org.lgna.project.ast.DoTogether.class, org.alice.ide.ast.NodeUtilities.createDoTogether() );
+		super( org.lgna.project.ast.DoTogether.class, org.alice.ide.ast.AstUtilities.createDoTogether() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

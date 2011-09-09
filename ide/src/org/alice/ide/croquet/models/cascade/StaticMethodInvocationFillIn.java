@@ -71,14 +71,14 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
 	private final org.lgna.project.ast.MethodInvocation transientValue;
 	private StaticMethodInvocationFillIn( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
-		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteStaticMethodInvocation( method );
+		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteStaticMethodInvocation( method );
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
 			this.addBlank( ParameterBlank.getInstance( parameter ) );
 		}
 	}
 	@Override
 	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
+		return org.alice.ide.ast.AstUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
 	}
 	@Override
 	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation,org.lgna.project.ast.Expression > step ) {

@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class CommentTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public CommentTemplate() {
-		super( org.lgna.project.ast.Comment.class, org.alice.ide.ast.NodeUtilities.createComment() );
+		super( org.lgna.project.ast.Comment.class, org.alice.ide.ast.AstUtilities.createComment() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

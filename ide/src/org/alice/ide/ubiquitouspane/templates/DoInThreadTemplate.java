@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class DoInThreadTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public DoInThreadTemplate() {
-		super( org.lgna.project.ast.DoInThread.class, org.alice.ide.ast.NodeUtilities.createDoInThread() );
+		super( org.lgna.project.ast.DoInThread.class, org.alice.ide.ast.AstUtilities.createDoInThread() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

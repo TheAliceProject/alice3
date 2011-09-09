@@ -86,7 +86,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.method );
+		return org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( this.method );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

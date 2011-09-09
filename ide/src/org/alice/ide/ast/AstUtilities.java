@@ -45,7 +45,7 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeUtilities {
+public class AstUtilities {
 	public static org.lgna.project.ast.UserMethod createMethod( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
 		return new org.lgna.project.ast.UserMethod( name, returnType, new org.lgna.project.ast.UserParameter[] {}, new org.lgna.project.ast.BlockStatement() );
 	}
@@ -188,13 +188,13 @@ public class NodeUtilities {
 		return rv;
 	}
 	public static org.lgna.project.ast.MethodInvocation createIncompleteMethodInvocation( org.lgna.project.ast.AbstractMethod method ) {
-		return NodeUtilities.createIncompleteMethodInvocation( new SelectedFieldExpression( method.getDeclaringType() ), method );
+		return AstUtilities.createIncompleteMethodInvocation( new SelectedFieldExpression( method.getDeclaringType() ), method );
 	}
 	public static org.lgna.project.ast.MethodInvocation createIncompleteStaticMethodInvocation( org.lgna.project.ast.AbstractMethod method ) {
-		return NodeUtilities.createIncompleteMethodInvocation( new org.lgna.project.ast.TypeExpression( method.getDeclaringType() ), method );
+		return AstUtilities.createIncompleteMethodInvocation( new org.lgna.project.ast.TypeExpression( method.getDeclaringType() ), method );
 	}
 	public static org.lgna.project.ast.MethodInvocation createStaticMethodInvocation( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
-		return NodeUtilities.createMethodInvocation( new org.lgna.project.ast.TypeExpression( method.getDeclaringType() ), method, argumentExpressions );
+		return AstUtilities.createMethodInvocation( new org.lgna.project.ast.TypeExpression( method.getDeclaringType() ), method, argumentExpressions );
 	}
 	public static org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.FieldAccess rv = new org.lgna.project.ast.FieldAccess();
@@ -213,15 +213,15 @@ public class NodeUtilities {
 	}
 	
 	public static org.lgna.project.ast.FieldAccess createIncompleteFieldAccess( org.lgna.project.ast.AbstractField field ) {
-		return NodeUtilities.createFieldAccess( new SelectedFieldExpression( field.getDeclaringType() ), field );
+		return AstUtilities.createFieldAccess( new SelectedFieldExpression( field.getDeclaringType() ), field );
 	}
 	private static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
-		org.lgna.project.ast.FieldAccess fieldAccess = NodeUtilities.createFieldAccess( expression, field );
+		org.lgna.project.ast.FieldAccess fieldAccess = AstUtilities.createFieldAccess( expression, field );
 		org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
 		return new org.lgna.project.ast.AssignmentExpression( valueType, fieldAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
 	}
 	public static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.AbstractField field ) {
-		return NodeUtilities.createIncompleteAssignmentExpression( new SelectedFieldExpression( field.getDeclaringType() ), field );
+		return AstUtilities.createIncompleteAssignmentExpression( new SelectedFieldExpression( field.getDeclaringType() ), field );
 	}
 	
 	public static org.lgna.project.ast.MethodInvocation createNextMethodInvocation( org.lgna.project.ast.MethodInvocation prevMethodInvocation, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod nextMethod ) {

@@ -58,7 +58,7 @@ package org.alice.ide.memberseditor.templates;
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return new org.lgna.project.ast.ArrayAccess( 
 				field.getValueType(), 
-				org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ), 
+				org.alice.ide.ast.AstUtilities.createIncompleteFieldAccess( field ), 
 				new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
 		);
 	}

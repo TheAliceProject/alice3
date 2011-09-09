@@ -66,7 +66,7 @@ public class CreateFieldFromPersonResourceOperation extends org.alice.ide.croque
 		if( subStep.isValueCommitted() ) {
 			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getCommittedValue();
 			org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createExpression( personResource );
-			org.lgna.project.ast.InstanceCreation expression = org.alice.ide.ast.NodeUtilities.createInstanceCreation( 
+			org.lgna.project.ast.InstanceCreation expression = org.alice.ide.ast.AstUtilities.createInstanceCreation( 
 					org.lgna.story.Biped.class, 
 					new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
 					argumentExpression 

@@ -64,6 +64,6 @@ public class WhileLoopInsertCascade extends StatementInsertCascade {
 	}
 	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createWhileLoop( expressions[ 0 ] );
+		return org.alice.ide.ast.AstUtilities.createWhileLoop( expressions[ 0 ] );
 	}
 }

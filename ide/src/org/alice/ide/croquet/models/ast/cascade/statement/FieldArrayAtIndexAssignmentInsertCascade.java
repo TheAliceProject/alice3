@@ -54,7 +54,7 @@ public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssign
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return org.alice.ide.ast.NodeUtilities.createFieldAccess( 
+		return org.alice.ide.ast.AstUtilities.createFieldAccess( 
 				org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), 
 				field
 		);

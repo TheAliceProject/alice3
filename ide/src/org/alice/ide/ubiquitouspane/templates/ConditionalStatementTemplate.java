@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class ConditionalStatementTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public ConditionalStatementTemplate() {
-		super( org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteConditionalStatement() );
+		super( org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.AstUtilities.createIncompleteConditionalStatement() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class DoInOrderTemplate extends CascadingUbiquitousStatementClassTemplate {
 	public DoInOrderTemplate() {
-		super( org.lgna.project.ast.DoInOrder.class, org.alice.ide.ast.NodeUtilities.createDoInOrder() );
+		super( org.lgna.project.ast.DoInOrder.class, org.alice.ide.ast.AstUtilities.createDoInOrder() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

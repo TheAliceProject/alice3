@@ -63,7 +63,7 @@ public class SpecifiedManagedFieldDeclarationOperation extends InitializerManage
 	private SpecifiedManagedFieldDeclarationOperation( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {
 		super( 
 				java.util.UUID.fromString( "a207504f-0f28-4e18-91ec-b7c3f26078fe" ), 
-				org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( field ) ) 
+				org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, org.alice.ide.ast.AstUtilities.createStaticFieldAccess( field ) ) 
 		);
 		//this.constructor = constructor;
 		this.field = field;

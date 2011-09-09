@@ -64,6 +64,6 @@ public class ConditionalStatementInsertCascade extends StatementInsertCascade {
 	}
 	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createConditionalStatement( expressions[ 0 ] );
+		return org.alice.ide.ast.AstUtilities.createConditionalStatement( expressions[ 0 ] );
 	}
 }

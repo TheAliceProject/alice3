@@ -68,12 +68,12 @@ public class ParameterDeclarationEdit extends org.lgna.croquet.edits.Edit< org.a
 	protected final void doOrRedoInternal( boolean isDo ) {
 		org.lgna.project.ast.UserCode code = this.getModel().getCode();
 		this.index = code.getParamtersProperty().size();
-		org.alice.ide.ast.NodeUtilities.addParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
+		org.alice.ide.ast.AstUtilities.addParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
 	}
 	@Override
 	protected final void undoInternal() {
 		org.lgna.project.ast.UserCode code = this.getModel().getCode();
-		org.alice.ide.ast.NodeUtilities.removeParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
+		org.alice.ide.ast.AstUtilities.removeParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
 	}
 	@Override
 	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {

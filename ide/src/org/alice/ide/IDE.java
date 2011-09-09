@@ -403,7 +403,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		}
 		String name = "My" + superType.getName();
-		return org.alice.ide.ast.NodeUtilities.createType( name, superType );
+		return org.alice.ide.ast.AstUtilities.createType( name, superType );
 	}
 	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( Class< ? > superCls ) {
 		return getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType.getInstance( superCls ) );

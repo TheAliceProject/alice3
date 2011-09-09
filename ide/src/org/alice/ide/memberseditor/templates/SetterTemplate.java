@@ -57,7 +57,7 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( this.field );
+		return org.alice.ide.ast.AstUtilities.createIncompleteAssignmentExpression( this.field );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {

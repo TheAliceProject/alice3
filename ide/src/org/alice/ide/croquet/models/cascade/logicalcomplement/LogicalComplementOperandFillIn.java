@@ -57,7 +57,7 @@ public class LogicalComplementOperandFillIn extends org.alice.ide.croquet.models
 	private LogicalComplementOperandFillIn() {
 		super( java.util.UUID.fromString( "f70996fb-fd4e-4114-962b-ca14c33e134b" ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ) );
-		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteLogicalComplement();
+		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteLogicalComplement();
 	}
 	@Override
 	protected org.lgna.project.ast.LogicalComplement createValue( org.lgna.project.ast.Expression[] expressions ) {

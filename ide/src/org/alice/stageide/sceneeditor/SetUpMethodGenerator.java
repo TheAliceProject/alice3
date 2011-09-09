@@ -82,7 +82,7 @@ public class SetUpMethodGenerator {
 			} else {
 				arg0Expression = new org.lgna.project.ast.NullLiteral();
 			}
-			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression );
+			return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression );
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
 		}
@@ -103,7 +103,7 @@ public class SetUpMethodGenerator {
 			//pass
 		} else {
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			rv = org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( color.getRed() ), createExpression( color.getGreen() ), createExpression( color.getBlue() ) );
+			rv = org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, createExpression( color.getRed() ), createExpression( color.getGreen() ), createExpression( color.getBlue() ) );
 		}
 		return rv;
 	}
@@ -126,33 +126,33 @@ public class SetUpMethodGenerator {
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Position position ) {
 		Class< ? > cls = org.lgna.story.Position.class;
 		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( position.getRight() ), createExpression( position.getUp() ), createExpression( position.getBackward() ) );
+		return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, createExpression( position.getRight() ), createExpression( position.getUp() ), createExpression( position.getBackward() ) );
 	}
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Scale scale ) {
 		Class< ? > cls = org.lgna.story.Scale.class;
 		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( scale.getLeftToRight() ), createExpression( scale.getBottomToTop() ), createExpression( scale.getFrontToBack() ) );
+		return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, createExpression( scale.getLeftToRight() ), createExpression( scale.getBottomToTop() ), createExpression( scale.getFrontToBack() ) );
 	}
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Orientation orientation ) {
 		edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = org.lgna.story.ImplementationAccessor.getOrthogonalMatrix3x3( orientation );
 		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( axes );
 		Class< ? > cls = org.lgna.story.Orientation.class;
 		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class, Number.class);
-		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
+		return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
 	}
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Font font ) {
 		Class< ? > cls = org.lgna.story.Font.class;
 		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, org.lgna.story.font.Attribute[].class );
-		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( font.getFamily() ), createExpression( font.getWeight() ), createExpression( font.getPosture() ) );
+		return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, createExpression( font.getFamily() ), createExpression( font.getWeight() ), createExpression( font.getPosture() ) );
 	}
 
 	private static org.lgna.project.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? > parameterCls, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression argumentExpression ) {
-		org.lgna.project.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterCls );
-		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpression );
+		org.lgna.project.ast.AbstractMethod method = org.alice.ide.ast.AstUtilities.lookupMethod( declarationCls, methodName, parameterCls );
+		return org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpression );
 	}
 	private static org.lgna.project.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? >[] parameterClses, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... argumentExpressions ) {
-		org.lgna.project.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterClses );
-		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
+		org.lgna.project.ast.AbstractMethod method = org.alice.ide.ast.AstUtilities.lookupMethod( declarationCls, methodName, parameterClses );
+		return org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
 	}
 
 	public static org.lgna.project.ast.Expression createGenderExpression( org.lgna.story.resources.sims2.Gender gender ) {
@@ -187,13 +187,13 @@ public class SetUpMethodGenerator {
 				new org.lgna.project.ast.DoubleLiteral( personResource.getObesityLevel() ),
 				createOutfitExpression( personResource.getOutfit() )
 		};
-		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
+		return org.alice.ide.ast.AstUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
 	}
 	
 	
 	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class );
-		org.lgna.project.ast.InstanceCreation rv = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );
+		org.lgna.project.ast.InstanceCreation rv = org.alice.ide.ast.AstUtilities.createInstanceCreation( type );
 		return rv;
 	}
 	

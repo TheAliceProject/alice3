@@ -65,7 +65,7 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.method );
+		return org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( this.method );
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
@@ -89,7 +89,7 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	protected org.lgna.project.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
-		return org.alice.ide.ast.NodeUtilities.getParameterValueTypes( this.method );
+		return org.alice.ide.ast.AstUtilities.getParameterValueTypes( this.method );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {

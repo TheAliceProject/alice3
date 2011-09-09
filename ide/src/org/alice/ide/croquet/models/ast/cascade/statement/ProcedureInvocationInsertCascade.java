@@ -68,7 +68,7 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createMethodInvocation( instanceExpression, this.method, expressions );
+		return org.alice.ide.ast.AstUtilities.createMethodInvocation( instanceExpression, this.method, expressions );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.MethodInvocationMenuModelStaticGetInstanceResolver createCodableResolver() {

@@ -54,6 +54,6 @@ public class VariableAssignmentInsertCascade extends ExpressionStatementInsertCa
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createVariableAssignment( this.variable, expressions[ 0 ] );
+		return org.alice.ide.ast.AstUtilities.createVariableAssignment( this.variable, expressions[ 0 ] );
 	}
 }

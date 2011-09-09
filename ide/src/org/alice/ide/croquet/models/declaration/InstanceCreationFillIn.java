@@ -64,11 +64,11 @@ public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade
 		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getParameters() ) {
 			this.addBlank( GalleryResourceBlank.getInstance( parameter.getValueType() ) );
 		}
-		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteInstanceCreation( constructor );
+		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteInstanceCreation( constructor );
 	}
 	@Override
 	protected org.lgna.project.ast.InstanceCreation createValue(org.lgna.project.ast.Expression[] expressions) {
-		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( this.transientValue.constructor.getValue(), expressions );
+		return org.alice.ide.ast.AstUtilities.createInstanceCreation( this.transientValue.constructor.getValue(), expressions );
 	}
 	@Override
 	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {

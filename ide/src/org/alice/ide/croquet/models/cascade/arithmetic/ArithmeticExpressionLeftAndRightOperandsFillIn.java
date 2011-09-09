@@ -52,7 +52,7 @@ public abstract class ArithmeticExpressionLeftAndRightOperandsFillIn extends org
 		super( id );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( leftOperandType ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( rightOperandType ) );
-		this.transientValue = org.alice.ide.ast.NodeUtilities.createIncompleteArithmeticInfixExpression( leftOperandType, operator, rightOperandType, resultType );
+		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteArithmeticInfixExpression( leftOperandType, operator, rightOperandType, resultType );
 	}
 	public ArithmeticExpressionLeftAndRightOperandsFillIn( java.util.UUID id, Class<?> resultCls, Class<?> leftOperandCls, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
 		this( id, org.lgna.project.ast.JavaType.getInstance( resultCls ), org.lgna.project.ast.JavaType.getInstance( leftOperandCls ), operator, org.lgna.project.ast.JavaType.getInstance( rightOperandCls ) );

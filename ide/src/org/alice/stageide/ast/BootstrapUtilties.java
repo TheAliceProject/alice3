@@ -70,7 +70,7 @@ public class BootstrapUtilties {
 		rv.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		rv.valueType.setValue( valueType );
 		rv.name.setValue( name );
-		rv.initializer.setValue( org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType ) );
+		rv.initializer.setValue( org.alice.ide.ast.AstUtilities.createInstanceCreation( valueType ) );
 		return rv;
 	}
 	private static org.lgna.project.ast.UserField createPrivateFinalField( Class< ? > cls, String name ) {
@@ -93,16 +93,16 @@ public class BootstrapUtilties {
 		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field );
 	}
 	private static org.lgna.project.ast.ExpressionStatement createMethodInvocationStatement( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
-		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( expression, method, argumentExpressions );
+		return org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( expression, method, argumentExpressions );
 	}
 
 	private static org.lgna.project.ast.VariableDeclarationStatement createVariableDeclarationStatementInitializedByInstanceCreation( String name, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		org.lgna.project.ast.UserVariable variable = new org.lgna.project.ast.UserVariable( name, type );
-		return org.alice.ide.ast.NodeUtilities.createVariableDeclarationStatement( variable, new org.lgna.project.ast.InstanceCreation( type.getDeclaredConstructor() ) );
+		return org.alice.ide.ast.AstUtilities.createVariableDeclarationStatement( variable, new org.lgna.project.ast.InstanceCreation( type.getDeclaredConstructor() ) );
 	}
 	
 	private static org.lgna.project.ast.FieldAccess createFieldAccess( Enum<?> value ) {
-		return org.alice.ide.ast.NodeUtilities.createStaticFieldAccess( value.getClass(), value.name() );
+		return org.alice.ide.ast.AstUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
 	
 	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.Appearance appearance ) {
@@ -156,10 +156,10 @@ public class BootstrapUtilties {
 
 		org.lgna.project.ast.BlockStatement handleActiveChangedBody = handleActiveChangedMethod.body.getValue();
 		
-		org.lgna.project.ast.ConditionalStatement ifOuter = org.alice.ide.ast.NodeUtilities.createConditionalStatement( 
+		org.lgna.project.ast.ConditionalStatement ifOuter = org.alice.ide.ast.AstUtilities.createConditionalStatement( 
 				new org.lgna.project.ast.ParameterAccess( isActiveParameter ) 
 		);
-		org.lgna.project.ast.ConditionalStatement ifInner = org.alice.ide.ast.NodeUtilities.createConditionalStatement( 
+		org.lgna.project.ast.ConditionalStatement ifInner = org.alice.ide.ast.AstUtilities.createConditionalStatement( 
 				new org.lgna.project.ast.RelationalInfixExpression( 
 						new org.lgna.project.ast.ParameterAccess( activeCountParameter ), 
 						org.lgna.project.ast.RelationalInfixExpression.Operator.EQUALS, 

@@ -320,27 +320,27 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 								Number.class, 
 								Number.class, 
 								Number.class );
-						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
+						return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
 					} else {
 						org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( 
 								org.lgna.story.AudioSource.class, 
 								org.alice.virtualmachine.resources.AudioResource.class,
 								Number.class, 
 								Number.class );
-						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral );
+						return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral );
 					}
 				} else {
 					org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( 
 							org.lgna.story.AudioSource.class, 
 							org.alice.virtualmachine.resources.AudioResource.class,
 							Number.class );
-					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
+					return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
 				}
 			} else {
 				org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( 
 						org.lgna.story.AudioSource.class, 
 						org.alice.virtualmachine.resources.AudioResource.class );
-				return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression );
+				return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression );
 			}
 		} else {
 			return null;
