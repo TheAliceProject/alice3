@@ -62,7 +62,7 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 	private FieldGalleryNode( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "4c21c31c-49a5-46dd-82d6-28f0055c30b4" ), field );
 		Class<?> resourceClass = ((org.lgna.project.ast.JavaType)this.getDeclaration().getValueType()).getClassReflectionProxy().getReification();
-		java.awt.image.BufferedImage thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(resourceClass);
+		java.awt.image.BufferedImage thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(resourceClass, this.getDeclaration().getName());
 		if( thumbnail != null ) {
 			this.largeIcon = new javax.swing.ImageIcon(thumbnail);
 		} else {

@@ -56,6 +56,7 @@ import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.MonsterResource;
 import org.lgna.story.resources.PersonResource;
 import org.lgna.story.resources.sims2.*;
 
@@ -71,14 +72,20 @@ class CustomAdult extends CustomPerson {
 	}
 }
 
+class CustomMonster extends CustomPerson {
+	public CustomMonster( MonsterResource resource ) {
+		super( resource );
+	}
+}
+
 class DesertScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground desert = new Ground();
 	private final Sphere sphere = new Sphere();
 //	private final CustomAdult fellowLaborer = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
 	private final Camera camera;
-	private final CustomAdult ogre;
-	public DesertScene( Camera camera, CustomAdult ogre ) {
+	private final CustomMonster ogre;
+	public DesertScene( Camera camera, CustomMonster ogre ) {
 		this.camera = camera;
 		this.ogre = ogre;
 	}
@@ -129,9 +136,9 @@ class SnowScene extends Scene {
 	private final Cone greenCone = new Cone(); 
 	private final Cone blueCone = new Cone();
 	private final Camera camera;
-	private final CustomAdult ogre;
+	private final CustomMonster ogre;
 	private final CustomAdult susan;
-	public SnowScene( Camera camera, CustomAdult ogre, CustomAdult susan ) {
+	public SnowScene( Camera camera, CustomMonster ogre, CustomAdult susan ) {
 		this.camera = camera;
 		this.susan = susan;
 		this.ogre = ogre;
@@ -227,7 +234,7 @@ class RagsToRichesStory extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final CustomAdult ogre = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
+	private final CustomMonster ogre = new CustomMonster( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
 //	private final CustomAdult ogre = new CustomAdult( 
 //			new AdultPersonResource(
 //					Gender.MALE,

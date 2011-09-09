@@ -53,6 +53,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +107,7 @@ public class ModelResourceExporter {
 	private List<String> textures = new LinkedList<String>();
 	private AxisAlignedBox boundingBox;
 	private File xmlFile;
-	private Image thumbnail;
+	private Map<String, Image> thumbnails = new HashMap<String, Image>();
 	
 	private String attributionName;
 	private String attributionYear;
@@ -182,9 +183,9 @@ public class ModelResourceExporter {
 		this.boundingBox = boundingBox;
 	}
 	
-	public void setThumbnail( Image thumbnail )
+	public void addThumbnail( String name, Image thumbnail )
 	{
-		this.thumbnail = thumbnail;
+		this.thumbnails.put(name, thumbnail);
 	}
 	
 	public void setXMLFile(File xmlFile)
@@ -646,28 +647,43 @@ public class ModelResourceExporter {
 		
 	}
 	
-	private File createThumbnail(String root)
+	private File saveImageToFile(String fileName, Image image)
 	{
-		if (this.thumbnail != null)
+		File outputFile = new File(fileName);
+        try{
+            if (!outputFile.exists()){
+            	FileUtilities.createParentDirectoriesIfNecessary(outputFile);
+                outputFile.createNewFile();
+            }
+            ImageUtilities.write(outputFile, image);
+            return outputFile;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+	}
+	
+	private List<File> createThumbnails(String root)
+	{
+		List<File> thumbnailFiles = new LinkedList<File>();
+		boolean isFirst = true;
+		for (Entry<String, Image> entry : this.thumbnails.entrySet())
 		{
 			String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+"resources/";
-	        File outputFile = new File(resourceDirectory, this.name+".png");
-	        try
-	        {
-	            if (!outputFile.exists())
-	            {
-	            	FileUtilities.createParentDirectoriesIfNecessary(outputFile);
-	                outputFile.createNewFile();
-	            }
-	            ImageUtilities.write(outputFile, this.thumbnail);
-	            return outputFile;
-	        }
-	        catch (Exception e)
-	        {
-	            e.printStackTrace();
-	        }
+			if (isFirst)
+			{
+				File f = saveImageToFile(resourceDirectory+this.name+".png", entry.getValue());
+				if (f != null ){
+					thumbnailFiles.add(f);
+				}
+			}
+			File f = saveImageToFile(resourceDirectory+this.name+"_"+entry.getKey()+".png", entry.getValue());
+			if (f != null ){
+				thumbnailFiles.add(f);
+			}
 		}
-        return null;
+        return thumbnailFiles;
 	}
 	
 	public File export(String sourceDirectory, String outputDir)
@@ -688,7 +704,7 @@ public class ModelResourceExporter {
 		}
 		
 		File xmlFile = createXMLFile(sourceDirectory);
-		File thumbnailFile = createThumbnail(sourceDirectory);
+		List<File> thumbnailFiles = createThumbnails(sourceDirectory);
 		File outputFile = new File(outputDir+this.name+".jar");
 		try
 		{
