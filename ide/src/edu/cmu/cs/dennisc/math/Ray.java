@@ -133,6 +133,20 @@ public class Ray {
 		return getPointAlong( new edu.cmu.cs.dennisc.math.Point3(), t );
 	}
 
+	public double getProjectedPointT( edu.cmu.cs.dennisc.math.Point3 p )
+	{
+		edu.cmu.cs.dennisc.math.Vector3 toPoint = edu.cmu.cs.dennisc.math.Vector3.createSubtraction(p, this.m_origin);
+		double dot = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct(toPoint, this.m_direction);
+		return dot;
+	}
+	
+	public edu.cmu.cs.dennisc.math.Point3 getProjectedPoint( edu.cmu.cs.dennisc.math.Point3 p )
+	{
+		edu.cmu.cs.dennisc.math.Vector3 toPoint = edu.cmu.cs.dennisc.math.Vector3.createSubtraction(p, this.m_origin);
+		double dot = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct(toPoint, this.m_direction);
+		return getPointAlong(dot);
+	}
+	
 	public void transform( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 		m.transform( m_origin );
 		m.transform( m_direction );

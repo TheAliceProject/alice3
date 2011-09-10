@@ -63,7 +63,7 @@ public class Mesh extends Geometry
     @Override
     protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) 
     {
-        edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertexBuffer.getValue().array() );
+    	edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertexBuffer.getValue() );
     }
     
     @Override

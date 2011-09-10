@@ -56,11 +56,18 @@ import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.MonsterResource;
 import org.lgna.story.resources.PersonResource;
 import org.lgna.story.resources.sims2.*;
 
 class CustomBiped extends Biped {
 	public CustomBiped( BipedResource resource ) {
+		super( resource );
+	}
+}
+
+class CustomMonster extends CustomPerson {
+	public CustomMonster( MonsterResource resource ) {
 		super( resource );
 	}
 }
@@ -71,8 +78,13 @@ class DesertScene extends Scene {
 	private final Sphere sphere = new Sphere();
 //	private final CustomAdult fellowLaborer = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
 	private final Camera camera;
+<<<<<<< HEAD
 	private final CustomBiped ogre;
 	public DesertScene( Camera camera, CustomBiped ogre ) {
+=======
+	private final CustomMonster ogre;
+	public DesertScene( Camera camera, CustomMonster ogre ) {
+>>>>>>> ea4337359d8781666f16ba798f2dfa0e588e1758
 		this.camera = camera;
 		this.ogre = ogre;
 	}
@@ -123,9 +135,15 @@ class SnowScene extends Scene {
 	private final Cone greenCone = new Cone(); 
 	private final Cone blueCone = new Cone();
 	private final Camera camera;
+<<<<<<< HEAD
 	private final CustomBiped ogre;
 	private final CustomBiped susan;
 	public SnowScene( Camera camera, CustomBiped ogre, CustomBiped susan ) {
+=======
+	private final CustomMonster ogre;
+	private final CustomAdult susan;
+	public SnowScene( Camera camera, CustomMonster ogre, CustomAdult susan ) {
+>>>>>>> ea4337359d8781666f16ba798f2dfa0e588e1758
 		this.camera = camera;
 		this.susan = susan;
 		this.ogre = ogre;
@@ -221,7 +239,11 @@ class RagsToRichesStory extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
+<<<<<<< HEAD
 	private final CustomBiped ogre = new CustomBiped( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
+=======
+	private final CustomMonster ogre = new CustomMonster( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
+>>>>>>> ea4337359d8781666f16ba798f2dfa0e588e1758
 //	private final CustomAdult ogre = new CustomAdult( 
 //			new AdultPersonResource(
 //					Gender.MALE,

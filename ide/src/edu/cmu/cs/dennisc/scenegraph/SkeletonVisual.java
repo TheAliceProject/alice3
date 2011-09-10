@@ -115,21 +115,30 @@ public class SkeletonVisual extends Visual {
     public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
         if( skeleton.getValue()!= null  ) {
             skeleton.getValue().getBoundingBox(rv);
-            rv.scale( scale.getValue() );
         } else {
             rv.setNaN();
+        }
+        if( this.geometries.getValue() != null) {
+        	for (edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue())
+        	{
+        		edu.cmu.cs.dennisc.math.AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
+        		rv.union(b);
+        	}
+		}
+        if (!rv.isNaN())
+        {
+        	rv.scale(this.scale.getValue());
         }
         return rv;
     }
     @Override
     public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
-        if( skeleton.getValue()!= null  ) {
-            edu.cmu.cs.dennisc.math.AxisAlignedBox box = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
-            skeleton.getValue().getBoundingBox(box);
+    	edu.cmu.cs.dennisc.math.AxisAlignedBox box = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
+    	getAxisAlignedMinimumBoundingBox(box);
+    	if (!box.isNaN()){
             double diameter = Point3.calculateDistanceBetween(box.getMinimum(), box.getMaximum());
             rv.center.set(box.getCenter());
             rv.radius = diameter/2;
-            rv.scale( scale.getValue() );
         } else {
             rv.setNaN();
         }
