@@ -49,7 +49,7 @@ package org.alice.ide.common;
 public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstance {
 	private org.lgna.project.ast.FieldAccess fieldAccess;
 
-	public FieldAccessPane( Factory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
+	public FieldAccessPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
 		this.fieldAccess = fieldAccess;
 		boolean isExpressionDesired;
 		if( this.fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
@@ -58,7 +58,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 			isExpressionDesired = true;
 		}
 		if( isExpressionDesired ) {
-			this.addComponent( factory.createExpressionPropertyPane( this.fieldAccess.expression, null ) );
+			this.addComponent( factory.createExpressionPropertyPane( this.fieldAccess.expression ) );
 			if( getIDE().isJava() ) {
 				//pass
 			} else {

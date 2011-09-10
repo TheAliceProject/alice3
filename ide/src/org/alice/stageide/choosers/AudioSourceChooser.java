@@ -204,8 +204,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		this.startTimeSlider.setTime( startTime );
 		this.stopTimeSlider.setTime( stopTime );
 
-		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getActiveInstance().getCodeFactory();
-		this.dropDown = factory.createExpressionPropertyPane( bogusNode.bogusProperty, null );
+		this.dropDown = org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance().createExpressionPropertyPane( bogusNode.bogusProperty, null );
 		
 		if( audioResource != null ) {
 			double duration = audioResource.getDuration();

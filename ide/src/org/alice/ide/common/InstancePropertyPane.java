@@ -51,8 +51,8 @@ public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.denni
 	//	}
 	private org.lgna.croquet.components.Label label;
 
-	public InstancePropertyPane( Factory factory, edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+	public InstancePropertyPane( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
 	}
 	@Override
 	protected void refresh() {

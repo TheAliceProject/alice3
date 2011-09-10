@@ -47,7 +47,7 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.common.Factory factory, org.lgna.project.ast.ArgumentListProperty property ) {
+	public ArgumentListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty property ) {
 		super( factory, property );
 	}
 	protected boolean isNameDesired( org.lgna.project.ast.AbstractParameter parameter ) {

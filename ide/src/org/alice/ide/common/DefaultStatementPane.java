@@ -47,7 +47,7 @@ package org.alice.ide.common;
  */
 public class DefaultStatementPane extends AbstractStatementPane {
 	private int maxYForIfBlock = -1;
-	public DefaultStatementPane( Factory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
+	public DefaultStatementPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
 		super( factory, statement, owner );
 		this.addComponent( factory.createComponent( statement ) );
 	}

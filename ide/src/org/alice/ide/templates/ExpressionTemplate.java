@@ -83,7 +83,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		this.removeAllComponents();
 		org.lgna.project.ast.Expression incompleteExpression = this.createIncompleteExpression();
 		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( incompleteExpression ) );
-		this.addComponent( getIDE().getTemplatesFactory().createComponent( incompleteExpression ) );
+		this.addComponent( org.alice.ide.x.TemplateAstI18nFactory.getInstance().createComponent( incompleteExpression ) );
 	}
 	@Override
 	protected boolean isPressed() {

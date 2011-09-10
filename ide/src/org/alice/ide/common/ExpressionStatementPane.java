@@ -57,7 +57,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			} );
 		}
 	};
-	public ExpressionStatementPane( Factory factory, org.lgna.project.ast.ExpressionStatement expressionStatement, org.lgna.project.ast.StatementListProperty owner ) {
+	public ExpressionStatementPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionStatement expressionStatement, org.lgna.project.ast.StatementListProperty owner ) {
 		super( factory, expressionStatement, owner );
 		this.refresh();
 	}
@@ -101,7 +101,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				final org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 				assert methodInvocation.getParent() == expressionStatement;
 				
-				if( this.getFactory() == org.alice.ide.IDE.getActiveInstance().getPreviewFactory() || methodInvocation.isValid() ) {
+				if( this.getFactory() == org.alice.ide.x.PreviewAstI18nFactory.getInstance() || methodInvocation.isValid() ) {
 					//pass
 				} else {
 					this.setBackgroundColor( java.awt.Color.RED );
@@ -109,7 +109,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				
 				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 				//todo:
-				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
+				if( this.getFactory() == org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance() ) {
 					org.lgna.project.ast.AbstractMember nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
 						this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );

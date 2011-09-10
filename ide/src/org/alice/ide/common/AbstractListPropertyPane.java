@@ -83,8 +83,8 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 		}
 		
 	}; 
-	public AbstractListPropertyPane( Factory factory, int axis, E property ) {
-		super( factory, axis, property );
+	public AbstractListPropertyPane( int axis, org.alice.ide.x.AstI18nFactory factory, E property ) {
+		super( axis, factory, property );
 	}
 	protected abstract org.lgna.croquet.components.Component< ? > createComponent( Object instance );
 	protected void addPrefixComponents() {

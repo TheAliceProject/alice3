@@ -50,8 +50,8 @@ public class ResourcePropertyPane extends AbstractPropertyPane<org.lgna.project.
 	private org.lgna.croquet.components.Label label;
 	private org.alice.virtualmachine.Resource prevResource;
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
-	public ResourcePropertyPane( Factory factory, org.lgna.project.ast.ResourceProperty property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+	public ResourcePropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ResourceProperty property ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
 	}
 	
 	private edu.cmu.cs.dennisc.pattern.event.NameListener getNameListener() {

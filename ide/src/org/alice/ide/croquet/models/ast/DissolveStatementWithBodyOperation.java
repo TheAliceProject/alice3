@@ -40,27 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preview;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.common.Factory {
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		//return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
-		return new ArgumentListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), argumentListProperty );
+public class DissolveStatementWithBodyOperation extends org.lgna.croquet.ActionOperation {
+	private static java.util.Map< org.lgna.project.ast.AbstractStatementWithBody, DissolveStatementWithBodyOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DissolveStatementWithBodyOperation getInstance( org.lgna.project.ast.AbstractStatementWithBody statementWithBody ) {
+		DissolveStatementWithBodyOperation rv = map.get( statementWithBody );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DissolveStatementWithBodyOperation( statementWithBody );
+			map.put( statementWithBody, rv );
+		}
+		return rv;
+	}
+	private org.lgna.project.ast.AbstractStatementWithBody statementWithBody;
+	private DissolveStatementWithBodyOperation( org.lgna.project.ast.AbstractStatementWithBody statementWithBody ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
+		this.statementWithBody = statementWithBody;
+	}
+	public org.lgna.project.ast.AbstractStatementWithBody getStatementWithBody() {
+		return this.statementWithBody;
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
+	protected void localize() {
+		super.localize();
+		//todo
+		this.setName( "Dissolve " + this.statementWithBody.getClass().getSimpleName() );
 	}
-	
-	// todo: investigate
-	// this epic hack was inserted to account for menu item icons returning a size of 0,0
-	// dennisc
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
-		return new org.lgna.croquet.components.LineAxisPanel( component );
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DissolveStatementWithBodyEdit( step ) );
 	}
 }

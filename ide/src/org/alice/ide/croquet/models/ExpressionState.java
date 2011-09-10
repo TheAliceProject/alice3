@@ -54,6 +54,6 @@ public abstract class ExpressionState< M extends org.lgna.project.ast.Expression
 		return new org.alice.ide.croquet.components.ExpressionDropDown( this );
 	}
 	public org.lgna.croquet.components.JComponent< ? > createView() {
-		return org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( this.getValue() );
+		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( this.getValue() );
 	}
 }

@@ -54,7 +54,7 @@ public class ItemInitializerPane extends org.lgna.croquet.components.FlowPanel {
 	}
 	public void refresh() {
 		this.forgetAndRemoveAllComponents();
-		this.addComponent( org.alice.ide.IDE.getActiveInstance().getCodeFactory().createExpressionPropertyPane( initializerProperty, null, initializerProperty.getExpressionType(), org.lgna.croquet.Application.INHERIT_GROUP, true ) );
+		this.addComponent( org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance().createExpressionPropertyPane( initializerProperty, initializerProperty.getExpressionType() ) );
 		this.revalidateAndRepaint();
 	}
 }

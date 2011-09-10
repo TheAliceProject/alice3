@@ -40,27 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preview;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.common.Factory {
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		//return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
-		return new ArgumentListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), argumentListProperty );
+public abstract class ConvertStatementWithBodyOperation extends org.lgna.croquet.ActionOperation {
+	private org.lgna.project.ast.AbstractStatementWithBody original;
+	public ConvertStatementWithBodyOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractStatementWithBody original ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
+		this.original = original;
 	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
+	public org.lgna.project.ast.AbstractStatementWithBody getOriginal() {
+		return this.original;
 	}
-	
-	// todo: investigate
-	// this epic hack was inserted to account for menu item icons returning a size of 0,0
-	// dennisc
+	protected abstract org.lgna.project.ast.AbstractStatementWithBody createReplacement();
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
-		return new org.lgna.croquet.components.LineAxisPanel( component );
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.ConvertStatementWithBodyEdit( step, this.createReplacement() ) );
 	}
 }

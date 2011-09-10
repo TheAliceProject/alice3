@@ -62,7 +62,7 @@ public class UbiquitousStatementImplementor { //todo: needs a better name
 			//pass
 		} else {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			this.incompleteStatementPane = ide.getTemplatesFactory().createStatementPane( incompleteStatement );
+			this.incompleteStatementPane = org.alice.ide.x.TemplateAstI18nFactory.getInstance().createStatementPane( incompleteStatement );
 		}
 		return this.incompleteStatementPane;
 	}

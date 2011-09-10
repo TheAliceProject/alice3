@@ -40,27 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preview;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.common.Factory {
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		//return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
-		return new ArgumentListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), argumentListProperty );
+public class ConvertDoInOrderToDoTogetherOperation extends ConvertStatementWithBodyOperation {
+	private static java.util.Map< org.lgna.project.ast.DoInOrder, ConvertDoInOrderToDoTogetherOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ConvertDoInOrderToDoTogetherOperation getInstance( org.lgna.project.ast.DoInOrder doInOrder ) {
+		ConvertDoInOrderToDoTogetherOperation rv = map.get( doInOrder );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ConvertDoInOrderToDoTogetherOperation( doInOrder );
+			map.put( doInOrder, rv );
+		}
+		return rv;
+	}
+
+	private ConvertDoInOrderToDoTogetherOperation( org.lgna.project.ast.DoInOrder doInOrder ) {
+		super( java.util.UUID.fromString( "d3abb3c6-f016-4687-be00-f0921de7cb39" ), doInOrder );
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
-	}
-	
-	// todo: investigate
-	// this epic hack was inserted to account for menu item icons returning a size of 0,0
-	// dennisc
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
-		return new org.lgna.croquet.components.LineAxisPanel( component );
+	protected org.lgna.project.ast.AbstractStatementWithBody createReplacement() {
+		return new org.lgna.project.ast.DoTogether();
 	}
 }

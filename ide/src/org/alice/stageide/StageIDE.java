@@ -277,7 +277,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new ThisFieldAccessNameLabel( field );
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, org.lgna.project.ast.Expression expression ) {
+	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
 		if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
 			org.lgna.project.ast.Expression fieldExpression = fieldAccess.expression.getValue();

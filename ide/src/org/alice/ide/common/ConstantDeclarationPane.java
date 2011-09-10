@@ -46,8 +46,8 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 
-class ConstantDeclarationPane extends LocalDeclarationPane {
-	public ConstantDeclarationPane( org.lgna.project.ast.UserConstant constantDeclaredInAlice ) {
-		super( constantDeclaredInAlice, new ConstantPane( constantDeclaredInAlice ) );
+public class ConstantDeclarationPane extends LocalDeclarationPane {
+	public ConstantDeclarationPane( org.lgna.project.ast.UserConstant constantDeclaredInAlice, org.lgna.croquet.components.JComponent< ? > constantPane ) {
+		super( constantDeclaredInAlice, constantPane );
 	}
 }

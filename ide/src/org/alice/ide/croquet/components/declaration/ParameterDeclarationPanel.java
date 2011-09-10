@@ -110,7 +110,7 @@ public class ParameterDeclarationPanel extends DeclarationPanel< org.alice.ide.c
 			org.lgna.croquet.components.PageAxisPanel pane = new org.lgna.croquet.components.PageAxisPanel();
 			pane.addComponent( new org.lgna.croquet.components.Label( sb.toString() ) );
 			pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
-			pane.addComponent( new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "Tip: look for " ), org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( new org.lgna.project.ast.NullLiteral() ) ) );
+			pane.addComponent( new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "Tip: look for " ), org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( new org.lgna.project.ast.NullLiteral() ) ) );
 			pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
 			pane.addComponent( checkBox );
 			return new org.lgna.croquet.components.Component< ? >[] { new org.lgna.croquet.components.Label( "WARNING:" ), pane };

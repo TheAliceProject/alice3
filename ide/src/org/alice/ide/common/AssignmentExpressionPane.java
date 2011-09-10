@@ -48,7 +48,7 @@ package org.alice.ide.common;
  */
 public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAxisPanel {
 	private org.lgna.project.ast.AssignmentExpression assignmentExpression;
-	public AssignmentExpressionPane( Factory factory, org.lgna.project.ast.AssignmentExpression assignmentExpression ) {
+	public AssignmentExpressionPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.AssignmentExpression assignmentExpression ) {
 		this.assignmentExpression = assignmentExpression;
 		org.lgna.project.ast.Expression left = this.assignmentExpression.leftHandSide.getValue();
 		
@@ -75,7 +75,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 			org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
 			isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 			valueType = field.getValueType();
-			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, null, field.getDeclaringType() ) );
+			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, field.getDeclaringType() ) );
 			if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 				parent.addComponent( new org.lgna.croquet.components.Label( " . " ) );
 			} else {
@@ -110,7 +110,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 		if( left instanceof org.lgna.project.ast.ArrayAccess ) {
 			org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)left;
 			parent.addComponent( new org.lgna.croquet.components.Label( "[ " ) );
-			parent.addComponent( factory.createExpressionPropertyPane( arrayAccess.index, null ) );
+			parent.addComponent( factory.createExpressionPropertyPane( arrayAccess.index ) );
 			parent.addComponent( new org.lgna.croquet.components.Label( " ]" ) );
 		}
 		
@@ -123,7 +123,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 				parent.addComponent( new org.alice.ide.common.GetsPane( true ) );
 			}
 		}
-		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, null, valueType ) );
+		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, valueType ) );
 		if( isSetter ) {
 			if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 				parent.addComponent( new org.lgna.croquet.components.Label( " )" ) );

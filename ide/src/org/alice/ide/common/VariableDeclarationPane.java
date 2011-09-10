@@ -46,8 +46,8 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 
-class VariableDeclarationPane extends LocalDeclarationPane {
-	public VariableDeclarationPane( org.lgna.project.ast.UserVariable variableDeclaredInAlice ) {
-		super( variableDeclaredInAlice, new VariablePane( variableDeclaredInAlice ) );
+public class VariableDeclarationPane extends LocalDeclarationPane {
+	public VariableDeclarationPane( org.lgna.project.ast.UserVariable variableDeclaredInAlice, org.lgna.croquet.components.JComponent< ? > variablePane ) {
+		super( variableDeclaredInAlice, variablePane );
 	}
 }

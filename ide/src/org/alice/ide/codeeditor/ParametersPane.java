@@ -49,8 +49,8 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< NodeListProperty< UserParameter >> {
-	public ParametersPane( org.alice.ide.common.Factory factory, org.lgna.project.ast.UserCode code ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, code.getParamtersProperty() );
+	public ParametersPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserCode code ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, factory, code.getParamtersProperty() );
 	}
 	
 	protected org.alice.ide.IDE getIDE() {

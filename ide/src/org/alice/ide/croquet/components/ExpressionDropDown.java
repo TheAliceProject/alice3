@@ -50,7 +50,7 @@ public class ExpressionDropDown< M extends org.lgna.project.ast.Expression > ext
 	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
 		private void refresh( org.lgna.project.ast.Expression nextValue ) {
 			this.forgetAndRemoveAllComponents();
-			this.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( nextValue ), Constraint.CENTER );
+			this.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue ), Constraint.CENTER );
 			this.revalidateAndRepaint();
 		}
 	};

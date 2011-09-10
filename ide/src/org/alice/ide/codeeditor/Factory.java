@@ -241,11 +241,11 @@ class StatementEnabledStateOperation extends org.lgna.croquet.BooleanState {
 public class Factory extends org.alice.ide.common.Factory {
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		return new ArgumentListPropertyPane( this, argumentListProperty );
+		return new ArgumentListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), argumentListProperty );
 	}
 	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType, org.lgna.croquet.Group group, boolean isBogus ) {
 		org.lgna.project.ast.Expression expression = expressionProperty.getValue();
-		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), expressionProperty );
 		if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
 			org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade model;
 			if( isBogus ) {

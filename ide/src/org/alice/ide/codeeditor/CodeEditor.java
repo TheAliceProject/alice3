@@ -178,7 +178,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		this.forgetAndRemoveAllComponents();
 		if( this.code instanceof org.lgna.project.ast.UserCode ) {
 			final org.lgna.project.ast.UserCode codeDeclaredInAlice = (org.lgna.project.ast.UserCode)this.code;
-			ParametersPane parametersPane = new ParametersPane( this.getIDE().getCodeFactory(), codeDeclaredInAlice );
+			ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), codeDeclaredInAlice );
 			AbstractCodeHeaderPane header;
 //			org.lgna.croquet.components.Component< ? > superInvocationPane = null;
 			if( code instanceof org.lgna.project.ast.UserMethod ) {
@@ -194,14 +194,14 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			class RootStatementListPropertyPane extends StatementListPropertyPane {
 				private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
 				public RootStatementListPropertyPane() {
-					super( getIDE().getCodeFactory(), codeDeclaredInAlice.getBodyProperty().getValue().statements );
+					super( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), codeDeclaredInAlice.getBodyProperty().getValue().statements );
 					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 48, 0 ) );
 					org.lgna.project.ast.BlockStatement body = codeDeclaredInAlice.getBodyProperty().getValue();
 					if( body instanceof org.lgna.project.ast.ConstructorBlockStatement ) {
 						org.lgna.project.ast.ConstructorBlockStatement constructorBlockStatement = (org.lgna.project.ast.ConstructorBlockStatement)body;
 						org.lgna.project.ast.ConstructorInvocationStatement	constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
 						assert constructorInvocationStatement != null;
-						superInvocationComponent = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createStatementPane( constructorInvocationStatement );
+						superInvocationComponent = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( constructorInvocationStatement );
 					} else {
 						superInvocationComponent = null;
 					}

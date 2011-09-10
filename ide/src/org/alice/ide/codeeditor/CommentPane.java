@@ -155,7 +155,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
  * @author Dennis Cosgrove
  */
 public class CommentPane extends org.alice.ide.common.AbstractStatementPane {
-	public CommentPane( org.alice.ide.common.Factory factory, org.lgna.project.ast.Comment comment, org.lgna.project.ast.StatementListProperty owner ) {
+	public CommentPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Comment comment, org.lgna.project.ast.StatementListProperty owner ) {
 		super( factory, comment, owner );
 		CommentLine commentLine = new CommentLine( comment );
 		this.addComponent( new org.lgna.croquet.components.SwingAdapter( commentLine ) );

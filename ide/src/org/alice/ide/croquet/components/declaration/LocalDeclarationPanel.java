@@ -55,7 +55,7 @@ public class LocalDeclarationPanel extends DeclarationPanel< org.alice.ide.croqu
 	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
 		org.alice.ide.croquet.models.declaration.LocalDeclarationStatementOperation model = this.getModel();
 		org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = model.createPreviewDeclaration();
-		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createStatementPane( localDeclarationStatement );
+		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( localDeclarationStatement );
 		return pane;
 	}
 }

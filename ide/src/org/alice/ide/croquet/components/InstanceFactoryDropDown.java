@@ -50,7 +50,7 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
 		private void refresh( org.alice.ide.instancefactory.InstanceFactory nextValue ) {
 			this.forgetAndRemoveAllComponents();
-			this.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( nextValue != null ? nextValue.createExpression() : null ), Constraint.CENTER );
+			this.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createExpression() : null ), Constraint.CENTER );
 			this.revalidateAndRepaint();
 		}
 	};

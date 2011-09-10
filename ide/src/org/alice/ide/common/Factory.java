@@ -49,6 +49,11 @@ import org.alice.ide.codeeditor.ExpressionPropertyDropDownPane;
  * @author Dennis Cosgrove
  */
 public abstract class Factory {
+	@Deprecated
+	public org.alice.ide.x.AstI18nFactory TODO_REMOVE_getBogusAstI18nFactory() {
+		return null;
+	}
+	
 	protected org.lgna.croquet.components.JComponent< ? > createGetsComponent( boolean isTowardLeading ) { 
 		return new org.alice.ide.common.GetsPane( isTowardLeading );
 	}
@@ -58,7 +63,7 @@ public abstract class Factory {
 	public org.lgna.croquet.components.JComponent< ? > createArgumentPane( org.lgna.project.ast.Argument argument, org.lgna.croquet.components.Component< ? > prefixPane ) {
 		org.lgna.project.ast.ExpressionProperty expressionProperty = argument.expression;
 		org.lgna.project.ast.Expression expression = expressionProperty.getValue();
-		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), expressionProperty );
 		if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
 			org.alice.ide.croquet.models.ast.cascade.ArgumentCascade model = org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( argument );
 			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
@@ -73,10 +78,16 @@ public abstract class Factory {
 	protected abstract org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty );
 	
 	protected org.lgna.croquet.components.JComponent< ? > createVariableDeclarationPane( org.lgna.project.ast.UserVariable variableDeclaredInAlice ) {
-		return new VariableDeclarationPane( variableDeclaredInAlice );
+		return new VariableDeclarationPane( variableDeclaredInAlice, this.createVariablePane( variableDeclaredInAlice ) );
 	}
-	protected org.lgna.croquet.components.JComponent< ? > createConstantDeclaredInAlice( org.lgna.project.ast.UserConstant constantDeclaredInAlice ) {
-		return new ConstantDeclarationPane( constantDeclaredInAlice );
+	protected org.lgna.croquet.components.JComponent< ? > createConstantDeclarationPane( org.lgna.project.ast.UserConstant constantDeclaredInAlice ) {
+		return new ConstantDeclarationPane( constantDeclaredInAlice, this.createConstantPane( constantDeclaredInAlice ) );
+	}
+	protected org.lgna.croquet.components.JComponent< ? > createVariablePane( org.lgna.project.ast.UserVariable variableDeclaredInAlice ) {
+		return new VariablePane( variableDeclaredInAlice );
+	}
+	protected org.lgna.croquet.components.JComponent< ? > createConstantPane( org.lgna.project.ast.UserConstant constantDeclaredInAlice ) {
+		return new ConstantPane( constantDeclaredInAlice );
 	}
 	
 	protected org.lgna.croquet.components.JComponent< ? > createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property, int underscoreCount ) {
@@ -89,15 +100,15 @@ public abstract class Factory {
 			if( "variable".equals( propertyName ) ) {
 				rv = this.createVariableDeclarationPane( (org.lgna.project.ast.UserVariable)property.getValue() );
 			} else if( "constant".equals( propertyName ) ) {
-				rv = this.createConstantDeclaredInAlice( (org.lgna.project.ast.UserConstant)property.getValue() );
+				rv = this.createConstantDeclarationPane( (org.lgna.project.ast.UserConstant)property.getValue() );
 			} else {
 				rv = new org.lgna.croquet.components.Label( "TODO: handle underscore count 2: " + propertyName );
 			}
 		} else if( underscoreCount == 1 ) {
 			if( "variable".equals( propertyName ) ) {
-				rv = new VariablePane( (org.lgna.project.ast.UserVariable)property.getValue() );
+				rv = this.createVariablePane( (org.lgna.project.ast.UserVariable)property.getValue() );
 			} else if( "constant".equals( propertyName ) ) {
-				rv = new ConstantPane( (org.lgna.project.ast.UserConstant)property.getValue() );
+				rv = this.createConstantPane( (org.lgna.project.ast.UserConstant)property.getValue() );
 			} else {
 				rv = new org.lgna.croquet.components.Label( "TODO: handle underscore count 1: " + propertyName );
 			}
@@ -119,26 +130,26 @@ public abstract class Factory {
 					if( property instanceof org.lgna.project.ast.ExpressionProperty ) {
 						rv = this.createExpressionPropertyPane( (org.lgna.project.ast.ExpressionProperty)property, null );
 					} else {
-						rv = new NodePropertyPane( this, (org.lgna.project.ast.NodeProperty< ? >)property );
+						rv = new NodePropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (org.lgna.project.ast.NodeProperty< ? >)property );
 					}
 				} else if( property instanceof org.lgna.project.ast.ResourceProperty ) {
-					rv = new ResourcePropertyPane( this, (org.lgna.project.ast.ResourceProperty)property );
+					rv = new ResourcePropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (org.lgna.project.ast.ResourceProperty)property );
 				} else if( property instanceof edu.cmu.cs.dennisc.property.ListProperty< ? > ) {
 					if( property instanceof org.lgna.project.ast.NodeListProperty< ? > ) {
 						if( property instanceof org.lgna.project.ast.StatementListProperty ) {
-							rv = new StatementListPropertyPane( this, (org.lgna.project.ast.StatementListProperty)property );
+							rv = new StatementListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (org.lgna.project.ast.StatementListProperty)property );
 						} else if( property instanceof org.lgna.project.ast.ArgumentListProperty ) {
 							rv = this.createArgumentListPropertyPane( (org.lgna.project.ast.ArgumentListProperty)property );
 						} else if( property instanceof org.lgna.project.ast.ExpressionListProperty ) {
-							rv = new ExpressionListPropertyPane( this, (org.lgna.project.ast.ExpressionListProperty)property );
+							rv = new ExpressionListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (org.lgna.project.ast.ExpressionListProperty)property );
 						} else {
-							rv = new DefaultNodeListPropertyPane( this, (org.lgna.project.ast.NodeListProperty< ? >)property );
+							rv = new DefaultNodeListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (org.lgna.project.ast.NodeListProperty< ? >)property );
 						}
 					} else {
-						rv = new DefaultListPropertyPane( this, (edu.cmu.cs.dennisc.property.ListProperty< ? >)property );
+						rv = new DefaultListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (edu.cmu.cs.dennisc.property.ListProperty< ? >)property );
 					}
 				} else {
-					rv = new InstancePropertyPane( this, property );
+					rv = new InstancePropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), property );
 				}
 				assert rv != null;
 			}
@@ -324,11 +335,11 @@ public abstract class Factory {
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane rv;
 		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-			rv = new org.alice.ide.common.ExpressionStatementPane( this, (org.lgna.project.ast.ExpressionStatement)statement, statementListProperty );
+			rv = new org.alice.ide.common.ExpressionStatementPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (org.lgna.project.ast.ExpressionStatement)statement, statementListProperty );
 		} else if( statement instanceof org.lgna.project.ast.Comment ) {
-			rv = new org.alice.ide.codeeditor.CommentPane( this, (org.lgna.project.ast.Comment)statement, statementListProperty );
+			rv = new org.alice.ide.codeeditor.CommentPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (org.lgna.project.ast.Comment)statement, statementListProperty );
 		} else {
-			rv = new org.alice.ide.common.DefaultStatementPane( this, statement, statementListProperty );
+			rv = new org.alice.ide.common.DefaultStatementPane( this.TODO_REMOVE_getBogusAstI18nFactory(), statement, statementListProperty );
 		}
 		return rv;
 	}
@@ -342,7 +353,7 @@ public abstract class Factory {
 	
 	protected org.lgna.croquet.components.JComponent< ? > createFieldAccessPane( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		org.lgna.croquet.components.JComponent< ? > rv;
-		FieldAccessPane fieldAccessPane = new FieldAccessPane( this, fieldAccess );
+		FieldAccessPane fieldAccessPane = new FieldAccessPane( this.TODO_REMOVE_getBogusAstI18nFactory(), fieldAccess );
 		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 		if( prefixPane != null ) {
 			rv = new org.lgna.croquet.components.LineAxisPanel( prefixPane, fieldAccessPane );
@@ -354,7 +365,7 @@ public abstract class Factory {
 	protected org.lgna.croquet.components.JComponent< ? > createInstanceCreationPane( org.lgna.project.ast.InstanceCreation instanceCreation ) {
 		org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 		if( constructor instanceof org.lgna.project.ast.AnonymousUserConstructor ) {
-			return new AnonymousConstructorPane( this, (org.lgna.project.ast.AnonymousUserConstructor)constructor );
+			return new AnonymousConstructorPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (org.lgna.project.ast.AnonymousUserConstructor)constructor );
 		} else {
 			return new ExpressionPane( instanceCreation, this.createComponent( instanceCreation ) );
 		}
@@ -373,7 +384,7 @@ public abstract class Factory {
 //		} else {
 //			rv = new ExpressionPane( this, expression );
 //		}
-		org.lgna.croquet.components.JComponent< ? > rv = org.alice.ide.IDE.getActiveInstance().getOverrideComponent( this, expression );
+		org.lgna.croquet.components.JComponent< ? > rv = org.alice.ide.IDE.getActiveInstance().getOverrideComponent( this.TODO_REMOVE_getBogusAstI18nFactory(), expression );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -424,11 +435,11 @@ public abstract class Factory {
 			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
 				rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
 			} else if( expression instanceof org.alice.ide.ast.PreviousValueExpression ) {
-				rv = new PreviousValueExpressionPane( (org.alice.ide.ast.PreviousValueExpression)expression, this );
+				rv = new PreviousValueExpressionPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (org.alice.ide.ast.PreviousValueExpression)expression );
 			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
 				rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.AssignmentExpression ) {
-				rv = new AssignmentExpressionPane( this, (org.lgna.project.ast.AssignmentExpression)expression );
+				rv = new AssignmentExpressionPane( this.TODO_REMOVE_getBogusAstI18nFactory(), (org.lgna.project.ast.AssignmentExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 				rv = this.createFieldAccessPane( (org.lgna.project.ast.FieldAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.TypeExpression ) {

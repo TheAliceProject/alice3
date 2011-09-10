@@ -71,7 +71,7 @@ package org.alice.ide.memberseditor.templates;
 		this.removeAllComponents();
 		org.lgna.project.ast.Expression incompleteExpression = this.createIncompleteExpression();
 		this.setBackgroundColor( getIDE().getTheme().getColorFor( incompleteExpression ) );
-		this.addComponent( getIDE().getTemplatesFactory().createExpressionPane( incompleteExpression ) );
+		this.addComponent( org.alice.ide.x.TemplateAstI18nFactory.getInstance().createExpressionPane( incompleteExpression ) );
 	}
 
 //	@Override

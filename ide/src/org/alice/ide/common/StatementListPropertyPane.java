@@ -51,8 +51,8 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< org.lgn
 	public static final int INTRASTICIAL_PAD = INTRASTICIAL_MIDDLE*2+1;
 	
 //	private static final int INTRASTICIAL_PAD = 0;
-	public StatementListPropertyPane( Factory factory, final org.lgna.project.ast.StatementListProperty property ) {
-		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );
+	public StatementListPropertyPane( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property ) {
+		super( javax.swing.BoxLayout.PAGE_AXIS, factory, property );
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
 //				final alice.ide.IDE ide = alice.ide.IDE.getActiveInstance();

@@ -46,11 +46,11 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class PreviousValueExpressionPane extends org.lgna.croquet.components.BorderPanel {
+	private final org.alice.ide.x.AstI18nFactory factory;
 	private final org.alice.ide.ast.PreviousValueExpression expression;
-	private final Factory factory;
-	public PreviousValueExpressionPane( org.alice.ide.ast.PreviousValueExpression expression, Factory factory ) {
-		this.expression = expression;
+	public PreviousValueExpressionPane( org.alice.ide.x.AstI18nFactory factory, org.alice.ide.ast.PreviousValueExpression expression ) {
 		this.factory = factory;
+		this.expression = expression;
 	}
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {

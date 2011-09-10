@@ -48,7 +48,7 @@ package org.alice.ide.memberseditor;
 public class Factory extends org.alice.ide.common.Factory {
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		return new ArgumentListPropertyPane( this, argumentListProperty );
+		return new ArgumentListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), argumentListProperty );
 	}
 	@Override
 	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType ) {

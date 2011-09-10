@@ -43,7 +43,7 @@
 package org.alice.ide.common;
 
 class MethodPane extends org.lgna.croquet.components.BorderPanel {
-	public MethodPane( Factory factory, org.lgna.project.ast.UserMethod method ) {
+	public MethodPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserMethod method ) {
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
 		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane, false ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ), Constraint.LINE_START );
@@ -69,7 +69,7 @@ class MethodPane extends org.lgna.croquet.components.BorderPanel {
  */
 public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 	private org.lgna.project.ast.AnonymousUserConstructor anonymousConstructor;
-	public AnonymousConstructorPane( Factory factory, org.lgna.project.ast.AnonymousUserConstructor anonymousConstructor ) {
+	public AnonymousConstructorPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.AnonymousUserConstructor anonymousConstructor ) {
 		this.anonymousConstructor = anonymousConstructor;
 		if( getIDE().isJava() ) {
 			org.lgna.croquet.components.LineAxisPanel header = new org.lgna.croquet.components.LineAxisPanel( 

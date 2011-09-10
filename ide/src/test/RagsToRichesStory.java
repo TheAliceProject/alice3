@@ -59,14 +59,8 @@ import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.PersonResource;
 import org.lgna.story.resources.sims2.*;
 
-abstract class CustomPerson extends Biped {
-	public CustomPerson( BipedResource resource ) {
-		super( resource );
-	}
-}
-
-class CustomAdult extends CustomPerson {
-	public CustomAdult( PersonResource resource ) {
+class CustomBiped extends Biped {
+	public CustomBiped( BipedResource resource ) {
 		super( resource );
 	}
 }
@@ -77,8 +71,8 @@ class DesertScene extends Scene {
 	private final Sphere sphere = new Sphere();
 //	private final CustomAdult fellowLaborer = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
 	private final Camera camera;
-	private final CustomAdult ogre;
-	public DesertScene( Camera camera, CustomAdult ogre ) {
+	private final CustomBiped ogre;
+	public DesertScene( Camera camera, CustomBiped ogre ) {
 		this.camera = camera;
 		this.ogre = ogre;
 	}
@@ -129,9 +123,9 @@ class SnowScene extends Scene {
 	private final Cone greenCone = new Cone(); 
 	private final Cone blueCone = new Cone();
 	private final Camera camera;
-	private final CustomAdult ogre;
-	private final CustomAdult susan;
-	public SnowScene( Camera camera, CustomAdult ogre, CustomAdult susan ) {
+	private final CustomBiped ogre;
+	private final CustomBiped susan;
+	public SnowScene( Camera camera, CustomBiped ogre, CustomBiped susan ) {
 		this.camera = camera;
 		this.susan = susan;
 		this.ogre = ogre;
@@ -218,7 +212,7 @@ class SnowScene extends Scene {
  */
 class RagsToRichesStory extends Program {
 	private final Camera camera = new Camera();
-	private final CustomAdult susan = new CustomAdult( 
+	private final CustomBiped susan = new CustomBiped( 
 			new AdultPersonResource(
 					Gender.FEMALE,
 					BaseSkinTone.getRandom(),
@@ -227,7 +221,7 @@ class RagsToRichesStory extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final CustomAdult ogre = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
+	private final CustomBiped ogre = new CustomBiped( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
 //	private final CustomAdult ogre = new CustomAdult( 
 //			new AdultPersonResource(
 //					Gender.MALE,

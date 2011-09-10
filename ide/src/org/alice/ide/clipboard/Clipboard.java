@@ -277,7 +277,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			org.lgna.project.ast.AbstractNode node = this.stack.peek();
 			if( node instanceof org.lgna.project.ast.Statement ) {
 				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
-				subject.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createStatementPane( statement ) );
+				subject.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement ) );
 				subject.revalidateAndRepaint();
 			}
 		}

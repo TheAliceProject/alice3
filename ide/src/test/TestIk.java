@@ -113,7 +113,7 @@ class IkScene extends Scene {
  */
 class TestIk extends Program {
 	private final Camera camera = new Camera();
-	private final Biped ogre = new Biped( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
+	private final Biped ogre = new Biped( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
 	private final IkScene scene = new IkScene( camera, ogre );
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();

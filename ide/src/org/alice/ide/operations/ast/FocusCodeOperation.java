@@ -49,7 +49,7 @@ public class FocusCodeOperation extends org.lgna.croquet.ActionOperation {
 	private org.lgna.project.ast.AbstractCode nextCode;
 	
 	private static java.util.Map< org.lgna.project.ast.AbstractCode, FocusCodeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FocusCodeOperation getInstance( org.lgna.project.ast.AbstractCode nextCode ) {
+	public static synchronized FocusCodeOperation getInstance( org.lgna.project.ast.AbstractCode nextCode ) {
 		FocusCodeOperation rv = map.get( nextCode );
 		if( rv != null ) {
 			//pass

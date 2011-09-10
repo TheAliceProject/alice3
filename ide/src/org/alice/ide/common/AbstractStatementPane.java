@@ -46,10 +46,7 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractStatementPane extends org.alice.ide.common.StatementLikeSubstance {
-	private Factory factory;
-	public Factory getFactory() {
-		return this.factory;
-	}
+	private final org.alice.ide.x.AstI18nFactory factory;
 	
 	private edu.cmu.cs.dennisc.property.event.PropertyListener isEnabledListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -60,23 +57,26 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 	}; 
 	private org.lgna.project.ast.Statement statement;
 	private org.lgna.project.ast.StatementListProperty owner;
-	public AbstractStatementPane( Factory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
+	public AbstractStatementPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
 		super( org.alice.ide.common.StatementLikeSubstance.getClassFor(statement), javax.swing.BoxLayout.LINE_AXIS );
 		this.factory = factory;
 		this.statement = statement;
 		this.owner = owner;
 	}
 
+	public org.alice.ide.x.AstI18nFactory getFactory() {
+		return this.factory;
+	}
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.factory.getStatementMap().put( this.statement, this );
+//		this.factory.getStatementMap().put( this.statement, this );
 		this.statement.isEnabled.addPropertyListener( this.isEnabledListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
 		this.statement.isEnabled.removePropertyListener( this.isEnabledListener );
-		this.factory.getStatementMap().remove( this.statement );
+//		this.factory.getStatementMap().remove( this.statement );
 		super.handleUndisplayable();
 	}
 	public org.lgna.project.ast.Statement getStatement() {

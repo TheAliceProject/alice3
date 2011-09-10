@@ -40,27 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preview;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.common.Factory {
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		//return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
-		return new ArgumentListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), argumentListProperty );
-	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
+public class IsStatementEnabledState extends org.lgna.croquet.BooleanState {
+	private static java.util.Map< org.lgna.project.ast.Statement, IsStatementEnabledState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized IsStatementEnabledState getInstance( org.lgna.project.ast.Statement statement ) {
+		IsStatementEnabledState rv = map.get( statement );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new IsStatementEnabledState( statement );
+			map.put( statement, rv );
+		}
+		return rv;
 	}
 	
-	// todo: investigate
-	// this epic hack was inserted to account for menu item icons returning a size of 0,0
-	// dennisc
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
-		return new org.lgna.croquet.components.LineAxisPanel( component );
+	private final org.lgna.project.ast.Statement statement;
+	private IsStatementEnabledState( org.lgna.project.ast.Statement statement ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
+		this.statement = statement;
+		this.addValueObserver( new ValueObserver<Boolean>() {
+			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+				IsStatementEnabledState.this.statement.isEnabled.setValue( nextValue );
+			}
+		} );
 	}
+
 }

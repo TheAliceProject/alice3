@@ -46,19 +46,11 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 
-class LocalDeclarationPane extends TypedDeclarationPane {
+public class LocalDeclarationPane extends TypedDeclarationPane {
 	private org.lgna.project.ast.UserLocal localDeclaredInAlice;
-
 	public LocalDeclarationPane( org.lgna.project.ast.UserLocal localDeclaredInAlice, org.lgna.croquet.components.Component< ? > component ) {
 		this.localDeclaredInAlice = localDeclaredInAlice;
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.localDeclaredInAlice.valueType.getValue() ) );
 		this.addComponent( component );
 	}
-	
-//	@Override
-//	protected java.util.List< zoot.Operation > getPopupOperations() {
-//		java.util.LinkedList< zoot.Operation > rv = new java.util.LinkedList< zoot.Operation >();
-//		rv.add( new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( this.localDeclaredInAlice ) );
-//		return rv;
-//	}
 }

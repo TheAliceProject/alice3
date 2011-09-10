@@ -40,27 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preview;
+
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.common.Factory {
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		//return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
-		return new ArgumentListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), argumentListProperty );
+public abstract class BlockStatementEdit< M extends org.lgna.croquet.CompletionModel > extends org.lgna.croquet.edits.Edit< M > {
+	private final org.lgna.project.ast.BlockStatement blockStatement;
+	public BlockStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.lgna.project.ast.BlockStatement blockStatement ) {
+		super( completionStep );
+		this.blockStatement = blockStatement;
+	}
+	public BlockStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.blockStatement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).decodeValue( binaryDecoder );
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
 	}
-	
-	// todo: investigate
-	// this epic hack was inserted to account for menu item icons returning a size of 0,0
-	// dennisc
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
-		return new org.lgna.croquet.components.LineAxisPanel( component );
+	public org.lgna.project.ast.BlockStatement getBlockStatement() {
+		return this.blockStatement;
 	}
 }

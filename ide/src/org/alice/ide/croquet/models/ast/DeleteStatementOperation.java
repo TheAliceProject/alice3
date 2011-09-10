@@ -40,27 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preview;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.common.Factory {
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		//return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
-		return new ArgumentListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), argumentListProperty );
+public class DeleteStatementOperation extends org.lgna.croquet.ActionOperation {
+	private static java.util.Map< org.lgna.project.ast.Statement, DeleteStatementOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DeleteStatementOperation getInstance( org.lgna.project.ast.Statement statement ) {
+		DeleteStatementOperation rv = map.get( statement );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeleteStatementOperation( statement );
+			map.put( statement, rv );
+		}
+		return rv;
+	}
+	private org.lgna.project.ast.Statement statement;
+	private DeleteStatementOperation( org.lgna.project.ast.Statement statement ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "c2b2810b-68ad-4935-b47f-458fe90f877b" ) );
+		this.statement = statement;
+	}
+	public org.lgna.project.ast.Statement getStatement() {
+		return this.statement;
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
-	}
-	
-	// todo: investigate
-	// this epic hack was inserted to account for menu item icons returning a size of 0,0
-	// dennisc
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
-		return new org.lgna.croquet.components.LineAxisPanel( component );
+	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeleteStatementEdit( step ) );
 	}
 }

@@ -365,23 +365,23 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	
 
-	private org.alice.ide.memberseditor.Factory templatesFactory = new org.alice.ide.memberseditor.Factory();
-
-	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
-		return this.templatesFactory;
-	}
-
-	private org.alice.ide.codeeditor.Factory codeFactory = new org.alice.ide.codeeditor.Factory();
-
-	public org.alice.ide.codeeditor.Factory getCodeFactory() {
-		return this.codeFactory;
-	}
-
-	private org.alice.ide.preview.Factory previewFactory = new org.alice.ide.preview.Factory();
-
-	public org.alice.ide.preview.Factory getPreviewFactory() {
-		return this.previewFactory;
-	}
+//	private org.alice.ide.memberseditor.Factory templatesFactory = new org.alice.ide.memberseditor.Factory();
+//
+//	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
+//		return this.templatesFactory;
+//	}
+//
+//	private org.alice.ide.codeeditor.Factory codeFactory = new org.alice.ide.codeeditor.Factory();
+//
+//	public org.alice.ide.codeeditor.Factory getCodeFactory() {
+//		return this.codeFactory;
+//	}
+//
+//	private org.alice.ide.preview.Factory previewFactory = new org.alice.ide.preview.Factory();
+//
+//	public org.alice.ide.preview.Factory getPreviewFactory() {
+//		return this.previewFactory;
+//	}
 
 	public void refreshUbiquitousPane() {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -410,7 +410,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	}
 
-	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, org.lgna.project.ast.Expression expression ) {
+	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
 		return null;
 	}
 
@@ -1245,33 +1245,33 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public org.lgna.croquet.components.Component< ? > getComponentForNode( org.lgna.project.ast.Node node, boolean scrollToVisible ) {
-		if( node instanceof org.lgna.project.ast.Statement ) {
-			final org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
-			ensureNodeVisible( node );
-			org.alice.ide.common.AbstractStatementPane rv = getCodeFactory().lookup( statement );
-			if( scrollToVisible ) {
-				//todo: use ScrollUtilities.scrollRectToVisible
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-					public void run() {
-						org.alice.ide.common.AbstractStatementPane pane = getCodeFactory().lookup( statement );
-						if( pane != null ) {
-							pane.scrollToVisible();
-						}
-					}
-				} );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
-	public org.lgna.croquet.components.Component< ? > getComponentForNode( java.util.UUID uuid, boolean scrollToVisible ) {
-		return getComponentForNode( getNodeForUUID( uuid ), scrollToVisible );
-	}
-	public org.lgna.croquet.components.Component< ? > getComponentForNode( java.util.UUID uuid ) {
-		return getComponentForNode( uuid, false );
-	}
+//	public org.lgna.croquet.components.Component< ? > getComponentForNode( org.lgna.project.ast.Node node, boolean scrollToVisible ) {
+//		if( node instanceof org.lgna.project.ast.Statement ) {
+//			final org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
+//			ensureNodeVisible( node );
+//			org.alice.ide.common.AbstractStatementPane rv = getCodeFactory().lookup( statement );
+//			if( scrollToVisible ) {
+//				//todo: use ScrollUtilities.scrollRectToVisible
+//				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//					public void run() {
+//						org.alice.ide.common.AbstractStatementPane pane = getCodeFactory().lookup( statement );
+//						if( pane != null ) {
+//							pane.scrollToVisible();
+//						}
+//					}
+//				} );
+//			}
+//			return rv;
+//		} else {
+//			return null;
+//		}
+//	}
+//	public org.lgna.croquet.components.Component< ? > getComponentForNode( java.util.UUID uuid, boolean scrollToVisible ) {
+//		return getComponentForNode( getNodeForUUID( uuid ), scrollToVisible );
+//	}
+//	public org.lgna.croquet.components.Component< ? > getComponentForNode( java.util.UUID uuid ) {
+//		return getComponentForNode( uuid, false );
+//	}
 
 	public String getApplicationSubPath() {
 		String rv = getApplicationName();

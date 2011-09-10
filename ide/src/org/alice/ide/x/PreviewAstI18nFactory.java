@@ -40,20 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preview;
+
+package org.alice.ide.x;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.common.Factory {
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		//return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
-		return new ArgumentListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), argumentListProperty );
+public class PreviewAstI18nFactory extends AstI18nFactory {
+	private static class SingletonHolder {
+		private static PreviewAstI18nFactory instance = new PreviewAstI18nFactory();
+	}
+	public static PreviewAstI18nFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+	private PreviewAstI18nFactory() {
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType ) {
+	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		return this.createExpressionPane( expressionProperty.getValue() );
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
+		return new org.alice.ide.preview.ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	
 	// todo: investigate
@@ -63,4 +71,5 @@ public class Factory extends org.alice.ide.common.Factory {
 	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
 		return new org.lgna.croquet.components.LineAxisPanel( component );
 	}
+	
 }

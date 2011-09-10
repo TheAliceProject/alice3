@@ -45,8 +45,8 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( Factory factory, org.lgna.project.ast.ArgumentListProperty property ) {
+public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
+	public ArgumentListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty property ) {
 		super( factory, property );
 	}
 	@Override

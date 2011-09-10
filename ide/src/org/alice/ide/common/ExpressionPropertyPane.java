@@ -53,8 +53,8 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< org.lgna.proje
 	//		this.prefixPane = prefixPane;
 	//		this.refresh();
 	//	}
-	public ExpressionPropertyPane( Factory factory, org.lgna.project.ast.ExpressionProperty property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+	public ExpressionPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionProperty property ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
 	}
 
 	@Override

@@ -40,27 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preview;
+
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.common.Factory {
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		//return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
-		return new ArgumentListPropertyPane( this.TODO_REMOVE_getBogusAstI18nFactory(), argumentListProperty );
+public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croquet.models.ast.DeleteStatementOperation > {
+	//todo:
+	private static org.alice.ide.croquet.models.ast.DeleteStatementOperation getModel( org.lgna.croquet.history.CompletionStep<org.alice.ide.croquet.models.ast.DeleteStatementOperation> completionStep ) {
+		return completionStep.getModel();
+	}
+	private final int index;
+	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
+		super( completionStep, (org.lgna.project.ast.BlockStatement) (getModel( completionStep ).getStatement().getParent() ) );
+		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
+		this.index = this.getBlockStatement().statements.indexOf( statement );
+	}
+	public DeleteStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.index = binaryDecoder.decodeInt();
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.project.ast.AbstractType<?,?,?> desiredValueType ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
+	protected final void doOrRedoInternal( boolean isDo ) {
+		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
+		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
+		assert blockStatement.statements.indexOf( statement ) == this.index;
+		blockStatement.statements.remove( index );
+		
+		System.err.println( "todo: preserve deletion " + statement );
+		//todo: remove
+		org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 	}
-	
-	// todo: investigate
-	// this epic hack was inserted to account for menu item icons returning a size of 0,0
-	// dennisc
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
-		return new org.lgna.croquet.components.LineAxisPanel( component );
+	protected final void undoInternal() {
+		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
+		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
+		blockStatement.statements.add( index, statement );
+		//todo: remove
+		org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
+	}
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
+		rv.append( "delete:" );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement, locale);
+		return rv;
 	}
 }

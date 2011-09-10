@@ -46,8 +46,8 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.property.InstanceProperty > extends org.lgna.croquet.components.AxisPanel {
-	private Factory factory;
-	private E property;
+	private final org.alice.ide.x.AstI18nFactory factory;
+	private final E property;
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 		public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
 		};
@@ -55,8 +55,8 @@ public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.propert
 			AbstractPropertyPane.this.refresh();
 		};
 	};
-	public AbstractPropertyPane( Factory factory, int direction, E property ) {
-		super( direction );
+	public AbstractPropertyPane( int axis, org.alice.ide.x.AstI18nFactory factory, E property ) {
+		super( axis );
 		assert property != null;
 		this.factory = factory;
 		this.property = property;
@@ -82,7 +82,7 @@ public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.propert
 		super.handleUndisplayable();
 	}
 	
-	protected Factory getFactory() {
+	protected org.alice.ide.x.AstI18nFactory getFactory() {
 		return this.factory;
 	}
 	

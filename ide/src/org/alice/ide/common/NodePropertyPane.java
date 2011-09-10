@@ -49,8 +49,8 @@ public class NodePropertyPane< E extends org.lgna.project.ast.NodeProperty > ext
 //	public NodePropertyPane( Factory factory ) {
 //		super( factory, javax.swing.BoxLayout.LINE_AXIS );
 //	}
-	public NodePropertyPane( Factory factory, E property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+	public NodePropertyPane( org.alice.ide.x.AstI18nFactory factory, E property ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
 	}
 	@Override
 	protected void refresh() {

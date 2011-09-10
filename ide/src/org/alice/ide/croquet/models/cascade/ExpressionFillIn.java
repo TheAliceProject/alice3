@@ -58,9 +58,8 @@ public abstract class ExpressionFillIn< F extends org.lgna.project.ast.Expressio
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,B > step ) {
-		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getActiveInstance().getPreviewFactory();
 		org.lgna.project.ast.Expression expression = this.getTransientValue( step );
-		javax.swing.JComponent expressionPane = factory.createExpressionPane( expression ).getAwtComponent();
+		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
 		if( this.text != null && this.text.length() > 0 ) {
 			javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 			return new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( expressionPane, javax.swing.Box.createHorizontalStrut( 16 ), label );

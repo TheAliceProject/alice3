@@ -47,8 +47,8 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< org.lgna.project.ast.NodeListProperty<?> > {
-	public DefaultNodeListPropertyPane( Factory factory, org.lgna.project.ast.NodeListProperty<?> property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+	public DefaultNodeListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.NodeListProperty<?> property ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
 	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {

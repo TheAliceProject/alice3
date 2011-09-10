@@ -64,7 +64,7 @@ public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> ex
 			expression = new org.lgna.project.ast.NullLiteral();
 		}
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( org.alice.ide.IDE.getActiveInstance().getPreviewFactory().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		return rv;
 	}
 	public abstract E getValue();
