@@ -209,11 +209,14 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	private static final org.lgna.project.ast.JavaType COLOR_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class );
+	private static final JavaType JOINTED_MODEL_RESOURCE_TYPE = JavaType.getInstance( org.lgna.story.resources.JointedModelResource.class );
 
 	private java.util.Map< org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon > mapFieldToIcon = new java.util.HashMap< org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon >();
 
 	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
-		if( field.getDeclaringType() == COLOR_TYPE && field.getValueType() == COLOR_TYPE ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
+		org.lgna.project.ast.AbstractType< ?,?,? > valueType = field.getDeclaringType();
+		if( declaringType == COLOR_TYPE && valueType == COLOR_TYPE ) {
 			org.alice.ide.swing.icons.ColorIcon rv = this.mapFieldToIcon.get( field );
 			if( rv != null ) {
 				//pass
@@ -228,6 +231,10 @@ public class StageIDE extends org.alice.ide.IDE {
 				}
 			}
 			return rv;
+		} else if( declaringType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) && valueType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) ) {
+			Class<?> resourceClass = ((org.lgna.project.ast.JavaType)field.getValueType()).getClassReflectionProxy().getReification();
+			java.awt.image.BufferedImage thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(resourceClass, field.getName());
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 32, 32 );
 		}
 		return null;
 	}

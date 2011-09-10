@@ -94,15 +94,19 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 
 	public org.lgna.story.implementation.sims2.NebulousPersonVisualData getPersonVisualData() {
 		org.lgna.story.implementation.BipedImp bipedImplementation = this.getPerson();
-		org.lgna.story.implementation.JointedModelImp.VisualData visualData = bipedImplementation.getVisualData();
-		if( visualData instanceof org.lgna.story.implementation.sims2.NebulousPersonVisualData ) {
-			org.lgna.story.implementation.sims2.NebulousPersonVisualData nebPersonVisualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)visualData;
-			return nebPersonVisualData;
+		if( bipedImplementation != null ) {
+			org.lgna.story.implementation.JointedModelImp.VisualData visualData = bipedImplementation.getVisualData();
+			if( visualData instanceof org.lgna.story.implementation.sims2.NebulousPersonVisualData ) {
+				org.lgna.story.implementation.sims2.NebulousPersonVisualData nebPersonVisualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)visualData;
+				return nebPersonVisualData;
+			}
+			throw new RuntimeException();
+		} else {
+			return null;
 		}
-		throw new RuntimeException();
 	}
-	public void getVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData personVisualData ) {
-		throw new RuntimeException();
+	public void setPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData personVisualData ) {
+		System.err.println( "TODO: setPersonVisualData " + personVisualData );
 	}
 	
 	public org.lgna.story.implementation.BipedImp getPerson() {

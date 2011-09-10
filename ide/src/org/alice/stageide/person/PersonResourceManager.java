@@ -104,21 +104,22 @@ public enum PersonResourceManager {
 			updatePerson();
 		}
 	};
-	private java.util.Map<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.implementation.BipedImp> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.implementation.BipedImp> mapLifeStageToImp = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private int count = 0;
 	private PersonResourceManager() {
 		org.lgna.story.resources.sims2.LifeStage[] lifeStages = {  org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
 		for( org.lgna.story.resources.sims2.LifeStage lifeStage : lifeStages ) {
-			org.lgna.story.resources.sims2.Gender gender = null;
-			org.lgna.story.resources.sims2.SkinTone skinTone = null;
-			org.lgna.story.resources.sims2.EyeColor eyeColor = null;
-			org.lgna.story.resources.sims2.Hair hair = null;
-			double obesityLevel = 0.0;
-			org.lgna.story.resources.sims2.Outfit outfit = null;
+			org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
+			org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
+			org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
+			org.lgna.story.resources.sims2.Hair hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+			double obesityLevel = org.alice.random.RandomUtilities.nextDouble();
+			org.lgna.story.resources.sims2.Outfit outfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 			org.lgna.story.resources.sims2.PersonResource personResource = lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
-			map.put( lifeStage, personResource.createImplementation( null ) );
+			this.mapLifeStageToImp.put( lifeStage, personResource.createImplementation( null ) );
 		}
-	}	
+	}
+	
 	public void push() {
 		if( count == 0 ) {
 			org.alice.stageide.person.models.LifeStageState.getInstance().addValueObserver( this.lifeStageObserver );
@@ -183,37 +184,39 @@ public enum PersonResourceManager {
 	
 	private boolean isAlreadyHandlingCataclysm = false;
 	private void handleCataclysm( boolean isLifeStageChange, boolean isGenderChange, boolean isHairColorChange ) {
-		if( this.isAlreadyHandlingCataclysm ) {
-			//pass
-		} else {
-			this.isAlreadyHandlingCataclysm = true;
-			try {
-				org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.stageide.person.models.LifeStageState.getInstance().getSelectedItem();
-				org.lgna.story.resources.sims2.Gender gender = org.alice.stageide.person.models.GenderState.getInstance().getSelectedItem();
-				String hairColor = org.alice.stageide.person.models.HairColorNameState.getInstance().getSelectedItem();
-				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-					org.alice.stageide.person.models.HairState.getInstance().handleCataclysmicChange( lifeStage, gender, hairColor );
+		if( org.alice.stageide.person.components.PersonViewer.getSingleton().getPerson() != null ) {
+			if( this.isAlreadyHandlingCataclysm ) {
+				//pass
+			} else {
+				this.isAlreadyHandlingCataclysm = true;
+				try {
+					org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.stageide.person.models.LifeStageState.getInstance().getSelectedItem();
+					org.lgna.story.resources.sims2.Gender gender = org.alice.stageide.person.models.GenderState.getInstance().getSelectedItem();
+					String hairColor = org.alice.stageide.person.models.HairColorNameState.getInstance().getSelectedItem();
+					if( isLifeStageChange || isGenderChange || isHairColorChange ) {
+						org.alice.stageide.person.models.HairState.getInstance().handleCataclysmicChange( lifeStage, gender, hairColor );
+					}
+					if( isLifeStageChange || isGenderChange ) {
+						org.alice.stageide.person.models.FullBodyOutfitState.getInstance().handleCataclysmicChange( lifeStage, gender );
+					}
+					if( isLifeStageChange ) {
+						org.alice.stageide.person.models.HairColorNameState.getInstance().handleCataclysmicChange( lifeStage );
+					}
+					this.updatePerson();
+					org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = org.alice.stageide.person.components.PersonViewer.getSingleton().getPersonVisualData();
+					org.lgna.story.resources.sims2.Hair hair = visualData.getHair();
+					if( isLifeStageChange || isGenderChange || isHairColorChange ) {
+						org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
+					}
+					if( isLifeStageChange || isGenderChange ) {
+						org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setSelectedItem( (org.lgna.story.resources.sims2.FullBodyOutfit)visualData.getOutfit() );
+					}
+					if( isLifeStageChange ) {
+						org.alice.stageide.person.models.HairColorNameState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
+					}
+				} finally {
+					this.isAlreadyHandlingCataclysm = false;
 				}
-				if( isLifeStageChange || isGenderChange ) {
-					org.alice.stageide.person.models.FullBodyOutfitState.getInstance().handleCataclysmicChange( lifeStage, gender );
-				}
-				if( isLifeStageChange ) {
-					org.alice.stageide.person.models.HairColorNameState.getInstance().handleCataclysmicChange( lifeStage );
-				}
-				this.updatePerson();
-				org.lgna.story.implementation.sims2.NebulousPersonVisualData person = org.alice.stageide.person.components.PersonViewer.getSingleton().getPersonVisualData();
-				org.lgna.story.resources.sims2.Hair hair = person.getHair();
-				if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-					org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
-				}
-				if( isLifeStageChange || isGenderChange ) {
-					org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setSelectedItem( (org.lgna.story.resources.sims2.FullBodyOutfit)person.getOutfit() );
-				}
-				if( isLifeStageChange ) {
-					org.alice.stageide.person.models.HairColorNameState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
-				}
-			} finally {
-				this.isAlreadyHandlingCataclysm = false;
 			}
 		}
 	}
@@ -237,7 +240,7 @@ public enum PersonResourceManager {
 				double fitnessLevel = org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue()*0.01;
 				
 				assert lifeStage != null;
-				org.lgna.story.implementation.BipedImp bipedImplementation = this.map.get( lifeStage );
+				org.lgna.story.implementation.BipedImp bipedImplementation = this.mapLifeStageToImp.get( lifeStage );
 				org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)bipedImplementation.getVisualData();
 				if( visualData != null ) {
 					if( gender != null ) {
@@ -275,7 +278,7 @@ public enum PersonResourceManager {
 						}
 						visualData.setHair( hair );
 					}
-					org.alice.stageide.person.components.PersonViewer.getSingleton().getVisualData( visualData );
+					org.alice.stageide.person.components.PersonViewer.getSingleton().setPersonVisualData( visualData );
 				}
 			} finally {
 				//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().releaseRenderingLock();

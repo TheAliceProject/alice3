@@ -61,9 +61,13 @@ public class SetUpMethodGenerator {
 		return new org.lgna.project.ast.StringLiteral( s );
 	}
 	private static org.lgna.project.ast.Expression createExpression( Enum e ) {
-		org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( e.getClass() );
-		org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, e.name() );
-		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
+		if( e != null ) {
+			org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( e.getClass() );
+			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, e.name() );
+			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
+		} else {
+			return new org.lgna.project.ast.NullLiteral();
+		}
 	}
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.font.Attribute attribute ) {
 		if( attribute instanceof Enum ) {
