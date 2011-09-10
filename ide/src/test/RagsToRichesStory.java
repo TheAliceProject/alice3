@@ -130,21 +130,9 @@ class SnowScene extends Scene {
 	private final Cone greenCone = new Cone(); 
 	private final Cone blueCone = new Cone();
 	private final Camera camera;
-<<<<<<< HEAD
-<<<<<<< HEAD
-	private final CustomBiped ogre;
+	private final CustomMonster ogre;
 	private final CustomBiped susan;
-	public SnowScene( Camera camera, CustomBiped ogre, CustomBiped susan ) {
-=======
-	private final CustomMonster ogre;
-	private final CustomAdult susan;
-	public SnowScene( Camera camera, CustomMonster ogre, CustomAdult susan ) {
->>>>>>> ea4337359d8781666f16ba798f2dfa0e588e1758
-=======
-	private final CustomMonster ogre;
-	private final CustomAdult susan;
-	public SnowScene( Camera camera, CustomMonster ogre, CustomAdult susan ) {
->>>>>>> ea4337359d8781666f16ba798f2dfa0e588e1758
+	public SnowScene( Camera camera, CustomMonster ogre, CustomBiped susan ) {
 		this.camera = camera;
 		this.susan = susan;
 		this.ogre = ogre;
@@ -240,15 +228,7 @@ class RagsToRichesStory extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-<<<<<<< HEAD
-<<<<<<< HEAD
-	private final CustomBiped ogre = new CustomBiped( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
-=======
 	private final CustomMonster ogre = new CustomMonster( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
->>>>>>> ea4337359d8781666f16ba798f2dfa0e588e1758
-=======
-	private final CustomMonster ogre = new CustomMonster( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
->>>>>>> ea4337359d8781666f16ba798f2dfa0e588e1758
 //	private final CustomAdult ogre = new CustomAdult( 
 //			new AdultPersonResource(
 //					Gender.MALE,
