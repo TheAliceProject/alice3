@@ -170,22 +170,28 @@ public enum PersonResourceManager {
 	}
 	
 
-	private org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+	/*package-private*/ org.lgna.story.resources.sims2.LifeStage getLifeStage() {
 		return org.alice.stageide.person.models.LifeStageState.getInstance().getValue();
 	}
-	private org.lgna.story.resources.sims2.Gender getGender() {
+	/*package-private*/ org.lgna.story.resources.sims2.Gender getGender() {
 		return org.alice.stageide.person.models.GenderState.getInstance().getValue();
 	}
-	private org.lgna.story.resources.sims2.EyeColor getEyeColor() {
+	/*package-private*/ org.lgna.story.resources.sims2.SkinTone getSkinTone() {
+		return org.alice.stageide.person.models.BaseSkinToneState.getInstance().getValue();
+	}
+	/*package-private*/ org.lgna.story.resources.sims2.EyeColor getEyeColor() {
 		return org.alice.stageide.person.models.BaseEyeColorState.getInstance().getValue();
 	}
-	private double getFitnessLevel() {
-		return 1.0 - org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue() * 0.01;
+	/*package-private*/ double getFitnessLevel() {
+		int obesityPercent = org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue();
+		java.math.BigDecimal value = new java.math.BigDecimal( obesityPercent );
+		value = value.movePointLeft( 2 );
+		return 1.0 - value.doubleValue();
 	}
-	private org.lgna.story.resources.sims2.Hair getHair() {
+	/*package-private*/ org.lgna.story.resources.sims2.Hair getHair() {
 		return org.alice.stageide.person.models.HairState.getInstance().getValue();
 	}
-	private org.lgna.story.resources.sims2.Outfit getOutfit() {
+	/*package-private*/ org.lgna.story.resources.sims2.Outfit getOutfit() {
 		return org.alice.stageide.person.models.FullBodyOutfitState.getInstance().getValue();
 	}
 
@@ -319,140 +325,4 @@ public enum PersonResourceManager {
 			this.addListenersIfAppropriate();
 		}
 	}
-	
-//	private void handleCataclysm( boolean isLifeStageChange, boolean isGenderChange, boolean isHairColorChange ) {
-//		this.removeListenersIfAppropriate();
-//		try {
-//			org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.stageide.person.models.LifeStageState.getInstance().getSelectedItem();
-//			org.lgna.story.resources.sims2.Gender gender = org.alice.stageide.person.models.GenderState.getInstance().getSelectedItem();
-//			String hairColor = org.alice.stageide.person.models.HairColorNameState.getInstance().getSelectedItem();
-//			if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-//				org.alice.stageide.person.models.HairState.getInstance().handleCataclysmicChange( lifeStage, gender, hairColor );
-//			}
-//			if( isLifeStageChange || isGenderChange ) {
-//				org.alice.stageide.person.models.FullBodyOutfitState.getInstance().handleCataclysmicChange( lifeStage, gender );
-//			}
-//			if( isLifeStageChange ) {
-//				org.alice.stageide.person.models.HairColorNameState.getInstance().handleCataclysmicChange( lifeStage );
-//			}
-//			//org.lgna.story.resources.sims2.Hair hair = //todo;
-//			if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-//				org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
-//			}
-//			if( isLifeStageChange || isGenderChange ) {
-//				org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setSelectedItem( (org.lgna.story.resources.sims2.FullBodyOutfit)visualData.getOutfit() );
-//			}
-//			if( isLifeStageChange ) {
-//				org.alice.stageide.person.models.HairColorNameState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
-//			}
-//		} finally {
-//			this.addListenersIfAppropriate();
-//		}
-//	}
-
-//	private boolean isAlreadyHandlingCataclysm = false;
-//	private void handleCataclysm( boolean isLifeStageChange, boolean isGenderChange, boolean isHairColorChange ) {
-//		if( org.alice.stageide.person.components.PersonViewer.getSingleton().getPerson() != null ) {
-//			if( this.isAlreadyHandlingCataclysm ) {
-//				//pass
-//			} else {
-//				this.isAlreadyHandlingCataclysm = true;
-//				try {
-//					org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.stageide.person.models.LifeStageState.getInstance().getSelectedItem();
-//					org.lgna.story.resources.sims2.Gender gender = org.alice.stageide.person.models.GenderState.getInstance().getSelectedItem();
-//					String hairColor = org.alice.stageide.person.models.HairColorNameState.getInstance().getSelectedItem();
-//					if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-//						org.alice.stageide.person.models.HairState.getInstance().handleCataclysmicChange( lifeStage, gender, hairColor );
-//					}
-//					if( isLifeStageChange || isGenderChange ) {
-//						org.alice.stageide.person.models.FullBodyOutfitState.getInstance().handleCataclysmicChange( lifeStage, gender );
-//					}
-//					if( isLifeStageChange ) {
-//						org.alice.stageide.person.models.HairColorNameState.getInstance().handleCataclysmicChange( lifeStage );
-//					}
-//					this.updatePerson();
-//					
-////					org.lgna.story.resources.sims2.Hair hair = //todo;
-////					if( isLifeStageChange || isGenderChange || isHairColorChange ) {
-////						org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
-////					}
-////					if( isLifeStageChange || isGenderChange ) {
-////						org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setSelectedItem( (org.lgna.story.resources.sims2.FullBodyOutfit)visualData.getOutfit() );
-////					}
-////					if( isLifeStageChange ) {
-////						org.alice.stageide.person.models.HairColorNameState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
-////					}
-//				} finally {
-//					this.isAlreadyHandlingCataclysm = false;
-//				}
-//			}
-//		}
-//	}
-//	
-//	private boolean isAlreadyUpdating = false;
-//	private void updatePerson() {
-//		if( this.isAlreadyUpdating ) {
-//			//pass
-//		} else {
-//			this.isAlreadyUpdating = true;
-//			//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().acquireRenderingLock();
-//			try {
-//				org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.stageide.person.models.LifeStageState.getInstance().getSelectedItem();
-//				org.lgna.story.resources.sims2.Gender gender = org.alice.stageide.person.models.GenderState.getInstance().getSelectedItem();
-//				String hairColor = org.alice.stageide.person.models.HairColorNameState.getInstance().getSelectedItem();
-//
-//				org.lgna.story.resources.sims2.FullBodyOutfit fullBodyOutfit = org.alice.stageide.person.models.FullBodyOutfitState.getInstance().getSelectedItem();
-//				org.lgna.story.resources.sims2.BaseEyeColor baseEyeColor = org.alice.stageide.person.models.BaseEyeColorState.getInstance().getSelectedItem();
-//				org.lgna.story.resources.sims2.BaseSkinTone baseSkinTone = org.alice.stageide.person.models.BaseSkinToneState.getInstance().getSelectedItem();
-//				org.lgna.story.resources.sims2.Hair hair = org.alice.stageide.person.models.HairState.getInstance().getSelectedItem();
-//				double fitnessLevel = org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue()*0.01;
-//
-//				PersonImp visualData = org.alice.stageide.person.components.PersonViewer.getSingleton().getPerson();
-//				visualData.pushAtomic();
-//				visualData.popAtomic();
-////				if( visualData != null ) {
-////					if( gender != null ) {
-////						visualData.setGender( gender );
-////					}
-////					if( baseSkinTone != null ) {
-////						visualData.setSkinTone( baseSkinTone );
-////						visualData.setObesityLevel( fitnessLevel );
-////						if( fullBodyOutfit != null && org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().isApplicable( fullBodyOutfit, lifeStage, gender ) ) {
-////							//pass
-////						} else {
-//////							org.lookingglassandalice.storytelling.Outfit outfit = person.getOutfit();
-//////							if( outfit instanceof org.lookingglassandalice.storytelling.FullBodyOutfit ) {
-//////								fullBodyOutfit = ( org.lookingglassandalice.storytelling.FullBodyOutfit )outfit;
-//////							} else {
-////								fullBodyOutfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
-//////							}
-////						}
-////						visualData.setOutfit( fullBodyOutfit );
-////					}
-////					if( baseEyeColor != null ) {
-////						visualData.setEyeColor( baseEyeColor );
-////					}
-////					if( gender != null ) {
-////						if( hair != null && org.lgna.story.resources.sims2.HairManager.getSingleton().isApplicable( hair, lifeStage, gender ) ) {
-////							//pass
-////						} else {
-////							try {
-////								Class<? extends org.lgna.story.resources.sims2.Hair> cls = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomClass(lifeStage, gender);
-////								java.lang.reflect.Field field = cls.getField( hairColor );
-////								hair = (org.lgna.story.resources.sims2.Hair)field.get( null );
-////							} catch( Exception e ) {
-////								hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender);
-////							}
-////						}
-////						visualData.setHair( hair );
-////					}
-////					org.alice.stageide.person.components.PersonViewer.getSingleton().setPersonVisualData( visualData );
-////				}
-//			} finally {
-//				//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().releaseRenderingLock();
-//				this.isAlreadyUpdating = false;
-//			}
-//		}
-//	}
-//	
 }

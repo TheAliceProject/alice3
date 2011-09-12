@@ -74,29 +74,8 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		sgVisual.setGeometry( sgGeometry );
 	}
 	
-	private org.lgna.story.resources.sims2.LifeStage getLifeStage() {
-		return org.alice.stageide.person.models.LifeStageState.getInstance().getValue();
-	}
-	private org.lgna.story.resources.sims2.Gender getGender() {
-		return org.alice.stageide.person.models.GenderState.getInstance().getValue();
-	}
-	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {
-		return org.alice.stageide.person.models.BaseSkinToneState.getInstance().getValue();
-	}
-	private org.lgna.story.resources.sims2.EyeColor getEyeColor() {
-		return org.alice.stageide.person.models.BaseEyeColorState.getInstance().getValue();
-	}
-	private double getFitnessLevel() {
-		return 1.0 - org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue() * 0.01;
-	}
-	private org.lgna.story.resources.sims2.Hair getHair() {
-		return org.alice.stageide.person.models.HairState.getInstance().getValue();
-	}
-	private org.lgna.story.resources.sims2.Outfit getOutfit() {
-		return org.alice.stageide.person.models.FullBodyOutfitState.getInstance().getValue();
-	}
 	/*package-private*/ void updateNebPerson() {
-		org.lgna.story.resources.sims2.LifeStage lifeStage = this.getLifeStage();
+		org.lgna.story.resources.sims2.LifeStage lifeStage = PersonResourceManager.SINGLETON.getLifeStage();
 		edu.cmu.cs.dennisc.nebulous.Person nebPerson = this.mapLifeStageToNebPerson.get( lifeStage );
 		if( nebPerson != null ) {
 			//pass
@@ -109,12 +88,12 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 				throw new RuntimeException( lre );
 			}
 		}
-		org.lgna.story.resources.sims2.Gender gender = this.getGender();
-		org.lgna.story.resources.sims2.SkinTone skinTone = this.getSkinTone();
-		org.lgna.story.resources.sims2.EyeColor eyeColor = this.getEyeColor();
-		double fitnessLevel = this.getFitnessLevel();
-		org.lgna.story.resources.sims2.Hair hair = this.getHair();
-		org.lgna.story.resources.sims2.Outfit outfit = this.getOutfit();
+		org.lgna.story.resources.sims2.Gender gender = PersonResourceManager.SINGLETON.getGender();
+		org.lgna.story.resources.sims2.SkinTone skinTone = PersonResourceManager.SINGLETON.getSkinTone();
+		org.lgna.story.resources.sims2.EyeColor eyeColor = PersonResourceManager.SINGLETON.getEyeColor();
+		double fitnessLevel = PersonResourceManager.SINGLETON.getFitnessLevel();
+		org.lgna.story.resources.sims2.Hair hair = PersonResourceManager.SINGLETON.getHair();
+		org.lgna.story.resources.sims2.Outfit outfit = PersonResourceManager.SINGLETON.getOutfit();
 		
 		nebPerson.setGender( gender );
 		nebPerson.setSkinTone( skinTone );
