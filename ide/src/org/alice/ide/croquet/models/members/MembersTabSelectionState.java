@@ -62,15 +62,5 @@ public class MembersTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 				ProceduresTab.getInstance(), FunctionsTab.getInstance(), FieldsTab.getInstance()
 		);
 	}
-	@Override
-	protected void localize() {
-		super.localize();
-		ProceduresTab proceduresTab = ProceduresTab.getInstance();
-		proceduresTab.setTitleText( this.getLocalizedText( "procedures" ) );
-		FunctionsTab functionsTab = FunctionsTab.getInstance();
-		functionsTab.setTitleText( this.getLocalizedText( "functions" ) );
-		FieldsTab fieldsTab = FieldsTab.getInstance();
-		fieldsTab.setTitleText( this.getLocalizedText( "fields" ) );
-	}
 }
 

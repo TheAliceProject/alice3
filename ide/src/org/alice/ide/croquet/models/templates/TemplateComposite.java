@@ -50,6 +50,9 @@ public abstract class TemplateComposite extends org.lgna.croquet.Composite {
 	public TemplateComposite( java.util.UUID id ) {
 		super( id );
 	}
+	@Override
+	protected void localize() {
+	}
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
 //		button.getAwtComponent().setIcon( ICON );
 //		button.getAwtComponent().setText( this.getClass().getName() );

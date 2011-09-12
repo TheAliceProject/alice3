@@ -63,6 +63,9 @@ public class DeclarationComposite extends org.lgna.croquet.Composite {
 		super( java.util.UUID.fromString( "291f2cd6-893e-4c7f-a6fd-16c718576d7a" ) );
 		this.declaration = declaration;
 	}
+	@Override
+	protected void localize() {
+	}
 	public org.lgna.project.ast.AbstractDeclaration getDeclaration() {
 		return this.declaration;
 	}

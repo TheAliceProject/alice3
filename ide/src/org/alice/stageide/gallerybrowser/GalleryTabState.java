@@ -41,19 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.person.models;
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BodyHeadTabSelectionModel extends org.lgna.croquet.PredeterminedTabSelectionState< ContentTab >{
+public class GalleryTabState extends org.lgna.croquet.PredeterminedTabSelectionState< org.lgna.croquet.PredeterminedTab > {
 	private static class SingletonHolder {
-		private static BodyHeadTabSelectionModel instance = new BodyHeadTabSelectionModel();
+		private static GalleryTabState instance = new GalleryTabState();
 	}
-	public static BodyHeadTabSelectionModel getInstance() {
+	public static GalleryTabState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private BodyHeadTabSelectionModel() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), null, 0, BodyTab.getInstance(), HeadTab.getInstance() );
+	private GalleryTabState() {
+		super( 
+				org.alice.ide.IDE.UI_STATE_GROUP, 
+				java.util.UUID.fromString( "46bffcb8-9f19-4328-aae3-550b0fc72f43" ), 
+				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.PredeterminedTab.class ), 
+				0,
+				ResourceTab.getInstance(), TypeTab.getInstance()
+		);
 	}
 }

@@ -48,30 +48,31 @@ package org.alice.stageide.gallerybrowser;
  */
 public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 	public GalleryBrowser() {
-		org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel();
-		topPanel.addComponent( new org.lgna.croquet.components.PathControl( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.LINE_START );
-		org.lgna.croquet.components.TextField filterTextField = FilterStringState.getInstance().createTextField();
-		filterTextField.setMinimumPreferredWidth( 320 );
-		filterTextField.setMaximumSizeClampedToPreferredSize( true );
-		filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
-		filterTextField.scaleFont( 1.5f );
-
-		topPanel.addComponent( filterTextField, Constraint.LINE_END );
-
-		this.addComponent( topPanel, Constraint.PAGE_START );
-		this.addComponent( new GalleryDirectoryView(), Constraint.CENTER );
-
-		org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
-		org.lgna.croquet.components.Button createPersonButton = createTypeFromPersonResourceOperation.createButton();
-		createPersonButton.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-		createPersonButton.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
-
-		createTypeFromPersonResourceOperation.setSmallIcon(edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
-		
-		this.addComponent( createPersonButton, Constraint.LINE_START );
-		
-		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton(), Constraint.PAGE_END );
-		this.addComponent( lineEndPanel, Constraint.LINE_END );
+		this.addComponent( GalleryTabState.getInstance().createDefaultFolderTabbedPane(), Constraint.CENTER );
+//		org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel();
+//		topPanel.addComponent( new org.lgna.croquet.components.PathControl( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.LINE_START );
+//		org.lgna.croquet.components.TextField filterTextField = FilterStringState.getInstance().createTextField();
+//		filterTextField.setMinimumPreferredWidth( 320 );
+//		filterTextField.setMaximumSizeClampedToPreferredSize( true );
+//		filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
+//		filterTextField.scaleFont( 1.5f );
+//
+//		topPanel.addComponent( filterTextField, Constraint.LINE_END );
+//
+//		this.addComponent( topPanel, Constraint.PAGE_START );
+//		this.addComponent( new GalleryDirectoryView(), Constraint.CENTER );
+//
+//		org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
+//		org.lgna.croquet.components.Button createPersonButton = createTypeFromPersonResourceOperation.createButton();
+//		createPersonButton.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+//		createPersonButton.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
+//
+//		createTypeFromPersonResourceOperation.setSmallIcon(edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
+//		
+//		this.addComponent( createPersonButton, Constraint.LINE_START );
+//		
+//		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
+//		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton(), Constraint.PAGE_END );
+//		this.addComponent( lineEndPanel, Constraint.LINE_END );
 	}
 }

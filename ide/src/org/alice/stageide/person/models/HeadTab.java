@@ -46,14 +46,30 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class BodyHeadTabSelectionModel extends org.lgna.croquet.PredeterminedTabSelectionState< ContentTab >{
+public class HeadTab extends ContentTab {
 	private static class SingletonHolder {
-		private static BodyHeadTabSelectionModel instance = new BodyHeadTabSelectionModel();
+		private static HeadTab instance = new HeadTab();
 	}
-	public static BodyHeadTabSelectionModel getInstance() {
+	public static HeadTab getInstance() {
 		return SingletonHolder.instance;
 	}
-	private BodyHeadTabSelectionModel() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), null, 0, BodyTab.getInstance(), HeadTab.getInstance() );
+	private HeadTab() {
+		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
 	}
-}
+	@Override
+	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
+		org.lgna.croquet.components.RowsSpringPanel rv = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
+			@Override
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "hair:", new org.alice.stageide.person.components.HairColorList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, new org.alice.stageide.person.components.HairList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "eye color:", new org.alice.stageide.person.components.BaseEyeColorList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, org.lgna.croquet.components.BoxUtilities.createGlue() ) );
+				return rv;
+			}
+		};
+		rv.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		return rv;
+	}
+};

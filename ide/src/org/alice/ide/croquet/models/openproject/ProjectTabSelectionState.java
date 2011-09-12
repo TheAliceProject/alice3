@@ -43,99 +43,11 @@
 
 package org.alice.ide.croquet.models.openproject;
 
-/*package-private*/ abstract class ContentTab extends org.lgna.croquet.PredeterminedTab {
-	public ContentTab( java.util.UUID id, String title ) {
-		super( id );
-		this.setTitleText( title );
-	}
-	public abstract java.net.URI getSelectedUri();
-	@Override
-	public org.lgna.croquet.components.ScrollPane createScrollPane() {
-		org.lgna.croquet.components.ScrollPane rv = super.createScrollPane();
-		rv.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		rv.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
-		rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-		return rv;
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
+
 public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabSelectionState< ContentTab > {
-	public static final java.util.UUID TEMPLATES_TAB_ID = java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" );
-	public static final java.util.UUID MY_PROJECTS_TAB_ID = java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" );
-	public static final java.util.UUID RECENT_TAB_ID = java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" );
-//	public static final java.util.UUID TUTORIAL_TAB_ID = java.util.UUID.fromString( "f4ff59f1-cf15-4301-a17a-2d80a4ea6fa4" );
-//	public static final java.util.UUID TEXTBOOK_TAB_ID = java.util.UUID.fromString( "033afcdf-29b9-4fbf-b9f5-fb5c496a7860" );
-	public static final java.util.UUID FILE_SYSTEM_TAB_ID = java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" );
-
-	private static class ContentPredeterminedTabCodec extends org.lgna.croquet.PredeterminedTabCodec< ContentTab > {
-		private ContentPredeterminedTabCodec() {
-			super( ContentTab.class );
-		}
-		@Override
-		protected ContentTab lookUp( java.util.UUID id ) {
-			return map.get( id );
-		}
-	}
-
-	private static java.util.Map< java.util.UUID, ContentTab > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	static {
-		map.put( TEMPLATES_TAB_ID, new ContentTab( TEMPLATES_TAB_ID, "Templates" ) {
-			@Override
-			public java.net.URI getSelectedUri() {
-				return org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getInstance().getSelectedItem();
-			}
-			@Override
-			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-				return new org.alice.stageide.openprojectpane.components.TemplatesTabContentPane();
-			}
-		} );
-		map.put( MY_PROJECTS_TAB_ID, new ContentTab( MY_PROJECTS_TAB_ID, "My Projects" ) {
-			@Override
-			public java.net.URI getSelectedUri() {
-				return org.alice.ide.openprojectpane.models.MyProjectsUriSelectionState.getInstance().getSelectedItem();
-			}
-			@Override
-			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-				return new org.alice.ide.openprojectpane.DirectoryListContentPanel( org.alice.ide.openprojectpane.models.MyProjectsUriSelectionState.getInstance() );
-			}
-		} );
-		map.put( RECENT_TAB_ID, new ContentTab( RECENT_TAB_ID, "Recent" ) {
-			@Override
-			public java.net.URI getSelectedUri() {
-				return org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().getSelectedItem();
-			}
-			@Override
-			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-				return new org.alice.ide.openprojectpane.RecentPane();
-			}
-		} );
-//		map.put( TUTORIAL_TAB_ID, new ContentTab( TUTORIAL_TAB_ID, "Tutorial" ) {
-//			@Override
-//			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-//				return new org.alice.ide.openprojectpane.TutorialPane();
-//			}
-//		} );
-//		map.put( TEXTBOOK_TAB_ID, new ContentTab( TEXTBOOK_TAB_ID, "Textbook" ) {
-//			@Override
-//			protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-//				return new org.alice.ide.openprojectpane.TextbookPane();
-//			}
-//		} );
-		map.put( FILE_SYSTEM_TAB_ID, new ContentTab( FILE_SYSTEM_TAB_ID, "File System" ) {
-			@Override
-			public java.net.URI getSelectedUri() {
-				return ((org.alice.ide.openprojectpane.FileSystemPane)this.getMainComponent()).getSelectedURI();
-			}
-			@Override
-			protected org.alice.ide.openprojectpane.FileSystemPane createMainComponent() {
-				return new org.alice.ide.openprojectpane.FileSystemPane();
-			}
-		} );
-	}
-	
 	private static class SingletonHolder {
 		private static ProjectTabSelectionState instance = new ProjectTabSelectionState();
 	}
@@ -143,14 +55,17 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 		return SingletonHolder.instance;
 	}
 	private ProjectTabSelectionState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP,
-			java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ), new ContentPredeterminedTabCodec(), -1, 
-			map.get( TEMPLATES_TAB_ID ),
-			map.get( MY_PROJECTS_TAB_ID ),
-			map.get( RECENT_TAB_ID ),
-			//map.get( TUTORIAL_TAB_ID ),
-			//map.get( TEXTBOOK_TAB_ID ),
-			map.get( FILE_SYSTEM_TAB_ID )
+		super( 
+				org.lgna.croquet.Application.UI_STATE_GROUP,
+				java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ), 
+				new org.lgna.croquet.PredeterminedTabCodec( ContentTab.class ) {
+					@Override
+					protected org.lgna.croquet.PredeterminedTab lookUp( java.util.UUID id ) {
+						throw new RuntimeException( "todo" );
+					}
+				}, 
+				-1, 
+				TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance()
 		);
 	}
 	public void refresh() {
@@ -169,9 +84,9 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 	public void selectAppropriateTab( boolean isNew ) {
 		ContentTab tab;
 		if( isNew ) {
-			tab = map.get( org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.TEMPLATES_TAB_ID );
+			tab = TemplatesTab.getInstance();
 		} else {
-			tab = map.get( org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.MY_PROJECTS_TAB_ID ); //todo: recentPane?
+			tab = MyProjectsTab.getInstance(); //todo: recentPane?
 		}
 		this.setSelectedItem( tab );
 	}

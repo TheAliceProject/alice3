@@ -99,15 +99,4 @@ public class PropertyAndMarkerPanelSelectionState extends PredeterminedTabSelect
 //            }
 //        }
 //    }
-    
-    @Override
-    protected void localize() {
-        super.localize();
-        ObjectPropertiesTab propertiesTab = ObjectPropertiesTab.getInstance();
-        propertiesTab.setTitleText( "Object Properties" );
-//        propertiesTab.setTitleText( this.getLocalizedText( "procedures" ) );
-        MarkerPanelTab markerTab = MarkerPanelTab.getInstance();
-        markerTab.setTitleText( "Markers" );
-//        markerTab.setTitleText( this.getLocalizedText( "functions" ) );
-    }
-}
+ }

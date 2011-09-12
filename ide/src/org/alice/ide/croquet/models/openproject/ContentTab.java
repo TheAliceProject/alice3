@@ -41,19 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.person.models;
+package org.alice.ide.croquet.models.openproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BodyHeadTabSelectionModel extends org.lgna.croquet.PredeterminedTabSelectionState< ContentTab >{
-	private static class SingletonHolder {
-		private static BodyHeadTabSelectionModel instance = new BodyHeadTabSelectionModel();
+/*package-private*/ abstract class ContentTab extends org.lgna.croquet.PredeterminedTab {
+	public ContentTab( java.util.UUID id ) {
+		super( id );
 	}
-	public static BodyHeadTabSelectionModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private BodyHeadTabSelectionModel() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), null, 0, BodyTab.getInstance(), HeadTab.getInstance() );
+	public abstract java.net.URI getSelectedUri();
+	@Override
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+		org.lgna.croquet.components.ScrollPane rv = super.createScrollPane();
+		rv.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		rv.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
+		rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+		return rv;
 	}
 }
