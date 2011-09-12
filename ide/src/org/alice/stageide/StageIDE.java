@@ -261,7 +261,11 @@ public class StageIDE extends org.alice.ide.IDE {
 		org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 		javax.swing.Icon icon = getIconFor( field );
 		if( icon != null ) {
-			return new org.lgna.croquet.components.Label( icon );
+			org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label( icon );
+//			rv.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
+//			rv.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.CENTER );
+			rv.getAwtComponent().setAlignmentY( 0.5f );
+			return rv;
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}

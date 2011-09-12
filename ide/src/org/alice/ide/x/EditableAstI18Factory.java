@@ -61,6 +61,11 @@ public class EditableAstI18Factory extends AstI18nFactory {
 	private EditableAstI18Factory( org.lgna.croquet.Group group ) {
 		this.group = group;
 	}
+	
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createTypeComponent( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+		return new org.lgna.croquet.components.Label( "todo EditableAstI18Factory" );
+	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
 		return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );

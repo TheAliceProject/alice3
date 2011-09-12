@@ -53,6 +53,11 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
 	
+	protected org.alice.ide.x.AstI18nFactory getFactory() {
+		//return org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance();
+		return org.alice.ide.x.PreviewAstI18nFactory.getInstance();
+	}
+	
 	protected org.lgna.croquet.components.Component< ? >[] createWarningRow() {
 		return null;
 	}
@@ -100,11 +105,11 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 			org.lgna.croquet.components.Component< ? > component;
 			if( model.isInitializerEditable() ) {
 				component = new org.lgna.croquet.components.LineAxisPanel( 
-						model.getInitializerState().createEditor(),
+						model.getInitializerState().createEditor( this.getFactory() ),
 						org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
 				);
 			} else {
-				component = model.getInitializerState().createView();
+				component = model.getInitializerState().createView(  this.getFactory() );
 			}
 			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerLabelText() + ":", component ) );
 		}
