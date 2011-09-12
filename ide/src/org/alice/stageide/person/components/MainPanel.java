@@ -65,7 +65,9 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 			//todo
 		}
 	};
+	private final PersonViewer personViewer;
 	public MainPanel( PersonViewer personViewer ) {
+		this.personViewer = personViewer;
 		this.tabbedPane = org.alice.stageide.person.models.BodyHeadTabSelectionModel.getInstance().createDefaultFolderTabbedPane();
 		this.tabbedPane.scaleFont( 1.5f );
 
@@ -92,5 +94,8 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 		splitPane.setDividerLocation( 400 );
 		this.addComponent( splitPane, Constraint.CENTER );
 		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueObserver( this.baseSkinToneObserver );
+	}
+	public PersonViewer getPersonViewer() {
+		return this.personViewer;
 	}
 }

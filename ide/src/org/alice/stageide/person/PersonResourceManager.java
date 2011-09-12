@@ -151,20 +151,21 @@ public enum PersonResourceManager {
 
 	public org.alice.stageide.person.components.PersonViewer allocatePersonViewer( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		assert activeCount == 0; //todo
+		this.pushAtomic();
 		this.setStates( personResource );
 		if( activeCount == 0 ) {
 			this.addListeners();
 		}
 		this.activeCount++;
-		this.personImp.updateNebPerson();
-		return new org.alice.stageide.person.components.PersonViewer( this.personImp ) ;
+		this.popAtomic();
+		return org.alice.stageide.person.components.PersonViewer.getInstance( this.personImp ) ;
 	}
 	public void releasePersonViewer( org.alice.stageide.person.components.PersonViewer personViewer ) {
 		this.activeCount--;
 		if( activeCount == 0 ) {
 			this.removeListeners();
 		}
-		personViewer.setPerson( null );
+		//personViewer.setPerson( null );
 		assert activeCount == 0; //todo
 	}
 	
@@ -188,9 +189,19 @@ public enum PersonResourceManager {
 		return org.alice.stageide.person.models.FullBodyOutfitState.getInstance().getValue();
 	}
 
+	private static org.lgna.story.resources.sims2.LifeStage getLifeStage( org.lgna.story.resources.sims2.PersonResource personResource ) {
+		return personResource != null ? personResource.getLifeStage() : null;
+	}
+	private static org.lgna.story.resources.sims2.Gender getGender( org.lgna.story.resources.sims2.PersonResource personResource ) {
+		return personResource != null ? personResource.getGender() : null;
+	}
 	private static String getHairColor( org.lgna.story.resources.sims2.PersonResource personResource ) {
-		org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
-		return hair!=null ? hair.toString() : null;
+		if( personResource != null ) {
+			org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
+			return hair!=null ? hair.toString() : null;
+		} else {
+			return null;
+		}
 	}
 	private static final String[] getHairColors( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		return lifeStage != null ? lifeStage.getHairColors() : null;
@@ -201,7 +212,9 @@ public enum PersonResourceManager {
 	public void pushAtomic() {
 		if( this.atomicCount == 0 ) {
 			this.prevPersonResource = this.createResourceFromStates();
-			this.mapToMap.put( this.prevPersonResource.getLifeStage(), this.prevPersonResource.getGender(), this.prevPersonResource );
+			if( this.prevPersonResource != null ) {
+				this.mapToMap.put( this.prevPersonResource.getLifeStage(), this.prevPersonResource.getGender(), this.prevPersonResource );
+			}
 		}
 		this.atomicCount++;
 	}
@@ -211,10 +224,10 @@ public enum PersonResourceManager {
 			this.removeListenersIfAppropriate();
 			try {
 				org.lgna.story.resources.sims2.LifeStage lifeStage = this.getLifeStage();
-				boolean isLifeStageChanged = this.prevPersonResource.getLifeStage() != lifeStage;
+				boolean isLifeStageChanged = getLifeStage( this.prevPersonResource ) != lifeStage;
 				if( isLifeStageChanged ) {
 					String[] hairColors = getHairColors( lifeStage );
-					if( hairColors != getHairColors( this.prevPersonResource.getLifeStage() ) ) {
+					if( hairColors != getHairColors( getLifeStage( this.prevPersonResource ) ) ) {
 						String hairColor = org.alice.stageide.person.models.HairColorNameState.getInstance().getSelectedItem();
 						int index = java.util.Arrays.asList( hairColors ).indexOf( hairColor );
 						if( index != -1 ) {
@@ -226,7 +239,7 @@ public enum PersonResourceManager {
 					}
 				}
 				org.lgna.story.resources.sims2.Gender gender = this.getGender();
-				boolean isGenderChanged = this.prevPersonResource.getGender() != gender;
+				boolean isGenderChanged = getGender( this.prevPersonResource ) != gender;
 
 				final String hairColor = org.alice.stageide.person.models.HairColorNameState.getInstance().getSelectedItem();
 				boolean isHairColorChanged = edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( getHairColor( this.prevPersonResource ), hairColor );
@@ -246,6 +259,7 @@ public enum PersonResourceManager {
 					} else {
 						index = -1;
 					}
+					index = 0;
 					org.alice.stageide.person.models.HairState.getInstance().setListData( 
 							index, 
 							edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(
@@ -259,7 +273,8 @@ public enum PersonResourceManager {
 							org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
 							null 
 					);
-					org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setListData( -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
+					int index = 0;
+					org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setListData( index, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
 							list,
 							org.lgna.story.resources.sims2.FullBodyOutfit.class
 					) );
@@ -280,7 +295,11 @@ public enum PersonResourceManager {
 		org.lgna.story.resources.sims2.Outfit outfit = org.alice.stageide.person.models.FullBodyOutfitState.getInstance().getValue();
 		org.lgna.story.resources.sims2.Hair hair = org.alice.stageide.person.models.HairState.getInstance().getValue();
 		double obesityLevel = org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue() * 0.01;
-		return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
+		if( lifeStage != null ) {
+			return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
+		} else {
+			return null;
+		}
 	}
 
 	public void setStates( org.lgna.story.resources.sims2.PersonResource personResource ) {

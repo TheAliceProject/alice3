@@ -455,16 +455,17 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		if (this.selectedObject != selected) 
 		{
 			this.fireSelecting( new SelectionEvent(this, selected) );
-			if (HandleManager.isSelectable(selected.getSgComposite()))
+			Transformable sgTransformable = selected != null ? selected.getSgComposite() : null;
+			if (HandleManager.isSelectable( sgTransformable ))
 			{
 				this.handleManager.setHandlesShowing(true);
-				this.handleManager.setSelectedObject( selected.getSgComposite() );
+				this.handleManager.setSelectedObject( sgTransformable );
 			}
 			else
 			{
 				this.handleManager.setSelectedObject( null );
 			}
-			this.currentInputState.setCurrentlySelectedObject( selected.getSgComposite() );
+			this.currentInputState.setCurrentlySelectedObject( sgTransformable );
 			this.currentInputState.setTimeCaptured();
 			selectedObject = selected;
 			this.handleStateChange();

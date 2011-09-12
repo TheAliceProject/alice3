@@ -61,7 +61,8 @@ public class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	}
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		boundingBox.setNaN();
+		boundingBox.setMinimum( -0.1, 0.0, -0.1 );
+		boundingBox.setMaximum( 0.1, 2.0, 0.1 );
 	}
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {

@@ -123,7 +123,14 @@ public abstract class ModelImp extends TransformableImp {
 	}
 
 	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
-		return null;
+		edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = getSgVisuals();
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bBox = edu.cmu.cs.dennisc.math.AxisAlignedBox.createNaN();
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : sgVisuals ) {
+			edu.cmu.cs.dennisc.math.AxisAlignedBox bb = sgVisual.getAxisAlignedMinimumBoundingBox();
+			bBox.union( bb );
+		}
+		assert bBox.isNaN() == false;
+		return bBox.getSize();
 	}
 	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
 	}

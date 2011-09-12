@@ -47,8 +47,15 @@ package org.alice.stageide.person.components;
  */
 public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
-	public PersonViewer( org.alice.stageide.person.PersonImp personImp ) {
-		this.setPerson( personImp );
+	
+	private static class SingletonHolder {
+		private static PersonViewer instance = new PersonViewer();
+	}
+	public static PersonViewer getInstance( org.alice.stageide.person.PersonImp personImp ) {
+		SingletonHolder.instance.setPerson( personImp );
+		return SingletonHolder.instance;
+	}
+	private PersonViewer() {
 	}
 
 	private void positionAndOrientCamera( double height, int index, double duration ) {

@@ -50,6 +50,10 @@ public final class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEnco
 	private final Point3 minimum = Point3.createNaN();
 	private final Point3 maximum = Point3.createNaN();
 
+	public static AxisAlignedBox createNaN() {
+		return new AxisAlignedBox( Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN ); 
+	}
+	
 	public AxisAlignedBox() {
 	}
 	public AxisAlignedBox( Point3 minimum, Point3 maximum ) {
@@ -256,6 +260,9 @@ public final class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEnco
 		return this.maximum.z - this.minimum.z;
 	}
 
+	public Dimension3 getSize() {
+		return new Dimension3( this.getWidth(), this.getHeight(), this.getDepth() );
+	}
 	public double getVolume() {
 		return getWidth() * getHeight() * getDepth();
 	}

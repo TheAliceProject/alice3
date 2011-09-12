@@ -80,6 +80,9 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 	private org.lgna.story.resources.sims2.Gender getGender() {
 		return org.alice.stageide.person.models.GenderState.getInstance().getValue();
 	}
+	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {
+		return org.alice.stageide.person.models.BaseSkinToneState.getInstance().getValue();
+	}
 	private org.lgna.story.resources.sims2.EyeColor getEyeColor() {
 		return org.alice.stageide.person.models.BaseEyeColorState.getInstance().getValue();
 	}
@@ -107,12 +110,14 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 			}
 		}
 		org.lgna.story.resources.sims2.Gender gender = this.getGender();
+		org.lgna.story.resources.sims2.SkinTone skinTone = this.getSkinTone();
 		org.lgna.story.resources.sims2.EyeColor eyeColor = this.getEyeColor();
 		double fitnessLevel = this.getFitnessLevel();
 		org.lgna.story.resources.sims2.Hair hair = this.getHair();
 		org.lgna.story.resources.sims2.Outfit outfit = this.getOutfit();
 		
 		nebPerson.setGender( gender );
+		nebPerson.setSkinTone( skinTone );
 		nebPerson.setEyeColor( eyeColor );
 		nebPerson.setFitnessLevel( fitnessLevel );
 		nebPerson.setHair( hair );
