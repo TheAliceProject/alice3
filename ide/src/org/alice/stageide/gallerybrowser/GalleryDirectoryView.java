@@ -81,6 +81,8 @@ public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryV
 
 	public GalleryDirectoryView() {
 		super( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() );
+		//todo
+		this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 	}
 	@Override
 	protected java.util.List< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > getChildren() {

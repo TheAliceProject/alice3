@@ -58,6 +58,10 @@ public class TypeTab extends org.lgna.croquet.PredeterminedTab {
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		return new org.lgna.croquet.components.Label( "type" );
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( TypeDeclarationOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		//todo
+		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+		return rv;
 	}
 }

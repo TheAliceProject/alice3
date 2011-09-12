@@ -46,9 +46,21 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
-	public final static java.awt.Color BACKGROUND_COLOR = org.alice.ide.IDE.getActiveInstance().getTheme().getConstructorColor();
-	public GalleryBrowser() {
-		this.addComponent( GalleryTabState.getInstance().createDefaultFolderTabbedPane(), Constraint.CENTER );
+public class TypeDeclarationOperation extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< org.lgna.project.ast.UserType< org.lgna.project.ast.NamedUserConstructor > > {
+	private static class SingletonHolder {
+		private static TypeDeclarationOperation instance = new TypeDeclarationOperation();
+	}
+	public static TypeDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private TypeDeclarationOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "773ed5cf-0922-47d5-b845-20fcf0d9de60" ) );
+	}
+	@Override
+	protected org.alice.ide.croquet.components.PanelWithPreview< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.project.ast.UserType< org.lgna.project.ast.NamedUserConstructor >> step ) {
+		return null;
+	}
+	@Override
+	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.project.ast.UserType< org.lgna.project.ast.NamedUserConstructor >> step, boolean isCommit ) {
 	}
 }
