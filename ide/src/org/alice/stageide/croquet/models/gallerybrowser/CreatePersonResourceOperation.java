@@ -58,7 +58,7 @@ public class CreatePersonResourceOperation extends PersonResourceOperation {
 	}
 	@Override
 	protected org.lgna.story.resources.sims2.PersonResource createInitialPersonResource() {
-		return org.alice.stageide.person.PersonResourceManager.SINGLETON.createRandomResource();
+		return org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
 	}
 	@Override
 	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.story.resources.sims2.PersonResource personResource ) {

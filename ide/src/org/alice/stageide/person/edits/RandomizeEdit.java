@@ -52,7 +52,7 @@ public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
 	public RandomizeEdit( org.lgna.croquet.history.CompletionStep step ) {
 		super( step );
 		this.prevState = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
-		this.nextState = org.alice.stageide.person.PersonResourceManager.SINGLETON.createRandomResource();
+		this.nextState = org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {

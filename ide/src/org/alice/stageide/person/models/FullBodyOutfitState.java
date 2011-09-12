@@ -69,14 +69,4 @@ public class FullBodyOutfitState extends AbstractListSelectionState<org.lgna.sto
 			}
 		} );
 	}
-	
-	public void handleCataclysmicChange( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		this.setListData( -1, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
-				edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-						org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-						null 
-				),
-				org.lgna.story.resources.sims2.FullBodyOutfit.class
-		) );
-	}
 }

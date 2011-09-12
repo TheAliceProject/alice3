@@ -46,19 +46,9 @@ package org.alice.stageide.person.components;
  * @author Dennis Cosgrove
  */
 public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
-	static PersonViewer singleton = null;
-
-	public static PersonViewer getSingleton() {
-		if( PersonViewer.singleton != null ) {
-			//pass
-		} else {
-			PersonViewer.singleton = new PersonViewer();
-		}
-		return PersonViewer.singleton;
-	}
-
 	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
-	private PersonViewer() {
+	public PersonViewer( org.alice.stageide.person.PersonImp personImp ) {
+		this.setPerson( personImp );
 	}
 
 	private void positionAndOrientCamera( double height, int index, double duration ) {
@@ -92,32 +82,16 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
-	public org.lgna.story.implementation.sims2.NebulousPersonVisualData getPersonVisualData() {
-		org.lgna.story.implementation.BipedImp bipedImplementation = this.getPerson();
-		if( bipedImplementation != null ) {
-			org.lgna.story.implementation.JointedModelImp.VisualData visualData = bipedImplementation.getVisualData();
-			if( visualData instanceof org.lgna.story.implementation.sims2.NebulousPersonVisualData ) {
-				org.lgna.story.implementation.sims2.NebulousPersonVisualData nebPersonVisualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)visualData;
-				return nebPersonVisualData;
-			}
-			throw new RuntimeException();
-		} else {
-			return null;
-		}
+	public org.alice.stageide.person.PersonImp getPerson() {
+		return (org.alice.stageide.person.PersonImp)this.getModel();
 	}
-	public void setPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData personVisualData ) {
-		System.err.println( "TODO: setPersonVisualData " + personVisualData );
-	}
-	
-	public org.lgna.story.implementation.BipedImp getPerson() {
-		return (org.lgna.story.implementation.BipedImp)this.getModel();
-	}
-	public void setPerson( org.lgna.story.implementation.BipedImp person ) {
-		assert person != null;
+	public void setPerson( org.alice.stageide.person.PersonImp person ) {
 		this.setModel( person );
 		this.dragAdapter.setSelectedImplementation( person );
-		double height = person.getSize().y;
-		this.positionAndOrientCamera( height, 0, 0.0 );
+		if( person != null ) {
+			double height = person.getSize().y;
+			this.positionAndOrientCamera( height, 0, 0.0 );
+		}
 	}
 	@Override
 	protected void initialize() {

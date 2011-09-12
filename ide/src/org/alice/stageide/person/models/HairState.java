@@ -69,19 +69,4 @@ public class HairState extends AbstractListSelectionState<org.lgna.story.resourc
 			}
 		} );
 	}
-	public void handleCataclysmicChange( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender, final String hairColor ) {
-		this.setListData( -1, 
-				edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
-						edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-								org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
-								new edu.cmu.cs.dennisc.pattern.Criterion< org.lgna.story.resources.sims2.Hair >() {
-									public boolean accept( org.lgna.story.resources.sims2.Hair hair ) {
-										return hair.toString().equals( hairColor );
-									}
-								} 
-						),
-						org.lgna.story.resources.sims2.Hair.class
-				) 
-		);
-	}
 }

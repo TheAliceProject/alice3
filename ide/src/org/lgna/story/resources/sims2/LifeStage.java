@@ -63,33 +63,56 @@ public enum LifeStage {
 		@Override
 		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 			return null;
-		} 
+		}
+		@Override
+		public java.lang.String[] getHairColors() {
+			return EXCLUDE_GREY;
+		}
 	},
 	CHILD {
 		@Override
 		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 			return new ChildPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
 		} 
+		@Override
+		public java.lang.String[] getHairColors() {
+			return EXCLUDE_GREY;
+		}
 	}, 
 	TEEN {
 		@Override
 		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 			return null;
 		} 
+		@Override
+		public java.lang.String[] getHairColors() {
+			return EXCLUDE_GREY;
+		}
 	}, 
 	ADULT {
 		@Override
 		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 			return new AdultPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
 		} 
+		@Override
+		public java.lang.String[] getHairColors() {
+			return INCLUDE_GREY;
+		}
 	}, 
 	ELDER {
 		@Override
 		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 			return null;
 		} 
+		@Override
+		public java.lang.String[] getHairColors() {
+			return INCLUDE_GREY;
+		}
 	};
 	
+	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
+	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
+
 	public static LifeStage getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( LifeStage.class );
 	}
@@ -134,4 +157,5 @@ public enum LifeStage {
 	}
 	
 	public abstract PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit );
+	public abstract String[] getHairColors();
 }

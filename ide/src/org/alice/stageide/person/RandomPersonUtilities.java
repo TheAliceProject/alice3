@@ -40,19 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.person.models;
+
+package org.alice.stageide.person;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameState extends AbstractListSelectionState< String > {
-	private static class SingletonHolder {
-		private static HairColorNameState instance = new HairColorNameState();
+public class RandomPersonUtilities {
+	private RandomPersonUtilities() {
+		throw new AssertionError();
 	}
-	public static HairColorNameState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private HairColorNameState() {
-		super( java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
+	public static org.lgna.story.resources.sims2.PersonResource createRandomResource() {
+		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
+		org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.random.RandomUtilities.getRandomValueFrom( potentialLifeStages );
+		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
+		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
+		org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
+		org.lgna.story.resources.sims2.Outfit outfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		org.lgna.story.resources.sims2.Hair hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		double obesityLevel = org.alice.random.RandomUtilities.nextDouble();
+		return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
 	}
 }
