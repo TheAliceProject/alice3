@@ -49,12 +49,13 @@ package org.lgna.story.implementation.sims2;
 public class NebulousVisualData< M extends edu.cmu.cs.dennisc.nebulous.Model> implements org.lgna.story.implementation.JointedModelImp.VisualData {
 	private final M nebModel;
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { new edu.cmu.cs.dennisc.scenegraph.Visual() };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] {};
+	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance() };
 	public NebulousVisualData( M nebModel ) {
 		this.nebModel = nebModel;
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebModel } );
+		this.getSgVisuals()[ 0 ].frontFacingAppearance.setValue( sgAppearances[ 0 ] );
 	}
-	public edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
+	public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
 		return this.sgAppearances;
 	}
 	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
