@@ -67,7 +67,7 @@ public class Collections {
 	}
 	public static <E> java.util.ArrayList<E> newLinkedList( E... array ) {
 		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
-		CollectionUtilities.set( rv, array );
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
 	public static <E> java.util.ArrayList<E> newArrayListWithMinimumCapacity( int minCapacity ) {
@@ -80,7 +80,7 @@ public class Collections {
 	}
 	public static <E> java.util.ArrayList<E> newArrayList( E... array ) {
 		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
-		CollectionUtilities.set( rv, array );
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
 	public static <E> java.util.ArrayList<E> newArrayList( java.util.Collection< E > other ) {
@@ -95,7 +95,7 @@ public class Collections {
 	public static <E> java.util.Vector<E> newVector( E... array ) {
 		java.util.Vector<E> rv = new java.util.Vector< E >();
 		if( array != null ) {
-			CollectionUtilities.set( rv, array );
+			edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		}
 		return rv;
 	}
@@ -110,7 +110,7 @@ public class Collections {
 	}
 	public static <E> java.util.Stack<E> newStack( E... array ) {
 		java.util.Stack<E> rv = new java.util.Stack< E >();
-		CollectionUtilities.set( rv, array );
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
 	public static <E> java.util.Stack< E > newStack( java.util.Collection< E > other ) {

@@ -182,11 +182,11 @@ public enum PersonResourceManager {
 	/*package-private*/ org.lgna.story.resources.sims2.EyeColor getEyeColor() {
 		return org.alice.stageide.person.models.BaseEyeColorState.getInstance().getValue();
 	}
-	/*package-private*/ double getFitnessLevel() {
+	/*package-private*/ double getObesityLevel() {
 		int obesityPercent = org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue();
 		java.math.BigDecimal value = new java.math.BigDecimal( obesityPercent );
 		value = value.movePointLeft( 2 );
-		return 1.0 - value.doubleValue();
+		return value.doubleValue();
 	}
 	/*package-private*/ org.lgna.story.resources.sims2.Hair getHair() {
 		return org.alice.stageide.person.models.HairState.getInstance().getValue();
@@ -268,7 +268,7 @@ public enum PersonResourceManager {
 					index = 0;
 					org.alice.stageide.person.models.HairState.getInstance().setListData( 
 							index, 
-							edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(
+							edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray(
 									list,
 									org.lgna.story.resources.sims2.Hair.class
 							) 
@@ -280,7 +280,7 @@ public enum PersonResourceManager {
 							null 
 					);
 					int index = 0;
-					org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setListData( index, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( 
+					org.alice.stageide.person.models.FullBodyOutfitState.getInstance().setListData( index, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( 
 							list,
 							org.lgna.story.resources.sims2.FullBodyOutfit.class
 					) );

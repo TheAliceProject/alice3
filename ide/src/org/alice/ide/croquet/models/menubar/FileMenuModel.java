@@ -70,7 +70,7 @@ public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
 			list.add(org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel());
 		}
-		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
 	private static class SingletonHolder {
 		private static FileMenuModel instance = new FileMenuModel();

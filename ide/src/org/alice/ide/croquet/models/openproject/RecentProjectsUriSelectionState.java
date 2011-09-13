@@ -60,7 +60,7 @@ public class RecentProjectsUriSelectionState extends org.alice.ide.openprojectpa
 	}
 	@Override
 	protected java.net.URI[] createArray() {
-		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.list, java.net.URI.class );
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.list, java.net.URI.class );
 	}
 	
 	private void addFile( java.io.File file ) {

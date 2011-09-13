@@ -52,7 +52,7 @@ public class PredeterminedMenuModel extends MenuModel {
 		this.models = models;
 	}
 	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< StandardMenuItemPrepModel > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(models, StandardMenuItemPrepModel.class) );
+		this( individualId, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray(models, StandardMenuItemPrepModel.class) );
 	}
 	
 	public Model[] getModels() {

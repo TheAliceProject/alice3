@@ -48,13 +48,93 @@ package edu.cmu.cs.dennisc.java.lang;
 public class ArrayUtilities {
 	public static void reverseInPlace( Object[] array ) {
 		final int N = array.length;
-		for( int i=0; i<N/2; i++ ) {
-			int j = N-i-1;
+		for( int i = 0; i < N / 2; i++ ) {
+			int j = N - i - 1;
 			if( i != j ) {
 				Object temp = array[ i ];
 				array[ i ] = array[ j ];
 				array[ j ] = temp;
 			}
 		}
+	}
+
+	public static <E extends Object> E[] createArray( java.util.Collection< E > collection, Class< E > cls, boolean isZeroLengthArrayDesiredForNull ) {
+		int size;
+		if( collection != null ) {
+			size = collection.size();
+		} else {
+			if( isZeroLengthArrayDesiredForNull ) {
+				size = 0;
+			} else {
+				size = -1;
+			}
+		}
+		E[] rv;
+		if( size >= 0 ) {
+			rv = (E[])java.lang.reflect.Array.newInstance( cls, size );
+		} else {
+			rv = null;
+		}
+		if( collection != null ) {
+			collection.toArray( rv );
+		}
+		return rv;
+	}
+	public static <E extends Object> E[] createArray( java.util.Collection< E > collection, Class< E > cls ) {
+		return createArray( collection, cls, false );
+	}
+	public static <E extends Object> void set( java.util.Collection< E > collection, E... array ) {
+		collection.clear();
+		if( array != null ) {
+			if( collection instanceof java.util.ArrayList< ? > ) {
+				java.util.ArrayList< ? > arrayList = (java.util.ArrayList< ? >)collection;
+				arrayList.ensureCapacity( array.length );
+			}
+			if( collection instanceof java.util.Vector< ? > ) {
+				java.util.Vector< ? > vector = (java.util.Vector< ? >)collection;
+				vector.ensureCapacity( array.length );
+			}
+		}
+		for( E e : array ) {
+			collection.add( e );
+		}
+	}
+	public static short[] createShortArray( java.util.Collection< Short > collection ) {
+		final int N = collection.size();
+		short[] rv = new short[ N ];
+		int i = 0;
+		for( Short v : collection ) {
+			rv[ i++ ] = v;
+		}
+		return rv;
+	}
+	public static int[] createIntArray( java.util.Collection< Integer > collection ) {
+		final int N = collection.size();
+		int[] rv = new int[ N ];
+		int i = 0;
+		for( Integer v : collection ) {
+			rv[ i++ ] = v;
+		}
+		return rv;
+	}
+
+	public static float[] createFloatArray( java.util.Collection< Float > collection ) {
+		final int N = collection.size();
+		float[] rv = new float[ N ];
+		int i = 0;
+		for( Float v : collection ) {
+			rv[ i++ ] = v;
+		}
+		return rv;
+	}
+
+	public static double[] createDoubleArray( java.util.Collection< Double > collection ) {
+		final int N = collection.size();
+		double[] rv = new double[ N ];
+		int i = 0;
+		for( Double v : collection ) {
+			rv[ i++ ] = v;
+		}
+		return rv;
 	}
 }

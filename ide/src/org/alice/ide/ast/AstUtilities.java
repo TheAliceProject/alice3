@@ -309,10 +309,10 @@ public class AstUtilities {
 		return createArrayInstanceCreation( org.lgna.project.ast.JavaType.getInstance( arrayCls ), expressions );
 	}
 	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( org.lgna.project.ast.AbstractType<?,?,?> arrayType, java.util.Collection< org.lgna.project.ast.Expression > expressions ) {
-		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
+		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
 	}
 	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, java.util.Collection< org.lgna.project.ast.Expression > expressions ) {
-		return createArrayInstanceCreation( org.lgna.project.ast.JavaType.getInstance( arrayCls ), edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
+		return createArrayInstanceCreation( org.lgna.project.ast.JavaType.getInstance( arrayCls ), edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
 	}
 
 	public static org.lgna.project.ast.JavaMethod lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {

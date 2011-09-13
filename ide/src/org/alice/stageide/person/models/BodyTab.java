@@ -66,14 +66,14 @@ public class BodyTab extends ContentTab {
 		org.lgna.croquet.components.Slider slider = ObesityPercentState.getInstance().createSlider();
 		slider.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		
-		org.lgna.croquet.components.BorderPanel fitnessLevelPane = new org.lgna.croquet.components.BorderPanel();
-		fitnessLevelPane.addComponent( SetObesityToInShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		fitnessLevelPane.addComponent( slider, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		fitnessLevelPane.addComponent( SetObesityToOutOfShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+		org.lgna.croquet.components.BorderPanel obesityLevelPane = new org.lgna.croquet.components.BorderPanel();
+		obesityLevelPane.addComponent( SetObesityToInShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		obesityLevelPane.addComponent( slider, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		obesityLevelPane.addComponent( SetObesityToOutOfShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel( 8, 8 );
 		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.addComponent( fitnessLevelPane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
+		rv.addComponent( obesityLevelPane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
 		rv.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		rv.getAwtComponent().setOpaque( true );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );

@@ -91,14 +91,14 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		org.lgna.story.resources.sims2.Gender gender = PersonResourceManager.SINGLETON.getGender();
 		org.lgna.story.resources.sims2.SkinTone skinTone = PersonResourceManager.SINGLETON.getSkinTone();
 		org.lgna.story.resources.sims2.EyeColor eyeColor = PersonResourceManager.SINGLETON.getEyeColor();
-		double fitnessLevel = PersonResourceManager.SINGLETON.getFitnessLevel();
+		double obesityLevel = PersonResourceManager.SINGLETON.getObesityLevel();
 		org.lgna.story.resources.sims2.Hair hair = PersonResourceManager.SINGLETON.getHair();
 		org.lgna.story.resources.sims2.Outfit outfit = PersonResourceManager.SINGLETON.getOutfit();
 		
 		nebPerson.setGender( gender );
 		nebPerson.setSkinTone( skinTone );
 		nebPerson.setEyeColor( eyeColor );
-		nebPerson.setObesityLevel( fitnessLevel );
+		nebPerson.setObesityLevel( obesityLevel );
 		nebPerson.setHair( hair );
 		nebPerson.setOutfit( outfit );
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();

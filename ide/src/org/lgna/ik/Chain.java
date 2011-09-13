@@ -58,7 +58,7 @@ public class Chain {
 			boolean isPositive = ( next == bone.getParent() );
 			list.add( new Element( bone, isPositive, N, isLinearEnabled, isAngularEnabled ) );
 		}
-		Element[] array = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( list, Element.class );
+		Element[] array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, Element.class );
 		return new Chain( array );
 	}
 

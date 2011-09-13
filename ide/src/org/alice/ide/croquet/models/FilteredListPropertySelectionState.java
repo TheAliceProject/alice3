@@ -133,7 +133,7 @@ public abstract class FilteredListPropertySelectionState< E > extends org.lgna.c
 	}
 	@Override
 	public E[] toArray( Class< E > componentType ) {
-		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.data, componentType );
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.data, componentType );
 	}
 	@Override
 	protected void internalAddItem( E item ) {
