@@ -51,7 +51,7 @@ public abstract class FieldDeclarationPanel< M extends org.alice.ide.croquet.mod
 		super( model );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
+	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
 		M model = this.getModel();
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), model.createPreviewDeclaration() );
 	}

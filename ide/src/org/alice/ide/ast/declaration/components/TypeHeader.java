@@ -40,21 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+
+package org.alice.ide.ast.declaration.components;
 
 /**
  * @author Dennis Cosgrove
  */
-//todo: remove
-@Deprecated
-abstract class AbstractNonGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation {
-	private final org.lgna.project.ast.UserType<?> declaringType;
-	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId, org.lgna.project.ast.UserType<?> declaringType ) {
-		super( individualId );
-		this.declaringType = declaringType;
-	}
-	@Override
-	protected org.lgna.project.ast.UserType< ? > getDeclaringType() {
-		return this.declaringType;
+public class TypeHeader extends org.lgna.croquet.components.FlowPanel {
+	public TypeHeader( org.lgna.project.ast.NamedUserType type ) {
+		super( Alignment.LEADING );
+		this.addComponent( new org.lgna.croquet.components.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
+		this.addComponent( new org.lgna.croquet.components.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type != null ? type.getSuperType() : null ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,8 ) );
 	}
 }

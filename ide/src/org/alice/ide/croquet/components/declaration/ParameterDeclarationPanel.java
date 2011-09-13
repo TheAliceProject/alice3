@@ -52,7 +52,7 @@ public class ParameterDeclarationPanel extends DeclarationPanel< org.alice.ide.c
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getParameterColor() );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
+	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
 		org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation model = this.getModel();
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, model.createPreviewDeclaration() );
 	}

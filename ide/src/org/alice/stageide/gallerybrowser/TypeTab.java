@@ -43,6 +43,8 @@
 
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.ide.ast.declaration.TypeDeclarationOperation;
+
 /**
  * @author Dennis Cosgrove
  */

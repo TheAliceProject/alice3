@@ -55,7 +55,7 @@ public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> ex
 		}
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
+	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
 		org.lgna.project.ast.Expression expression;
 		try {
 			expression = this.getValue();

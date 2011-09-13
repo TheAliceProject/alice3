@@ -41,52 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.preview;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelWithPreview< C extends org.lgna.croquet.components.JComponent< ? > > extends org.lgna.croquet.components.BorderPanel {
-	private static final int PAD = 16;
-	public PanelWithPreview() {
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
-	}
-	protected boolean isPreviewDesired() {
-		return true;
-	}
-	private C previewPanel;
-	
-	public C getPreviewPanel() {
-		return this.previewPanel;
-	}
-	protected abstract C createPreviewPanel();
-	protected abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
-	private void initializeIfNecessary() {
-		if( this.previewPanel != null ) {
-			//pass
-		} else {
-			this.addComponent( this.createMainComponent(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-
-			if( this.isPreviewDesired() ) {
-				this.previewPanel = this.createPreviewPanel();
-				org.lgna.croquet.components.PageAxisPanel northPanel = new org.lgna.croquet.components.PageAxisPanel(
-						new org.lgna.croquet.components.LineAxisPanel( 
-								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
-								new org.lgna.croquet.components.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
-								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
-								this.previewPanel
-						),
-						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ),
-						new org.lgna.croquet.components.HorizontalSeparator(),
-						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 )
-				);
-				this.addComponent( northPanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-			}
-		}
+public class SuperTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.AbstractType > {
+	private final TypeDeclarationOperation owner;
+	public SuperTypeState( TypeDeclarationOperation owner, org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "5a410cd3-a005-4471-8015-446d184a450f" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), initialValue );
+		this.owner = owner;
 	}
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.initializeIfNecessary();
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
+		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		java.util.List< org.lgna.project.ast.NamedUserType > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
+		for( org.lgna.project.ast.NamedUserType type : types ) {
+			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+		}
+		return rv;
 	}
 }

@@ -41,52 +41,57 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.preview;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelWithPreview< C extends org.lgna.croquet.components.JComponent< ? > > extends org.lgna.croquet.components.BorderPanel {
-	private static final int PAD = 16;
-	public PanelWithPreview() {
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
+public class TypeDeclarationOperation extends org.lgna.croquet.InputDialogOperation< org.lgna.project.ast.NamedUserType > {
+	private static class SingletonHolder {
+		private static TypeDeclarationOperation instance = new TypeDeclarationOperation();
 	}
-	protected boolean isPreviewDesired() {
-		return true;
+	public static TypeDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
 	}
-	private C previewPanel;
-	
-	public C getPreviewPanel() {
-		return this.previewPanel;
-	}
-	protected abstract C createPreviewPanel();
-	protected abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
-	private void initializeIfNecessary() {
-		if( this.previewPanel != null ) {
-			//pass
-		} else {
-			this.addComponent( this.createMainComponent(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-
-			if( this.isPreviewDesired() ) {
-				this.previewPanel = this.createPreviewPanel();
-				org.lgna.croquet.components.PageAxisPanel northPanel = new org.lgna.croquet.components.PageAxisPanel(
-						new org.lgna.croquet.components.LineAxisPanel( 
-								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
-								new org.lgna.croquet.components.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
-								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
-								this.previewPanel
-						),
-						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ),
-						new org.lgna.croquet.components.HorizontalSeparator(),
-						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 )
-				);
-				this.addComponent( northPanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-			}
-		}
+	private final NameState nameState = new NameState( this, "" );
+	private final SuperTypeState superTypeState = new SuperTypeState( this, null );
+	private String superTypeLabelText; 
+	private String nameLabelText; 
+	private TypeDeclarationOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "773ed5cf-0922-47d5-b845-20fcf0d9de60" ) );
 	}
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.initializeIfNecessary();
+	protected void localize() {
+		super.localize();
+		this.superTypeLabelText = this.findLocalizedText( "superTypeLabel", TypeDeclarationOperation.class );
+		this.nameLabelText = this.findLocalizedText( "nameLabel", TypeDeclarationOperation.class );
+	}
+	
+	
+	public NameState getNameState() {
+		return this.nameState;
+	}
+	public SuperTypeState getSuperTypeState() {
+		return this.superTypeState;
+	}
+	
+	public String getSuperTypeLabelText() {
+		return this.superTypeLabelText;
+	}
+	public String getNameLabelText() {
+		return this.nameLabelText;
+	}
+	
+	@Override
+	protected org.alice.ide.ast.declaration.components.TypeDeclarationPanel prologue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.project.ast.NamedUserType > step ) {
+		return new org.alice.ide.ast.declaration.components.TypeDeclarationPanel( this );
+	}
+	@Override
+	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.project.ast.NamedUserType > step, boolean isCommit ) {
+		if( isCommit ) {
+			step.finish();
+		} else {
+			step.cancel();
+		}
 	}
 }

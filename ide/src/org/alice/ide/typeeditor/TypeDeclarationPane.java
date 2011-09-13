@@ -105,24 +105,13 @@ public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel
 		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 		
-		Title title = new Title( type );
+		org.alice.ide.ast.declaration.components.TypeHeader typeHeader = new org.alice.ide.ast.declaration.components.TypeHeader( type );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
-		this.addComponent( title, Constraint.PAGE_START );
+		this.addComponent( typeHeader, Constraint.PAGE_START );
 		this.addComponent( scrollPane, Constraint.CENTER );
 
-		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( title.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {
+		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( typeHeader.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {
 			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( component, 1.2f );
-		}
-	}
-	
-	class Title extends org.lgna.croquet.components.FlowPanel {
-		public Title( org.lgna.project.ast.NamedUserType type ) {
-			super( Alignment.LEADING );
-			this.addComponent( new org.lgna.croquet.components.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
-			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
-			this.addComponent( new org.lgna.croquet.components.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
-			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type.getSuperType() ) );
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,8 ) );
 		}
 	}
 }

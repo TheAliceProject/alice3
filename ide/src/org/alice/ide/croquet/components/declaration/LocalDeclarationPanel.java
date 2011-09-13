@@ -52,7 +52,7 @@ public class LocalDeclarationPanel extends DeclarationPanel< org.alice.ide.croqu
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getLocalColor() );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
+	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
 		org.alice.ide.croquet.models.declaration.LocalDeclarationStatementOperation model = this.getModel();
 		org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = model.createPreviewDeclaration();
 		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( localDeclarationStatement );

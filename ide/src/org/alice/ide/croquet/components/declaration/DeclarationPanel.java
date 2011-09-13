@@ -123,7 +123,7 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		return false;
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createMainComponent() {
+	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		final M model = this.getModel();
 		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {
 			@Override
@@ -132,7 +132,7 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 			}
 		}
 		DetailsPanel detailsPanel = new DetailsPanel();
-		org.lgna.croquet.components.Component< ? > rv;
+		org.lgna.croquet.components.JComponent< ? > rv;
 		if( this.isDeclaringTypeAffordanceDesired() && model.getDeclaringTypeState() != null ) {
 			org.lgna.croquet.components.PageAxisPanel panel = new org.lgna.croquet.components.PageAxisPanel();
 			if( model.isDeclaringTypeEditable() ) {

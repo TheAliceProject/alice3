@@ -41,52 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.preview;
+package org.alice.ide.ast.declaration.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelWithPreview< C extends org.lgna.croquet.components.JComponent< ? > > extends org.lgna.croquet.components.BorderPanel {
-	private static final int PAD = 16;
-	public PanelWithPreview() {
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
+public class TypeDeclarationPanel extends org.alice.ide.preview.PanelWithPreview< TypeHeader > {
+	private final org.alice.ide.ast.declaration.TypeDeclarationOperation model;
+	public TypeDeclarationPanel( org.alice.ide.ast.declaration.TypeDeclarationOperation model ) {
+		this.model = model;
 	}
-	protected boolean isPreviewDesired() {
-		return true;
-	}
-	private C previewPanel;
-	
-	public C getPreviewPanel() {
-		return this.previewPanel;
-	}
-	protected abstract C createPreviewPanel();
-	protected abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
-	private void initializeIfNecessary() {
-		if( this.previewPanel != null ) {
-			//pass
-		} else {
-			this.addComponent( this.createMainComponent(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-
-			if( this.isPreviewDesired() ) {
-				this.previewPanel = this.createPreviewPanel();
-				org.lgna.croquet.components.PageAxisPanel northPanel = new org.lgna.croquet.components.PageAxisPanel(
-						new org.lgna.croquet.components.LineAxisPanel( 
-								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
-								new org.lgna.croquet.components.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
-								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
-								this.previewPanel
-						),
-						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ),
-						new org.lgna.croquet.components.HorizontalSeparator(),
-						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 )
-				);
-				this.addComponent( northPanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-			}
-		}
+	public org.alice.ide.ast.declaration.TypeDeclarationOperation getModel() {
+		return this.model;
 	}
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.initializeIfNecessary();
+	protected TypeHeader createPreviewPanel() {
+		return new TypeHeader( null );
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {
+			@Override
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+				org.alice.ide.ast.declaration.TypeDeclarationOperation model = TypeDeclarationPanel.this.getModel();
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getSuperTypeLabelText() + ":", new org.alice.ide.croquet.components.TypeDropDown( model.getSuperTypeState() ) ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
+				return rv;
+			}
+		}
+		DetailsPanel rv = new DetailsPanel();
+		return rv;
 	}
 }
