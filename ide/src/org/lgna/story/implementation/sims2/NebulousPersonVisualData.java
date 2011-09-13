@@ -116,7 +116,7 @@ public class NebulousPersonVisualData extends NebulousVisualData< edu.cmu.cs.den
 	}
 	public void setObesityLevel( double obesityLevel ) {
 		this.obesityLevel = obesityLevel;
-		this.getNebModel().setFitnessLevel( 1.0-this.obesityLevel );
+		this.getNebModel().setObesityLevel( this.obesityLevel );
 	}
 	public org.lgna.story.resources.sims2.Hair getHair() {
 		return this.hair;

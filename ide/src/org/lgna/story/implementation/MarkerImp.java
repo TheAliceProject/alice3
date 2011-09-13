@@ -149,7 +149,7 @@ public abstract class MarkerImp extends ModelImp {
 	
 	public void setMarkerColor( Color4f color )
 	{
-		for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : this.getSgAppearances() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgAppearances() ) {
 			sgAppearance.diffuseColor.setValue( color );
 		}
 	}

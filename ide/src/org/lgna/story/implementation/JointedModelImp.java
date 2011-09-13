@@ -49,7 +49,7 @@ package org.lgna.story.implementation;
 public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R extends org.lgna.story.resources.JointedModelResource > extends ModelImp {
 	public static interface VisualData { 
 		public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
-		public edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances();
+		public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances();
 		public double getBoundingSphereRadius();
 	}
 	public static interface JointImplementationAndVisualDataFactory< R extends org.lgna.story.resources.JointedModelResource > {
@@ -85,7 +85,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		return this.visualData.getSgVisuals();
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
+	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
 		return this.visualData.getSgAppearances();
 	}
 	

@@ -98,7 +98,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		nebPerson.setGender( gender );
 		nebPerson.setSkinTone( skinTone );
 		nebPerson.setEyeColor( eyeColor );
-		nebPerson.setFitnessLevel( fitnessLevel );
+		nebPerson.setObesityLevel( fitnessLevel );
 		nebPerson.setHair( hair );
 		nebPerson.setOutfit( outfit );
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();
