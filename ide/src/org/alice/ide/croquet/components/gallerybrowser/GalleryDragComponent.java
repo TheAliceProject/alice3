@@ -55,7 +55,7 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 		label.setIcon( model.getLargeIcon() );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
+		this.setEnabledBackgroundPaint( new java.awt.Color( 0xf7e4b6 ) );
 		this.internalAddComponent( label );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 8, 0 ) );
 	}
