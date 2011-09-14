@@ -46,6 +46,9 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
+	public ExpressionCreatorPane() {
+		super( new org.alice.ide.croquet.models.ToDoDragModel() );
+	}
 	@Override
 	protected boolean isKnurlDesired() {
 		return true;

@@ -46,7 +46,4 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class AccessiblePane extends ExpressionCreatorPane {
-	public AccessiblePane() {
-		this.setDragModel( new org.alice.ide.croquet.models.ToDoDragModel() );
-	}
 }

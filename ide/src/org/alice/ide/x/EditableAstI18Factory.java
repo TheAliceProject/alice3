@@ -87,9 +87,8 @@ public class EditableAstI18Factory extends AstI18nFactory {
 		return rv;
 	}
 	@Override
-	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
-		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
-		abstractStatementPane.setDragModel( new org.alice.ide.croquet.models.ToDoDragModel() );
+	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
+		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( dragModel, statement, statementListProperty );
 		abstractStatementPane.setPopupPrepModel( new org.lgna.croquet.PredeterminedMenuModel(
 				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
 				this.createPopupOperations( abstractStatementPane ) 

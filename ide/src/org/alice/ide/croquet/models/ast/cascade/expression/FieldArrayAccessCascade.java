@@ -68,7 +68,7 @@ public class FieldArrayAccessCascade extends ArrayAccessCascade {
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
 		return org.alice.ide.ast.AstUtilities.createFieldAccess( 
-				org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), 
+				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), 
 				this.field
 		);
 	}

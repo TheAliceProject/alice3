@@ -247,7 +247,7 @@ public class AstUtilities {
 		return rv;
 	}
 	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression... argumentExpressions ) {
-		return completeMethodInvocation( rv, org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), argumentExpressions );
+		return completeMethodInvocation( rv, org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), argumentExpressions );
 	}
 	
 	public static org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {

@@ -798,7 +798,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
 			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
 				if( statementPane.getStatement() == statement ) {
-					return statementPane.getDragModel();
+					return statementPane.getModel();
 				}
 			}
 		}
@@ -809,7 +809,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			java.util.List< org.alice.ide.common.TransientPane > transientPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.TransientPane.class );
 			for( org.alice.ide.common.TransientPane transientPane : transientPanes ) {
 				if( transientPane.getTransient() == trans ) {
-					return transientPane.getDragModel();
+					return transientPane.getModel();
 				}
 			}
 		}

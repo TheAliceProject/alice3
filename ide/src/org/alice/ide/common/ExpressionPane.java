@@ -48,11 +48,11 @@ package org.alice.ide.common;
 public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance  {
 	private org.lgna.project.ast.Expression expression;
 	public ExpressionPane( org.lgna.project.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
+		super( null );
 		this.expression = expression;
 		this.addComponent( component );
-		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( expression ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( expression ) );
 	}
-	
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		if( this.expression != null ) {
@@ -69,7 +69,13 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	@Override
 	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
 		if( this.expression != null ) {
-			return this.expression.getType();
+			org.lgna.project.ast.AbstractType<?,?,?> rv = this.expression.getType();
+//			if( rv != null ) {
+//				//pass
+//			} else {
+//				this.makeStandOut();
+//			}
+			return rv;
 		} else {
 			return org.lgna.project.ast.JavaType.OBJECT_TYPE;
 		}

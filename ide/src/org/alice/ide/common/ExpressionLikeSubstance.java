@@ -49,9 +49,12 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	private static final int INSET = 2;
 	public static final int DOCKING_BAY_INSET_LEFT = 5;
 
+	public ExpressionLikeSubstance( org.lgna.croquet.DragModel model ) {
+		super( model );
+	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
 	}
 	private boolean isVoid() {
 		org.lgna.project.ast.AbstractType<?,?,?> type = getExpressionType();

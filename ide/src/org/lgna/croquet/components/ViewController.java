@@ -68,9 +68,6 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 	
 	private org.lgna.croquet.PopupPrepModel popupPrepModel;
 	public final org.lgna.croquet.PopupPrepModel getPopupPrepModel() {
-		if( this.popupPrepModel != null ) {
-			this.popupPrepModel.setFirstComponentHint( this );
-		}
 		return this.popupPrepModel;
 	}
 	public final void setPopupPrepModel( org.lgna.croquet.PopupPrepModel popupMenuPrepModel ) {

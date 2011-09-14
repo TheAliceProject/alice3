@@ -42,37 +42,28 @@
  */
 package org.lgna.croquet.components;
 
-public abstract class Control< J extends javax.swing.JComponent, M extends org.lgna.croquet.Model > extends ViewController< J, M > {
-	private static class ControlAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
-		private Control control;
-		public ControlAdapter( Control control ) {
-			this.control = control;
-		}
-//		@Override
-//		protected void finalize() throws java.lang.Throwable {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize ControlAdapter" );
-//			super.finalize();
-//		}
+public abstract class Control< J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Model > extends ViewController< J, M > {
+	private class ControlAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
 		public void mousePressed( java.awt.event.MouseEvent e ) {
-			this.control.handleMousePressed( e );
+			Control.this.handleMousePressed( e );
 		}
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
-			this.control.handleMouseReleased( e );
+			Control.this.handleMouseReleased( e );
 		}
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
-			this.control.handleMouseClicked( e );
+			Control.this.handleMouseClicked( e );
 		}
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
-			this.control.handleMouseEntered( e );
+			Control.this.handleMouseEntered( e );
 		}
 		public void mouseExited( java.awt.event.MouseEvent e ) {
-			this.control.handleMouseExited( e );
+			Control.this.handleMouseExited( e );
 		}
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
-			this.control.handleMouseMoved( e );
+			Control.this.handleMouseMoved( e );
 		}
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
-			this.control.handleMouseDragged( e );
+			Control.this.handleMouseDragged( e );
 		}
 	}
 	
@@ -99,7 +90,7 @@ public abstract class Control< J extends javax.swing.JComponent, M extends org.l
 			if( this.controlAdapter != null ) {
 				//pass
 			} else {
-				this.controlAdapter = new ControlAdapter( this );
+				this.controlAdapter = new ControlAdapter();
 				this.addMouseListener( this.controlAdapter );
 				this.addMouseMotionListener( this.controlAdapter );
 			}

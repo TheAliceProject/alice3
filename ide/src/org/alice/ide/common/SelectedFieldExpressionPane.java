@@ -78,6 +78,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	private org.alice.ide.instancefactory.InstanceFactory instanceFactory = null;
 	private org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
+		super( null );
 		this.addComponent( this.label );
 	}
 	@Override
@@ -110,7 +111,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	}
 	
 	private void updateLabel() {
-		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( this.instanceFactory != null ? org.lgna.project.ast.FieldAccess.class : org.lgna.project.ast.NullLiteral.class ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( this.instanceFactory != null ? org.lgna.project.ast.FieldAccess.class : org.lgna.project.ast.NullLiteral.class ) );
 		this.label.setText( this.instanceFactory != null ? this.instanceFactory.getRepr() : "<unset>" );
 		this.label.revalidateAndRepaint();
 	}

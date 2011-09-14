@@ -70,6 +70,7 @@ class MethodPane extends org.lgna.croquet.components.BorderPanel {
 public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 	private org.lgna.project.ast.AnonymousUserConstructor anonymousConstructor;
 	public AnonymousConstructorPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.AnonymousUserConstructor anonymousConstructor ) {
+		super( null );
 		this.anonymousConstructor = anonymousConstructor;
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		boolean isJava = ide.isJava();
@@ -98,11 +99,11 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		if( isJava ) {
 			this.addComponent( new org.lgna.croquet.components.Label( "}" ) );
 		}
-		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.InstanceCreation.class ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.InstanceCreation.class ) );
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.PAGE_AXIS );
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {

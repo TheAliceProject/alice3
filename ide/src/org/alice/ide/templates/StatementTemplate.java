@@ -46,9 +46,8 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate( org.lgna.croquet.DragModel dragModel, Class<? extends org.lgna.project.ast.Statement> cls) {
-		super(cls, javax.swing.BoxLayout.LINE_AXIS);
-		this.setDragModel( dragModel );
+	public StatementTemplate( org.lgna.croquet.DragModel model, Class<? extends org.lgna.project.ast.Statement> cls) {
+		super( model, cls, javax.swing.BoxLayout.LINE_AXIS);
 	}
 	
 	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair );

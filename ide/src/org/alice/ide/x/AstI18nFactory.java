@@ -132,19 +132,19 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return new org.alice.ide.common.InstancePropertyPane( this, property );
 	}
 	
-	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
+	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane rv;
 		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-			rv = new org.alice.ide.common.ExpressionStatementPane( this, (org.lgna.project.ast.ExpressionStatement)statement, statementListProperty );
+			rv = new org.alice.ide.common.ExpressionStatementPane( dragModel, this, (org.lgna.project.ast.ExpressionStatement)statement, statementListProperty );
 		} else if( statement instanceof org.lgna.project.ast.Comment ) {
-			rv = new org.alice.ide.codeeditor.CommentPane( this, (org.lgna.project.ast.Comment)statement, statementListProperty );
+			rv = new org.alice.ide.codeeditor.CommentPane( dragModel, this, (org.lgna.project.ast.Comment)statement, statementListProperty );
 		} else {
-			rv = new org.alice.ide.common.DefaultStatementPane( this, statement, statementListProperty );
+			rv = new org.alice.ide.common.DefaultStatementPane( dragModel, this, statement, statementListProperty );
 		}
 		return rv;
 	}
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.project.ast.Statement statement ) {
-		return this.createStatementPane( statement, null );
+		return this.createStatementPane( new org.alice.ide.croquet.models.ToDoDragModel(), statement, null );
 	}
 	public org.lgna.croquet.components.JComponent< ? > createExpressionPane( org.lgna.project.ast.Expression expression ) {
 //		java.awt.Component rv;
@@ -207,6 +207,10 @@ public abstract class AstI18nFactory extends I18nFactory {
 				rv = new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
 			} else if( expression instanceof org.alice.ide.ast.PreviousValueExpression ) {
 				rv = new org.alice.ide.common.PreviousValueExpressionPane( this, (org.alice.ide.ast.PreviousValueExpression)expression );
+			} else if( expression instanceof org.alice.ide.ast.CurrentThisExpression ) {
+				//todo
+				rv = new org.alice.ide.common.ExpressionPane( expression, new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
+				rv.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
 			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
 				rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.AssignmentExpression ) {

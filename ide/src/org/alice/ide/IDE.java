@@ -1182,11 +1182,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return text;
 	}
 
-	public final org.lgna.project.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
-		return org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression();
-	}
-
-	
 	@Deprecated
 	public final boolean isAccessibleInScope( org.lgna.project.ast.Accessible accessible ) {
 		return true;

@@ -48,7 +48,7 @@ package org.alice.ide.common;
 public class VariablePane extends LocalPane<org.lgna.project.ast.UserVariable> {
 	public VariablePane( org.lgna.project.ast.UserVariable variable ) {
 		super( variable );
-		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.VariableAccess.class ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.VariableAccess.class ) );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {

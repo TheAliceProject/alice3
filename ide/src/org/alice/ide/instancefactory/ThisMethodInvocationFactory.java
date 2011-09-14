@@ -70,8 +70,14 @@ public class ThisMethodInvocationFactory implements InstanceFactory {
 	public org.lgna.project.ast.AbstractMethod getMethod() {
 		return this.method;
 	}
-	public org.lgna.project.ast.Expression createExpression() {
-		return new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.ThisExpression(), this.method );
+	private org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression expression ) {
+		return new org.lgna.project.ast.MethodInvocation( expression, this.method );
+	}
+	public org.lgna.project.ast.MethodInvocation createTransientExpression() {
+		return this.createMethodInvocation( new org.alice.ide.ast.CurrentThisExpression() );
+	}
+	public org.lgna.project.ast.MethodInvocation createExpression() {
+		return this.createMethodInvocation( new org.lgna.project.ast.ThisExpression() );
 	}
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return this.method.getReturnType();

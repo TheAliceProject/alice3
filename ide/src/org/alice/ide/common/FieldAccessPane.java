@@ -50,6 +50,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 	private org.lgna.project.ast.FieldAccess fieldAccess;
 
 	public FieldAccessPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
+		super( null );
 		this.fieldAccess = fieldAccess;
 		boolean isExpressionDesired;
 		if( this.fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
@@ -66,7 +67,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 			}
 		}
 		Class< ? extends org.lgna.project.ast.Expression > cls = org.lgna.project.ast.FieldAccess.class;
-		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( cls ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( cls ) );
 		org.lgna.project.ast.AbstractField field = this.fieldAccess.field.getValue();
 		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		//nodeNameLabel.scaleFont( 1.2f );

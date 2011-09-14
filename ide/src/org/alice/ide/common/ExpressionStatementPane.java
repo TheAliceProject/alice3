@@ -57,13 +57,13 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			} );
 		}
 	};
-	public ExpressionStatementPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionStatement expressionStatement, org.lgna.project.ast.StatementListProperty owner ) {
-		super( factory, expressionStatement, owner );
+	public ExpressionStatementPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionStatement expressionStatement, org.lgna.project.ast.StatementListProperty owner ) {
+		super( model, factory, expressionStatement, owner );
 		this.refresh();
 	}
 
 	@Override
-	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		final org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)getStatement();
 		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
 		if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
@@ -74,7 +74,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				return java.awt.Color.RED;
 			}
 		}
-		return super.getEnabledBackgroundPaint( x, y, width, height );
+		return super.getBackgroundPaint( x, y, width, height );
 	}
 	
 	@Override

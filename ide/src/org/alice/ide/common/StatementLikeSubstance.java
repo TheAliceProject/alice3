@@ -46,8 +46,8 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class StatementLikeSubstance extends NodeLikeSubstance {
-	private Class< ? extends org.lgna.project.ast.Statement > statementCls;
-	private int axis;
+	private final Class< ? extends org.lgna.project.ast.Statement > statementCls;
+	private final int axis;
 	protected static Class< ? extends org.lgna.project.ast.Statement > getClassFor( org.lgna.project.ast.Statement statement ) {
 		if( statement != null ) {
 			return statement.getClass();
@@ -55,13 +55,14 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 			return org.lgna.project.ast.Statement.class;
 		}
 	}
-	public StatementLikeSubstance( Class< ? extends org.lgna.project.ast.Statement > statementCls, int axis ) {
+	public StatementLikeSubstance( org.lgna.croquet.DragModel model, Class< ? extends org.lgna.project.ast.Statement > statementCls, int axis ) {
+		super( model );
 		this.statementCls = statementCls;
 		this.axis = axis;
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, this.axis );
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+		return new javax.swing.BoxLayout( jComponent, this.axis );
 	}
 	public Class< ? extends org.lgna.project.ast.Statement > getStatementCls() {
 		return this.statementCls;
@@ -90,8 +91,9 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	protected int getInsetRight() {
 		return StatementLikeSubstance.INSET + 4;
 	}
+	
 	@Override
-	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		return org.alice.ide.IDE.getActiveInstance().getTheme().getPaintFor( this.statementCls, x, y, width, height );
 	}
 

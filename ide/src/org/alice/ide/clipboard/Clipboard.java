@@ -211,19 +211,20 @@ class ClipboardDropSite implements org.lgna.croquet.DropSite {
 	}
 }
 
+class ClipboardDragModel extends org.alice.ide.croquet.models.CodeDragModel {
+	public ClipboardDragModel() {
+		super( java.util.UUID.fromString( "d6c25f14-7ed2-4cb8-90dd-f621af830060" ) );
+	}
+	@Override
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return org.lgna.project.ast.JavaType.VOID_TYPE;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
-public class Clipboard extends org.lgna.croquet.components.DragComponent implements org.lgna.croquet.DropReceptor {
-	class ClipboardDragModel extends org.alice.ide.croquet.models.CodeDragModel {
-		public ClipboardDragModel() {
-			super( java.util.UUID.fromString( "d6c25f14-7ed2-4cb8-90dd-f621af830060" ) );
-		}
-		@Override
-		protected org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-			return org.lgna.project.ast.JavaType.VOID_TYPE;
-		}
-	}
+public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.swing.AbstractButton, ClipboardDragModel > implements org.lgna.croquet.DropReceptor {
 
 	private final java.util.Stack< org.lgna.project.ast.AbstractNode > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private static class SingletonHolder {
@@ -249,16 +250,15 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 		
 	};
 	private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
-	private org.lgna.croquet.DragModel dragModel = new ClipboardDragModel();
 	private Clipboard() {
+		super( new ClipboardDragModel() );
 		this.setMinimumPreferredWidth( 40 );
-		this.setDragModel( this.dragModel );
 		this.refresh();
 	}
 	@Override
-	public org.lgna.croquet.DragModel getDragModel() {
+	public org.alice.ide.clipboard.ClipboardDragModel getModel() {
 		if( this.stack != null && this.stack.size() > 0 ) {
-			return super.getDragModel();
+			return super.getModel();
 		} else {
 			return null;
 		}
@@ -359,8 +359,8 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 	}
 	
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		class JClipboardPanel extends javax.swing.JPanel {
+	protected javax.swing.AbstractButton createAwtComponent() {
+		class JClipboard extends javax.swing.AbstractButton {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 40 );
@@ -370,7 +370,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 				return new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( Clipboard.this.subject.getAwtComponent() );
 			}
 		}
-		JClipboardPanel rv = new JClipboardPanel();
+		JClipboard rv = new JClipboard();
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,2,2,2 ) );
 		return rv;
 	}

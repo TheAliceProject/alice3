@@ -41,56 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.gallerybrowser;
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent< org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel > {
-	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
-		super( model );
-		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-		label.setText( model.getText() );
-		label.setIcon( model.getLargeIcon() );
-		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
-		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
-		this.internalAddComponent( label );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 8, 0 ) );
+public class CurrentThisExpression extends org.lgna.project.ast.Expression {
+	public CurrentThisExpression() {
 	}
 	@Override
-	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
-		return new java.awt.geom.RoundRectangle2D.Float( x, y, width-1, height-1, 8, 8 );
-	}
-	@Override
-	protected void fillBounds(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		g2.fill( this.createShape(x, y, width, height));
-	}
-	@Override
-	protected int getInsetTop() {
-		return 0;
-	}
-	@Override
-	protected int getInsetRight() {
-		return 0;
-	}
-	@Override
-	protected int getInsetBottom() {
-		return 0;
-	}
-
-	@Override
-	protected int getDockInsetLeft() {
-		return 0;
-	}
-	@Override
-	protected int getInternalInsetLeft() {
-		return 0;
-	}
-	@Override
-	protected void paintPrologue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		java.awt.geom.RoundRectangle2D rr = new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 );
-		g2.fill( rr );
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+		return org.alice.ide.IDE.getActiveInstance().getTypeInScope();
 	}
 }

@@ -57,8 +57,8 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 	}; 
 	private org.lgna.project.ast.Statement statement;
 	private org.lgna.project.ast.StatementListProperty owner;
-	public AbstractStatementPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
-		super( org.alice.ide.common.StatementLikeSubstance.getClassFor(statement), javax.swing.BoxLayout.LINE_AXIS );
+	public AbstractStatementPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
+		super( model, org.alice.ide.common.StatementLikeSubstance.getClassFor(statement), javax.swing.BoxLayout.LINE_AXIS );
 		this.factory = factory;
 		this.statement = statement;
 		this.owner = owner;
