@@ -54,11 +54,20 @@ public class SuperTypeState extends org.lgna.croquet.DefaultCustomItemState< org
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
-		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType type : types ) {
-			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		
+		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+		
+		for( org.lgna.project.ast.JavaType javaType : apiConfigurationManager.getTopLevelGalleryTypes() ) {
+			org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType );
+			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( namedUserType ) );
 		}
+//		org.lgna.project.Project project = ide.getProject();
+//		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
+//		for( org.lgna.project.ast.NamedUserType type : types ) {
+//			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+//		}
+
 		return rv;
 	}
 }

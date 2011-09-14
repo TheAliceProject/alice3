@@ -68,7 +68,7 @@ public class RootGalleryNode extends GalleryNode {
 		return null;
 	}
 
-	private java.util.List< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getDeclarationChildren() {
+	private java.util.List< org.lgna.project.ast.JavaType > getDeclarationChildren() {
 		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
 	}
 	@Override
