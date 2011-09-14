@@ -211,8 +211,9 @@ public abstract class AstI18nFactory extends I18nFactory {
 				//todo
 				rv = new org.alice.ide.common.ExpressionPane( expression, new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
 				rv.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
-			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
-				rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
+			} else if( expression instanceof org.alice.ide.ast.SelectedInstanceFactoryExpression ) {
+				//rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedInstanceFactoryExpression)expression );
+				rv = new org.alice.ide.common.SelectedInstanceFactoryExpressionPanel( this );
 			} else if( expression instanceof org.lgna.project.ast.AssignmentExpression ) {
 				rv = new org.alice.ide.common.AssignmentExpressionPane( this, (org.lgna.project.ast.AssignmentExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {

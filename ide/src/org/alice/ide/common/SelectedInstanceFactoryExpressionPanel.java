@@ -40,47 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyExpressionPane extends ExpressionLikeSubstance {
-	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 180, 180, 220 );
-	private static final java.awt.Color TOP_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 0.9f );
-	private static final java.awt.Color BOTTOM_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 1.1f );
-	private final org.alice.ide.ast.EmptyExpression emptyExpression;
-	public EmptyExpressionPane( org.alice.ide.ast.EmptyExpression emptyExpression ) {
-		super( null );
-		this.emptyExpression = emptyExpression;
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( " ??? " );
-		this.addComponent( label );
-	}
-
-	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
-		return this.emptyExpression.getType();
-	}
-
-	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		return new java.awt.GradientPaint( 0, y, TOP_COLOR, 0, y+height, BOTTOM_COLOR );
+public class SelectedInstanceFactoryExpressionPanel extends org.alice.ide.croquet.components.RefreshPanel {
+	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+			SelectedInstanceFactoryExpressionPanel.this.refreshLater();
+		}
+	};
+	private final org.alice.ide.x.AstI18nFactory factory;
+	public SelectedInstanceFactoryExpressionPanel( org.alice.ide.x.AstI18nFactory factory ) {
+		this.factory = factory;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
-		return edu.cmu.cs.dennisc.java.awt.BevelState.SUNKEN;
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 	}
 	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		return true;
-	}
-	
-	@Override
-	protected int getInsetTop() {
-		return 0;
+	protected void internalRefresh() {
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
+		org.lgna.project.ast.Expression expression = instanceFactory != null ? instanceFactory.createTransientExpression() : null;
+		this.forgetAndRemoveAllComponents();
+		this.internalAddComponent( this.factory.createExpressionPane( expression ) );
 	}
 	@Override
-	protected int getInsetBottom() {
-		return 1;
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactorySelectionObserver );
+		super.handleUndisplayable();
 	}
 }

@@ -50,10 +50,15 @@ public abstract class RefreshPanel extends org.lgna.croquet.components.Panel {
 	@Override
 	protected javax.swing.JPanel createJPanel() {
 		class JRefreshPanel extends DefaultJPanel {
+//			@Override
+//			public void doLayout() {
+//				RefreshPanel.this.refreshIfNecessary();
+//				super.doLayout();
+//			}
 			@Override
-			public void doLayout() {
+			public void invalidate() {
 				RefreshPanel.this.refreshIfNecessary();
-				super.doLayout();
+				super.invalidate();
 			}
 		}
 		return new JRefreshPanel();
@@ -62,12 +67,19 @@ public abstract class RefreshPanel extends org.lgna.croquet.components.Panel {
 	protected abstract void internalRefresh();
 	private void refreshIfNecessary() {
 		if( this.isRefreshNecessary ) {
-			this.internalRefresh();
+			//todo: move below?
 			this.isRefreshNecessary = false;
+			this.internalRefresh();
+			//this.isRefreshNecessary = false;
 		}
 	}
 	public final void refreshLater() {
-		this.isRefreshNecessary = true;
-		this.revalidateAndRepaint();
+		//System.err.println( "refreshLater: " + Integer.toString( this.hashCode(), 16 ) );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				RefreshPanel.this.isRefreshNecessary = true;
+				RefreshPanel.this.revalidateAndRepaint();
+			}
+		} );
 	}
 }

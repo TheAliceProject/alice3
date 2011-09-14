@@ -77,7 +77,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	
 	private org.alice.ide.instancefactory.InstanceFactory instanceFactory = null;
 	private org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
+	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedInstanceFactoryExpression selectedFieldExpression ) {
 		super( null );
 		this.addComponent( this.label );
 	}
