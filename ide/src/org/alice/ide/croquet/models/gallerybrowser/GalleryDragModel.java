@@ -40,31 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
+
+package org.alice.ide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class GalleryDragModel extends IdeDragModel {
-	public GalleryDragModel() {
-		super( java.util.UUID.fromString( "377a4edf-e0ff-43f7-9c1b-ff4d6a3e8539" ) );
+public abstract class GalleryDragModel extends org.alice.ide.croquet.models.IdeDragModel {
+	public GalleryDragModel( java.util.UUID id ) {
+		super( id );
 	}
+	public abstract String getText();
+	public abstract javax.swing.Icon getSmallIcon();
+	public abstract javax.swing.Icon getLargeIcon();
+	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
 	@Override
 	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
-		if (sceneEditor instanceof org.alice.stageide.sceneeditor.StorytellingSceneEditor)
-		{
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( (org.alice.stageide.sceneeditor.StorytellingSceneEditor)sceneEditor );
-		}
-		else
-		{
+		if( sceneEditor instanceof org.lgna.croquet.DropReceptor ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( (org.lgna.croquet.DropReceptor)sceneEditor );
+		} else {
 			return null;
-//			throw new UnsupportedDataTypeException("Active scene editor type does not support Drag and Drop");
 		}
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		throw new RuntimeException( "todo" );
 	}
 }

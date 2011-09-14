@@ -41,33 +41,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryNode extends GalleryDragModel implements Iterable< GalleryNode > {
-	public GalleryNode( java.util.UUID id ) {
-		super( id );
+public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
+	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, TypeDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static TypeDragModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		TypeDragModel rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new TypeDragModel( type );
+			map.put( type, rv );
+		}
+		return rv;
 	}
-	public abstract GalleryNode getParent();
-	public abstract GalleryNode getChild( int index );
-	public abstract int getChildCount();
-	public abstract int getIndexOfChild( GalleryNode child );
-	public java.util.Iterator< GalleryNode > iterator() {
-		return new java.util.Iterator< GalleryNode >() {
-			private int index = 0;
-			public boolean hasNext() {
-				return this.index < GalleryNode.this.getChildCount();
-			}
-			public GalleryNode next() {
-				GalleryNode rv = GalleryNode.this.getChild( this.index );
-				this.index++;
-				return rv;
-			}
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
+	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
+	private TypeDragModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( java.util.UUID.fromString( "547192e8-12cc-4c62-b05d-8108205c0b06" ) );
+		this.type = type;
+	}
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > parameterType = this.type.getDeclaredConstructors().get( 0 ).getParameters().get( 0 ).getValueType();
+		return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType ).getRoot().getPopupPrepModel();
+	}
+	@Override
+	public org.lgna.croquet.Model getLeftButtonClickModel() {
+		return null;
+	}
+	@Override
+	public javax.swing.Icon getLargeIcon() {
+		return null;
+	}
+	@Override
+	public javax.swing.Icon getSmallIcon() {
+		return null;
+	}
+	@Override
+	public java.lang.String getText() {
+		return this.type.getName();
 	}
 }
