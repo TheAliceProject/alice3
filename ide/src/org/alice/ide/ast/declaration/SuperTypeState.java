@@ -55,7 +55,7 @@ public class SuperTypeState extends org.lgna.croquet.DefaultCustomItemState< org
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.List< org.lgna.project.ast.NamedUserType > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
+		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
 		for( org.lgna.project.ast.NamedUserType type : types ) {
 			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
 		}

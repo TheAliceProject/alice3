@@ -41,46 +41,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.name.validators;
+package org.alice.ide.typemanager;
 
-public abstract class TransientNameValidator extends NodeNameValidator {
-	private final org.lgna.project.ast.UserCode code;
-	private final org.lgna.project.ast.BlockStatement block;
-	public TransientNameValidator( org.lgna.project.ast.Node node, org.lgna.project.ast.UserCode code, org.lgna.project.ast.BlockStatement block ) {
-		super( node );
-//		assert code != null;
-//		assert block != null;
-		this.code = code;
-		this.block = block;
+/**
+ * @author Dennis Cosgrove
+ */
+public class TypeManager {
+	public TypeManager() {
+		throw new AssertionError();
 	}
-	@Override
-	protected boolean isNameAvailable( String name ) {
-		if( this.code != null ) {
-			org.lgna.project.ast.Node node = this.getNode();
-			for( org.lgna.project.ast.UserParameter parameter : this.code.getParamtersProperty() ) {
-				if( parameter == node ) {
-					//pass
-				} else {
-					if( name.equals( parameter.name.getValue() ) ) {
-						return false;
-					}
-				}
-			}
-//			if( this.block != null ) {
-//				
-//			}
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserLocal > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserLocal.class );
-			((org.lgna.project.ast.AbstractCode)this.code).crawl( crawler, false );
-			for( org.lgna.project.ast.UserLocal local : crawler.getList() ) {
-				if( local == node ) {
-					//pass
-				} else {
-					if( name.equals( local.name.getValue() ) ) {
-						return false;
-					}
-				}
+	
+	private static org.lgna.project.Project prevProject;
+	private static java.util.Map< org.lgna.project.ast.JavaType, org.lgna.project.ast.NamedUserType > prevProjectMap;
+	
+	private static org.lgna.project.ast.NamedUserType createTypeFor( org.lgna.project.ast.JavaType javaType ) {
+		org.lgna.project.ast.NamedUserType rv = new org.lgna.project.ast.NamedUserType();
+		rv.name.setValue( "My" + javaType.getName() ); //todo
+		rv.superType.setValue( javaType );
+		//todo
+		return rv;
+	}
+	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.JavaType javaType ) {
+		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		java.util.Set< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
+		for( org.lgna.project.ast.NamedUserType type : types ) {
+			if( type.getSuperType() == javaType ) {
+				return type;
 			}
 		}
-		return true;
+		if( project == prevProject ) {
+			org.lgna.project.ast.NamedUserType prevType = prevProjectMap.get( javaType );
+			if( prevType != null ) {
+				return prevType;
+			}
+		} else {
+			prevProjectMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			prevProject = project;
+		}
+		
+		org.lgna.project.ast.NamedUserType rv = createTypeFor( javaType );
+		prevProjectMap.put( javaType, rv );
+		return rv;
 	}
 }

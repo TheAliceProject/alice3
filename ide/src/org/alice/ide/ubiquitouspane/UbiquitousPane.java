@@ -105,7 +105,7 @@ class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPan
 					}
 				}
 			}
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.VariableDeclarationStatement > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.VariableDeclarationStatement >( org.lgna.project.ast.VariableDeclarationStatement.class );
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.VariableDeclarationStatement > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.VariableDeclarationStatement.class );
 			code.crawl( crawler, false );
 			for( org.lgna.project.ast.VariableDeclarationStatement variableDeclarationStatement : crawler.getList() ) {
 				org.lgna.project.ast.UserVariable variable = variableDeclarationStatement.variable.getValue();

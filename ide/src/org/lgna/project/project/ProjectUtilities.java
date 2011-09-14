@@ -174,8 +174,10 @@ public abstract class ProjectUtilities {
 	public static org.lgna.project.Project readProject( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		assert zipFile != null;
 		org.lgna.project.ast.NamedUserType type = readType( zipFile, PROGRAM_TYPE_ENTRY_NAME );
+		//todo
+		java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = java.util.Collections.emptySet();
 		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipFile );
-		org.lgna.project.Project rv = new org.lgna.project.Project( type, resources );
+		org.lgna.project.Project rv = new org.lgna.project.Project( type, namedUserTypes, resources );
 		readProperties( rv, zipFile );
 		return rv;
 	}
@@ -416,10 +418,10 @@ public abstract class ProjectUtilities {
 		return null;
 	}
 
-	public static java.util.List< org.lgna.project.ast.NamedUserType > getTypes( org.lgna.project.Project project ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.NamedUserType > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.NamedUserType >( org.lgna.project.ast.NamedUserType.class );
-		final org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
-		programType.crawl( crawler, true );
-		return crawler.getList();
-	}
+//	public static java.util.List< org.lgna.project.ast.NamedUserType > getTypes( org.lgna.project.Project project ) {
+//		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.NamedUserType > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
+//		final org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
+//		programType.crawl( crawler, true );
+//		return crawler.getList();
+//	}
 }
