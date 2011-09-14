@@ -40,79 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.preview;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelWithPreview< F > extends org.lgna.croquet.components.CascadeInputDialogPanel< F > {
-	class PreviewPane extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
-		public void refresh() {
-			this.internalForgetAndRemoveAllComponents();
-			this.internalAddComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.CENTER );
-			this.revalidateAndRepaint();
-		}
-		@Override
-		protected javax.swing.JPanel createAwtComponent() {
-			javax.swing.JPanel rv = new javax.swing.JPanel() {
-				@Override
-				public boolean contains(int x, int y) {
-					return false;
-				}
-				@Override
-				public java.awt.Dimension getPreferredSize() {
-					return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
-				}
-			};
-			rv.setOpaque( false );
-			rv.setLayout(new java.awt.BorderLayout());
-			return rv;
-		}
-		@Override
-		protected void handleDisplayable() {
-			super.handleDisplayable();
-			this.refresh();
-		}
-		@Override
-		protected void handleUndisplayable() {
-			this.internalForgetAndRemoveAllComponents();
-			super.handleUndisplayable();
-		}
+public abstract class PanelWithPreview< C extends org.lgna.croquet.components.JComponent< ? > > extends org.lgna.croquet.components.BorderPanel {
+	private static final int PAD = 16;
+	public PanelWithPreview() {
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
 	}
-
-	private PreviewPane previewPane;
-	
 	protected boolean isPreviewDesired() {
 		return true;
 	}
+	private C previewPanel;
 	
-	public PanelWithPreview() {
-		final int PAD = 16;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
+	public C getPreviewPanel() {
+		return this.previewPanel;
 	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.BorderLayout();
-	}
-	public void addComponent( org.lgna.croquet.components.Component< ? > component, org.lgna.croquet.components.BorderPanel.Constraint constraint ) {
-		this.internalAddComponent( component, constraint.getInternal() );
-	}
-	protected abstract org.lgna.croquet.components.Component< ? > createPreviewSubComponent();
-	protected abstract org.lgna.croquet.components.Component< ? > createMainComponent();
+	protected abstract C createPreviewPanel();
+	protected abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
 	private void initializeIfNecessary() {
-		if( this.previewPane != null ) {
+		if( this.previewPanel != null ) {
 			//pass
 		} else {
 			this.addComponent( this.createMainComponent(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 
 			if( this.isPreviewDesired() ) {
-				this.previewPane = new PreviewPane();
+				this.previewPanel = this.createPreviewPanel();
 				org.lgna.croquet.components.PageAxisPanel northPanel = new org.lgna.croquet.components.PageAxisPanel(
 						new org.lgna.croquet.components.LineAxisPanel( 
 								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
 								new org.lgna.croquet.components.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
 								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
-								this.previewPane
+								this.previewPanel
 						),
 						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ),
 						new org.lgna.croquet.components.HorizontalSeparator(),
@@ -122,28 +84,9 @@ public abstract class PanelWithPreview< F > extends org.lgna.croquet.components.
 			}
 		}
 	}
-
-	public void updatePreview() {
-		if( this.previewPane != null ) {
-			this.previewPane.refresh();
-		}
-	}
-
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getActiveInstance();
-	}
-	
-	public abstract String getExplanationIfOkButtonShouldBeDisabled();
-	
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.initializeIfNecessary();
 	}
-//	@Override
-//	protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-//		this.removeComponent( this.centerPanel );
-//		super.handleRemovedFrom(parent);
-//	}
 }
-

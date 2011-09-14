@@ -40,94 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.util;
+
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CollectionUtilities {
-	private CollectionUtilities() {
-		throw new AssertionError();
-	}
-	public static <E extends Object> E[] createArray( java.util.Collection< E > collection, Class< E > cls, boolean isZeroLengthArrayDesiredForNull ) {
-		int size;
-		if( collection != null ) {
-			size = collection.size();
+public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
+	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, TypeDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static TypeDragModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		TypeDragModel rv = map.get( type );
+		if( rv != null ) {
+			//pass
 		} else {
-			if( isZeroLengthArrayDesiredForNull ) {
-				size = 0;
-			} else {
-				size = -1;
-			}
-		}
-		E[] rv;
-		if( size >= 0  ) {
-			rv = (E[])java.lang.reflect.Array.newInstance( cls, size );
-		} else {
-			rv = null;
-		}
-		if( collection != null ) {
-			collection.toArray( rv );
+			rv = new TypeDragModel( type );
+			map.put( type, rv );
 		}
 		return rv;
 	}
-	public static <E extends Object> E[] createArray( java.util.Collection< E > collection, Class< E > cls ) {
-		return createArray( collection, cls, false );
+	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
+	private TypeDragModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( java.util.UUID.fromString( "547192e8-12cc-4c62-b05d-8108205c0b06" ) );
+		this.type = type;
 	}
-	public static <E extends Object> void set( java.util.Collection< E > collection, E... array ) {
-		collection.clear();
-		if( array != null ) {
-			if( collection instanceof java.util.ArrayList< ? > ) {
-				java.util.ArrayList< ? > arrayList = (java.util.ArrayList< ? >)collection;
-				arrayList.ensureCapacity( array.length );
-			}
-			if( collection instanceof java.util.Vector< ? > ) {
-				java.util.Vector< ? > vector = (java.util.Vector< ? >)collection;
-				vector.ensureCapacity( array.length );
-			}
-		}
-		for( E e : array ) {
-			collection.add( e );
-		}
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > parameterType = this.type.getDeclaredConstructors().get( 0 ).getParameters().get( 0 ).getValueType();
+		return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType ).getRoot().getPopupPrepModel();
 	}
-	public static short[] createShortArray( java.util.Collection<Short> collection ) {
-		final int N = collection.size();
-		short[] rv = new short[ N ];
-		int i = 0;
-		for( Short v : collection ) {
-			rv[ i++ ] = v;
-		}
-		return rv;
+	@Override
+	public org.lgna.croquet.Model getLeftButtonClickModel() {
+		return null;
 	}
-	public static int[] createIntArray( java.util.Collection<Integer> collection ) {
-		final int N = collection.size();
-		int[] rv = new int[ N ];
-		int i = 0;
-		for( Integer v : collection ) {
-			rv[ i++ ] = v;
-		}
-		return rv;
+	@Override
+	public javax.swing.Icon getLargeIcon() {
+		return null;
 	}
-	
-    public static float[] createFloatArray(java.util.Collection<Float> collection )
-    {
-        final int N = collection.size();
-        float[] rv = new float[ N ];
-        int i = 0;
-        for( Float v : collection ) {
-            rv[ i++ ] = v;
-        }
-        return rv;
-    }
-    
-    public static double[] createDoubleArray(java.util.Collection<Double> collection )
-    {
-        final int N = collection.size();
-        double[] rv = new double[ N ];
-        int i = 0;
-        for( Double v : collection ) {
-            rv[ i++ ] = v;
-        }
-        return rv;
-    }
+	@Override
+	public javax.swing.Icon getSmallIcon() {
+		return null;
+	}
+	@Override
+	public java.lang.String getText() {
+		return this.type.getName();
+	}
 }

@@ -5,14 +5,15 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import org.lgna.story.resourceutilities.StorytellingResources;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
+public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	
 	static {
-//		StorytellingResources.getInstance().loadSimsBundles();
-		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Model.class, ModelAdapter.class );
+		//StorytellingResources.getInstance().loadSimsBundles();
 	}
 	
 	
@@ -20,21 +21,10 @@ public class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
         Manager.initializeIfNecessary();
     }
     
-    public Model(Object o) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
-        this();
-        initialize(o);
-    }
-    
-    public Model(Object o, String textureName) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
-        this();
-        initializeWithTexture(o, textureName);
-    }
-    
     public native void render();
     public native void pick();
-    private native void initialize( Object o );
-    private native void initializeWithTexture( Object o, String textureName );
-    public native void setTexture( String textureName );
+    private native void getAxisAlignedBoundingBoxForJoint(org.lgna.story.resources.JointId name, double[] bboxData);
+    private native void updateAxisAlignedBoundingBox(double[] bboxData);
     public native void getLocalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
 	public native void setLocalTransformationForPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
 	public native void getAbsoluteTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
@@ -59,10 +49,21 @@ public class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
 		throw new RuntimeException( "todo" );
 	}
+	
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedBoundingBoxForJoint( org.lgna.story.resources.JointId joint ) {
+		double[] bboxData = new double[6];
+		getAxisAlignedBoundingBoxForJoint( joint, bboxData);
+		AxisAlignedBox bbox = new AxisAlignedBox(bboxData[0], bboxData[1], bboxData[2], bboxData[3], bboxData[4], bboxData[5]);
+		return bbox;
+	}
+	
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		boundingBox.setMinimum( -0.1, 0.0, -0.1 );
-		boundingBox.setMaximum( 0.1, 2.0, 0.1 );
+		//the bounding boxes come in the form (double[6])
+		double[] bboxData = new double[6];
+		updateAxisAlignedBoundingBox(bboxData);
+		boundingBox.setMinimum( bboxData[0], bboxData[1], bboxData[2] );
+		boundingBox.setMaximum( bboxData[3], bboxData[4], bboxData[5]  );
 	}
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {

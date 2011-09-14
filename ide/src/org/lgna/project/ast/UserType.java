@@ -106,7 +106,7 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 	public DeclarationProperty< AbstractType<?,?,?> > superType = new DeclarationProperty< AbstractType<?,?,?> >( this ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?,?,?> value) {
-			assert value.isArray() == false;
+			assert value == null || value.isArray() == false;
 			super.setValue( owner, value );
 		}
 	};

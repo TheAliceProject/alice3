@@ -67,8 +67,8 @@ public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsol
             }
         }
         
-        this.weights = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createFloatArray(nonZeroWeights);
-        this.indices = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createIntArray(nonZeroIndices);
+        this.weights = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createFloatArray(nonZeroWeights);
+        this.indices = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createIntArray(nonZeroIndices);
     }
 
     public void setWeightsAndIndices(float[] weights, int[] indices)

@@ -79,9 +79,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.resource;
 				return NebulousPersonVisualData.createInstance( personResource );
 			} else {
-				String modelName = SimsResourceUtilities.getModelName( this.resource );
-				String textureName = SimsResourceUtilities.getTextureName( this.resource );
-				return new NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Model >( new edu.cmu.cs.dennisc.nebulous.Model( modelName, textureName ) );
+				return new NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Model >( new edu.cmu.cs.dennisc.nebulous.Thing( this.resource, this.resource ) );
 			}
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			throw new RuntimeException( lre );

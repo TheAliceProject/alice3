@@ -53,7 +53,7 @@ public class Skeleton {
 			Bone rootBone = Bone.createTree( jointedModelImp, rootJointId ); 
 			list.add( rootBone );
 		}
-		Bone[] array = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( list, Bone.class );
+		Bone[] array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, Bone.class );
 		return new Skeleton( array );
 	}
 	private final Bone[] rootBones;

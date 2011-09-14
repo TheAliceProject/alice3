@@ -59,7 +59,7 @@ public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemS
 		}
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.List< org.lgna.project.ast.NamedUserType > types = org.lgna.project.project.ProjectUtilities.getTypes( project );
+		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
 		for( org.lgna.project.ast.NamedUserType type : types ) {
 			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
 		}

@@ -68,8 +68,8 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 	}
 	public ClassInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.clsName = binaryDecoder.decodeString();
-		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
-		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
 	}
 	
 	public String getClsName() {
@@ -78,8 +78,8 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 	
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.clsName );
-		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.constructorInfos, ConstructorInfo.class ) );
-		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.methodInfos, MethodInfo.class ) );
+		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.constructorInfos, ConstructorInfo.class ) );
+		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.methodInfos, MethodInfo.class ) );
 	}
 	protected Class<?> getCls() {
 		if( this.isGetClassForNameAlreadyAttempted ) {
@@ -93,7 +93,7 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 					this.cls = Class.forName( this.clsName );
 					assert this.cls != null : this.clsName;
 				} catch( Throwable t ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( t, this.clsName );
+					System.err.println( t + " " + this.clsName );
 				}
 //			}
 		}

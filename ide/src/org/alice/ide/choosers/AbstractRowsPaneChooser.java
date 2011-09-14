@@ -72,7 +72,7 @@ public abstract class AbstractRowsPaneChooser<E extends org.lgna.project.ast.Exp
 		return rv;
 	}
 	@Override
-	public org.lgna.croquet.components.Component< ? > createMainComponent() {
+	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		org.lgna.croquet.components.RowsSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowsSpringPanel() {
 			@Override
 			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {

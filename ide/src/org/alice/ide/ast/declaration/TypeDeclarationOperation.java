@@ -40,45 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
 
-import org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				RecentProjectsUriSelectionState.getInstance().getMenuModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				PrintMenuModel.getInstance(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel()
-		);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
-			list.add(org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel());
-		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
-	}
+public class TypeDeclarationOperation extends org.lgna.croquet.InputDialogOperation< org.lgna.project.ast.NamedUserType > {
 	private static class SingletonHolder {
-		private static FileMenuModel instance = new FileMenuModel();
+		private static TypeDeclarationOperation instance = new TypeDeclarationOperation();
 	}
-	public static FileMenuModel getInstance() {
+	public static TypeDeclarationOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private FileMenuModel() {
-		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), createMenuItemPrepModels() );
+	private final NameState nameState = new NameState( this, "" );
+	private final SuperTypeState superTypeState = new SuperTypeState( this, null );
+	private String superTypeLabelText; 
+	private String nameLabelText; 
+	private TypeDeclarationOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "773ed5cf-0922-47d5-b845-20fcf0d9de60" ) );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		this.superTypeLabelText = this.findLocalizedText( "superTypeLabel", TypeDeclarationOperation.class );
+		this.nameLabelText = this.findLocalizedText( "nameLabel", TypeDeclarationOperation.class );
+	}
+	
+	
+	public NameState getNameState() {
+		return this.nameState;
+	}
+	public SuperTypeState getSuperTypeState() {
+		return this.superTypeState;
+	}
+	
+	public String getSuperTypeLabelText() {
+		return this.superTypeLabelText;
+	}
+	public String getNameLabelText() {
+		return this.nameLabelText;
+	}
+	
+	@Override
+	protected org.alice.ide.ast.declaration.components.TypeDeclarationPanel prologue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.project.ast.NamedUserType > step ) {
+		return new org.alice.ide.ast.declaration.components.TypeDeclarationPanel( this );
+	}
+	@Override
+	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.project.ast.NamedUserType > step, boolean isCommit ) {
+		if( isCommit ) {
+			step.finish();
+		} else {
+			step.cancel();
+		}
 	}
 }

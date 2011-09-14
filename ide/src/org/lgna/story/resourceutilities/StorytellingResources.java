@@ -118,12 +118,12 @@ public class StorytellingResources {
 		}
 	}
 	
-	public List< org.lgna.project.ast.UserType<?> > getTopLevelGalleryTypes() {
+	public List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes() {
 		List<ModelResourceTreeNode> rootNodes = this.galleryTree.getRootNodes();
-		List< org.lgna.project.ast.UserType<?> > rootTypes = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		List< org.lgna.project.ast.JavaType > rootTypes = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		for (ModelResourceTreeNode node : rootNodes)
 		{
-			rootTypes.add(node.getUserType());
+			rootTypes.add(node.getUserType().getFirstTypeEncounteredDeclaredInJava());
 		}
 		return rootTypes;
 	}

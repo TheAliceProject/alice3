@@ -89,7 +89,7 @@ public class GeometryUtilities {
 			}
 			
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "sharing", rv.getName(), vertices.length, "--->", sharedVertices.size() );
-			rv.vertices.setValue( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( sharedVertices, edu.cmu.cs.dennisc.scenegraph.Vertex.class ) );
+			rv.vertices.setValue( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( sharedVertices, edu.cmu.cs.dennisc.scenegraph.Vertex.class ) );
 			int[] array = rv.polygonData.getValueAsArray();
 			for( int i=0; i<array.length; i++ ) {
 				array[ i ] = map.get( array[ i ] );
@@ -239,7 +239,7 @@ public class GeometryUtilities {
 					System.err.println( "removing triangle" );
 				}
 			}
-			rv.polygonData.setValue( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createIntArray( trimmedPolygonData ) );
+			rv.polygonData.setValue( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createIntArray( trimmedPolygonData ) );
 		}
 		return rv;
 	}
@@ -279,7 +279,7 @@ public class GeometryUtilities {
 				reassignedPolygonData[ i ] = map.get( polygonData[ i ] );
 			}
 			
-			rv.vertices.setValue( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( trimmedVertices, Vertex.class ) );
+			rv.vertices.setValue( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( trimmedVertices, Vertex.class ) );
 			rv.polygonData.setValue( reassignedPolygonData );
 		}
 		return rv;

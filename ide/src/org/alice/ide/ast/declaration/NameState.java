@@ -41,26 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.gallerybrowser;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclarationOperation extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< org.lgna.project.ast.UserType< org.lgna.project.ast.NamedUserConstructor > > {
-	private static class SingletonHolder {
-		private static TypeDeclarationOperation instance = new TypeDeclarationOperation();
-	}
-	public static TypeDeclarationOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private TypeDeclarationOperation() {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "773ed5cf-0922-47d5-b845-20fcf0d9de60" ) );
-	}
-	@Override
-	protected org.alice.ide.croquet.components.PanelWithPreview< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.project.ast.UserType< org.lgna.project.ast.NamedUserConstructor >> step ) {
-		return null;
-	}
-	@Override
-	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.project.ast.UserType< org.lgna.project.ast.NamedUserConstructor >> step, boolean isCommit ) {
+public class NameState extends org.lgna.croquet.StringState {
+	private final TypeDeclarationOperation owner;
+	public NameState( TypeDeclarationOperation owner, String initialValue ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ae0210ac-2d48-4fec-8f1a-2227f0a20010" ), initialValue );
+		this.owner = owner;
 	}
 }

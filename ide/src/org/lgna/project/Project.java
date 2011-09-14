@@ -195,10 +195,12 @@ public class Project {
 	}
 	
 	private org.lgna.project.ast.NamedUserType programType = null;
+	private java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 	private java.util.Set< org.alice.virtualmachine.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 	private Properties properties = new Properties();
-	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.alice.virtualmachine.Resource > resources ) {
+	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes, java.util.Set< org.alice.virtualmachine.Resource > resources ) {
 		this( programType );
+		this.namedUserTypes.addAll( namedUserTypes );
 		this.resources.addAll( resources );
 	}
 	public Project( org.lgna.project.ast.NamedUserType programType ) {
@@ -271,21 +273,36 @@ public class Project {
 	}
 	
 	public void addResource( org.alice.virtualmachine.Resource resource ) {
-		synchronized( this.resources ) {
-			if( this.resources.contains( resource ) ) {
-				//todo
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
-			} else {
-				this.resources.add( resource );
-			}
+		if( this.resources.contains( resource ) ) {
+			//todo
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
+		} else {
+			this.resources.add( resource );
 		}
 	}
 	public void removeResource( org.alice.virtualmachine.Resource resource ) {
-		synchronized( this.resources ) {
-			this.resources.remove( resource );
-		}
+		this.resources.remove( resource );
 	}
 	public java.util.Set< org.alice.virtualmachine.Resource > getResources() {
 		return this.resources;
+	}
+
+	public void addNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
+		if( this.namedUserTypes.contains( namedUserType ) ) {
+			//todo
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains named user type:", namedUserType );
+		} else {
+			this.namedUserTypes.add( namedUserType );
+		}
+	}
+	public void removeNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
+		this.namedUserTypes.remove( namedUserType );
+	}
+	public java.util.Set< org.lgna.project.ast.NamedUserType > getNamedUserTypes() {
+		boolean isReferencedDeclarationPropertyInclusionDesired = true;
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.NamedUserType > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
+		this.programType.crawl( crawler, isReferencedDeclarationPropertyInclusionDesired );
+		this.namedUserTypes.addAll( crawler.getList() );
+		return this.namedUserTypes;
 	}
 }

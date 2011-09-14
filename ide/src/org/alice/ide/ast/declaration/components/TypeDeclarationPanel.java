@@ -40,21 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+
+package org.alice.ide.ast.declaration.components;
 
 /**
  * @author Dennis Cosgrove
  */
-//todo: remove
-@Deprecated
-abstract class AbstractNonGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation {
-	private final org.lgna.project.ast.UserType<?> declaringType;
-	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId, org.lgna.project.ast.UserType<?> declaringType ) {
-		super( individualId );
-		this.declaringType = declaringType;
+public class TypeDeclarationPanel extends org.alice.ide.preview.PanelWithPreview< TypeHeader > {
+	private final org.alice.ide.ast.declaration.TypeDeclarationOperation model;
+	public TypeDeclarationPanel( org.alice.ide.ast.declaration.TypeDeclarationOperation model ) {
+		this.model = model;
+	}
+	public org.alice.ide.ast.declaration.TypeDeclarationOperation getModel() {
+		return this.model;
 	}
 	@Override
-	protected org.lgna.project.ast.UserType< ? > getDeclaringType() {
-		return this.declaringType;
+	protected TypeHeader createPreviewPanel() {
+		return new TypeHeader( null );
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {
+			@Override
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+				org.alice.ide.ast.declaration.TypeDeclarationOperation model = TypeDeclarationPanel.this.getModel();
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getSuperTypeLabelText() + ":", new org.alice.ide.croquet.components.TypeDropDown( model.getSuperTypeState() ) ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
+				return rv;
+			}
+		}
+		DetailsPanel rv = new DetailsPanel();
+		return rv;
 	}
 }

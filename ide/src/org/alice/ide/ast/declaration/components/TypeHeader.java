@@ -40,31 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
+
+package org.alice.ide.ast.declaration.components;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class GalleryDragModel extends IdeDragModel {
-	public GalleryDragModel() {
-		super( java.util.UUID.fromString( "377a4edf-e0ff-43f7-9c1b-ff4d6a3e8539" ) );
-	}
-	@Override
-	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
-		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
-		if (sceneEditor instanceof org.alice.stageide.sceneeditor.StorytellingSceneEditor)
-		{
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( (org.alice.stageide.sceneeditor.StorytellingSceneEditor)sceneEditor );
-		}
-		else
-		{
-			return null;
-//			throw new UnsupportedDataTypeException("Active scene editor type does not support Drag and Drop");
-		}
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		throw new RuntimeException( "todo" );
+public class TypeHeader extends org.lgna.croquet.components.FlowPanel {
+	public TypeHeader( org.lgna.project.ast.NamedUserType type ) {
+		super( Alignment.LEADING );
+		this.addComponent( new org.lgna.croquet.components.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
+		this.addComponent( new org.lgna.croquet.components.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type != null ? type.getSuperType() : null ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,8 ) );
 	}
 }

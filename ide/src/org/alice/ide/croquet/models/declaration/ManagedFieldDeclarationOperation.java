@@ -56,19 +56,19 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 			this.doStatements.add( statement );
 		}
 		public org.lgna.project.ast.Statement[] getDoStatements() {
-			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.doStatements, org.lgna.project.ast.Statement.class );
+			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.doStatements, org.lgna.project.ast.Statement.class );
 		}
 		public void addUndoStatement( org.lgna.project.ast.Statement statement ) {
 			this.undoStatements.add( statement );
 		}
 		public org.lgna.project.ast.Statement[] getUndoStatements() {
-			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.undoStatements, org.lgna.project.ast.Statement.class );
+			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.undoStatements, org.lgna.project.ast.Statement.class );
 		}
 		public void addResource( org.alice.virtualmachine.Resource resource ) {
 			this.resources.add( resource );
 		}
 		public org.alice.virtualmachine.Resource[] getResources() {
-			return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.resources, org.alice.virtualmachine.Resource.class );
+			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.resources, org.alice.virtualmachine.Resource.class );
 		}
 	}
 

@@ -51,7 +51,7 @@ public interface ApiConfigurationManager {
 	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis();
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
-	public java.util.List< ? extends org.lgna.project.ast.AbstractType< ?,?,? > > getTopLevelGalleryTypes();
+	public java.util.List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes();
 	public org.lgna.project.ast.AbstractType< ?,?,? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
 	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?,?,? > argumentType );

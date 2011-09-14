@@ -1014,12 +1014,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //	}
 
 	private static Iterable< org.lgna.project.ast.UserVariable > getVariables( org.lgna.project.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserVariable > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserVariable >( org.lgna.project.ast.UserVariable.class );
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserVariable > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserVariable.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}
 	private static Iterable< org.lgna.project.ast.UserConstant > getConstants( org.lgna.project.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserConstant > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserConstant >( org.lgna.project.ast.UserConstant.class );
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserConstant > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserConstant.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryNode extends org.alice.ide.croquet.models.IdeDragModel implements Iterable< GalleryNode > {
+public abstract class GalleryNode extends GalleryDragModel implements Iterable< GalleryNode > {
 	public GalleryNode( java.util.UUID id ) {
 		super( id );
 	}
@@ -54,9 +54,6 @@ public abstract class GalleryNode extends org.alice.ide.croquet.models.IdeDragMo
 	public abstract GalleryNode getChild( int index );
 	public abstract int getChildCount();
 	public abstract int getIndexOfChild( GalleryNode child );
-	public abstract String getText();
-	public abstract javax.swing.Icon getSmallIcon();
-	public abstract javax.swing.Icon getLargeIcon();
 	public java.util.Iterator< GalleryNode > iterator() {
 		return new java.util.Iterator< GalleryNode >() {
 			private int index = 0;
@@ -73,15 +70,4 @@ public abstract class GalleryNode extends org.alice.ide.croquet.models.IdeDragMo
 			}
 		};
 	}
-
-	@Override
-	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
-		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
-		if( sceneEditor instanceof org.lgna.croquet.DropReceptor ) {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( (org.lgna.croquet.DropReceptor)sceneEditor );
-		} else {
-			return null;
-		}
-	}
-	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
 }

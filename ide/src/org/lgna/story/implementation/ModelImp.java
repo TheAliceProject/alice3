@@ -54,7 +54,7 @@ public abstract class ModelImp extends TransformableImp {
 		}
 		@Override
 		protected void handleSetValue(edu.cmu.cs.dennisc.color.Color4f value) {
-			for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
+			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
 				sgAppearance.diffuseColor.setValue( value );
 			}
 		}
@@ -66,19 +66,22 @@ public abstract class ModelImp extends TransformableImp {
 		}
 		@Override
 		protected void handleSetValue( Float value ) {
-			for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
+			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
 				sgAppearance.opacity.setValue( value );
 			}
 		}
 	};
 	
-	protected abstract edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances();
+	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 		
 	
 	public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
-		for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : this.getSgAppearances() ) {
-			sgAppearance.diffuseColorTexture.setValue( diffuseColorTexture );
+		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgAppearances() ) {
+			if (sgAppearance instanceof edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)
+			{
+				((edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)sgAppearance).diffuseColorTexture.setValue( diffuseColorTexture );
+			}
 		}
 	}
 	

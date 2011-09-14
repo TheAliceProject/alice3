@@ -51,7 +51,7 @@ public abstract class MethodDeclarationPanel< M extends org.alice.ide.croquet.mo
 		super( model );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createPreviewSubComponent() {
+	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
 		M model = this.getModel();
 		return new org.alice.ide.codeeditor.MethodHeaderPane( model.createPreviewDeclaration(), null, true, model.getDeclaringType() );
 	}

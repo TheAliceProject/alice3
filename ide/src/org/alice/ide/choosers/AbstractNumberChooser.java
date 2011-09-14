@@ -62,7 +62,7 @@ abstract class AbstractNumberChooser<N extends org.lgna.project.ast.Expression> 
 	}
 	
 	@Override
-	public org.lgna.croquet.components.Component< ? > createMainComponent() {
+	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		org.alice.ide.croquet.models.numberpad.PlusMinusOperation plusMinusOperation = org.alice.ide.croquet.models.numberpad.PlusMinusOperation.getInstance( this.numberModel );
 		if( this.numberModel.isDecimalPointSupported() ) {
 			org.alice.ide.croquet.models.numberpad.DecimalPointOperation decimalPointOperation = org.alice.ide.croquet.models.numberpad.DecimalPointOperation.getInstance( this.numberModel );
