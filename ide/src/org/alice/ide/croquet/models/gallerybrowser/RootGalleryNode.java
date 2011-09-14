@@ -58,8 +58,8 @@ public class RootGalleryNode extends GalleryNode {
 	}
 
 	public org.lgna.project.ast.AbstractConstructor getConstructorForArgumentType( org.lgna.project.ast.AbstractType< ?,?,? > argumentType ) {
-		for( org.lgna.project.ast.AbstractType< ?,?,? > type : this.getDeclarationChildren() ) {
-			org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
+		for( org.lgna.project.ast.NamedUserType userType : this.getDeclarationChildren() ) {
+			org.lgna.project.ast.AbstractConstructor constructor = userType.getDeclaredConstructors().get( 0 );
 			org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
 			if( parameter.getValueType().isAssignableFrom( argumentType ) ) {
 				return constructor;
@@ -68,8 +68,8 @@ public class RootGalleryNode extends GalleryNode {
 		return null;
 	}
 
-	private java.util.List< org.lgna.project.ast.JavaType > getDeclarationChildren() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
+	private java.util.List< org.lgna.project.ast.NamedUserType > getDeclarationChildren() {
+		return org.alice.ide.typemanager.TypeManager.getNamedUserTypesFor( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes() );
 	}
 	@Override
 	public GalleryNode getParent() {

@@ -55,6 +55,10 @@ public class InstanceCreationInitializerState extends org.alice.ide.croquet.mode
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.InstanceCreation > blankNode ) {
 		for( org.lgna.project.ast.AbstractType< ?,?,? > type : org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes() ) {
+			if( type instanceof org.lgna.project.ast.JavaType ) {
+				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+				type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType );
+			}
 			rv.add( InstanceCreationFillIn.getInstance( type.getDeclaredConstructors().get( 0 ) ) );
 		}
 		return rv;

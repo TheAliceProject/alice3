@@ -58,7 +58,41 @@ public class TypeManager {
 		org.lgna.project.ast.NamedUserType rv = new org.lgna.project.ast.NamedUserType();
 		rv.name.setValue( "My" + javaType.getName() ); //todo
 		rv.superType.setValue( javaType );
-		//todo
+		
+		for( org.lgna.project.ast.JavaConstructor javaConstructor : javaType.getDeclaredConstructors() ) {
+			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > javaParameters = javaConstructor.getParameters();
+			
+			org.lgna.project.ast.NamedUserConstructor userConstructor = new org.lgna.project.ast.NamedUserConstructor();
+			org.lgna.project.ast.ConstructorBlockStatement body = new org.lgna.project.ast.ConstructorBlockStatement();
+			org.lgna.project.ast.SuperConstructorInvocationStatement superConstructorInvocationStatement = new org.lgna.project.ast.SuperConstructorInvocationStatement();
+
+			superConstructorInvocationStatement.contructor.setValue( javaConstructor );
+			final int N = javaParameters.size();
+			for( int i=0; i<N; i++ ) {
+				org.lgna.project.ast.AbstractParameter javaParameterI = javaParameters.get( i );
+				String name = javaParameterI.getName(); //todo?
+				if( name != null ) {
+					//pass
+				} else {
+					name = "p"+i;
+				}
+				org.lgna.project.ast.UserParameter userParameterI = new org.lgna.project.ast.UserParameter( name, javaParameterI.getValueType() );
+				userConstructor.parameters.add( userParameterI );
+				superConstructorInvocationStatement.arguments.add( new org.lgna.project.ast.Argument( javaParameterI, new org.lgna.project.ast.ParameterAccess( userParameterI ) ) );
+			}
+			
+			body.constructorInvocationStatement.setValue( superConstructorInvocationStatement );
+			userConstructor.body.setValue( body );
+			
+			rv.constructors.add( userConstructor );
+		}
+		return rv;
+	}
+	public static java.util.List< org.lgna.project.ast.NamedUserType > getNamedUserTypesFor( java.util.List< org.lgna.project.ast.JavaType > javaTypes ) {
+		java.util.ArrayList< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( javaTypes.size() );
+		for( org.lgna.project.ast.JavaType javaType : javaTypes ) {
+			rv.add( getNamedUserTypeFor( javaType ) );
+		}
 		return rv;
 	}
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.JavaType javaType ) {
