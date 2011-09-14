@@ -11,7 +11,7 @@ import org.lgna.story.resourceutilities.StorytellingResources;
 public class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	
 	static {
-		StorytellingResources.getInstance().loadSimsBundles();
+//		StorytellingResources.getInstance().loadSimsBundles();
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Model.class, ModelAdapter.class );
 	}
 	
