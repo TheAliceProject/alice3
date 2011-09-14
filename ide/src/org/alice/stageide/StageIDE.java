@@ -292,7 +292,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
 			org.lgna.project.ast.Expression fieldExpression = fieldAccess.expression.getValue();
-			if( fieldExpression instanceof org.lgna.project.ast.ThisExpression ) {
+			if( fieldExpression instanceof org.lgna.project.ast.ThisExpression || fieldExpression instanceof org.alice.ide.ast.CurrentThisExpression ) {
 				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 				org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
 				if( declaringType != null && declaringType.isAssignableTo( org.lgna.story.Scene.class ) ) {
