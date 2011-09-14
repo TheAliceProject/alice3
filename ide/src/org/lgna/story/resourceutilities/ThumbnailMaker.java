@@ -59,10 +59,14 @@ public class ThumbnailMaker {
 	private static final int THUMBNAIL_WIDTH = 160;
 	private static final int THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH * 3 / 4;
 	private static final int ANTI_ALIAS_FACTOR = 4;
+	private static final double SEARCH_FACTOR = .25;
 	
+	private int width;
+	private int height;
 	private final edu.cmu.cs.dennisc.scenegraph.util.World world = new edu.cmu.cs.dennisc.scenegraph.util.World();
 	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgModelTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 	private edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
+	private edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass testImageOffscreenLookingGlass;
 	
 	private static ThumbnailMaker instance;
 	
@@ -76,6 +80,44 @@ public class ThumbnailMaker {
 	private ThumbnailMaker()
 	{
 		world.addComponent(this.sgModelTransformable);
+	}
+	
+	private void setUpCamera(edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass lookingGlass)
+	{
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = world.getSGCamera();
+		boolean isClearingAndAddingRequired;
+		if( lookingGlass.getCameraCount() == 1 ) {
+			if( lookingGlass.getCameraAt( 0 ) == sgCamera ) {
+				isClearingAndAddingRequired = false;
+			} else {
+				isClearingAndAddingRequired = true;
+			}
+		} else {
+			isClearingAndAddingRequired = true;
+		}
+		if( isClearingAndAddingRequired ) {
+			lookingGlass.clearCameras();
+			lookingGlass.addCamera( sgCamera );
+		}
+	}
+	
+	private void initializeIfNecessary(int width, int height)
+	{
+		boolean forceNew = this.width != width || this.height != height;
+		this.width = width;
+		this.height = height;
+		if( offscreenLookingGlass == null || forceNew) {
+			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
+			offscreenLookingGlass.setSize( this.width*ANTI_ALIAS_FACTOR, this.height*ANTI_ALIAS_FACTOR );
+		}
+		if ( testImageOffscreenLookingGlass == null || forceNew)
+		{
+			testImageOffscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
+			testImageOffscreenLookingGlass.setSize( (int)(this.width*SEARCH_FACTOR), (int)(this.height*SEARCH_FACTOR) );
+		}
+		setUpCamera(offscreenLookingGlass);
+		setUpCamera(testImageOffscreenLookingGlass);
+		
 	}
 	
 	private AffineMatrix4x4 getThumbnailCameraOrientation(AxisAlignedBox bbox)
@@ -104,50 +146,193 @@ public class ThumbnailMaker {
 			}
 		}
 		
-		Point3 cameraLocation = cameraRay.getPointAlong(minVal*.8);
+		Point3 cameraLocation = cameraRay.getPointAlong(minVal);
 		OrthogonalMatrix3x3 pointAtOrientation = OrthogonalMatrix3x3.createFromForwardAndUpGuide(cameraDir, Vector3.accessPositiveYAxis());
 		AffineMatrix4x4 rv = new AffineMatrix4x4(pointAtOrientation, cameraLocation);
 		return rv;
 	}
 	
-	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int width, int height) throws Exception {
-		v.setParent(this.sgModelTransformable);
+	private void setSize(int width, int height)
+	{
+		Dimension d = offscreenLookingGlass.getSize();
+		if (d.width != width || d.height != height)
+		{
+			offscreenLookingGlass.setSize(width, height);
+		}
+	}
+	
+	private boolean isTransparent(int pixel)
+	{
+		int alpha = pixel >> 24;
+		return alpha == 0;
+	}
+	
+	private int getLeftBorder(java.awt.image.BufferedImage image)
+	{
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for (int x=0; x<width; x++)
+		{
+			for (int y=0; y<height; y++)
+			{
+				if (!isTransparent(image.getRGB(x, y)))
+				{
+					return x;
+				}
+			}
+		}
+		return width;
+	}
+	
+	private int getRightBorder(java.awt.image.BufferedImage image)
+	{
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for (int x=width-1; x>=0; x--)
+		{
+			for (int y=0; y<height; y++)
+			{
+				if (!isTransparent(image.getRGB(x, y)))
+				{
+					return width - x;
+				}
+			}
+		}
+		return width;
+	}
+	
+	private int getTopBorder(java.awt.image.BufferedImage image)
+	{
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for (int y=0; y<height; y++)
+		{
+			for (int x=0; x<width; x++)
+			{
+				if (!isTransparent(image.getRGB(x, y)))
+				{
+					return y;
+				}
+			}
+		}
+		return height;
+	}
+	
+	private int getBottomBorder(java.awt.image.BufferedImage image)
+	{
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for (int y=height-1; y>=0; y--)
+		{
+			for (int x=0; x<width; x++)
+			{
+				if (!isTransparent(image.getRGB(x, y)))
+				{
+					return height - y;
+				}
+			}
+		}
+		return height;
+	}
+	
+	private boolean isFullyFramed(java.awt.image.BufferedImage image)
+	{
+		int width = image.getWidth();
+		int right = width-1;
+		int height = image.getHeight();
+		int bottom = height - 1;
+		for (int x=0; x<width; x++)
+		{
+			int topPixel = image.getRGB(x, 0);
+			if (!isTransparent(topPixel))
+			{
+				return false;
+			}
+			int bottomPixel = image.getRGB(x, bottom);
+			if (!isTransparent(bottomPixel))
+			{
+				return false;
+			}
+		}
+		for (int y=0; y<height; y++)
+		{
+			int leftPixel = image.getRGB(0, y);
+			if (!isTransparent(leftPixel))
+			{
+				return false;
+			}
+			int rightPixel = image.getRGB(right, y);
+			if (!isTransparent(rightPixel))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private Point3 getRecenterPositionBasedOnImage(java.awt.image.BufferedImage testImage, Point3 currentPosition, AxisAlignedBox bbox)
+	{
+		int topBorder = getTopBorder(testImage);
+		int bottomBorder = getBottomBorder(testImage);
+		int rightBorder = getRightBorder(testImage);
+		int leftBorder = getLeftBorder(testImage);
 		
+		double shiftUpPercent = (bottomBorder - topBorder) / ((double)testImage.getHeight());
+		double shiftRightPercent = (leftBorder - rightBorder) / ((double)testImage.getHeight());
+		
+		double shiftUpAmount = shiftUpPercent * bbox.getHeight();
+		double shiftRightAmount = shiftRightPercent * bbox.getWidth()* .5;
+		
+		Point3 testPosition = new Point3(currentPosition);
+		
+		testPosition.y += shiftUpAmount;
+		testPosition.x += shiftRightAmount;
+		
+		return testPosition;
+	}
+	
+	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int width, int height) throws Exception {
+		initializeIfNecessary(width, height);
+		
+		v.setParent(this.sgModelTransformable);
 		world.getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox));
 		
-		int scaledWidth = ANTI_ALIAS_FACTOR * width;
-		int scaledHeight = ANTI_ALIAS_FACTOR * height;
+		AffineMatrix4x4 cameraTransform = world.getSGCameraVehicle().getAbsoluteTransformation();
+		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray(cameraTransform.translation, Vector3.createMultiplication(cameraTransform.orientation.backward, -1));
+		java.awt.image.BufferedImage testImage = testImageOffscreenLookingGlass.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+		java.nio.FloatBuffer depthBuffer = testImageOffscreenLookingGlass.createFloatBufferForUseAsDepthBuffer();
 		
-		if( offscreenLookingGlass != null ) {
-			Dimension d = offscreenLookingGlass.getSize();
-			if (d.width != scaledWidth || d.height != scaledHeight)
+		testImageOffscreenLookingGlass.clearAndRenderOffscreen();
+		testImage = testImageOffscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+		
+		Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation, bbox);
+		world.getSGCameraVehicle().setTranslationOnly(testPosition, world);
+		boolean framed = true;
+		Point3 lastGoodPosition = new Point3(testPosition);
+		double distanceToCenter = Point3.calculateDistanceBetween(cameraRay.accessOrigin(), bbox.getCenter());
+		double distanceStep = distanceToCenter / 20;
+		double currentT = 0;
+		while (framed && distanceStep < distanceToCenter)
+		{
+			cameraRay.getPointAlong(testPosition, currentT);
+			world.getSGCameraVehicle().setTranslationOnly(testPosition, world);
+			testImageOffscreenLookingGlass.clearAndRenderOffscreen();
+			testImage = testImageOffscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+			framed = isFullyFramed(testImage);
+			if (framed)
 			{
-				offscreenLookingGlass.setSize(scaledWidth, scaledHeight);
+				lastGoodPosition.set(testPosition);
 			}
-		} else {
-			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
-			offscreenLookingGlass.setSize( scaledWidth, scaledHeight );
+			currentT += distanceStep;
 		}
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = world.getSGCamera();
-		boolean isClearingAndAddingRequired;
-		if( offscreenLookingGlass.getCameraCount() == 1 ) {
-			if( offscreenLookingGlass.getCameraAt( 0 ) == sgCamera ) {
-				isClearingAndAddingRequired = false;
-			} else {
-				isClearingAndAddingRequired = true;
-			}
-		} else {
-			isClearingAndAddingRequired = true;
-		}
-		if( isClearingAndAddingRequired ) {
-			offscreenLookingGlass.clearCameras();
-			offscreenLookingGlass.addCamera( sgCamera );
-		}
+		
+		world.getSGCameraVehicle().setTranslationOnly(lastGoodPosition, world);
 		offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
+		
 		v.setParent(null);
 		
-		Image returnImage = rv.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		Image returnImage = rv.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
 		if (returnImage instanceof java.awt.image.BufferedImage)
 		{
 			return (java.awt.image.BufferedImage)returnImage;
