@@ -62,7 +62,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	}
 	@Override
 	protected boolean isInScope() {
-		return getIDE().isSelectedAccessibleInScope();
+		return org.alice.ide.IDE.getActiveInstance().isSelectedAccessibleInScope();
 	}
 	@Override
 	protected boolean contains(int x, int y, boolean jContains) {

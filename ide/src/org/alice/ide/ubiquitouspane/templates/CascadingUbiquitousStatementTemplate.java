@@ -77,7 +77,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 		} else {
 			this.label = new org.lgna.croquet.components.Label( this.getLabelText() );
 			if( org.lgna.project.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
-				this.label.setForegroundColor( getIDE().getTheme().getCommentForegroundColor() );
+				this.label.setForegroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getCommentForegroundColor() );
 			}
 			//this.label.setFontToScaledFont( 1.2f );
 			this.addComponent( this.label );

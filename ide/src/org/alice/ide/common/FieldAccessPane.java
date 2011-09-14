@@ -59,14 +59,14 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		}
 		if( isExpressionDesired ) {
 			this.addComponent( factory.createExpressionPropertyPane( this.fieldAccess.expression ) );
-			if( getIDE().isJava() ) {
+			if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 				//pass
 			} else {
 				this.addComponent( new org.lgna.croquet.components.Label( "." ) );
 			}
 		}
 		Class< ? extends org.lgna.project.ast.Expression > cls = org.lgna.project.ast.FieldAccess.class;
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( cls ) );
+		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( cls ) );
 		org.lgna.project.ast.AbstractField field = this.fieldAccess.field.getValue();
 		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		//nodeNameLabel.scaleFont( 1.2f );

@@ -42,15 +42,7 @@
  */
 package org.lgna.croquet.components;
 
-public abstract class Control extends Widget {
-	private org.lgna.croquet.Model leftButtonPressModel;
-	private org.lgna.croquet.Model leftButtonClickModel;
-	private org.lgna.croquet.Model leftButtonDoubleClickModel;
-
-	private boolean isActive = false;
-	private boolean isPressed = false;
-	//private boolean isSelected = false;
-
+public abstract class Control< J extends javax.swing.JComponent, M extends org.lgna.croquet.Model > extends ViewController< J, M > {
 	private static class ControlAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
 		private Control control;
 		public ControlAdapter( Control control ) {
@@ -83,20 +75,26 @@ public abstract class Control extends Widget {
 			this.control.handleMouseDragged( e );
 		}
 	}
+	
 	private ControlAdapter controlAdapter = null;
+	private org.lgna.croquet.Model leftButtonPressModel;
+	private org.lgna.croquet.Model leftButtonClickModel;
+	private org.lgna.croquet.Model leftButtonDoubleClickModel;
+
+	private boolean isActive = false;
+	private boolean isPressed = false;
+	//private boolean isSelected = false;
+
+	public Control( M model ) {
+		super( model );
+	}
 	protected boolean isMouseListeningDesired() { 
 		return this.leftButtonPressModel != null || this.leftButtonClickModel != null || this.leftButtonDoubleClickModel != null;
 	}
 
-//	@Override
-//	protected void finalize() throws Throwable {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize", this.getClass() );
-//		super.finalize();
-//	}
-	
 	@Override
-	protected void addNotify() {
-		super.addNotify();
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+		super.handleAddedTo( parent );
 		if( isMouseListeningDesired() ) {
 			if( this.controlAdapter != null ) {
 				//pass
@@ -108,8 +106,7 @@ public abstract class Control extends Widget {
 		}
 	}
 	@Override
-	protected void removeNotify() {
-		super.removeNotify();
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		if( this.controlAdapter != null ) {
 			this.removeMouseListener( this.controlAdapter );
 			this.removeMouseMotionListener( this.controlAdapter );
@@ -117,6 +114,7 @@ public abstract class Control extends Widget {
 //			
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "REMOVE NOTIFY: ", this.getClass() );
 		}
+		super.handleRemovedFrom( parent );
 	}
 	
 	private java.awt.event.MouseEvent mousePressedEvent = null;

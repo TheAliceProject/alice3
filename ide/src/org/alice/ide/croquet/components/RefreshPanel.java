@@ -40,16 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide;
+
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Component extends org.lgna.croquet.components.DragComponent {
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getActiveInstance();
+public abstract class RefreshPanel extends org.lgna.croquet.components.Panel {
+	@Override
+	protected javax.swing.JPanel createJPanel() {
+		class JRefreshPanel extends DefaultJPanel {
+			@Override
+			public void doLayout() {
+				RefreshPanel.this.refreshIfNecessary();
+				super.doLayout();
+			}
+		}
+		return new JRefreshPanel();
 	}
-	public void fillBounds( java.awt.Graphics2D g2 ) {
-		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
+	private boolean isRefreshNecessary = true;
+	protected abstract void internalRefresh();
+	private void refreshIfNecessary() {
+		if( this.isRefreshNecessary ) {
+			this.internalRefresh();
+			this.isRefreshNecessary = false;
+		}
+	}
+	public final void refreshLater() {
+		this.isRefreshNecessary = true;
+		this.revalidateAndRepaint();
 	}
 }

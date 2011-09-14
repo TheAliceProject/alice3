@@ -58,7 +58,7 @@ public class ThisPane extends AccessiblePane {
 
 	public ThisPane() {
 		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
+		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
 	}
 	@Override
 	protected void handleDisplayable() {

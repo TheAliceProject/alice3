@@ -144,7 +144,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 //				}
 			}
 		}
-		if( getIDE().isJava() ) {
+		if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
 			this.addComponent( new org.lgna.croquet.components.Label( ";" ) );
 		}
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );

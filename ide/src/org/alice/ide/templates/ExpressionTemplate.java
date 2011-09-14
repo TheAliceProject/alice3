@@ -82,7 +82,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	protected void refresh() {
 		this.removeAllComponents();
 		org.lgna.project.ast.Expression incompleteExpression = this.createIncompleteExpression();
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( incompleteExpression ) );
+		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( incompleteExpression ) );
 		this.addComponent( org.alice.ide.x.TemplateAstI18nFactory.getInstance().createComponent( incompleteExpression ) );
 	}
 	@Override
@@ -92,7 +92,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	
 	@Override
 	protected boolean isInScope() {
-		return getIDE().isSelectedAccessibleInScope();
+		return org.alice.ide.IDE.getActiveInstance().isSelectedAccessibleInScope();
 	}
 	
 	@Override

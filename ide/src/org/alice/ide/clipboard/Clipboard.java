@@ -264,10 +264,6 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 		}
 	}
 	
-	@Override
-	protected javax.swing.JToolTip createToolTip( javax.swing.JToolTip jToolTip ) {
-		return new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( this.subject.getAwtComponent() );
-	}
 	private void refresh() {
 		this.subject.forgetAndRemoveAllComponents();
 		if( this.stack.isEmpty() ) {
@@ -361,33 +357,25 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 			return PasteFromClipboardOperation.getInstance( blockStatementIndexPair );
 		}
 	}
-	@Override
-	protected java.awt.Dimension getPreferredSize( java.awt.Dimension size ) {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( size, 40 );
-	}
 	
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridLayout();
+	protected javax.swing.JPanel createAwtComponent() {
+		class JClipboardPanel extends javax.swing.JPanel {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 40 );
+			}
+			@Override
+			public javax.swing.JToolTip createToolTip() {
+				return new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( Clipboard.this.subject.getAwtComponent() );
+			}
+		}
+		JClipboardPanel rv = new JClipboardPanel();
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,2,2,2 ) );
+		return rv;
 	}
-	@Override
-	protected int getInsetBottom() {
-		return 2;
-	}
-	@Override
-	protected int getInsetLeft() {
-		return 2;
-	}
-	@Override
-	protected int getInsetRight() {
-		return 2;
-	}
-	@Override
-	protected int getInsetTop() {
-		return 2;
-	}
+	
 
-	
 	private static java.awt.Shape createClip( float x, float y, float width, float height, float holeRadius ) {
 		float xADelta = width*0.2f;
 		float xBDelta = width*0.425f;

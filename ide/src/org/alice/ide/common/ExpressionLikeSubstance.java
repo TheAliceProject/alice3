@@ -71,7 +71,6 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		}
 		return false;
 	}
-	
 	@Override
 	protected int getInsetTop() {
 		if( this.isVoid() ) {
@@ -80,7 +79,6 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			return ExpressionLikeSubstance.INSET;
 		}
 	}
-	
 	@Override
 	protected int getDockInsetLeft() {
 		if( this.isVoid() || this.isExpressionTypeFeedbackDesired() == false ) {

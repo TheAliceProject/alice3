@@ -45,22 +45,149 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NodeLikeSubstance extends org.alice.ide.Component {
+public abstract class NodeLikeSubstance extends org.lgna.croquet.components.DragComponent {
 	protected static final int KNURL_WIDTH = 8;
 	private java.awt.Paint enabledBackgroundPaint;
 	public NodeLikeSubstance() {
-		if( this.isKnurlDesired() ) {
-			this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
-		}
 		this.setEnabledBackgroundPaint( null );
+		this.setMaximumSizeClampedToPreferredSize( true );
 	}
+
+	protected abstract int getDockInsetLeft();
+	protected final int getKnurlInsetLeft() {
+		if( this.isKnurlDesired() ) {
+			return KNURL_WIDTH;
+		} else {
+			return 0;
+		}
+	}
+	protected abstract int getInsetTop();
+	protected abstract int getInsetBottom();
+	protected abstract int getInsetRight();
+	protected abstract int getInternalInsetLeft();
+	protected final int getInsetLeft() {
+		int rv = 0;
+		rv += this.getDockInsetLeft();
+		rv += this.getKnurlInsetLeft();
+		rv += this.getInternalInsetLeft();
+		return rv;
+	}
+	private javax.swing.border.Border border = null;
+	private void updateBorderIfNecessary() {
+		if( this.border != null ) {
+			//pass
+		} else {
+			this.border = javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() );
+			this.getAwtComponent().setBorder( this.border );
+			if( this.isKnurlDesired() ) {
+				this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
+			}
+		}
+	}
+	
 	protected void setEnabledBackgroundPaint( java.awt.Paint enabledBackgroundPaint ) {
 		this.enabledBackgroundPaint = enabledBackgroundPaint;
 	}
+	protected boolean isInScope() {
+		return true;
+	}
+	protected java.awt.Paint getEnabledBackgroundPaint(int x, int y, int width, int height) {
+		return this.enabledBackgroundPaint;
+	}
+	protected final java.awt.Paint getBackgroundPaint(int x, int y, int width, int height) {
+		if( this.isInScope() ) {
+			return this.getEnabledBackgroundPaint(x, y, width, height);
+		} else {
+			return java.awt.Color.WHITE;
+		}
+	}
+	protected java.awt.Paint getForegroundPaint( int x, int y, int width, int height ) {
+		return this.getForegroundColor();
+	}
+//	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+//		return this.getBackgroundColor();
+//	}
 
-	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+	}
+	@Override
+	protected javax.swing.JPanel createAwtComponent() {
+		javax.swing.JPanel rv = new javax.swing.JPanel() {
+			@Override
+			public void invalidate() {
+				NodeLikeSubstance.this.updateBorderIfNecessary();
+				super.invalidate();
+			}
+			@Override
+			public boolean contains(int x, int y) {
+				return NodeLikeSubstance.this.contains(x, y, super.contains(x, y) );
+			}
+			@Override
+			public javax.swing.JToolTip createToolTip() {
+				return NodeLikeSubstance.this.createToolTip( super.createToolTip() );
+			}
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				if( NodeLikeSubstance.this.isMaximumSizeClampedToPreferredSize() ) {
+					return this.getPreferredSize();
+				} else {
+					return super.getMaximumSize();
+				}
+			}
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return NodeLikeSubstance.this.getPreferredSize( super.getPreferredSize() );
+			}
+			@Override
+			public void paint(java.awt.Graphics g) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				int x = 0;
+				int y = 0;
+				int width = this.getWidth();
+				int height = this.getHeight();
+
+				java.awt.Paint prevPaint;
+				prevPaint = g2.getPaint();
+				try {
+					g2.setPaint( NodeLikeSubstance.this.getBackgroundPaint( x, y, width, height ) );
+					NodeLikeSubstance.this.paintPrologue( g2, x, y, width, height );
+				} finally {
+					g2.setPaint( prevPaint );
+				}
+				super.paint(g);
+				prevPaint = g2.getPaint();
+				g2.setPaint( NodeLikeSubstance.this.getForegroundPaint( x, y, width, height ) );
+				try {
+					NodeLikeSubstance.this.paintEpilogue( g2, x, y, width, height );
+				} finally {
+					g2.setPaint( prevPaint );
+				}
+			}
+		};
+		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
+		rv.setLayout( layoutManager );
+
+		//rv.setOpaque( false );
+		rv.setBackground( null );
+		rv.setOpaque( false );
+		
+		//rv.setDoubleBuffered( false );
+		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+		
+//		rv.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.GARISH_COLOR );
+//		rv.setOpaque( true );
+		return rv;
+	}
+	protected boolean contains( int x, int y, boolean jContains ) {
+		return jContains;
+	}
+	protected java.awt.Dimension getPreferredSize( java.awt.Dimension size ) {
+		return size;
+	}
+	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
+		return jToolTip;
 	}
 
 	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
@@ -75,24 +202,6 @@ public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 		}
 	}
 
-	protected abstract int getDockInsetLeft();
-	protected final int getKnurlInsetLeft() {
-		if( this.isKnurlDesired() ) {
-			return KNURL_WIDTH;
-		} else {
-			return 0;
-		}
-	}
-	protected abstract int getInternalInsetLeft();
-	@Override
-	protected final int getInsetLeft() {
-		int rv = 0;
-		rv += this.getDockInsetLeft();
-		rv += this.getKnurlInsetLeft();
-		rv += this.getInternalInsetLeft();
-		return rv;
-	}
-	
 	protected boolean isKnurlDesired() {
 		//todo: check for dragOperation
 		return true;
@@ -109,20 +218,6 @@ public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 //			return super.contains( x, y );
 //		}
 //	}
-	protected java.awt.Paint getEnabledBackgroundPaint(int x, int y, int width, int height) {
-		return this.enabledBackgroundPaint;
-	}
-	protected boolean isInScope() {
-		return true;
-	}
-	@Override
-	protected final java.awt.Paint getBackgroundPaint(int x, int y, int width, int height) {
-		if( this.isInScope() ) {
-			return this.getEnabledBackgroundPaint(x, y, width, height);
-		} else {
-			return java.awt.Color.WHITE;
-		}
-	}
 
 	private static final java.awt.Stroke ACTIVE_STROKE = new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static final java.awt.Stroke PASSIVE_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
@@ -158,5 +253,24 @@ public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( grayscale ) );
 			edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g2, x+this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
 		}
+	}
+	
+	public void addComponent(org.lgna.croquet.components.Component<?> component) {
+		this.internalAddComponent(component);
+	}
+	public void addComponent(org.lgna.croquet.components.Component<?> component, Object constraints) {
+		this.internalAddComponent(component, constraints);
+	}
+	public void forgetAndRemoveComponent( org.lgna.croquet.components.Component< ? > component ) {
+		this.internalForgetAndRemoveComponent( component );
+	}
+	public void removeAllComponents() {
+		this.internalRemoveAllComponents();
+	}
+	public void forgetAndRemoveAllComponents() {
+		this.internalForgetAndRemoveAllComponents();
+	}
+	protected void fillBounds( java.awt.Graphics2D g2 ) {
+		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
 	}
 }

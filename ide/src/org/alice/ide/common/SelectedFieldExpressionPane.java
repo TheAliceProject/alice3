@@ -110,7 +110,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	}
 	
 	private void updateLabel() {
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( this.instanceFactory != null ? org.lgna.project.ast.FieldAccess.class : org.lgna.project.ast.NullLiteral.class ) );
+		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( this.instanceFactory != null ? org.lgna.project.ast.FieldAccess.class : org.lgna.project.ast.NullLiteral.class ) );
 		this.label.setText( this.instanceFactory != null ? this.instanceFactory.getRepr() : "<unset>" );
 		this.label.revalidateAndRepaint();
 	}

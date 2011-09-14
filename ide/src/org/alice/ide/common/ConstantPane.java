@@ -48,7 +48,7 @@ package org.alice.ide.common;
 public class ConstantPane extends LocalPane< org.lgna.project.ast.UserConstant > {
 	public ConstantPane( org.lgna.project.ast.UserConstant constant ) {
 		super( constant );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( org.lgna.project.ast.ConstantAccess.class ) );
+		this.setEnabledBackgroundPaint( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ConstantAccess.class ) );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
