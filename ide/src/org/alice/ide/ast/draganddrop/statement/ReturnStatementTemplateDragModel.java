@@ -58,6 +58,6 @@ public class ReturnStatementTemplateDragModel extends StatementTemplateDragModel
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ReturnStatementInsertCascade.getInstance( blockStatementIndexPair ).getRoot().getPopupPrepModel();
+		return org.alice.ide.croquet.models.ast.cascade.statement.ReturnStatementInsertCascade.getInstance( blockStatementIndexPair );
 	}
 }

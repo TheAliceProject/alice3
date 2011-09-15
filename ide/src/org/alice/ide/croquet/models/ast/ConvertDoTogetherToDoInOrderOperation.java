@@ -60,7 +60,7 @@ public class ConvertDoTogetherToDoInOrderOperation extends ConvertStatementWithB
 	}
 
 	private ConvertDoTogetherToDoInOrderOperation( org.lgna.project.ast.DoTogether doTogether ) {
-		super( java.util.UUID.fromString( "d3abb3c6-f016-4687-be00-f0921de7cb39" ), doTogether );
+		super( java.util.UUID.fromString( "782c978e-4047-4351-a333-ecd9e3daf2d0" ), doTogether );
 	}
 	@Override
 	protected org.lgna.project.ast.AbstractStatementWithBody createReplacement() {

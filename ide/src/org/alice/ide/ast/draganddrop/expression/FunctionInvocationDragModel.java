@@ -69,6 +69,6 @@ public class FunctionInvocationDragModel extends AbstractExpressionDragModel {
 	}
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade.getInstance( this.method, expressionProperty ).getRoot().getPopupPrepModel();
+		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade.getInstance( this.method, expressionProperty );
 	}
 }
