@@ -57,6 +57,7 @@ package org.alice.ide.memberseditor.templates;
 		}
 	};
 	public FunctionInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
+		super( org.alice.ide.ast.draganddrop.expression.FunctionInvocationDragModel.getInstance( method ) );
 		this.method = method;
 		if( method instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod methodInAlice = (org.lgna.project.ast.UserMethod)method;
@@ -67,11 +68,6 @@ package org.alice.ide.memberseditor.templates;
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( this.method );
 	}
-	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
-		return this.method.getReturnType();
-	}
-	
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
@@ -86,13 +82,5 @@ package org.alice.ide.memberseditor.templates;
 			((org.lgna.project.ast.UserMethod)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
 		}
 		super.handleUndisplayable();
-	}
-	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
-		return org.alice.ide.ast.AstUtilities.getParameterValueTypes( this.method );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade.getInstance( this.method, expressionProperty ).getRoot().getPopupPrepModel();
 	}
 }

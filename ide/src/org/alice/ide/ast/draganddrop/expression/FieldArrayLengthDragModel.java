@@ -41,18 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.ast.draganddrop.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public class FieldArrayLengthDragModel extends ExpressionDragModel {
+	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldArrayLengthDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FieldArrayLengthDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
+		FieldArrayLengthDragModel rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldArrayLengthDragModel( field );
+			map.put( field, rv );
+		}
+		return rv;
 	}
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
+	private org.lgna.project.ast.AbstractField field;
+	private FieldArrayLengthDragModel( org.lgna.project.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "eecd3065-72bf-489a-8338-6c9aad3582ea" ) );
+		this.field = field;
+	}
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE;
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayLengthOperation.getInstance( this.field, expressionProperty );
 	}
 }

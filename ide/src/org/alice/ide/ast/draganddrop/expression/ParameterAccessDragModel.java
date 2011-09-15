@@ -40,17 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+
+package org.alice.ide.ast.draganddrop.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldPopupOperation extends org.lgna.croquet.PredeterminedMenuModel {
-	public FieldPopupOperation( org.lgna.project.ast.UserField field ) {
-		super( 
-			java.util.UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
-			org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel(),
-			org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel()
-		);
+public class ParameterAccessDragModel extends ExpressionDragModel {
+	private static java.util.Map< org.lgna.project.ast.UserParameter, ParameterAccessDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ParameterAccessDragModel getInstance( org.lgna.project.ast.UserParameter parameter ) {
+		ParameterAccessDragModel rv = map.get( parameter );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ParameterAccessDragModel( parameter );
+			map.put( parameter, rv );
+		}
+		return rv;
+	}
+	private org.lgna.project.ast.UserParameter parameter;
+	private ParameterAccessDragModel( org.lgna.project.ast.UserParameter parameter ) {
+		super( java.util.UUID.fromString( "5b79d910-bbeb-4f9c-9593-28c0697f4036" ) );
+		this.parameter = parameter;
+	}
+	@Override
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return this.parameter.getValueType();
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.cascade.expression.ParameterAccessOperation.getInstance( this.parameter, expressionProperty );
 	}
 }

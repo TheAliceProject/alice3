@@ -64,7 +64,7 @@ public class VariableAssignmentStatementTemplate extends CascadingUbiquitousStat
 		return this.variable.getName() + "\u2190\u2423";
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return new org.alice.ide.croquet.models.ast.cascade.statement.VariableAssignmentInsertCascade( blockStatementIndexPair, this.variable ).getRoot().getPopupPrepModel();
 	}
 }

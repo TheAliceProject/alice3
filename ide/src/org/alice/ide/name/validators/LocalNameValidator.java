@@ -60,7 +60,7 @@ public class LocalNameValidator extends TransientNameValidator {
 	public LocalNameValidator( org.lgna.project.ast.UserLocal local ) {
 		super( local, getCode( local ), getBlock( local ) );
 	}
-	public LocalNameValidator( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public LocalNameValidator( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( null, getCode( blockStatementIndexPair.getBlockStatement() ), blockStatementIndexPair.getBlockStatement() );
 	}
 }

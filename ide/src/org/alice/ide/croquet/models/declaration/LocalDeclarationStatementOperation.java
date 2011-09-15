@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class LocalDeclarationStatementOperation extends DeclarationLikeSubstanceOperation< org.lgna.project.ast.LocalDeclarationStatement >{
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, LocalDeclarationStatementOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static LocalDeclarationStatementOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalDeclarationStatementOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static LocalDeclarationStatementOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		synchronized( map ) {
 			LocalDeclarationStatementOperation rv = map.get( blockStatementIndexPair );
 			if( rv != null ) {
@@ -60,8 +60,8 @@ public class LocalDeclarationStatementOperation extends DeclarationLikeSubstance
 			return rv;
 		}
 	}
-	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	private LocalDeclarationStatementOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	private LocalDeclarationStatementOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( 
 				java.util.UUID.fromString( "5f7fa2bf-5c39-4699-85b9-736a1f8dfbb0" ), 
 				null, false,
@@ -73,7 +73,7 @@ public class LocalDeclarationStatementOperation extends DeclarationLikeSubstance
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 
-	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
 	@Override

@@ -41,18 +41,63 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.ast.draganddrop;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public class ExpressionPropertyDropSite implements org.lgna.croquet.RetargetableDropSite {
+	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+	public ExpressionPropertyDropSite( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		this.expressionProperty = expressionProperty;
 	}
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
+	public ExpressionPropertyDropSite( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		org.alice.ide.croquet.codecs.PropertyOfNodeCodec< org.lgna.project.ast.ExpressionProperty > codec = org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( org.lgna.project.ast.ExpressionProperty.class );
+		this.expressionProperty = codec.decodeValue( binaryDecoder );
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		org.alice.ide.croquet.codecs.PropertyOfNodeCodec< org.lgna.project.ast.ExpressionProperty > codec = org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( org.lgna.project.ast.ExpressionProperty.class );
+		codec.encodeValue( binaryEncoder, this.expressionProperty );
+	}
+	
+	public org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
+		return this.expressionProperty;
+	}
+	public ExpressionPropertyDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
+		org.lgna.project.ast.ExpressionProperty replacementExpressionProperty = retargeter.retarget( this.expressionProperty );
+		
+		System.err.println( "todo: retarget properties" );
+		
+		return new ExpressionPropertyDropSite( replacementExpressionProperty );
+	}
+
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+	public boolean equals( Object o ) {
+		if( o == this )
+			return true;
+		if( o instanceof ExpressionPropertyDropSite ) {
+			ExpressionPropertyDropSite epds = (ExpressionPropertyDropSite)o;
+			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.expressionProperty, epds.expressionProperty );
+		} else {
+			return false;
+		}
+	}
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		if( this.expressionProperty != null ) {
+			rv = 37*rv + this.expressionProperty.hashCode();
+		}
+		return rv;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[expressionProperty=" );
+		sb.append( this.expressionProperty );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

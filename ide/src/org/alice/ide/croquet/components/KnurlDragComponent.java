@@ -232,5 +232,4 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 	protected void fillBounds( java.awt.Graphics2D g2 ) {
 		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
 	}
-	
 }

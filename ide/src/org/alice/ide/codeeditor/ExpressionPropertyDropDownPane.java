@@ -101,11 +101,11 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 		return null;
 	}
 	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep context ) {
+		org.lgna.croquet.DragModel dragModel = context.getModel();
 		org.lgna.croquet.Model rv;
-		org.lgna.croquet.components.DragComponent source = context.getDragSource();
-		if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {
-			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source;
-			rv = expressionCreatorPane.getDropModel( context, this.expressionProperty );
+		if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.ExpressionDragModel ) {
+			org.alice.ide.ast.draganddrop.expression.ExpressionDragModel expressionDragModel = (org.alice.ide.ast.draganddrop.expression.ExpressionDragModel)dragModel;
+			rv = expressionDragModel.getDropModel( context, new org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite( this.expressionProperty ) );
 		} else {
 			rv = null;
 		}

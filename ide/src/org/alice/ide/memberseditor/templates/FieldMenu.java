@@ -40,19 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.memberseditor.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
-	}
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
-	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+/*package-private*/ class FieldMenu extends org.lgna.croquet.PredeterminedMenuModel {
+	public FieldMenu( org.lgna.project.ast.UserField field ) {
+		super( 
+			java.util.UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
+			org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel(),
+			org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel()
+		);
 	}
 }

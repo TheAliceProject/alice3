@@ -41,18 +41,72 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.ast.draganddrop;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public final class BlockStatementIndexPair implements org.lgna.croquet.RetargetableDropSite {
+	private final org.lgna.project.ast.BlockStatement blockStatement;
+	private final int index;
+	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
+		this.blockStatement = blockStatement;
+		this.index = index;
 	}
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
+	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.Project project = ide.getProject();
+		java.util.UUID id = binaryDecoder.decodeId();
+		this.blockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( project, id );
+		this.index = binaryDecoder.decodeInt(); 
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.blockStatement.getUUID() );
+		binaryEncoder.encode( this.index );
+	}
+	
+	public org.lgna.project.ast.BlockStatement getBlockStatement() {
+		return this.blockStatement;
+	}
+	public int getIndex() {
+		return this.index;
+	}
+	
+	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
+		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+		return new BlockStatementIndexPair( replacementBlockStatement, this.index );
+	}
+
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+	public boolean equals( Object o ) {
+		if( o == this )
+			return true;
+		if( o instanceof BlockStatementIndexPair ) {
+			BlockStatementIndexPair bsip = (BlockStatementIndexPair)o;
+			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.blockStatement, bsip.blockStatement ) && this.index == bsip.index;
+		} else {
+			return false;
+		}
+	}
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		if( this.blockStatement != null ) {
+			rv = 37*rv + this.blockStatement.hashCode();
+		}
+		rv = 37*rv + this.index;
+		return rv;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[blockStatement=" );
+		sb.append( this.blockStatement );
+		sb.append( ";index=" );
+		sb.append( this.index );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

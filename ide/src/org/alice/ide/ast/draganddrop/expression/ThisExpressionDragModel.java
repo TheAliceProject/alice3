@@ -41,18 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.ast.draganddrop.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public class ThisExpressionDragModel extends ExpressionDragModel {
+	private static class SingletonHolder {
+		private static ThisExpressionDragModel instance = new ThisExpressionDragModel();
 	}
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
+	public static ThisExpressionDragModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ThisExpressionDragModel() {
+		super( java.util.UUID.fromString( "f1ae6805-24ec-400b-9459-7101f0663356" ) );
+	}
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation.getInstance( expressionProperty );
+	}
+	@Override
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		return ide.getTypeInScope();
 	}
 }
+

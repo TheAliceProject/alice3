@@ -42,6 +42,7 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.common.DefaultStatementPane;
 import org.alice.ide.common.StatementListPropertyPane;
 

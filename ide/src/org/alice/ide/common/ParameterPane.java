@@ -49,7 +49,7 @@ public class ParameterPane extends TransientPane<org.lgna.project.ast.UserParame
 	private org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty;
 
 	public ParameterPane( org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty, final org.lgna.project.ast.UserParameter parameter ) {
-		super( parameter );
+		super( org.alice.ide.ast.draganddrop.expression.ParameterAccessDragModel.getInstance( parameter ), parameter );
 		this.parametersProperty = parametersProperty;
 		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( parameter ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ParameterAccess.class ) );
@@ -77,9 +77,5 @@ public class ParameterPane extends TransientPane<org.lgna.project.ast.UserParame
 		} else {
 			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.ParameterAccessMenuModel.getInstance( parameter ).getPopupPrepModel() );
 		}
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.ParameterAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

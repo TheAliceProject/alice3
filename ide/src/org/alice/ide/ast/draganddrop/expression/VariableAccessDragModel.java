@@ -41,18 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.ast.draganddrop.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public class VariableAccessDragModel extends ExpressionDragModel {
+	private static java.util.Map< org.lgna.project.ast.UserVariable, VariableAccessDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized VariableAccessDragModel getInstance( org.lgna.project.ast.UserVariable variable ) {
+		VariableAccessDragModel rv = map.get( variable );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new VariableAccessDragModel( variable );
+			map.put( variable, rv );
+		}
+		return rv;
 	}
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
+	private org.lgna.project.ast.UserVariable variable;
+	private VariableAccessDragModel( org.lgna.project.ast.UserVariable variable ) {
+		super( java.util.UUID.fromString( "57dbd70e-11e0-4311-905e-954a95403950" ) );
+		this.variable = variable;
+	}
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return this.variable.getValueType();
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.cascade.expression.VariableAccessOperation.getInstance( this.variable, expressionProperty );
 	}
 }

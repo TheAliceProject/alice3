@@ -47,7 +47,7 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.codeeditor.BlockStatementIndexPair.class, org.lgna.project.ast.AbstractField.class };
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, org.lgna.project.ast.AbstractField.class };
 	public SetterMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade instance ) {
 		super( instance );
 	}
@@ -61,13 +61,13 @@ public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.r
 		assert arguments.length == 2;
 		//arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
 		
-		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.codeeditor.BlockStatementIndexPair)arguments[ 0 ];
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];
 		org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
 		blockStatement = retargeter.retarget( blockStatement );
 		int index = blockStatementIndexPair.getIndex();
 		
 		
-		arguments[ 0 ] = new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
+		arguments[ 0 ] = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
 		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
 	}
 
@@ -89,7 +89,7 @@ public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.r
 
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.AbstractField field = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );

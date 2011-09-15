@@ -45,7 +45,7 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyExpression extends org.lgna.project.ast.Expression {
+public class EmptyExpression extends IdeExpression {
 	private org.lgna.project.ast.AbstractType<?,?,?> type;
 	public EmptyExpression( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		this.type = type;

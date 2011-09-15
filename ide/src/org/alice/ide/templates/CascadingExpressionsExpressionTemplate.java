@@ -46,7 +46,7 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class CascadingExpressionsExpressionTemplate extends ExpressionTemplate {
-//	public CascadingExpressionsExpressionTemplate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-//		super( expression );
-//	}
+	public CascadingExpressionsExpressionTemplate( org.alice.ide.ast.draganddrop.expression.ExpressionDragModel model ) {
+		super( model );
+	}
 }

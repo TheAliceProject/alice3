@@ -48,7 +48,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  */
 public abstract class ArrayAtIndexAssignmentInsertCascade extends StatementInsertCascade {
 	private final org.lgna.project.ast.AbstractType< ?,?,? > arrayType;
-	public ArrayAtIndexAssignmentInsertCascade( java.util.UUID id,  org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractType< ?,?,? > arrayType, org.lgna.project.annotations.ValueDetails< ? > parameterDetails ) {
+	public ArrayAtIndexAssignmentInsertCascade( java.util.UUID id,  org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractType< ?,?,? > arrayType, org.lgna.project.annotations.ValueDetails< ? > parameterDetails ) {
 		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
 		this.arrayType = arrayType;
 	}

@@ -41,18 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.ast.draganddrop.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public class FieldAccessDragModel extends ExpressionDragModel {
+	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldAccessDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FieldAccessDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
+		FieldAccessDragModel rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldAccessDragModel( field );
+			map.put( field, rv );
+		}
+		return rv;
 	}
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
+	private org.lgna.project.ast.AbstractField field;
+	private FieldAccessDragModel( org.lgna.project.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "55de38ae-a90e-4c6a-9208-4a83f3f303d9" ) );
+		this.field = field;
+	}
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return this.field.getValueType();
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
 	}
 }

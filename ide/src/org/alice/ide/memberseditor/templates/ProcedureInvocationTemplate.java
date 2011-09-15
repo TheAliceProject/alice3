@@ -89,7 +89,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		return org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( this.method );
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method ).getRoot().getPopupPrepModel();
 	}
 }

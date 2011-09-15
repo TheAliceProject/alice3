@@ -48,7 +48,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  */
 public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
 	private final org.lgna.project.ast.AbstractField field;
-	public FieldArrayAtIndexAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
+	public FieldArrayAtIndexAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "9097fa73-b622-47a0-8f69-3c4bfaf55d71" ), blockStatementIndexPair, field.getValueType(), null );
 		this.field = field;
 	}

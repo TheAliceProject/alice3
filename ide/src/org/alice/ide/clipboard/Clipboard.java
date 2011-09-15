@@ -45,7 +45,7 @@ package org.alice.ide.clipboard;
 
 abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation { 
 	private final boolean isCopy;
-	public FromClipboardOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
+	public FromClipboardOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
 		super( id, blockStatementIndexPair );
 		this.isCopy = isCopy;
 	}
@@ -69,8 +69,8 @@ abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.c
 }
 
 class CopyFromClipboardOperation extends FromClipboardOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, CopyFromClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CopyFromClipboardOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CopyFromClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CopyFromClipboardOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		CopyFromClipboardOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -81,14 +81,14 @@ class CopyFromClipboardOperation extends FromClipboardOperation {
 		}
 		return rv;
 	}
-	private CopyFromClipboardOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private CopyFromClipboardOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "fc162a45-2175-4ccf-a5f2-d3de969692c3" ), blockStatementIndexPair, true );
 	}
 }
 
 class PasteFromClipboardOperation extends FromClipboardOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, PasteFromClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized PasteFromClipboardOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, PasteFromClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized PasteFromClipboardOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		PasteFromClipboardOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -99,7 +99,7 @@ class PasteFromClipboardOperation extends FromClipboardOperation {
 		}
 		return rv;
 	}
-	private PasteFromClipboardOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private PasteFromClipboardOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "4dea691b-af8f-4991-80e2-3db880f1883f" ), blockStatementIndexPair, false );
 	}
 }
@@ -350,7 +350,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.
 		return this.subject;
 	}
 	
-	public org.lgna.croquet.Model getModel( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
+	public org.lgna.croquet.Model getModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
 		if( isCopy ) {
 			return CopyFromClipboardOperation.getInstance( blockStatementIndexPair );
 		} else {

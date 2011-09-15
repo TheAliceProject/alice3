@@ -45,7 +45,7 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class SelectedInstanceFactoryExpression extends org.lgna.project.ast.Expression {
+public class SelectedInstanceFactoryExpression extends IdeExpression {
 	private org.lgna.project.ast.AbstractType<?,?,?> requiredType;
 	public SelectedInstanceFactoryExpression( org.lgna.project.ast.AbstractType<?,?,?> requiredType ) {
 		this.requiredType = requiredType;

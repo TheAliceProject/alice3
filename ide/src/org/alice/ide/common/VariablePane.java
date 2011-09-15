@@ -47,11 +47,7 @@ package org.alice.ide.common;
  */
 public class VariablePane extends LocalPane<org.lgna.project.ast.UserVariable> {
 	public VariablePane( org.lgna.project.ast.UserVariable variable ) {
-		super( variable );
+		super( org.alice.ide.ast.draganddrop.expression.VariableAccessDragModel.getInstance( variable ), variable );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.VariableAccess.class ) );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.VariableAccessOperation.getInstance( this.getTransient(), expressionProperty );
 	}
 }

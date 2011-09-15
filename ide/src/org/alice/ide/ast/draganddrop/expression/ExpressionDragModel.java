@@ -41,18 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.ast.draganddrop.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public abstract class ExpressionDragModel extends org.alice.ide.croquet.models.IdeDragModel {
+	public ExpressionDragModel( java.util.UUID id ) {
+		super( id );
 	}
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
+	public abstract org.lgna.project.ast.AbstractType< ?,?,? > getExpressionType();
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
+		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
+			if( codeEditor != null ) {
+				codeEditor.addPotentialDropReceptors( rv, this.getExpressionType() );
+			} else {
+				//todo: investigate
+			}
+		}
+		return rv;
+	}
+	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty );
+	@Override
+	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		assert dropSite instanceof org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
+		org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite expressionPropertyDropSite = (org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite)dropSite;
+		return this.getDropModel( expressionPropertyDropSite.getExpressionProperty() );
 	}
 }

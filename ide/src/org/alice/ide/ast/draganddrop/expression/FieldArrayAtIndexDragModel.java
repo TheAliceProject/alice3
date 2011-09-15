@@ -41,18 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.ast.draganddrop.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedExpressionBasedStatmentInsertCascade extends StatementInsertCascade {
-	public SelectedExpressionBasedStatmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
-		super( id, blockStatementIndexPair, blanks );
+public class FieldArrayAtIndexDragModel extends ExpressionDragModel {
+	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldArrayAtIndexDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FieldArrayAtIndexDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
+		FieldArrayAtIndexDragModel rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldArrayAtIndexDragModel( field );
+			map.put( field, rv );
+		}
+		return rv;
 	}
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
+	private org.lgna.project.ast.AbstractField field;
+	private FieldArrayAtIndexDragModel( org.lgna.project.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "732cb037-cc8c-4be0-b89c-8c541c282d0c" ) );
+		this.field = field;
+	}
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return this.field.getValueType().getComponentType();
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayAccessCascade.getInstance( this.field, expressionProperty );
 	}
 }

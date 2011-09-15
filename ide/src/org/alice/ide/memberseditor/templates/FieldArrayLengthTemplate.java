@@ -48,22 +48,15 @@ package org.alice.ide.memberseditor.templates;
 /*package-private*/ class FieldArrayLengthTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
 	private org.lgna.project.ast.AbstractField field;
 	public FieldArrayLengthTemplate( org.lgna.project.ast.AbstractField field ) {
+		super( org.alice.ide.ast.draganddrop.expression.FieldArrayLengthDragModel.getInstance( field ) );
 		this.field = field;
 		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
+			org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)this.field;
+			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
 		}
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return new org.lgna.project.ast.ArrayLength( org.alice.ide.ast.AstUtilities.createIncompleteFieldAccess( field ) );
-	}
-	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
-		return org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE;
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayLengthOperation.getInstance( this.field, expressionProperty );
 	}
 }

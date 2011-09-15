@@ -52,7 +52,7 @@ package org.alice.ide.memberseditor.templates;
 		this.field = field;
 		if( this.field instanceof org.lgna.project.ast.UserField ) {
 			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
+			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override
@@ -69,7 +69,7 @@ package org.alice.ide.memberseditor.templates;
 		);
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		//todo
 		return new org.alice.ide.croquet.models.ast.cascade.statement.FieldArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.field ).getRoot().getPopupPrepModel();
 	}

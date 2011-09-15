@@ -41,72 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast.draganddrop.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class BlockStatementIndexPair implements org.lgna.croquet.RetargetableDropSite {
-	private final org.lgna.project.ast.BlockStatement blockStatement;
-	private final int index;
-	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
-		this.blockStatement = blockStatement;
-		this.index = index;
-	}
-	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		java.util.UUID id = binaryDecoder.decodeId();
-		this.blockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( project, id );
-		this.index = binaryDecoder.decodeInt(); 
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.blockStatement.getUUID() );
-		binaryEncoder.encode( this.index );
-	}
-	
-	public org.lgna.project.ast.BlockStatement getBlockStatement() {
-		return this.blockStatement;
-	}
-	public int getIndex() {
-		return this.index;
-	}
-	
-	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-		return new BlockStatementIndexPair( replacementBlockStatement, this.index );
-	}
-
-	@Override
-	public boolean equals( Object o ) {
-		if( o == this )
-			return true;
-		if( o instanceof BlockStatementIndexPair ) {
-			BlockStatementIndexPair bsip = (BlockStatementIndexPair)o;
-			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.blockStatement, bsip.blockStatement ) && this.index == bsip.index;
+public class FunctionInvocationDragModel extends ExpressionDragModel {
+	private static java.util.Map< org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FunctionInvocationDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
+		FunctionInvocationDragModel rv = map.get( method );
+		if( rv != null ) {
+			//pass
 		} else {
-			return false;
+			rv = new FunctionInvocationDragModel( method );
+			map.put( method, rv );
 		}
-	}
-	@Override
-	public int hashCode() {
-		int rv = 17;
-		if( this.blockStatement != null ) {
-			rv = 37*rv + this.blockStatement.hashCode();
-		}
-		rv = 37*rv + this.index;
 		return rv;
 	}
-
+	private org.lgna.project.ast.AbstractMethod method;
+	private FunctionInvocationDragModel( org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "ba2ea332-c7e1-4153-b8d9-39d524b19362" ) );
+		this.method = method;
+	}
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[blockStatement=" );
-		sb.append( this.blockStatement );
-		sb.append( ";index=" );
-		sb.append( this.index );
-		sb.append( "]" );
-		return sb.toString();
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return this.method.getReturnType();
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade.getInstance( this.method, expressionProperty ).getRoot().getPopupPrepModel();
 	}
 }
