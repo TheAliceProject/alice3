@@ -277,7 +277,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< org.lgn
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
 		org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)instance;
-		return this.getFactory().createStatementPane( new org.alice.ide.croquet.models.ToDoDragModel(), statement, getProperty() );
+		return this.getFactory().createStatementPane( org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ), statement, getProperty() );
 	}
 	
 	@Override

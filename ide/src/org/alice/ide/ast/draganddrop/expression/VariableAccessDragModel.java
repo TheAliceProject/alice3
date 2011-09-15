@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class VariableAccessDragModel extends ExpressionDragModel {
+public class VariableAccessDragModel extends AbstractExpressionDragModel {
 	private static java.util.Map< org.lgna.project.ast.UserVariable, VariableAccessDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized VariableAccessDragModel getInstance( org.lgna.project.ast.UserVariable variable ) {
 		VariableAccessDragModel rv = map.get( variable );

@@ -40,17 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.draganddrop.expression;
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionDragModel extends org.alice.ide.croquet.models.IdeDragModel {
-	public ExpressionDragModel( java.util.UUID id ) {
+public abstract class AbstractStatementDragModel extends org.alice.ide.croquet.models.IdeDragModel {
+	public AbstractStatementDragModel( java.util.UUID id ) {
 		super( id );
 	}
-	public abstract org.lgna.project.ast.AbstractType< ?,?,? > getExpressionType();
 	@Override
 	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
 		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -58,18 +56,15 @@ public abstract class ExpressionDragModel extends org.alice.ide.croquet.models.I
 		if( ide != null ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
 			if( codeEditor != null ) {
-				codeEditor.addPotentialDropReceptors( rv, this.getExpressionType() );
+				codeEditor.addPotentialDropReceptors( rv, org.lgna.project.ast.JavaType.VOID_TYPE );
 			} else {
 				//todo: investigate
 			}
 		}
+		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
+		if( clipboard.isPotentiallyAcceptingOf( this ) ) {
+			rv.add( clipboard );
+		}
 		return rv;
-	}
-	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty );
-	@Override
-	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		assert dropSite instanceof org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
-		org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite expressionPropertyDropSite = (org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite)dropSite;
-		return this.getDropModel( expressionPropertyDropSite.getExpressionProperty() );
 	}
 }

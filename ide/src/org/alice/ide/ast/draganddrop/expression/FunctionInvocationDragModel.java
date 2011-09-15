@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionInvocationDragModel extends ExpressionDragModel {
+public class FunctionInvocationDragModel extends AbstractExpressionDragModel {
 	private static java.util.Map< org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized FunctionInvocationDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		FunctionInvocationDragModel rv = map.get( method );

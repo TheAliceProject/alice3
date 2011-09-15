@@ -40,38 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.ast.draganddrop.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
-		super( model );
+public abstract class AbstractExpressionDragModel extends org.alice.ide.croquet.models.IdeDragModel {
+	public AbstractExpressionDragModel( java.util.UUID id ) {
+		super( id );
 	}
+	public abstract org.lgna.project.ast.AbstractType< ?,?,? > getExpressionType();
 	@Override
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getExpressionType();
-	}
-	@Override
-	protected boolean isKnurlDesired() {
-		return true;
-	}
-	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
-	}
-	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
-		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
+	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
+		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
+			if( codeEditor != null ) {
+				codeEditor.addPotentialDropReceptors( rv, this.getExpressionType() );
+			} else {
+				//todo: investigate
+			}
 		}
+		return rv;
 	}
-//	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
-//	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
+	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty );
+	@Override
+	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		assert dropSite instanceof org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
+		org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite expressionPropertyDropSite = (org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite)dropSite;
+		return this.getDropModel( expressionPropertyDropSite.getExpressionProperty() );
+	}
 }

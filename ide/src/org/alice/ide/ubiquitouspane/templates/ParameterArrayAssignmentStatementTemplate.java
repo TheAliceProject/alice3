@@ -48,7 +48,7 @@ package org.alice.ide.ubiquitouspane.templates;
 public class ParameterArrayAssignmentStatementTemplate extends ArrayAssignmentStatementTemplate {
 	private org.lgna.project.ast.UserParameter parameter;
 	public ParameterArrayAssignmentStatementTemplate( org.lgna.project.ast.UserParameter parameter ) {
-		super( org.alice.ide.ast.AstUtilities.createIncompleteParameterArrayAssignmentStatement( parameter ) );
+		super( org.alice.ide.ast.draganddrop.statement.ParameterArrayAtIndexAssignmentTemplateDragModel.getInstance( parameter ), org.alice.ide.ast.AstUtilities.createIncompleteParameterArrayAssignmentStatement( parameter ) );
 		this.parameter = parameter;
 	}
 	@Override
@@ -58,9 +58,5 @@ public class ParameterArrayAssignmentStatementTemplate extends ArrayAssignmentSt
 	@Override
 	protected org.lgna.project.ast.AbstractType<?,?,?> getTransientComponentType() {
 		return this.parameter.valueType.getValue().getComponentType();
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.ast.cascade.statement.ParameterArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.parameter ).getRoot().getPopupPrepModel();
 	}
 }

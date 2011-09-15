@@ -40,38 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
-		super( model );
+public class DoInThreadTemplateDragModel extends StatementTemplateDragModel {
+	private static class SingletonHolder {
+		private static DoInThreadTemplateDragModel instance = new DoInThreadTemplateDragModel();
+	}
+	public static DoInThreadTemplateDragModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DoInThreadTemplateDragModel() {
+		super( java.util.UUID.fromString( "0684bcaa-289d-4c99-8f9c-a3d5610c805a" ) );
 	}
 	@Override
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getExpressionType();
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.DoInThreadInsertOperation.getInstance( blockStatementIndexPair );
 	}
-	@Override
-	protected boolean isKnurlDesired() {
-		return true;
-	}
-	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
-	}
-	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
-		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
-		}
-	}
-//	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
-//	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
 }

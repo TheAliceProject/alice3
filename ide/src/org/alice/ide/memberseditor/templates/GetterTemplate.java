@@ -46,7 +46,7 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 //todo: reduce visibility
-public class GetterTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
+public class GetterTemplate extends org.alice.ide.templates.ExpressionTemplate {
 	private org.lgna.project.ast.AbstractField field;
 	protected GetterTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.ast.draganddrop.expression.FieldAccessDragModel.getInstance( field ) );

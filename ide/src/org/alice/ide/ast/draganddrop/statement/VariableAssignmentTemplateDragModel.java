@@ -40,38 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
-		super( model );
-	}
-	@Override
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getExpressionType();
-	}
-	@Override
-	protected boolean isKnurlDesired() {
-		return true;
-	}
-	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
-	}
-	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
+public class VariableAssignmentTemplateDragModel extends StatementTemplateDragModel {
+	private static java.util.Map< org.lgna.project.ast.UserVariable, VariableAssignmentTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized VariableAssignmentTemplateDragModel getInstance( org.lgna.project.ast.UserVariable variable ) {
+		VariableAssignmentTemplateDragModel rv = map.get( variable );
+		if( rv != null ) {
+			//pass
 		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
+			rv = new VariableAssignmentTemplateDragModel( variable );
+			map.put( variable, rv );
 		}
+		return rv;
 	}
-//	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
-//	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
+	private org.lgna.project.ast.UserVariable variable;
+	private VariableAssignmentTemplateDragModel( org.lgna.project.ast.UserVariable variable ) {
+		super( java.util.UUID.fromString( "8fc94780-2193-4cb9-8db4-ef39e9ece075" ) );
+		this.variable = variable;
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< VariableAssignmentTemplateDragModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< VariableAssignmentTemplateDragModel >( this, this.variable, org.lgna.project.ast.UserVariable.class );
+	}
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return new org.alice.ide.croquet.models.ast.cascade.statement.VariableAssignmentInsertCascade( blockStatementIndexPair, this.variable ).getRoot().getPopupPrepModel();
+	}
 }

@@ -48,7 +48,7 @@ package org.alice.ide.ubiquitouspane.templates;
 public class VariableAssignmentStatementTemplate extends CascadingUbiquitousStatementTemplate {
 	private org.lgna.project.ast.UserVariable variable;
 	public VariableAssignmentStatementTemplate( org.lgna.project.ast.UserVariable variable ) {
-		super( new org.alice.ide.croquet.models.ToDoDragModel(), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.AstUtilities.createIncompleteVariableAssignmentStatement( variable ) );
+		super( org.alice.ide.ast.draganddrop.statement.VariableAssignmentTemplateDragModel.getInstance( variable ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.AstUtilities.createIncompleteVariableAssignmentStatement( variable ) );
 		this.variable = variable;
 		this.variable.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -62,9 +62,5 @@ public class VariableAssignmentStatementTemplate extends CascadingUbiquitousStat
 	protected String getLabelText() {
 		assert this.variable != null;
 		return this.variable.getName() + "\u2190\u2423";
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.ast.cascade.statement.VariableAssignmentInsertCascade( blockStatementIndexPair, this.variable ).getRoot().getPopupPrepModel();
 	}
 }

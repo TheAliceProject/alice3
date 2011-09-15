@@ -41,34 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StatementClassTemplateDragModel extends VoidTemplateDragModel {
-	private static java.util.Map< Class< ? extends org.lgna.project.ast.Statement >, StatementClassTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized StatementClassTemplateDragModel getInstance( Class< ? extends org.lgna.project.ast.Statement > cls ) {
-		StatementClassTemplateDragModel rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new StatementClassTemplateDragModel( cls );
-			map.put( cls, rv );
-		}
-		return rv;
+public class ReturnStatementTemplateDragModel extends StatementTemplateDragModel {
+	private static class SingletonHolder {
+		private static ReturnStatementTemplateDragModel instance = new ReturnStatementTemplateDragModel();
 	}
-	private Class<? extends org.lgna.project.ast.Statement > cls;
-	private StatementClassTemplateDragModel( Class<? extends org.lgna.project.ast.Statement > cls ) {
-		super( java.util.UUID.fromString( "cd416904-2217-4de7-8bb2-c85c9b29d323" ) );
-		this.cls = cls;
+	public static ReturnStatementTemplateDragModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ReturnStatementTemplateDragModel() {
+		super( java.util.UUID.fromString( "7c9b66c3-9cb9-4fbc-bce1-d8dbf33808b2" ) );
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< StatementClassTemplateDragModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< StatementClassTemplateDragModel >( this, this.cls );
-	}
-	@Override
-	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {
-		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates", userInformation.getLocale() );
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.ReturnStatementInsertCascade.getInstance( blockStatementIndexPair ).getRoot().getPopupPrepModel();
 	}
 }

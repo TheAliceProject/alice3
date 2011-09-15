@@ -40,38 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
-		super( model );
-	}
-	@Override
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getExpressionType();
-	}
-	@Override
-	protected boolean isKnurlDesired() {
-		return true;
-	}
-	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
-	}
-	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
+public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragModel {
+	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ProcedureInvocationTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ProcedureInvocationTemplateDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
+		ProcedureInvocationTemplateDragModel rv = map.get( method );
+		if( rv != null ) {
+			//pass
 		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
+			rv = new ProcedureInvocationTemplateDragModel( method );
+			map.put( method, rv );
 		}
+		return rv;
 	}
-//	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
-//	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
+	private org.lgna.project.ast.AbstractMethod method;
+	private ProcedureInvocationTemplateDragModel( org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ) );
+		this.method = method;
+		assert this.method.isProcedure();
+	}
+	public org.lgna.project.ast.AbstractMethod getMethod() {
+		return this.method;
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< ProcedureInvocationTemplateDragModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel >( this, this.method, org.lgna.project.ast.AbstractMethod.class );
+	}
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method ).getRoot().getPopupPrepModel();
+	}
 }

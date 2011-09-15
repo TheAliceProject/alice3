@@ -40,38 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
-		super( model );
-	}
-	@Override
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getExpressionType();
-	}
-	@Override
-	protected boolean isKnurlDesired() {
-		return true;
-	}
-	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
-	}
-	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
+public class StatementDragModel extends AbstractStatementDragModel {
+	private static java.util.Map< org.lgna.project.ast.Statement, StatementDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized StatementDragModel getInstance( org.lgna.project.ast.Statement statement ) {
+		StatementDragModel rv = map.get( statement );
+		if( rv != null ) {
+			//pass
 		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
+			rv = new StatementDragModel( statement );
+			map.put( statement, rv );
 		}
+		return rv;
 	}
-//	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
-//	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
+	private org.lgna.project.ast.Statement statement;
+	private StatementDragModel( org.lgna.project.ast.Statement statement ) {
+		super( java.util.UUID.fromString( "e9c09a94-b2f0-440b-80ee-aff456b382e8" ) );
+		this.statement = statement;
+	}
+	public org.lgna.project.ast.Statement getStatement() {
+		return this.statement;
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< StatementDragModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StatementDragModel >( this, this.statement, org.lgna.project.ast.Statement.class );
+	}
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		throw new RuntimeException( "todo" );
+	}
 }

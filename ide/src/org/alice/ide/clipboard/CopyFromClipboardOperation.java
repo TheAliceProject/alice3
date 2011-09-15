@@ -41,13 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ubiquitouspane.templates;
+package org.alice.ide.clipboard;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingUbiquitousStatementClassTemplate extends CascadingUbiquitousStatementTemplate {
-	public CascadingUbiquitousStatementClassTemplate( Class< ? extends org.lgna.project.ast.Statement > cls, org.lgna.project.ast.Statement incompleteStatement ) {
-		super( org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel.getInstance( cls ), cls, incompleteStatement );
+public class CopyFromClipboardOperation extends FromClipboardOperation {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CopyFromClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CopyFromClipboardOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		CopyFromClipboardOperation rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new CopyFromClipboardOperation( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
+		}
+		return rv;
+	}
+	private CopyFromClipboardOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "fc162a45-2175-4ccf-a5f2-d3de969692c3" ), blockStatementIndexPair, true );
 	}
 }

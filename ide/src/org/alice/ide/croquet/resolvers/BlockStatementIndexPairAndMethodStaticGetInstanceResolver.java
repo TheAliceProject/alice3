@@ -46,12 +46,12 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, org.lgna.project.ast.AbstractField.class };
-	public SetterMenuModelStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade instance ) {
+public class BlockStatementIndexPairAndMethodStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > {
+	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, org.lgna.project.ast.AbstractMethod.class };
+	public BlockStatementIndexPairAndMethodStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade instance ) {
 		super( instance );
 	}
-	public SetterMenuModelStaticGetInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public BlockStatementIndexPairAndMethodStaticGetInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
@@ -72,11 +72,11 @@ public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.r
 	}
 
 	@Override
-	protected java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade.class;
+	protected java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.class;
 	}
 	@Override
-	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade > cls ) {
+	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > cls ) {
 		//note: do not call super
 	}
 	@Override
@@ -92,12 +92,12 @@ public class SetterMenuModelStaticGetInstanceResolver extends org.lgna.croquet.r
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.AbstractField field = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
-		return new Object[] { blockStatementIndexPair, field };
+		org.lgna.project.ast.AbstractMethod method = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
+		return new Object[] { blockStatementIndexPair, method };
 	}
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.getInstance().getBlockStatementIndexPair() );
-		binaryEncoder.encode( this.getInstance().getField().getUUID() );
+		binaryEncoder.encode( this.getInstance().getMethod().getUUID() );
 	}
 }

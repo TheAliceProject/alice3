@@ -40,45 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
 
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementDragModel extends IdeDragModel {
-	public StatementDragModel( java.util.UUID id ) {
-		super( id );
+public class CountLoopTemplateDragModel extends StatementTemplateDragModel {
+	private static class SingletonHolder {
+		private static CountLoopTemplateDragModel instance = new CountLoopTemplateDragModel();
+	}
+	public static CountLoopTemplateDragModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CountLoopTemplateDragModel() {
+		super( java.util.UUID.fromString( "61ad4ccc-a384-42fa-8a18-7964cd513f8e" ) );
 	}
 	@Override
-	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
-		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		if( ide != null ) {
-			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
-			if( codeEditor != null ) {
-				codeEditor.addPotentialDropReceptors( rv, org.lgna.project.ast.JavaType.VOID_TYPE );
-			} else {
-				//todo: investigate
-			}
-		}
-		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
-		if( clipboard.isPotentiallyAcceptingOf( this ) ) {
-			rv.add( clipboard );
-		}
-		return rv;
-	}
-//	protected final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-//		return org.lgna.project.ast.JavaType.VOID_TYPE;
-//	}
-	//protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair dropSite );
-	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair dropSite ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Override
-	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		assert dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
-		return this.getDropModel( step, blockStatementIndexPair );
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.getInstance( blockStatementIndexPair ).getRoot().getPopupPrepModel();
 	}
 }

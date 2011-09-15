@@ -115,7 +115,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.SetterTemplate( field );
+			rv = new org.alice.ide.memberseditor.templates.SetFieldTemplate( field );
 			mapMethodToMutatorTemplate.put( field, rv );
 		}
 		return rv;
@@ -125,7 +125,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.SetArrayAtIndexTemplate( field );
+			rv = new org.alice.ide.memberseditor.templates.SetFieldArrayAtIndexTemplate( field );
 			mapMethodToMutateArrayAtIndexTemplate.put( field, rv );
 		}
 		return rv;

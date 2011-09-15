@@ -40,28 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+
+package org.alice.ide.clipboard;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class SetterTemplate extends ExpressionStatementTemplate {
-	private org.lgna.project.ast.AbstractField field;
-	public SetterTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.croquet.models.ast.SetterTemplateDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
+public class CopyToClipboardOperation extends org.lgna.croquet.ActionOperation {
+	private static java.util.Map< org.lgna.project.ast.AbstractNode, CopyToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CopyToClipboardOperation getInstance( org.lgna.project.ast.AbstractNode node ) {
+		assert node != null;
+		CopyToClipboardOperation rv = map.get( node );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new CopyToClipboardOperation( node );
+			map.put( node, rv );
 		}
+		return rv;
+	}
+	private final org.lgna.project.ast.AbstractNode node;
+	private CopyToClipboardOperation( org.lgna.project.ast.AbstractNode node ) {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "86025bf5-1f1f-4f2d-8182-190574a3c3d0" ) );
+		this.node = org.alice.ide.IDE.getActiveInstance().createCopy( node );
 	}
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.AstUtilities.createIncompleteAssignmentExpression( this.field );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		//todo
-		return new org.alice.ide.croquet.models.ast.cascade.statement.SetterInsertCascade( blockStatementIndexPair, this.field ).getRoot().getPopupPrepModel();
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		Clipboard.getInstance().push( this.node );
+		step.finish();
 	}
 }

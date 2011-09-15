@@ -41,29 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ForEachInArrayInsertCascade extends StatementInsertCascade {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ForEachInArrayInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ForEachInArrayInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		ForEachInArrayInsertCascade rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ForEachInArrayInsertCascade( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
+public abstract class StatementTemplateDragModel extends AbstractStatementDragModel {
+	public StatementTemplateDragModel( java.util.UUID id ) {
+		super( id );
 	}
-	private ForEachInArrayInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "b5764acd-4d2a-4967-a695-beffc7ea19a8" ), blockStatementIndexPair, ArrayBlank.getInstance() );
-	}
+	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair dropSite );
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return org.alice.ide.ast.AstUtilities.createForEachInArrayLoop( expressions[ 0 ] );
+	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		assert dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
+		return this.getDropModel( step, blockStatementIndexPair );
 	}
 }

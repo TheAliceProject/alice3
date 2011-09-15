@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldArrayLengthTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
+/*package-private*/ class FieldArrayLengthTemplate extends org.alice.ide.templates.ExpressionTemplate {
 	private org.lgna.project.ast.AbstractField field;
 	public FieldArrayLengthTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.ast.draganddrop.expression.FieldArrayLengthDragModel.getInstance( field ) );

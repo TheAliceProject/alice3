@@ -40,37 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+
+package org.alice.ide.clipboard;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class SetArrayAtIndexTemplate extends ExpressionStatementTemplate {
-	private org.lgna.project.ast.AbstractField field;
-	public SetArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.croquet.models.ast.SetArrayAtIndexDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
+public abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation { 
+	private final boolean isCopy;
+	public FromClipboardOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
+		super( id, blockStatementIndexPair );
+		this.isCopy = isCopy;
+	}
+
+	@Override
+	protected final org.lgna.project.ast.Statement createStatement() {
+		org.lgna.project.ast.AbstractNode node = Clipboard.getInstance().peek();
+		//todo: recast if necessary
+		if( node instanceof org.lgna.project.ast.Statement ) {
+			org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
+			if( isCopy ) {
+				return org.alice.ide.IDE.getActiveInstance().createCopy( statement );
+			} else {
+				Clipboard.getInstance().pop();
+				return statement;
+			}
+		} else {
+			throw new org.lgna.croquet.CancelException();
 		}
-	}
-	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return new org.lgna.project.ast.AssignmentExpression( 
-				this.field.getValueType().getComponentType(), 
-				new org.lgna.project.ast.ArrayAccess( 
-						field.getValueType(), 
-						org.alice.ide.ast.AstUtilities.createIncompleteFieldAccess( this.field ), 
-						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
-				), 
-				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 
-				new org.alice.ide.ast.EmptyExpression( this.field.getValueType().getComponentType() )
-		);
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		//todo
-		return new org.alice.ide.croquet.models.ast.cascade.statement.FieldArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.field ).getRoot().getPopupPrepModel();
 	}
 }

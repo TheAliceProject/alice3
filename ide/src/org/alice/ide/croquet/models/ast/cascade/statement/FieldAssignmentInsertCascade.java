@@ -41,34 +41,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetArrayAtIndexDragModel extends VoidTemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, SetArrayAtIndexDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized SetArrayAtIndexDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		SetArrayAtIndexDragModel rv = map.get( field );
+public class FieldAssignmentInsertCascade extends ExpressionStatementInsertCascade {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractField, FieldAssignmentInsertCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized FieldAssignmentInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
+		FieldAssignmentInsertCascade rv = mapToMap.get( blockStatementIndexPair, field );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new SetArrayAtIndexDragModel( field );
-			map.put( field, rv );
+			rv = new FieldAssignmentInsertCascade( blockStatementIndexPair, field );
+			mapToMap.put( blockStatementIndexPair, field, rv );
 		}
 		return rv;
 	}
-	private org.lgna.project.ast.AbstractField field;
-	private SetArrayAtIndexDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "099819b6-500a-4f77-b53f-9067f8bb9e75" ) );
+
+	private final org.lgna.project.ast.AbstractField field;
+	private FieldAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "2593d9c3-5619-4d8d-812b-481d73035fe9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( field.getValueType() ) );
 		this.field = field;
 	}
-	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< SetArrayAtIndexDragModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SetArrayAtIndexDragModel >( this, this.field, org.lgna.project.ast.AbstractField.class );
+	public org.lgna.project.ast.AbstractField getField() {
+		return this.field;
 	}
 	@Override
-	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {
-		return this.field.getName();
+	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
+		org.lgna.project.ast.AssignmentExpression rv = new org.lgna.project.ast.AssignmentExpression(
+			this.field.getValueType(), 
+			new org.lgna.project.ast.FieldAccess( instanceExpression, this.field ),
+			org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
+			expressions[ 0 ] 
+		);
+		return rv;
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver( this );
 	}
 }

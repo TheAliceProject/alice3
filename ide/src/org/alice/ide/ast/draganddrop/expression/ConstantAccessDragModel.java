@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantAccessDragModel extends ExpressionDragModel {
+public class ConstantAccessDragModel extends AbstractExpressionDragModel {
 	private static java.util.Map< org.lgna.project.ast.UserConstant, ConstantAccessDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ConstantAccessDragModel getInstance( org.lgna.project.ast.UserConstant constant ) {
 		ConstantAccessDragModel rv = map.get( constant );

@@ -40,38 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.clipboard;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
-		super( model );
-	}
-	@Override
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getExpressionType();
-	}
-	@Override
-	protected boolean isKnurlDesired() {
-		return true;
-	}
-	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
-	}
-	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
+public class CutToClipboardOperation extends org.lgna.croquet.ActionOperation {
+	private static java.util.Map< org.lgna.project.ast.Statement, CutToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CutToClipboardOperation getInstance( org.lgna.project.ast.Statement node ) {
+		assert node != null;
+		CutToClipboardOperation rv = map.get( node );
+		if( rv != null ) {
+			//pass
 		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
+			rv = new CutToClipboardOperation( node );
+			map.put( node, rv );
 		}
+		return rv;
 	}
-//	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
-//	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
+	private final org.lgna.project.ast.Statement statement;
+	private CutToClipboardOperation( org.lgna.project.ast.Statement statement ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
+		this.statement = statement;
+	}
+	@Override
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		step.commitAndInvokeDo( new org.alice.ide.clipboard.edits.CutToClipboardEdit( step, statement ) );
+	}
 }

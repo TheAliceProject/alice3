@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldArrayAtIndexDragModel extends ExpressionDragModel {
+public class FieldArrayAtIndexDragModel extends AbstractExpressionDragModel {
 	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldArrayAtIndexDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized FieldArrayAtIndexDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
 		FieldArrayAtIndexDragModel rv = map.get( field );

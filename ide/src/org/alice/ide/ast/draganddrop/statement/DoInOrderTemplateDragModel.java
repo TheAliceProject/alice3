@@ -41,35 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodTemplateDragModel extends TemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractMethod, MethodTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodTemplateDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
-		MethodTemplateDragModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodTemplateDragModel( method );
-			map.put( method, rv );
-		}
-		return rv;
+public class DoInOrderTemplateDragModel extends StatementTemplateDragModel {
+	private static class SingletonHolder {
+		private static DoInOrderTemplateDragModel instance = new DoInOrderTemplateDragModel();
 	}
-	private org.lgna.project.ast.AbstractMethod method;
-	private MethodTemplateDragModel( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ) );
-		this.method = method;
-		assert this.method.isProcedure();
+	public static DoInOrderTemplateDragModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DoInOrderTemplateDragModel() {
+		super( java.util.UUID.fromString( "cdbe6179-5721-49a9-a77e-79187adaadc2" ) );
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< MethodTemplateDragModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateDragModel >( this, this.method, org.lgna.project.ast.AbstractMethod.class );
-	}
-	@Override
-	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {
-		return this.method.getName();
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

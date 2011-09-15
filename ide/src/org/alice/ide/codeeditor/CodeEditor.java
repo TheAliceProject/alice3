@@ -273,7 +273,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return rv;
 	}
 	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-		if( dragModel instanceof org.alice.ide.croquet.models.StatementDragModel ) {
+		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
 			return false;
@@ -452,11 +452,12 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	}
 	public final org.lgna.croquet.Model dragDropped( final org.lgna.croquet.history.DragStep step ) {
 		org.lgna.croquet.Model rv = null;
-		final org.lgna.croquet.components.DragComponent source = step.getDragSource();
+		final org.lgna.croquet.DragModel dragModel = step.getModel();
+		org.lgna.croquet.components.DragComponent dragSource = step.getDragSource();
 		final java.awt.event.MouseEvent eSource = step.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
-			final int index = statementListPropertyPane.calculateIndex( source.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
+			final int index = statementListPropertyPane.calculateIndex( dragSource.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
 
 			if( EPIC_HACK_desiredStatementListPropertyPane != null && EPIC_HACK_desiredIndex != -1 ) {
 				int desiredIndex;
@@ -474,19 +475,13 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 				}
 			}
 			
-			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
-				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
+			if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel ) {
 				if( org.alice.ide.croquet.models.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
 					//pass
 				} else {
-					org.lgna.project.ast.AbstractMethod method;
-					if( statementTemplate instanceof org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate ) {
-						org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate = (org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate)statementTemplate;
-						method = procedureInvocationTemplate.getMethod();
-					} else {
-						method = null;
-					}
-					if( method != null ) {
+					if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel ) {
+						org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel procedureInvocationTemplateDragModel = (org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel)dragModel;
+						org.lgna.project.ast.AbstractMethod method = procedureInvocationTemplateDragModel.getMethod();
 						if( method == this.getCode() ) {
 							StringBuilder sb = new StringBuilder();
 							sb.append( "<html>" );
@@ -509,40 +504,45 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					} else {
 						blockStatementIndexPair = null;
 					}
-					rv = statementTemplate.getDropModel( step, blockStatementIndexPair );
+					rv = dragModel.getDropModel( step, blockStatementIndexPair );
+					
+					System.err.println( "todo: investigate pushContext" );
 					org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( null, blockStatementIndexPair );
 					System.err.println( "todo: handle finally" );
 				}
-			} else if( source instanceof org.alice.ide.clipboard.Clipboard ) {
-				//todo check for recursion
-				org.alice.ide.clipboard.Clipboard clipboard = (org.alice.ide.clipboard.Clipboard)source;
-				boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource );
+			} else if( dragModel instanceof org.alice.ide.clipboard.ClipboardDragModel ) {
+				org.alice.ide.clipboard.ClipboardDragModel clipboardDragModel = (org.alice.ide.clipboard.ClipboardDragModel)dragModel;
 				if( this.currentUnder != null ) {
 					edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 					if( propertyOwner instanceof org.lgna.project.ast.BlockStatement ) {
 						BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair( (org.lgna.project.ast.BlockStatement)propertyOwner, index );
-						rv = clipboard.getModel( blockStatementIndexPair, isCopy );
+						rv = clipboardDragModel.getDropModel( step, blockStatementIndexPair );
 					}
 				}
-			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
+			} else if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
 				if( this.currentUnder != null ) {
-					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
-					final org.lgna.project.ast.Statement statement = abstractStatementPane.getStatement();
-					final org.lgna.project.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
-					final org.lgna.project.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
-					final int prevIndex = prevOwner.indexOf( statement );
-					final int nextIndex = this.currentUnder.calculateIndex( source.convertPoint( eSource.getPoint(), this.currentUnder ) );
+					org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
+					final org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
+					
+					org.lgna.project.ast.Node parent = statement.getParent();
+					if( parent instanceof org.lgna.project.ast.BlockStatement ) {
+						org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
+						final org.lgna.project.ast.StatementListProperty prevOwner = blockStatement.statements;
+						final org.lgna.project.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
+						final int prevIndex = prevOwner.indexOf( statement );
+						final int nextIndex = this.currentUnder.calculateIndex( dragSource.convertPoint( eSource.getPoint(), this.currentUnder ) );
 
-					org.lgna.project.ast.BlockStatement prevBlockStatement = (org.lgna.project.ast.BlockStatement)prevOwner.getOwner();
-					org.lgna.project.ast.BlockStatement nextBlockStatement = (org.lgna.project.ast.BlockStatement)nextOwner.getOwner();
-					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-						org.lgna.project.ast.Statement copy = getIDE().createCopy( statement );
-						rv = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( nextBlockStatement, nextIndex, copy );
-					} else {
-						if( prevOwner == nextOwner && ( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) ) {
-							rv = null;
+						org.lgna.project.ast.BlockStatement prevBlockStatement = (org.lgna.project.ast.BlockStatement)prevOwner.getOwner();
+						org.lgna.project.ast.BlockStatement nextBlockStatement = (org.lgna.project.ast.BlockStatement)nextOwner.getOwner();
+						if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
+							org.lgna.project.ast.Statement copy = getIDE().createCopy( statement );
+							rv = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( nextBlockStatement, nextIndex, copy );
 						} else {
-							rv = new org.alice.ide.croquet.models.ast.MoveStatementActionOperation( prevBlockStatement, prevIndex, statement, nextBlockStatement, nextIndex );
+							if( prevOwner == nextOwner && ( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) ) {
+								rv = null;
+							} else {
+								rv = new org.alice.ide.croquet.models.ast.MoveStatementActionOperation( prevBlockStatement, prevIndex, statement, nextBlockStatement, nextIndex );
+							}
 						}
 					}
 				}

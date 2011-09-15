@@ -41,32 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetterInsertCascade extends ExpressionStatementInsertCascade {
-	private final org.lgna.project.ast.AbstractField field;
-	public SetterInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "2593d9c3-5619-4d8d-812b-481d73035fe9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( field.getValueType() ) );
-		this.field = field;
+public class DeclareLocalDragModel extends StatementTemplateDragModel {
+	private static class SingletonHolder {
+		private static DeclareLocalDragModel instance = new DeclareLocalDragModel();
 	}
-	public org.lgna.project.ast.AbstractField getField() {
-		return this.field;
+	public static DeclareLocalDragModel getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
-		org.lgna.project.ast.AssignmentExpression rv = new org.lgna.project.ast.AssignmentExpression(
-			this.field.getValueType(), 
-			new org.lgna.project.ast.FieldAccess( instanceExpression, this.field ),
-			org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
-			expressions[ 0 ] 
-		);
-		return rv;
+	private DeclareLocalDragModel() {
+		super( java.util.UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ) );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.SetterMenuModelStaticGetInstanceResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.SetterMenuModelStaticGetInstanceResolver( this );
+	public org.lgna.croquet.Operation< ? > getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.declaration.LocalDeclarationStatementOperation.getInstance( blockStatementIndexPair );
 	}
 }

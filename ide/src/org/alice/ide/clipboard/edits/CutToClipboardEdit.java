@@ -40,38 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.clipboard.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
-		super( model );
+public class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
+	private org.lgna.project.ast.Statement statement;
+	private org.lgna.project.ast.BlockStatement originalBlockStatement;
+	private int originalIndex;
+	public CutToClipboardEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement ) {
+		super( completionStep );
+		this.statement = statement;
+		this.originalBlockStatement = (org.lgna.project.ast.BlockStatement)this.statement.getParent();;
+		assert this.originalBlockStatement != null;
+		this.originalIndex = this.originalBlockStatement.statements.indexOf( this.statement );
+		assert this.originalIndex != -1;
+	}
+	public CutToClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.Project project = ide.getProject();
+		java.util.UUID statementId = binaryDecoder.decodeId();
+		this.statement = org.lgna.project.project.ProjectUtilities.lookupNode( project, statementId );
+		java.util.UUID blockStatementId = binaryDecoder.decodeId();
+		this.originalBlockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( project, blockStatementId );
+		this.originalIndex = binaryDecoder.decodeInt();
 	}
 	@Override
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getExpressionType();
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.statement.getUUID() );
+		binaryEncoder.encode( this.originalBlockStatement.getUUID() );
+		binaryEncoder.encode( this.originalIndex );
 	}
 	@Override
-	protected boolean isKnurlDesired() {
-		return true;
+	protected void doOrRedoInternal( boolean isDo ) {
+		org.alice.ide.clipboard.Clipboard.getInstance().push( this.statement );
+		this.originalBlockStatement.statements.remove( this.originalIndex );
 	}
 	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
+	protected void undoInternal() {
+		org.alice.ide.clipboard.Clipboard.getInstance().pop();
+		this.originalBlockStatement.statements.add( this.originalIndex, this.statement );
 	}
 	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
-		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
-		}
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "cut to clipboard" );
+		return rv;
 	}
-//	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
-//	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
 }

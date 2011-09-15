@@ -45,8 +45,8 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class ExpressionStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
-	public ExpressionStatementTemplate( org.lgna.croquet.DragModel dragAndDropModel ) {
+/*package-private*/ abstract class ExpressionStatementTemplate extends org.alice.ide.templates.StatementTemplate {
+	public ExpressionStatementTemplate( org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel dragAndDropModel ) {
 		super( dragAndDropModel, org.lgna.project.ast.ExpressionStatement.class );
 	}
 	protected abstract org.lgna.project.ast.Expression createIncompleteExpression();

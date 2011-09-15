@@ -40,13 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.templates;
+
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingExpressionsExpressionTemplate extends ExpressionTemplate {
-	public CascadingExpressionsExpressionTemplate( org.alice.ide.ast.draganddrop.expression.ExpressionDragModel model ) {
-		super( model );
+public class FieldArrayAtIndexAssignmentTemplateDragModel extends StatementTemplateDragModel {
+	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldArrayAtIndexAssignmentTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FieldArrayAtIndexAssignmentTemplateDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
+		FieldArrayAtIndexAssignmentTemplateDragModel rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldArrayAtIndexAssignmentTemplateDragModel( field );
+			map.put( field, rv );
+		}
+		return rv;
+	}
+	private org.lgna.project.ast.AbstractField field;
+	private FieldArrayAtIndexAssignmentTemplateDragModel( org.lgna.project.ast.AbstractField field ) {
+		super( java.util.UUID.fromString( "099819b6-500a-4f77-b53f-9067f8bb9e75" ) );
+		this.field = field;
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< FieldArrayAtIndexAssignmentTemplateDragModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FieldArrayAtIndexAssignmentTemplateDragModel >( this, this.field, org.lgna.project.ast.AbstractField.class );
+	}
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.FieldArrayAtIndexAssignmentInsertCascade.getInstance( blockStatementIndexPair, this.field ).getRoot().getPopupPrepModel();
 	}
 }

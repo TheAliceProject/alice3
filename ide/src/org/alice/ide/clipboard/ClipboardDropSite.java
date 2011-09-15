@@ -41,13 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.clipboard;
 
+//todo
 /**
  * @author Dennis Cosgrove
  */
-public abstract class VoidTemplateDragModel extends TemplateDragModel {
-	public VoidTemplateDragModel( java.util.UUID id ) {
-		super( id );
+public final class ClipboardDropSite implements org.lgna.croquet.DropSite {
+	public ClipboardDropSite() {
+	}
+	public ClipboardDropSite( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+	@Override
+	public boolean equals( java.lang.Object obj ) {
+		return obj instanceof ClipboardDropSite;
 	}
 }

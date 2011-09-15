@@ -45,10 +45,10 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
+public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.StatementTemplate {
 	private UbiquitousStatementImplementor implementor;
 	private org.lgna.croquet.components.Label label;
-	public CascadingUbiquitousStatementTemplate( org.lgna.croquet.DragModel dragModel, Class< ? extends org.lgna.project.ast.Statement > cls, org.lgna.project.ast.Statement incompleteStatement ) {
+	public CascadingUbiquitousStatementTemplate( org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel dragModel, Class< ? extends org.lgna.project.ast.Statement > cls, org.lgna.project.ast.Statement incompleteStatement ) {
 		super( dragModel, cls );
 		this.implementor = new UbiquitousStatementImplementor( incompleteStatement );
 	}

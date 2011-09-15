@@ -40,38 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.memberseditor.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
-		super( model );
-	}
-	@Override
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getExpressionType();
-	}
-	@Override
-	protected boolean isKnurlDesired() {
-		return true;
-	}
-	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
-	}
-	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
-		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
+/*package-private*/ class SetFieldArrayAtIndexTemplate extends ExpressionStatementTemplate {
+	private org.lgna.project.ast.AbstractField field;
+	public SetFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
+		super( org.alice.ide.ast.draganddrop.statement.FieldArrayAtIndexAssignmentTemplateDragModel.getInstance( field ) );
+		this.field = field;
+		if( this.field instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
+			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
-//	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
-//	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
+	@Override
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
+		return new org.lgna.project.ast.AssignmentExpression( 
+				this.field.getValueType().getComponentType(), 
+				new org.lgna.project.ast.ArrayAccess( 
+						field.getValueType(), 
+						org.alice.ide.ast.AstUtilities.createIncompleteFieldAccess( this.field ), 
+						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
+				), 
+				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 
+				new org.alice.ide.ast.EmptyExpression( this.field.getValueType().getComponentType() )
+		);
+	}
 }

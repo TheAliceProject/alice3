@@ -41,56 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateDragModel extends org.alice.ide.croquet.models.StatementDragModel {
-	public TemplateDragModel( java.util.UUID id ) {
-		super( id );
+public class VariableArrayAtIndexAssignmentTemplateDragModel extends StatementTemplateDragModel {
+	private static java.util.Map< org.lgna.project.ast.UserVariable, VariableArrayAtIndexAssignmentTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized VariableArrayAtIndexAssignmentTemplateDragModel getInstance( org.lgna.project.ast.UserVariable variable ) {
+		VariableArrayAtIndexAssignmentTemplateDragModel rv = map.get( variable );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new VariableArrayAtIndexAssignmentTemplateDragModel( variable );
+			map.put( variable, rv );
+		}
+		return rv;
 	}
-	
-	protected abstract String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation );
-	
-//	@Override
-//	protected StringBuilder updateTutorialStepTitle( java.lang.StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-//		rv.append( "Drag and Drop " );
-//		rv.append( "<strong>" );
-//		rv.append( this.getTutorialStepDescription( userInformation ) );
-//		rv.append( "</strong>" );
-//		
-//		if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
-//			org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
-//			edu.cmu.cs.dennisc.alice.ast.Expression[] originalExpressions = insertStatementEdit.getInitialExpressions();
-//			String prefix = " ";
-//			for( edu.cmu.cs.dennisc.alice.ast.Expression expression : originalExpressions ) {
-//				rv.append( prefix );
-//				edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, expression, userInformation.getLocale() );
-//				prefix = ", ";
-//			}
-//		}
-//		return rv;
-//	}
-//	@Override
-//	public String getTutorialDragNoteText( org.lgna.croquet.steps.DragStep dragAndDropContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-//		StringBuilder sb = new StringBuilder();
-//		sb.append( "Drag the " );
-//		sb.append( "<strong>" );
-//		sb.append( this.getTutorialStepDescription( userInformation ) );
-//		sb.append( "</strong>" );
-//		sb.append( " tile..." );
-//		return sb.toString();
-//	}
-//	@Override
-//	public String getTutorialDropNoteText( org.lgna.croquet.steps.DragStep dragAndDropContext, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-//		StringBuilder sb = new StringBuilder();
-//		sb.append( "Drag the " );
-//		sb.append( "<strong>" );
-//		sb.append( this.getTutorialStepDescription( userInformation ) );
-//		sb.append( "</strong>" );
-//		sb.append( " tile here..." );
-//		return sb.toString();
-//	}
-	
+	private org.lgna.project.ast.UserVariable variable;
+	private VariableArrayAtIndexAssignmentTemplateDragModel( org.lgna.project.ast.UserVariable variable ) {
+		super( java.util.UUID.fromString( "634df8b1-e171-4121-9405-533c4c4d78ed" ) );
+		this.variable = variable;
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< VariableArrayAtIndexAssignmentTemplateDragModel > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< VariableArrayAtIndexAssignmentTemplateDragModel >( this, this.variable, org.lgna.project.ast.UserVariable.class );
+	}
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return new org.alice.ide.croquet.models.ast.cascade.statement.VariableArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.variable ).getRoot().getPopupPrepModel();
+	}
 }

@@ -90,7 +90,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 	}
 
 	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-		return dragModel instanceof org.alice.ide.ast.draganddrop.expression.ExpressionDragModel;
+		return dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
 	}
 	public void dragStarted( org.lgna.croquet.history.DragStep context ) {
 	}
@@ -103,8 +103,8 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep context ) {
 		org.lgna.croquet.DragModel dragModel = context.getModel();
 		org.lgna.croquet.Model rv;
-		if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.ExpressionDragModel ) {
-			org.alice.ide.ast.draganddrop.expression.ExpressionDragModel expressionDragModel = (org.alice.ide.ast.draganddrop.expression.ExpressionDragModel)dragModel;
+		if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel ) {
+			org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel expressionDragModel = (org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)dragModel;
 			rv = expressionDragModel.getDropModel( context, new org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite( this.expressionProperty ) );
 		} else {
 			rv = null;

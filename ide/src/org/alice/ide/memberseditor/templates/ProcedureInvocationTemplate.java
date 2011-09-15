@@ -57,7 +57,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		}
 	};
 	/*package-private*/ ProcedureInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		super( org.alice.ide.croquet.models.ast.MethodTemplateDragModel.getInstance( method ) );
+		super( org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( method ) );
 		this.method = method;
 		
 		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
@@ -87,9 +87,5 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( this.method );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method ).getRoot().getPopupPrepModel();
 	}
 }

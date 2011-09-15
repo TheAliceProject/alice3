@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisExpressionDragModel extends ExpressionDragModel {
+public class ThisExpressionDragModel extends AbstractExpressionDragModel {
 	private static class SingletonHolder {
 		private static ThisExpressionDragModel instance = new ThisExpressionDragModel();
 	}

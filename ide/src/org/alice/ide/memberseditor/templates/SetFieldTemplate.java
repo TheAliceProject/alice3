@@ -40,35 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.memberseditor.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetterTemplateDragModel extends VoidTemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, SetterTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized SetterTemplateDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		SetterTemplateDragModel rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SetterTemplateDragModel( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+/*package-private*/ class SetFieldTemplate extends ExpressionStatementTemplate {
 	private org.lgna.project.ast.AbstractField field;
-	private SetterTemplateDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "c2116770-a3e7-44cc-ad48-e52d22404d35" ) );
+	public SetFieldTemplate( org.lgna.project.ast.AbstractField field ) {
+		super( org.alice.ide.ast.draganddrop.statement.FieldAssignmentTemplateDragModel.getInstance( field ) );
 		this.field = field;
+		if( this.field instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
+			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
+		}
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< SetterTemplateDragModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< SetterTemplateDragModel >( this, this.field, org.lgna.project.ast.AbstractField.class );
-	}
-	@Override
-	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {
-		return this.field.getName();
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
+		return org.alice.ide.ast.AstUtilities.createIncompleteAssignmentExpression( this.field );
 	}
 }

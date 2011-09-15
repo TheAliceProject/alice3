@@ -41,24 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareLocalDragModel extends VoidTemplateDragModel {
+public class ForEachInArrayLoopTemplateDragModel extends StatementTemplateDragModel {
 	private static class SingletonHolder {
-		private static DeclareLocalDragModel instance = new DeclareLocalDragModel();
+		private static ForEachInArrayLoopTemplateDragModel instance = new ForEachInArrayLoopTemplateDragModel();
 	}
-	public static DeclareLocalDragModel getInstance() {
+	public static ForEachInArrayLoopTemplateDragModel getInstance() {
 		return SingletonHolder.instance;
 	}
-	private DeclareLocalDragModel() {
-		super( java.util.UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ) );
+	private ForEachInArrayLoopTemplateDragModel() {
+		super( java.util.UUID.fromString( "1126a2d4-0f95-4e1f-bda1-79727e6f88fd" ) );
 	}
 	@Override
-	protected String getTutorialStepDescription( org.lgna.croquet.UserInformation userInformation ) {
-		//todo
-		return "local";
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertCascade.getInstance( blockStatementIndexPair );
 	}
 }

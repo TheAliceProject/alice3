@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class AccessFieldArrayAtIndexTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
+/*package-private*/ class AccessFieldArrayAtIndexTemplate extends org.alice.ide.templates.ExpressionTemplate {
 	private org.lgna.project.ast.AbstractField field;
 	public AccessFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.ast.draganddrop.expression.FieldArrayAtIndexDragModel.getInstance( field ) );
