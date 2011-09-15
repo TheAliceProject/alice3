@@ -45,13 +45,8 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TransientPane<N extends org.lgna.project.ast.AbstractTransient> extends AccessiblePane {
-	private final N trans;
-	public TransientPane( org.alice.ide.ast.draganddrop.expression.ExpressionDragModel model, N trans ) {
+public abstract class TransientPane extends AccessiblePane {
+	public TransientPane( org.alice.ide.ast.draganddrop.expression.ExpressionDragModel model ) {
 		super( model );
-		this.trans = trans;
-	}
-	public N getTransient() {
-		return this.trans;
 	}
 }

@@ -762,60 +762,60 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return null;
 	}
 	
-	public org.lgna.croquet.CascadePopupPrepModel< org.lgna.project.ast.Expression > getOperation( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
-		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
-			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
-				return expressionPropertyDropDownPane.getModel();
-			}
-		}
-		return null;
-	}
-	public org.alice.ide.croquet.models.ast.cascade.MoreCascade getMoreOperation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-		if( methodInvocation != null ) {
-			return org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation );
-//			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = org.lgna.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
-//			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
-//				if( statementPane.getStatement() == methodInvocation.getParent() ) {
-//					return statementPane.getMoreOperation();
+//	public org.lgna.croquet.CascadePopupPrepModel< org.lgna.project.ast.Expression > getOperation( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+//		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
+//		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
+//			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
+//				return expressionPropertyDropDownPane.getModel();
+//			}
+//		}
+//		return null;
+//	}
+//	public org.alice.ide.croquet.models.ast.cascade.MoreCascade getMoreOperation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+//		if( methodInvocation != null ) {
+//			return org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation );
+////			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = org.lgna.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
+////			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
+////				if( statementPane.getStatement() == methodInvocation.getParent() ) {
+////					return statementPane.getMoreOperation();
+////				}
+////			}
+//		}
+//		return null;
+//	}
+//	public org.lgna.croquet.PopupPrepModel getPopupMenuOperationForStatement( org.lgna.project.ast.Statement statement ) {
+//		if( statement != null ) {
+//			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
+//			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
+//				if( statementPane.getStatement() == statement ) {
+//					return statementPane.getPopupPrepModel();
 //				}
 //			}
-		}
-		return null;
-	}
-	public org.lgna.croquet.PopupPrepModel getPopupMenuOperationForStatement( org.lgna.project.ast.Statement statement ) {
-		if( statement != null ) {
-			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
-			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
-				if( statementPane.getStatement() == statement ) {
-					return statementPane.getPopupPrepModel();
-				}
-			}
-		}
-		return null;
-	}
-	public org.lgna.croquet.DragModel getDragAndDropOperationForStatement( org.lgna.project.ast.Statement statement ) {
-		if( statement != null ) {
-			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
-			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
-				if( statementPane.getStatement() == statement ) {
-					return statementPane.getModel();
-				}
-			}
-		}
-		return null;
-	}
-	public org.lgna.croquet.DragModel getDragAndDropOperationForTransient( org.lgna.project.ast.AbstractTransient trans ) {
-		if( trans != null ) {
-			java.util.List< org.alice.ide.common.TransientPane > transientPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.TransientPane.class );
-			for( org.alice.ide.common.TransientPane transientPane : transientPanes ) {
-				if( transientPane.getTransient() == trans ) {
-					return transientPane.getModel();
-				}
-			}
-		}
-		return null;
-	}
+//		}
+//		return null;
+//	}
+//	public org.lgna.croquet.DragModel getDragAndDropOperationForStatement( org.lgna.project.ast.Statement statement ) {
+//		if( statement != null ) {
+//			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
+//			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
+//				if( statementPane.getStatement() == statement ) {
+//					return statementPane.getModel();
+//				}
+//			}
+//		}
+//		return null;
+//	}
+//	public org.lgna.croquet.DragModel getDragAndDropOperationForTransient( org.lgna.project.ast.AbstractTransient trans ) {
+//		if( trans != null ) {
+//			java.util.List< org.alice.ide.common.TransientPane > transientPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.TransientPane.class );
+//			for( org.alice.ide.common.TransientPane transientPane : transientPanes ) {
+//				if( transientPane.getTransient() == trans ) {
+//					return transientPane.getModel();
+//				}
+//			}
+//		}
+//		return null;
+//	}
 	
 	public int print(java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex) throws java.awt.print.PrinterException {
 		if( pageIndex > 0 ) {

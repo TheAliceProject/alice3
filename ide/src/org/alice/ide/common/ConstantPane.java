@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantPane extends LocalPane< org.lgna.project.ast.UserConstant > {
+public class ConstantPane extends LocalPane {
 	public ConstantPane( org.lgna.project.ast.UserConstant constant ) {
 		super( org.alice.ide.ast.draganddrop.expression.ConstantAccessDragModel.getInstance( constant ), constant );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ConstantAccess.class ) );

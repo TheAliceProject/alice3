@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends LocalPane<org.lgna.project.ast.UserVariable> {
+public class VariablePane extends LocalPane {
 	public VariablePane( org.lgna.project.ast.UserVariable variable ) {
 		super( org.alice.ide.ast.draganddrop.expression.VariableAccessDragModel.getInstance( variable ), variable );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.VariableAccess.class ) );
