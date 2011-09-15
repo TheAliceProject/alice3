@@ -211,13 +211,9 @@ class ClipboardDropSite implements org.lgna.croquet.DropSite {
 	}
 }
 
-class ClipboardDragModel extends org.alice.ide.croquet.models.CodeDragModel {
+class ClipboardDragModel extends org.alice.ide.croquet.models.StatementDragModel {
 	public ClipboardDragModel() {
 		super( java.util.UUID.fromString( "d6c25f14-7ed2-4cb8-90dd-f621af830060" ) );
-	}
-	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return org.lgna.project.ast.JavaType.VOID_TYPE;
 	}
 }
 
@@ -310,8 +306,8 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.
 	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
 		return this.dropSite;
 	}
-	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
-		return source instanceof org.alice.ide.common.AbstractStatementPane;
+	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+		return dragModel instanceof org.alice.ide.croquet.models.StatementDragModel;
 	}
 	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep step ) {
 		org.alice.ide.common.AbstractStatementPane pane = (org.alice.ide.common.AbstractStatementPane)step.getDragSource();

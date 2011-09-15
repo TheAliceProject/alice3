@@ -272,8 +272,8 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 		return rv;
 	}
-	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
-		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
+	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+		if( dragModel instanceof org.alice.ide.croquet.models.StatementDragModel ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
 			return false;

@@ -62,10 +62,7 @@ public class MethodTemplateDragModel extends TemplateDragModel {
 	private MethodTemplateDragModel( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ) );
 		this.method = method;
-	}
-	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return this.method.getReturnType();
+		assert this.method.isProcedure();
 	}
 	@Override
 	protected org.lgna.croquet.resolvers.CodableResolver< MethodTemplateDragModel > createCodableResolver() {

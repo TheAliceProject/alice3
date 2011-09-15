@@ -46,46 +46,39 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CodeDragModel extends IdeDragModel {
-	public CodeDragModel( java.util.UUID id ) {
+public abstract class StatementDragModel extends IdeDragModel {
+	public StatementDragModel( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract org.lgna.project.ast.AbstractType< ?,?,? > getExpressionType();
 	@Override
-	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
+	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
 		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
 			if( codeEditor != null ) {
-				org.lgna.project.ast.AbstractType< ?,?,? > expressionType = this.getExpressionType();
-				if( expressionType != null ) {
-					codeEditor.addPotentialDropReceptors( rv, expressionType );
-				} else {
-					if( dragSource.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
-						org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)dragSource.getSubject();
-						codeEditor.addPotentialDropReceptors( rv, expressionLikeSubstance.getExpressionType() );
-					} else {
-						rv.add( codeEditor );
-						//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
-						//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
-						//					rv.add( dropReceptor );
-						//				}
-						//			}
-					}
-				}
+				codeEditor.addPotentialDropReceptors( rv, org.lgna.project.ast.JavaType.VOID_TYPE );
 			} else {
 				//todo: investigate
 			}
 		}
 		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
-		if( clipboard.isPotentiallyAcceptingOf( dragSource ) ) {
+		if( clipboard.isPotentiallyAcceptingOf( this ) ) {
 			rv.add( clipboard );
 		}
 		return rv;
 	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+//	protected final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+//		return org.lgna.project.ast.JavaType.VOID_TYPE;
+//	}
+	//protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair dropSite );
+	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair dropSite ) {
 		throw new RuntimeException( "todo" );
+	}
+	@Override
+	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		assert dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
+		return this.getDropModel( step, blockStatementIndexPair );
 	}
 }

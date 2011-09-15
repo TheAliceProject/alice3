@@ -248,8 +248,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 	}
 	private DragStep( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
-		org.lgna.croquet.components.DragComponent dragSource = this.getDragSource();
-		java.util.List< ? extends org.lgna.croquet.DropReceptor > potentialDropReceptors = model.createListOfPotentialDropReceptors( dragSource );
+		java.util.List< ? extends org.lgna.croquet.DropReceptor > potentialDropReceptors = model.createListOfPotentialDropReceptors();
 		this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
 		int i = 0;
 		for( org.lgna.croquet.DropReceptor dropReceptor : potentialDropReceptors ) {

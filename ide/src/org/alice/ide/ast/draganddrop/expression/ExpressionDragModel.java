@@ -52,7 +52,7 @@ public abstract class ExpressionDragModel extends org.alice.ide.croquet.models.I
 	}
 	public abstract org.lgna.project.ast.AbstractType< ?,?,? > getExpressionType();
 	@Override
-	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource ) {
+	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
 		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {

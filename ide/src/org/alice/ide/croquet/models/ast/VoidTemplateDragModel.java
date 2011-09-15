@@ -50,8 +50,4 @@ public abstract class VoidTemplateDragModel extends TemplateDragModel {
 	public VoidTemplateDragModel( java.util.UUID id ) {
 		super( id );
 	}
-	@Override
-	protected final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return org.lgna.project.ast.JavaType.VOID_TYPE;
-	}
 }

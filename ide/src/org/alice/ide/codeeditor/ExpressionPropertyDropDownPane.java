@@ -89,8 +89,8 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 		return this;
 	}
 
-	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
-		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
+	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+		return dragModel instanceof org.alice.ide.ast.draganddrop.expression.ExpressionDragModel;
 	}
 	public void dragStarted( org.lgna.croquet.history.DragStep context ) {
 	}
