@@ -141,7 +141,7 @@ public abstract class I18nFactory {
 			return rv;
 		}
 	}
-	protected org.lgna.croquet.components.JComponent< ? > createComponent( org.alice.ide.i18n.Page page, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	public org.lgna.croquet.components.JComponent< ? > createComponent( org.alice.ide.i18n.Page page, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		org.alice.ide.i18n.Line[] lines = page.getLines();
 		final int N = lines.length;
 		assert N > 0;

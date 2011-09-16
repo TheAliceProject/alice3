@@ -41,26 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.x;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TemplateAstI18nFactory extends IdeAstI18nFactory {
-	private static class SingletonHolder {
-		private static TemplateAstI18nFactory instance = new TemplateAstI18nFactory();
+public class ThisExpressionLikeView extends AbstractExpressionView {
+	private ThisExpressionLikeView( org.lgna.project.ast.Expression expression ) {
+		super( expression );
+		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
 	}
-	public static TemplateAstI18nFactory getInstance() {
-		return SingletonHolder.instance;
+	public ThisExpressionLikeView( org.lgna.project.ast.ThisExpression thisExpression ) {
+		this( (org.lgna.project.ast.Expression)thisExpression );
 	}
-	private TemplateAstI18nFactory() {
-	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		return new org.alice.ide.memberseditor.ArgumentListPropertyPane( this, argumentListProperty );
+	public ThisExpressionLikeView( org.alice.ide.ast.CurrentThisExpression currentThisExpression ) {
+		this( (org.lgna.project.ast.Expression)currentThisExpression );
 	}
 }

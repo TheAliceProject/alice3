@@ -40,55 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionView extends org.alice.ide.common.ExpressionLikeSubstance  {
-	private final org.lgna.project.ast.Expression expression;
-	public ExpressionView( org.lgna.project.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
-		super( null, expression != null ? expression.getType() == org.lgna.project.ast.JavaType.VOID_TYPE : false );
-		this.expression = expression;
-		this.addComponent( component );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( expression ) );
-	}
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.expression != null ) {
-			if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
-				return false;
-			} else {
-				return super.isExpressionTypeFeedbackDesired();
-			}
-		} else {
-			return true;
-		}
-	}
-	
-	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
-		if( this.expression != null ) {
-			org.lgna.project.ast.AbstractType<?,?,?> rv = this.expression.getType();
-			return rv;
-		} else {
-			return org.lgna.project.ast.JavaType.OBJECT_TYPE;
-		}
-	}
-	@Override
-	protected int getInsetTop() {
-		if( this.expression instanceof org.lgna.project.ast.InfixExpression || this.expression instanceof org.lgna.project.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
-	}
-	@Override
-	protected int getInsetBottom() {
-		if( this.expression instanceof org.lgna.project.ast.InfixExpression || this.expression instanceof org.lgna.project.ast.LogicalComplement ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
+public class ExpressionView extends AbstractExpressionView {
+	public ExpressionView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
+		super( expression );
+		this.addComponent( factory.createComponent( expression ) );
 	}
 }

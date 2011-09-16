@@ -41,26 +41,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.x;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TemplateAstI18nFactory extends IdeAstI18nFactory {
-	private static class SingletonHolder {
-		private static TemplateAstI18nFactory instance = new TemplateAstI18nFactory();
-	}
-	public static TemplateAstI18nFactory getInstance() {
-		return SingletonHolder.instance;
-	}
-	private TemplateAstI18nFactory() {
-	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		return new org.alice.ide.memberseditor.ArgumentListPropertyPane( this, argumentListProperty );
+public class InfixExpressionView extends AbstractExpressionView {
+	public InfixExpressionView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InfixExpression< ? extends Enum< ? > > infixExpression ) {
+		super( infixExpression );
+		String clsName = infixExpression.getClass().getName();
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( clsName, javax.swing.JComponent.getDefaultLocale() );
+		
+		Enum<?> e = infixExpression.operator.getValue();
+		
+		String value = resourceBundle.getString( e.name() );
+		org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
+		org.lgna.croquet.components.JComponent< ? > component = factory.createComponent( page, infixExpression );
+		for( java.awt.Component child : component.getAwtComponent().getComponents() ) {
+			if( child instanceof javax.swing.JLabel ) {
+				javax.swing.JLabel label = (javax.swing.JLabel)child;
+				String text = label.getText();
+				//todo: remove this terrible hack
+				boolean isScaleDesired = false;
+				if( text.length() == 3 ) {
+					char c0 = text.charAt( 0 );
+					char c1 = text.charAt( 1 );
+					char c2 = text.charAt( 2 );
+					if( c0==' ' && c2 == ' ' ) {
+						if( Character.isLetterOrDigit( c1 ) ) {
+							//pass
+						} else {
+							isScaleDesired = true;
+						}
+					}
+				} else if( text.length() == 4 ) {
+					isScaleDesired = " >= ".equals( text ) || " <= ".equals( text ) || " == ".equals( text );
+				}
+				edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+				if( isScaleDesired ) {
+					edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 1.5f );
+				}
+				//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
+			}
+		}
+		this.addComponent( component );
 	}
 }

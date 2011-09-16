@@ -46,21 +46,20 @@ package org.alice.ide.x;
 /**
  * @author Dennis Cosgrove
  */
-public class TemplateAstI18nFactory extends IdeAstI18nFactory {
-	private static class SingletonHolder {
-		private static TemplateAstI18nFactory instance = new TemplateAstI18nFactory();
-	}
-	public static TemplateAstI18nFactory getInstance() {
-		return SingletonHolder.instance;
-	}
-	private TemplateAstI18nFactory() {
-	}
+public abstract class IdeAstI18nFactory extends AstI18nFactory {
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
-		return new org.alice.ide.memberseditor.ArgumentListPropertyPane( this, argumentListProperty );
+	protected org.lgna.croquet.components.JComponent< ? > createIdeExpressionPane( org.alice.ide.ast.IdeExpression ideExpression ) {
+		if( ideExpression instanceof org.alice.ide.ast.EmptyExpression ) {
+			return new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)ideExpression );
+		} else if( ideExpression instanceof org.alice.ide.ast.PreviousValueExpression ) {
+			return new org.alice.ide.common.PreviousValueExpressionPane( this, (org.alice.ide.ast.PreviousValueExpression)ideExpression );
+		} else if( ideExpression instanceof org.alice.ide.ast.CurrentThisExpression ) {
+			return new org.alice.ide.x.components.ThisExpressionLikeView( (org.alice.ide.ast.CurrentThisExpression)ideExpression );
+		} else if( ideExpression instanceof org.alice.ide.ast.SelectedInstanceFactoryExpression ) {
+			//rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedInstanceFactoryExpression)expression );
+			return new org.alice.ide.common.SelectedInstanceFactoryExpressionPanel( this );
+		} else {
+			throw new RuntimeException( ideExpression.toString() );
+		}
 	}
 }

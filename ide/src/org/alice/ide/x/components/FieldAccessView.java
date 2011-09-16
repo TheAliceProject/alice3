@@ -52,6 +52,12 @@ public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstanc
 	public FieldAccessView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
 		super( null );
 		this.fieldAccess = fieldAccess;
+		
+		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForFieldAccessIfAppropriate( this.fieldAccess );
+		if( prefixPane != null ) {
+			this.addComponent( prefixPane );
+		}
+
 		this.replacement = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().createReplacementForFieldAccessIfAppropriate( fieldAccess );
 		if( this.replacement != null ) {
 			this.addComponent( this.replacement );

@@ -59,7 +59,6 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 		if( left instanceof org.lgna.project.ast.ArrayAccess ) {
 			org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)left;
 			parent = new org.lgna.croquet.components.LineAxisPanel();
-			this.addComponent( parent );
 			expression = arrayAccess.array.getValue();
 		} else {
 			parent = this;

@@ -62,7 +62,7 @@ public class JavaConstructorParameter extends JavaParameter {
 				}
 			}
 		} catch( Throwable t ) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ParameterDeclaredInJavaConstructor getParameterNameFor: ", constructorReflectionProxy, index );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ParameterDeclaredInJavaConstructor getParameterNameFor: ", constructorReflectionProxy, index );
 		}
 		return rv;
 	}
