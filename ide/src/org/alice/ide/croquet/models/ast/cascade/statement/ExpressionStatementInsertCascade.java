@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionStatementInsertCascade extends SelectedExpressionBasedStatmentInsertCascade {
-	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
+	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
 		super( id, blockStatementIndexPair, blanks );
 	}
 	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );

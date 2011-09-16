@@ -46,7 +46,7 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class CurrentThisExpression extends org.lgna.project.ast.Expression {
+public class CurrentThisExpression extends IdeExpression {
 	public CurrentThisExpression() {
 	}
 	@Override

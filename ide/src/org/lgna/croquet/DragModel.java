@@ -70,7 +70,8 @@ public abstract class DragModel extends PrepModel {
 	}
 	
 	
-	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource );
+	//public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource );
+	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors();
 	public abstract void handleDragStarted( org.lgna.croquet.history.DragStep step );
 	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step );
 	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step );

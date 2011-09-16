@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class DoTogetherInsertOperation extends StatementInsertOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, DoTogetherInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DoTogetherInsertOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoTogetherInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DoTogetherInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		DoTogetherInsertOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -59,7 +59,7 @@ public class DoTogetherInsertOperation extends StatementInsertOperation {
 		}
 		return rv;
 	}
-	private DoTogetherInsertOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private DoTogetherInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "e808bf50-d3bd-4256-a416-453542eff619" ), blockStatementIndexPair );
 	}
 	@Override

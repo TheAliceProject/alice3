@@ -89,8 +89,8 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 		return this;
 	}
 
-	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
-		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
+	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+		return dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
 	}
 	public void dragStarted( org.lgna.croquet.history.DragStep context ) {
 	}
@@ -101,11 +101,11 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 		return null;
 	}
 	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep context ) {
+		org.lgna.croquet.DragModel dragModel = context.getModel();
 		org.lgna.croquet.Model rv;
-		org.lgna.croquet.components.DragComponent source = context.getDragSource();
-		if( source instanceof org.alice.ide.common.ExpressionCreatorPane ) {
-			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source;
-			rv = expressionCreatorPane.getDropModel( context, this.expressionProperty );
+		if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel ) {
+			org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel expressionDragModel = (org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)dragModel;
+			rv = expressionDragModel.getDropModel( context, new org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite( this.expressionProperty ) );
 		} else {
 			rv = null;
 		}

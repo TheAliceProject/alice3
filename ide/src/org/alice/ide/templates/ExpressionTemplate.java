@@ -46,8 +46,11 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionCreatorPane {
-	protected abstract org.lgna.project.ast.Expression createIncompleteExpression();
 	private boolean isInitialized = false;
+	public ExpressionTemplate( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
+		super( model );
+	}
+	protected abstract org.lgna.project.ast.Expression createIncompleteExpression();
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();

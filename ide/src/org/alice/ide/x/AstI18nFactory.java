@@ -144,7 +144,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return rv;
 	}
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.project.ast.Statement statement ) {
-		return this.createStatementPane( new org.alice.ide.croquet.models.ToDoDragModel(), statement, null );
+		return this.createStatementPane( org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ), statement, null );
 	}
 	public org.lgna.croquet.components.JComponent< ? > createExpressionPane( org.lgna.project.ast.Expression expression ) {
 //		java.awt.Component rv;

@@ -180,8 +180,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-		if( dropSite instanceof org.alice.ide.codeeditor.BlockStatementIndexPair ) {
-			org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.codeeditor.BlockStatementIndexPair)dropSite;
+		if( dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
+			org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
 			org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
 			org.lgna.project.ast.AbstractCode code = blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 			System.err.println( "todo: getDropReceptor: " + dropSite );

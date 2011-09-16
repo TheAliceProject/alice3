@@ -87,7 +87,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		return ResourceCascade.getInstance( this.getDeclaration() ).getRoot().getPopupPrepModel();
+		return ResourceCascade.getInstance( this.getDeclaration() );
 	}
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {

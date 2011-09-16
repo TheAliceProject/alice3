@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.codeeditor.BlockStatementIndexPair, org.lgna.project.ast.AbstractMethod, ProcedureInvocationInsertCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ProcedureInvocationInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractMethod method ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractMethod, ProcedureInvocationInsertCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ProcedureInvocationInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractMethod method ) {
 		ProcedureInvocationInsertCascade rv = mapToMap.get( blockStatementIndexPair, method );
 		if( rv != null ) {
 			//pass
@@ -59,7 +59,7 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 		return rv;
 	}
 	private final org.lgna.project.ast.AbstractMethod method;
-	private ProcedureInvocationInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractMethod method ) {
+	private ProcedureInvocationInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "d8ea7244-f0eb-4c3a-a9fa-a92182ed221a" ), blockStatementIndexPair, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
 		this.method = method;
 	}
@@ -71,7 +71,7 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 		return org.alice.ide.ast.AstUtilities.createMethodInvocation( instanceExpression, this.method, expressions );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.MethodInvocationMenuModelStaticGetInstanceResolver createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.MethodInvocationMenuModelStaticGetInstanceResolver( this );
+	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndMethodStaticGetInstanceResolver createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndMethodStaticGetInstanceResolver( this );
 	}
 }

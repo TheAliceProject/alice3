@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class ReturnStatementInsertCascade extends StatementInsertCascade {
-	private static org.lgna.project.ast.AbstractType<?,?,?> getReturnType( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private static org.lgna.project.ast.AbstractType<?,?,?> getReturnType( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		org.lgna.project.ast.AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
@@ -58,8 +58,8 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 		return null;
 	}
 
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, ReturnStatementInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ReturnStatementInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ReturnStatementInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ReturnStatementInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		ReturnStatementInsertCascade rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -70,7 +70,7 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 		}
 		return rv;
 	}
-	private ReturnStatementInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private ReturnStatementInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "6b1dae07-066f-4250-92e8-db1eacd32801" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( getReturnType( blockStatementIndexPair ) ) );
 	}
 	

@@ -45,13 +45,14 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class AccessFieldArrayAtIndexTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
+/*package-private*/ class AccessFieldArrayAtIndexTemplate extends org.alice.ide.templates.ExpressionTemplate {
 	private org.lgna.project.ast.AbstractField field;
 	public AccessFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
+		super( org.alice.ide.ast.draganddrop.expression.FieldArrayAtIndexDragModel.getInstance( field ) );
 		this.field = field;
 		if( this.field instanceof org.lgna.project.ast.UserField ) {
 			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
+			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override
@@ -62,28 +63,4 @@ package org.alice.ide.memberseditor.templates;
 				new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
 		);
 	}
-	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
-		return field.getValueType().getComponentType();
-	}
-	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? >[] getBlankExpressionTypes() {
-		return new org.lgna.project.ast.AbstractType< ?, ?, ? >[] { org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE };
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
-	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-//		edu.cmu.cs.dennisc.alice.ast.ArrayAccess rv = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
-//				field.getValueType(), 
-//				org.alice.ide.ast.NodeUtilities.createFieldAccess( 
-//						getIDE().createInstanceExpression(), 
-//						field 
-//				), 
-//				expressions[ 0 ]
-//		);
-//		return rv;
-//	}
 }

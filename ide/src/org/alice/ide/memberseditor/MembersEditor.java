@@ -145,18 +145,20 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 
 		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
 		instanceLabel.scaleFont( FONT_SCALAR );
-		
-		final org.lgna.project.ast.JavaField PROTOTYPE_FIELD;
-		try {
-			PROTOTYPE_FIELD = org.lgna.project.ast.JavaField.getInstance( MembersEditor.class.getField( "PROTOTYPE" ) );
-		} catch( NoSuchFieldException nsfe ) {
-			throw new RuntimeException( nsfe );
-		}
-		
+//		
+//		final org.lgna.project.ast.JavaField PROTOTYPE_FIELD;
+//		try {
+//			PROTOTYPE_FIELD = org.lgna.project.ast.JavaField.getInstance( MembersEditor.class.getField( "PROTOTYPE" ) );
+//		} catch( NoSuchFieldException nsfe ) {
+//			throw new RuntimeException( nsfe );
+//		}
+//		
 		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
 		
 		instancePanel.addComponent( instanceLabel );
 		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryDropDown( org.alice.ide.instancefactory.InstanceFactoryState.getInstance() ) );
+		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,0,4 ) );
 
 		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		this.addComponent( cardPanel, Constraint.CENTER );

@@ -48,6 +48,7 @@ import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.ThisExpression;
 
 
+//todo
 public class CameraViewFieldComponent extends GetterTemplate {
 	
 	protected AbstractField field;

@@ -45,12 +45,8 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalStatementTemplate extends CascadingUbiquitousStatementClassTemplate {
+public class ConditionalStatementTemplate extends CascadingUbiquitousStatementTemplate {
 	public ConditionalStatementTemplate() {
-		super( org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.AstUtilities.createIncompleteConditionalStatement() );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ConditionalStatementInsertCascade.getInstance( blockStatementIndexPair ).getRoot().getPopupPrepModel();
+		super( org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance(), org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.AstUtilities.createIncompleteConditionalStatement() );
 	}
 }

@@ -53,7 +53,8 @@ public class ThisExpression extends Expression {
 		if( rv != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ThisExpression cannot find type" );
+			System.err.println( "WARNING: ThisExpression cannot find type" );
+			Thread.dumpStack();
 		}
 		return rv;
 //		//todo

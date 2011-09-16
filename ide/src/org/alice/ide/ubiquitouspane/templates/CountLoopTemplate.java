@@ -45,12 +45,8 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopTemplate extends CascadingUbiquitousStatementClassTemplate {
+public class CountLoopTemplate extends CascadingUbiquitousStatementTemplate {
 	public CountLoopTemplate() {
-		super( org.lgna.project.ast.CountLoop.class, org.alice.ide.ast.AstUtilities.createIncompleteCountLoop() );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.getInstance( blockStatementIndexPair ).getRoot().getPopupPrepModel();
+		super( org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(), org.lgna.project.ast.CountLoop.class, org.alice.ide.ast.AstUtilities.createIncompleteCountLoop() );
 	}
 }

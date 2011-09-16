@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class EachInArrayTogetherInsertCascade extends StatementInsertCascade {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, EachInArrayTogetherInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized EachInArrayTogetherInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, EachInArrayTogetherInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized EachInArrayTogetherInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		EachInArrayTogetherInsertCascade rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -59,7 +59,7 @@ public class EachInArrayTogetherInsertCascade extends StatementInsertCascade {
 		}
 		return rv;
 	}
-	private EachInArrayTogetherInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private EachInArrayTogetherInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "e791f54f-d426-4632-99b5-20ebdfc2778f" ), blockStatementIndexPair, ArrayBlank.getInstance() );
 	}
 	@Override
