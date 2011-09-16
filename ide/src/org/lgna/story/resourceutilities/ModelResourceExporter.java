@@ -103,6 +103,7 @@ public class ModelResourceExporter {
 		}
 	}
 	
+	private String resourceName;
 	private String name;
 	private List<String> textures = new LinkedList<String>();
 	private AxisAlignedBox boundingBox;
@@ -117,18 +118,25 @@ public class ModelResourceExporter {
 	private ModelClassData classData;
 	private List<Tuple2<String, String>> jointList;
 	
-	public ModelResourceExporter(String name)
+	public ModelResourceExporter(String name, String resourceName)
 	{
 		this.name = name;
 		if (Character.isLowerCase(this.name.charAt(0)))
 		{
 			this.name = this.name.substring(0, 1).toUpperCase() + this.name.substring(1);
 		}
+		this.resourceName = resourceName;
 	}
 	
 	public ModelResourceExporter(String name, ModelClassData classData)
 	{
-		this(name);
+		this(name, name);
+		this.classData = classData;
+	}
+	
+	public ModelResourceExporter(String name, String resourceName, ModelClassData classData)
+	{
+		this(name, resourceName);
 		this.classData = classData;
 	}
 	
@@ -136,6 +144,22 @@ public class ModelResourceExporter {
 	{
 		this(name, classData);
 		this.jointAndVisualFactory = jointAndVisualFactoryClass;
+	}
+	
+	public ModelResourceExporter(String name, String resourceName, ModelClassData classData, Class<?> jointAndVisualFactoryClass)
+	{
+		this(name, resourceName, classData);
+		this.jointAndVisualFactory = jointAndVisualFactoryClass;
+	}
+	
+	public void SetResourceName(String resourceName)
+	{
+		this.resourceName = resourceName;
+	}
+	
+	public String getResourceName()
+	{
+		return this.resourceName;
 	}
 	
 	public ModelClassData getClassData()
