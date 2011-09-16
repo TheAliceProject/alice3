@@ -56,7 +56,7 @@ public class GroundImp extends SimpleModelImp {
 		
 		double xzMin = -10.0;
 		double xzMax = +10.0;
-		double y = -1.0;
+		double y = 0.0;
 
 		float i = 0.0f;
 		float j = 1.0f;

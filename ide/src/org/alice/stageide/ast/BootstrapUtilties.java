@@ -139,9 +139,20 @@ public class BootstrapUtilties {
 					) 
 			);
 		}
+
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		m.applyRotationAboutYAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( Math.PI ) );
+		m.applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( -Math.PI/16.0 ) );
+		m.applyTranslationAlongZAxis( 8 );
+		
+		edu.cmu.cs.dennisc.math.UnitQuaternion quat = new edu.cmu.cs.dennisc.math.UnitQuaternion( m.orientation );
+		performGeneratedSetupBody.statements.add(
+				org.alice.stageide.sceneeditor.SetUpMethodGenerator.createOrientationStatement( false, cameraField, new org.lgna.story.Orientation( quat.x, quat.y, quat.z, quat.w ) ),
+				org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement( false, cameraField, new org.lgna.story.Position( m.translation.x, m.translation.y, m.translation.z ) )
+		);
+
 		
 		org.lgna.project.ast.JavaMethod setAppearanceMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setAppearance", org.lgna.story.Ground.Appearance.class );
-		
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setAppearanceMethod, createFieldAccess( appearance ) ) );
 
 		org.lgna.project.ast.UserMethod performCustomSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, "performCustomSetup" );
@@ -212,7 +223,6 @@ public class BootstrapUtilties {
 						myFirstMethod
 				)
 		);
-		
 		
 		org.lgna.project.ast.NamedUserType rv = createType( "MyProgram", org.lgna.story.Program.class );
 		rv.fields.add( sceneField );
