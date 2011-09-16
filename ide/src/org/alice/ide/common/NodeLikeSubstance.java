@@ -46,31 +46,13 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class NodeLikeSubstance extends org.alice.ide.croquet.components.KnurlDragComponent< org.lgna.croquet.DragModel > {
-//	private java.awt.Paint enabledBackgroundPaint;
 	public NodeLikeSubstance( org.lgna.croquet.DragModel model ) {
 		super( model );
-//		this.setEnabledBackgroundPaint( null );
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
-	
-//	protected void setEnabledBackgroundPaint( java.awt.Paint enabledBackgroundPaint ) {
-//		this.enabledBackgroundPaint = enabledBackgroundPaint;
-//	}
 	protected boolean isInScope() {
 		return true;
 	}
-//	protected java.awt.Paint getEnabledBackgroundPaint(int x, int y, int width, int height) {
-//		return this.enabledBackgroundPaint;
-//	}
-//	protected final java.awt.Paint getBackgroundPaint(int x, int y, int width, int height) {
-//		if( this.isInScope() ) {
-//			return this.getEnabledBackgroundPaint(x, y, width, height);
-//		} else {
-//			return java.awt.Color.WHITE;
-//		}
-//	}
-
-
 	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
 		if( this.isActive() ) {
 			if( this.isPressed() ) {
@@ -82,17 +64,4 @@ public abstract class NodeLikeSubstance extends org.alice.ide.croquet.components
 			return edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
 		}
 	}
-
-//	protected boolean isCullingContainsDesired() {
-//		return isKnurlDesired() == false;
-//	}
-	
-//	@Override
-//	public boolean contains( int x, int y ) {
-//		if( isCullingContainsDesired() ) {
-//			return false;
-//		} else {
-//			return super.contains( x, y );
-//		}
-//	}
 }

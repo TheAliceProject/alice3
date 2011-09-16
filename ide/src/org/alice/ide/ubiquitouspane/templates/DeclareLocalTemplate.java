@@ -58,7 +58,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		return this.implementor.getLabelText();
 	}
 	@Override
-	public org.lgna.croquet.components.Component< ? > getSubject() {
+	public org.lgna.croquet.components.JComponent< ? > getSubject() {
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override

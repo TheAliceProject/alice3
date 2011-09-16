@@ -410,10 +410,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	}
 
-	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
-		return null;
-	}
-
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
 		return (expression instanceof org.lgna.project.ast.TypeExpression || expression instanceof org.lgna.project.ast.ResourceExpression) == false;
 	}

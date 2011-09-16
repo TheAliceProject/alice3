@@ -168,7 +168,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.
 	
 	
 	@Override
-	public org.lgna.croquet.components.Component< ? > getSubject() {
+	public org.lgna.croquet.components.JComponent< ? > getSubject() {
 		return this.subject;
 	}
 

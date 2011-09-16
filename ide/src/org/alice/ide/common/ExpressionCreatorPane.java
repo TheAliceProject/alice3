@@ -54,10 +54,6 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getExpressionType();
 	}
 	@Override
-	protected boolean isKnurlDesired() {
-		return true;
-	}
-	@Override
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {
 		return true;
 	}

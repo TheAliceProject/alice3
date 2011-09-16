@@ -61,7 +61,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 	}
 	
 	@Override
-	public org.lgna.croquet.components.Component< ? > getSubject() {
+	public org.lgna.croquet.components.JComponent< ? > getSubject() {
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override

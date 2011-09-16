@@ -270,45 +270,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
 
-	protected org.alice.ide.ast.components.DeclarationNameLabel createDeclarationNameLabel( org.lgna.project.ast.AbstractField field ) {
-		//todo: better name
-		class ThisFieldAccessNameLabel extends org.alice.ide.ast.components.DeclarationNameLabel {
-			public ThisFieldAccessNameLabel( org.lgna.project.ast.AbstractField field ) {
-				super( field );
-			}
-			@Override
-			protected String getNameText() {
-				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getValue() ) {
-					return "this." + super.getNameText();
-				} else {
-					return super.getNameText();
-				}
-			}
-		}
-		return new ThisFieldAccessNameLabel( field );
-	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
-		if( expression instanceof org.lgna.project.ast.FieldAccess ) {
-			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
-			org.lgna.project.ast.Expression fieldExpression = fieldAccess.expression.getValue();
-			if( fieldExpression instanceof org.lgna.project.ast.ThisExpression || fieldExpression instanceof org.alice.ide.ast.CurrentThisExpression ) {
-				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-				org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
-				if( declaringType != null && declaringType.isAssignableTo( org.lgna.story.Scene.class ) ) {
-					if( field.getValueType().isAssignableTo( org.lgna.story.Entity.class ) ) {
-						return new org.alice.ide.x.components.ExpressionView( expression, this.createDeclarationNameLabel( field ) ) {
-							@Override
-							protected boolean isExpressionTypeFeedbackDesired() {
-								return true;
-							}
-						};
-					}
-				}
-			}
-		}
-		return super.getOverrideComponent( factory, expression );
-	}
 	@Override
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
 		if( super.isDropDownDesiredFor( expression ) ) {

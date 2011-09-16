@@ -58,9 +58,8 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 		return this.getBackgroundColor();
 	}
 
-	protected boolean isKnurlDesired() {
-		//todo: check for dragOperation
-		return true;
+	protected final boolean isKnurlDesired() {
+		return this.getModel() != null;
 	}
 	protected abstract int getInsetTop();
 	protected abstract int getDockInsetLeft();
@@ -82,29 +81,12 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 	protected abstract int getInsetBottom();
 	protected abstract int getInsetRight();
 
-	private javax.swing.border.Border border = null;
-	private void updateBorderIfNecessary() {
-		if( this.border != null ) {
-			//pass
-		} else {
-			this.border = javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() );
-			this.getAwtComponent().setBorder( this.border );
-			if( this.isKnurlDesired() ) {
-				this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
-			}
-		}
-	}
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
 		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
 	}
 	@Override
-	protected javax.swing.AbstractButton createAwtComponent() {
+	protected final javax.swing.AbstractButton createAwtComponent() {
 		javax.swing.AbstractButton rv = new javax.swing.AbstractButton() {
-			@Override
-			public void invalidate() {
-				KnurlDragComponent.this.updateBorderIfNecessary();
-				super.invalidate();
-			}
 			@Override
 			public boolean contains(int x, int y) {
 				return KnurlDragComponent.this.contains(x, y, super.contains(x, y) );
@@ -153,6 +135,10 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 		};
 		
 		rv.setModel( new javax.swing.DefaultButtonModel() );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
+		if( this.isKnurlDesired() ) {
+			rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
+		}
 		
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );

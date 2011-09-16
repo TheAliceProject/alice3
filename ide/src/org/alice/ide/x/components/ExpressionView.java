@@ -48,7 +48,7 @@ package org.alice.ide.x.components;
 public class ExpressionView extends org.alice.ide.common.ExpressionLikeSubstance  {
 	private final org.lgna.project.ast.Expression expression;
 	public ExpressionView( org.lgna.project.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
-		super( null );
+		super( null, expression != null ? expression.getType() == org.lgna.project.ast.JavaType.VOID_TYPE : false );
 		this.expression = expression;
 		this.addComponent( component );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( expression ) );

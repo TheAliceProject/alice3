@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class UbiquitousStatementImplementor { //todo: needs a better name
 	private org.lgna.project.ast.Statement incompleteStatement;
-	private org.lgna.croquet.components.Component< ? > incompleteStatementPane;
+	private org.lgna.croquet.components.JComponent< ? > incompleteStatementPane;
 	private String labelText;
 	private javax.swing.JToolTip toolTip;
 
@@ -57,7 +57,7 @@ public class UbiquitousStatementImplementor { //todo: needs a better name
 	public org.lgna.project.ast.Statement getIncompleteStatement() {
 		return this.incompleteStatement;
 	}
-	public org.lgna.croquet.components.Component< ? > getIncompleteStatementPane() {
+	public org.lgna.croquet.components.JComponent< ? > getIncompleteStatementPane() {
 		if( this.incompleteStatementPane != null ) {
 			//pass
 		} else {

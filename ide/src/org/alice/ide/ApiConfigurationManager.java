@@ -55,4 +55,5 @@ public interface ApiConfigurationManager {
 	public org.lgna.project.ast.AbstractType< ?,?,? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
 	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?,?,? > argumentType );
+	public org.lgna.croquet.components.JComponent< ? > createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
 }

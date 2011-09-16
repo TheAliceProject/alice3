@@ -55,8 +55,8 @@ public abstract class RefreshPanel extends org.lgna.croquet.components.Panel {
 //		}
 		@Override
 		public void invalidate() {
-			RefreshPanel.this.refreshIfNecessary();
 			super.invalidate();
+			RefreshPanel.this.refreshIfNecessary();
 		}
 	}
 
@@ -64,14 +64,22 @@ public abstract class RefreshPanel extends org.lgna.croquet.components.Panel {
 	protected JRefreshPanel createJPanel() {
 		return new JRefreshPanel();
 	}
+	private boolean isInTheMidstOfRefreshing = false;
 	private boolean isRefreshNecessary = true;
 	protected abstract void internalRefresh();
 	private void refreshIfNecessary() {
 		if( this.isRefreshNecessary ) {
-			//todo: move below?
-			this.isRefreshNecessary = false;
-			this.internalRefresh();
-			//this.isRefreshNecessary = false;
+			if( this.isInTheMidstOfRefreshing ) {
+				//pass
+			} else {
+				this.isInTheMidstOfRefreshing = true;
+				try {
+					this.internalRefresh();
+					this.isRefreshNecessary = false;
+				} finally {
+					this.isInTheMidstOfRefreshing = false;
+				}
+			}
 		}
 	}
 	public final void refreshLater() {

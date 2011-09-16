@@ -138,9 +138,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 				return this.getPreferredSize();
 			}
 		}
-		FeedbackJPanel rv = new FeedbackJPanel();
-		rv.setLayout( this.createLayoutManager( rv ) );
-		return rv;
+		return new FeedbackJPanel();
 	}
 	public int getAvailableDropProxyHeight() {
 //		int heightAvailable = this.getHeight();

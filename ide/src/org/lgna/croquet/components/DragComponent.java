@@ -88,7 +88,7 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 		return super.isMouseListeningDesired() || this.getModel() != null;
 	}
 
-	public Component<?> getSubject() {
+	public JComponent<?> getSubject() {
 		return this;
 	}
 //	public org.lgna.croquet.DragModel getDragModel() {

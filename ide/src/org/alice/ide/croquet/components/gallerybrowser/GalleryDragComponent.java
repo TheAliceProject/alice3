@@ -55,9 +55,29 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		label.setIcon( model.getLargeIcon() );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
 		this.internalAddComponent( label );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 8, 0 ) );
+		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
+	}
+	@Override
+	protected int getInsetTop() {
+		return 4;
+	}
+	@Override
+	protected int getInsetRight() {
+		return 4;
+	}
+	@Override
+	protected int getInsetBottom() {
+		return 4;
+	}
+
+	@Override
+	protected int getDockInsetLeft() {
+		return 0;
+	}
+	@Override
+	protected int getInternalInsetLeft() {
+		return 4;
 	}
 	@Override
 	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
@@ -68,29 +88,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		g2.fill( this.createShape(x, y, width, height));
 	}
 	@Override
-	protected int getInsetTop() {
-		return 0;
-	}
-	@Override
-	protected int getInsetRight() {
-		return 0;
-	}
-	@Override
-	protected int getInsetBottom() {
-		return 0;
-	}
-
-	@Override
-	protected int getDockInsetLeft() {
-		return 0;
-	}
-	@Override
-	protected int getInternalInsetLeft() {
-		return 0;
-	}
-	@Override
 	protected void paintPrologue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		java.awt.geom.RoundRectangle2D rr = new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 );
-		g2.fill( rr );
+		g2.fill( this.createShape( x, y, width, height ) );
 	}
 }
