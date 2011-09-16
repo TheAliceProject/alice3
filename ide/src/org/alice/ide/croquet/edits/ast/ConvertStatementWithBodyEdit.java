@@ -85,7 +85,7 @@ public class ConvertStatementWithBodyEdit extends BlockStatementEdit< org.alice.
 		org.lgna.project.ast.StatementListProperty property = this.getBlockStatement().statements;
 		org.lgna.project.ast.AbstractStatementWithBody original = this.getModel().getOriginal();
 		org.lgna.project.ast.BlockStatement body = this.replacement.body.getValue();
-		int index = property.indexOf( original );
+		int index = property.indexOf( replacement );
 
 		property.remove( index );
 		replacement.body.setValue( null );

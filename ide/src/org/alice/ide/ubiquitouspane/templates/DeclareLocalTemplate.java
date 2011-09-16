@@ -48,7 +48,7 @@ package org.alice.ide.ubiquitouspane.templates;
 public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTemplate {
 	private UbiquitousStatementImplementor implementor;
 	public DeclareLocalTemplate() {
-		super( org.alice.ide.croquet.models.ast.DeclareLocalDragModel.getInstance(), org.lgna.project.ast.LocalDeclarationStatement.class );
+		super( org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(), org.lgna.project.ast.LocalDeclarationStatement.class );
 		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.AstUtilities.createIncompleteVariableDeclarationStatement() );
 		this.addComponent( new org.lgna.croquet.components.Label( this.getLabelText() ) );
 		this.setToolTipText( "" );
@@ -58,15 +58,11 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		return this.implementor.getLabelText();
 	}
 	@Override
-	public org.lgna.croquet.components.Component< ? > getSubject() {
+	public org.lgna.croquet.components.JComponent< ? > getSubject() {
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
 	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
 		return this.implementor.getToolTip();
-	}
-	@Override
-	public org.lgna.croquet.Operation< ? > getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.declaration.LocalDeclarationStatementOperation.getInstance( blockStatementIndexPair );
 	}
 }

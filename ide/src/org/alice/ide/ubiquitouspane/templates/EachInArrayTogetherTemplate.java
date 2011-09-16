@@ -45,12 +45,8 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementClassTemplate {
+public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementTemplate {
 	public EachInArrayTogetherTemplate() {
-		super( org.lgna.project.ast.EachInArrayTogether.class, org.alice.ide.ast.AstUtilities.createIncompleteEachInArrayTogether() );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertCascade.getInstance( blockStatementIndexPair ).getRoot().getPopupPrepModel();
+		super( org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance(), org.lgna.project.ast.EachInArrayTogether.class, org.alice.ide.ast.AstUtilities.createIncompleteEachInArrayTogether() );
 	}
 }

@@ -68,7 +68,7 @@ package org.lgna.croquet.components;
 	protected DragComponent getDragComponent() {
 		return this.dragComponent;
 	}
-	protected Component<?> getSubject() {
+	protected JComponent<?> getSubject() {
 		return this.dragComponent.getSubject();
 	}
 

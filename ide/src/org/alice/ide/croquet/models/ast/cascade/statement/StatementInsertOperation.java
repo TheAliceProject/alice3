@@ -47,12 +47,12 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOperation {
-	private final org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair;
-	public StatementInsertOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	public StatementInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
-	public org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
 	protected abstract org.lgna.project.ast.Statement createStatement();

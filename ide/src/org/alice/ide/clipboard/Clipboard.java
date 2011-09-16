@@ -43,187 +43,10 @@
 
 package org.alice.ide.clipboard;
 
-abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation { 
-	private final boolean isCopy;
-	public FromClipboardOperation( java.util.UUID id, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
-		super( id, blockStatementIndexPair );
-		this.isCopy = isCopy;
-	}
-
-	@Override
-	protected final org.lgna.project.ast.Statement createStatement() {
-		org.lgna.project.ast.AbstractNode node = Clipboard.getInstance().peek();
-		//todo: recast if necessary
-		if( node instanceof org.lgna.project.ast.Statement ) {
-			org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
-			if( isCopy ) {
-				return org.alice.ide.IDE.getActiveInstance().createCopy( statement );
-			} else {
-				Clipboard.getInstance().pop();
-				return statement;
-			}
-		} else {
-			throw new org.lgna.croquet.CancelException();
-		}
-	}
-}
-
-class CopyFromClipboardOperation extends FromClipboardOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, CopyFromClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CopyFromClipboardOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		CopyFromClipboardOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CopyFromClipboardOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
-	private CopyFromClipboardOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "fc162a45-2175-4ccf-a5f2-d3de969692c3" ), blockStatementIndexPair, true );
-	}
-}
-
-class PasteFromClipboardOperation extends FromClipboardOperation {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, PasteFromClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized PasteFromClipboardOperation getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		PasteFromClipboardOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new PasteFromClipboardOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
-	private PasteFromClipboardOperation( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "4dea691b-af8f-4991-80e2-3db880f1883f" ), blockStatementIndexPair, false );
-	}
-}
-
-
-class CopyToClipboardOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< org.lgna.project.ast.AbstractNode, CopyToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CopyToClipboardOperation getInstance( org.lgna.project.ast.AbstractNode node ) {
-		assert node != null;
-		CopyToClipboardOperation rv = map.get( node );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CopyToClipboardOperation( node );
-			map.put( node, rv );
-		}
-		return rv;
-	}
-	private final org.lgna.project.ast.AbstractNode node;
-	private CopyToClipboardOperation( org.lgna.project.ast.AbstractNode node ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "86025bf5-1f1f-4f2d-8182-190574a3c3d0" ) );
-		this.node = org.alice.ide.IDE.getActiveInstance().createCopy( node );
-	}
-	@Override
-	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		Clipboard.getInstance().push( this.node );
-		step.finish();
-	}
-}
-
-class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
-	private org.lgna.project.ast.Statement statement;
-	private org.lgna.project.ast.BlockStatement originalBlockStatement;
-	private int originalIndex;
-	public CutToClipboardEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement ) {
-		super( completionStep );
-		this.statement = statement;
-		this.originalBlockStatement = (org.lgna.project.ast.BlockStatement)this.statement.getParent();;
-		assert this.originalBlockStatement != null;
-		this.originalIndex = this.originalBlockStatement.statements.indexOf( this.statement );
-		assert this.originalIndex != -1;
-	}
-	public CutToClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		java.util.UUID statementId = binaryDecoder.decodeId();
-		this.statement = org.lgna.project.project.ProjectUtilities.lookupNode( project, statementId );
-		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		this.originalBlockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( project, blockStatementId );
-		this.originalIndex = binaryDecoder.decodeInt();
-	}
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.statement.getUUID() );
-		binaryEncoder.encode( this.originalBlockStatement.getUUID() );
-		binaryEncoder.encode( this.originalIndex );
-	}
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		Clipboard.getInstance().push( this.statement );
-		this.originalBlockStatement.statements.remove( this.originalIndex );
-	}
-	@Override
-	protected void undoInternal() {
-		Clipboard.getInstance().pop();
-		this.originalBlockStatement.statements.add( this.originalIndex, this.statement );
-	}
-	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "cut to clipboard" );
-		return rv;
-	}
-}
-
-class CutToClipboardOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< org.lgna.project.ast.Statement, CutToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CutToClipboardOperation getInstance( org.lgna.project.ast.Statement node ) {
-		assert node != null;
-		CutToClipboardOperation rv = map.get( node );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CutToClipboardOperation( node );
-			map.put( node, rv );
-		}
-		return rv;
-	}
-	private final org.lgna.project.ast.Statement statement;
-	private CutToClipboardOperation( org.lgna.project.ast.Statement statement ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
-		this.statement = statement;
-	}
-	@Override
-	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		step.commitAndInvokeDo( new CutToClipboardEdit( step, statement ) );
-	}
-}
-
-
-//todo
-class ClipboardDropSite implements org.lgna.croquet.DropSite {
-	public ClipboardDropSite() {
-	}
-	public ClipboardDropSite( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class Clipboard extends org.lgna.croquet.components.DragComponent implements org.lgna.croquet.DropReceptor {
-	class ClipboardDragModel extends org.alice.ide.croquet.models.CodeDragModel {
-		public ClipboardDragModel() {
-			super( java.util.UUID.fromString( "d6c25f14-7ed2-4cb8-90dd-f621af830060" ) );
-		}
-		@Override
-		protected org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-			return org.lgna.project.ast.JavaType.VOID_TYPE;
-		}
-	}
+public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.swing.AbstractButton, org.alice.ide.clipboard.ClipboardDragModel > implements org.lgna.croquet.DropReceptor {
 
 	private final java.util.Stack< org.lgna.project.ast.AbstractNode > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private static class SingletonHolder {
@@ -249,25 +72,20 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 		
 	};
 	private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
-	private org.lgna.croquet.DragModel dragModel = new ClipboardDragModel();
 	private Clipboard() {
+		super( new ClipboardDragModel() );
 		this.setMinimumPreferredWidth( 40 );
-		this.setDragModel( this.dragModel );
 		this.refresh();
 	}
 	@Override
-	public org.lgna.croquet.DragModel getDragModel() {
+	public org.alice.ide.clipboard.ClipboardDragModel getModel() {
 		if( this.stack != null && this.stack.size() > 0 ) {
-			return super.getDragModel();
+			return super.getModel();
 		} else {
 			return null;
 		}
 	}
 	
-	@Override
-	protected javax.swing.JToolTip createToolTip( javax.swing.JToolTip jToolTip ) {
-		return new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( this.subject.getAwtComponent() );
-	}
 	private void refresh() {
 		this.subject.forgetAndRemoveAllComponents();
 		if( this.stack.isEmpty() ) {
@@ -314,8 +132,8 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
 		return this.dropSite;
 	}
-	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
-		return source instanceof org.alice.ide.common.AbstractStatementPane;
+	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+		return dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel;
 	}
 	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep step ) {
 		org.alice.ide.common.AbstractStatementPane pane = (org.alice.ide.common.AbstractStatementPane)step.getDragSource();
@@ -350,44 +168,28 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent impleme
 	
 	
 	@Override
-	public org.lgna.croquet.components.Component< ? > getSubject() {
+	public org.lgna.croquet.components.JComponent< ? > getSubject() {
 		return this.subject;
 	}
-	
-	public org.lgna.croquet.Model getModel( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
-		if( isCopy ) {
-			return CopyFromClipboardOperation.getInstance( blockStatementIndexPair );
-		} else {
-			return PasteFromClipboardOperation.getInstance( blockStatementIndexPair );
-		}
-	}
-	@Override
-	protected java.awt.Dimension getPreferredSize( java.awt.Dimension size ) {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( size, 40 );
-	}
-	
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridLayout();
-	}
-	@Override
-	protected int getInsetBottom() {
-		return 2;
-	}
-	@Override
-	protected int getInsetLeft() {
-		return 2;
-	}
-	@Override
-	protected int getInsetRight() {
-		return 2;
-	}
-	@Override
-	protected int getInsetTop() {
-		return 2;
-	}
 
+	@Override
+	protected javax.swing.AbstractButton createAwtComponent() {
+		class JClipboard extends javax.swing.AbstractButton {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 40 );
+			}
+			@Override
+			public javax.swing.JToolTip createToolTip() {
+				return new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( Clipboard.this.subject.getAwtComponent() );
+			}
+		}
+		JClipboard rv = new JClipboard();
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,2,2,2 ) );
+		return rv;
+	}
 	
+
 	private static java.awt.Shape createClip( float x, float y, float width, float height, float holeRadius ) {
 		float xADelta = width*0.2f;
 		float xBDelta = width*0.425f;

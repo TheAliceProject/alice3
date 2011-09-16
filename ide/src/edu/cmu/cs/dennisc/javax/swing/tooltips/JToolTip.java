@@ -55,6 +55,7 @@ class ToolTipUI extends javax.swing.plaf.basic.BasicToolTipUI {
 		if( subject != null ) {
 			edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( subject );
 			edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( subject );
+			edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( subject );
 			return subject.getPreferredSize();
 		} else {
 			return super.getPreferredSize( c );

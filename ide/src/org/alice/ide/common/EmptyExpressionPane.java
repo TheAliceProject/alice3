@@ -42,8 +42,6 @@
  */
 package org.alice.ide.common;
 
-import org.alice.ide.ast.EmptyExpression;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -51,19 +49,30 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 180, 180, 220 );
 	private static final java.awt.Color TOP_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 0.9f );
 	private static final java.awt.Color BOTTOM_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 1.1f );
-	private EmptyExpression emptyExpression;
-	public EmptyExpressionPane( EmptyExpression emptyExpression ) {
+	private final org.alice.ide.ast.EmptyExpression emptyExpression;
+	public EmptyExpressionPane( org.alice.ide.ast.EmptyExpression emptyExpression ) {
+		super( null );
 		this.emptyExpression = emptyExpression;
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( " ??? " );
 		this.addComponent( label );
 	}
+
 	@Override
-	protected java.awt.Paint getEnabledBackgroundPaint( int x, int y, int width, int height ) {
-		this.setEnabledBackgroundPaint( new java.awt.Color( 191, 191, 255 ) );
+	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
+		return this.emptyExpression.getType();
+	}
+
+	@Override
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		return new java.awt.GradientPaint( 0, y, TOP_COLOR, 0, y+height, BOTTOM_COLOR );
 	}
-	public EmptyExpressionPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		this( new EmptyExpression( type ) );
+	@Override
+	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
+		return edu.cmu.cs.dennisc.java.awt.BevelState.SUNKEN;
+	}
+	@Override
+	protected boolean isExpressionTypeFeedbackDesired() {
+		return true;
 	}
 	
 	@Override
@@ -73,17 +82,5 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 	@Override
 	protected int getInsetBottom() {
 		return 1;
-	}
-	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
-		return this.emptyExpression.getType();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
-		return edu.cmu.cs.dennisc.java.awt.BevelState.SUNKEN;
-	}
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		return true;
 	}
 }

@@ -52,7 +52,7 @@ public class CodeTitlePane extends org.lgna.croquet.components.LineAxisPanel {
 		this.code = code;
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.code.getDeclaringType() ) );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( this.code ) );
+		this.addComponent( new org.alice.ide.ast.components.DeclarationNameLabel( this.code ) );
 	}
 	public org.lgna.project.ast.AbstractCode getCode() {
 		return this.code;

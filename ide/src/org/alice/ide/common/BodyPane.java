@@ -44,17 +44,13 @@ package org.alice.ide.common;
 
 public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
 	public BodyPane( org.lgna.croquet.components.Component< ? > statementListComponent ) {
-		super( org.lgna.project.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
+		super( null, org.lgna.project.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
 		this.addComponent( new org.lgna.croquet.components.Label( "do in order" ), java.awt.BorderLayout.NORTH );
 		this.addComponent( statementListComponent, java.awt.BorderLayout.CENTER );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ), java.awt.BorderLayout.WEST );
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
 		return new java.awt.BorderLayout();
-	}
-	@Override
-	protected boolean isKnurlDesired() {
-		return false;
 	}
 }

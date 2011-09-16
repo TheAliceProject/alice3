@@ -66,7 +66,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		
 		
 //		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( methodDeclaredInAlice );
+		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( methodDeclaredInAlice );
 		nameLabel.scaleFont( NAME_SCALE );
 		nameLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,4,0,4 ) );
 

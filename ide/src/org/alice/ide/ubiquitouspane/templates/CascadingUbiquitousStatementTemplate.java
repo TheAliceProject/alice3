@@ -45,10 +45,10 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
+public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.StatementTemplate {
 	private UbiquitousStatementImplementor implementor;
 	private org.lgna.croquet.components.Label label;
-	public CascadingUbiquitousStatementTemplate( org.lgna.croquet.DragModel dragModel, Class< ? extends org.lgna.project.ast.Statement > cls, org.lgna.project.ast.Statement incompleteStatement ) {
+	public CascadingUbiquitousStatementTemplate( org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel dragModel, Class< ? extends org.lgna.project.ast.Statement > cls, org.lgna.project.ast.Statement incompleteStatement ) {
 		super( dragModel, cls );
 		this.implementor = new UbiquitousStatementImplementor( incompleteStatement );
 	}
@@ -61,7 +61,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 	}
 	
 	@Override
-	public org.lgna.croquet.components.Component< ? > getSubject() {
+	public org.lgna.croquet.components.JComponent< ? > getSubject() {
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
@@ -77,7 +77,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 		} else {
 			this.label = new org.lgna.croquet.components.Label( this.getLabelText() );
 			if( org.lgna.project.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
-				this.label.setForegroundColor( getIDE().getTheme().getCommentForegroundColor() );
+				this.label.setForegroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getCommentForegroundColor() );
 			}
 			//this.label.setFontToScaledFont( 1.2f );
 			this.addComponent( this.label );

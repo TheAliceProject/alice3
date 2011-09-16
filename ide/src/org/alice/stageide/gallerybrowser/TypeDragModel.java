@@ -66,7 +66,7 @@ public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.G
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > parameterType = this.type.getDeclaredConstructors().get( 0 ).getParameters().get( 0 ).getValueType();
-		return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType ).getRoot().getPopupPrepModel();
+		return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType );
 	}
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {

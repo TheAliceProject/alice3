@@ -45,7 +45,7 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviousValueExpression extends org.lgna.project.ast.Expression {
+public class PreviousValueExpression extends IdeExpression {
 	private org.lgna.project.ast.AbstractType<?,?,?> type;
 	public PreviousValueExpression( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		this.type = type;
@@ -55,15 +55,12 @@ public class PreviousValueExpression extends org.lgna.project.ast.Expression {
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType<?,?,?> getType() {
-		return this.type;
-	}
-//	@Override
-//	public edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getType() {
 //		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
 //		if( previousExpression != null ) {
 //			return previousExpression.getType();
 //		} else {
 //			return null;
 //		}
-//	}
+		return this.type;
+	}
 }

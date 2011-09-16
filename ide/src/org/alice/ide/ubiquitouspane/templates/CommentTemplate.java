@@ -45,12 +45,8 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class CommentTemplate extends CascadingUbiquitousStatementClassTemplate {
+public class CommentTemplate extends CascadingUbiquitousStatementTemplate {
 	public CommentTemplate() {
-		super( org.lgna.project.ast.Comment.class, org.alice.ide.ast.AstUtilities.createComment() );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.CommentInsertOperation.getInstance( blockStatementIndexPair );
+		super( org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance(), org.lgna.project.ast.Comment.class, org.alice.ide.ast.AstUtilities.createComment() );
 	}
 }

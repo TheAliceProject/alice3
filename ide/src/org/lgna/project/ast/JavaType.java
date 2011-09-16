@@ -394,8 +394,4 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			return false;
 		}
 	}
-	@Override
-	public String toString() {
-		return getClass() + "[cls=" + this.classReflectionProxy.getName() + "]";
-	}
 }

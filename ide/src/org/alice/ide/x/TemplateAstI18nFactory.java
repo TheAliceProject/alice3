@@ -46,7 +46,7 @@ package org.alice.ide.x;
 /**
  * @author Dennis Cosgrove
  */
-public class TemplateAstI18nFactory extends AstI18nFactory {
+public class TemplateAstI18nFactory extends IdeAstI18nFactory {
 	private static class SingletonHolder {
 		private static TemplateAstI18nFactory instance = new TemplateAstI18nFactory();
 	}

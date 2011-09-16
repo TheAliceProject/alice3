@@ -626,4 +626,17 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 		this.appendRepr( sb, locale );
 		return sb.toString();
 	}
+	
+	protected StringBuilder appendStringDetails( StringBuilder rv ) {
+		return rv;
+	}
+	@Override
+	public final String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		this.appendStringDetails( sb );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }

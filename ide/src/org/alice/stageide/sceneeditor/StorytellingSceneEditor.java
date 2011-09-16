@@ -412,8 +412,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return this;
 	}
 
-	public boolean isPotentiallyAcceptingOf(DragComponent source) {
-		return source instanceof org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent;
+	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+		return dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 	}
 
 	public org.lgna.croquet.components.JComponent<?> getViewController() {

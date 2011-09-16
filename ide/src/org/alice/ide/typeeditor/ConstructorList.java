@@ -60,7 +60,7 @@ public class ConstructorList extends MemberList< org.lgna.project.ast.NamedUserC
 	@Override
 	protected org.alice.ide.typeeditor.ConstructorItemDetails createItemDetails( org.lgna.project.ast.NamedUserConstructor item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
 		button.addComponent( org.alice.ide.croquet.models.ast.EditConstructorOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		button.addComponent( new org.alice.ide.common.DeclarationNameLabel( item, 1.5f ), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		button.addComponent( new org.alice.ide.ast.components.DeclarationNameLabel( item, 1.5f ), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 		return new ConstructorItemDetails( this, item, button );
 	}
 }

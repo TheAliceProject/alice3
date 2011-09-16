@@ -47,16 +47,32 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractField, FieldArrayAtIndexAssignmentInsertCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized FieldArrayAtIndexAssignmentInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
+		FieldArrayAtIndexAssignmentInsertCascade rv = mapToMap.get( blockStatementIndexPair, field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FieldArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, field );
+			mapToMap.put( blockStatementIndexPair, field, rv );
+		}
+		return rv;
+	}
 	private final org.lgna.project.ast.AbstractField field;
-	public FieldArrayAtIndexAssignmentInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
+	private FieldArrayAtIndexAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "9097fa73-b622-47a0-8f69-3c4bfaf55d71" ), blockStatementIndexPair, field.getValueType(), null );
 		this.field = field;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
 		return org.alice.ide.ast.AstUtilities.createFieldAccess( 
-				org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), 
+				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), 
 				field
 		);
 	}
+	//todo
+//	@Override
+//	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver createCodableResolver() {
+//		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver( this );
+//	}
 }

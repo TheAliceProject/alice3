@@ -46,26 +46,18 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 //todo: reduce visibility
-public class GetterTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
-	private static final org.lgna.project.ast.AbstractType<?,?,?>[] ZERO_LENGTH_TYPE_ARRAY = new org.lgna.project.ast.AbstractType[] {};  
+public class GetterTemplate extends org.alice.ide.templates.ExpressionTemplate {
 	private org.lgna.project.ast.AbstractField field;
 	protected GetterTemplate( org.lgna.project.ast.AbstractField field ) {
+		super( org.alice.ide.ast.draganddrop.expression.FieldAccessDragModel.getInstance( field ) );
 		this.field = field;
 		if( this.field instanceof org.lgna.project.ast.UserField ) {
 			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldPopupOperation( fieldInAlice ).getPopupPrepModel() );
+			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.AstUtilities.createIncompleteFieldAccess( field );
-	}
-	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
-		return this.field.getValueType();
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
 	}
 }

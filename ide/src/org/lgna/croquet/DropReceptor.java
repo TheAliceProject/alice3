@@ -42,18 +42,14 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.TrackableShape;
-import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.resolvers.CodableResolver;
-
 /**
  * @author Dennis Cosgrove
  */
 public interface DropReceptor {
-	public <R extends DropReceptor> CodableResolver< DropReceptor > getCodableResolver();
-	public TrackableShape getTrackableShape( DropSite potentialDropSite );
+	public <R extends DropReceptor> org.lgna.croquet.resolvers.CodableResolver< DropReceptor > getCodableResolver();
+	public org.lgna.croquet.components.TrackableShape getTrackableShape( DropSite potentialDropSite );
 	
-	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source );
+	public boolean isPotentiallyAcceptingOf( DragModel dragModel );
 	//public ViewController<?,?> getViewController();
 	//todo: rename
 	public org.lgna.croquet.components.JComponent<?> getViewController();
@@ -68,5 +64,5 @@ public interface DropReceptor {
 	
 	public void dragStopped( org.lgna.croquet.history.DragStep step );
 	
-	public String getTutorialNoteText( Model model, Edit< ? > edit, UserInformation userInformation );
+	public String getTutorialNoteText( Model model, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation );
 }

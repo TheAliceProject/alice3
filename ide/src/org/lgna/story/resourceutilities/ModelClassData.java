@@ -24,11 +24,15 @@ public class ModelClassData extends BaseModelClassData
 	
 	
 	public static final ModelClassData PERSON_CLASS_DATA = new ModelClassData(org.lgna.story.resources.PersonResource.class, "org.lgna.story.resources.people", BIPED_BASE_CLASS_DATA);
+	public static final ModelClassData CHARACTER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.CharacterResource.class, "org.lgna.story.resources.character", BIPED_BASE_CLASS_DATA);
 	public static final ModelClassData MONSTER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.MonsterResource.class, "org.lgna.story.resources.monster", BIPED_BASE_CLASS_DATA);
 	public static final ModelClassData BIRD_CLASS_DATA = new ModelClassData(org.lgna.story.resources.BirdResource.class, "org.lgna.story.resources.bird", FLYER_BASE_CLASS_DATA);
 	public static final ModelClassData FISH_CLASS_DATA = new ModelClassData(org.lgna.story.resources.FishResource.class, "org.lgna.story.resources.fish", SWIMMER_BASE_CLASS_DATA);
 	public static final ModelClassData WHALE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.WhaleResource.class, "org.lgna.story.resources.whale", SWIMMER_BASE_CLASS_DATA);
 	public static final ModelClassData PROP_CLASS_DATA = new ModelClassData(org.lgna.story.resources.PropResource.class, "org.lgna.story.resources.prop", PROP_BASE_CLASS_DATA);
 	public static final ModelClassData CAT_CLASS_DATA = new ModelClassData(org.lgna.story.resources.CatResource.class, "org.lgna.story.resources.cat", QUADRUPED_BASE_CLASS_DATA);
+	public static final ModelClassData DOG_CLASS_DATA = new ModelClassData(org.lgna.story.resources.DogResource.class, "org.lgna.story.resources.dog", QUADRUPED_BASE_CLASS_DATA);
+	public static final ModelClassData CAMEL_CLASS_DATA = new ModelClassData(org.lgna.story.resources.CamelResource.class, "org.lgna.story.resources.camel", QUADRUPED_BASE_CLASS_DATA);
+	public static final ModelClassData HORSE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.HorseResource.class, "org.lgna.story.resources.horse", QUADRUPED_BASE_CLASS_DATA);
 	
 }

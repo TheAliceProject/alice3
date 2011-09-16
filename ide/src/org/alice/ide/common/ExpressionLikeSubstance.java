@@ -49,13 +49,17 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	private static final int INSET = 2;
 	public static final int DOCKING_BAY_INSET_LEFT = 5;
 
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+	private final boolean isVoid;
+	public ExpressionLikeSubstance( org.lgna.croquet.DragModel model, boolean isVoid ) {
+		super( model );
+		this.isVoid = isVoid;
 	}
-	private boolean isVoid() {
-		org.lgna.project.ast.AbstractType<?,?,?> type = getExpressionType();
-		return type == org.lgna.project.ast.JavaType.VOID_TYPE;
+	public ExpressionLikeSubstance( org.lgna.croquet.DragModel model ) {
+		this( model, false );;
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
 	}
 	protected boolean isExpressionTypeFeedbackDesired() {
 		return org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() || isKnurlDesired();
@@ -71,19 +75,17 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		}
 		return false;
 	}
-	
 	@Override
 	protected int getInsetTop() {
-		if( this.isVoid() ) {
+		if( this.isVoid ) {
 			return 0;
 		} else {
 			return ExpressionLikeSubstance.INSET;
 		}
 	}
-	
 	@Override
 	protected int getDockInsetLeft() {
-		if( this.isVoid() || this.isExpressionTypeFeedbackDesired() == false ) {
+		if( this.isVoid || this.isExpressionTypeFeedbackDesired() == false ) {
 			return 0;
 		} else {
 			return DOCKING_BAY_INSET_LEFT + 2;
@@ -91,7 +93,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	}
 	@Override
 	protected int getInternalInsetLeft() {
-		if( this.isVoid() ) {
+		if( this.isVoid ) {
 			return 0;
 		} else {
 			return 1;
@@ -100,7 +102,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	
 	@Override
 	protected int getInsetBottom() {
-		if( this.isVoid() ) {
+		if( this.isVoid ) {
 			return 0;
 		} else {
 			return ExpressionLikeSubstance.INSET;
@@ -108,7 +110,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	}
 	@Override
 	protected int getInsetRight() {
-		if( this.isVoid() ) {
+		if( this.isVoid ) {
 			return 0;
 		} else {
 			return ExpressionLikeSubstance.INSET;
@@ -133,7 +135,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	
 	@Override
 	protected java.awt.Shape createShape(int x, int y, int width, int height) {
-		if( this.isVoid() || this.isExpressionTypeFeedbackDesired() == false ) {
+		if( this.isVoid || this.isExpressionTypeFeedbackDesired() == false ) {
 			return null;
 		} else {
 			return this.createBoundsShape(x, y, width, height).getBaseShape();
@@ -149,7 +151,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		if( this.isVoid() || this.isExpressionTypeFeedbackDesired() == false ) {
+		if( this.isVoid || this.isExpressionTypeFeedbackDesired() == false ) {
 			//pass
 		} else {
 			//edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
@@ -159,14 +161,8 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
 		}
 	}
-	
-	@Override
-	protected boolean isKnurlDesired() {
-		return false;
-	}
 
 	public abstract org.lgna.project.ast.AbstractType<?,?,?> getExpressionType();
-	
 	//	@Override
 	//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
 	//		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET+DOCKING_BAY_INSET_LEFT, INSET, (float)getWidth()-2*INSET-DOCKING_BAY_INSET_LEFT, (float)getHeight()-2*INSET, 8, 8 );

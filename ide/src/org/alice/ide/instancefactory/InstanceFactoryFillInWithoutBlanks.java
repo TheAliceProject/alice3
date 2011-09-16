@@ -54,7 +54,7 @@ public abstract class InstanceFactoryFillInWithoutBlanks extends org.lgna.croque
 	}
 	@Override
 	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		org.lgna.project.ast.Expression expression = this.getTransientValue( step ).createExpression();
+		org.lgna.project.ast.Expression expression = this.transientValue.createTransientExpression();
 		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
 		return expressionPane;
 	}

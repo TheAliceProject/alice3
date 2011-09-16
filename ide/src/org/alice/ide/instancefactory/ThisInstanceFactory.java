@@ -51,6 +51,9 @@ public enum ThisInstanceFactory implements InstanceFactory {
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
+	public org.lgna.project.ast.Expression createTransientExpression() {
+		return new org.alice.ide.ast.CurrentThisExpression();
+	}
 	public org.lgna.project.ast.Expression createExpression() {
 		return new org.lgna.project.ast.ThisExpression();
 	}

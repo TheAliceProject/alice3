@@ -46,18 +46,38 @@ package org.alice.ide.croquet.components.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance {
-	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel node ) {
-		this.setDragModel( node );
-		this.setLeftButtonClickModel( node.getLeftButtonClickModel() );
+public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent< org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel > {
+	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
+		super( model );
+		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-		label.setText( node.getText() );
-		label.setIcon( node.getLargeIcon() );
+		label.setText( model.getText() );
+		label.setIcon( model.getLargeIcon() );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-		this.setBackgroundColor( null );
-		this.setEnabledBackgroundPaint( new java.awt.Color( 0xf7e4b6 ) );
-		this.addComponent( label );
+		this.internalAddComponent( label );
+		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
+	}
+	@Override
+	protected int getInsetTop() {
+		return 4;
+	}
+	@Override
+	protected int getInsetRight() {
+		return 4;
+	}
+	@Override
+	protected int getInsetBottom() {
+		return 4;
+	}
+
+	@Override
+	protected int getDockInsetLeft() {
+		return 0;
+	}
+	@Override
+	protected int getInternalInsetLeft() {
+		return 4;
 	}
 	@Override
 	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
@@ -67,35 +87,8 @@ public class GalleryDragComponent extends org.alice.ide.common.NodeLikeSubstance
 	protected void fillBounds(java.awt.Graphics2D g2, int x, int y, int width, int height) {
 		g2.fill( this.createShape(x, y, width, height));
 	}
-
-	@Override
-	protected int getDockInsetLeft() {
-		return 0;
-	}
-
-	@Override
-	protected int getInternalInsetLeft() {
-		return 0;
-	}
-
-	@Override
-	protected int getInsetBottom() {
-		return 8;
-	}
-
-	@Override
-	protected int getInsetRight() {
-		return 0;
-	}
-
-	@Override
-	protected int getInsetTop() {
-		return 0;
-	}
-
 	@Override
 	protected void paintPrologue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		java.awt.geom.RoundRectangle2D rr = new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 );
-		g2.fill( rr );
+		g2.fill( this.createShape( x, y, width, height ) );
 	}
 }

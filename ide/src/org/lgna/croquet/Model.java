@@ -131,34 +131,28 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 		return this.components;
 	}
 	
-	private org.lgna.croquet.components.JComponent< ? > firstComponentHint;
-	
 	@Deprecated
 	public <J extends org.lgna.croquet.components.JComponent< ? > > J getFirstComponent( Class<J> cls, boolean isVisibleAcceptable ) {
-		if( this.firstComponentHint != null ) {
-			return cls.cast( this.firstComponentHint );
-		} else {
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent:", this );
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "count:", this.components.size() );
+		for( org.lgna.croquet.components.JComponent< ? > component : this.components ) {
+			if( cls.isAssignableFrom( component.getClass() ) ) {
+				if( component.getAwtComponent().isShowing() ) {
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
+					return cls.cast( component );
+				} else {
+					//pass
+				}
+			}
+		}
+		if( isVisibleAcceptable ) {
 			for( org.lgna.croquet.components.JComponent< ? > component : this.components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
-					if( component.getAwtComponent().isShowing() ) {
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
+					if( component.getAwtComponent().isVisible() ) {
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
 						return cls.cast( component );
 					} else {
 						//pass
-					}
-				}
-			}
-			if( isVisibleAcceptable ) {
-				for( org.lgna.croquet.components.JComponent< ? > component : this.components ) {
-					if( cls.isAssignableFrom( component.getClass() ) ) {
-						if( component.getAwtComponent().isVisible() ) {
-//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
-							return cls.cast( component );
-						} else {
-							//pass
-						}
 					}
 				}
 			}
@@ -187,18 +181,6 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
 		return getFirstComponent( false );
 	}
-	@Deprecated
-	public void setFirstComponentHint( org.lgna.croquet.components.JComponent< ? > firstComponentHint ) {
-//		Thread.dumpStack();
-		assert this.components.contains( firstComponentHint );
-		if( this.firstComponentHint != firstComponentHint ) {
-//			if( this.firstComponentHint != null ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "setFirstComponentHint", this.firstComponentHint, "->", firstComponentHint );
-//			}
-			this.firstComponentHint = firstComponentHint;
-		}
-	}
-	
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
 		rv.append( "text: " );
 		rv.append( this );

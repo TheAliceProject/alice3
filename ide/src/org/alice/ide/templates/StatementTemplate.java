@@ -46,23 +46,16 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate( org.lgna.croquet.DragModel dragModel, Class<? extends org.lgna.project.ast.Statement> cls) {
-		super(cls, javax.swing.BoxLayout.LINE_AXIS);
-		this.setDragModel( dragModel );
+	public StatementTemplate( org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel model, Class<? extends org.lgna.project.ast.Statement> cls) {
+		super( model, cls, javax.swing.BoxLayout.LINE_AXIS);
 	}
-	
-	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair );
-//	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement, int index ) {
-//		return this.getDropModel( step, new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index ) );
-//	}
-	
 	@Override
 	protected boolean isPressed() {
 		return false;
 	}
 	@Override
 	protected boolean isInScope() {
-		return getIDE().isSelectedAccessibleInScope();
+		return org.alice.ide.IDE.getActiveInstance().isSelectedAccessibleInScope();
 	}
 	@Override
 	protected boolean contains(int x, int y, boolean jContains) {

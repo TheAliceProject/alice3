@@ -180,8 +180,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-		if( dropSite instanceof org.alice.ide.codeeditor.BlockStatementIndexPair ) {
-			org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.codeeditor.BlockStatementIndexPair)dropSite;
+		if( dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
+			org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
 			org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
 			org.lgna.project.ast.AbstractCode code = blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 			System.err.println( "todo: getDropReceptor: " + dropSite );
@@ -408,10 +408,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( Class< ? > superCls ) {
 		return getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType.getInstance( superCls ) );
 
-	}
-
-	public org.lgna.croquet.components.JComponent< ? > getOverrideComponent( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
-		return null;
 	}
 
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
@@ -1182,11 +1178,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return text;
 	}
 
-	public final org.lgna.project.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
-		return org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression();
-	}
-
-	
 	@Deprecated
 	public final boolean isAccessibleInScope( org.lgna.project.ast.Accessible accessible ) {
 		return true;

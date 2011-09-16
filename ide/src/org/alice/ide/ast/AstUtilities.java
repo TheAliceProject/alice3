@@ -188,7 +188,7 @@ public class AstUtilities {
 		return rv;
 	}
 	public static org.lgna.project.ast.MethodInvocation createIncompleteMethodInvocation( org.lgna.project.ast.AbstractMethod method ) {
-		return AstUtilities.createIncompleteMethodInvocation( new SelectedFieldExpression( method.getDeclaringType() ), method );
+		return AstUtilities.createIncompleteMethodInvocation( new SelectedInstanceFactoryExpression( method.getDeclaringType() ), method );
 	}
 	public static org.lgna.project.ast.MethodInvocation createIncompleteStaticMethodInvocation( org.lgna.project.ast.AbstractMethod method ) {
 		return AstUtilities.createIncompleteMethodInvocation( new org.lgna.project.ast.TypeExpression( method.getDeclaringType() ), method );
@@ -213,7 +213,7 @@ public class AstUtilities {
 	}
 	
 	public static org.lgna.project.ast.FieldAccess createIncompleteFieldAccess( org.lgna.project.ast.AbstractField field ) {
-		return AstUtilities.createFieldAccess( new SelectedFieldExpression( field.getDeclaringType() ), field );
+		return AstUtilities.createFieldAccess( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
 	}
 	private static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.FieldAccess fieldAccess = AstUtilities.createFieldAccess( expression, field );
@@ -221,7 +221,7 @@ public class AstUtilities {
 		return new org.lgna.project.ast.AssignmentExpression( valueType, fieldAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
 	}
 	public static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.AbstractField field ) {
-		return AstUtilities.createIncompleteAssignmentExpression( new SelectedFieldExpression( field.getDeclaringType() ), field );
+		return AstUtilities.createIncompleteAssignmentExpression( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
 	}
 	
 	public static org.lgna.project.ast.MethodInvocation createNextMethodInvocation( org.lgna.project.ast.MethodInvocation prevMethodInvocation, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod nextMethod ) {
@@ -247,7 +247,7 @@ public class AstUtilities {
 		return rv;
 	}
 	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression... argumentExpressions ) {
-		return completeMethodInvocation( rv, org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), argumentExpressions );
+		return completeMethodInvocation( rv, org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), argumentExpressions );
 	}
 	
 	public static org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {

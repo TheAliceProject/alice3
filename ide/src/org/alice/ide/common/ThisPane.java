@@ -57,8 +57,9 @@ public class ThisPane extends AccessiblePane {
 	};
 
 	public ThisPane() {
+		super( org.alice.ide.ast.draganddrop.expression.ThisExpressionDragModel.getInstance() );
 		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
-		this.setEnabledBackgroundPaint( getIDE().getTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
 	}
 	@Override
 	protected void handleDisplayable() {
@@ -89,14 +90,6 @@ public class ThisPane extends AccessiblePane {
 			this.type = TYPE_FOR_NULL;
 			this.setToolTipText( null );
 		}
-	}
-	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
-		return this.type;
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation.getInstance( expressionProperty );
 	}
 
 	@Override

@@ -122,7 +122,7 @@ public class ThumbnailMaker {
 	
 	private AffineMatrix4x4 getThumbnailCameraOrientation(AxisAlignedBox bbox)
 	{
-		Vector3 cameraDir = new Vector3(1.0, -2.0, -3.0);
+		Vector3 cameraDir = new Vector3(-1.0, -2.0, 3.0);
 		cameraDir.normalize();
 		
 		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray(bbox.getCenter(), cameraDir);
@@ -280,8 +280,8 @@ public class ThumbnailMaker {
 		double shiftUpPercent = (bottomBorder - topBorder) / ((double)testImage.getHeight());
 		double shiftRightPercent = (leftBorder - rightBorder) / ((double)testImage.getHeight());
 		
-		double shiftUpAmount = shiftUpPercent * bbox.getHeight();
-		double shiftRightAmount = shiftRightPercent * bbox.getWidth()* .5;
+		double shiftUpAmount = shiftUpPercent * bbox.getHeight() * .75;
+		double shiftRightAmount = shiftRightPercent * bbox.getWidth()* .75;
 		
 		Point3 testPosition = new Point3(currentPosition);
 		
@@ -298,37 +298,48 @@ public class ThumbnailMaker {
 		world.getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox));
 		
 		AffineMatrix4x4 cameraTransform = world.getSGCameraVehicle().getAbsoluteTransformation();
-		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray(cameraTransform.translation, Vector3.createMultiplication(cameraTransform.orientation.backward, -1));
 		java.awt.image.BufferedImage testImage = testImageOffscreenLookingGlass.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
 		java.nio.FloatBuffer depthBuffer = testImageOffscreenLookingGlass.createFloatBufferForUseAsDepthBuffer();
 		
 		testImageOffscreenLookingGlass.clearAndRenderOffscreen();
 		testImage = testImageOffscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 		
+		ImageUtilities.write("C:/batchOutput/thumbnailTest/initial.png", testImage);
+		
 		Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation, bbox);
 		world.getSGCameraVehicle().setTranslationOnly(testPosition, world);
 		boolean framed = true;
 		Point3 lastGoodPosition = new Point3(testPosition);
+		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray(testPosition, Vector3.createMultiplication(cameraTransform.orientation.backward, -1));
 		double distanceToCenter = Point3.calculateDistanceBetween(cameraRay.accessOrigin(), bbox.getCenter());
+		double bboxDiagonal = Point3.calculateDistanceBetween(bbox.getMinimum(), bbox.getMaximum());
+		double distanceToEdge = distanceToCenter - bboxDiagonal;
 		double distanceStep = distanceToCenter / 20;
 		double currentT = 0;
-		while (framed && distanceStep < distanceToCenter)
+		int count = 0;
+		while (framed && (distanceToEdge - currentT > this.world.getSGCamera().nearClippingPlaneDistance.getValue()))
 		{
 			cameraRay.getPointAlong(testPosition, currentT);
 			world.getSGCameraVehicle().setTranslationOnly(testPosition, world);
 			testImageOffscreenLookingGlass.clearAndRenderOffscreen();
 			testImage = testImageOffscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+			
+			ImageUtilities.write("C:/batchOutput/thumbnailTest/test"+count+".png", testImage);
+			
 			framed = isFullyFramed(testImage);
 			if (framed)
 			{
 				lastGoodPosition.set(testPosition);
 			}
+			count++;
 			currentT += distanceStep;
 		}
 		
 		world.getSGCameraVehicle().setTranslationOnly(lastGoodPosition, world);
 		offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
+		
+		ImageUtilities.write("C:/batchOutput/thumbnailTest/final.png", rv);
 		
 		v.setParent(null);
 		

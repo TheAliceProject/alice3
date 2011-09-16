@@ -67,6 +67,6 @@ public class FunctionInvocationCascade extends org.alice.ide.croquet.models.ast.
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
-		return org.alice.ide.ast.AstUtilities.createMethodInvocation( org.alice.ide.IDE.getActiveInstance().createInstanceExpression(), this.method, expressions );
+		return org.alice.ide.ast.AstUtilities.createMethodInvocation( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), this.method, expressions );
 	}
 }

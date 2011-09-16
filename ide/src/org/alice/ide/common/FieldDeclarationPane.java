@@ -55,7 +55,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		}
 		this.addComponent( TypeComponent.createInstance( field.getValueType() ) );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
+		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( field );
 		nameLabel.scaleFont( 1.5f );
 		this.addComponent( nameLabel );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
@@ -65,7 +65,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		if( isDropDownDesired ) {
 			component = org.alice.ide.croquet.models.ast.FieldInitializerState.getInstance( this.field ).createEditor( org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance() );
 		} else {
-			component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
+			component = new org.alice.ide.x.components.ExpressionPropertyView( factory, field.initializer );
 		}
 		this.addComponent( component );
 	}

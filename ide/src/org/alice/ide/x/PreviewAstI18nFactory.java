@@ -46,7 +46,7 @@ package org.alice.ide.x;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewAstI18nFactory extends AstI18nFactory {
+public class PreviewAstI18nFactory extends IdeAstI18nFactory {
 	private static class SingletonHolder {
 		private static PreviewAstI18nFactory instance = new PreviewAstI18nFactory();
 	}

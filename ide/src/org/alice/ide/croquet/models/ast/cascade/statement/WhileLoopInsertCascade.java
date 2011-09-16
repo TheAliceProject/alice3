@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class WhileLoopInsertCascade extends StatementInsertCascade {
-	private static java.util.Map< org.alice.ide.codeeditor.BlockStatementIndexPair, WhileLoopInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized WhileLoopInsertCascade getInstance( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized WhileLoopInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		WhileLoopInsertCascade rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -59,7 +59,7 @@ public class WhileLoopInsertCascade extends StatementInsertCascade {
 		}
 		return rv;
 	}
-	private WhileLoopInsertCascade( org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	private WhileLoopInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
 	@Override

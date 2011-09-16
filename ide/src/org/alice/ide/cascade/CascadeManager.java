@@ -66,9 +66,9 @@ public abstract class CascadeManager {
 		addRelationalTypeToBooleanFillerInner( org.lgna.project.ast.JavaType.getInstance( operandCls ) );
 	}
 	private org.lgna.project.ast.Expression previousExpression = null;
-	private org.alice.ide.codeeditor.BlockStatementIndexPair contextBlockStatementIndexPair = null;
+	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair contextBlockStatementIndexPair = null;
 
-	public void pushContext( org.lgna.project.ast.Expression previousExpression, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
+	public void pushContext( org.lgna.project.ast.Expression previousExpression, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		this.previousExpression = previousExpression;
 		this.contextBlockStatementIndexPair = blockStatementIndexPair;
 	}

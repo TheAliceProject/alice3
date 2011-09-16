@@ -48,7 +48,7 @@ package org.alice.ide.ubiquitouspane.templates;
 public class VariableArrayAssignmentStatementTemplate extends ArrayAssignmentStatementTemplate {
 	private org.lgna.project.ast.UserVariable variable;
 	public VariableArrayAssignmentStatementTemplate( org.lgna.project.ast.UserVariable variable ) {
-		super( org.alice.ide.ast.AstUtilities.createIncompleteVariableArrayAssignmentStatement( variable ) );
+		super( org.alice.ide.ast.draganddrop.statement.VariableArrayAtIndexAssignmentTemplateDragModel.getInstance( variable ), org.alice.ide.ast.AstUtilities.createIncompleteVariableArrayAssignmentStatement( variable ) );
 		this.variable = variable;
 	}
 	@Override
@@ -58,9 +58,5 @@ public class VariableArrayAssignmentStatementTemplate extends ArrayAssignmentSta
 	@Override
 	protected org.lgna.project.ast.AbstractType<?,?,?> getTransientComponentType() {
 		return this.variable.valueType.getValue().getComponentType();
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.codeeditor.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.ast.cascade.statement.VariableArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.variable ).getRoot().getPopupPrepModel();
 	}
 }

@@ -42,14 +42,15 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.common.DefaultStatementPane;
-import org.alice.ide.common.StatementListPropertyPane;
+import org.alice.ide.x.components.StatementListPropertyView;
 
 /**
  * @author Dennis Cosgrove
  */
 public class CodeEditor extends org.lgna.croquet.components.BorderPanel implements org.lgna.croquet.DropReceptor, java.awt.print.Printable {
-	private StatementListPropertyPane EPIC_HACK_desiredStatementListPropertyPane = null;
+	private StatementListPropertyView EPIC_HACK_desiredStatementListPropertyPane = null;
 	private int EPIC_HACK_desiredIndex = -1;
 
 	private org.lgna.project.ast.AbstractCode code;
@@ -191,7 +192,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			} else {
 				throw new RuntimeException();
 			}
-			class RootStatementListPropertyPane extends StatementListPropertyPane {
+			class RootStatementListPropertyPane extends StatementListPropertyView {
 				private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
 				public RootStatementListPropertyPane() {
 					super( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), codeDeclaredInAlice.getBodyProperty().getValue().statements );
@@ -271,17 +272,17 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 		return rv;
 	}
-	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.components.DragComponent source ) {
-		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
+	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
 			return false;
 		}
 	}
 	
-	private StatementListPropertyPane currentUnder;
+	private StatementListPropertyView currentUnder;
 	
-	private void setCurrentUnder( StatementListPropertyPane nextUnder, java.awt.Dimension dropSize ) {
+	private void setCurrentUnder( StatementListPropertyView nextUnder, java.awt.Dimension dropSize ) {
 		if( this.currentUnder != nextUnder ) {
 			if( this.currentUnder != null ) {
 				this.currentUnder.setIsCurrentUnder( false );
@@ -305,10 +306,10 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return this.scrollPane.getViewportView();
 	}
 	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( org.lgna.croquet.components.Container<?> source ) {
-		java.util.List< StatementListPropertyPane > statementListPropertyPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
+		java.util.List< StatementListPropertyView > statementListPropertyPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, StatementListPropertyView.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
-		for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
+		for( StatementListPropertyView statementListPropertyPane : statementListPropertyPanes ) {
 			if( source != null && source.isAncestorOf( statementListPropertyPane ) ) {
 				continue;
 			}
@@ -329,12 +330,12 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return rv;
 
 	}
-	private StatementListPropertyPane getStatementListPropertyPaneUnder( java.awt.event.MouseEvent e, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos ) {
-		StatementListPropertyPane rv = null;
+	private StatementListPropertyView getStatementListPropertyPaneUnder( java.awt.event.MouseEvent e, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos ) {
+		StatementListPropertyView rv = null;
 		for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : this.statementListPropertyPaneInfos ) {
 			if( statementListPropertyPaneInfo != null ) {
 				if( statementListPropertyPaneInfo.contains( e ) ) {
-					StatementListPropertyPane slpp = statementListPropertyPaneInfo.getStatementListPropertyPane();
+					StatementListPropertyView slpp = statementListPropertyPaneInfo.getStatementListPropertyPane();
 					if( rv != null ) {
 						if( rv.getHeight() > slpp.getHeight() ) {
 							rv = slpp;
@@ -354,7 +355,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = step.getLatestMouseEvent();
 			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
-			StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
+			StatementListPropertyView nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
 			this.setCurrentUnder( nextUnder, source.getDropProxySize() );
 			if( this.currentUnder != null ) {
 				boolean isDropProxyAlreadyUpdated = false;
@@ -420,7 +421,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 									p.y -= availableHeight;
 									height = null;
 								} else {
-									p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
+									p.y += StatementListPropertyView.INTRASTICIAL_PAD;
 									if( this.currentUnder.getProperty() == ((org.lgna.project.ast.UserCode)this.code).getBodyProperty().getValue().statements ) {
 										height = null;
 									}
@@ -451,11 +452,12 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	}
 	public final org.lgna.croquet.Model dragDropped( final org.lgna.croquet.history.DragStep step ) {
 		org.lgna.croquet.Model rv = null;
-		final org.lgna.croquet.components.DragComponent source = step.getDragSource();
+		final org.lgna.croquet.DragModel dragModel = step.getModel();
+		org.lgna.croquet.components.DragComponent dragSource = step.getDragSource();
 		final java.awt.event.MouseEvent eSource = step.getLatestMouseEvent();
-		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
+		final StatementListPropertyView statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
-			final int index = statementListPropertyPane.calculateIndex( source.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
+			final int index = statementListPropertyPane.calculateIndex( dragSource.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
 
 			if( EPIC_HACK_desiredStatementListPropertyPane != null && EPIC_HACK_desiredIndex != -1 ) {
 				int desiredIndex;
@@ -473,19 +475,13 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 				}
 			}
 			
-			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
-				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
+			if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel ) {
 				if( org.alice.ide.croquet.models.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
 					//pass
 				} else {
-					org.lgna.project.ast.AbstractMethod method;
-					if( statementTemplate instanceof org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate ) {
-						org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate = (org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate)statementTemplate;
-						method = procedureInvocationTemplate.getMethod();
-					} else {
-						method = null;
-					}
-					if( method != null ) {
+					if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel ) {
+						org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel procedureInvocationTemplateDragModel = (org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel)dragModel;
+						org.lgna.project.ast.AbstractMethod method = procedureInvocationTemplateDragModel.getMethod();
 						if( method == this.getCode() ) {
 							StringBuilder sb = new StringBuilder();
 							sb.append( "<html>" );
@@ -508,40 +504,45 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					} else {
 						blockStatementIndexPair = null;
 					}
-					rv = statementTemplate.getDropModel( step, blockStatementIndexPair );
+					rv = dragModel.getDropModel( step, blockStatementIndexPair );
+					
+					System.err.println( "todo: investigate pushContext" );
 					org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( null, blockStatementIndexPair );
 					System.err.println( "todo: handle finally" );
 				}
-			} else if( source instanceof org.alice.ide.clipboard.Clipboard ) {
-				//todo check for recursion
-				org.alice.ide.clipboard.Clipboard clipboard = (org.alice.ide.clipboard.Clipboard)source;
-				boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource );
+			} else if( dragModel instanceof org.alice.ide.clipboard.ClipboardDragModel ) {
+				org.alice.ide.clipboard.ClipboardDragModel clipboardDragModel = (org.alice.ide.clipboard.ClipboardDragModel)dragModel;
 				if( this.currentUnder != null ) {
 					edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 					if( propertyOwner instanceof org.lgna.project.ast.BlockStatement ) {
 						BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair( (org.lgna.project.ast.BlockStatement)propertyOwner, index );
-						rv = clipboard.getModel( blockStatementIndexPair, isCopy );
+						rv = clipboardDragModel.getDropModel( step, blockStatementIndexPair );
 					}
 				}
-			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
+			} else if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
 				if( this.currentUnder != null ) {
-					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
-					final org.lgna.project.ast.Statement statement = abstractStatementPane.getStatement();
-					final org.lgna.project.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
-					final org.lgna.project.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
-					final int prevIndex = prevOwner.indexOf( statement );
-					final int nextIndex = this.currentUnder.calculateIndex( source.convertPoint( eSource.getPoint(), this.currentUnder ) );
+					org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
+					final org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
+					
+					org.lgna.project.ast.Node parent = statement.getParent();
+					if( parent instanceof org.lgna.project.ast.BlockStatement ) {
+						org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
+						final org.lgna.project.ast.StatementListProperty prevOwner = blockStatement.statements;
+						final org.lgna.project.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
+						final int prevIndex = prevOwner.indexOf( statement );
+						final int nextIndex = this.currentUnder.calculateIndex( dragSource.convertPoint( eSource.getPoint(), this.currentUnder ) );
 
-					org.lgna.project.ast.BlockStatement prevBlockStatement = (org.lgna.project.ast.BlockStatement)prevOwner.getOwner();
-					org.lgna.project.ast.BlockStatement nextBlockStatement = (org.lgna.project.ast.BlockStatement)nextOwner.getOwner();
-					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-						org.lgna.project.ast.Statement copy = getIDE().createCopy( statement );
-						rv = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( nextBlockStatement, nextIndex, copy );
-					} else {
-						if( prevOwner == nextOwner && ( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) ) {
-							rv = null;
+						org.lgna.project.ast.BlockStatement prevBlockStatement = (org.lgna.project.ast.BlockStatement)prevOwner.getOwner();
+						org.lgna.project.ast.BlockStatement nextBlockStatement = (org.lgna.project.ast.BlockStatement)nextOwner.getOwner();
+						if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
+							org.lgna.project.ast.Statement copy = getIDE().createCopy( statement );
+							rv = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( nextBlockStatement, nextIndex, copy );
 						} else {
-							rv = new org.alice.ide.croquet.models.ast.MoveStatementActionOperation( prevBlockStatement, prevIndex, statement, nextBlockStatement, nextIndex );
+							if( prevOwner == nextOwner && ( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) ) {
+								rv = null;
+							} else {
+								rv = new org.alice.ide.croquet.models.ast.MoveStatementActionOperation( prevBlockStatement, prevIndex, statement, nextBlockStatement, nextIndex );
+							}
 						}
 					}
 				}
@@ -560,9 +561,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	public final void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
 		//todo: listen to step
-		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = true;
+		StatementListPropertyView.EPIC_HACK_ignoreDrawingDesired = true;
 		this.setCurrentUnder( null, null );
-		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = false;
+		StatementListPropertyView.EPIC_HACK_ignoreDrawingDesired = false;
 		this.repaint();
 	}
 	public final void dragStopped( org.lgna.croquet.history.DragStep step ) {
@@ -612,9 +613,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	public class StatementListIndexTrackableShape implements org.lgna.croquet.components.TrackableShape {
 		private org.lgna.project.ast.StatementListProperty statementListProperty;
 		private int index;
-		private StatementListPropertyPane statementListPropertyPane;
+		private StatementListPropertyView statementListPropertyPane;
 		private java.awt.Rectangle boundsAtIndex;
-		private StatementListIndexTrackableShape( org.lgna.project.ast.StatementListProperty statementListProperty, int index, StatementListPropertyPane statementListPropertyPane, java.awt.Rectangle boundsAtIndex ) {
+		private StatementListIndexTrackableShape( org.lgna.project.ast.StatementListProperty statementListProperty, int index, StatementListPropertyView statementListPropertyPane, java.awt.Rectangle boundsAtIndex ) {
 			this.statementListProperty = statementListProperty;
 			this.index = index;
 			this.statementListPropertyPane = statementListPropertyPane;
@@ -682,9 +683,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			final int N = statementListPropertyPaneInfos.length;
 			for( int i=0; i<N; i++ ) {
 				StatementListPropertyPaneInfo statementListPropertyPaneInfo = statementListPropertyPaneInfos[ i ];
-				StatementListPropertyPane statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
+				StatementListPropertyView statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
 				if( statementListPropertyPane.getProperty() == statementListProperty ) {
-					StatementListPropertyPane.BoundInformation yBounds = statementListPropertyPane.calculateYBounds( index );
+					StatementListPropertyView.BoundInformation yBounds = statementListPropertyPane.calculateYBounds( index );
 					java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
 					
 					int yMinimum;
@@ -761,60 +762,60 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return null;
 	}
 	
-	public org.lgna.croquet.CascadePopupPrepModel< org.lgna.project.ast.Expression > getOperation( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
-		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
-			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
-				return expressionPropertyDropDownPane.getModel();
-			}
-		}
-		return null;
-	}
-	public org.alice.ide.croquet.models.ast.cascade.MoreCascade getMoreOperation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-		if( methodInvocation != null ) {
-			return org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation );
-//			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = org.lgna.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
-//			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
-//				if( statementPane.getStatement() == methodInvocation.getParent() ) {
-//					return statementPane.getMoreOperation();
+//	public org.lgna.croquet.CascadePopupPrepModel< org.lgna.project.ast.Expression > getOperation( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+//		java.util.List< ExpressionPropertyDropDownPane > expressionPropertyDropDownPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class );
+//		for( final ExpressionPropertyDropDownPane expressionPropertyDropDownPane : expressionPropertyDropDownPanes ) {
+//			if( expressionPropertyDropDownPane.getExpressionProperty() == expressionProperty ) {
+//				return expressionPropertyDropDownPane.getModel();
+//			}
+//		}
+//		return null;
+//	}
+//	public org.alice.ide.croquet.models.ast.cascade.MoreCascade getMoreOperation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+//		if( methodInvocation != null ) {
+//			return org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation );
+////			java.util.List< org.alice.ide.common.ExpressionStatementPane > statementPanes = org.lgna.croquet.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.ExpressionStatementPane.class );
+////			for( org.alice.ide.common.ExpressionStatementPane statementPane : statementPanes ) {
+////				if( statementPane.getStatement() == methodInvocation.getParent() ) {
+////					return statementPane.getMoreOperation();
+////				}
+////			}
+//		}
+//		return null;
+//	}
+//	public org.lgna.croquet.PopupPrepModel getPopupMenuOperationForStatement( org.lgna.project.ast.Statement statement ) {
+//		if( statement != null ) {
+//			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
+//			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
+//				if( statementPane.getStatement() == statement ) {
+//					return statementPane.getPopupPrepModel();
 //				}
 //			}
-		}
-		return null;
-	}
-	public org.lgna.croquet.PopupPrepModel getPopupMenuOperationForStatement( org.lgna.project.ast.Statement statement ) {
-		if( statement != null ) {
-			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
-			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
-				if( statementPane.getStatement() == statement ) {
-					return statementPane.getPopupPrepModel();
-				}
-			}
-		}
-		return null;
-	}
-	public org.lgna.croquet.DragModel getDragAndDropOperationForStatement( org.lgna.project.ast.Statement statement ) {
-		if( statement != null ) {
-			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
-			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
-				if( statementPane.getStatement() == statement ) {
-					return statementPane.getDragModel();
-				}
-			}
-		}
-		return null;
-	}
-	public org.lgna.croquet.DragModel getDragAndDropOperationForTransient( org.lgna.project.ast.AbstractTransient trans ) {
-		if( trans != null ) {
-			java.util.List< org.alice.ide.common.TransientPane > transientPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.TransientPane.class );
-			for( org.alice.ide.common.TransientPane transientPane : transientPanes ) {
-				if( transientPane.getTransient() == trans ) {
-					return transientPane.getDragModel();
-				}
-			}
-		}
-		return null;
-	}
+//		}
+//		return null;
+//	}
+//	public org.lgna.croquet.DragModel getDragAndDropOperationForStatement( org.lgna.project.ast.Statement statement ) {
+//		if( statement != null ) {
+//			java.util.List< org.alice.ide.common.AbstractStatementPane > statementPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.AbstractStatementPane.class );
+//			for( org.alice.ide.common.AbstractStatementPane statementPane : statementPanes ) {
+//				if( statementPane.getStatement() == statement ) {
+//					return statementPane.getModel();
+//				}
+//			}
+//		}
+//		return null;
+//	}
+//	public org.lgna.croquet.DragModel getDragAndDropOperationForTransient( org.lgna.project.ast.AbstractTransient trans ) {
+//		if( trans != null ) {
+//			java.util.List< org.alice.ide.common.TransientPane > transientPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.common.TransientPane.class );
+//			for( org.alice.ide.common.TransientPane transientPane : transientPanes ) {
+//				if( transientPane.getTransient() == trans ) {
+//					return transientPane.getModel();
+//				}
+//			}
+//		}
+//		return null;
+//	}
 	
 	public int print(java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex) throws java.awt.print.PrinterException {
 		if( pageIndex > 0 ) {

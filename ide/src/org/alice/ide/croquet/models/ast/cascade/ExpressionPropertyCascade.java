@@ -58,7 +58,7 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 	private org.lgna.project.ast.Expression getPreviousExpression() {
 		return this.expressionProperty.getValue();
 	}
-	protected org.alice.ide.codeeditor.BlockStatementIndexPair getBlockStatementIndexPair() {
+	protected org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.expressionProperty.getOwner();
 		if( owner instanceof org.lgna.project.ast.Node ) {
 			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)owner;
@@ -68,7 +68,7 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 				if( parent instanceof org.lgna.project.ast.BlockStatement ) {
 					org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
 					int index = blockStatement.statements.indexOf( statement );
-					return new org.alice.ide.codeeditor.BlockStatementIndexPair( blockStatement, index );
+					return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
 				}
 			}
 		}
