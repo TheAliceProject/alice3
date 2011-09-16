@@ -40,49 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.rename;
+
+package org.alice.ide.croquet.edits.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.InputDialogOperation<Void> {
-	public AbstractRenameNodeOperation( org.lgna.croquet.Group group, java.util.UUID individualId ) {
-		super( group, individualId );
+public class RenameDeclarationEdit extends org.lgna.croquet.edits.Edit {
+	private final org.lgna.project.ast.AbstractDeclaration declaration;
+	private final String prevValue;
+	private final String nextValue;
+	public RenameDeclarationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractDeclaration declaration, String prevValue, String nextValue ) {
+		super( completionStep );
+		this.declaration = declaration;
+		this.prevValue = prevValue;
+		this.nextValue = nextValue;
+	}
+	public RenameDeclarationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.declaration = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractDeclaration.class ).decodeValue( binaryDecoder );
+		this.prevValue = binaryDecoder.decodeString();
+		this.nextValue = binaryDecoder.decodeString();
 	}
 	@Override
-	protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.InputDialogOperationStep<Void> step) {
-		org.alice.ide.name.RenamePane renamePane = new org.alice.ide.name.RenamePane();
-		renamePane.setAndSelectNameText( this.getNameProperty().getValue() );
-		return renamePane;
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractDeclaration.class ).encodeValue( binaryEncoder, this.declaration );
+		binaryEncoder.encode( this.prevValue );
+		binaryEncoder.encode( this.nextValue );
+	}
+
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.declaration.getNamePropertyIfItExists().setValue( this.nextValue );
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep<Void> step, boolean isOk) {
-		if( isOk ) {
-			org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getMainPanel();
-			String nextValue = renamePane.getNameText();
-			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();
-			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.rename.RenameNodeEdit( step, nameProperty, nextValue ) );
-		} else {
-			step.cancel();
-		}
+	protected final void undoInternal() {
+		this.declaration.getNamePropertyIfItExists().setValue( this.prevValue );
 	}
-	
 	@Override
-	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-		dialog.setSize( 300, 150 );
-	}
-	protected abstract edu.cmu.cs.dennisc.property.StringProperty getNameProperty();
-	protected abstract org.alice.ide.name.validators.NodeNameValidator getNodeNameValidator();
-	
-	@Override
-	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep<Void> step ) {
-		org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getMainPanel();
-		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = this.getNodeNameValidator();
-		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( renamePane.getNameText() );
-		if( rv != null ) {
-			return rv;
-		} else {
-			return super.getInternalExplanation( step );
-		}
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "rename: " );
+		rv.append( this.prevValue );
+		rv.append( " ===> " );
+		rv.append( this.nextValue );
+		return rv;
 	}
 }
