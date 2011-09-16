@@ -40,39 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+
+package org.alice.ide.croquet.edits.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractIsEnabledStatementOperation extends org.lgna.croquet.ActionOperation {
-	private org.lgna.project.ast.Statement statement;
-
-	public AbstractIsEnabledStatementOperation( org.lgna.project.ast.Statement statement ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "340f585a-80de-4930-9b53-6c71a5f5c2be" ) );
-		this.statement = statement;
+public class RenameNodeEdit extends org.lgna.croquet.edits.Edit {
+	private final edu.cmu.cs.dennisc.property.StringProperty nameProperty;
+	private final String prevValue;
+	private final String nextValue;
+	public RenameNodeEdit( org.lgna.croquet.history.CompletionStep completionStep, edu.cmu.cs.dennisc.property.StringProperty nameProperty, String nextValue ) {
+		super( completionStep );
+		this.nameProperty = nameProperty;
+		this.prevValue = this.nameProperty.getValue();
+		this.nextValue = nextValue;
 	}
-	protected abstract boolean getDesiredValue();
+	public RenameNodeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.nameProperty = org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( edu.cmu.cs.dennisc.property.StringProperty.class ).decodeValue( binaryDecoder );
+		this.prevValue = binaryDecoder.decodeString();
+		this.nextValue = binaryDecoder.decodeString();
+	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		final boolean nextValue = this.getDesiredValue();
-		final boolean prevValue = this.statement.isEnabled.getValue();
-		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
-			@Override
-			protected final void doOrRedoInternal( boolean isDo ) {
-				statement.isEnabled.setValue( nextValue );
-			}
-			@Override
-			protected final void undoInternal() {
-				statement.isEnabled.setValue( prevValue );
-			}
-			
-			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-				rv.append( "set enabled: " );
-				rv.append( nextValue );
-				return rv;
-			}
-		} );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( edu.cmu.cs.dennisc.property.StringProperty.class ).encodeValue( binaryEncoder, this.nameProperty );
+		binaryEncoder.encode( this.prevValue );
+		binaryEncoder.encode( this.nextValue );
+	}
+
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.nameProperty.setValue( this.nextValue );
+	}
+	@Override
+	protected final void undoInternal() {
+		this.nameProperty.setValue( this.prevValue );
+	}
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "rename: " );
+		rv.append( this.prevValue );
+		rv.append( " ===> " );
+		rv.append( this.nextValue );
+		return rv;
 	}
 }

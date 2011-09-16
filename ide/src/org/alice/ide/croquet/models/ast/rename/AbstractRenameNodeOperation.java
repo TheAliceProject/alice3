@@ -59,27 +59,9 @@ public abstract class AbstractRenameNodeOperation extends org.lgna.croquet.Input
 	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep<Void> step, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getMainPanel();
-			final String nextValue = renamePane.getNameText();
-			final edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();
-			final String prevValue = nameProperty.getValue();
-			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
-				@Override
-				protected final void doOrRedoInternal( boolean isDo ) {
-					nameProperty.setValue( nextValue );
-				}
-				@Override
-				protected final void undoInternal() {
-					nameProperty.setValue( prevValue );
-				}
-				@Override
-				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-					rv.append( "rename: " );
-					rv.append( prevValue );
-					rv.append( " ===> " );
-					rv.append( nextValue );
-					return rv;
-				}
-			} );
+			String nextValue = renamePane.getNameText();
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNameProperty();
+			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.rename.RenameNodeEdit( step, nameProperty, nextValue ) );
 		} else {
 			step.cancel();
 		}
