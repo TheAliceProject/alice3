@@ -40,18 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ResourcePropertyPane extends AbstractPropertyPane<org.lgna.project.ast.ResourceProperty> {
-	private static java.text.NumberFormat durationFormat = new java.text.DecimalFormat( "0.00" );
+public class ResourcePropertyView extends org.alice.ide.croquet.components.AbstractPropertyPane<org.lgna.project.ast.ResourceProperty, org.alice.virtualmachine.Resource> {
+	private static final java.text.NumberFormat DURATION_FORMAT = new java.text.DecimalFormat( "0.00" );
 	private org.lgna.croquet.components.Label label;
 	private org.alice.virtualmachine.Resource prevResource;
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
-	public ResourcePropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ResourceProperty property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
+	public ResourcePropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ResourceProperty property ) {
+		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
 	}
 	
 	private edu.cmu.cs.dennisc.pattern.event.NameListener getNameListener() {
@@ -62,11 +62,7 @@ public class ResourcePropertyPane extends AbstractPropertyPane<org.lgna.project.
 				public void nameChanging( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
 				}
 				public void nameChanged( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
-					javax.swing.SwingUtilities.invokeLater( new Runnable() {
-						public void run() {
-							ResourcePropertyPane.this.refresh();
-						}
-					} );
+					ResourcePropertyView.this.refreshLater();
 				}
 			};
 		}
@@ -86,7 +82,7 @@ public class ResourcePropertyPane extends AbstractPropertyPane<org.lgna.project.
 	}
 
 	@Override
-	protected void refresh() {
+	protected void internalRefresh() {
 		if( this.label != null ) {
 			//pass
 		} else {
@@ -113,7 +109,7 @@ public class ResourcePropertyPane extends AbstractPropertyPane<org.lgna.project.
 				} else {
 					sb.append( "<font color=\"gray\">" );
 					sb.append( "<i>" );
-					sb.append( " (" + durationFormat.format( duration ) + "s) " );
+					sb.append( " (" + DURATION_FORMAT.format( duration ) + "s) " );
 					sb.append( "</i>" );
 					sb.append( "</font>" );
 				}

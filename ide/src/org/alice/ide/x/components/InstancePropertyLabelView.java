@@ -40,27 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyPane extends AbstractPropertyPane< org.lgna.project.ast.ExpressionProperty > {
-//	private javax.swing.JComponent prefixPane;
-
-	//	public ExpressionPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired, javax.swing.JComponent prefixPane ) {
-	//		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
-	//		this.prefixPane = prefixPane;
-	//		this.refresh();
-	//	}
-	public ExpressionPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionProperty property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
+public class InstancePropertyLabelView extends org.alice.ide.croquet.components.AbstractPropertyPane< edu.cmu.cs.dennisc.property.InstanceProperty< Object >, Object > {
+	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
+	public InstancePropertyLabelView( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.InstanceProperty< Object > property ) {
+		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
+		this.addComponent( this.label );
 	}
-
 	@Override
-	protected void refresh() {
-		this.forgetAndRemoveAllComponents();
-		this.addComponent( this.getFactory().createExpressionPane( getProperty().getValue() ) );
-		this.revalidateAndRepaint();
+	protected void internalRefresh() {
+		this.label.setText( getProperty().getValue().toString() );
 	}
 }

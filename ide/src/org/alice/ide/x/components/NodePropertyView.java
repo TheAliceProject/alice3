@@ -40,19 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
-
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.property.ListProperty<?> > {
-	public DefaultListPropertyPane( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.ListProperty<?> property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
+public class NodePropertyView< P extends org.lgna.project.ast.NodeProperty< N >, N extends org.lgna.project.ast.AbstractNode > extends org.alice.ide.croquet.components.AbstractPropertyPane< P, N > {
+	public NodePropertyView( org.alice.ide.x.AstI18nFactory factory, P property ) {
+		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
+	}
+	protected org.lgna.croquet.components.JComponent< ? > createComponent( N node ) {
+		return this.getFactory().createComponent( node );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
-		return new org.lgna.croquet.components.Label( instance.toString() );
+	protected final void internalRefresh() {
+		this.forgetAndRemoveAllComponents();
+		this.addComponent( this.createComponent( this.getProperty().getValue() ) );
 	}
 }
-

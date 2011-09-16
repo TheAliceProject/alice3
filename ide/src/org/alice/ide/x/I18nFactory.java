@@ -69,7 +69,7 @@ public abstract class I18nFactory {
 		org.lgna.croquet.components.JComponent< ? > rv;
 		if( owner instanceof org.lgna.project.ast.AbstractDeclaration && methodName.equals( "getName" ) ) {
 			org.lgna.project.ast.AbstractDeclaration declaration = (org.lgna.project.ast.AbstractDeclaration)owner;
-			org.alice.ide.common.DeclarationNameLabel label = new org.alice.ide.common.DeclarationNameLabel( declaration );
+			org.alice.ide.ast.components.DeclarationNameLabel label = new org.alice.ide.ast.components.DeclarationNameLabel( declaration );
 			if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
 				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
 				if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
@@ -80,7 +80,7 @@ public abstract class I18nFactory {
 			rv = label;
 		} else if( owner instanceof org.lgna.project.ast.Argument && methodName.equals( "getParameterNameText" ) ) {
 			org.lgna.project.ast.Argument argument = (org.lgna.project.ast.Argument)owner;
-			rv = new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() );
+			rv = new org.alice.ide.ast.components.DeclarationNameLabel( argument.parameter.getValue() );
 		} else if( owner instanceof org.lgna.project.ast.AbstractConstructor && methodName.equals( "getDeclaringType" ) ) {
 			org.lgna.project.ast.AbstractConstructor constructor = (org.lgna.project.ast.AbstractConstructor)owner;
 			rv = this.createTypeComponent( constructor.getDeclaringType() );
@@ -121,7 +121,7 @@ public abstract class I18nFactory {
 	protected org.lgna.croquet.components.JComponent< ? > createComponent( org.alice.ide.i18n.Line line, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int indentCount = line.getIndentCount();
 		org.alice.ide.i18n.Chunk[] chunks = line.getChunks();
-		assert chunks.length > 0;
+		assert chunks.length > 0 : owner;
 		if( indentCount > 0 || chunks.length > 1 ) {
 			org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
 			if( indentCount > 0 ) {

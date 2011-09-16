@@ -40,87 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
-	private org.lgna.project.ast.AbstractDeclaration declaration;
+public abstract class AbstractPropertyPane< P extends edu.cmu.cs.dennisc.property.InstanceProperty< T >, T > extends RefreshPanel {
+	private final org.alice.ide.x.AstI18nFactory factory;
+	private final P property;
+	private final int axis;
+	private final edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
+		};
+		public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
+			AbstractPropertyPane.this.refreshLater();
+		};
+	};
+	
+	public AbstractPropertyPane( org.alice.ide.x.AstI18nFactory factory, P property, int axis ) {
+		assert property != null;
+		this.factory = factory;
+		this.property = property;
+		this.axis = axis;
+	}
+	
+	protected org.alice.ide.x.AstI18nFactory getFactory() {
+		return this.factory;
+	}
+	public P getProperty() {
+		return this.property;
+	}
 
-	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+	protected int getBoxLayoutPad() {
+		return 0;
+	}
+	@Override
+	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		assert this.axis == javax.swing.BoxLayout.LINE_AXIS || this.axis == javax.swing.BoxLayout.PAGE_AXIS;
+		int pad = this.getBoxLayoutPad();
+		if( pad > 0 ) {
+			return new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( jPanel, this.axis, pad );
+		} else {
+			return new javax.swing.BoxLayout( jPanel, this.axis );
 		}
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			DeclarationNameLabel.this.updateText();
-		}
+	}
+	public void addComponent( org.lgna.croquet.components.Component< ? > component ) {
+		this.internalAddComponent( component );
 	}
 
-	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
-
-	public DeclarationNameLabel( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		this.declaration = declaration;
-		this.updateText();
-		this.setForegroundColor( java.awt.Color.BLACK );
-	}
-	public DeclarationNameLabel( org.lgna.project.ast.AbstractDeclaration declaration, float fontScaleFactor ) {
-		this( declaration );
-		this.scaleFont( fontScaleFactor );
-	}
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		if( this.declaration != null ) {
-			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
-			if( nameProperty != null ) {
-				nameProperty.addPropertyListener( this.namePropertyAdapter );
-			}
-		}
+		this.property.addPropertyListener( this.propertyAdapter );
 	}
-	
 	@Override
 	protected void handleUndisplayable() {
-		if( this.declaration != null ) {
-			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
-			if( nameProperty != null ) {
-				nameProperty.removePropertyListener( this.namePropertyAdapter );
-			}
-		}
+		this.property.removePropertyListener( this.propertyAdapter );
 		super.handleUndisplayable();
 	}
-	protected org.lgna.project.ast.AbstractDeclaration getDeclaration() {
-		return this.declaration;
-	}
 	
-	protected String getNameText() {
-		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
-		return formatter.getNameForDeclaration( this.declaration );
-	}
-	
-	protected String getTextForNullName() {
-		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull();
-	}
-	protected final String getTextForBlankName() {
-		return "<unset>";
-	}
-	private void updateText() {
-		String text;
-		if( this.declaration != null ) {
-			text = this.getNameText();
-		} else {
-			text = null;
-		}
-		if( text != null ) {
-			//pass
-		} else {
-			text = this.getTextForNullName();
-		}
-		if( text.length() > 0 ) {
-			//pass
-		} else {
-			text = this.getTextForBlankName();
-		}
-		this.setText( text );
-		this.repaint();
-	}
 }

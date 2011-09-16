@@ -48,7 +48,7 @@ package org.alice.ide.common;
 public abstract class LocalPane extends TransientPane {
 	public LocalPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model, org.lgna.project.ast.UserLocal local ) {
 		super( model );
-		this.addComponent( new org.alice.ide.common.LocalNameLabel( local ) );
+		this.addComponent( new org.alice.ide.ast.components.LocalValidNameLabel( local ) );
 		this.setPopupPrepModel( org.alice.ide.croquet.models.ast.LocalMenuModel.getInstance( local ).getPopupPrepModel() );
 	}
 }

@@ -270,9 +270,9 @@ public class StageIDE extends org.alice.ide.IDE {
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
 
-	protected org.alice.ide.common.DeclarationNameLabel createDeclarationNameLabel( org.lgna.project.ast.AbstractField field ) {
+	protected org.alice.ide.ast.components.DeclarationNameLabel createDeclarationNameLabel( org.lgna.project.ast.AbstractField field ) {
 		//todo: better name
-		class ThisFieldAccessNameLabel extends org.alice.ide.common.DeclarationNameLabel {
+		class ThisFieldAccessNameLabel extends org.alice.ide.ast.components.DeclarationNameLabel {
 			public ThisFieldAccessNameLabel( org.lgna.project.ast.AbstractField field ) {
 				super( field );
 			}
@@ -297,7 +297,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
 				if( declaringType != null && declaringType.isAssignableTo( org.lgna.story.Scene.class ) ) {
 					if( field.getValueType().isAssignableTo( org.lgna.story.Entity.class ) ) {
-						return new org.alice.ide.common.ExpressionPane( expression, this.createDeclarationNameLabel( field ) ) {
+						return new org.alice.ide.x.components.ExpressionView( expression, this.createDeclarationNameLabel( field ) ) {
 							@Override
 							protected boolean isExpressionTypeFeedbackDesired() {
 								return true;

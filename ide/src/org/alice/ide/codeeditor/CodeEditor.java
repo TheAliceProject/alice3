@@ -44,13 +44,13 @@ package org.alice.ide.codeeditor;
 
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.common.DefaultStatementPane;
-import org.alice.ide.common.StatementListPropertyPane;
+import org.alice.ide.x.components.StatementListPropertyView;
 
 /**
  * @author Dennis Cosgrove
  */
 public class CodeEditor extends org.lgna.croquet.components.BorderPanel implements org.lgna.croquet.DropReceptor, java.awt.print.Printable {
-	private StatementListPropertyPane EPIC_HACK_desiredStatementListPropertyPane = null;
+	private StatementListPropertyView EPIC_HACK_desiredStatementListPropertyPane = null;
 	private int EPIC_HACK_desiredIndex = -1;
 
 	private org.lgna.project.ast.AbstractCode code;
@@ -192,7 +192,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			} else {
 				throw new RuntimeException();
 			}
-			class RootStatementListPropertyPane extends StatementListPropertyPane {
+			class RootStatementListPropertyPane extends StatementListPropertyView {
 				private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
 				public RootStatementListPropertyPane() {
 					super( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), codeDeclaredInAlice.getBodyProperty().getValue().statements );
@@ -280,9 +280,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 	}
 	
-	private StatementListPropertyPane currentUnder;
+	private StatementListPropertyView currentUnder;
 	
-	private void setCurrentUnder( StatementListPropertyPane nextUnder, java.awt.Dimension dropSize ) {
+	private void setCurrentUnder( StatementListPropertyView nextUnder, java.awt.Dimension dropSize ) {
 		if( this.currentUnder != nextUnder ) {
 			if( this.currentUnder != null ) {
 				this.currentUnder.setIsCurrentUnder( false );
@@ -306,10 +306,10 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return this.scrollPane.getViewportView();
 	}
 	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( org.lgna.croquet.components.Container<?> source ) {
-		java.util.List< StatementListPropertyPane > statementListPropertyPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, StatementListPropertyPane.class );
+		java.util.List< StatementListPropertyView > statementListPropertyPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, StatementListPropertyView.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
-		for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
+		for( StatementListPropertyView statementListPropertyPane : statementListPropertyPanes ) {
 			if( source != null && source.isAncestorOf( statementListPropertyPane ) ) {
 				continue;
 			}
@@ -330,12 +330,12 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return rv;
 
 	}
-	private StatementListPropertyPane getStatementListPropertyPaneUnder( java.awt.event.MouseEvent e, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos ) {
-		StatementListPropertyPane rv = null;
+	private StatementListPropertyView getStatementListPropertyPaneUnder( java.awt.event.MouseEvent e, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos ) {
+		StatementListPropertyView rv = null;
 		for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : this.statementListPropertyPaneInfos ) {
 			if( statementListPropertyPaneInfo != null ) {
 				if( statementListPropertyPaneInfo.contains( e ) ) {
-					StatementListPropertyPane slpp = statementListPropertyPaneInfo.getStatementListPropertyPane();
+					StatementListPropertyView slpp = statementListPropertyPaneInfo.getStatementListPropertyPane();
 					if( rv != null ) {
 						if( rv.getHeight() > slpp.getHeight() ) {
 							rv = slpp;
@@ -355,7 +355,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = step.getLatestMouseEvent();
 			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
-			StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
+			StatementListPropertyView nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
 			this.setCurrentUnder( nextUnder, source.getDropProxySize() );
 			if( this.currentUnder != null ) {
 				boolean isDropProxyAlreadyUpdated = false;
@@ -421,7 +421,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 									p.y -= availableHeight;
 									height = null;
 								} else {
-									p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
+									p.y += StatementListPropertyView.INTRASTICIAL_PAD;
 									if( this.currentUnder.getProperty() == ((org.lgna.project.ast.UserCode)this.code).getBodyProperty().getValue().statements ) {
 										height = null;
 									}
@@ -455,7 +455,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		final org.lgna.croquet.DragModel dragModel = step.getModel();
 		org.lgna.croquet.components.DragComponent dragSource = step.getDragSource();
 		final java.awt.event.MouseEvent eSource = step.getLatestMouseEvent();
-		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
+		final StatementListPropertyView statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
 			final int index = statementListPropertyPane.calculateIndex( dragSource.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
 
@@ -561,9 +561,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	public final void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
 		//todo: listen to step
-		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = true;
+		StatementListPropertyView.EPIC_HACK_ignoreDrawingDesired = true;
 		this.setCurrentUnder( null, null );
-		StatementListPropertyPane.EPIC_HACK_ignoreDrawingDesired = false;
+		StatementListPropertyView.EPIC_HACK_ignoreDrawingDesired = false;
 		this.repaint();
 	}
 	public final void dragStopped( org.lgna.croquet.history.DragStep step ) {
@@ -613,9 +613,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	public class StatementListIndexTrackableShape implements org.lgna.croquet.components.TrackableShape {
 		private org.lgna.project.ast.StatementListProperty statementListProperty;
 		private int index;
-		private StatementListPropertyPane statementListPropertyPane;
+		private StatementListPropertyView statementListPropertyPane;
 		private java.awt.Rectangle boundsAtIndex;
-		private StatementListIndexTrackableShape( org.lgna.project.ast.StatementListProperty statementListProperty, int index, StatementListPropertyPane statementListPropertyPane, java.awt.Rectangle boundsAtIndex ) {
+		private StatementListIndexTrackableShape( org.lgna.project.ast.StatementListProperty statementListProperty, int index, StatementListPropertyView statementListPropertyPane, java.awt.Rectangle boundsAtIndex ) {
 			this.statementListProperty = statementListProperty;
 			this.index = index;
 			this.statementListPropertyPane = statementListPropertyPane;
@@ -683,9 +683,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			final int N = statementListPropertyPaneInfos.length;
 			for( int i=0; i<N; i++ ) {
 				StatementListPropertyPaneInfo statementListPropertyPaneInfo = statementListPropertyPaneInfos[ i ];
-				StatementListPropertyPane statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
+				StatementListPropertyView statementListPropertyPane = statementListPropertyPaneInfo.getStatementListPropertyPane();
 				if( statementListPropertyPane.getProperty() == statementListProperty ) {
-					StatementListPropertyPane.BoundInformation yBounds = statementListPropertyPane.calculateYBounds( index );
+					StatementListPropertyView.BoundInformation yBounds = statementListPropertyPane.calculateYBounds( index );
 					java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
 					
 					int yMinimum;

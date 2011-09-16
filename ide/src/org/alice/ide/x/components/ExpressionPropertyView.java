@@ -40,29 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.property.InstanceProperty< ? > > {
-	//	public InstancePropertyPane( Factory factory ) {
-	//		super( factory, javax.swing.BoxLayout.LINE_AXIS );
-	//	}
-	private org.lgna.croquet.components.Label label;
-
-	public InstancePropertyPane( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
+public class ExpressionPropertyView extends NodePropertyView< org.lgna.project.ast.ExpressionProperty, org.lgna.project.ast.Expression > {
+	public ExpressionPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionProperty property ) {
+		super( factory, property );
 	}
 	@Override
-	protected void refresh() {
-		//todo: move to adding?
-		if( this.label != null ) {
-			//pass
-		} else {
-			this.label = new org.lgna.croquet.components.Label();
-			this.addComponent( this.label );
-		}
-		this.label.setText( getProperty().getValue().toString() );
+	protected org.lgna.croquet.components.JComponent< ? > createComponent( org.lgna.project.ast.Expression expression ) {
+		return this.getFactory().createExpressionPane( expression );
 	}
 }

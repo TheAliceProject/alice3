@@ -40,54 +40,87 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.ast.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.property.InstanceProperty > extends org.lgna.croquet.components.AxisPanel {
-	private final org.alice.ide.x.AstI18nFactory factory;
-	private final E property;
-	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-		public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
-		};
-		public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
-			AbstractPropertyPane.this.refresh();
-		};
-	};
-	public AbstractPropertyPane( int axis, org.alice.ide.x.AstI18nFactory factory, E property ) {
-		super( axis );
-		assert property != null;
-		this.factory = factory;
-		this.property = property;
+public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
+	private org.lgna.project.ast.AbstractDeclaration declaration;
+
+	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
+		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		}
+		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			DeclarationNameLabel.this.updateText();
+		}
 	}
 
-	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-		this.refresh();
+	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
+
+	public DeclarationNameLabel( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		this.declaration = declaration;
+		this.updateText();
+		this.setForegroundColor( java.awt.Color.BLACK );
 	}
-	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
-		super.handleRemovedFrom( parent );
+	public DeclarationNameLabel( org.lgna.project.ast.AbstractDeclaration declaration, float fontScaleFactor ) {
+		this( declaration );
+		this.scaleFont( fontScaleFactor );
 	}
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.property.addPropertyListener( this.propertyAdapter );
+		if( this.declaration != null ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
+			if( nameProperty != null ) {
+				nameProperty.addPropertyListener( this.namePropertyAdapter );
+			}
+		}
 	}
+	
 	@Override
 	protected void handleUndisplayable() {
-		this.property.removePropertyListener( this.propertyAdapter );
+		if( this.declaration != null ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
+			if( nameProperty != null ) {
+				nameProperty.removePropertyListener( this.namePropertyAdapter );
+			}
+		}
 		super.handleUndisplayable();
 	}
-	
-	protected org.alice.ide.x.AstI18nFactory getFactory() {
-		return this.factory;
+	protected org.lgna.project.ast.AbstractDeclaration getDeclaration() {
+		return this.declaration;
 	}
 	
-	public E getProperty() {
-		return this.property;
+	protected String getNameText() {
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+		return formatter.getNameForDeclaration( this.declaration );
 	}
-	protected abstract void refresh();
+	
+	protected String getTextForNullName() {
+		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull();
+	}
+	protected final String getTextForBlankName() {
+		return "<unset>";
+	}
+	private void updateText() {
+		String text;
+		if( this.declaration != null ) {
+			text = this.getNameText();
+		} else {
+			text = null;
+		}
+		if( text != null ) {
+			//pass
+		} else {
+			text = this.getTextForNullName();
+		}
+		if( text.length() > 0 ) {
+			//pass
+		} else {
+			text = this.getTextForBlankName();
+		}
+		this.setText( text );
+		this.repaint();
+	}
 }

@@ -40,27 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
-
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListPropertyPane extends AbstractListPropertyPane< org.lgna.project.ast.ExpressionListProperty > {
-	public ExpressionListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionListProperty property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
+public class ExpressionView extends org.alice.ide.common.ExpressionLikeSubstance  {
+	private final org.lgna.project.ast.Expression expression;
+	public ExpressionView( org.lgna.project.ast.Expression expression, org.lgna.croquet.components.Component< ? > component ) {
+		super( null );
+		this.expression = expression;
+		this.addComponent( component );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( expression ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createInterstitial( int i, final int N ) {
-		if( i < N - 1 ) {
-			return new org.lgna.croquet.components.Label( ", " );
+	protected boolean isExpressionTypeFeedbackDesired() {
+		if( this.expression != null ) {
+			if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
+				return false;
+			} else {
+				return super.isExpressionTypeFeedbackDesired();
+			}
 		} else {
-			return null;
+			return true;
+		}
+	}
+	
+	@Override
+	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
+		if( this.expression != null ) {
+			org.lgna.project.ast.AbstractType<?,?,?> rv = this.expression.getType();
+			return rv;
+		} else {
+			return org.lgna.project.ast.JavaType.OBJECT_TYPE;
 		}
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
-		org.lgna.project.ast.Expression expression = (org.lgna.project.ast.Expression)instance;
-		return this.getFactory().createExpressionPane( expression );
+	protected int getInsetTop() {
+		if( this.expression instanceof org.lgna.project.ast.InfixExpression || this.expression instanceof org.lgna.project.ast.LogicalComplement ) {
+			return 0;
+		} else {
+			return super.getInsetTop();
+		}
+	}
+	@Override
+	protected int getInsetBottom() {
+		if( this.expression instanceof org.lgna.project.ast.InfixExpression || this.expression instanceof org.lgna.project.ast.LogicalComplement ) {
+			return 0;
+		} else {
+			return super.getInsetTop();
+		}
 	}
 }

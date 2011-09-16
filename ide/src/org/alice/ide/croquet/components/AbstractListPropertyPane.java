@@ -40,53 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.croquet.components;
 
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.property.ListProperty > extends AbstractPropertyPane< E > {
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< E >() {
-
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
+public abstract class AbstractListPropertyPane< P extends edu.cmu.cs.dennisc.property.ListProperty< T >, T > extends AbstractPropertyPane< P, java.util.ArrayList< T > > {
+	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener< T > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< T >() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< T > e ) {
 		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
-			//todo
-			//AbstractListPropertyPane.this.refresh();
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					AbstractListPropertyPane.this.refresh();
-				}
-			} );
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< T > e ) {
+			AbstractListPropertyPane.this.refreshLater();
 		}
 
-
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< T > e ) {
 		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
-			AbstractListPropertyPane.this.refresh();
-		}
-
-
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
-		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
-			AbstractListPropertyPane.this.refresh();
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< T > e ) {
+			AbstractListPropertyPane.this.refreshLater();
 		}
 
-
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< T > e ) {
 		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
-			AbstractListPropertyPane.this.refresh();
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< T > e ) {
+			AbstractListPropertyPane.this.refreshLater();
+		}
+
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< T > e ) {
+		}
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< T > e ) {
+			AbstractListPropertyPane.this.refreshLater();
 		}
 		
 	}; 
-	public AbstractListPropertyPane( int axis, org.alice.ide.x.AstI18nFactory factory, E property ) {
-		super( axis, factory, property );
+	public AbstractListPropertyPane( org.alice.ide.x.AstI18nFactory factory, P property, int axis ) {
+		super( factory, property, axis );
 	}
-	protected abstract org.lgna.croquet.components.Component< ? > createComponent( Object instance );
+	protected abstract org.lgna.croquet.components.Component< ? > createComponent( T instance );
 	protected void addPrefixComponents() {
 	}
 	protected void addPostfixComponents() {
@@ -107,12 +97,12 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 	}
 	
 	@Override
-	protected void refresh() {
-		this.removeAllComponents();
+	protected void internalRefresh() {
+		this.forgetAndRemoveAllComponents();
 		this.addPrefixComponents();
 		final int N = getProperty().size();
 		int i = 0;
-		for( Object o : getProperty() ) {
+		for( T o : getProperty() ) {
 			org.lgna.croquet.components.Component< ? > component;
 			if( o != null ) {
 				component = this.createComponent( o );
@@ -127,9 +117,13 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 			i++;
 		}
 		this.addPostfixComponents();
-		//todo: investigate on 1.5
-		edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
-		this.revalidateAndRepaint();
+//		
+//		
+//		//todo: investigate on 1.5
+//		edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
+//		
+//		
+//		this.revalidateAndRepaint();
 	}
 }
 

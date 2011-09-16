@@ -55,7 +55,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 	public org.lgna.croquet.components.JComponent< ? > createArgumentPane( org.lgna.project.ast.Argument argument, org.lgna.croquet.components.Component< ? > prefixPane ) {
 		org.lgna.project.ast.ExpressionProperty expressionProperty = argument.expression;
 		org.lgna.project.ast.Expression expression = expressionProperty.getValue();
-		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
 		if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
 			org.alice.ide.croquet.models.ast.cascade.ArgumentCascade model = org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( argument );
 			org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
@@ -69,7 +69,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 		if( constructor instanceof org.lgna.project.ast.AnonymousUserConstructor ) {
 			return new org.alice.ide.common.AnonymousConstructorPane( this, (org.lgna.project.ast.AnonymousUserConstructor)constructor );
 		} else {
-			return new org.alice.ide.common.ExpressionPane( instanceCreation, this.createComponent( instanceCreation ) );
+			return new org.alice.ide.x.components.ExpressionView( instanceCreation, this.createComponent( instanceCreation ) );
 		}
 	}
 	protected org.lgna.croquet.components.JComponent< ? > createFieldAccessPane( org.lgna.project.ast.FieldAccess fieldAccess ) {
@@ -106,30 +106,30 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return new org.alice.ide.common.ConstantPane( userConstant );
 	}
 	protected org.lgna.croquet.components.JComponent< ? > createGenericNodePropertyPane( org.lgna.project.ast.NodeProperty< ? > nodeProperty ) {
-		return new org.alice.ide.common.NodePropertyPane( this, nodeProperty );
+		return new org.alice.ide.x.components.NodePropertyView( this, nodeProperty );
 	}
 	public abstract org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public final org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return this.createExpressionPropertyPane( expressionProperty, null );
 	}
 	protected org.lgna.croquet.components.JComponent< ? > createResourcePropertyPane( org.lgna.project.ast.ResourceProperty resourceProperty ) {
-		return new org.alice.ide.common.ResourcePropertyPane( this, resourceProperty );
+		return new org.alice.ide.x.components.ResourcePropertyView( this, resourceProperty );
 	}
 	protected org.lgna.croquet.components.JComponent< ? > createStatementListPropertyPane( org.lgna.project.ast.StatementListProperty statementListProperty ) {
-		return new org.alice.ide.common.StatementListPropertyPane( this, statementListProperty );
+		return new org.alice.ide.x.components.StatementListPropertyView( this, statementListProperty );
 	}
 	protected abstract org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty );
 	protected org.lgna.croquet.components.JComponent< ? > createExpressionListPropertyPane( org.lgna.project.ast.ExpressionListProperty expressionListProperty ) {
-		return new org.alice.ide.common.ExpressionListPropertyPane( this, expressionListProperty );
+		return new org.alice.ide.x.components.ExpressionListPropertyPane( this, expressionListProperty );
 	}
-	protected org.lgna.croquet.components.JComponent< ? > createGenericNodeListPropertyPane( org.lgna.project.ast.NodeListProperty< ? > nodeListProperty ) {
+	protected org.lgna.croquet.components.JComponent< ? > createGenericNodeListPropertyPane( org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.AbstractNode > nodeListProperty ) {
 		return new org.alice.ide.common.DefaultNodeListPropertyPane( this, nodeListProperty );
 	}
-	protected org.lgna.croquet.components.JComponent< ? > createGenericListPropertyPane( edu.cmu.cs.dennisc.property.ListProperty< ? > listProperty ) {
-		return new org.alice.ide.common.DefaultListPropertyPane( this, listProperty );
+	protected org.lgna.croquet.components.JComponent< ? > createGenericListPropertyPane( edu.cmu.cs.dennisc.property.ListProperty< Object > listProperty ) {
+		return new org.alice.ide.x.components.ListPropertyLabelsView( this, listProperty );
 	}
-	protected org.lgna.croquet.components.JComponent< ? > createGenericInstancePropertyPane( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
-		return new org.alice.ide.common.InstancePropertyPane( this, property );
+	protected org.lgna.croquet.components.JComponent< ? > createGenericInstancePropertyPane( edu.cmu.cs.dennisc.property.InstanceProperty property ) {
+		return new org.alice.ide.x.components.InstancePropertyLabelView( this, property );
 	}
 	
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
@@ -147,29 +147,16 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return this.createStatementPane( org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ), statement, null );
 	}
 	public org.lgna.croquet.components.JComponent< ? > createExpressionPane( org.lgna.project.ast.Expression expression ) {
-//		java.awt.Component rv;
-//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-//			rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
-////		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-////			rv = new FieldAccessPane( this, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-//		} else {
-//			rv = new ExpressionPane( this, expression );
-//		}
 		org.lgna.croquet.components.JComponent< ? > rv = org.alice.ide.IDE.getActiveInstance().getOverrideComponent( this, expression );
 		if( rv != null ) {
 			//pass
 		} else {
 			if( expression instanceof org.lgna.project.ast.InfixExpression ) {
-				org.lgna.project.ast.InfixExpression infixExpression = (org.lgna.project.ast.InfixExpression)expression;
+				org.lgna.project.ast.InfixExpression< ? extends Enum< ? > > infixExpression = (org.lgna.project.ast.InfixExpression< ? extends Enum< ? > >)expression;
 				String clsName = infixExpression.getClass().getName();
 				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( clsName, javax.swing.JComponent.getDefaultLocale() );
 				
-				
-				
-				//todo: investigate the need for this cast
-				Enum e = (Enum)infixExpression.operator.getValue();
-				
-				
+				Enum<?> e = infixExpression.operator.getValue();
 				
 				String value = resourceBundle.getString( e.name() );
 				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
@@ -201,7 +188,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 						//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
 					}
 				}
-				rv = new org.alice.ide.common.ExpressionPane( infixExpression, component );
+				rv = new org.alice.ide.x.components.ExpressionView( infixExpression, component );
 				
 			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
 				rv = new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
@@ -209,7 +196,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 				rv = new org.alice.ide.common.PreviousValueExpressionPane( this, (org.alice.ide.ast.PreviousValueExpression)expression );
 			} else if( expression instanceof org.alice.ide.ast.CurrentThisExpression ) {
 				//todo
-				rv = new org.alice.ide.common.ExpressionPane( expression, new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
+				rv = new org.alice.ide.x.components.ExpressionView( expression, new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
 				rv.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
 			} else if( expression instanceof org.alice.ide.ast.SelectedInstanceFactoryExpression ) {
 				//rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedInstanceFactoryExpression)expression );
@@ -222,7 +209,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired() ) {
 					
 					rv = new org.lgna.croquet.components.LineAxisPanel(
-							new org.alice.ide.common.DeclarationNameLabel( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() ),
+							new org.alice.ide.ast.components.DeclarationNameLabel( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() ),
 							new org.lgna.croquet.components.Label( "." )
 					);
 					//rv = TypeComponent.createInstance( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
@@ -236,7 +223,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 			} else {
 				org.lgna.croquet.components.JComponent< ? > component = this.createComponent( expression );
 				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
-					rv = new org.alice.ide.common.ExpressionPane( expression, component );
+					rv = new org.alice.ide.x.components.ExpressionView( expression, component );
 				} else {
 					rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
 				}
@@ -292,10 +279,10 @@ public abstract class AstI18nFactory extends I18nFactory {
 						} else if( property instanceof org.lgna.project.ast.ExpressionListProperty ) {
 							rv = this.createExpressionListPropertyPane( (org.lgna.project.ast.ExpressionListProperty)property );
 						} else {
-							rv = this.createGenericNodeListPropertyPane( (org.lgna.project.ast.NodeListProperty< ? >)property );
+							rv = this.createGenericNodeListPropertyPane( (org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.AbstractNode >)property );
 						}
 					} else {
-						rv = this.createGenericListPropertyPane( (edu.cmu.cs.dennisc.property.ListProperty< ? >)property );
+						rv = this.createGenericListPropertyPane( (edu.cmu.cs.dennisc.property.ListProperty< Object >)property );
 					}
 				} else {
 					rv = this.createGenericInstancePropertyPane( property );

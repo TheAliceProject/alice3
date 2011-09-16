@@ -40,24 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.ast.components;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends org.lgna.project.ast.NodeProperty > extends AbstractPropertyPane< E > {
-//	public NodePropertyPane( Factory factory ) {
-//		super( factory, javax.swing.BoxLayout.LINE_AXIS );
-//	}
-	public NodePropertyPane( org.alice.ide.x.AstI18nFactory factory, E property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, factory, property );
+public class LocalValidNameLabel extends DeclarationNameLabel {
+	public LocalValidNameLabel( org.lgna.project.ast.UserLocal local ) {
+		super( local );
 	}
 	@Override
-	protected void refresh() {
-		this.forgetAndRemoveAllComponents();
-		Object value = getProperty().getValue();
-		if( value instanceof org.lgna.project.ast.AbstractNode ) {
-			this.addComponent( this.getFactory().createComponent( (org.lgna.project.ast.AbstractNode)value ) );
-		}
+	protected String getTextForNullName() {
+		return ((org.lgna.project.ast.UserLocal)getDeclaration()).getValidName();
 	}
 }

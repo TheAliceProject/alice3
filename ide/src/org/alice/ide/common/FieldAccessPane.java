@@ -69,7 +69,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		Class< ? extends org.lgna.project.ast.Expression > cls = org.lgna.project.ast.FieldAccess.class;
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( cls ) );
 		org.lgna.project.ast.AbstractField field = this.fieldAccess.field.getValue();
-		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
+		org.alice.ide.ast.components.DeclarationNameLabel nodeNameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( field );
 		//nodeNameLabel.scaleFont( 1.2f );
 		//nodeNameLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );

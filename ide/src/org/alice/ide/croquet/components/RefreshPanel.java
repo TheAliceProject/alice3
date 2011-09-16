@@ -47,20 +47,21 @@ package org.alice.ide.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class RefreshPanel extends org.lgna.croquet.components.Panel {
-	@Override
-	protected javax.swing.JPanel createJPanel() {
-		class JRefreshPanel extends DefaultJPanel {
-//			@Override
-//			public void doLayout() {
-//				RefreshPanel.this.refreshIfNecessary();
-//				super.doLayout();
-//			}
-			@Override
-			public void invalidate() {
-				RefreshPanel.this.refreshIfNecessary();
-				super.invalidate();
-			}
+	protected class JRefreshPanel extends DefaultJPanel {
+//		@Override
+//		public void doLayout() {
+//			RefreshPanel.this.refreshIfNecessary();
+//			super.doLayout();
+//		}
+		@Override
+		public void invalidate() {
+			RefreshPanel.this.refreshIfNecessary();
+			super.invalidate();
 		}
+	}
+
+	@Override
+	protected JRefreshPanel createJPanel() {
 		return new JRefreshPanel();
 	}
 	private boolean isRefreshNecessary = true;
@@ -82,4 +83,14 @@ public abstract class RefreshPanel extends org.lgna.croquet.components.Panel {
 			}
 		} );
 	}
+	@Override
+	protected void handleDisplayable() {
+		this.refreshIfNecessary();
+		super.handleDisplayable();
+	}
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+	}
+	
 }

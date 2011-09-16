@@ -42,15 +42,12 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.UserParameter;
-
 /**
  * @author Dennis Cosgrove
  */
-public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< NodeListProperty< UserParameter >> {
+public class ParametersPane extends org.alice.ide.croquet.components.AbstractListPropertyPane< org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter >, org.lgna.project.ast.UserParameter > {
 	public ParametersPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserCode code ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, factory, code.getParamtersProperty() );
+		super( factory, code.getParamtersProperty(), javax.swing.BoxLayout.LINE_AXIS );
 	}
 	
 	protected org.alice.ide.IDE getIDE() {
@@ -62,8 +59,8 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( Object parameter ) {
-		return new TypedParameterPane( getProperty(), (org.lgna.project.ast.UserParameter)parameter );
+	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.UserParameter parameter ) {
+		return new TypedParameterPane( getProperty(), parameter );
 	}
 	@Override
 	protected void addPrefixComponents() {
@@ -114,10 +111,9 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 		}
 		//this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
 	}
-	
 	@Override
-	protected void refresh() {
-		super.refresh();
+	protected void internalRefresh() {
+		super.internalRefresh();
 		org.alice.ide.IDE.getActiveInstance().refreshAccessibles();
 	}
 }

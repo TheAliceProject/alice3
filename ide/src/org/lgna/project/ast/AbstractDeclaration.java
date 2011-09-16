@@ -78,6 +78,11 @@ public abstract class AbstractDeclaration extends AbstractNode {
 		} else {
 			super.setName( name );
 		}
-		
+	}
+	@Override
+	protected StringBuilder appendStringDetails(  StringBuilder rv ) {
+		super.appendStringDetails( rv );
+		rv.append( this.getName() );
+		return rv;
 	}
 }

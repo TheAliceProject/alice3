@@ -40,17 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalNameLabel extends DeclarationNameLabel {
-	public LocalNameLabel( org.lgna.project.ast.UserLocal local ) {
-		super( local );
+public class ListPropertyLabelsView extends org.alice.ide.croquet.components.AbstractListPropertyPane< edu.cmu.cs.dennisc.property.ListProperty<Object>, Object > {
+	public ListPropertyLabelsView( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.ListProperty<Object> property ) {
+		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
 	}
 	@Override
-	protected String getTextForNullName() {
-		return ((org.lgna.project.ast.UserLocal)getDeclaration()).getValidName();
+	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
+		return new org.lgna.croquet.components.Label( instance.toString() );
 	}
 }
+

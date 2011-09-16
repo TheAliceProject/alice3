@@ -40,19 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StatementListPropertyPane extends AbstractListPropertyPane< org.lgna.project.ast.StatementListProperty > {
+public class StatementListPropertyView extends org.alice.ide.croquet.components.AbstractListPropertyPane< org.lgna.project.ast.StatementListProperty, org.lgna.project.ast.Statement > {
 	private static final int INDENT = 8;
 	private static final int INTRASTICIAL_MIDDLE = 1;
 	public static final int INTRASTICIAL_PAD = INTRASTICIAL_MIDDLE*2+1;
 	
 //	private static final int INTRASTICIAL_PAD = 0;
-	public StatementListPropertyPane( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property ) {
-		super( javax.swing.BoxLayout.PAGE_AXIS, factory, property );
+	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property ) {
+		super( factory, property, javax.swing.BoxLayout.PAGE_AXIS );
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
 //				final alice.ide.IDE ide = alice.ide.IDE.getActiveInstance();
@@ -96,14 +96,14 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< org.lgn
 	}
 
 	@Override
-	protected javax.swing.JPanel createJPanel() {
+	protected JRefreshPanel createJPanel() {
 		final java.awt.Color FEEDBACK_COLOR = java.awt.Color.GREEN.darker().darker();
-		class FeedbackJPanel extends DefaultJPanel {
+		class FeedbackJPanel extends JRefreshPanel {
 			@Override
 			public void paint(java.awt.Graphics g) {
 				super.paint(g);
-				int i = StatementListPropertyPane.this.currentPotentialDropIndex;
-				final int N = StatementListPropertyPane.this.getProperty().size();
+				int i = StatementListPropertyView.this.currentPotentialDropIndex;
+				final int N = StatementListPropertyView.this.getProperty().size();
 				if( N == this.getComponentCount() && i >= 0 && i < N ) {
 					if( i != -1 && N > 0 ) {
 						int y;
@@ -242,7 +242,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< org.lgn
 	private static boolean isOwnedByElse( org.lgna.project.ast.Node owningNode ) {
 		return owningNode instanceof org.lgna.project.ast.ConditionalStatement;
 	}
-	public java.awt.Rectangle getDropBounds( DefaultStatementPane statementAncestor ) {
+	public java.awt.Rectangle getDropBounds( org.alice.ide.common.DefaultStatementPane statementAncestor ) {
 		org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
 		boolean isIf = isOwnedByIf( owningNode );
 		boolean isElse = isOwnedByElse( owningNode );
@@ -275,14 +275,13 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< org.lgn
 
 	
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
-		org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)instance;
+	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.Statement statement ) {
 		return this.getFactory().createStatementPane( org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ), statement, getProperty() );
 	}
 	
 	@Override
-	protected void refresh() {
-		super.refresh();
+	protected void internalRefresh() {
+		super.internalRefresh();
 		int bottom;
 		if( this.getComponentCount() == 0 ) {
 			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
@@ -311,7 +310,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< org.lgn
 			}
 		}
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, bottom, 16 ) );
-		this.revalidateAndRepaint();
+//		this.revalidateAndRepaint();
 	}
 	public boolean isFigurativelyEmpty() {
 		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance;
