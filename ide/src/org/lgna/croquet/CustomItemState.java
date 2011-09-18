@@ -89,13 +89,4 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 	protected void commitStateEdit(T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger) {
 		//todo
 	}
-	protected abstract void handleValueChange( T value );
-	public final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
-		this.fireChanging( prevValue, nextValue, isAdjusting );
-		this.handleValueChange( nextValue );
-		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
-			component.revalidateAndRepaint();
-		}
-		this.fireChanged( prevValue, nextValue, isAdjusting );
-	}
 }

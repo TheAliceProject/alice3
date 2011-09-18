@@ -63,8 +63,4 @@ public abstract class DefaultCustomItemState<T> extends org.lgna.croquet.CustomI
 	protected void handleValueChange( T value ) {
 		this.value = value;
 	}
-	@Override
-	public void setValue( T value ) {
-		this.changeValue( this.value, value, false );
-	}
 }

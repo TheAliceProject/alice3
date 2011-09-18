@@ -64,6 +64,19 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 		this.previousValue = this.getValue();
 		this.boundedRangeModel.addChangeListener( this.changeListener );
 	}
+	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
+		javax.swing.BoundedRangeModel boundedRangeModel = this.getBoundedRangeModel();
+		N nextValue = this.getValue();
+		this.fireChanging( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting() );
+		if( this.isAppropriateToComplete() ) {
+			this.commitStateEdit( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
+		}
+		this.fireChanged( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting() );
+		this.previousValue = nextValue;
+	}
+	@Override
+	protected void localize() {
+	}
 	protected abstract N fromInt( int value );
 	protected abstract int toInt( N value );
 	public N getMinimum() {
@@ -76,31 +89,18 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 		return this.fromInt( this.boundedRangeModel.getExtent() );
 	}
 	@Override
-	protected void localize() {
-	}
-	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
-		javax.swing.BoundedRangeModel boundedRangeModel = this.getBoundedRangeModel();
-		N nextValue = this.getValue();
-		this.fireChanging( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting() );
-		if( this.isAppropriateToComplete() ) {
-			this.commitStateEdit( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
-		}
-		this.fireChanged( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting() );
-		this.previousValue = nextValue;
-	}
-	@Override
 	public N getValue() {
 		return this.fromInt( this.boundedRangeModel.getValue() );
 	}
 	@Override
-	public void setValue( N value ) {
-		if( value != this.previousValue ) {
+	protected void handleValueChange(N nextValue) {
+		if( nextValue != this.previousValue ) {
 			N prevValue = this.previousValue;
 			boolean isAdjusting = false;
-			this.fireChanging( prevValue, value, isAdjusting );
-			this.getBoundedRangeModel().setValue( this.toInt( value ) );
-			this.previousValue = value;
-			this.fireChanged( prevValue, value, isAdjusting );
+			this.fireChanging( prevValue, nextValue, isAdjusting );
+			this.getBoundedRangeModel().setValue( this.toInt( nextValue ) );
+			this.previousValue = nextValue;
+			this.fireChanged( prevValue, nextValue, isAdjusting );
 		}
 	}
 

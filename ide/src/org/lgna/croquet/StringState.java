@@ -77,12 +77,12 @@ public abstract class StringState extends State<String> {
 			String nextValue = document.getText( 0, document.getLength() );
 			String prevValue = this.previousValue;
 			boolean isAdjusting = false;
-			fireChanging( prevValue, nextValue, isAdjusting );
+			this.fireChanging( prevValue, nextValue, isAdjusting );
 			if( this.isAppropriateToComplete() ) {
 				this.commitStateEdit( prevValue, nextValue, isAdjusting, new org.lgna.croquet.triggers.DocumentEventTrigger( e ) );
 			}
 			StringState.this.previousValue = nextValue;
-			fireChanged( prevValue, nextValue, isAdjusting );
+			this.fireChanged( prevValue, nextValue, isAdjusting );
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
@@ -105,11 +105,11 @@ public abstract class StringState extends State<String> {
 		}
 	}
 	@Override
-	public void setValue( String value ) {
+	protected void handleValueChange( String nextValue ) {
 		this.pushAtomic();
 		try {
 			this.document.remove( 0, this.document.getLength() );
-			this.document.insertString( 0, value, null );
+			this.document.insertString( 0, nextValue, null );
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		} finally {

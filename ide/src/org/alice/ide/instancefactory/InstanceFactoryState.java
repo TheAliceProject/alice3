@@ -85,11 +85,4 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	protected void handleValueChange( org.alice.ide.instancefactory.InstanceFactory value ) {
 		this.value = value;
 	}
-	
-	@Override
-	public void setValue( org.alice.ide.instancefactory.InstanceFactory value ) {
-		this.fireChanging( this.value, value, false );
-		this.handleValueChange( value );
-		this.fireChanged( this.value, value, false );
-	}
 }

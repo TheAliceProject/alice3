@@ -51,14 +51,8 @@ public abstract class State<T> extends CompletionModel {
 		public void changed( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 	};
 	private final java.util.List< ValueObserver<T> > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
 	public State( Group group, java.util.UUID id ) {
 		super(group, id);
-	}
-	
-	@Override
-	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
-		throw new RuntimeException();
 	}
 	public void addValueObserver( ValueObserver<T> valueObserver ) {
 		this.valueObservers.add( valueObserver );
@@ -70,7 +64,6 @@ public abstract class State<T> extends CompletionModel {
 	public void removeValueObserver( ValueObserver<T> valueObserver ) {
 		this.valueObservers.remove( valueObserver );
 	}
-
 	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
 		for( ValueObserver<T> valueObserver : this.valueObservers ) {
 			valueObserver.changing( this, prevValue, nextValue, isAdjusting );
@@ -83,9 +76,10 @@ public abstract class State<T> extends CompletionModel {
 	}
 	
 	@Override
-	protected boolean isAppropriateToComplete() {
-		return super.isAppropriateToComplete() && this.isInMidstOfAtomic() == false;
+	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
+		throw new UnsupportedOperationException();
 	}
+
 	
 	private int pushCount = 0;
 	private T prevAtomicSelectedValue;
@@ -122,12 +116,29 @@ public abstract class State<T> extends CompletionModel {
 			}
 		}
 	}
+	@Override
+	protected boolean isAppropriateToComplete() {
+		return super.isAppropriateToComplete() && this.isInMidstOfAtomic() == false;
+	}
 	
 	protected abstract void commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger );
-	
+	protected abstract void handleValueChange( T nextValue );
+	protected final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
+		this.fireChanging( prevValue, nextValue, false );
+		this.handleValueChange( nextValue );
+//		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
+//			component.revalidateAndRepaint();
+//		}
+		this.fireChanged( prevValue, nextValue, false );
+	}
 	
 	public abstract T getValue();
-	public abstract void setValue( T value );
+	public final void setValue( T value ) {
+		T prevValue = this.getValue();
+		this.changeValue( prevValue, value, false );
+	}
+	
+	
 	@Override
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
