@@ -345,7 +345,7 @@ public class TransactionManager {
 		}
 	}
 
-	public static void handleBoundedRangeIntegerStateChanged( BoundedRangeIntegerState boundedRangeIntegerState, int value, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static void handleBoundedIntegerStateChanged( BoundedIntegerState boundedIntegerState, int value, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		TransactionHistory transactionHistory = getActiveTransactionHistory();
 		Transaction transaction = transactionHistory.getActiveTransaction();
 		if( isAdjusting ) {
@@ -353,7 +353,7 @@ public class TransactionManager {
 			transaction.fireChanging( adjustEvent );
 			transaction.fireChanged( adjustEvent );
 		} else {
-			BoundedRangeIntegerStateChangeStep.createAndAddToTransaction( transaction, boundedRangeIntegerState, trigger );
+			BoundedIntegerStateChangeStep.createAndAddToTransaction( transaction, boundedIntegerState, trigger );
 		}
 //		org.lgna.croquet.steps.TransactionManager.handleStateChanged( BoundedRangeIntegerState.this, e );
 //		org.lgna.croquet.steps.BoundedRangeIntegerStateChangeStep step;
@@ -362,21 +362,21 @@ public class TransactionManager {
 //		} else {
 //			step = org.lgna.croquet.steps.TransactionManager.addBoundedRangeIntegerStateChangeStep( BoundedRangeIntegerState.this );
 //		}
-//		this.previousValueIsAdjusting = boundedRangeModel.getValueIsAdjusting();
+//		this.previousValueIsAdjusting = boundedModel.getValueIsAdjusting();
 //		step.handleStateChanged( e );
 //		BoundedRangeIntegerState.this.fireValueChanged( e );
 //
 //		if( this.previousValueIsAdjusting ) {
 //			//pass
 //		} else {
-//			int nextValue = boundedRangeModel.getValue();
+//			int nextValue = boundedModel.getValue();
 //			step.commitAndInvokeDo( new org.lgna.croquet.edits.BoundedRangeIntegerStateEdit( e, BoundedRangeIntegerState.this.previousValue, nextValue, false ) );
 //			BoundedRangeIntegerState.this.previousValue = nextValue;
 ////				ModelContext< ? > popContext = ContextManager.popContext();
-////				assert popContext == boundedRangeIntegerStateContext;
+////				assert popContext == boundedIntegerStateContext;
 //		}
 	}
-	public static void handleBoundedRangeDoubleStateChanged( BoundedRangeDoubleState boundedRangeDoubleState, double value, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static void handleBoundedDoubleStateChanged( BoundedDoubleState boundedDoubleState, double value, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		TransactionHistory transactionHistory = getActiveTransactionHistory();
 		Transaction transaction = transactionHistory.getActiveTransaction();
 		if( isAdjusting ) {
@@ -384,7 +384,7 @@ public class TransactionManager {
 			transaction.fireChanging( adjustEvent );
 			transaction.fireChanged( adjustEvent );
 		} else {
-			BoundedRangeDoubleStateChangeStep.createAndAddToTransaction( transaction, boundedRangeDoubleState, trigger );
+			BoundedDoubleStateChangeStep.createAndAddToTransaction( transaction, boundedDoubleState, trigger );
 		}
 	}
 

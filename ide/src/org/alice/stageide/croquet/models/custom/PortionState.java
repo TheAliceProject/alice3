@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class PortionState extends org.lgna.croquet.BoundedRangeDoubleState {
+public class PortionState extends org.lgna.croquet.BoundedDoubleState {
 	private static class SingletonHolder {
 		private static PortionState instance = new PortionState();
 	}

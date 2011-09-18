@@ -46,11 +46,14 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedRangeNumberStateChangeStep< M extends org.lgna.croquet.BoundedRangeNumberState< N >, N extends Number > extends StateChangeStep< org.lgna.croquet.BoundedRangeNumberState< N > >{
-	public BoundedRangeNumberStateChangeStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
+public class BoundedDoubleStateChangeStep extends BoundedNumberStateChangeStep< org.lgna.croquet.BoundedDoubleState, Double > {
+	/*package-private*/ static BoundedDoubleStateChangeStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.BoundedDoubleState model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return new BoundedDoubleStateChangeStep( parent, model, trigger );
+	}
+	private BoundedDoubleStateChangeStep( Transaction parent, org.lgna.croquet.BoundedDoubleState model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
-	public BoundedRangeNumberStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public BoundedDoubleStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }

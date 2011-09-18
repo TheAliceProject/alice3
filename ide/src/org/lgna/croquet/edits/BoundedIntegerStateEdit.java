@@ -40,20 +40,76 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.history;
+package org.lgna.croquet.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BoundedRangeIntegerStateChangeStep extends BoundedRangeNumberStateChangeStep< org.lgna.croquet.BoundedRangeIntegerState, Integer > {
-	/*package-private*/ static BoundedRangeIntegerStateChangeStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.BoundedRangeIntegerState model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new BoundedRangeIntegerStateChangeStep( parent, model, trigger );
+public final class BoundedIntegerStateEdit extends StateEdit<org.lgna.croquet.BoundedIntegerState,Integer> {
+	private final int prevValue;
+	private final int nextValue;
+	private final boolean isDoDesired;
+	public BoundedIntegerStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.BoundedIntegerState > completionStep, javax.swing.event.ChangeEvent e, int prevValue, int nextValue, boolean isDoDesired ) {
+		super( completionStep );
+		this.prevValue = prevValue;
+		this.nextValue = nextValue;
+		this.isDoDesired = isDoDesired;
 	}
-	private BoundedRangeIntegerStateChangeStep( Transaction parent, org.lgna.croquet.BoundedRangeIntegerState model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger );
+	public BoundedIntegerStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.prevValue = binaryDecoder.decodeInt();
+		this.nextValue = binaryDecoder.decodeInt();
+		
+		
+		//todo?
+		this.isDoDesired = binaryDecoder.decodeBoolean();
 	}
-	public BoundedRangeIntegerStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.prevValue );
+		binaryEncoder.encode( this.nextValue );
+
+		
+		//todo?
+		binaryEncoder.encode( this.isDoDesired );
+	}
+	
+
+	@Override
+	public Integer getPreviousValue() {
+		return this.prevValue;
+	}
+	@Override
+	public Integer getNextValue() {
+		return this.nextValue;
+	}
+	
+	@Override
+	public boolean canRedo() {
+		return this.getModel() != null;
+	}
+	@Override
+	public boolean canUndo() {
+		return this.getModel() != null;
+	}
+
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		if( isDo==false || this.isDoDesired ) {
+			this.getModel().setValue(this.nextValue);
+		}
+	}
+
+	@Override
+	protected final void undoInternal() {
+		this.getModel().setValue(this.prevValue);
+	}
+
+	@Override
+	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+		rv.append("integer: ");
+		rv.append(this.nextValue);
+		return rv;
 	}
 }

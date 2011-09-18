@@ -46,18 +46,18 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedRangeNumberState< N extends Number > extends State< N > {
+public abstract class BoundedNumberState< N extends Number > extends State< N > {
 	private final javax.swing.BoundedRangeModel boundedRangeModel;
 	private final javax.swing.SpinnerModel spinnerModel;
 	private N previousValue;
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		//private boolean previousValueIsAdjusting = false;
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			BoundedRangeNumberState.this.handleStateChanged( e );
+			BoundedNumberState.this.handleStateChanged( e );
 		}
 	};
 
-	public BoundedRangeNumberState( Group group, java.util.UUID id, javax.swing.BoundedRangeModel boundedRangeModel, javax.swing.SpinnerModel spinnerModel ) {
+	public BoundedNumberState( Group group, java.util.UUID id, javax.swing.BoundedRangeModel boundedRangeModel, javax.swing.SpinnerModel spinnerModel ) {
 		super( group, id );
 		this.boundedRangeModel = boundedRangeModel;
 		this.spinnerModel = spinnerModel;

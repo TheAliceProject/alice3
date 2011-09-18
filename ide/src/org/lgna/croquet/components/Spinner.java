@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class Spinner extends ViewController< javax.swing.JSpinner, org.lgna.croquet.BoundedRangeNumberState<?> > {
-	public Spinner( org.lgna.croquet.BoundedRangeNumberState<?> model ) {
+public class Spinner extends ViewController< javax.swing.JSpinner, org.lgna.croquet.BoundedNumberState<?> > {
+	public Spinner( org.lgna.croquet.BoundedNumberState<?> model ) {
 		super( model );
 	}
 	@Override

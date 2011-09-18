@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectCountState extends org.lgna.croquet.BoundedRangeIntegerState {
+public class RecentProjectCountState extends org.lgna.croquet.BoundedIntegerState {
 	private static class SingletonHolder {
 		private static RecentProjectCountState instance = new RecentProjectCountState();
 	}

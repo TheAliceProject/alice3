@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedRangeDoubleState extends BoundedRangeNumberState< Double > {
+public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 	public static class Details {
 		private final Group group;
 		private final java.util.UUID id;
@@ -111,12 +111,12 @@ public abstract class BoundedRangeDoubleState extends BoundedRangeNumberState< D
 			return this.spinnerModel;
 		}
 	}
-	public BoundedRangeDoubleState( Details details ) {
+	public BoundedDoubleState( Details details ) {
 		super( details.group, details.id, details.getBoundedRangeModel(), details.getSpinnerModel() );
 	}
 	@Override
 	protected void commitStateEdit( Double prevValue, Double nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.TransactionManager.handleBoundedRangeDoubleStateChanged( BoundedRangeDoubleState.this, nextValue, isAdjusting, trigger );
+		org.lgna.croquet.history.TransactionManager.handleBoundedDoubleStateChanged( BoundedDoubleState.this, nextValue, isAdjusting, trigger );
 	}
 	@Override
 	protected Double fromInt( int value ) {

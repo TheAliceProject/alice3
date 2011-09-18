@@ -46,7 +46,7 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class ObesityLevelState extends org.lgna.croquet.BoundedRangeDoubleState {
+public class ObesityLevelState extends org.lgna.croquet.BoundedDoubleState {
 	private static class SingletonHolder {
 		private static ObesityLevelState instance = new ObesityLevelState();
 	}
