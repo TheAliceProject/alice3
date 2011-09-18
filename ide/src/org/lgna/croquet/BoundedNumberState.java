@@ -47,8 +47,22 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class BoundedNumberState< N extends Number > extends State< N > {
-	private final javax.swing.BoundedRangeModel boundedRangeModel;
-	private final javax.swing.SpinnerModel spinnerModel;
+	public class SwingModel {
+		private final javax.swing.BoundedRangeModel boundedRangeModel;
+		private final javax.swing.SpinnerModel spinnerModel;
+		private SwingModel( javax.swing.BoundedRangeModel boundedRangeModel, javax.swing.SpinnerModel spinnerModel ) {
+			this.boundedRangeModel = boundedRangeModel;
+			this.spinnerModel = spinnerModel;
+		}
+		public javax.swing.BoundedRangeModel getBoundedRangeModel() {
+			return this.boundedRangeModel;
+		}
+		public javax.swing.SpinnerModel getSpinnerModel() {
+			return this.spinnerModel;
+		}
+	}
+
+	private final SwingModel swingModel;
 	private N previousValue;
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		//private boolean previousValueIsAdjusting = false;
@@ -59,19 +73,22 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 
 	public BoundedNumberState( Group group, java.util.UUID id, javax.swing.BoundedRangeModel boundedRangeModel, javax.swing.SpinnerModel spinnerModel ) {
 		super( group, id );
-		this.boundedRangeModel = boundedRangeModel;
-		this.spinnerModel = spinnerModel;
+		this.swingModel = new SwingModel( boundedRangeModel, spinnerModel );
 		this.previousValue = this.getValue();
-		this.boundedRangeModel.addChangeListener( this.changeListener );
+		this.swingModel.boundedRangeModel.addChangeListener( this.changeListener );
 	}
+	
+	public SwingModel getSwingModel() {
+		return this.swingModel;
+	}
+
 	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
-		javax.swing.BoundedRangeModel boundedRangeModel = this.getBoundedRangeModel();
 		N nextValue = this.getValue();
-		this.fireChanging( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting() );
+		this.fireChanging( this.previousValue, nextValue, this.swingModel.boundedRangeModel.getValueIsAdjusting() );
 		if( this.isAppropriateToComplete() ) {
-			this.commitStateEdit( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
+			this.commitStateEdit( this.previousValue, nextValue, this.swingModel.boundedRangeModel.getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
 		}
-		this.fireChanged( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting() );
+		this.fireChanged( this.previousValue, nextValue, this.swingModel.boundedRangeModel.getValueIsAdjusting() );
 		this.previousValue = nextValue;
 	}
 	@Override
@@ -80,17 +97,17 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 	protected abstract N fromInt( int value );
 	protected abstract int toInt( N value );
 	public N getMinimum() {
-		return this.fromInt( this.boundedRangeModel.getMinimum() );
+		return this.fromInt( this.swingModel.boundedRangeModel.getMinimum() );
 	}
 	public N getMaximum() {
-		return this.fromInt( this.boundedRangeModel.getMaximum() );
+		return this.fromInt( this.swingModel.boundedRangeModel.getMaximum() );
 	}
 	public N getExtent() {
-		return this.fromInt( this.boundedRangeModel.getExtent() );
+		return this.fromInt( this.swingModel.boundedRangeModel.getExtent() );
 	}
 	@Override
 	public N getValue() {
-		return this.fromInt( this.boundedRangeModel.getValue() );
+		return this.fromInt( this.swingModel.boundedRangeModel.getValue() );
 	}
 	@Override
 	protected void handleValueChange(N nextValue) {
@@ -98,18 +115,12 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 			N prevValue = this.previousValue;
 			boolean isAdjusting = false;
 			this.fireChanging( prevValue, nextValue, isAdjusting );
-			this.getBoundedRangeModel().setValue( this.toInt( nextValue ) );
+			this.swingModel.boundedRangeModel.setValue( this.toInt( nextValue ) );
 			this.previousValue = nextValue;
 			this.fireChanged( prevValue, nextValue, isAdjusting );
 		}
 	}
 
-	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
-		return this.boundedRangeModel;
-	}
-	public javax.swing.SpinnerModel getSpinnerModel() {
-		return this.spinnerModel;
-	}
 	public org.lgna.croquet.components.Slider createSlider() {
 		return new org.lgna.croquet.components.Slider( this );
 	}

@@ -46,12 +46,14 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class BooleanState extends State< Boolean > {
-	public static class SwingModel {
+	public class SwingModel {
 		private final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 			}
 		};
+		private SwingModel() {
+		}
 		public javax.swing.ButtonModel getButtonModel() {
 			return this.buttonModel;
 		}
@@ -81,6 +83,9 @@ public abstract class BooleanState extends State< Boolean > {
 		this.swingModel.buttonModel.addItemListener( this.itemListener );
 	}
 
+	public SwingModel getSwingModel() {
+		return this.swingModel;
+	}
 	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
 		if( this.isAppropriateToComplete() ) {
 			boolean nextValue = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
@@ -105,13 +110,6 @@ public abstract class BooleanState extends State< Boolean > {
 		}
 	}
 	
-	public javax.swing.ButtonModel getButtonModel() {
-		return this.swingModel.buttonModel;
-	}
-	public javax.swing.Action getAction() {
-		return this.swingModel.action;
-	}
-
 	@Override
 	protected void commitStateEdit( Boolean prevValue, Boolean nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.TransactionManager.commitEdit( this, nextValue, trigger );

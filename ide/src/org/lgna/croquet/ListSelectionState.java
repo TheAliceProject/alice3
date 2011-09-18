@@ -165,8 +165,33 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<T> extends ItemState< T > implements Iterable< T >/*, java.util.List<E>*/{
-	private final ComboBoxModel< T > comboBoxModel = new ComboBoxModel< T >( this );
-	private final ListSelectionModel< T > listSelectionModel = new ListSelectionModel< T >( this );
+	public class SwingModel {
+		private final ComboBoxModel< T > comboBoxModel;
+		private final ListSelectionModel< T > listSelectionModel;
+		private SwingModel( ComboBoxModel< T > comboBoxModel, ListSelectionModel< T > listSelectionModel ) {
+			this.comboBoxModel = comboBoxModel;
+			this.listSelectionModel = listSelectionModel;
+		}
+		public javax.swing.ComboBoxModel getComboBoxModel() {
+			return this.comboBoxModel;
+		}
+		public javax.swing.ListSelectionModel getListSelectionModel() {
+			return this.listSelectionModel;
+		}
+	}
+	private final SwingModel swingModel = new SwingModel( new ComboBoxModel< T >( this ), new ListSelectionModel< T >( this ) );
+	private int index = -1;
+
+	public ListSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex ) {
+		super( group, id, codec );
+		this.index = selectionIndex;
+	}
+	public SwingModel getSwingModel() {
+		return this.swingModel;
+	}
+	@Override
+	protected void localize() {
+	}
 
 	/*package-private*/void setSelectionIndexFromSwing( int index ) {
 		this.pushAtomic();
@@ -177,16 +202,6 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		this.pushAtomic();
 		this.index = this.indexOf( item );
 		this.popAtomic();
-	}
-
-	private int index = -1;
-
-	public ListSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex ) {
-		super( group, id, codec );
-		this.index = selectionIndex;
-	}
-	@Override
-	protected void localize() {
 	}
 
 	private ListSelectionStatePrepModel< T > prepModel;
@@ -204,18 +219,12 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				ListSelectionState.this.setSelectionFromSwing( item );
-				ListSelectionState.this.listSelectionModel.fireListSelectionChanged( ListSelectionState.this.index, ListSelectionState.this.index, ListSelectionState.this.listSelectionModel.getValueIsAdjusting() );
+				ListSelectionState.this.swingModel.listSelectionModel.fireListSelectionChanged( ListSelectionState.this.index, ListSelectionState.this.index, ListSelectionState.this.swingModel.listSelectionModel.getValueIsAdjusting() );
 			}
 		};
 		action.putValue( javax.swing.Action.NAME, getMenuText( item ) );
 		action.putValue( javax.swing.Action.SMALL_ICON, getMenuSmallIcon( item ) );
 		return action;
-	}
-	public javax.swing.ComboBoxModel getComboBoxModel() {
-		return this.comboBoxModel;
-	}
-	public javax.swing.ListSelectionModel getListSelectionModel() {
-		return this.listSelectionModel;
 	}
 
 	@Override
@@ -224,10 +233,10 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	}
 
 	public void addListDataListener( javax.swing.event.ListDataListener listener ) {
-		this.comboBoxModel.addListDataListener( listener );
+		this.swingModel.comboBoxModel.addListDataListener( listener );
 	}
 	public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
-		this.comboBoxModel.removeListDataListener( listener );
+		this.swingModel.comboBoxModel.removeListDataListener( listener );
 	}
 
 	public T getSelectedItem() {
@@ -288,7 +297,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			this.internalAddItem( item );
 
 			int index = this.getItemCount() - 1;
-			this.comboBoxModel.ACCESS_fireIntervalAdded( this, index, index );
+			this.swingModel.comboBoxModel.ACCESS_fireIntervalAdded( this, index, index );
 			this.handleItemAdded( item );
 		} finally {
 			this.popAtomic();
@@ -299,7 +308,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		try {
 			int index = this.indexOf( item );
 			this.internalRemoveItem( item );
-			this.comboBoxModel.ACCESS_fireIntervalRemoved( this, index, index );
+			this.swingModel.comboBoxModel.ACCESS_fireIntervalRemoved( this, index, index );
 			this.handleItemRemoved( item );
 		} finally {
 			this.popAtomic();
@@ -339,7 +348,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			//				this.index = -1;
 			//			}
 
-			this.comboBoxModel.ACCESS_fireContentsChanged( this, 0, this.getItemCount() );
+			this.swingModel.comboBoxModel.ACCESS_fireContentsChanged( this, 0, this.getItemCount() );
 			for( T item : removed ) {
 				this.handleItemRemoved( item );
 			}
@@ -363,8 +372,8 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	@Override
 	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
 		super.fireChanging( prevValue, nextValue, isAdjusting );
-		this.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.listSelectionModel.getValueIsAdjusting() );
-		this.comboBoxModel.ACCESS_fireContentsChanged( this, this.index, this.index );
+		this.swingModel.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.swingModel.listSelectionModel.getValueIsAdjusting() );
+		this.swingModel.comboBoxModel.ACCESS_fireContentsChanged( this, this.index, this.index );
 	}
 
 	public final void setItems( T... items ) {

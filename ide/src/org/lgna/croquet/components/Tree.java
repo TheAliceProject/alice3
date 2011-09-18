@@ -50,7 +50,7 @@ public class Tree<E> extends ViewController< javax.swing.JTree, org.lgna.croquet
 	public Tree( org.lgna.croquet.TreeSelectionState< E > model ) {
 		super( model );
 		this.setSwingTreeModel( model.getTreeModel() );
-		this.setSwingTreeSelectionModel( model.getTreeSelectionModel() );
+		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
 	}
 
 	private void setSwingTreeModel( javax.swing.tree.TreeModel treeModel ) {

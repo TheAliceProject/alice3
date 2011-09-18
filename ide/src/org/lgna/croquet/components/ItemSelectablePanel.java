@@ -65,8 +65,8 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 		if( this.isInitialized ) {
 			//pass
 		} else {
-			this.setSwingComboBoxModel(this.getModel().getComboBoxModel());
-			this.setSwingListSelectionModel(this.getModel().getListSelectionModel());
+			this.setSwingComboBoxModel(this.getModel().getSwingModel().getComboBoxModel());
+			this.setSwingListSelectionModel(this.getModel().getSwingModel().getListSelectionModel());
 			this.isInitialized = true;
 		}
 	}

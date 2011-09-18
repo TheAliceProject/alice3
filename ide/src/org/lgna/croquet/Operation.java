@@ -48,18 +48,26 @@ import org.lgna.croquet.edits.Edit;
  * @author Dennis Cosgrove
  */
 public abstract class Operation< S extends org.lgna.croquet.history.OperationStep<? extends Operation<?>>> extends CompletionModel {
-	private javax.swing.Action action = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			Operation.this.fire( e );
+	public class SwingModel {
+		private javax.swing.Action action = new javax.swing.AbstractAction() {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				Operation.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
+			}
+		};
+		public javax.swing.Action getAction() {
+			return this.action;
 		}
-	};
+	}
+	
+	private final SwingModel swingModel = new SwingModel();
+
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
-	
-	public javax.swing.Action getAction() {
-		return this.action;
+	public SwingModel getSwingModel() {
+		return this.swingModel;
 	}
+	
 	@Override
 	protected void localize() {
 		String name = this.getDefaultLocalizedText();
@@ -143,40 +151,40 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	protected abstract void perform( S step );
 
 	public String getName() {
-		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
+		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
 	}
 	public void setName( String name ) {
-		this.action.putValue( javax.swing.Action.NAME, name );
+		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
 	}
 //	public String getShortDescription() {
-//		return String.class.cast( this.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
+//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
 //	}
 	public void setShortDescription( String shortDescription ) {
-		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
 //	public String getLongDescription() {
-//		return String.class.cast( this.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
+//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
 //	}
 	public void setLongDescription( String longDescription ) {
-		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
+		this.swingModel.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
 	}
 	public javax.swing.Icon getSmallIcon() {
-		return javax.swing.Icon.class.cast( this.action.getValue( javax.swing.Action.SMALL_ICON ) );
+		return javax.swing.Icon.class.cast( this.swingModel.action.getValue( javax.swing.Action.SMALL_ICON ) );
 	}
 	public void setSmallIcon( javax.swing.Icon icon ) {
-		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
 //	public int getMnemonicKey() {
-//		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
+//		return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
 //	}
 	private void setMnemonicKey( int mnemonicKey ) {
-		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
+		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
 //	public javax.swing.KeyStroke getAcceleratorKey() {
-//		return javax.swing.KeyStroke.class.cast( this.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
+//		return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
 //	}
 	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
+		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
 	@Override

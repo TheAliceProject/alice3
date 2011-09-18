@@ -49,7 +49,7 @@ package org.lgna.croquet.components;
 public class Slider extends ViewController< javax.swing.JSlider, org.lgna.croquet.BoundedNumberState<?> > {
 	public Slider( org.lgna.croquet.BoundedNumberState<?> model ) {
 		super( model );
-		this.getAwtComponent().setModel( this.getModel().getBoundedRangeModel() );
+		this.getAwtComponent().setModel( this.getModel().getSwingModel().getBoundedRangeModel() );
 	}
 	@Override
 	protected javax.swing.JSlider createAwtComponent() {

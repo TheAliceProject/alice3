@@ -188,6 +188,15 @@ class TreeNodeCascade<T> extends Cascade< T > {
 public abstract class TreeSelectionState<T> extends ItemState< T > {
 	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
 	}
+	public class SwingModel {
+		private final SingleTreeSelectionModel treeSelectionModel = new SingleTreeSelectionModel();
+		private SwingModel() {
+		}
+		public javax.swing.tree.TreeSelectionModel getTreeSelectionModel() {
+			return this.treeSelectionModel;
+		}
+	}
+	private final SwingModel swingModel = new SwingModel();
 
 	private final SingleTreeSelectionModel treeSelectionModel;
 
@@ -204,15 +213,16 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		} );
 	}
 
+	public SwingModel getSwingModel() {
+		return this.swingModel;
+	}
+	
 	@Override
 	protected void localize() {
 	}
 	protected abstract String getTextForNode( T node );
 	protected abstract javax.swing.Icon getIconForNode( T node );
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > getTreeModel();
-	public javax.swing.tree.TreeSelectionModel getTreeSelectionModel() {
-		return this.treeSelectionModel;
-	}
 	public T getSelectedNode() {
 		javax.swing.tree.TreePath path = this.treeSelectionModel.getSelectionPath();
 		if( path != null ) {

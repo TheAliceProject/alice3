@@ -52,6 +52,6 @@ public class Spinner extends ViewController< javax.swing.JSpinner, org.lgna.croq
 	}
 	@Override
 	protected javax.swing.JSpinner createAwtComponent() {
-		return new javax.swing.JSpinner( this.getModel().getSpinnerModel() );
+		return new javax.swing.JSpinner( this.getModel().getSwingModel().getSpinnerModel() );
 	}
 }

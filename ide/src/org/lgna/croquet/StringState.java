@@ -46,7 +46,15 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class StringState extends State<String> {
-	private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
+	public class SwingModel {
+		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
+		private SwingModel() {
+		}
+		public javax.swing.text.Document getDocument() {
+			return this.document;
+		}
+	}
+
 	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		public void changedUpdate(javax.swing.event.DocumentEvent e) {
 			StringState.this.handleUpdate(e);
@@ -59,18 +67,23 @@ public abstract class StringState extends State<String> {
 		}
 	};
 
+	private final SwingModel swingModel = new SwingModel();
 	private String previousValue;
 	public StringState(Group group, java.util.UUID id, String initialState) {
 		super(group, id);
 		this.previousValue = initialState;
 		try {
-			this.document.insertString(0, initialState, null);
+			this.swingModel.document.insertString(0, initialState, null);
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
-		this.document.addDocumentListener( this.documentListener );
+		this.swingModel.document.addDocumentListener( this.documentListener );
 	}
 
+	public SwingModel getSwingModel() {
+		return this.swingModel;
+	}
+	
 	private void handleUpdate( javax.swing.event.DocumentEvent e ) {
 		try {
 			javax.swing.text.Document document = e.getDocument();
@@ -99,7 +112,7 @@ public abstract class StringState extends State<String> {
 	@Override
 	public String getValue() {
 		try {
-			return this.document.getText( 0, this.document.getLength() );
+			return this.swingModel.document.getText( 0, this.swingModel.document.getLength() );
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
@@ -108,8 +121,8 @@ public abstract class StringState extends State<String> {
 	protected void handleValueChange( String nextValue ) {
 		this.pushAtomic();
 		try {
-			this.document.remove( 0, this.document.getLength() );
-			this.document.insertString( 0, nextValue, null );
+			this.swingModel.document.remove( 0, this.swingModel.document.getLength() );
+			this.swingModel.document.insertString( 0, nextValue, null );
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		} finally {
@@ -130,9 +143,6 @@ public abstract class StringState extends State<String> {
 		return rv;
 	}
 
-	public javax.swing.text.Document getDocument() {
-		return this.document;
-	}
 	public org.lgna.croquet.components.TextField createTextField() {
 		return new org.lgna.croquet.components.TextField( this );
 	}

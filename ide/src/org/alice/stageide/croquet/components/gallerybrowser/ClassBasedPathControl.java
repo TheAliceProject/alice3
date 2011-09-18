@@ -162,7 +162,7 @@ public class ClassBasedPathControl extends ViewController< javax.swing.JComponen
 		super( model );
 		this.initializer = initializer;
 		this.setSwingTreeModel( model.getTreeModel() );
-		this.setSwingTreeSelectionModel( model.getTreeSelectionModel() );
+		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
 	}
 	
 	private void refresh() {
