@@ -41,19 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.person.models;
+package org.lgna.croquet.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ObesityPercentState extends org.lgna.croquet.BoundedRangeIntegerState {
-	private static class SingletonHolder {
-		private static ObesityPercentState instance = new ObesityPercentState();
+public abstract class BoundedRangeNumberStateChangeStep< M extends org.lgna.croquet.BoundedRangeNumberState< N >, N extends Number > extends StateChangeStep< org.lgna.croquet.BoundedRangeNumberState< N > >{
+	public BoundedRangeNumberStateChangeStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
+		super( parent, model, trigger );
 	}
-	public static ObesityPercentState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ObesityPercentState() {
-		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ) ).minimum( 0 ).maximum( 100 ).initialValue( 50 ) );
+	public BoundedRangeNumberStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

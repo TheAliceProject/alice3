@@ -47,8 +47,86 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class BoundedRangeDoubleState extends BoundedRangeNumberState< Double > {
-	public BoundedRangeDoubleState() {
-		super( null, null, null, null );
-		//todo
+	public static class Details {
+		private final Group group;
+		private final java.util.UUID id;
+		private double minimum = 0.0;
+		private double maximum = 1.0;
+		private double extent = 0.01;
+		private double initialValue = 0.5;
+		public Details( Group group, java.util.UUID id ) {
+			this.group = group;
+			this.id = id;
+		}
+		public Details minimum( double minimum ) {
+			this.minimum = minimum;
+			return this;
+		}
+		public Details maximum( double maximum ) {
+			this.maximum = maximum;
+			return this;
+		}
+		public Details extent( double extent ) {
+			this.extent = extent;
+			return this;
+		}
+		public Details initialValue( double initialValue ) {
+			this.initialValue = initialValue;
+			return this;
+		}
+		private javax.swing.BoundedRangeModel boundedRangeModel;
+		private javax.swing.SpinnerModel spinnerModel;
+		private synchronized javax.swing.BoundedRangeModel getBoundedRangeModel() {
+			if( this.boundedRangeModel != null ) {
+				//pass
+			} else {
+				this.boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
+				int min = 0;
+				int max = (int)((this.maximum-this.minimum)/this.extent);
+				int ext = 1;
+				int val = (int)((this.initialValue-this.minimum)/this.extent);
+				this.boundedRangeModel.setRangeProperties( val, ext, min, max, false );
+			}
+			return this.boundedRangeModel;
+		}
+		private synchronized javax.swing.SpinnerModel getSpinnerModel() {
+			if( this.spinnerModel != null ) {
+				//pass
+			} else {
+				this.spinnerModel = new javax.swing.AbstractSpinnerModel() {
+					public Double getNextValue() {
+						throw new RuntimeException( "todo" );
+					}
+					public Double getPreviousValue() {
+						throw new RuntimeException( "todo" );
+					}
+					public Double getValue() {
+						throw new RuntimeException( "todo" );
+					}
+					public void setValue( Object value ) {
+						throw new RuntimeException( "todo" );
+					}
+				};
+			}
+			return this.spinnerModel;
+		}
+	}
+	public BoundedRangeDoubleState( Details details ) {
+		super( details.group, details.id, details.getBoundedRangeModel(), details.getSpinnerModel() );
+	}
+	@Override
+	protected void commitStateEdit( Double prevValue, Double nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.TransactionManager.handleBoundedRangeDoubleStateChanged( BoundedRangeDoubleState.this, nextValue, isAdjusting, trigger );
+	}
+	@Override
+	protected Double fromInt( int value ) {
+//		java.math.BigDecimal bigDecimal = new java.math.BigDecimal( value );
+//		bigDecimal = bigDecimal.movePointLeft( 2 );
+		return value/100.0;
+	}
+	@Override
+	protected int toInt( Double value ) {
+
+		return (int)(value*100);
 	}
 }

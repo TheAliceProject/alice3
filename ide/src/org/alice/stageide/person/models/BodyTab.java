@@ -63,7 +63,7 @@ public class BodyTab extends ContentTab {
 		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
-		org.lgna.croquet.components.Slider slider = ObesityPercentState.getInstance().createSlider();
+		org.lgna.croquet.components.Slider slider = ObesityLevelState.getInstance().createSlider();
 		slider.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		
 		org.lgna.croquet.components.BorderPanel obesityLevelPane = new org.lgna.croquet.components.BorderPanel();

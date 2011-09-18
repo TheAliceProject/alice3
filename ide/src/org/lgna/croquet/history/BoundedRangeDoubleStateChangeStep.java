@@ -41,19 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.person.models;
+package org.lgna.croquet.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SetObesityOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private final double value;
-	protected SetObesityOperation( java.util.UUID uuid, double value ) {
-		super( uuid );
-		this.value = value;
+public class BoundedRangeDoubleStateChangeStep extends BoundedRangeNumberStateChangeStep< org.lgna.croquet.BoundedRangeDoubleState, Double > {
+	/*package-private*/ static BoundedRangeDoubleStateChangeStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.BoundedRangeDoubleState model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return new BoundedRangeDoubleStateChangeStep( parent, model, trigger );
 	}
-	@Override
-	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
-		ObesityLevelState.getInstance().setValue( this.value );
+	private BoundedRangeDoubleStateChangeStep( Transaction parent, org.lgna.croquet.BoundedRangeDoubleState model, org.lgna.croquet.triggers.Trigger trigger ) {
+		super( parent, model, trigger );
+	}
+	public BoundedRangeDoubleStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

@@ -46,14 +46,14 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SetObesityOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private final double value;
-	protected SetObesityOperation( java.util.UUID uuid, double value ) {
-		super( uuid );
-		this.value = value;
+public class ObesityLevelState extends org.lgna.croquet.BoundedRangeDoubleState {
+	private static class SingletonHolder {
+		private static ObesityLevelState instance = new ObesityLevelState();
 	}
-	@Override
-	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
-		ObesityLevelState.getInstance().setValue( this.value );
+	public static ObesityLevelState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ObesityLevelState() {
+		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ) ).minimum( 0.0 ).maximum( 1.0 ).initialValue( 0.5 ).extent( 0.01 ) );
 	}
 }

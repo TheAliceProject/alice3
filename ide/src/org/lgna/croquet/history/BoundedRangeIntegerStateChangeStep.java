@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class BoundedRangeIntegerStateChangeStep extends StateChangeStep< org.lgna.croquet.BoundedRangeIntegerState > {
+public class BoundedRangeIntegerStateChangeStep extends BoundedRangeNumberStateChangeStep< org.lgna.croquet.BoundedRangeIntegerState, Integer > {
 	/*package-private*/ static BoundedRangeIntegerStateChangeStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.BoundedRangeIntegerState model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new BoundedRangeIntegerStateChangeStep( parent, model, trigger );
 	}

@@ -109,11 +109,11 @@ public enum PersonResourceManager {
 			popAtomic();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver<Integer> obesityPercentStateObserver = new org.lgna.croquet.State.ValueObserver<Integer>() {
-		public void changing( org.lgna.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueObserver<Double> obesityLevelObserver = new org.lgna.croquet.State.ValueObserver<Double>() {
+		public void changing( org.lgna.croquet.State< Double > state, Double prevValue, Double nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
-		public void changed( org.lgna.croquet.State< Integer > state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< Double > state, Double prevValue, Double nextValue, boolean isAdjusting ) {
 			popAtomic();
 		}
 	};
@@ -125,7 +125,7 @@ public enum PersonResourceManager {
 		org.alice.stageide.person.models.HairColorNameState.getInstance().addValueObserver( this.hairColorNameObserver );
 		org.alice.stageide.person.models.HairState.getInstance().addValueObserver( this.hairObserver );
 		org.alice.stageide.person.models.FullBodyOutfitState.getInstance().addValueObserver( this.fullBodyOutfitObserver );
-		org.alice.stageide.person.models.ObesityPercentState.getInstance().addValueObserver( this.obesityPercentStateObserver );
+		org.alice.stageide.person.models.ObesityLevelState.getInstance().addValueObserver( this.obesityLevelObserver );
 	}
 	private void removeListeners() {
 		org.alice.stageide.person.models.LifeStageState.getInstance().removeValueObserver( this.lifeStageObserver );
@@ -135,7 +135,7 @@ public enum PersonResourceManager {
 		org.alice.stageide.person.models.HairColorNameState.getInstance().removeValueObserver( this.hairColorNameObserver );
 		org.alice.stageide.person.models.HairState.getInstance().removeValueObserver( this.hairObserver );
 		org.alice.stageide.person.models.FullBodyOutfitState.getInstance().removeValueObserver( this.fullBodyOutfitObserver );
-		org.alice.stageide.person.models.ObesityPercentState.getInstance().removeValueObserver( this.obesityPercentStateObserver );
+		org.alice.stageide.person.models.ObesityLevelState.getInstance().removeValueObserver( this.obesityLevelObserver );
 	}
 	private int activeCount = 0;
 	private void addListenersIfAppropriate() {
@@ -183,10 +183,7 @@ public enum PersonResourceManager {
 		return org.alice.stageide.person.models.BaseEyeColorState.getInstance().getValue();
 	}
 	/*package-private*/ double getObesityLevel() {
-		int obesityPercent = org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue();
-		java.math.BigDecimal value = new java.math.BigDecimal( obesityPercent );
-		value = value.movePointLeft( 2 );
-		return value.doubleValue();
+		return org.alice.stageide.person.models.ObesityLevelState.getInstance().getValue();
 	}
 	/*package-private*/ org.lgna.story.resources.sims2.Hair getHair() {
 		return org.alice.stageide.person.models.HairState.getInstance().getValue();
@@ -300,7 +297,7 @@ public enum PersonResourceManager {
 		org.lgna.story.resources.sims2.EyeColor eyeColor = org.alice.stageide.person.models.BaseEyeColorState.getInstance().getValue();
 		org.lgna.story.resources.sims2.Outfit outfit = org.alice.stageide.person.models.FullBodyOutfitState.getInstance().getValue();
 		org.lgna.story.resources.sims2.Hair hair = org.alice.stageide.person.models.HairState.getInstance().getValue();
-		double obesityLevel = org.alice.stageide.person.models.ObesityPercentState.getInstance().getValue() * 0.01;
+		double obesityLevel = org.alice.stageide.person.models.ObesityLevelState.getInstance().getValue();
 		if( lifeStage != null ) {
 			return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
 		} else {
@@ -320,7 +317,7 @@ public enum PersonResourceManager {
 			org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
 			org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
 			org.alice.stageide.person.models.HairColorNameState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
-			org.alice.stageide.person.models.ObesityPercentState.getInstance().setValue( (int)(personResource.getObesityLevel()*100) );
+			org.alice.stageide.person.models.ObesityLevelState.getInstance().setValue( personResource.getObesityLevel() );
 		} finally {
 			this.addListenersIfAppropriate();
 		}

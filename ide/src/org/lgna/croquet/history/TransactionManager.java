@@ -376,6 +376,17 @@ public class TransactionManager {
 ////				assert popContext == boundedRangeIntegerStateContext;
 //		}
 	}
+	public static void handleBoundedRangeDoubleStateChanged( BoundedRangeDoubleState boundedRangeDoubleState, double value, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+		TransactionHistory transactionHistory = getActiveTransactionHistory();
+		Transaction transaction = transactionHistory.getActiveTransaction();
+		if( isAdjusting ) {
+			org.lgna.croquet.history.event.AdjustValueStateEvent adjustEvent = new org.lgna.croquet.history.event.AdjustValueStateEvent( transaction );
+			transaction.fireChanging( adjustEvent );
+			transaction.fireChanged( adjustEvent );
+		} else {
+			BoundedRangeDoubleStateChangeStep.createAndAddToTransaction( transaction, boundedRangeDoubleState, trigger );
+		}
+	}
 
 	public static org.lgna.croquet.edits.BooleanStateEdit commitEdit( BooleanState booleanState, boolean value, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.BooleanStateChangeStep step = org.lgna.croquet.history.TransactionManager.addBooleanStateChangeStep( booleanState, trigger );

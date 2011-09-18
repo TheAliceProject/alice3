@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class PortionState extends org.lgna.croquet.BoundedRangeIntegerState {
+public class PortionState extends org.lgna.croquet.BoundedRangeDoubleState {
 	private static class SingletonHolder {
 		private static PortionState instance = new PortionState();
 	}
@@ -54,6 +54,6 @@ public class PortionState extends org.lgna.croquet.BoundedRangeIntegerState {
 		return SingletonHolder.instance;
 	}
 	private PortionState() {
-		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4c5552d0-d5c3-4f01-94b5-4920bd4be6fc" ) ).minimum( 0 ).maximum( 100 ).initialValue( 100 ) );
+		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4c5552d0-d5c3-4f01-94b5-4920bd4be6fc" ) ).minimum( 0.0 ).maximum( 1.0 ).initialValue( 0.5 ).extent( 0.01 ) );
 	}
 }
