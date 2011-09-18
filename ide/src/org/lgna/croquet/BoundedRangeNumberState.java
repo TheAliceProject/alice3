@@ -80,10 +80,13 @@ public abstract class BoundedRangeNumberState< N extends Number > extends State<
 	}
 	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
 		javax.swing.BoundedRangeModel boundedRangeModel = this.getBoundedRangeModel();
+		N nextValue = this.getValue();
+		this.fireChanging( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting() );
 		if( this.isAppropriateToComplete() ) {
-			this.commitStateEdit( this.previousValue, this.getValue(), boundedRangeModel.getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
+			this.commitStateEdit( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
 		}
-		this.fireChanged( this.previousValue, this.getValue(), boundedRangeModel.getValueIsAdjusting() );
+		this.fireChanged( this.previousValue, nextValue, boundedRangeModel.getValueIsAdjusting() );
+		this.previousValue = nextValue;
 	}
 	@Override
 	public N getValue() {
