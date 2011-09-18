@@ -175,7 +175,7 @@ public class ModelResourceTree {
 		{
 			Class<? extends org.lgna.story.resources.ModelResource> currentClass = cls;
 			Stack<Class<? extends org.lgna.story.resources.ModelResource>> classStack = new Stack<Class<? extends org.lgna.story.resources.ModelResource>>();			
-			Class<? extends org.lgna.story.resources.ModelResource>[] interfaces = null;
+			Class<?>[] interfaces = null;
 			while (currentClass != null)
 			{
 				classStack.push(currentClass);
@@ -190,13 +190,15 @@ public class ModelResourceTree {
 				}
 				
 				interfaces = currentClass.getInterfaces();
+				currentClass = null;
 				if (interfaces != null && interfaces.length > 0)
 				{
-					currentClass = interfaces[0];
-				}
-				else
-				{
-					currentClass = null;
+					for( Class<?> intrfc : interfaces ) {
+						if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( intrfc ) ) {
+							currentClass = (Class<? extends org.lgna.story.resources.ModelResource>)intrfc;
+							break;
+						}
+					}
 				}
 			}
 			addNodes(topNode, classStack);

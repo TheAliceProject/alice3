@@ -54,12 +54,6 @@ public class PortionState extends org.lgna.croquet.BoundedRangeIntegerState {
 		return SingletonHolder.instance;
 	}
 	private PortionState() {
-		super(
-				org.lgna.croquet.Application.INHERIT_GROUP,
-				java.util.UUID.fromString( "4c5552d0-d5c3-4f01-94b5-4920bd4be6fc" ),
-				0, 
-				100,
-				100
-		);
+		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4c5552d0-d5c3-4f01-94b5-4920bd4be6fc" ) ).minimum( 0 ).maximum( 100 ).initialValue( 100 ) );
 	}
 }

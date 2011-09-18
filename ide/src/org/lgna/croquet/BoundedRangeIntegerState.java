@@ -45,85 +45,80 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedRangeIntegerState extends State< Integer > {
-	private int previousValue;
-	private final javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
-	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
-		//private boolean previousValueIsAdjusting = false;
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			BoundedRangeIntegerState.this.handleStateChanged( e );
+public abstract class BoundedRangeIntegerState extends BoundedRangeNumberState< Integer > {
+	public static class Details {
+		private final Group group;
+		private final java.util.UUID id;
+		private int minimum = 0;
+		private int maximum = 100;
+		private int extent = 1;
+		private int initialValue = 50;
+		public Details( Group group, java.util.UUID id ) {
+			this.group = group;
+			this.id = id;
 		}
-	};
-	private final javax.swing.SpinnerModel spinnerModel = new javax.swing.AbstractSpinnerModel() {
-		public Integer getNextValue() {
-			return this.getValue()+1;
+		public Details minimum( int minimum ) {
+			this.minimum = minimum;
+			return this;
 		}
-		public Integer getPreviousValue() {
-			return this.getValue()-1;
+		public Details maximum( int maximum ) {
+			this.maximum = maximum;
+			return this;
 		}
-		public Integer getValue() {
-			return BoundedRangeIntegerState.this.boundedRangeModel.getValue();
+		public Details extent( int extent ) {
+			this.extent = extent;
+			return this;
 		}
-		public void setValue( Object value ) {
-			BoundedRangeIntegerState.this.boundedRangeModel.setValue( (Integer)value );
+		public Details initialValue( int initialValue ) {
+			this.initialValue = initialValue;
+			return this;
 		}
-	};
-
-	public BoundedRangeIntegerState( Group group, java.util.UUID id, int minimum, int value, int maximum ) {
-		super( group, id );
-		this.boundedRangeModel.setMinimum( minimum );
-		this.boundedRangeModel.setMaximum( maximum );
-		this.boundedRangeModel.setValue( value );
-		this.previousValue = this.boundedRangeModel.getValue();
-		this.boundedRangeModel.addChangeListener( this.changeListener );
+		private javax.swing.BoundedRangeModel boundedRangeModel;
+		private javax.swing.SpinnerModel spinnerModel;
+		private synchronized javax.swing.BoundedRangeModel getBoundedRangeModel() {
+			if( this.boundedRangeModel != null ) {
+				//pass
+			} else {
+				this.boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
+				this.boundedRangeModel.setRangeProperties( this.initialValue, this.extent, this.minimum, this.maximum, false );
+			}
+			return this.boundedRangeModel;
+		}
+		private synchronized javax.swing.SpinnerModel getSpinnerModel() {
+			if( this.spinnerModel != null ) {
+				//pass
+			} else {
+				this.spinnerModel = new javax.swing.AbstractSpinnerModel() {
+					public Integer getNextValue() {
+						return this.getValue() + Details.this.boundedRangeModel.getExtent();
+					}
+					public Integer getPreviousValue() {
+						return this.getValue() - Details.this.boundedRangeModel.getExtent();
+					}
+					public Integer getValue() {
+						return Details.this.boundedRangeModel.getValue();
+					}
+					public void setValue( Object value ) {
+						Details.this.boundedRangeModel.setValue( (Integer)value );
+					}
+				};
+			}
+			return this.spinnerModel;
+		}
 	}
-
-	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
-		if( this.isAppropriateToComplete() ) {
-			this.commitStateEdit( this.previousValue, boundedRangeModel.getValue(), boundedRangeModel.getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
-		}
-		fireChanged( previousValue, boundedRangeModel.getValue(), boundedRangeModel.getValueIsAdjusting() );
+	public BoundedRangeIntegerState( Details details ) {
+		super( details.group, details.id, details.getBoundedRangeModel(), details.getSpinnerModel() );
 	}
 	@Override
 	protected void commitStateEdit( Integer prevValue, Integer nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.TransactionManager.handleBoundedRangeIntegerStateChanged( BoundedRangeIntegerState.this, nextValue, isAdjusting, trigger );
 	}
-	
 	@Override
-	protected void localize() {
-	}
-	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
-		return this.boundedRangeModel;
-	}
-	public javax.swing.SpinnerModel getSpinnerModel() {
-		return this.spinnerModel;
-	}
-
-	public int getMinimum() {
-		return this.boundedRangeModel.getMinimum();
-	}
-	public int getMaximum() {
-		return this.boundedRangeModel.getMaximum();
+	protected Integer fromInt( int value ) {
+		return value;
 	}
 	@Override
-	public Integer getValue() {
-		return this.boundedRangeModel.getValue();
-	}
-	public void setValue( Integer value ) {
-		if( value != this.previousValue ) {
-			Integer prevValue = this.previousValue;
-			boolean isAdjusting = false;
-			this.fireChanging( prevValue, value, isAdjusting );
-			this.boundedRangeModel.setValue( value );
-			this.previousValue = value;
-			this.fireChanged( prevValue, value, isAdjusting );
-		}
-	}
-
-	public org.lgna.croquet.components.Slider createSlider() {
-		return new org.lgna.croquet.components.Slider( this );
-	}
-	public org.lgna.croquet.components.Spinner createSpinner() {
-		return new org.lgna.croquet.components.Spinner( this );
+	protected int toInt( Integer value ) {
+		return value;
 	}
 }
