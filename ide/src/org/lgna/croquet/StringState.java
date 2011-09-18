@@ -104,6 +104,7 @@ public abstract class StringState extends State<String> {
 			throw new RuntimeException( ble );
 		}
 	}
+	@Override
 	public void setValue( String value ) {
 		this.pushAtomic();
 		try {

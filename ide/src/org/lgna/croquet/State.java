@@ -127,6 +127,7 @@ public abstract class State<T> extends CompletionModel {
 	
 	
 	public abstract T getValue();
+	public abstract void setValue( T value );
 	@Override
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {

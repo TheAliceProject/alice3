@@ -92,6 +92,7 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 	public N getValue() {
 		return this.fromInt( this.boundedRangeModel.getValue() );
 	}
+	@Override
 	public void setValue( N value ) {
 		if( value != this.previousValue ) {
 			N prevValue = this.previousValue;

@@ -245,6 +245,10 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	public void setSelectedItem( T selectedItem ) {
 		this.setSelectedIndex( this.indexOf( selectedItem ) );
 	}
+	@Override
+	public void setValue(T value) {
+		this.setSelectedItem( value );
+	}
 	public int getSelectedIndex() {
 		return this.index;
 	}

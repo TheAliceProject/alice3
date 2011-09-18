@@ -162,6 +162,7 @@ public abstract class BooleanState extends State< Boolean > {
 	public Boolean getValue() {
 		return this.buttonModel.isSelected();
 	}
+	@Override
 	public void setValue( Boolean value ) {
 		if( value != this.value ) {
 			//this.buttonModel.removeItemListener(itemListener);

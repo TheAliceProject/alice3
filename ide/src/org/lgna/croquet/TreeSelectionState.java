@@ -212,17 +212,20 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 	public void setSelectedNode( T e ) {
 		this.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
 	}
+	@Override
+	public T getValue() {
+		return this.getSelectedNode();
+	}
+	@Override
+	public void setValue(T value) {
+		this.setSelectedNode( value );
+	}
 	
 	@Override
 	protected void commitStateEdit(T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger) {
 		//todo
 	}
 
-	@Override
-	public T getValue() {
-		return this.getSelectedNode();
-	}
-	
 	public java.util.List< T > getChildren( T node ) {
 		edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel = this.getTreeModel();
 		final int N = treeModel.getChildCount( node );

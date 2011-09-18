@@ -41,30 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultCustomItemState<T> extends org.lgna.croquet.CustomItemStateWithInternalBlank< T > {
-	private T value;
-	public DefaultCustomItemState( Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialValue ) {
-		super( group, id, itemCodec );
-		this.value = initialValue;
+public abstract class BoundedNumberStateEdit<M extends org.lgna.croquet.BoundedNumberState<N>,N extends Number> extends StateEdit<M,N> {
+	public BoundedNumberStateEdit( org.lgna.croquet.history.CompletionStep< M > completionStep ) {
+		super( completionStep );
+	}
+	public BoundedNumberStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public T getValue() {
-		return this.value;
-	}
-	@Override
-	protected void handleValueChange( T value ) {
-		this.value = value;
-	}
-	@Override
-	public void setValue( T value ) {
-		this.changeValue( this.value, value, false );
+	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+		rv.append("change: ");
+		rv.append(this.getNextValue());
+		return rv;
 	}
 }
