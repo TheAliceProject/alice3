@@ -117,7 +117,6 @@ public abstract class BooleanState extends State< Boolean > {
 	}
 	private final SwingModel swingModel = new SwingModel();
 	
-	private boolean value;
 	private String trueText;
 	private String falseText;
 	private javax.swing.Icon trueIcon;
@@ -129,10 +128,9 @@ public abstract class BooleanState extends State< Boolean > {
 		}
 	};
 
-	public BooleanState( Group group, java.util.UUID id, boolean initialState ) {
-		super( group, id );
-		this.value = initialState;
-		this.swingModel.buttonModel.setSelected( initialState );
+	public BooleanState( Group group, java.util.UUID id, boolean initialValue ) {
+		super( group, id, initialValue );
+		this.swingModel.buttonModel.setSelected( initialValue );
 		this.swingModel.buttonModel.addItemListener( this.itemListener );
 	}
 
@@ -204,23 +202,33 @@ public abstract class BooleanState extends State< Boolean > {
 	public Boolean getValue() {
 		return this.swingModel.buttonModel.isSelected();
 	}
+	
 	@Override
-	protected void handleValueChange( Boolean nextValue ) {
-		if( nextValue != this.value ) {
-			//this.buttonModel.removeItemListener(itemListener);
-
-			boolean isAdjusting = false;
-			
-			Boolean prevValue = this.value;
-			this.fireChanging( prevValue, nextValue, isAdjusting );
-			this.swingModel.buttonModel.setSelected( value );
-			this.value = nextValue;
-			this.fireChanged( prevValue, nextValue, isAdjusting );
-
-			//this.buttonModel.addItemListener(itemListener);
-			this.updateNameAndIcon();
+	protected void updateSwingModel( Boolean nextValue ) {
+		this.swingModel.buttonModel.removeItemListener( this.itemListener );
+		try {
+			this.swingModel.buttonModel.setSelected( nextValue );
+		} finally {
+			this.swingModel.buttonModel.addItemListener( this.itemListener );
 		}
 	}
+//	@Override
+//	protected void handleValueChange( Boolean nextValue ) {
+//		if( nextValue != this.value ) {
+//			//this.buttonModel.removeItemListener(itemListener);
+//
+//			boolean isAdjusting = false;
+//			
+//			Boolean prevValue = this.value;
+//			this.fireChanging( prevValue, nextValue, isAdjusting );
+//			this.swingModel.buttonModel.setSelected( value );
+//			this.value = nextValue;
+//			this.fireChanged( prevValue, nextValue, isAdjusting );
+//
+//			//this.buttonModel.addItemListener(itemListener);
+//			this.updateNameAndIcon();
+//		}
+//	}
 
 	public String getTrueText() {
 		return this.trueText;

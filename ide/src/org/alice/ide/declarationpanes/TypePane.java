@@ -72,7 +72,7 @@ class TypePropertyItemState extends org.lgna.croquet.CustomItemState< org.lgna.p
 		return this.typeProperty.getValue();
 	}
 	@Override
-	protected void handleValueChange( org.lgna.project.ast.AbstractType value ) {
+	protected void updateSwingModel( org.lgna.project.ast.AbstractType value ) {
 		this.typeProperty.setValue( value );
 	}
 }

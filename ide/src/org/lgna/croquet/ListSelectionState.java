@@ -182,8 +182,8 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	private final SwingModel swingModel = new SwingModel( new ComboBoxModel< T >( this ), new ListSelectionModel< T >( this ) );
 	private int index = -1;
 
-	public ListSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex ) {
-		super( group, id, codec );
+	public ListSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex, T... data ) {
+		super( group, id, null, codec );
 		this.index = selectionIndex;
 	}
 	public SwingModel getSwingModel() {
@@ -193,15 +193,21 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	protected void localize() {
 	}
 
-	/*package-private*/void setSelectionIndexFromSwing( int index ) {
-		this.pushAtomic();
+	/*package-private*/void setSelectionIndexFromSwing( int index, org.lgna.croquet.triggers.Trigger trigger ) {
+		this.pushAtomic( trigger );
 		this.index = index;
 		this.popAtomic();
 	}
-	/*package-private*/void setSelectionFromSwing( T item ) {
-		this.pushAtomic();
+	/*package-private*/void setSelectionIndexFromSwing( int index ) {
+		this.setSelectionIndexFromSwing( index, null );
+	}
+	/*package-private*/void setSelectionFromSwing( T item, org.lgna.croquet.triggers.Trigger trigger ) {
+		this.pushAtomic( trigger );
 		this.index = this.indexOf( item );
 		this.popAtomic();
+	}
+	/*package-private*/void setSelectionFromSwing( T item ) {
+		this.setSelectionFromSwing( item, null );
 	}
 
 	private ListSelectionStatePrepModel< T > prepModel;
@@ -218,7 +224,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	public javax.swing.Action createActionForItem( final T item ) {
 		javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				ListSelectionState.this.setSelectionFromSwing( item );
+				ListSelectionState.this.setSelectionFromSwing( item, new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
 				ListSelectionState.this.swingModel.listSelectionModel.fireListSelectionChanged( ListSelectionState.this.index, ListSelectionState.this.index, ListSelectionState.this.swingModel.listSelectionModel.getValueIsAdjusting() );
 			}
 		};
@@ -256,7 +262,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		this.setSelectedIndex( this.indexOf( selectedItem ) );
 	}
 	@Override
-	protected void handleValueChange( T nextValue ) {
+	protected void updateSwingModel(T nextValue) {
 		this.setSelectedItem( nextValue );
 	}
 	public int getSelectedIndex() {
@@ -291,6 +297,46 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	protected abstract void internalRemoveItem( T item );
 	protected abstract void internalSetItems( java.util.Collection< T > items );
 
+	private int pushCount = 0;
+	private T prevAtomicSelectedValue;
+	private org.lgna.croquet.triggers.Trigger trigger;
+	public boolean isInMidstOfAtomic() {
+		return this.pushCount > 0;
+	}
+	public void pushAtomic( org.lgna.croquet.triggers.Trigger trigger ) {
+		if( this.isInMidstOfAtomic() ) {
+			//pass
+		} else {
+			this.prevAtomicSelectedValue = this.getValue();
+			this.trigger = trigger;
+		}
+		this.pushCount++;
+	}
+	public void pushAtomic() {
+		this.pushAtomic( null );
+	}
+	public void popAtomic() {
+		this.pushCount--;
+		if( this.pushCount == 0 ) {
+			T nextSelectedValue = this.getValue();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
+				//pass
+			} else {
+				boolean isAdjusting = false;
+				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
+				if( this.isAppropriateToComplete() ) {
+					this.commitStateEdit( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting, this.trigger );
+				}
+				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
+				this.trigger = null;
+			}
+		}
+	}
+	@Override
+	protected boolean isAppropriateToComplete() {
+		return super.isAppropriateToComplete() && this.isInMidstOfAtomic() == false;
+	}
+	
 	public final void addItem( T item ) {
 		this.pushAtomic();
 		try {

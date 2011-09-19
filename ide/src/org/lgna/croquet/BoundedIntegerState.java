@@ -107,7 +107,7 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 		}
 	}
 	public BoundedIntegerState( Details details ) {
-		super( details.group, details.id, details.getBoundedRangeModel(), details.getSpinnerModel() );
+		super( details.group, details.id, details.getBoundedRangeModel().getValue(), details.getBoundedRangeModel(), details.getSpinnerModel() );
 	}
 	@Override
 	protected void commitStateEdit( Integer prevValue, Integer nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {

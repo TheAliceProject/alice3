@@ -51,8 +51,10 @@ public abstract class State<T> extends CompletionModel {
 		public void changed( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 	};
 	private final java.util.List< ValueObserver<T> > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public State( Group group, java.util.UUID id ) {
+	private T prevValue;
+	public State( Group group, java.util.UUID id, T initialValue ) {
 		super(group, id);
+		this.prevValue = initialValue;
 	}
 	public void addValueObserver( ValueObserver<T> valueObserver ) {
 		this.valueObservers.add( valueObserver );
@@ -79,66 +81,38 @@ public abstract class State<T> extends CompletionModel {
 	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
 		throw new UnsupportedOperationException();
 	}
-
-	
-	private int pushCount = 0;
-	private T prevAtomicSelectedValue;
-	private org.lgna.croquet.triggers.Trigger trigger;
-	public boolean isInMidstOfAtomic() {
-		return this.pushCount > 0;
-	}
-	public void pushAtomic( org.lgna.croquet.triggers.Trigger trigger ) {
-		if( this.isInMidstOfAtomic() ) {
-			//pass
-		} else {
-			this.prevAtomicSelectedValue = this.getValue();
-			this.trigger = trigger;
-		}
-		this.pushCount++;
-	}
-	public void pushAtomic() {
-		this.pushAtomic( null );
-	}
-	public void popAtomic() {
-		this.pushCount--;
-		if( this.pushCount == 0 ) {
-			T nextSelectedValue = this.getValue();
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
-				//pass
-			} else {
-				boolean isAdjusting = false;
-				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
-				if( this.isAppropriateToComplete() ) {
-					this.commitStateEdit( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting, this.trigger );
-				}
-				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
-				this.trigger = null;
-			}
-		}
-	}
-	@Override
-	protected boolean isAppropriateToComplete() {
-		return super.isAppropriateToComplete() && this.isInMidstOfAtomic() == false;
-	}
 	
 	protected abstract void commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger );
-	protected abstract void handleValueChange( T nextValue );
-	protected final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
-		this.fireChanging( prevValue, nextValue, false );
-		this.handleValueChange( nextValue );
+	protected abstract void updateSwingModel( T nextValue );
+	private void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger, boolean isFromSwing ) {
+		this.fireChanging( this.prevValue, nextValue, isAdjusting );
+		if( isFromSwing ) {
+			//pass
+		} else {
+			this.updateSwingModel( nextValue );
+		}
+//		this.handleValueChange( nextValue );
+		if( this.isAppropriateToComplete() ) {
+			this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
+		}
 //		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
 //			component.revalidateAndRepaint();
 //		}
-		this.fireChanged( prevValue, nextValue, false );
+//		StringState.this.previousValue = nextValue;
+		this.fireChanged( this.prevValue, nextValue, isAdjusting );
+		this.prevValue = nextValue;
+	}
+	protected final void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+		this.changeValue( nextValue, isAdjusting, trigger, false );
+	}
+	protected final void changeValueFromSwing( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+		this.changeValue( nextValue, isAdjusting, trigger, true );
 	}
 	
 	public abstract T getValue();
 	public final void setValue( T value ) {
-		T prevValue = this.getValue();
-		this.changeValue( prevValue, value, false );
+		this.changeValue( value, false, null );
 	}
-	
-	
 	@Override
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {

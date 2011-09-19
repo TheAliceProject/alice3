@@ -45,9 +45,10 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StringState extends State<String> {
+public abstract class StringState extends State< String > {
 	public class SwingModel {
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
+
 		private SwingModel() {
 		}
 		public javax.swing.text.Document getDocument() {
@@ -55,25 +56,33 @@ public abstract class StringState extends State<String> {
 		}
 	}
 
+	private final SwingModel swingModel = new SwingModel();
 	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
-		public void changedUpdate(javax.swing.event.DocumentEvent e) {
-			StringState.this.handleUpdate(e);
+		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
+			try {
+				javax.swing.text.Document document = e.getDocument();
+				String nextValue = document.getText( 0, document.getLength() );
+				boolean isAdjusting = false;
+				StringState.this.changeValueFromSwing( nextValue, isAdjusting, new org.lgna.croquet.triggers.DocumentEventTrigger( e ) );
+			} catch( javax.swing.text.BadLocationException ble ) {
+				throw new RuntimeException( ble );
+			}
 		}
-		public void insertUpdate(javax.swing.event.DocumentEvent e) {
-			StringState.this.handleUpdate(e);
+		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+			this.handleUpdate( e );
 		}
-		public void removeUpdate(javax.swing.event.DocumentEvent e) {
-			StringState.this.handleUpdate(e);
+		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+			this.handleUpdate( e );
+		}
+		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+			this.handleUpdate( e );
 		}
 	};
 
-	private final SwingModel swingModel = new SwingModel();
-	private String previousValue;
-	public StringState(Group group, java.util.UUID id, String initialState) {
-		super(group, id);
-		this.previousValue = initialState;
+	public StringState( Group group, java.util.UUID id, String initialValue ) {
+		super( group, id, initialValue );
 		try {
-			this.swingModel.document.insertString(0, initialState, null);
+			this.swingModel.document.insertString( 0, initialValue, null );
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
@@ -83,21 +92,17 @@ public abstract class StringState extends State<String> {
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}
-	
-	private void handleUpdate( javax.swing.event.DocumentEvent e ) {
+
+	@Override
+	protected void updateSwingModel( String nextValue ) {
+		this.swingModel.document.removeDocumentListener( this.documentListener );
 		try {
-			javax.swing.text.Document document = e.getDocument();
-			String nextValue = document.getText( 0, document.getLength() );
-			String prevValue = this.previousValue;
-			boolean isAdjusting = false;
-			this.fireChanging( prevValue, nextValue, isAdjusting );
-			if( this.isAppropriateToComplete() ) {
-				this.commitStateEdit( prevValue, nextValue, isAdjusting, new org.lgna.croquet.triggers.DocumentEventTrigger( e ) );
-			}
-			StringState.this.previousValue = nextValue;
-			this.fireChanged( prevValue, nextValue, isAdjusting );
+			this.swingModel.document.remove( 0, this.swingModel.document.getLength() );
+			this.swingModel.document.insertString( 0, nextValue, null );
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
+		} finally {
+			this.swingModel.document.addDocumentListener( this.documentListener );
 		}
 	}
 
@@ -117,19 +122,7 @@ public abstract class StringState extends State<String> {
 			throw new RuntimeException( ble );
 		}
 	}
-	@Override
-	protected void handleValueChange( String nextValue ) {
-		this.pushAtomic();
-		try {
-			this.swingModel.document.remove( 0, this.swingModel.document.getLength() );
-			this.swingModel.document.insertString( 0, nextValue, null );
-		} catch( javax.swing.text.BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		} finally {
-			this.popAtomic();
-		}
-	}
-	
+
 	@Override
 	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		if( edit instanceof org.lgna.croquet.edits.StringStateEdit ) {

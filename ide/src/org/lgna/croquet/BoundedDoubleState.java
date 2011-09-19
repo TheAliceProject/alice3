@@ -112,7 +112,7 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 		}
 	}
 	public BoundedDoubleState( Details details ) {
-		super( details.group, details.id, details.getBoundedRangeModel(), details.getSpinnerModel() );
+		super( details.group, details.id, details.getBoundedRangeModel().getValue()/100.0, details.getBoundedRangeModel(), details.getSpinnerModel() );
 	}
 	@Override
 	protected void commitStateEdit( Double prevValue, Double nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {

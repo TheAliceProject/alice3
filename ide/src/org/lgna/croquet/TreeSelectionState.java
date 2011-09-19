@@ -197,20 +197,22 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		}
 	}
 	private final SwingModel swingModel = new SwingModel();
-
 	private final SingleTreeSelectionModel treeSelectionModel;
+	private final javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
+		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
+			T nextValue = getSelectedNode();
+			boolean isAdjusting = false;
+			TreeSelectionState.this.changeValueFromSwing( nextValue, isAdjusting, new org.lgna.croquet.triggers.TreeSelectionEventTrigger( e ) );
+			T prevValue = getValue();
+			System.err.println( "changing from " + prevValue + " to " + nextValue );
+			fireChanged( prevValue, nextValue, false );
+		}
+	};
 
 	public TreeSelectionState( Group group, java.util.UUID id, ItemCodec< T > itemCodec ) {
-		super( group, id, itemCodec );
+		super( group, id, null, itemCodec );
 		this.treeSelectionModel = new SingleTreeSelectionModel();
-		this.treeSelectionModel.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
-			public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
-				T prevValue = getValue();
-				T nextValue = getSelectedNode();
-				System.err.println( "changing from " + prevValue + " to " + nextValue );
-				fireChanged( prevValue, nextValue, false );
-			}
-		} );
+		this.treeSelectionModel.addTreeSelectionListener( this.treeSelectionListener );
 	}
 
 	public SwingModel getSwingModel() {
@@ -240,7 +242,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 	}
 
 	@Override
-	protected void handleValueChange( T nextValue ) {
+	protected void updateSwingModel(T nextValue) {
 		this.setSelectedNode( nextValue );
 	}
 
