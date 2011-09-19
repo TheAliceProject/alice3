@@ -40,9 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.alice.stageide.croquet.components.gallerybrowser;
 
-import org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.TreeSelectionState;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 
 

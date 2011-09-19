@@ -43,7 +43,6 @@
 package org.alice.stageide.croquet.components.gallerybrowser;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.SelectClassActionOperation;
 import org.lgna.croquet.TreeSelectionState;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.PopupButton;

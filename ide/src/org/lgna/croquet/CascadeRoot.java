@@ -47,18 +47,93 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> extends CascadeBlankOwner< T[], T > {
-	private final CascadePopupPrepModel< T > popupPrepModel;
+	public static final class CascadePopupPrepModelResolver<T> implements org.lgna.croquet.resolvers.CodableResolver< InternalCascadePopupPrepModel<T> > {
+		private final InternalCascadePopupPrepModel<T> model;
+		public CascadePopupPrepModelResolver( InternalCascadePopupPrepModel<T> model ) {
+			this.model = model;
+		}
+		public CascadePopupPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			org.lgna.croquet.resolvers.CodableResolver< CascadeRoot<T,?>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			CascadeRoot<T,?> root = resolver.getResolved();
+			this.model = root.getPopupPrepModel();
+		}
+		public InternalCascadePopupPrepModel<T> getResolved() {
+			return this.model;
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			org.lgna.croquet.resolvers.CodableResolver< InputDialogOperation<T>> resolver = this.model.root.getCodableResolver();
+			binaryEncoder.encode( resolver );
+		}
+	}
+
+	public static final class InternalCascadePopupPrepModel<T> extends PopupPrepModel {
+		private final CascadeRoot< T,? > root;
+		/*package-private*/ InternalCascadePopupPrepModel( CascadeRoot< T,? > root ) {
+			super( java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
+			this.root = root;
+		}
+		@Override
+		protected CascadePopupPrepModelResolver<T> createCodableResolver() {
+			return new CascadePopupPrepModelResolver<T>( this );
+		}
+		@Override
+		public Iterable< ? extends Model > getChildren() {
+			return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.root );
+		}
+
+		@Override
+		protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
+			return this.root.getClassUsedForLocalization();
+		}
+		
+		public CompletionModel getCompletionModel() {
+			return this.root.getCompletionModel();
+		}
+		protected void handleFinally() {
+			this.root.epilogue();
+		}
+		
+		@Override
+		protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.triggers.Trigger trigger ) {
+			final org.lgna.croquet.cascade.RtRoot< T,? > rtRoot = new org.lgna.croquet.cascade.RtRoot( this.root );
+			org.lgna.croquet.history.Step< ? > rv;
+			if( rtRoot.isGoodToGo() ) {
+				rv = rtRoot.complete( new org.lgna.croquet.triggers.AutomaticCompletionTrigger( trigger ) );
+				this.handleFinally();
+			} else {
+				final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( this, trigger );			
+				final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this );
+				popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
+					public void componentShown( java.awt.event.ComponentEvent e ) {
+					}
+					public void componentMoved( java.awt.event.ComponentEvent e ) {
+					}
+					public void componentResized( java.awt.event.ComponentEvent e ) {
+						org.lgna.croquet.history.TransactionManager.firePopupMenuResized( prepStep );
+					}
+					public void componentHidden( java.awt.event.ComponentEvent e ) {
+					}
+				} );
+				popupMenu.addPopupMenuListener( rtRoot.createPopupMenuListener( popupMenu ) );
+				this.root.prologue();
+				trigger.showPopupMenu( popupMenu );
+				rv = prepStep;
+			}
+			return rv;
+		}
+	}
+	private final InternalCascadePopupPrepModel< T > popupPrepModel;
 
 	public CascadeRoot( java.util.UUID id, CascadeBlank< T >[] blanks ) {
 		super( id );
-		this.popupPrepModel = new CascadePopupPrepModel< T >( this );
+		this.popupPrepModel = new InternalCascadePopupPrepModel< T >( this );
 		assert blanks != null;
 		for( int i = 0; i < blanks.length; i++ ) {
 			assert blanks[ i ] != null : this;
 			this.addBlank( blanks[ i ] );
 		}
 	}
-	public CascadePopupPrepModel< T > getPopupPrepModel() {
+	public InternalCascadePopupPrepModel< T > getPopupPrepModel() {
 		return this.popupPrepModel;
 	}
 	@Override

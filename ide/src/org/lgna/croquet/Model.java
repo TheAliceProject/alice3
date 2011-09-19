@@ -42,12 +42,10 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.resolvers.RuntimeResolver;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model extends Element implements RuntimeResolver< Model > {
+public abstract class Model extends Element implements org.lgna.croquet.resolvers.RuntimeResolver< Model > {
 	public Model( java.util.UUID id ) {
 		super( id );
 	}
@@ -181,13 +179,13 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
 		return getFirstComponent( false );
 	}
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
 		rv.append( "text: " );
 		rv.append( this );
 		return rv;
 	}
 
-	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
+	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
 		this.updateTutorialStepText( sb, step, edit, userInformation );
 		return sb.toString();

@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class BooleanState extends State< Boolean > {
-	public static class BooleanStateMenuPrepModelResolver extends IndirectResolver< InternalMenuItemPrepModel, BooleanState > {
+	public static final class BooleanStateMenuPrepModelResolver extends IndirectResolver< InternalMenuItemPrepModel, BooleanState > {
 		public BooleanStateMenuPrepModelResolver( InternalMenuItemPrepModel model ) {
 			super( model.getBooleanState() );
 		}
@@ -58,7 +58,7 @@ public abstract class BooleanState extends State< Boolean > {
 			return indirect.getMenuItemPrepModel();
 		}
 	}
-	private final class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
+	private static final class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
 		private final BooleanState booleanState;
 		/*package-private*/ InternalMenuItemPrepModel( BooleanState booleanState ) {
 			super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );

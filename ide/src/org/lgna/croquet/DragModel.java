@@ -54,12 +54,6 @@ public abstract class DragModel extends PrepModel {
 	}
 	
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		rv.append( "Drag..." );
-		return rv;
-	}
-	
-	@Override
 	public Iterable< ? extends Model > getChildren() {
 		return java.util.Collections.emptyList();
 	}
@@ -81,6 +75,11 @@ public abstract class DragModel extends PrepModel {
 	
 	@Override
 	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
-		throw new RuntimeException();
+		throw new UnsupportedOperationException();
+	}
+	@Override
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		rv.append( "Drag..." );
+		return rv;
 	}
 }

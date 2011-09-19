@@ -186,6 +186,42 @@ class TreeNodeCascade<T> extends Cascade< T > {
  * @author Dennis Cosgrove
  */
 public abstract class TreeSelectionState<T> extends ItemState< T > {
+	private static final class InternalTreeNodeSelectionOperation<T> extends ActionOperation {
+		private static edu.cmu.cs.dennisc.map.MapToMap< TreeSelectionState, Object, InternalTreeNodeSelectionOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+		/*package-private*/ static <T> InternalTreeNodeSelectionOperation<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode ) {
+			InternalTreeNodeSelectionOperation<T> rv = mapToMap.get(treeSelectionState, treeNode);
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new InternalTreeNodeSelectionOperation<T>(treeSelectionState, treeNode);
+				mapToMap.put( treeSelectionState, treeNode, rv );
+			}
+			return rv;
+		}
+
+		private final TreeSelectionState<T> treeSelectionState;
+		private final T treeNode;
+		
+		private InternalTreeNodeSelectionOperation( TreeSelectionState<T> treeSelectionState, T treeNode ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ca407baf-13b1-4530-bf35-67764efbf5f0" ) );
+			this.treeSelectionState = treeSelectionState;
+			this.treeNode = treeNode;
+		}
+
+		@Override
+		protected void localize() {
+			super.localize();
+			this.setName( this.treeSelectionState.getTextForNode( this.treeNode ) );
+			this.setSmallIcon( this.treeSelectionState.getIconForNode( this.treeNode ) );
+		}
+		@Override
+		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+			//todo: create edit
+			this.treeSelectionState.setSelectedNode( this.treeNode );
+			step.finish();
+		}
+	}
+
 	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
 	}
 	public class SwingModel {
@@ -282,7 +318,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		return TreeNodeCascade.getInstance( this, node );
 	}
 	public ActionOperation getSelectionOperationFor( T node ) {
-		return TreeNodeSelectionOperation.getInstance( this, node );
+		return InternalTreeNodeSelectionOperation.getInstance( this, node );
 	}
 	public java.util.List< T > getChildrenOfSelectedValue() {
 		return this.getChildren( this.getValue() );
