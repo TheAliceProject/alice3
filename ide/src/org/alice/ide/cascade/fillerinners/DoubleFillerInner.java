@@ -69,7 +69,14 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
 			rv.add( org.alice.ide.croquet.models.cascade.number.MathCascadeMenu.getInstance() );
 		}
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+		org.lgna.croquet.CascadeItem item = apiConfigurationManager.getCustomFillInFor( details );
+		if( item != null ) {
+			rv.add( item );
+		} else {
+			rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
+		}
 		return rv;
 	}
 }

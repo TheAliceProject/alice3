@@ -123,5 +123,11 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		}
 		return null;
 	}
-	
+	public org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails ) {
+		if( valueDetails instanceof org.lgna.story.annotation.PortionDetails ) {
+			return org.alice.stageide.croquet.models.custom.CustomPortionInputDialogOperation.getInstance().getFillIn();
+		} else {
+			return null;
+		}
+	}
 }
