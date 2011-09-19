@@ -40,26 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
 
+package org.alice.stageide.raytrace;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class ExportToPovRayOperation extends org.lgna.croquet.ActionOperation {
+	//todo:
+	private static final org.lgna.croquet.Group EXPORT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "c3cf5b76-8b67-467f-a0f9-34cfa9d36240" ), "EXPORT_GROUP" );
+	
+	
+	
 	private static class SingletonHolder {
-		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
+		private static ExportToPovRayOperation instance = new ExportToPovRayOperation();
 	}
-	public static InternalTestingMenuModel getInstance() {
+	public static ExportToPovRayOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel()
-		);
+	private ExportToPovRayOperation() {
+		super( EXPORT_GROUP, java.util.UUID.fromString( "7f14ddfc-d090-4ef5-b47d-4d5036f6d784" ) );
+	}
+	@Override
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
+		org.lgna.project.ast.UserField sceneField = sceneEditor.getActiveSceneField();
+		org.lgna.project.ast.AbstractField cameraField = sceneField.getValueType().getDeclaredField( "camera" );
+		org.lgna.story.Camera camera = (org.lgna.story.Camera)sceneEditor.getInstanceInJavaVMForField( cameraField );
+		org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.ImplementationAccessor.getImplementation( camera );
+		edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgCamera = cameraImp.getSgCamera();
+		edu.cmu.cs.dennisc.raytrace.POVRayUtilities.export( new java.io.PrintWriter( System.out ), sgCamera );
+		step.finish();
 	}
 }

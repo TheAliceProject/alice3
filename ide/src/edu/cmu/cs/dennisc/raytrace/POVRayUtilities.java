@@ -210,8 +210,8 @@ public class POVRayUtilities {
 		pw.println( "}" );
 	}
 	
-	public static void export( java.io.PrintWriter pw, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
-		AbstractCamera sgCamera = lookingGlass.getCameraAt( 0 );
+	public static void export( java.io.PrintWriter pw, AbstractCamera sgCamera ) {
+		//AbstractCamera sgCamera = lookingGlass.getCameraAt( 0 );
 		Composite sgRoot = sgCamera.getRoot();
 		if( sgRoot instanceof Scene ) {
 			Scene sgScene = (Scene)sgRoot;
@@ -228,7 +228,16 @@ public class POVRayUtilities {
 			pw.println( toString( m ) );
 			if( sgCamera instanceof SymmetricPerspectiveCamera ) {
 				SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera = (SymmetricPerspectiveCamera)sgCamera;
-				pw.println( "angle " + lookingGlass.getActualHorizontalViewingAngle( sgSymmetricPerspectiveCamera ).getAsDegrees() );
+				edu.cmu.cs.dennisc.math.Angle angle = sgSymmetricPerspectiveCamera.horizontalViewingAngle.getValue();
+				double degrees;
+				if( angle.isNaN() ) {
+					//todo
+					degrees = 45;
+				} else {
+					degrees = angle.getAsDegrees();
+				}
+				//pw.println( "angle " + lookingGlass.getActualHorizontalViewingAngle( sgSymmetricPerspectiveCamera ).getAsDegrees() );
+				pw.println( "angle " + degrees );
 			}
 			pw.println( "}" );
 			
@@ -242,24 +251,24 @@ public class POVRayUtilities {
 			pw.flush();
 		}
 	}
-	public static void export( java.io.File file, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
-		try {
-			file.getParentFile().mkdirs();
-			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-			java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( fos );
-			export( new java.io.PrintWriter( bos ), lookingGlass );
-			bos.flush();
-			fos.flush();
-			fos.close();
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
-	public static void export( String path, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
-		export( new java.io.File( path ), lookingGlass );
-	}
-	
-	public static int exec( String path ) {
-		return edu.cmu.cs.dennisc.java.lang.RuntimeUtilities.exec( new java.io.File( "s:/povray" ), "pvengine", "/RENDER", "test.pov" );
-	}
+//	public static void export( java.io.File file, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
+//		try {
+//			file.getParentFile().mkdirs();
+//			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
+//			java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( fos );
+//			export( new java.io.PrintWriter( bos ), lookingGlass );
+//			bos.flush();
+//			fos.flush();
+//			fos.close();
+//		} catch( java.io.IOException ioe ) {
+//			throw new RuntimeException( ioe );
+//		}
+//	}
+//	public static void export( String path, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
+//		export( new java.io.File( path ), lookingGlass );
+//	}
+//	
+//	public static int exec( String path ) {
+//		return edu.cmu.cs.dennisc.java.lang.RuntimeUtilities.exec( new java.io.File( "s:/povray" ), "pvengine", "/RENDER", "test.pov" );
+//	}
 }
