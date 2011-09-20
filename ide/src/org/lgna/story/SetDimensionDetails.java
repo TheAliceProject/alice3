@@ -47,6 +47,7 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class SetDimensionDetails {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetDimensionDetails.class )
 	public static class Value extends AbstractAnimationDetails {
 		protected org.lgna.story.SetDimensionPolicy policy = org.lgna.story.SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
 		/*package-private*/ Value() {

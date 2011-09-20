@@ -47,6 +47,7 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class ResizeDimensionDetails {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=ResizeDimensionDetails.class )
 	public static class Value extends AbstractAnimationDetails {
 		private Boolean isVolumePreserved = true;
 		/*package-private*/ Value() {

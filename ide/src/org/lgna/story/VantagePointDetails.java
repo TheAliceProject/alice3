@@ -47,6 +47,7 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class VantagePointDetails {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=VantagePointDetails.class )
 	public static class Value extends AbstractAnimationDetails {
 		/*package-private*/ Value() {
 		}
