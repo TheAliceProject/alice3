@@ -47,14 +47,4 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public abstract class Shape extends Model {
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	public Color getColor() {
-		return Color.createInstance( this.getImplementation().color.getValue() );
-	}
-	public void setColor( Color color ) {
-		this.setColor( color, new SetPropertyDetails.Value() );
-	}
-	public void setColor( org.lgna.story.Color color, SetPropertyDetails.Value details ) {
-		this.getImplementation().color.animateValue( Color.getInternal( color ), details.getDuration(), details.getStyle() );
-	}
 }

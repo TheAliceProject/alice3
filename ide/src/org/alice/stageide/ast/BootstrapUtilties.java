@@ -105,7 +105,7 @@ public class BootstrapUtilties {
 		return org.alice.ide.ast.AstUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
 	
-	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.Appearance appearance ) {
+	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.SurfaceAppearance appearance ) {
 		org.lgna.project.ast.UserField sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
 		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
 		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
@@ -152,8 +152,8 @@ public class BootstrapUtilties {
 		);
 
 		
-		org.lgna.project.ast.JavaMethod setAppearanceMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setAppearance", org.lgna.story.Ground.Appearance.class );
-		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setAppearanceMethod, createFieldAccess( appearance ) ) );
+		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setPaint", org.lgna.story.Paint.class );
+		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
 
 		org.lgna.project.ast.UserMethod performCustomSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, "performCustomSetup" );
 

@@ -181,7 +181,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 				this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 			}
 		} else {
-			org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.Appearance.valueOf( uri.toString() ) );
+			org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.SurfaceAppearance.valueOf( uri.toString() ) );
 			org.lgna.project.Project project = new org.lgna.project.Project( programType );
 			this.setProject( project );
 		}
