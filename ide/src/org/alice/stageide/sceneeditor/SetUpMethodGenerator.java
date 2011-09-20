@@ -91,15 +91,24 @@ public class SetUpMethodGenerator {
 			return new org.lgna.project.ast.NullLiteral();
 		}
 	}
+	
+	private static org.lgna.project.ast.FieldAccess createFieldAccess( java.lang.reflect.Field fld ) {
+		int modifiers = fld.getModifiers();
+		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers ) ) {
+			org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( fld.getDeclaringClass() );
+			org.lgna.project.ast.JavaField field = org.lgna.project.ast.JavaField.getInstance( fld );
+			return new org.lgna.project.ast.FieldAccess( typeExpression, field );
+		} else {
+			return null;
+		}
+	}
 
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Color color ) {
 		org.lgna.project.ast.Expression rv = null;
 		Class< ? > cls = org.lgna.story.Color.class;
 		for( java.lang.reflect.Field fld : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( cls, cls ) ) {
 			if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null ).equals( color ) ) {
-				org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( cls );
-				org.lgna.project.ast.JavaField field = org.lgna.project.ast.JavaField.getInstance( fld );
-				rv = new org.lgna.project.ast.FieldAccess( typeExpression, field );
+				rv = createFieldAccess( fld );
 				break;
 			}
 		}
@@ -111,11 +120,25 @@ public class SetUpMethodGenerator {
 		}
 		return rv;
 	}
+	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.ImagePaint imagePaint ) {
+		if( imagePaint instanceof Enum ) {
+			Enum e = (Enum)imagePaint;
+			java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getFld( (Enum)imagePaint );
+			return createFieldAccess( fld );
+		} else {
+			//todo?
+			//return new org.lgna.project.ast.NullLiteral();
+			return createExpression( org.lgna.story.Color.RED );
+		}
+	}
 	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Paint paint ) {
 		if( paint != null ) {
 			if( paint instanceof org.lgna.story.Color ) {
 				org.lgna.story.Color color = (org.lgna.story.Color)paint;
 				return createExpression( color );
+			} else if( paint instanceof org.lgna.story.ImagePaint ) {
+				org.lgna.story.ImagePaint imagePaint = (org.lgna.story.ImagePaint)paint;
+				return createExpression( imagePaint );
 			} else if( paint instanceof org.lgna.story.ImageSource ) {
 				org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
 				return createExpression( imageSource );

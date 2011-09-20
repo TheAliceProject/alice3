@@ -47,6 +47,7 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ModelImp extends TransformableImp {
+	@Deprecated
 	public final ColorProperty color = new ColorProperty( ModelImp.this ) {
 		@Override
 		public edu.cmu.cs.dennisc.color.Color4f getValue() {
@@ -56,6 +57,19 @@ public abstract class ModelImp extends TransformableImp {
 		protected void handleSetValue(edu.cmu.cs.dennisc.color.Color4f value) {
 			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
 				sgAppearance.diffuseColor.setValue( value );
+			}
+		}
+	};
+
+	public final PaintProperty paint = new PaintProperty( ModelImp.this ) {
+		@Override
+		public org.lgna.story.Paint getValue() {
+			return org.lgna.story.Color.WHITE;
+		}
+		@Override
+		protected void handleSetValue( org.lgna.story.Paint value) {
+			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
+				//sgAppearance.diffuseColor.setValue( value );
 			}
 		}
 	};

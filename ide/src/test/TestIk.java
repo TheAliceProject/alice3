@@ -69,9 +69,9 @@ class IkScene extends Scene {
 		this.camera.setVehicle( this );
 		this.ogre.setVehicle( this );
 		
-		this.redCone.setColor( Color.RED );
-		this.greenCone.setColor( Color.GREEN );
-		this.blueCone.setColor( Color.BLUE );
+		this.redCone.setPaint( Color.RED );
+		this.greenCone.setPaint( Color.GREEN );
+		this.blueCone.setPaint( Color.BLUE );
 		this.redCone.setBaseRadius( 0.1 );
 		this.greenCone.setBaseRadius( 0.1 );
 		this.blueCone.setBaseRadius( 0.1 );
@@ -84,7 +84,7 @@ class IkScene extends Scene {
 		this.blueCone.move( MoveDirection.LEFT, 1.5 );
 		
 		this.ogre.move( MoveDirection.LEFT, 1.5 );
-		this.snow.setAppearance( Ground.Appearance.SNOW );
+		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
 	private void performCustomSetup() {

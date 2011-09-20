@@ -60,7 +60,7 @@ class MyScene extends Scene {
 		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
-		this.snow.setAppearance( Ground.Appearance.SNOW );
+		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 	}
 	private void performCustomSetup() {
 	}

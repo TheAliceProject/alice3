@@ -41,73 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
-
-import org.lgna.project.annotations.*;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Ground extends Entity implements MutableRider, Visual {
-	public static enum SurfaceAppearance implements ImagePaint {
-		GRASS("grass"), 
-		DIRT("dirt"), 
-		SAND("sand"), 
-		SNOW("snow"), 
-		WATER("water"), 
-		MOON("moon");
-		private String resourceName;
-
-		SurfaceAppearance( String resourceName ) {
-			this.resourceName = resourceName;
-		}
-		public java.lang.reflect.Field getReflectField() {
-			try {
-				return this.getClass().getDeclaredField( this.name() );
-			} catch( NoSuchFieldException nsfe ) {
-				throw new RuntimeException( nsfe );
-			}
-		}
-		public java.net.URL getResource() {
-			return Ground.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
-		}
+public abstract class PaintProperty extends Property< org.lgna.story.Paint > {
+	private org.lgna.story.Paint value;
+	public PaintProperty( EntityImp owner ) {
+		super( owner, org.lgna.story.Paint.class );
 	}
-
-	private final org.lgna.story.implementation.GroundImp implementation = new org.lgna.story.implementation.GroundImp( this );
-
 	@Override
-	/*package-private*/org.lgna.story.implementation.GroundImp getImplementation() {
-		return this.implementation;
+	public org.lgna.story.Paint getValue() {
+		return this.value;
 	}
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+	@Override
+	protected void handleSetValue( org.lgna.story.Paint value ) {
+		this.value = value;
 	}
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	public Paint getPaint() {
-		return this.getImplementation().paint.getValue();
-	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setPaint( Paint paint ) {
-		this.setPaint( paint, new SetPropertyDetails.Value() );
-	}
-	@MethodTemplate()
-	public void setPaint( Paint paint, SetPropertyDetails.Value details ) {
-		this.getImplementation().paint.animateValue( paint, details.getDuration(), details.getStyle() );
-	}
-
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
-	public Double getOpacity() {
-		return (double)this.getImplementation().opacity.getValue();
-	}
-	@MethodTemplate( isFollowedByLongerMethod = true )
-	public void setOpacity( Number opacity ) {
-		this.setOpacity( opacity, new SetPropertyDetails.Value() );
-	}
-	@MethodTemplate()
-	public void setOpacity( Number opacity, SetPropertyDetails.Value details ) {
-		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
+	@Override
+	protected org.lgna.story.Paint interpolate( org.lgna.story.Paint a, org.lgna.story.Paint b, double portion ) {
+		return b;
 	}
 }

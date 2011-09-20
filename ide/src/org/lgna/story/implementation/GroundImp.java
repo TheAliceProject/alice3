@@ -48,7 +48,7 @@ package org.lgna.story.implementation;
  */
 public class GroundImp extends SimpleModelImp {
 	private final org.lgna.story.Ground abstraction;
-	private org.lgna.story.Ground.Appearance appearance = null;
+	private org.lgna.story.Ground.SurfaceAppearance appearance = null;
 	public GroundImp( org.lgna.story.Ground abstraction ) {
 		this.abstraction = abstraction;
 		
@@ -80,10 +80,10 @@ public class GroundImp extends SimpleModelImp {
 	public org.lgna.story.Ground getAbstraction() {
 		return this.abstraction;
 	}
-	public org.lgna.story.Ground.Appearance getAppearance() {
+	public org.lgna.story.Ground.SurfaceAppearance getAppearance() {
 		return this.appearance;
 	}
-	public void setAppearance( org.lgna.story.Ground.Appearance appearance ) {
+	public void setAppearance( org.lgna.story.Ground.SurfaceAppearance appearance ) {
 		if( this.appearance != null ) {
 			
 		}

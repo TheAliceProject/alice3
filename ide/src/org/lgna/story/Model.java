@@ -50,6 +50,21 @@ import org.lgna.project.annotations.*;
 public abstract class Model extends MovableTurnable implements Resizable, Visual {
 	@Override
 	/*package-private*/abstract org.lgna.story.implementation.ModelImp getImplementation();
+
+	@MethodTemplate()
+	@GetterTemplate(isPersistent = true)
+	public Paint getPaint() {
+		return this.getImplementation().paint.getValue();
+	}
+	@MethodTemplate(isFollowedByLongerMethod = true)
+	public void setPaint( Paint paint ) {
+		this.setPaint( paint, new SetPropertyDetails.Value() );
+	}
+	@MethodTemplate()
+	public void setPaint( Paint paint, SetPropertyDetails.Value details ) {
+		this.getImplementation().paint.animateValue( paint, details.getDuration(), details.getStyle() );
+	}
+
 	@MethodTemplate()
 	@GetterTemplate(isPersistent = true)
 	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
