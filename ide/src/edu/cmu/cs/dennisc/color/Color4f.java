@@ -90,6 +90,11 @@ public class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecod
 	public static Color4f createNaN() {
 		return new Color4f( Float.NaN, Float.NaN, Float.NaN, Float.NaN );
 	}
+	public static Color4f createInterpolation( Color4f a, Color4f b,  float portion ) {
+		Color4f rv = Color4f.createNaN();
+		rv.interpolate( a, b, portion );
+		return rv;
+	}
 	
 	@Deprecated
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -179,5 +184,20 @@ public class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecod
 		green = a.green + ( b.green - a.green ) * portion;
 		blue = a.blue + ( b.blue - a.blue ) * portion;
 		alpha = a.alpha + ( b.alpha - a.alpha ) * portion;
+	}
+	@Override
+	public java.lang.String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[red=" );
+		sb.append( this.red );
+		sb.append( ";green=" );
+		sb.append( this.green );
+		sb.append( ";blue=" );
+		sb.append( this.blue );
+		sb.append( ";alpha=" );
+		sb.append( this.alpha );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

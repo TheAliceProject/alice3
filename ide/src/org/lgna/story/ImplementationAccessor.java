@@ -76,7 +76,7 @@ public class ImplementationAccessor {
 			return defaultValue;
 		}
 	}
-	public static edu.cmu.cs.dennisc.texture.BufferedImageTexture getTexture( Paint paint, edu.cmu.cs.dennisc.texture.BufferedImageTexture defaultValue ) {
+	public static edu.cmu.cs.dennisc.texture.Texture getTexture( Paint paint, edu.cmu.cs.dennisc.texture.Texture defaultValue ) {
 		if( paint instanceof org.lgna.story.ImageSource ) {
 			org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
 			org.alice.virtualmachine.resources.ImageResource imageResource = imageSource.getImageResource();

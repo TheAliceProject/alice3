@@ -47,20 +47,35 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class PaintProperty extends Property< org.lgna.story.Paint > {
-	private org.lgna.story.Paint value;
+	private org.lgna.story.Paint value = org.lgna.story.Color.WHITE;
 	public PaintProperty( EntityImp owner ) {
 		super( owner, org.lgna.story.Paint.class );
 	}
 	@Override
-	public org.lgna.story.Paint getValue() {
+	public final org.lgna.story.Paint getValue() {
 		return this.value;
 	}
+	protected abstract void internalSetValue( org.lgna.story.Paint value );
 	@Override
-	protected void handleSetValue( org.lgna.story.Paint value ) {
+	protected final void handleSetValue( org.lgna.story.Paint value ) {
+		this.internalSetValue( value );
 		this.value = value;
 	}
 	@Override
 	protected org.lgna.story.Paint interpolate( org.lgna.story.Paint a, org.lgna.story.Paint b, double portion ) {
+		if( a instanceof org.lgna.story.Color ) {
+			org.lgna.story.Color aColor = (org.lgna.story.Color)a;
+			if( b instanceof org.lgna.story.Color ) {
+				org.lgna.story.Color bColor = (org.lgna.story.Color)b;
+				
+				edu.cmu.cs.dennisc.color.Color4f c = edu.cmu.cs.dennisc.color.Color4f.createInterpolation( 
+						org.lgna.story.ImplementationAccessor.getColor4f( aColor ),
+						org.lgna.story.ImplementationAccessor.getColor4f( bColor ),
+						(float)portion
+				);
+				return new org.lgna.story.Color( c.red, c.green, c.blue );
+			}
+		}
 		return b;
 	}
 }
