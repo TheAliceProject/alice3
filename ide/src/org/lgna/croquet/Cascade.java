@@ -47,18 +47,68 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Cascade<T> extends CompletionModel {
+	public static class InternalRootResolver<T> extends IndirectResolver< InternalRoot<T>, Cascade<T> > {
+		private InternalRootResolver( Cascade<T> indirect ) {
+			super( indirect );
+		}
+		public InternalRootResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected InternalRoot<T> getDirect( Cascade<T> indirect ) {
+			return indirect.getRoot();
+		}
+	}
+
+	public static final class InternalRoot<T> extends CascadeRoot< T, org.lgna.croquet.history.CascadeCompletionStep< T > > {
+		private final Cascade< T > cascade;
+		private InternalRoot( Cascade< T > cascade, CascadeBlank< T >[] blanks ) {
+			super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ), blanks );
+			this.cascade = cascade;
+		}
+		@Override
+		protected InternalRootResolver<T> createCodableResolver() {
+			return new InternalRootResolver<T>( this.cascade );
+		}
+		@Override
+		public Cascade< T > getCompletionModel() {
+			return this.cascade;
+		}
+		@Override
+		public Class< T > getComponentType() {
+			return this.cascade.getComponentType();
+		}
+
+		@Override
+		public void prologue() {
+			this.cascade.prologue();
+		}
+		@Override
+		public void epilogue() {
+			this.cascade.epilogue();
+		}
+		@Override
+		public org.lgna.croquet.history.CascadeCompletionStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
+			return org.lgna.croquet.history.TransactionManager.addCascadeCompletionStep( this.cascade, trigger );
+		}
+		@Override
+		protected org.lgna.croquet.edits.Edit createEdit(org.lgna.croquet.history.CascadeCompletionStep<T> completionStep, T[] values) {
+			return this.cascade.createEdit( completionStep, values );
+		}
+	}
+
 	private final Class< T > componentType;
-	private final CascadeStandardRoot< T > root;
+	private final InternalRoot< T > root;
 
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T >[] blanks ) {
 		super( group, id );
 		this.componentType = componentType;
-		this.root = new CascadeStandardRoot< T >( this, blanks );
+		this.root = new InternalRoot< T >( this, blanks );
 	}
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T > blank ) {
 		this( group, id, componentType, new CascadeBlank[] { blank } );
 	}
-	public CascadeStandardRoot< T > getRoot() {
+	public InternalRoot< T > getRoot() {
 		return this.root;
 	}
 	@Override

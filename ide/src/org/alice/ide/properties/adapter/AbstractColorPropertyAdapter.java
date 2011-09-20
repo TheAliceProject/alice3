@@ -70,7 +70,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 		}
 	}
 	
-	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation;
+	private org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation;
 	protected java.util.List< SetColorOperation > defaultColorOperationModels;
 	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
 	

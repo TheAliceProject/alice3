@@ -58,7 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity, Turnable> {
 
 	private HierarchyListener hierarchyListener;
-	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation;
+	private org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation;
 	
 	protected class SetVehicleOperation extends SetValueOperation<Entity>
 	{

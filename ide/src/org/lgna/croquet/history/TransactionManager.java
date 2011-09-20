@@ -258,7 +258,7 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return WizardDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static StandardPopupPrepStep addStandardPopupOperationStep( org.lgna.croquet.StandardPopupPrepModel standardPopupOperation, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static StandardPopupPrepStep addStandardPopupOperationStep( org.lgna.croquet.MenuModel.InternalPopupPrepModel standardPopupOperation, org.lgna.croquet.triggers.Trigger trigger ) {
 		return StandardPopupPrepStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation, trigger );
 	}
 	public static <T> CascadePopupPrepStep<T> addCascadePopupPrepStep( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
