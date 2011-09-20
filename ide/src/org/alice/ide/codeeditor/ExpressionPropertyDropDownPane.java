@@ -45,9 +45,9 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupButton< org.lgna.croquet.CascadeRoot.InternalCascadePopupPrepModel< org.lgna.project.ast.Expression > > implements org.lgna.croquet.DropReceptor {
+public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupButton< org.lgna.croquet.CascadeRoot.InternalPopupPrepModel< org.lgna.project.ast.Expression > > implements org.lgna.croquet.DropReceptor {
 	private org.lgna.project.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalCascadePopupPrepModel< org.lgna.project.ast.Expression > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel< org.lgna.project.ast.Expression > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 	}

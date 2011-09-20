@@ -47,34 +47,31 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> extends CascadeBlankOwner< T[], T > {
-	public static final class CascadePopupPrepModelResolver<T> implements org.lgna.croquet.resolvers.CodableResolver< InternalCascadePopupPrepModel<T> > {
-		private final InternalCascadePopupPrepModel<T> model;
-		public CascadePopupPrepModelResolver( InternalCascadePopupPrepModel<T> model ) {
-			this.model = model;
+	public static final class InternalPopupPrepModelResolver<T> extends IndirectResolver< InternalPopupPrepModel<T>, CascadeRoot<T,?> > {
+		private InternalPopupPrepModelResolver( CascadeRoot<T,?> indirect ) {
+			super( indirect );
 		}
-		public CascadePopupPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.lgna.croquet.resolvers.CodableResolver< CascadeRoot<T,?>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			CascadeRoot<T,?> root = resolver.getResolved();
-			this.model = root.getPopupPrepModel();
+		public InternalPopupPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
 		}
-		public InternalCascadePopupPrepModel<T> getResolved() {
-			return this.model;
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver< InputDialogOperation<T>> resolver = this.model.root.getCodableResolver();
-			binaryEncoder.encode( resolver );
+		@Override
+		protected InternalPopupPrepModel<T> getDirect( CascadeRoot<T,?> indirect ) {
+			return indirect.getPopupPrepModel();
 		}
 	}
 
-	public static final class InternalCascadePopupPrepModel<T> extends PopupPrepModel {
+	public static final class InternalPopupPrepModel<T> extends PopupPrepModel {
 		private final CascadeRoot< T,? > root;
-		/*package-private*/ InternalCascadePopupPrepModel( CascadeRoot< T,? > root ) {
+		private InternalPopupPrepModel( CascadeRoot< T,? > root ) {
 			super( java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
 			this.root = root;
 		}
+		public CascadeRoot< T, ? > getCascadeRoot() {
+			return this.root;
+		}
 		@Override
-		protected CascadePopupPrepModelResolver<T> createCodableResolver() {
-			return new CascadePopupPrepModelResolver<T>( this );
+		protected InternalPopupPrepModelResolver<T> createCodableResolver() {
+			return new InternalPopupPrepModelResolver<T>( this.root );
 		}
 		@Override
 		public Iterable< ? extends Model > getChildren() {
@@ -86,9 +83,6 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			return this.root.getClassUsedForLocalization();
 		}
 		
-		public CompletionModel getCompletionModel() {
-			return this.root.getCompletionModel();
-		}
 		protected void handleFinally() {
 			this.root.epilogue();
 		}
@@ -122,18 +116,18 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			return rv;
 		}
 	}
-	private final InternalCascadePopupPrepModel< T > popupPrepModel;
+	private final InternalPopupPrepModel< T > popupPrepModel;
 
 	public CascadeRoot( java.util.UUID id, CascadeBlank< T >[] blanks ) {
 		super( id );
-		this.popupPrepModel = new InternalCascadePopupPrepModel< T >( this );
+		this.popupPrepModel = new InternalPopupPrepModel< T >( this );
 		assert blanks != null;
 		for( int i = 0; i < blanks.length; i++ ) {
 			assert blanks[ i ] != null : this;
 			this.addBlank( blanks[ i ] );
 		}
 	}
-	public InternalCascadePopupPrepModel< T > getPopupPrepModel() {
+	public InternalPopupPrepModel< T > getPopupPrepModel() {
 		return this.popupPrepModel;
 	}
 	@Override

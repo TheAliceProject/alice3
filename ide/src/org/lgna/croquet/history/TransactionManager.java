@@ -242,7 +242,7 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return PlainDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static PlainDialogCloseOperationStep addPlainDialogCloseOperationStep( org.lgna.croquet.PlainDialogCloseOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static PlainDialogCloseOperationStep addPlainDialogCloseOperationStep( org.lgna.croquet.PlainDialogOperation.InternalCloseOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		return PlainDialogCloseOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
@@ -261,7 +261,7 @@ public class TransactionManager {
 	public static StandardPopupPrepStep addStandardPopupOperationStep( org.lgna.croquet.StandardPopupPrepModel standardPopupOperation, org.lgna.croquet.triggers.Trigger trigger ) {
 		return StandardPopupPrepStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation, trigger );
 	}
-	public static <T> CascadePopupPrepStep<T> addCascadePopupPrepStep( org.lgna.croquet.CascadeRoot.InternalCascadePopupPrepModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static <T> CascadePopupPrepStep<T> addCascadePopupPrepStep( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return CascadePopupPrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 	public static <T> CascadeCompletionStep<T> addCascadeCompletionStep( org.lgna.croquet.Cascade<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
@@ -271,10 +271,10 @@ public class TransactionManager {
 	public static BooleanStateChangeStep addBooleanStateChangeStep( org.lgna.croquet.BooleanState model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return BooleanStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
-	public static <E> ListSelectionStateChangeStep<E> addListSelectionStateChangeStep( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static <T> ListSelectionStateChangeStep<T> addListSelectionStateChangeStep( org.lgna.croquet.ListSelectionState< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return ListSelectionStateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static <E> ListSelectionStatePrepStep<E> addListSelectionPrepStep( org.lgna.croquet.ListSelectionStatePrepModel< E > model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.ListSelectionState.InternalPrepModel< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 	public static <T> CustomItemStateChangeStep<T> addCustomItemStateChangeStep( org.lgna.croquet.CustomItemState< T > model, org.lgna.croquet.triggers.Trigger trigger ) {

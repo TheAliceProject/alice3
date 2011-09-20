@@ -192,12 +192,64 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 		return false;
 	}
 
-	private OperationMenuItemPrepModel menuPrepModel;
-	public synchronized OperationMenuItemPrepModel getMenuItemPrepModel() {
+	public static class InternalMenuPrepModelResolver extends IndirectResolver< InternalMenuItemPrepModel, Operation< ? > > {
+		private InternalMenuPrepModelResolver( Operation< ? > indirect ) {
+			super( indirect );
+		}
+		public InternalMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected InternalMenuItemPrepModel getDirect( Operation< ? > indirect ) {
+			return indirect.getMenuItemPrepModel();
+		}
+	}
+	private final static class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
+		private final Operation<?> operation;
+		private InternalMenuItemPrepModel( Operation<?> operation ) {
+			super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
+			assert operation != null;
+			this.operation = operation;
+		}
+		@Override
+		public Iterable< ? extends Model > getChildren() {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.operation );
+		}
+		@Override
+		protected void localize() {
+		}
+		public Operation<?> getOperation() {
+			return this.operation;
+		}
+		@Override
+		protected InternalMenuPrepModelResolver createCodableResolver() {
+			return new InternalMenuPrepModelResolver( this.operation );
+		}
+		@Override
+		public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
+			return this.operation.getFirstComponent();
+		}
+		@Override
+		public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
+			rv.addMenuItem( new org.lgna.croquet.components.MenuItem( this.getOperation() ) );
+			return rv;
+		}
+		@Override
+		protected StringBuilder appendRepr( StringBuilder rv ) {
+			super.appendRepr( rv );
+			rv.append( "[" );
+			rv.append( this.getOperation() );
+			rv.append( "]" );
+			return rv;
+		}
+	}
+
+	private InternalMenuItemPrepModel menuPrepModel;
+	public synchronized InternalMenuItemPrepModel getMenuItemPrepModel() {
 		if( this.menuPrepModel != null ) {
 			//pass
 		} else {
-			this.menuPrepModel = new OperationMenuItemPrepModel( this );
+			this.menuPrepModel = new InternalMenuItemPrepModel( this );
 		}
 		return this.menuPrepModel;
 	}

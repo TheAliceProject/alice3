@@ -47,28 +47,21 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ValueInputDialogOperation<T> extends InputDialogOperation< T > {
-	public static class CascadeInputDialogOperationFillInResolver<F> implements org.lgna.croquet.resolvers.CodableResolver< InternalFillIn<F> > {
-		private final InternalFillIn<F> model;
-
-		public CascadeInputDialogOperationFillInResolver( InternalFillIn<F> model ) {
-			this.model = model;
+	public static final class InternalFillInResolver<F> extends IndirectResolver< InternalFillIn<F>, ValueInputDialogOperation<F> > {
+		private InternalFillInResolver( ValueInputDialogOperation<F> internal ) {
+			super( internal );
 		}
-		public CascadeInputDialogOperationFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.lgna.croquet.resolvers.CodableResolver< ValueInputDialogOperation<F>> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			ValueInputDialogOperation<F> inputDialogOperation = resolver.getResolved();
-			this.model = inputDialogOperation.getFillIn();
+		public InternalFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
 		}
-		public InternalFillIn<F> getResolved() {
-			return this.model;
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver< InputDialogOperation<F>> resolver = this.model.valueInputDialogOperation.getCodableResolver();
-			binaryEncoder.encode( resolver );
+		@Override
+		protected InternalFillIn<F> getDirect( ValueInputDialogOperation<F> indirect ) {
+			return indirect.getFillIn();
 		}
 	}
 	private static final class InternalFillIn<F> extends CascadeFillIn< F, Void > {
 		private final ValueInputDialogOperation<F> valueInputDialogOperation;
-		/*package-private*/ InternalFillIn( ValueInputDialogOperation<F> valueInputDialogOperation ) {
+		private InternalFillIn( ValueInputDialogOperation<F> valueInputDialogOperation ) {
 			super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
 			this.valueInputDialogOperation = valueInputDialogOperation;
 		}
@@ -76,8 +69,8 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			return this.valueInputDialogOperation;
 		}
 		@Override
-		protected CascadeInputDialogOperationFillInResolver<F> createCodableResolver() {
-			return new CascadeInputDialogOperationFillInResolver<F>( this );
+		protected InternalFillInResolver<F> createCodableResolver() {
+			return new InternalFillInResolver<F>( this.valueInputDialogOperation );
 		}
 		@Override
 		protected String getTutorialItemText() {

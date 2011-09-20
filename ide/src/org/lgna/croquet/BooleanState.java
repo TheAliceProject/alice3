@@ -46,11 +46,11 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class BooleanState extends State< Boolean > {
-	public static final class BooleanStateMenuPrepModelResolver extends IndirectResolver< InternalMenuItemPrepModel, BooleanState > {
-		public BooleanStateMenuPrepModelResolver( InternalMenuItemPrepModel model ) {
-			super( model.getBooleanState() );
+	public static final class InternalMenuItemPrepModelResolver extends IndirectResolver< InternalMenuItemPrepModel, BooleanState > {
+		private InternalMenuItemPrepModelResolver( BooleanState indirect ) {
+			super( indirect );
 		}
-		public BooleanStateMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		public InternalMenuItemPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
 		@Override
@@ -60,7 +60,7 @@ public abstract class BooleanState extends State< Boolean > {
 	}
 	private static final class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
 		private final BooleanState booleanState;
-		/*package-private*/ InternalMenuItemPrepModel( BooleanState booleanState ) {
+		private InternalMenuItemPrepModel( BooleanState booleanState ) {
 			super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
 			assert booleanState != null;
 			this.booleanState = booleanState;
@@ -76,8 +76,8 @@ public abstract class BooleanState extends State< Boolean > {
 			return this.booleanState;
 		}
 		@Override
-		protected BooleanStateMenuPrepModelResolver createCodableResolver() {
-			return new BooleanStateMenuPrepModelResolver( this );
+		protected InternalMenuItemPrepModelResolver createCodableResolver() {
+			return new InternalMenuItemPrepModelResolver( this.booleanState );
 		}
 		@Override
 		public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
