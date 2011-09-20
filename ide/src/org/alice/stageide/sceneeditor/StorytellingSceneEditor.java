@@ -42,11 +42,20 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import java.awt.LayoutManager;
+
+import javax.swing.JPanel;
+
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
+import org.lgna.croquet.components.HorizontalSplitPane;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.PageAxisPanel;
+import org.lgna.croquet.components.Panel;
+import org.lgna.croquet.components.SplitPane;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.UserField;
@@ -97,19 +106,23 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			org.lgna.croquet.components.CompassPointSpringPanel {
 		@Override
 		protected javax.swing.JPanel createJPanel() {
-			javax.swing.JPanel rv = StorytellingSceneEditor.this.onscreenLookingGlass
-					.getJPanel();
+			javax.swing.JPanel rv = StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
 			rv.setLayout(new javax.swing.SpringLayout());
 			return rv;
 		}
 	}
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	
+	private org.lgna.croquet.components.PageAxisPanel propertiesPanel;
+	private org.lgna.croquet.components.HorizontalSplitPane propertiesSplitPane = new HorizontalSplitPane();
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImplementation;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.components.PushButton expandCollapseButton;
+	
+	
+	
 	
 	@Override
 	protected void setProgramInstance(UserInstance programInstance) 
@@ -143,13 +156,29 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private static final int INSET = 8;
 	
+	private void showLookingGlassPanel()
+	{
+		this.addComponent( this.mainPanel, Constraint.CENTER );
+	}
+	
+	private void hideLookingGlassPanel()
+	{
+		this.removeComponent( this.mainPanel );
+	}
+	
 	@Override
 	protected void handleExpandContractChange(boolean isExpanded) {
 		if (isExpanded)
 		{
+			this.mainPanel.removeAllComponents();
+			this.propertiesSplitPane.setLeftComponent(this.lookingGlassPanel);
+			this.propertiesSplitPane.setRightComponent(this.propertiesPanel);
+			this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
 		}
 		else
 		{
+			this.mainPanel.removeAllComponents();
+			this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
 		}
 		this.mainCameraNavigatorWidget.setExpanded(isExpanded);
 		this.lookingGlassPanel.setSouthEastComponent(this.expandCollapseButton);
@@ -177,6 +206,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
 			
 			this.expandCollapseButton = IsSceneEditorExpandedState.getInstance().createPushButton();
+			
+			this.propertiesSplitPane.setResizeWeight(1.0);
+			
+			this.propertiesPanel = new PageAxisPanel();
+			this.propertiesPanel.addComponent(new Label("Properties Panel"));
 			
 			doCameraDependentInitialization();
 			
@@ -365,12 +399,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
-		this.addComponent( this.lookingGlassPanel, Constraint.CENTER );
+		this.showLookingGlassPanel();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		this.removeComponent( this.lookingGlassPanel );
+		this.hideLookingGlassPanel();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		super.handleUndisplayable();
