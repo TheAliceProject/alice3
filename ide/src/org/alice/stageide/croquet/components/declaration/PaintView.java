@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class PaintView extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.alice.stageide.croquet.models.declaration.PaintState > {
+public class PaintView extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.alice.ide.croquet.models.StandardExpressionState > {
 	private org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
@@ -54,7 +54,7 @@ public class PaintView extends org.lgna.croquet.components.ViewController< javax
 			PaintView.this.repaint();
 		}
 	};
-	public PaintView( org.alice.stageide.croquet.models.declaration.PaintState model ) {
+	public PaintView( org.alice.ide.croquet.models.StandardExpressionState model ) {
 		super( model );
 	}
 	@Override

@@ -41,23 +41,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PredeterminedTypeExpressionState extends StandardExpressionState {
-	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
-	public PredeterminedTypeExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( group, id, initialValue );
-		this.type = type;
-	}
-	public PredeterminedTypeExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue, Class<?> cls ) {
-		this( group, id, initialValue, org.lgna.project.ast.JavaType.getInstance( cls ) );
-	}
+public class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
+	private static java.util.Map< org.lgna.project.ast.JavaMethod, PropertyState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
+	private static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
+		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr );
+		return org.lgna.project.ast.JavaMethod.getInstance( sttr );
+	}
+	private static synchronized PropertyState getInstanceForSetter( org.lgna.project.ast.JavaMethod setter ) {
+		PropertyState rv = map.get( setter );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new PropertyState( setter );
+			map.put( setter, rv );
+		}
+		return rv;
+	}
+	public static synchronized PropertyState getInstanceForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		return getInstanceForSetter( getSetterForGetter( getter ) );
+	}
+	private final org.lgna.project.ast.JavaMethod setter;
+	private PropertyState( org.lgna.project.ast.JavaMethod setter ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7df7024e-5eef-4ed0-b463-da3719955e7a" ), null );
+		this.setter = setter;
+	}
+	private org.lgna.project.ast.JavaMethodParameter getParameter0() {
+		return (org.lgna.project.ast.JavaMethodParameter)this.setter.getParameters().get( 0 );
+	}
 	@Override
 	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
-		return this.type;
+		return this.getParameter0().getValueType();
+	}
+	@Override
+	protected org.lgna.project.annotations.ValueDetails< ? > getValueDetails() {
+		return this.getParameter0().getDetails();
 	}
 }

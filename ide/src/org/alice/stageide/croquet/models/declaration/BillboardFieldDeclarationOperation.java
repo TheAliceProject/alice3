@@ -78,11 +78,18 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 		return this.backPaintLabelText;
 	}
 	
-	public FrontPaintState getFrontPaintState() {
-		return FrontPaintState.getInstance();
+	protected org.alice.ide.croquet.models.StandardExpressionState getStateForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		return org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( getter );
 	}
-	public BackPaintState getBackPaintState() {
-		return BackPaintState.getInstance();
+	protected org.alice.ide.croquet.models.StandardExpressionState getStateForGetter( Class<?> cls, String name, Class<?>... parameterTypes ) {
+		return getStateForGetter( org.lgna.project.ast.JavaMethod.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, name, parameterTypes ) ) );
+	}
+
+	public org.alice.ide.croquet.models.StandardExpressionState getFrontPaintState() {
+		return this.getStateForGetter( org.lgna.story.Billboard.class, "getFrontPaint" );
+	}
+	public org.alice.ide.croquet.models.StandardExpressionState getBackPaintState() {
+		return this.getStateForGetter( org.lgna.story.Billboard.class, "getBackPaint" );
 	}
 	@Override
 	protected org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {

@@ -64,6 +64,10 @@ public class FieldInitializerState extends org.alice.ide.croquet.models.Standard
 		this.field = field;
 	}
 	@Override
+	protected org.lgna.project.annotations.ValueDetails< ? > getValueDetails() {
+		return null;
+	}
+	@Override
 	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
 		return this.field.getValueType();
 	}
