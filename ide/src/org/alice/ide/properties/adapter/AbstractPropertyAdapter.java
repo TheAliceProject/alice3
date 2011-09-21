@@ -141,7 +141,10 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		} else if( model instanceof org.lgna.croquet.Operation< ? > ) {
 			org.lgna.croquet.Operation< ? > operation = (org.lgna.croquet.Operation< ? >)model;
 	        return operation.createButton();
-		} else {
+		} else if (model == null){
+			return null;
+		}
+		else {
 			throw new RuntimeException( "todo" );
 		}
     }

@@ -51,6 +51,7 @@ import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.SnapGrid;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.croquet.components.HorizontalSplitPane;
@@ -145,7 +146,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	private SidePane propertiesPanel;
+	private SidePane sidePanel = new SidePane();
 	private org.lgna.croquet.components.HorizontalSplitPane propertiesSplitPane = new HorizontalSplitPane();
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImplementation;
@@ -171,8 +172,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	private void setActiveFieldOnPropertyPanel(UserField field)
-	{
-		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = AstUtilities.getPersistentPropertyGetters(field.getValueType());
+	{	
+		getPropertyPanel().setField(field);
 //		this.propertiesPanel.removeAllComponents();
 //		for (org.lgna.project.ast.JavaMethod getter : getterMethods)
 //		{
@@ -219,7 +220,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		{
 			this.mainPanel.removeAllComponents();
 			this.propertiesSplitPane.setLeftComponent(this.lookingGlassPanel);
-			this.propertiesSplitPane.setRightComponent(this.propertiesPanel);
+			this.propertiesSplitPane.setRightComponent(this.sidePanel);
 			this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
 		}
 		else
@@ -230,6 +231,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		this.mainCameraNavigatorWidget.setExpanded(isExpanded);
 		this.lookingGlassPanel.setSouthEastComponent(this.expandCollapseButton);
 		this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
+	}
+	
+	
+	private SceneObjectPropertyManagerPanel getPropertyPanel()
+	{
+		return ObjectPropertiesTab.getInstance().getMainComponent();
 	}
 	
 	@Override
@@ -256,8 +263,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.expandCollapseButton = IsSceneEditorExpandedState.getInstance().createPushButton();
 			
 			this.propertiesSplitPane.setResizeWeight(1.0);
-			
-			this.propertiesPanel = new SidePane();
 			
 			doCameraDependentInitialization();
 			

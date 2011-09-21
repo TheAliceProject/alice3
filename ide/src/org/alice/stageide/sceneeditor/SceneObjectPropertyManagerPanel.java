@@ -50,6 +50,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.ide.IDE;
+import org.alice.ide.ast.AstUtilities;
 import org.alice.ide.properties.uicontroller.AdapterControllerUtilities;
 import org.alice.ide.properties.uicontroller.PropertyAdapterController;
 import org.alice.stageide.croquet.models.sceneditor.AreExtraPropertiesShownState;
@@ -67,9 +68,10 @@ import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.ToolPalette;
 import org.lgna.project.ast.AbstractField;
+import org.lgna.story.ImplementationAccessor;
 
 
-public class SceneObjectPropertyManager extends GridBagPanel implements org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.project.ast.Accessible>
+public class SceneObjectPropertyManagerPanel extends GridBagPanel
 {
 	private AbstractField selectedField;
 	private Object selectedObject;
@@ -93,7 +95,7 @@ public class SceneObjectPropertyManager extends GridBagPanel implements org.lgna
 	private GridBagPanel morePropertiesPanel;
 	private ToolPalette extraPropertiesPalette;
 	
-	public SceneObjectPropertyManager()
+	public SceneObjectPropertyManagerPanel()
 	{
 		super();
 		this.classLabel = new Label("NO CLASS");
@@ -191,21 +193,22 @@ public class SceneObjectPropertyManager extends GridBagPanel implements org.lgna
 	    this.addNameAndControllerToPanel(propertyPair.label, propertyPair.controller.getPanel(), panel, index);
 	}
 
-	public void changing( org.lgna.croquet.State< org.lgna.project.ast.Accessible > state, org.lgna.project.ast.Accessible prevValue, org.lgna.project.ast.Accessible nextValue, boolean isAdjusting ) {
-	}
-	public void changed( org.lgna.croquet.State< org.lgna.project.ast.Accessible > state, org.lgna.project.ast.Accessible prevValue, org.lgna.project.ast.Accessible nextValue, boolean isAdjusting ) {
-		this.selectedField = null;
-		this.selectedObject = null;
-		if( nextValue instanceof AbstractField ) {
-			AbstractField field = (AbstractField)nextValue;
-			this.selectedField = field;
-			Object instance = IDE.getActiveInstance().getSceneEditor().getInstanceInAliceVMForField( field );
-			if( instance instanceof org.lgna.project.virtualmachine.UserInstance ) {
-				org.lgna.project.virtualmachine.UserInstance instanceInAlice = (org.lgna.project.virtualmachine.UserInstance)instance;
-				instance = instanceInAlice.getInstanceInJava();
-			}
-			this.selectedObject = instance;
+	public void setField( AbstractField field )
+	{
+		this.selectedField = field;
+		
+		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = AstUtilities.getPersistentPropertyGetters(field.getValueType());
+		for (org.lgna.project.ast.JavaMethod getter : getterMethods )
+		{
+			org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( getter );
+			System.out.println("state: "+state);
 		}
+		
+		Object instance = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( field );
+		if( instance instanceof org.lgna.story.Entity ) {
+			instance = ImplementationAccessor.getImplementation((org.lgna.story.Entity)instance);
+		}
+		this.selectedObject = instance;
 		
 		for (LabelValueControllerPair activeController : this.activeControllers)
 		{

@@ -383,6 +383,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 //        this.setBackgroundColor(Color.YELLOW);
 	}
 	
+	
 	public ActionOperation getShowSceneGraphViewerActionOperation()
 	{
 		return this.showSceneGraphActionOperation;
