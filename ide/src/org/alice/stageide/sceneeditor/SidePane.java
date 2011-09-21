@@ -161,12 +161,12 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 		}
 	}
 	
-	public SidePane(StorytellingSceneEditor sceneEditor) {
+	public SidePane() {
 	    
 	    ToolPaletteTabbedPane<PredeterminedTab> tptp = PropertyAndMarkerPanelSelectionState.getInstance().createDefaultToolPaletteTabbedPane();
 	    
 		this.mainPanel = new GridBagPanel();
-		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState(), sceneEditor);
+		this.snapControlPanel = new SnapControlPanel();
 		
 		//Set up the handle components
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
@@ -395,11 +395,6 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	public void setExpanded(boolean isExpanded) {
 		this.isExpanded = isExpanded;
 		this.revalidateAndRepaint();
-	}
-
-	public void setSnapState(SnapState snapState)
-	{
-		this.snapControlPanel.setSnapState(snapState);
 	}
 	
 

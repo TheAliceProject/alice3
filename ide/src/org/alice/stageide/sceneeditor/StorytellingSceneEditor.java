@@ -46,8 +46,10 @@ import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
 
+import org.alice.ide.ast.AstUtilities;
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.alice.interact.SnapGrid;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
@@ -59,6 +61,7 @@ import org.lgna.croquet.components.SplitPane;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.BookmarkCameraMarker;
 import org.lgna.story.ImplementationAccessor;
@@ -111,17 +114,45 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			return rv;
 		}
 	}
+	
+	private org.lgna.croquet.State.ValueObserver<Boolean> showSnapGridObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			StorytellingSceneEditor.this.setShowSnapGrid(nextValue);	
+		}
+	};
+	
+	private org.lgna.croquet.State.ValueObserver<Boolean> snapEnabledObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+            if (SnapState.getInstance().isShowSnapGridEnabled())
+            {
+            	StorytellingSceneEditor.this.setShowSnapGrid(nextValue);
+            }
+        }
+    };
+    
+    private org.lgna.croquet.State.ValueObserver<Double> snapGridSpacingObserver = new org.lgna.croquet.State.ValueObserver<Double>() {
+		public void changing( org.lgna.croquet.State< Double > state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Double > state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+			StorytellingSceneEditor.this.setSnapGridSpacing(nextValue);
+		}
+	};
+	
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	private org.lgna.croquet.components.PageAxisPanel propertiesPanel;
+	private SidePane propertiesPanel;
 	private org.lgna.croquet.components.HorizontalSplitPane propertiesSplitPane = new HorizontalSplitPane();
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImplementation;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.components.PushButton expandCollapseButton;
 	
-	
+	protected SnapGrid snapGrid;
 	
 	
 	@Override
@@ -131,6 +162,22 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		ProgramImp programImplementation = ImplementationAccessor.getImplementation(getProgramInstanceInJava());
 		programImplementation.setAnimator(this.animator);
 		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
+	}
+	
+	@Override
+	public void setSelectedField(UserType<?> declaringType, UserField field) {
+		super.setSelectedField(declaringType, field);
+		this.setActiveFieldOnPropertyPanel(field);
+	}
+	
+	private void setActiveFieldOnPropertyPanel(UserField field)
+	{
+		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = AstUtilities.getPersistentPropertyGetters(field.getValueType());
+//		this.propertiesPanel.removeAllComponents();
+//		for (org.lgna.project.ast.JavaMethod getter : getterMethods)
+//		{
+//			this.propertiesPanel.addComponent(new Label(getter.getName()));
+//		}
 	}
 	
 	protected void setSceneCamera(org.lgna.project.ast.UserField cameraField)
@@ -194,8 +241,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 //			
 //			this.snapGrid = new SnapGrid();
 //			this.snapState = new SnapState();
-//			this.snapState.getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
-//			this.snapState.getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);
+			SnapState.getInstance().getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
+			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);
+			SnapState.getInstance().getSnapGridSpacingState().addAndInvokeValueObserver(this.snapGridSpacingObserver);
 			
 			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter(this);
 //			this.globalDragAdapter.setSnapState(this.snapState);
@@ -209,8 +257,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			
 			this.propertiesSplitPane.setResizeWeight(1.0);
 			
-			this.propertiesPanel = new PageAxisPanel();
-			this.propertiesPanel.addComponent(new Label("Properties Panel"));
+			this.propertiesPanel = new SidePane();
 			
 			doCameraDependentInitialization();
 			
@@ -550,14 +597,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	public MarkerImp getMarkerForField( UserField field ) {
 		throw new RuntimeException( "todo" );
 	}
-	public SnapState getSnapState() {
-		throw new RuntimeException( "todo" );
-	}
 	public AbstractCamera getSGCameraForCreatingThumbnails() {
 		throw new RuntimeException( "todo" );
 	}
+	
+	public void setShowSnapGrid( boolean showSnapGrid ) {
+		if (this.snapGrid != null)
+		{
+			this.snapGrid.setShowing(showSnapGrid);
+		}
+	}
 	public void setSnapGridSpacing( double gridSpacing ) {
-		throw new RuntimeException( "todo" );
+		if (this.snapGrid != null)
+		{
+			this.snapGrid.setSpacing(gridSpacing);
+		}
 	}
 	
 }

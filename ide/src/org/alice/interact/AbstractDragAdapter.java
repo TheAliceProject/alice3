@@ -196,8 +196,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected InteractionGroup currentInteractionState = null;
 	protected ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
 	
-	protected SnapState snapState = null;
-	
 	private TransformableImp selectedObject = null;
 	private CameraMarkerImp selectedCameraMarker = null;
 	private ObjectMarkerImp selectedObjectMarker = null;
@@ -1249,16 +1247,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public void keyTyped( KeyEvent e ) {
 		//System.out.println("Key typed!");
 		
-	}
-
-	public void setSnapState(SnapState snapState)
-	{
-		this.snapState = snapState;
-	}
-	
-	public SnapState getSnapState()
-	{
-		return this.snapState;
 	}
 	
 }
