@@ -200,7 +200,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = AstUtilities.getPersistentPropertyGetters(field.getValueType());
 		for (org.lgna.project.ast.JavaMethod getter : getterMethods )
 		{
-			org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( getter );
+			org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( IDE.PROJECT_GROUP, getter );
 			System.out.println("state: "+state);
 		}
 		
