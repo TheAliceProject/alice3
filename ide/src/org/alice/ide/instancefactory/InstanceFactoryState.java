@@ -53,9 +53,58 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	public static InstanceFactoryState getInstance() {
 		return SingletonHolder.instance;
 	}
+	
+	private static org.lgna.project.ast.AbstractType< ?,?,? > getDeclaringType( org.alice.ide.croquet.models.typeeditor.DeclarationComposite declarationComposite ) { 
+		if( declarationComposite != null ) {
+			org.lgna.project.ast.AbstractDeclaration declaration = declarationComposite.getDeclaration();
+			if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
+				return method.getDeclaringType();
+			} else if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
+				org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
+				return type;
+			}
+		}
+		return null;
+	}
+	
+	private ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > declarationObserver = new ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+			InstanceFactoryState.this.handleDeclaringTypeChange( getDeclaringType( prevValue ), getDeclaringType( nextValue ) );
+		}
+	};
+	
+	private java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private InstanceFactory value;
 	private InstanceFactoryState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), InstanceFactoryCodec.SINGLETON );
+		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addValueObserver( declarationObserver );
+	}
+	private void handleDeclaringTypeChange( org.lgna.project.ast.AbstractType< ?,?,? > prevType, org.lgna.project.ast.AbstractType< ?,?,? > nextType ) {
+		if( prevType != nextType ) {
+			InstanceFactory prevValue = this.getValue();
+			if( prevType != null ) {
+				if( prevValue != null ) {
+					map.put( prevType, prevValue );
+				} else {
+					map.remove( prevType );
+				}
+			}
+			InstanceFactory nextValue;
+			if( nextType != null ) {
+				nextValue = map.get( nextType );
+				if( nextValue != null ) {
+					//pass
+				} else {
+					nextValue = ThisInstanceFactory.SINGLETON;
+				}
+			} else {
+				nextValue = null;
+			}
+			this.setValue( nextValue );
+		}
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< InstanceFactory > blankNode ) {
