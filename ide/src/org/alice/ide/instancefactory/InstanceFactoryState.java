@@ -83,27 +83,28 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addValueObserver( declarationObserver );
 	}
 	private void handleDeclaringTypeChange( org.lgna.project.ast.AbstractType< ?,?,? > prevType, org.lgna.project.ast.AbstractType< ?,?,? > nextType ) {
-		InstanceFactory prevValue = this.getValue();
-		if( prevType != null ) {
-			if( prevValue != null ) {
-				map.put( prevType, prevValue );
-			} else {
-				map.remove( prevType );
+		if( prevType != nextType ) {
+			InstanceFactory prevValue = this.getValue();
+			if( prevType != null ) {
+				if( prevValue != null ) {
+					map.put( prevType, prevValue );
+				} else {
+					map.remove( prevType );
+				}
 			}
-		}
-		InstanceFactory nextValue;
-		if( nextType != null ) {
-			nextValue = map.get( nextType );
-			if( nextValue != null ) {
-				//pass
+			InstanceFactory nextValue;
+			if( nextType != null ) {
+				nextValue = map.get( nextType );
+				if( nextValue != null ) {
+					//pass
+				} else {
+					nextValue = ThisInstanceFactory.SINGLETON;
+				}
 			} else {
-				nextValue = ThisInstanceFactory.SINGLETON;
+				nextValue = null;
 			}
-		} else {
-			nextValue = null;
+			this.setValue( nextValue );
 		}
-		this.setValue( nextValue );
-		
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< InstanceFactory > blankNode ) {

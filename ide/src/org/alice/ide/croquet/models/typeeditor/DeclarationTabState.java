@@ -58,7 +58,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-			DeclarationTabState.this.handleTypeChanged( nextValue );
+			DeclarationTabState.this.handleTypeChanged( prevValue, nextValue );
 		}
 	};
 	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserMethod > methodsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserMethod >() {
@@ -84,6 +84,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		}
 	};
 	
+	private java.util.Map< org.lgna.project.ast.NamedUserType, DeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private org.lgna.project.ast.NamedUserType type;
 	private DeclarationTabState() {
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
@@ -92,25 +93,43 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 	private void refresh() {
 		this.pushAtomic();
 		this.clear();
-		if( type != null ) {
-			this.addItem( DeclarationComposite.getInstance( type ) );
-			for( org.lgna.project.ast.UserMethod method : type.methods ) {
+		if( this.type != null ) {
+			this.addItem( DeclarationComposite.getInstance( this.type ) );
+			for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
 				if( method.isPublicAccess() ) {
 					this.addItem( DeclarationComposite.getInstance( method ) );
 				}
 			}
-			this.setSelectedIndex( 0 );
+			DeclarationComposite selection = map.get( this.type );
+			int index;
+			if( selection != null ) {
+				index = this.indexOf( selection );
+				index = Math.max( index, 0 );
+			} else {
+				index = -1;
+			}
+			this.setSelectedIndex( index );
 		} else {
 			this.setSelectedIndex( -1 );
 		}
 		this.popAtomic();
 	}
-	private void handleTypeChanged( org.lgna.project.ast.NamedUserType type ) {
-		if( this.type != type ) {
+	private void handleTypeChanged( org.lgna.project.ast.NamedUserType prevType, org.lgna.project.ast.NamedUserType nextType ) {
+		if( this.type != nextType ) {
+			
+			if( prevType != null ) {
+				DeclarationComposite prevDeclarationComposite = this.getSelectedItem();
+				if( prevDeclarationComposite != null ) {
+					this.map.put( prevType, prevDeclarationComposite );
+				} else {
+					this.map.remove( prevType );
+				}
+			}
+
 			if( this.type != null ) {
 				this.type.methods.removeListPropertyListener( this.methodsListener );
 			}
-			this.type = type;
+			this.type = nextType;
 			this.refresh();
 			if( this.type != null ) {
 				this.type.methods.addListPropertyListener( this.methodsListener );
