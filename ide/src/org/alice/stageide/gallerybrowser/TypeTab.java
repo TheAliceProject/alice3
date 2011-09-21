@@ -74,6 +74,11 @@ public class TypeTab extends org.lgna.croquet.PredeterminedTab {
 		}
 		
 		rv.addComponent( panel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+
+		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
+		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
+		rv.addComponent( lineEndPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+
 		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		return rv;
 	}

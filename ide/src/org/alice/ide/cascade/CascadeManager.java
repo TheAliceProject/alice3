@@ -335,12 +335,12 @@ public abstract class CascadeManager {
 		}
 		return rv;
 	}
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		return this.updateChildren( rv, blankNode, type, null );
-	}
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, Class<?> cls ) {
-		return this.updateChildren( rv, blankNode, org.lgna.project.ast.JavaType.getInstance( cls ) );
-	}
+//	public java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+//		return this.updateChildren( rv, blankNode, type, null );
+//	}
+//	public java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, Class<?> cls ) {
+//		return this.updateChildren( rv, blankNode, org.lgna.project.ast.JavaType.getInstance( cls ) );
+//	}
 //	@Deprecated
 //	private void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent, int dropIndex, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
 //		this.dropParent = dropParent;

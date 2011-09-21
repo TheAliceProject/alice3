@@ -64,15 +64,8 @@ public class PropertyState extends org.alice.ide.croquet.models.StandardExpressi
 		}
 		return rv;
 	}
-	public static synchronized PropertyState getInstanceForGetter( org.lgna.project.ast.JavaMethod setter ) {
-		PropertyState rv = map.get( setter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new PropertyState( setter );
-			map.put( setter, rv );
-		}
-		return rv;
+	public static synchronized PropertyState getInstanceForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		return getInstanceForSetter( getSetterForGetter( getter ) );
 	}
 	private final org.lgna.project.ast.JavaMethod setter;
 	private PropertyState( org.lgna.project.ast.JavaMethod setter ) {
