@@ -112,13 +112,8 @@ public class InterpolationUtilities {
 		return interpolate( AffineMatrix4x4.createNaN(), a, b, portion );
 	}
 
-	public static edu.cmu.cs.dennisc.color.Color4f interpolate( edu.cmu.cs.dennisc.color.Color4f rv, edu.cmu.cs.dennisc.color.Color4f a, edu.cmu.cs.dennisc.color.Color4f b, double portion ) {
-		//todo: double -> float?
-		rv.interpolate( a, b, (float)portion );
-		return rv;
-	}
 	public static edu.cmu.cs.dennisc.color.Color4f interpolate( edu.cmu.cs.dennisc.color.Color4f a, edu.cmu.cs.dennisc.color.Color4f b, double portion ) {
-		return interpolate( new edu.cmu.cs.dennisc.color.Color4f(), a, b, portion );
+		return edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a, b, (float)portion );
 	}
 
 	public static double interpolate( double a, double b, double portion ) {

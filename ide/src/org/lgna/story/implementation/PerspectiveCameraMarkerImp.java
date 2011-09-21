@@ -197,50 +197,48 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp{
 		Vector3f negBottomNormalf = Vector3f.createMultiplication(bottomNormalf, -1);
 		Vector3f negLeftNormalf = Vector3f.createMultiplication(leftNormalf, -1);
 		
-		Color4f diffuse = Color4f.createNaN();
-		Color4f specular = Color4f.createNaN();
 		TextureCoordinate2f uvs = edu.cmu.cs.dennisc.texture.TextureCoordinate2f.createNaN();
 		
-		sgLensVertices[0] = new Vertex(outerTopLeft, topNormalf, diffuse, specular, uvs);
-		sgLensVertices[1] = new Vertex(innerTopLeft, topNormalf, diffuse, specular, uvs);
-		sgLensVertices[2] = new Vertex(innerTopRight, topNormalf, diffuse, specular, uvs);
-		sgLensVertices[3] = new Vertex(outerTopRight, topNormalf, diffuse, specular, uvs);
+		sgLensVertices[0] = Vertex.createXYZIJKUV(outerTopLeft, topNormalf, uvs);
+		sgLensVertices[1] = Vertex.createXYZIJKUV(innerTopLeft, topNormalf, uvs);
+		sgLensVertices[2] = Vertex.createXYZIJKUV(innerTopRight, topNormalf, uvs);
+		sgLensVertices[3] = Vertex.createXYZIJKUV(outerTopRight, topNormalf, uvs);
 		
-		sgLensVertices[4] = new Vertex(outerTopRight, rightNormalf, diffuse, specular, uvs);
-		sgLensVertices[5] = new Vertex(innerTopRight, rightNormalf, diffuse, specular, uvs);
-		sgLensVertices[6] = new Vertex(innerBottomRight, rightNormalf, diffuse, specular, uvs);
-		sgLensVertices[7] = new Vertex(outerBottomRight, rightNormalf, diffuse, specular, uvs);
+		sgLensVertices[4] = Vertex.createXYZIJKUV(outerTopRight, rightNormalf, uvs);
+		sgLensVertices[5] = Vertex.createXYZIJKUV(innerTopRight, rightNormalf, uvs);
+		sgLensVertices[6] = Vertex.createXYZIJKUV(innerBottomRight, rightNormalf, uvs);
+		sgLensVertices[7] = Vertex.createXYZIJKUV(outerBottomRight, rightNormalf, uvs);
 		
-		sgLensVertices[8] = new Vertex(outerBottomRight, bottomNormalf, diffuse, specular, uvs);
-		sgLensVertices[9] = new Vertex(innerBottomRight, bottomNormalf, diffuse, specular, uvs);
-		sgLensVertices[10] = new Vertex(innerBottomLeft, bottomNormalf, diffuse, specular, uvs);
-		sgLensVertices[11] = new Vertex(outerBottomLeft, bottomNormalf, diffuse, specular, uvs);
+		sgLensVertices[8] = Vertex.createXYZIJKUV(outerBottomRight, bottomNormalf, uvs);
+		sgLensVertices[9] = Vertex.createXYZIJKUV(innerBottomRight, bottomNormalf, uvs);
+		sgLensVertices[10] = Vertex.createXYZIJKUV(innerBottomLeft, bottomNormalf, uvs);
+		sgLensVertices[11] = Vertex.createXYZIJKUV(outerBottomLeft, bottomNormalf, uvs);
 		
-		sgLensVertices[12] = new Vertex(outerBottomLeft, leftNormalf, diffuse, specular, uvs);
-		sgLensVertices[13] = new Vertex(innerBottomLeft, leftNormalf, diffuse, specular, uvs);
-		sgLensVertices[14] = new Vertex(innerTopLeft, leftNormalf, diffuse, specular, uvs);
-		sgLensVertices[15] = new Vertex(outerTopLeft, leftNormalf, diffuse, specular, uvs);
+		sgLensVertices[12] = Vertex.createXYZIJKUV(outerBottomLeft, leftNormalf, uvs);
+		sgLensVertices[13] = Vertex.createXYZIJKUV(innerBottomLeft, leftNormalf, uvs);
+		sgLensVertices[14] = Vertex.createXYZIJKUV(innerTopLeft, leftNormalf, uvs);
+		sgLensVertices[15] = Vertex.createXYZIJKUV(outerTopLeft, leftNormalf, uvs);
 		
 		//The opposite faces
-		sgLensVertices[16] = new Vertex(outerTopRight, negTopNormalf, diffuse, specular, uvs);
-		sgLensVertices[17] = new Vertex(innerTopRight, negTopNormalf, diffuse, specular, uvs);
-		sgLensVertices[18] = new Vertex(innerTopLeft, negTopNormalf, diffuse, specular, uvs);
-		sgLensVertices[19] = new Vertex(outerTopLeft, negTopNormalf, diffuse, specular, uvs);
+		sgLensVertices[16] = Vertex.createXYZIJKUV(outerTopRight, negTopNormalf, uvs);
+		sgLensVertices[17] = Vertex.createXYZIJKUV(innerTopRight, negTopNormalf, uvs);
+		sgLensVertices[18] = Vertex.createXYZIJKUV(innerTopLeft, negTopNormalf, uvs);
+		sgLensVertices[19] = Vertex.createXYZIJKUV(outerTopLeft, negTopNormalf, uvs);
 		
-		sgLensVertices[20] = new Vertex(outerBottomRight, negRightNormalf, diffuse, specular, uvs);
-		sgLensVertices[21] = new Vertex(innerBottomRight, negRightNormalf, diffuse, specular, uvs);
-		sgLensVertices[22] = new Vertex(innerTopRight, negRightNormalf, diffuse, specular, uvs);
-		sgLensVertices[23] = new Vertex(outerTopRight, negRightNormalf, diffuse, specular, uvs);
+		sgLensVertices[20] = Vertex.createXYZIJKUV(outerBottomRight, negRightNormalf, uvs);
+		sgLensVertices[21] = Vertex.createXYZIJKUV(innerBottomRight, negRightNormalf, uvs);
+		sgLensVertices[22] = Vertex.createXYZIJKUV(innerTopRight, negRightNormalf, uvs);
+		sgLensVertices[23] = Vertex.createXYZIJKUV(outerTopRight, negRightNormalf, uvs);
 		
-		sgLensVertices[24] = new Vertex(outerBottomLeft, negBottomNormalf, diffuse, specular, uvs);
-		sgLensVertices[25] = new Vertex(innerBottomLeft, negBottomNormalf, diffuse, specular, uvs);
-		sgLensVertices[26] = new Vertex(innerBottomRight, negBottomNormalf, diffuse, specular, uvs);
-		sgLensVertices[27] = new Vertex(outerBottomRight, negBottomNormalf, diffuse, specular, uvs);
+		sgLensVertices[24] = Vertex.createXYZIJKUV(outerBottomLeft, negBottomNormalf, uvs);
+		sgLensVertices[25] = Vertex.createXYZIJKUV(innerBottomLeft, negBottomNormalf, uvs);
+		sgLensVertices[26] = Vertex.createXYZIJKUV(innerBottomRight, negBottomNormalf, uvs);
+		sgLensVertices[27] = Vertex.createXYZIJKUV(outerBottomRight, negBottomNormalf, uvs);
 		
-		sgLensVertices[28] = new Vertex(outerTopLeft, negLeftNormalf, diffuse, specular, uvs);
-		sgLensVertices[29] = new Vertex(innerTopLeft, negLeftNormalf, diffuse, specular, uvs);
-		sgLensVertices[30] = new Vertex(innerBottomLeft, negLeftNormalf, diffuse, specular, uvs);
-		sgLensVertices[31] = new Vertex(outerBottomLeft, negLeftNormalf, diffuse, specular, uvs);
+		sgLensVertices[28] = Vertex.createXYZIJKUV(outerTopLeft, negLeftNormalf, uvs);
+		sgLensVertices[29] = Vertex.createXYZIJKUV(innerTopLeft, negLeftNormalf, uvs);
+		sgLensVertices[30] = Vertex.createXYZIJKUV(innerBottomLeft, negLeftNormalf, uvs);
+		sgLensVertices[31] = Vertex.createXYZIJKUV(outerBottomLeft, negLeftNormalf, uvs);
 		
 		sgLensGeometry.vertices.setValue( sgLensVertices );
 		sgLensVisual.geometries.setValue( new Geometry[] { sgLensGeometry } );

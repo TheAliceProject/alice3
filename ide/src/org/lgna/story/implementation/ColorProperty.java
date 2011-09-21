@@ -61,8 +61,6 @@ public abstract class ColorProperty extends Property< edu.cmu.cs.dennisc.color.C
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.color.Color4f interpolate( edu.cmu.cs.dennisc.color.Color4f a, edu.cmu.cs.dennisc.color.Color4f b, double portion ) {
-		edu.cmu.cs.dennisc.color.Color4f rv = edu.cmu.cs.dennisc.color.Color4f.createNaN();
-		rv.interpolate( a, b, (float)portion );
-		return rv;
+		return edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a, b, (float)portion );
 	}
 }

@@ -53,17 +53,12 @@ public class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 	public static final int FORMAT_SPECULAR_HIGHLIGHT_COLOR = 8;
 	public static final int FORMAT_TEXTURE_COORDINATE_0 = 16;
 
-	public final edu.cmu.cs.dennisc.math.Point3 position = edu.cmu.cs.dennisc.math.Point3.createNaN();
-	public final edu.cmu.cs.dennisc.math.Vector3f normal = edu.cmu.cs.dennisc.math.Vector3f.createNaN();
-	public final edu.cmu.cs.dennisc.color.Color4f diffuseColor = edu.cmu.cs.dennisc.color.Color4f.createNaN();
-	public final edu.cmu.cs.dennisc.color.Color4f specularHighlightColor = edu.cmu.cs.dennisc.color.Color4f.createNaN();
-	public final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0 = edu.cmu.cs.dennisc.texture.TextureCoordinate2f.createNaN();
+	public final edu.cmu.cs.dennisc.math.Point3 position;
+	public final edu.cmu.cs.dennisc.math.Vector3f normal;
+	public final edu.cmu.cs.dennisc.color.Color4f diffuseColor;
+	public final edu.cmu.cs.dennisc.color.Color4f specularHighlightColor;
+	public final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
 
-	public Vertex() {
-	}
-//	public Vertex( int format ) {
-//		initializeToFormat( format );
-//	}
 	public Vertex( 
 			edu.cmu.cs.dennisc.math.Point3 position, 
 			edu.cmu.cs.dennisc.math.Vector3f normal, 
@@ -71,80 +66,100 @@ public class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 			edu.cmu.cs.dennisc.color.Color4f specularHighlightColor,
 			edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0 
 	) {
-		this.position.set( position );
-		this.normal.set( normal );
-		this.diffuseColor.set( diffuseColor );
-		this.specularHighlightColor.set( specularHighlightColor );
-		this.textureCoordinate0.set( textureCoordinate0 );
+		this.position = position != null ? position : edu.cmu.cs.dennisc.math.Point3.createNaN();
+		this.normal = normal != null ? normal : edu.cmu.cs.dennisc.math.Vector3f.createNaN();
+		this.diffuseColor = diffuseColor != null ? diffuseColor : edu.cmu.cs.dennisc.color.Color4f.createNaN();
+		this.specularHighlightColor = specularHighlightColor != null ? specularHighlightColor : edu.cmu.cs.dennisc.color.Color4f.createNaN();
+		this.textureCoordinate0 = textureCoordinate0 != null ? textureCoordinate0 : edu.cmu.cs.dennisc.texture.TextureCoordinate2f.createNaN();
 	}
 	public Vertex( Vertex other ) {
 		this( other.position, other.normal, other.diffuseColor, other.specularHighlightColor, other.textureCoordinate0 );
 	}
 	public Vertex( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
-	}
-	@Deprecated
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		position.decode( binaryDecoder );
-		normal.decode( binaryDecoder );
-		diffuseColor.decode( binaryDecoder );
-		specularHighlightColor.decode( binaryDecoder );
-		textureCoordinate0.decode( binaryDecoder );
+		position = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		normal = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		diffuseColor = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		specularHighlightColor = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		textureCoordinate0 = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		position.encode( binaryEncoder );
-		normal.encode( binaryEncoder );
-		diffuseColor.encode( binaryEncoder );
-		specularHighlightColor.encode( binaryEncoder );
-		textureCoordinate0.encode( binaryEncoder );
+		binaryEncoder.encode( position );
+		binaryEncoder.encode( normal );
+		binaryEncoder.encode( diffuseColor );
+		binaryEncoder.encode( specularHighlightColor );
+		binaryEncoder.encode( textureCoordinate0 );
 	}
 
+	public static Vertex createXYZ( edu.cmu.cs.dennisc.math.Point3 xyz ) {
+		return new Vertex(
+				xyz,
+				null,
+				null,
+				null,
+				null
+//				edu.cmu.cs.dennisc.math.Vector3f.createNaN(),
+//				edu.cmu.cs.dennisc.color.Color4f.createNaN(),
+//				edu.cmu.cs.dennisc.color.Color4f.createNaN(),
+//				edu.cmu.cs.dennisc.texture.TextureCoordinate2f.createNaN()
+		);
+	}
 	public static Vertex createXYZ( double x, double y, double z ) {
-		Vertex vertex = new Vertex();
-		vertex.position.set( x, y, z );
-		return vertex;
+		return createXYZ( new edu.cmu.cs.dennisc.math.Point3( x, y, z ) );
+	}
+	public static Vertex createXYZUV( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv ) {
+		return new Vertex(
+				xyz,
+				null, 
+				null,
+				null,
+				uv
+		);
 	}
 	public static Vertex createXYZUV( double x, double y, double z, float u, float v ) {
-		Vertex vertex = new Vertex();
-		vertex.position.set( x, y, z );
-		vertex.textureCoordinate0.set( u, v );
-		return vertex;
+		return createXYZUV( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v ) );
+	}
+	public static Vertex createXYZIJKUV( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.math.Vector3f ijk, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv ) {
+		return new Vertex(
+				xyz,
+				ijk, 
+				null,
+				null,
+				uv
+		);
 	}
 	public static Vertex createXYZIJKUV( double x, double y, double z, float i, float j, float k, float u, float v ) {
-		Vertex vertex = new Vertex();
-		vertex.position.set( x, y, z );
-		vertex.normal.set( i, j, k );
-		vertex.textureCoordinate0.set( u, v );
-		return vertex;
+		return createXYZIJKUV( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.math.Vector3f( i, j, k ), new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v ) );
 	}
-	public static Vertex createXYZIJK( double x, double y, double z, float i, float j, float k ) {
-		Vertex vertex = new Vertex();
-		vertex.position.set( x, y, z );
-		vertex.normal.set( i, j, k );
-		return vertex;
+	public static Vertex createXYZIJK( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.math.Vector3f ijk ) {
+		return new Vertex(
+				xyz,
+				ijk, 
+				null,
+				null,
+				null
+		);
 	}
 
+	public static Vertex createXYZIJK( double x, double y, double z, float i, float j, float k ) {
+		return createXYZIJK( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.math.Vector3f( i, j, k ) );
+	}
+
+	public static Vertex createXYZRGBA( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.color.Color4f rgba ) {
+		return new Vertex(
+				xyz,
+				null, 
+				rgba,
+				null,
+				null
+		);
+	}
 	public static Vertex createXYZRGBA( double x, double y, double z, float r, float g, float b, float a ) {
-		Vertex vertex = new Vertex();
-		vertex.position.set( x, y, z );
-		vertex.diffuseColor.set( r, g, b, a );
-		return vertex;
+		return createXYZRGBA( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.color.Color4f( r, g, b, a ) );
 	}
 	public static Vertex createXYZRGB( double x, double y, double z, float r, float g, float b ) {
 		return createXYZRGBA( x, y, z, r, g, b, 1.0f );
 	}
 
-	//todo?
-	//	@Override
-	//	public synchronized Object clone() {
-	//		try {
-	//			//todo?
-	//			//do i need to make new clones of position, etc?
-	//			return super.clone();
-	//		} catch( CloneNotSupportedException e ) {
-	//			throw new InternalError();
-	//		}
-	//	}
 	@Override
 	public boolean equals( Object o ) {
 		if( this == o ) {
@@ -217,40 +232,23 @@ public class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 	@Deprecated
 	public int getFormat() {
 		int format = 0;
-		if( position.isNaN() == false ) {
+		if( position != null && position.isNaN() == false ) {
 			format |= FORMAT_POSITION;
 		}
-		if( normal.isNaN() == false ) {
+		if( normal != null && normal.isNaN() == false ) {
 			format |= FORMAT_NORMAL;
 		}
-		if( diffuseColor.isNaN() == false ) {
+		if( diffuseColor != null && diffuseColor.isNaN() == false ) {
 			format |= FORMAT_DIFFUSE_COLOR;
 		}
-		if( specularHighlightColor.isNaN() == false ) {
+		if( specularHighlightColor != null && specularHighlightColor.isNaN() == false ) {
 			format |= FORMAT_SPECULAR_HIGHLIGHT_COLOR;
 		}
-		if( textureCoordinate0.isNaN() == false ) {
+		if( textureCoordinate0 != null && textureCoordinate0.isNaN() == false ) {
 			format |= FORMAT_TEXTURE_COORDINATE_0;
 		}
 		return format;
 	}
-//	public void initializeToFormat( int format ) {
-//		if( (format & FORMAT_POSITION) != 0 ) {
-//			position = new edu.cmu.cs.dennisc.math.PointD3();
-//		}
-//		if( (format & FORMAT_NORMAL) != 0 ) {
-//			normal = new edu.cmu.cs.dennisc.math.VectorF3();
-//		}
-//		if( (format & FORMAT_DIFFUSE_COLOR) != 0 ) {
-//			diffuseColor = new edu.cmu.cs.dennisc.color.ColorF4();
-//		}
-//		if( (format & FORMAT_SPECULAR_HIGHLIGHT_COLOR) != 0 ) {
-//			specularHighlightColor = new edu.cmu.cs.dennisc.color.ColorF4();
-//		}
-//		if( (format & FORMAT_TEXTURE_COORDINATE_0) != 0 ) {
-//			textureCoordinate0 = new edu.cmu.cs.dennisc.texture.TextureCoordinateF2();
-//		}
-//	}
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 m ) {
 		if( position.isNaN() == false ) {
 			m.transform( position );
@@ -260,25 +258,6 @@ public class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 		}
 	}
 
-	//todo: handle null better?
-	public void set( Vertex other ) {
-//		assert getFormat() == other.getFormat();
-//		if( position != null ) {
-//			position.set( other.position );
-//		}
-//		if( normal != null ) {
-//			normal.set( other.normal );
-//		}
-//		if( diffuseColor != null ) {
-//			diffuseColor.set( other.diffuseColor );
-//		}
-//		if( specularHighlightColor != null ) {
-//			specularHighlightColor.set( other.specularHighlightColor );
-//		}
-//		if( textureCoordinate0 != null ) {
-//			textureCoordinate0.set( other.textureCoordinate0 );
-//		}
-	}
 	@Override
 	public String toString() {
 		return Vertex.class.getName() + "[position=" + position + ",normal=" + normal + ",diffuseColor=" + diffuseColor + ",specularHighlightColor=" + specularHighlightColor + ",textureCoordinate0=" + textureCoordinate0 + "]";
