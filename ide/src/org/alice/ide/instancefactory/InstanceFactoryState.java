@@ -109,20 +109,30 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< InstanceFactory > blankNode ) {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager();
-		rv.add( ThisInstanceFactoryFillIn.getInstance() );
-		//rv.add( ThisMethodInvocationFactoryFillIn.getInstance( org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
-		org.lgna.project.ast.NamedUserType type = org.alice.ide.IDE.getActiveInstance().getSceneType();
-		for( org.lgna.project.ast.UserField field : type.getDeclaredFields() ) {
-			if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-				InstanceFactoryFillInWithoutBlanks fillIn = ThisFieldAccessFactoryFillIn.getInstance( field );
-				org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu = apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field );
-				if( subMenu != null ) {
-					rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( fillIn, subMenu ) );
-				} else {
-					rv.add( fillIn );
+		
+		org.lgna.project.ast.AbstractType< ?,?,? > type = getDeclaringType( org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getValue() );
+
+		ThisInstanceFactoryFillIn thisFillIn = ThisInstanceFactoryFillIn.getInstance();
+		org.lgna.croquet.CascadeMenuModel< InstanceFactory > thisSubMenu = apiConfigurationManager.getInstanceFactorySubMenuForThis( type );
+		if( thisSubMenu != null ) {
+			rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( thisFillIn, thisSubMenu ) );
+		} else {
+			rv.add( thisFillIn );
+		}
+		if( type instanceof org.lgna.project.ast.NamedUserType ) {
+			org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
+			for( org.lgna.project.ast.UserField field : namedUserType.getDeclaredFields() ) {
+				if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
+					InstanceFactoryFillInWithoutBlanks fieldFillIn = ThisFieldAccessFactoryFillIn.getInstance( field );
+					org.lgna.croquet.CascadeMenuModel< InstanceFactory > fieldSubMenu = apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field );
+					if( fieldSubMenu != null ) {
+						rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( fieldFillIn, fieldSubMenu ) );
+					} else {
+						rv.add( fieldFillIn );
+					}
 				}
+				//rv.add( ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
 			}
-			//rv.add( ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
 		}
 		return rv;
 	}

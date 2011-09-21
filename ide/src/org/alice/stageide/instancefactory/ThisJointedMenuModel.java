@@ -41,20 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide;
+package org.alice.stageide.instancefactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ApiConfigurationManager {
-	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type );
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
-	public java.util.List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes();
-	public org.lgna.project.ast.AbstractType< ?,?,? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
-	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?,?,? > argumentType );
-	public org.lgna.croquet.components.JComponent< ? > createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
-	public org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails );
+public class ThisJointedMenuModel extends JointedMenuModel {
+	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ThisJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ThisJointedMenuModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
+		synchronized( map ) {
+			ThisJointedMenuModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ThisJointedMenuModel( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
+	}
+	private ThisJointedMenuModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), type );
+	}
+	@Override
+	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		return org.alice.ide.instancefactory.ThisMethodInvocationFactoryFillIn.getInstance( method );
+	}
 }

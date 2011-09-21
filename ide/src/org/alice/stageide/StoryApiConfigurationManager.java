@@ -139,14 +139,18 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceChildrenFor(type);
 	}
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
-		return null;
+	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		if( org.alice.stageide.instancefactory.JointedMenuModel.isJointed( type ) ) {
+			return org.alice.stageide.instancefactory.ThisJointedMenuModel.getInstance( type );
+		} else {
+			return null;
+		}
 	}
 	
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
 		if( org.alice.stageide.instancefactory.JointedMenuModel.isJointed( type ) ) {
-			return org.alice.stageide.instancefactory.JointedMenuModel.getInstance( field );
+			return org.alice.stageide.instancefactory.ThisFieldAccessJointedMenuModel.getInstance( field );
 		} else {
 			return null;
 		}
