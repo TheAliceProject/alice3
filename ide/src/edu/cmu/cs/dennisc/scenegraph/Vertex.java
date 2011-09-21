@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 /**
  * @author Dennis Cosgrove
  */
-public class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public static final int FORMAT_POSITION = 1;
 	public static final int FORMAT_NORMAL = 2;
 	public static final int FORMAT_DIFFUSE_COLOR = 4;
@@ -228,6 +228,11 @@ public class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 			}
 		}
 	}
+
+	//todo: 
+//	@Override
+//	public int hashCode() {
+//	}
 
 	@Deprecated
 	public int getFormat() {

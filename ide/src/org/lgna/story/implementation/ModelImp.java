@@ -90,10 +90,18 @@ public abstract class ModelImp extends TransformableImp {
 			edu.cmu.cs.dennisc.color.Color4f color4f = org.lgna.story.ImplementationAccessor.getColor4f( value, edu.cmu.cs.dennisc.color.Color4f.WHITE );
 			edu.cmu.cs.dennisc.texture.Texture texture = org.lgna.story.ImplementationAccessor.getTexture( value, null );
 			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
-				sgAppearance.diffuseColor.setValue( color4f );
+				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( color4f, sgAppearance.diffuseColor.getValue() ) ) {
+					//pass
+				} else {
+					sgAppearance.diffuseColor.setValue( color4f );
+				}
 				if( sgAppearance instanceof edu.cmu.cs.dennisc.scenegraph.TexturedAppearance ) {
 					edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgTexturedAppearance = (edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)sgAppearance;
-					sgTexturedAppearance.diffuseColorTexture.setValue( texture );
+					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( texture, sgTexturedAppearance.diffuseColorTexture.getValue() ) ) {
+						//pass
+					} else {
+						sgTexturedAppearance.diffuseColorTexture.setValue( texture );
+					}
 				}
 			}
 		}
