@@ -52,6 +52,7 @@ import org.alice.interact.SnapLine;
 import org.alice.interact.SnapSphere;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.handle.RotationRingHandle;
+import org.alice.stageide.sceneeditor.snap.SnapState;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Angle;
@@ -452,16 +453,16 @@ public class SnapUtilities
 	public static Point3 doMovementSnapping(Transformable t, Point3 currentPosition, AbstractDragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera)
 	{
 		Point3 snapPosition = new Point3(currentPosition);
-		if (dragAdapter != null && dragAdapter.getSnapState() != null)
+		if (dragAdapter != null)
 		{
 			//Try snapping to various snaps
-			if (dragAdapter.getSnapState().shouldSnapToGround())
+			if (SnapState.getInstance().shouldSnapToGround())
 			{
 				snapPosition = SnapUtilities.snapObjectToGround(t, currentPosition, referenceFrame);
 			}
-			if (dragAdapter.getSnapState().shouldSnapToGrid())
+			if (SnapState.getInstance().shouldSnapToGrid())
 			{
-				snapPosition = SnapUtilities.snapObjectToGrid(t, snapPosition, dragAdapter.getSnapState().getGridSpacing(), referenceFrame);
+				snapPosition = SnapUtilities.snapObjectToGrid(t, snapPosition, SnapState.getInstance().getGridSpacing(), referenceFrame);
 			}
 			//Visualize any snapping that happened
 			if (camera != null)
@@ -580,11 +581,11 @@ public class SnapUtilities
 	{
 		Angle snapAngle = new AngleInRadians(currentAngle);
 		//Try snapping to various snaps
-		if (dragAdapter != null && dragAdapter.getSnapState() != null)
+		if (dragAdapter != null)
 		{
-			if (dragAdapter.getSnapState().shouldSnapToRotation())
+			if (SnapState.getInstance().shouldSnapToRotation())
 			{
-				snapAngle = snapObjectToAngle(currentAngle, dragAdapter.getSnapState().getRotationSnapAngle());
+				snapAngle = snapObjectToAngle(currentAngle, SnapState.getInstance().getRotationSnapAngle());
 			}
 		}
 		return snapAngle;

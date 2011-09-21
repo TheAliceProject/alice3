@@ -43,6 +43,8 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.BoundedIntegerState.Details;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -95,16 +97,16 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 			} else {
 				this.spinnerModel = new javax.swing.AbstractSpinnerModel() {
 					public Double getNextValue() {
-						throw new RuntimeException( "todo" );
+						return this.getValue() + Details.this.boundedRangeModel.getExtent();
 					}
 					public Double getPreviousValue() {
-						throw new RuntimeException( "todo" );
+						return this.getValue() - Details.this.boundedRangeModel.getExtent();
 					}
 					public Double getValue() {
-						throw new RuntimeException( "todo" );
+						return (double)Details.this.boundedRangeModel.getValue();
 					}
 					public void setValue( Object value ) {
-						throw new RuntimeException( "todo" );
+						Details.this.boundedRangeModel.setValue( (Integer)value );
 					}
 				};
 			}

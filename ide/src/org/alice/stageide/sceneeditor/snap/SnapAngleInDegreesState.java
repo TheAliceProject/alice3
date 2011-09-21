@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.snap;
 
-package org.alice.stageide.croquet.models.sceneditor;
+import org.lgna.croquet.BoundedDoubleState;
 
-import org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel;
-import org.lgna.croquet.PredeterminedTab;
-
-
-public class ObjectPropertiesTab extends PredeterminedTab
-{
-    private static class SingletonHolder {
-        private static ObjectPropertiesTab instance = new ObjectPropertiesTab();
-    }
-    public static ObjectPropertiesTab getInstance() {
-        return SingletonHolder.instance;
-    }
-    private ObjectPropertiesTab() {
-        super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
-    }
-    @Override
-    protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-        return new SceneObjectPropertyManagerPanel();
-    }
-
-    @Override
-    public SceneObjectPropertyManagerPanel getMainComponent()
-    {
-        org.lgna.croquet.components.JComponent< ? > c = super.getMainComponent();
-        if ( c instanceof SceneObjectPropertyManagerPanel)
-        {
-            return (SceneObjectPropertyManagerPanel)c;
-        }
-        return null;
-    }
-    
-    
+/**
+ * @author dculyba
+ *
+ */
+public class SnapAngleInDegreesState extends BoundedDoubleState {
+	private static class SingletonHolder {
+		private static SnapAngleInDegreesState instance = new SnapAngleInDegreesState();
+	}
+	public static SnapAngleInDegreesState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SnapAngleInDegreesState() {
+		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8427dc9c-2057-44c0-9cbd-0ea7d6283480" ) ).minimum( 15.0 ).maximum( 180.0 ).initialValue( 30.0 ).extent( 15.0 ) );
+	}
 }

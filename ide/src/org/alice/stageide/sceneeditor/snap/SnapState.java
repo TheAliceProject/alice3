@@ -45,6 +45,7 @@ package org.alice.stageide.sceneeditor.snap;
 
 
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.BoundedDoubleState;
 
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 
@@ -52,25 +53,16 @@ import edu.cmu.cs.dennisc.math.Angle;
 
 public class SnapState 
 {
-	public static Integer[] ANGLE_SNAP_OPTIONS = {new Integer(15), new Integer(30), new Integer(45), new Integer(60), new Integer(90), new Integer(120), new Integer(180)};
-	private double gridSpacing = .5d;
-	private Angle rotationSnapAngle = new AngleInDegrees(45); //In degrees
 	
-	
-	public SnapState()
-	{
+	private static class SingletonHolder {
+		private static SnapState instance = new SnapState();
+	}
+	public static SnapState getInstance() {
+		return SingletonHolder.instance;
 	}
 	
-	public static Integer getAngleOptionForAngle(int angle)
+	private SnapState()
 	{
-		for (Integer angleOption : ANGLE_SNAP_OPTIONS)
-		{
-			if (angleOption.equals(angle))
-			{
-				return angleOption;
-			}
-		}
-		return null;
 	}
 	
 	public BooleanState getIsSnapEnabledState()
@@ -96,6 +88,16 @@ public class SnapState
 	public BooleanState getShowSnapGridState()
 	{
 		return ShowSnapGridState.getInstance();
+	}
+	
+	public BoundedDoubleState getSnapGridSpacingState()
+	{
+		return SnapGridSpacingState.getInstance();
+	}
+	
+	public BoundedDoubleState getSnapAngleInDegreesState()
+	{
+		return SnapAngleInDegreesState.getInstance();
 	}
 	
 	public void setShouldSnapToGroundEnabled(boolean shouldSnapToGround)
@@ -130,12 +132,12 @@ public class SnapState
 	
 	public void setGridSpacing(double gridSpacing)
 	{
-		this.gridSpacing = gridSpacing;
+		this.getSnapGridSpacingState().setValue(gridSpacing);
 	}
 	
 	public double getGridSpacing()
 	{
-		return this.gridSpacing;
+		return this.getSnapGridSpacingState().getValue();
 	}
 	
 	public void setSnapEnabled(boolean snapEnabled)
@@ -165,17 +167,17 @@ public class SnapState
 	
 	public void setRotationSnapAngleInDegrees(double degrees)
 	{
-		this.rotationSnapAngle.setAsDegrees(degrees);
+		this.getSnapAngleInDegreesState().setValue(degrees);
 	}
 	
 	public void setRotationSnapAngle(Angle snapAngle)
 	{
-		this.rotationSnapAngle = new AngleInDegrees(snapAngle);
+		setRotationSnapAngleInDegrees(new AngleInDegrees(snapAngle).getAsDegrees());
 	}
 	
 	public Angle getRotationSnapAngle()
 	{
-		return this.rotationSnapAngle;
+		return new AngleInDegrees(this.getSnapAngleInDegreesState().getValue());
 	}
 	
 	public boolean shouldShowSnapGrid()

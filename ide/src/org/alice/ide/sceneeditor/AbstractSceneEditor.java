@@ -52,6 +52,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	
 	private org.lgna.project.ast.NamedUserType programType;
 	private org.lgna.project.virtualmachine.UserInstance programInstance;
+	private org.lgna.project.ast.UserField selectedField;
 	
 	private org.alice.ide.ProjectApplication.ProjectObserver projectObserver = new org.alice.ide.ProjectApplication.ProjectObserver() { 
 		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
@@ -151,6 +152,17 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 	
+	public org.lgna.project.ast.UserField getSelectedField()
+	{
+		return this.selectedField;
+	}
+	
+	public void setSelectedField(org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field)
+	{
+		assert declaringType == this.getActiveSceneType();
+		this.selectedField = field;
+	}
+	
 	public void addField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
 		assert declaringType == this.getActiveSceneType();
 		this.getActiveSceneType().fields.add(field);
@@ -159,6 +171,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		{
 			this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement(this.getActiveSceneInstance(), statement);
 		}
+		this.setSelectedField(declaringType, field);
 	}
 	
 	public void removeField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){

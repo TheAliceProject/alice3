@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.snap;
 
-package org.alice.stageide.croquet.models.sceneditor;
+import org.lgna.croquet.BoundedDoubleState;
 
-import org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel;
-import org.lgna.croquet.PredeterminedTab;
+/**
+ * @author dculyba
+ *
+ */
+public class SnapGridSpacingState extends BoundedDoubleState {
+	private static class SingletonHolder {
+		private static SnapGridSpacingState instance = new SnapGridSpacingState();
+	}
+	public static SnapGridSpacingState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SnapGridSpacingState() {
+		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "f8a1a56f-70da-41c7-9fb0-8d874a37ec27" ) ).minimum( 0.05 ).maximum( 10.0 ).initialValue( 0.5 ).extent( 0.05 ) );
+	}
 
-
-public class ObjectPropertiesTab extends PredeterminedTab
-{
-    private static class SingletonHolder {
-        private static ObjectPropertiesTab instance = new ObjectPropertiesTab();
-    }
-    public static ObjectPropertiesTab getInstance() {
-        return SingletonHolder.instance;
-    }
-    private ObjectPropertiesTab() {
-        super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
-    }
-    @Override
-    protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-        return new SceneObjectPropertyManagerPanel();
-    }
-
-    @Override
-    public SceneObjectPropertyManagerPanel getMainComponent()
-    {
-        org.lgna.croquet.components.JComponent< ? > c = super.getMainComponent();
-        if ( c instanceof SceneObjectPropertyManagerPanel)
-        {
-            return (SceneObjectPropertyManagerPanel)c;
-        }
-        return null;
-    }
-    
-    
 }
