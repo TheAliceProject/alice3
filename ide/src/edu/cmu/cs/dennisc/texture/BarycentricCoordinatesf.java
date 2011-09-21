@@ -45,13 +45,27 @@ package edu.cmu.cs.dennisc.texture;
 /**
  * @author Dennis Cosgrove
  */
-public class BarycentricCoordinatesf implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public float t0;
-	public float t1;
-	public float t2;
+public final class BarycentricCoordinatesf implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public final float t0;
+	public final float t1;
+	public final float t2;
 	
-	public BarycentricCoordinatesf( java.awt.Point p0, java.awt.Point p1, java.awt.Point p2, java.awt.Point p ) {
-		set( p0, p1, p2, p );
+	private BarycentricCoordinatesf( float a, float b, float c, float d, float e, float f, float g, float h, float i ) {
+		this.t0 = ( b*(f+i) - c*(e+h) ) / ( a*(e+h) - b*(d+g) );
+		this.t1 = ( a*(f+i) - c*(d+g) ) / ( b*(d+g) - a*(e+h) );
+		this.t2 = 1 - ( t0 + t1 );
+	}
+	private BarycentricCoordinatesf( java.awt.Point p0, java.awt.Point p1, java.awt.Point p2, java.awt.Point p ) {
+		this( p0.x, p0.y, 0, p1.x, p1.y, 0, p2.x, p2.y, 0, p.x, p.y, 0 );
+	}
+//	private BarycentricCoordinatesf( edu.cmu.cs.dennisc.math.Tuple3f p0, edu.cmu.cs.dennisc.math.Tuple3f p1, edu.cmu.cs.dennisc.math.Tuple3f p2, edu.cmu.cs.dennisc.math.Tuple3f p ) {
+//		this( p0.x, p0.y, p0.z, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p.x, p.y, p.z );
+//	}
+	private BarycentricCoordinatesf( float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x, float y, float z ) {
+		this( x0-x2, x1-x2, x2-x, y0-y2, y1-y2, y2-y, z0-z2, z1-z2, z2-z );
+	}
+	public static BarycentricCoordinatesf createInstance( java.awt.Point p0, java.awt.Point p1, java.awt.Point p2, java.awt.Point p ) {
+		return new BarycentricCoordinatesf( p0, p1, p2, p );
 	}
 	public BarycentricCoordinatesf( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.t0 = binaryDecoder.decodeFloat();
@@ -65,39 +79,47 @@ public class BarycentricCoordinatesf implements edu.cmu.cs.dennisc.codec.BinaryE
 		binaryEncoder.encode( t2 );
 	}
 
-	public void set( java.awt.Point p0, java.awt.Point p1, java.awt.Point p2, java.awt.Point p ) {
-		set( p0.x, p0.y, 0, p1.x, p1.y, 0, p2.x, p2.y, 0, p.x, p.y, 0 );
+	@Override
+	public final boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o != null ) {
+				if( this.getClass().equals( o.getClass() ) ) {
+					BarycentricCoordinatesf other = (BarycentricCoordinatesf)o;
+					return Float.compare( this.t0, other.t0 ) == 0 && Float.compare( this.t1, other.t1 ) == 0 && Float.compare( this.t2, other.t2 ) == 0;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
 	}
-
-	public void set( edu.cmu.cs.dennisc.math.Tuple3f p0, edu.cmu.cs.dennisc.math.Tuple3f p1, edu.cmu.cs.dennisc.math.Tuple3f p2, edu.cmu.cs.dennisc.math.Tuple3f p ) {
-		set( p0.x, p0.y, p0.z, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p.x, p.y, p.z );
-	}
-
-	private void set( float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x, float y, float z ) {
-		set( x0-x2, x1-x2, x2-x, y0-y2, y1-y2, y2-y, z0-z2, z1-z2, z2-z );
-	}
-	
-	private void set( float a, float b, float c, float d, float e, float f, float g, float h, float i ) {
-		this.t0 = ( b*(f+i) - c*(e+h) ) / ( a*(e+h) - b*(d+g) );
-		this.t1 = ( a*(f+i) - c*(d+g) ) / ( b*(d+g) - a*(e+h) );
-		this.t2 = 1 - ( t0 + t1 );
-	}
-	
-
-	private static edu.cmu.cs.dennisc.texture.TextureCoordinate2f addMultiply( edu.cmu.cs.dennisc.texture.TextureCoordinate2f rv, float a, edu.cmu.cs.dennisc.texture.TextureCoordinate2f b ) {
-		rv.u += a * b.u;
-		rv.v += a * b.v;
+	@Override
+	public final int hashCode() {
+		int rv = 17;
+		rv = 37*rv + this.getClass().hashCode();
+		rv = 37*rv + Float.floatToIntBits( this.t0 );
+		rv = 37*rv + Float.floatToIntBits( this.t1 );
+		rv = 37*rv + Float.floatToIntBits( this.t2 );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.texture.TextureCoordinate2f interpolate( edu.cmu.cs.dennisc.texture.TextureCoordinate2f rv, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv0, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv1, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv2 ) {
-		rv.set( 0f, 0f );
-		addMultiply( rv, t0, uv0 );
-		addMultiply( rv, t1, uv1 );
-		addMultiply( rv, t2, uv2 );
-		return rv;
-	}
-	public edu.cmu.cs.dennisc.texture.TextureCoordinate2f interpolate( edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv0, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv1, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv2 ) {
-		return interpolate( new edu.cmu.cs.dennisc.texture.TextureCoordinate2f(), uv0, uv1, uv2 );
+	
+	public edu.cmu.cs.dennisc.texture.TextureCoordinate2f createInterpolation( edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv0, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv1, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv2 ) {
+		float u = 0.0f;
+		float v = 0.0f;
+		
+		u += this.t0 * uv0.u;
+		v += this.t0 * uv0.v;
+		
+		u += this.t1 * uv1.u;
+		v += this.t1 * uv1.v;
+
+		u += this.t2 * uv2.u;
+		v += this.t2 * uv2.v;
+		
+		return new TextureCoordinate2f( u, v );
 	}
 }

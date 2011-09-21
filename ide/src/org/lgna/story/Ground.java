@@ -61,13 +61,6 @@ public class Ground extends Entity implements MutableRider, Visual {
 		SurfaceAppearance( String resourceName ) {
 			this.resourceName = resourceName;
 		}
-		public java.lang.reflect.Field getReflectField() {
-			try {
-				return this.getClass().getDeclaredField( this.name() );
-			} catch( NoSuchFieldException nsfe ) {
-				throw new RuntimeException( nsfe );
-			}
-		}
 		public java.net.URL getResource() {
 			return Ground.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
 		}

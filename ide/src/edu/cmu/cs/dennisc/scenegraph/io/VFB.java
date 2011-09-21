@@ -76,16 +76,16 @@ public class VFB {
 		if( nVersion==1 ) {
 			int vertexCount = dis.readInt();
 			Vertex[] vertices = new Vertex[vertexCount];
-			for (int i=0; i<vertices.length; i++) {
-				vertices[i] = new Vertex();
-				vertices[i].position.x = -dis.readFloat();
-				vertices[i].position.y = dis.readFloat();
-				vertices[i].position.z = dis.readFloat();
-				vertices[i].normal.x = -dis.readFloat();
-				vertices[i].normal.y = dis.readFloat();
-				vertices[i].normal.z = dis.readFloat();
-				vertices[i].textureCoordinate0.u = dis.readFloat();
-				vertices[i].textureCoordinate0.v = dis.readFloat();
+			for (int index=0; index<vertices.length; index++) {
+				float x = -dis.readFloat();
+				float y = dis.readFloat();
+				float z = dis.readFloat();
+				float i = -dis.readFloat();
+				float j = dis.readFloat();
+				float k = dis.readFloat();
+				float u = dis.readFloat();
+				float v = dis.readFloat();
+				vertices[index] = Vertex.createXYZIJKUV( x, y, z, i, j, k, u, v );
 			}
 
 			int faceCount = dis.readInt();

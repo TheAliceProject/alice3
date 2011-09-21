@@ -81,9 +81,7 @@ public abstract class ColorTargetBasedAnimation extends TargetBasedFrameObserver
 
 	@Override
 	protected Color4f interpolate( Color4f v0, Color4f v1, double deltaSinceLastUpdate ) {
-		Color4f toReturn = new Color4f(v0);
-		toReturn.interpolate( v1, (float)(deltaSinceLastUpdate*this.speed) );
-		return toReturn;
+		return Color4f.createInterpolation( v0, v1, (float)(deltaSinceLastUpdate*this.speed) );
 	}
 
 	@Override

@@ -87,14 +87,15 @@ public class PaintView extends org.lgna.croquet.components.ViewController< javax
 						org.lgna.story.Paint paint = (org.lgna.story.Paint)values[ 0 ];
 						
 						edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( paint, null );
-						edu.cmu.cs.dennisc.texture.BufferedImageTexture texture = org.lgna.story.ImplementationAccessor.getTexture( paint, null );
+						edu.cmu.cs.dennisc.texture.Texture texture = org.lgna.story.ImplementationAccessor.getTexture( paint, null );
 
 						if( color != null ) {
 							g.setColor( color.getAsAWTColor() );
 							g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 						}
-						if( texture != null ) {
-							edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredScaledToFitImage( g, texture.getBufferedImage(), this );
+						if( texture instanceof edu.cmu.cs.dennisc.texture.BufferedImageTexture ) {
+							edu.cmu.cs.dennisc.texture.BufferedImageTexture bufferedImageTexture = (edu.cmu.cs.dennisc.texture.BufferedImageTexture)texture;
+							edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredScaledToFitImage( g, bufferedImageTexture.getBufferedImage(), this );
 						}
 					}
 				}
