@@ -57,6 +57,10 @@ public abstract class PredeterminedTypeExpressionState extends StandardExpressio
 	}
 	
 	@Override
+	protected org.lgna.project.annotations.ValueDetails< ? > getValueDetails() {
+		return null;
+	}
+	@Override
 	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
 		return this.type;
 	}
