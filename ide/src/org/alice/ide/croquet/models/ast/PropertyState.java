@@ -47,29 +47,29 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
-	private static java.util.Map< org.lgna.project.ast.JavaMethod, PropertyState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	
 	private static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
 		java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
 		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr );
 		return org.lgna.project.ast.JavaMethod.getInstance( sttr );
 	}
-	private static synchronized PropertyState getInstanceForSetter( org.lgna.project.ast.JavaMethod setter ) {
-		PropertyState rv = map.get( setter );
+	private static synchronized PropertyState getInstanceForSetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
+		PropertyState rv = map.get( group, setter );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new PropertyState( setter );
-			map.put( setter, rv );
+			rv = new PropertyState( group, setter );
+			map.put( group, setter, rv );
 		}
 		return rv;
 	}
-	public static synchronized PropertyState getInstanceForGetter( org.lgna.project.ast.JavaMethod getter ) {
-		return getInstanceForSetter( getSetterForGetter( getter ) );
+	public static synchronized PropertyState getInstanceForGetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod getter ) {
+		return getInstanceForSetter( group, getSetterForGetter( getter ) );
 	}
 	private final org.lgna.project.ast.JavaMethod setter;
-	private PropertyState( org.lgna.project.ast.JavaMethod setter ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7df7024e-5eef-4ed0-b463-da3719955e7a" ), null );
+	private PropertyState( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
+		super( group, java.util.UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), null );
 		this.setter = setter;
 	}
 	private org.lgna.project.ast.JavaMethodParameter getParameter0() {
