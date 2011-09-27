@@ -57,4 +57,5 @@ public interface ApiConfigurationManager {
 	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?,?,? > argumentType );
 	public org.lgna.croquet.components.JComponent< ? > createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
 	public org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails );
+	public org.alice.ide.ast.ExpressionCreator getExpressionCreator();
 }

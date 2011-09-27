@@ -48,6 +48,7 @@ package org.alice.stageide;
  */
 public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurationManager {
 	SINGLETON;
+	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private StoryApiConfigurationManager() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.Entity.class );
 		final int SMALL_ICON_SIZE = 32;
@@ -207,5 +208,8 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		} else {
 			return null;
 		}
+	}
+	public org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
+		return this.expressionCreator;
 	}
 }

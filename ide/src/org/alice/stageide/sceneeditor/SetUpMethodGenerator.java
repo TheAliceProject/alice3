@@ -46,6 +46,10 @@ package org.alice.stageide.sceneeditor;
  * @author Dennis Cosgrove
  */
 public class SetUpMethodGenerator {
+	private static org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
+		return org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+	}
+
 	private static org.lgna.project.ast.Expression createInstanceExpression( boolean isThis, org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.Expression thisExpression = new org.lgna.project.ast.ThisExpression();
 		if( isThis ) {
@@ -53,124 +57,6 @@ public class SetUpMethodGenerator {
 		} else {
 			return new org.lgna.project.ast.FieldAccess( thisExpression, field );
 		}
-	}
-	private static org.lgna.project.ast.Expression createExpression( Double d ) {
-		return new org.lgna.project.ast.DoubleLiteral( d );
-	}
-	private static org.lgna.project.ast.Expression createExpression( String s ) {
-		return new org.lgna.project.ast.StringLiteral( s );
-	}
-	private static org.lgna.project.ast.Expression createExpression( Enum e ) {
-		if( e != null ) {
-			org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( e.getClass() );
-			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, e.name() );
-			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
-		} else {
-			return new org.lgna.project.ast.NullLiteral();
-		}
-	}
-	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.font.Attribute attribute ) {
-		if( attribute instanceof Enum ) {
-			return createExpression( (Enum)attribute );
-		} else {
-			throw new RuntimeException( "todo handle org.lookingglassandalice.storytelling.font.Attribute that is not an Enum" );
-		}
-	}
-	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.ImageSource imageSource ) {
-		if( imageSource != null ) {
-			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( org.lgna.story.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
-			org.lgna.project.ast.Expression arg0Expression;
-			org.alice.virtualmachine.resources.ImageResource imageResource = imageSource.getImageResource();
-			if( imageResource != null ) {
-				arg0Expression = new org.lgna.project.ast.ResourceExpression( org.alice.virtualmachine.resources.ImageResource.class, imageResource );
-			} else {
-				arg0Expression = new org.lgna.project.ast.NullLiteral();
-			}
-			return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression );
-		} else {
-			return new org.lgna.project.ast.NullLiteral();
-		}
-	}
-	
-	private static org.lgna.project.ast.FieldAccess createFieldAccess( java.lang.reflect.Field fld ) {
-		int modifiers = fld.getModifiers();
-		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers ) ) {
-			org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( fld.getDeclaringClass() );
-			org.lgna.project.ast.JavaField field = org.lgna.project.ast.JavaField.getInstance( fld );
-			return new org.lgna.project.ast.FieldAccess( typeExpression, field );
-		} else {
-			return null;
-		}
-	}
-
-	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Color color ) {
-		org.lgna.project.ast.Expression rv = null;
-		Class< ? > cls = org.lgna.story.Color.class;
-		for( java.lang.reflect.Field fld : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( cls, cls ) ) {
-			if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null ).equals( color ) ) {
-				rv = createFieldAccess( fld );
-				break;
-			}
-		}
-		if( rv != null ) {
-			//pass
-		} else {
-			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			rv = org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, createExpression( color.getRed() ), createExpression( color.getGreen() ), createExpression( color.getBlue() ) );
-		}
-		return rv;
-	}
-	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.ImagePaint imagePaint ) {
-		if( imagePaint instanceof Enum ) {
-			Enum e = (Enum)imagePaint;
-			java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getFld( (Enum)imagePaint );
-			return createFieldAccess( fld );
-		} else {
-			//todo?
-			//return new org.lgna.project.ast.NullLiteral();
-			return createExpression( org.lgna.story.Color.RED );
-		}
-	}
-	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Paint paint ) {
-		if( paint != null ) {
-			if( paint instanceof org.lgna.story.Color ) {
-				org.lgna.story.Color color = (org.lgna.story.Color)paint;
-				return createExpression( color );
-			} else if( paint instanceof org.lgna.story.ImagePaint ) {
-				org.lgna.story.ImagePaint imagePaint = (org.lgna.story.ImagePaint)paint;
-				return createExpression( imagePaint );
-			} else if( paint instanceof org.lgna.story.ImageSource ) {
-				org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
-				return createExpression( imageSource );
-			} else {
-				return null;
-			}
-		} else {
-			return new org.lgna.project.ast.NullLiteral();
-		}
-	}
-
-	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Position position ) {
-		Class< ? > cls = org.lgna.story.Position.class;
-		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-		return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, createExpression( position.getRight() ), createExpression( position.getUp() ), createExpression( position.getBackward() ) );
-	}
-	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Scale scale ) {
-		Class< ? > cls = org.lgna.story.Scale.class;
-		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-		return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, createExpression( scale.getLeftToRight() ), createExpression( scale.getBottomToTop() ), createExpression( scale.getFrontToBack() ) );
-	}
-	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Orientation orientation ) {
-		edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = org.lgna.story.ImplementationAccessor.getOrthogonalMatrix3x3( orientation );
-		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( axes );
-		Class< ? > cls = org.lgna.story.Orientation.class;
-		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class, Number.class);
-		return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
-	}
-	private static org.lgna.project.ast.Expression createExpression( org.lgna.story.Font font ) {
-		Class< ? > cls = org.lgna.story.Font.class;
-		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, org.lgna.story.font.Attribute[].class );
-		return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, createExpression( font.getFamily() ), createExpression( font.getWeight() ), createExpression( font.getPosture() ) );
 	}
 
 	private static org.lgna.project.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? > parameterCls, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression argumentExpression ) {
@@ -182,21 +68,6 @@ public class SetUpMethodGenerator {
 		return org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
 	}
 
-	public static org.lgna.project.ast.Expression createGenderExpression( org.lgna.story.resources.sims2.Gender gender ) {
-		return createExpression( (Enum)gender );
-	}
-	public static org.lgna.project.ast.Expression createSkinToneExpression( org.lgna.story.resources.sims2.SkinTone skinTone ) {
-		return createExpression( (Enum)skinTone );
-	}
-	public static org.lgna.project.ast.Expression createEyeColorExpression( org.lgna.story.resources.sims2.EyeColor eyeColor ) {
-		return createExpression( (Enum)eyeColor );
-	}
-	public static org.lgna.project.ast.Expression createHairExpression( org.lgna.story.resources.sims2.Hair hair ) {
-		return createExpression( (Enum)hair );
-	}
-	public static org.lgna.project.ast.Expression createOutfitExpression( org.lgna.story.resources.sims2.Outfit outfit ) {
-		return createExpression( (Enum)outfit );
-	}
 	public static org.lgna.project.ast.InstanceCreation createExpression( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		Class<?>[] parameterClses = { 
 				org.lgna.story.resources.sims2.Gender.class, 
@@ -207,12 +78,12 @@ public class SetUpMethodGenerator {
 				org.lgna.story.resources.sims2.Outfit.class 
 		};
 		org.lgna.project.ast.Expression[] arguments = {
-				createGenderExpression( personResource.getGender() ),
-				createSkinToneExpression( personResource.getSkinTone() ),
-				createEyeColorExpression( personResource.getEyeColor() ),
-				createHairExpression( personResource.getHair() ),
-				new org.lgna.project.ast.DoubleLiteral( personResource.getObesityLevel() ),
-				createOutfitExpression( personResource.getOutfit() )
+				getExpressionCreator().createExpression( personResource.getGender() ),
+				getExpressionCreator().createExpression( personResource.getSkinTone() ),
+				getExpressionCreator().createExpression( personResource.getEyeColor() ),
+				getExpressionCreator().createExpression( personResource.getHair() ),
+				getExpressionCreator().createExpression( personResource.getObesityLevel() ),
+				getExpressionCreator().createExpression( personResource.getOutfit() )
 		};
 		return org.alice.ide.ast.AstUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
 	}
@@ -224,13 +95,13 @@ public class SetUpMethodGenerator {
 		return rv;
 	}
 	
-	public static void fillInAutomaticPointOfViewAssignment(org.lgna.project.ast.StatementListProperty bodyStatementsProperty, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField pointOfViewField)
-	{
-		if (pointOfViewField != null)
-		{
-			bodyStatementsProperty.add( createStatement( org.lgna.story.Turnable.class, "moveAndOrientTo", new Class< ? >[] {org.lgna.story.Entity.class, Number.class}, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( false, pointOfViewField ), createExpression( 0.0 ) ) );
-		}
-	}
+//	public static void fillInAutomaticPointOfViewAssignment(org.lgna.project.ast.StatementListProperty bodyStatementsProperty, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField pointOfViewField)
+//	{
+//		if (pointOfViewField != null)
+//		{
+//			bodyStatementsProperty.add( createStatement( org.lgna.story.Turnable.class, "moveAndOrientTo", new Class< ? >[] {org.lgna.story.Entity.class, Number.class}, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( false, pointOfViewField ), getExpressionCreator().createExpression( 0.0 ) ) );
+//		}
+//	}
 	
 	public static void fillInAutomaticVehicleAssignment(org.lgna.project.ast.StatementListProperty bodyStatementsProperty, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField vehicleField, boolean isVehicleScene)
 	{
@@ -252,13 +123,13 @@ public class SetUpMethodGenerator {
 	public static org.lgna.project.ast.Statement createOrientationStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.story.Orientation orientation ) {
 		return createStatement( 
 				org.lgna.story.Turnable.class, "setOrientationRelativeToVehicle", org.lgna.story.Orientation.class, 
-				SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( orientation ) 
+				SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( orientation ) 
 		);
 	}
 	public static org.lgna.project.ast.Statement createPositionStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.story.Position position ) {
 		return createStatement( 
 				org.lgna.story.MovableTurnable.class, "setPositionRelativeToVehicle", org.lgna.story.Position.class, 
-				SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( position ) 
+				SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( position ) 
 		);
 	}
 	
@@ -269,13 +140,13 @@ public class SetUpMethodGenerator {
 			bodyStatementsProperty.add( 
 					createStatement( 
 							org.lgna.story.Entity.class, "setName", String.class, 
-							SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( field.getName() ) 
+							SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( field.getName() ) 
 					) 
 			);
 
 			if( instance instanceof org.lgna.story.Scene ) {
 				org.lgna.story.Scene scene = (org.lgna.story.Scene)entity;
-				bodyStatementsProperty.add( createStatement( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( scene.getAtmosphereColor() ) ) );
+				bodyStatementsProperty.add( createStatement( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( scene.getAtmosphereColor() ) ) );
 			} else {
 				if ( instance instanceof org.lgna.story.MutableRider )
 				{
@@ -296,7 +167,7 @@ public class SetUpMethodGenerator {
 					bodyStatementsProperty.add( 
 							createStatement( 
 									org.lgna.story.Turnable.class, "setOrientationRelativeToVehicle", org.lgna.story.Orientation.class, 
-									SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( orientation ) 
+									SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( orientation ) 
 							) 
 					);
 					if( turnable instanceof org.lgna.story.MovableTurnable ) {
@@ -305,13 +176,13 @@ public class SetUpMethodGenerator {
 						bodyStatementsProperty.add( 
 								createStatement( 
 										org.lgna.story.MovableTurnable.class, "setPositionRelativeToVehicle", org.lgna.story.Position.class, 
-										SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( position ) 
+										SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( position ) 
 								) 
 						);
 						if( instance instanceof org.lgna.story.Billboard ) {
 							org.lgna.story.Billboard billboard = (org.lgna.story.Billboard)movableTurnable;
-							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setFrontPaint", org.lgna.story.Paint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getFrontPaint() ) ) );
-							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setBackPaint", org.lgna.story.Paint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), SetUpMethodGenerator.createExpression( billboard.getBackPaint() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setFrontPaint", org.lgna.story.Paint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( billboard.getFrontPaint() ) ) );
+							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setBackPaint", org.lgna.story.Paint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( billboard.getBackPaint() ) ) );
 						}
 					}
 				}
@@ -320,7 +191,7 @@ public class SetUpMethodGenerator {
 		if( instance instanceof org.lgna.story.Resizable ) {
 			org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
 			org.lgna.story.Scale scale = resizable.getScale();
-			bodyStatementsProperty.add( createStatement( org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), createExpression( scale ) ) );
+			bodyStatementsProperty.add( createStatement( org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( scale ) ) );
 		}
 //		
 //		
