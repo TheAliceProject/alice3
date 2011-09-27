@@ -193,6 +193,13 @@ public class SetUpMethodGenerator {
 			org.lgna.story.Scale scale = resizable.getScale();
 			bodyStatementsProperty.add( createStatement( org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( scale ) ) );
 		}
+		
+		if( instance != null ) {
+			org.lgna.project.ast.JavaType javaType = org.lgna.project.ast.JavaType.getInstance( instance.getClass() );
+			for( org.lgna.project.ast.JavaMethod getter : org.alice.ide.ast.AstUtilities.getDeclaredPersistentPropertyGetters( javaType ) ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle:", getter );
+			}
+		}
 //		
 //		
 //				if (transformable instanceof CameraMarker)
