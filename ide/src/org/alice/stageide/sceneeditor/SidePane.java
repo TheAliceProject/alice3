@@ -56,7 +56,6 @@ import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.croquet.models.sceneditor.PropertyAndMarkerPanelSelectionState;
 import org.alice.stageide.sceneeditor.snap.SnapControlPanel;
-import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.PredeterminedTab;

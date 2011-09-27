@@ -49,9 +49,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JSpinner;
-import javax.swing.SpinnerListModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -60,8 +57,6 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.Spinner;
 import org.lgna.croquet.components.ToolPalette;
-
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
 
 public class SnapControlPanel extends GridBagPanel implements ChangeListener, ActionListener
 {

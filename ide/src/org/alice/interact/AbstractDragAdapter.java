@@ -74,7 +74,6 @@ import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.ClickAdapterManipulator;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
-import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.story.Entity;
 import org.lgna.story.implementation.CameraMarkerImp;

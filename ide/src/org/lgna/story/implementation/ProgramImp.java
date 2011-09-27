@@ -43,11 +43,7 @@
 
 package org.lgna.story.implementation;
 
-import java.awt.Color;
-
 import javax.swing.JComponent;
-
-import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 
 /**
  * @author Dennis Cosgrove

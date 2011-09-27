@@ -42,23 +42,14 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import java.awt.LayoutManager;
-
-import javax.swing.JPanel;
-
-import org.alice.ide.ast.AstUtilities;
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.interact.SnapGrid;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.SnapGrid;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.croquet.components.HorizontalSplitPane;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.PageAxisPanel;
-import org.lgna.croquet.components.Panel;
-import org.lgna.croquet.components.SplitPane;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.UserField;

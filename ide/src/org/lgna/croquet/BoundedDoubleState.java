@@ -43,8 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.BoundedIntegerState.Details;
-
 /**
  * @author Dennis Cosgrove
  */
