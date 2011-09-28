@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.eula;
 /**
  * @author Dennis Cosgrove
  */
-public class EulaUtilities extends Exception {
+public class EULAUtilities {
 	public static void promptUserToAcceptEULAIfNecessary( Class<?> preferencesCls, String preferencesKey, String title, String license, String name ) throws LicenseRejectedException {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( preferencesCls );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
