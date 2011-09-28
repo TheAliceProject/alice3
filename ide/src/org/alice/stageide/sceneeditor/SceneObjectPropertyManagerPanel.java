@@ -73,7 +73,6 @@ import org.lgna.project.ast.AbstractField;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.EntityImp;
-import org.lgna.story.implementation.ModelImp;
 
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel

@@ -47,7 +47,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.lgna.project.ast.DoubleLiteral;
 
 public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
 {
