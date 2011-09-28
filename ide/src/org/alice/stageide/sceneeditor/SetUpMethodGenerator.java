@@ -136,7 +136,6 @@ public class SetUpMethodGenerator {
 	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance ) {
 		if( instance instanceof org.lgna.story.Entity ) {
 			org.lgna.story.Entity entity = (org.lgna.story.Entity)instance;
-			String name = field.getName();
 			bodyStatementsProperty.add( 
 					createStatement( 
 							org.lgna.story.Entity.class, "setName", String.class, 
@@ -179,11 +178,11 @@ public class SetUpMethodGenerator {
 										SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( position ) 
 								) 
 						);
-						if( instance instanceof org.lgna.story.Billboard ) {
-							org.lgna.story.Billboard billboard = (org.lgna.story.Billboard)movableTurnable;
-							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setFrontPaint", org.lgna.story.Paint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( billboard.getFrontPaint() ) ) );
-							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setBackPaint", org.lgna.story.Paint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( billboard.getBackPaint() ) ) );
-						}
+//						if( instance instanceof org.lgna.story.Billboard ) {
+//							org.lgna.story.Billboard billboard = (org.lgna.story.Billboard)movableTurnable;
+//							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setFrontPaint", org.lgna.story.Paint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( billboard.getFrontPaint() ) ) );
+//							bodyStatementsProperty.add( createStatement( org.lgna.story.Billboard.class, "setBackPaint", org.lgna.story.Paint.class, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( billboard.getBackPaint() ) ) );
+//						}
 					}
 				}
 			}
@@ -196,8 +195,17 @@ public class SetUpMethodGenerator {
 		
 		if( instance != null ) {
 			org.lgna.project.ast.JavaType javaType = org.lgna.project.ast.JavaType.getInstance( instance.getClass() );
-			for( org.lgna.project.ast.JavaMethod getter : org.alice.ide.ast.AstUtilities.getDeclaredPersistentPropertyGetters( javaType ) ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle:", getter );
+			for( org.lgna.project.ast.JavaMethod getter : org.alice.ide.ast.AstUtilities.getPersistentPropertyGetters( javaType ) ) {
+				java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
+				Object value = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, gttr );
+				org.lgna.project.ast.JavaMethod setter = org.alice.ide.ast.AstUtilities.getSetterForGetter( getter );
+				bodyStatementsProperty.add( 
+						org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( 
+								SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
+								setter, 
+								getExpressionCreator().createExpression( value ) 
+						)
+				);
 			}
 		}
 //		

@@ -49,11 +49,6 @@ package org.alice.ide.croquet.models.ast;
 public class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
 	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	
-	private static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
-		java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
-		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr );
-		return org.lgna.project.ast.JavaMethod.getInstance( sttr );
-	}
 	private static synchronized PropertyState getInstanceForSetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
 		PropertyState rv = map.get( group, setter );
 		if( rv != null ) {
@@ -65,7 +60,7 @@ public class PropertyState extends org.alice.ide.croquet.models.StandardExpressi
 		return rv;
 	}
 	public static synchronized PropertyState getInstanceForGetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod getter ) {
-		return getInstanceForSetter( group, getSetterForGetter( getter ) );
+		return getInstanceForSetter( group, org.alice.ide.ast.AstUtilities.getSetterForGetter( getter ) );
 	}
 	private final org.lgna.project.ast.JavaMethod setter;
 	private PropertyState( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {

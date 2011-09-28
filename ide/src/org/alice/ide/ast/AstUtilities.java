@@ -80,6 +80,11 @@ public class AstUtilities {
 		}
 		return rv;
 	}
+	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
+		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr );
+		return org.lgna.project.ast.JavaMethod.getInstance( sttr );
+	}
 	
 	
 	public static org.lgna.project.ast.UserMethod createMethod( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
