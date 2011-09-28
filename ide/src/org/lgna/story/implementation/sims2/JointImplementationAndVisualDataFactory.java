@@ -70,7 +70,8 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		return this.resource;
 	}
 	public org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
-		edu.cmu.cs.dennisc.nebulous.Model nebModel = null;
+		assert jointedModelImplementation.getVisualData() instanceof NebulousVisualData;
+		edu.cmu.cs.dennisc.nebulous.Model nebModel = ((NebulousVisualData<edu.cmu.cs.dennisc.nebulous.Model>)jointedModelImplementation.getVisualData()).getNebModel();
 		return new JointImplementation( jointedModelImplementation, new NebulousJoint( nebModel, jointId ) );
 	}
 	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData( org.lgna.story.implementation.JointedModelImp jointedModelImplementation ) {

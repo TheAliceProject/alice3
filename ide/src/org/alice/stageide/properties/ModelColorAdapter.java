@@ -43,6 +43,7 @@
 
 package org.alice.stageide.properties;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
 
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -50,9 +51,9 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lgna.story.implementation.ModelImp> {
 
-	public ModelColorAdapter(org.lgna.story.implementation.ModelImp instance)
+	public ModelColorAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
 	{
-		super(instance);
+		super(instance, expressionState);
 	}
 
 	public Color4f getValue() 

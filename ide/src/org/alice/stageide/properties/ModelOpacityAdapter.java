@@ -43,15 +43,16 @@
 
 package org.alice.stageide.properties;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
 
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna.story.implementation.ModelImp> {
 
-	public ModelOpacityAdapter(org.lgna.story.implementation.ModelImp instance)
+	public ModelOpacityAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
 	{
-		super(instance);
+		super(instance, expressionState);
 	}
 	
 	public Double getValue() 

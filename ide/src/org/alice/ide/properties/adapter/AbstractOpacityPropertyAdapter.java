@@ -45,18 +45,20 @@ package org.alice.ide.properties.adapter;
 
 import java.util.Locale;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+
 public abstract class AbstractOpacityPropertyAdapter<O> extends AbstractDoublePropertyAdapter<O> {
 
 
 	
-	public AbstractOpacityPropertyAdapter(O instance)
+	public AbstractOpacityPropertyAdapter(O instance, StandardExpressionState expressionState)
 	{
-		this("Opacity", instance);
+		this("Opacity", instance, expressionState);
 	}
 	
-	public AbstractOpacityPropertyAdapter(String repr, O instance )
+	public AbstractOpacityPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
 	{
-		super(repr, instance);
+		super(repr, instance, expressionState);
 	}
 	
 	@Override

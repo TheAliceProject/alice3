@@ -46,12 +46,26 @@ package org.alice.ide.properties.adapter;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+import org.lgna.project.ast.DoubleLiteral;
+
 public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
 {
 	
 	protected O instance;
 	protected String repr;
 	protected P lastSetValue;
+	private boolean isExpressionSet = false;
+	protected StandardExpressionState expressionState;
+
+	private org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+			AbstractPropertyAdapter.this.onExpressionStateUpdate();
+		}
+	};
+	
 	
 	protected String getCurrentValueLabelString()
 	{
@@ -60,14 +74,10 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	
 	protected List<ValueChangeObserver<P>> valueChangeObservers = new LinkedList<ValueChangeObserver<P>>();
 	
-	public AbstractPropertyAdapter(String repr)
-	{
-		this(repr, null);
-	}
-	
-	public AbstractPropertyAdapter(String repr, O instance)
+	public AbstractPropertyAdapter(String repr, O instance, StandardExpressionState expressionState)
 	{
 		this.repr = repr;
+		this.expressionState = expressionState;
 		this.setInstance(instance);
 	}
 	
@@ -95,7 +105,6 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	public void setValue(P newValue)
 	{
 		this.lastSetValue = newValue;
-//		this.notifyValueObservers(newValue);
 	}
 	
 	public P getLastSetValue()
@@ -122,8 +131,47 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		this.valueChangeObservers.remove(observer);
 	}
 	
+	public void setExpressionState( StandardExpressionState expressionState )
+	{
+		this.expressionState = expressionState;
+	}
+	
+	protected void startListening() {
+		if (this.expressionState != null)
+		{
+			this.expressionState.addValueObserver( this.valueObserver );
+		}
+	}
+	
+	protected void stopListening() {
+		if (this.expressionState != null)
+		{
+			this.expressionState.removeValueObserver( this.valueObserver );
+		}
+	}
+	
+	private void onExpressionStateUpdate()
+	{
+		org.lgna.project.ast.Expression expression = expressionState.getValue();
+		if( expression != null ) {
+			org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
+			
+			Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
+			assert values.length == 1;
+			isExpressionSet = true;
+			this.setValue((P)values[ 0 ]);
+			isExpressionSet = false;
+		}
+	}
+	
+//	protected abstract void setExpressionValue(P value);
+	
 	protected void notifyValueObservers(P newValue)
 	{
+		if (!isExpressionSet)
+		{
+//			setExpressionValue(newValue);
+		}
 		for (ValueChangeObserver<P> observer : this.valueChangeObservers)
 		{
 			observer.valueChanged(newValue);
@@ -148,10 +196,6 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 			throw new RuntimeException( "todo" );
 		}
     }
-	
-	protected abstract void startListening();
-	
-	protected abstract void stopListening();
 	
 	
 }

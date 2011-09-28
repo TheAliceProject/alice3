@@ -45,6 +45,7 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
 import org.alice.ide.properties.adapter.AbstractNamePropertyAdapter;
 import org.lgna.croquet.Operation;
@@ -55,9 +56,9 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 public class FieldNameAdapter extends AbstractNamePropertyAdapter<org.lgna.project.ast.UserField> {
 	
-	public FieldNameAdapter(org.lgna.project.ast.UserField instance)
+	public FieldNameAdapter(org.lgna.project.ast.UserField instance, StandardExpressionState expressionState)
 	{
-		super(instance);
+		super(instance, expressionState);
 	}
 
 	public String getValue() 

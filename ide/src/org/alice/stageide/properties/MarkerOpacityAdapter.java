@@ -43,15 +43,16 @@
 
 package org.alice.stageide.properties;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
 
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna.story.implementation.MarkerImp> {
 
-	public MarkerOpacityAdapter(org.lgna.story.implementation.MarkerImp instance)
+	public MarkerOpacityAdapter(org.lgna.story.implementation.MarkerImp instance, StandardExpressionState expressionState)
 	{
-		super(instance);
+		super(instance, expressionState);
 	}
 	
 

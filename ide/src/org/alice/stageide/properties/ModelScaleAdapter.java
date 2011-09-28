@@ -45,6 +45,7 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractScaleAdapter;
 import org.lgna.croquet.Operation;
 
@@ -53,9 +54,9 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 public class ModelScaleAdapter extends AbstractScaleAdapter<org.lgna.story.implementation.ModelImp>
 {
-	public ModelScaleAdapter(org.lgna.story.implementation.ModelImp instance)
+	public ModelScaleAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
 	{
-		super("Size", instance);
+		super("Size", instance, expressionState);
 	}
 	
 	@Override
