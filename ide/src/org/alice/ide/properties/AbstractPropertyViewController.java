@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,68 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.properties;
 
-package org.alice.stageide.properties;
-
-import java.util.Locale;
-
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.lgna.croquet.Operation;
-import org.lgna.story.ImplementationAccessor;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-
-public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lgna.story.MovableTurnable> {
-	
-	public TransformableTranslationAdapter(org.lgna.story.MovableTurnable instance, StandardExpressionState expressionState) {
-		super(instance, expressionState);
-	}
-
-	public Point3 getValue() 
-	{
-		if (this.instance != null)
-		{
-			return ImplementationAccessor.getImplementation(this.instance).getAbsoluteTransformation().translation;
+/**
+ * @author dculyba
+ *
+ */
+public abstract class AbstractPropertyViewController extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.alice.ide.croquet.models.StandardExpressionState > {
+	private org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
-		return null;
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+			AbstractPropertyViewController.this.valueChanged();
+		}
+	};
+	public AbstractPropertyViewController( org.alice.ide.croquet.models.StandardExpressionState model ) {
+		super( model );
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().addValueObserver( this.valueObserver );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.getModel().removeValueObserver( this.valueObserver );
+		super.handleUndisplayable();
 	}
 	
-	@Override
-	public void setValue(Point3 newValue) 
-	{
-		super.setValue(newValue);
-		if (this.instance != null)
-		{
-			AffineMatrix4x4 currentTrans = ImplementationAccessor.getImplementation(this.instance).getAbsoluteTransformation();
-			double dist = Point3.calculateDistanceBetween(currentTrans.translation, newValue);
-			double duration = 1;
-			if (dist < .02)
-			{
-				duration = 0;
-			}
-			else if (dist < .1)
-			{
-				duration = (dist - .02) / (.1 - .02);
-			}
-			
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().setTranslationOnly(newValue, implementation.getSgComposite().getRoot());
-		}
-	}
-
-	@Override
-	public Operation getEditModel() 
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUndoRedoDescription(Locale locale) 
-	{
-		// TODO Auto-generated method stub
-		return "Position Change";
-	}
-
+	protected abstract void valueChanged();
 }

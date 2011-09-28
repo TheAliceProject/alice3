@@ -45,6 +45,7 @@ package org.alice.stageide.properties;
 
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Turnable;
+import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPoint3PropertyAdapter;
 
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
@@ -54,14 +55,14 @@ public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Turnable
 {
 	private AbsoluteTransformationListener absoluteTransformationListener;
 	
-	public AbstractAbsolutePositionPropertyAdapter(O instance) 
+	public AbstractAbsolutePositionPropertyAdapter(O instance, StandardExpressionState expressionState ) 
 	{
-		this("Position", instance);
+		this("Position", instance, expressionState);
 	}
 	
-	public AbstractAbsolutePositionPropertyAdapter(String repr, O instance )
+	public AbstractAbsolutePositionPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
 	{
-		super(repr, instance);
+		super(repr, instance, expressionState);
 	}
 	
 	private void initializeTransformationListenersIfNecessary()

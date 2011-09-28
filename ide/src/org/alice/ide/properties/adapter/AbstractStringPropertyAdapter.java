@@ -43,6 +43,8 @@
 
 package org.alice.ide.properties.adapter;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+
 public abstract class AbstractStringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<String, O> 
 {
 
@@ -52,9 +54,9 @@ public abstract class AbstractStringPropertyAdapter<O> extends AbstractInstanceP
 		}
 	}
 	
-	public AbstractStringPropertyAdapter(String repr, O instance )
+	public AbstractStringPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
 	{
-		super(repr, instance);
+		super(repr, instance, expressionState);
 	}
 	
 	public Class<String> getPropertyType()

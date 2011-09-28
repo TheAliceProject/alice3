@@ -44,6 +44,9 @@
 package org.alice.ide.properties.adapter;
 
 import java.util.Locale;
+
+import org.alice.ide.croquet.models.StandardExpressionState;
+
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 
@@ -61,9 +64,9 @@ public abstract class AbstractDoublePropertyAdapter<O> extends AbstractInstanceP
 	protected org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation;
 	protected java.util.List< SetDoubleOperation > defaultDoubleOperationModels;
 	
-	public AbstractDoublePropertyAdapter(String repr, O instance )
+	public AbstractDoublePropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
 	{
-		super(repr, instance);
+		super(repr, instance, expressionState);
 	}
 	
 	public Class<Double> getPropertyType()

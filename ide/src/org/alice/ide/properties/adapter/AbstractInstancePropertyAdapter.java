@@ -43,6 +43,8 @@
 
 package org.alice.ide.properties.adapter;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
@@ -69,38 +71,31 @@ public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractProp
 	@Override
 	protected void startListening() 
 	{
+		super.startListening();
 		if (this.instance != null)
 		{
 			this.initializeListenersIfNecessary();
 			this.addPropertyListener(this.propertyListener);
-//			this.getPropertyInstanceForInstance(this.instance).addPropertyListener(this.propertyListener);
 		}
 	}
 	
 	@Override
 	protected void stopListening() 
 	{
+		super.stopListening();
 		if (this.instance != null)
 		{
 			this.removePropertyListener(this.propertyListener);
-//			this.getPropertyInstanceForInstance(this.instance).removePropertyListener(this.propertyListener);
 		}
 	}
 	
-	public AbstractInstancePropertyAdapter(String repr) 
+	public AbstractInstancePropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
 	{
-		super(repr);
-	}
-	
-	public AbstractInstancePropertyAdapter(String repr, O instance )
-	{
-		super(repr, instance);
+		super(repr, instance, expressionState);
 	}
 	
 	protected abstract void addPropertyListener(PropertyListener propertyListener);
 	protected abstract void removePropertyListener(PropertyListener propertyListener);
-
-//	protected abstract edu.cmu.cs.dennisc.property.InstanceProperty<?> getPropertyInstanceForInstance(O instance);
 	
 	protected void handleInternalValueChanged()
 	{

@@ -43,6 +43,8 @@
 
 package org.alice.ide.properties.adapter;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+
 import edu.cmu.cs.dennisc.math.Point3;
 
 public abstract class AbstractPoint3PropertyAdapter<O> extends AbstractPropertyAdapter<Point3, O> 
@@ -53,9 +55,9 @@ public abstract class AbstractPoint3PropertyAdapter<O> extends AbstractPropertyA
 		}
 	}
 
-	public AbstractPoint3PropertyAdapter(String repr, O instance )
+	public AbstractPoint3PropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
 	{
-		super(repr, instance);
+		super(repr, instance, expressionState);
 	}
 	
 	public Class<Point3> getPropertyType()

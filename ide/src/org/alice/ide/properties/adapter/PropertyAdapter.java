@@ -43,6 +43,9 @@
 
 package org.alice.ide.properties.adapter;
 
+
+//P = property value type
+//O = property owner type
 public interface PropertyAdapter <P, O>
 {
 	public static interface ValueChangeObserver<P>
