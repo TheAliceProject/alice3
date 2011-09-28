@@ -92,7 +92,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 
-	private org.lgna.project.ast.Expression createFontExpression( org.lgna.story.Font font ) {
+	private org.lgna.project.ast.Expression createFontExpression( org.lgna.story.Font font ) throws CannotCreateExpressionException {
 		Class< ? > cls = org.lgna.story.Font.class;
 		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, org.lgna.story.font.Attribute[].class );
 		return org.alice.ide.ast.AstUtilities.createInstanceCreation( constructor, 
@@ -135,22 +135,18 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 	
-	private org.lgna.project.ast.Expression createImagePaintExpression( org.lgna.story.ImagePaint imagePaint ) {
+	private org.lgna.project.ast.Expression createImagePaintExpression( org.lgna.story.ImagePaint imagePaint ) throws CannotCreateExpressionException {
 		if( imagePaint != null ) {
-			if( imagePaint instanceof Enum ) {
-				Enum e = (Enum)imagePaint;
-				java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getFld( (Enum)imagePaint );
-				return createPublicStaticFieldAccess( fld );
+			if( imagePaint instanceof Enum<?> ) {
+				return this.createEnumExpression( (Enum<?>)imagePaint );
 			} else {
-				//todo?
-				//return new org.lgna.project.ast.NullLiteral();
-				return this.createExpression( org.lgna.story.Color.RED );
+				throw new CannotCreateExpressionException( imagePaint );
 			}
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
 		}
 	}
-	private org.lgna.project.ast.Expression createPaintExpression( org.lgna.story.Paint paint ) {
+	private org.lgna.project.ast.Expression createPaintExpression( org.lgna.story.Paint paint ) throws CannotCreateExpressionException {
 		if( paint != null ) {
 			if( paint instanceof org.lgna.story.Color ) {
 				org.lgna.story.Color color = (org.lgna.story.Color)paint;
@@ -162,7 +158,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 				org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
 				return this.createImageSourceExpression( imageSource );
 			} else {
-				return null;
+				throw new CannotCreateExpressionException( paint );
 			}
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
@@ -170,7 +166,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 	}	
 
 	@Override
-	protected org.lgna.project.ast.Expression createCustomExpression( Object value ) {
+	protected org.lgna.project.ast.Expression createCustomExpression( Object value ) throws CannotCreateExpressionException {
 		if( value instanceof org.lgna.story.Position ) {
 			return this.createPositionExpression( (org.lgna.story.Position)value );
 		} else if( value instanceof org.lgna.story.Orientation ) {
@@ -182,7 +178,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		} else if( value instanceof org.lgna.story.Font ) {
 			return this.createFontExpression( (org.lgna.story.Font)value );
 		} else {
-			throw new RuntimeException( value.toString() );
+			throw new CannotCreateExpressionException( value );
 		}
 
 	}

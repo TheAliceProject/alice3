@@ -47,6 +47,15 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionCreator {
+	public static final class CannotCreateExpressionException extends Exception {
+		private final Object value;
+		public CannotCreateExpressionException( Object value ) {
+			this.value = value;
+		}
+		public Object getValue() {
+			return this.value;
+		}
+	}
 	protected org.lgna.project.ast.FieldAccess createPublicStaticFieldAccess( java.lang.reflect.Field fld ) {
 		int modifiers = fld.getModifiers();
 		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers ) ) {
@@ -63,7 +72,8 @@ public abstract class ExpressionCreator {
 	protected final org.lgna.project.ast.Expression createIntegerExpression( Integer value ) {
 		return new org.lgna.project.ast.IntegerLiteral( value );
 	}
-	protected final org.lgna.project.ast.Expression createStringExpression( String value ) {
+	//todo:
+	public final org.lgna.project.ast.Expression createStringExpression( String value ) {
 		if( value != null ) {
 			return new org.lgna.project.ast.StringLiteral( value );
 		} else {
@@ -80,8 +90,8 @@ public abstract class ExpressionCreator {
 			return new org.lgna.project.ast.NullLiteral();
 		}
 	}
-	protected abstract org.lgna.project.ast.Expression createCustomExpression( Object value );
-	public org.lgna.project.ast.Expression createExpression( Object value ) {
+	protected abstract org.lgna.project.ast.Expression createCustomExpression( Object value ) throws CannotCreateExpressionException;
+	public org.lgna.project.ast.Expression createExpression( Object value ) throws CannotCreateExpressionException {
 		if( value != null ) {
 			if( value instanceof Double ) {
 				return this.createDoubleExpression( (Double)value );
