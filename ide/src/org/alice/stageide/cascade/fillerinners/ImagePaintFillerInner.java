@@ -41,67 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
-
-import org.lgna.project.annotations.*;
+package org.alice.stageide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Ground extends Entity implements MutableRider, Visual {
-	public static enum SurfaceAppearance implements ImagePaint {
-		GRASS("grass"), 
-		DIRT("dirt"), 
-		SAND("sand"), 
-		SNOW("snow"), 
-		WATER("water"), 
-		MOON("moon");
-		private String resourceName;
-
-		SurfaceAppearance( String resourceName ) {
-			this.resourceName = resourceName;
-		}
-		public java.net.URL getResource() {
-			return Ground.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
-		}
+public class ImagePaintFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public ImagePaintFillerInner() {
+		super( org.lgna.story.ImagePaint.class );
 	}
-
-	private final org.lgna.story.implementation.GroundImp implementation = new org.lgna.story.implementation.GroundImp( this );
-
 	@Override
-	/*package-private*/org.lgna.story.implementation.GroundImp getImplementation() {
-		return this.implementation;
-	}
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.GroundSurfaceAppearanceDetails.class)
-	public Paint getPaint() {
-		return this.getImplementation().paint.getValue();
-	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setPaint( Paint paint ) {
-		this.setPaint( paint, new SetPropertyDetails.Value() );
-	}
-	@MethodTemplate()
-	public void setPaint( Paint paint, SetPropertyDetails.Value details ) {
-		this.getImplementation().paint.animateValue( paint, details.getDuration(), details.getStyle() );
-	}
-
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
-	public Double getOpacity() {
-		return (double)this.getImplementation().opacity.getValue();
-	}
-	@MethodTemplate( isFollowedByLongerMethod = true )
-	public void setOpacity( Number opacity ) {
-		this.setOpacity( opacity, new SetPropertyDetails.Value() );
-	}
-	@MethodTemplate()
-	public void setOpacity( Number opacity, SetPropertyDetails.Value details ) {
-		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		if( details instanceof org.lgna.project.annotations.PublicStaticFieldValueDetails ) {
+			org.lgna.project.annotations.PublicStaticFieldValueDetails publicStaticFieldValueDetails = (org.lgna.project.annotations.PublicStaticFieldValueDetails)details;
+			java.lang.reflect.Field[] flds = publicStaticFieldValueDetails.getFlds();
+			for( java.lang.reflect.Field fld : flds ) {
+ 	 			rv.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( fld ) );
+			}
+		}
+ 		return rv;
 	}
 }

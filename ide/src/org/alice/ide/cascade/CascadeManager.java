@@ -300,6 +300,7 @@ public abstract class CascadeManager {
 				for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
 					if( expressionFillerInner.isAssignableTo( type ) ) {
 						expressionFillerInner.addItems( rv, details, isRoot, this.previousExpression );
+						rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 					}
 				}
 			}
