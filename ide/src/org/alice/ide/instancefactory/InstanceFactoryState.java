@@ -53,27 +53,86 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	public static InstanceFactoryState getInstance() {
 		return SingletonHolder.instance;
 	}
+	
+	private static org.lgna.project.ast.AbstractType< ?,?,? > getDeclaringType( org.alice.ide.croquet.models.typeeditor.DeclarationComposite declarationComposite ) { 
+		if( declarationComposite != null ) {
+			org.lgna.project.ast.AbstractDeclaration declaration = declarationComposite.getDeclaration();
+			if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
+				return method.getDeclaringType();
+			} else if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
+				org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
+				return type;
+			}
+		}
+		return null;
+	}
+	
+	private ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > declarationObserver = new ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+			InstanceFactoryState.this.handleDeclaringTypeChange( getDeclaringType( prevValue ), getDeclaringType( nextValue ) );
+		}
+	};
+	
+	private java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private InstanceFactory value;
 	private InstanceFactoryState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), InstanceFactoryCodec.SINGLETON );
+		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addValueObserver( declarationObserver );
+	}
+	private void handleDeclaringTypeChange( org.lgna.project.ast.AbstractType< ?,?,? > prevType, org.lgna.project.ast.AbstractType< ?,?,? > nextType ) {
+		if( prevType != nextType ) {
+			InstanceFactory prevValue = this.getValue();
+			if( prevType != null ) {
+				if( prevValue != null ) {
+					map.put( prevType, prevValue );
+				} else {
+					map.remove( prevType );
+				}
+			}
+			InstanceFactory nextValue;
+			if( nextType != null ) {
+				nextValue = map.get( nextType );
+				if( nextValue != null ) {
+					//pass
+				} else {
+					nextValue = ThisInstanceFactory.SINGLETON;
+				}
+			} else {
+				nextValue = null;
+			}
+			this.setValue( nextValue );
+		}
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< InstanceFactory > blankNode ) {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager();
-		rv.add( ThisInstanceFactoryFillIn.getInstance() );
-		//rv.add( ThisMethodInvocationFactoryFillIn.getInstance( org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
-		org.lgna.project.ast.NamedUserType type = org.alice.ide.IDE.getActiveInstance().getSceneType();
-		for( org.lgna.project.ast.UserField field : type.getDeclaredFields() ) {
-			if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-				InstanceFactoryFillInWithoutBlanks fillIn = ThisFieldAccessFactoryFillIn.getInstance( field );
-				org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu = apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field );
-				if( subMenu != null ) {
-					rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( fillIn, subMenu ) );
-				} else {
-					rv.add( fillIn );
+		
+		org.lgna.project.ast.AbstractType< ?,?,? > type = getDeclaringType( org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getValue() );
+
+		ThisInstanceFactoryFillIn thisFillIn = ThisInstanceFactoryFillIn.getInstance();
+		org.lgna.croquet.CascadeMenuModel< InstanceFactory > thisSubMenu = apiConfigurationManager.getInstanceFactorySubMenuForThis( type );
+		if( thisSubMenu != null ) {
+			rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( thisFillIn, thisSubMenu ) );
+		} else {
+			rv.add( thisFillIn );
+		}
+		if( type instanceof org.lgna.project.ast.NamedUserType ) {
+			org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
+			for( org.lgna.project.ast.UserField field : namedUserType.getDeclaredFields() ) {
+				if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
+					InstanceFactoryFillInWithoutBlanks fieldFillIn = ThisFieldAccessFactoryFillIn.getInstance( field );
+					org.lgna.croquet.CascadeMenuModel< InstanceFactory > fieldSubMenu = apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field );
+					if( fieldSubMenu != null ) {
+						rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( fieldFillIn, fieldSubMenu ) );
+					} else {
+						rv.add( fieldFillIn );
+					}
 				}
+				//rv.add( ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
 			}
-			//rv.add( ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
 		}
 		return rv;
 	}
@@ -82,13 +141,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		return this.value;
 	}
 	@Override
-	protected void handleValueChange( org.alice.ide.instancefactory.InstanceFactory value ) {
+	protected void updateSwingModel( org.alice.ide.instancefactory.InstanceFactory value ) {
 		this.value = value;
-	}
-	
-	public void setValue( org.alice.ide.instancefactory.InstanceFactory value ) {
-		this.fireChanging( this.value, value, false );
-		this.handleValueChange( value );
-		this.fireChanged( this.value, value, false );
 	}
 }

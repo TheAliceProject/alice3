@@ -49,11 +49,13 @@ package org.alice.ide;
 public interface ApiConfigurationManager {
 	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type );
 	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis();
+	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
 	public java.util.List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes();
 	public org.lgna.project.ast.AbstractType< ?,?,? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
 	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?,?,? > argumentType );
 	public org.lgna.croquet.components.JComponent< ? > createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
+	public org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails );
+	public org.alice.ide.ast.ExpressionCreator getExpressionCreator();
 }

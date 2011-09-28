@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,60 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.snap;
 
-package org.lgna.croquet;
+import org.lgna.croquet.BoundedDoubleState;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public final class OperationMenuItemPrepModel extends StandardMenuItemPrepModel {
-	public static class OperationMenuPrepModelResolver extends IndirectResolver< OperationMenuItemPrepModel, Operation< ? > > {
-		public OperationMenuPrepModelResolver( OperationMenuItemPrepModel model ) {
-			super( model.getOperation() );
-		}
-		public OperationMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		protected OperationMenuItemPrepModel getDirect( Operation< ? > indirect ) {
-			return indirect.getMenuItemPrepModel();
-		}
+public class SnapGridSpacingState extends BoundedDoubleState {
+	private static class SingletonHolder {
+		private static SnapGridSpacingState instance = new SnapGridSpacingState();
 	}
-	private final Operation<?> operation;
-	/*package-private*/ OperationMenuItemPrepModel( Operation<?> operation ) {
-		super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
-		assert operation != null;
-		this.operation = operation;
+	public static SnapGridSpacingState getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public Iterable< ? extends Model > getChildren() {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.operation );
+	private SnapGridSpacingState() {
+		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "f8a1a56f-70da-41c7-9fb0-8d874a37ec27" ) ).minimum( 0.05 ).maximum( 10.0 ).initialValue( 0.5 ).extent( 0.05 ) );
 	}
-	@Override
-	protected void localize() {
-	}
-	public Operation<?> getOperation() {
-		return this.operation;
-	}
-	@Override
-	protected OperationMenuPrepModelResolver createCodableResolver() {
-		return new OperationMenuPrepModelResolver( this );
-	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
-		return this.operation.getFirstComponent();
-	}
-	@Override
-	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-		rv.addMenuItem( new org.lgna.croquet.components.MenuItem( this.getOperation() ) );
-		return rv;
-	}
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( "[" );
-		rv.append( this.getOperation() );
-		rv.append( "]" );
-		return rv;
-	}
+
 }

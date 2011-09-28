@@ -48,13 +48,33 @@ package org.lgna.croquet;
 public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.history.GatedCommitDialogOperationStep< ? >> extends DialogOperation< S > {
 	private static final String NULL_EXPLANATION = "good to go";
 	private static final String NULL_STEP_EXPLANATION = "null step";
-	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
-	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
-
+	public static final class InternalCompleteOperationResolver extends IndirectResolver< InternalCompleteOperation, GatedCommitDialogOperation< ? > > {
+		private InternalCompleteOperationResolver( GatedCommitDialogOperation< ? > indirect ) {
+			super( indirect );
+		}
+		public InternalCompleteOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected InternalCompleteOperation getDirect( GatedCommitDialogOperation< ? > indirect ) {
+			return indirect.getCompleteOperation();
+		}
+	}
+	public static final class InternalCancelOperationResolver extends IndirectResolver< InternalCancelOperation, GatedCommitDialogOperation< ? > > {
+		private InternalCancelOperationResolver( GatedCommitDialogOperation< ? > indirect ) {
+			super( indirect );
+		}
+		public InternalCancelOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected InternalCancelOperation getDirect( GatedCommitDialogOperation< ? > indirect ) {
+			return indirect.getCancelOperation();
+		}
+	}
 	private static abstract class InternalDialogOperation extends ActionOperation {
 		private final GatedCommitDialogOperation< ? > gatedCommitDialogOperation;
 		private org.lgna.croquet.components.Dialog dialog;
-		
 		public InternalDialogOperation( java.util.UUID id, GatedCommitDialogOperation< ? > gatedCommitDialogOperation ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 			this.gatedCommitDialogOperation = gatedCommitDialogOperation;
@@ -74,8 +94,8 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 			//super.localize();
 		}
 	}
-	protected static class CompleteOperation extends InternalDialogOperation {
-		public CompleteOperation( GatedCommitDialogOperation< ? > gatedCommitDialogOperation ) {
+	protected static final class InternalCompleteOperation extends InternalDialogOperation {
+		private InternalCompleteOperation( GatedCommitDialogOperation< ? > gatedCommitDialogOperation ) {
 			super( java.util.UUID.fromString( "fc908f6f-4b72-48b6-9b65-352dc9f2e18b" ), gatedCommitDialogOperation );
 		}
 		@Override
@@ -85,12 +105,12 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 			this.getDialog().setVisible( false );
 		}
 		@Override
-		protected CompleteOperationResolver createCodableResolver() {
-			return new CompleteOperationResolver( this );
+		protected InternalCompleteOperationResolver createCodableResolver() {
+			return new InternalCompleteOperationResolver( this.getGatedCommitDialogOperation() );
 		}
 	}
-	protected static class CancelOperation extends InternalDialogOperation {
-		public CancelOperation( GatedCommitDialogOperation< ? > gatedCommitDialogOperation ) {
+	protected static final class InternalCancelOperation extends InternalDialogOperation {
+		private InternalCancelOperation( GatedCommitDialogOperation< ? > gatedCommitDialogOperation ) {
 			super( java.util.UUID.fromString( "3363c6f0-c8a2-48f2-aefc-c53894ec8a99" ), gatedCommitDialogOperation );
 		}
 		@Override
@@ -98,30 +118,9 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 			step.cancel();
 			this.getDialog().setVisible( false );
 		}
-	}
-
-	public static class CompleteOperationResolver extends IndirectResolver< CompleteOperation, GatedCommitDialogOperation< ? > > {
-		public CompleteOperationResolver( CompleteOperation model ) {
-			super( model.getGatedCommitDialogOperation() );
-		}
-		public CompleteOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
 		@Override
-		protected CompleteOperation getDirect( GatedCommitDialogOperation< ? > indirect ) {
-			return indirect.getCompleteOperation();
-		}
-	}
-	public static class CancelOperationResolver<T> extends IndirectResolver< CancelOperation, GatedCommitDialogOperation< ? > > {
-		public CancelOperationResolver( CancelOperation model ) {
-			super( model.getGatedCommitDialogOperation() );
-		}
-		public CancelOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		protected CancelOperation getDirect( GatedCommitDialogOperation< ? > indirect ) {
-			return indirect.getCancelOperation();
+		protected InternalCancelOperationResolver createCodableResolver() {
+			return new InternalCancelOperationResolver( this.getGatedCommitDialogOperation() );
 		}
 	}
 	
@@ -204,8 +203,8 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 	}
 	
 	private final ExplanationLabel explanationLabel = new ExplanationLabel();
-	private final CompleteOperation completeOperation = new CompleteOperation( this );
-	private final CancelOperation cancelOperation = new CancelOperation( this );
+	private final InternalCompleteOperation completeOperation = new InternalCompleteOperation( this );
+	private final InternalCancelOperation cancelOperation = new InternalCancelOperation( this );
 
 	public GatedCommitDialogOperation( Group group, java.util.UUID id ) {
 		super( group, id );
@@ -216,10 +215,10 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 
 	private boolean isCompleted;
 
-	protected final CompleteOperation getCompleteOperation() {
+	protected final InternalCompleteOperation getCompleteOperation() {
 		return this.completeOperation;
 	}
-	protected final CancelOperation getCancelOperation() {
+	protected final InternalCancelOperation getCancelOperation() {
 		return this.cancelOperation;
 	}
 

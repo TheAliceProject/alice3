@@ -45,11 +45,15 @@ package org.alice.stageide.sceneeditor;
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.SnapGrid;
+import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.components.DragComponent;
+import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.BookmarkCameraMarker;
 import org.lgna.story.ImplementationAccessor;
@@ -97,19 +101,51 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			org.lgna.croquet.components.CompassPointSpringPanel {
 		@Override
 		protected javax.swing.JPanel createJPanel() {
-			javax.swing.JPanel rv = StorytellingSceneEditor.this.onscreenLookingGlass
-					.getJPanel();
+			javax.swing.JPanel rv = StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
 			rv.setLayout(new javax.swing.SpringLayout());
 			return rv;
 		}
 	}
-	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	
+	private org.lgna.croquet.State.ValueObserver<Boolean> showSnapGridObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			StorytellingSceneEditor.this.setShowSnapGrid(nextValue);	
+		}
+	};
+	
+	private org.lgna.croquet.State.ValueObserver<Boolean> snapEnabledObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+            if (SnapState.getInstance().isShowSnapGridEnabled())
+            {
+            	StorytellingSceneEditor.this.setShowSnapGrid(nextValue);
+            }
+        }
+    };
+    
+    private org.lgna.croquet.State.ValueObserver<Double> snapGridSpacingObserver = new org.lgna.croquet.State.ValueObserver<Double>() {
+		public void changing( org.lgna.croquet.State< Double > state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Double > state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+			StorytellingSceneEditor.this.setSnapGridSpacing(nextValue);
+		}
+	};
+	
+	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
+	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
+	private SidePane sidePanel = new SidePane();
+	private org.lgna.croquet.components.HorizontalSplitPane propertiesSplitPane = new HorizontalSplitPane();
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImplementation;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.components.PushButton expandCollapseButton;
+	
+	protected SnapGrid snapGrid;
+	
 	
 	@Override
 	protected void setProgramInstance(UserInstance programInstance) 
@@ -118,6 +154,22 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		ProgramImp programImplementation = ImplementationAccessor.getImplementation(getProgramInstanceInJava());
 		programImplementation.setAnimator(this.animator);
 		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
+	}
+	
+	@Override
+	public void setSelectedField(UserType<?> declaringType, UserField field) {
+		super.setSelectedField(declaringType, field);
+		this.setActiveFieldOnPropertyPanel(field);
+	}
+	
+	private void setActiveFieldOnPropertyPanel(UserField field)
+	{	
+		getPropertyPanel().setField(field);
+//		this.propertiesPanel.removeAllComponents();
+//		for (org.lgna.project.ast.JavaMethod getter : getterMethods)
+//		{
+//			this.propertiesPanel.addComponent(new Label(getter.getName()));
+//		}
 	}
 	
 	protected void setSceneCamera(org.lgna.project.ast.UserField cameraField)
@@ -143,17 +195,39 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private static final int INSET = 8;
 	
+	private void showLookingGlassPanel()
+	{
+		this.addComponent( this.mainPanel, Constraint.CENTER );
+	}
+	
+	private void hideLookingGlassPanel()
+	{
+		this.removeComponent( this.mainPanel );
+	}
+	
 	@Override
 	protected void handleExpandContractChange(boolean isExpanded) {
 		if (isExpanded)
 		{
+			this.mainPanel.removeAllComponents();
+			this.propertiesSplitPane.setLeftComponent(this.lookingGlassPanel);
+			this.propertiesSplitPane.setRightComponent(this.sidePanel);
+			this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
 		}
 		else
 		{
+			this.mainPanel.removeAllComponents();
+			this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
 		}
 		this.mainCameraNavigatorWidget.setExpanded(isExpanded);
 		this.lookingGlassPanel.setSouthEastComponent(this.expandCollapseButton);
 		this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
+	}
+	
+	
+	private SceneObjectPropertyManagerPanel getPropertyPanel()
+	{
+		return ObjectPropertiesTab.getInstance().getMainComponent();
 	}
 	
 	@Override
@@ -165,8 +239,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 //			
 //			this.snapGrid = new SnapGrid();
 //			this.snapState = new SnapState();
-//			this.snapState.getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
-//			this.snapState.getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);
+			SnapState.getInstance().getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
+			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);
+			SnapState.getInstance().getSnapGridSpacingState().addAndInvokeValueObserver(this.snapGridSpacingObserver);
 			
 			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter(this);
 //			this.globalDragAdapter.setSnapState(this.snapState);
@@ -177,6 +252,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
 			
 			this.expandCollapseButton = IsSceneEditorExpandedState.getInstance().createPushButton();
+			
+			this.propertiesSplitPane.setResizeWeight(1.0);
 			
 			doCameraDependentInitialization();
 			
@@ -365,12 +442,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
-		this.addComponent( this.lookingGlassPanel, Constraint.CENTER );
+		this.showLookingGlassPanel();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		this.removeComponent( this.lookingGlassPanel );
+		this.hideLookingGlassPanel();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		super.handleUndisplayable();
@@ -516,14 +593,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	public MarkerImp getMarkerForField( UserField field ) {
 		throw new RuntimeException( "todo" );
 	}
-	public SnapState getSnapState() {
-		throw new RuntimeException( "todo" );
-	}
 	public AbstractCamera getSGCameraForCreatingThumbnails() {
 		throw new RuntimeException( "todo" );
 	}
+	
+	public void setShowSnapGrid( boolean showSnapGrid ) {
+		if (this.snapGrid != null)
+		{
+			this.snapGrid.setShowing(showSnapGrid);
+		}
+	}
 	public void setSnapGridSpacing( double gridSpacing ) {
-		throw new RuntimeException( "todo" );
+		if (this.snapGrid != null)
+		{
+			this.snapGrid.setSpacing(gridSpacing);
+		}
 	}
 	
 }

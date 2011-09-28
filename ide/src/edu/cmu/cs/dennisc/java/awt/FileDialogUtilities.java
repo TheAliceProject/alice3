@@ -220,10 +220,10 @@ public class FileDialogUtilities {
 		return rv;
 	}
 	public static java.io.File showOpenFileDialog( java.awt.Component component, java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return showOpenFileDialog( component, directory.getAbsolutePath(), filename, extension, isSharingDesired ); 
+		return showOpenFileDialog( component, directory != null ? directory.getAbsolutePath() : null, filename, extension, isSharingDesired ); 
 	}
 	public static java.io.File showSaveFileDialog( java.awt.Component component, java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return showSaveFileDialog( component, directory.getAbsolutePath(), filename, extension, isSharingDesired ); 
+		return showSaveFileDialog( component, directory != null ? directory.getAbsolutePath() : null, filename, extension, isSharingDesired ); 
 	}
 	public static java.io.File showOpenFileDialog( java.awt.Component component, String directoryPath, String filename, String extension, boolean isSharingDesired ) {
 		return showFileDialog( component, "Open...", java.awt.FileDialog.LOAD, directoryPath, filename, extension, isSharingDesired ); 

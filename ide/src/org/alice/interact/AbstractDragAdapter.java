@@ -74,7 +74,6 @@ import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.ClickAdapterManipulator;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
-import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.story.Entity;
 import org.lgna.story.implementation.CameraMarkerImp;
@@ -195,8 +194,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected HandleManager handleManager = new HandleManager();
 	protected InteractionGroup currentInteractionState = null;
 	protected ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
-	
-	protected SnapState snapState = null;
 	
 	private TransformableImp selectedObject = null;
 	private CameraMarkerImp selectedCameraMarker = null;
@@ -1249,16 +1246,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public void keyTyped( KeyEvent e ) {
 		//System.out.println("Key typed!");
 		
-	}
-
-	public void setSnapState(SnapState snapState)
-	{
-		this.snapState = snapState;
-	}
-	
-	public SnapState getSnapState()
-	{
-		return this.snapState;
 	}
 	
 }

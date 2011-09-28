@@ -69,7 +69,7 @@ public class EditableAstI18Factory extends AstI18nFactory {
 	
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createTypeComponent( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return new org.lgna.croquet.components.Label( "todo EditableAstI18Factory" );
+		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {

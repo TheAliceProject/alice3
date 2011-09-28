@@ -43,7 +43,7 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-import org.alice.stageide.sceneeditor.SceneObjectPropertyManager;
+import org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel;
 import org.lgna.croquet.PredeterminedTab;
 
 
@@ -60,16 +60,16 @@ public class ObjectPropertiesTab extends PredeterminedTab
     }
     @Override
     protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-        return new SceneObjectPropertyManager();
+        return new SceneObjectPropertyManagerPanel();
     }
 
     @Override
-    public SceneObjectPropertyManager getMainComponent()
+    public SceneObjectPropertyManagerPanel getMainComponent()
     {
         org.lgna.croquet.components.JComponent< ? > c = super.getMainComponent();
-        if ( c instanceof SceneObjectPropertyManager)
+        if ( c instanceof SceneObjectPropertyManagerPanel)
         {
-            return (SceneObjectPropertyManager)c;
+            return (SceneObjectPropertyManagerPanel)c;
         }
         return null;
     }

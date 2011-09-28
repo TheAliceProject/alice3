@@ -141,7 +141,6 @@ public class TemplatesTabSelectionState extends org.lgna.croquet.TabSelectionSta
 	public static TemplatesTabSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
-	
 	private TemplatesTabSelectionState() {
 		super( 
 				org.alice.ide.IDE.UI_STATE_GROUP, 

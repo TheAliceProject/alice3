@@ -1990,7 +1990,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	public void setSnapGridSpacing( final double spacing )
 	{
-		snapGrid.setSpacing(spacing);
+		this.snapGrid.setSpacing(spacing);
 	}
 	
 	

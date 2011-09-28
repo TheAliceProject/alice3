@@ -41,19 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.declaration;
+package org.alice.stageide.raytrace;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FrontPaintState extends PaintState {
+public class ExportToPovRayOperation extends org.lgna.croquet.ActionOperation {
+	//todo:
+	private static final org.lgna.croquet.Group EXPORT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "c3cf5b76-8b67-467f-a0f9-34cfa9d36240" ), "EXPORT_GROUP" );
+	
+	
+	
 	private static class SingletonHolder {
-		private static FrontPaintState instance = new FrontPaintState();
+		private static ExportToPovRayOperation instance = new ExportToPovRayOperation();
 	}
-	public static FrontPaintState getInstance() {
+	public static ExportToPovRayOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private FrontPaintState() {
-		super( java.util.UUID.fromString( "f400e909-947f-4595-9064-f713db128042" ) );
+	private ExportToPovRayOperation() {
+		super( EXPORT_GROUP, java.util.UUID.fromString( "7f14ddfc-d090-4ef5-b47d-4d5036f6d784" ) );
+	}
+	@Override
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
+		org.lgna.project.ast.UserField sceneField = sceneEditor.getActiveSceneField();
+		org.lgna.project.ast.AbstractField cameraField = sceneField.getValueType().getDeclaredField( "camera" );
+		org.lgna.story.Camera camera = (org.lgna.story.Camera)sceneEditor.getInstanceInJavaVMForField( cameraField );
+		org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.ImplementationAccessor.getImplementation( camera );
+		edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgCamera = cameraImp.getSgCamera();
+		edu.cmu.cs.dennisc.raytrace.POVRayUtilities.export( new java.io.PrintWriter( System.out ), sgCamera );
+		step.finish();
 	}
 }

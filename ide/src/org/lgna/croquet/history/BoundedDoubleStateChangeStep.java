@@ -41,40 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.history;
 
-public class TreeNodeSelectionOperation<T> extends ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< TreeSelectionState, Object, TreeNodeSelectionOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	/*package-private*/ static <T> TreeNodeSelectionOperation<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode ) {
-		TreeNodeSelectionOperation<T> rv = mapToMap.get(treeSelectionState, treeNode);
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new TreeNodeSelectionOperation<T>(treeSelectionState, treeNode);
-			mapToMap.put( treeSelectionState, treeNode, rv );
-		}
-		return rv;
+/**
+ * @author Dennis Cosgrove
+ */
+public class BoundedDoubleStateChangeStep extends BoundedNumberStateChangeStep< org.lgna.croquet.BoundedDoubleState, Double > {
+	/*package-private*/ static BoundedDoubleStateChangeStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.BoundedDoubleState model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return new BoundedDoubleStateChangeStep( parent, model, trigger );
 	}
-
-	private final TreeSelectionState<T> treeSelectionState;
-	private final T treeNode;
-	
-	private TreeNodeSelectionOperation( TreeSelectionState<T> treeSelectionState, T treeNode ) {
-		super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ca407baf-13b1-4530-bf35-67764efbf5f0" ) );
-		this.treeSelectionState = treeSelectionState;
-		this.treeNode = treeNode;
+	private BoundedDoubleStateChangeStep( Transaction parent, org.lgna.croquet.BoundedDoubleState model, org.lgna.croquet.triggers.Trigger trigger ) {
+		super( parent, model, trigger );
 	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( this.treeSelectionState.getTextForNode( this.treeNode ) );
-		this.setSmallIcon( this.treeSelectionState.getIconForNode( this.treeNode ) );
-	}
-	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		//todo: create edit
-		this.treeSelectionState.setSelectedNode( this.treeNode );
-		step.finish();
+	public BoundedDoubleStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

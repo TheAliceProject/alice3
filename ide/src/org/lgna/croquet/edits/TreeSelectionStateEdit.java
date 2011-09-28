@@ -68,15 +68,6 @@ public class TreeSelectionStateEdit<T> extends ItemStateEdit<org.lgna.croquet.Tr
 			return super.getModel();
 		}
 	}
-	@Override
-	public boolean canRedo() {
-		return this.getModel() != null;
-	}
-	@Override
-	public boolean canUndo() {
-		return this.getModel() != null;
-	}
-
 //	@Override
 //	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
 //		super.addKeyValuePairs( retargeter, replacementEdit );
@@ -84,13 +75,4 @@ public class TreeSelectionStateEdit<T> extends ItemStateEdit<org.lgna.croquet.Tr
 //		retargeter.addKeyValuePair( this.prevValue, listSelectionStateEdit.prevValue );
 //		retargeter.addKeyValuePair( this.nextValue, listSelectionStateEdit.nextValue );
 //	}
-
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().setSelectedNode( this.getNextValue() );
-	}
-	@Override
-	protected final void undoInternal() {
-		this.getModel().setSelectedNode( this.getPreviousValue() );
-	}
 }

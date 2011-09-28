@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectCountState extends org.lgna.croquet.BoundedRangeIntegerState {
+public class RecentProjectCountState extends org.lgna.croquet.BoundedIntegerState {
 	private static class SingletonHolder {
 		private static RecentProjectCountState instance = new RecentProjectCountState();
 	}
@@ -54,6 +54,6 @@ public class RecentProjectCountState extends org.lgna.croquet.BoundedRangeIntege
 		return SingletonHolder.instance;
 	}
 	private RecentProjectCountState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "15c030d1-d6c7-4415-ac20-e1b5bc6993de" ), 0, 10, 100 );
+		super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "15c030d1-d6c7-4415-ac20-e1b5bc6993de" ) ).minimum( 0 ).maximum( 100 ).initialValue( 10 ) );
 	}
 }

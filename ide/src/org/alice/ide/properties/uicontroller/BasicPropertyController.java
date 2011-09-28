@@ -97,19 +97,21 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
         if (this.propertyAdapter != null)
         {
             this.editButton = this.propertyAdapter.createEditViewController();
-            this.mainPanel.addComponent(this.editButton, new GridBagConstraints(
-                    xIndex++, // gridX
-                    0, // gridY
-                    1, // gridWidth
-                    1, // gridHeight
-                    0.0, // weightX
-                    0.0, // weightY
-                    GridBagConstraints.WEST, // anchor
-                    GridBagConstraints.HORIZONTAL, // fill
-                    new Insets(0, 4, 0, 0), // insets (top, left, bottom, right)
-                    0, // ipadX
-                    0) // ipadY
-                    );
+            if (this.editButton != null ){
+	            this.mainPanel.addComponent(this.editButton, new GridBagConstraints(
+	                    xIndex++, // gridX
+	                    0, // gridY
+	                    1, // gridWidth
+	                    1, // gridHeight
+	                    0.0, // weightX
+	                    0.0, // weightY
+	                    GridBagConstraints.WEST, // anchor
+	                    GridBagConstraints.HORIZONTAL, // fill
+	                    new Insets(0, 4, 0, 0), // insets (top, left, bottom, right)
+	                    0, // ipadX
+	                    0) // ipadY
+	                    );
+            }
         }
         this.mainPanel.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 
                 xIndex++, //gridX

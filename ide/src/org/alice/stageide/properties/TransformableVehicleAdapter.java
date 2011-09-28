@@ -46,10 +46,12 @@ package org.alice.stageide.properties;
 import java.util.Locale;
 
 import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.Model;
 import org.lgna.story.Entity;
+import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Turnable;
 
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
@@ -58,7 +60,7 @@ import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity, Turnable> {
 
 	private HierarchyListener hierarchyListener;
-	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation;
+	private org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation;
 	
 	protected class SetVehicleOperation extends SetValueOperation<Entity>
 	{
@@ -73,9 +75,9 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 		}
 	}
 	
-	public TransformableVehicleAdapter(Turnable instance) 
+	public TransformableVehicleAdapter(Turnable instance, StandardExpressionState expressionState) 
 	{
-		super("Vehicle", instance);
+		super("Vehicle", instance, expressionState);
 	}
 	
 
@@ -259,7 +261,8 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 		if (this.instance != null)
 		{
 			this.initializeListenersIfNecessary();
-//			this.instance.getSGTransformable().addHierarchyListener(this.hierarchyListener);
+			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation(this.instance);
+			imp.getSgComposite().addHierarchyListener(this.hierarchyListener);
 		}
 	}
 
@@ -268,7 +271,8 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	{
 		if (this.instance != null)
 		{
-//			this.instance.getSGTransformable().removeHierarchyListener(this.hierarchyListener);
+			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation(this.instance);
+			imp.getSgComposite().removeHierarchyListener(this.hierarchyListener);
 		}
 	}
 

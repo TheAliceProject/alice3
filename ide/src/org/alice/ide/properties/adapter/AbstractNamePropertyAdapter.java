@@ -43,16 +43,18 @@
 
 package org.alice.ide.properties.adapter;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+
 public abstract class AbstractNamePropertyAdapter<O> extends AbstractStringPropertyAdapter<O> {
 
-	public AbstractNamePropertyAdapter(O instance)
+	public AbstractNamePropertyAdapter(O instance, StandardExpressionState expressionState)
 	{
-		this("Name", instance);
+		this("Name", instance, expressionState);
 	}
 	
-	public AbstractNamePropertyAdapter(String repr, O instance )
+	public AbstractNamePropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
 	{
-		super(repr, instance);
+		super(repr, instance, expressionState);
 	}
 
 

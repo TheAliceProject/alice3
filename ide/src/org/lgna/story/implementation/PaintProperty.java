@@ -41,13 +41,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.declaration;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PaintState extends org.alice.ide.croquet.models.PredeterminedTypeExpressionState {
-	public PaintState( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, id, null, org.lgna.story.Paint.class );
+public abstract class PaintProperty extends Property< org.lgna.story.Paint > {
+	private org.lgna.story.Paint value = org.lgna.story.Color.WHITE;
+	public PaintProperty( EntityImp owner ) {
+		super( owner, org.lgna.story.Paint.class );
+	}
+	@Override
+	public final org.lgna.story.Paint getValue() {
+		return this.value;
+	}
+	protected abstract void internalSetValue( org.lgna.story.Paint value );
+	@Override
+	protected final void handleSetValue( org.lgna.story.Paint value ) {
+		this.internalSetValue( value );
+		this.value = value;
+	}
+	@Override
+	protected org.lgna.story.Paint interpolate( org.lgna.story.Paint a, org.lgna.story.Paint b, double portion ) {
+		if( a instanceof org.lgna.story.Color ) {
+			org.lgna.story.Color aColor = (org.lgna.story.Color)a;
+			if( b instanceof org.lgna.story.Color ) {
+				org.lgna.story.Color bColor = (org.lgna.story.Color)b;
+				
+				edu.cmu.cs.dennisc.color.Color4f c = edu.cmu.cs.dennisc.color.Color4f.createInterpolation( 
+						org.lgna.story.ImplementationAccessor.getColor4f( aColor ),
+						org.lgna.story.ImplementationAccessor.getColor4f( bColor ),
+						(float)portion
+				);
+				return new org.lgna.story.Color( c.red, c.green, c.blue );
+			}
+		}
+		return b;
 	}
 }

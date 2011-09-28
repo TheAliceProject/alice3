@@ -48,14 +48,13 @@ package org.lgna.story;
  */
 public class Biped extends JointedModel implements Articulable {
 	private final org.lgna.story.implementation.BipedImp implementation;
+	public Biped( org.lgna.story.resources.BipedResource resource ) {
+		this.implementation = resource.createImplementation( this );
+	}
 	@Override
 	/*package-private*/ org.lgna.story.implementation.BipedImp getImplementation() {
 		return this.implementation;
 	}
-	public Biped( org.lgna.story.resources.BipedResource resource ) {
-		this.implementation = resource.createImplementation( this );
-	}
-	
 	public void walkTo( Entity entity ) {
 	}
 	public void touch( Entity entity ) {

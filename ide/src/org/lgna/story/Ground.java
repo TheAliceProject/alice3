@@ -49,11 +49,16 @@ import org.lgna.project.annotations.*;
  * @author Dennis Cosgrove
  */
 public class Ground extends Entity implements MutableRider, Visual {
-	public static enum Appearance {
-		GRASS("grass"), DIRT("dirt"), SAND("sand"), SNOW("snow"), WATER("water"), MOON("moon");
+	public static enum SurfaceAppearance implements ImagePaint {
+		GRASS("grass"), 
+		DIRT("dirt"), 
+		SAND("sand"), 
+		SNOW("snow"), 
+		WATER("water"), 
+		MOON("moon");
 		private String resourceName;
 
-		Appearance( String resourceName ) {
+		SurfaceAppearance( String resourceName ) {
 			this.resourceName = resourceName;
 		}
 		public java.net.URL getResource() {
@@ -72,6 +77,20 @@ public class Ground extends Entity implements MutableRider, Visual {
 	}
 	@MethodTemplate()
 	@GetterTemplate(isPersistent = true)
+	public Paint getPaint() {
+		return this.getImplementation().paint.getValue();
+	}
+	@MethodTemplate(isFollowedByLongerMethod = true)
+	public void setPaint( Paint paint ) {
+		this.setPaint( paint, new SetPropertyDetails.Value() );
+	}
+	@MethodTemplate()
+	public void setPaint( Paint paint, SetPropertyDetails.Value details ) {
+		this.getImplementation().paint.animateValue( paint, details.getDuration(), details.getStyle() );
+	}
+
+	@MethodTemplate()
+	@GetterTemplate(isPersistent = true)
 	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
@@ -83,11 +102,5 @@ public class Ground extends Entity implements MutableRider, Visual {
 	@MethodTemplate()
 	public void setOpacity( Number opacity, SetPropertyDetails.Value details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
-	}
-	public Appearance getAppearance() {
-		return this.getImplementation().getAppearance();
-	}
-	public void setAppearance( Appearance appearance ) {
-		this.getImplementation().setAppearance( appearance );
 	}
 }

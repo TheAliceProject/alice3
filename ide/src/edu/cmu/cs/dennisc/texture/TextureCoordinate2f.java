@@ -45,14 +45,16 @@ package edu.cmu.cs.dennisc.texture;
 /**
  * @author Dennis Cosgrove
  */
-public class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public float u;
-	public float v;
+public final class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public final float u;
+	public final float v;
 	
-	public TextureCoordinate2f() {
+	public static TextureCoordinate2f createNaN() {
+		return new TextureCoordinate2f( Float.NaN, Float.NaN );
 	}
+
 	public TextureCoordinate2f( TextureCoordinate2f other ) {
-		set( other );
+		this( other.u, other.v );
 	}
 	public TextureCoordinate2f( float u, float v ) {
 		this.u = u;
@@ -62,36 +64,13 @@ public class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.BinaryEncod
 		this.u = binaryDecoder.decodeFloat();
 		this.v = binaryDecoder.decodeFloat();
 	}
-	
-	@Deprecated
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.u = binaryDecoder.decodeFloat();
-		this.v = binaryDecoder.decodeFloat();
-	}
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		binaryEncoder.encode( u );
 		binaryEncoder.encode( v );
 	}
-	//todo
-	public static TextureCoordinate2f createNaN() {
-		return new TextureCoordinate2f( Float.NaN, Float.NaN );
-	}
-	
-	public void set( TextureCoordinate2f other ) {
-		this.u = other.u;
-		this.v = other.v;
-	}
-	public void set( float u, float v ) {
-		this.u = u;
-		this.v = v;
-	}
-	public void setNaN() {
-		u = v = Float.NaN;
-	}
 	public boolean isNaN() {
 		return Float.isNaN( u ) || Float.isNaN( v );
 	}
-	
 	@Override
 	public final boolean equals( Object o ) {
 		if( this == o ) {

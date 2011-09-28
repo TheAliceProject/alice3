@@ -41,19 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BoundedRangeIntegerStateChangeStep extends StateChangeStep< org.lgna.croquet.BoundedRangeIntegerState > {
-	/*package-private*/ static BoundedRangeIntegerStateChangeStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.BoundedRangeIntegerState model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new BoundedRangeIntegerStateChangeStep( parent, model, trigger );
+public abstract class BoundedNumberStateEdit<M extends org.lgna.croquet.BoundedNumberState<N>,N extends Number> extends StateEdit<M,N> {
+	public BoundedNumberStateEdit( org.lgna.croquet.history.CompletionStep< M > completionStep ) {
+		super( completionStep );
 	}
-	private BoundedRangeIntegerStateChangeStep( Transaction parent, org.lgna.croquet.BoundedRangeIntegerState model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger );
+	public BoundedNumberStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 	}
-	public BoundedRangeIntegerStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	@Override
+	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+		rv.append("change: ");
+		rv.append(this.getNextValue());
+		return rv;
 	}
 }

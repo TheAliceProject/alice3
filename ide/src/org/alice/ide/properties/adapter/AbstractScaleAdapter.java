@@ -42,6 +42,8 @@
  */
 
 package org.alice.ide.properties.adapter;
+import org.alice.ide.croquet.models.StandardExpressionState;
+
 import edu.cmu.cs.dennisc.math.Dimension3;
 
 public abstract class AbstractScaleAdapter<O> extends AbstractInstancePropertyAdapter<Dimension3, O> 
@@ -52,9 +54,9 @@ public abstract class AbstractScaleAdapter<O> extends AbstractInstancePropertyAd
 		}
 	}
 
-	public AbstractScaleAdapter(String repr, O instance )
+	public AbstractScaleAdapter(String repr, O instance, StandardExpressionState expressionState )
 	{
-		super(repr, instance);
+		super(repr, instance, expressionState);
 	}
 	
 	public Class<Dimension3> getPropertyType()

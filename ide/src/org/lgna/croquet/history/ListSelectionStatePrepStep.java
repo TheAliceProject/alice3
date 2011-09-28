@@ -45,11 +45,11 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionStatePrepStep<E> extends PrepStep< org.lgna.croquet.ListSelectionStatePrepModel< E > > {
-	public static <E> ListSelectionStatePrepStep<E> createAndAddToTransaction( Transaction parent, org.lgna.croquet.ListSelectionStatePrepModel<E> model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new ListSelectionStatePrepStep<E>( parent, model, trigger );
+public class ListSelectionStatePrepStep<T> extends PrepStep< org.lgna.croquet.ListSelectionState.InternalPrepModel< T > > {
+	public static <T> ListSelectionStatePrepStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.ListSelectionState.InternalPrepModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return new ListSelectionStatePrepStep<T>( parent, model, trigger );
 	}
-	private ListSelectionStatePrepStep( Transaction parent, org.lgna.croquet.ListSelectionStatePrepModel< E > model, org.lgna.croquet.triggers.Trigger trigger ) {
+	private ListSelectionStatePrepStep( Transaction parent, org.lgna.croquet.ListSelectionState.InternalPrepModel< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public ListSelectionStatePrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

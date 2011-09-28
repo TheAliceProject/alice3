@@ -65,14 +65,18 @@ public class CreateFieldFromPersonResourceOperation extends org.alice.ide.croque
 		org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = CreatePersonResourceOperation.getInstance().fire();
 		if( subStep.isValueCommitted() ) {
 			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getCommittedValue();
-			org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createExpression( personResource );
-			org.lgna.project.ast.InstanceCreation expression = org.alice.ide.ast.AstUtilities.createInstanceCreation( 
-					org.lgna.story.Biped.class, 
-					new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
-					argumentExpression 
-			);
-			this.getInitializerState().setValue( expression );
-			return super.prologue( step );
+			try {
+				org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
+				org.lgna.project.ast.InstanceCreation expression = org.alice.ide.ast.AstUtilities.createInstanceCreation( 
+						org.lgna.story.Biped.class, 
+						new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
+						argumentExpression 
+				);
+				this.getInitializerState().setValue( expression );
+				return super.prologue( step );
+			} catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee) {
+				throw new RuntimeException( ccee );
+			}
 		} else {
 			return null;
 		}

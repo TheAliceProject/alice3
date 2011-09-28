@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,65 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.properties;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public final class CascadeStandardRoot<T> extends CascadeRoot< T, org.lgna.croquet.history.CascadeCompletionStep< T > > {
-	public static class CascadeStandardRootResolver<T> implements org.lgna.croquet.resolvers.CodableResolver< CascadeStandardRoot< T > > {
-		private final CascadeStandardRoot< T > model;
-
-		public CascadeStandardRootResolver( CascadeStandardRoot< T > model ) {
-			this.model = model;
+public abstract class AbstractPropertyViewController extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.alice.ide.croquet.models.StandardExpressionState > {
+	private org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
-		public CascadeStandardRootResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			org.lgna.croquet.resolvers.CodableResolver< Cascade< T >> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			Cascade< T > cascade = resolver.getResolved();
-			this.model = cascade.getRoot();
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+			AbstractPropertyViewController.this.valueChanged();
 		}
-		public CascadeStandardRoot< T > getResolved() {
-			return this.model;
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			org.lgna.croquet.resolvers.CodableResolver< InputDialogOperation< T >> resolver = this.model.cascade.getCodableResolver();
-			binaryEncoder.encode( resolver );
-		}
-	}
-
-	private final Cascade< T > cascade;
-	/*package-private*/CascadeStandardRoot( Cascade< T > cascade, CascadeBlank< T >[] blanks ) {
-		super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ), blanks );
-		this.cascade = cascade;
+	};
+	public AbstractPropertyViewController( org.alice.ide.croquet.models.StandardExpressionState model ) {
+		super( model );
 	}
 	@Override
-	protected CascadeStandardRootResolver<T> createCodableResolver() {
-		return new CascadeStandardRootResolver<T>( this );
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().addValueObserver( this.valueObserver );
 	}
 	@Override
-	public Cascade< T > getCompletionModel() {
-		return this.cascade;
+	protected void handleUndisplayable() {
+		this.getModel().removeValueObserver( this.valueObserver );
+		super.handleUndisplayable();
 	}
-	@Override
-	public Class< T > getComponentType() {
-		return this.cascade.getComponentType();
-	}
-
-	@Override
-	public void prologue() {
-		this.cascade.prologue();
-	}
-	@Override
-	public void epilogue() {
-		this.cascade.epilogue();
-	}
-	@Override
-	public org.lgna.croquet.history.CascadeCompletionStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
-		return org.lgna.croquet.history.TransactionManager.addCascadeCompletionStep( this.cascade, trigger );
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit(org.lgna.croquet.history.CascadeCompletionStep<T> completionStep, T[] values) {
-		return this.cascade.createEdit( completionStep, values );
-	}
+	
+	protected abstract void valueChanged();
 }

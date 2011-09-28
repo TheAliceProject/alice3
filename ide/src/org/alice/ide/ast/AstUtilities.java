@@ -46,6 +46,47 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class AstUtilities {
+	
+	private static java.util.List< org.lgna.project.ast.JavaMethod > updatePersistentPropertyGetters( java.util.List< org.lgna.project.ast.JavaMethod > rv, org.lgna.project.ast.JavaType javaType ) {
+		for( org.lgna.project.ast.JavaMethod method : javaType.getDeclaredMethods() ) { 
+			java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+			if( mthd != null ) {
+				if( mthd.isAnnotationPresent( org.lgna.project.annotations.GetterTemplate.class ) ) {
+					org.lgna.project.annotations.GetterTemplate gttrTemplate = mthd.getAnnotation( org.lgna.project.annotations.GetterTemplate.class );
+					if( gttrTemplate.isPersistent() ) {
+						rv.add( method );
+					}
+				}
+			}
+		}
+		return rv;
+	}
+	public static Iterable< org.lgna.project.ast.JavaMethod > getDeclaredPersistentPropertyGetters( org.lgna.project.ast.JavaType javaType ) {
+		java.util.List< org.lgna.project.ast.JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		updatePersistentPropertyGetters( rv, javaType );
+		return rv;
+	}
+	public static Iterable< org.lgna.project.ast.JavaMethod > getPersistentPropertyGetters( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		java.util.List< org.lgna.project.ast.JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.lgna.project.ast.JavaType javaType = type.getFirstTypeEncounteredDeclaredInJava();
+		while( true ) {
+			updatePersistentPropertyGetters( rv, javaType );
+			if( javaType.isFollowToSuperClassDesired() ) {
+				//pass
+			} else {
+				break;
+			}
+			javaType = (org.lgna.project.ast.JavaType)javaType.getSuperType();
+		}
+		return rv;
+	}
+	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
+		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr );
+		return org.lgna.project.ast.JavaMethod.getInstance( sttr );
+	}
+	
+	
 	public static org.lgna.project.ast.UserMethod createMethod( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
 		return new org.lgna.project.ast.UserMethod( name, returnType, new org.lgna.project.ast.UserParameter[] {}, new org.lgna.project.ast.BlockStatement() );
 	}

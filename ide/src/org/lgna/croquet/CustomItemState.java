@@ -76,7 +76,7 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 	}
 	private final CascadeCustomRoot root;
 	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec, CascadeBlank< T >... blanks ) {
-		super( group, id, itemCodec );
+		super( group, id, null, itemCodec );
 		this.root = new CascadeCustomRoot( blanks );
 	}
 	public CascadeCustomRoot getCascadeRoot() {
@@ -88,14 +88,5 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 	@Override
 	protected void commitStateEdit(T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger) {
 		//todo
-	}
-	protected abstract void handleValueChange( T value );
-	public final void changeValue( T prevValue, T nextValue, boolean isAdjusting ) {
-		this.fireChanging( prevValue, nextValue, isAdjusting );
-		this.handleValueChange( nextValue );
-		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
-			component.revalidateAndRepaint();
-		}
-		this.fireChanged( prevValue, nextValue, isAdjusting );
 	}
 }

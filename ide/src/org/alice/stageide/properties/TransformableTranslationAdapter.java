@@ -45,6 +45,7 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
 import org.lgna.croquet.Operation;
 import org.lgna.story.ImplementationAccessor;
 
@@ -53,8 +54,8 @@ import edu.cmu.cs.dennisc.math.Point3;
 
 public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lgna.story.MovableTurnable> {
 	
-	public TransformableTranslationAdapter(org.lgna.story.MovableTurnable instance) {
-		super(instance);
+	public TransformableTranslationAdapter(org.lgna.story.MovableTurnable instance, StandardExpressionState expressionState) {
+		super(instance, expressionState);
 	}
 
 	public Point3 getValue() 

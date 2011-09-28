@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.color;
 /**
  * @author Dennis Cosgrove
  */
-public class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public static final Color4f BLACK = new Color4f( java.awt.Color.BLACK );
 	public static final Color4f BLUE = new Color4f( java.awt.Color.BLUE );
 	public static final Color4f CYAN = new Color4f( java.awt.Color.CYAN );
@@ -63,21 +63,22 @@ public class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecod
 	public static final Color4f PURPLE = new Color4f( 128/255.0f, 0.0f, 128/255.0f, 1.0f );
 	public static final Color4f BROWN = new Color4f( 162/255.0f, 42/255.0f, 42/255.0f, 1.0f );
 
-	public float red = 0.0f;
-	public float green = 0.0f;
-	public float blue = 0.0f;
-	public float alpha = 1.0f;
+	public final float red;
+	public final float green;
+	public final float blue;
+	public final float alpha;
 	
-	public Color4f() {
+	public Color4f( float red, float green, float blue, float alpha ) {
+		this.red = red;
+		this.green = green;
+		this.blue = blue;
+		this.alpha = alpha;
 	}
 	public Color4f( Color4f other ) {
-		set( other );
-	}
-	public Color4f( float red, float green, float blue, float alpha ) {
-		set( red, green, blue, alpha );
+		this( other.red, other.green, other.blue, other.alpha );
 	}
 	public Color4f( java.awt.Color awtColor ) {
-		set( awtColor.getRed()/255.0f, awtColor.getGreen()/255.0f, awtColor.getBlue()/255.0f, awtColor.getAlpha()/255.0f );
+		this( awtColor.getRed()/255.0f, awtColor.getGreen()/255.0f, awtColor.getBlue()/255.0f, awtColor.getAlpha()/255.0f );
 	}
 	public Color4f( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.red = binaryDecoder.decodeFloat();
@@ -85,20 +86,18 @@ public class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecod
 		this.blue = binaryDecoder.decodeFloat();
 		this.alpha = binaryDecoder.decodeFloat();
 	}
-	
-	//todo
+
 	public static Color4f createNaN() {
 		return new Color4f( Float.NaN, Float.NaN, Float.NaN, Float.NaN );
 	}
-	
-	@Deprecated
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.red = binaryDecoder.decodeFloat();
-		this.green = binaryDecoder.decodeFloat();
-		this.blue = binaryDecoder.decodeFloat();
-		this.alpha = binaryDecoder.decodeFloat();
+	public static Color4f createInterpolation( Color4f a, Color4f b,  float portion ) {
+		float red = a.red + ( b.red - a.red ) * portion;
+		float green = a.green + ( b.green - a.green ) * portion;
+		float blue = a.blue + ( b.blue - a.blue ) * portion;
+		float alpha = a.alpha + ( b.alpha - a.alpha ) * portion;
+		return new Color4f( red, green, blue, alpha );
 	}
-	
+
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		binaryEncoder.encode( this.red );
 		binaryEncoder.encode( this.green );
@@ -129,27 +128,6 @@ public class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecod
 		return Float.isNaN( red ) || Float.isNaN( green ) || Float.isNaN( blue ) || Float.isNaN( alpha );
 	}
 	
-	public void set( Color4f other ) {
-		if( other != null ) {
-			this.red = other.red;
-			this.green = other.green;
-			this.blue = other.blue;
-			this.alpha = other.alpha;
-		} else {
-			setNaN();
-		}
-	}
-	public void set( float red, float green, float blue, float alpha ) {
-		this.red = red;
-		this.green = green;
-		this.blue = blue;
-		this.alpha = alpha;
-	}
-	
-	public void setNaN() {
-		red = green = blue = alpha = Float.NaN;
-	}
-	
 	public java.awt.Color getAsAWTColor() {
 		if( this.isNaN() ) {
 			return null;
@@ -168,16 +146,19 @@ public class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecod
 		return getAsArray( new float[ 4 ] );
 	}
 	
-	public void interpolate( Color4f b, float portion ) {
-		red += ( b.red - red ) * portion;
-		green += ( b.green - green ) * portion;
-		blue += ( b.blue - blue ) * portion;
-		alpha += ( b.alpha - alpha ) * portion;
-	}
-	public void interpolate( Color4f a, Color4f b, float portion ) {
-		red = a.red + ( b.red - a.red ) * portion;
-		green = a.green + ( b.green - a.green ) * portion;
-		blue = a.blue + ( b.blue - a.blue ) * portion;
-		alpha = a.alpha + ( b.alpha - a.alpha ) * portion;
+	@Override
+	public java.lang.String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[red=" );
+		sb.append( this.red );
+		sb.append( ";green=" );
+		sb.append( this.green );
+		sb.append( ";blue=" );
+		sb.append( this.blue );
+		sb.append( ";alpha=" );
+		sb.append( this.alpha );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

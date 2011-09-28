@@ -51,6 +51,8 @@ import org.lgna.croquet.components.ViewController;
  * @author Dennis Cosgrove
  */
 public abstract class DialogOperation< S extends org.lgna.croquet.history.DialogOperationStep<?> > extends SingleThreadOperation<S> {
+	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
+	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
 	public DialogOperation(Group group, java.util.UUID id) {
 		super(group, id);
 	}

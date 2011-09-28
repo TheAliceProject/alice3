@@ -43,13 +43,88 @@
 
 package org.alice.stageide;
 
-import org.lgna.story.resourceutilities.StorytellingResources;
-
 /**
  * @author Dennis Cosgrove
  */
 public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurationManager {
 	SINGLETON;
+	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
+	private StoryApiConfigurationManager() {
+		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.Entity.class );
+		final int SMALL_ICON_SIZE = 32;
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Sun.class, new javax.swing.Icon() {
+
+			public int getIconWidth() {
+				return SMALL_ICON_SIZE;
+			}
+			public int getIconHeight() {
+				return SMALL_ICON_SIZE;
+			}
+			
+			private java.awt.Shape createArc( float size ) {
+				java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+				rv.moveTo( 0.0f, 0.0f );
+				rv.lineTo( size, 0.0f );
+				rv.quadTo( size, size, 0.0f, size );
+				rv.closePath();
+				return rv;
+			}
+			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				java.awt.geom.AffineTransform m = g2.getTransform();
+				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				try {
+					java.awt.Shape innerArc = this.createArc( 20.0f );
+					java.awt.Shape outerArc = this.createArc( 22.0f );
+					
+					g2.translate( 4.0f, 4.0f );
+					java.awt.geom.GeneralPath pathRays = new java.awt.geom.GeneralPath();
+					double thetaN = Math.PI/2.0;
+					double thetaDelta = thetaN/8.0;
+					g2.setColor( new java.awt.Color( 255, 210, 0 ) );
+					for( double theta = 0.0; theta<=thetaN; theta += thetaDelta ) {
+						pathRays.moveTo( 0.0f, 0.0f );
+						pathRays.lineTo( (float)( Math.cos( theta ) * 26.0 ), (float)( Math.sin( theta ) * 26.0 ) ); 
+					}
+					g2.draw( pathRays );
+					g2.fill( outerArc );
+
+					g2.setColor( new java.awt.Color( 230, 230, 0 ) );
+					g2.fill( innerArc );
+				} finally {
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+					g2.setTransform( m );
+				}
+			}
+		} );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Camera.class, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.gallerybrowser.ResourceManager.class.getResource( "images/SymmetricPerspectiveCamera.png" ) ) );
+//		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lookingglassandalice.storytelling.Camera.class, new javax.swing.Icon() {
+//			public int getIconWidth() {
+//				return SMALL_ICON_SIZE;
+//			}
+//			public int getIconHeight() {
+//				return SMALL_ICON_SIZE;
+//			}
+//			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+//				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+//				path.moveTo( 4,4 );
+//				path.lineTo( 20, 4 );
+//				path.lineTo( 20, 12 );
+//				path.lineTo( 28, 8 );
+//				path.lineTo( 28, 20 );
+//				path.lineTo( 20, 16 );
+//				path.lineTo( 20, 24 );
+//				path.lineTo( 4, 24 );
+//				path.closePath();
+//				g2.setColor( java.awt.Color.GRAY );
+//				g2.fill( path );
+//				g2.setColor( java.awt.Color.BLACK );
+//				g2.draw( path );
+//			}
+//		} );
+	}
 	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
 		return type.isAssignableTo( org.lgna.story.Scene.class );
 	}
@@ -57,22 +132,26 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		return type.isAssignableTo( org.lgna.story.Entity.class );
 	}
 	public java.util.List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes() {
-		return StorytellingResources.getInstance().getTopLevelGalleryTypes();
+		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getTopLevelGalleryTypes();
 	}
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return StorytellingResources.getInstance().getGalleryResourceParentFor( type );
+		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceParentFor( type );
 	}
 	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return StorytellingResources.getInstance().getGalleryResourceChildrenFor(type);
+		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceChildrenFor(type);
 	}
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis() {
-		return null;
+	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		if( org.alice.stageide.instancefactory.JointedMenuModel.isJointed( type ) ) {
+			return org.alice.stageide.instancefactory.ThisJointedMenuModel.getInstance( type );
+		} else {
+			return null;
+		}
 	}
 	
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
 		if( org.alice.stageide.instancefactory.JointedMenuModel.isJointed( type ) ) {
-			return org.alice.stageide.instancefactory.JointedMenuModel.getInstance( field );
+			return org.alice.stageide.instancefactory.ThisFieldAccessJointedMenuModel.getInstance( field );
 		} else {
 			return null;
 		}
@@ -123,5 +202,14 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		}
 		return null;
 	}
-	
+	public org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails ) {
+		if( valueDetails instanceof org.lgna.story.annotation.PortionDetails ) {
+			return org.alice.stageide.croquet.models.custom.CustomPortionInputDialogOperation.getInstance().getFillIn();
+		} else {
+			return null;
+		}
+	}
+	public org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
+		return this.expressionCreator;
+	}
 }

@@ -51,7 +51,7 @@ import org.lgna.croquet.ListSelectionState;
 public class ComboBox<E> extends ItemSelectable< javax.swing.JComboBox, E > {
 	public ComboBox( ListSelectionState< E > model ) {
 		super( model );
-		this.setSwingComboBoxModel( model.getComboBoxModel() );
+		this.setSwingComboBoxModel( model.getSwingModel().getComboBoxModel() );
 	}
 
 	@Override

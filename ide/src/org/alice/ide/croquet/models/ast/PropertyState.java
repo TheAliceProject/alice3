@@ -41,19 +41,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.person.models;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ObesityPercentState extends org.lgna.croquet.BoundedRangeIntegerState {
-	private static class SingletonHolder {
-		private static ObesityPercentState instance = new ObesityPercentState();
+public class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	
+	private static synchronized PropertyState getInstanceForSetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
+		PropertyState rv = map.get( group, setter );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new PropertyState( group, setter );
+			map.put( group, setter, rv );
+		}
+		return rv;
 	}
-	public static ObesityPercentState getInstance() {
-		return SingletonHolder.instance;
+	public static synchronized PropertyState getInstanceForGetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod getter ) {
+		return getInstanceForSetter( group, org.alice.ide.ast.AstUtilities.getSetterForGetter( getter ) );
 	}
-	private ObesityPercentState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ), 0, 50, 100 );
+	private final org.lgna.project.ast.JavaMethod setter;
+	private PropertyState( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
+		super( group, java.util.UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), null );
+		this.setter = setter;
+	}
+	private org.lgna.project.ast.JavaMethodParameter getParameter0() {
+		return (org.lgna.project.ast.JavaMethodParameter)this.setter.getParameters().get( 0 );
+	}
+	@Override
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+		return this.getParameter0().getValueType();
+	}
+	@Override
+	protected org.lgna.project.annotations.ValueDetails< ? > getValueDetails() {
+		return this.getParameter0().getDetails();
 	}
 }

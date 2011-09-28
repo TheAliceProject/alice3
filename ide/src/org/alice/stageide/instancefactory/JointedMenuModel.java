@@ -46,7 +46,7 @@ package org.alice.stageide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class JointedMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
+public abstract class JointedMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
 	private static final org.lgna.project.ast.JavaType JOINT_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class );
 	private static boolean isJointGetter( org.lgna.project.ast.AbstractMethod method ) {
 		if( method.isPublicAccess() ) {
@@ -98,30 +98,16 @@ public class JointedMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alic
 			}
 		}
 	}
-	private static java.util.Map< org.lgna.project.ast.UserField, JointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static JointedMenuModel getInstance( org.lgna.project.ast.UserField value ) {
-		synchronized( map ) {
-			JointedMenuModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new JointedMenuModel( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
-	private final org.lgna.project.ast.UserField field;
 	private final java.util.List< org.lgna.project.ast.AbstractMethod > getters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private JointedMenuModel( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "63b4f859-e44f-419f-a1bf-3ead76a52d6b" ) );
-		this.field = field;
-		updateJointGetters( getters, field.getValueType() );
+	public JointedMenuModel( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( id );
+		updateJointGetters( getters, type );
 	}
+	protected abstract org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method );
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
+	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
 		for( org.lgna.project.ast.AbstractMethod method : this.getters ) {
-			rv.add( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, method ) );
+			rv.add( this.getFillIn( method ) );
 		}
 		return rv;
 	}

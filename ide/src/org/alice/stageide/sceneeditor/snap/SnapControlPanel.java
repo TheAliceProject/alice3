@@ -49,31 +49,22 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JSpinner;
-import javax.swing.SpinnerListModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
+import org.lgna.croquet.components.Spinner;
 import org.lgna.croquet.components.ToolPalette;
-
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
 
 public class SnapControlPanel extends GridBagPanel implements ChangeListener, ActionListener
 {
-	private SnapState snapState;
-	private org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor;
-	
-	private JSpinner gridSizeSpinner;
+	private Spinner gridSizeSpinner;
 	private Label gridSizeLabel;
-	private SpinnerNumberModel gridSizeModel;
 	
-	private JSpinner snapAngleSpinner;
+	private Spinner snapAngleSpinner;
 	private Label snapAngleLabel;
-	private SpinnerListModel snapAngleModel;
 	
 	private GridBagPanel detailsPanel;
 	private LineAxisPanel snapToGridPanel;
@@ -90,15 +81,12 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 		}
 	};
 	
-	public SnapControlPanel(SnapState snapState, org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor)
+	public SnapControlPanel()
 	{
-		this.sceneEditor = sceneEditor;
-		this.snapState = snapState;
 		this.detailsPanel = new GridBagPanel();
 		this.detailsPalette = AreSnapDetailsExpandedState.getInstance().createToolPalette(detailsPanel);
-		createUI();
 		initializeUI();
-		this.snapState.getIsSnapEnabledState().addAndInvokeValueObserver(this.snapStateValueObserver);
+		SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueObserver(this.snapStateValueObserver);
 		updateUIFromSnapState();
 	}
 	
@@ -109,62 +97,35 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
         this.detailsPalette.setBackgroundColor(color);
     }
 	
-	private void createUI()
-	{
-	    Dimension spinnerSize = new Dimension(50, 26);
-        this.gridSizeModel = new SpinnerNumberModel(this.snapState.getGridSpacing(), .01d, 10d, .05d);
-        this.gridSizeSpinner = new JSpinner(this.gridSizeModel);
-        this.gridSizeSpinner.setPreferredSize(spinnerSize);
-        this.gridSizeSpinner.setMinimumSize(spinnerSize);
-        this.gridSizeSpinner.setMaximumSize(spinnerSize);
-        this.gridSizeSpinner.addChangeListener(this);
-        this.gridSizeModel.addChangeListener(this);
-        
-        this.snapAngleModel = new SpinnerListModel(SnapState.ANGLE_SNAP_OPTIONS);
-        this.snapAngleModel.setValue(SnapState.getAngleOptionForAngle((int)this.snapState.getRotationSnapAngle().getAsDegrees()));
-        this.snapAngleSpinner = new JSpinner(this.snapAngleModel);
-        this.snapAngleSpinner.addChangeListener(this);
-        this.snapAngleSpinner.setPreferredSize(spinnerSize);
-        this.snapAngleSpinner.setMinimumSize(spinnerSize);
-        this.snapAngleSpinner.setMaximumSize(spinnerSize);
-        
-        java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SnapControlPanel.class.getPackage().getName() + ".snap" );
-        
-        this.snapToGridPanel = new LineAxisPanel();
-        snapToGridPanel.setBorder(null);
-        snapToGridPanel.addComponent(this.snapState.getShowSnapGridState().createCheckBox());
-        this.gridSizeLabel = new Label("   "+resourceBundle.getString("gridSpacing")+" ");
-        snapToGridPanel.addComponent(this.gridSizeLabel);
-        snapToGridPanel.addComponent(new org.lgna.croquet.components.SwingAdapter(this.gridSizeSpinner));
-        
-        this.rotationSnapPanel = new LineAxisPanel();
-        rotationSnapPanel.setBorder(null);
-        rotationSnapPanel.addComponent(this.snapState.getIsRotationSnapEnabledState().createCheckBox());
-        this.snapAngleLabel = new Label("   "+resourceBundle.getString("angleSnap")+"  ");
-        rotationSnapPanel.addComponent(this.snapAngleLabel);
-        rotationSnapPanel.addComponent(new org.lgna.croquet.components.SwingAdapter(this.snapAngleSpinner));
-	}
-	
 	protected void initializeUI()
 	{
 	    this.isInitializing = true;
 		this.removeAllComponents();
-		
-		this.gridSizeModel.setValue(this.snapState.getGridSpacing());
-		this.snapAngleModel.setValue(SnapState.getAngleOptionForAngle((int)this.snapState.getRotationSnapAngle().getAsDegrees()));
-		
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SnapControlPanel.class.getPackage().getName() + ".snap" );
+		Dimension spinnerSize = new Dimension(50, 26);       
+        
+        this.snapToGridPanel = new LineAxisPanel();
+        snapToGridPanel.setBorder(null);
+        snapToGridPanel.addComponent(SnapState.getInstance().getShowSnapGridState().createCheckBox());
+        this.gridSizeLabel = new Label("   "+resourceBundle.getString("gridSpacing")+" ");
+        snapToGridPanel.addComponent(this.gridSizeLabel);
+        this.gridSizeSpinner = SnapState.getInstance().getSnapGridSpacingState().createSpinner();
+        this.gridSizeSpinner.getAwtComponent().setPreferredSize(spinnerSize);
+        this.gridSizeSpinner.getAwtComponent().setMinimumSize(spinnerSize);
+        this.gridSizeSpinner.getAwtComponent().setMaximumSize(spinnerSize);
+        snapToGridPanel.addComponent(this.gridSizeSpinner);
+        
+        this.rotationSnapPanel = new LineAxisPanel();
+        rotationSnapPanel.setBorder(null);
+        rotationSnapPanel.addComponent(SnapState.getInstance().getIsRotationSnapEnabledState().createCheckBox());
+        this.snapAngleLabel = new Label("   "+resourceBundle.getString("angleSnap")+"  ");
+        rotationSnapPanel.addComponent(this.snapAngleLabel);
+        this.snapAngleSpinner = SnapState.getInstance().getSnapAngleInDegreesState().createSpinner();
+        this.snapAngleSpinner.getAwtComponent().setPreferredSize(spinnerSize);
+        this.snapAngleSpinner.getAwtComponent().setMinimumSize(spinnerSize);
+        this.snapAngleSpinner.getAwtComponent().setMaximumSize(spinnerSize);
+        rotationSnapPanel.addComponent(this.snapAngleSpinner);
 		
-		this.snapToGridPanel.removeAllComponents();
-		this.snapToGridPanel.addComponent(this.snapState.getShowSnapGridState().createCheckBox());
-		snapToGridPanel.addComponent(this.gridSizeLabel);
-		snapToGridPanel.addComponent(new org.lgna.croquet.components.SwingAdapter(this.gridSizeSpinner));
-		
-		this.rotationSnapPanel.removeAllComponents();
-		rotationSnapPanel.addComponent(this.snapState.getIsRotationSnapEnabledState().createCheckBox());
-		rotationSnapPanel.addComponent(this.snapAngleLabel);
-		rotationSnapPanel.addComponent(new org.lgna.croquet.components.SwingAdapter(this.snapAngleSpinner));
-
 		detailsPanel.addComponent(snapToGridPanel , new GridBagConstraints( 
 				0, //gridX
 				1, //gridY
@@ -191,7 +152,7 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 				0, //ipadX
 				0 ) //ipadY
 		);
-		detailsPanel.addComponent(this.snapState.getIsSnapToGroundEnabledState().createCheckBox() , new GridBagConstraints( 
+		detailsPanel.addComponent(SnapState.getInstance().getIsSnapToGroundEnabledState().createCheckBox() , new GridBagConstraints( 
 				0, //gridX
 				3, //gridY
 				2, //gridWidth
@@ -206,7 +167,7 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 		);
 
 		
-		this.addComponent(this.snapState.getIsSnapEnabledState().createCheckBox() , new GridBagConstraints( 
+		this.addComponent(SnapState.getInstance().getIsSnapEnabledState().createCheckBox() , new GridBagConstraints( 
                 0, //gridX
                 0, //gridY
                 1, //gridWidth
@@ -250,46 +211,32 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 	
 	protected void updateUIFromSnapState()
 	{
-		this.snapState.getIsSnapToGroundEnabledState().setEnabled(this.snapState.isSnapEnabled());
-		this.snapState.getShowSnapGridState().setEnabled(this.snapState.isSnapEnabled());
+		SnapState.getInstance().getIsSnapToGroundEnabledState().setEnabled(SnapState.getInstance().isSnapEnabled());
+		SnapState.getInstance().getShowSnapGridState().setEnabled(SnapState.getInstance().isSnapEnabled());
 		
-		this.gridSizeModel.setValue(new Double(this.snapState.getGridSpacing()));
-		this.snapState.getIsSnapToGridEnabledState().setEnabled(this.snapState.isSnapEnabled());
-		this.gridSizeSpinner.setEnabled(this.snapState.isSnapEnabled());
-		this.gridSizeLabel.getAwtComponent().setEnabled(this.snapState.isSnapEnabled());
+		SnapState.getInstance().getIsSnapToGridEnabledState().setEnabled(SnapState.getInstance().isSnapEnabled());
+		this.gridSizeSpinner.getAwtComponent().setEnabled(SnapState.getInstance().isSnapEnabled());
+		this.gridSizeLabel.getAwtComponent().setEnabled(SnapState.getInstance().isSnapEnabled());
 		
-		this.snapAngleModel.setValue(SnapState.getAngleOptionForAngle((int)this.snapState.getRotationSnapAngle().getAsDegrees()));
-		this.snapState.getIsRotationSnapEnabledState().setEnabled(this.snapState.isSnapEnabled());
-		this.snapAngleSpinner.setEnabled(this.snapState.isSnapEnabled());
-		this.snapAngleLabel.getAwtComponent().setEnabled(this.snapState.isSnapEnabled());
-	}
-	
-	protected void updateSnapStateFromUI()
-	{
-		this.snapState.setGridSpacing(this.gridSizeModel.getNumber().doubleValue());
-		this.snapState.setRotationSnapAngle(new AngleInDegrees(((Integer)this.snapAngleModel.getValue()).doubleValue()));
-		if (this.sceneEditor != null)
-		{
-			this.sceneEditor.setSnapGridSpacing(this.snapState.getGridSpacing());
-		}
+		SnapState.getInstance().getIsRotationSnapEnabledState().setEnabled(SnapState.getInstance().isSnapEnabled());
+		this.snapAngleSpinner.getAwtComponent().setEnabled(SnapState.getInstance().isSnapEnabled());
+		this.snapAngleLabel.getAwtComponent().setEnabled(SnapState.getInstance().isSnapEnabled());
 	}
 	
 	public void setSnapState(SnapState snapState)
 	{
-		if (this.snapState != null)
+		if (SnapState.getInstance() != null)
 		{
-			this.snapState.getIsSnapEnabledState().removeValueObserver(this.snapStateValueObserver);
+			SnapState.getInstance().getIsSnapEnabledState().removeValueObserver(this.snapStateValueObserver);
 		}
-		this.snapState = snapState;
 		initializeUI();
-		this.snapState.getIsSnapEnabledState().addAndInvokeValueObserver(this.snapStateValueObserver);
+		
 		updateUIFromSnapState();
 	}
 
 	public void stateChanged(ChangeEvent e) {
 	    if (!this.isInitializing)
 	    {
-	        updateSnapStateFromUI();
 	        updateUIFromSnapState();
 	    }
 	}
@@ -297,7 +244,6 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 	public void actionPerformed(ActionEvent e) {
 	    if (!this.isInitializing)
         {
-	        updateSnapStateFromUI();
 	        updateUIFromSnapState();
         }
 	}

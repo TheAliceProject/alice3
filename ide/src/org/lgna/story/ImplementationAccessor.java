@@ -76,7 +76,8 @@ public class ImplementationAccessor {
 			return defaultValue;
 		}
 	}
-	public static edu.cmu.cs.dennisc.texture.BufferedImageTexture getTexture( Paint paint, edu.cmu.cs.dennisc.texture.BufferedImageTexture defaultValue ) {
+	private static final java.util.Map< ImagePaint, edu.cmu.cs.dennisc.texture.BufferedImageTexture > mapImagePaintToTexture = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static edu.cmu.cs.dennisc.texture.Texture getTexture( Paint paint, edu.cmu.cs.dennisc.texture.Texture defaultValue ) {
 		if( paint instanceof org.lgna.story.ImageSource ) {
 			org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
 			org.alice.virtualmachine.resources.ImageResource imageResource = imageSource.getImageResource();
@@ -85,6 +86,22 @@ public class ImplementationAccessor {
 			} else {
 				return null;
 			}
+		} else if( paint instanceof org.lgna.story.ImagePaint ) {
+			org.lgna.story.ImagePaint imagePaint = (org.lgna.story.ImagePaint)paint;
+			edu.cmu.cs.dennisc.texture.BufferedImageTexture rv = mapImagePaintToTexture.get( imagePaint );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
+				try {
+					rv.setBufferedImage( javax.imageio.ImageIO.read( imagePaint.getResource() ) );
+				} catch( java.io.IOException ioe ) {
+					throw new RuntimeException( ioe );
+				}
+				rv.setMipMappingDesired( true );
+				mapImagePaintToTexture.put( imagePaint, rv );
+			}
+			return rv;
 		} else {
 			return defaultValue;
 		}

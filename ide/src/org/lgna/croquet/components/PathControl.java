@@ -87,7 +87,7 @@ public class PathControl<T> extends ViewController< javax.swing.JComponent, Tree
 	};
 	public PathControl( TreeSelectionState<T> model ) {
 		super( model );
-		this.setSwingTreeSelectionModel( model.getTreeSelectionModel() );
+		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
 	}
 
 	private void setSwingTreeSelectionModel( javax.swing.tree.TreeSelectionModel treeSelectionModel ) {

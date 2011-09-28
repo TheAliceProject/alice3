@@ -47,15 +47,20 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class BillboardImp extends ModelImp {
+	private static final float MIN_U = 0.0f;
+	private static final float MAX_U = 1.0f;
+	private static final float MIN_V = 1.0f;
+	private static final float MAX_V = 0.0f;
+
 	private class Face extends edu.cmu.cs.dennisc.scenegraph.Visual {
 		private org.lgna.story.Paint paint;
 		private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
 		private edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
 		private edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
-				new edu.cmu.cs.dennisc.scenegraph.Vertex(),
-				new edu.cmu.cs.dennisc.scenegraph.Vertex(),
-				new edu.cmu.cs.dennisc.scenegraph.Vertex(),
-				new edu.cmu.cs.dennisc.scenegraph.Vertex(),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MIN_V ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MIN_V ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MAX_V )
 		};
 		private boolean isFront;
 		
@@ -78,38 +83,26 @@ public class BillboardImp extends ModelImp {
 		public void updateAspectRatio( double widthToHeightAspectRatio ) { 
 			double x = widthToHeightAspectRatio * 0.5;
 			
-			final float MIN_U = 0.0f;
-			final float MAX_U = 1.0f;
-			final float MIN_V = 1.0f;
-			final float MAX_V = 0.0f;
 			
 			edu.cmu.cs.dennisc.scenegraph.Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
 			v0.position.x = -x;
 			v0.position.y = 1;
 			v0.position.z = 0;
-			v0.textureCoordinate0.u = MAX_U;
-			v0.textureCoordinate0.v = MAX_V;
 			
 			edu.cmu.cs.dennisc.scenegraph.Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
 			v1.position.x = -x;
 			v1.position.y = 0;
 			v1.position.z = 0;
-			v1.textureCoordinate0.u = MAX_U;
-			v1.textureCoordinate0.v = MIN_V;
 
 			edu.cmu.cs.dennisc.scenegraph.Vertex v2 = sgVertices[ this.getIndex( 2 ) ];
 			v2.position.x = +x;
 			v2.position.y = 0;
 			v2.position.z = 0;
-			v2.textureCoordinate0.u = MIN_U;
-			v2.textureCoordinate0.v = MIN_V;
 
 			edu.cmu.cs.dennisc.scenegraph.Vertex v3 = sgVertices[ this.getIndex( 3 ) ];
 			v3.position.x = +x;
 			v3.position.y = 1;
 			v3.position.z = 0;
-			v3.textureCoordinate0.u = MIN_U;
-			v3.textureCoordinate0.v = MAX_V;
 		}
 		private int getIndex( int i ) {
 			if( this.isFront ) {

@@ -41,19 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.declaration;
+package org.lgna.croquet.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BackPaintState extends PaintState {
-	private static class SingletonHolder {
-		private static BackPaintState instance = new BackPaintState();
+public abstract class BoundedNumberStateChangeStep< M extends org.lgna.croquet.BoundedNumberState< N >, N extends Number > extends StateChangeStep< org.lgna.croquet.BoundedNumberState< N > >{
+	public BoundedNumberStateChangeStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
+		super( parent, model, trigger );
 	}
-	public static BackPaintState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private BackPaintState() {
-		super( java.util.UUID.fromString( "3ce5728f-098d-4beb-b5ad-d5224accd93d" ) );
+	public BoundedNumberStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 }

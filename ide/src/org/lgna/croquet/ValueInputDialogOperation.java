@@ -47,15 +47,72 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ValueInputDialogOperation<T> extends InputDialogOperation< T > {
+	public static final class InternalFillInResolver<F> extends IndirectResolver< InternalFillIn<F>, ValueInputDialogOperation<F> > {
+		private InternalFillInResolver( ValueInputDialogOperation<F> internal ) {
+			super( internal );
+		}
+		public InternalFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected InternalFillIn<F> getDirect( ValueInputDialogOperation<F> indirect ) {
+			return indirect.getFillIn();
+		}
+	}
+	private static final class InternalFillIn<F> extends CascadeFillIn< F, Void > {
+		private final ValueInputDialogOperation<F> valueInputDialogOperation;
+		private InternalFillIn( ValueInputDialogOperation<F> valueInputDialogOperation ) {
+			super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
+			this.valueInputDialogOperation = valueInputDialogOperation;
+		}
+		public ValueInputDialogOperation<F> getInputDialogOperation() {
+			return this.valueInputDialogOperation;
+		}
+		@Override
+		protected InternalFillInResolver<F> createCodableResolver() {
+			return new InternalFillInResolver<F>( this.valueInputDialogOperation );
+		}
+		@Override
+		protected String getTutorialItemText() {
+			return this.valueInputDialogOperation.getDefaultLocalizedText();
+		}
+		@Override
+		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+			return new javax.swing.JLabel( this.getTutorialItemText() );
+		}
+		@Override
+		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+			org.lgna.croquet.history.InputDialogOperationStep<F> inputDialogStep = this.valueInputDialogOperation.fire();
+			if( inputDialogStep.isValueCommitted() ) {
+				return inputDialogStep.getCommittedValue();
+			} else {
+				throw new CancelException();
+			}
+		}
+		@Override
+		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+			return null;
+		}
+		
+		@Override
+		protected StringBuilder appendRepr( StringBuilder rv ) {
+			super.appendRepr( rv );
+			rv.append( "[" );
+			rv.append( this.getInputDialogOperation() );
+			rv.append( "]" );
+			return rv;
+		}
+	}
+
 	public ValueInputDialogOperation( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
-	private CascadeValueInputDialogOperationFillIn<T> cascadeFillIn;
-	public synchronized CascadeValueInputDialogOperationFillIn<T> getFillIn() {
+	private InternalFillIn<T> cascadeFillIn;
+	public synchronized InternalFillIn<T> getFillIn() {
 		if( this.cascadeFillIn != null ) {
 			//pass
 		} else {
-			this.cascadeFillIn = new CascadeValueInputDialogOperationFillIn<T>( this );
+			this.cascadeFillIn = new InternalFillIn<T>( this );
 		}
 		return this.cascadeFillIn;
 	}

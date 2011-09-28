@@ -55,8 +55,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 			if( previousExpression instanceof org.lgna.project.ast.DoubleLiteral ) {
 				org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)previousExpression;
 				double dValue = doubleLiteral.value.getValue();
-				int iValue = (int)(dValue*100.0);
-				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValue( iValue );
+				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValue( dValue );
 			}
 		}
 	}
@@ -66,7 +65,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 	}
 	@Override
 	public org.lgna.project.ast.DoubleLiteral getValue() {
-		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue() / 100.0;
+		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue();
 		org.lgna.project.ast.DoubleLiteral doubleLiteral = new org.lgna.project.ast.DoubleLiteral( value );
 //		final boolean IS_LITERAL_DESIRED = true;
 //		if( IS_LITERAL_DESIRED ) {

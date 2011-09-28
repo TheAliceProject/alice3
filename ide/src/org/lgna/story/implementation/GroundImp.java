@@ -48,7 +48,7 @@ package org.lgna.story.implementation;
  */
 public class GroundImp extends SimpleModelImp {
 	private final org.lgna.story.Ground abstraction;
-	private org.lgna.story.Ground.Appearance appearance = null;
+	private org.lgna.story.Ground.SurfaceAppearance appearance = null;
 	public GroundImp( org.lgna.story.Ground abstraction ) {
 		this.abstraction = abstraction;
 		
@@ -80,30 +80,30 @@ public class GroundImp extends SimpleModelImp {
 	public org.lgna.story.Ground getAbstraction() {
 		return this.abstraction;
 	}
-	public org.lgna.story.Ground.Appearance getAppearance() {
-		return this.appearance;
-	}
-	public void setAppearance( org.lgna.story.Ground.Appearance appearance ) {
-		if( this.appearance != null ) {
-			
-		}
-		this.appearance = appearance;
-		edu.cmu.cs.dennisc.texture.BufferedImageTexture diffuseColorTexture;
-		if( this.appearance != null ) {
-			//todo
-			java.net.URL resource = this.appearance.getResource();
-			try {
-				java.awt.image.BufferedImage bufferedImage = javax.imageio.ImageIO.read( resource );
-				diffuseColorTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
-				diffuseColorTexture.setBufferedImage( bufferedImage );
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
-			}
-		} else {
-			diffuseColorTexture = null;
-		}
-		this.setDiffuseColorTexture( diffuseColorTexture );
-	}
+//	public org.lgna.story.Ground.SurfaceAppearance getAppearance() {
+//		return this.appearance;
+//	}
+//	public void setAppearance( org.lgna.story.Ground.SurfaceAppearance appearance ) {
+//		if( this.appearance != null ) {
+//			
+//		}
+//		this.appearance = appearance;
+//		edu.cmu.cs.dennisc.texture.BufferedImageTexture diffuseColorTexture;
+//		if( this.appearance != null ) {
+//			//todo
+//			java.net.URL resource = this.appearance.getResource();
+//			try {
+//				java.awt.image.BufferedImage bufferedImage = javax.imageio.ImageIO.read( resource );
+//				diffuseColorTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
+//				diffuseColorTexture.setBufferedImage( bufferedImage );
+//			} catch( java.io.IOException ioe ) {
+//				throw new RuntimeException( ioe );
+//			}
+//		} else {
+//			diffuseColorTexture = null;
+//		}
+//		this.setDiffuseColorTexture( diffuseColorTexture );
+//	}
 	
 	@Override
 	protected double getBoundingSphereRadius() {

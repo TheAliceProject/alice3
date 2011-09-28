@@ -52,12 +52,144 @@ public abstract class MenuModel extends AbstractMenuModel {
 	public MenuModel( java.util.UUID individualId ) {
 		this( individualId, null );
 	}
-	private StandardPopupPrepModel popupPrepModel;
-	public synchronized StandardPopupPrepModel getPopupPrepModel() {
+	public static class InternalPopupPrepModelResolver  extends IndirectResolver< InternalPopupPrepModel, MenuModel > {
+		private InternalPopupPrepModelResolver( MenuModel indirect ) {
+			super( indirect );
+		}
+		public InternalPopupPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected InternalPopupPrepModel getDirect( MenuModel indirect ) {
+			return indirect.getPopupPrepModel();
+		}
+	}
+	public final static class InternalPopupPrepModel extends PopupPrepModel {
+		private MenuModel menuModel;
+		private InternalPopupPrepModel( MenuModel menuModel ) {
+			super( java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
+			this.menuModel = menuModel;
+		}
+		
+		@Override
+		public Iterable< ? extends org.lgna.croquet.Model > getChildren() {
+			return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.menuModel );
+		}
+		@Override
+		protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
+			return this.menuModel.getClassUsedForLocalization();
+		}
+		public MenuModel getMenuModel() {
+			return this.menuModel;
+		}
+			
+//		@Override
+//		public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+//			SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
+//			if( successfulCompletionEvent != null ) {
+//				ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+//				return descendantContext.getModel().getTutorialStepTitle( descendantContext, userInformation );
+//			} else {
+//				return super.getTutorialStepTitle( modelContext, edit, userInformation );
+//			}
+//		}
+//		@Override
+//		public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+//			SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
+//			if( successfulCompletionEvent != null ) {
+//				ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+//				return descendantContext.getModel().getTutorialNoteText( descendantContext, userInformation );
+//			} else {
+//				return super.getTutorialNoteText( modelContext, edit, userInformation );
+//			}
+//		}
+		
+		@Override
+		protected org.lgna.croquet.resolvers.CodableResolver< InternalPopupPrepModel > createCodableResolver() {
+			return new InternalPopupPrepModelResolver( this.menuModel );
+		}
+		
+		
+		@Override
+		protected org.lgna.croquet.history.StandardPopupPrepStep perform( org.lgna.croquet.triggers.Trigger trigger ) {
+			final org.lgna.croquet.history.StandardPopupPrepStep step = org.lgna.croquet.history.TransactionManager.addStandardPopupOperationStep( this, trigger );
+
+			final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
+				@Override
+				protected void handleDisplayable() {
+					//todo: investigate
+					super.handleDisplayable();
+					//PopupMenuOperation.this.menuModel.addPopupMenuListener( this );
+					InternalPopupPrepModel.this.addComponent( this );
+				}
+				@Override
+				protected void handleUndisplayable() {
+					InternalPopupPrepModel.this.removeComponent( this );
+					InternalPopupPrepModel.this.menuModel.removePopupMenuListener( this );
+					super.handleUndisplayable();
+				}
+			};
+			//todo: investigate
+			this.menuModel.addPopupMenuListener( popupMenu );
+			
+			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+				private javax.swing.event.PopupMenuEvent cancelEvent = null;
+				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+					this.cancelEvent = null;
+				}
+				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+					if( this.cancelEvent != null ) {
+						System.err.println( "todo: cancel" );
+						//step.getParent().cancel();
+						this.cancelEvent = null;
+					} else {
+						System.err.println( "todo: finish" );
+						//step.getParent().finish();
+					}
+					InternalPopupPrepModel.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
+					
+					System.err.println( "TODO: handleFinally?" );
+//					performObserver.handleFinally();
+				}
+				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+					this.cancelEvent = e;
+				}
+			} );
+
+			popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
+				public void componentShown( java.awt.event.ComponentEvent e ) {
+//					java.awt.Component awtComponent = e.getComponent();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+				}
+				public void componentMoved( java.awt.event.ComponentEvent e ) {
+//					java.awt.Component awtComponent = e.getComponent();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentMoved", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+				}
+				public void componentResized( java.awt.event.ComponentEvent e ) {
+//					java.awt.Component awtComponent = e.getComponent();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+					step.handleResized( e );
+				}
+				public void componentHidden( java.awt.event.ComponentEvent e ) {
+//					java.awt.Component awtComponent = e.getComponent();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentHidden", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+				}
+			} );
+
+			
+			this.menuModel.handlePopupMenuPrologue( popupMenu, step );
+			
+			step.showPopupMenu( popupMenu );
+			return step;
+		}
+	}
+
+	private InternalPopupPrepModel popupPrepModel;
+	public synchronized InternalPopupPrepModel getPopupPrepModel() {
 		if( this.popupPrepModel != null ) {
 			//pass
 		} else {
-			this.popupPrepModel = new StandardPopupPrepModel( this );
+			this.popupPrepModel = new InternalPopupPrepModel( this );
 		}
 		return this.popupPrepModel;
 	}

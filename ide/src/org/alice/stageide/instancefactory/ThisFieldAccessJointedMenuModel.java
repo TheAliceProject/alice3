@@ -41,51 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.instancefactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepModel {
-	public static class BooleanStateMenuPrepModelResolver extends IndirectResolver< BooleanStateMenuItemPrepModel, BooleanState > {
-		public BooleanStateMenuPrepModelResolver( BooleanStateMenuItemPrepModel model ) {
-			super( model.getBooleanState() );
+public class ThisFieldAccessJointedMenuModel extends JointedMenuModel {
+	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ThisFieldAccessJointedMenuModel getInstance( org.lgna.project.ast.UserField value ) {
+		synchronized( map ) {
+			ThisFieldAccessJointedMenuModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ThisFieldAccessJointedMenuModel( value );
+				map.put( value, rv );
+			}
+			return rv;
 		}
-		public BooleanStateMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		protected BooleanStateMenuItemPrepModel getDirect( BooleanState indirect ) {
-			return indirect.getMenuItemPrepModel();
-		}
 	}
-	private final BooleanState booleanState;
-	/*package-private*/ BooleanStateMenuItemPrepModel( BooleanState booleanState ) {
-		super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
-		assert booleanState != null;
-		this.booleanState = booleanState;
+	private final org.lgna.project.ast.UserField field;
+	private ThisFieldAccessJointedMenuModel( org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
+		this.field = field;
 	}
 	@Override
-	public Iterable< ? extends Model > getChildren() {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.booleanState );
-	}
-	@Override
-	protected void localize() {
-	}
-	public BooleanState getBooleanState() {
-		return this.booleanState;
-	}
-	@Override
-	protected BooleanStateMenuPrepModelResolver createCodableResolver() {
-		return new BooleanStateMenuPrepModelResolver( this );
-	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
-		return this.booleanState.getFirstComponent();
-	}
-	@Override
-	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-		rv.addCheckBoxMenuItem( new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() ) );
-		return rv;
+	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		return org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( this.field, method );
 	}
 }

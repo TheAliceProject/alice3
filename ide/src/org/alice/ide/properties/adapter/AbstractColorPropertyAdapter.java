@@ -44,6 +44,8 @@
 package org.alice.ide.properties.adapter;
 
 import java.util.Locale;
+
+import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.icons.ColorIcon;
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -70,7 +72,7 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 		}
 	}
 	
-	private org.lgna.croquet.StandardPopupPrepModel popupMenuOperation;
+	private org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation;
 	protected java.util.List< SetColorOperation > defaultColorOperationModels;
 	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
 	
@@ -135,14 +137,14 @@ public abstract class AbstractColorPropertyAdapter<O> extends AbstractInstancePr
 		return new SetColorOperation(value, null);
 	}
 	
-	public AbstractColorPropertyAdapter(O instance)
+	public AbstractColorPropertyAdapter(O instance, StandardExpressionState expressionState)
 	{
-		this("Color", instance);
+		this("Color", instance, expressionState);
 	}
 	
-	public AbstractColorPropertyAdapter(String repr, O instance )
+	public AbstractColorPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
 	{
-		super(repr, instance);
+		super(repr, instance, expressionState);
 	}
 	
 	public Color4f getValueCopy() 

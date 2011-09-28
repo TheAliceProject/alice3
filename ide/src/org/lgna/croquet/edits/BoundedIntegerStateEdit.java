@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,47 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
-
-import org.alice.stageide.croquet.components.gallerybrowser.ClassBasedPathControl;
-import org.lgna.story.resourceutilities.ModelResourceTreeNode;
-
+package org.lgna.croquet.edits;
 
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class SelectClassActionOperation extends ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<ModelResourceTreeNode, ClassBasedPathControl.Initializer, SelectClassActionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static SelectClassActionOperation getInstance( TreeSelectionState<ModelResourceTreeNode> treeSelectionState, ModelResourceTreeNode treeNode, ClassBasedPathControl.Initializer initializer ) {
-		assert initializer != null;
-		SelectClassActionOperation rv = mapToMap.get(treeNode, initializer);
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SelectClassActionOperation(treeSelectionState, treeNode, initializer);
-			mapToMap.put( treeNode, initializer, rv );
-		}
-		return rv;
+public final class BoundedIntegerStateEdit extends BoundedNumberStateEdit<org.lgna.croquet.BoundedIntegerState,Integer> {
+	private final int prevValue;
+	private final int nextValue;
+	public BoundedIntegerStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.BoundedIntegerState > completionStep, int prevValue, int nextValue ) {
+		super( completionStep );
+		this.prevValue = prevValue;
+		this.nextValue = nextValue;
 	}
-
-	private TreeSelectionState<ModelResourceTreeNode> treeSelectionState;
-	private ModelResourceTreeNode treeNode;
+	public BoundedIntegerStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.prevValue = binaryDecoder.decodeInt();
+		this.nextValue = binaryDecoder.decodeInt();
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.prevValue );
+		binaryEncoder.encode( this.nextValue );
+	}
 	
-	private SelectClassActionOperation( TreeSelectionState<ModelResourceTreeNode> treeSelectionState, ModelResourceTreeNode treeNode, ClassBasedPathControl.Initializer initializer ) {
-		super( Application.INHERIT_GROUP, java.util.UUID.fromString( "e9d3ebc0-fa0f-4db4-9ce6-e795eab4e859" ) );
-		this.treeSelectionState = treeSelectionState;
-		this.treeNode = treeNode;
-		if( initializer != null ) {
-			initializer.configure( this, this.treeNode );
-		}
-	}
 
 	@Override
-	protected void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		//todo: create edit
-		this.treeSelectionState.setSelectedNode( this.treeNode );
-		step.finish();
+	public Integer getPreviousValue() {
+		return this.prevValue;
 	}
-
+	@Override
+	public Integer getNextValue() {
+		return this.nextValue;
+	}
 }

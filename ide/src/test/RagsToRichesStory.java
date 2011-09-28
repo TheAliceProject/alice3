@@ -49,16 +49,20 @@ import org.lgna.story.Cone;
 import org.lgna.story.Ground;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.Program;
-import org.lgna.story.VantagePointWithAsSeenByDetails;
 import org.lgna.story.RollDirection;
 import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
+import org.lgna.story.VantagePointWithAsSeenByDetails;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.MonsterResource;
-import org.lgna.story.resources.PersonResource;
-import org.lgna.story.resources.sims2.*;
+import org.lgna.story.resources.sims2.AdultPersonResource;
+import org.lgna.story.resources.sims2.BaseEyeColor;
+import org.lgna.story.resources.sims2.BaseSkinTone;
+import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
+import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
+import org.lgna.story.resources.sims2.Gender;
 
 class CustomBiped extends Biped {
 	public CustomBiped( BipedResource resource ) {
@@ -96,9 +100,9 @@ class DesertScene extends Scene {
 //		this.ogre.move( MoveDirection.LEFT, 1.0 );
 //		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
 		
-		this.desert.setAppearance( Ground.Appearance.SAND );
+		this.desert.setPaint( Ground.SurfaceAppearance.SAND );
 		this.sphere.setRadius( 0.1 );
-		this.sphere.setColor( Color.RED );
+		this.sphere.setPaint( Color.RED );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.sphere );
 	}
 	private void performCustomSetup() {
@@ -150,9 +154,9 @@ class SnowScene extends Scene {
 		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
 		
-		this.redCone.setColor( Color.RED );
-		this.greenCone.setColor( Color.GREEN );
-		this.blueCone.setColor( Color.BLUE );
+		this.redCone.setPaint( Color.RED );
+		this.greenCone.setPaint( Color.GREEN );
+		this.blueCone.setPaint( Color.BLUE );
 		this.redCone.setBaseRadius( 0.1 );
 		this.greenCone.setBaseRadius( 0.1 );
 		this.blueCone.setBaseRadius( 0.1 );
@@ -166,7 +170,7 @@ class SnowScene extends Scene {
 		
 		this.ogre.move( MoveDirection.LEFT, 1.5 );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
-		this.snow.setAppearance( Ground.Appearance.SNOW );
+		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
 	private void performCustomSetup() {

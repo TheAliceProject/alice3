@@ -52,11 +52,15 @@ public abstract class Color4fAnimation extends edu.cmu.cs.dennisc.animation.inte
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.color.Color4f newE( edu.cmu.cs.dennisc.color.Color4f other ) {
-		return new edu.cmu.cs.dennisc.color.Color4f( other );
+		if( other != null ) {
+			return new edu.cmu.cs.dennisc.color.Color4f( other );
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.color.Color4f interpolate( edu.cmu.cs.dennisc.color.Color4f rv, edu.cmu.cs.dennisc.color.Color4f v0, edu.cmu.cs.dennisc.color.Color4f v1, double portion ) {
-		rv.interpolate( v0, v1, (float)portion );
-		return rv;
+		assert rv == null;
+		return edu.cmu.cs.dennisc.color.Color4f.createInterpolation( v0, v1, (float)portion );
 	}
 }

@@ -41,23 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models;
+package org.alice.stageide.person.models;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PredeterminedTypeExpressionState extends StandardExpressionState {
-	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
-	public PredeterminedTypeExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( group, id, initialValue );
-		this.type = type;
+public class ObesityLevelState extends org.lgna.croquet.BoundedDoubleState {
+	private static class SingletonHolder {
+		private static ObesityLevelState instance = new ObesityLevelState();
 	}
-	public PredeterminedTypeExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue, Class<?> cls ) {
-		this( group, id, initialValue, org.lgna.project.ast.JavaType.getInstance( cls ) );
+	public static ObesityLevelState getInstance() {
+		return SingletonHolder.instance;
 	}
-	
-	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
-		return this.type;
+	private ObesityLevelState() {
+		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ) ).minimum( 0.0 ).maximum( 1.0 ).initialValue( 0.5 ).extent( 0.01 ) );
 	}
 }
