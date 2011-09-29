@@ -54,7 +54,8 @@ public class DropNoteUtilities {
 		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
 			org.lgna.croquet.history.event.AddStepEvent addStepEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
 			org.lgna.croquet.history.Step< ? > candidateStep = addStepEvent.getStep();
-			if( candidateStep.getModel() == desiredModel ) {
+			org.lgna.croquet.Model candidateModel = candidateStep.getModel();
+			if( candidateModel == desiredModel ) {
 				org.lgna.croquet.triggers.Trigger trigger = candidateStep.getTrigger();
 				if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
 					org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;

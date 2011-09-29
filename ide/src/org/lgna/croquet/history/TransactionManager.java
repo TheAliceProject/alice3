@@ -132,7 +132,6 @@ public class TransactionManager {
 		}
 	}
 
-	private static javax.swing.MenuElement[] previousMenuElements = {};
 	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
 		org.lgna.croquet.triggers.MenuSelectionTrigger trigger = new org.lgna.croquet.triggers.MenuSelectionTrigger( e );
 		if( trigger.isValid() ) {
