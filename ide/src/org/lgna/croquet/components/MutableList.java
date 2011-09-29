@@ -43,76 +43,68 @@
 
 package org.lgna.croquet.components;
 
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+/*package-private*/ class MutableListItemDetails<E> extends ItemDetails<E, MutableListItemDetails< E >, MutableList<E>> {
+	private Component< ? > leadingComponent;
+	private Component< ? > mainComponent;
+	private Component< ? > trailingComponent;
 
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.Operation;
+	public MutableListItemDetails( MutableList<E> panel, E item, BooleanStateButton< javax.swing.AbstractButton > button, Component< ? > leadingComponent, Component< ? > mainComponent, Component< ? > trailingComponent, java.awt.event.ActionListener actionListener ) {
+		super( panel, item, button );
+		this.leadingComponent = leadingComponent;
+		this.mainComponent = mainComponent;
+		this.trailingComponent = trailingComponent;
 
+		if( this.leadingComponent != null ) {
+			button.internalAddComponent( this.leadingComponent, java.awt.BorderLayout.LINE_START );
+		}
+		if( this.mainComponent != null ) {
+			button.internalAddComponent( this.mainComponent, java.awt.BorderLayout.CENTER );
+		}
+		if( actionListener != null ) {
+			//todo
+			assert this.trailingComponent == null;
+			edu.cmu.cs.dennisc.javax.swing.components.JCloseButton jCloseButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
+			jCloseButton.addActionListener( actionListener );
+			button.getAwtComponent().add( jCloseButton, java.awt.BorderLayout.LINE_END );
+		} else {
+			if( this.trailingComponent != null ) {
+				button.internalAddComponent( this.trailingComponent, java.awt.BorderLayout.LINE_END );
+			}
+		}
+
+	}
+	public Component< ? > getLeadingComponent() {
+		return this.leadingComponent;
+	}
+	public Component< ? > getMainComponent() {
+		return this.mainComponent;
+	}
+	public Component< ? > getTrailingComponent() {
+		return this.trailingComponent;
+	}
+}
 
 /**
  * @author Dennis Cosgrove
  */
-public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.MutableListItemDetails > {
-	class MutableListItemDetails extends ItemSelectablePanel.ItemDetails {
-		private Component<?> leadingComponent;
-		private Component<?> mainComponent;
-		private Component<?> trailingComponent;
-		public MutableListItemDetails( E item, AbstractButton<?, BooleanState> button, Component<?> leadingComponent, Component<?> mainComponent, Component<?> trailingComponent, java.awt.event.ActionListener actionListener ) {
-			super( item, button );
-			this.leadingComponent = leadingComponent;
-			this.mainComponent = mainComponent;
-			this.trailingComponent = trailingComponent;
-			
-			if( this.leadingComponent != null ) {
-				button.internalAddComponent( this.leadingComponent, java.awt.BorderLayout.LINE_START );
-			}
-			if( this.mainComponent != null ) {
-				button.internalAddComponent( this.mainComponent, java.awt.BorderLayout.CENTER );
-			}
-			if( actionListener != null ) {
-				//todo
-				assert this.trailingComponent == null;
-				edu.cmu.cs.dennisc.javax.swing.components.JCloseButton jCloseButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton(true);
-				jCloseButton.addActionListener( actionListener );
-				button.getAwtComponent().add( jCloseButton, java.awt.BorderLayout.LINE_END );
-			} else {
-				if( this.trailingComponent != null ) {
-					button.internalAddComponent( this.trailingComponent, java.awt.BorderLayout.LINE_END );
-				}
-			}
-
-		}
-		public Component<?> getLeadingComponent() {
-			return this.leadingComponent;
-		}
-		public Component<?> getMainComponent() {
-			return this.mainComponent;
-		}
-		public Component<?> getTrailingComponent() {
-			return this.trailingComponent;
-		}
+public final class MutableList<E> extends ItemSelectablePanel< E, MutableListItemDetails<E> > {
+	public static interface Factory<E> {
+		public Component< ? > createLeadingComponent();
+		public Component< ? > createMainComponent();
+		public Component< ? > createTrailingComponent();
+		public void update( Component< ? > leadingComponent, Component< ? > mainComponent, Component< ? > trailingComponent, int index, E item );
+		public void updateSelection( Component< ? > leadingComponent, Component< ? > mainComponent, Component< ? > trailingComponent, boolean isSelected );
+		public org.lgna.croquet.Operation< ? > getAddItemOperation();
 	}
 
-	public static interface Factory< E > {
-		public Component<?> createLeadingComponent();
-		public Component<?> createMainComponent();
-		public Component<?> createTrailingComponent();
-		public void update( Component<?> leadingComponent, Component<?> mainComponent, Component<?> trailingComponent, int index, E item );
-		public void updateSelection( Component<?> leadingComponent, Component<?> mainComponent, Component<?> trailingComponent, boolean isSelected );
-		public Operation<?> getAddItemOperation();
-	}
-	
 	private static java.awt.Color DEFAULT_SELECTED_BACKGROUND = new java.awt.Color( 57, 105, 138 );
-	private static java.awt.Color DEFAULT_UNSELECTED_BACKGROUND = new java.awt.Color( 214, 217, 223);
-	
+	private static java.awt.Color DEFAULT_UNSELECTED_BACKGROUND = new java.awt.Color( 214, 217, 223 );
+
 	private java.awt.Color selectedBackgroundColor = DEFAULT_SELECTED_BACKGROUND;
-	private java.awt.Color unselectedBackgroundColor = DEFAULT_UNSELECTED_BACKGROUND; 
-	
-	
+	private java.awt.Color unselectedBackgroundColor = DEFAULT_UNSELECTED_BACKGROUND;
+
 	private class MutableListButton extends BooleanStateButton< javax.swing.AbstractButton > {
-		public MutableListButton( BooleanState booleanState ) {
+		public MutableListButton( org.lgna.croquet.BooleanState booleanState ) {
 			super( booleanState );
 		}
 		@Override
@@ -125,23 +117,22 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 					return rv;
 				}
 				@Override
-				protected void paintComponent(java.awt.Graphics g) {
+				protected void paintComponent( java.awt.Graphics g ) {
 					//super.paintComponent(g);
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 					g.setColor( MutableList.this.getUnselectedBackgroundColor() );
 					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 					//g.clearRect( 0, 0, this.getWidth(), this.getHeight() );
 					if( this.isSelected() ) {
 						java.awt.Color color;
-//						if( this.getModel().isRollover() ) {
-//							color = SELECTION_ROLLOVER_BACKGROUND;
-//						} else {
-							color = MutableList.this.getSelectedBackgroundColor();
-//						}
+						//						if( this.getModel().isRollover() ) {
+						//							color = SELECTION_ROLLOVER_BACKGROUND;
+						//						} else {
+						color = MutableList.this.getSelectedBackgroundColor();
+						//						}
 						g.setColor( color );
-						if (g instanceof Graphics2D)
-		                {
-		                   ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		                }
+						g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 						g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), 8, 8 );
 						if( this.getModel().isRollover() ) {
 							color = java.awt.Color.LIGHT_GRAY;
@@ -149,49 +140,52 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 							color = java.awt.Color.GRAY;
 						}
 						g.setColor( color );
-						edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight()-5 );
+						edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight() - 5 );
 					}
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 				}
 			};
-			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder(4, 14, 4, 4) );
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
 			rv.setLayout( new java.awt.BorderLayout() );
 			rv.setRolloverEnabled( true );
 			return rv;
 		}
-//		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-//			public void itemStateChanged(java.awt.event.ItemEvent e) {
-//				boolean isSelected = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( isSelected, mainComponent.hashCode() );
-//				MutableList.this.factory.updateSelection(leadingComponent, mainComponent, trailingComponent, isSelected );
-//				if( isSelected ) {
-//					requestFocus();
-//				}
-//			}
-//		};
-//		@Override
-//		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-//			super.handleAddedTo( parent );
-//			this.getAwtComponent().addItemListener( this.itemListener );
-//		}
-//		@Override
-//		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
-//			this.getAwtComponent().removeItemListener( this.itemListener );
-//			super.handleRemovedFrom( parent );
-//		}
+		//		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+		//			public void itemStateChanged(java.awt.event.ItemEvent e) {
+		//				boolean isSelected = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
+		//				edu.cmu.cs.dennisc.print.PrintUtilities.println( isSelected, mainComponent.hashCode() );
+		//				MutableList.this.factory.updateSelection(leadingComponent, mainComponent, trailingComponent, isSelected );
+		//				if( isSelected ) {
+		//					requestFocus();
+		//				}
+		//			}
+		//		};
+		//		@Override
+		//		protected void handleAddedTo(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		//			super.handleAddedTo( parent );
+		//			this.getAwtComponent().addItemListener( this.itemListener );
+		//		}
+		//		@Override
+		//		protected void handleRemovedFrom(edu.cmu.cs.dennisc.croquet.Component<?> parent) {
+		//			this.getAwtComponent().removeItemListener( this.itemListener );
+		//			super.handleRemovedFrom( parent );
+		//		}
 	}
-	private Factory<E> factory;
+
+	private Factory< E > factory;
 	private PageAxisPanel pageAxisPanel = new PageAxisPanel();
-	public MutableList( ListSelectionState<E> model, Factory<E> factory ) {
+
+	public MutableList( org.lgna.croquet.ListSelectionState< E > model, Factory< E > factory ) {
 		super( model );
 		this.factory = factory;
 		this.internalAddComponent( pageAxisPanel, java.awt.BorderLayout.CENTER );
-		Operation<?> operation = this.factory.getAddItemOperation();
+		org.lgna.croquet.Operation< ? > operation = this.factory.getAddItemOperation();
 		if( operation != null ) {
 			this.internalAddComponent( operation.createButton(), java.awt.BorderLayout.PAGE_END );
 		}
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
 	@Override
@@ -200,9 +194,11 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 			details.getButton().setVisible( false );
 		}
 	}
+
 	private int index;
+
 	@Override
-	protected void addPrologue(int count) {
+	protected void addPrologue( int count ) {
 		//this.pageAxisPanel.internalRemoveAllComponents();
 		this.index = 0;
 		for( MutableListItemDetails details : this.getAllItemDetails() ) {
@@ -210,8 +206,8 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 		}
 	}
 	@Override
-	protected void addItem(MutableList.MutableListItemDetails itemDetails) {
-		factory.update(itemDetails.getLeadingComponent(), itemDetails.getMainComponent(), itemDetails.getTrailingComponent(), this.index, (E)itemDetails.getItem() );
+	protected void addItem( MutableListItemDetails<E> itemDetails ) {
+		factory.update( itemDetails.getLeadingComponent(), itemDetails.getMainComponent(), itemDetails.getTrailingComponent(), this.index, (E)itemDetails.getItem() );
 		this.index++;
 		//this.pageAxisPanel.internalAddComponent( itemDetails.getButton() );
 		itemDetails.getButton().setVisible( true );
@@ -228,39 +224,35 @@ public final class MutableList< E > extends ItemSelectablePanel< E, MutableList.
 		}
 	}
 	@Override
-	protected final MutableList.MutableListItemDetails createItemDetails( final E item, BooleanState booleanState ) {
+	protected final MutableListItemDetails<E> createItemDetails( final E item, org.lgna.croquet.BooleanState booleanState ) {
 		java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				MutableList.this.getModel().removeItem( item );
 			}
 		};
 
 		MutableListButton mutableListButton = new MutableListButton( booleanState );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MUTABLE_LIST_BOOLEAN_STATE" );
-		MutableListItemDetails rv = new MutableListItemDetails( item, mutableListButton, factory.createLeadingComponent(), factory.createMainComponent(), factory.createTrailingComponent(), actionListener );
-		AbstractButton<?, ?> button = rv.getButton();
+		MutableListItemDetails rv = new MutableListItemDetails<E>( this, item, mutableListButton, factory.createLeadingComponent(), factory.createMainComponent(), factory.createTrailingComponent(), actionListener );
+		AbstractButton< ?, ? > button = rv.getButton();
 		button.setVisible( false );
 		this.pageAxisPanel.addComponent( button );
 		return rv;
 	}
-	
-	public void setSelectedBackgroundColor(java.awt.Color color)
-	{
-	    this.selectedBackgroundColor = color;
+
+	public void setSelectedBackgroundColor( java.awt.Color color ) {
+		this.selectedBackgroundColor = color;
 	}
-	
-	public java.awt.Color getSelectedBackgroundColor()
-	{
-	    return this.selectedBackgroundColor;
+
+	public java.awt.Color getSelectedBackgroundColor() {
+		return this.selectedBackgroundColor;
 	}
-	
-	public void setUnselectedBackgroundColor(java.awt.Color color)
-    {
-        this.unselectedBackgroundColor = color;
-    }
-    
-    public java.awt.Color getUnselectedBackgroundColor()
-    {
-        return this.unselectedBackgroundColor;
-    }
+
+	public void setUnselectedBackgroundColor( java.awt.Color color ) {
+		this.unselectedBackgroundColor = color;
+	}
+
+	public java.awt.Color getUnselectedBackgroundColor() {
+		return this.unselectedBackgroundColor;
+	}
 }

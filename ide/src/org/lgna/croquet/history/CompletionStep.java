@@ -98,7 +98,7 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	public TransactionHistory getTransactionHistory() {
 		return this.transactionHistory;
 	}
-	private void popTransactionHistoryIfNecessary() {
+	protected void popTransactionHistoryIfNecessary() {
 		if( this.transactionHistory != null ) {
 			TransactionHistory pop = TransactionManager.popTransactionHistory();
 			assert pop == this.transactionHistory;
@@ -112,6 +112,13 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	}
 	public boolean isCanceled() {
 		return this.isPending() == false && this.isSuccessfullyCompleted() == false;
+	}
+	
+	protected void setPending( boolean isPending ) {
+		this.isPending = isPending;
+	}
+	protected void setSuccessfullyCompleted( boolean isSuccessfullyCompleted ) {
+		this.isSuccessfullyCompleted = isSuccessfullyCompleted;
 	}
 
 	public org.lgna.croquet.edits.Edit< ? > getEdit() {

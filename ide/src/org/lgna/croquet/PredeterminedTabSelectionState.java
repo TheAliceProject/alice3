@@ -42,12 +42,6 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.AbstractButton;
-import org.lgna.croquet.components.FolderTabbedPane;
-import org.lgna.croquet.components.JComponent;
-import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.ToolPaletteTabbedPane;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -58,13 +52,16 @@ public abstract class PredeterminedTabSelectionState<T extends PredeterminedTab>
 			assert rv != null;
 			return rv;
 		}
-		public final JComponent<?> createMainComponent(T item) {
+		public final org.lgna.croquet.components.JComponent<?> createMainComponent(T item) {
 			return item.getMainComponent();
 		}
-		public void customizeTitleComponent( BooleanState booleanState, AbstractButton< ?, BooleanState > button, T item ) {
+		public void customizeTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item ) {
 			item.customizeTitleComponent( booleanState, button );
 		}
-		public final ScrollPane createScrollPane( T item ) {
+        public void releaseTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item ) {
+        	item.releaseTitleComponent( booleanState, button );
+        }
+		public final org.lgna.croquet.components.ScrollPane createScrollPane( T item ) {
 			return item.createScrollPane();
 		}
 		public final boolean isCloseable(T item) {
@@ -75,12 +72,12 @@ public abstract class PredeterminedTabSelectionState<T extends PredeterminedTab>
 		super( group, id, codec, selectionIndex, tabs );
 	}
 
-	public FolderTabbedPane<T> createDefaultFolderTabbedPane() {
-		return this.createFolderTabbedPane( new PredeterminedTabCreator() );
+	public org.lgna.croquet.components.FolderTabbedPane<T> createDefaultFolderTabbedPane() {
+		return this.createFolderTabbedPane( new PredeterminedTabCreator<T>() );
 	}
 
-	public ToolPaletteTabbedPane<T> createDefaultToolPaletteTabbedPane() {
-		return this.createToolPaletteTabbedPane( new PredeterminedTabCreator() );
+	public org.lgna.croquet.components.ToolPaletteTabbedPane<T> createDefaultToolPaletteTabbedPane() {
+		return this.createToolPaletteTabbedPane( new PredeterminedTabCreator<T>() );
 	}
 
 	@Deprecated

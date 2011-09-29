@@ -48,8 +48,8 @@ package org.lgna.croquet;
  */
 public abstract class ItemState<T> extends State<T> {
 	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, ItemCodec< T > itemCodec ) {
-		super( group, id );
+	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
+		super( group, id, initialValue );
 		//assert itemCodec != null;
 		if( itemCodec != null ) {
 			//pass

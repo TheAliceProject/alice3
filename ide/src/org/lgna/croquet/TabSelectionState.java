@@ -47,6 +47,15 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class TabSelectionState< T extends Composite > extends DefaultListSelectionState< T > {
+	public static interface TabCreator<T> {
+		public java.util.UUID getId( T item );
+		public void customizeTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item );
+		public void releaseTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item );
+		public org.lgna.croquet.components.JComponent< ? > createMainComponent( T item );
+		public org.lgna.croquet.components.ScrollPane createScrollPane( T item );
+		public boolean isCloseable( T item );
+	}
+
 	public TabSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex ) {
 		super( group, id, codec, selectionIndex );
 	}
@@ -59,14 +68,6 @@ public class TabSelectionState< T extends Composite > extends DefaultListSelecti
 	public TabSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex, T... data ) {
 		super( group, id, codec, selectionIndex, data );
 	}
-	public interface TabCreator<T> {
-		public java.util.UUID getId( T item );
-		public void customizeTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item );
-		public org.lgna.croquet.components.JComponent< ? > createMainComponent( T item );
-		public org.lgna.croquet.components.ScrollPane createScrollPane( T item );
-		public boolean isCloseable( T item );
-	}
-
 	public org.lgna.croquet.components.FolderTabbedPane< T > createFolderTabbedPane( TabCreator< T > tabCreator ) {
 		return new org.lgna.croquet.components.FolderTabbedPane< T >( this, tabCreator );
 	};
@@ -74,7 +75,7 @@ public class TabSelectionState< T extends Composite > extends DefaultListSelecti
 		return new org.lgna.croquet.components.ToolPaletteTabbedPane< T >( this, tabCreator );
 	};
 	public org.lgna.croquet.components.JComponent< ? > getMainComponentFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane< T, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane< T, ?, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( abstractTabbedPane != null ) {
 			return abstractTabbedPane.getMainComponentFor( item );
 		} else {
@@ -82,7 +83,7 @@ public class TabSelectionState< T extends Composite > extends DefaultListSelecti
 		}
 	}
 	public org.lgna.croquet.components.ScrollPane getScrollPaneFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane< T, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane< T, ?, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( abstractTabbedPane != null ) {
 			return abstractTabbedPane.getScrollPaneFor( item );
 		} else {
@@ -90,7 +91,7 @@ public class TabSelectionState< T extends Composite > extends DefaultListSelecti
 		}
 	}
 	public org.lgna.croquet.components.JComponent< ? > getRootComponentFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane< T, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane< T, ?, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( abstractTabbedPane != null ) {
 			return abstractTabbedPane.getRootComponentFor( item );
 		} else {

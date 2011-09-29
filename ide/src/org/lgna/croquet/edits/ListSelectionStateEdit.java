@@ -52,29 +52,12 @@ public final class ListSelectionStateEdit<E> extends ItemStateEdit<org.lgna.croq
 	public ListSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
-	@Override
-	public boolean canRedo() {
-		return this.getModel() != null;
-	}
-	@Override
-	public boolean canUndo() {
-		return this.getModel() != null;
-	}
 
-//	@Override
+	//	@Override
 //	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
 //		super.addKeyValuePairs( retargeter, replacementEdit );
 //		ListSelectionStateEdit listSelectionStateEdit = (ListSelectionStateEdit)replacementEdit;
 //		retargeter.addKeyValuePair( this.prevValue, listSelectionStateEdit.prevValue );
 //		retargeter.addKeyValuePair( this.nextValue, listSelectionStateEdit.nextValue );
 //	}
-
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().setSelectedItem( this.getNextValue() );
-	}
-	@Override
-	protected final void undoInternal() {
-		this.getModel().setSelectedItem( this.getPreviousValue() );
-	}
 }

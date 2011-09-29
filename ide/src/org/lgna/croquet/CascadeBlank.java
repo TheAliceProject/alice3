@@ -50,6 +50,9 @@ public abstract class CascadeBlank< B > extends Element {
 	public CascadeBlank( java.util.UUID id ) {
 		super( id );
 	}
+	@Override
+	protected void localize() {
+	}
 	protected abstract java.util.List< CascadeBlankChild > updateChildren( java.util.List< CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<B> blankNode );
 	private static boolean isEmptySeparator( CascadeBlankChild child ) {
 		return child instanceof CascadeLineSeparator || ( (child instanceof CascadeLabelSeparator) && ((CascadeLabelSeparator)child).isValid() == false );
@@ -89,6 +92,6 @@ public abstract class CascadeBlank< B > extends Element {
 			}
 		}
 
-		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( children, CascadeBlankChild.class );
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( children, CascadeBlankChild.class );
 	}
 }

@@ -52,7 +52,22 @@ public abstract class StateEdit<M extends org.lgna.croquet.State<T>,T> extends o
 	public StateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
-	
+	@Override
+	public final boolean canRedo() {
+		return this.getModel() != null;
+	}
+	@Override
+	public final boolean canUndo() {
+		return this.getModel() != null;
+	}
 	public abstract T getPreviousValue();
 	public abstract T getNextValue();
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.getModel().setValue(this.getNextValue());
+	}
+	@Override
+	protected final void undoInternal() {
+		this.getModel().setValue(this.getPreviousValue());
+	}
 }

@@ -45,19 +45,42 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogOperationStep extends GatedCommitDialogOperationStep< org.lgna.croquet.InputDialogOperation > {
-	/*package-private*/ static InputDialogOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.InputDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new InputDialogOperationStep( parent, model, trigger );
+public class InputDialogOperationStep<T> extends GatedCommitDialogOperationStep< org.lgna.croquet.InputDialogOperation<T> > {
+	/*package-private*/ static <T> InputDialogOperationStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.InputDialogOperation<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return new InputDialogOperationStep<T>( parent, model, trigger );
 	}
-	private InputDialogOperationStep( Transaction parent, org.lgna.croquet.InputDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
+	private InputDialogOperationStep( Transaction parent, org.lgna.croquet.InputDialogOperation<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public InputDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
+	private boolean isValueCommitted = false;
+	private T committedValue;
+	public boolean isValueCommitted() {
+		return this.isValueCommitted;
+	}
+	public T getCommittedValue() {
+		return this.committedValue;
+	}
+	public void commitValue( T value ) {
+		org.lgna.croquet.history.event.ValueCommittedEvent<T> e = new org.lgna.croquet.history.event.ValueCommittedEvent<T>( this, value );
+		this.fireChanging( e );
+
+		
+		this.setSuccessfullyCompleted( true );
+		this.committedValue = value;
+		this.isValueCommitted = true;
+		this.setPending( false );
+
+		this.fireChanged( e );
+		this.popTransactionHistoryIfNecessary();
+	}
+	
 	private org.lgna.croquet.components.JComponent<?> mainPanel;
-	public <J extends org.lgna.croquet.components.JComponent<?>> J getMainPanel() {
-		return (J)this.mainPanel;
+	public org.lgna.croquet.components.JComponent<?> getMainPanel() {
+		return this.mainPanel;
 	}
 	public void setMainPanel( org.lgna.croquet.components.JComponent<?> mainPanel ) {
 		this.mainPanel = mainPanel;
