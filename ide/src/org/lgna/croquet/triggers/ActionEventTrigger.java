@@ -61,4 +61,7 @@ public class ActionEventTrigger extends EventObjectTrigger<java.awt.event.Action
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "Click";
+	}
 }

@@ -95,9 +95,8 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 //	}
 //
 	@Override
-	protected StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		//super.updateTutorialStepText( rv, step, edit, userInformation );
-		rv.append( "Click <strong>" );
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		rv.append( " <strong>" );
 		rv.append( this.getName() );
 		rv.append( "</strong>" );
 		return rv;

@@ -57,4 +57,7 @@ public class ChangeEventTrigger extends EventObjectTrigger< javax.swing.event.Ch
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "Change";
+	}
 }

@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class DocumentEventTrigger implements org.lgna.croquet.triggers.Trigger {
+public class DocumentEventTrigger extends AbstractTrigger {
 	private final transient org.lgna.croquet.components.ViewController< ?, ? > viewController;
 	private final transient javax.swing.event.DocumentEvent documentEvent;
 	public DocumentEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, javax.swing.event.DocumentEvent documentEvent ) {
@@ -73,5 +73,8 @@ public class DocumentEventTrigger implements org.lgna.croquet.triggers.Trigger {
 		} else {
 			throw new RuntimeException( "todo" );
 		}
+	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "Type";
 	}
 }

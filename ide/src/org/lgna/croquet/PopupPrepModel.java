@@ -94,7 +94,7 @@ public abstract class PopupPrepModel extends PrepModel {
 	
 	@Override
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		rv.append( "Click " );
+		rv.append( " " );
 		rv.append( this.getDefaultLocalizedText() );
 		return rv;
 	}

@@ -46,21 +46,15 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuEventTrigger extends EventObjectTrigger<javax.swing.event.PopupMenuEvent> {
-	public PopupMenuEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
-		super( viewController, popupMenuEvent );
+public class DragTrigger extends MouseEventTrigger {
+	public DragTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
+		super( viewController, mouseEvent );
 	}
-	public PopupMenuEventTrigger( javax.swing.event.PopupMenuEvent popupMenuEvent ) {
-		this( null, popupMenuEvent );
-	}
-	public PopupMenuEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public DragTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	@Override
-	protected java.awt.Point getPoint() {
-		return null;
-	}
 	public String getNoteText( java.util.Locale locale ) {
-		return "PopUp";
+		return "Press and Drag";
 	}
 }

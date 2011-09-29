@@ -99,7 +99,7 @@ public final class OperationMenuItemPrepModel extends StandardMenuItemPrepModel 
 	@Override
 	protected StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		//super.updateTutorialStepText( rv, step, edit, userInformation );
-		rv.append( "Select <strong>" );
+		rv.append( " <strong>" );
 		rv.append( this.operation.getName() );
 		rv.append( "</strong>" );
 		return rv;

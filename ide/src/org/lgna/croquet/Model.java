@@ -334,13 +334,14 @@ public abstract class Model extends Element implements RuntimeResolver< Model > 
 	}
 	
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
-		rv.append( "text: " );
+		rv.append( "TODO: override updateTutorialStepText " );
 		rv.append( this );
 		return rv;
 	}
 
-	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
+	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, Edit< ? > edit, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
+		sb.append( triggerText );
 		this.updateTutorialStepText( sb, step, edit, userInformation );
 		return sb.toString();
 	}

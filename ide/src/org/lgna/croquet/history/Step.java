@@ -88,7 +88,9 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 	public String getTutorialNoteText( org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		org.lgna.croquet.Model model = this.getModelForTutorialNoteText();
 		if( model != null ) {
-			return model.getTutorialNoteText( this, edit, userInformation );
+			org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
+			String triggerText = trigger.getNoteText( userInformation.getLocale() );
+			return model.getTutorialNoteText( this, triggerText, edit, userInformation );
 		} else {
 			return null;
 		}
@@ -113,7 +115,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		if( model != null ) {
 			rv.append( model.getClass().getName() );
 			rv.append( ";" );
-			rv.append( model.getTutorialNoteText( this, null, null ) );
+			rv.append( model.getTutorialNoteText( this, null, null, null ) );
 		}
 		return rv;
 	}
