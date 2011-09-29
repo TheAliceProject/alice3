@@ -115,7 +115,7 @@ public abstract class StringState extends State<String> {
 			rv.append( stringStateEdit.getNextValue() );
 			rv.append( "</strong>" );
 		} else {
-			rv = super.updateTutorialStepText( rv, step, edit, userInformation );
+			rv.append( "UNKNOWN EDIT" );
 		}
 		return rv;
 	}

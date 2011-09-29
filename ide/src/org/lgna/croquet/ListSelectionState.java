@@ -517,6 +517,8 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 			rv.append( " <strong>" );
 			this.getItemCodec().appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
 			rv.append( "</strong>." );
+		} else {
+			rv.append( "UNKNOWN EDIT" );
 		}
 		return rv;
 	}

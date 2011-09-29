@@ -88,4 +88,8 @@ public final class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepMod
 		rv.addCheckBoxMenuItem( new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() ) );
 		return rv;
 	}
+	@Override
+	protected StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		return this.booleanState.updateTutorialStepText( rv, step, edit, userInformation );
+	}
 }
