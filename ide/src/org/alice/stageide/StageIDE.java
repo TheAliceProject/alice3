@@ -165,8 +165,8 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 //	@Override
-//	protected boolean isInclusionOfTypeDesired(edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> valueTypeInAlice) {
-//		return super.isInclusionOfTypeDesired(valueTypeInAlice) || valueTypeInAlice.isAssignableTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Camera.class ) );
+//	protected boolean isInclusionOfTypeDesired(org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> valueTypeInAlice) {
+//		return super.isInclusionOfTypeDesired(valueTypeInAlice) || valueTypeInAlice.isAssignableTo( org.lgna.project.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Camera.class ) );
 //	}
 
 	@Override
@@ -247,9 +247,9 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.croquet.models.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
 //	@Override
-//	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+//	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, org.lgna.project.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 //		this.ensureProjectCodeUpToDate();
-//		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldSelectionState().getValue();
+//		org.lgna.project.ast.AbstractField field = this.getFieldSelectionState().getValue();
 //		if( field == this.getSceneField() ) {
 //			field = null;
 //		}
@@ -355,9 +355,9 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 //	@Override
-//	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
-//		if( typeInJava == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) ) {
+//	public boolean isDeclareFieldOfPredeterminedTypeSupported( org.lgna.project.ast.TypeDeclaredInAlice valueType ) {
+//		org.lgna.project.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+//		if( typeInJava == org.lgna.project.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) ) {
 //			this.showMessageDialog( "todo: isDeclareFieldOfPredeterminedTypeSupported" );
 //			return false;
 //		} else {

@@ -60,7 +60,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private static final String POST_PROJECT_PATH = "/post.a3p";
 	
 	private boolean isOriginalProjectLive = false;
-	private edu.cmu.cs.dennisc.alice.Project originalProject;
+	private org.lgna.project.Project originalProject;
 	private org.lgna.croquet.history.TransactionHistory originalTransactionHistory;
 	
 	@Override
@@ -76,15 +76,15 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		}
 	}
 
-	private edu.cmu.cs.dennisc.alice.Project getOriginalProject() {
+	private org.lgna.project.Project getOriginalProject() {
 		return this.originalProject;
 	}
-	private edu.cmu.cs.dennisc.alice.Project getReplacementProject() {
+	private org.lgna.project.Project getReplacementProject() {
 		return super.getProject();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.alice.Project getProject() {
+	public org.lgna.project.Project getProject() {
 		if( this.isOriginalProjectLive ) {
 			return this.getOriginalProject();
 		} else {
@@ -96,40 +96,40 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private void retarget() {
 		//note: we leverage the fact that the uuids are identical for much of the initial states of the two projects
 		class AstDecodingRetargeter implements org.lgna.croquet.Retargeter {
-			private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapIdToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			public void addAllToReplacementMap( edu.cmu.cs.dennisc.alice.Project project ) {
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = project.getProgramType();
-				edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.Node > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.Node >( edu.cmu.cs.dennisc.alice.ast.Node.class );
+			private java.util.Map< java.util.UUID, org.lgna.project.ast.Node > mapIdToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			public void addAllToReplacementMap( org.lgna.project.Project project ) {
+				org.lgna.project.ast.NamedUserType programType = project.getProgramType();
+				edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.Node > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.Node.class );
 				programType.crawl( crawler, true );
-				for( edu.cmu.cs.dennisc.alice.ast.Node node : crawler.getList() ) {
+				for( org.lgna.project.ast.Node node : crawler.getList() ) {
 					mapIdToReplacementNode.put( node.getUUID(), node );
 				}
 			}
 			public void addKeyValuePair( Object key, Object value ) {
-				if( key instanceof edu.cmu.cs.dennisc.alice.ast.Node && value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-					mapIdToReplacementNode.put( ((edu.cmu.cs.dennisc.alice.ast.Node)key).getUUID(), (edu.cmu.cs.dennisc.alice.ast.Node)value );
+				if( key instanceof org.lgna.project.ast.Node && value instanceof org.lgna.project.ast.Node ) {
+					mapIdToReplacementNode.put( ((org.lgna.project.ast.Node)key).getUUID(), (org.lgna.project.ast.Node)value );
 				} else {
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: IGNORING addKeyValuePair", key, value );
 				}
 			}
 			public <N> N retarget(N value) {
-				if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-					edu.cmu.cs.dennisc.alice.ast.Node originalNode = (edu.cmu.cs.dennisc.alice.ast.Node)value;
-					edu.cmu.cs.dennisc.alice.ast.Node retargetedNode = mapIdToReplacementNode.get( originalNode.getUUID() );
+				if( value instanceof org.lgna.project.ast.Node ) {
+					org.lgna.project.ast.Node originalNode = (org.lgna.project.ast.Node)value;
+					org.lgna.project.ast.Node retargetedNode = mapIdToReplacementNode.get( originalNode.getUUID() );
 					if( retargetedNode != null ) {
 						return (N)retargetedNode;
 					} else {
 						return value;
 					}
-				} else if( value instanceof org.alice.ide.editorstabbedpane.CodeComposite ) {
-					return (N)org.alice.ide.editorstabbedpane.CodeComposite.getInstance( retarget( ((org.alice.ide.editorstabbedpane.CodeComposite)value).getCode() ) );
+				} else if( value instanceof org.alice.ide.croquet.models.typeeditor.DeclarationComposite ) {
+					return (N)org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.croquet.models.typeeditor.DeclarationComposite)value).getDeclaration() ) );
 				} else {
 					return value;
 				}
 			}
 		};
 
-		edu.cmu.cs.dennisc.alice.Project replacementProject = this.getReplacementProject();
+		org.lgna.project.Project replacementProject = this.getReplacementProject();
 		AstDecodingRetargeter astDecodingRetargeter = new AstDecodingRetargeter();
 		astDecodingRetargeter.addAllToReplacementMap( replacementProject );
 
@@ -138,14 +138,14 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		}
 		this.originalTransactionHistory.retarget( astDecodingRetargeter );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.BlockStatement getRunBody( edu.cmu.cs.dennisc.alice.Project project ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType().fields.get( 0 ).getValueType();
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice runMethod = sceneType.getDeclaredMethod( "run" );
+	private static org.lgna.project.ast.BlockStatement getRunBody( org.lgna.project.Project project ) {
+		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
+		org.lgna.project.ast.UserMethod runMethod = sceneType.getDeclaredMethod( "run" );
 		return runMethod.body.getValue();
 	}
 	private void createAndShowTutorial() {
 		//final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
-		this.originalProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( ROOT_PATH+POST_PROJECT_PATH );
+		this.originalProject = org.lgna.project.project.ProjectUtilities.readProject( ROOT_PATH+POST_PROJECT_PATH );
 
 		if( IS_BASED_ON_INTERACTION_AST ) {
 			uist.ast.TransactionHistoryGenerator transactionHistoryGenerator = new uist.ast.TransactionHistoryGenerator( getRunBody( this.getOriginalProject() ), getRunBody( this.getReplacementProject() ), 0 );
@@ -184,7 +184,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					filterer,
 					recoverer,
 					
-					new org.lgna.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
+					new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
 					
 					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 
@@ -193,7 +193,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //					org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 			);
 		} else {
-			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		}
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );
@@ -245,7 +245,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			}
 
 			try {
-				edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeProject( ROOT_PATH+POST_PROJECT_PATH, this.getProject() );
+				org.lgna.project.project.ProjectUtilities.writeProject( ROOT_PATH+POST_PROJECT_PATH, this.getProject() );
 			} catch( java.io.IOException ioe ) {
 				throw new RuntimeException( ioe );
 			}
@@ -275,7 +275,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			IS_STENCILS  = Boolean.parseBoolean( args[ 9 ] );
 			IS_BASED_ON_INTERACTION_AST = Boolean.parseBoolean( args[ 10 ] );
 		}
-		org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.IS_RUN_BUTTON_DESIRED = IS_MONKEY_WRENCH_DESIRED == false;
+		//org.alice.stageide.sceneeditor.StorytellingSceneEditor.IS_RUN_BUTTON_DESIRED = IS_MONKEY_WRENCH_DESIRED == false;
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( IS_ENCODING || IS_MONKEY_WRENCH_DESIRED == false );
 		//org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().setValue( true );
 

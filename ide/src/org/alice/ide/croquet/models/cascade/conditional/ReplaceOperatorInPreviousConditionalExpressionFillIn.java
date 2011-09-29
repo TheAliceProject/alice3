@@ -67,8 +67,8 @@ public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends org.al
 	}
 	
 //	@Override
-//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-//		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression;
+//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.ConditionalInfixExpression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
+//		return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
 //	}
 	@Override
 	protected org.lgna.project.ast.ConditionalInfixExpression createValue( org.lgna.project.ast.Expression previousExpression ) {

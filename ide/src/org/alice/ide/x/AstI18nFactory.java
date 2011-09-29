@@ -160,13 +160,13 @@ public abstract class AstI18nFactory extends I18nFactory {
 							new org.alice.ide.ast.components.DeclarationNameLabel( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() ),
 							new org.lgna.croquet.components.Label( "." )
 					);
-					//rv = TypeComponent.createInstance( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+					//rv = TypeComponent.createInstance( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() );
 				} else {
 					rv = new org.lgna.croquet.components.Label();
 				}
 			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
 				rv = this.createInstanceCreationPane( (org.lgna.project.ast.InstanceCreation)expression );
-//				} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractLiteral ) {
+//				} else if( expression instanceof org.lgna.project.ast.AbstractLiteral ) {
 //					rv = this.createComponent( expression );
 			} else {
 				org.lgna.croquet.components.JComponent< ? > component = this.createComponent( expression );

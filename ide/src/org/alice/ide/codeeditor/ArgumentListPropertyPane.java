@@ -60,8 +60,8 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 			} else if( parameter instanceof org.lgna.project.ast.JavaConstructorParameter ) {
 				//todo
 
-//				edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor)parameter;
-//				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructorDeclaredInJava = parameterDeclaredInJavaConstructor.getConstructor();
+//				org.lgna.project.ast.ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (org.lgna.project.ast.ParameterDeclaredInJavaConstructor)parameter;
+//				org.lgna.project.ast.ConstructorDeclaredInJava constructorDeclaredInJava = parameterDeclaredInJavaConstructor.getConstructor();
 //				rv = constructorDeclaredInJava.isParameterInShortestChainedConstructor( parameterDeclaredInJavaConstructor ) == false;
 				
 				rv = true;

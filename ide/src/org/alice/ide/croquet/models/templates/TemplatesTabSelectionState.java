@@ -56,8 +56,8 @@ package org.alice.ide.croquet.models.templates;
 //public class TemplatesTabSelectionState extends edu.cmu.cs.dennisc.croquet.PredeterminedTabSelectionState {
 //	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 //		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
-//			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-//			edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > type; 
+//			org.lgna.project.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
+//			org.lgna.project.ast.AbstractType< ?, ?, ? > type; 
 //			if( accessible != null ) {
 //				type = accessible.getValueType();
 //			} else {

@@ -60,4 +60,7 @@ public class PopupMenuEventTrigger extends EventObjectTrigger<javax.swing.event.
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "PopUp";
+	}
 }

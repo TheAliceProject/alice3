@@ -55,7 +55,7 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 			org.lgna.project.ast.Expression previousExpression = ide.getCascadeManager().createCopyOfPreviousExpression();
 			if( previousExpression instanceof org.lgna.project.ast.AbstractValueLiteral ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle previous expression; replace selected text later." );
-//				edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral valueLiteral = (edu.cmu.cs.dennisc.alice.ast.AbstractValueLiteral)previousExpression;
+//				org.lgna.project.ast.AbstractValueLiteral valueLiteral = (org.lgna.project.ast.AbstractValueLiteral)previousExpression;
 //				return valueLiteral.getValueProperty().getValue().toString();
 			}
 		}

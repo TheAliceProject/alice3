@@ -129,7 +129,7 @@ public class BootstrapUtilties {
 				throw new RuntimeException( nsme );
 			}
 			org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.JavaMethod.getInstance( mthd );
-			//edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lookingglassandalice.storytelling.Entity.class );
+			//org.lgna.project.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lookingglassandalice.storytelling.Entity.class );
 
 			performGeneratedSetupBody.statements.add( 
 					createMethodInvocationStatement( 

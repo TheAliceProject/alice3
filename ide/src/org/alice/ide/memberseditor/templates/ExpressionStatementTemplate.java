@@ -75,10 +75,10 @@ package org.alice.ide.memberseditor.templates;
 	}
 
 //	@Override
-//	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-//		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( expressions );
+//	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
+//		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
 //		if( expression != null ) {
-//			return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
+//			return new org.lgna.project.ast.ExpressionStatement( expression );
 //		} else {
 //			return null;
 //		}

@@ -131,11 +131,11 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 
 //	public static void main( String[] args ) {
 //		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getTypeDeclaredInAliceFor( declaringTypeDeclaredInJava );
+//		org.lgna.project.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = org.lgna.project.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );
+//		org.lgna.project.ast.TypeDeclaredInAlice declaringType = ide.getTypeDeclaredInAliceFor( declaringTypeDeclaredInJava );
 //
 //		java.io.File file = new java.io.File( "C:/Program Files/LookingGlass/0.alpha.0000/gallery/thumbnails/edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters/adults/Lunchlady.png" );
-//		//edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
+//		//org.lgna.project.ast.TypeDeclaredInJava typeDeclaredInJava = org.lgna.project.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
 //
 //
 //		CreateFieldFromGalleryPane createFieldFromGalleryPane = new CreateFieldFromGalleryPane( declaringType, file );

@@ -46,10 +46,10 @@ package uist.ast;
  * @author Dennis Cosgrove
  */
 public class TransactionHistoryGenerator {
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement src;
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement dst;
+	private org.lgna.project.ast.BlockStatement src;
+	private org.lgna.project.ast.BlockStatement dst;
 	private int dstIndex0;
-	public TransactionHistoryGenerator( edu.cmu.cs.dennisc.alice.ast.BlockStatement src, edu.cmu.cs.dennisc.alice.ast.BlockStatement dst, int dstIndex0 ) {
+	public TransactionHistoryGenerator( org.lgna.project.ast.BlockStatement src, org.lgna.project.ast.BlockStatement dst, int dstIndex0 ) {
 		this.src = src;
 		this.dst = dst;
 		this.dstIndex0 = dstIndex0;
@@ -64,8 +64,8 @@ public class TransactionHistoryGenerator {
 //		return rv;
 //	}
 //	
-//	private static edu.cmu.cs.dennisc.croquet.OperationContext< ? > generateMethodDeclarationContext( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice ) {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType = methodInAlice.getDeclaringType();
+//	private static edu.cmu.cs.dennisc.croquet.OperationContext< ? > generateMethodDeclarationContext( org.lgna.project.ast.MethodDeclaredInAlice methodInAlice ) {
+//		org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType = methodInAlice.getDeclaringType();
 //		org.alice.ide.croquet.models.ast.DeclareMethodOperation declareMethodOperation;
 //		if( methodInAlice.isProcedure() ) {
 //			declareMethodOperation = org.alice.ide.croquet.models.ast.DeclareProcedureOperation.getInstance( declaringType );
@@ -79,32 +79,32 @@ public class TransactionHistoryGenerator {
 //		return rv;
 //	}
 //	
-//	private static edu.cmu.cs.dennisc.croquet.ModelContext< ? > generate( edu.cmu.cs.dennisc.croquet.ModelContext< ? > rv, edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement ) {
+//	private static edu.cmu.cs.dennisc.croquet.ModelContext< ? > generate( edu.cmu.cs.dennisc.croquet.ModelContext< ? > rv, org.lgna.project.ast.BlockStatement blockStatement ) {
 //		//will get re-targeted later
 //		return generate( rv, blockStatement, blockStatement, 0 );
 //	}
 //	
-//	private static edu.cmu.cs.dennisc.croquet.ModelContext< ? > generate( edu.cmu.cs.dennisc.croquet.ModelContext< ? > rv, edu.cmu.cs.dennisc.alice.ast.BlockStatement src, edu.cmu.cs.dennisc.alice.ast.BlockStatement dst, int dstIndex0 ) {
+//	private static edu.cmu.cs.dennisc.croquet.ModelContext< ? > generate( edu.cmu.cs.dennisc.croquet.ModelContext< ? > rv, org.lgna.project.ast.BlockStatement src, org.lgna.project.ast.BlockStatement dst, int dstIndex0 ) {
 //		int dstIndex = dstIndex0; 
-//		for( edu.cmu.cs.dennisc.alice.ast.Statement statement : src.statements ) {
+//		for( org.lgna.project.ast.Statement statement : src.statements ) {
 //			org.alice.ide.croquet.models.ast.InsertStatementActionOperation insertStatementActionOperation = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( dst, dstIndex, statement );
 //			edu.cmu.cs.dennisc.croquet.ActionOperationContext insertStatementContext = new edu.cmu.cs.dennisc.croquet.ActionOperationContext( insertStatementActionOperation );
 //			addEdit( insertStatementContext, new org.alice.ide.croquet.edits.DependentEdit() );
 //			
 //			edu.cmu.cs.dennisc.croquet.DragAndDropModel dragAndDropModel;
-//			if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
-//				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
-//				edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
-//				if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
-//					edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
-//					edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-//					if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-//						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+//			if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+//				org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+//				org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+//				if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+//					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+//					org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+//					if( method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+//						org.lgna.project.ast.MethodDeclaredInAlice methodInAlice = (org.lgna.project.ast.MethodDeclaredInAlice)method;
 //						rv.addChild( generateMethodDeclarationContext( methodInAlice ) );
 //						
 //						generate( rv, methodInAlice.body.getValue() );
 //
-//						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice invokedFromMethod = dst.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+//						org.lgna.project.ast.MethodDeclaredInAlice invokedFromMethod = dst.getFirstAncestorAssignableTo( org.lgna.project.ast.MethodDeclaredInAlice.class );
 //						
 //						edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< org.alice.ide.editorstabbedpane.CodeComposite > listSelectionStateContext = new edu.cmu.cs.dennisc.croquet.ListSelectionStateContext< org.alice.ide.editorstabbedpane.CodeComposite >( org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance() );
 //						org.lgna.croquet.edits.ListSelectionStateEdit< org.alice.ide.editorstabbedpane.CodeComposite > edit = new org.lgna.croquet.edits.ListSelectionStateEdit< org.alice.ide.editorstabbedpane.CodeComposite >( org.alice.ide.editorstabbedpane.CodeComposite.getInstance( methodInAlice ), org.alice.ide.editorstabbedpane.CodeComposite.getInstance( invokedFromMethod ) );
@@ -129,7 +129,7 @@ public class TransactionHistoryGenerator {
 //			dragAndDropContext.addChild( enteredPotentialDropSiteEvent );
 //			dragAndDropContext.addChild( droppedEvent );
 //			
-//			if( statement instanceof edu.cmu.cs.dennisc.alice.ast.CountLoop ) {
+//			if( statement instanceof org.lgna.project.ast.CountLoop ) {
 //				edu.cmu.cs.dennisc.croquet.CascadePopupOperation popupMenuOperation = null;
 //				edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext popupMenuOperationContext = new edu.cmu.cs.dennisc.croquet.CascadePopupOperationContext( popupMenuOperation );
 //				java.util.List< edu.cmu.cs.dennisc.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
@@ -151,8 +151,8 @@ public class TransactionHistoryGenerator {
 //			dstIndex++;
 //			rv.addChild( dragAndDropContext );
 //			
-//			if( statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
-//				edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody statementWithBody = (edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)statement;
+//			if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+//				org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
 //				generate( rv, statementWithBody.body.getValue() );
 //			}
 //		}
@@ -177,12 +177,12 @@ public class TransactionHistoryGenerator {
 //	}
 	
 	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement dst = new edu.cmu.cs.dennisc.alice.ast.BlockStatement(
-				org.alice.ide.ast.NodeUtilities.createDoInOrder()
+		org.lgna.project.ast.BlockStatement dst = new org.lgna.project.ast.BlockStatement(
+				org.alice.ide.ast.AstUtilities.createDoInOrder()
 		);
-		edu.cmu.cs.dennisc.alice.ast.BlockStatement src = new edu.cmu.cs.dennisc.alice.ast.BlockStatement(
-				org.alice.ide.ast.NodeUtilities.createDoTogether(),
-				org.alice.ide.ast.NodeUtilities.createCountLoop( new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 3 ) )
+		org.lgna.project.ast.BlockStatement src = new org.lgna.project.ast.BlockStatement(
+				org.alice.ide.ast.AstUtilities.createDoTogether(),
+				org.alice.ide.ast.AstUtilities.createCountLoop( new org.lgna.project.ast.IntegerLiteral( 3 ) )
 		);
 		
 		TransactionHistoryGenerator generator = new TransactionHistoryGenerator( src, dst, 1 );

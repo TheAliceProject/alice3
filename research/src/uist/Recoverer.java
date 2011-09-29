@@ -48,32 +48,33 @@ package uist;
  */
 public class Recoverer implements org.lgna.cheshire.Recoverer {
 	public Recoverer() {
-		if( TutorialIde.IS_MONKEY_WRENCH_DESIRED ) {
-			final int N = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getItemCount();
-			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( org.alice.ide.IDE.getActiveInstance().getSceneField() );
-		}
+//		if( TutorialIde.IS_MONKEY_WRENCH_DESIRED ) {
+//			final int N = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getItemCount();
+//			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( org.alice.ide.IDE.getActiveInstance().getSceneField() );
+//		}
 	}
 	public org.lgna.croquet.history.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction ) {
-		System.err.println( "createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound: " + transaction );
-//		edu.cmu.cs.dennisc.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
-//		if( model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation ) {
-//			org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();
-//			org.lgna.croquet.steps.Transaction rv = new org.lgna.croquet.steps.Transaction( transaction.getParent() );
-//			org.lgna.croquet.steps.ListSelectionStateChangeStep completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, membersTabSelectionState );
-//			edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit( membersTabSelectionState.getValue(), membersTabSelectionState.getItemAt( 0 ) );
-//			completionStep.commit( edit );
-//			return rv;
-//		} else {
-			if( TutorialIde.IS_MONKEY_WRENCH_DESIRED ) {
-				org.alice.ide.croquet.models.ui.AccessibleListSelectionState accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
-				edu.cmu.cs.dennisc.alice.ast.Accessible[] data = accessibleListSelectionState.toArray();
-				edu.cmu.cs.dennisc.alice.ast.Accessible prevValue = accessibleListSelectionState.getValue();
-				edu.cmu.cs.dennisc.alice.ast.Accessible nextValue = data[ data.length-1 ];
-				
-				return org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( transaction.getParent(), accessibleListSelectionState, prevValue, nextValue, true );
-			} else {
-				return null;
-			}
-//		}
+//		System.err.println( "createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound: " + transaction );
+////		edu.cmu.cs.dennisc.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
+////		if( model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation ) {
+////			org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();
+////			org.lgna.croquet.steps.Transaction rv = new org.lgna.croquet.steps.Transaction( transaction.getParent() );
+////			org.lgna.croquet.steps.ListSelectionStateChangeStep completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, membersTabSelectionState );
+////			edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit( membersTabSelectionState.getValue(), membersTabSelectionState.getItemAt( 0 ) );
+////			completionStep.commit( edit );
+////			return rv;
+////		} else {
+//			if( TutorialIde.IS_MONKEY_WRENCH_DESIRED ) {
+//				org.alice.ide.croquet.models.ui.AccessibleListSelectionState accessibleListSelectionState = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
+//				org.lgna.project.ast.Accessible[] data = accessibleListSelectionState.toArray();
+//				org.lgna.project.ast.Accessible prevValue = accessibleListSelectionState.getValue();
+//				org.lgna.project.ast.Accessible nextValue = data[ data.length-1 ];
+//				
+//				return org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( transaction.getParent(), accessibleListSelectionState, prevValue, nextValue, true );
+//			} else {
+//				return null;
+//			}
+////		}
+		return null;
 	}
 }

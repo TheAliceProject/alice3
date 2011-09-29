@@ -58,7 +58,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 		if( N > 0 ) {
 
 			String codeText;
-//			if( code instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
+//			if( code instanceof org.lgna.project.ast.AbstractMethod ) {
 				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)this.getCode();
 				if( method.isProcedure() ) {
 					codeText = "procedure";

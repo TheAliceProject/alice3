@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class SimulatedTrigger implements org.lgna.croquet.triggers.Trigger {
+public class SimulatedTrigger extends AbstractTrigger {
 	public SimulatedTrigger() {
 	}
 	public SimulatedTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -58,5 +58,9 @@ public class SimulatedTrigger implements org.lgna.croquet.triggers.Trigger {
 	}
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
+	}
+	public String getNoteText( java.util.Locale locale ) {
+		//todo
+		return "SIMULATED";
 	}
 }

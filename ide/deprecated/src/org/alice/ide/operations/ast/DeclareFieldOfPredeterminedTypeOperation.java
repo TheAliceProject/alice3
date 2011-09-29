@@ -73,7 +73,7 @@ public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGallery
 		return rv;
 	}
 //	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep context ) {
+//	protected org.lgna.project.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep context ) {
 //		return this.createFieldPane.getInputValue();
 //	}
 //	@Override

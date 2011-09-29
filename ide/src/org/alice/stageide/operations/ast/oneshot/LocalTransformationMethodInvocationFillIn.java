@@ -47,7 +47,7 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class LocalTransformationMethodInvocationFillIn extends MethodInvocationFillIn {
-	//private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//private static java.util.Map< org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static LocalTransformationMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {

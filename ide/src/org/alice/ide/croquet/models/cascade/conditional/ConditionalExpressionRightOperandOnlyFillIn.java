@@ -71,7 +71,7 @@ public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.c
 		);
 	}
 //	@Override
-//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep< edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression, edu.cmu.cs.dennisc.alice.ast.Expression > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
+//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep< org.lgna.project.ast.ConditionalInfixExpression, org.lgna.project.ast.Expression > context, org.lgna.project.ast.Expression previousExpression ) {
 //		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
 //	}
 	@Override

@@ -152,11 +152,11 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		return fillIn;
 	}	
 //	@Override
-//	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addFillInAndPossiblyPartFillIns(  java.util.List< org.lgna.croquet.CascadeBlankChild > rv, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type2 ) {
+//	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addFillInAndPossiblyPartFillIns(  java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.AbstractType<?,?,?> type2 ) {
 //		super.addFillInAndPossiblyPartFillIns( rv, expression, type, type2 );
 //		System.err.println( "TODO: addFillInAndPossiblyPartFills" );
 //		if( type.isAssignableTo( org.lookingglassandalice.storytelling.PolygonalModel.class ) ) {
-//			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;
+//			org.lgna.project.ast.TypeDeclaredInJava typeInJava = null;
 //			Class< ? > paramCls = null;
 //			if( type2.isAssignableFrom( org.lookingglassandalice.storytelling.Model.class ) ) {
 //				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
@@ -168,7 +168,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 //				}
 //			}
 //			if( paramCls != null ) {
-//				edu.cmu.cs.dennisc.alice.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
+//				org.lgna.project.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
 //				if( getPartMethod != null ) {
 //					rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
 //				}

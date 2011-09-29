@@ -100,9 +100,9 @@ public class DefaultTheme implements Theme {
 			if( org.lgna.project.ast.Comment.class.isAssignableFrom( cls ) ) {
 				return edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 245 );
 			} else {
-//				if( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
+//				if( org.lgna.project.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
 //					return new java.awt.Color( 255, 230, 180 );
-////				} else if( edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class.isAssignableFrom( cls ) ) {
+////				} else if( org.lgna.project.ast.LocalDeclarationStatement.class.isAssignableFrom( cls ) ) {
 ////					return new java.awt.Color( 255, 230, 180 );
 //				} else {
 					return new java.awt.Color( 0xd3d7f0 );
@@ -133,12 +133,12 @@ public class DefaultTheme implements Theme {
 	public java.awt.Color getColorFor( org.lgna.project.ast.Node node ) {
 		if( node != null ) {
 			Class< ? extends org.lgna.project.ast.Node > cls = node.getClass();
-//			if( node instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-//				edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)node;
-//				if( fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+//			if( node instanceof org.lgna.project.ast.FieldAccess ) {
+//				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)node;
+//				if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
 //					//pass
 //				} else {
-//					cls = edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class;
+//					cls = org.lgna.project.ast.MethodInvocation.class;
 //				}
 //			}
 			return this.getColorFor( cls );

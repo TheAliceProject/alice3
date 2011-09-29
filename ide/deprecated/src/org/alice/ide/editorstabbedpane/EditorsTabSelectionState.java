@@ -520,7 +520,7 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 //		org.lgna.croquet.Component< ? > component = this.getCurrentTabStateOperation().getSingletonView();
 //		if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 //			org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
-//			edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode;
+//			org.lgna.project.ast.AbstractCode nextFocusedCode;
 //			if( codeEditor != null ) {
 //				nextFocusedCode = codeEditor.getCode();
 //			} else {
@@ -550,8 +550,8 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 //		}
 //	}
 //	private class TypeListener  {
-//		private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type;
-//		public TypeListener( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> type ) {
+//		private org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type;
+//		public TypeListener( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> type ) {
 //			this.type = type;
 //		}
 //	}
@@ -652,14 +652,14 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 //					}
 //				}
 //			}
-//			class CodeTabIsSelectedOperation extends org.lgna.croquet.TabStateOperation<edu.cmu.cs.dennisc.alice.ast.AbstractCode> {
-//				public CodeTabIsSelectedOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+//			class CodeTabIsSelectedOperation extends org.lgna.croquet.TabStateOperation<org.lgna.project.ast.AbstractCode> {
+//				public CodeTabIsSelectedOperation( org.lgna.project.ast.AbstractCode code ) {
 //					super( org.alice.ide.IDE.IDE_GROUP,  java.util.UUID.fromString( "83fc2f34-a05f-48fd-941f-4e2ba08f45af" ), code );
 //				}
 //				@Override
-//				protected String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+//				protected String getTextFor( org.lgna.project.ast.AbstractCode code ) {
 //					if( code != null ) {
-//						if( code instanceof edu.cmu.cs.dennisc.alice.ast.AbstractConstructor ) {
+//						if( code instanceof org.lgna.project.ast.AbstractConstructor ) {
 //							return "constructor";
 //						} else {
 //							return code.getName();
@@ -679,8 +679,8 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 //				@Override
 //				protected org.lgna.croquet.JComponent<?> createSingletonView() {
 //					final org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
-//					if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-//						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+//					if( code instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+//						org.lgna.project.ast.MethodDeclaredInAlice method = (org.lgna.project.ast.MethodDeclaredInAlice)code;
 //						
 //						//todo: remove this property listener when tab is closed
 //						
@@ -713,9 +713,9 @@ public class EditorsTabSelectionState extends org.lgna.croquet.TabSelectionState
 	}
 
 //	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
-//		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+//		public void focusedCodeChanging( org.lgna.project.ast.AbstractCode previousCode, org.lgna.project.ast.AbstractCode nextCode ) {
 //		}
-//		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+//		public void focusedCodeChanged( org.lgna.project.ast.AbstractCode previousCode, org.lgna.project.ast.AbstractCode nextCode ) {
 //			if( nextCode != null ) {
 //				EditorsTabSelectionStateOperation.this.edit( nextCode, false );
 //			}

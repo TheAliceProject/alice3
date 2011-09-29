@@ -179,14 +179,17 @@ public abstract class Model extends Element implements org.lgna.croquet.resolver
 	public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
 		return getFirstComponent( false );
 	}
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
-		rv.append( "text: " );
-		rv.append( this );
-		return rv;
-	}
 
-	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
+	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation );
+//	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
+//		rv.append( "TODO: override updateTutorialStepText " );
+//		rv.append( this );
+//		return rv;
+//	}
+
+	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
 		StringBuilder sb = new StringBuilder();
+		sb.append( triggerText );
 		this.updateTutorialStepText( sb, step, edit, userInformation );
 		return sb.toString();
 	}

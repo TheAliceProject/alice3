@@ -81,4 +81,8 @@ public class DropTrigger extends MouseEventTrigger implements RetargetableTrigge
 			this.dropSite = retargetableDropSite.createReplacement( retargeter );
 		}
 	}
+	@Override
+	public String getNoteText( java.util.Locale locale ) {
+		return "Drop";
+	}
 }

@@ -122,10 +122,10 @@ class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPan
 
 //class LoopTemplate extends org.alice.ide.templates.StatementTemplate {
 //	public LoopTemplate() {
-//		super( edu.cmu.cs.dennisc.alice.ast.AbstractLoop.class );
+//		super( org.lgna.project.ast.AbstractLoop.class );
 //	}
 //	@Override
-//	public void createStatement( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
+//	public void createStatement( zoot.event.DragAndDropEvent e, org.lgna.project.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< org.lgna.project.ast.Statement > taskObserver ) {
 //		taskObserver.handleCancelation();
 //	}
 //}

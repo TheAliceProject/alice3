@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EventObjectTrigger< E extends java.util.EventObject > implements org.lgna.croquet.triggers.Trigger {
+public abstract class EventObjectTrigger< E extends java.util.EventObject > extends AbstractTrigger {
 	private final transient org.lgna.croquet.components.ViewController< ?, ? > viewController;
 	private final transient E event;
 	public EventObjectTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, E event ) {

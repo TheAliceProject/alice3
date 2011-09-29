@@ -89,4 +89,8 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 	protected void commitStateEdit(T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger) {
 		//todo
 	}
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		return rv;
+	}
 }

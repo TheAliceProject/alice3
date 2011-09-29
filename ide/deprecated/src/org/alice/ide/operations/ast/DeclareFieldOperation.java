@@ -76,7 +76,7 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 		return rv;
 	}
 //	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep step ) {
+//	protected org.lgna.project.ast.FieldDeclaredInAlice createField( org.lgna.croquet.history.InputDialogOperationStep step ) {
 //		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = step.getMainPanel();
 //		return createFieldPane.getInputValue();
 //	}

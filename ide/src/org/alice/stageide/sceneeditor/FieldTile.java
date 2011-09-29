@@ -53,7 +53,7 @@ package org.alice.stageide.sceneeditor;
 //		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 //		}
 //	}
-//	public static FieldTile createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField accessible ) {
+//	public static FieldTile createInstance( org.lgna.project.ast.AbstractField accessible ) {
 //		FieldSelectedState state = FieldSelectedState.getInstance(accessible);
 //		return state.register( new FieldTile( accessible ) );
 //	}
@@ -165,15 +165,15 @@ package org.alice.stageide.sceneeditor;
 //						return org.alice.ide.IDE.PROJECT_GROUP;
 //					}
 //					@Override
-//					protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] getDesiredValueTypes() {
-//						return new edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? >[] {
-//								edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.SpatialRelation.class ),
-//								edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE,	
-//								edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE,	
+//					protected org.lgna.project.ast.AbstractType< ?, ?, ? >[] getDesiredValueTypes() {
+//						return new org.lgna.project.ast.AbstractType< ?, ?, ? >[] {
+//								org.lgna.project.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.SpatialRelation.class ),
+//								org.lgna.project.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE,	
+//								org.lgna.project.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE,	
 //						};
 //					}
 //					@Override
-//					public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+//					public org.lgna.project.ast.Expression getPreviousExpression() {
 //						return null;
 //					}
 //					@Override
@@ -245,7 +245,7 @@ package org.alice.stageide.sceneeditor;
 }
 //public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 //	private String text;
-//	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+//	private org.lgna.project.ast.AbstractField field;
 //	private org.alice.ide.operations.ast.SelectFieldActionOperation selectOperation;
 //	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 //		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -255,14 +255,14 @@ package org.alice.stageide.sceneeditor;
 //		}
 //	}
 //	
-//	public FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//	public FieldTile( org.lgna.project.ast.AbstractField field ) {
 //		assert field != null;
 //		this.field = field;
 //		this.selectOperation = new org.alice.ide.operations.ast.SelectFieldActionOperation( this.field );
 //		this.setLeftButtonPressOperation( this.selectOperation );
 //		this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1b079c62-dd58-41dd-93cf-d85ab03a4d23" ), this.createPopupOperations() ) );
-//		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-//			((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field).name.addPropertyListener( new NamePropertyAdapter() );
+//		if( this.field instanceof org.lgna.project.ast.FieldDeclaredInAlice ) {
+//			((org.lgna.project.ast.FieldDeclaredInAlice)field).name.addPropertyListener( new NamePropertyAdapter() );
 //		}
 //		this.updateLabel();
 //	}
@@ -276,8 +276,8 @@ package org.alice.stageide.sceneeditor;
 //		return super.getInsetRight() + 4;
 //	}
 //	protected java.util.List< edu.cmu.cs.dennisc.croquet.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Operation > rv ) {
-//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.getField();
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
+//		org.lgna.project.ast.FieldDeclaredInAlice fieldInAlice = (org.lgna.project.ast.FieldDeclaredInAlice)this.getField();
+//		org.lgna.project.ast.AbstractType fieldType = fieldInAlice.getValueType();
 //		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
 //		if( fieldType.isAssignableTo( org.lookingglassandalice.storytelling.Transformable.class ) ) {
 //			if( fieldType.isAssignableTo( org.lookingglassandalice.storytelling.Camera.class ) ) {
@@ -299,23 +299,23 @@ package org.alice.stageide.sceneeditor;
 //		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Operation >() );
 //	}
 //	@Override
-//	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+//	public org.lgna.project.ast.AbstractType getExpressionType() {
 //		if( this.field != null ) {
 //			return this.field.getValueType();
 //		} else {
 //			return null;
 //		}
 //	}
-//	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
+//	public org.lgna.project.ast.AbstractField getField() {
 //		return this.field;
 //	}
-////	public void setField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+////	public void setField( org.lgna.project.ast.AbstractField field ) {
 ////		this.field = field;
 ////		this.updateLabel();
 ////	}
 //	protected java.awt.Color calculateColor() {
 //		org.alice.ide.IDE ide = getIDE();
-//		java.awt.Color color = ide.getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+//		java.awt.Color color = ide.getColorFor( org.lgna.project.ast.FieldAccess.class );
 //		if( this.field == ide.getFieldSelection() ) {
 //			color = java.awt.Color.YELLOW;
 //		} else {

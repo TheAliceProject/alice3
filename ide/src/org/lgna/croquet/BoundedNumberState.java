@@ -119,6 +119,10 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 //		}
 //	}
 
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		return rv;
+	}
 	public org.lgna.croquet.components.Slider createSlider() {
 		return new org.lgna.croquet.components.Slider( this );
 	}

@@ -102,30 +102,30 @@ public class MoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.
 	}
 	
 //	@Override
-//	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+//	public org.lgna.project.ast.Expression getPreviousExpression() {
 //		return null;
 //	}
 //	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
+//	protected org.lgna.project.ast.Statement getStatement() {
 //		return this.expressionStatement;
 //	}
 //	
-//	private edu.cmu.cs.dennisc.alice.ast.AbstractParameter getLastParameter() {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.nextMethodInvocation.method.getValue();
-//		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
+//	private org.lgna.project.ast.AbstractParameter getLastParameter() {
+//		org.lgna.project.ast.AbstractMethod method = this.nextMethodInvocation.method.getValue();
+//		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
 //		return parameters.get( parameters.size()-1 );
 //	}
 //
 //	@Override
 //	protected String getTitle() {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = this.getLastParameter();
+//		org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
 //		return lastParameter.getName();
 //	}
 //	
 //	
 //	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = this.getLastParameter();
+//	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+//		org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
 //		return lastParameter.getDesiredValueType();
 //	}
 	@Override

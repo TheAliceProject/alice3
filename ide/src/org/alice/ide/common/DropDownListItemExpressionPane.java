@@ -73,7 +73,7 @@ public class DropDownListItemExpressionPane extends AbstractDropDownPane {
 		this.expressionListProperty.removeListPropertyListener( this.listPropertyAdapter );
 		super.handleUndisplayable();
 	}
-	//protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> getFillInType();
+	//protected abstract org.lgna.project.ast.AbstractType<?,?,?> getFillInType();
 	public void refresh() {
 		this.forgetAndRemoveAllComponents();
 		if( this.index < this.expressionListProperty.size() ) {

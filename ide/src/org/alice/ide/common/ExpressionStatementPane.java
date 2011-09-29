@@ -123,8 +123,8 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 
 
 //			not worth while since instance creations are not normally (ever) the expression of an expression statements 				
-//			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) { 
-//				final edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
+//			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) { 
+//				final org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
 //				
 //				if( instanceCreation.isValid() ) {
 //					//pass
@@ -132,12 +132,12 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 //					this.setBackground( java.awt.Color.RED );
 //				}
 //				
-//				edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+//				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 //				//todo:
 //				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
-//					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = constructor.getNextLongerInChain();
+//					org.lgna.project.ast.AbstractMember nextLonger = constructor.getNextLongerInChain();
 //					if( nextLonger != null ) {
-//						final edu.cmu.cs.dennisc.alice.ast.AbstractConstructor nextLongerAbstractConstructor = (edu.cmu.cs.dennisc.alice.ast.AbstractConstructor)nextLonger;
+//						final org.lgna.project.ast.AbstractConstructor nextLongerAbstractConstructor = (org.lgna.project.ast.AbstractConstructor)nextLonger;
 //						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 //						this.add( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
 //					}
@@ -150,14 +150,14 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.revalidateAndRepaint();
 	}
-//	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {
-//		edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = this.getExpressionStatement();
-//		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
-//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
-//			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
-//			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-//			if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-//				return (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+//	private org.lgna.project.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {
+//		org.lgna.project.ast.ExpressionStatement expressionStatement = this.getExpressionStatement();
+//		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+//		if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+//			org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+//			org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+//			if( method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
+//				return (org.lgna.project.ast.MethodDeclaredInAlice)method;
 //			}
 //		}
 //		return null;
@@ -166,7 +166,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 //	@Override
 //	protected void handleControlClick( java.awt.event.MouseEvent e) {
 //		//super.handleControlClick();
-//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
+//		org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
 //		if( methodDeclaredInAlice != null ) {
 //			getIDE().performIfAppropriate( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ), e, true );
 //		}
@@ -179,7 +179,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 //	@Override
 //	protected java.util.List< org.alice.ide.operations.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.operations.AbstractActionOperation > rv ) {
 //		rv = super.updateOperationsListForAltMenu( rv );
-//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
+//		org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
 //		if( methodDeclaredInAlice != null ) {
 //			rv.add( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ) );
 //		}

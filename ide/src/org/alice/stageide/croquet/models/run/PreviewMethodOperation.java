@@ -55,10 +55,10 @@ public class PreviewMethodOperation extends org.lgna.croquet.ActionOperation {
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 //		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate.getAwtComponent(), 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
 //		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate.getAwtComponent(), null, mouseEvent );
-//		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
-//			public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-//				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( statement, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
-//				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class );
+//		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< org.lgna.project.ast.Statement >() {
+//			public void handleCompletion( org.lgna.project.ast.Statement statement ) {
+//				org.lgna.project.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( statement, org.lgna.project.ast.ExpressionStatement.class );
+//				org.lgna.project.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), org.lgna.project.ast.MethodInvocation.class );
 //				methodInvocation.expression.setValue( null );
 //				PreviewMethodOperation.this.getIDE().handlePreviewMethod( context, methodInvocation );
 //				context.finish();

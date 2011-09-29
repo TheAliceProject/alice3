@@ -95,7 +95,7 @@ public class AliceFormatter extends Formatter {
 		return getLocalizedText( text, text );
 	}
 //	public String getTextForThis() {
-//		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class, "edu.cmu.cs.dennisc.alice.ast.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
+//		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( org.lgna.project.ast.ThisExpression.class, "org.lgna.project.ast.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
 //	}
 	@Override
 	public String getTextForThis() {

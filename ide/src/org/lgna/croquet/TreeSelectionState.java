@@ -326,4 +326,8 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 	public org.lgna.croquet.components.Tree< T > createTree() {
 		return new org.lgna.croquet.components.Tree< T >( this );
 	}
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		return rv;
+	}
 }

@@ -46,11 +46,11 @@ package uist;
  * @author Dennis Cosgrove
  */
 class WizardOfHastings {
-	public static void castPart( org.lgna.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.Project originalProject, String originalFieldName, edu.cmu.cs.dennisc.alice.Project replacementProject, String replacementFieldName ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> orginalSceneType = originalProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();		
-		edu.cmu.cs.dennisc.alice.ast.AbstractField originalField = orginalSceneType.getDeclaredField( originalFieldName );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> replacementSceneType = replacementProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();
-		edu.cmu.cs.dennisc.alice.ast.AbstractField replacementField = replacementSceneType.getDeclaredField( replacementFieldName );
+	public static void castPart( org.lgna.croquet.Retargeter retargeter, org.lgna.project.Project originalProject, String originalFieldName, org.lgna.project.Project replacementProject, String replacementFieldName ) {
+		org.lgna.project.ast.AbstractType<?,?,?> orginalSceneType = originalProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();		
+		org.lgna.project.ast.AbstractField originalField = orginalSceneType.getDeclaredField( originalFieldName );
+		org.lgna.project.ast.AbstractType<?,?,?> replacementSceneType = replacementProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();
+		org.lgna.project.ast.AbstractField replacementField = replacementSceneType.getDeclaredField( replacementFieldName );
 		
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "original:", originalField.getName(), originalField.getValueType().getName(), originalField.getValueType().getUUID() );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "replacement:", replacementField.getName(), replacementField.getValueType().getName(), replacementField.getValueType().getUUID() );

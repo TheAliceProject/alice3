@@ -58,17 +58,17 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > context ) {
-//		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().createCopyOfPreviousExpression();
+//		final org.lgna.project.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().createCopyOfPreviousExpression();
 //		final boolean isTop = blank.getParentFillIn() == null;
 //		
 //		if( previousExpression != null ) {
-//			for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
+//			for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
 //				rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
 //			}
 //			rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "divide, remainder" ) {
 //				@Override
 //				protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-//					for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
+//					for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
 //						rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
 //					}
 //				}

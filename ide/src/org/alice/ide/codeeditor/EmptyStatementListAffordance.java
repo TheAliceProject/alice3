@@ -56,7 +56,7 @@ public class EmptyStatementListAffordance extends org.lgna.croquet.components.JC
 
 	private boolean isDrawingDesired = true;
 	
-//	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty;
+//	private org.lgna.project.ast.StatementListProperty statementListProperty;
 	private org.lgna.project.ast.StatementListProperty alternateListProperty;
 	public EmptyStatementListAffordance( org.lgna.project.ast.StatementListProperty statementListProperty, org.lgna.project.ast.StatementListProperty alternateListProperty ) {
 //		this.statementListProperty = statementListProperty;

@@ -166,17 +166,17 @@ public abstract class VirtualMachine {
 	
 	protected Object createInstanceFromAnonymousConstructor( org.lgna.project.ast.AnonymousUserConstructor constructor, Object[] arguments ) {
 		throw new RuntimeException( "todo" );
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = constructor.getDeclaringType();
-//		if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
-//			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice anonymousType = (edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice)type;
-//			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> superType = anonymousType.getSuperType();
-//			if( superType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
-//				Class< ? > anonymousCls = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)superType).getClassReflectionProxy().getReification();
+//		org.lgna.project.ast.AbstractType<?,?,?> type = constructor.getDeclaringType();
+//		if( type instanceof org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice ) {
+//			org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice anonymousType = (org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice)type;
+//			org.lgna.project.ast.AbstractType<?,?,?> superType = anonymousType.getSuperType();
+//			if( superType instanceof org.lgna.project.ast.TypeDeclaredInJava ) {
+//				Class< ? > anonymousCls = ((org.lgna.project.ast.TypeDeclaredInJava)superType).getClassReflectionProxy().getReification();
 //				Class< ? > adapterCls = this.mapAnonymousClsToAdapterCls.get( anonymousCls );
 //				if( adapterCls != null ) {
 //					final InstanceInAlice instance = this.getThis();
 //					Context context = new Context() {
-//						public void invokeEntryPoint( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, final Object... arguments ) {
+//						public void invokeEntryPoint( final org.lgna.project.ast.AbstractMethod method, final Object... arguments ) {
 ////							new Thread() {
 ////								@Override
 ////								public void run() {
@@ -185,7 +185,7 @@ public abstract class VirtualMachine {
 ////							}.start();
 //						}
 //					};
-//					Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class, Object[].class };
+//					Class< ? >[] parameterTypes = { Context.class, org.lgna.project.ast.AbstractTypeDeclaredInAlice.class, Object[].class };
 //					Object[] args = { context, anonymousType, arguments };
 //					return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
 //				} else {

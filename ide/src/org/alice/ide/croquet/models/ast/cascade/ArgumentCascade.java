@@ -63,7 +63,7 @@ public class ArgumentCascade extends ProjectExpressionPropertyCascade {
 		this.argument = argument;
 	}
 //	@Override
-//	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+//	public org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
 //		return this.argument.expression;
 //	}
 //	@Override

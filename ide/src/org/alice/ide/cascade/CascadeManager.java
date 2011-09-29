@@ -142,8 +142,8 @@ public abstract class CascadeManager {
 		rv.add( this.createBlankChildForFillInAndPossiblyPartFillIns( expression, type, type2 ) );
 		return rv;
 	}
-//	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addFillInAndPossiblyPartFillIns(  java.util.List< org.lgna.croquet.CascadeBlankChild > rv, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type2 ) {
-//		rv.add( new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( expression ) );
+//	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addFillInAndPossiblyPartFillIns(  java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.AbstractType<?,?,?> type2 ) {
+//		rv.add( new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn< org.lgna.project.ast.Expression >( expression ) );
 //		return rv;
 //	}
 
@@ -343,16 +343,16 @@ public abstract class CascadeManager {
 //		return this.updateChildren( rv, blankNode, org.lgna.project.ast.JavaType.getInstance( cls ) );
 //	}
 //	@Deprecated
-//	private void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.BlockStatement dropParent, int dropIndex, edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
+//	private void promptUserForExpressions( org.lgna.project.ast.BlockStatement dropParent, int dropIndex, org.lgna.project.ast.AbstractType<?,?,?>[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< org.lgna.project.ast.Expression[] > taskObserver ) {
 //		this.dropParent = dropParent;
 //		this.dropIndex = dropIndex;
-//		edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] > fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
+//		edu.cmu.cs.dennisc.cascade.FillIn< org.lgna.project.ast.Expression[] > fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
 //		java.util.List< edu.cmu.cs.dennisc.cascade.Node > children = fillIn.getChildren();
 //		if( children.size() == 1 ) {
 //			edu.cmu.cs.dennisc.cascade.Blank blank0 = fillIn.getBlankAt( 0 );
-//			edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression > selectedFillIn = (edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression >)blank0.getSelectedFillIn();
+//			edu.cmu.cs.dennisc.cascade.FillIn< org.lgna.project.ast.Expression > selectedFillIn = (edu.cmu.cs.dennisc.cascade.FillIn< org.lgna.project.ast.Expression >)blank0.getSelectedFillIn();
 //			if( selectedFillIn != null ) {
-//				taskObserver.handleCompletion( new edu.cmu.cs.dennisc.alice.ast.Expression[] { selectedFillIn.getValue() } );
+//				taskObserver.handleCompletion( new org.lgna.project.ast.Expression[] { selectedFillIn.getValue() } );
 //				//note: return
 //				return;
 //			}

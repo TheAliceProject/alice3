@@ -66,8 +66,8 @@ public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.ali
 		this.operator = operator;
 	}
 //	@Override
-//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-//		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
+//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.ArithmeticInfixExpression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
+//		return previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
 //	}
 	@Override
 	protected org.lgna.project.ast.ArithmeticInfixExpression createValue( org.lgna.project.ast.Expression previousExpression ) {

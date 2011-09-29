@@ -124,8 +124,8 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 
 //	@Override
 //	public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > getAcceptableReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-//		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-//		edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement = retargeter.retarget( this.statement );
+//		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+//		org.lgna.project.ast.Statement replacementStatement = retargeter.retarget( this.statement );
 //		return new InsertStatementEdit( replacementBlockStatement, this.index, replacementStatement );
 //	}
 	
@@ -184,13 +184,13 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 	}
 
 	
-//	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.alice.ast.Statement replacementStatement ) {
-//		edu.cmu.cs.dennisc.alice.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+//	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, org.lgna.project.ast.Statement replacementStatement ) {
+//		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
 //		retargeter.addKeyValuePair( this.statement, replacementStatement );
 //		final int N = this.initialExpressions.length;
 //
 //		System.err.println( "todo: replacementExpressions" );
-//		edu.cmu.cs.dennisc.alice.ast.Expression[] replacementExpressions = this.initialExpressions;
+//		org.lgna.project.ast.Expression[] replacementExpressions = this.initialExpressions;
 //		
 //		return new InsertStatementEdit( replacementBlockStatement, this.specifiedIndex, replacementStatement, replacementExpressions );
 //	}

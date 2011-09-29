@@ -45,10 +45,10 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
+public class DeclareMethodParameterOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.ParameterDeclaredInAlice> {
 	@Deprecated
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice, DeclareMethodParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static DeclareMethodParameterOperation getInstance( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	private static java.util.Map< org.lgna.project.ast.MethodDeclaredInAlice, DeclareMethodParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static DeclareMethodParameterOperation getInstance( org.lgna.project.ast.MethodDeclaredInAlice method ) {
 		DeclareMethodParameterOperation rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -58,18 +58,18 @@ public class DeclareMethodParameterOperation extends org.alice.ide.croquet.model
 		}
 		return rv;
 	}
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	private DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+	private org.lgna.project.ast.MethodDeclaredInAlice method;
+	private DeclareMethodParameterOperation( org.lgna.project.ast.MethodDeclaredInAlice method ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "108b8040-92e1-4792-b61e-594bd5eeb0bb" ) );
 		this.method = method;
 	}
 	
-	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethod() {
+	public org.lgna.project.ast.MethodDeclaredInAlice getMethod() {
 		return this.method;
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareMethodParameterOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareMethodParameterOperation >( this, this.method, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareMethodParameterOperation >( this, this.method, org.lgna.project.ast.MethodDeclaredInAlice.class );
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.CreateMethodParameterPane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
@@ -80,7 +80,7 @@ public class DeclareMethodParameterOperation extends org.alice.ide.croquet.model
 	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
 			org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = step.getMainPanel();
-			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getInputValue();
+			org.lgna.project.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.getInputValue();
 			if( parameter != null ) {
 				step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareMethodParameterEdit( step, parameter ) );
 			} else {

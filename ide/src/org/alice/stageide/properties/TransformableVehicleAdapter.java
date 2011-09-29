@@ -131,7 +131,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 //				@Override
 //				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) 
 //				{
-//					org.lgna.croquet.ListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
+//					org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
 //					java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 //					
 //					Entity currentVehicle = TransformableVehicleAdapter.this.getValue();
@@ -141,7 +141,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 //						setVehicleOperations.add(org.lgna.croquet.MenuModel.SEPARATOR);
 //					}
 //					
-//					for (edu.cmu.cs.dennisc.alice.ast.Accessible field : possibleFields)
+//					for (org.lgna.project.ast.Accessible field : possibleFields)
 //					{
 //						if (field instanceof FieldDeclaredInAlice)
 //						{

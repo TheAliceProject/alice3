@@ -409,11 +409,11 @@ public class AstUtilities {
 		return createIncompleteStringConcatenation( new EmptyExpression( org.lgna.project.ast.JavaType.OBJECT_TYPE ) );
 	}
 
-//	public static edu.cmu.cs.dennisc.alice.ast.AbstractParameter getNextParameter( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-//		final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
+//	public static org.lgna.project.ast.AbstractParameter getNextParameter( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+//		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+//		final org.lgna.project.ast.AbstractMethod nextLongerMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
 //		
-//		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
+//		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
 //		return parameters.get( parameters.size()-1 );
 //	}
 	

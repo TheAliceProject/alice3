@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareFunctionOperation extends DeclareMethodOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareFunctionOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static DeclareFunctionOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? >, DeclareFunctionOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static DeclareFunctionOperation getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		DeclareFunctionOperation rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -57,16 +57,16 @@ public class DeclareFunctionOperation extends DeclareMethodOperation {
 		}
 		return rv;
 	}
-	private DeclareFunctionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+	private DeclareFunctionOperation( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		super( java.util.UUID.fromString( "1687287d-25f7-4ad0-a369-0bb59b96b53d" ), type );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFunctionOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFunctionOperation >( this, this.getDeclaringType(), edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareFunctionOperation >( this, this.getDeclaringType(), org.lgna.project.ast.AbstractTypeDeclaredInAlice.class );
 	}
 	
 	@Override
-	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+	protected org.alice.ide.declarationpanes.CreateDeclarationPane< org.lgna.project.ast.MethodDeclaredInAlice > createCreateMethodPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		return new org.alice.ide.declarationpanes.CreateFunctionPane( type );
 	}
 	@Override
@@ -75,7 +75,7 @@ public class DeclareFunctionOperation extends DeclareMethodOperation {
 	}
 	@Override
 	protected StringBuilder appendTutorialFinishNoteText( StringBuilder rv, org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit, org.lgna.croquet.UserInformation userInformation ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = declareMethodEdit.getMethod();
+		org.lgna.project.ast.MethodDeclaredInAlice method = declareMethodEdit.getMethod();
 		rv.append( "a) Select return value type: " );
 		rv.append( "<strong>" );
 		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();

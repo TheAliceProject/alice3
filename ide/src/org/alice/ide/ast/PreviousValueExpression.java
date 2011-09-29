@@ -55,7 +55,7 @@ public class PreviousValueExpression extends IdeExpression {
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType<?,?,?> getType() {
-//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
+//		org.lgna.project.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
 //		if( previousExpression != null ) {
 //			return previousExpression.getType();
 //		} else {
