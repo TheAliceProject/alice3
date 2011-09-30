@@ -274,12 +274,12 @@ public class Joint extends Transformable
     {
         if (edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY))
         {
-            final double UNIT_LENGTH = .1;
+            final double UNIT_LENGTH = this.getBoundingBox(null).getSize().calculateMagnitude()/2.0;
             this.localTransformation.getValue().getAsColumnMajorArray16(m_local);
             rc.gl.glMultMatrixd(m_localBuffer);
             {
                 rc.gl.glDisable( javax.media.opengl.GL2.GL_LIGHTING );
-        
+                rc.gl.glDisable( javax.media.opengl.GL2.GL_TEXTURE_2D );
                 rc.gl.glBegin( javax.media.opengl.GL2.GL_LINES );
         
                 rc.gl.glColor3f( 1.0f, 0.0f, 0.0f );
@@ -343,7 +343,7 @@ public class Joint extends Transformable
                     rc.gl.glEnd();
                 }
                 
-        
+                rc.gl.glEnable( javax.media.opengl.GL2.GL_TEXTURE_2D );
                 rc.gl.glEnable( javax.media.opengl.GL2.GL_LIGHTING );
             }
         }
