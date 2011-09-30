@@ -42,7 +42,12 @@
  */
 package org.lgna.croquet.components;
 
-public abstract class DragComponent< J extends javax.swing.AbstractButton, M extends org.lgna.croquet.DragModel > extends Control< J, M > {
+import org.lgna.croquet.Application;
+import org.lgna.croquet.DragModel;
+
+public abstract class DragComponent extends Control {
+	private DragModel dragModel;
+
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
 
@@ -58,9 +63,19 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 		}
 	};
 
-	public DragComponent( M model ) {
-		super( model );
+	public DragComponent() {
+		this.updateProxySizes();
 	}
+
+//	public Resolver< DragAndDropOperation > getDragAndDropOperationResolver() {
+//		return new Resolver< DragAndDropOperation >() {
+//			public edu.cmu.cs.dennisc.croquet.DragAndDropOperation getResolved() {
+//				DragComponent.this.dragAndDropOperation.setFirstComponentHint( DragComponent.this );
+//				return DragComponent.this.dragAndDropOperation;
+//			}
+//		};
+//	}
+
 	public DragProxy getDragProxy() {
 		return this.dragProxy;
 	}
@@ -73,47 +88,58 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	public void addNotify() {
+		super.addNotify();
 		this.addComponentListener( this.componentAdapter );
 	}
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+	public void removeNotify() {
 		this.removeComponentListener( this.componentAdapter );
-		super.handleRemovedFrom( parent );
-	}
-	
-	@Override
-	protected boolean isMouseListeningDesired() {
-		return super.isMouseListeningDesired() || this.getModel() != null;
+		super.removeNotify();
 	}
 
-	public JComponent<?> getSubject() {
+	@Override
+	protected boolean isMouseListeningDesired() {
+		return super.isMouseListeningDesired() || this.dragModel != null;
+	}
+
+	public Component<?> getSubject() {
 		return this;
 	}
-//	public org.lgna.croquet.DragModel getDragModel() {
-//		return this.dragModel;
-//	}
-//	private void setDragModel( org.lgna.croquet.DragModel dragModel ) {
-//		if( this.dragModel != dragModel ) {
-//			if( this.dragModel != null ) {
-//				this.dragModel.removeComponent( this );
+	//	public void setSubject( java.awt.Component subject ) {
+	//		this.subject = subject;
+	//	}
+	public DragModel getDragModel() {
+		if( this.dragModel != null ) {
+			this.dragModel.setFirstComponentHint( DragComponent.this );
+		}
+		return this.dragModel;
+	}
+	public void setDragModel( DragModel dragModel ) {
+		if( this.dragModel != dragModel ) {
+//			if( this.dragAndDropOperation != null ) {
+//				assert dragAndDropOperation == null; 
+//			} else {
+//				assert dragAndDropOperation != null; 
 //			}
-//			this.dragModel = dragModel;
-//			if( this.dragModel != null ) {
-//				this.dragModel.addComponent( this );
-//			}
-//		} else {
-//			assert false;
-//		}
-//	}
+			if( this.dragModel != null ) {
+				this.dragModel.removeComponent( this );
+			}
+			this.dragModel = dragModel;
+			if( this.dragModel != null ) {
+				this.dragModel.addComponent( this );
+			}
+		} else {
+			assert false;
+		}
+	}
 
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {
 		return false;
 	}
 
 	private boolean isActuallyPotentiallyDraggable() {
-		boolean rv = this.getModel() != null;
+		boolean rv = this.getDragModel() != null;
 		if( rv ) {
 			if( this.dragProxy != null ) {
 				//pass
@@ -178,7 +204,7 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 	private org.lgna.croquet.history.DragStep step;
 
 	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+		Application application = Application.getActiveInstance();
 		application.setDragInProgress( true );
 		this.updateProxySizes();
 		this.updateProxyPosition( e );
@@ -188,13 +214,13 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
 		
-		this.step = org.lgna.croquet.history.TransactionManager.addDragStep( this.getModel(), new org.lgna.croquet.triggers.DragTrigger( this, this.getLeftButtonPressedEvent() ) );
+		this.step = org.lgna.croquet.history.TransactionManager.addDragStep( this.dragModel, new org.lgna.croquet.triggers.DragTrigger( this, this.getLeftButtonPressedEvent() ) );
 		this.step.setLatestMouseEvent( e );
-		this.getModel().handleDragStarted( this.step );
+		this.dragModel.handleDragStarted( this.step );
 		this.showDragProxy();
 	}
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
-		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
+		if( Application.getActiveInstance().isDragInProgress() ) {
 			this.updateProxyPosition( e );
 			this.step.handleMouseDragged( e );
 		}
@@ -227,7 +253,7 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 	public void handleMousePressed( java.awt.event.MouseEvent e ) {
 		super.handleMousePressed( e );
 		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-			if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
+			if( Application.getActiveInstance().isDragInProgress() ) {
 				this.handleCancel( e );
 			}
 		}
@@ -239,7 +265,7 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 				if( this.isWithinClickThreshold() ) {
 					//pass
 				} else {
-					org.lgna.croquet.Application.getActiveInstance().setDragInProgress( false );
+					Application.getActiveInstance().setDragInProgress( false );
 					this.setActive( this.getAwtComponent().contains( e.getPoint() ) );
 					javax.swing.JLayeredPane layeredPane = getLayeredPane();
 					java.awt.Rectangle bounds = this.dragProxy.getBounds();
@@ -299,7 +325,7 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 		}
 	}
 	public void handleCancel( java.util.EventObject e ) {
-		org.lgna.croquet.Application.getActiveInstance().setDragInProgress( false );
+		Application.getActiveInstance().setDragInProgress( false );
 		this.setActive( false );
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
 		if( layeredPane != null ) {
@@ -309,9 +335,4 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 		}
 		this.step.handleCancel( e );
 	}
-	
-	protected abstract void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height );
-	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
-	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
-	
 }

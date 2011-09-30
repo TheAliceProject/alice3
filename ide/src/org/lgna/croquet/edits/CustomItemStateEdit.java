@@ -53,12 +53,13 @@ public class CustomItemStateEdit<T> extends ItemStateEdit< org.lgna.croquet.Cust
 	public CustomItemStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
-//	@Override
-//	protected final void doOrRedoInternal( boolean isDo ) {
-//		this.getModel().changeValue( this.getPreviousValue(), this.getNextValue(), false );
-//	}
-//	@Override
-//	protected final void undoInternal() {
-//		this.getModel().changeValue( this.getNextValue(), this.getPreviousValue(), false );
-//	}
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.getModel().changeValue( this.getPreviousValue(), this.getNextValue(), false );
+	}
+	@Override
+	protected final void undoInternal() {
+		this.getModel().changeValue( this.getNextValue(), this.getPreviousValue(), false );
+	}
+
 }

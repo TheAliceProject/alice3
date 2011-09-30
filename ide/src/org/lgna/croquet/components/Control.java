@@ -42,32 +42,7 @@
  */
 package org.lgna.croquet.components;
 
-public abstract class Control< J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Model > extends ViewController< J, M > {
-	private class ControlAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
-		public void mousePressed( java.awt.event.MouseEvent e ) {
-			Control.this.handleMousePressed( e );
-		}
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
-			Control.this.handleMouseReleased( e );
-		}
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
-			Control.this.handleMouseClicked( e );
-		}
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
-			Control.this.handleMouseEntered( e );
-		}
-		public void mouseExited( java.awt.event.MouseEvent e ) {
-			Control.this.handleMouseExited( e );
-		}
-		public void mouseMoved( java.awt.event.MouseEvent e ) {
-			Control.this.handleMouseMoved( e );
-		}
-		public void mouseDragged( java.awt.event.MouseEvent e ) {
-			Control.this.handleMouseDragged( e );
-		}
-	}
-	
-	private ControlAdapter controlAdapter = null;
+public abstract class Control extends Widget {
 	private org.lgna.croquet.Model leftButtonPressModel;
 	private org.lgna.croquet.Model leftButtonClickModel;
 	private org.lgna.croquet.Model leftButtonDoubleClickModel;
@@ -76,28 +51,65 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 	private boolean isPressed = false;
 	//private boolean isSelected = false;
 
-	public Control( M model ) {
-		super( model );
+	private static class ControlAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
+		private Control control;
+		public ControlAdapter( Control control ) {
+			this.control = control;
+		}
+//		@Override
+//		protected void finalize() throws java.lang.Throwable {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize ControlAdapter" );
+//			super.finalize();
+//		}
+		public void mousePressed( java.awt.event.MouseEvent e ) {
+			this.control.handleMousePressed( e );
+		}
+		public void mouseReleased( java.awt.event.MouseEvent e ) {
+			this.control.handleMouseReleased( e );
+		}
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+			this.control.handleMouseClicked( e );
+		}
+		public void mouseEntered( java.awt.event.MouseEvent e ) {
+			this.control.handleMouseEntered( e );
+		}
+		public void mouseExited( java.awt.event.MouseEvent e ) {
+			this.control.handleMouseExited( e );
+		}
+		public void mouseMoved( java.awt.event.MouseEvent e ) {
+			this.control.handleMouseMoved( e );
+		}
+		public void mouseDragged( java.awt.event.MouseEvent e ) {
+			this.control.handleMouseDragged( e );
+		}
 	}
+	private ControlAdapter controlAdapter = null;
 	protected boolean isMouseListeningDesired() { 
 		return this.leftButtonPressModel != null || this.leftButtonClickModel != null || this.leftButtonDoubleClickModel != null;
 	}
 
+//	@Override
+//	protected void finalize() throws Throwable {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize", this.getClass() );
+//		super.finalize();
+//	}
+	
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		super.handleAddedTo( parent );
+	protected void addNotify() {
+		super.addNotify();
 		if( isMouseListeningDesired() ) {
 			if( this.controlAdapter != null ) {
 				//pass
 			} else {
-				this.controlAdapter = new ControlAdapter();
+				this.controlAdapter = new ControlAdapter( this );
 				this.addMouseListener( this.controlAdapter );
 				this.addMouseMotionListener( this.controlAdapter );
 			}
 		}
 	}
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+	protected void removeNotify() {
+		super.removeNotify();
 		if( this.controlAdapter != null ) {
 			this.removeMouseListener( this.controlAdapter );
 			this.removeMouseMotionListener( this.controlAdapter );
@@ -105,7 +117,6 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 //			
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "REMOVE NOTIFY: ", this.getClass() );
 		}
-		super.handleRemovedFrom( parent );
 	}
 	
 	private java.awt.event.MouseEvent mousePressedEvent = null;

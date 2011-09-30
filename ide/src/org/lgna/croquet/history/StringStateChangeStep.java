@@ -63,7 +63,7 @@ public class StringStateChangeStep extends StateChangeStep< org.lgna.croquet.Str
 		this.originalValue = null;
 		this.currentValue = null;
 	}
-	/*package-private*/ void pendDocumentEvent( org.lgna.croquet.triggers.Trigger trigger, String currentValue ) {
+	/*package-private*/ void pendDocumentEvent( org.lgna.croquet.triggers.DocumentEventTrigger trigger, String currentValue ) {
 		org.lgna.croquet.history.event.StateChangeEvent e = new org.lgna.croquet.history.event.StateChangeEvent( this );
 		this.fireChanging( e );
 		this.currentValue = currentValue;

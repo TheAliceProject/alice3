@@ -58,6 +58,11 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 		this.clsForI18N = clsForI18N;
 	}
 	@Override
+	public Iterable< ? extends MenuItemPrepModel > getChildren() {
+		return null;
+	}
+	
+	@Override
 	protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
 		if( this.clsForI18N != null ) {
 			return this.clsForI18N;
@@ -71,9 +76,13 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, this.getLocalizedMnemonicKey() );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, this.getLocalizedAcceleratorKeyStroke() );
 	}
+	protected String getTutorialNoteName() {
+		return this.getName();
+	}
 	@Override
-	public Iterable< ? extends MenuItemPrepModel > getChildren() {
-		return null;
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		rv.append( " <strong>" + this.getTutorialNoteName() + "</strong>" );
+		return rv;
 	}
 
 	public javax.swing.Action getAction() {
@@ -92,16 +101,44 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
 	
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 	}
-	public void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
+	public void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 	}
 	
+//	private javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+//		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "stateChanged", javax.swing.MenuSelectionManager.defaultManager().getSelectedPath() );
+//		}
+//	};
 	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+////		//menuItemContainer.addChangeListener( this.changeListener );
+//		Container< ? > parent = menuItemContainer.getParent();
+////		ModelContext< ? > parentContext;
+////		if( parent instanceof MenuBar ) {
+////			MenuBar menuBar = (MenuBar)parent;
+////			parentContext = menuBar.createMenuBarContext();
+////		} else {
+////			parentContext = RootContext.getInstance().getCurrentContext();
+////		}
+//		MenuModelContext context = RootContext.createAndPushMenuModelContext( MenuModel.this, menuItemContainer );
+//		context.handleMenuSelected( e );
+////		
+////		javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
+////		menuSelectionManager.addChangeListener( this.changeListener );
 	}
 	protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+//		MenuModelContext context = (MenuModelContext)RootContext.getCurrentContext();
+//		context.handleMenuDeselected( e );
+//		ModelContext< ? > modelContext = RootContext.popContext();
+//		assert modelContext instanceof MenuModelContext;
+//		javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
+//		menuSelectionManager.removeChangeListener( this.changeListener );
 	}
 	protected void handleCanceled( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+////		MenuModelContext context = (MenuModelContext)RootContext.getCurrentContext();
+////		context.handleMenuCanceled( e );
+//		System.err.println( "todo: cancel" + " " + e );
 	}
 	
 	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {
@@ -142,14 +179,6 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	@Override
 	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
 		rv.addMenu( this.createMenu() );
-		return rv;
-	}
-	protected String getTutorialNoteName() {
-		return this.getName();
-	}
-	@Override
-	protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit, UserInformation userInformation) {
-		rv.append( " <strong>" + this.getTutorialNoteName() + "</strong>" );
 		return rv;
 	}
 }

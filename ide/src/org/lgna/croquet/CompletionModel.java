@@ -48,7 +48,6 @@ package org.lgna.croquet;
  */
 public abstract class CompletionModel extends Model {
 	private final Group group;
-	private int ignoreCount = 0;
 
 	public CompletionModel( Group group, java.util.UUID id ) {
 		super( id );
@@ -58,16 +57,10 @@ public abstract class CompletionModel extends Model {
 		return this.group;
 	}
 
-	protected void pushIgnore() {
-		this.ignoreCount++;
+	public boolean isToBeIgnored() {
+		return false;
 	}
-	protected void popIgnore() {
-		this.ignoreCount--;
-		assert this.ignoreCount >= 0;
-	}
-	protected boolean isAppropriateToComplete() {
-		return Manager.isInTheMidstOfUndoOrRedo()==false && this.ignoreCount == 0;
-	}
+	
 	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step, UserInformation userInformation ) {
 		this.initializeIfNecessary();
 		org.lgna.croquet.edits.Edit< ? > edit = step.getEdit();

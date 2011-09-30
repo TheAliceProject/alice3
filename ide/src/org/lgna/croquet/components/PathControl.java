@@ -43,25 +43,81 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.*;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.SelectDirectoryActionOperation;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.TreeSelectionState;
 
-/*package-private*/ class DirectoryControl<T> extends BorderPanel {
-	public static <T> DirectoryControl<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode ) {
-		return new DirectoryControl<T>( treeSelectionState, treeNode );
+/*package-private*/ class SelectChildDirectoryMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+	public static SelectChildDirectoryMenuModel getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SelectChildDirectoryPopupMenuOperation.getInstance()" );
+		return new SelectChildDirectoryMenuModel(treeSelectionState, treeNode, initializer);
 	}
 
-	private DirectoryControl( TreeSelectionState<T> treeSelectionState, T treeNode ) {
-		//PopupButton selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupPrepModel().createPopupButton();
-		PopupButton selectChildButton = treeSelectionState.getCascadeFor( treeNode ).getRoot().getPopupPrepModel().createPopupButton();
+	private static final int ARROW_SIZE = 10;
+	private static final int ARROW_BORDER_HALF_SIZE = 3;
+	private static java.util.List< StandardMenuItemPrepModel > createModels( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		java.util.List< StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.Enumeration< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > enumeration = treeNode.children();
+		if( enumeration != null ) {
+			while( enumeration.hasMoreElements() ) {
+				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> child = enumeration.nextElement();
+				if( child.getAllowsChildren() ) {
+					list.add( SelectDirectoryActionOperation.getInstance(treeSelectionState, child, initializer ).getMenuItemPrepModel() );
+				} else {
+					Operation<?> leafOperation = initializer.getOperationForLeaf( child );
+					if( leafOperation != null ) {
+						list.add( leafOperation.getMenuItemPrepModel() );
+					}
+				}
+			}
+		}
+		return list;
+	}
+	private SelectChildDirectoryMenuModel( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		super( java.util.UUID.fromString( "cc6a0de7-91b1-4a2b-86ff-21ca9de14bed" ), createModels( treeSelectionState, treeNode, initializer ) );
+		javax.swing.Icon icon = new javax.swing.Icon() {
+			public int getIconHeight() {
+				return ARROW_SIZE + ARROW_BORDER_HALF_SIZE + ARROW_BORDER_HALF_SIZE;
+			}
+
+			public int getIconWidth() {
+				return ARROW_SIZE + ARROW_BORDER_HALF_SIZE + ARROW_BORDER_HALF_SIZE;
+			}
+
+			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+				if( c instanceof javax.swing.AbstractButton ) {
+					javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading heading;
+					if( button.getModel().isPressed() ) {
+						heading = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH;
+					} else {
+						heading = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST;
+					}
+					g.setColor( java.awt.Color.BLACK );
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, heading, x + ARROW_BORDER_HALF_SIZE, y + ARROW_BORDER_HALF_SIZE, ARROW_SIZE, ARROW_SIZE );
+				}
+			}
+		};
+		this.setSmallIcon( icon );
+	}
+}
+
+/*package-private*/ class DirectoryControl extends BorderPanel {
+	public static DirectoryControl getInstance( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DirectoryControl.getInstance()" );
+		return new DirectoryControl( treeSelectionState, treeNode, initializer );
+	}
+
+	private DirectoryControl( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> treeSelectionState, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode, PathControl.Initializer initializer ) {
+		PopupButton selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupPrepModel().createPopupButton();
 		if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
 		} else {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
 		}
-		ActionOperation operation = treeSelectionState.getSelectionOperationFor( treeNode );
-		//initializer.configure( operation, treeNode );
-		Button button = operation.createButton();
-		this.addComponent( button, Constraint.CENTER );
+		this.addComponent( SelectDirectoryActionOperation.getInstance( treeSelectionState, treeNode, initializer ).createButton(), Constraint.CENTER );
 		this.addComponent( selectChildButton, Constraint.LINE_END );
 	}
 
@@ -75,21 +131,37 @@ import org.lgna.croquet.*;
 		};
 	}
 }
+
 /**
  * @author Dennis Cosgrove
  */
-public class PathControl<T> extends ViewController< javax.swing.JComponent, TreeSelectionState<T> > {
+public class PathControl extends ViewController< javax.swing.JComponent, TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> > {
 	private javax.swing.tree.TreeSelectionModel treeSelectionModel;
 	private javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
 		public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
 			PathControl.this.refresh();
 		}
 	};
-	public PathControl( TreeSelectionState<T> model ) {
-		super( model );
-		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
+	
+	//todo: better name
+	public interface Initializer {
+		public ActionOperation configure( ActionOperation rv, edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode );
+		public Operation<?> getOperationForLeaf( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode );
 	}
 
+	//private java.util.Map< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, DirectoryControl > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
+	private final Initializer initializer;
+	public PathControl( TreeSelectionState<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> model, Initializer initializer ) {
+		super( model );
+		this.initializer = initializer;
+		this.setSwingTreeModel( model.getTreeModel() );
+		this.setSwingTreeSelectionModel( model.getTreeSelectionModel() );
+	}
+
+	private void setSwingTreeModel( javax.swing.tree.TreeModel treeModel ) {
+		//todo
+	}
 	private void setSwingTreeSelectionModel( javax.swing.tree.TreeSelectionModel treeSelectionModel ) {
 		if( this.treeSelectionModel != null ) {
 			this.treeSelectionModel.removeTreeSelectionListener( this.treeSelectionListener );
@@ -103,16 +175,13 @@ public class PathControl<T> extends ViewController< javax.swing.JComponent, Tree
 
 	private void refresh() {
 		this.internalRemoveAllComponents();
-		edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel = this.getModel().getTreeModel();
 		javax.swing.tree.TreePath treePath = this.treeSelectionModel.getSelectionPath();
 		if( treePath != null ) {
 			final int N = treePath.getPathCount();
 			for( int i=0; i<N; i++ ) {
-				T treeNode = (T)treePath.getPathComponent( i );
-				if( treeModel.isLeaf( treeNode ) ) {
-					//pass
-				} else {
-					this.internalAddComponent( DirectoryControl.getInstance( this.getModel(), treeNode ) );
+				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode = (edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>)treePath.getPathComponent( i );
+				if( treeNode.getAllowsChildren() ) {
+					this.internalAddComponent( DirectoryControl.getInstance( this.getModel(), treeNode, this.initializer) );
 				}
 			}
 		}

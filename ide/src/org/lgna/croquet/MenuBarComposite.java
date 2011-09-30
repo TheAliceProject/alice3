@@ -51,9 +51,6 @@ public class MenuBarComposite extends Composite {
 		super( id );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
 		return this.menuModels.contains( model );
 	}

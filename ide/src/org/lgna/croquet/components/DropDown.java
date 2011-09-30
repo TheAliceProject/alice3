@@ -101,16 +101,8 @@ public abstract class DropDown< M extends org.lgna.croquet.Model >  extends org.
 				this.setUI(new javax.swing.plaf.basic.BasicButtonUI());
 			}
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
-			@Override
 			public java.awt.Dimension getMaximumSize() {
-				if( DropDown.this.isMaximumSizeClampedToPreferredSize() ) {
-					return this.getPreferredSize();
-				} else {
-					return super.getMaximumSize();
-				}
+				return this.getPreferredSize();
 			}
 			@Override
 			public void paint(java.awt.Graphics g) {

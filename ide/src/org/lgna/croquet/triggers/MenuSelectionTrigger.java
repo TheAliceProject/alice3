@@ -128,7 +128,7 @@ public class MenuSelectionTrigger extends ChangeEventTrigger {
 					}
 				}
 			}
-			this.menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.MenuItemPrepModel.class );
+			this.menuItemPrepModels = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( list, org.lgna.croquet.MenuItemPrepModel.class );
 		} else {
 			this.menuBarComposite = null;
 			this.menuItemPrepModels = new org.lgna.croquet.MenuItemPrepModel[ 0 ];

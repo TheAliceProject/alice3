@@ -54,8 +54,8 @@ public abstract class DragModel extends PrepModel {
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit, UserInformation userInformation) {
-		rv.append( "..." );
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		rv.append( "...." );
 		return rv;
 	}
 	
@@ -69,18 +69,14 @@ public abstract class DragModel extends PrepModel {
 		return true;
 	}
 	
-	
-	//public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource );
-	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors();
+	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource );
 	public abstract void handleDragStarted( org.lgna.croquet.history.DragStep step );
 	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step );
 	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step );
 	public abstract void handleDragStopped( org.lgna.croquet.history.DragStep step );
 	
-	public abstract Model getDropModel( org.lgna.croquet.history.DragStep step, DropSite dropSite );
-	
 	@Override
 	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
-		throw new UnsupportedOperationException();
+		throw new RuntimeException();
 	}
 }

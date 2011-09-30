@@ -51,15 +51,13 @@ import org.lgna.croquet.components.ViewController;
  * @author Dennis Cosgrove
  */
 public abstract class DialogOperation< S extends org.lgna.croquet.history.DialogOperationStep<?> > extends SingleThreadOperation<S> {
-	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
-	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
 	public DialogOperation(Group group, java.util.UUID id) {
 		super(group, id);
 	}
-
-	protected void modifyPackedDialogSizeIfDesired( Dialog dialog ) {
-	}
 	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
+		return null;
+	}
+	protected java.awt.Dimension getDesiredDialogSize( Dialog dialog ) {
 		return null;
 	}
 	protected void tweakDialog( Dialog dialog, S context ) {
@@ -139,8 +137,12 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 		try {
 			if( contentPane != null ) {
 				dialog.getAwtComponent().setContentPane( contentPane.getAwtComponent() );
-				dialog.pack();
-				this.modifyPackedDialogSizeIfDesired( dialog );
+				java.awt.Dimension size = this.getDesiredDialogSize( dialog );
+				if( size != null ) {
+					dialog.getAwtComponent().setSize( size );
+				} else {
+					dialog.pack();
+				}
 				java.awt.Point location = this.getDesiredDialogLocation( dialog );
 				if( location != null ) {
 					dialog.setLocation( location );

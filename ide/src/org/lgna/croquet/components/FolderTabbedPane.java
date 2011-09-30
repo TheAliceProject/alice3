@@ -50,29 +50,10 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.TabSelectionState;
 
-/*package-private*/ class FolderTabItemDetails<E> extends TabItemDetails<E, FolderTabItemDetails<E>, FolderTabbedPane<E>> {
-	private final CardPanel.Key cardPanelKey;
-	public FolderTabItemDetails( FolderTabbedPane< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button, java.util.UUID id, ScrollPane scrollPane, JComponent<?> mainComponent ) {
-		super( panel, item, button, id, scrollPane, mainComponent );
-		this.cardPanelKey = panel.getCardPanel().createKey( this.getRootComponent(), this.getId() );
-	}
-	public CardPanel.Key getCardPanelKey() {
-		return this.cardPanelKey;
-	}
-	@Override
-	public void setSelected(boolean isSelected) {
-		super.setSelected(isSelected);
-		if( isSelected ) {
-			this.getPanel().getCardPanel().show( this.cardPanelKey );
-			this.getPanel().getCardPanel().revalidateAndRepaint();
-		}
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabItemDetails<E>, FolderTabbedPane<E> > {
+public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabbedPane.FolderTabItemDetails > {
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
 	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicButtonUI {
@@ -313,6 +294,25 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabI
 	private TitlesPanel titlesPanel = new TitlesPanel();
 	private BorderPanel innerHeaderPanel = new BorderPanel();
 	private BorderPanel outerHeaderPanel = new BorderPanel();
+
+	/*package-private*/ class FolderTabItemDetails extends AbstractTabbedPane.TabItemDetails {
+		private CardPanel.Key cardPanelKey;
+		public FolderTabItemDetails( E item, AbstractButton< ?,BooleanState > button, java.util.UUID id, ScrollPane scrollPane, JComponent<?> mainComponent ) {
+			super( item, button, id, scrollPane, mainComponent );
+			this.cardPanelKey = cardPanel.createKey( this.getRootComponent(), this.getId() );
+		}
+		public CardPanel.Key getCardPanelKey() {
+			return cardPanelKey;
+		}
+		@Override
+		public void setSelected(boolean isSelected) {
+			super.setSelected(isSelected);
+			if( isSelected ) {
+				cardPanel.show( this.cardPanelKey );
+				cardPanel.revalidateAndRepaint();
+			}
+		}
+	}
 	
 	//private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.Action getActionFor( E item ) {
@@ -430,10 +430,6 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabI
 		this.setInnerHeaderTrailingComponent( new PopupButton( popupOperation ) );
 	}
 
-	/*package-private*/ CardPanel getCardPanel() {
-		return this.cardPanel;
-	}
-	
 	public void setHeaderLeadingComponent( JComponent< ? > component ) {
 		if( component.isOpaque() ) {
 			//pass
@@ -479,11 +475,12 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabI
 	}
 
 	@Override
-	protected BooleanStateButton< ? extends javax.swing.AbstractButton > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
+	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
 		return new FolderTabTitle( booleanState, closeButtonActionListener );
 	}
 	@Override
-	protected FolderTabItemDetails<E> createTabItemDetails( E item, java.util.UUID id, BooleanStateButton< ? extends javax.swing.AbstractButton > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent ) {
+	protected FolderTabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton< ?, BooleanState > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent ) {
+//		AbstractButton<?,?> button = new FolderTabTitle(innerTitleComponent, closeButtonActionListener);
 		JComponent<?> root;
 		if( scrollPane != null ) {
 			root = scrollPane;
@@ -491,7 +488,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabI
 			root = mainComponent;
 		}
 		root.setVisible( false );
-		return new FolderTabItemDetails<E>( this, item, titleButton, id, scrollPane, mainComponent );
+		//root.setBackgroundColor( null );
+		return new FolderTabItemDetails( item, titleButton, id, scrollPane, mainComponent );
 	};
 	
 
@@ -504,7 +502,7 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabI
 	protected void addPrologue(int count) {
 	}
 	@Override
-	protected void addItem(FolderTabItemDetails<E> folderTabItemDetails) {
+	protected void addItem(FolderTabbedPane.FolderTabItemDetails folderTabItemDetails) {
 		this.titlesPanel.addComponent( folderTabItemDetails.getButton() );
 		this.cardPanel.addComponent( folderTabItemDetails.getCardPanelKey() );
 	}

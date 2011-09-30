@@ -42,12 +42,14 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.Component;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface WizardStage {
 	public String getTitle();
-	public org.lgna.croquet.components.Component< ? > getComponent();
+	public Component< ? > getComponent();
 	public String getExplanationIfProcedeButtonShouldBeDisabled();
 	public boolean isFinishPotentiallyEnabled();
 }

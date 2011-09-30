@@ -59,7 +59,7 @@ public class TransactionHistory extends Node< CompletionStep<?> > implements Ite
 		}
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.transactions, Transaction.class ) );
+		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.transactions, Transaction.class ) );
 	}
 
 	@Deprecated

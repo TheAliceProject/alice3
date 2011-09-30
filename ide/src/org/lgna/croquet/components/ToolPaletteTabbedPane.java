@@ -43,38 +43,37 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/ class ToolPaletteTabItemDetails<E> extends TabItemDetails<E, ToolPaletteTabItemDetails<E>, ToolPaletteTabbedPane<E>> {
-	public ToolPaletteTabItemDetails( ToolPaletteTabbedPane< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button, java.util.UUID id, ScrollPane scrollPane, JComponent<?> mainComponent ) {
-		super( panel, item, button, id, scrollPane, mainComponent );
-	}
-	@Override
-	public void setSelected(boolean isSelected) {
-		super.setSelected(isSelected);
-		for( ToolPaletteTabItemDetails<E> tabItemDetails : this.getPanel().getAllItemDetails() ) {
-			tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
-		}
-		this.getPanel().revalidateAndRepaint();
-	}
-}
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.TabSelectionState;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>, ToolPaletteTabbedPane<E>> {
-	public ToolPaletteTabbedPane( org.lgna.croquet.ListSelectionState<E> model, org.lgna.croquet.TabSelectionState.TabCreator< E > tabCreator ) {
+public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, AbstractTabbedPane.TabItemDetails> {
+	public ToolPaletteTabbedPane( ListSelectionState<E> model, TabSelectionState.TabCreator< E > tabCreator ) {
 		super( model, tabCreator );
 	}
 
 	@Override
-	protected BooleanStateButton< ? extends javax.swing.AbstractButton > createTitleButton( org.lgna.croquet.BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
+	protected AbstractButton< ?, BooleanState > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
 		return new ToolPaletteTitle( booleanState );
 	}
 	@Override
-	protected ToolPaletteTabItemDetails<E> createTabItemDetails( E item, java.util.UUID id, BooleanStateButton< ? extends javax.swing.AbstractButton > button, ScrollPane scrollPane, final JComponent<?> mainComponent ) {
+	protected TabItemDetails createTabItemDetails( E item, java.util.UUID id, AbstractButton<?,BooleanState> button, ScrollPane scrollPane, final JComponent<?> mainComponent ) {
 		if( scrollPane != null ) {
 			scrollPane.setVisible( false );
 		}
-		return new ToolPaletteTabItemDetails<E>( this, item, button, id, scrollPane, mainComponent );
+		return new TabItemDetails( item, button, id, scrollPane, mainComponent ) {
+			@Override
+			public void setSelected(boolean isSelected) {
+				super.setSelected(isSelected);
+				for( TabItemDetails tabItemDetails : getAllItemDetails() ) {
+					tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
+				}
+				ToolPaletteTabbedPane.this.revalidateAndRepaint();
+			}
+		};
 	};
 	
 	@Override
@@ -90,7 +89,7 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, ToolPa
 	protected void addPrologue(int count) {
 	}
 	@Override
-	protected void addItem( ToolPaletteTabItemDetails<E> itemDetails) {
+	protected void addItem( AbstractTabbedPane.TabItemDetails itemDetails) {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;

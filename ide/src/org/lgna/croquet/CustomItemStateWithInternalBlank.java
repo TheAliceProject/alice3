@@ -47,7 +47,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CustomItemStateWithInternalBlank< T > extends CustomItemState< T > {
-	private final class CustomBlank extends org.lgna.croquet.CascadeBlank<T> {
+	private class CustomBlank extends org.lgna.croquet.CascadeBlank<T> {
 		public CustomBlank() {
 			super( java.util.UUID.fromString( "3fa6c08f-550d-4d80-b4a9-71c35c0fd186" ) );
 		}

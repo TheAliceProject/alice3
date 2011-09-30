@@ -43,9 +43,11 @@
 
 package org.lgna.croquet.resolvers;
 
+import org.lgna.croquet.Retargeter;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface RetargetableResolver<T> extends CodableResolver<T> {
-	public void retarget( org.lgna.croquet.Retargeter retargeter );
+	public void retarget( Retargeter retargeter );
 }

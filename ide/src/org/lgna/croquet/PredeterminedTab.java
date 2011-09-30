@@ -60,14 +60,10 @@ public abstract class PredeterminedTab extends Composite {
 	public PredeterminedTab( java.util.UUID id ) {
 		super( id );
 	}
-	@Override
-	protected void localize() {
-		this.setTitleText( this.getDefaultLocalizedText() );
-	}
 	public String getTitleText() {
 		return this.titleText;
 	}
-	private void setTitleText( String titleText ) {
+	public void setTitleText( String titleText ) {
 		this.titleText = titleText;
 		this.updateTitleText();
 	}
@@ -89,16 +85,11 @@ public abstract class PredeterminedTab extends Composite {
 		}
 	}
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-		this.initializeIfNecessary();
 		this.booleanState = booleanState;
 		this.button = button;
 		this.updateTitleText();
 		this.updateTitleIcon();
 	}
-    public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-    }
-	
-	
 	protected abstract JComponent<?> createMainComponent();
 	public JComponent<?> getMainComponent() {
 		if( this.mainComponent != null ) {

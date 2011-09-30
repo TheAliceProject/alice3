@@ -74,6 +74,25 @@ public final class BooleanStateEdit extends StateEdit<org.lgna.croquet.BooleanSt
 	public Boolean getNextValue() {
 		return this.nextValue;
 	}
+		
+	@Override
+	public boolean canRedo() {
+		return this.getModel() != null;
+	}
+	@Override
+	public boolean canUndo() {
+		return this.getModel() != null;
+	}
+
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.getModel().setValue(this.nextValue);
+	}
+
+	@Override
+	protected final void undoInternal() {
+		this.getModel().setValue(this.prevValue);
+	}
 
 	@Override
 	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {

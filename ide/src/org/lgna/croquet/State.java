@@ -51,10 +51,14 @@ public abstract class State<T> extends CompletionModel {
 		public void changed( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 	};
 	private final java.util.List< ValueObserver<T> > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private T prevValue;
-	public State( Group group, java.util.UUID id, T initialValue ) {
+
+	public State( Group group, java.util.UUID id ) {
 		super(group, id);
-		this.prevValue = initialValue;
+	}
+	
+	@Override
+	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
+		throw new RuntimeException();
 	}
 	public void addValueObserver( ValueObserver<T> valueObserver ) {
 		this.valueObservers.add( valueObserver );
@@ -66,6 +70,7 @@ public abstract class State<T> extends CompletionModel {
 	public void removeValueObserver( ValueObserver<T> valueObserver ) {
 		this.valueObservers.remove( valueObserver );
 	}
+
 	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
 		for( ValueObserver<T> valueObserver : this.valueObservers ) {
 			valueObserver.changing( this, prevValue, nextValue, isAdjusting );
@@ -77,42 +82,7 @@ public abstract class State<T> extends CompletionModel {
 		}
 	}
 	
-	@Override
-	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
-		throw new UnsupportedOperationException();
-	}
-	
-	protected abstract void commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger );
-	protected abstract void updateSwingModel( T nextValue );
-	private void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger, boolean isFromSwing ) {
-		this.fireChanging( this.prevValue, nextValue, isAdjusting );
-		if( isFromSwing ) {
-			//pass
-		} else {
-			this.updateSwingModel( nextValue );
-		}
-//		this.handleValueChange( nextValue );
-		if( this.isAppropriateToComplete() ) {
-			this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
-		}
-//		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
-//			component.revalidateAndRepaint();
-//		}
-//		StringState.this.previousValue = nextValue;
-		this.fireChanged( this.prevValue, nextValue, isAdjusting );
-		this.prevValue = nextValue;
-	}
-	protected final void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		this.changeValue( nextValue, isAdjusting, trigger, false );
-	}
-	protected final void changeValueFromSwing( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		this.changeValue( nextValue, isAdjusting, trigger, true );
-	}
-	
 	public abstract T getValue();
-	public final void setValue( T value ) {
-		this.changeValue( value, false, null );
-	}
 	@Override
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {

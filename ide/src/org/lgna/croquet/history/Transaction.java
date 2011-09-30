@@ -110,7 +110,7 @@ public class Transaction extends Node< TransactionHistory > {
 		this.completionStep.setParent( this );
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
+		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
 		binaryEncoder.encode( this.completionStep );
 	}
 	
@@ -219,7 +219,7 @@ public class Transaction extends Node< TransactionHistory > {
 		return this.prepSteps.toArray( rv );
 	}
 	public void setPrepSteps( org.lgna.croquet.history.PrepStep< ? >... prepSteps ) {
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( this.prepSteps, prepSteps );
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.prepSteps, prepSteps );
 	}
 	public Iterable< PrepStep<?> > getPrepSteps() {
 		return this.prepSteps;

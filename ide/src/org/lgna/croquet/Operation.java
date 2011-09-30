@@ -46,25 +46,38 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Operation< S extends org.lgna.croquet.history.OperationStep<? extends Operation<?>>> extends CompletionModel {
-	public class SwingModel {
-		private javax.swing.Action action = new javax.swing.AbstractAction() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				Operation.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
-			}
-		};
-		public javax.swing.Action getAction() {
-			return this.action;
-		}
-	}
-	
-	private final SwingModel swingModel = new SwingModel();
+//	private class ButtonActionListener implements java.awt.event.ActionListener {
+//		private AbstractButton< ?,? > button;
+//		public ButtonActionListener( AbstractButton< ?,? > button ) {
+//			this.button = button;
+//		}
+//		public void actionPerformed( java.awt.event.ActionEvent e ) {
+//			Operation.this.fire( e, this.button );
+//		}
+//	}
+//	private java.util.Map< AbstractButton< ?,? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
+	
+//	private final java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
+//		public void actionPerformed( java.awt.event.ActionEvent e ) {
+//			Operation.this.fire( e );
+//		}
+//	};
+	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			Operation.this.fire( e );
+		}
+	};
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
-	public SwingModel getSwingModel() {
-		return this.swingModel;
+	
+	public javax.swing.Action getAction() {
+		return this.action;
 	}
+//	public java.awt.event.ActionListener getActionListener() {
+//		return this.actionListener;
+//	}
 	
 	@Override
 	protected void localize() {
@@ -146,40 +159,40 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	protected abstract void perform( S step );
 
 	public String getName() {
-		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
+		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
 	}
 	public void setName( String name ) {
-		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
+		this.action.putValue( javax.swing.Action.NAME, name );
 	}
 //	public String getShortDescription() {
-//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
+//		return String.class.cast( this.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
 //	}
 	public void setShortDescription( String shortDescription ) {
-		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
 //	public String getLongDescription() {
-//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
+//		return String.class.cast( this.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
 //	}
 	public void setLongDescription( String longDescription ) {
-		this.swingModel.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
+		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
 	}
 	public javax.swing.Icon getSmallIcon() {
-		return javax.swing.Icon.class.cast( this.swingModel.action.getValue( javax.swing.Action.SMALL_ICON ) );
+		return javax.swing.Icon.class.cast( this.action.getValue( javax.swing.Action.SMALL_ICON ) );
 	}
 	public void setSmallIcon( javax.swing.Icon icon ) {
-		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
 //	public int getMnemonicKey() {
-//		return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
+//		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
 //	}
 	private void setMnemonicKey( int mnemonicKey ) {
-		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
+		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
 //	public javax.swing.KeyStroke getAcceleratorKey() {
-//		return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
+//		return javax.swing.KeyStroke.class.cast( this.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
 //	}
 	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
+		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
 	@Override
@@ -187,68 +200,12 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 		return false;
 	}
 
-	public static class InternalMenuPrepModelResolver extends IndirectResolver< InternalMenuItemPrepModel, Operation< ? > > {
-		private InternalMenuPrepModelResolver( Operation< ? > indirect ) {
-			super( indirect );
-		}
-		public InternalMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		protected InternalMenuItemPrepModel getDirect( Operation< ? > indirect ) {
-			return indirect.getMenuItemPrepModel();
-		}
-	}
-	private final static class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
-		private final Operation<?> operation;
-		private InternalMenuItemPrepModel( Operation<?> operation ) {
-			super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
-			assert operation != null;
-			this.operation = operation;
-		}
-		@Override
-		public Iterable< ? extends Model > getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.operation );
-		}
-		@Override
-		protected void localize() {
-		}
-		public Operation<?> getOperation() {
-			return this.operation;
-		}
-		@Override
-		protected InternalMenuPrepModelResolver createCodableResolver() {
-			return new InternalMenuPrepModelResolver( this.operation );
-		}
-		@Override
-		public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
-			return this.operation.getFirstComponent();
-		}
-		@Override
-		public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-			rv.addMenuItem( new org.lgna.croquet.components.MenuItem( this.getOperation() ) );
-			return rv;
-		}
-		@Override
-		protected StringBuilder appendRepr( StringBuilder rv ) {
-			super.appendRepr( rv );
-			rv.append( "[" );
-			rv.append( this.getOperation() );
-			rv.append( "]" );
-			return rv;
-		}
-		@Override
-		protected StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-			return this.operation.updateTutorialStepText( rv, step, edit, userInformation );
-		}
-	}
-
-	private InternalMenuItemPrepModel menuPrepModel;
-	public synchronized InternalMenuItemPrepModel getMenuItemPrepModel() {
+	private OperationMenuItemPrepModel menuPrepModel;
+	public synchronized OperationMenuItemPrepModel getMenuItemPrepModel() {
 		if( this.menuPrepModel != null ) {
 			//pass
 		} else {
-			this.menuPrepModel = new InternalMenuItemPrepModel( this );
+			this.menuPrepModel = new OperationMenuItemPrepModel( this );
 		}
 		return this.menuPrepModel;
 	}

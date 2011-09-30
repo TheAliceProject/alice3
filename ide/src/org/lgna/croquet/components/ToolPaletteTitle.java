@@ -45,91 +45,98 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class ToolPaletteTitle extends BooleanStateButton< javax.swing.AbstractButton > {
-	private static class ArrowIcon extends edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon {
-		public ArrowIcon( int size ) {
-			super( size );
+/* package-private */class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractButton> {
+	private static class ArrowIcon extends
+			edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon {
+		public ArrowIcon(int size) {
+			super(size);
 		}
-		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+
+		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x,
+				int y) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton) c;
 			Heading heading;
-			if( button.getModel().isSelected() || button.getModel().isPressed() ) {
+			if (button.getModel().isSelected() || button.getModel().isPressed()) {
 				heading = Heading.SOUTH;
 			} else {
 				heading = Heading.EAST;
 			}
-			java.awt.geom.GeneralPath path = this.createPath( x, y, heading );
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.geom.GeneralPath path = this.createPath(x, y, heading);
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 			java.awt.Paint fillPaint = java.awt.Color.WHITE;
 			// if( button.getModel().isSelected() ) {
 			// //pass
 			// } else {
-			if( button.getModel().isPressed() ) {
+			if (button.getModel().isPressed()) {
 				fillPaint = java.awt.Color.YELLOW.darker();
 			} else {
-				if( button.getModel().isRollover() ) {
+				if (button.getModel().isRollover()) {
 					fillPaint = java.awt.Color.YELLOW;
 				}
 			}
 			// }
 
-			g2.setPaint( fillPaint );
-			g2.fill( path );
-			g2.setPaint( java.awt.Color.BLACK );
-			g2.draw( path );
+			g2.setPaint(fillPaint);
+			g2.fill(path);
+			g2.setPaint(java.awt.Color.BLACK);
+			g2.draw(path);
 		}
 	}
 
-	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 );
+	private static final ArrowIcon ARROW_ICON = new ArrowIcon(14);
 
-	public ToolPaletteTitle( org.lgna.croquet.BooleanState booleanState ) {
-		super( booleanState );
+	public ToolPaletteTitle(org.lgna.croquet.BooleanState booleanState) {
+		super(booleanState);
 	}
 
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
 		javax.swing.JRadioButton rv = new javax.swing.JRadioButton() {
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			protected void paintComponent(java.awt.Graphics g) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 				final double FACTOR;
 				javax.swing.ButtonModel buttonModel = this.getModel();
-				if( buttonModel.isArmed() || buttonModel.isRollover() ) {
+				if (buttonModel.isArmed() || buttonModel.isRollover()) {
 					FACTOR = 1.3;
 				} else {
 					FACTOR = 1.15;
 				}
 				final double INVERSE_FACTOR = 1.0 / FACTOR;
-				java.awt.Color colorDark = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, INVERSE_FACTOR, INVERSE_FACTOR );
+				java.awt.Color colorDark = edu.cmu.cs.dennisc.java.awt.ColorUtilities
+						.scaleHSB(this.getBackground(), 1.0, INVERSE_FACTOR,
+								INVERSE_FACTOR);
 
 				java.awt.Paint paint;
-				if( buttonModel.isSelected() ) {
+				if (buttonModel.isSelected()) {
 					paint = colorDark;
 				} else {
-					java.awt.Color colorBright = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, FACTOR, FACTOR );
-					paint = new java.awt.GradientPaint( 0, 0, colorBright, 0, this.getHeight(), colorDark );
+					java.awt.Color colorBright = edu.cmu.cs.dennisc.java.awt.ColorUtilities
+							.scaleHSB(this.getBackground(), 1.0, FACTOR, FACTOR);
+					paint = new java.awt.GradientPaint(0, 0, colorBright, 0,
+							this.getHeight(), colorDark);
 				}
-				g2.setPaint( paint );
-				g2.fill( g2.getClip() );
-				super.paintComponent( g );
+				g2.setPaint(paint);
+				g2.fill(g2.getClip());
+				super.paintComponent(g);
 
 				int x = 4;
 				int height = this.getHeight();
 				int iconHeight = ARROW_ICON.getIconHeight();
 				int y = (height - iconHeight) / 2;
-				ARROW_ICON.paintIcon( this, g2, x, y );
+				ARROW_ICON.paintIcon(this, g2, x, y);
 			}
 
 			@Override
 			public void updateUI() {
-				this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
+				this.setUI(new javax.swing.plaf.basic.BasicButtonUI());
 			}
 
 		};
 		// rv.setIcon( new ArrowIcon( 14 ) );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 24, 4, 4 ) );
-		rv.setOpaque( false );
-		rv.setVerticalTextPosition( javax.swing.SwingConstants.CENTER );
+		rv.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 24, 4, 4));
+		rv.setOpaque(false);
+		rv.setVerticalTextPosition(javax.swing.SwingConstants.CENTER);
 		return rv;
 	}
 }
