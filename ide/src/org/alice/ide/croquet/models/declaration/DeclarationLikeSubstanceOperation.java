@@ -117,16 +117,16 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	protected void localize() {
 		super.localize();
 		if( this.declaringTypeState != null ) {
-			this.declaringTypeLabelText = this.findLocalizedText( "declaringTypeLabel", DeclarationOperation.class );
+			this.declaringTypeLabelText = this.findLocalizedText( "declaringTypeLabel", DeclarationLikeSubstanceOperation.class );
 		}
 		if( this.valueComponentTypeState != null ) {
-			this.valueTypeLabelText = this.findLocalizedText( "valueTypeLabel", DeclarationOperation.class );
+			this.valueTypeLabelText = this.findLocalizedText( "valueTypeLabel", DeclarationLikeSubstanceOperation.class );
 		}
 		if( this.nameState != null ) {
-			this.nameLabelText = this.findLocalizedText( "nameLabel", DeclarationOperation.class );
+			this.nameLabelText = this.findLocalizedText( "nameLabel", DeclarationLikeSubstanceOperation.class );
 		}
 		if( this.initializerState != null ) {
-			this.initializerLabelText = this.findLocalizedText( "initializerLabel", DeclarationOperation.class );
+			this.initializerLabelText = this.findLocalizedText( "initializerLabel", DeclarationLikeSubstanceOperation.class );
 		}
 	}
 
