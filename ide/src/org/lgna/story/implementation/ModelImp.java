@@ -140,10 +140,24 @@ public abstract class ModelImp extends TransformableImp {
 		this.getSgVisuals()[0].scale.removePropertyListener(listener);
 	}
 	
+	private edu.cmu.cs.dennisc.math.Matrix3x3 getSgVisualsScale() {
+		return this.getSgVisuals()[0].scale.getValue();
+	}
+	private void setSgVisualsScale( edu.cmu.cs.dennisc.math.Matrix3x3 m ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+			sgVisual.scale.setValue( m );
+		}
+	}
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		return new edu.cmu.cs.dennisc.math.Dimension3( 1.0, 1.0, 1.0 );
+		edu.cmu.cs.dennisc.math.Matrix3x3 scale = this.getSgVisualsScale();
+		return new edu.cmu.cs.dennisc.math.Dimension3( scale.right.x, scale.up.y, scale.backward.z );
 	}
 	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
+		edu.cmu.cs.dennisc.math.Matrix3x3 m = edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity();
+		m.right.x = scale.x;
+		m.up.y = scale.y;
+		m.backward.z = scale.z;
+		this.setSgVisualsScale( m );
 	}
 	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 	}
@@ -165,13 +179,13 @@ public abstract class ModelImp extends TransformableImp {
 	}
 
 	public void animateSetWidth( double width, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		assert isVolumePreserved && isAspectRatioPreserved == false;
+		assert ( isVolumePreserved && isAspectRatioPreserved ) == false;
 	}
 	public void animateSetHeight( double height, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		assert isVolumePreserved && isAspectRatioPreserved == false;
+		assert ( isVolumePreserved && isAspectRatioPreserved ) == false;
 	}
 	public void animateSetDepth( double depth, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		assert isVolumePreserved && isAspectRatioPreserved == false;
+		assert ( isVolumePreserved && isAspectRatioPreserved ) == false;
 	}
 
 	public void animateResize( double factor, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
