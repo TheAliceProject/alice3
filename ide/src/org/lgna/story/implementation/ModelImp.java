@@ -148,6 +148,54 @@ public abstract class ModelImp extends TransformableImp {
 			sgVisual.scale.setValue( m );
 		}
 	}
+	
+	private void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
+		if( isScootDesired ) {
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
+			m.translation.multiply( axis );
+			this.getSgComposite().localTransformation.setValue( m );
+		}
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+			edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgVisual.scale.getValue();
+			edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
+			sgVisual.scale.setValue( scale );
+		}
+	}
+	private void animateApplyScale( edu.cmu.cs.dennisc.math.Vector3 axis, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
+			private final edu.cmu.cs.dennisc.math.Vector3 vPrev = new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 );
+			private final edu.cmu.cs.dennisc.math.Vector3 vBuffer = new edu.cmu.cs.dennisc.math.Vector3();
+
+			private final ModelImp subject;
+			private final ModelImp[] scoots;
+			public ScaleAnimation( double duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Vector3 axis, ModelImp subject, ModelImp[] scoots ) {
+				super( duration, style, new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 ), axis );
+				this.subject = subject;
+				this.scoots = scoots;
+			}
+			@Override
+			protected void updateValue( edu.cmu.cs.dennisc.math.Vector3 v ) {
+				edu.cmu.cs.dennisc.math.Vector3.setReturnValueToDivision( this.vBuffer, v, this.vPrev );
+				this.subject.applyScale( this.vBuffer, false );
+				for( ModelImp model : this.scoots ) {
+					model.applyScale( this.vBuffer, true );
+				}
+				this.vPrev.set( v );
+			}
+		}
+
+		double actualDuration = adjustDurationIfNecessary( duration );
+		ModelImp[] scoots = {};
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
+			this.applyScale( axis, false );
+			for( ModelImp model : scoots ) {
+				model.applyScale( axis, true );
+			}
+		} else {
+			this.perform( new ScaleAnimation( actualDuration, style, axis, this, scoots ) );
+		}
+	}
+	
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
 		edu.cmu.cs.dennisc.math.Matrix3x3 scale = this.getSgVisualsScale();
 		return new edu.cmu.cs.dennisc.math.Dimension3( scale.right.x, scale.up.y, scale.backward.z );
@@ -160,6 +208,9 @@ public abstract class ModelImp extends TransformableImp {
 		this.setSgVisualsScale( m );
 	}
 	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		if( duration > 0  ) {
+			
+		}
 	}
 
 	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
@@ -172,29 +223,172 @@ public abstract class ModelImp extends TransformableImp {
 		assert bBox.isNaN() == false;
 		return bBox.getSize();
 	}
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	public double getWidth() {
+		return this.getSize().x;
+	}
+	public double getHeight() {
+		return this.getSize().y;
+	}
+	public double getDepth() {
+		return this.getSize().z;
 	}
 
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+		this.animateSetSize( size, 0, null );
+	}
+
+	private static double getScale( double prevSize, double nextSize ) {
+		if( prevSize == 0.0 ) {
+			if( nextSize == 0.0 ) {
+				return 1.0;
+			} else {
+				throw new RuntimeException( "unable to set the size of model that has zero(0) along a dimension" );
+			}
+		} else {
+			return nextSize/prevSize;
+		}
+	}
 	public void animateSetSize( edu.cmu.cs.dennisc.math.Dimension3 size, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		edu.cmu.cs.dennisc.math.Dimension3 prevSize = this.getSize();
+		edu.cmu.cs.dennisc.math.Vector3 scale = new edu.cmu.cs.dennisc.math.Vector3(
+				getScale( prevSize.x, size.x ),
+				getScale( prevSize.y, size.y ),
+				getScale( prevSize.z, size.z )
+		);
+		this.animateApplyScale( scale, duration, style );
 	}
 
 	public void animateSetWidth( double width, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		assert ( isVolumePreserved && isAspectRatioPreserved ) == false;
+		double prevWidth = this.getWidth();
+		assert Double.isNaN( prevWidth ) == false;
+		assert prevWidth >= 0;
+		if( prevWidth > 0.0 ) {
+			double factor = width / prevWidth;
+			if( isAspectRatioPreserved ) {
+				this.animateResize( factor, duration, style );
+			} else {
+				this.animateResizeWidth( factor, isVolumePreserved, duration, style );
+			}
+		} else {
+			if( width != 0.0 ) {
+				throw new RuntimeException( "unable to set the width of model that has zero(0) width" );
+			}
+		}
 	}
 	public void animateSetHeight( double height, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		assert ( isVolumePreserved && isAspectRatioPreserved ) == false;
+		double prevHeight = this.getHeight();
+		assert Double.isNaN( prevHeight ) == false;
+		assert prevHeight >= 0;
+		if( prevHeight > 0.0 ) {
+			double factor = height / prevHeight;
+			if( isAspectRatioPreserved ) {
+				this.animateResize( factor, duration, style );
+			} else {
+				this.animateResizeHeight( factor, isVolumePreserved, duration, style );
+			}
+		} else {
+			if( height != 0.0 ) {
+				throw new RuntimeException( "unable to set the height of model that has zero(0) height" );
+			}
+		}
 	}
 	public void animateSetDepth( double depth, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		assert ( isVolumePreserved && isAspectRatioPreserved ) == false;
+		double prevDepth = this.getDepth();
+		assert Double.isNaN( prevDepth ) == false;
+		assert prevDepth >= 0;
+		if( prevDepth > 0.0 ) {
+			double factor = depth / prevDepth;
+			if( isAspectRatioPreserved ) {
+				this.animateResize( factor, duration, style );
+			} else {
+				this.animateResizeDepth( factor, isVolumePreserved, duration, style );
+			}
+		} else {
+			if( depth != 0.0 ) {
+				throw new RuntimeException( "unable to set the height of model that has zero(0) height" );
+			}
+		}
+	}
+
+	private static enum Dimension {
+		LEFT_TO_RIGHT( true,  false, false ),
+		TOP_TO_BOTTOM( false, true,  false ),
+		FRONT_TO_BACK( false, false, true );
+		
+		private final boolean isXScaled;
+		private final boolean isYScaled;
+		private final boolean isZScaled;
+
+		private Dimension( boolean isXScaled, boolean isYScaled, boolean isZScaled ) {
+			this.isXScaled = isXScaled;
+			this.isYScaled = isYScaled;
+			this.isZScaled = isZScaled;
+			assert this.isXScaled ^ this.isYScaled ^ this.isZScaled;
+		}
+		
+		public edu.cmu.cs.dennisc.math.Vector3 getResizeAxis( edu.cmu.cs.dennisc.math.Vector3 rv, double amount, boolean isVolumePreserved ) {
+			//todo: center around 0 as opposed to 1?
+			assert amount > 0;
+			
+			double x;
+			double y;
+			double z;
+
+			if( isVolumePreserved ) {
+				double squash = 1.0/Math.sqrt( amount );
+				if( this.isXScaled ) {
+					x = amount;
+					y = squash;
+					z = squash;
+				} else if( this.isYScaled ) {
+					x = squash;
+					y = amount;
+					z = squash;
+				} else if( this.isZScaled ) {
+					x = squash;
+					y = squash;
+					z = amount;
+				} else {
+					throw new RuntimeException();
+				}
+			} else {
+				x = 1;
+				y = 1;
+				z = 1;
+				if( this.isXScaled ) {
+					x = amount;
+				}
+				if( this.isYScaled ) {
+					y = amount;
+				}
+				if( this.isZScaled ) {
+					z = amount;
+				}
+			}
+
+			rv.set( x, y, z );
+			return rv;
+		}
+		public edu.cmu.cs.dennisc.math.Vector3 getResizeAxis( double amount, boolean isVolumePreserved ) {
+			return getResizeAxis( edu.cmu.cs.dennisc.math.Vector3.createNaN(), amount, isVolumePreserved );
+		}
 	}
 
 	public void animateResize( double factor, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateApplyScale( new edu.cmu.cs.dennisc.math.Vector3( factor, factor, factor ), duration, style );
 	}
+	
 	public void animateResizeWidth( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateApplyScale( Dimension.LEFT_TO_RIGHT.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 	public void animateResizeHeight( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateApplyScale( Dimension.TOP_TO_BOTTOM.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 	public void animateResizeDepth( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateApplyScale( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 	
 //	@Override
