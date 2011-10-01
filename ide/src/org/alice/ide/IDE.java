@@ -164,7 +164,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public abstract ApiConfigurationManager getApiConfigurationManager();
 	
 	@Override
-	public void initialize( java.lang.String[] args ) {
+	public void initialize( String[] args ) {
 		super.initialize( args );
 		org.lgna.croquet.components.Frame frame = this.getFrame();
 		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );		

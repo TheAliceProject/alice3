@@ -65,7 +65,7 @@ public class DeleteMethodOperation extends DeleteMemberOperation< org.lgna.proje
 		super( java.util.UUID.fromString( "ed56c9b9-3eed-48d0-9bbc-f6e251fdd3b5" ), method, declaringType );
 	}
 	@Override
-	protected java.lang.Class< org.lgna.project.ast.UserMethod > getNodeParameterType() {
+	protected Class< org.lgna.project.ast.UserMethod > getNodeParameterType() {
 		return org.lgna.project.ast.UserMethod.class;
 	}
 	@Override

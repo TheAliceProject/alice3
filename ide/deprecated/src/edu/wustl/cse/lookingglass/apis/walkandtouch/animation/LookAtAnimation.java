@@ -87,10 +87,10 @@ public class LookAtAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedA
 			edu.cmu.cs.dennisc.math.Vector3 subjectForward = subjectMatrix.createForward();
 			
 			double cosAngle = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( subjectForward, targetForward ) / (targetForward.calculateMagnitude() * subjectForward.calculateMagnitude());
-			cosAngle = java.lang.Math.acos(cosAngle);
+			cosAngle = Math.acos(cosAngle);
 			
 			// convert to revolutions
-			cosAngle /= (2 * java.lang.Math.PI);
+			cosAngle /= (2 * Math.PI);
 			
 			// if the character has to turn more than 1/4, then 
 			if (cosAngle > 0.25) {

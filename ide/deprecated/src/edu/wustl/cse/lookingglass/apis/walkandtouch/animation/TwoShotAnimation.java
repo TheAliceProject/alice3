@@ -54,7 +54,7 @@ import edu.wustl.cse.lookingglass.apis.walkandtouch.SpatialRelation;
  */
 public class TwoShotAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
 	
-	private double angleToRotate = java.lang.Math.PI/6; // 5 degrees, for now
+	private double angleToRotate = Math.PI/6; // 5 degrees, for now
 	
 	protected edu.wustl.cse.lookingglass.apis.walkandtouch.SymmetricPerspectiveCamera m_subject = null;
 	protected org.alice.apis.moveandturn.Transformable m_asSeenBy2 = null;
@@ -156,7 +156,7 @@ public class TwoShotAnimation extends edu.cmu.cs.dennisc.animation.DurationBased
 	}
 	
 	protected double calculateDistance(double x1, double z1, double x2, double z2) {				
-		return java.lang.Math.sqrt((x2-x1)*(x2-x1) + (z2-z1)*(z2-z1));
+		return Math.sqrt((x2-x1)*(x2-x1) + (z2-z1)*(z2-z1));
 	}
 	
 	protected OrthogonalMatrix3x3 getCameraOrientation(SpatialRelation spatialRelation) {

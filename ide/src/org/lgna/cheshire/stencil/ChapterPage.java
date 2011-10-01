@@ -96,7 +96,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 	/*package-private*/ static final boolean IS_NOTE_OVERLAPPING_DESIRED = true;
 	private class PageLayoutManager implements java.awt.LayoutManager {
 		private java.util.Set<java.awt.Component> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet(); 
-		public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
+		public void addLayoutComponent( String name, java.awt.Component comp ) {
 		}
 		public void removeLayoutComponent( java.awt.Component comp ) {
 		}

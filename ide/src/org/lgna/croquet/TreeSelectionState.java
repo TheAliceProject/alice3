@@ -86,15 +86,15 @@ class TreeNodeFillIn<T> extends CascadeFillIn< T, Void > {
 		return this.node;
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, java.lang.Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
 		return this.model.getTextForNode( this.node );
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, java.lang.Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
 		return this.model.getIconForNode( this.node );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, java.lang.Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
 		throw new AssertionError();
 	}
 	@Override
@@ -126,7 +126,7 @@ class TreeNodeMenu<T> extends CascadeMenuModel< T > {
 		this.node = node;
 	}
 	@Override
-	protected java.lang.String getDefaultLocalizedText() {
+	protected String getDefaultLocalizedText() {
 		return null;
 	}
 	@Override

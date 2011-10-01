@@ -54,7 +54,7 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 	
 	//or
 	private Class<T> instanceCls;
-	private java.lang.Class<?>[] parameterTypes;
+	private Class<?>[] parameterTypes;
 	private Object[] arguments;
 
 	//is valid
@@ -80,7 +80,7 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 //		this.arguments = retargetedArguments;
 //		this.instance = null;
 //	}
-	protected final void handleDecoded(Class<T> instanceCls, java.lang.Class<?>[] parameterTypes, Object[] arguments) {
+	protected final void handleDecoded(Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments) {
 		this.instanceCls = instanceCls;
 		this.parameterTypes = parameterTypes;
 		this.arguments = arguments;

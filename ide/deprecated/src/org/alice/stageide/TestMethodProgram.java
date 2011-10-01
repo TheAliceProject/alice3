@@ -54,15 +54,15 @@ public class TestMethodProgram extends org.lookingglassandalice.storytelling.Pro
 			return super.evaluateArguments( parameters, arguments );
 		}
 		@Override
-		protected void pushConstructorFrame( org.lgna.project.ast.TypeDeclaredInAlice type, java.util.Map< org.lgna.project.ast.AbstractParameter, java.lang.Object > map ) {
+		protected void pushConstructorFrame( org.lgna.project.ast.TypeDeclaredInAlice type, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map ) {
 			super.pushConstructorFrame( type, map );
 		}
 		@Override
-		protected void pushMethodFrame( edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instance, java.util.Map< org.lgna.project.ast.AbstractParameter, java.lang.Object > map ) {
+		protected void pushMethodFrame( edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instance, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map ) {
 			super.pushMethodFrame( instance, map );
 		}
 		@Override
-		protected void pushLocal( org.lgna.project.ast.LocalDeclaredInAlice local, java.lang.Object value ) {
+		protected void pushLocal( org.lgna.project.ast.LocalDeclaredInAlice local, Object value ) {
 			super.pushLocal( local, value );
 		}
 		

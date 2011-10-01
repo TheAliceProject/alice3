@@ -238,7 +238,7 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 			return rv;
 		}
 		@Override
-		protected StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 			return this.operation.updateTutorialStepText( rv, step, edit, userInformation );
 		}
 	}

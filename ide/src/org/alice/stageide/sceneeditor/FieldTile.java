@@ -157,7 +157,7 @@ package org.alice.stageide.sceneeditor;
 //				rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ).getMenuItemPrepModel() );
 				
 //				edu.cmu.cs.dennisc.croquet.Operation< ? > placeOperation = new org.alice.ide.croquet.models.ast.FillInExpressionsPopupMenuOperation( java.util.UUID.fromString( "2c49d08c-2baf-40c6-b8d5-74d5f9db567b" ) ) {
-//					public edu.cmu.cs.dennisc.cascade.CascadingEdit< ? > createEdit( java.lang.Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
+//					public edu.cmu.cs.dennisc.cascade.CascadingEdit< ? > createEdit( Object value, edu.cmu.cs.dennisc.croquet.ActionOperationContext context ) {
 //						return null;
 //					}
 //					@Override

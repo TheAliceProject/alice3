@@ -56,7 +56,7 @@ public class JavaFormatter extends Formatter {
 		super( new java.util.Locale( "en", "US", "java" ), "Java" );
 	}
 	@Override
-	protected String getTextForCls(java.lang.Class<?> cls) {
+	protected String getTextForCls(Class<?> cls) {
 		return cls.getSimpleName();
 	}
 	@Override
@@ -68,7 +68,7 @@ public class JavaFormatter extends Formatter {
 		return "this";
 	}
 	@Override
-	protected java.lang.String getTextForParameterDeclaredInJava( org.lgna.project.ast.JavaParameter parameterInJava ) {
+	protected String getTextForParameterDeclaredInJava( org.lgna.project.ast.JavaParameter parameterInJava ) {
 		return parameterInJava.getName();
 	}
 	@Override

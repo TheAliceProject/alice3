@@ -58,8 +58,8 @@ public class PowerCascadeMenu extends org.alice.ide.croquet.models.cascade.Expre
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > context ) {
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "sqrt", java.lang.Double.TYPE ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "sqrt", Double.TYPE ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "pow", Double.TYPE, Double.TYPE ) );
 		return rv;
 	}
 }

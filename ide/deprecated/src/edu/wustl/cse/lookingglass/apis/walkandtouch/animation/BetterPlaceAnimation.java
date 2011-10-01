@@ -202,7 +202,7 @@ public class BetterPlaceAnimation extends DurationBasedAnimation {
 		double ft = m_xHermite.evaluateDerivative(t);
 		double ht = m_zHermite.evaluateDerivative(t);
 		
-		return java.lang.Math.sqrt(ft*ft + ht*ht);
+		return Math.sqrt(ft*ft + ht*ht);
 	}
 	
 	protected double getPathLength() {

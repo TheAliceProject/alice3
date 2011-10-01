@@ -116,7 +116,7 @@ public class LieDownAnimation extends StraightenAnimation {
 			double subjectHeight = subject.getHeight();
 			double subjectDepth = subject.getDepth();
 			
-			double zOffset = java.lang.Math.abs(subject.getAxisAlignedMinimumBoundingBox(subject).getCenterOfBackFace().z) - subject.getAxisAlignedMinimumBoundingBox(subject).getDepth()*0.2;
+			double zOffset = Math.abs(subject.getAxisAlignedMinimumBoundingBox(subject).getCenterOfBackFace().z) - subject.getAxisAlignedMinimumBoundingBox(subject).getDepth()*0.2;
 			
 			// TODO: deal with pivots in the floor vs in the center of the character.
 			if (feetFaceDirection.equals(org.alice.apis.moveandturn.MoveDirection.BACKWARD)) {

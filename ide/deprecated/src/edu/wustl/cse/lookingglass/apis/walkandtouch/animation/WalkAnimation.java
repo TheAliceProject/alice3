@@ -71,7 +71,7 @@ public class WalkAnimation extends AbstractWalkAnimation {
 		}
 		
 		if (numberOfSteps == -1) {
-			numberOfSteps = java.lang.Math.round(distance/stepLength);
+			numberOfSteps = Math.round(distance/stepLength);
 		}
 		
 		return distance/numberOfSteps;
@@ -104,7 +104,7 @@ public class WalkAnimation extends AbstractWalkAnimation {
 			done = false;		
 			timePerStep = 1.0/stepSpeed;
 			
-			int stepNumber = (int)java.lang.Math.ceil( deltaSincePrologue  * (1.0/timePerStep)) - 1;
+			int stepNumber = (int)Math.ceil( deltaSincePrologue  * (1.0/timePerStep)) - 1;
 			if (stepNumber == -1) stepNumber = 0;
 			if (stepNumber == numberOfSteps) {
 				stepNumber -= 1;

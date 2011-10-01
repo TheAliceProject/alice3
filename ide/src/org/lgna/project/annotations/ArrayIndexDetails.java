@@ -51,10 +51,10 @@ public enum ArrayIndexDetails implements IntegerValueDetails {
 	public Class< Integer > getSupportedCls() {
 		return Integer.class;
 	}
-	public java.lang.Integer getMinimumValue() {
+	public Integer getMinimumValue() {
 		return 0;
 	}
-	public java.lang.Integer getMaximumValue() {
+	public Integer getMaximumValue() {
 		return null;
 	}
 	public int[] getLiterals() {

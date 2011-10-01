@@ -147,7 +147,7 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 	}
 	
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getName() );
 		sb.append( "[red=" );

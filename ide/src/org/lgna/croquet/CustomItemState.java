@@ -56,7 +56,7 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 			return org.lgna.croquet.history.TransactionManager.addCustomItemStateChangeStep( CustomItemState.this, trigger );
 		}
 		@Override
-		public java.lang.Class< T > getComponentType() {
+		public Class< T > getComponentType() {
 			return CustomItemState.this.getItemCodec().getValueClass();
 		}
 		@Override

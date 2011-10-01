@@ -4,8 +4,6 @@
 
 package edu.cmu.cs.dennisc.nebulous;
 
-import org.alice.ide.IDE;
-
 /**
  * @author Dennis Cosgrove
  */

@@ -262,7 +262,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 //			return null;
 //		}
 //	}
-	public <E extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( java.lang.Class< E > componentCls, Object context ) {
+	public <E extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class< E > componentCls, Object context ) {
 		throw new RuntimeException( "todo" );
 	}
 	

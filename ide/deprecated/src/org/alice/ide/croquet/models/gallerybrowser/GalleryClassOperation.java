@@ -147,7 +147,7 @@ public class GalleryClassOperation extends AbstractGalleryDeclareFieldOperation 
 	}
 	
 
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, java.lang.Object> createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, Object> createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldFromGalleryPane = step.getMainPanel();
 		org.lgna.project.ast.UserField field = createFieldFromGalleryPane.getInputValue();
 		if (field != null) {

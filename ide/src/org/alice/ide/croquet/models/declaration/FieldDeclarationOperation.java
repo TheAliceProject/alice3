@@ -78,7 +78,7 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 	protected abstract boolean isFieldFinal();
 	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field );
 	@Override
-	protected final org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
+	protected final org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
 		org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
 		if( this.isFieldFinal() ) {
 			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );

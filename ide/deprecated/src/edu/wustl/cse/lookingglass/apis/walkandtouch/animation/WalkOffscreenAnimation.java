@@ -121,7 +121,7 @@ public class WalkOffscreenAnimation extends AbstractWalkAnimation {
 			timePerStep = 1.0 / stepSpeed;
 
 
-			int stepNumber = (int)java.lang.Math.ceil( (deltaSincePrologue - turnLength) * (1.0 / timePerStep) ) - 1;
+			int stepNumber = (int)Math.ceil( (deltaSincePrologue - turnLength) * (1.0 / timePerStep) ) - 1;
 			if( stepNumber == -1 )
 				stepNumber = 0;
 			if( stepNumber == numberOfSteps ) {

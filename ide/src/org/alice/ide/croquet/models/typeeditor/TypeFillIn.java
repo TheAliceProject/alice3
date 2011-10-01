@@ -64,23 +64,23 @@ public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project
 		this.type = type;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, java.lang.Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, Void > step ) {
 		throw new AssertionError();
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, java.lang.Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, Void > step ) {
 		return org.alice.ide.common.TypeIcon.getInstance( this.type );
 	}
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, java.lang.Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, Void > step ) {
 		return null;
 	}
 	@Override
-	public org.lgna.project.ast.NamedUserType createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, java.lang.Void > step ) {
+	public org.lgna.project.ast.NamedUserType createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, Void > step ) {
 		return this.type;
 	}
 	@Override
-	public org.lgna.project.ast.NamedUserType getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, java.lang.Void > step ) {
+	public org.lgna.project.ast.NamedUserType getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, Void > step ) {
 		return this.type;
 	}
 }

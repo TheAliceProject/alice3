@@ -57,7 +57,7 @@ public class TreeSelectionEventTrigger extends EventObjectTrigger<javax.swing.ev
 	protected java.awt.Point getPoint() {
 		return null;
 	}
-	public java.lang.String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( java.util.Locale locale ) {
 		return "Select";
 	}
 }

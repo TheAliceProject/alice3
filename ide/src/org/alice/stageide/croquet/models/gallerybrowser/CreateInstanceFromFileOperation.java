@@ -166,7 +166,7 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 //	}
 //	
 //	@Deprecated
-//	protected edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, java.lang.Object > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
+//	protected edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, Object > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep context ) {
 //		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = context.getMainPanel();
 //		//todo: dialog title: "Create New Instance"
 //		org.lgna.project.ast.UserField field = createFieldPane.getInputValue();
@@ -180,7 +180,7 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 //	
 //	
 ////	@Override
-////	protected edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, org.lgna.project.ast.TypeDeclaredInAlice ownerType ) {
+////	protected edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, org.lgna.project.ast.TypeDeclaredInAlice ownerType ) {
 ////		java.io.File directory = this.getInitialDirectory();
 ////		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.getIDE().getJFrame(), directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false );
 ////

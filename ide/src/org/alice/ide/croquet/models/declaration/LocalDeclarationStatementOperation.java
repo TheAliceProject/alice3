@@ -89,7 +89,7 @@ public class LocalDeclarationStatementOperation extends DeclarationLikeSubstance
 		return this.createLocalDeclarationStatement();
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, java.lang.String declarationName, org.lgna.project.ast.Expression initializer ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, this.createLocalDeclarationStatement() );
 	}
 }
