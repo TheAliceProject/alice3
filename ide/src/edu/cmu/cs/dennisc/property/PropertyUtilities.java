@@ -75,7 +75,7 @@ public final class PropertyUtilities {
 				parameterTypes[ 0 ] = Number.class;
 				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
 			} else {
-				throw re;
+				return null;
 			}
 		}
 	}

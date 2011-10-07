@@ -43,6 +43,7 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
@@ -56,6 +57,8 @@ public abstract class Entity implements Rider {
 	public void setName( String name ) {
 		this.name = name;
 	}
+	@GetterTemplate(isPersistent = true)
+	@MethodTemplate()
 	public Entity getVehicle() {
 		org.lgna.story.implementation.EntityImp vehicleImplementation = this.getImplementation().getVehicle();
 		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;

@@ -83,7 +83,11 @@ public class AstUtilities {
 	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
 		java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
 		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr );
-		return org.lgna.project.ast.JavaMethod.getInstance( sttr );
+		if( sttr != null ) {
+			return org.lgna.project.ast.JavaMethod.getInstance( sttr );
+		} else {
+			return null;
+		}
 	}
 	
 	

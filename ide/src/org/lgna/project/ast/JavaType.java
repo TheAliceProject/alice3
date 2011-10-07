@@ -115,10 +115,14 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 					org.lgna.project.annotations.GetterTemplate propertyGetterTemplate = mthd.getAnnotation( org.lgna.project.annotations.GetterTemplate.class );
 					if( propertyGetterTemplate != null ) {
 						java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
+						JavaMethod setter;
 						if( sttr != null ) {
-							JavaMethod setter = (JavaMethod)JavaMethod.getInstance( sttr ).getLongestInChain();
-							rv.getterSetterPairs.add( new JavaGetterSetterPair( method, setter ) );
-
+							setter = (JavaMethod)JavaMethod.getInstance( sttr ).getLongestInChain();
+						} else {
+							setter = null;
+						}
+						rv.getterSetterPairs.add( new JavaGetterSetterPair( method, setter ) );
+						if( setter != null ) {
 							org.lgna.project.annotations.ValueTemplate valueTemplate = mthd.getAnnotation( org.lgna.project.annotations.ValueTemplate.class );
 							if( valueTemplate != null ) {
 								JavaMethod m = setter;
