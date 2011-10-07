@@ -52,12 +52,12 @@ import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.Model;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Turnable;
+import org.lgna.story.MutableRider;
 
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
-public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity, Turnable> {
+public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity, MutableRider> {
 
 	private HierarchyListener hierarchyListener;
 	private org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation;
@@ -75,7 +75,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 		}
 	}
 	
-	public TransformableVehicleAdapter(Turnable instance, StandardExpressionState expressionState) 
+	public TransformableVehicleAdapter(MutableRider instance, StandardExpressionState expressionState) 
 	{
 		super("Vehicle", instance, expressionState);
 	}
@@ -112,8 +112,8 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 			if( o == null ) {
 				break;
 			}
-			if( o instanceof Turnable ) {
-				o = ((Turnable)o).getVehicle();
+			if( o instanceof MutableRider ) {
+				o = ((MutableRider)o).getVehicle();
 			} else {
 				break;
 			}
@@ -261,7 +261,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 		if (this.instance != null)
 		{
 			this.initializeListenersIfNecessary();
-			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation(this.instance);
+			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation((Entity)this.instance);
 			imp.getSgComposite().addHierarchyListener(this.hierarchyListener);
 		}
 	}
@@ -271,7 +271,7 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	{
 		if (this.instance != null)
 		{
-			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation(this.instance);
+			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation((Entity)this.instance);
 			imp.getSgComposite().removeHierarchyListener(this.hierarchyListener);
 		}
 	}

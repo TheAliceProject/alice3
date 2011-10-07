@@ -122,14 +122,14 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 		
 		for( org.lgna.project.ast.UserField field : new org.lgna.project.ast.UserField[] { cameraField, sunField, groundField } ) {
-			java.lang.reflect.Method mthd;
-			try {
-				mthd = ((org.lgna.project.ast.JavaType)field.getValueType()).getClassReflectionProxy().getReification().getMethod( "setVehicle", org.lgna.story.Entity.class );
-			} catch( NoSuchMethodException nsme ) {
-				throw new RuntimeException( nsme );
-			}
-			org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.JavaMethod.getInstance( mthd );
-			//org.lgna.project.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lookingglassandalice.storytelling.Entity.class );
+//			java.lang.reflect.Method mthd;
+//			try {
+//				mthd = ((org.lgna.project.ast.JavaType)field.getValueType()).getClassReflectionProxy().getReification().getMethod( "setVehicle", org.lgna.story.Entity.class );
+//			} catch( NoSuchMethodException nsme ) {
+//				throw new RuntimeException( nsme );
+//			}
+			//org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.JavaMethod.getInstance( mthd );
+			org.lgna.project.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lgna.story.Entity.class );
 
 			performGeneratedSetupBody.statements.add( 
 					createMethodInvocationStatement( 

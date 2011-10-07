@@ -47,12 +47,9 @@ import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Turnable extends Entity implements MutableRider {
+public abstract class Turnable extends Entity {
 	@Override
 	/*package-private*/abstract org.lgna.story.implementation.AbstractTransformableImp getImplementation();
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
 
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount ) {
