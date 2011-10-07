@@ -80,16 +80,18 @@ public class AstUtilities {
 		}
 		return rv;
 	}
-	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
+	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter, org.lgna.project.ast.JavaType type ) {
 		java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
-		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr );
+		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr, type.getClassReflectionProxy().getReification() );
 		if( sttr != null ) {
 			return org.lgna.project.ast.JavaMethod.getInstance( sttr );
 		} else {
 			return null;
 		}
 	}
-	
+	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		return getSetterForGetter( getter, getter.getDeclaringType() );
+	}	
 	
 	public static org.lgna.project.ast.UserMethod createMethod( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
 		return new org.lgna.project.ast.UserMethod( name, returnType, new org.lgna.project.ast.UserParameter[] {}, new org.lgna.project.ast.BlockStatement() );

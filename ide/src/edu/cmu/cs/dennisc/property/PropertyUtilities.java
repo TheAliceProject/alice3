@@ -164,8 +164,11 @@ public final class PropertyUtilities {
 		}
 	}
 		
+	public static java.lang.reflect.Method getSetterForGetter( java.lang.reflect.Method method, Class<?> cls ) {
+		return getSetter( cls, getPropertyNameForGetter( method ) );
+	}
 	public static java.lang.reflect.Method getSetterForGetter( java.lang.reflect.Method method ) {
-		return getSetter( method.getDeclaringClass(), getPropertyNameForGetter( method ) );
+		return getSetterForGetter( method, method.getDeclaringClass() );
 	}
 	public static java.lang.reflect.Method getGetterForSetter( java.lang.reflect.Method method ) {
 		return getGetter( method.getDeclaringClass(), getPropertyNameForSetter( method ) );
