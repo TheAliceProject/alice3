@@ -129,6 +129,10 @@ public class SetUpMethodGenerator {
 	
 	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance ) {
 		if( instance != null ) {
+			if( instance instanceof org.lgna.story.Entity ) {
+				org.lgna.story.Entity entity = (org.lgna.story.Entity)instance;
+				entity.setName( field.getName() );
+			}
 			Class<?> instanceCls = instance.getClass();
 			org.lgna.project.ast.JavaType javaType = org.lgna.project.ast.JavaType.getInstance( instanceCls );
 			for( org.lgna.project.ast.JavaMethod getter : org.alice.ide.ast.AstUtilities.getPersistentPropertyGetters( javaType ) ) {
@@ -160,27 +164,6 @@ public class SetUpMethodGenerator {
 					System.err.println( "setter is null for: " + getter );
 				}
 			}
-		}
-		if( instance instanceof org.lgna.story.Entity ) {
-			bodyStatementsProperty.add( 
-					createStatement( 
-							org.lgna.story.Entity.class, "setName", String.class, 
-							SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createStringExpression( field.getName() ) 
-					) 
-			);
-
-//			if ( instance instanceof org.lgna.story.MutableRider )
-//			{
-//				org.lgna.story.Entity vehicle = entity.getVehicle();
-//				boolean isVehicleScene = (vehicle instanceof org.lgna.story.Scene);
-//				org.lgna.project.ast.AbstractField vehicleField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(vehicle);
-//				bodyStatementsProperty.add( 
-//						createStatement( 
-//								org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.Entity.class, 
-//								SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) 
-//						) 
-//				);
-//			}
 			if( instance instanceof org.lgna.story.Turnable ) {
 				org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)instance;
 				org.lgna.story.Orientation orientation = turnable.getOrientationRelativeToVehicle();
@@ -203,20 +186,20 @@ public class SetUpMethodGenerator {
 					}
 				}
 			}
-		}
-		if( instance instanceof org.lgna.story.Resizable ) {
-			org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
-			org.lgna.story.Scale scale = resizable.getScale();
-			try {
-				bodyStatementsProperty.add( 
-						createStatement( 
-								org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class }, 
-								SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
-								getExpressionCreator().createExpression( scale ) 
-						)
-				);
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-				throw new RuntimeException( ccee );
+			if( instance instanceof org.lgna.story.Resizable ) {
+				org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
+				org.lgna.story.Scale scale = resizable.getScale();
+				try {
+					bodyStatementsProperty.add( 
+							createStatement( 
+									org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class }, 
+									SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
+									getExpressionCreator().createExpression( scale ) 
+							)
+					);
+				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+					throw new RuntimeException( ccee );
+				}
 			}
 		}
 	}

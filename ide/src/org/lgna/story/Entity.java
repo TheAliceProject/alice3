@@ -51,9 +51,12 @@ import org.lgna.project.annotations.*;
 public abstract class Entity implements Rider {
 	private String name;
 	/*package-private*/ abstract org.lgna.story.implementation.EntityImp getImplementation();
+	@GetterTemplate(isPersistent = true)
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public String getName() {
 		return this.name;
 	}
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public void setName( String name ) {
 		this.name = name;
 	}
