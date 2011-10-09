@@ -50,7 +50,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		super( factory, property );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.Argument argument ) {
+	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.AbstractArgument argument ) {
 		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
 		rv.setBackgroundColor( new java.awt.Color( 255, 255, 255, 127 ) );
 		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.OutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
@@ -60,7 +60,10 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		if( parameterName != null && parameterName.length() > 0 ) {
 			rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 		}
-		rv.addComponent( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
+		if( argument instanceof org.lgna.project.ast.Argument ) {
+			org.lgna.project.ast.Argument simpleArgument = (org.lgna.project.ast.Argument)argument;
+			rv.addComponent( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)simpleArgument.expression.getValue() ) );
+		}
 		return rv;
 	}
 }

@@ -54,7 +54,7 @@ public class ThisExpression extends Expression {
 			//pass
 		} else {
 			System.err.println( "WARNING: ThisExpression cannot find type" );
-			Thread.dumpStack();
+			//Thread.dumpStack();
 		}
 		return rv;
 //		//todo

@@ -58,7 +58,7 @@ public class MethodInvocation extends Expression {
 
 	public MethodInvocation() {
 	}
-	public MethodInvocation( Expression expression, AbstractMethod method, Argument... arguments ){
+	public MethodInvocation( Expression expression, AbstractMethod method, AbstractArgument... arguments ){
 		if( expression instanceof NullLiteral ) {
 			//pass
 		} else {
@@ -119,9 +119,9 @@ public class MethodInvocation extends Expression {
 		NodeUtilities.safeAppendRepr( rv, this.method.getValue(), locale );
 		rv.append( "(" );
 		String separator = "";
-		for( Argument argument : this.arguments ) {
+		for( AbstractArgument argument : this.arguments ) {
 			rv.append( separator );
-			NodeUtilities.safeAppendRepr( rv, argument.expression.getValue(), locale );
+			NodeUtilities.safeAppendRepr( rv, argument, locale );
 			separator = ", ";
 		}
 		rv.append( ")" );

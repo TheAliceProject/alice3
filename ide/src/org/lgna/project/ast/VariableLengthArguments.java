@@ -40,53 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.edits.ast;
+
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterDeclarationEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation > {
-	private org.lgna.project.ast.UserParameter parameter;
-	private transient java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.AbstractArgument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private transient int index;
-
-	public ParameterDeclarationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserParameter parameter ) {
-		super( completionStep );
-		this.parameter = parameter;
+public class VariableLengthArguments extends AbstractArgument {
+	public ExpressionListProperty expressions = new ExpressionListProperty( this );
+	public VariableLengthArguments() {
 	}
-	public ParameterDeclarationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.parameter = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserParameter.class ).decodeValue( binaryDecoder );
-	}
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserParameter.class ).encodeValue( binaryEncoder, this.parameter );
-	}
-
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.UserCode code = this.getModel().getCode();
-		this.index = code.getParamtersProperty().size();
-		org.alice.ide.ast.AstUtilities.addParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
-	}
-	@Override
-	protected final void undoInternal() {
-		org.lgna.project.ast.UserCode code = this.getModel().getCode();
-		org.alice.ide.ast.AstUtilities.removeParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
-	}
-	@Override
-	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-		rv.append( "declare:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, parameter, locale);
-		return rv;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
-	}
-	@Override
-	public boolean canRedo() {
-		return true;
+	public VariableLengthArguments( AbstractParameter parameter, Expression... expressions ) {
+		super( parameter );
+		this.expressions.setValue( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( expressions ) );
 	}
 }

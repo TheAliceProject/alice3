@@ -240,13 +240,35 @@ public abstract class VirtualMachine {
 		}
 	}
 	
-	private Object evaluate( org.lgna.project.ast.Argument argument ) {
-		assert argument != null;
-		org.lgna.project.ast.Expression expression = argument.expression.getValue();
-		assert expression != null;
-		return this.evaluate( expression );
+	private Object evaluate( org.lgna.project.ast.KeyedArguments keyedArguments, int i ) {
+		org.lgna.project.ast.JavaKeyMethodExpressionPair keyExpressionPairI = keyedArguments.keyExpressionPairs.get( i );
+		org.lgna.project.ast.JavaMethod methodI = keyExpressionPairI.keyMethod.getValue();
+		Object instance;
+		if( i == 0 ) {
+			assert methodI.isStatic();
+			instance = null;
+		} else {
+			instance = this.evaluate( keyedArguments, i-1 );
+		}
+		java.lang.reflect.Method mthdI = methodI.getMethodReflectionProxy().getReification();
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, mthdI, this.evaluate( keyExpressionPairI.expression.getValue() ) );
 	}
-	protected Object[] evaluateArguments( java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.Argument > arguments ) {
+	
+	private Object evaluate( org.lgna.project.ast.AbstractArgument argument ) {
+		assert argument != null;
+		if( argument instanceof org.lgna.project.ast.Argument ) {
+			org.lgna.project.ast.Argument simpleArgument = (org.lgna.project.ast.Argument)argument;
+			org.lgna.project.ast.Expression expression = simpleArgument.expression.getValue();
+			assert expression != null;
+			return this.evaluate( expression );
+		} else if( argument instanceof org.lgna.project.ast.KeyedArguments ) {
+			org.lgna.project.ast.KeyedArguments keyedArguments = (org.lgna.project.ast.KeyedArguments)argument;
+			return this.evaluate( keyedArguments, keyedArguments.keyExpressionPairs.size()-1 );
+		} else {
+			throw new RuntimeException( argument.toString() );
+		}
+	}
+	protected Object[] evaluateArguments( java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.AbstractArgument > arguments ) {
 		final int N = parameters.size();
 		final int M = arguments.size();
 		assert N == M;
@@ -264,7 +286,7 @@ public abstract class VirtualMachine {
 				assert componentCls != null;
 				rv[ N-1 ] = java.lang.reflect.Array.newInstance( componentCls, M );
 				for( int j=0; j<( M - (N-1) ); j++ ) {
-					org.lgna.project.ast.Argument argumentJ = arguments.get( (N-1) + j );
+					org.lgna.project.ast.AbstractArgument argumentJ = arguments.get( (N-1) + j );
 					assert argumentJ != null;
 					Object valueJ = this.evaluate( argumentJ );
 					assert valueJ != null;
