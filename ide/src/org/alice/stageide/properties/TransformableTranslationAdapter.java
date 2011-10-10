@@ -45,19 +45,71 @@ package org.alice.stageide.properties;
 
 import java.util.Locale;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.lgna.croquet.Operation;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Turnable;
+import org.alice.ide.croquet.models.StandardExpressionState;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
-public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lgna.story.MovableTurnable> {
+public abstract class TransformableTranslationAdapter extends AbstractPropertyAdapter<Point3, org.lgna.story.MovableTurnable> 
+{
+	private AbsoluteTransformationListener absoluteTransformationListener;
 	
 	public TransformableTranslationAdapter(org.lgna.story.MovableTurnable instance, StandardExpressionState expressionState) {
-		super(instance, expressionState);
+		super("Position", instance, expressionState);
 	}
-
+	
+	private void initializeTransformationListenersIfNecessary()
+	{
+		if (this.absoluteTransformationListener == null)
+		{
+			this.absoluteTransformationListener = new AbsoluteTransformationListener() {
+				public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) 
+				{
+					TransformableTranslationAdapter.this.handleInternalValueChanged();
+				}
+			};
+		}
+	}
+	
+	@Override
+	protected void startListening() 
+	{
+		if (this.instance != null)
+		{
+			this.initializeTransformationListenersIfNecessary();
+			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
+			implementation.getSgComposite().addAbsoluteTransformationListener(this.absoluteTransformationListener);
+		}
+	}
+	
+	@Override
+	protected void stopListening() 
+	{
+		if (this.instance != null)
+		{
+			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
+			implementation.getSgComposite().removeAbsoluteTransformationListener(this.absoluteTransformationListener);
+		}
+	}
+	
+	@Override
+	public Class<Point3> getPropertyType()
+	{
+		return Point3.class;
+	}
+	
+	@Override
+	public Point3 getValueCopy() 
+	{
+		return new Point3(this.getValue());
+	}
+	
+	@Override
 	public Point3 getValue() 
 	{
 		if (this.instance != null)
@@ -91,17 +143,15 @@ public class TransformableTranslationAdapter extends AbstractAbsolutePositionPro
 	}
 
 	@Override
-	public Operation getEditModel() 
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public String getUndoRedoDescription(Locale locale) 
 	{
 		// TODO Auto-generated method stub
 		return "Position Change";
+	}
+
+	protected void handleInternalValueChanged()
+	{
+		this.notifyValueObservers(this.getValue());
 	}
 
 }

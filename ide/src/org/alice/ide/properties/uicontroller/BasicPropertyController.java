@@ -48,6 +48,7 @@ import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Component;
@@ -60,7 +61,7 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
     protected Component<?> propertyComponent;
     protected org.lgna.croquet.components.ViewController< ?,? > editButton;
     
-    public BasicPropertyController(PropertyAdapter<P, ?> propertyAdapter)
+    public BasicPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter)
     {
         super(propertyAdapter);
     }

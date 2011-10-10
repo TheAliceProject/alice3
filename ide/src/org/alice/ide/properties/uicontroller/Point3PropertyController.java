@@ -48,8 +48,9 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.alice.ide.properties.adapter.ScalePropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.GridBagPanel;
@@ -57,10 +58,18 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.Panel;
 import org.lgna.croquet.components.SwingAdapter;
 
+import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public class Point3PropertyController extends AbstractAdapterController<Point3>
 {	
+	
+	protected class SetPoint3Operation extends SetValueOperation<Point3> {
+		public SetPoint3Operation( AbstractPropertyAdapter <Point3, ?> propertyAdapter, Point3 value) {
+			super( propertyAdapter, value, null, java.util.UUID.fromString( "c742ea2e-cafe-41a0-9b76-38cb51921823" ) );
+		}
+	}
+	
 	private ActionListener valueChangeListener;
 	
 	private Label xLabel;
@@ -74,7 +83,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 
 	private boolean doUpdateOnAdapter = true;
 	
-	public Point3PropertyController(PropertyAdapter<Point3, ?> propertyAdapter)
+	public Point3PropertyController(AbstractPropertyAdapter<Point3, ?> propertyAdapter)
 	{
 		super(propertyAdapter);
 	}
@@ -285,7 +294,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 				{
 					if (this.propertyAdapter.getLastSetValue() == null || !this.propertyAdapter.getLastSetValue().equals(newPoint))
 					{
-						SetValueOperation<Point3> operation = this.propertyAdapter.getSetValueOperation(newPoint);
+						SetValueOperation<Point3> operation = new SetPoint3Operation(this.propertyAdapter, newPoint);
 						operation.setName(newPoint.toString());
 						operation.fire(e);
 					}

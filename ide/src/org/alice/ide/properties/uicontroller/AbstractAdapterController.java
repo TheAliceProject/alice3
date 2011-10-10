@@ -43,6 +43,7 @@
 
 package org.alice.ide.properties.uicontroller;
 
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Panel;
@@ -51,7 +52,7 @@ public abstract class AbstractAdapterController<P> implements PropertyAdapterCon
 {
     protected GridBagPanel mainPanel;
     
-	protected PropertyAdapter.ValueChangeObserver<P> valueChangeObserver = new PropertyAdapter.ValueChangeObserver<P>()
+	protected AbstractPropertyAdapter.ValueChangeObserver<P> valueChangeObserver = new AbstractPropertyAdapter.ValueChangeObserver<P>()
 	{
 		public void valueChanged(P newValue) 
 		{
@@ -59,9 +60,9 @@ public abstract class AbstractAdapterController<P> implements PropertyAdapterCon
 		}
 	};
 	
-	protected PropertyAdapter<P, ?> propertyAdapter;
+	protected AbstractPropertyAdapter<P, ?> propertyAdapter;
 	
-	public AbstractAdapterController(PropertyAdapter<P, ?> propertyAdapter)
+	public AbstractAdapterController(AbstractPropertyAdapter<P, ?> propertyAdapter)
 	{
 		super();
 		this.propertyAdapter = propertyAdapter;
@@ -69,7 +70,10 @@ public abstract class AbstractAdapterController<P> implements PropertyAdapterCon
 		this.setPropertyAdapter(this.propertyAdapter);
 	}
 	
-	public abstract Class<?> getPropertyType();
+	public Class<?> getPropertyType()
+	{
+		return this.propertyAdapter.getPropertyType();
+	}
 	protected abstract void setValueOnUI(P value);
     
     protected void setValueOnData(P value)
@@ -100,12 +104,12 @@ public abstract class AbstractAdapterController<P> implements PropertyAdapterCon
     }
     
     
-	public PropertyAdapter<P, ?> getPropertyAdapter()
+	public AbstractPropertyAdapter<P, ?> getPropertyAdapter()
 	{
 		return this.propertyAdapter;
 	}
 
-	public void setPropertyAdapter(PropertyAdapter<P, ?> propertyAdapter)
+	public void setPropertyAdapter(AbstractPropertyAdapter<P, ?> propertyAdapter)
 	{
 		if (this.propertyAdapter != null)
 		{

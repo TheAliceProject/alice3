@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,67 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.properties.uicontroller;
 
-package org.alice.ide.properties.adapter;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.components.Panel;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-
-import edu.cmu.cs.dennisc.math.Point3;
-
-public abstract class AbstractPoint3PropertyAdapter<O> extends AbstractPropertyAdapter<Point3, O> 
+/**
+ * @author dculyba
+ *
+ */
+public class ExpressionBasedPropertyController<P> implements PropertyAdapterController<P>
 {
-	protected class SetPoint3Operation extends SetValueOperation<Point3> {
-		public SetPoint3Operation( Point3 value, String name) {
-			super( AbstractPoint3PropertyAdapter.this, value, name, java.util.UUID.fromString( "fa074f8e-71f3-46bc-af04-2e3c262ed6e8" ) );
-		}
+    protected BorderPanel mainPanel;
+	protected AbstractPropertyAdapter<P, ?> propertyAdapter;
+	
+	public ExpressionBasedPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter)
+	{
+		super();
+		this.initializeComponents();
+		this.setPropertyAdapter(propertyAdapter);
+	}
+	
+	public Class<?> getPropertyType()
+	{
+		return this.propertyAdapter.getPropertyType();
+	}
+	
+	protected void setValueOnUI(P value)
+	{
+		
+	}
+    
+    protected void setValueOnData(P value)
+    {
+        this.propertyAdapter.setValue(value);
+    }
+    
+	
+    protected void initializeComponents()
+    {
+        this.mainPanel = new BorderPanel();
+    }
+    
+    public Panel getPanel()
+    {
+        return this.mainPanel;
+    }
+    
+    
+	public AbstractPropertyAdapter<P, ?> getPropertyAdapter()
+	{
+		return this.propertyAdapter;
 	}
 
-	public AbstractPoint3PropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
+	public void setPropertyAdapter(AbstractPropertyAdapter<P, ?> propertyAdapter)
 	{
-		super(repr, instance, expressionState);
+			this.propertyAdapter = propertyAdapter;
+			this.mainPanel.removeAllComponents();
+			this.mainPanel.addComponent(this.propertyAdapter.getExpressionState().createEditor(org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance()), Constraint.CENTER);
 	}
-	
-	public Class<Point3> getPropertyType()
-	{
-		return Point3.class;
-	}
-	
-	@Override
-	public SetValueOperation<Point3> getSetValueOperation(Point3 value) 
-	{
-		return new SetPoint3Operation(value, null);
-	}
-	
-	public Point3 getValueCopy() 
-	{
-		return new Point3(this.getValue());
-	}
+
 }

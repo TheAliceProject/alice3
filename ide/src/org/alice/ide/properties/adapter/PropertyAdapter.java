@@ -43,6 +43,8 @@
 
 package org.alice.ide.properties.adapter;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+
 
 //P = property value type
 //O = property owner type
@@ -73,13 +75,9 @@ public interface PropertyAdapter <P, O>
 	
 	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
 	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
+	public void removeValueChangeObserver(ValueChangeObserver<P> observer); 
 	
-	public org.lgna.croquet.Model getEditModel();
-	
-	public org.lgna.croquet.components.ViewController<?,?> createEditViewController();
-	
-	public SetValueOperation<P> getSetValueOperation(P value); 
+	public StandardExpressionState getExpressionState();
 	
 	public String getUndoRedoDescription(java.util.Locale locale);
 	

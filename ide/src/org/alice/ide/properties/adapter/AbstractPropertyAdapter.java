@@ -46,10 +46,15 @@ package org.alice.ide.properties.adapter;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.ide.croquet.models.StandardExpressionState;
 
-public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
+public abstract class AbstractPropertyAdapter<P, O>
 {
+	public static interface ValueChangeObserver<P>
+	{
+		public void valueChanged(P newValue);
+	}
 	
 	protected O instance;
 	protected String repr;
@@ -84,8 +89,6 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	{
 		return this.repr;
 	}
-	
-	public abstract SetValueOperation<P> getSetValueOperation(P value);
 
 	public abstract String getUndoRedoDescription(java.util.Locale locale);
 	
@@ -93,6 +96,7 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	{
 		this.stopListening();
 		this.instance = instance;
+		this.setExpressionValue(this.getValue());
 		this.startListening();
 	}
 	
@@ -110,6 +114,10 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	{
 		return this.lastSetValue;
 	}
+	
+	public abstract P getValue();
+	public abstract Class<P> getPropertyType();
+	public abstract P getValueCopy();
 	
 	public void addValueChangeObserver(ValueChangeObserver<P> observer)
 	{
@@ -133,19 +141,57 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	public void setExpressionState( StandardExpressionState expressionState )
 	{
 		this.expressionState = expressionState;
+		this.setExpressionValue(this.getValue());
+	}
+	
+	public StandardExpressionState getExpressionState()
+	{
+		return this.expressionState;
 	}
 	
 	protected void startListening() {
+		startPropertyListening();
+		startExpressionListening();
+	}
+	
+	protected void stopListening() {
+		stopPropertyListening();
+		stopExpressionListening();
+	}
+	
+	protected void startExpressionListening() {
 		if (this.expressionState != null)
 		{
 			this.expressionState.addValueObserver( this.valueObserver );
 		}
 	}
 	
-	protected void stopListening() {
+	protected void stopExpressionListening() {
 		if (this.expressionState != null)
 		{
 			this.expressionState.removeValueObserver( this.valueObserver );
+		}
+	}
+	
+	protected void startPropertyListening() {
+	}
+	
+	protected void stopPropertyListening() {
+	}
+	
+	private void setExpressionValue(P value)
+	{
+		if (this.expressionState != null)
+		{
+			try
+			{
+				org.lgna.project.ast.Expression expressionValue = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression(this.getValue());
+				this.expressionState.setValue(expressionValue);
+			}
+			catch (CannotCreateExpressionException e)
+			{
+				this.expressionState = null;
+			}
 		}
 	}
 	
@@ -163,13 +209,11 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		}
 	}
 	
-//	protected abstract void setExpressionValue(P value);
-	
 	protected void notifyValueObservers(P newValue)
 	{
 		if (!isExpressionSet)
 		{
-//			setExpressionValue(newValue);
+			this.setExpressionValue(newValue);
 		}
 		for (ValueChangeObserver<P> observer : this.valueChangeObservers)
 		{
@@ -177,23 +221,14 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		}
 	}
 
-	public abstract org.lgna.croquet.Model getEditModel();
+	public org.lgna.croquet.Model getEditModel()
+	{
+		return null;
+	}
 	
 	public org.lgna.croquet.components.ViewController< ?,? > createEditViewController()
     {
-		org.lgna.croquet.Model model = this.getEditModel();
-		if( model instanceof org.lgna.croquet.PopupPrepModel ) {
-			org.lgna.croquet.PopupPrepModel popupPrepModel = (org.lgna.croquet.PopupPrepModel)model;
-	        return popupPrepModel.createPopupButton();
-		} else if( model instanceof org.lgna.croquet.Operation< ? > ) {
-			org.lgna.croquet.Operation< ? > operation = (org.lgna.croquet.Operation< ? >)model;
-	        return operation.createButton();
-		} else if (model == null){
-			return null;
-		}
-		else {
-			throw new RuntimeException( "todo" );
-		}
+		return null;
     }
 	
 	

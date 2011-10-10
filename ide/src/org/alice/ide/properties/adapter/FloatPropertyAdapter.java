@@ -41,35 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.uicontroller;
+package org.alice.ide.properties.adapter;
 
-import org.alice.ide.properties.adapter.AbstractDoublePropertyAdapter;
-import org.alice.ide.properties.adapter.PropertyAdapter;
+import java.util.Locale;
 
-public class DoublePropertyController extends LabelBasedPropertyController<Double>
+import org.alice.ide.croquet.models.StandardExpressionState;
+
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+
+public class FloatPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Float, O> 
 {
-	public DoublePropertyController(PropertyAdapter<Double, ?> propertyAdapter)
+	public FloatPropertyAdapter(O instance, org.lgna.story.implementation.Property<Float> property, StandardExpressionState expressionState)
 	{
-		super(propertyAdapter);
+		this("Float", instance, property, expressionState);
+	}
+	
+	public FloatPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<Float> property, StandardExpressionState expressionState )
+	{
+		super(repr, instance, property, expressionState);
 	}
 	
 	@Override
-	public Class<?> getPropertyType() 
+	public Float getValueCopy() 
 	{
-		return Double.class;
+		return new Float(this.getValue());
 	}
 	
 	@Override
-	protected void setValueOnUI(Double value)
+	public String getUndoRedoDescription(Locale locale) 
 	{
-		if (value != null)
-		{
-			this.label.setText(AbstractDoublePropertyAdapter.format.format(value));
-		}
-		else
-		{
-			this.label.setText(BLANK_STRING);
-		}
+		return "Float";
 	}
 	
+
 }

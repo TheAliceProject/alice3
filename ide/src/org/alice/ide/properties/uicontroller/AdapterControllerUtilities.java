@@ -44,54 +44,60 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.lgna.story.Entity;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.stageide.properties.FieldNameAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;
 import org.alice.stageide.properties.uicontroller.FieldNamePropertyController;
 import org.alice.stageide.properties.uicontroller.ModelScalePropertyController;
 
+import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public class AdapterControllerUtilities 
 {
 	//TODO: base this lookup on a (type -> property controller) registration that happens in the IDE
-	public static PropertyAdapterController getValuePanelForPropertyAdapter(PropertyAdapter propertyAdapter)
+	public static PropertyAdapterController getValuePanelForPropertyAdapter(AbstractPropertyAdapter<?,?> propertyAdapter)
 	{
 		Class<?> propertyType = propertyAdapter != null?  propertyAdapter.getPropertyType() : null;
 		if (propertyType == null)
 		{
 			return new BlankPropertyController(propertyAdapter);
 		}
+		if (propertyAdapter.getExpressionState() != null)
+		{
+			return new ExpressionBasedPropertyController(propertyAdapter);
+		}
 		//Check for adapter specific rules first
 		else if (propertyAdapter instanceof FieldNameAdapter)
 		{
-		    return new FieldNamePropertyController(propertyAdapter);
+		    return new FieldNamePropertyController((AbstractPropertyAdapter<String, ?>)propertyAdapter);
 		}
 		//Now check based on desired type
 		else if (edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyType))
 		{
-			return new Color4fPropertyController(propertyAdapter);
+			return new Color4fPropertyController((AbstractPropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?>)propertyAdapter);
 		}
 		else if (String.class.isAssignableFrom(propertyType))
 		{
-			return new StringPropertyController(propertyAdapter);
+			return new StringPropertyController((AbstractPropertyAdapter<String, ?>)propertyAdapter);
 		}
-		else if (Double.class.isAssignableFrom(propertyType))
+		else if (Float.class.isAssignableFrom(propertyType))
 		{
-			return new DoublePropertyController(propertyAdapter);
+			return new FloatPropertyController((AbstractPropertyAdapter<Float, ?>)propertyAdapter);
 		}
 		else if (Point3.class.isAssignableFrom(propertyType))
 		{
-			return new Point3PropertyController(propertyAdapter);
+			return new Point3PropertyController((AbstractPropertyAdapter<Point3, ?>)propertyAdapter);
 		}
 		else if (Entity.class.isAssignableFrom(propertyType))
 		{
-			return new CompositePropertyController(propertyAdapter);
+			return new CompositePropertyController((AbstractPropertyAdapter<Entity, ?>)propertyAdapter);
 		}
 		else if (Matrix3x3.class.isAssignableFrom(propertyType))
 		{
-			return new ModelScalePropertyController(propertyAdapter);
+			return new ModelScalePropertyController((AbstractPropertyAdapter<Dimension3, ?>)propertyAdapter);
 		}else
 		{
 			return new BlankPropertyController(propertyAdapter);

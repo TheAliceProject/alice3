@@ -44,57 +44,13 @@
 package org.alice.stageide.properties;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
+import org.alice.ide.properties.adapter.FloatPropertyAdapter;
 
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-
-public class ModelOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna.story.implementation.ModelImp> {
+public class ModelOpacityAdapter extends FloatPropertyAdapter<org.lgna.story.implementation.ModelImp> {
 
 	public ModelOpacityAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
 	{
-		super(instance, expressionState);
+		super(instance, instance.opacity, expressionState);
 	}
 	
-	public Double getValue() 
-	{
-		if (this.instance != null)
-		{
-			return (double)this.instance.opacity.getValue();
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	@Override
-	public void setValue(final Double value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			new Thread() {
-				@Override
-				public void run() {
-					ModelOpacityAdapter.this.instance.opacity.setValue(value.floatValue());
-				}
-			}.start();
-		}
-		
-	}
-
-	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.addOpacityListener(propertyListener);
-		}
-	}
-
-	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.removeOpacityListener(propertyListener);
-		}
-	}
-
 }

@@ -41,61 +41,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.adapter;
+
+import java.util.Locale;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
 
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 
-public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna.story.implementation.MarkerImp> {
-
-	public MarkerOpacityAdapter(org.lgna.story.implementation.MarkerImp instance, StandardExpressionState expressionState)
+public class StringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<String, O> 
+{
+	
+	public StringPropertyAdapter(O instance, InstanceProperty<String> property, StandardExpressionState expressionState)
 	{
-		super(instance, expressionState);
+		this("String", instance, property, expressionState);
 	}
 	
-
-	public Double getValue() 
+	public StringPropertyAdapter(String repr, O instance, InstanceProperty<String> property, StandardExpressionState expressionState )
 	{
-		if (this.instance != null)
-		{
-			return (double)this.instance.opacity.getValue();
-		}
-		else
-		{
-			return null;
-		}
+		super(repr, instance, property, expressionState);
 	}
 	
 	@Override
-	public void setValue(final Double value) 
+	public String getUndoRedoDescription(Locale locale) 
 	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			new Thread() {
-				@Override
-				public void run() {
-					MarkerOpacityAdapter.this.instance.opacity.setValue(value.floatValue());
-				}
-			}.start();
-		}
-		
+		return "String";
 	}
 	
 	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.addOpacityListener(propertyListener);
-		}
+	public String getValueCopy() 
+	{
+		return new String(this.getValue());
 	}
 
 	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.removeOpacityListener(propertyListener);
-		}
+	public Class<String> getPropertyType() {
+		return String.class;
 	}
 
 }

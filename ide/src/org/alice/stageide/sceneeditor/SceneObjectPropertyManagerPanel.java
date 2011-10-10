@@ -53,16 +53,16 @@ import org.alice.ide.IDE;
 import org.alice.ide.ast.AstUtilities;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.ast.PropertyState;
+import org.alice.ide.properties.adapter.AbstractImplementationPropertyAdapter;
+import org.alice.ide.properties.adapter.FloatPropertyAdapter;
 import org.alice.ide.properties.uicontroller.AdapterControllerUtilities;
 import org.alice.ide.properties.uicontroller.PropertyAdapterController;
+import org.alice.stageide.StoryApiConfigurationManager;
 import org.alice.stageide.croquet.models.sceneditor.AreExtraPropertiesShownState;
 import org.alice.stageide.properties.FieldNameAdapter;
-import org.alice.stageide.properties.MarkerColorAdapter;
-import org.alice.stageide.properties.MarkerOpacityAdapter;
-import org.alice.stageide.properties.ModelColorAdapter;
 import org.alice.stageide.properties.ModelOpacityAdapter;
 import org.alice.stageide.properties.ModelScaleAdapter;
-import org.alice.stageide.properties.TransformableTranslationAdapter;
+import org.alice.stageide.properties.TransformableTranslationAdapter2;
 import org.alice.stageide.properties.TransformableVehicleAdapter;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Component;
@@ -70,14 +70,16 @@ import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.ToolPalette;
 import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.UserField;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.ModelImp;
 
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel
 {
-	private AbstractField selectedField;
+	private UserField selectedField;
 	private Object selectedObject;
 	private Entity selectedEntity;
 	private EntityImp selectedImp;
@@ -116,58 +118,47 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	    super.setBackgroundColor(color);
 	    this.extraPropertiesPalette.setBackgroundColor(color);
 	}
-	
-	private static Class<?>[] PROPERTY_ADAPTER_CLASSES= {
-		FieldNameAdapter.class,
-		MarkerColorAdapter.class,
-		MarkerOpacityAdapter.class,
-		ModelColorAdapter.class,
-		ModelOpacityAdapter.class,
-		TransformableTranslationAdapter.class,
-		TransformableVehicleAdapter.class,
-		ModelScaleAdapter.class,
-	};
 
-	public static List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> getPropertyAdaptersForObject(Object object, StandardExpressionState expressionState)
+	public static List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> getPropertyAdaptersForObject(Object object, StandardExpressionState expressionState)
 	{
-		List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> propertyList = new LinkedList<org.alice.ide.properties.adapter.PropertyAdapter<?,?>>();
-		if (object != null)
-		{
-			for (Class<?> adapterClass : PROPERTY_ADAPTER_CLASSES)
-			{
-				Constructor<?>[] constructors = adapterClass.getConstructors();
-				for (Constructor<?> constructor : constructors)
-				{
-					if (constructor.getParameterTypes().length > 0)
-					{
-						if (constructor.getParameterTypes()[0].isAssignableFrom(object.getClass()))
-						{
-							try
-							{
-								System.out.println("Selecting "+adapterClass.getSimpleName());
-								org.alice.ide.properties.adapter.PropertyAdapter<?,?> propertyAdapter = null;
-								if (constructor.getParameterTypes().length == 1)
-								{
-									propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object);
-								}
-								else if (constructor.getParameterTypes().length == 2)
-								{
-									propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object, expressionState);
-								}
-								if (propertyAdapter != null)
-								{
-									propertyList.add(propertyAdapter);
-								}
-							}
-							catch (Exception e)
-							{
-								e.printStackTrace();
-							}
-						}
-					}
-				}
-			}
-		}
+		List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> propertyList = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>>();
+//		if (object != null)
+//		{
+//			for (Class<?> adapterClass : PROPERTY_ADAPTER_CLASSES)
+//			{
+//				Constructor<?>[] constructors = adapterClass.getConstructors();
+//				for (Constructor<?> constructor : constructors)
+//				{
+//					if (constructor.getParameterTypes().length > 0)
+//					{
+//						if (constructor.getParameterTypes()[0].isAssignableFrom(object.getClass()))
+//						{
+//							try
+//							{
+//								System.out.println("Selecting "+adapterClass.getSimpleName());
+//								org.alice.ide.properties.adapter.PropertyAdapter<?,?> propertyAdapter = null;
+//								if (constructor.getParameterTypes().length == 1)
+//								{
+//									propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object);
+//								}
+//								else if (constructor.getParameterTypes().length == 2)
+//								{
+//									propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object, expressionState);
+//								}
+//								if (propertyAdapter != null)
+//								{
+//									propertyList.add(propertyAdapter);
+//								}
+//							}
+//							catch (Exception e)
+//							{
+//								e.printStackTrace();
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
 		return propertyList;
 	}
 	
@@ -210,24 +201,40 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	{
 	    this.addNameAndControllerToPanel(propertyPair.label, propertyPair.controller.getPanel(), panel, index);
 	}
+	
+	private static org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
+		return org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+	}
 
 	
-	public void setField( AbstractField field )
+	private static org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter(org.lgna.project.ast.JavaMethod getter, EntityImp entityImp)
 	{
-		this.selectedField = field;
-		
-		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = AstUtilities.getPersistentPropertyGetters(field.getValueType());
-		for (org.lgna.project.ast.JavaMethod getter : getterMethods )
+		org.lgna.project.ast.JavaMethod setter = org.alice.ide.ast.AstUtilities.getSetterForGetter( getter );
+		if (setter != null)
 		{
-			org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( IDE.PROJECT_GROUP, getter );
-			System.out.println("state: "+state+": "+getter.getName()+"->"+ getter.getReturnType());
-			if (state instanceof PropertyState)
+			if (entityImp instanceof ModelImp && setter.getName().equalsIgnoreCase("setOpacity"))
 			{
-				PropertyState ps = (PropertyState)state;
+				org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( IDE.PROJECT_GROUP, getter );
+				return new AbstractImplementationPropertyAdapter<Float, ModelImp>("Opacity", (ModelImp)entityImp, ((ModelImp)entityImp).opacity, state);
 				
+				return new FloatPropertyAdapter<ModelImp>("Opacity", (ModelImp)entityImp, ((ModelImp)entityImp).opacity, state);
+			}
+//			else if (entityImp instanceof ModelImp && setter.getName().equalsIgnoreCase("setPaint"))
+//			{
+//				org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( IDE.PROJECT_GROUP, getter );
+//				return new ModelOpacityAdapter((ModelImp)entityImp, state);
+//			}
+			else
+			{
+				System.out.println("Unknown setter: "+setter.getName());
 			}
 		}
-		
+		return null;
+	}
+	
+	public void setField( UserField field )
+	{
+		this.selectedField = field;
 		Object instance = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( field );
 		if( instance instanceof org.lgna.story.Entity ) {
 			this.selectedEntity = (org.lgna.story.Entity)instance;
@@ -253,17 +260,31 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		this.morePropertiesPanel.removeAllComponents();
 		
 		
-		List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.PropertyAdapter<?,?>>();
-		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedField, null));
-		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedImp, null));
-		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedEntity, null));
+		List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>>();
+		
+		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = AstUtilities.getPersistentPropertyGetters(field.getValueType());
+		
+		propertyAdapters.add(new FieldNameAdapter(this.selectedField, (StandardExpressionState)null));
+		
+		for (org.lgna.project.ast.JavaMethod getter : getterMethods )
+		{
+			org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter(getter, this.selectedImp);
+			if (adapter != null)
+			{
+				propertyAdapters.add(adapter);
+			}
+		}
+		
+//		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedField, null));
+//		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedImp, null));
+//		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedEntity, null));
 		LabelValueControllerPair fieldNamePair = null;
 		if (propertyAdapters.size() != 0)
 		{
 			int mainPropertyCount = 0;
 			int extraPropertyCount = 0;
 			//Add all the extra properties to the extra panel and find the name property adapter
-			for (org.alice.ide.properties.adapter.PropertyAdapter propertyAdapter : propertyAdapters)
+			for (org.alice.ide.properties.adapter.AbstractPropertyAdapter propertyAdapter : propertyAdapters)
 			{
 				LabelValueControllerPair matchingLabelController = null;
 				for (LabelValueControllerPair labelController : this.labelControllerList)

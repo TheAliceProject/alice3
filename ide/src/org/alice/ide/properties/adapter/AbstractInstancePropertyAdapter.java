@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,28 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.properties.adapter;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
+/**
+ * @author dculyba
+ *
+ */
 public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
-
-	private PropertyListener propertyListener;
+	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener;
+	private InstanceProperty<P> property;
 	
 	private void initializeListenersIfNecessary()
 	{
 		if (this.propertyListener == null)
 		{
-			this.propertyListener = new PropertyListener()
+			this.propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener()
 			{
-				public void propertyChanging(PropertyEvent e) {}
-				
-				public void propertyChanged(PropertyEvent e)
-				{
+				public void propertyChanging(PropertyEvent e) {
+				}
+
+				public void propertyChanged(PropertyEvent e) {
 					handleInternalValueChanged();
 				}
 			};
@@ -69,9 +72,9 @@ public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractProp
 	}
 	
 	@Override
-	protected void startListening() 
+	protected void startPropertyListening() 
 	{
-		super.startListening();
+		super.startPropertyListening();
 		if (this.instance != null)
 		{
 			this.initializeListenersIfNecessary();
@@ -80,25 +83,57 @@ public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractProp
 	}
 	
 	@Override
-	protected void stopListening() 
+	protected void stopPropertyListening() 
 	{
-		super.stopListening();
+		super.stopPropertyListening();
 		if (this.instance != null)
 		{
 			this.removePropertyListener(this.propertyListener);
 		}
 	}
 	
-	public AbstractInstancePropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
-	{
+	public AbstractInstancePropertyAdapter(String repr, O instance, InstanceProperty<P> property, StandardExpressionState expressionState ){
 		super(repr, instance, expressionState);
+		this.property = property;
 	}
 	
-	protected abstract void addPropertyListener(PropertyListener propertyListener);
-	protected abstract void removePropertyListener(PropertyListener propertyListener);
+	@Override
+	public P getValue() {
+		if (this.property != null){
+			return this.property.getValue();
+		}
+		else{
+			return null;
+		}
+	}
 	
-	protected void handleInternalValueChanged()
-	{
+	@Override
+	public void setValue(final P value) {
+		super.setValue(value);
+		if (this.property != null){
+			new Thread() {
+				@Override
+				public void run() {
+					AbstractInstancePropertyAdapter.this.property.setValue(value);
+				}
+			}.start();
+		}
+		
+	}
+
+	protected void addPropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
+		if (this.property != null){
+			property.addPropertyListener(propertyListener);
+		}
+	}
+
+	protected void removePropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
+		if (this.property != null){
+			property.removePropertyListener(propertyListener);
+		}
+	}
+	
+	protected void handleInternalValueChanged(){
 		P newValue = this.getValue();
 		this.notifyValueObservers(newValue);
 	}

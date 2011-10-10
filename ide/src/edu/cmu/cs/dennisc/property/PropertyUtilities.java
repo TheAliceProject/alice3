@@ -49,6 +49,10 @@ public final class PropertyUtilities {
 	private PropertyUtilities() {
 	}
 	public static java.lang.reflect.Method getGetter( Class< ? > cls, String propertyName ) {
+		if (propertyName == null)
+		{
+			System.out.println(">");
+		}
 		Class< ? >[] parameterTypes = {};
 		String methodName;
 		if( propertyName.startsWith( "Is" ) && Character.isUpperCase( propertyName.charAt( 2 ) ) ) {
@@ -75,7 +79,8 @@ public final class PropertyUtilities {
 				parameterTypes[ 0 ] = Number.class;
 				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
 			} else {
-				throw re;
+				return null;
+//				throw re;
 			}
 		}
 	}

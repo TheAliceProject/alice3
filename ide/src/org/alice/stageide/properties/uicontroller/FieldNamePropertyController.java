@@ -50,6 +50,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
 import org.lgna.croquet.components.Component;
@@ -61,7 +62,7 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
 
     private Label label;
     
-    public FieldNamePropertyController(PropertyAdapter<String, ?> propertyAdapter)
+    public FieldNamePropertyController(AbstractPropertyAdapter<String, ?> propertyAdapter)
     {
         super(propertyAdapter);
     }

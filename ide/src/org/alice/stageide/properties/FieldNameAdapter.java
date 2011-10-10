@@ -47,41 +47,18 @@ import java.util.Locale;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
-import org.alice.ide.properties.adapter.AbstractNamePropertyAdapter;
+import org.alice.ide.properties.adapter.StringPropertyAdapter;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.Button;
 
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 
-public class FieldNameAdapter extends AbstractNamePropertyAdapter<org.lgna.project.ast.UserField> {
+public class FieldNameAdapter extends StringPropertyAdapter<org.lgna.project.ast.UserField> {
 	
 	public FieldNameAdapter(org.lgna.project.ast.UserField instance, StandardExpressionState expressionState)
 	{
-		super(instance, expressionState);
-	}
-
-	public String getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getName();
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	@Override
-	public void setValue(String value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			this.instance.setName(value);
-		}
-		
+		super("Name", instance, instance.name, expressionState);
 	}
 	
 	@Override
@@ -104,20 +81,6 @@ public class FieldNameAdapter extends AbstractNamePropertyAdapter<org.lgna.proje
 	public String getUndoRedoDescription(Locale locale) 
 	{
 		return "Field Name";
-	}
-
-	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.name.addPropertyListener(propertyListener);
-		}
-	}
-
-	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.name.addPropertyListener(propertyListener);
-		}
 	}
 
 }

@@ -43,6 +43,7 @@
 
 package org.alice.ide.properties.uicontroller;
 
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.Label;
@@ -52,12 +53,10 @@ public abstract class LabelBasedPropertyController<P> extends BasicPropertyContr
 {
     protected Label label;
     
-    public LabelBasedPropertyController(PropertyAdapter<P, ?>  propertyAdapter)
+    public LabelBasedPropertyController(AbstractPropertyAdapter<P, ?>  propertyAdapter)
     {
         super(propertyAdapter);
     }
-
-    
 
     @Override
     protected void initializeComponents()

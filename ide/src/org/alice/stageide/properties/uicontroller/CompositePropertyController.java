@@ -47,6 +47,7 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
 import org.alice.stageide.properties.TransformableVehicleAdapter;
@@ -54,7 +55,7 @@ import org.lgna.story.Entity;
 
 public class CompositePropertyController extends LabelBasedPropertyController<Entity>{
 
-	public CompositePropertyController(PropertyAdapter<Entity, ?> propertyAdapter) 
+	public CompositePropertyController(AbstractPropertyAdapter<Entity, ?> propertyAdapter) 
 	{
 		super(propertyAdapter);
 	}

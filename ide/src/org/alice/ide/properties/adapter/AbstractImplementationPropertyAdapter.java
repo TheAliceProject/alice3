@@ -41,67 +41,103 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.adapter;
 
-import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Turnable;
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractPoint3PropertyAdapter;
+import org.lgna.story.implementation.Property.Listener;
 
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Turnable> extends AbstractPoint3PropertyAdapter<O>
-{
-	private AbsoluteTransformationListener absoluteTransformationListener;
+public abstract class AbstractImplementationPropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
+
+	private Listener<P> propertyListener;
+	private org.lgna.story.implementation.Property<P> property;
 	
-	public AbstractAbsolutePositionPropertyAdapter(O instance, StandardExpressionState expressionState ) 
+	private void initializeListenersIfNecessary()
 	{
-		this("Position", instance, expressionState);
-	}
-	
-	public AbstractAbsolutePositionPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
-	{
-		super(repr, instance, expressionState);
-	}
-	
-	private void initializeTransformationListenersIfNecessary()
-	{
-		if (this.absoluteTransformationListener == null)
+		if (this.propertyListener == null)
 		{
-			this.absoluteTransformationListener = new AbsoluteTransformationListener() {
-				public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) 
-				{
-					AbstractAbsolutePositionPropertyAdapter.this.handleInternalValueChanged();
+			this.propertyListener = new Listener<P>()
+			{
+				public void propertyChanged(P prevValue, P nextValue) {
+					handleInternalValueChanged();
 				}
 			};
 		}
 	}
 	
 	@Override
-	protected void startListening() 
+	protected void startPropertyListening() 
 	{
+		super.startPropertyListening();
 		if (this.instance != null)
 		{
-			this.initializeTransformationListenersIfNecessary();
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().addAbsoluteTransformationListener(this.absoluteTransformationListener);
+			this.initializeListenersIfNecessary();
+			this.addPropertyListener(this.propertyListener);
 		}
 	}
 	
 	@Override
-	protected void stopListening() 
+	protected void stopPropertyListening() 
 	{
+		super.stopPropertyListening();
 		if (this.instance != null)
 		{
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().removeAbsoluteTransformationListener(this.absoluteTransformationListener);
+			this.removePropertyListener(this.propertyListener);
+		}
+	}
+	
+	public AbstractImplementationPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<P> property, StandardExpressionState expressionState ){
+		super(repr, instance, expressionState);
+		this.property = property;
+	}
+	
+	@Override
+	public P getValue() {
+		if (this.property != null){
+			return this.property.getValue();
+		}
+		else{
+			return null;
+		}
+	}
+	
+	@Override
+	public Class<P> getPropertyType() {
+		return this.property.getValueCls();
+	}
+	
+	@Override
+	public void setValue(final P value) {
+		super.setValue(value);
+		if (this.property != null){
+			new Thread() {
+				@Override
+				public void run() {
+					AbstractImplementationPropertyAdapter.this.property.setValue(value);
+				}
+			}.start();
+		}
+		
+	}
+
+	protected void addPropertyListener(Listener<P> propertyListener) {
+		if (this.property != null){
+			property.addPropertyObserver(propertyListener);
 		}
 	}
 
-	protected void handleInternalValueChanged()
-	{
-		this.notifyValueObservers(this.getValue());
+	protected void removePropertyListener(Listener<P> propertyListener) {
+		if (this.property != null){
+			property.removePropertyObserver(propertyListener);
+		}
+	}
+	
+	protected void handleInternalValueChanged(){
+		P newValue = this.getValue();
+		this.notifyValueObservers(newValue);
 	}
 
 }

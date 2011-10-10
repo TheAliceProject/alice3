@@ -46,17 +46,17 @@ package org.alice.stageide.properties;
 import java.util.Locale;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractScaleAdapter;
+import org.alice.ide.properties.adapter.AbstractInstancePropertyAdapter;
+import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class ModelScaleAdapter extends AbstractScaleAdapter<org.lgna.story.implementation.ModelImp>
+public class ModelScaleAdapter extends AbstractInstancePropertyAdapter<Dimension3, org.lgna.story.implementation.ModelImp>
 {
 	public ModelScaleAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
 	{
-		super("Size", instance, expressionState);
+		super("Size", instance, null, expressionState);
 	}
 	
 	@Override
@@ -65,6 +65,7 @@ public class ModelScaleAdapter extends AbstractScaleAdapter<org.lgna.story.imple
 		return "Resize";
 	}
 
+	@Override
 	public Dimension3 getValue() 
 	{
 		if (this.instance != null)
@@ -78,52 +79,33 @@ public class ModelScaleAdapter extends AbstractScaleAdapter<org.lgna.story.imple
 	public void setValue(Dimension3 value) 
 	{
 		super.setValue(value);
-		if (this.instance != null)
-		{
-//			Vector3 scaleVector = edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleVector3(value);
-//			Matrix3x3 oldScale = edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.getTransformableScale(this.instance.getSgComposite());
-//			Dimension3 oldScaleVector = this.inst
-//			final Dimension3 scaleToApply = new Dimension3(value.x / oldScaleVector.x, value.y / oldScaleVector.y, value.z / oldScaleVector.z);
+		if (this.instance != null){
 			this.instance.setScale(value);
-			
-//			if( ((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getAnimator() != null ) {
-//				class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
-//					private edu.cmu.cs.dennisc.math.Vector3 m_vPrev = new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 );
-//					private edu.cmu.cs.dennisc.math.Vector3 m_vBuffer = new edu.cmu.cs.dennisc.math.Vector3();
-//					public ScaleAnimation() {
-//						super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 ), scaleToApply );
-//					}
-//					@Override
-//					protected void updateValue( edu.cmu.cs.dennisc.math.Vector3 v ) {
-//						edu.cmu.cs.dennisc.math.Vector3.setReturnValueToDivision( m_vBuffer, v, m_vPrev );
-//						edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.applyScale( ModelScaleAdapter.this.instance.getSgComposite(), m_vBuffer, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
-//						m_vPrev.set( v );
-//					}
-//				}
-//				((MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor())).getAnimator().invokeLater( new ScaleAnimation(), null );
-//			} else {
-//				edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.applyScale( ModelScaleAdapter.this.instance.getSgComposite(), scaleToApply, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
-//			}
 		}
 	}
 
 	@Override
-	public Operation getEditModel() 
-	{
-		return null;
-	}
-
-	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) {
+	protected void addPropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
 		if (this.instance != null){
 			this.instance.addScaleListener(propertyListener);
 		}	
 	}
 
 	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
+	protected void removePropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
 		if (this.instance != null){
 			this.instance.removeScaleListener(propertyListener);
-		}		
+		}	
+	}
+
+
+	@Override
+	public Class<Dimension3> getPropertyType() {
+		return Dimension3.class;
+	}
+
+	@Override
+	public Dimension3 getValueCopy() {
+		return new Dimension3(this.getValue());
 	}
 }

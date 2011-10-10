@@ -41,64 +41,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.uicontroller;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.alice.ide.properties.adapter.FloatPropertyAdapter;
+import org.alice.ide.properties.adapter.PropertyAdapter;
 
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-
-public class MarkerColorAdapter extends AbstractColorPropertyAdapter<org.lgna.story.implementation.MarkerImp> {
-
-	public MarkerColorAdapter(org.lgna.story.implementation.MarkerImp instance, StandardExpressionState expressionState)
+public class FloatPropertyController extends LabelBasedPropertyController<Float>
+{
+	private static java.text.NumberFormat FLOAT_FORMAT = new java.text.DecimalFormat( "0.0" );
+	
+	public FloatPropertyController(AbstractPropertyAdapter<Float, ?> propertyAdapter)
 	{
-		super(instance, expressionState);
+		super(propertyAdapter);
 	}
-
-	public Color4f getValue() 
+	
+	@Override
+	public Class<?> getPropertyType() 
 	{
-		if (this.instance != null)
+		return Double.class;
+	}
+	
+	@Override
+	protected void setValueOnUI(Float value)
+	{
+		if (value != null)
 		{
-			return this.instance.color.getValue();
+			this.label.setText(FLOAT_FORMAT.format(value));
 		}
 		else
 		{
-			return null;
+			this.label.setText(BLANK_STRING);
 		}
 	}
-
-	@Override
-	public void setValue(final Color4f value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			new Thread() {
-				@Override
-				public void run() {
-					MarkerColorAdapter.this.instance.color.setValue(value);
-				}
-			}.start();
-		}
-		
-	}
-
-	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) 
-	{
-		if (this.instance != null)
-		{
-			instance.addColorListener(propertyListener);
-		}
-	}
-
-	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null)
-		{
-			instance.removeColorListener(propertyListener);
-		}
-	}
-
+	
 }

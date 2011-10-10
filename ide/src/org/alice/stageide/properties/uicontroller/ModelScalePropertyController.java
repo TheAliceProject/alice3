@@ -48,7 +48,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.alice.ide.properties.adapter.ScalePropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
 import org.alice.ide.properties.uicontroller.DoubleTextField;
@@ -64,12 +66,20 @@ import org.lgna.croquet.components.SwingAdapter;
 import org.lgna.story.Model;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.ScaleUtilities;
 import edu.cmu.cs.dennisc.math.Vector3;
 
-public class ModelScalePropertyController extends AbstractAdapterController<Matrix3x3>
+public class ModelScalePropertyController extends AbstractAdapterController<Dimension3>
 {
+	
+	protected class SetScaleOperation extends SetValueOperation<Dimension3> {
+		public SetScaleOperation( AbstractPropertyAdapter <Dimension3, ?> propertyAdapter, Dimension3 value ) {
+			super( propertyAdapter, value, null, java.util.UUID.fromString( "c742ea2e-cafe-41a0-9b76-38cb51921823" ) );
+		}
+	}
 	
 	private ActionListener valueChangeListener;
 	
@@ -88,7 +98,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 	private boolean doUpdateOnAdapter = true;
 	
 	
-	public ModelScalePropertyController(PropertyAdapter<Matrix3x3, Model> propertyAdapter) 
+	public ModelScalePropertyController(AbstractPropertyAdapter<Dimension3, ?> propertyAdapter) 
 	{
 		super(propertyAdapter);
 	}
@@ -251,7 +261,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 		}
 		if (this.propertyAdapter != null)
 		{
-			SetValueOperation<Matrix3x3> setScale = this.propertyAdapter.getSetValueOperation(Matrix3x3.createIdentity());
+			SetValueOperation<Dimension3> setScale = new SetScaleOperation(this.propertyAdapter, new Dimension3(1, 1, 1));
 			setScale.setName("Reset");
 			this.resetButton = setScale.createButton();
 			
@@ -279,18 +289,17 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 	}
 	
 	@Override
-	protected void setValueOnUI(Matrix3x3 value) 
+	protected void setValueOnUI(Dimension3 value) 
 	{
 		if (value != null)
 		{
-			Vector3 scaleVector = ScaleUtilities.newScaleVector3(value);
 			AxisAlignedBox bbox = this.getUnscaledBBox();
 			if (bbox != null)
 			{
 				this.doUpdateOnAdapter = false;
-				double width = bbox.getWidth() * scaleVector.x;
-				double height = bbox.getHeight() * scaleVector.y;
-				double depth = bbox.getDepth() * scaleVector.z;
+				double width = bbox.getWidth() * value.x;
+				double height = bbox.getHeight() * value.y;
+				double depth = bbox.getDepth() * value.z;
 				this.widthField.setValue(width);
 				this.heightField.setValue(height);
 				this.depthField.setValue(depth);
@@ -304,7 +313,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 		this.depthField.setValue(null);
 	}
 	
-	private Matrix3x3 getScaleFromUI(Object source)
+	private Dimension3 getScaleFromUI(Object source)
 	{
 		double desiredWidth = widthField.getValue();
 		double desiredHeight = heightField.getValue();
@@ -319,10 +328,10 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 			return null;
 		}
 		
-		Matrix3x3 currentScale = this.propertyAdapter.getValue();
-		double currentXScale = currentScale.right.x;
-		double currentYScale = currentScale.up.y;
-		double currentZScale = currentScale.backward.z;
+		Dimension3 currentScale = this.propertyAdapter.getValue();
+		double currentXScale = currentScale.x;
+		double currentYScale = currentScale.y;
+		double currentZScale = currentScale.z;
 		
 		double xScale = desiredWidth / bbox.getWidth();
 		double yScale = desiredHeight / bbox.getHeight();
@@ -349,8 +358,7 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 			}
 			
 		}
-		Vector3 scaleVector = new Vector3(xScale, yScale, zScale);
-		Matrix3x3 newScale = ScaleUtilities.newScaleMatrix3d(scaleVector);
+		Dimension3 newScale = new Dimension3(xScale, yScale, zScale);
 		return newScale;
 	}
 	
@@ -358,14 +366,14 @@ public class ModelScalePropertyController extends AbstractAdapterController<Matr
 	{ 
 		if (this.doUpdateOnAdapter)
 		{
-			Matrix3x3 newScale = getScaleFromUI(e.getSource());
+			Dimension3 newScale = getScaleFromUI(e.getSource());
 			if (newScale != null)
 			{
 				if (!newScale.equals(this.propertyAdapter.getValue()))
 				{
 					if (this.propertyAdapter.getLastSetValue() == null || !this.propertyAdapter.getLastSetValue().equals(newScale))
 					{
-						SetValueOperation<Matrix3x3> operation = this.propertyAdapter.getSetValueOperation(newScale);
+						SetValueOperation<Dimension3> operation = new SetScaleOperation(this.propertyAdapter, newScale);
 						operation.setName(newScale.toString());
 						operation.fire(e);
 					}
