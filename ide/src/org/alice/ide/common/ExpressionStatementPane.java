@@ -110,10 +110,18 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 				//todo:
 				if( this.getFactory() == org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance() ) {
-					org.lgna.project.ast.AbstractMember nextLonger = method.getNextLongerInChain();
+					org.lgna.project.ast.AbstractCode nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
+						java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextLonger.getParameters();
+						org.lgna.project.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+						org.lgna.croquet.Cascade< ? > cascade;
+						if( lastParameter.isKeyworded() ) {
+							cascade = org.alice.ide.croquet.models.ast.cascade.KeyedMoreCascade.getInstance( methodInvocation );
+						} else {
+							cascade = org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation );
+						}
 						this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-						org.lgna.croquet.components.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupButton< org.lgna.croquet.PopupPrepModel >( org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation ).getRoot().getPopupPrepModel() );
+						org.lgna.croquet.components.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupButton< org.lgna.croquet.PopupPrepModel >( cascade.getRoot().getPopupPrepModel() );
 						button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 						button.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
 						button.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
