@@ -81,5 +81,5 @@ public class UserParameter extends AbstractParameter {
 	@Override
 	public boolean isVariableLength() {
 		return false;
-	}	
+	}
 }

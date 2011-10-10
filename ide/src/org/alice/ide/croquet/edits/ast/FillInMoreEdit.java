@@ -65,6 +65,10 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 		binaryEncoder.encode( this.argumentExpression.getUUID() );
 	}
 
+	private org.lgna.project.ast.Argument getArgumentAt( org.lgna.project.ast.MethodInvocation methodInvocation, int index ) {
+		return (org.lgna.project.ast.Argument)methodInvocation.arguments.get( index );
+	}
+	
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel();
@@ -76,11 +80,11 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 		nextMethodInvocation.expression.setValue( instanceExpression );
 		final int N = prevMethodInvocation.arguments.size();
 		for( int i=0; i<N; i++ ) {
-			org.lgna.project.ast.Expression expressionI =  prevMethodInvocation.arguments.get( i ).expression.getValue();
+			org.lgna.project.ast.Expression expressionI = this.getArgumentAt( prevMethodInvocation, i ).expression.getValue();
 			//prevMethodInvocation.arguments.get( i ).expression.setValue( null );
-			nextMethodInvocation.arguments.get( i ).expression.setValue( expressionI );
+			this.getArgumentAt( nextMethodInvocation, i ).expression.setValue( expressionI );
 		}
-		nextMethodInvocation.arguments.get( N ).expression.setValue( this.argumentExpression );
+		this.getArgumentAt( nextMethodInvocation, N ).expression.setValue( this.argumentExpression );
 		model.getExpressionStatement().expression.setValue( nextMethodInvocation );
 //		this.getModel().updateToolTipText();
 	}
@@ -95,9 +99,9 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 		prevMethodInvocation.expression.setValue( instanceExpression );
 		final int N = prevMethodInvocation.arguments.size();
 		for( int i=0; i<N; i++ ) {
-			org.lgna.project.ast.Expression expressionI =  nextMethodInvocation.arguments.get( i ).expression.getValue();
+			org.lgna.project.ast.Expression expressionI =  this.getArgumentAt( nextMethodInvocation, i ).expression.getValue();
 			//nextMethodInvocation.arguments.get( i ).expression.setValue( null );
-			prevMethodInvocation.arguments.get( i ).expression.setValue( expressionI );
+			this.getArgumentAt( prevMethodInvocation, i ).expression.setValue( expressionI );
 		}
 		//nextMethodInvocation.arguments.get( N ).expression.setValue( null );
 
@@ -115,7 +119,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), locale );
 			rv.append( " " );
 			final int N = nextMethodInvocation.arguments.size(); 
-			org.lgna.project.ast.Argument argument = nextMethodInvocation.arguments.get( N-1 );
+			org.lgna.project.ast.AbstractArgument argument = nextMethodInvocation.arguments.get( N-1 );
 			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, argument, locale );
 		}
 		return rv;

@@ -152,9 +152,10 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 
 	private static org.lgna.project.ast.Expression getArgumentExpressionAt( org.lgna.project.ast.InstanceCreation instanceCreation, int index ) {
 		assert instanceCreation.arguments.size() >= index;
-		org.lgna.project.ast.Argument arg = instanceCreation.arguments.get( index );
+		org.lgna.project.ast.AbstractArgument arg = instanceCreation.arguments.get( index );
 		assert arg != null;
-		return arg.expression.getValue();
+		assert arg instanceof org.lgna.project.ast.Argument;
+		return ((org.lgna.project.ast.Argument)arg).expression.getValue();
 	}
 	public AudioSourceChooser() {
 		org.lgna.project.ast.ResourceExpression resourceExpression = null;

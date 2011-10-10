@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentListProperty extends NodeListProperty< Argument > {
+public class ArgumentListProperty extends NodeListProperty< AbstractArgument > {
 	public ArgumentListProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		super( owner );
 	}
