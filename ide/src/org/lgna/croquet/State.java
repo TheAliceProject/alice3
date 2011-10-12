@@ -95,9 +95,9 @@ public abstract class State<T> extends CompletionModel {
 		if( this.isAppropriateToComplete() ) {
 			this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
 		}
-//		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
-//			component.revalidateAndRepaint();
-//		}
+		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
+			component.revalidateAndRepaint();
+		}
 //		StringState.this.previousValue = nextValue;
 		this.fireChanged( this.prevValue, nextValue, isAdjusting );
 		this.prevValue = nextValue;
