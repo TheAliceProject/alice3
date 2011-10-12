@@ -89,6 +89,16 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	@Override
+	public boolean isVariableLength() {
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
+		if( mthd != null ) {
+			return mthd.isVarArgs();
+		} else {
+			return false;
+		}
+	}
+
+	@Override
 	public boolean isValid() {
 		return this.methodReflectionProxy.getReification() != null;
 	}

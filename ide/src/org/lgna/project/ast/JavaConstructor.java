@@ -87,7 +87,15 @@ public class JavaConstructor extends AbstractConstructor {
 	public ConstructorReflectionProxy getConstructorReflectionProxy() {
 		return this.constructorReflectionProxy;
 	}
-	
+	@Override
+	public boolean isVariableLength() {
+		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getReification();
+		if( cnstrctr != null ) {
+			return cnstrctr.isVarArgs();
+		} else {
+			return false;
+		}
+	}
 	@Override
 	public JavaType getDeclaringType() {
 		return JavaType.getInstance( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );

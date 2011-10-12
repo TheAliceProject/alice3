@@ -40,29 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum TraditionalStyle implements Style {
-	BEGIN_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
-	BEGIN_GENTLY_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
-	BEGIN_ABRUPTLY_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
-	BEGIN_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
-	private edu.cmu.cs.dennisc.animation.TraditionalStyle internal;
-	public static TraditionalStyle valueOf( boolean[] beginAndEndGentlies ) {
-		for( TraditionalStyle value : TraditionalStyle.values() ) {
-			if( value.internal.isSlowInDesired() == beginAndEndGentlies[ 0 ] && value.internal.isSlowOutDesired() == beginAndEndGentlies[ 1 ] ) {
-				return value;
-			}
-		}
-		throw new AssertionError();
+public class DurationAndAnimationStyleAndAsSeenByArgumentFactory extends DurationAndAnimationStyleArgumentFactory {
+	protected DurationAndAnimationStyleAndAsSeenByArgumentFactory() {
+		super();
 	}
-	TraditionalStyle( edu.cmu.cs.dennisc.animation.TraditionalStyle internal ) {
-		this.internal = internal;
-	}
-	public double calculatePortion( double timeElapsed, double timeTotal ) {
-		return this.internal.calculatePortion( timeElapsed, timeTotal );
+	public static AsSeenBy asSeenBy( Entity entity ) {
+		return new AsSeenBy( entity );
 	}
 }

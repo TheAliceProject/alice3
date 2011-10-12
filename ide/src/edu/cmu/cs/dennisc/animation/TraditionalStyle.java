@@ -50,13 +50,20 @@ public enum TraditionalStyle implements Style {
 	BEGIN_GENTLY_AND_END_ABRUPTLY( true, false ),
 	BEGIN_ABRUPTLY_AND_END_GENTLY( false, true ),
 	BEGIN_AND_END_GENTLY( true, true );
-	private boolean m_isSlowInDesired;
-	private boolean m_isSlowOutDesired;
+	private boolean isSlowInDesired;
+	private boolean isSlowOutDesired;
 	TraditionalStyle( boolean isSlowInDesired, boolean isSlowOutDesired ) {
-		m_isSlowInDesired = isSlowInDesired;
-		m_isSlowOutDesired = isSlowOutDesired;
+		this.isSlowInDesired = isSlowInDesired;
+		this.isSlowOutDesired = isSlowOutDesired;
 	}
-
+	
+	public boolean isSlowInDesired() {
+		return this.isSlowInDesired;
+	}
+	public boolean isSlowOutDesired() {
+		return this.isSlowOutDesired;
+	}
+	
 	private static double gently (double x, double A, double B) {
 		double y, a3, b3, c3, m, b2;
 		if (x < A) {
@@ -78,14 +85,14 @@ public enum TraditionalStyle implements Style {
 	public double calculatePortion( double timeElapsed, double timeTotal ) {
 		if( timeTotal!=0 ) {
 			double portion = timeElapsed/timeTotal;
-			if( m_isSlowInDesired ) {
-				if( m_isSlowOutDesired ) {
+			if( this.isSlowInDesired ) {
+				if( this.isSlowOutDesired ) {
 					return gently( portion, 0.3, 0.8 );
 				} else {
 					return gently( portion, 0.99, 0.999 );
 				}
 			} else {
-				if( m_isSlowOutDesired ) {
+				if( this.isSlowOutDesired ) {
 					return gently( portion, 0.001, 0.01 );
 				} else {
 					return portion;

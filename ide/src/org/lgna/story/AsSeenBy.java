@@ -40,29 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum TraditionalStyle implements Style {
-	BEGIN_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
-	BEGIN_GENTLY_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
-	BEGIN_ABRUPTLY_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
-	BEGIN_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
-	private edu.cmu.cs.dennisc.animation.TraditionalStyle internal;
-	public static TraditionalStyle valueOf( boolean[] beginAndEndGentlies ) {
-		for( TraditionalStyle value : TraditionalStyle.values() ) {
-			if( value.internal.isSlowInDesired() == beginAndEndGentlies[ 0 ] && value.internal.isSlowOutDesired() == beginAndEndGentlies[ 1 ] ) {
-				return value;
+public class AsSeenBy implements Turn.Detail {
+	private final Entity value;
+	public AsSeenBy( Entity value ) {
+		this.value = value; 
+	}
+	/*package-private*/ static Entity getValue( Object[] details, Entity defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof AsSeenBy ) {
+				AsSeenBy asSeenBy = (AsSeenBy)detail;
+				return asSeenBy.value;
 			}
 		}
-		throw new AssertionError();
-	}
-	TraditionalStyle( edu.cmu.cs.dennisc.animation.TraditionalStyle internal ) {
-		this.internal = internal;
-	}
-	public double calculatePortion( double timeElapsed, double timeTotal ) {
-		return this.internal.calculatePortion( timeElapsed, timeTotal );
+		return defaultValue;
 	}
 }
