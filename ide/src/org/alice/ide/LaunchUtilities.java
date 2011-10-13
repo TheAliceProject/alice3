@@ -199,7 +199,7 @@ public class LaunchUtilities {
 				ide.getFrame().setVisible( isVisible );
 
 				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSceneEditorExpanded" ) ) {
-					org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().setValue( true );
+					org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().setValueTransactionlessly( true );
 				}
 			}
 		};

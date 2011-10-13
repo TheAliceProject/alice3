@@ -202,7 +202,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 			try
 			{
 				org.lgna.project.ast.Expression expressionValue = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression(this.getValue());
-				this.expressionState.setValue(expressionValue);
+				this.expressionState.setValueTransactionlessly(expressionValue);
 			}
 			catch (CannotCreateExpressionException e)
 			{

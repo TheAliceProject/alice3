@@ -56,7 +56,7 @@ public abstract class NameInputPane extends org.lgna.croquet.components.RowsSpri
 
 	public void setAndSelectNameText( String text ) {
 		if( text != null ) {
-			this.nameState.setValue( text );
+			this.nameState.setValueTransactionlessly( text );
 			this.getTextField().selectAll();
 		}
 	}

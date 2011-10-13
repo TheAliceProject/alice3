@@ -80,7 +80,7 @@ public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState 
 			public void windowDeactivated(java.awt.event.WindowEvent e) {
 			}
 			public void windowClosing(java.awt.event.WindowEvent e) {
-				IsFrameShowingState.this.setValue( false );
+				IsFrameShowingState.this.changeValueFromSwing( false, false, new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
 			}
 			public void windowClosed(java.awt.event.WindowEvent e) {
 			}

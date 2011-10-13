@@ -892,10 +892,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
 		}
 		this.refreshAccessibles();
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValue( (NamedUserType)rootField.getValueType() );
+		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON );
+				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON );
 			}
 		} );
 	}
@@ -1070,7 +1070,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
 		if( nextFocusedCode != null ) {
-			org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValue( (NamedUserType)nextFocusedCode.getDeclaringType() );
+			org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (NamedUserType)nextFocusedCode.getDeclaringType() );
 			org.alice.ide.croquet.models.typeeditor.DeclarationComposite composite = org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( nextFocusedCode );
 			if( org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().containsItem( composite ) ) {
 				//pass

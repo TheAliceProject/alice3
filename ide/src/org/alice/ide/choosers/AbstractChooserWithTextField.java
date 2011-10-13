@@ -71,7 +71,7 @@ public abstract class AbstractChooserWithTextField<E extends org.lgna.project.as
 	}
 
 	public void setAndSelectText( String text ) {
-		this.stringState.setValue( text );
+		this.stringState.setValueTransactionlessly( text );
 		this.textField.selectAll();
 	}
 }

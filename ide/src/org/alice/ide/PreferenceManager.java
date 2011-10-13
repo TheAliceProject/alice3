@@ -115,7 +115,7 @@ public class PreferenceManager {
 			//pass
 		} else {
 			E value = decodeItem( encoding, codec );
-			rv.setSelectedItem( value );
+			rv.setValueTransactionlessly( value );
 		}
 		return rv;
 	}
@@ -159,7 +159,7 @@ public class PreferenceManager {
 			clearAllPreferencesIfRequested( userPreferences );
 			java.util.UUID id = booleanState.getId();
 			boolean value = userPreferences.getBoolean( id.toString(), booleanState.getValue() );
-			booleanState.setValue( value );
+			booleanState.setValueTransactionlessly( value );
 			booleanStatePreferences.add( booleanState );
 		} else {
 			System.err.println( "registerAndInitializePreference: " + booleanState );
@@ -172,7 +172,7 @@ public class PreferenceManager {
 			clearAllPreferencesIfRequested( userPreferences );
 			java.util.UUID id = stringState.getId();
 			String value = userPreferences.get( id.toString(), stringState.getValue() );
-			stringState.setValue( value );
+			stringState.setValueTransactionlessly( value );
 			stringStatePreferences.add( stringState );
 		} else {
 			System.err.println( "registerAndInitializePreference: " + stringState );

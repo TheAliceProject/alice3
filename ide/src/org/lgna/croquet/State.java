@@ -112,6 +112,22 @@ public abstract class State<T> extends CompletionModel {
 	public final void setValue( T value ) {
 		this.changeValue( value, false, null );
 	}
+
+	private void changeValueTransactionlessly( T value, boolean isAdjusting ) {
+		this.pushIgnore();
+		try {
+			this.changeValue( value, isAdjusting, null );
+		} finally {
+			this.popIgnore();
+		}
+	}
+
+	public final void setValueTransactionlessly( T value ) {
+		this.changeValueTransactionlessly( value, false );
+	}
+	public final void adjustValueTransactionlessly( T value ) {
+		this.changeValueTransactionlessly( value, true );
+	}
 	@Override
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
