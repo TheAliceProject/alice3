@@ -26,7 +26,7 @@ public class ModelAdapter< E extends Model > extends edu.cmu.cs.dennisc.lookingg
 //		if( rc.isGLChanged() ) {
 //			m_element.forget();
 //		}
-		m_element.render();
+		m_element.render(rc.gl, rc.getGlobalBrightness());
 	}
 	@Override
 	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
