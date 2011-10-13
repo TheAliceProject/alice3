@@ -35,4 +35,17 @@ public class ModelClassData extends BaseModelClassData
 	public static final ModelClassData CAMEL_CLASS_DATA = new ModelClassData(org.lgna.story.resources.CamelResource.class, "org.lgna.story.resources.camel", QUADRUPED_BASE_CLASS_DATA);
 	public static final ModelClassData HORSE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.HorseResource.class, "org.lgna.story.resources.horse", QUADRUPED_BASE_CLASS_DATA);
 	
+	public static final ModelClassData BED_CLASS_DATA = new ModelClassData(org.lgna.story.resources.BedResource.class, "org.lgna.story.resources.bed", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData ARMOIRE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.ArmoireResource.class, "org.lgna.story.resources.armoire", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData BOOKCASE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.BookcaseResource.class, "org.lgna.story.resources.bookcase", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData DESK_CLASS_DATA = new ModelClassData(org.lgna.story.resources.DeskResource.class, "org.lgna.story.resources.desk", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData DRESSER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.DresserResource.class, "org.lgna.story.resources.dresser", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData FRIDGE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.RefrigeratorResource.class, "org.lgna.story.resources.refrigerator", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData HOTTUB_CLASS_DATA = new ModelClassData(org.lgna.story.resources.HotTubResource.class, "org.lgna.story.resources.hottub", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData LIGHT_CLASS_DATA = new ModelClassData(org.lgna.story.resources.LightResource.class, "org.lgna.story.resources.light", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData LOVESEAT_CLASS_DATA = new ModelClassData(org.lgna.story.resources.LoveseatResource.class, "org.lgna.story.resources.loveseat", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData PINBALL_CLASS_DATA = new ModelClassData(org.lgna.story.resources.PinballMachineResource.class, "org.lgna.story.resources.pinball", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData SOFA_CLASS_DATA = new ModelClassData(org.lgna.story.resources.SofaResource.class, "org.lgna.story.resources.sofa", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData UFO_CLASS_DATA = new ModelClassData(org.lgna.story.resources.UFOResource.class, "org.lgna.story.resources.ufo", PROP_BASE_CLASS_DATA);
+	
 }
