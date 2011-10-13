@@ -13,7 +13,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	
 	static {
-		StorytellingResources.getInstance().loadSimsBundles();
+		//StorytellingResources.getInstance().loadSimsBundles();
 	}
 	
 	

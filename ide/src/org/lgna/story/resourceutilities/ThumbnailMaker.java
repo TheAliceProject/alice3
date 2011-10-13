@@ -101,6 +101,18 @@ public class ThumbnailMaker {
 		}
 	}
 	
+	private void setSize(int width, int height)
+	{
+		boolean forceNew = this.width != width || this.height != height;
+		this.width = width;
+		this.height = height;
+		if( offscreenLookingGlass == null || forceNew) {
+			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
+			offscreenLookingGlass.setSize( this.width, this.height );
+		}
+		setUpCamera(offscreenLookingGlass);
+	}
+	
 	private void initializeIfNecessary(int width, int height)
 	{
 		boolean forceNew = this.width != width || this.height != height;
@@ -150,15 +162,6 @@ public class ThumbnailMaker {
 		OrthogonalMatrix3x3 pointAtOrientation = OrthogonalMatrix3x3.createFromForwardAndUpGuide(cameraDir, Vector3.accessPositiveYAxis());
 		AffineMatrix4x4 rv = new AffineMatrix4x4(pointAtOrientation, cameraLocation);
 		return rv;
-	}
-	
-	private void setSize(int width, int height)
-	{
-		Dimension d = offscreenLookingGlass.getSize();
-		if (d.width != width || d.height != height)
-		{
-			offscreenLookingGlass.setSize(width, height);
-		}
 	}
 	
 	private boolean isTransparent(int pixel)
@@ -292,17 +295,18 @@ public class ThumbnailMaker {
 	}
 	
 	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int width, int height) throws Exception {
-		initializeIfNecessary(width, height);
+//		initializeIfNecessary(width, height);
+		this.setSize((int)(width*SEARCH_FACTOR), (int)(height*SEARCH_FACTOR));
 		
 		v.setParent(this.sgModelTransformable);
 		world.getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox));
 		
 		AffineMatrix4x4 cameraTransform = world.getSGCameraVehicle().getAbsoluteTransformation();
-		java.awt.image.BufferedImage testImage = testImageOffscreenLookingGlass.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
-		java.nio.FloatBuffer depthBuffer = testImageOffscreenLookingGlass.createFloatBufferForUseAsDepthBuffer();
+		java.awt.image.BufferedImage testImage = offscreenLookingGlass.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+		java.nio.FloatBuffer depthBuffer = offscreenLookingGlass.createFloatBufferForUseAsDepthBuffer();
 		
-		testImageOffscreenLookingGlass.clearAndRenderOffscreen();
-		testImage = testImageOffscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+		offscreenLookingGlass.clearAndRenderOffscreen();
+		testImage = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 		
 		ImageUtilities.write("C:/batchOutput/thumbnailTest/initial.png", testImage);
 		
@@ -321,8 +325,8 @@ public class ThumbnailMaker {
 		{
 			cameraRay.getPointAlong(testPosition, currentT);
 			world.getSGCameraVehicle().setTranslationOnly(testPosition, world);
-			testImageOffscreenLookingGlass.clearAndRenderOffscreen();
-			testImage = testImageOffscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+			offscreenLookingGlass.clearAndRenderOffscreen();
+			testImage = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 			
 			ImageUtilities.write("C:/batchOutput/thumbnailTest/test"+count+".png", testImage);
 			
@@ -336,6 +340,9 @@ public class ThumbnailMaker {
 		}
 		
 		world.getSGCameraVehicle().setTranslationOnly(lastGoodPosition, world);
+		
+		this.setSize((int)(width*ANTI_ALIAS_FACTOR), (int)(height*ANTI_ALIAS_FACTOR));
+		
 		offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
 		
