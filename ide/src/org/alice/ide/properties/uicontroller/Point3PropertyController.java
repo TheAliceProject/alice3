@@ -65,7 +65,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 	
 	protected class SetPoint3Operation extends SetValueOperation<Point3> {
 		public SetPoint3Operation( AbstractPropertyAdapter <Point3, ?> propertyAdapter, Point3 value) {
-			super( propertyAdapter, value, null, java.util.UUID.fromString( "c742ea2e-cafe-41a0-9b76-38cb51921823" ) );
+			super( propertyAdapter, value, null, java.util.UUID.fromString( "c4da3421-b4ea-4a6d-9718-7ba6b75cc3e3" ) );
 		}
 	}
 	
