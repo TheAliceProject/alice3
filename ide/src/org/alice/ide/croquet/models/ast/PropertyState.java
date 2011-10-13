@@ -68,7 +68,7 @@ public class PropertyState extends org.alice.ide.croquet.models.StandardExpressi
 		this.setter = setter;
 	}
 	private org.lgna.project.ast.JavaMethodParameter getParameter0() {
-		return (org.lgna.project.ast.JavaMethodParameter)this.setter.getParameters().get( 0 );
+		return (org.lgna.project.ast.JavaMethodParameter)this.setter.getRequiredParameters().get( 0 );
 	}
 	@Override
 	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {

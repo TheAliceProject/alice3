@@ -46,8 +46,8 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class DurationAndAnimationStyleAndAsSeenByArgumentFactory extends DurationAndAnimationStyleArgumentFactory {
-	protected DurationAndAnimationStyleAndAsSeenByArgumentFactory() {
+public class DurationAnimationStyleAsSeenByArgumentFactory extends DurationAnimationStyleArgumentFactory {
+	protected DurationAnimationStyleAsSeenByArgumentFactory() {
 		super();
 	}
 	public static AsSeenBy asSeenBy( Entity entity ) {

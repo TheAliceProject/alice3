@@ -106,7 +106,7 @@ public class UserMethod extends AbstractMethod implements UserCode {
 		return returnType.getValue();
 	}
 	@Override
-	public java.util.ArrayList< ? extends AbstractParameter > getParameters() {
+	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
 		return parameters.getValue();
 	}
 	@Override
@@ -139,8 +139,12 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	}
 
 	@Override
-	public boolean isVariableLength() {
-		return false;
+	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+		return null;
+	}
+	@Override
+	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+		return null;
 	}
 
 	@Override

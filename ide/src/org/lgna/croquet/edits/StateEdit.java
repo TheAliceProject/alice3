@@ -64,10 +64,10 @@ public abstract class StateEdit<M extends org.lgna.croquet.State<T>,T> extends o
 	public abstract T getNextValue();
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().setValue(this.getNextValue());
+		this.getModel().setValueTransactionlessly( this.getNextValue() );
 	}
 	@Override
 	protected final void undoInternal() {
-		this.getModel().setValue(this.getPreviousValue());
+		this.getModel().setValueTransactionlessly( this.getPreviousValue() );
 	}
 }

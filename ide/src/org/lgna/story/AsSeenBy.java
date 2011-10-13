@@ -46,7 +46,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class AsSeenBy implements Turn.Detail {
+public class AsSeenBy implements Turn.Detail, Roll.Detail {
 	private final Entity value;
 	public AsSeenBy( Entity value ) {
 		this.value = value; 

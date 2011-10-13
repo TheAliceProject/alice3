@@ -183,7 +183,7 @@ public abstract class CascadeManager {
 				}
 			}
 			if( this.contextBlockStatementIndexPair != null ) {
-				for( org.lgna.project.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
+				for( org.lgna.project.ast.AbstractParameter parameter : codeInFocus.getRequiredParameters() ) {
 					org.lgna.project.ast.AbstractType<?,?,?> parameterType = parameter.getValueType();
 					if( type.isAssignableFrom( parameterType ) ) {
 						this.addFillInAndPossiblyPartFillIns( rv, new org.lgna.project.ast.ParameterAccess( parameter ), parameter.getValueType(), type );

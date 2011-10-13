@@ -60,7 +60,7 @@ public class RootGalleryNode extends GalleryNode {
 	public org.lgna.project.ast.AbstractConstructor getConstructorForArgumentType( org.lgna.project.ast.AbstractType< ?,?,? > argumentType ) {
 		for( org.lgna.project.ast.NamedUserType userType : this.getDeclarationChildren() ) {
 			org.lgna.project.ast.AbstractConstructor constructor = userType.getDeclaredConstructors().get( 0 );
-			org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
+			org.lgna.project.ast.AbstractParameter parameter = constructor.getRequiredParameters().get( 0 );
 			if( parameter.getValueType().isAssignableFrom( argumentType ) ) {
 				return constructor;
 			}
@@ -83,7 +83,7 @@ public class RootGalleryNode extends GalleryNode {
 	public GalleryNode getChild( int index ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = this.getDeclarationChildren().get( index );
 		org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-		org.lgna.project.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
+		org.lgna.project.ast.AbstractParameter parameter = constructor.getRequiredParameters().get( 0 );
 		return ArgumentTypeGalleryNode.getInstance( parameter.getValueType() );
 	}
 	@Override

@@ -46,7 +46,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class Turn extends DurationAndAnimationStyleAndAsSeenByArgumentFactory {
+public class Turn extends DurationAnimationStyleAsSeenByArgumentFactory {
 	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=Turn.class )
 	public static interface Detail {
 	}

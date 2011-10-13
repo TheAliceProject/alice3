@@ -59,7 +59,7 @@ public abstract class AbstractMethod extends AbstractCode {
 	public abstract AbstractType<?,?,?> getReturnType();
 	
 	public boolean isOverride() {
-		java.util.ArrayList< ? extends AbstractParameter > parameters = this.getParameters();
+		java.util.ArrayList< ? extends AbstractParameter > parameters = this.getRequiredParameters();
 		final int N = parameters.size();
 		AbstractType<?,?,?>[] parameterTypes = new AbstractType[ N ];
 		for( int i=0; i<N; i++ ) {

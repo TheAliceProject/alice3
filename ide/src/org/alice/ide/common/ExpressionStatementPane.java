@@ -112,7 +112,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				if( this.getFactory() == org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance() ) {
 					org.lgna.project.ast.AbstractCode nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
-						java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextLonger.getParameters();
+						java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextLonger.getRequiredParameters();
 						org.lgna.project.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
 						org.lgna.croquet.Cascade< ? > cascade;
 						if( lastParameter.isKeyworded() ) {

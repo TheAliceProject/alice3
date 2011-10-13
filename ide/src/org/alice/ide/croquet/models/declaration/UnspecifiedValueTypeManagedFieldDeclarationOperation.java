@@ -63,7 +63,7 @@ public class UnspecifiedValueTypeManagedFieldDeclarationOperation extends Initia
 			} else {
 				type = null;
 			}
-			UnspecifiedValueTypeManagedFieldDeclarationOperation.this.getComponentValueTypeState().setValue( type );
+			UnspecifiedValueTypeManagedFieldDeclarationOperation.this.getComponentValueTypeState().setValueTransactionlessly( type );
 		}
 	};
 	private UnspecifiedValueTypeManagedFieldDeclarationOperation() {

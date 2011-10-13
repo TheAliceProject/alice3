@@ -48,8 +48,9 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCode extends AbstractMember {
-	public abstract java.util.ArrayList< ? extends AbstractParameter > getParameters();
-	public abstract boolean isVariableLength();
+	public abstract java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters();
+	public abstract AbstractParameter getVariableLengthParameter();
+	public abstract AbstractParameter getKeyedParameter();
 	public AbstractCode getShortestInChain() {
 		AbstractCode next = this.getNextShorterInChain();
 		if( next != null ) {

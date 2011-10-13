@@ -64,7 +64,8 @@ public abstract class Turnable extends Entity {
 				Duration.getValue( details ), 
 				AnimationStyle.getValue( details ) 
 		);
-		this.turn( TurnDirection.LEFT, 1.0, Turn.duration( 1.0 ), Turn.animationStyle( true, false ), Turn.asSeenBy( this.getVehicle() ) );
+//		this.turn( TurnDirection.LEFT, 1.0, new Duration( 1.0 ), new AnimationStyle( true, false ), new AsSeenBy( this.getVehicle() ) );
+//		this.turn( TurnDirection.LEFT, 1.0, Turn.duration( 1.0 ), Turn.animationStyle( true, false ), Turn.asSeenBy( this.getVehicle() ) );
 	}
 //	@MethodTemplate(isFollowedByLongerMethod = true)
 //	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount ) {

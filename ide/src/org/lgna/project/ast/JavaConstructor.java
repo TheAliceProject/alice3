@@ -47,10 +47,11 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaConstructor extends AbstractConstructor {
-	private static java.util.Map< ConstructorReflectionProxy, JavaConstructor > s_map = new java.util.HashMap< ConstructorReflectionProxy, JavaConstructor >();
+	private static final java.util.Map< ConstructorReflectionProxy, JavaConstructor > s_map = new java.util.HashMap< ConstructorReflectionProxy, JavaConstructor >();
 
-	private ConstructorReflectionProxy constructorReflectionProxy;
-	private java.util.ArrayList< JavaConstructorParameter > parameters;
+	private final ConstructorReflectionProxy constructorReflectionProxy;
+	private final java.util.ArrayList< JavaConstructorParameter > requiredParameters;
+	private final AbstractParameter variableOrKeyedParameter;
 
 	public static JavaConstructor getInstance( ConstructorReflectionProxy constructorReflectionProxy ) {
 		if( constructorReflectionProxy != null ) {
@@ -75,25 +76,52 @@ public class JavaConstructor extends AbstractConstructor {
 	
 	private JavaConstructor( ConstructorReflectionProxy constructorReflectionProxy ) {
 		this.constructorReflectionProxy = constructorReflectionProxy;
-		ClassReflectionProxy[] classReflectionProxies = this.constructorReflectionProxy.getParameterClassReflectionProxies();
-		this.parameters = new java.util.ArrayList< JavaConstructorParameter >();
-		this.parameters.ensureCapacity( classReflectionProxies.length );
+		ClassReflectionProxy[] parameterTypeReflectionProxies = this.constructorReflectionProxy.getParameterClassReflectionProxies();
+		final int N;
+		if( this.constructorReflectionProxy.isVarArgs() ) {
+			N = parameterTypeReflectionProxies.length - 1;
+		} else {
+			N = parameterTypeReflectionProxies.length;
+		}
+		this.requiredParameters = new java.util.ArrayList< JavaConstructorParameter >();
+		this.requiredParameters.ensureCapacity( N );
 		java.lang.annotation.Annotation[][] parameterAnnotations = this.constructorReflectionProxy.getParameterAnnotations();
-		for( int i = 0; i < classReflectionProxies.length; i++ ) {
-			this.parameters.add( new JavaConstructorParameter( this, i, parameterAnnotations[ i ] ) );
+		for( int i = 0; i < N; i++ ) {
+			this.requiredParameters.add( new JavaConstructorParameter( this, i, parameterAnnotations[ i ] ) );
+		}
+		if( this.constructorReflectionProxy.isVarArgs() ) {
+			this.variableOrKeyedParameter = new JavaConstructorParameter( this, N, parameterAnnotations[ N ] );
+		} else {
+			this.variableOrKeyedParameter = null;
 		}
 	}
 	
 	public ConstructorReflectionProxy getConstructorReflectionProxy() {
 		return this.constructorReflectionProxy;
 	}
+	
 	@Override
-	public boolean isVariableLength() {
-		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getReification();
-		if( cnstrctr != null ) {
-			return cnstrctr.isVarArgs();
+	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+		if( this.variableOrKeyedParameter != null ) {
+			if( variableOrKeyedParameter.getValueType().getKeywordFactoryType() != null ) {
+				return this.variableOrKeyedParameter;
+			} else {
+				return null;
+			}
 		} else {
-			return false;
+			return null;
+		}
+	}
+	@Override
+	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+		if( this.variableOrKeyedParameter != null ) {
+			if( variableOrKeyedParameter.getValueType().getKeywordFactoryType() != null ) {
+				return null;
+			} else {
+				return this.variableOrKeyedParameter;
+			}
+		} else {
+			return null;
 		}
 	}
 	@Override
@@ -101,8 +129,8 @@ public class JavaConstructor extends AbstractConstructor {
 		return JavaType.getInstance( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 	@Override
-	public java.util.ArrayList< ? extends AbstractParameter > getParameters() {
-		return this.parameters;
+	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
+		return this.requiredParameters;
 	}
 	@Override
 	public org.lgna.project.annotations.Visibility getVisibility() {
@@ -125,7 +153,7 @@ public class JavaConstructor extends AbstractConstructor {
 	public boolean isParameterInShortestChainedConstructor( JavaConstructorParameter parameterDeclaredInJavaConstructor ) {
 		int index = parameterDeclaredInJavaConstructor.getIndex();
 		JavaConstructor constructorDeclaredInJava = (JavaConstructor)getShortestInChain();
-		return index < constructorDeclaredInJava.getParameters().size();
+		return index < constructorDeclaredInJava.getRequiredParameters().size();
 	}
 	
 	@Override

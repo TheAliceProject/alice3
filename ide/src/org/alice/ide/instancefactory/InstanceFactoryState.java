@@ -103,7 +103,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			} else {
 				nextValue = null;
 			}
-			this.setValue( nextValue );
+			this.setValueTransactionlessly( nextValue );
 		}
 	}
 	@Override

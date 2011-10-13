@@ -48,7 +48,11 @@ package org.lgna.project.ast;
  */
 public abstract class UserConstructor extends AbstractConstructor {
 	@Override
-	public boolean isVariableLength() {
-		return false;
+	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+		return null;
+	}
+	@Override
+	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+		return null;
 	}
 }

@@ -100,7 +100,7 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 				if( nextValue ) {
 					//pass
 				} else {
-					IsRecursionAllowedState.getInstance().setValue( false );
+					IsRecursionAllowedState.getInstance().setValueTransactionlessly( false );
 				}
 				label.getAwtComponent().setEnabled( nextValue );
 				button.getAwtComponent().setEnabled( nextValue );

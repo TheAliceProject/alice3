@@ -88,7 +88,7 @@ public class AnonymousUserConstructor extends UserConstructor {
 		return null;
 	}
 	@Override
-	public java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > getParameters() {
+	public java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > getRequiredParameters() {
 		return this.parameters;
 	}
 	@Override

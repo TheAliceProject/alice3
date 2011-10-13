@@ -236,7 +236,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				StencilsPresentation.this.stencil.revalidateAndRepaint();
-				StencilsPresentation.this.isInterceptingEvents.setValue( nextValue );
+				StencilsPresentation.this.isInterceptingEvents.setValueTransactionlessly( nextValue );
 				StencilsPresentation.this.isInterceptingEvents.setEnabled( nextValue );
 			}
 		} );

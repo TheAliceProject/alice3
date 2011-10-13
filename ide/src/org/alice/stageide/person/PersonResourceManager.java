@@ -317,7 +317,7 @@ public enum PersonResourceManager {
 			org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
 			org.alice.stageide.person.models.HairState.getInstance().setSelectedItem( hair );
 			org.alice.stageide.person.models.HairColorNameState.getInstance().setSelectedItem( hair != null ? hair.toString() : null );
-			org.alice.stageide.person.models.ObesityLevelState.getInstance().setValue( personResource.getObesityLevel() );
+			org.alice.stageide.person.models.ObesityLevelState.getInstance().setValueTransactionlessly( personResource.getObesityLevel() );
 		} finally {
 			this.addListenersIfAppropriate();
 		}

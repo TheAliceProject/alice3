@@ -57,7 +57,7 @@ public class InitializerManagedFieldDeclarationOperation  extends ManagedFieldDe
 			} else {
 				type = null;
 			}
-			InitializerManagedFieldDeclarationOperation.this.getComponentValueTypeState().setValue( type );
+			InitializerManagedFieldDeclarationOperation.this.getComponentValueTypeState().setValueTransactionlessly( type );
 		}
 	};
 	public InitializerManagedFieldDeclarationOperation( java.util.UUID id, org.lgna.project.ast.Expression initialExpression ) {

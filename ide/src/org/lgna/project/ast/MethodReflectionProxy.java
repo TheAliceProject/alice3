@@ -47,14 +47,20 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class MethodReflectionProxy extends InvocableReflectionProxy< java.lang.reflect.Method > {
-	private String name;
-	public MethodReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name, ClassReflectionProxy[] parameterClassReflectionProxies ) {
+	private final String name;
+	private final boolean isVarArgs; 
+	public MethodReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name, ClassReflectionProxy[] parameterClassReflectionProxies, boolean isVarArgs ) {
 		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
 		this.name = name;
+		this.isVarArgs = isVarArgs;
 	}
 	public MethodReflectionProxy( java.lang.reflect.Method mthd ) {
 		super( mthd, mthd.getDeclaringClass(), mthd.getParameterTypes() );
 		this.name = mthd.getName();
+		this.isVarArgs = mthd.isVarArgs();
+	}
+	public boolean isVarArgs() {
+		return this.isVarArgs;
 	}
 
 	@Override

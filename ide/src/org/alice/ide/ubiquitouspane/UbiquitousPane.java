@@ -96,7 +96,7 @@ class TransientStatementsWrapper extends org.lgna.croquet.components.LineAxisPan
 		this.removeAllComponents();
 		org.lgna.project.ast.AbstractCode code = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
 		if( code != null ) {
-			for( org.lgna.project.ast.AbstractParameter parameter : code.getParameters() ) {
+			for( org.lgna.project.ast.AbstractParameter parameter : code.getRequiredParameters() ) {
 				if( parameter instanceof org.lgna.project.ast.UserParameter ) {
 					org.lgna.project.ast.UserParameter parameterInAlice = (org.lgna.project.ast.UserParameter)parameter;
 					org.lgna.project.ast.AbstractType<?,?,?> type = parameterInAlice.getValueType();

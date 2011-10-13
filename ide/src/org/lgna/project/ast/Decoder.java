@@ -213,7 +213,8 @@ public class Decoder {
 		org.w3c.dom.Element xmlConstructor = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
 		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlConstructor );
 		ClassReflectionProxy[] parameterClses = decodeParameters( xmlConstructor );
-		return new ConstructorReflectionProxy( declaringCls, parameterClses );
+		boolean isVarArgs = Boolean.parseBoolean( xmlConstructor.getAttribute( "isVarArgs" ) );
+		return new ConstructorReflectionProxy( declaringCls, parameterClses, isVarArgs );
 	}
 	private MethodReflectionProxy decodeMethod( org.w3c.dom.Element xmlParent, String nodeName ) {
 		org.w3c.dom.Element xmlMethod = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
@@ -221,7 +222,8 @@ public class Decoder {
 		String name = xmlMethod.getAttribute( "name" );
 		name = filterMethodNameIfNecessary( declaringCls, name );
 		ClassReflectionProxy[] parameterClses = decodeParameters( xmlMethod );
-		return new MethodReflectionProxy( declaringCls, name, parameterClses );
+		boolean isVarArgs = Boolean.parseBoolean( xmlMethod.getAttribute( "isVarArgs" ) );
+		return new MethodReflectionProxy( declaringCls, name, parameterClses, isVarArgs );
 	}
 	public AbstractNode decode( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		AbstractNode rv;
@@ -246,7 +248,7 @@ public class Decoder {
 				JavaConstructor constructorDeclaredInJava = (JavaConstructor)decodeValue( xmlConstructor, map );
 				org.w3c.dom.Element xmlIndex = (org.w3c.dom.Element)nodeList.item( 1 );
 				int index = Integer.parseInt( xmlIndex.getTextContent() );
-				rv = constructorDeclaredInJava.getParameters().get( index );
+				rv = constructorDeclaredInJava.getRequiredParameters().get( index );
 			} else if( clsName.equals( JavaMethodParameter.class.getName() ) ) {
 				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
 				assert nodeList.getLength() == 2;
@@ -254,7 +256,7 @@ public class Decoder {
 				JavaMethod methodDeclaredInJava = (JavaMethod)decodeValue( xmlMethod, map );
 				org.w3c.dom.Element xmlIndex = (org.w3c.dom.Element)nodeList.item( 1 );
 				int index = Integer.parseInt( xmlIndex.getTextContent() );
-				rv = methodDeclaredInJava.getParameters().get( index );
+				rv = methodDeclaredInJava.getRequiredParameters().get( index );
 			} else {
 				rv = (AbstractNode)newInstance( xmlElement );
 				assert rv != null;

@@ -55,7 +55,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 			if( previousExpression instanceof org.lgna.project.ast.DoubleLiteral ) {
 				org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)previousExpression;
 				double dValue = doubleLiteral.value.getValue();
-				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValue( dValue );
+				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValueTransactionlessly( dValue );
 			}
 		}
 	}

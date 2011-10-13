@@ -137,7 +137,7 @@ public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryV
 	}
 	private void handleSelectionChanged( org.alice.ide.croquet.models.gallerybrowser.GalleryNode nextValue ) {
 		//todo: does not handle case where user clicks on button hooked up to currently selected path node
-		FilterStringState.getInstance().setValue( "" );
+		FilterStringState.getInstance().setValueTransactionlessly( "" );
 		this.refresh();
 	}
 }

@@ -52,7 +52,7 @@ public abstract class MethodInvocationFillIn extends org.lgna.croquet.CascadeFil
 		super( id );
 		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( method );
 		this.transientValue.expression.setValue( new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field ) );
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
 			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameter ) );
 		}
 	}
