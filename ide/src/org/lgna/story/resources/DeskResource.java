@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,68 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story.resources;
 
-package org.alice.stageide.properties;
-
-import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Turnable;
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractPoint3PropertyAdapter;
-
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
-
-public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Turnable> extends AbstractPoint3PropertyAdapter<O>
-{
-	private AbsoluteTransformationListener absoluteTransformationListener;
-	
-	public AbstractAbsolutePositionPropertyAdapter(O instance, StandardExpressionState expressionState ) 
-	{
-		this("Position", instance, expressionState);
-	}
-	
-	public AbstractAbsolutePositionPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
-	{
-		super(repr, instance, expressionState);
-	}
-	
-	private void initializeTransformationListenersIfNecessary()
-	{
-		if (this.absoluteTransformationListener == null)
-		{
-			this.absoluteTransformationListener = new AbsoluteTransformationListener() {
-				public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) 
-				{
-					AbstractAbsolutePositionPropertyAdapter.this.handleInternalValueChanged();
-				}
-			};
-		}
-	}
-	
-	@Override
-	protected void startListening() 
-	{
-		if (this.instance != null)
-		{
-			this.initializeTransformationListenersIfNecessary();
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().addAbsoluteTransformationListener(this.absoluteTransformationListener);
-		}
-	}
-	
-	@Override
-	protected void stopListening() 
-	{
-		if (this.instance != null)
-		{
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().removeAbsoluteTransformationListener(this.absoluteTransformationListener);
-		}
-	}
-
-	protected void handleInternalValueChanged()
-	{
-		this.notifyValueObservers(this.getValue());
-	}
+/**
+ * @author alice
+ *
+ */
+public interface DeskResource extends PropResource {
 
 }

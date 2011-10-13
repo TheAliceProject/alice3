@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,68 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.properties;
 
 import java.util.Locale;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.lgna.croquet.Operation;
-import org.lgna.story.ImplementationAccessor;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.lgna.story.implementation.TextImp;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
+/**
+ * @author dculyba
+ *
+ */
+public class TextValuePropertyAdapter extends AbstractPropertyAdapter<String, TextImp> {
 
-public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lgna.story.MovableTurnable> {
 	
-	public TransformableTranslationAdapter(org.lgna.story.MovableTurnable instance, StandardExpressionState expressionState) {
-		super(instance, expressionState);
+	public TextValuePropertyAdapter(TextImp instance, StandardExpressionState expressionState) 
+	{
+		super("Text", instance, expressionState);
+	}
+	
+
+	@Override
+	public void setValue(String value) 
+	{
+		super.setValue(value);
+		if (this.instance != null)
+		{
+			this.instance.setValue(value);
+		}
 	}
 
-	public Point3 getValue() 
+	@Override
+	public Class<String> getPropertyType() 
+	{
+		return String.class;
+	}
+
+	@Override
+	public String getValue() 
 	{
 		if (this.instance != null)
 		{
-			return ImplementationAccessor.getImplementation(this.instance).getAbsoluteTransformation().translation;
+			return this.instance.getValue();
 		}
 		return null;
 	}
 	
 	@Override
-	public void setValue(Point3 newValue) 
+	public String getValueCopy() 
 	{
-		super.setValue(newValue);
-		if (this.instance != null)
-		{
-			AffineMatrix4x4 currentTrans = ImplementationAccessor.getImplementation(this.instance).getAbsoluteTransformation();
-			double dist = Point3.calculateDistanceBetween(currentTrans.translation, newValue);
-			double duration = 1;
-			if (dist < .02)
-			{
-				duration = 0;
-			}
-			else if (dist < .1)
-			{
-				duration = (dist - .02) / (.1 - .02);
-			}
-			
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().setTranslationOnly(newValue, implementation.getSgComposite().getRoot());
-		}
-	}
-
-	@Override
-	public Operation getEditModel() 
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUndoRedoDescription(Locale locale) 
-	{
-		// TODO Auto-generated method stub
-		return "Position Change";
+		return new String(this.getValue());
 	}
 
 }

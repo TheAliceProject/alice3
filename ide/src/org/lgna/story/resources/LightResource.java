@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story.resources;
 
-package org.alice.ide.properties.adapter;
-import org.alice.ide.croquet.models.StandardExpressionState;
+/**
+ * @author alice
+ *
+ */
+public interface LightResource extends PropResource {
 
-import edu.cmu.cs.dennisc.math.Dimension3;
-
-public abstract class AbstractScaleAdapter<O> extends AbstractInstancePropertyAdapter<Dimension3, O> 
-{
-	protected class SetScaleOperation extends SetValueOperation<Dimension3> {
-		public SetScaleOperation( Dimension3 value, String name) {
-			super( AbstractScaleAdapter.this, value, name, java.util.UUID.fromString( "c742ea2e-cafe-41a0-9b76-38cb51921823" ) );
-		}
-	}
-
-	public AbstractScaleAdapter(String repr, O instance, StandardExpressionState expressionState )
-	{
-		super(repr, instance, expressionState);
-	}
-	
-	public Class<Dimension3> getPropertyType()
-	{
-		return Dimension3.class;
-	}
-	
-	@Override
-	public SetValueOperation<Dimension3> getSetValueOperation(Dimension3 value) 
-	{
-		return new SetScaleOperation(value, null);
-	}
-	
-	public Dimension3 getValueCopy() 
-	{
-		return new Dimension3(this.getValue());
-	}
 }

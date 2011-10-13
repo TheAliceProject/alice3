@@ -43,36 +43,36 @@
 
 package org.alice.ide.properties.adapter;
 
+import java.util.Locale;
+
 import org.alice.ide.croquet.models.StandardExpressionState;
+import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
+import org.alice.ide.swing.icons.ColorIcon;
+import edu.cmu.cs.dennisc.color.Color4f;
 
-public abstract class AbstractStringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<String, O> 
+public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> 
 {
-
-	protected class SetStringOperation extends SetValueOperation<String> {
-		public SetStringOperation( String value, String name) {
-			super( AbstractStringPropertyAdapter.this, value, name, java.util.UUID.fromString( "cc558b11-321a-4196-9cf2-9947978f6218" ) );
-		}
+	public ColorPropertyAdapter(O instance, org.lgna.story.implementation.Property<edu.cmu.cs.dennisc.color.Color4f> property, StandardExpressionState expressionState)
+	{
+		this("Color", instance, property, expressionState);
 	}
 	
-	public AbstractStringPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
+	public ColorPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<edu.cmu.cs.dennisc.color.Color4f> property, StandardExpressionState expressionState )
 	{
-		super(repr, instance, expressionState);
-	}
-	
-	public Class<String> getPropertyType()
-	{
-		return String.class;
+		super(repr, instance, property, expressionState);
 	}
 	
 	@Override
-	public SetValueOperation<String> getSetValueOperation(String value) 
+	public Color4f getValueCopy() 
 	{
-		return new SetStringOperation(value, null);
+		return new Color4f(this.getValue());
 	}
 	
-	public String getValueCopy() 
+	@Override
+	public String getUndoRedoDescription(Locale locale) 
 	{
-		return new String(this.getValue());
+		return "Color";
 	}
+	
 
 }

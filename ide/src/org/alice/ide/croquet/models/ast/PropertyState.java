@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.ast;
 public class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
 	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	
-	private static synchronized PropertyState getInstanceForSetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
+	public static synchronized PropertyState getInstanceForSetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
 		PropertyState rv = map.get( group, setter );
 		if( rv != null ) {
 			//pass

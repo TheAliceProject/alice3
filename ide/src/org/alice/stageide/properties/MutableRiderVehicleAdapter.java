@@ -46,10 +46,12 @@ package org.alice.stageide.properties;
 import java.util.Locale;
 
 import org.alice.ide.IDE;
+import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.Model;
+import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MutableRider;
@@ -57,43 +59,78 @@ import org.lgna.story.MutableRider;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
-public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity, MutableRider> {
+public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, MutableRider> {
 
 	private HierarchyListener hierarchyListener;
-	private org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation;
+	private org.lgna.project.virtualmachine.UserInstance sceneInstance;
 	
-	protected class SetVehicleOperation extends SetValueOperation<Entity>
-	{
-		public SetVehicleOperation( Entity value, String name) {
-			super( TransformableVehicleAdapter.this, value, name, java.util.UUID.fromString( "981768b7-f40b-4363-b64f-34264be73651" ) );
-			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(value);
-			if (field != null)
-			{
-				org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
-				this.setSmallIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( valueType ) );
-			}
-		}
-	}
-	
-	public TransformableVehicleAdapter(MutableRider instance, StandardExpressionState expressionState) 
+	public MutableRiderVehicleAdapter(MutableRider instance, StandardExpressionState expressionState, org.lgna.project.virtualmachine.UserInstance sceneInstance) 
 	{
 		super("Vehicle", instance, expressionState);
+		this.sceneInstance = sceneInstance;
+		this.initializeExpressionState();
 	}
 	
-
 	private void initializeListenersIfNecessary()
 	{
 		if (this.hierarchyListener == null)
 		{
 			this.hierarchyListener = new HierarchyListener()
 			{
-
 				public void hierarchyChanged(HierarchyEvent hierarchyEvent) 
 				{
-					TransformableVehicleAdapter.this.handleHeirarchyChanged();
+					MutableRiderVehicleAdapter.this.handleHeirarchyChanged();
 				}
 			};
 		}
+	}
+	
+	@Override
+	protected void setExpressionValue(Entity value)
+	{
+		if (this.expressionState != null && this.sceneInstance != null)
+		{
+			org.lgna.project.ast.Expression expressionValue;
+			org.lgna.story.Entity entity = (org.lgna.story.Entity)value;
+			org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
+			org.lgna.project.ast.Expression thisExpression = new org.lgna.project.ast.ThisExpression();
+			if (value instanceof org.lgna.story.Scene) {
+				expressionValue = thisExpression;
+			}
+			else {
+				expressionValue = new org.lgna.project.ast.FieldAccess( thisExpression, entityField );
+			}
+			this.expressionState.setValue(expressionValue);
+		}
+	}
+	
+	@Override
+	protected void intermediateSetValue(Object value)
+	{
+		if (value instanceof UserInstance)
+		{
+			Object instanceInJava = ((UserInstance)value).getInstanceInJava();
+			if (instanceInJava instanceof Entity)
+			{
+				value = instanceInJava;
+			}
+		}
+		if (value instanceof Entity)
+		{
+			this.setValue((Entity)value);
+		}
+		else {
+			System.out.println("???");
+		}
+	}
+	
+	@Override
+	protected Object evaluateExpression(org.lgna.project.ast.Expression expression)
+	{
+		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
+		Object[] values = vm.ENTRY_POINT_evaluate( this.sceneInstance, new org.lgna.project.ast.Expression[] { expression } );
+		assert values.length == 1;
+		return values[0];
 	}
 	
 	protected void handleHeirarchyChanged()
@@ -101,90 +138,6 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 		this.notifyValueObservers(this.getValue());
 	}
 	
-	protected boolean isValidVehicle(Entity vehicle)
-	{
-		Entity o = vehicle;
-		while( true ) {
-			if ( o == this.instance )
-			{
-				return false;
-			}
-			if( o == null ) {
-				break;
-			}
-			if( o instanceof MutableRider ) {
-				o = ((MutableRider)o).getVehicle();
-			} else {
-				break;
-			}
-		}
-		return true;
-	}
-	
-	@Override
-	public Model getEditModel() 
-	{
-		if (this.popupMenuOperation == null)
-		{
-			System.err.println( "todo: getEditModel" );
-//			this.popupMenuOperation = new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "2ae18028-e18a-47ad-8dda-ba6c186142a4" ) ) {
-//				@Override
-//				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) 
-//				{
-//					org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Accessible > possibleFields = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance();
-//					java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> setVehicleOperations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//					
-//					Entity currentVehicle = TransformableVehicleAdapter.this.getValue();
-//					if (currentVehicle != null)
-//					{
-//						setVehicleOperations.add(new SetVehicleOperation(currentVehicle, TransformableVehicleAdapter.getNameForVehicle(currentVehicle)+TransformableVehicleAdapter.this.getCurrentValueLabelString()).getMenuItemPrepModel());
-//						setVehicleOperations.add(org.lgna.croquet.MenuModel.SEPARATOR);
-//					}
-//					
-//					for (org.lgna.project.ast.Accessible field : possibleFields)
-//					{
-//						if (field instanceof FieldDeclaredInAlice)
-//						{
-//							Entity objectInJava = ((MoveAndTurnSceneEditor)IDE.getActiveInstance().getSceneEditor()).getInstanceInJavaVMForField((FieldDeclaredInAlice)field, Entity.class);
-//							boolean canBeVehicle = false;
-//							if (objectInJava != null)
-//							{
-////								if (objectInJava instanceof Light)
-////								{
-////									canBeVehicle = false;
-////								}
-////								else 
-//								if (objectInJava instanceof Turnable && TransformableVehicleAdapter.this.isValidVehicle(objectInJava))
-//								{
-//									canBeVehicle = true;
-//								}
-//								else if (objectInJava instanceof Scene)
-//								{
-//									canBeVehicle = true;
-//								}
-//								
-//							}
-//							if (canBeVehicle)
-//							{
-//								setVehicleOperations.add(new SetVehicleOperation(objectInJava, TransformableVehicleAdapter.getNameForVehicle(objectInJava)).getMenuItemPrepModel());
-//							}
-//						}
-//					}
-//					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, setVehicleOperations );
-//				}
-//			}.getPopupPrepModel();
-		}
-		
-		// TODO Auto-generated method stub
-		return this.popupMenuOperation;
-	}
-	
-	@Override
-	public SetValueOperation<Entity> getSetValueOperation(Entity value) 
-	{
-		return new SetVehicleOperation(value, null);
-	}
-
 	public static String getNameForVehicle(Entity vehicle)
 	{
 		if (vehicle != null)
@@ -219,12 +172,6 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 		}
 		return null;
 	}
-	
-	@Override
-	public String getUndoRedoDescription(Locale locale) 
-	{
-		return "Set Vehicle";
-	}
 
 	@Override
 	public void setValue(Entity value) 
@@ -236,11 +183,13 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 		}
 	}
 
+	@Override
 	public Class<Entity> getPropertyType() 
 	{
 		return Entity.class;
 	}
 
+	@Override
 	public Entity getValue() 
 	{
 		if (this.instance != null)
@@ -250,14 +199,16 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 		return null;
 	}
 	
+	@Override
 	public Entity getValueCopy() 
 	{
 		return this.getValue();
 	}
 
 	@Override
-	protected void startListening() 
+	protected void startPropertyListening() 
 	{
+		super.startPropertyListening();
 		if (this.instance != null)
 		{
 			this.initializeListenersIfNecessary();
@@ -267,8 +218,9 @@ public class TransformableVehicleAdapter extends AbstractPropertyAdapter<Entity,
 	}
 
 	@Override
-	protected void stopListening() 
+	protected void stopPropertyListening() 
 	{
+		super.stopPropertyListening();
 		if (this.instance != null)
 		{
 			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation((Entity)this.instance);

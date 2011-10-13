@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story.resources;
 
-package org.alice.ide.properties.adapter;
+/**
+ * @author alice
+ *
+ */
+public interface HotTubResource extends PropResource {
 
-import java.util.Locale;
-
-import org.alice.ide.croquet.models.StandardExpressionState;
-
-public abstract class AbstractOpacityPropertyAdapter<O> extends AbstractDoublePropertyAdapter<O> {
-
-
-	
-	public AbstractOpacityPropertyAdapter(O instance, StandardExpressionState expressionState)
-	{
-		this("Opacity", instance, expressionState);
-	}
-	
-	public AbstractOpacityPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
-	{
-		super(repr, instance, expressionState);
-	}
-	
-	@Override
-	protected double[] getDefaultValues()
-	{
-		double[] defaultValues = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
-		return defaultValues;
-	}
-	
-	@Override
-	public String getUndoRedoDescription(Locale locale) 
-	{
-		return "Opacity";
-	}
 }

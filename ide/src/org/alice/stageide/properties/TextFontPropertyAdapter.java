@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,47 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.properties;
 
-package org.alice.ide.properties.adapter;
+import java.util.Locale;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.lgna.story.implementation.TextImp;
 
-//P = property value type
-//O = property owner type
-public interface PropertyAdapter <P, O>
-{
-	public static interface ValueChangeObserver<P>
+/**
+ * @author dculyba
+ *
+ */
+public class TextFontPropertyAdapter extends AbstractPropertyAdapter<java.awt.Font, TextImp> {
+
+	
+	public TextFontPropertyAdapter(TextImp instance, StandardExpressionState expressionState) 
 	{
-		public void valueChanged(P newValue);
+		super("Font", instance, expressionState);
 	}
 	
-	public String getRepr();
+
+	@Override
+	public void setValue(java.awt.Font value) 
+	{
+		super.setValue(value);
+		if (this.instance != null)
+		{
+			this.instance.setFont(value);
+		}
+	}
+
+	@Override
+	public Class<java.awt.Font> getPropertyType() 
+	{
+		return java.awt.Font.class;
+	}
+
+	@Override
+	public java.awt.Font getValue() 
+	{
+		if (this.instance != null)
+		{
+			return this.instance.getFont();
+		}
+		return null;
+	}
 	
-	public Class<P> getPropertyType();
-	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public P getValueCopy();
-	
-	public O getInstance();
-	
-	public P getLastSetValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public org.lgna.croquet.Model getEditModel();
-	
-	public org.lgna.croquet.components.ViewController<?,?> createEditViewController();
-	
-	public SetValueOperation<P> getSetValueOperation(P value); 
-	
-	public String getUndoRedoDescription(java.util.Locale locale);
-	
+	@Override
+	public java.awt.Font getValueCopy() 
+	{
+		return this.getValue();
+	}
+
 }

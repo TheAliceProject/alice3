@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,65 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story.resources;
 
-package org.alice.stageide.properties;
-
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractColorPropertyAdapter;
-
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-
-public class ModelColorAdapter extends AbstractColorPropertyAdapter<org.lgna.story.implementation.ModelImp> {
-
-	public ModelColorAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
-	{
-		super(instance, expressionState);
-	}
-
-	public Color4f getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.color.getValue();
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	@Override
-	public void setValue(final Color4f value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			new Thread() {
-				@Override
-				public void run() {
-					ModelColorAdapter.this.instance.color.setValue(value);
-				}
-			}.start();
-		}
-		
-	}
-
-	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) 
-	{
-		if (this.instance != null)
-		{
-			instance.addColorListener(propertyListener);
-		}
-	}
-
-	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null)
-		{
-			instance.removeColorListener(propertyListener);
-		}
-	}
+/**
+ * @author alice
+ *
+ */
+public interface SofaResource extends PropResource {
 
 }

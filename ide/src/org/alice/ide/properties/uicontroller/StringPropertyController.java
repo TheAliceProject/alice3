@@ -44,12 +44,12 @@
 package org.alice.ide.properties.uicontroller;
 
 
-import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
 
 public class StringPropertyController extends LabelBasedPropertyController<String>
 {
-	public StringPropertyController(PropertyAdapter<String, ?> propertyAdapter)
+	public StringPropertyController(AbstractPropertyAdapter<String, ?> propertyAdapter)
 	{
 		super(propertyAdapter);
 	}

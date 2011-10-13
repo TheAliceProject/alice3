@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,36 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.properties;
 
-package org.alice.ide.properties.uicontroller;
+import java.util.Locale;
 
-import org.alice.ide.properties.adapter.AbstractDoublePropertyAdapter;
-import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.alice.ide.croquet.models.StandardExpressionState;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.lgna.story.Paint;
+import org.lgna.story.implementation.BillboardImp;
 
-public class DoublePropertyController extends LabelBasedPropertyController<Double>
-{
-	public DoublePropertyController(PropertyAdapter<Double, ?> propertyAdapter)
+/**
+ * @author dculyba
+ *
+ */
+public class BillboardBackPaintPropertyAdapter extends AbstractPropertyAdapter<Paint, BillboardImp> {
+
+	
+	public BillboardBackPaintPropertyAdapter(BillboardImp instance, StandardExpressionState expressionState) 
 	{
-		super(propertyAdapter);
+		super("Back Paint", instance, expressionState);
+	}
+	
+
+	@Override
+	public void setValue(Paint value) 
+	{
+		super.setValue(value);
+		if (this.instance != null)
+		{
+			this.instance.setBackPaint(value);
+		}
+	}
+
+	@Override
+	public Class<Paint> getPropertyType() 
+	{
+		return Paint.class;
+	}
+
+	@Override
+	public Paint getValue() 
+	{
+		if (this.instance != null)
+		{
+			return this.instance.getBackPaint();
+		}
+		return null;
 	}
 	
 	@Override
-	public Class<?> getPropertyType() 
+	public Paint getValueCopy() 
 	{
-		return Double.class;
+		return this.getValue();
 	}
-	
-	@Override
-	protected void setValueOnUI(Double value)
-	{
-		if (value != null)
-		{
-			this.label.setText(AbstractDoublePropertyAdapter.format.format(value));
-		}
-		else
-		{
-			this.label.setText(BLANK_STRING);
-		}
-	}
-	
+
 }

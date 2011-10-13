@@ -41,61 +41,103 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.properties.adapter;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
+import org.lgna.story.implementation.Property.Listener;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna.story.implementation.MarkerImp> {
+public abstract class AbstractImplementationPropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
 
-	public MarkerOpacityAdapter(org.lgna.story.implementation.MarkerImp instance, StandardExpressionState expressionState)
+	private Listener<P> propertyListener;
+	private org.lgna.story.implementation.Property<P> property;
+	
+	private void initializeListenersIfNecessary()
 	{
-		super(instance, expressionState);
+		if (this.propertyListener == null)
+		{
+			this.propertyListener = new Listener<P>()
+			{
+				public void propertyChanged(P prevValue, P nextValue) {
+					handleInternalValueChanged();
+				}
+			};
+		}
 	}
 	
-
-	public Double getValue() 
+	@Override
+	protected void startPropertyListening() 
 	{
+		super.startPropertyListening();
 		if (this.instance != null)
 		{
-			return (double)this.instance.opacity.getValue();
+			this.initializeListenersIfNecessary();
+			this.addPropertyListener(this.propertyListener);
 		}
-		else
+	}
+	
+	@Override
+	protected void stopPropertyListening() 
+	{
+		super.stopPropertyListening();
+		if (this.instance != null)
 		{
+			this.removePropertyListener(this.propertyListener);
+		}
+	}
+	
+	public AbstractImplementationPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<P> property, StandardExpressionState expressionState ){
+		super(repr, instance, expressionState);
+		this.property = property;
+	}
+	
+	@Override
+	public P getValue() {
+		if (this.property != null){
+			return this.property.getValue();
+		}
+		else{
 			return null;
 		}
 	}
 	
 	@Override
-	public void setValue(final Double value) 
-	{
+	public Class<P> getPropertyType() {
+		return this.property.getValueCls();
+	}
+	
+	@Override
+	public void setValue(final P value) {
 		super.setValue(value);
-		if (this.instance != null)
-		{
+		if (this.property != null){
 			new Thread() {
 				@Override
 				public void run() {
-					MarkerOpacityAdapter.this.instance.opacity.setValue(value.floatValue());
+					AbstractImplementationPropertyAdapter.this.property.setValue(value);
 				}
 			}.start();
 		}
 		
 	}
-	
-	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.addOpacityListener(propertyListener);
+
+	protected void addPropertyListener(Listener<P> propertyListener) {
+		if (this.property != null){
+			property.addPropertyObserver(propertyListener);
 		}
 	}
 
-	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.removeOpacityListener(propertyListener);
+	protected void removePropertyListener(Listener<P> propertyListener) {
+		if (this.property != null){
+			property.removePropertyObserver(propertyListener);
 		}
+	}
+	
+	protected void handleInternalValueChanged(){
+		P newValue = this.getValue();
+		this.notifyValueObservers(newValue);
 	}
 
 }

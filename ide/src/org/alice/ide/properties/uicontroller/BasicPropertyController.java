@@ -48,19 +48,18 @@ import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Component;
 
 
-public abstract class BasicPropertyController<P> extends AbstractAdapterController<P> implements MouseListener
+public abstract class BasicPropertyController<P> extends AbstractAdapterController<P>
 {
     protected static final String BLANK_STRING = "NO VALUE";
     
     protected Component<?> propertyComponent;
-    protected org.lgna.croquet.components.ViewController< ?,? > editButton;
     
-    public BasicPropertyController(PropertyAdapter<P, ?> propertyAdapter)
+    public BasicPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter)
     {
         super(propertyAdapter);
     }
@@ -72,7 +71,6 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
     {
         super.initializeComponents();
         this.propertyComponent = createPropertyComponent();
-        this.propertyComponent.getAwtComponent().addMouseListener(this);
         this.mainPanel.setMinimumPreferredHeight(PropertyAdapterController.MIN_ADAPTER_HEIGHT);
     }
     
@@ -94,25 +92,6 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
                 0, // ipadX
                 0) // ipadY
                 );
-        if (this.propertyAdapter != null)
-        {
-            this.editButton = this.propertyAdapter.createEditViewController();
-            if (this.editButton != null ){
-	            this.mainPanel.addComponent(this.editButton, new GridBagConstraints(
-	                    xIndex++, // gridX
-	                    0, // gridY
-	                    1, // gridWidth
-	                    1, // gridHeight
-	                    0.0, // weightX
-	                    0.0, // weightY
-	                    GridBagConstraints.WEST, // anchor
-	                    GridBagConstraints.HORIZONTAL, // fill
-	                    new Insets(0, 4, 0, 0), // insets (top, left, bottom, right)
-	                    0, // ipadX
-	                    0) // ipadY
-	                    );
-            }
-        }
         this.mainPanel.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 
                 xIndex++, //gridX
                 0, //gridY
@@ -127,14 +106,4 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
                 0 ) //ipadY
         );
     }
-    
-    public void mouseClicked(MouseEvent e)
-    {
-        this.propertyAdapter.getEditModel().fire( new org.lgna.croquet.triggers.MouseEventTrigger( this.editButton, e ) );
-    }
-    
-    public void mouseEntered(MouseEvent e){}
-    public void mouseExited(MouseEvent e){}
-    public void mousePressed(MouseEvent e){}
-    public void mouseReleased(MouseEvent e){}
 }
