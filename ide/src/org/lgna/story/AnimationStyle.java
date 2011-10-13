@@ -40,29 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum TraditionalStyle implements Style {
-	BEGIN_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
-	BEGIN_GENTLY_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
-	BEGIN_ABRUPTLY_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
-	BEGIN_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
-	private edu.cmu.cs.dennisc.animation.TraditionalStyle internal;
-	public static TraditionalStyle valueOf( boolean[] beginAndEndGentlies ) {
-		for( TraditionalStyle value : TraditionalStyle.values() ) {
-			if( value.internal.isSlowInDesired() == beginAndEndGentlies[ 0 ] && value.internal.isSlowOutDesired() == beginAndEndGentlies[ 1 ] ) {
-				return value;
+public class AnimationStyle implements Turn.Detail {
+	private static final boolean[] DEFAULT_VALUE = { true, true };
+	private final boolean[] value;
+	public AnimationStyle( Boolean isBegunGently, Boolean isEndedGently ) {
+		this.value = new boolean[] { isBegunGently, isEndedGently }; 
+	}
+	private static boolean[] getValue( Object[] details, boolean[] defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof AnimationStyle ) {
+				AnimationStyle animationStyle = (AnimationStyle)detail;
+				return animationStyle.value;
 			}
 		}
-		throw new AssertionError();
+		return defaultValue;
 	}
-	TraditionalStyle( edu.cmu.cs.dennisc.animation.TraditionalStyle internal ) {
-		this.internal = internal;
-	}
-	public double calculatePortion( double timeElapsed, double timeTotal ) {
-		return this.internal.calculatePortion( timeElapsed, timeTotal );
+	/*package-private*/ static TraditionalStyle getValue( Object[] details ) {
+		return TraditionalStyle.valueOf( getValue( details, DEFAULT_VALUE ) );
 	}
 }

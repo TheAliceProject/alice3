@@ -47,4 +47,8 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class UserConstructor extends AbstractConstructor {
+	@Override
+	public boolean isVariableLength() {
+		return false;
+	}
 }

@@ -139,6 +139,11 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	}
 
 	@Override
+	public boolean isVariableLength() {
+		return false;
+	}
+
+	@Override
 	public boolean isStatic() {
 		return this.isStatic.getValue();
 	}
