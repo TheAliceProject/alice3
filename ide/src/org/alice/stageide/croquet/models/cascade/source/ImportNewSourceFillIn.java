@@ -60,15 +60,15 @@ public abstract class ImportNewSourceFillIn< E, R extends org.alice.virtualmachi
 	}
 	
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, java.lang.Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, Void > step ) {
 		return new javax.swing.JLabel( this.getMenuText() );
 	}
 	@Override
-	public final org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, java.lang.Void > step ) {
+	public final org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, Void > step ) {
 		return this.transientValue;
 	}
 	@Override
-	public final org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, java.lang.Void > step ) {
+	public final org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, Void > step ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		try {
 			R resource = this.getResourcePrompter().promptUserForResource( ide.getFrame() );

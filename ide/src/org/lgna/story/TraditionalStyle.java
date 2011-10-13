@@ -51,6 +51,14 @@ public enum TraditionalStyle implements Style {
 	BEGIN_ABRUPTLY_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
 	BEGIN_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
 	private edu.cmu.cs.dennisc.animation.TraditionalStyle internal;
+	public static TraditionalStyle valueOf( boolean[] beginAndEndGentlies ) {
+		for( TraditionalStyle value : TraditionalStyle.values() ) {
+			if( value.internal.isSlowInDesired() == beginAndEndGentlies[ 0 ] && value.internal.isSlowOutDesired() == beginAndEndGentlies[ 1 ] ) {
+				return value;
+			}
+		}
+		throw new AssertionError();
+	}
 	TraditionalStyle( edu.cmu.cs.dennisc.animation.TraditionalStyle internal ) {
 		this.internal = internal;
 	}

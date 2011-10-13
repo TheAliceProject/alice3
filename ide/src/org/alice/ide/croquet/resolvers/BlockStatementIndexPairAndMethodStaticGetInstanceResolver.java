@@ -72,11 +72,11 @@ public class BlockStatementIndexPairAndMethodStaticGetInstanceResolver extends o
 	}
 
 	@Override
-	protected java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	protected Class< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.class;
 	}
 	@Override
-	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Class< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > cls ) {
+	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > cls ) {
 		//note: do not call super
 	}
 	@Override

@@ -53,7 +53,7 @@ public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu< org.lgna
 		this.type = type;
 	}
 	@Override
-	protected java.lang.String getDefaultLocalizedText() {
+	protected String getDefaultLocalizedText() {
 		return "Relational (" + this.type.getName() + ") { ==, != }";
 	}
 	@Override

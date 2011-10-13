@@ -57,4 +57,7 @@ public class WindowEventTrigger extends ComponentEventTrigger< java.awt.event.Wi
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "Window";
+	}
 }

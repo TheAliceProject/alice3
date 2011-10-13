@@ -46,9 +46,9 @@ package org.alice.stageide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class EditPersonOperation extends PersonOperation {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private static java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractField, EditPersonOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static EditPersonOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private org.lgna.project.ast.AbstractField field;
+	private static java.util.Map<org.lgna.project.ast.AbstractField, EditPersonOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static EditPersonOperation getInstance( org.lgna.project.ast.AbstractField field ) {
 		EditPersonOperation rv = map.get( field );
 		if( rv != null ) {
 			//pass
@@ -59,7 +59,7 @@ public class EditPersonOperation extends PersonOperation {
 		return rv;
 	}
 
-	private EditPersonOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private EditPersonOperation( org.lgna.project.ast.AbstractField field ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "bbbc5715-a41a-4740-b3fe-41ee20b1f9c5" ) );
 		this.field = field;
 	}
@@ -96,7 +96,7 @@ public class EditPersonOperation extends PersonOperation {
 			@Override
 			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 				rv.append( "edit: " );
-				edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr( rv, field, locale );
+				org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, field, locale );
 				return rv;
 			}
 		} );
@@ -104,8 +104,8 @@ public class EditPersonOperation extends PersonOperation {
 }
 
 //public class EditPersonActionOperation extends edu.cmu.cs.dennisc.croquet.InputDialogOperation<org.alice.stageide.personeditor.PersonEditor> {
-//	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-//	public EditPersonActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//	private org.lgna.project.ast.AbstractField field;
+//	public EditPersonActionOperation( org.lgna.project.ast.AbstractField field ) {
 //		super( edu.cmu.cs.dennisc.alice.Project.GROUP, java.util.UUID.fromString( "ad113b0e-acb2-4e43-8196-eba6a4961dc8" ) );
 //		this.setName( "Edit..." );
 //		this.field = field;
@@ -161,7 +161,7 @@ public class EditPersonOperation extends PersonOperation {
 //				@Override
 //				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
 //					rv.append( "edit: " );
-//					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, field, locale );
+//					org.lgna.project.ast.Node.safeAppendRepr( rv, field, locale );
 //					return rv;
 //				}
 //			} );

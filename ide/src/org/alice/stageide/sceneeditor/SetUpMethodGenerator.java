@@ -101,7 +101,7 @@ public class SetUpMethodGenerator {
 	{
 		if (vehicleField != null)
 		{
-			bodyStatementsProperty.add( createStatement( org.lgna.story.Turnable.class, "setVehicle", org.lgna.story.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
+			bodyStatementsProperty.add( createStatement( org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
 		}
 	}
 	
@@ -109,7 +109,7 @@ public class SetUpMethodGenerator {
 	{
 		if (vehicleField != null || isVehicleScene)
 		{
-			return createStatement( org.lgna.story.Turnable.class, "setVehicle", org.lgna.story.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) );
+			return createStatement( org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) );
 		}
 		return null;
 	}
@@ -128,27 +128,41 @@ public class SetUpMethodGenerator {
 	}
 	
 	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance ) {
-		if( instance instanceof org.lgna.story.Entity ) {
-			org.lgna.story.Entity entity = (org.lgna.story.Entity)instance;
-			bodyStatementsProperty.add( 
-					createStatement( 
-							org.lgna.story.Entity.class, "setName", String.class, 
-							SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createStringExpression( field.getName() ) 
-					) 
-			);
-
-			if ( instance instanceof org.lgna.story.MutableRider )
-			{
-				org.lgna.story.Entity vehicle = entity.getVehicle();
-				boolean isVehicleScene = (vehicle instanceof org.lgna.story.Scene);
-	
-				org.lgna.project.ast.AbstractField vehicleField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(vehicle);
-				bodyStatementsProperty.add( 
-						createStatement( 
-								org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.Entity.class, 
-								SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) 
-						) 
-				);
+		if( instance != null ) {
+			if( instance instanceof org.lgna.story.Entity ) {
+				org.lgna.story.Entity entity = (org.lgna.story.Entity)instance;
+				entity.setName( field.getName() );
+			}
+			Class<?> instanceCls = instance.getClass();
+			org.lgna.project.ast.JavaType javaType = org.lgna.project.ast.JavaType.getInstance( instanceCls );
+			for( org.lgna.project.ast.JavaMethod getter : org.alice.ide.ast.AstUtilities.getPersistentPropertyGetters( javaType ) ) {
+				java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
+				Object value = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, gttr );
+				org.lgna.project.ast.JavaMethod setter = org.alice.ide.ast.AstUtilities.getSetterForGetter( getter, javaType );
+				if( setter != null ) {
+					try {
+						org.lgna.project.ast.Expression expression;
+						if( value instanceof org.lgna.story.Entity ) {
+							org.lgna.story.Entity entity = (org.lgna.story.Entity)value;
+							boolean isEntityScene = (entity instanceof org.lgna.story.Scene);
+							org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
+							expression = SetUpMethodGenerator.createInstanceExpression( isEntityScene, entityField );
+						} else {
+							expression = getExpressionCreator().createExpression( value );
+						}
+						bodyStatementsProperty.add( 
+								org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( 
+										SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
+										setter, 
+										expression 
+								)
+						);
+					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+						System.err.println( "cannot create expression for: " + value );
+					}
+				} else {
+					System.err.println( "setter is null for: " + getter );
+				}
 			}
 			if( instance instanceof org.lgna.story.Turnable ) {
 				org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)instance;
@@ -172,40 +186,19 @@ public class SetUpMethodGenerator {
 					}
 				}
 			}
-		}
-		if( instance instanceof org.lgna.story.Resizable ) {
-			org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
-			org.lgna.story.Scale scale = resizable.getScale();
-			try {
-				bodyStatementsProperty.add( 
-						createStatement( 
-								org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class }, 
-								SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
-								getExpressionCreator().createExpression( scale ) 
-						)
-				);
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-				throw new RuntimeException( ccee );
-			}
-		}
-		
-		if( instance != null ) {
-			org.lgna.project.ast.JavaType javaType = org.lgna.project.ast.JavaType.getInstance( instance.getClass() );
-			for( org.lgna.project.ast.JavaMethod getter : org.alice.ide.ast.AstUtilities.getPersistentPropertyGetters( javaType ) ) {
-				java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
-				Object value = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, gttr );
-				org.lgna.project.ast.JavaMethod setter = org.alice.ide.ast.AstUtilities.getSetterForGetter( getter );
+			if( instance instanceof org.lgna.story.Resizable ) {
+				org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
+				org.lgna.story.Scale scale = resizable.getScale();
 				try {
-					org.lgna.project.ast.Expression expression = getExpressionCreator().createExpression( value );
 					bodyStatementsProperty.add( 
-							org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( 
+							createStatement( 
+									org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class }, 
 									SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
-									setter, 
-									expression 
+									getExpressionCreator().createExpression( scale ) 
 							)
 					);
 				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-					System.err.println( "cannot create expression for: " + value );
+					throw new RuntimeException( ccee );
 				}
 			}
 		}

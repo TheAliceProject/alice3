@@ -51,8 +51,8 @@ public abstract class ReduceToOperandInPreviousArithmeticExpressionFillIn extend
 		super( id );
 	}
 //	@Override
-//	protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< edu.cmu.cs.dennisc.alice.ast.Expression, Void > context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-//		return previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression;
+//	protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.Expression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
+//		return previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
 //	}
 	protected abstract org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ArithmeticInfixExpression previousArithmetic );
 	@Override

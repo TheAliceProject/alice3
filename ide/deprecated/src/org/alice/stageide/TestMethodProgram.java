@@ -46,23 +46,23 @@ package org.alice.stageide;
 public class TestMethodProgram extends org.lookingglassandalice.storytelling.Program {
 	class TestVirtualMachine extends edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine {
 		@Override
-		public Object get( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
+		public Object get( org.lgna.project.ast.AbstractField field, Object instance ) {
 			return super.get( field, instance );
 		}
 		@Override
-		public Object[] evaluateArguments( java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.Argument > arguments ) {
+		public Object[] evaluateArguments( java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.Argument > arguments ) {
 			return super.evaluateArguments( parameters, arguments );
 		}
 		@Override
-		protected void pushConstructorFrame( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, java.lang.Object > map ) {
+		protected void pushConstructorFrame( org.lgna.project.ast.TypeDeclaredInAlice type, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map ) {
 			super.pushConstructorFrame( type, map );
 		}
 		@Override
-		protected void pushMethodFrame( edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instance, java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, java.lang.Object > map ) {
+		protected void pushMethodFrame( edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instance, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map ) {
 			super.pushMethodFrame( instance, map );
 		}
 		@Override
-		protected void pushLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local, java.lang.Object value ) {
+		protected void pushLocal( org.lgna.project.ast.LocalDeclaredInAlice local, Object value ) {
 			super.pushLocal( local, value );
 		}
 		
@@ -80,12 +80,12 @@ public class TestMethodProgram extends org.lookingglassandalice.storytelling.Pro
 		}
 	}
 	private static java.awt.Dimension preferredSize = new java.awt.Dimension( 400, 300 );
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType;
+	private org.lgna.project.ast.AbstractType<?,?,?> sceneType;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstance;
 	private TestVirtualMachine vm;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation;
-	public TestMethodProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+	private org.lgna.project.ast.AbstractField field;
+	private org.lgna.project.ast.MethodInvocation emptyExpressionMethodInvocation;
+	public TestMethodProgram( org.lgna.project.ast.AbstractType<?,?,?> sceneType, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 		this.sceneType = sceneType;
 		this.field = field;
 		this.emptyExpressionMethodInvocation = emptyExpressionMethodInvocation;

@@ -12,6 +12,7 @@ public class Manager {
 	static boolean s_isLicensePromptDesired = true;
 	static java.util.List< java.io.File > s_pendingBundles;
 
+	private static native void setDebugDraw(boolean debugDraw);
 	private static native void addBundlePath( String bundlePath );
 	private static native void removeBundlePath( String bundlePath );
 	private static native void setRawResourceDirectory( String rourcePath );
@@ -42,6 +43,9 @@ public class Manager {
 		if( isInitialized() ) {
 			//pass
 		} else {
+			
+			System.out.println(System.getProperty("java.library.path"));
+			
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( License.class );
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 				try {
@@ -80,6 +84,8 @@ public class Manager {
 				for( java.io.File directory : Manager.getPendingBundles() ) {
 					Manager.addBundlePath( directory.getAbsolutePath() );
 				}
+				boolean debugDraw = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY);
+				Manager.setDebugDraw(debugDraw);
 				s_isInitialized = true;
 			} else {
 				throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();

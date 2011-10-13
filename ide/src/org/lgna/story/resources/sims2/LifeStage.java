@@ -65,7 +65,7 @@ public enum LifeStage {
 			return null;
 		}
 		@Override
-		public java.lang.String[] getHairColors() {
+		public String[] getHairColors() {
 			return EXCLUDE_GREY;
 		}
 	},
@@ -75,7 +75,7 @@ public enum LifeStage {
 			return new ChildPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
 		} 
 		@Override
-		public java.lang.String[] getHairColors() {
+		public String[] getHairColors() {
 			return EXCLUDE_GREY;
 		}
 	}, 
@@ -85,7 +85,7 @@ public enum LifeStage {
 			return null;
 		} 
 		@Override
-		public java.lang.String[] getHairColors() {
+		public String[] getHairColors() {
 			return EXCLUDE_GREY;
 		}
 	}, 
@@ -95,7 +95,7 @@ public enum LifeStage {
 			return new AdultPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
 		} 
 		@Override
-		public java.lang.String[] getHairColors() {
+		public String[] getHairColors() {
 			return INCLUDE_GREY;
 		}
 	}, 
@@ -105,7 +105,7 @@ public enum LifeStage {
 			return null;
 		} 
 		@Override
-		public java.lang.String[] getHairColors() {
+		public String[] getHairColors() {
 			return INCLUDE_GREY;
 		}
 	};

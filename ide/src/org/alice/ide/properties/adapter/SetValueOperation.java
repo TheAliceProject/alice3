@@ -45,11 +45,11 @@ package org.alice.ide.properties.adapter;
 
 public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation 
 {
-	protected PropertyAdapter <P, ?> propertyAdapter;
+	protected AbstractPropertyAdapter <P, ?> propertyAdapter;
 	protected P value;
 	protected P originalValue;
 	
-	public SetValueOperation( PropertyAdapter <P, ?> propertyAdapter, P value, String name, java.util.UUID individualUUID) {
+	public SetValueOperation( AbstractPropertyAdapter <P, ?> propertyAdapter, P value, String name, java.util.UUID individualUUID) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualUUID );
 		this.propertyAdapter = propertyAdapter;
 		this.value = value;

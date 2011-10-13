@@ -82,23 +82,23 @@ public class KneelAnimation extends AbstractBodyPositionAnimation {
 	public void setFinalOrientations() {
 		rightUpperFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
 		rightLowerFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightLowerFinalOrient, 0.5 * java.lang.Math.PI);
+		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightLowerFinalOrient, 0.5 * Math.PI);
 		rightFootFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightFootFinalOrient, 0.5 * java.lang.Math.PI);
+		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightFootFinalOrient, 0.5 * Math.PI);
 		
 		if (oneKnee) {
 			double lengthSupportLeg = 0.0;
 			
 			if ( (rightLower == null) ) {
 				leftUpperFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX(leftUpperFinalOrient, 0.25*java.lang.Math.PI );
+				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX(leftUpperFinalOrient, 0.25*Math.PI );
 				leftFootFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftFootFinalOrient, -0.25 * java.lang.Math.PI);
+				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftFootFinalOrient, -0.25 * Math.PI);
 				
 				rightUpperFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightUpperFinalOrient, -0.25*java.lang.Math.PI);
+				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightUpperFinalOrient, -0.25*Math.PI);
 				rightFootFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightFootFinalOrient, 0.25 * java.lang.Math.PI);
+				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightFootFinalOrient, 0.25 * Math.PI);
 				
 			}
 			
@@ -106,39 +106,39 @@ public class KneelAnimation extends AbstractBodyPositionAnimation {
 				edu.cmu.cs.dennisc.math.Point3 posLower = rightLower.getPosition(rightUpper);
 				edu.cmu.cs.dennisc.math.AxisAlignedBox boxLower = rightLower.getAxisAlignedMinimumBoundingBox();
 				
-				lengthSupportLeg = java.lang.Math.abs(posLower.y) + java.lang.Math.abs(boxLower.getMinimum().z);
+				lengthSupportLeg = Math.abs(posLower.y) + Math.abs(boxLower.getMinimum().z);
 				
 				double lengthLowerLeg =  0.0; 
-				if (leftFoot != null) lengthLowerLeg = java.lang.Math.abs(leftFoot.getPosition(leftLower).y) + java.lang.Math.abs(leftFoot.getAxisAlignedMinimumBoundingBox().getMinimum().z);
-				else lengthLowerLeg = java.lang.Math.abs(leftLower.getAxisAlignedMinimumBoundingBox().getMinimum().y);
+				if (leftFoot != null) lengthLowerLeg = Math.abs(leftFoot.getPosition(leftLower).y) + Math.abs(leftFoot.getAxisAlignedMinimumBoundingBox().getMinimum().z);
+				else lengthLowerLeg = Math.abs(leftLower.getAxisAlignedMinimumBoundingBox().getMinimum().y);
 				
 				double diff = lengthSupportLeg - lengthLowerLeg;
-				double angle = java.lang.Math.asin(java.lang.Math.abs(diff)/java.lang.Math.abs(posLower.y));
+				double angle = Math.asin(Math.abs(diff)/Math.abs(posLower.y));
 								
 				if (lengthSupportLeg*2.0 < lengthLowerLeg) {
 					leftUpperFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
 					leftLowerFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftLowerFinalOrient, 0.25*java.lang.Math.PI );
+					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftLowerFinalOrient, 0.25*Math.PI );
 					leftFootFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftFootFinalOrient, -0.25 * java.lang.Math.PI);
+					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftFootFinalOrient, -0.25 * Math.PI);
 					
 					rightUpperFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
 					rightLowerFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightLowerFinalOrient, -0.25*java.lang.Math.PI);
+					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightLowerFinalOrient, -0.25*Math.PI);
 					rightFootFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightFootFinalOrient, 0.25 * java.lang.Math.PI);
+					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightFootFinalOrient, 0.25 * Math.PI);
 				} else if (diff < 0) {
 					leftUpperFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftUpperFinalOrient, -0.5*java.lang.Math.PI - angle);
+					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftUpperFinalOrient, -0.5*Math.PI - angle);
 					leftLowerFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftLowerFinalOrient, 0.5 * java.lang.Math.PI + angle);
+					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftLowerFinalOrient, 0.5 * Math.PI + angle);
 					leftFootFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
 					
 				} else {
 					leftUpperFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftUpperFinalOrient, -0.5*java.lang.Math.PI + angle);
+					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftUpperFinalOrient, -0.5*Math.PI + angle);
 					leftLowerFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftLowerFinalOrient, 0.5 * java.lang.Math.PI - angle);
+					edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftLowerFinalOrient, 0.5 * Math.PI - angle);
 					leftFootFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
 					
 				}
@@ -146,21 +146,21 @@ public class KneelAnimation extends AbstractBodyPositionAnimation {
 		} else {	
 			if ( (rightLower == null) ) {
 				leftUpperFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftUpperFinalOrient, 0.5 * java.lang.Math.PI);
+				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftUpperFinalOrient, 0.5 * Math.PI);
 				leftFootFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftFootFinalOrient, 0.5 * java.lang.Math.PI);
+				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftFootFinalOrient, 0.5 * Math.PI);
 
 				rightUpperFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightUpperFinalOrient, 0.5 * java.lang.Math.PI);
+				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightUpperFinalOrient, 0.5 * Math.PI);
 				rightFootFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightFootFinalOrient, 0.5 * java.lang.Math.PI);
+				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightFootFinalOrient, 0.5 * Math.PI);
 				
 			} else {
 				leftUpperFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
 				leftLowerFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftLowerFinalOrient, 0.5 * java.lang.Math.PI);
+				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftLowerFinalOrient, 0.5 * Math.PI);
 				leftFootFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
-				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftFootFinalOrient, 0.5 * java.lang.Math.PI);
+				edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftFootFinalOrient, 0.5 * Math.PI);
 			}
 		}
 	}

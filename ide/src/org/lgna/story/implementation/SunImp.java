@@ -52,7 +52,7 @@ public class SunImp extends TransformableImp {
 	public SunImp( org.lgna.story.Sun abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgComposite().addComponent( this.sgSun );
-		this.getSgComposite().applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRevolutions( 0.25 ) );
+		this.getSgComposite().applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRevolutions( -0.25 ) );
 	}
 	@Override
 	public org.lgna.story.Sun getAbstraction() {

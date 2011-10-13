@@ -86,15 +86,15 @@ class TreeNodeFillIn<T> extends CascadeFillIn< T, Void > {
 		return this.node;
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, java.lang.Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
 		return this.model.getTextForNode( this.node );
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, java.lang.Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
 		return this.model.getIconForNode( this.node );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, java.lang.Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
 		throw new AssertionError();
 	}
 	@Override
@@ -126,7 +126,7 @@ class TreeNodeMenu<T> extends CascadeMenuModel< T > {
 		this.node = node;
 	}
 	@Override
-	protected java.lang.String getDefaultLocalizedText() {
+	protected String getDefaultLocalizedText() {
 		return null;
 	}
 	@Override
@@ -233,7 +233,6 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		}
 	}
 	private final SwingModel swingModel = new SwingModel();
-	private final SingleTreeSelectionModel treeSelectionModel;
 	private final javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
 		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
 			T nextValue = getSelectedNode();
@@ -247,8 +246,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 
 	public TreeSelectionState( Group group, java.util.UUID id, ItemCodec< T > itemCodec ) {
 		super( group, id, null, itemCodec );
-		this.treeSelectionModel = new SingleTreeSelectionModel();
-		this.treeSelectionModel.addTreeSelectionListener( this.treeSelectionListener );
+		this.swingModel.treeSelectionModel.addTreeSelectionListener( this.treeSelectionListener );
 	}
 
 	public SwingModel getSwingModel() {
@@ -262,15 +260,15 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 	protected abstract javax.swing.Icon getIconForNode( T node );
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > getTreeModel();
 	public T getSelectedNode() {
-		javax.swing.tree.TreePath path = this.treeSelectionModel.getSelectionPath();
+		javax.swing.tree.TreePath path = this.swingModel.treeSelectionModel.getSelectionPath();
 		if( path != null ) {
 			return (T)path.getLastPathComponent();
 		} else {
 			return null;
 		}
 	}
-	public void setSelectedNode( T e ) {
-		this.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
+	private void setSelectedNode( T e ) {
+		this.swingModel.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
 	}
 	@Override
 	public T getValue() {
@@ -325,5 +323,9 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 	}
 	public org.lgna.croquet.components.Tree< T > createTree() {
 		return new org.lgna.croquet.components.Tree< T >( this );
+	}
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		return rv;
 	}
 }

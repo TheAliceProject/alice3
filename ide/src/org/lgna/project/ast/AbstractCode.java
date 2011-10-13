@@ -49,7 +49,7 @@ package org.lgna.project.ast;
  */
 public abstract class AbstractCode extends AbstractMember {
 	public abstract java.util.ArrayList< ? extends AbstractParameter > getParameters();
-	
+	public abstract boolean isVariableLength();
 	public AbstractCode getShortestInChain() {
 		AbstractCode next = this.getNextShorterInChain();
 		if( next != null ) {

@@ -46,6 +46,8 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Marker extends MovableTurnable 
-{
+public abstract class Marker extends MovableTurnable implements MutableRider {
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+	}
 }

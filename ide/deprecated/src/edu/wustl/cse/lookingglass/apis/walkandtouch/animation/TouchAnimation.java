@@ -191,7 +191,7 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 			double cosAngle = ((targetDistance * targetDistance) - (upperLimbLength * upperLimbLength) - (lowerLimbLength * lowerLimbLength))/(-2.0 * upperLimbLength * lowerLimbLength);
 			//System.out.println("cosAngle: " + cosAngle);
 			if (cosAngle > 1.0) cosAngle = 1.0;
-			limbAngle = (java.lang.Math.PI - java.lang.Math.acos(cosAngle))/ (2.0 * java.lang.Math.PI);		
+			limbAngle = (Math.PI - Math.acos(cosAngle))/ (2.0 * Math.PI);		
 			//System.out.println("limbAngle: " + limbAngle);
 			
 //				arms turn backwards, legs turn forwards so as not to break people
@@ -212,8 +212,8 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 		Vector3 cross = new Vector3();
 		Vector3.setReturnValueToCrossProduct(cross, initialVector, targetVector);
 		cross.normalize();	
-		//upperLimb.rotateRightNow(cross, angle /(2.0 * java.lang.Math.PI), (org.alice.apis.moveandturn.ReferenceFrame)upperLimb.getParent());
-		rotateAroundArbitraryAxis(upperLimb, cross, angle / (2.0 * java.lang.Math.PI), AsSeenBy.PARENT);
+		//upperLimb.rotateRightNow(cross, angle /(2.0 * Math.PI), (org.alice.apis.moveandturn.ReferenceFrame)upperLimb.getParent());
+		rotateAroundArbitraryAxis(upperLimb, cross, angle / (2.0 * Math.PI), AsSeenBy.PARENT);
 		
 		
 		//nudge rotations to make arms look a tab more reasonable
@@ -366,7 +366,7 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 		double bLength = b.calculateMagnitude(); 
 		double cosC = ((cLength * cLength) - (aLength * aLength) - (bLength * bLength)) / (-2.0 * aLength * bLength);
 		
-		return java.lang.Math.acos(cosC);
+		return Math.acos(cosC);
 	}
 	
 	// I assume I want rotation in radians

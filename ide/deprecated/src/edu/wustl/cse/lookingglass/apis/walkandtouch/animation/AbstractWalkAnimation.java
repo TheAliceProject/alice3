@@ -364,7 +364,7 @@ public abstract class AbstractWalkAnimation extends edu.cmu.cs.dennisc.animation
 			double rightHeight = rightFoot.getAxisAlignedMinimumBoundingBox( org.alice.apis.moveandturn.AsSeenBy.SCENE ).getCenterOfBottomFace().y;
 			double leftHeight = leftFoot.getAxisAlignedMinimumBoundingBox( org.alice.apis.moveandturn.AsSeenBy.SCENE).getCenterOfBottomFace().y;
 
-			distanceAboveGround = java.lang.Math.min( rightHeight, leftHeight );
+			distanceAboveGround = Math.min( rightHeight, leftHeight );
 		} else {
 			distanceAboveGround = subject.getAxisAlignedMinimumBoundingBox( org.alice.apis.moveandturn.AsSeenBy.SCENE ).getCenterOfBottomFace().y;
 		}
@@ -513,7 +513,7 @@ public abstract class AbstractWalkAnimation extends edu.cmu.cs.dennisc.animation
 	}
 
 	public double getStepLength() {
-		double stepLength = totalLength * java.lang.Math.sin( contactAngle ) * 1.5;
+		double stepLength = totalLength * Math.sin( contactAngle ) * 1.5;
 		if( stepLength == 0.0 )
 			stepLength = 1.0;
 		return stepLength;
@@ -586,13 +586,13 @@ public abstract class AbstractWalkAnimation extends edu.cmu.cs.dennisc.animation
 			rotationUpper = contactAngle;
 		} else {
 
-			double lowerLegEffectiveLength = java.lang.Math.sqrt( footHorizLength * footHorizLength + (lowerLength + footLength) * (lowerLength + footLength) );
+			double lowerLegEffectiveLength = Math.sqrt( footHorizLength * footHorizLength + (lowerLength + footLength) * (lowerLength + footLength) );
 			double kneeAngle = (totalLength * totalLength - upperLength * upperLength - lowerLegEffectiveLength * lowerLegEffectiveLength) / (-2.0 * upperLength * lowerLegEffectiveLength);
 
-			kneeAngle = java.lang.Math.acos( kneeAngle );
+			kneeAngle = Math.acos( kneeAngle );
 
-			rotationLower = (java.lang.Math.PI - kneeAngle) + java.lang.Math.atan( footHorizLength / (footLength + lowerLength) );
-			rotationUpper = contactAngle - java.lang.Math.asin( (lowerLegEffectiveLength * java.lang.Math.sin( kneeAngle )) / totalLength );
+			rotationLower = (Math.PI - kneeAngle) + Math.atan( footHorizLength / (footLength + lowerLength) );
+			rotationUpper = contactAngle - Math.asin( (lowerLegEffectiveLength * Math.sin( kneeAngle )) / totalLength );
 
 			recoilBackLowerAngle += rotationLower;
 			recoilFrontUpperAngle += contactAngle;
@@ -609,7 +609,7 @@ public abstract class AbstractWalkAnimation extends edu.cmu.cs.dennisc.animation
 		RotationUtilities.rotateAroundX(backUpperContactOrient, rotationUpper);
 		RotationUtilities.rotateAroundX(backLowerContactOrient, rotationLower);
 
-		distanceToMoveContact = totalLength - (totalLength * java.lang.Math.cos( contactAngle ));
+		distanceToMoveContact = totalLength - (totalLength * Math.cos( contactAngle ));
 		contactPos = subject.getPositionInScene( new Point3( 0, -1.0 * distanceToMoveContact, 0 ) );
 	}
 
@@ -618,7 +618,7 @@ public abstract class AbstractWalkAnimation extends edu.cmu.cs.dennisc.animation
 		RotationUtilities.rotateAroundX(frontLowerRecoilOrient, recoilFrontUpperAngle);
 		RotationUtilities.rotateAroundX(backLowerRecoilOrient, recoilBackLowerAngle);
 
-		double distance = upperLength - (upperLength * java.lang.Math.cos( passingFrontUpperAngle )) + lowerLength - (lowerLength * java.lang.Math.cos( passingFrontLowerAngle - passingFrontUpperAngle ));
+		double distance = upperLength - (upperLength * Math.cos( passingFrontUpperAngle )) + lowerLength - (lowerLength * Math.cos( passingFrontLowerAngle - passingFrontUpperAngle ));
 		recoilPos = subject.getPositionInScene( new Point3( 0, -1.0 * distance, 0 ) );
 	}
 
@@ -630,7 +630,7 @@ public abstract class AbstractWalkAnimation extends edu.cmu.cs.dennisc.animation
 		RotationUtilities.rotateAroundX(backUpperPassingOrient, -1.0 * passingFrontUpperAngle);
 		RotationUtilities.rotateAroundX(backLowerPassingOrient, passingBackLowerAngle);
 
-		double distance = upperLength - (upperLength * java.lang.Math.cos( recoilFrontUpperAngle ));
+		double distance = upperLength - (upperLength * Math.cos( recoilFrontUpperAngle ));
 		passingPos = subject.getPositionInScene( new Point3( 0, -1.0 * distance, 0 ) );
 
 	}
@@ -641,7 +641,7 @@ public abstract class AbstractWalkAnimation extends edu.cmu.cs.dennisc.animation
 		RotationUtilities.rotateAroundX(backUpperHighPointOrient, -1.0 * highPointBackUpperAngle);
 		RotationUtilities.rotateAroundX(backLowerHighPointOrient, highPointBackLowerAngle);
 
-		double distance = totalLength - (totalLength * java.lang.Math.cos( highPointFrontUpperAngle ));
+		double distance = totalLength - (totalLength * Math.cos( highPointFrontUpperAngle ));
 		highPointPos = subject.getPositionInScene( new Point3( 0, -1.0 * distance, 0 ) );
 	}
 

@@ -100,18 +100,18 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		return originalEdit;
 	}
 
-//	private static edu.cmu.cs.dennisc.alice.ast.MethodInvocation getMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-//		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
-//			edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
-//			edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
-//			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
-//				return (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+//	private static org.lgna.project.ast.MethodInvocation getMethodInvocation( org.lgna.project.ast.Statement statement ) {
+//		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+//			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+//			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+//			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+//				return (org.lgna.project.ast.MethodInvocation)expression;
 //			}
 //		}
 //		return null;
 //	}
-//	private static edu.cmu.cs.dennisc.alice.ast.AbstractMethod getMethod( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-//		edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = getMethodInvocation( statement );
+//	private static org.lgna.project.ast.AbstractMethod getMethod( org.lgna.project.ast.Statement statement ) {
+//		org.lgna.project.ast.MethodInvocation methodInvocation = getMethodInvocation( statement );
 //		if( methodInvocation != null ) {
 //			return methodInvocation.method.getValue();
 //		}
@@ -122,7 +122,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		InsertStatementActionOperation replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.blockStatement, replacement.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacement.statement );
-//		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = getMethod( this.statement );
+//		org.lgna.project.ast.AbstractMethod method = getMethod( this.statement );
 //		if( method != null ) {
 //			retargeter.addKeyValuePair( method, getMethod( replacement.statement ) );
 //		}
@@ -131,7 +131,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		this.blockStatement = retargeter.retarget( this.blockStatement );
 		org.lgna.project.ast.Statement originalStatement = this.statement;
 		this.statement = retargeter.retarget( originalStatement );
-//		edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = getMethodInvocation( this.statement );
+//		org.lgna.project.ast.MethodInvocation methodInvocation = getMethodInvocation( this.statement );
 //		if( methodInvocation != null ) {
 //			methodInvocation.method.setValue( retargeter.retarget( getMethod( originalStatement ) ) );
 //		}

@@ -142,8 +142,8 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 	}
 	
 //	public DeclareMethodEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> replacementDeclaringType = retargeter.retarget( this.declaringType );
-//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice replacementMethod = org.alice.ide.ast.NodeUtilities.createMethod( this.method.getName(), this.method.getReturnType() );
+//		org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> replacementDeclaringType = retargeter.retarget( this.declaringType );
+//		org.lgna.project.ast.MethodDeclaredInAlice replacementMethod = org.alice.ide.ast.NodeUtilities.createMethod( this.method.getName(), this.method.getReturnType() );
 //		retargeter.addKeyValuePair( this.method, replacementMethod );
 //		retargeter.addKeyValuePair( this.method.body.getValue(), replacementMethod.body.getValue() );
 //		return new DeclareMethodEdit( replacementDeclaringType, replacementMethod );

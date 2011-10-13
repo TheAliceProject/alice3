@@ -59,7 +59,7 @@ public final class ClipboardDropSite implements org.lgna.croquet.DropSite {
 		return 0;
 	}
 	@Override
-	public boolean equals( java.lang.Object obj ) {
+	public boolean equals( Object obj ) {
 		return obj instanceof ClipboardDropSite;
 	}
 }

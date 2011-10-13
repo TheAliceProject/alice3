@@ -41,46 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.lgna.project.annotations;
 
-
-//P = property value type
-//O = property owner type
-public interface PropertyAdapter <P, O>
-{
-	public static interface ValueChangeObserver<P>
-	{
-		public void valueChanged(P newValue);
-	}
-	
-	public String getRepr();
-	
-	public Class<P> getPropertyType();
-	
-	public void setInstance(O instance);
-	
-	public P getValue();
-	
-	public P getValueCopy();
-	
-	public O getInstance();
-	
-	public P getLastSetValue();
-	
-	public void setValue(P value);
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer);
-	
-	public org.lgna.croquet.Model getEditModel();
-	
-	public org.lgna.croquet.components.ViewController<?,?> createEditViewController();
-	
-	public SetValueOperation<P> getSetValueOperation(P value); 
-	
-	public String getUndoRedoDescription(java.util.Locale locale);
-	
+/**
+ * @author Dennis Cosgrove
+ */
+public interface PublicStaticFieldValueDetails<T> extends ValueDetails<T> {
+	public java.lang.reflect.Field[] getFlds();
 }

@@ -43,81 +43,14 @@
 
 package org.alice.stageide.properties;
 
-import java.util.Locale;
-
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
-import org.alice.ide.properties.adapter.AbstractNamePropertyAdapter;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.components.Button;
-
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import org.alice.ide.properties.adapter.StringPropertyAdapter;
 
 
-public class FieldNameAdapter extends AbstractNamePropertyAdapter<org.lgna.project.ast.UserField> {
+public class FieldNameAdapter extends StringPropertyAdapter<org.lgna.project.ast.UserField> {
 	
 	public FieldNameAdapter(org.lgna.project.ast.UserField instance, StandardExpressionState expressionState)
 	{
-		super(instance, expressionState);
+		super("Name", instance, instance.name, expressionState);
 	}
-
-	public String getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getName();
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	@Override
-	public void setValue(String value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			this.instance.setName(value);
-		}
-		
-	}
-	
-	@Override
-	public Operation getEditModel() 
-	{
-		return RenameFieldOperation.getInstance( this.instance );
-		
-	}
-	
-	@Override
-    public Button createEditViewController()
-	{
-	    Button b = this.getEditModel().createButton();
-	    //TODO: Localize This
-	    b.getAwtComponent().setText("Rename...");
-	    return b;
-	}
-
-	@Override
-	public String getUndoRedoDescription(Locale locale) 
-	{
-		return "Field Name";
-	}
-
-	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.name.addPropertyListener(propertyListener);
-		}
-	}
-
-	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.name.addPropertyListener(propertyListener);
-		}
-	}
-
 }

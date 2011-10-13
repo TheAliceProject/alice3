@@ -70,11 +70,11 @@ public class GalleryResourceFillIn extends org.alice.ide.croquet.models.cascade.
 		);
 	}
 	@Override
-	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, java.lang.Void > step ) {
+	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, Void > step ) {
 		return createValue( this.transientValue.field.getValue() );
 	}
 	@Override
-	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, java.lang.Void > step ) {
+	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, Void > step ) {
 		return this.transientValue;
 	}
 }

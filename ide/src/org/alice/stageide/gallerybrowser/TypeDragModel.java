@@ -81,7 +81,7 @@ public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.G
 		return null;
 	}
 	@Override
-	public java.lang.String getText() {
+	public String getText() {
 		return this.type.getName();
 	}
 }

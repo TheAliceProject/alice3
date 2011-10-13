@@ -91,14 +91,13 @@ public abstract class State<T> extends CompletionModel {
 		} else {
 			this.updateSwingModel( nextValue );
 		}
-//		this.handleValueChange( nextValue );
 		if( this.isAppropriateToComplete() ) {
 			this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
 		}
+		//todo?
 //		for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
 //			component.revalidateAndRepaint();
 //		}
-//		StringState.this.previousValue = nextValue;
 		this.fireChanged( this.prevValue, nextValue, isAdjusting );
 		this.prevValue = nextValue;
 	}

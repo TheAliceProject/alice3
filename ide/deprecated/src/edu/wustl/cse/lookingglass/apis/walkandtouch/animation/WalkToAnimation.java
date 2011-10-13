@@ -200,7 +200,7 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 
 				timePerStep = 1.0/stepSpeed;
 
-				int stepNumber = (int)java.lang.Math.ceil( deltaSincePrologue  * (1.0/timePerStep)) - 1;
+				int stepNumber = (int)Math.ceil( deltaSincePrologue  * (1.0/timePerStep)) - 1;
 				if (stepNumber == -1) stepNumber = 0;
 				if (stepNumber == numberOfSteps) {
 					stepNumber -= 1;
@@ -263,7 +263,7 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 		double ft = m_xHermite.evaluateDerivative(t);
 		double ht = m_zHermite.evaluateDerivative(t);
 		
-		return java.lang.Math.sqrt(ft*ft + ht*ht);
+		return Math.sqrt(ft*ft + ht*ht);
 	}
 	
 	protected double getPathLength() {
@@ -287,7 +287,7 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 			startT += 2*h;
 		}
 		
-		//System.out.println("distance between points: " + java.lang.Math.sqrt((m_transformationEnd.right.w - m_transformationBegin.right.w) * (m_transformationEnd.right.w - m_transformationBegin.right.w) + (m_transformationEnd.backward.w - m_transformationBegin.backward.w) * (m_transformationEnd.backward.w - m_transformationBegin.backward.w)) );
+		//System.out.println("distance between points: " + Math.sqrt((m_transformationEnd.right.w - m_transformationBegin.right.w) * (m_transformationEnd.right.w - m_transformationBegin.right.w) + (m_transformationEnd.backward.w - m_transformationBegin.backward.w) * (m_transformationEnd.backward.w - m_transformationBegin.backward.w)) );
 		return (x1s + 4*x4s + 2*x2s) * (h/3.0);
 	}
 	
@@ -303,7 +303,7 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 		}
 	
 		if (numberOfSteps == -1) {
-			numberOfSteps = java.lang.Math.round(distanceToMove/stepLength);
+			numberOfSteps = Math.round(distanceToMove/stepLength);
 		}
 	
 		return distanceToMove/numberOfSteps;

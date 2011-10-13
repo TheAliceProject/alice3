@@ -66,7 +66,7 @@ public class KeywordMenuModel extends org.lgna.croquet.CascadeMenuModel< org.lgn
 		this.method = method;
 	}
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression > step ) {
 		return this.method.getName();
 	}
 	@Override

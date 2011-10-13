@@ -45,9 +45,9 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareMethodOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
-	public DeclareMethodOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
+public abstract class DeclareMethodOperation extends org.alice.ide.croquet.models.InputDialogWithPreviewOperation<org.lgna.project.ast.MethodDeclaredInAlice> {
+	private org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType;
+	public DeclareMethodOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		this.declaringType = declaringType;
 	}
@@ -96,7 +96,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( step, originalDeclareMethodEdit.getDeclaringType(), originalDeclareMethodEdit.getMethod() );
 	}
 	protected String getDeclarationName(org.lgna.croquet.history.InputDialogOperationStep step) {
-		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
+		org.alice.ide.declarationpanes.CreateDeclarationPane<org.lgna.project.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
 		if( createMethodPane != null ) {
 			return createMethodPane.getDeclarationName();
 		} else {
@@ -105,30 +105,30 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 	}
 //	@Override
 //	public edu.cmu.cs.dennisc.croquet.Edit< ? > EPIC_HACK_createEdit( org.lgna.croquet.steps.InputDialogOperationStep step ) {
-//		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
-//		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
+//		org.alice.ide.declarationpanes.CreateDeclarationPane<org.lgna.project.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
+//		final org.lgna.project.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
 //		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( declaringType, method );
 //	}
 
-	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > declaringType );
+	protected abstract org.alice.ide.declarationpanes.CreateDeclarationPane<org.lgna.project.ast.MethodDeclaredInAlice> createCreateMethodPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > declaringType );
 	@Override
-	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected org.alice.ide.declarationpanes.CreateDeclarationPane< org.lgna.project.ast.MethodDeclaredInAlice > prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
 		assert this.declaringType != null;
 		return this.createCreateMethodPane( this.declaringType );
 	}
 	@Override
 	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
-			final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
+			org.alice.ide.declarationpanes.CreateDeclarationPane<org.lgna.project.ast.MethodDeclaredInAlice> createMethodPane = step.getMainPanel();
+			final org.lgna.project.ast.MethodDeclaredInAlice method = createMethodPane.getInputValue();
 			if( method != null ) {
 				final org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-				final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = ide.getFocusedCode();
+				final org.lgna.project.ast.AbstractCode prevCode = ide.getFocusedCode();
 //				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 //					@Override
 //					protected final void doOrRedoInternal( boolean isDo ) {
 //						declaringType.methods.add( method );
-////						assert method.getDeclaringType() == method.body.getValue().getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType.class );
+////						assert method.getDeclaringType() == method.body.getValue().getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractType.class );
 //						ide.setFocusedCode( method );
 //					}
 //					@Override
@@ -144,7 +144,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 //					@Override
 //					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
 //						rv.append( "declare:" );
-//						edu.cmu.cs.dennisc.alice.ast.NodeUtilities.safeAppendRepr(rv, method, locale);
+//						org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, method, locale);
 //						return rv;
 //					}
 //				} );
@@ -156,7 +156,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.croquet.model
 			step.cancel();
 		}
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> getDeclaringType() {
+	public org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> getDeclaringType() {
 		return this.declaringType;
 	}
 	@Override

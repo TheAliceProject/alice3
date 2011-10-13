@@ -43,6 +43,7 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
@@ -50,12 +51,17 @@ package org.lgna.story;
 public abstract class Entity implements Rider {
 	private String name;
 	/*package-private*/ abstract org.lgna.story.implementation.EntityImp getImplementation();
+	@GetterTemplate(isPersistent = true)
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public String getName() {
 		return this.name;
 	}
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public void setName( String name ) {
 		this.name = name;
 	}
+	@GetterTemplate(isPersistent = true)
+	@MethodTemplate()
 	public Entity getVehicle() {
 		org.lgna.story.implementation.EntityImp vehicleImplementation = this.getImplementation().getVehicle();
 		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;

@@ -47,8 +47,11 @@ import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public class Camera extends MovableTurnable {
+public class Camera extends MovableTurnable implements MutableRider {
 	private final org.lgna.story.implementation.SymmetricPerspectiveCameraImp implementation = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( this );
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+	}
 	@Override
 	/*package-private*/ org.lgna.story.implementation.SymmetricPerspectiveCameraImp getImplementation() {
 		return this.implementation;

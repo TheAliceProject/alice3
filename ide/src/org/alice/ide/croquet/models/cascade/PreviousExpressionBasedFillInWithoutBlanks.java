@@ -53,10 +53,10 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.
 	private org.lgna.project.ast.Expression getPreviousExpression() {
 		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
 	}
-//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
+//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, org.lgna.project.ast.Expression previousExpression );
 //	@Override
 //	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,Void> context ) {
-//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 //		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
 //	}
 	private org.lgna.project.ast.Expression cleanExpression;

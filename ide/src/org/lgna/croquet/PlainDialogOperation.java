@@ -66,7 +66,7 @@ public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croq
 			this.plainDialogOperation = plainDialogOperation;
 		}
 		@Override
-		protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 			rv.append( "Press the <strong>Close</strong> button when you are ready." );
 			return rv;
 		}

@@ -78,7 +78,7 @@ public abstract class CascadeFillIn<F,B> extends CascadeBlankOwner< F, B > {
 			org.lgna.croquet.cascade.AbstractItemNode< B,?,? > selectedFillInContext = blankStep.getSelectedFillInContext();
 			rv[ i ] = blankActor.act( selectedFillInContext );
 //			if( rv[ i ] == null ) {
-//				if( this.cls == edu.cmu.cs.dennisc.alice.ast.Expression.class ) {
+//				if( this.cls == org.lgna.project.ast.Expression.class ) {
 //					edu.cmu.cs.dennisc.croquet.CascadeBlank< B > blank = blankContext.getModel();
 //					if( blank instanceof ExpressionBlank ) {
 //						ExpressionBlank expressionBlank = (ExpressionBlank)blank;

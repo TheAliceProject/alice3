@@ -88,12 +88,12 @@ public class ArrayChooser extends AbstractRowsPaneChooser< org.lgna.project.ast.
 //				ArrayChooser.this.arrayInitializerPane.handleTypeChange( bogusNode.getType() );
 //			}
 //		} );
-//		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+//		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.Expression >() {
 //			@Override
-//			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+//			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.Expression > e ) {
 //			}
 //			@Override
-//			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+//			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.Expression > e ) {
 //			}
 //		} );
 	}

@@ -73,7 +73,7 @@ public final class ReflectionUtilities {
 	public static boolean isAbstract( java.lang.reflect.Member mmbr ) {
 		return java.lang.reflect.Modifier.isAbstract( mmbr.getModifiers() );
 	}
-	public static boolean isAbstract( java.lang.Class<?> cls ) {
+	public static boolean isAbstract( Class<?> cls ) {
 		return java.lang.reflect.Modifier.isAbstract( cls.getModifiers() );
 	}
 	//todo: add the rest of the modifiers

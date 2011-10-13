@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareProcedureOperation extends DeclareMethodOperation {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? >, DeclareProcedureOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static DeclareProcedureOperation getInstance( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+	private static java.util.Map< org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? >, DeclareProcedureOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static DeclareProcedureOperation getInstance( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		DeclareProcedureOperation rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -57,15 +57,15 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 		}
 		return rv;
 	}
-	private DeclareProcedureOperation( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+	private DeclareProcedureOperation( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		super( java.util.UUID.fromString( "dcaee920-08ea-4b03-85d1-f2df5f73bfb4" ), type );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareProcedureOperation > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareProcedureOperation >( this, this.getDeclaringType(), edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclareProcedureOperation >( this, this.getDeclaringType(), org.lgna.project.ast.AbstractTypeDeclaredInAlice.class );
 	}
 	@Override
-	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice< ? > type ) {
+	protected org.alice.ide.declarationpanes.CreateDeclarationPane< org.lgna.project.ast.MethodDeclaredInAlice > createCreateMethodPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice< ? > type ) {
 		return new org.alice.ide.declarationpanes.CreateProcedurePane( type );
 	}
 	@Override

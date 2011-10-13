@@ -44,35 +44,100 @@
 package org.alice.ide.properties.adapter;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
+import org.lgna.story.implementation.Property.Listener;
 
-import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
-public abstract class AbstractPoint3PropertyAdapter<O> extends AbstractPropertyAdapter<Point3, O> 
-{
-	protected class SetPoint3Operation extends SetValueOperation<Point3> {
-		public SetPoint3Operation( Point3 value, String name) {
-			super( AbstractPoint3PropertyAdapter.this, value, name, java.util.UUID.fromString( "fa074f8e-71f3-46bc-af04-2e3c262ed6e8" ) );
-		}
-	}
+public abstract class AbstractImplementationPropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
 
-	public AbstractPoint3PropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
-	{
-		super(repr, instance, expressionState);
-	}
+	private Listener<P> propertyListener;
+	private org.lgna.story.implementation.Property<P> property;
 	
-	public Class<Point3> getPropertyType()
+	private void initializeListenersIfNecessary()
 	{
-		return Point3.class;
+		if (this.propertyListener == null)
+		{
+			this.propertyListener = new Listener<P>()
+			{
+				public void propertyChanged(P prevValue, P nextValue) {
+					handleInternalValueChanged();
+				}
+			};
+		}
 	}
 	
 	@Override
-	public SetValueOperation<Point3> getSetValueOperation(Point3 value) 
+	protected void startPropertyListening() 
 	{
-		return new SetPoint3Operation(value, null);
+		super.startPropertyListening();
+		if (this.instance != null)
+		{
+			this.initializeListenersIfNecessary();
+			this.addPropertyListener(this.propertyListener);
+		}
 	}
 	
-	public Point3 getValueCopy() 
+	@Override
+	protected void stopPropertyListening() 
 	{
-		return new Point3(this.getValue());
+		super.stopPropertyListening();
+		if (this.instance != null)
+		{
+			this.removePropertyListener(this.propertyListener);
+		}
 	}
+	
+	public AbstractImplementationPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<P> property, StandardExpressionState expressionState ){
+		super(repr, instance, expressionState);
+		this.property = property;
+	}
+	
+	@Override
+	public P getValue() {
+		if (this.property != null){
+			return this.property.getValue();
+		}
+		else{
+			return null;
+		}
+	}
+	
+	@Override
+	public Class<P> getPropertyType() {
+		return this.property.getValueCls();
+	}
+	
+	@Override
+	public void setValue(final P value) {
+		super.setValue(value);
+		if (this.property != null){
+			new Thread() {
+				@Override
+				public void run() {
+					AbstractImplementationPropertyAdapter.this.property.setValue(value);
+				}
+			}.start();
+		}
+		
+	}
+
+	protected void addPropertyListener(Listener<P> propertyListener) {
+		if (this.property != null){
+			property.addPropertyObserver(propertyListener);
+		}
+	}
+
+	protected void removePropertyListener(Listener<P> propertyListener) {
+		if (this.property != null){
+			property.removePropertyObserver(propertyListener);
+		}
+	}
+	
+	protected void handleInternalValueChanged(){
+		P newValue = this.getValue();
+		this.notifyValueObservers(newValue);
+	}
+
 }

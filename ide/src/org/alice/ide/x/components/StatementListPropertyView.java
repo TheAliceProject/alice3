@@ -60,8 +60,8 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 //					//final StatementListPropertyPane statementListPropertyPane = getStatementListPropertyPaneUnder( e, createStatementListPropertyPaneInfos( null ) );
 //					final StatementListPropertyPane statementListPropertyPane = StatementListPropertyPane.this;
 //					if( statementListPropertyPane != null ) {
-//						ide.promptUserForStatement( e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
-//							public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//						ide.promptUserForStatement( e, new edu.cmu.cs.dennisc.task.TaskObserver< org.lgna.project.ast.Statement >() {
+//							public void handleCompletion( org.lgna.project.ast.Statement statement ) {
 //								java.awt.Point p = e.getPoint();
 //								//p = javax.swing.SwingUtilities.convertPoint( e.getComponent(), p, statementListPropertyPane );
 //								statementListPropertyPane.getProperty().add( statementListPropertyPane.calculateIndex( p ), statement );

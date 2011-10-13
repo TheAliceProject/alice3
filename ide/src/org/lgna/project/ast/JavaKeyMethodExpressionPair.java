@@ -41,67 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.lgna.project.ast;
 
-import java.util.Locale;
-
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.lgna.croquet.Operation;
-import org.lgna.story.ImplementationAccessor;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
-
-public class TransformableTranslationAdapter extends AbstractAbsolutePositionPropertyAdapter<org.lgna.story.MovableTurnable> {
-	
-	public TransformableTranslationAdapter(org.lgna.story.MovableTurnable instance, StandardExpressionState expressionState) {
-		super(instance, expressionState);
-	}
-
-	public Point3 getValue() 
-	{
-		if (this.instance != null)
-		{
-			return ImplementationAccessor.getImplementation(this.instance).getAbsoluteTransformation().translation;
+/**
+ * @author Dennis Cosgrove
+ */
+public class JavaKeyMethodExpressionPair extends AbstractNode {
+	public DeclarationProperty< JavaMethod > keyMethod = new DeclarationProperty< JavaMethod >( this ) {
+		@Override
+		public boolean isReference() {
+			return true;
 		}
-		return null;
-	}
-	
-	@Override
-	public void setValue(Point3 newValue) 
-	{
-		super.setValue(newValue);
-		if (this.instance != null)
-		{
-			AffineMatrix4x4 currentTrans = ImplementationAccessor.getImplementation(this.instance).getAbsoluteTransformation();
-			double dist = Point3.calculateDistanceBetween(currentTrans.translation, newValue);
-			double duration = 1;
-			if (dist < .02)
-			{
-				duration = 0;
-			}
-			else if (dist < .1)
-			{
-				duration = (dist - .02) / (.1 - .02);
-			}
-			
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().setTranslationOnly(newValue, implementation.getSgComposite().getRoot());
+	};
+	public ExpressionProperty expression = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?,?,?> getExpressionType() {
+			return JavaType.getInstance( Boolean.class );
 		}
+	};
+	public JavaKeyMethodExpressionPair() {
 	}
-
-	@Override
-	public Operation getEditModel() 
-	{
-		// TODO Auto-generated method stub
-		return null;
+	public JavaKeyMethodExpressionPair( JavaMethod keywordMethod, Expression expression ) {
+		this.keyMethod.setValue( keywordMethod );
+		this.expression.setValue( expression );
 	}
-
-	@Override
-	public String getUndoRedoDescription(Locale locale) 
-	{
-		// TODO Auto-generated method stub
-		return "Position Change";
-	}
-
 }

@@ -47,7 +47,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
  */
 class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
 	private org.lookingglassandalice.storytelling.resources.sims2.Person person;
-	public CreateFieldFromPersonPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.lookingglassandalice.storytelling.resources.sims2.Person person ) {
+	public CreateFieldFromPersonPane( org.lgna.project.ast.TypeDeclaredInAlice declaringType, org.lookingglassandalice.storytelling.resources.sims2.Person person ) {
 		super( declaringType, person.getClass(), null );
 		this.person = person;
 	}
@@ -78,7 +78,7 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 		
 		if( person != null ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
+			org.lgna.project.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
 			return new CreateFieldFromPersonPane( declaringType, person );
 		} else {
 			return null;
@@ -90,9 +90,9 @@ public class CreatePersonFieldOperation extends AbstractGalleryDeclareFieldOpera
 		return rv;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, org.lookingglassandalice.storytelling.resources.sims2.Person > createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.FieldDeclaredInAlice, org.lookingglassandalice.storytelling.resources.sims2.Person > createFieldAndInstance(org.lgna.croquet.history.InputDialogOperationStep step ) {
 		CreateFieldFromPersonPane createFieldFromPersonPane = step.getMainPanel();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getInputValue();
+		org.lgna.project.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.getInputValue();
 		if( field != null ) {
 			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, createFieldFromPersonPane.getPerson() );

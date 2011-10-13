@@ -85,6 +85,11 @@ public abstract class Element {
 		if( map != null ) {
 			Class<? extends Element> cls = map.get( id );
 			if( cls != null ) {
+				if (cls != this.getClass())
+				{
+					Class thisClass = this.getClass();
+					System.out.println("BOOM!");
+				}
 				assert cls == this.getClass() : id;
 			} else {
 				map.put( id, this.getClass() );

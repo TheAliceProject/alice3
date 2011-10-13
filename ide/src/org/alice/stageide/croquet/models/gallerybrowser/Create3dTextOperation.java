@@ -133,7 +133,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 
 	private org.lgna.croquet.components.Label sample;
 
-//	public CreateTextPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+//	public CreateTextPane( org.lgna.project.ast.TypeDeclaredInAlice declaringType ) {
 //		super( declaringType, org.lookingglassandalice.storytelling.Billboard.class, null );
 	public CreateTextPane( final Create3dTextOperation operation ) {
 		final int INSET = 16;
@@ -300,7 +300,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 //		} catch( NumberFormatException nfe ) {
 //			return false;
 //		}
-//		boolean isInstanceNameValid = edu.cmu.cs.dennisc.alice.ast.IdentifierUtilities.isValidIdentifier( this.instanceNameVC.getText() );
+//		boolean isInstanceNameValid = org.lgna.project.ast.IdentifierUtilities.isValidIdentifier( this.instanceNameVC.getText() );
 //		return super.isOKButtonValid() && isInstanceNameValid;
 //	}
 	private void handleTextChange( javax.swing.event.DocumentEvent e ) {
@@ -345,7 +345,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	}
 	
 //	@Override
-//	protected java.lang.String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
+//	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
 //		CreateTextPane pane = step.getMainPanel();
 //		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = new org.alice.ide.name.validators.FieldNameValidator( org.alice.ide.IDE.getActiveInstance().getSceneType() );
 //		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( pane.getInstanceNameText() );

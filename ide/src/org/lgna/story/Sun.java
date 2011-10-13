@@ -46,10 +46,13 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class Sun extends Turnable {
+public class Sun extends Turnable implements MutableRider {
 	private final org.lgna.story.implementation.SunImp implementation = new org.lgna.story.implementation.SunImp( this );
 	@Override
 	/*package-private*/ org.lgna.story.implementation.SunImp getImplementation() {
 		return this.implementation;
+	}
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 }

@@ -189,8 +189,8 @@ public abstract class Factory {
 		} else if( owner instanceof org.lgna.project.ast.AbstractConstructor && methodName.equals( "getDeclaringType" ) ) {
 			org.lgna.project.ast.AbstractConstructor constructor = (org.lgna.project.ast.AbstractConstructor)owner;
 			rv = TypeComponent.createInstance( constructor.getDeclaringType() );
-//		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression && methodName.equals( "getResourceName" ) ) {
-//			edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)owner;
+//		} else if( owner instanceof org.lgna.project.ast.ResourceExpression && methodName.equals( "getResourceName" ) ) {
+//			org.lgna.project.ast.ResourceExpression resourceExpression = (org.lgna.project.ast.ResourceExpression)owner;
 //			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
 //			rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "resource " + resource.getName() );
 		} else {
@@ -307,10 +307,10 @@ public abstract class Factory {
 //				rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)owner );
 //			} else if( owner instanceof org.alice.ide.ast.SelectedFieldExpression ) {
 //				rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)owner );
-//			} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-//				rv = new FieldAccessPane( this, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)owner );
-//			} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-//				rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)owner).value.getValue() );
+//			} else if( owner instanceof org.lgna.project.ast.FieldAccess ) {
+//				rv = new FieldAccessPane( this, (org.lgna.project.ast.FieldAccess)owner );
+//			} else if( owner instanceof org.lgna.project.ast.TypeExpression ) {
+//				rv = new TypeComponent( ((org.lgna.project.ast.TypeExpression)owner).value.getValue() );
 //			} else {
 				Class< ? > cls = owner.getClass();
 				String value = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
@@ -346,7 +346,7 @@ public abstract class Factory {
 	public final org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.project.ast.Statement statement ) {
 		return this.createStatementPane( statement, null );
 	}
-//	public final java.awt.Component createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+//	public final java.awt.Component createExpressionPane( org.lgna.project.ast.Expression expression ) {
 //		return new ExpressionPane( this, expression );
 //	}
 	
@@ -377,10 +377,10 @@ public abstract class Factory {
 
 	public org.lgna.croquet.components.JComponent< ? > createExpressionPane( org.lgna.project.ast.Expression expression ) {
 //		java.awt.Component rv;
-//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-//			rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
-////		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-////			rv = new FieldAccessPane( this, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+//		if( expression instanceof org.lgna.project.ast.TypeExpression ) {
+//			rv = new TypeComponent( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() );
+////		} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {
+////			rv = new FieldAccessPane( this, (org.lgna.project.ast.FieldAccess)expression );
 //		} else {
 //			rv = new ExpressionPane( this, expression );
 //		}
@@ -449,13 +449,13 @@ public abstract class Factory {
 							new DeclarationNameLabel( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() ),
 							new org.lgna.croquet.components.Label( "." )
 					);
-					//rv = TypeComponent.createInstance( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+					//rv = TypeComponent.createInstance( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() );
 				} else {
 					rv = new org.lgna.croquet.components.Label();
 				}
 			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
 				rv = this.createInstanceCreationPane( (org.lgna.project.ast.InstanceCreation)expression );
-//			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractLiteral ) {
+//			} else if( expression instanceof org.lgna.project.ast.AbstractLiteral ) {
 //				rv = this.createComponent( expression );
 			} else {
 				org.lgna.croquet.components.JComponent< ? > component = this.createComponent( expression );

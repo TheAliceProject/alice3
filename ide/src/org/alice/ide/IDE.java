@@ -164,7 +164,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public abstract ApiConfigurationManager getApiConfigurationManager();
 	
 	@Override
-	public void initialize( java.lang.String[] args ) {
+	public void initialize( String[] args ) {
 		super.initialize( args );
 		org.lgna.croquet.components.Frame frame = this.getFrame();
 		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );		
@@ -699,7 +699,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
+	//public abstract void handleDelete( org.lgna.project.ast.Node node );
 
 	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
@@ -831,13 +831,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //		if( isRespondingToRefreshAccessibles ) {
 //			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
 //
-//			edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getFocusedCode();
-//			edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
+//			org.lgna.project.ast.AbstractCode code = this.getFocusedCode();
+//			org.lgna.project.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 //
-//			java.util.List< edu.cmu.cs.dennisc.alice.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//			java.util.List< org.lgna.project.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 //			if( this.rootField != null ) {
 //				accessibles.add( this.rootField );
-//				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.getRootTypeDeclaredInAlice().fields ) {
+//				for( org.lgna.project.ast.AbstractField field : this.getRootTypeDeclaredInAlice().fields ) {
 //					if( this.isAccessibleDesired( field ) ) {
 //						accessibles.add( field );
 //					}
@@ -845,19 +845,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //			}
 //
 //			int indexOfLastField = accessibles.size() - 1;
-//			if( code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
-//				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)code;
-//				for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : codeDeclaredInAlice.getParamtersProperty() ) {
+//			if( code instanceof org.lgna.project.ast.CodeDeclaredInAlice ) {
+//				org.lgna.project.ast.CodeDeclaredInAlice codeDeclaredInAlice = (org.lgna.project.ast.CodeDeclaredInAlice)code;
+//				for( org.lgna.project.ast.ParameterDeclaredInAlice parameter : codeDeclaredInAlice.getParamtersProperty() ) {
 //					if( this.isAccessibleDesired( parameter ) ) {
 //						accessibles.add( parameter );
 //					}
 //				}
-//				for( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable : IDE.getVariables( code ) ) {
+//				for( org.lgna.project.ast.VariableDeclaredInAlice variable : IDE.getVariables( code ) ) {
 //					if( this.isAccessibleDesired( variable ) ) {
 //						accessibles.add( variable );
 //					}
 //				}
-//				for( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant : IDE.getConstants( code ) ) {
+//				for( org.lgna.project.ast.ConstantDeclaredInAlice constant : IDE.getConstants( code ) ) {
 //					if( this.isAccessibleDesired( constant ) ) {
 //						accessibles.add( constant );
 //					}

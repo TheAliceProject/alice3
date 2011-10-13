@@ -47,11 +47,11 @@ package org.alice.ide.properties.uicontroller;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import org.alice.ide.properties.adapter.PropertyAdapter;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
-public class BlankPropertyController extends LabelBasedPropertyController<Object>
+public class BlankPropertyController<P> extends LabelBasedPropertyController<P>
 {
-	public BlankPropertyController(PropertyAdapter<Object, ?> propertyAdapter)
+	public BlankPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter)
 	{
 		super(propertyAdapter);
 	}

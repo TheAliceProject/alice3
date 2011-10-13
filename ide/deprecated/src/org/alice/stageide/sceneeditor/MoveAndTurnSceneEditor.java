@@ -102,10 +102,10 @@ import org.lgna.croquet.components.AbstractButton;
 import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.DragComponent;
 
-import edu.cmu.cs.dennisc.alice.ast.AbstractField;
-import edu.cmu.cs.dennisc.alice.ast.Accessible;
-import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.Accessible;
+import org.lgna.project.ast.FieldDeclaredInAlice;
+import org.lgna.project.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
@@ -171,7 +171,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	protected SnapGrid snapGrid;
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lookingglassandalice.storytelling.Scene scene;
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = null;
+	private org.lgna.project.ast.TypeDeclaredInAlice sceneType = null;
 	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera = null;
 	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgPerspectiveCamera = null;
 	
@@ -207,51 +207,51 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	};
 	
 	private org.lgna.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice> cameraMarkerFieldSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice>() {
-		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.FieldDeclaredInAlice > state, org.lgna.project.ast.FieldDeclaredInAlice prevValue, org.lgna.project.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.FieldDeclaredInAlice > state, org.lgna.project.ast.FieldDeclaredInAlice prevValue, org.lgna.project.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleCameraMarkerFieldSelection( nextValue );
 		}
 	};
 	
 	private org.lgna.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice> objectMarkerFieldSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<FieldDeclaredInAlice>() {
-		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.FieldDeclaredInAlice > state, org.lgna.project.ast.FieldDeclaredInAlice prevValue, org.lgna.project.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > state, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice prevValue, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.FieldDeclaredInAlice > state, org.lgna.project.ast.FieldDeclaredInAlice prevValue, org.lgna.project.ast.FieldDeclaredInAlice nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleObjectMarkerFieldSelection( nextValue );
 		}
 	};
 	
-	private org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible> fieldSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
-		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.project.ast.Accessible> fieldSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.project.ast.Accessible>() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Accessible > state, org.lgna.project.ast.Accessible prevValue, org.lgna.project.ast.Accessible nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Accessible > state, org.lgna.project.ast.Accessible prevValue, org.lgna.project.ast.Accessible nextValue, boolean isAdjusting ) {
 			MoveAndTurnSceneEditor.this.handleAccessibleSelection( nextValue );
 		}
 	};
 	
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > globalFieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.FieldDeclaredInAlice > globalFieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.FieldDeclaredInAlice >() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 			MoveAndTurnSceneEditor.this.handleGlobalFieldsAdded(e.getElements());
 		}
 
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 			MoveAndTurnSceneEditor.this.handleGlobalFieldsCleared();
 		}
 
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 			MoveAndTurnSceneEditor.this.handleGlobalFieldsRemoved(e.getElements());
 		}
 
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.FieldDeclaredInAlice > e ) {
 			MoveAndTurnSceneEditor.this.handleGlobalFieldsSet(e.getElements());
 		}
 	};
@@ -289,11 +289,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		}
 	};
 	
-	private static class FieldRadioButtons extends org.lgna.croquet.components.CustomRadioButtons< edu.cmu.cs.dennisc.alice.ast.Accessible > {
+	private static class FieldRadioButtons extends org.lgna.croquet.components.CustomRadioButtons< org.lgna.project.ast.Accessible > {
 		private static final int SUB_FIELD_LEFT_INSET = 10;
 		private static final int INTRA_FIELD_PAD = 1;
 		private javax.swing.SpringLayout springLayout;
-		public FieldRadioButtons( ListSelectionState<edu.cmu.cs.dennisc.alice.ast.Accessible> model ) {
+		public FieldRadioButtons( ListSelectionState<org.lgna.project.ast.Accessible> model ) {
 			super( model );
 		}
 		@Override
@@ -322,7 +322,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		}
 		
 		@Override
-		protected org.lgna.croquet.components.BooleanStateButton< ? > createBooleanStateButton( edu.cmu.cs.dennisc.alice.ast.Accessible item, BooleanState booleanState ) {
+		protected org.lgna.croquet.components.BooleanStateButton< ? > createBooleanStateButton( org.lgna.project.ast.Accessible item, BooleanState booleanState ) {
 			return new FieldTile( item, booleanState );
 		}
 		
@@ -473,7 +473,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	}
 	
 	//Called when a selection changes on org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance()
-	private void handleAccessibleSelection( edu.cmu.cs.dennisc.alice.ast.Accessible accessible ) {
+	private void handleAccessibleSelection( org.lgna.project.ast.Accessible accessible ) {
 		if( accessible instanceof AbstractField ) {
 			AbstractField field = (AbstractField)accessible;
 			Object instance = this.getInstanceInAliceVMForField( field );
@@ -554,7 +554,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		{
 //			objectInJava = org.lookingglassandalice.storytelling.Entity.getElement(this.sgPerspectiveCamera);
 		}
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJavaVM( objectInJava );
+		org.lgna.project.ast.AbstractField field = this.getFieldForInstanceInJavaVM( objectInJava );
 		if (objectInJava instanceof CameraMarker)
 		{
 			CameraMarkerFieldListSelectionState.getInstance().setSelectedItem((FieldDeclaredInAlice)field);
@@ -1221,15 +1221,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 
 	protected void updateSceneBasedOnScope() {
-//		//		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = this.getIDE().getTypeInScope();
+//		//		org.lgna.project.ast.AbstractCode code = this.getIDE().getFocusedCode();
+//		org.lgna.project.ast.AbstractType<?,?,?> type = this.getIDE().getTypeInScope();
 //		if( type != null ) {
-//			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+//			org.lgna.project.ast.AbstractField sceneField = this.getSceneField();
 //			if( sceneField != null ) {
-//				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
+//				org.lgna.project.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
 //				boolean isSceneScope = type.isAssignableFrom( sceneType ) || this.sidePane.isExpanded();
 //
-//				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneType.getDeclaredFields();
+//				java.util.ArrayList< ? extends org.lgna.project.ast.AbstractField > fields = sceneType.getDeclaredFields();
 //
 //				try {
 //					edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = this.getOnscreenLookingGlass().getCameraAt( 0 );
@@ -1251,7 +1251,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 //				//						scene.setAtmosphereColor( org.lookingglassandalice.storytelling.Color.BLACK, org.lookingglassandalice.storytelling.Scene.RIGHT_NOW );
 //				//					}
 //				//				}
-//				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
+//				for( org.lgna.project.ast.AbstractField field : fields ) {
 //					Object instanceInJava = this.getInstanceInJavaVMForField( field );
 //					if( instanceInJava instanceof org.lookingglassandalice.storytelling.Model ) {
 //						org.lookingglassandalice.storytelling.Model model = (org.lookingglassandalice.storytelling.Model)instanceInJava;
@@ -1276,26 +1276,26 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 //		} );
 	}
 
-	private void handleFocusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+	private void handleFocusedCodeChanged( org.lgna.project.ast.AbstractCode code ) {
 		this.updateSceneBasedOnScope();
 		if( code != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = code.getDeclaringType();
+			org.lgna.project.ast.AbstractType<?,?,?> type = code.getDeclaringType();
 			if( type != null ) {
-				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
+				org.lgna.project.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
 				if( accessible instanceof AbstractField ) {
 					AbstractField selectedField = (AbstractField)accessible;
 					if( selectedField != null ) {
-						edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> selectedType = selectedField.getValueType();
+						org.lgna.project.ast.AbstractType<?,?,?> selectedType = selectedField.getValueType();
 						if( type.isAssignableFrom( selectedType ) ) {
 							//pass
 						} else {
-							edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+							org.lgna.project.ast.AbstractField sceneField = this.getSceneField();
 							if( sceneField != null ) {
-								edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
+								org.lgna.project.ast.AbstractType<?,?,?> sceneType = sceneField.getValueType();
 								if( type.isAssignableFrom( sceneType ) ) {
 									//pass
 								} else {
-									for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+									for( org.lgna.project.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 										if( type.isAssignableFrom( field.getValueType() ) ) {
 											org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setSelectedItem( field );
 											break;
@@ -1315,7 +1315,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 //		edu.cmu.cs.dennisc.print.PrintUtilities.println( "update field labels" );
 	}
 	
-	protected void putFieldForInstanceInJava( Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	protected void putFieldForInstanceInJava( Object instanceInJava, org.lgna.project.ast.AbstractField field ) {
 //		super.putFieldForInstanceInJava( instanceInJava, field );
 //		if( instanceInJava instanceof org.lookingglassandalice.storytelling.Turnable ) {
 //			org.lookingglassandalice.storytelling.Turnable transformable = (org.lookingglassandalice.storytelling.Turnable)instanceInJava;
@@ -1380,7 +1380,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	
 	/*
 	@Override
-	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
+	protected Object createScene( org.lgna.project.ast.FieldDeclaredInAlice sceneField ) {
 		//Detach the previous scene's cameras
 		clearCameras();
 		this.scene = null;
@@ -1391,7 +1391,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		
 		//Make the new scene
 		Object rv = super.createScene( sceneField );
-		this.sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
+		this.sceneType = (org.lgna.project.ast.TypeDeclaredInAlice)sceneField.getValueType();
 		
 		//Start listening to fields on the new scene
 		//Trigger a "fieldsSet" on all sceneEditorFieldObservers to have them update to the new fields
@@ -1411,7 +1411,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 		}
 		
 		//Run the GeneratedSetUp method to get everything in its starting place
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = getIDE().getPerformEditorGeneratedSetUpMethod();
+		org.lgna.project.ast.AbstractMethod method = getIDE().getPerformEditorGeneratedSetUpMethod();
 		this.getVM().invokeEntryPoint( method, rv );
 		
 		
@@ -1516,21 +1516,21 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 //		}
 	}
 	
-	private void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, FieldAndInstanceMapper mapper) {
+	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, FieldAndInstanceMapper mapper) {
 		//SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, mapper.getInstanceInJavaVMForField( field ), mapper );
 	}
 	
 	@Override
-	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
+	public void generateCodeForSetUp( org.lgna.project.ast.StatementListProperty bodyStatementsProperty ) {
 		
 //		//Set the camera to have the point of view of the opening scene marker
 //		AffineMatrix4x4 currentCameraTransformable = this.sgPerspectiveCamera.getAbsoluteTransformation();
 //		edu.cmu.cs.dennisc.scenegraph.Transformable cameraParent = (edu.cmu.cs.dennisc.scenegraph.Transformable)this.sgPerspectiveCamera.getParent();
 //		cameraParent.setTransformation(this.openingSceneMarker.getTransformation(AsSeenBy.SCENE), this.scene.getSGReferenceFrame());
 //		
-//		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+//		org.lgna.project.ast.AbstractField sceneField = this.getSceneField();
 //		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField, fieldAndInstanceMapper );
-//		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.sceneType.getDeclaredFields() ) {
+//		for( org.lgna.project.ast.AbstractField field : this.sceneType.getDeclaredFields() ) {
 //			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field, fieldAndInstanceMapper );
 //		}
 //		
@@ -1540,7 +1540,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 	}
 
 
-	//	public void editPerson( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	//	public void editPerson( org.lgna.project.ast.AbstractField field ) {
 	//		org.lookingglassandalice.storytelling.Person person = this.getInstanceInJavaVMForField( field, org.lookingglassandalice.storytelling.Person.class );
 	//		if( person != null ) {
 	//			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
@@ -1834,10 +1834,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 //		Penguin penguinModel = new Penguin();
 //		penguinModel.setName( penguinName );
 //
-//		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.Penguin.class );
-//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice penguinModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( penguinName, org.lookingglassandalice.storytelling.Penguin.class, initializer );
-//		penguinModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-//		penguinModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+//		org.lgna.project.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.Penguin.class );
+//		org.lgna.project.ast.FieldDeclaredInAlice penguinModelField = new org.lgna.project.ast.FieldDeclaredInAlice( penguinName, org.lookingglassandalice.storytelling.Penguin.class, initializer );
+//		penguinModelField.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+//		penguinModelField.access.setValue( org.lgna.project.ast.Access.PRIVATE );
 //		
 //		org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( penguinModelField, penguinModel );
 //		this.sceneType.fields.add(penguinModelField);
@@ -1851,10 +1851,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 //        Collada colladaModel = new Collada();
 //        colladaModel.setName( colladaName );
 //
-//        edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.Collada.class );
-//        edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice colladaModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( colladaName, org.lookingglassandalice.storytelling.Collada.class, initializer );
-//        colladaModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-//        colladaModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+//        org.lgna.project.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.Collada.class );
+//        org.lgna.project.ast.FieldDeclaredInAlice colladaModelField = new org.lgna.project.ast.FieldDeclaredInAlice( colladaName, org.lookingglassandalice.storytelling.Collada.class, initializer );
+//        colladaModelField.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+//        colladaModelField.access.setValue( org.lgna.project.ast.Access.PRIVATE );
 //        
 //        org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( colladaModelField, colladaModel );
 //        this.sceneType.fields.add(colladaModelField);
@@ -1868,10 +1868,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 //		Ogre ogreModel = new Ogre();
 //		ogreModel.setName( ogreName );
 //
-//		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.Ogre.class );
-//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ogreModelField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( ogreName, org.lookingglassandalice.storytelling.Ogre.class, initializer );
-//		ogreModelField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-//		ogreModelField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+//		org.lgna.project.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.Ogre.class );
+//		org.lgna.project.ast.FieldDeclaredInAlice ogreModelField = new org.lgna.project.ast.FieldDeclaredInAlice( ogreName, org.lookingglassandalice.storytelling.Ogre.class, initializer );
+//		ogreModelField.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+//		ogreModelField.access.setValue( org.lgna.project.ast.Access.PRIVATE );
 //		
 //		org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( ogreModelField, ogreModel );
 //		this.sceneType.fields.add(ogreModelField);
@@ -1889,10 +1889,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 //		objectMarker.setShowing(true);
 //		objectMarker.setLocalTransformation( selectedTransformable.getTransformation(AsSeenBy.SCENE) );
 
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.ObjectMarker.class );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice objectMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( markerName, org.lookingglassandalice.storytelling.ObjectMarker.class, initializer );
-		objectMarkerField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-		objectMarkerField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+		org.lgna.project.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.ObjectMarker.class );
+		org.lgna.project.ast.FieldDeclaredInAlice objectMarkerField = new org.lgna.project.ast.FieldDeclaredInAlice( markerName, org.lookingglassandalice.storytelling.ObjectMarker.class, initializer );
+		objectMarkerField.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+		objectMarkerField.access.setValue( org.lgna.project.ast.Access.PRIVATE );
 		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( objectMarkerField, objectMarker );
 	}
 	
@@ -1907,10 +1907,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractSc
 //		cameraMarker.setLocalTransformation( getSGCameraForCreatingMarker().getTransformation( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE.getSgReferenceFrame() ) );
 		updateCameraMarkerToCamera(cameraMarker, (SymmetricPerspectiveCamera)getSGCameraForCreatingMarker());
 
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.BookmarkCameraMarker.class );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( markerName, org.lookingglassandalice.storytelling.BookmarkCameraMarker.class, initializer );
-		cameraMarkerField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-		cameraMarkerField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+		org.lgna.project.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.lookingglassandalice.storytelling.BookmarkCameraMarker.class );
+		org.lgna.project.ast.FieldDeclaredInAlice cameraMarkerField = new org.lgna.project.ast.FieldDeclaredInAlice( markerName, org.lookingglassandalice.storytelling.BookmarkCameraMarker.class, initializer );
+		cameraMarkerField.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+		cameraMarkerField.access.setValue( org.lgna.project.ast.Access.PRIVATE );
 		
 //		CameraMarkerFieldListSelectionState.getInstance().setSelectedItem(cameraMarkerField);
 		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( cameraMarkerField, cameraMarker );

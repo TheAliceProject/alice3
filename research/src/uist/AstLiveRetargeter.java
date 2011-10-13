@@ -50,14 +50,14 @@ package uist;
 	private java.util.Map< Object, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public void addKeyValuePair( Object key, Object value ) {
 		this.map.put( key, value );
-		if( key instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
+		if( key instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
 			System.err.println( "TODO: addKeyValuePair recursive retarget" );
-			this.addKeyValuePair( ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)key).body.getValue(), ((edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)value).body.getValue() );
+			this.addKeyValuePair( ((org.lgna.project.ast.AbstractStatementWithBody)key).body.getValue(), ((org.lgna.project.ast.AbstractStatementWithBody)value).body.getValue() );
 		}
 	}
 	public <N> N retarget(N original) {
-		if( original instanceof org.alice.ide.editorstabbedpane.CodeComposite ) {
-			original = (N)org.alice.ide.editorstabbedpane.CodeComposite.getInstance( retarget( ((org.alice.ide.editorstabbedpane.CodeComposite)original).getCode() ) );
+		if( original instanceof org.alice.ide.croquet.models.typeeditor.DeclarationComposite ) {
+			original = (N)org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.croquet.models.typeeditor.DeclarationComposite)original).getDeclaration() ) );
 		}
 		N rv = (N)map.get( original );
 		if( rv != null ) {

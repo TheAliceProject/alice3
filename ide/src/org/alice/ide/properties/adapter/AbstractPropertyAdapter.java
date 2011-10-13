@@ -46,17 +46,22 @@ package org.alice.ide.properties.adapter;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.lgna.project.ast.DoubleLiteral;
 
-public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P, O> 
+public abstract class AbstractPropertyAdapter<P, O>
 {
+	public static interface ValueChangeObserver<P>
+	{
+		public void valueChanged(P newValue);
+	}
 	
 	protected O instance;
 	protected String repr;
 	protected P lastSetValue;
 	private boolean isExpressionSet = false;
 	protected StandardExpressionState expressionState;
+	
 
 	private org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
@@ -79,16 +84,18 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		this.repr = repr;
 		this.expressionState = expressionState;
 		this.setInstance(instance);
+		this.initializeExpressionState();
 	}
 	
 	public String getRepr()
 	{
 		return this.repr;
 	}
-	
-	public abstract SetValueOperation<P> getSetValueOperation(P value);
 
-	public abstract String getUndoRedoDescription(java.util.Locale locale);
+	public String getUndoRedoDescription(java.util.Locale locale)
+	{
+		return getRepr();
+	}
 	
 	public void setInstance(O instance)
 	{
@@ -112,6 +119,10 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 		return this.lastSetValue;
 	}
 	
+	public abstract P getValue();
+	public abstract Class<P> getPropertyType();
+	public abstract P getValueCopy();
+	
 	public void addValueChangeObserver(ValueChangeObserver<P> observer)
 	{
 		if (!this.valueChangeObservers.contains(observer))
@@ -134,68 +145,107 @@ public abstract class AbstractPropertyAdapter<P, O> implements PropertyAdapter<P
 	public void setExpressionState( StandardExpressionState expressionState )
 	{
 		this.expressionState = expressionState;
+		this.setExpressionValue(this.getValue());
 	}
 	
-	protected void startListening() {
+	public void clearListeners()
+	{
+		this.valueChangeObservers.clear();
+	}
+	
+	public StandardExpressionState getExpressionState()
+	{
+		return this.expressionState;
+	}
+	
+	public void startListening() {
+		startPropertyListening();
+		startExpressionListening();
+	}
+	
+	public void stopListening() {
+		stopPropertyListening();
+		stopExpressionListening();
+	}
+	
+	protected void startExpressionListening() {
 		if (this.expressionState != null)
 		{
 			this.expressionState.addValueObserver( this.valueObserver );
 		}
 	}
 	
-	protected void stopListening() {
+	protected void stopExpressionListening() {
 		if (this.expressionState != null)
 		{
 			this.expressionState.removeValueObserver( this.valueObserver );
 		}
 	}
 	
-	private void onExpressionStateUpdate()
+	protected void startPropertyListening() {
+	}
+	
+	protected void stopPropertyListening() {
+	}
+	
+	protected void initializeExpressionState()
 	{
-		org.lgna.project.ast.Expression expression = expressionState.getValue();
-		if( expression != null ) {
-			org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
-			
-			Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
-			assert values.length == 1;
-			isExpressionSet = true;
-			this.setValue((P)values[ 0 ]);
-			isExpressionSet = false;
+		stopExpressionListening();
+		this.setExpressionValue(this.getValue());
+		startExpressionListening();
+	}
+	
+	protected void setExpressionValue(P value)
+	{
+		if (this.expressionState != null)
+		{
+			try
+			{
+				org.lgna.project.ast.Expression expressionValue = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression(this.getValue());
+				this.expressionState.setValue(expressionValue);
+			}
+			catch (CannotCreateExpressionException e)
+			{
+				this.expressionState = null;
+			}
 		}
 	}
 	
-//	protected abstract void setExpressionValue(P value);
+	protected void intermediateSetValue(Object value)
+	{
+		this.setValue((P)value);
+	}
+	
+	protected Object evaluateExpression(org.lgna.project.ast.Expression expression)
+	{
+		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
+		Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
+		assert values.length == 1;
+		return values[0];
+	}
+	
+	protected void onExpressionStateUpdate()
+	{
+		org.lgna.project.ast.Expression expression = expressionState.getValue();
+		if( expression != null ) {
+			Object value = evaluateExpression(expression);
+			isExpressionSet = true;
+			this.intermediateSetValue(value);
+			isExpressionSet = false;
+		}
+	}
 	
 	protected void notifyValueObservers(P newValue)
 	{
 		if (!isExpressionSet)
 		{
-//			setExpressionValue(newValue);
+			this.setExpressionValue(newValue);
 		}
 		for (ValueChangeObserver<P> observer : this.valueChangeObservers)
 		{
 			observer.valueChanged(newValue);
 		}
 	}
-
-	public abstract org.lgna.croquet.Model getEditModel();
-	
-	public org.lgna.croquet.components.ViewController< ?,? > createEditViewController()
-    {
-		org.lgna.croquet.Model model = this.getEditModel();
-		if( model instanceof org.lgna.croquet.PopupPrepModel ) {
-			org.lgna.croquet.PopupPrepModel popupPrepModel = (org.lgna.croquet.PopupPrepModel)model;
-	        return popupPrepModel.createPopupButton();
-		} else if( model instanceof org.lgna.croquet.Operation< ? > ) {
-			org.lgna.croquet.Operation< ? > operation = (org.lgna.croquet.Operation< ? >)model;
-	        return operation.createButton();
-		} else if (model == null){
-			return null;
-		}
-		else {
-			throw new RuntimeException( "todo" );
-		}
-    }
 	
 	
 }

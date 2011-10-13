@@ -52,16 +52,24 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return component;
 	}
 	
-	public org.lgna.croquet.components.JComponent< ? > createArgumentPane( org.lgna.project.ast.Argument argument, org.lgna.croquet.components.Component< ? > prefixPane ) {
-		org.lgna.project.ast.ExpressionProperty expressionProperty = argument.expression;
-		org.lgna.project.ast.Expression expression = expressionProperty.getValue();
-		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
-		if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
-			org.alice.ide.croquet.models.ast.cascade.ArgumentCascade model = org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( argument );
-			org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
-			rv = expressionPropertyDropDownPane;
+	public org.lgna.croquet.components.JComponent< ? > createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.Component< ? > prefixPane ) {
+		if( argument instanceof org.lgna.project.ast.Argument ) {
+			org.lgna.project.ast.Argument simpleArgument = (org.lgna.project.ast.Argument)argument;
+			org.lgna.project.ast.ExpressionProperty expressionProperty = simpleArgument.expression;
+			org.lgna.project.ast.Expression expression = expressionProperty.getValue();
+			org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
+			if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
+				org.alice.ide.croquet.models.ast.cascade.ArgumentCascade model = org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( simpleArgument );
+				org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
+				rv = expressionPropertyDropDownPane;
+			}
+			return rv;
+		} else if( argument instanceof org.lgna.project.ast.KeyedArguments ) {
+			org.lgna.project.ast.KeyedArguments keywordArguments = (org.lgna.project.ast.KeyedArguments)argument;
+			return new org.alice.ide.x.components.KeywordsView( this, keywordArguments );
+		} else {
+			throw new RuntimeException( "todo: " + argument );
 		}
-		return rv;
 	}
 	
 	protected org.lgna.croquet.components.JComponent< ? > createInstanceCreationPane( org.lgna.project.ast.InstanceCreation instanceCreation ) {
@@ -160,13 +168,13 @@ public abstract class AstI18nFactory extends I18nFactory {
 							new org.alice.ide.ast.components.DeclarationNameLabel( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() ),
 							new org.lgna.croquet.components.Label( "." )
 					);
-					//rv = TypeComponent.createInstance( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+					//rv = TypeComponent.createInstance( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() );
 				} else {
 					rv = new org.lgna.croquet.components.Label();
 				}
 			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
 				rv = this.createInstanceCreationPane( (org.lgna.project.ast.InstanceCreation)expression );
-//				} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractLiteral ) {
+//				} else if( expression instanceof org.lgna.project.ast.AbstractLiteral ) {
 //					rv = this.createComponent( expression );
 			} else {
 				org.lgna.croquet.components.JComponent< ? > component = this.createComponent( expression );

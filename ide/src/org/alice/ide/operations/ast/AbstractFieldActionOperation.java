@@ -54,7 +54,7 @@ public abstract class AbstractFieldActionOperation extends org.lgna.croquet.Acti
 	public org.lgna.project.ast.AbstractField getField() {
 		return this.field;
 	}
-//	public void setField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//	public void setField( org.lgna.project.ast.AbstractField field ) {
 //		this.field = field;
 //	}
 }

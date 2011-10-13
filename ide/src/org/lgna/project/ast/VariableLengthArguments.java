@@ -41,36 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.lgna.project.ast;
 
-import java.util.Locale;
-
-import org.alice.ide.croquet.models.StandardExpressionState;
-
-public abstract class AbstractOpacityPropertyAdapter<O> extends AbstractDoublePropertyAdapter<O> {
-
-
-	
-	public AbstractOpacityPropertyAdapter(O instance, StandardExpressionState expressionState)
-	{
-		this("Opacity", instance, expressionState);
+/**
+ * @author Dennis Cosgrove
+ */
+public class VariableLengthArguments extends AbstractArgument {
+	public ExpressionListProperty expressions = new ExpressionListProperty( this );
+	public VariableLengthArguments() {
 	}
-	
-	public AbstractOpacityPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
-	{
-		super(repr, instance, expressionState);
-	}
-	
-	@Override
-	protected double[] getDefaultValues()
-	{
-		double[] defaultValues = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
-		return defaultValues;
-	}
-	
-	@Override
-	public String getUndoRedoDescription(Locale locale) 
-	{
-		return "Opacity";
+	public VariableLengthArguments( AbstractParameter parameter, Expression... expressions ) {
+		super( parameter );
+		this.expressions.setValue( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( expressions ) );
 	}
 }

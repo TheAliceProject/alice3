@@ -87,7 +87,15 @@ public class JavaConstructor extends AbstractConstructor {
 	public ConstructorReflectionProxy getConstructorReflectionProxy() {
 		return this.constructorReflectionProxy;
 	}
-	
+	@Override
+	public boolean isVariableLength() {
+		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getReification();
+		if( cnstrctr != null ) {
+			return cnstrctr.isVarArgs();
+		} else {
+			return false;
+		}
+	}
 	@Override
 	public JavaType getDeclaringType() {
 		return JavaType.getInstance( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );
@@ -121,7 +129,7 @@ public class JavaConstructor extends AbstractConstructor {
 	}
 	
 	@Override
-	public AbstractCode getNextLongerInChain() {
+	public JavaConstructor getNextLongerInChain() {
 		return this.nextLongerInChain;
 	}
 	public void setNextLongerInChain( JavaConstructor nextLongerInChain ) {
@@ -131,7 +139,7 @@ public class JavaConstructor extends AbstractConstructor {
 	private JavaConstructor nextShorterInChain = null;
 
 	@Override
-	public AbstractCode getNextShorterInChain() {
+	public JavaConstructor getNextShorterInChain() {
 		return this.nextShorterInChain;
 	}
 	public void setNextShorterInChain( JavaConstructor nextShorterInChain ) {

@@ -89,6 +89,16 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	@Override
+	public boolean isVariableLength() {
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
+		if( mthd != null ) {
+			return mthd.isVarArgs();
+		} else {
+			return false;
+		}
+	}
+
+	@Override
 	public boolean isValid() {
 		return this.methodReflectionProxy.getReification() != null;
 	}
@@ -141,22 +151,20 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	private JavaMethod nextLongerInChain = null;
-
 	@Override
-	public AbstractCode getNextLongerInChain() {
+	public JavaMethod getNextLongerInChain() {
 		return this.nextLongerInChain;
 	}
-	public void setNextLongerInChain( JavaMethod nextLongerInChain ) {
+	/*package-private*/ void setNextLongerInChain( JavaMethod nextLongerInChain ) {
 		this.nextLongerInChain = nextLongerInChain;
 	}
 
 	private JavaMethod nextShorterInChain = null;
-
 	@Override
-	public AbstractCode getNextShorterInChain() {
+	public JavaMethod getNextShorterInChain() {
 		return this.nextShorterInChain;
 	}
-	public void setNextShorterInChain( JavaMethod nextShorterInChain ) {
+	/*package-private*/ void setNextShorterInChain( JavaMethod nextShorterInChain ) {
 		this.nextShorterInChain = nextShorterInChain;
 	}
 

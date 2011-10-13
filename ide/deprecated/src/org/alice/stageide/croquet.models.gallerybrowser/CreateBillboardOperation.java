@@ -50,7 +50,7 @@ import org.lgna.croquet.components.BorderPanel.Constraint;
 class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
 	private org.lgna.story.Billboard billboard;
 	private org.alice.ide.croquet.ImageView imageView = new org.alice.ide.croquet.ImageView( 240 );
-	public CreateFieldFromBillboardPane( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
+	public CreateFieldFromBillboardPane( org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> declaringType ) {
 		super( declaringType, org.lgna.story.Billboard.class, null );
 		this.imageView.setBorder( javax.swing.BorderFactory.createEmptyBorder(0,0,0,8) );
 		this.addComponent( this.imageView, Constraint.LINE_END );
@@ -104,12 +104,12 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 				billboard.setFrontImageSource( frontImageSource );
 				rv.setBillboard( billboard );
 				//				String name = "billboard";
-				//				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor(org.lookingglassandalice.storytelling.Billboard.class);
-				//				edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(type);
-				//				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice(name, type, initializer);
-				//				field.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
-				//				field.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
-				//				return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, billboard );
+				//				org.lgna.project.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor(org.lookingglassandalice.storytelling.Billboard.class);
+				//				org.lgna.project.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(type);
+				//				org.lgna.project.ast.FieldDeclaredInAlice field = new org.lgna.project.ast.FieldDeclaredInAlice(name, type, initializer);
+				//				field.finalVolatileOrNeither.setValue(org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL);
+				//				field.access.setValue(org.lgna.project.ast.Access.PRIVATE);
+				//				return new edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.FieldDeclaredInAlice, Object>( field, billboard );
 			} else {
 				return null;
 			}
@@ -122,7 +122,7 @@ public class CreateBillboardOperation extends AbstractGalleryDeclareFieldOperati
 	protected org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData fillInEpilogueData( org.alice.ide.operations.ast.AbstractDeclareFieldInputDialogOperation.EpilogueData rv, org.lgna.croquet.history.InputDialogOperationStep step ) {
 		super.fillInEpilogueData( rv, step );
 		CreateFieldFromBillboardPane createFieldFromBillboardPane = step.getMainPanel();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.getInputValue();
+		org.lgna.project.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.getInputValue();
 		rv.setField( field );
 		//todo: add statements
 		return rv;

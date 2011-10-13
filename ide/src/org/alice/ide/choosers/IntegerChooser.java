@@ -48,9 +48,9 @@ package org.alice.ide.choosers;
 public class IntegerChooser extends AbstractNumberChooser<org.lgna.project.ast.Expression> {
 	public IntegerChooser() {
 		super( org.alice.ide.croquet.models.numberpad.IntegerModel.getInstance() );
-		//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		//		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.IntegerLiteral ) {
-		//			edu.cmu.cs.dennisc.alice.ast.IntegerLiteral integerLiteral = (edu.cmu.cs.dennisc.alice.ast.IntegerLiteral)previousExpression;
+		//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
+		//		if( previousExpression instanceof org.lgna.project.ast.IntegerLiteral ) {
+		//			org.lgna.project.ast.IntegerLiteral integerLiteral = (org.lgna.project.ast.IntegerLiteral)previousExpression;
 		//			this.setAndSelectText( Integer.toString( integerLiteral.value.getValue() ) );
 		//		}
 	}

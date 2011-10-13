@@ -64,10 +64,10 @@ public abstract class PreviousExpressionBasedFillInWithBlanks< F extends org.lgn
 		boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
 		return super.isDirty() || isPrevExpressionChanged;
 	}
-//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,B> context, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression );
+//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,B> context, org.lgna.project.ast.Expression previousExpression );
 //	@Override
 //	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,B> context ) {
-//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 //		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
 //	}
 	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression, B[] expressions);

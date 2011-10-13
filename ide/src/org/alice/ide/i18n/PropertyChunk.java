@@ -65,10 +65,10 @@ public class PropertyChunk extends Chunk {
 	public String getPropertyName() {
 		return this.propertyName;
 	}
-//	if( owner instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
-//		rv = new VariablePane( (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)owner );
-//	} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
-//		rv = new ConstantPane( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)owner );
+//	if( owner instanceof org.lgna.project.ast.VariableDeclaredInAlice ) {
+//		rv = new VariablePane( (org.lgna.project.ast.VariableDeclaredInAlice)owner );
+//	} else if( owner instanceof org.lgna.project.ast.ConstantDeclaredInAlice ) {
+//		rv = new ConstantPane( (org.lgna.project.ast.ConstantDeclaredInAlice)owner );
 //	} else {
 //		rv = zoot.ZLabel.acquire( "should never happen" );
 //	}

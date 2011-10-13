@@ -62,16 +62,16 @@ public abstract class IngredientFillerInner extends org.alice.ide.cascade.filler
 //							blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( cls.getSimpleName() ) {
 //								@Override
 //								protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-//									edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls );
-//							 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
+//									org.lgna.project.ast.TypeDeclaredInJava type = org.lgna.project.ast.TypeDeclaredInJava.get( cls );
+//							 		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
 //							 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-//							 				IngredientFillerInner.this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
+//							 				IngredientFillerInner.this.addExpressionFillIn( blank, new org.lgna.project.ast.TypeExpression( type ), field );
 //							 			}
 //							 		}
 //								}
 //								@Override
 //								protected javax.swing.JComponent createMenuProxy() {
-//									return org.alice.ide.common.TypeComponent.createInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) ).getAwtComponent();
+//									return org.alice.ide.common.TypeComponent.createInstance( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) ).getAwtComponent();
 //								}
 //							} );
 //						}

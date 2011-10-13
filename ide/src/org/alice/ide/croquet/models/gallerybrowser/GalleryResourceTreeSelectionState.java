@@ -62,7 +62,7 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 		return node.getSmallIcon();
 	}
 	@Override
-	protected java.lang.String getTextForNode( GalleryNode node ) {
+	protected String getTextForNode( GalleryNode node ) {
 		return node.getText();
 	}
 	

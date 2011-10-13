@@ -41,61 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.stageide.cascade.fillerinners;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractOpacityPropertyAdapter;
-
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-
-public class MarkerOpacityAdapter extends AbstractOpacityPropertyAdapter<org.lgna.story.implementation.MarkerImp> {
-
-	public MarkerOpacityAdapter(org.lgna.story.implementation.MarkerImp instance, StandardExpressionState expressionState)
-	{
-		super(instance, expressionState);
+/**
+ * @author Dennis Cosgrove
+ */
+public class ImagePaintFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public ImagePaintFillerInner() {
+		super( org.lgna.story.ImagePaint.class );
 	}
-	
-
-	public Double getValue() 
-	{
-		if (this.instance != null)
-		{
-			return (double)this.instance.opacity.getValue();
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
 	@Override
-	public void setValue(final Double value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			new Thread() {
-				@Override
-				public void run() {
-					MarkerOpacityAdapter.this.instance.opacity.setValue(value.floatValue());
-				}
-			}.start();
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		if( details instanceof org.lgna.project.annotations.PublicStaticFieldValueDetails ) {
+			org.lgna.project.annotations.PublicStaticFieldValueDetails publicStaticFieldValueDetails = (org.lgna.project.annotations.PublicStaticFieldValueDetails)details;
+			java.lang.reflect.Field[] flds = publicStaticFieldValueDetails.getFlds();
+			for( java.lang.reflect.Field fld : flds ) {
+ 	 			rv.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( fld ) );
+			}
 		}
-		
+ 		return rv;
 	}
-	
-	@Override
-	protected void addPropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.addOpacityListener(propertyListener);
-		}
-	}
-
-	@Override
-	protected void removePropertyListener(PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.removeOpacityListener(propertyListener);
-		}
-	}
-
 }

@@ -60,7 +60,7 @@ public class InitializerPane extends org.lgna.croquet.components.CardPanel {
 
 			public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
 				itemInitializerPane.refresh();
-//				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = InitializerPane.this.bogusNode.componentType.getValue();
+//				org.lgna.project.ast.AbstractType<?,?,?> type = InitializerPane.this.bogusNode.componentType.getValue();
 //				if (type != null) {
 //					arrayInitializerPane.handleTypeChange(type.getArrayType());
 //				}
@@ -112,7 +112,7 @@ public class InitializerPane extends org.lgna.croquet.components.CardPanel {
 //		} );
 	}
 
-	// public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType
+	// public void handleTypeChange( org.lgna.project.ast.AbstractType
 	// type ) {
 	// if( type != null ) {
 	// this.handleIsArrayChange( type.isArray() );

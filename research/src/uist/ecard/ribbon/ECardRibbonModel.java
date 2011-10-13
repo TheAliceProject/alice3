@@ -18,11 +18,11 @@ public class ECardRibbonModel extends org.lgna.croquet.PredeterminedTabSelection
 				PictureEffectsRibbonModel.getInstance()
 		);
 	}
-	@Override
-	protected void localize() {
-		super.localize();
-		HomeRibbonModel.getInstance().setTitleText("Home");
-		InsertRibbonModel.getInstance().setTitleText("Insert");
-		PictureEffectsRibbonModel.getInstance().setTitleText("Picture Effects");
-	}
+//	@Override
+//	protected void localize() {
+//		super.localize();
+//		HomeRibbonModel.getInstance().setTitleText("Home");
+//		InsertRibbonModel.getInstance().setTitleText("Insert");
+//		PictureEffectsRibbonModel.getInstance().setTitleText("Picture Effects");
+//	}
 }

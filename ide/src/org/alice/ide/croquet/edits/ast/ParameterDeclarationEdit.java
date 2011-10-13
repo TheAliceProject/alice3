@@ -47,7 +47,7 @@ package org.alice.ide.croquet.edits.ast;
  */
 public class ParameterDeclarationEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation > {
 	private org.lgna.project.ast.UserParameter parameter;
-	private transient java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private transient java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.AbstractArgument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private transient int index;
 
 	public ParameterDeclarationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserParameter parameter ) {

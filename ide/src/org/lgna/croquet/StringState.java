@@ -124,14 +124,14 @@ public abstract class StringState extends State< String > {
 	}
 
 	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		if( edit instanceof org.lgna.croquet.edits.StringStateEdit ) {
 			org.lgna.croquet.edits.StringStateEdit stringStateEdit = (org.lgna.croquet.edits.StringStateEdit)edit;
-			rv.append( "Enter <strong>" );
+			rv.append( " <strong>" );
 			rv.append( stringStateEdit.getNextValue() );
 			rv.append( "</strong>" );
 		} else {
-			rv = super.updateTutorialStepText( rv, step, edit, userInformation );
+			rv.append( "UNKNOWN EDIT" );
 		}
 		return rv;
 	}

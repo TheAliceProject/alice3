@@ -17,9 +17,4 @@ public class ThoughtBubbleEffectModel extends org.lgna.croquet.ActionOperation {
 		ECardApplication.getActiveInstance().getCardPanel().setImage(ECardPanel.CardState.BUBBLE_PHOTO);
 		step.finish();
 	}
-	@Override
-	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		rv.append( "Select " + this.getDefaultLocalizedText() );
-		return rv;
-	}
 }

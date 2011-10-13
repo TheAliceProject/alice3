@@ -68,18 +68,18 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 //				this.setOpaque( true );
 //			}
 //			public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-//				edu.cmu.cs.dennisc.alice.ast.Accessible accessible = (edu.cmu.cs.dennisc.alice.ast.Accessible)value;
+//				org.lgna.project.ast.Accessible accessible = (org.lgna.project.ast.Accessible)value;
 //				if( accessible != null ) {
 //					this.isInScope = true;
 //					StringBuilder sb = new StringBuilder();
 //					sb.append( "<html>" );
-//					if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
+//					if( accessible instanceof org.lgna.project.ast.AbstractField ) {
 //						//pass
-//					} else if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractParameter ) {
+//					} else if( accessible instanceof org.lgna.project.ast.AbstractParameter ) {
 //						sb.append( "<i>parameter:</i> " );
-//					} else if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
+//					} else if( accessible instanceof org.lgna.project.ast.VariableDeclaredInAlice ) {
 //						sb.append( "<i>variable:</i> " );
-//					} else if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
+//					} else if( accessible instanceof org.lgna.project.ast.ConstantDeclaredInAlice ) {
 //						sb.append( "<i>constant:</i> " );
 //					}
 //					sb.append( "<strong>" );
@@ -87,11 +87,11 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 //					sb.append( "</strong>" );
 //
 //					//rv.setEnabled( true );
-//					if( accessible instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-//						edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)accessible;
-//						edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
+//					if( accessible instanceof org.lgna.project.ast.AbstractField ) {
+//						org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)accessible;
+//						org.lgna.project.ast.AbstractCode focusedCode = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
 //						if( focusedCode != null ) {
-//							edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> scopeType = focusedCode.getDeclaringType();
+//							org.lgna.project.ast.AbstractType<?,?,?> scopeType = focusedCode.getDeclaringType();
 //							if( field.getValueType() == scopeType ) {
 //								sb.append( " <em>(this)</em>" );
 //							} else if( field.getDeclaringType() == scopeType ) {
@@ -105,8 +105,8 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 //					sb.append( "</html>" );
 //					this.setText( sb.toString() );
 //					
-//					edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> valueType = accessible.getValueType();
-////					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava valueTypeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+//					org.lgna.project.ast.AbstractType<?,?,?> valueType = accessible.getValueType();
+////					org.lgna.project.ast.TypeDeclaredInJava valueTypeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 ////					String className = valueTypeInJava.getClassReflectionProxy().getName();
 //					
 //					this.setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( valueType ) );

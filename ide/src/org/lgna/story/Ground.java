@@ -77,6 +77,7 @@ public class Ground extends Entity implements MutableRider, Visual {
 	}
 	@MethodTemplate()
 	@GetterTemplate(isPersistent = true)
+	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.GroundSurfaceAppearanceDetails.class)
 	public Paint getPaint() {
 		return this.getImplementation().paint.getValue();
 	}

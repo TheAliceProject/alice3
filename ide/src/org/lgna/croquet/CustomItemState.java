@@ -56,7 +56,7 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 			return org.lgna.croquet.history.TransactionManager.addCustomItemStateChangeStep( CustomItemState.this, trigger );
 		}
 		@Override
-		public java.lang.Class< T > getComponentType() {
+		public Class< T > getComponentType() {
 			return CustomItemState.this.getItemCodec().getValueClass();
 		}
 		@Override
@@ -88,5 +88,9 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 	@Override
 	protected void commitStateEdit(T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger) {
 		//todo
+	}
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		return rv;
 	}
 }

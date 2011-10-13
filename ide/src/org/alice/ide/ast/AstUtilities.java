@@ -80,12 +80,18 @@ public class AstUtilities {
 		}
 		return rv;
 	}
-	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
+	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter, org.lgna.project.ast.JavaType type ) {
 		java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
-		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr );
-		return org.lgna.project.ast.JavaMethod.getInstance( sttr );
+		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr, type.getClassReflectionProxy().getReification() );
+		if( sttr != null ) {
+			return org.lgna.project.ast.JavaMethod.getInstance( sttr );
+		} else {
+			return null;
+		}
 	}
-	
+	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		return getSetterForGetter( getter, getter.getDeclaringType() );
+	}	
 	
 	public static org.lgna.project.ast.UserMethod createMethod( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
 		return new org.lgna.project.ast.UserMethod( name, returnType, new org.lgna.project.ast.UserParameter[] {}, new org.lgna.project.ast.BlockStatement() );
@@ -272,7 +278,12 @@ public class AstUtilities {
 		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getParameters();
 		final int N = parameters.size();
 		for( int i=0; i<N-1; i++ ) {
-			rv.arguments.add( new org.lgna.project.ast.Argument( parameters.get( i ), prevMethodInvocation.arguments.get( i ).expression.getValue() ) );
+			org.lgna.project.ast.AbstractArgument argument = prevMethodInvocation.arguments.get( i );
+			if( argument instanceof org.lgna.project.ast.Argument ) {
+				rv.arguments.add( new org.lgna.project.ast.Argument( parameters.get( i ), ((org.lgna.project.ast.Argument)argument).expression.getValue() ) );
+			} else {
+				throw new RuntimeException();
+			}
 		}
 		rv.arguments.add( new org.lgna.project.ast.Argument( parameters.get( N-1 ), expression ) );
 		return rv;
@@ -281,8 +292,12 @@ public class AstUtilities {
 	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... argumentExpressions ) {
 		rv.expression.setValue( instanceExpression );
 		int i = 0;
-		for( org.lgna.project.ast.Argument argument : rv.arguments ) {
-			argument.expression.setValue( argumentExpressions[ i ] );
+		for( org.lgna.project.ast.AbstractArgument argument : rv.arguments ) {
+			if( argument instanceof org.lgna.project.ast.Argument ) {
+				((org.lgna.project.ast.Argument)argument).expression.setValue( argumentExpressions[ i ] );
+			} else {
+				throw new RuntimeException();
+			}
 			i ++;
 		}
 		return rv;
@@ -409,31 +424,31 @@ public class AstUtilities {
 		return createIncompleteStringConcatenation( new EmptyExpression( org.lgna.project.ast.JavaType.OBJECT_TYPE ) );
 	}
 
-//	public static edu.cmu.cs.dennisc.alice.ast.AbstractParameter getNextParameter( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-//		final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
+//	public static org.lgna.project.ast.AbstractParameter getNextParameter( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+//		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+//		final org.lgna.project.ast.AbstractMethod nextLongerMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
 //		
-//		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
+//		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
 //		return parameters.get( parameters.size()-1 );
 //	}
 	
-	public static java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > removeParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > rv, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
+	public static java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.AbstractArgument > removeParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.AbstractArgument > rv, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
 		assert rv != null;
 		assert code.getParamtersProperty().get( index ) == parameterDeclaredInAlice;
 		rv.clear();
 		code.getParamtersProperty().remove( index );
 		for( org.lgna.project.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
-			org.lgna.project.ast.Argument argument = argumentListProperty.remove( index );
+			org.lgna.project.ast.AbstractArgument argument = argumentListProperty.remove( index );
 			if( argument != null ) {
 				rv.put( argumentListProperty, argument );
 			}
 		}
 		return rv;
 	}
-	public static void addParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.Argument > map, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
+	public static void addParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.AbstractArgument > map, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
 		code.getParamtersProperty().add( index, parameterDeclaredInAlice );
 		for( org.lgna.project.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
-			org.lgna.project.ast.Argument argument = map.get( code );
+			org.lgna.project.ast.AbstractArgument argument = map.get( code );
 			if( argument != null ) {
 				//pass
 			} else {

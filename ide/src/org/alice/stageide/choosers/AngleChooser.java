@@ -47,21 +47,21 @@ package org.alice.stageide.choosers;
  */
 public class AngleChooser extends org.alice.ide.choosers.DoubleChooser {
 	public AngleChooser() {
-//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 //		//todo: handle other numbers
-//		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-//			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
+//		if( previousExpression instanceof org.lgna.project.ast.DoubleLiteral ) {
+//			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)previousExpression;
 //			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
 //		}
 	}
 
 }
-//public class AngleChooser extends org.alice.ide.choosers.AbstractChooserWithTextField< edu.cmu.cs.dennisc.alice.ast.Expression > {
+//public class AngleChooser extends org.alice.ide.choosers.AbstractChooserWithTextField< org.lgna.project.ast.Expression > {
 //	public AngleChooser() {
-//		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 //		//todo: handle other numbers
-//		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-//			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
+//		if( previousExpression instanceof org.lgna.project.ast.DoubleLiteral ) {
+//			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)previousExpression;
 //			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
 //		}
 //	}
@@ -74,9 +74,9 @@ public class AngleChooser extends org.alice.ide.choosers.DoubleChooser {
 //		return new org.alice.apis.moveandturn.AngleInRevolutions( value );
 //	}
 //
-//	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
+//	public org.lgna.project.ast.Expression getValue() {
 //		double value = this.slider.getValue() / 100.0;
-//		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
+//		org.lgna.project.ast.DoubleLiteral doubleLiteral = new org.lgna.project.ast.DoubleLiteral( value );
 //		final boolean IS_LITERAL_DESIRED = true;
 //		if( IS_LITERAL_DESIRED ) {
 //			return doubleLiteral;

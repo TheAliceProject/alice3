@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui;
 /**
  * @author Dennis Cosgrove
  */
-public class AccessibleListSelectionState extends org.lgna.croquet.DefaultListSelectionState< edu.cmu.cs.dennisc.alice.ast.Accessible > {
+public class AccessibleListSelectionState extends org.lgna.croquet.DefaultListSelectionState< org.lgna.project.ast.Accessible > {
 	private static class SingletonHolder {
 		private static AccessibleListSelectionState instance = new AccessibleListSelectionState();
 	}
@@ -53,6 +53,6 @@ public class AccessibleListSelectionState extends org.lgna.croquet.DefaultListSe
 		return SingletonHolder.instance;
 	}
 	private AccessibleListSelectionState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.Accessible.class ) );
+		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a6d09409-82b8-4dfe-b156-588f1983893c" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Accessible.class ) );
 	}
 }

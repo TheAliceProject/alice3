@@ -166,17 +166,17 @@ public abstract class VirtualMachine {
 	
 	protected Object createInstanceFromAnonymousConstructor( org.lgna.project.ast.AnonymousUserConstructor constructor, Object[] arguments ) {
 		throw new RuntimeException( "todo" );
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = constructor.getDeclaringType();
-//		if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
-//			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice anonymousType = (edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice)type;
-//			edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> superType = anonymousType.getSuperType();
-//			if( superType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
-//				Class< ? > anonymousCls = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)superType).getClassReflectionProxy().getReification();
+//		org.lgna.project.ast.AbstractType<?,?,?> type = constructor.getDeclaringType();
+//		if( type instanceof org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice ) {
+//			org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice anonymousType = (org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice)type;
+//			org.lgna.project.ast.AbstractType<?,?,?> superType = anonymousType.getSuperType();
+//			if( superType instanceof org.lgna.project.ast.TypeDeclaredInJava ) {
+//				Class< ? > anonymousCls = ((org.lgna.project.ast.TypeDeclaredInJava)superType).getClassReflectionProxy().getReification();
 //				Class< ? > adapterCls = this.mapAnonymousClsToAdapterCls.get( anonymousCls );
 //				if( adapterCls != null ) {
 //					final InstanceInAlice instance = this.getThis();
 //					Context context = new Context() {
-//						public void invokeEntryPoint( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, final Object... arguments ) {
+//						public void invokeEntryPoint( final org.lgna.project.ast.AbstractMethod method, final Object... arguments ) {
 ////							new Thread() {
 ////								@Override
 ////								public void run() {
@@ -185,7 +185,7 @@ public abstract class VirtualMachine {
 ////							}.start();
 //						}
 //					};
-//					Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice.class, Object[].class };
+//					Class< ? >[] parameterTypes = { Context.class, org.lgna.project.ast.AbstractTypeDeclaredInAlice.class, Object[].class };
 //					Object[] args = { context, anonymousType, arguments };
 //					return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
 //				} else {
@@ -240,13 +240,35 @@ public abstract class VirtualMachine {
 		}
 	}
 	
-	private Object evaluate( org.lgna.project.ast.Argument argument ) {
-		assert argument != null;
-		org.lgna.project.ast.Expression expression = argument.expression.getValue();
-		assert expression != null;
-		return this.evaluate( expression );
+	private Object evaluate( org.lgna.project.ast.KeyedArguments keyedArguments, int i ) {
+		org.lgna.project.ast.JavaKeyMethodExpressionPair keyExpressionPairI = keyedArguments.keyExpressionPairs.get( i );
+		org.lgna.project.ast.JavaMethod methodI = keyExpressionPairI.keyMethod.getValue();
+		Object instance;
+		if( i == 0 ) {
+			assert methodI.isStatic();
+			instance = null;
+		} else {
+			instance = this.evaluate( keyedArguments, i-1 );
+		}
+		java.lang.reflect.Method mthdI = methodI.getMethodReflectionProxy().getReification();
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, mthdI, this.evaluate( keyExpressionPairI.expression.getValue() ) );
 	}
-	protected Object[] evaluateArguments( java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.Argument > arguments ) {
+	
+	private Object evaluate( org.lgna.project.ast.AbstractArgument argument ) {
+		assert argument != null;
+		if( argument instanceof org.lgna.project.ast.Argument ) {
+			org.lgna.project.ast.Argument simpleArgument = (org.lgna.project.ast.Argument)argument;
+			org.lgna.project.ast.Expression expression = simpleArgument.expression.getValue();
+			assert expression != null;
+			return this.evaluate( expression );
+		} else if( argument instanceof org.lgna.project.ast.KeyedArguments ) {
+			org.lgna.project.ast.KeyedArguments keyedArguments = (org.lgna.project.ast.KeyedArguments)argument;
+			return this.evaluate( keyedArguments, keyedArguments.keyExpressionPairs.size()-1 );
+		} else {
+			throw new RuntimeException( argument.toString() );
+		}
+	}
+	protected Object[] evaluateArguments( java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.AbstractArgument > arguments ) {
 		final int N = parameters.size();
 		final int M = arguments.size();
 		assert N == M;
@@ -264,7 +286,7 @@ public abstract class VirtualMachine {
 				assert componentCls != null;
 				rv[ N-1 ] = java.lang.reflect.Array.newInstance( componentCls, M );
 				for( int j=0; j<( M - (N-1) ); j++ ) {
-					org.lgna.project.ast.Argument argumentJ = arguments.get( (N-1) + j );
+					org.lgna.project.ast.AbstractArgument argumentJ = arguments.get( (N-1) + j );
 					assert argumentJ != null;
 					Object valueJ = this.evaluate( argumentJ );
 					assert valueJ != null;

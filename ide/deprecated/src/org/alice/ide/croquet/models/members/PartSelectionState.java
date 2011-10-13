@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.members;
 /**
  * @author Dennis Cosgrove
  */
-public class PartSelectionState extends org.lgna.croquet.DefaultListSelectionState< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > {
+public class PartSelectionState extends org.lgna.croquet.DefaultListSelectionState< org.lgna.project.ast.FieldDeclaredInJavaWithField > {
 	private static class SingletonHolder {
 		private static PartSelectionState instance = new PartSelectionState();
 	}
@@ -53,12 +53,12 @@ public class PartSelectionState extends org.lgna.croquet.DefaultListSelectionSta
 		return SingletonHolder.instance;
 	}
 	private PartSelectionState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "17b94498-cf54-414c-aa57-be2ef333de57" ),org.alice.ide.croquet.codecs.NodeCodec.getInstance( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.class ) );
-		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<edu.cmu.cs.dennisc.alice.ast.Accessible>() {
-			public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "17b94498-cf54-414c-aa57-be2ef333de57" ),org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.FieldDeclaredInJavaWithField.class ) );
+		org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().addValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver<org.lgna.project.ast.Accessible>() {
+			public void changing( org.lgna.croquet.State< org.lgna.project.ast.Accessible > state, org.lgna.project.ast.Accessible prevValue, org.lgna.project.ast.Accessible nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.alice.ast.Accessible > state, edu.cmu.cs.dennisc.alice.ast.Accessible prevValue, edu.cmu.cs.dennisc.alice.ast.Accessible nextValue, boolean isAdjusting ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type;
+			public void changed( org.lgna.croquet.State< org.lgna.project.ast.Accessible > state, org.lgna.project.ast.Accessible prevValue, org.lgna.project.ast.Accessible nextValue, boolean isAdjusting ) {
+				org.lgna.project.ast.AbstractType<?,?,?> type;
 				if( nextValue != null ) {
 					type = nextValue.getValueType();
 				} else {
@@ -72,24 +72,24 @@ public class PartSelectionState extends org.lgna.croquet.DefaultListSelectionSta
 	private void setPartEnumCls(Class<?> partEnumCls) {
 		if( this.partEnumCls != partEnumCls ) {
 			this.partEnumCls = partEnumCls;
-			java.util.ArrayList< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField > items = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			java.util.ArrayList< org.lgna.project.ast.FieldDeclaredInJavaWithField > items = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 			if( partEnumCls != null ) {
 				java.lang.reflect.Field[] flds = partEnumCls.getFields();
 				items.ensureCapacity( flds.length + 1 );
 				items.add( null );
 				for( java.lang.reflect.Field fld : flds ) {
 					if( fld.isEnumConstant() ) {
-						items.add( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( fld ) );
+						items.add( org.lgna.project.ast.FieldDeclaredInJavaWithField.get( fld ) );
 					}
 				}
 			}
 			this.setListData( -1, items );
 		}
 	}
-	private void setValueType( edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type ) {
+	private void setValueType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		Class<?> partEnumCls = null;
 		if( type != null ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+			org.lgna.project.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
 			Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
 			for( Class<?> declaredCls : cls.getDeclaredClasses() ) {
 				if( declaredCls.isEnum() && "Part".equals( declaredCls.getSimpleName() ) ) {

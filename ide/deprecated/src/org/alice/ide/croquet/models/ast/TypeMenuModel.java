@@ -85,7 +85,7 @@ public class TypeMenuModel extends org.lgna.croquet.MenuModel {
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, org.alice.ide.croquet.models.ast.rename.RenameTypeOperation.getInstance( this.type ).getMenuItemPrepModel() );
 //		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 //		if( ide.isInstanceCreationAllowableFor( this.type ) ) {
-//			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = ide.getSceneType();
+//			org.lgna.project.ast.TypeDeclaredInAlice ownerType = ide.getSceneType();
 //			org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ownerType, this.type ).getMenuItemPrepModel() );
 //		}
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElement( menuItemContainer, TypeSaveAsOperation.getInstance( this.type ).getMenuItemPrepModel() );

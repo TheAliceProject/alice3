@@ -249,11 +249,11 @@ public class SitAnimation extends AbstractBodyPositionAnimation {
 		rightLowerFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
 		leftLowerFinalOrient = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
 		
-		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightUpperFinalOrient, -0.5 * java.lang.Math.PI);
-		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftUpperFinalOrient, -0.5 * java.lang.Math.PI);
+		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightUpperFinalOrient, -0.5 * Math.PI);
+		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftUpperFinalOrient, -0.5 * Math.PI);
 		
-		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightLowerFinalOrient, 0.5 * java.lang.Math.PI);
-		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftLowerFinalOrient, 0.5 * java.lang.Math.PI);
+		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( rightLowerFinalOrient, 0.5 * Math.PI);
+		edu.wustl.cse.lookingglass.apis.walkandtouch.RotationUtilities.rotateAroundX( leftLowerFinalOrient, 0.5 * Math.PI);
 	}
 
 

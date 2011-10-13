@@ -41,38 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.properties.adapter;
+package org.lgna.project.ast;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-
-public abstract class AbstractStringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<String, O> 
-{
-
-	protected class SetStringOperation extends SetValueOperation<String> {
-		public SetStringOperation( String value, String name) {
-			super( AbstractStringPropertyAdapter.this, value, name, java.util.UUID.fromString( "cc558b11-321a-4196-9cf2-9947978f6218" ) );
-		}
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class AbstractArgument extends AbstractNode {
+	public DeclarationProperty< AbstractParameter > parameter = new DeclarationProperty< AbstractParameter >( this );
+	public AbstractArgument() {
 	}
-	
-	public AbstractStringPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
-	{
-		super(repr, instance, expressionState);
+	public AbstractArgument( AbstractParameter parameter ) {
+		this.parameter.setValue( parameter );
 	}
-	
-	public Class<String> getPropertyType()
-	{
-		return String.class;
-	}
-	
 	@Override
-	public SetValueOperation<String> getSetValueOperation(String value) 
-	{
-		return new SetStringOperation(value, null);
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+		//return super.appendRepr( rv, locale );
+		NodeUtilities.safeAppendRepr( rv, this.parameter.getValue(), locale );
+		return rv;
 	}
-	
-	public String getValueCopy() 
-	{
-		return new String(this.getValue());
-	}
-
 }

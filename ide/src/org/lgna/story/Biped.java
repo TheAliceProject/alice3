@@ -79,6 +79,15 @@ public class Biped extends JointedModel implements Articulable {
 	public Joint getHead() {
 		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.HEAD );
 	}
+	public Joint getMouth() {
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.MOUTH );
+	}
+	public Joint getRightEye() {
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_EYE );
+	}
+	public Joint getLeftEye() {
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_EYE );
+	}
 	
 	public Joint getRightHip() {
 		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_HIP );

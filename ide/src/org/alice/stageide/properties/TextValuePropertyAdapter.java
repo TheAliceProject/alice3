@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,68 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.properties;
 
-import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Turnable;
+import java.util.Locale;
+
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractPoint3PropertyAdapter;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.lgna.story.implementation.TextImp;
 
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
+/**
+ * @author dculyba
+ *
+ */
+public class TextValuePropertyAdapter extends AbstractPropertyAdapter<String, TextImp> {
 
-public abstract class AbstractAbsolutePositionPropertyAdapter<O extends Turnable> extends AbstractPoint3PropertyAdapter<O>
-{
-	private AbsoluteTransformationListener absoluteTransformationListener;
 	
-	public AbstractAbsolutePositionPropertyAdapter(O instance, StandardExpressionState expressionState ) 
+	public TextValuePropertyAdapter(TextImp instance, StandardExpressionState expressionState) 
 	{
-		this("Position", instance, expressionState);
+		super("Text", instance, expressionState);
 	}
 	
-	public AbstractAbsolutePositionPropertyAdapter(String repr, O instance, StandardExpressionState expressionState )
+
+	@Override
+	public void setValue(String value) 
 	{
-		super(repr, instance, expressionState);
-	}
-	
-	private void initializeTransformationListenersIfNecessary()
-	{
-		if (this.absoluteTransformationListener == null)
+		super.setValue(value);
+		if (this.instance != null)
 		{
-			this.absoluteTransformationListener = new AbsoluteTransformationListener() {
-				public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) 
-				{
-					AbstractAbsolutePositionPropertyAdapter.this.handleInternalValueChanged();
-				}
-			};
+			this.instance.setValue(value);
 		}
 	}
-	
+
 	@Override
-	protected void startListening() 
+	public Class<String> getPropertyType() 
+	{
+		return String.class;
+	}
+
+	@Override
+	public String getValue() 
 	{
 		if (this.instance != null)
 		{
-			this.initializeTransformationListenersIfNecessary();
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().addAbsoluteTransformationListener(this.absoluteTransformationListener);
+			return this.instance.getValue();
 		}
+		return null;
 	}
 	
 	@Override
-	protected void stopListening() 
+	public String getValueCopy() 
 	{
-		if (this.instance != null)
-		{
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().removeAbsoluteTransformationListener(this.absoluteTransformationListener);
-		}
-	}
-
-	protected void handleInternalValueChanged()
-	{
-		this.notifyValueObservers(this.getValue());
+		return new String(this.getValue());
 	}
 
 }

@@ -53,35 +53,58 @@ import org.alice.ide.IDE;
 import org.alice.ide.ast.AstUtilities;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.ast.PropertyState;
+import org.alice.ide.properties.adapter.AbstractImplementationPropertyAdapter;
+import org.alice.ide.properties.adapter.ColorPropertyAdapter;
+import org.alice.ide.properties.adapter.DoublePropertyAdapter;
+import org.alice.ide.properties.adapter.FloatPropertyAdapter;
 import org.alice.ide.properties.uicontroller.AdapterControllerUtilities;
 import org.alice.ide.properties.uicontroller.PropertyAdapterController;
+import org.alice.stageide.StoryApiConfigurationManager;
 import org.alice.stageide.croquet.models.sceneditor.AreExtraPropertiesShownState;
+import org.alice.stageide.properties.BillboardBackPaintPropertyAdapter;
 import org.alice.stageide.properties.FieldNameAdapter;
-import org.alice.stageide.properties.MarkerColorAdapter;
-import org.alice.stageide.properties.MarkerOpacityAdapter;
-import org.alice.stageide.properties.ModelColorAdapter;
+import org.alice.stageide.properties.BillboardFrontPaintPropertyAdapter;
+import org.alice.stageide.properties.GroundOpacityAdapter;
 import org.alice.stageide.properties.ModelOpacityAdapter;
-import org.alice.stageide.properties.ModelScaleAdapter;
-import org.alice.stageide.properties.TransformableTranslationAdapter;
-import org.alice.stageide.properties.TransformableVehicleAdapter;
+import org.alice.stageide.properties.ModelSizeAdapter;
+import org.alice.stageide.properties.PaintPropertyAdapter;
+import org.alice.stageide.properties.TextFontPropertyAdapter;
+import org.alice.stageide.properties.TextValuePropertyAdapter;
+import org.alice.stageide.properties.MoveableTurnableTranslationAdapter;
+import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.ToolPalette;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.UserField;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Model;
+import org.lgna.story.MovableTurnable;
+import org.lgna.story.MutableRider;
+import org.lgna.story.implementation.BillboardImp;
+import org.lgna.story.implementation.ConeImp;
 import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.GroundImp;
 import org.lgna.story.implementation.ModelImp;
+import org.lgna.story.implementation.SceneImplementation;
+import org.lgna.story.implementation.SphereImp;
+import org.lgna.story.implementation.TextImp;
 
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel
 {
-	private AbstractField selectedField;
+	private UserField selectedField;
 	private Object selectedObject;
 	private Entity selectedEntity;
 	private EntityImp selectedImp;
+	
+	private org.lgna.project.virtualmachine.UserInstance sceneInstance;
 	
 	private class LabelValueControllerPair
 	{
@@ -95,7 +118,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		} 
 	}
 	
-	private List<LabelValueControllerPair> labelControllerList = new LinkedList<LabelValueControllerPair>();
 	private List<LabelValueControllerPair> activeControllers = new LinkedList<LabelValueControllerPair>();
 	private Label classLabel;
 	private Label classNameLabel;
@@ -117,58 +139,52 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	    super.setBackgroundColor(color);
 	    this.extraPropertiesPalette.setBackgroundColor(color);
 	}
-	
-	private static Class<?>[] PROPERTY_ADAPTER_CLASSES= {
-		FieldNameAdapter.class,
-		MarkerColorAdapter.class,
-		MarkerOpacityAdapter.class,
-		ModelColorAdapter.class,
-		ModelOpacityAdapter.class,
-		TransformableTranslationAdapter.class,
-		TransformableVehicleAdapter.class,
-		ModelScaleAdapter.class,
-	};
 
-	public static List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> getPropertyAdaptersForObject(Object object, StandardExpressionState expressionState)
+	public void setSceneInstance(org.lgna.project.virtualmachine.UserInstance sceneInstance)
 	{
-		List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> propertyList = new LinkedList<org.alice.ide.properties.adapter.PropertyAdapter<?,?>>();
-		if (object != null)
-		{
-			for (Class<?> adapterClass : PROPERTY_ADAPTER_CLASSES)
-			{
-				Constructor<?>[] constructors = adapterClass.getConstructors();
-				for (Constructor<?> constructor : constructors)
-				{
-					if (constructor.getParameterTypes().length > 0)
-					{
-						if (constructor.getParameterTypes()[0].isAssignableFrom(object.getClass()))
-						{
-							try
-							{
-								System.out.println("Selecting "+adapterClass.getSimpleName());
-								org.alice.ide.properties.adapter.PropertyAdapter<?,?> propertyAdapter = null;
-								if (constructor.getParameterTypes().length == 1)
-								{
-									propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object);
-								}
-								else if (constructor.getParameterTypes().length == 2)
-								{
-									propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object, expressionState);
-								}
-								if (propertyAdapter != null)
-								{
-									propertyList.add(propertyAdapter);
-								}
-							}
-							catch (Exception e)
-							{
-								e.printStackTrace();
-							}
-						}
-					}
-				}
-			}
-		}
+		this.sceneInstance = sceneInstance;
+	}
+	
+	public static List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> getPropertyAdaptersForObject(Object object, StandardExpressionState expressionState)
+	{
+		List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> propertyList = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>>();
+//		if (object != null)
+//		{
+//			for (Class<?> adapterClass : PROPERTY_ADAPTER_CLASSES)
+//			{
+//				Constructor<?>[] constructors = adapterClass.getConstructors();
+//				for (Constructor<?> constructor : constructors)
+//				{
+//					if (constructor.getParameterTypes().length > 0)
+//					{
+//						if (constructor.getParameterTypes()[0].isAssignableFrom(object.getClass()))
+//						{
+//							try
+//							{
+//								System.out.println("Selecting "+adapterClass.getSimpleName());
+//								org.alice.ide.properties.adapter.PropertyAdapter<?,?> propertyAdapter = null;
+//								if (constructor.getParameterTypes().length == 1)
+//								{
+//									propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object);
+//								}
+//								else if (constructor.getParameterTypes().length == 2)
+//								{
+//									propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object, expressionState);
+//								}
+//								if (propertyAdapter != null)
+//								{
+//									propertyList.add(propertyAdapter);
+//								}
+//							}
+//							catch (Exception e)
+//							{
+//								e.printStackTrace();
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
 		return propertyList;
 	}
 	
@@ -211,24 +227,122 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	{
 	    this.addNameAndControllerToPanel(propertyPair.label, propertyPair.controller.getPanel(), panel, index);
 	}
+	
+	private static org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
+		return org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+	}
 
 	
-	public void setField( AbstractField field )
+	private org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter(org.lgna.project.ast.JavaMethod getter, JavaType declaringType, EntityImp entityImp)
 	{
-		this.selectedField = field;
-		
-		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = AstUtilities.getPersistentPropertyGetters(field.getValueType());
-		for (org.lgna.project.ast.JavaMethod getter : getterMethods )
+		org.lgna.project.ast.JavaMethod setter = org.alice.ide.ast.AstUtilities.getSetterForGetter( getter, declaringType );
+		org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForSetter( IDE.PROJECT_GROUP, setter );
+		boolean isVisible = setter == null || setter.getVisibility() == null || setter.getVisibility() == Visibility.PRIME_TIME;
+		if (setter != null && isVisible)
 		{
-			org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( IDE.PROJECT_GROUP, getter );
-			System.out.println("state: "+state+": "+getter.getName()+"->"+ getter.getReturnType());
-			if (state instanceof PropertyState)
+			if (setter.getName().equalsIgnoreCase("setOpacity"))
 			{
-				PropertyState ps = (PropertyState)state;
-				
+				if (entityImp instanceof ModelImp)
+				{
+					return new ModelOpacityAdapter((ModelImp)entityImp, state);
+				}
+				else if (entityImp instanceof GroundImp)
+				{
+					return new GroundOpacityAdapter((GroundImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setPaint"))
+			{
+				if (entityImp instanceof GroundImp)
+				{
+					return new PaintPropertyAdapter<GroundImp>("Paint", (GroundImp)entityImp, ((GroundImp)entityImp).paint, state);
+				}
+				else if (entityImp instanceof ModelImp)
+				{
+					return new PaintPropertyAdapter<ModelImp>("Paint", (ModelImp)entityImp, ((ModelImp)entityImp).paint, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setVehicle"))
+			{
+				if (entityImp.getAbstraction() instanceof MutableRider)
+				{
+					return new MutableRiderVehicleAdapter((MutableRider)entityImp.getAbstraction(), state, this.sceneInstance);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setAtmosphereColor"))
+			{
+				if (entityImp instanceof SceneImplementation)
+				{
+					return new ColorPropertyAdapter<SceneImplementation>("Atmosphere Color", (SceneImplementation)entityImp, ((SceneImplementation)entityImp).atmosphereColor, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setAmbientLightColor"))
+			{
+				if (entityImp instanceof SceneImplementation)
+				{
+					return new ColorPropertyAdapter<SceneImplementation>("Light Color", (SceneImplementation)entityImp, ((SceneImplementation)entityImp).ambientLightColor, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setBackPaint"))
+			{
+				if (entityImp instanceof BillboardImp)
+				{
+					return new BillboardBackPaintPropertyAdapter((BillboardImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setFrontPaint"))
+			{
+				if (entityImp instanceof BillboardImp)
+				{
+					return new BillboardFrontPaintPropertyAdapter((BillboardImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setFont"))
+			{
+				if (entityImp instanceof TextImp)
+				{
+					return new TextFontPropertyAdapter((TextImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setValue"))
+			{
+				if (entityImp instanceof TextImp)
+				{
+					return new TextValuePropertyAdapter((TextImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setRadius"))
+			{
+				if (entityImp instanceof SphereImp)
+				{
+					return new DoublePropertyAdapter<SphereImp>("Opacity", (SphereImp)entityImp, ((SphereImp)entityImp).radius, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setBaseRadius"))
+			{
+				if (entityImp instanceof ConeImp)
+				{
+					return new DoublePropertyAdapter<ConeImp>("Base Radius", (ConeImp)entityImp, ((ConeImp)entityImp).baseRadius, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setLength"))
+			{
+				if (entityImp instanceof ConeImp)
+				{
+					return new DoublePropertyAdapter<ConeImp>("Length", (ConeImp)entityImp, ((ConeImp)entityImp).length, state);
+				}
+			}
+			else
+			{
+				System.out.println("Unknown setter: "+setter.getName());
 			}
 		}
-		
+		return null;
+	}
+	
+	public void setField( UserField field )
+	{
+		this.selectedField = field;
 		Object instance = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( field );
 		if( instance instanceof org.lgna.story.Entity ) {
 			this.selectedEntity = (org.lgna.story.Entity)instance;
@@ -245,6 +359,8 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		{
 			if (activeController.controller != null)
 			{
+				activeController.controller.getPropertyAdapter().stopListening();
+//				activeController.controller.getPropertyAdapter().clearListeners();
 				activeController.controller.setPropertyAdapter(null);
 			}
 		}
@@ -254,36 +370,45 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		this.morePropertiesPanel.removeAllComponents();
 		
 		
-		List<org.alice.ide.properties.adapter.PropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.PropertyAdapter<?,?>>();
-		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedField, null));
-		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedImp, null));
-		propertyAdapters.addAll(getPropertyAdaptersForObject(this.selectedEntity, null));
+		List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>>();
+		
+		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = AstUtilities.getPersistentPropertyGetters(field.getValueType());
+		JavaType declaringType = field.getValueType().getFirstTypeEncounteredDeclaredInJava();
+		propertyAdapters.add(new FieldNameAdapter(this.selectedField, (StandardExpressionState)null));
+		
+		for (org.lgna.project.ast.JavaMethod getter : getterMethods )
+		{
+			System.out.println("Looking for adapter for "+getter.getName());
+			org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter(getter, declaringType, this.selectedImp);
+			if (adapter != null)
+			{
+				propertyAdapters.add(adapter);
+			}
+		}
+		
+		if (this.selectedEntity instanceof MovableTurnable)
+		{
+			propertyAdapters.add( new MoveableTurnableTranslationAdapter((MovableTurnable)this.selectedEntity, null));
+		}
+		if (this.selectedEntity instanceof Model && this.selectedImp instanceof ModelImp)
+		{
+			propertyAdapters.add( new ModelSizeAdapter((ModelImp)this.selectedImp, null));
+		}
+		
 		LabelValueControllerPair fieldNamePair = null;
+		
+		
 		if (propertyAdapters.size() != 0)
 		{
 			int mainPropertyCount = 0;
 			int extraPropertyCount = 0;
 			//Add all the extra properties to the extra panel and find the name property adapter
-			for (org.alice.ide.properties.adapter.PropertyAdapter propertyAdapter : propertyAdapters)
+			for (org.alice.ide.properties.adapter.AbstractPropertyAdapter propertyAdapter : propertyAdapters)
 			{
-				LabelValueControllerPair matchingLabelController = null;
-				for (LabelValueControllerPair labelController : this.labelControllerList)
-				{
-					if (labelController.controller.getPropertyType().equals(propertyAdapter.getPropertyType()))
-					{
-						matchingLabelController = labelController;
-						matchingLabelController.label.setText(propertyAdapter.getRepr()+ " = ");
-						matchingLabelController.controller.setPropertyAdapter(propertyAdapter);
-						break;
-					}
-				}
-				if (matchingLabelController == null)
-				{
-					PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter(propertyAdapter);
-					assert propertyController != null;
-					matchingLabelController = new LabelValueControllerPair(createLabel(propertyAdapter.getRepr()+ " = "), propertyController);
-					this.labelControllerList.add(matchingLabelController);
-				}
+
+				PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter(propertyAdapter);
+				assert propertyController != null;
+				LabelValueControllerPair matchingLabelController = new LabelValueControllerPair(createLabel(propertyAdapter.getRepr()+ " = "), propertyController);
 				assert matchingLabelController != null;
 				if (propertyAdapter instanceof FieldNameAdapter)
 				{
