@@ -44,8 +44,6 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.properties.adapter.FloatPropertyAdapter;
-import org.alice.ide.properties.adapter.PropertyAdapter;
 
 public class FloatPropertyController extends LabelBasedPropertyController<Float>
 {
