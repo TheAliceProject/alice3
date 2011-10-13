@@ -57,4 +57,7 @@ public class AppleApplicationEventTrigger extends EventObjectTrigger< java.util.
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "Apple";
+	}
 }

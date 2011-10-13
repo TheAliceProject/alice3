@@ -134,7 +134,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	public final <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class< E > componentCls ) {
 		E[] rv = (E[])createArray( componentCls );
 		for( int i=0; i<rv.length; i++ ) {
-			rv[ i ] = decodeBinaryEncodableAndDecodable();
+			rv[ i ] = (E)decodeBinaryEncodableAndDecodable();
 		}
 		return rv;
 	}
@@ -215,10 +215,10 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	private static final Class<?>[] OBJECT_PARAMETER_TYPES = { BinaryDecoder.class, Object.class };
 	
 	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {
-		return decodeBinaryEncodableAndDecodable( EMPTY_PARAMETER_TYPES, new Object[] { this } );
+		return (E)decodeBinaryEncodableAndDecodable( EMPTY_PARAMETER_TYPES, new Object[] { this } );
 	}
 	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Object context ) {
-		return decodeBinaryEncodableAndDecodable( OBJECT_PARAMETER_TYPES, new Object[] { this, context } );
+		return (E)decodeBinaryEncodableAndDecodable( OBJECT_PARAMETER_TYPES, new Object[] { this, context } );
 	}
 
 //	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable() {

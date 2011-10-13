@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class AutomaticCompletionTrigger implements org.lgna.croquet.triggers.Trigger {
+public class AutomaticCompletionTrigger extends AbstractTrigger {
 	private final transient org.lgna.croquet.triggers.Trigger previousTrigger;
 	public AutomaticCompletionTrigger( org.lgna.croquet.triggers.Trigger previousTrigger ) {
 		this.previousTrigger = previousTrigger;
@@ -61,5 +61,9 @@ public class AutomaticCompletionTrigger implements org.lgna.croquet.triggers.Tri
 	}
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		this.previousTrigger.showPopupMenu( popupMenu );
+	}
+	public String getNoteText( java.util.Locale locale ) {
+		//todo
+		return "COMPLETE";
 	}
 }

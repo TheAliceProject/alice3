@@ -359,6 +359,10 @@ public abstract class Factory {
 			return new ExpressionPane( instanceCreation, this.createComponent( instanceCreation ) );
 		}
 	}
+	
+	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
+		return component;
+	}
 
 	public org.lgna.croquet.components.JComponent< ? > createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 //		java.awt.Component rv;
@@ -447,7 +451,7 @@ public abstract class Factory {
 				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
 					rv = new ExpressionPane( expression, component );
 				} else {
-					rv = component;
+					rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
 				}
 			}
 		}

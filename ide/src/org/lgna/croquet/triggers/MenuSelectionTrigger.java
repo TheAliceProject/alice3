@@ -171,4 +171,8 @@ public class MenuSelectionTrigger extends ChangeEventTrigger {
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	@Override
+	public String getNoteText( java.util.Locale locale ) {
+		return "Select";
+	}
 }

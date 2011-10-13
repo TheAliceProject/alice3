@@ -42,8 +42,6 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.edits.Edit;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -96,23 +94,20 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 //		return "Press " + this.getTutorialNoteText( step, userInformation );
 //	}
 //
-//	protected String getTutorialNoteName() {
-//		return this.getName();
-//	}
-//	@Override
-//	protected StringBuilder updateTutorialStepText( StringBuilder rv, ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-//		rv.append( "Click <strong>" );
-//		rv.append( this.getTutorialNoteName() );
-//		rv.append( "</strong>" );
-//		return rv;
-//	}
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		rv.append( " <strong>" );
+		rv.append( this.getName() );
+		rv.append( "</strong>" );
+		return rv;
+	}
 	
-	protected Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	protected org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		return null;
 	}
 	@Override
-	public Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		Edit< ? > replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
+	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+		org.lgna.croquet.edits.Edit< ? > replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
 //		if( replacementEdit != null ) {
 //			final S step = this.createAndPushStep( null, null );
 //			try {
@@ -201,7 +196,7 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	}
 
 	@Override
-	public boolean isAlreadyInState( Edit< ? > edit ) {
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
 		return false;
 	}
 

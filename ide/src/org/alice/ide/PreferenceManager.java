@@ -98,6 +98,7 @@ public class PreferenceManager {
 	}
 
 	private static java.util.List< org.lgna.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List< org.lgna.croquet.StringState > stringStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > listSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 	public static void registerAndInitializePreference( org.lgna.croquet.BooleanState booleanState ) {
@@ -111,6 +112,19 @@ public class PreferenceManager {
 			booleanStatePreferences.add( booleanState );
 		} else {
 			System.err.println( "registerAndInitializePreference: " + booleanState );
+		}
+	}
+	public static void registerAndInitializePreference( org.lgna.croquet.StringState stringState ) {
+		IDE ide = IDE.getActiveInstance();
+		if( ide != null ) {
+			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
+			clearAllPreferencesIfRequested( userPreferences );
+			java.util.UUID id = stringState.getId();
+			String value = userPreferences.get( id.toString(), stringState.getValue() );
+			stringState.setValue( value );
+			stringStatePreferences.add( stringState );
+		} else {
+			System.err.println( "registerAndInitializePreference: " + stringState );
 		}
 	}
 	public static void registerAndInitializePreference( org.lgna.croquet.ListSelectionState< ? > listSelectionState ) {
@@ -134,6 +148,9 @@ public class PreferenceManager {
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
 			for( org.lgna.croquet.BooleanState booleanState : booleanStatePreferences ) {
 				userPreferences.putBoolean( booleanState.getId().toString(), booleanState.getValue() );
+			}
+			for( org.lgna.croquet.StringState stringState : stringStatePreferences ) {
+				userPreferences.put( stringState.getId().toString(), stringState.getValue() );
 			}
 			for( org.lgna.croquet.ListSelectionState< ? > listSelectionState : listSelectionStatePreferences ) {
 				try {

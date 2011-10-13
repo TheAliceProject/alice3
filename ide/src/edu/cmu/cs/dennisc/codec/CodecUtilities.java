@@ -70,7 +70,7 @@ public abstract class CodecUtilities {
 		} else {
 			binaryDecoder = new InputStreamBinaryDecoder( is );
 		}
-		return binaryDecoder.decodeBinaryEncodableAndDecodable(/* cls */);
+		return (E)binaryDecoder.decodeBinaryEncodableAndDecodable(/* cls */);
 	}
 	public static <E extends BinaryEncodableAndDecodable> E decodeBinary( java.io.File file, Class<E> cls ) {
 		try {
@@ -255,7 +255,7 @@ public abstract class CodecUtilities {
 	public static <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinary( java.io.InputStream is, Class<E> cls ) {
 		BinaryDecoder binaryDecoder = new InputStreamBinaryDecoder( is );
 		java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map = new java.util.HashMap< Integer, ReferenceableBinaryEncodableAndDecodable >();
-		return binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( /*cls, */map );
+		return (E)binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( /*cls, */map );
 	}
 	public static <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinary( java.io.File file, Class<E> cls ) {
 		try {

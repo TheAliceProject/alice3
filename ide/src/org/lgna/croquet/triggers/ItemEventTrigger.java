@@ -60,4 +60,7 @@ public class ItemEventTrigger extends EventObjectTrigger<java.awt.event.ItemEven
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "Select";
+	}
 }

@@ -76,7 +76,7 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 				filterer,
 				recoverer,
 				
-				new org.lgna.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
+				new org.lgna.croquet.Group[] { org.alice.ide.IDE.UI_STATE_GROUP },
 				
 				org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 

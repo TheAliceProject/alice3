@@ -127,17 +127,18 @@ public abstract class BooleanState extends State< Boolean > {
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
 		if( edit instanceof org.lgna.croquet.edits.BooleanStateEdit ) {
 			org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)edit;
+			rv.append( " " );
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
-				if( booleanStateEdit.getNextValue() ) {
-					rv.append( "Select " );
-				} else {
-					rv.append( "Unselect " );
-				}
+//				if( booleanStateEdit.getNextValue() ) {
+//					rv.append( "Select " );
+//				} else {
+//					rv.append( "Unselect " );
+//				}
 				rv.append( "<strong>" );
 				rv.append( this.getTrueText() );
 				rv.append( "</strong>" );
 			} else {
-				rv.append( "Press " );
+//				rv.append( "Press " );
 				rv.append( "<strong>" );
 				if( booleanStateEdit.getNextValue() ) {
 					rv.append( this.falseText );

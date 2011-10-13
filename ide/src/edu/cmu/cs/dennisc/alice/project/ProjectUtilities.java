@@ -88,34 +88,6 @@ public abstract class ProjectUtilities {
 	private static String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
 	private static String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
 
-	public static java.io.File getMyAliceDirectory( String applicationName ) {
-		java.io.File rv = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), applicationName );
-		rv.mkdirs();
-		return rv;
-	}
-	public static java.io.File getMyProjectsDirectory( String applicationName ) {
-		java.io.File rv = new java.io.File( getMyAliceDirectory( applicationName ), "MyProjects" );
-		rv.mkdirs();
-		return rv;
-	}
-	public static java.io.File getMyTypesDirectory( String applicationName ) {
-		java.io.File rv = new java.io.File( getMyAliceDirectory( applicationName ), "MyClasses" );
-		rv.mkdirs();
-		return rv;
-	}
-	@Deprecated
-	public static java.io.File getMyAliceDirectory() {
-		return getMyAliceDirectory( "Alice3" );
-	}
-	@Deprecated
-	public static java.io.File getMyProjectsDirectory() {
-		return getMyProjectsDirectory( "Alice3" );
-	}
-	@Deprecated
-	public static java.io.File getMyTypesDirectory() {
-		return getMyTypesDirectory( "Alice3" );
-	}
-
 	public static java.io.File[] listProjectFiles( java.io.File directory ) {
 		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, PROJECT_EXTENSION );
 	}
@@ -429,7 +401,7 @@ public abstract class ProjectUtilities {
 	}
 	public static <N extends edu.cmu.cs.dennisc.alice.ast.Node > N decodeNode( edu.cmu.cs.dennisc.alice.Project project, edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		java.util.UUID id = binaryDecoder.decodeId();
-		return lookupNode( project, id );
+		return (N)lookupNode( project, id );
 	}
 	public static void encodeNode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		binaryEncoder.encode( node.getUUID() );

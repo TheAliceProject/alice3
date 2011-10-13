@@ -50,8 +50,8 @@ public abstract class SerialOperation extends SingleThreadOperation<org.lgna.cro
 	protected final void perform(org.lgna.croquet.history.SerialOperationStep step) {
 		for( Operation<?> operation : this.getOperations() ) {
 			//todo?
-			operation.handleFire(step.getTrigger());
-			if( step.isCanceled() ) {
+			org.lgna.croquet.history.CompletionStep< ? > subStep = operation.handleFire(step.getTrigger());
+			if( subStep.isCanceled() ) {
 				break;
 			}
 		}
