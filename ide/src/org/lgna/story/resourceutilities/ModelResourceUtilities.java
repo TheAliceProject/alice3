@@ -497,7 +497,7 @@ public class ModelResourceUtilities {
 		List<JavaConstructor> constructors = javeType.getDeclaredConstructors();
 		for (JavaConstructor constructor : constructors)
 		{
-			List<JavaConstructorParameter> parameters = (List<JavaConstructorParameter>) constructor.getParameters();
+			List<JavaConstructorParameter> parameters = (List<JavaConstructorParameter>) constructor.getRequiredParameters();
 			if (parameters.size() == 1)
 			{
 				JavaConstructorParameter parameter = parameters.get(0);
@@ -521,14 +521,14 @@ public class ModelResourceUtilities {
 		Class< ? >[] methodParameterClasses = { org.lgna.story.JointedModel.class, org.lgna.story.resources.JointId.class };
 		org.lgna.project.ast.JavaMethod methodExpression = org.lgna.project.ast.JavaMethod.getInstance(org.lgna.story.Joint.class, "getJoint", methodParameterClasses);
 		
-		org.lgna.project.ast.Argument thisArgument = new org.lgna.project.ast.Argument( methodExpression.getParameters().get(0), new org.lgna.project.ast.ThisExpression() );
+		org.lgna.project.ast.Argument thisArgument = new org.lgna.project.ast.Argument( methodExpression.getRequiredParameters().get(0), new org.lgna.project.ast.ThisExpression() );
 		
 		org.lgna.project.ast.FieldAccess jointField = new org.lgna.project.ast.FieldAccess( 
 				new org.lgna.project.ast.TypeExpression( jointIdType ), 
 				org.lgna.project.ast.JavaField.getInstance(partField.getDeclaringClass(), partField.getName() ) 
 		);
 		
-		org.lgna.project.ast.Argument jointArgument = new org.lgna.project.ast.Argument( methodExpression.getParameters().get(1), jointField );
+		org.lgna.project.ast.Argument jointArgument = new org.lgna.project.ast.Argument( methodExpression.getRequiredParameters().get(1), jointField );
 		
 		org.lgna.project.ast.Argument[] methodArguments = { thisArgument, jointArgument};
 		org.lgna.project.ast.MethodInvocation getJointMethodInvocation = new org.lgna.project.ast.MethodInvocation( typeExpression, methodExpression, methodArguments );

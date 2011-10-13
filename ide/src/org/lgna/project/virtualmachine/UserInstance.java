@@ -88,7 +88,7 @@ public class UserInstance {
 		org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)constructor.getDeclaringType();
 		vm.pushConstructorFrame( type, stackMap );
 		try {
-			Object[] nextArguments = vm.evaluateArguments( nextConstructor.getParameters(), constructorInvocationStatement.arguments );
+			Object[] nextArguments = vm.evaluateArguments( nextConstructor.getRequiredParameters(), constructorInvocationStatement.arguments );
 			if( nextConstructor.isDeclaredInAlice() ) {
 				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
 			} else {

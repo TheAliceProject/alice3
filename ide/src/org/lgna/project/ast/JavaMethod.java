@@ -47,10 +47,11 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaMethod extends AbstractMethod {
-	private static java.util.Map< MethodReflectionProxy, JavaMethod > s_mapReflectionProxyToJava = new java.util.HashMap< MethodReflectionProxy, JavaMethod >();
+	private static final java.util.Map< MethodReflectionProxy, JavaMethod > s_mapReflectionProxyToJava = new java.util.HashMap< MethodReflectionProxy, JavaMethod >();
 
-	private MethodReflectionProxy methodReflectionProxy;
-	private java.util.ArrayList< JavaMethodParameter > parameters;
+	private final MethodReflectionProxy methodReflectionProxy;
+	private final java.util.ArrayList< JavaMethodParameter > requiredParameters;
+	private final AbstractParameter variableOrKeyedParameter;
 
 	public static JavaMethod getInstance( MethodReflectionProxy methodReflectionProxy ) {
 		if( methodReflectionProxy != null ) {
@@ -75,12 +76,23 @@ public class JavaMethod extends AbstractMethod {
 
 	private JavaMethod( MethodReflectionProxy methodReflectionProxy ) {
 		this.methodReflectionProxy = methodReflectionProxy;
-		ClassReflectionProxy[] classReflectionProxies = this.methodReflectionProxy.getParameterClassReflectionProxies();
-		this.parameters = new java.util.ArrayList< JavaMethodParameter >();
-		this.parameters.ensureCapacity( classReflectionProxies.length );
+		ClassReflectionProxy[] parameterTypeReflectionProxies = this.methodReflectionProxy.getParameterClassReflectionProxies();
+		final int N;
+		if( this.methodReflectionProxy.isVarArgs() ) {
+			N = parameterTypeReflectionProxies.length - 1;
+		} else {
+			N = parameterTypeReflectionProxies.length;
+		}
+		this.requiredParameters = new java.util.ArrayList< JavaMethodParameter >();
+		this.requiredParameters.ensureCapacity( N );
 		java.lang.annotation.Annotation[][] parameterAnnotations = this.methodReflectionProxy.getParameterAnnotations();
-		for( int i = 0; i < classReflectionProxies.length; i++ ) {
-			this.parameters.add( new JavaMethodParameter( this, i, parameterAnnotations[ i ] ) );
+		for( int i = 0; i < N; i++ ) {
+			this.requiredParameters.add( new JavaMethodParameter( this, i, parameterAnnotations[ i ] ) );
+		}
+		if( this.methodReflectionProxy.isVarArgs() ) {
+			this.variableOrKeyedParameter = new JavaMethodParameter( this, N, parameterAnnotations[ N ] );
+		} else {
+			this.variableOrKeyedParameter = null;
 		}
 	}
 
@@ -89,12 +101,27 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	@Override
-	public boolean isVariableLength() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		if( mthd != null ) {
-			return mthd.isVarArgs();
+	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+		if( this.variableOrKeyedParameter != null ) {
+			if( variableOrKeyedParameter.getValueType().getKeywordFactoryType() != null ) {
+				return this.variableOrKeyedParameter;
+			} else {
+				return null;
+			}
 		} else {
-			return false;
+			return null;
+		}
+	}
+	@Override
+	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+		if( this.variableOrKeyedParameter != null ) {
+			if( variableOrKeyedParameter.getValueType().getKeywordFactoryType() != null ) {
+				return null;
+			} else {
+				return this.variableOrKeyedParameter;
+			}
+		} else {
+			return null;
 		}
 	}
 
@@ -121,8 +148,8 @@ public class JavaMethod extends AbstractMethod {
 		}
 	}
 	@Override
-	public java.util.ArrayList< ? extends AbstractParameter > getParameters() {
-		return this.parameters;
+	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
+		return this.requiredParameters;
 	}
 
 	@Override
@@ -147,7 +174,7 @@ public class JavaMethod extends AbstractMethod {
 	public boolean isParameterInShortestChainedMethod( JavaMethodParameter parameterDeclaredInJavaMethod ) {
 		int index = parameterDeclaredInJavaMethod.getIndex();
 		JavaMethod methodDeclaredInJava = (JavaMethod)getShortestInChain();
-		return index < methodDeclaredInJava.getParameters().size();
+		return index < methodDeclaredInJava.getRequiredParameters().size();
 	}
 
 	private JavaMethod nextLongerInChain = null;

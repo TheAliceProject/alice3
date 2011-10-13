@@ -161,7 +161,7 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		java.util.List< org.lgna.project.ast.NamedUserType > types = org.alice.ide.typemanager.TypeManager.getNamedUserTypesFor( getTopLevelGalleryTypes() );
 		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : types ) {
 			org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = constructor.getParameters();
+			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = constructor.getRequiredParameters();
 			if( parameters.size() == 1 ) {
 				if( parameters.get( 0 ).getValueType().isAssignableFrom( argumentType ) ) {
 					return constructor;

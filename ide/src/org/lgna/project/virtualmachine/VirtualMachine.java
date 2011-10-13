@@ -462,7 +462,7 @@ public abstract class VirtualMachine {
 	}
 	protected Object evaluateInstanceCreation( org.lgna.project.ast.InstanceCreation classInstanceCreation ) {
 //		AbstractType classType =classInstanceCreation.constructor.getValue().getDeclaringType();
-		Object[] arguments = this.evaluateArguments( classInstanceCreation.constructor.getValue().getParameters(), classInstanceCreation.arguments );
+		Object[] arguments = this.evaluateArguments( classInstanceCreation.constructor.getValue().getRequiredParameters(), classInstanceCreation.arguments );
 		return this.createInstance( classInstanceCreation.constructor.getValue(), arguments );
 	}
 	protected Object evaluateArrayInstanceCreation( org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation ) {
@@ -546,8 +546,8 @@ public abstract class VirtualMachine {
 
 	protected Object evaluateMethodInvocation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		if( methodInvocation.isValid() ) {
-			assert methodInvocation.method.getValue().getParameters().size() == methodInvocation.arguments.size() : methodInvocation.method.getValue().getName();
-			Object[] arguments = this.evaluateArguments( methodInvocation.method.getValue().getParameters(), methodInvocation.arguments );
+			assert methodInvocation.method.getValue().getRequiredParameters().size() == methodInvocation.arguments.size() : methodInvocation.method.getValue().getName();
+			Object[] arguments = this.evaluateArguments( methodInvocation.method.getValue().getRequiredParameters(), methodInvocation.arguments );
 			return this.invoke( this.evaluate( methodInvocation.expression.getValue() ), methodInvocation.method.getValue(), arguments );
 		} else {
 			javax.swing.JOptionPane.showMessageDialog( null, "skipping invalid methodInvocation: " + methodInvocation.method.getValue().getName() );

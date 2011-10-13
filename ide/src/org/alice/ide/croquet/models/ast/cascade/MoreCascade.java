@@ -61,7 +61,7 @@ public class MoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.
 	private static org.lgna.project.ast.AbstractParameter getNextParameter( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getParameters();
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getRequiredParameters();
 		return parameters.get( parameters.size()-1 );
 	}
 	
@@ -79,7 +79,7 @@ public class MoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.
 		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
 		this.nextMethodInvocation = new org.lgna.project.ast.MethodInvocation();
 		this.nextMethodInvocation.method.setValue( nextMethod );
-		for( org.lgna.project.ast.AbstractParameter parameter : nextMethod.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : nextMethod.getRequiredParameters() ) {
 			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, null );
 			this.nextMethodInvocation.arguments.add( argument );
 		}

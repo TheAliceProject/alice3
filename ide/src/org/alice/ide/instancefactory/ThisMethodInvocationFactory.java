@@ -50,7 +50,7 @@ public class ThisMethodInvocationFactory implements InstanceFactory {
 	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ThisMethodInvocationFactory getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		assert method != null;
-		assert method.getParameters().size() == 0;
+		assert method.getRequiredParameters().size() == 0;
 		ThisMethodInvocationFactory rv = map.get( method );
 		if( rv != null ) {
 			//pass

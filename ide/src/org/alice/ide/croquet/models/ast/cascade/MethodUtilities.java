@@ -51,7 +51,7 @@ public class MethodUtilities {
 		throw new AssertionError();
 	}
 	public static org.alice.ide.croquet.models.cascade.ParameterBlank[] createParameterBlanks( org.lgna.project.ast.AbstractMethod method ) {
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getRequiredParameters();
 		org.alice.ide.croquet.models.cascade.ParameterBlank[] rv = new org.alice.ide.croquet.models.cascade.ParameterBlank[ parameters.size() ];
 		for( int i=0; i<rv.length; i++ ) {
 			rv[ i ] = org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameters.get( i ) );

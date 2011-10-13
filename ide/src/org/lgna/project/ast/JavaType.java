@@ -127,7 +127,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 							if( valueTemplate != null ) {
 								JavaMethod m = setter;
 								while( m != null ) {
-									JavaMethodParameter parameter0 = (JavaMethodParameter)m.getParameters().get( 0 );
+									JavaMethodParameter parameter0 = (JavaMethodParameter)m.getRequiredParameters().get( 0 );
 									parameter0.setValueTemplate( valueTemplate );
 									m = (JavaMethod)m.getNextShorterInChain();
 								}

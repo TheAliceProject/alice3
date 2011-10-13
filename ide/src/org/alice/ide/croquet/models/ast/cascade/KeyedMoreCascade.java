@@ -62,7 +62,7 @@ public class KeyedMoreCascade extends org.lgna.croquet.Cascade< org.lgna.project
 	private static org.lgna.project.ast.AbstractParameter getNextParameter( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getParameters();
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getRequiredParameters();
 		return parameters.get( parameters.size()-1 );
 	}
 	
@@ -80,7 +80,7 @@ public class KeyedMoreCascade extends org.lgna.croquet.Cascade< org.lgna.project
 		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
 		this.nextMethodInvocation = new org.lgna.project.ast.MethodInvocation();
 		this.nextMethodInvocation.method.setValue( nextMethod );
-		for( org.lgna.project.ast.AbstractParameter parameter : nextMethod.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : nextMethod.getRequiredParameters() ) {
 			org.lgna.project.ast.AbstractArgument argument;
 			if( parameter.isKeyworded() ) {
 				argument = new org.lgna.project.ast.KeyedArguments();

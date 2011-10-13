@@ -47,11 +47,17 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class ConstructorReflectionProxy extends InvocableReflectionProxy< java.lang.reflect.Constructor< ? > > {
-	public ConstructorReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies ) {
+	private final boolean isVarArgs;
+	public ConstructorReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies, boolean isVarArgs ) {
 		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
+		this.isVarArgs = isVarArgs;
 	}
 	public ConstructorReflectionProxy( java.lang.reflect.Constructor< ? > cnstrctr ) {
 		super( cnstrctr, cnstrctr.getDeclaringClass(), cnstrctr.getParameterTypes() );
+		this.isVarArgs = cnstrctr.isVarArgs();
+	}
+	public boolean isVarArgs() {
+		return this.isVarArgs;
 	}
 	@Override
 	protected java.lang.reflect.Constructor< ? > reify() {

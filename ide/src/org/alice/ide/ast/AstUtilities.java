@@ -228,7 +228,7 @@ public class AstUtilities {
 		org.lgna.project.ast.MethodInvocation rv = new org.lgna.project.ast.MethodInvocation();
 		rv.expression.setValue( expression );
 		rv.method.setValue( method );
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
 			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, new EmptyExpression( parameter.getValueType() ) );
 			rv.arguments.add( argument );
 		}
@@ -275,7 +275,7 @@ public class AstUtilities {
 		org.lgna.project.ast.MethodInvocation rv = new org.lgna.project.ast.MethodInvocation();
 		rv.expression.setValue( prevMethodInvocation.expression.getValue() );
 		rv.method.setValue( nextMethod );
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getParameters();
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getRequiredParameters();
 		final int N = parameters.size();
 		for( int i=0; i<N-1; i++ ) {
 			org.lgna.project.ast.AbstractArgument argument = prevMethodInvocation.arguments.get( i );
@@ -311,7 +311,7 @@ public class AstUtilities {
 		rv.expression.setValue( instanceExpression );
 		rv.method.setValue( method );
 		int i = 0;
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
 			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, argumentExpressions[ i ] );
 			rv.arguments.add( argument );
 			i++;
@@ -331,7 +331,7 @@ public class AstUtilities {
 	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.Expression... argumentExpressions ) {
 		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
 		int i = 0;
-		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
 			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, argumentExpressions[ i ] );
 			rv.arguments.add( argument );
 			i++;
@@ -350,7 +350,7 @@ public class AstUtilities {
 	
 	public static org.lgna.project.ast.InstanceCreation createIncompleteInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor ) {
 		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
-		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
 			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, new EmptyExpression( parameter.getValueType() ) );
 			rv.arguments.add( argument );
 		}
@@ -460,7 +460,7 @@ public class AstUtilities {
 	}
 	
 	public static org.lgna.project.ast.AbstractType<?,?,?>[] getParameterValueTypes( org.lgna.project.ast.AbstractMethod method ) {
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getRequiredParameters();
 		org.lgna.project.ast.AbstractType<?,?,?>[] rv = new org.lgna.project.ast.AbstractType[ parameters.size() ];
 		int i = 0;
 		for( org.lgna.project.ast.AbstractParameter parameter : parameters ) {

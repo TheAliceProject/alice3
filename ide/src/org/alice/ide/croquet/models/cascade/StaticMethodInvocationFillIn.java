@@ -72,7 +72,7 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
 	private StaticMethodInvocationFillIn( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
 		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteStaticMethodInvocation( method );
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
 			this.addBlank( ParameterBlank.getInstance( parameter ) );
 		}
 	}

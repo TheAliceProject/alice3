@@ -5,7 +5,7 @@ public class MethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks
 	public MethodInvocationFillIn( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "b105e9e9-b8da-4927-b2d1-5bc6ebd17c1a" ) );
 		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( expression, method );
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getParameters() ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
 			ParameterBlank parameterBlank = ParameterBlank.getInstance( parameter );
 			this.addBlank( parameterBlank );
 		}
