@@ -46,7 +46,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class AnimationStyle implements Turn.Detail {
+public class AnimationStyle implements Turn.Detail, Roll.Detail {
 	private static final boolean[] DEFAULT_VALUE = { true, true };
 	private final boolean[] value;
 	public AnimationStyle( Boolean isBegunGently, Boolean isEndedGently ) {

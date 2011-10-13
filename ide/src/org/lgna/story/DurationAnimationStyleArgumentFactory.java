@@ -46,8 +46,8 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class DurationAndAnimationStyleArgumentFactory {
-	protected DurationAndAnimationStyleArgumentFactory() {
+public class DurationAnimationStyleArgumentFactory {
+	protected DurationAnimationStyleArgumentFactory() {
 		throw new AssertionError();
 	}
 	public static Duration duration( Number duration ) {
