@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -71,6 +73,16 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getLocalTransformation();
 		m.orientation.setValue( orientation );
 		this.setLocalTransformation( m );
+	}
+	@Override
+	public void setVehicle(EntityImp vehicle) {
+		assert vehicle != this;
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 absTransform = this.getScene() != null ? this.getTransformation(this.getScene()) : this.getLocalTransformation();
+		super.setVehicle(vehicle);
+		if (vehicle != null)
+		{
+			this.setTransformation(this.getScene(), absTransform);
+		}
 	}
 	
 	public void applyTranslation( double x, double y, double z, ReferenceFrame asSeenBy ) {

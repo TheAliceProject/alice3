@@ -44,16 +44,21 @@
 package org.alice.stageide.properties.uicontroller;
 
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
+import org.alice.stageide.properties.FieldNameAdapter;
+import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 
 
@@ -61,8 +66,9 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
 {
 
     private Label label;
+    private Button editButton;
     
-    public FieldNamePropertyController(AbstractPropertyAdapter<String, ?> propertyAdapter)
+    public FieldNamePropertyController(FieldNameAdapter propertyAdapter)
     {
         super(propertyAdapter);
     }
@@ -93,7 +99,41 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
         };
         this.label.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor());
         this.label.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-        return this.label;
+        
+        this.editButton = RenameFieldOperation.getInstance( ((FieldNameAdapter)this.propertyAdapter).getInstance() ).createButton();
+        this.editButton.getAwtComponent().setText("Rename...");
+        
+        
+        GridBagPanel componentPanel = new GridBagPanel();
+        int xIndex = 0;
+        componentPanel.addComponent(this.label, new GridBagConstraints(
+                xIndex++, // gridX
+                0, // gridY
+                1, // gridWidth
+                1, // gridHeight
+                0.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.HORIZONTAL, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+        componentPanel.addComponent(this.editButton, new GridBagConstraints(
+                xIndex++, // gridX
+                0, // gridY
+                0, // gridWidth
+                1, // gridHeight
+                0.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.HORIZONTAL, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+                );
+        
+        return componentPanel;
     }
 
     @Override
@@ -114,12 +154,6 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
             this.label.getAwtComponent().setText(BLANK_STRING);
         }
         
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e)
-    {
-        //Do Nothing
     }
     
 }

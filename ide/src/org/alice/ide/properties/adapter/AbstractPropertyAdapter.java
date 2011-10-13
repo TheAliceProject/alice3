@@ -61,6 +61,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 	protected P lastSetValue;
 	private boolean isExpressionSet = false;
 	protected StandardExpressionState expressionState;
+	
 
 	private org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
@@ -83,6 +84,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 		this.repr = repr;
 		this.expressionState = expressionState;
 		this.setInstance(instance);
+		this.initializeExpressionState();
 	}
 	
 	public String getRepr()
@@ -90,13 +92,15 @@ public abstract class AbstractPropertyAdapter<P, O>
 		return this.repr;
 	}
 
-	public abstract String getUndoRedoDescription(java.util.Locale locale);
+	public String getUndoRedoDescription(java.util.Locale locale)
+	{
+		return getRepr();
+	}
 	
 	public void setInstance(O instance)
 	{
 		this.stopListening();
 		this.instance = instance;
-		this.setExpressionValue(this.getValue());
 		this.startListening();
 	}
 	
@@ -144,17 +148,22 @@ public abstract class AbstractPropertyAdapter<P, O>
 		this.setExpressionValue(this.getValue());
 	}
 	
+	public void clearListeners()
+	{
+		this.valueChangeObservers.clear();
+	}
+	
 	public StandardExpressionState getExpressionState()
 	{
 		return this.expressionState;
 	}
 	
-	protected void startListening() {
+	public void startListening() {
 		startPropertyListening();
 		startExpressionListening();
 	}
 	
-	protected void stopListening() {
+	public void stopListening() {
 		stopPropertyListening();
 		stopExpressionListening();
 	}
@@ -179,7 +188,14 @@ public abstract class AbstractPropertyAdapter<P, O>
 	protected void stopPropertyListening() {
 	}
 	
-	private void setExpressionValue(P value)
+	protected void initializeExpressionState()
+	{
+		stopExpressionListening();
+		this.setExpressionValue(this.getValue());
+		startExpressionListening();
+	}
+	
+	protected void setExpressionValue(P value)
 	{
 		if (this.expressionState != null)
 		{
@@ -195,16 +211,26 @@ public abstract class AbstractPropertyAdapter<P, O>
 		}
 	}
 	
-	private void onExpressionStateUpdate()
+	protected void intermediateSetValue(Object value)
+	{
+		this.setValue((P)value);
+	}
+	
+	protected Object evaluateExpression(org.lgna.project.ast.Expression expression)
+	{
+		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
+		Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
+		assert values.length == 1;
+		return values[0];
+	}
+	
+	protected void onExpressionStateUpdate()
 	{
 		org.lgna.project.ast.Expression expression = expressionState.getValue();
 		if( expression != null ) {
-			org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
-			
-			Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
-			assert values.length == 1;
+			Object value = evaluateExpression(expression);
 			isExpressionSet = true;
-			this.setValue((P)values[ 0 ]);
+			this.intermediateSetValue(value);
 			isExpressionSet = false;
 		}
 	}
@@ -220,16 +246,6 @@ public abstract class AbstractPropertyAdapter<P, O>
 			observer.valueChanged(newValue);
 		}
 	}
-
-	public org.lgna.croquet.Model getEditModel()
-	{
-		return null;
-	}
-	
-	public org.lgna.croquet.components.ViewController< ?,? > createEditViewController()
-    {
-		return null;
-    }
 	
 	
 }

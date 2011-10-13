@@ -44,7 +44,6 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.swing.icons.ColorIcon;
 
 import edu.cmu.cs.dennisc.color.Color4f;

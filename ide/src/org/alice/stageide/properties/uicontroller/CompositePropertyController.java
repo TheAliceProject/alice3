@@ -48,9 +48,8 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
-import org.alice.stageide.properties.TransformableVehicleAdapter;
+import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.lgna.story.Entity;
 
 public class CompositePropertyController extends LabelBasedPropertyController<Entity>{
@@ -80,8 +79,8 @@ public class CompositePropertyController extends LabelBasedPropertyController<En
 	@Override
 	protected void setValueOnUI(Entity value) 
 	{
-		this.label.setIcon(TransformableVehicleAdapter.getIconForVehicle(value));
-		this.label.setText(TransformableVehicleAdapter.getNameForVehicle(value));
+		this.label.setIcon(MutableRiderVehicleAdapter.getIconForVehicle(value));
+		this.label.setText(MutableRiderVehicleAdapter.getNameForVehicle(value));
 	}
 	
 

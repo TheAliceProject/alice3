@@ -92,9 +92,11 @@ public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractProp
 		}
 	}
 	
-	public AbstractInstancePropertyAdapter(String repr, O instance, InstanceProperty<P> property, StandardExpressionState expressionState ){
+	public AbstractInstancePropertyAdapter(String repr, O instance, InstanceProperty<P> property, StandardExpressionState expressionState){
 		super(repr, instance, expressionState);
 		this.property = property;
+		startPropertyListening();
+		this.initializeExpressionState();
 	}
 	
 	@Override

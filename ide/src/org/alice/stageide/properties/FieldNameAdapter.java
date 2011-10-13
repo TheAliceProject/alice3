@@ -43,15 +43,8 @@
 
 package org.alice.stageide.properties;
 
-import java.util.Locale;
-
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
 import org.alice.ide.properties.adapter.StringPropertyAdapter;
-import org.lgna.croquet.Operation;
-import org.lgna.croquet.components.Button;
-
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 
 public class FieldNameAdapter extends StringPropertyAdapter<org.lgna.project.ast.UserField> {
@@ -60,27 +53,4 @@ public class FieldNameAdapter extends StringPropertyAdapter<org.lgna.project.ast
 	{
 		super("Name", instance, instance.name, expressionState);
 	}
-	
-	@Override
-	public Operation getEditModel() 
-	{
-		return RenameFieldOperation.getInstance( this.instance );
-		
-	}
-	
-	@Override
-    public Button createEditViewController()
-	{
-	    Button b = this.getEditModel().createButton();
-	    //TODO: Localize This
-	    b.getAwtComponent().setText("Rename...");
-	    return b;
-	}
-
-	@Override
-	public String getUndoRedoDescription(Locale locale) 
-	{
-		return "Field Name";
-	}
-
 }

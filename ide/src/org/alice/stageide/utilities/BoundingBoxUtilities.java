@@ -95,4 +95,16 @@ public class BoundingBoxUtilities {
 		return getSGTransformableBBox(sgTransformable, false);
 	}
 
+	public static AxisAlignedBox getTransformableScaledBBox(org.lgna.story.implementation.ModelImp modelImp)
+	{
+		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)modelImp.getSgComposite();
+		return getSGTransformableBBox(sgTransformable, true);
+	}
+	
+	public static AxisAlignedBox getTransformableUnscaledBBox(org.lgna.story.implementation.EntityImp entity)
+	{
+		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)entity.getSgComposite();
+		return getSGTransformableBBox(sgTransformable, false);
+	}
+	
 }

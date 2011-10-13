@@ -43,14 +43,108 @@
 
 package org.alice.stageide.properties;
 
+import java.util.Locale;
+
 import org.alice.ide.croquet.models.StandardExpressionState;
+import org.alice.ide.properties.adapter.AbstractImplementationPropertyAdapter;
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.FloatPropertyAdapter;
+import org.lgna.story.implementation.ModelImp;
+import org.lgna.story.implementation.Property.Listener;
 
-public class ModelOpacityAdapter extends FloatPropertyAdapter<org.lgna.story.implementation.ModelImp> {
+public class ModelOpacityAdapter extends AbstractPropertyAdapter<Double, ModelImp> {
 
-	public ModelOpacityAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
+	private Listener<Float> propertyListener;
+	private org.lgna.story.implementation.Property<Float> property;
+	
+	private void initializeListenersIfNecessary()
 	{
-		super(instance, instance.opacity, expressionState);
+		if (this.propertyListener == null)
+		{
+			this.propertyListener = new Listener<Float>()
+			{
+				public void propertyChanged(Float prevValue, Float nextValue) {
+					handleInternalValueChanged();
+				}
+			};
+		}
+	}
+	
+	@Override
+	protected void startPropertyListening() 
+	{
+		super.startPropertyListening();
+		if (this.instance != null)
+		{
+			this.initializeListenersIfNecessary();
+			this.addPropertyListener(this.propertyListener);
+		}
+	}
+	
+	@Override
+	protected void stopPropertyListening() 
+	{
+		super.stopPropertyListening();
+		if (this.instance != null)
+		{
+			this.removePropertyListener(this.propertyListener);
+		}
+	}
+	
+	public ModelOpacityAdapter( ModelImp instance, StandardExpressionState expressionState ){
+		super("Opacity", instance, expressionState);
+		this.property = instance.opacity;
+		this.initializeExpressionState();
+	}
+	
+	@Override
+	public Double getValue() {
+		if (this.property != null){
+			return this.property.getValue().doubleValue();
+		}
+		else{
+			return null;
+		}
+	}
+	
+	@Override
+	public Class<Double> getPropertyType() {
+		return Double.class;
+	}
+	
+	@Override
+	public void setValue(final Double value) {
+		super.setValue(value);
+		if (this.property != null){
+			new Thread() {
+				@Override
+				public void run() {
+					ModelOpacityAdapter.this.property.setValue(value.floatValue());
+				}
+			}.start();
+		}
+	}
+
+	protected void addPropertyListener(Listener<Float> propertyListener) {
+		if (this.property != null){
+			property.addPropertyObserver(propertyListener);
+		}
+	}
+
+	protected void removePropertyListener(Listener<Float> propertyListener) {
+		if (this.property != null){
+			property.removePropertyObserver(propertyListener);
+		}
+	}
+	
+	protected void handleInternalValueChanged(){
+		Double newValue = this.getValue();
+		this.notifyValueObservers(newValue);
+	}
+
+	@Override
+	public Double getValueCopy() {
+		return new Double(this.getValue());
 	}
 	
 }

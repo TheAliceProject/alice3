@@ -45,11 +45,12 @@ package org.alice.ide.properties.uicontroller;
 
 import org.lgna.story.Entity;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.properties.adapter.PropertyAdapter;
 import org.alice.stageide.properties.FieldNameAdapter;
+import org.alice.stageide.properties.ModelSizeAdapter;
+import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;
 import org.alice.stageide.properties.uicontroller.FieldNamePropertyController;
-import org.alice.stageide.properties.uicontroller.ModelScalePropertyController;
+import org.alice.stageide.properties.uicontroller.ModelSizePropertyController;
 
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
@@ -72,7 +73,7 @@ public class AdapterControllerUtilities
 		//Check for adapter specific rules first
 		else if (propertyAdapter instanceof FieldNameAdapter)
 		{
-		    return new FieldNamePropertyController((AbstractPropertyAdapter<String, ?>)propertyAdapter);
+		    return new FieldNamePropertyController((FieldNameAdapter)propertyAdapter);
 		}
 		//Now check based on desired type
 		else if (edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyType))
@@ -91,13 +92,13 @@ public class AdapterControllerUtilities
 		{
 			return new Point3PropertyController((AbstractPropertyAdapter<Point3, ?>)propertyAdapter);
 		}
-		else if (Entity.class.isAssignableFrom(propertyType))
+		else if (propertyAdapter instanceof MutableRiderVehicleAdapter)
 		{
-			return new CompositePropertyController((AbstractPropertyAdapter<Entity, ?>)propertyAdapter);
+			return new CompositePropertyController((MutableRiderVehicleAdapter)propertyAdapter);
 		}
-		else if (Matrix3x3.class.isAssignableFrom(propertyType))
+		else if (propertyAdapter instanceof ModelSizeAdapter)
 		{
-			return new ModelScalePropertyController((AbstractPropertyAdapter<Dimension3, ?>)propertyAdapter);
+			return new ModelSizePropertyController((ModelSizeAdapter)propertyAdapter);
 		}else
 		{
 			return new BlankPropertyController(propertyAdapter);

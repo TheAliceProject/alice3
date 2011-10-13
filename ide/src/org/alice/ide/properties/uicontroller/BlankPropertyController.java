@@ -48,7 +48,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.properties.adapter.PropertyAdapter;
 
 public class BlankPropertyController<P> extends LabelBasedPropertyController<P>
 {
