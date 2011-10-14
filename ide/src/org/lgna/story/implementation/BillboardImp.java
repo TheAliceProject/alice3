@@ -150,12 +150,15 @@ public class BillboardImp extends ModelImp {
 	private final Face sgFrontFace = new Face( true );
 	private final Face sgBackFace = new Face( false );
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.sgAppearance };
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
 
 	private final org.lgna.story.Billboard abstraction;
 	public BillboardImp( org.lgna.story.Billboard abstraction ) {
 		this.abstraction = abstraction;
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.sgVisuals ) {
+			sgVisual.setParent( this.getSgComposite() );
+		}
 	}
 	@Override
 	public org.lgna.story.Billboard getAbstraction() {

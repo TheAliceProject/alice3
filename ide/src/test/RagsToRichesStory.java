@@ -81,6 +81,7 @@ class DesertScene extends Scene {
 	private final Ground desert = new Ground();
 	private final Sphere sphere = new Sphere();
 //	private final CustomAdult fellowLaborer = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
+	private final org.lgna.story.Billboard billboard = new org.lgna.story.Billboard();
 	private final Camera camera;
 	private final CustomMonster ogre;
 	public DesertScene( Camera camera, CustomMonster ogre ) {
@@ -93,9 +94,13 @@ class DesertScene extends Scene {
 		this.desert.setVehicle( this );
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
-		this.sphere.setVehicle( this );
-		this.ogre.setVehicle( this );
+		//this.sphere.setVehicle( this );
+		//this.ogre.setVehicle( this );
 //		this.fellowLaborer.setVehicle( this );
+		
+		this.billboard.setVehicle( this );
+		this.billboard.setPaint( Color.RED );
+		this.billboard.setBackPaint( Color.BLUE );
 
 //		this.ogre.move( MoveDirection.LEFT, 1.0 );
 //		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
