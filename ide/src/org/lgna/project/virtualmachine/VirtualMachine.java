@@ -240,61 +240,83 @@ public abstract class VirtualMachine {
 		}
 	}
 	
-	private Object evaluate( org.lgna.project.ast.KeyedArguments keyedArguments, int i ) {
-		org.lgna.project.ast.JavaKeyMethodExpressionPair keyExpressionPairI = keyedArguments.keyExpressionPairs.get( i );
-		org.lgna.project.ast.JavaMethod methodI = keyExpressionPairI.keyMethod.getValue();
-		Object instance;
-		if( i == 0 ) {
-			assert methodI.isStatic();
-			instance = null;
-		} else {
-			instance = this.evaluate( keyedArguments, i-1 );
-		}
-		java.lang.reflect.Method mthdI = methodI.getMethodReflectionProxy().getReification();
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, mthdI, this.evaluate( keyExpressionPairI.expression.getValue() ) );
+	private Object evaluateSimpleArgument( org.lgna.project.ast.SimpleArgument simpleArgument ) {
+		assert simpleArgument != null;
+		org.lgna.project.ast.Expression expression = simpleArgument.expression.getValue();
+		assert expression != null;
+		return this.evaluate( expression );
+	}
+	private Object evaluateJavaKeyedArgument( org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
+		org.lgna.project.ast.JavaMethod method = keyedArgument.keyMethod.getValue();
+		assert method.isStatic();
+		Object instance = null;
+		java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, mthd, this.evaluate( keyedArgument.expression.getValue() ) );
 	}
 	
-	private Object evaluate( org.lgna.project.ast.AbstractArgument argument ) {
-		assert argument != null;
-		if( argument instanceof org.lgna.project.ast.Argument ) {
-			org.lgna.project.ast.Argument simpleArgument = (org.lgna.project.ast.Argument)argument;
-			org.lgna.project.ast.Expression expression = simpleArgument.expression.getValue();
-			assert expression != null;
-			return this.evaluate( expression );
-		} else if( argument instanceof org.lgna.project.ast.KeyedArguments ) {
-			org.lgna.project.ast.KeyedArguments keyedArguments = (org.lgna.project.ast.KeyedArguments)argument;
-			return this.evaluate( keyedArguments, keyedArguments.keyExpressionPairs.size()-1 );
-		} else {
-			throw new RuntimeException( argument.toString() );
+	protected Object[] evaluateArguments( org.lgna.project.ast.AbstractCode code, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.SimpleArgument > arguments, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.SimpleArgument > variableArguments, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.JavaKeyedArgument > keyedArguments ) {
+		//todo: when variable length and keyed parameters are offered in the IDE (User) this code will need to be updated 
+		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = code.getRequiredParameters();
+		org.lgna.project.ast.AbstractParameter variableParameter = code.getVariableLengthParameter();
+		org.lgna.project.ast.AbstractParameter keyedParameter = code.getKeyedParameter();
+		
+		final int REQUIRED_N = arguments.size();
+		assert requiredParameters.size() == REQUIRED_N;
+
+		int length = REQUIRED_N;
+		if( variableParameter != null ) {
+			length += 1;
 		}
-	}
-	protected Object[] evaluateArguments( java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.AbstractArgument > arguments ) {
-		final int N = parameters.size();
-		final int M = arguments.size();
-		assert N == M;
-		Object[] rv = new Object[ N ];
-		if( N>0 ) {
-			for( int i=0; i<N-1; i++ ) {
-				rv[ i ] = this.evaluate( arguments.get( i ) );
+		if( keyedParameter != null ) {
+			length += 1;
+		}
+		Object[] rv = new Object[ length ];
+		int rvIndex;
+		for( rvIndex=0; rvIndex<REQUIRED_N; rvIndex++ ) {
+			rv[ rvIndex ] = this.evaluateSimpleArgument( arguments.get( rvIndex ) );
+		}
+		if( variableParameter != null ) {
+			final int VARIABLE_N = variableArguments.size();
+			org.lgna.project.ast.JavaType variableArrayType = variableParameter.getValueType().getFirstTypeEncounteredDeclaredInJava();
+			assert variableArrayType.isArray();
+			Class<?> componentCls = variableArrayType.getComponentType().getClassReflectionProxy().getReification();
+			Object array = java.lang.reflect.Array.newInstance( componentCls, VARIABLE_N );
+			for( int i=0; i<VARIABLE_N; i++ ) {
+				//todo: support primitive types
+				java.lang.reflect.Array.set( array, i, this.evaluateSimpleArgument( variableArguments.get( rvIndex ) ) );
 			}
-			
-			org.lgna.project.ast.AbstractParameter paramLast = parameters.get( N-1 );
-			if( paramLast.isVariableLength() ) {
-				Class<?> arrayCls =  paramLast.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification();
-				assert arrayCls != null;
-				Class<?> componentCls = arrayCls.getComponentType();
-				assert componentCls != null;
-				rv[ N-1 ] = java.lang.reflect.Array.newInstance( componentCls, M );
-				for( int j=0; j<( M - (N-1) ); j++ ) {
-					org.lgna.project.ast.AbstractArgument argumentJ = arguments.get( (N-1) + j );
-					assert argumentJ != null;
-					Object valueJ = this.evaluate( argumentJ );
-					assert valueJ != null;
-					java.lang.reflect.Array.set( rv[ N-1 ], j, valueJ );
-				}
-			} else {
-				rv[ N-1 ] = this.evaluate( arguments.get( N-1 ) );
+			rv[ rvIndex ] = array;
+		}
+		if( keyedParameter != null ) {
+			final int KEYED_N = keyedArguments.size();
+			org.lgna.project.ast.JavaType keyedArrayType = keyedParameter.getValueType().getFirstTypeEncounteredDeclaredInJava();
+			assert keyedArrayType.isArray();
+			Class<?> componentCls = keyedArrayType.getComponentType().getClassReflectionProxy().getReification();
+			Object array = java.lang.reflect.Array.newInstance( componentCls, KEYED_N );
+			for( int i=0; i<KEYED_N; i++ ) {
+				//todo: support primitive types
+				java.lang.reflect.Array.set( array, i, this.evaluateJavaKeyedArgument( keyedArguments.get( rvIndex ) ) );
 			}
+			rv[ rvIndex ] = array;
+//
+//			
+//			org.lgna.project.ast.AbstractParameter paramLast = requiredParameters.get( N-1 );
+//			if( paramLast.isVariableLength() ) {
+//				Class<?> arrayCls =  paramLast.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification();
+//				assert arrayCls != null;
+//				Class<?> componentCls = arrayCls.getComponentType();
+//				assert componentCls != null;
+//				rv[ N-1 ] = java.lang.reflect.Array.newInstance( componentCls, M );
+//				for( int j=0; j<( M - (N-1) ); j++ ) {
+//					org.lgna.project.ast.AbstractArgument argumentJ = arguments.get( (N-1) + j );
+//					assert argumentJ != null;
+//					Object valueJ = this.evaluate( argumentJ );
+//					assert valueJ != null;
+//					java.lang.reflect.Array.set( rv[ N-1 ], j, valueJ );
+//				}
+//			} else {
+//				rv[ N-1 ] = this.evaluate( arguments.get( N-1 ) );
+//			}
 		}
 		return rv;
 	}
@@ -462,7 +484,7 @@ public abstract class VirtualMachine {
 	}
 	protected Object evaluateInstanceCreation( org.lgna.project.ast.InstanceCreation classInstanceCreation ) {
 //		AbstractType classType =classInstanceCreation.constructor.getValue().getDeclaringType();
-		Object[] arguments = this.evaluateArguments( classInstanceCreation.constructor.getValue().getRequiredParameters(), classInstanceCreation.arguments );
+		Object[] arguments = this.evaluateArguments( classInstanceCreation.constructor.getValue(), classInstanceCreation.arguments, classInstanceCreation.variableArguments, classInstanceCreation.keyedArguments );
 		return this.createInstance( classInstanceCreation.constructor.getValue(), arguments );
 	}
 	protected Object evaluateArrayInstanceCreation( org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation ) {
@@ -547,7 +569,7 @@ public abstract class VirtualMachine {
 	protected Object evaluateMethodInvocation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		if( methodInvocation.isValid() ) {
 			assert methodInvocation.method.getValue().getRequiredParameters().size() == methodInvocation.arguments.size() : methodInvocation.method.getValue().getName();
-			Object[] arguments = this.evaluateArguments( methodInvocation.method.getValue().getRequiredParameters(), methodInvocation.arguments );
+			Object[] arguments = this.evaluateArguments( methodInvocation.method.getValue(), methodInvocation.arguments, methodInvocation.variableArguments, methodInvocation.keyedArguments );
 			return this.invoke( this.evaluate( methodInvocation.expression.getValue() ), methodInvocation.method.getValue(), arguments );
 		} else {
 			javax.swing.JOptionPane.showMessageDialog( null, "skipping invalid methodInvocation: " + methodInvocation.method.getValue().getName() );

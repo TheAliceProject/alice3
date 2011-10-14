@@ -67,6 +67,9 @@ public class PropertyState extends org.alice.ide.croquet.models.StandardExpressi
 		super( group, java.util.UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), null );
 		this.setter = setter;
 	}
+	public org.lgna.project.ast.JavaMethod getSetter() {
+		return this.setter;
+	}
 	private org.lgna.project.ast.JavaMethodParameter getParameter0() {
 		return (org.lgna.project.ast.JavaMethodParameter)this.setter.getRequiredParameters().get( 0 );
 	}

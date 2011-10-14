@@ -53,11 +53,13 @@ public class InstanceCreation extends Expression {
 			return ( this.getValue() instanceof AnonymousUserConstructor ) == false; 
 		}
 	};
-	public ArgumentListProperty arguments = new ArgumentListProperty( this );
+	public SimpleArgumentListProperty arguments = new SimpleArgumentListProperty( this );
+	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
+	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 
 	public InstanceCreation() {
 	}
-	public InstanceCreation( AbstractConstructor constructor, Argument... arguments ) {
+	public InstanceCreation( AbstractConstructor constructor, SimpleArgument... arguments ) {
 		assert constructor != null;
 		this.constructor.setValue( constructor );
 		this.arguments.add( arguments );

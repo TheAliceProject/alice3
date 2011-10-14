@@ -78,7 +78,7 @@ public class ObjectMarkerImp extends MarkerImp{
 		double radiusCylinder = unit * 0.05;
 		double lengthCone = unit * lengthFactor * 0.3;
 		double radiusCone = radiusCylinder * 3.0;
-		return new Arrow( lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, this.getSgAppearances()[0], axisToSGAppearanceMap.get( bottomToTopAxis ), false );
+		return new Arrow( lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, this.getSgPaintAppearances()[0], axisToSGAppearanceMap.get( bottomToTopAxis ), false );
 	}
 	
 	@Override
@@ -123,13 +123,12 @@ public class ObjectMarkerImp extends MarkerImp{
 	}
 	
 	@Override
-	protected TexturedAppearance[] getOpacityAppearances() {
-		return this.opacityAppearances;
-	}
-
-	@Override
-	protected TexturedAppearance[] getSgAppearances() {
+	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
 		return this.sgAppearances;
+	}
+	@Override
+	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgOpacityAppearances() {
+		return this.opacityAppearances;
 	}
 
 	@Override

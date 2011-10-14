@@ -85,8 +85,12 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		return this.visualData.getSgVisuals();
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
+	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances() {
 		return this.visualData.getSgAppearances();
+	}
+	@Override
+	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
+		return this.getSgPaintAppearances();
 	}
 	
 	public org.lgna.story.implementation.JointImp getJointImplementation( org.lgna.story.resources.JointId jointId ) {

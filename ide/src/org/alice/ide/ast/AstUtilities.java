@@ -229,7 +229,7 @@ public class AstUtilities {
 		rv.expression.setValue( expression );
 		rv.method.setValue( method );
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
-			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, new EmptyExpression( parameter.getValueType() ) );
+			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, new EmptyExpression( parameter.getValueType() ) );
 			rv.arguments.add( argument );
 		}
 		return rv;
@@ -279,13 +279,13 @@ public class AstUtilities {
 		final int N = parameters.size();
 		for( int i=0; i<N-1; i++ ) {
 			org.lgna.project.ast.AbstractArgument argument = prevMethodInvocation.arguments.get( i );
-			if( argument instanceof org.lgna.project.ast.Argument ) {
-				rv.arguments.add( new org.lgna.project.ast.Argument( parameters.get( i ), ((org.lgna.project.ast.Argument)argument).expression.getValue() ) );
+			if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
+				rv.arguments.add( new org.lgna.project.ast.SimpleArgument( parameters.get( i ), ((org.lgna.project.ast.SimpleArgument)argument).expression.getValue() ) );
 			} else {
 				throw new RuntimeException();
 			}
 		}
-		rv.arguments.add( new org.lgna.project.ast.Argument( parameters.get( N-1 ), expression ) );
+		rv.arguments.add( new org.lgna.project.ast.SimpleArgument( parameters.get( N-1 ), expression ) );
 		return rv;
 	}
 
@@ -293,8 +293,8 @@ public class AstUtilities {
 		rv.expression.setValue( instanceExpression );
 		int i = 0;
 		for( org.lgna.project.ast.AbstractArgument argument : rv.arguments ) {
-			if( argument instanceof org.lgna.project.ast.Argument ) {
-				((org.lgna.project.ast.Argument)argument).expression.setValue( argumentExpressions[ i ] );
+			if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
+				((org.lgna.project.ast.SimpleArgument)argument).expression.setValue( argumentExpressions[ i ] );
 			} else {
 				throw new RuntimeException();
 			}
@@ -312,7 +312,7 @@ public class AstUtilities {
 		rv.method.setValue( method );
 		int i = 0;
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
-			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, argumentExpressions[ i ] );
+			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, argumentExpressions[ i ] );
 			rv.arguments.add( argument );
 			i++;
 		}
@@ -332,7 +332,7 @@ public class AstUtilities {
 		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
 		int i = 0;
 		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
-			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, argumentExpressions[ i ] );
+			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, argumentExpressions[ i ] );
 			rv.arguments.add( argument );
 			i++;
 		}
@@ -351,7 +351,7 @@ public class AstUtilities {
 	public static org.lgna.project.ast.InstanceCreation createIncompleteInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor ) {
 		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
 		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
-			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, new EmptyExpression( parameter.getValueType() ) );
+			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, new EmptyExpression( parameter.getValueType() ) );
 			rv.arguments.add( argument );
 		}
 		return rv;
@@ -432,28 +432,28 @@ public class AstUtilities {
 //		return parameters.get( parameters.size()-1 );
 //	}
 	
-	public static java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.AbstractArgument > removeParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.AbstractArgument > rv, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
+	public static java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > removeParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > rv, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
 		assert rv != null;
 		assert code.getParamtersProperty().get( index ) == parameterDeclaredInAlice;
 		rv.clear();
 		code.getParamtersProperty().remove( index );
-		for( org.lgna.project.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
-			org.lgna.project.ast.AbstractArgument argument = argumentListProperty.remove( index );
+		for( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
+			org.lgna.project.ast.SimpleArgument argument = argumentListProperty.remove( index );
 			if( argument != null ) {
 				rv.put( argumentListProperty, argument );
 			}
 		}
 		return rv;
 	}
-	public static void addParameter( java.util.Map< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.AbstractArgument > map, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentListProperties ) {
+	public static void addParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > map, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
 		code.getParamtersProperty().add( index, parameterDeclaredInAlice );
-		for( org.lgna.project.ast.ArgumentListProperty argumentListProperty : argumentListProperties ) {
-			org.lgna.project.ast.AbstractArgument argument = map.get( code );
+		for( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
+			org.lgna.project.ast.SimpleArgument argument = map.get( code );
 			if( argument != null ) {
 				//pass
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addParameter" );
-				argument = new org.lgna.project.ast.Argument( parameterDeclaredInAlice, new org.lgna.project.ast.NullLiteral() );
+				argument = new org.lgna.project.ast.SimpleArgument( parameterDeclaredInAlice, new org.lgna.project.ast.NullLiteral() );
 			}
 			argumentListProperty.add( index, argument );
 		}

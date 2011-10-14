@@ -127,6 +127,14 @@ public class SetUpMethodGenerator {
 		);
 	}
 	
+	public static org.lgna.project.ast.Statement createSetterStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod setter, org.lgna.project.ast.Expression expression ) {
+		return org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( 
+				SetUpMethodGenerator.createInstanceExpression( isThis, field ),
+				setter, 
+				expression 
+		);
+	}
+	
 	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance ) {
 		if( instance != null ) {
 			if( instance instanceof org.lgna.story.Entity ) {

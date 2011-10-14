@@ -60,7 +60,7 @@ public class ParameterDeclarationPanel extends DeclarationPanel< org.alice.ide.c
 	protected org.lgna.croquet.components.Component< ? >[] createWarningRow() {
 		org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation model = this.getModel();
 		org.lgna.project.ast.UserCode code = model.getCode();
-		java.util.List< org.lgna.project.ast.ArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
+		java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
 		final int N = argumentLists.size();
 		if( N > 0 ) {
 

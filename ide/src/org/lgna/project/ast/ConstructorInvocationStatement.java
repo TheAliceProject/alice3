@@ -53,10 +53,12 @@ public abstract class ConstructorInvocationStatement extends Statement {
 			return true;
 		}
 	};
-	public ArgumentListProperty arguments = new ArgumentListProperty( this );
+	public SimpleArgumentListProperty arguments = new SimpleArgumentListProperty( this );
+	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
+	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 	public ConstructorInvocationStatement() {
 	}
-	public ConstructorInvocationStatement( AbstractConstructor constructor, Argument[] arguments ){
+	public ConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument[] arguments ){
 		assert constructor != null;
 		this.contructor.setValue( constructor );
 		this.arguments.add( arguments );

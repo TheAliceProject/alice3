@@ -89,8 +89,8 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		org.lgna.project.ast.UserParameter bParam = method.parameters.get( bIndex );
 		method.parameters.set( aIndex, bParam, aParam );
 		for( org.lgna.project.ast.MethodInvocation methodInvocation : methodInvocations ) {
-			org.lgna.project.ast.AbstractArgument aArg = methodInvocation.arguments.get( aIndex );
-			org.lgna.project.ast.AbstractArgument bArg = methodInvocation.arguments.get( bIndex );
+			org.lgna.project.ast.SimpleArgument aArg = methodInvocation.arguments.get( aIndex );
+			org.lgna.project.ast.SimpleArgument bArg = methodInvocation.arguments.get( bIndex );
 			assert aArg.parameter.getValue() == aParam;
 			assert bArg.parameter.getValue() == bParam;
 			methodInvocation.arguments.set( aIndex, bArg, aArg );

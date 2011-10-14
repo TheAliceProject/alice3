@@ -54,11 +54,13 @@ public class MethodInvocation extends Expression {
 		}
 	};
 	public DeclarationProperty< AbstractMethod > method = new DeclarationProperty< AbstractMethod >( this );
-	public ArgumentListProperty arguments = new ArgumentListProperty( this );
+	public SimpleArgumentListProperty arguments = new SimpleArgumentListProperty( this );
+	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
+	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 
 	public MethodInvocation() {
 	}
-	public MethodInvocation( Expression expression, AbstractMethod method, AbstractArgument... arguments ){
+	public MethodInvocation( Expression expression, AbstractMethod method, SimpleArgument... arguments ){
 		if( expression instanceof NullLiteral ) {
 			//pass
 		} else {

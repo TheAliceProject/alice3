@@ -123,7 +123,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp{
 
 		Visual sgBoxVisual = new Visual();
 		sgBoxVisual.setName("Camera Box Visual");
-		sgBoxVisual.frontFacingAppearance.setValue( this.getSgAppearances()[0] );
+		sgBoxVisual.frontFacingAppearance.setValue( this.getSgPaintAppearances()[0] );
 		edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
 		sgBox.setMinimum(new Point3( -WIDTH/2, -HEIGHT/2, 0));
 		sgBox.setMaximum(new Point3( WIDTH/2, HEIGHT/2, LENGTH));
@@ -133,7 +133,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp{
 		
 		Visual sgCylinder1Visual= new Visual();
 		sgCylinder1Visual.setName("Camera Cylinder 1 Visual");
-		sgCylinder1Visual.frontFacingAppearance.setValue( this.getSgAppearances()[0] );
+		sgCylinder1Visual.frontFacingAppearance.setValue( this.getSgPaintAppearances()[0] );
 		Cylinder sgCylinder1 = new Cylinder();
 		sgCylinder1.topRadius.setValue( radius );
 		sgCylinder1.bottomRadius.setValue( radius );
@@ -150,7 +150,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp{
 		
 		Visual sgCylinder2Visual= new Visual();
 		sgCylinder2Visual.setName("Camera Cylinder 2 Visual");
-		sgCylinder2Visual.frontFacingAppearance.setValue( this.getSgAppearances()[0] );
+		sgCylinder2Visual.frontFacingAppearance.setValue( this.getSgPaintAppearances()[0] );
 		Cylinder sgCylinder2 = new Cylinder();
 		sgCylinder2.topRadius.setValue( radius );
 		sgCylinder2.bottomRadius.setValue( radius );
@@ -167,7 +167,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp{
 		
 		Visual sgLensVisual= new Visual();
 		sgLensVisual.setName("Camera Lens Hood Visual");
-		sgLensVisual.frontFacingAppearance.setValue( this.getSgAppearances()[0] );
+		sgLensVisual.frontFacingAppearance.setValue( this.getSgPaintAppearances()[0] );
 		QuadArray sgLensGeometry = new QuadArray();
 		Vertex[] sgLensVertices = new Vertex[32];
 		Point3 innerTopLeft = new Point3(-WIDTH/2, HEIGHT/4, 0);
@@ -333,15 +333,14 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp{
 		}
 	}
 
-	@Override
-	protected TexturedAppearance[] getOpacityAppearances() {
-		return this.getSgAppearances();
-	}
-
 
 	@Override
-	protected TexturedAppearance[] getSgAppearances() {
+	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
 		return this.sgAppearances;
+	}
+	@Override
+	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgOpacityAppearances() {
+		return this.getSgPaintAppearances();
 	}
 
 	@Override

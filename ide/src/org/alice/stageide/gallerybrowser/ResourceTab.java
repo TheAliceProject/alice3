@@ -84,6 +84,7 @@ public class ResourceTab extends org.lgna.croquet.PredeterminedTab {
 				
 				org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
 				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton(), Constraint.PAGE_START );
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation.getInstance().createButton(), Constraint.PAGE_END );
 				this.addComponent( lineEndPanel, Constraint.LINE_END );
 				//todo
 				this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );

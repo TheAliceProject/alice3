@@ -81,12 +81,7 @@ public class KeyedMoreCascade extends org.lgna.croquet.Cascade< org.lgna.project
 		this.nextMethodInvocation = new org.lgna.project.ast.MethodInvocation();
 		this.nextMethodInvocation.method.setValue( nextMethod );
 		for( org.lgna.project.ast.AbstractParameter parameter : nextMethod.getRequiredParameters() ) {
-			org.lgna.project.ast.AbstractArgument argument;
-			if( parameter.isKeyworded() ) {
-				argument = new org.lgna.project.ast.KeyedArguments();
-			} else {
-				argument = new org.lgna.project.ast.Argument();
-			}
+			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument();
 			argument.parameter.setValue( parameter );
 			this.nextMethodInvocation.arguments.add( argument );
 		}

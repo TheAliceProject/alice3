@@ -49,7 +49,7 @@ package org.lgna.project.ast;
 public class SuperConstructorInvocationStatement extends ConstructorInvocationStatement {
 	public SuperConstructorInvocationStatement() {
 	}
-	public SuperConstructorInvocationStatement( AbstractConstructor constructor, Argument... arguments ){
+	public SuperConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument... arguments ){
 		super( constructor, arguments );
 	}
 }

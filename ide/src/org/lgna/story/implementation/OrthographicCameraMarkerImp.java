@@ -79,13 +79,12 @@ public class OrthographicCameraMarkerImp extends CameraMarkerImp{
 	}
 
 	@Override
-	protected TexturedAppearance[] getOpacityAppearances() {
-		return sgAppearances;
+	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
+		return this.sgAppearances;
 	}
-
 	@Override
-	protected TexturedAppearance[] getSgAppearances() {
-		return sgAppearances;
+	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgOpacityAppearances() {
+		return this.getSgPaintAppearances();
 	}
 
 	@Override

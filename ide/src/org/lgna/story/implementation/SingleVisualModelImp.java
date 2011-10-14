@@ -59,8 +59,12 @@ public abstract class SingleVisualModelImp extends ModelImp {
 		return this.sgVisuals;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
+	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances() {
 		return this.sgAppearances;
+	}
+	@Override
+	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
+		return this.getSgPaintAppearances();
 	}
 	@Override
 	protected double getBoundingSphereRadius() {

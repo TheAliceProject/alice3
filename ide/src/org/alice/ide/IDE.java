@@ -337,11 +337,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		programType.crawl( crawler, true );
 		return crawler.getList();
 	}
-	public java.util.List< org.lgna.project.ast.ArgumentListProperty > getArgumentLists( final org.lgna.project.ast.UserCode code ) {
+	public java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > getArgumentLists( final org.lgna.project.ast.UserCode code ) {
 		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
 		assert programType != null;
 		class ArgumentListCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-			private final java.util.List< org.lgna.project.ast.ArgumentListProperty > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			private final java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
 					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
@@ -355,7 +355,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					}
 				}
 			}
-			public java.util.List< org.lgna.project.ast.ArgumentListProperty > getList() {
+			public java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > getList() {
 				return this.list;
 			}
 		}
