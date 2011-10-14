@@ -40,32 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preview;
+
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.x.PreviewAstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
-		super( factory, property );
+public class ArgumentListPropertyView< N extends org.lgna.project.ast.AbstractArgument > extends LineAxisRefreshPanel {
+	private final org.alice.ide.x.AstI18nFactory factory;
+	private final org.lgna.project.ast.ArgumentListProperty< N > argumentListProperty;
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< N > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< N >() {
+		@Override
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< N > e ) {
+		}
+		@Override
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< N > e ) {
+			ArgumentListPropertyView.this.refreshLater();
+		}
+	};
+	public ArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty< N > argumentListProperty ) {
+		this.factory = factory;
+		this.argumentListProperty = argumentListProperty;
+	}
+	
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.argumentListProperty.addListPropertyListener( this.listPropertyAdapter );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.SimpleArgument argument ) {
-		org.lgna.croquet.components.Component< ? > expressionComponent = this.getFactory().createExpressionPane( ((org.lgna.project.ast.SimpleArgument)argument).expression.getValue() );
-		org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
-		final boolean IS_PARAMETER_NAME_DESIRED = parameter.getParent() instanceof org.lgna.project.ast.AbstractMethod;
-		if( IS_PARAMETER_NAME_DESIRED ) {
-			String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( parameter );
-			if( parameterName != null && parameterName.length() > 0 ) {
-				org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
-				rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": " ) );
-				rv.addComponent( expressionComponent );
-				return rv;
-			} else {
-				return expressionComponent;
-			}
-		} else {
-			return expressionComponent;
+	protected void handleUndisplayable() {
+		this.argumentListProperty.removeListPropertyListener( this.listPropertyAdapter );
+		super.handleUndisplayable();
+	}
+	@Override
+	protected void internalRefresh() {
+		for( N argument : this.argumentListProperty ) {
+			this.factory.createArgumentPane( argument, null );
 		}
 	}
 }

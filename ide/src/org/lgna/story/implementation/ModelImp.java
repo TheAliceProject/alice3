@@ -47,43 +47,6 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ModelImp extends TransformableImp {
-	@Deprecated
-	public final ColorProperty color = new ColorProperty( ModelImp.this ) {
-		@Override
-		public edu.cmu.cs.dennisc.color.Color4f getValue() {
-			return ModelImp.this.getSgAppearances()[ 0 ].diffuseColor.getValue();
-		}
-		@Override
-		protected void handleSetValue(edu.cmu.cs.dennisc.color.Color4f value) {
-			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
-				sgAppearance.diffuseColor.setValue( value );
-			}
-		}
-	};
-	@Deprecated
-	public void addColorListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener)
-	{
-		this.getSgAppearances()[ 0 ].diffuseColor.addPropertyListener(listener);
-	}
-	
-	@Deprecated
-	public void removeColorListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener)
-	{
-		this.getSgAppearances()[ 0 ].diffuseColor.removePropertyListener(listener);
-	}
-	
-	@Deprecated
-	public void addOpacityListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener)
-	{
-		this.getSgAppearances()[ 0 ].opacity.addPropertyListener(listener);
-	}
-	
-	@Deprecated
-	public void removeOpacityListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener)
-	{
-		this.getSgAppearances()[ 0 ].opacity.removePropertyListener(listener);
-	}
-
 	public final PaintProperty paint = new PaintProperty( ModelImp.this ) {
 		@Override
 		protected void internalSetValue(org.lgna.story.Paint value) {

@@ -40,32 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preview;
+
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.x.PreviewAstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
-		super( factory, property );
-	}
+public abstract class LineAxisRefreshPanel extends org.alice.ide.croquet.components.RefreshPanel {
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.SimpleArgument argument ) {
-		org.lgna.croquet.components.Component< ? > expressionComponent = this.getFactory().createExpressionPane( ((org.lgna.project.ast.SimpleArgument)argument).expression.getValue() );
-		org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
-		final boolean IS_PARAMETER_NAME_DESIRED = parameter.getParent() instanceof org.lgna.project.ast.AbstractMethod;
-		if( IS_PARAMETER_NAME_DESIRED ) {
-			String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( parameter );
-			if( parameterName != null && parameterName.length() > 0 ) {
-				org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
-				rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": " ) );
-				rv.addComponent( expressionComponent );
-				return rv;
-			} else {
-				return expressionComponent;
-			}
-		} else {
-			return expressionComponent;
-		}
+	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 	}
 }
+

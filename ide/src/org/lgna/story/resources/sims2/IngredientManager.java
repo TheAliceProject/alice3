@@ -40,11 +40,8 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
+package org.lgna.story.resources.sims2;
 
-import org.lgna.story.resources.sims2.Gender;
-import org.lgna.story.resources.sims2.Ingredient;
-import org.lgna.story.resources.sims2.LifeStage;
 
 public abstract class IngredientManager<E extends Ingredient> {
 	private java.util.Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

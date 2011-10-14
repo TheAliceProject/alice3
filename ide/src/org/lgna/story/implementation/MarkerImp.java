@@ -167,24 +167,9 @@ public abstract class MarkerImp extends ModelImp {
 			sgAppearance.opacity.setValue( scaledValue );
 		}
 	}
-	
-	@Override
-	public void addOpacityListener(PropertyListener listener)
-	{
-		this.getOpacityAppearances()[ 0 ].opacity.addPropertyListener(listener);
-	}
-	
-	@Override
-	public void removeOpacityListener(PropertyListener listener)
-	{
-		this.getOpacityAppearances()[ 0 ].opacity.removePropertyListener(listener);
-	}
-	
 	@Override
 	protected double getBoundingSphereRadius() {
 		double diagonal = Point3.calculateDistanceBetween(this.boundingBox.getMinimum(), this.boundingBox.getMaximum());
 		return diagonal*.5;
 	}
-
-	
 }

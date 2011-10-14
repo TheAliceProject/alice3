@@ -119,7 +119,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	}
 	
 	private List<LabelValueControllerPair> activeControllers = new LinkedList<LabelValueControllerPair>();
-	private Label classLabel;
 	private Label classNameLabel;
 	private GridBagPanel morePropertiesPanel;
 	private ToolPalette extraPropertiesPalette;
@@ -127,7 +126,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	public SceneObjectPropertyManagerPanel()
 	{
 		super();
-		this.classLabel = new Label("NO CLASS");
 		this.classNameLabel = createLabel("Class = ");
 		this.morePropertiesPanel = new GridBagPanel();
 		this.extraPropertiesPalette = AreExtraPropertiesShownState.getInstance().createToolPalette(this.morePropertiesPanel);
@@ -424,14 +422,16 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 				}
                 this.activeControllers.add(matchingLabelController);
 			}
+			
+			org.lgna.project.ast.AbstractType< ?,?,? > valueType;
 			//Setup the primary properties
 			if (this.selectedField != null)
             {
-                this.classLabel.setText(this.selectedField.getValueType().getName());
+				valueType = this.selectedField.getValueType();
             }
             else
             {
-                this.classLabel.setText("NO FIELD, NO CLASS");
+				valueType = null;
             }
 			
 			//Add the object's name
@@ -440,7 +440,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			    this.addPropertyToPanel(fieldNamePair, this, mainPropertyCount++);
 			}
 			//Add the object's class
-			this.addNameAndControllerToPanel(this.classNameLabel, this.classLabel, this, mainPropertyCount++);
+			this.addNameAndControllerToPanel(this.classNameLabel, org.alice.ide.common.TypeComponent.createInstance( valueType ), this, mainPropertyCount++);
 			//Lastly, add the extra palette if there are any extra properties
             if (extraPropertyCount > 0)
             {
