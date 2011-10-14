@@ -78,21 +78,38 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 		return this.backPaintLabelText;
 	}
 	
-	protected org.alice.ide.croquet.models.StandardExpressionState getStateForGetter( org.lgna.project.ast.JavaMethod getter ) {
+	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( org.lgna.project.ast.JavaMethod getter ) {
 		return org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( org.lgna.croquet.Application.INHERIT_GROUP, getter );
 	}
-	protected org.alice.ide.croquet.models.StandardExpressionState getStateForGetter( Class<?> cls, String name, Class<?>... parameterTypes ) {
+	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( Class<?> cls, String name, Class<?>... parameterTypes ) {
 		return getStateForGetter( org.lgna.project.ast.JavaMethod.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, name, parameterTypes ) ) );
 	}
 
-	public org.alice.ide.croquet.models.StandardExpressionState getFrontPaintState() {
+	public org.alice.ide.croquet.models.ast.PropertyState getFrontPaintState() {
 		return this.getStateForGetter( org.lgna.story.Billboard.class, "getFrontPaint" );
 	}
-	public org.alice.ide.croquet.models.StandardExpressionState getBackPaintState() {
+	public org.alice.ide.croquet.models.ast.PropertyState getBackPaintState() {
 		return this.getStateForGetter( org.lgna.story.Billboard.class, "getBackPaint" );
 	}
 	@Override
 	protected org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		return new org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel( this );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		org.alice.ide.croquet.models.ast.PropertyState frontState = this.getFrontPaintState();
+		org.alice.ide.croquet.models.ast.PropertyState backState = this.getBackPaintState();
+		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
+				true, field, 
+				frontState.getSetter(), 
+				frontState.getValue()
+		) );
+		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
+				true, field, 
+				backState.getSetter(), 
+				backState.getValue()
+		) );
+		return rv;
 	}
 }
