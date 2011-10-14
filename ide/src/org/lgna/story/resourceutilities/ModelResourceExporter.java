@@ -60,6 +60,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
+import java.util.zip.ZipException;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -555,8 +556,15 @@ public class ModelResourceExporter {
 	        {
 		        JarEntry entry = new JarEntry(name);
 		        entry.setTime(source.lastModified());
-		        target.putNextEntry(entry);
-		        target.closeEntry();
+		        try
+		        {
+			        target.putNextEntry(entry);
+			        target.closeEntry();
+		        }
+		        catch (ZipException ze)
+		        {
+		        	System.err.println(ze.getMessage());
+		        }
 	        }
 	      }
 	      for (File nestedFile: source.listFiles())
@@ -710,7 +718,7 @@ public class ModelResourceExporter {
         return thumbnailFiles;
 	}
 	
-	public File export(String sourceDirectory, String outputDir)
+	public boolean addToJar(String sourceDirectory, JarOutputStream jos)
 	{
 		if (!sourceDirectory.endsWith("/") && !sourceDirectory.endsWith("\\")) {
 			sourceDirectory += File.separator;
@@ -718,7 +726,7 @@ public class ModelResourceExporter {
 		File javaFile = createJavaCode(sourceDirectory);
 		
 		String[] args = new String[]{javaFile.getAbsolutePath(), "-classpath", System.getProperty("java.class.path")};
-		com.sun.tools.javac.Main javac = new com.sun.tools.javac.Main();
+//		com.sun.tools.javac.Main javac = new com.sun.tools.javac.Main();
 		PrintWriter pw = new PrintWriter(System.out);
 		int status = com.sun.tools.javac.Main.compile(args, pw);
 		
@@ -729,13 +737,29 @@ public class ModelResourceExporter {
 		
 		File xmlFile = createXMLFile(sourceDirectory);
 		List<File> thumbnailFiles = createThumbnails(sourceDirectory);
+		try
+		{
+			System.out.println("Adding "+sourceDirectory);
+			add(new File(sourceDirectory), jos);
+			return true;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public File export(String sourceDirectory, String outputDir)
+	{
+		
 		File outputFile = new File(outputDir+this.name+".jar");
 		try
 		{
 			FileUtilities.createParentDirectoriesIfNecessary(outputFile);
 			FileOutputStream fos = new FileOutputStream(outputFile);
 			JarOutputStream jos = new JarOutputStream(fos);
-			add(new File(sourceDirectory), jos);
+			addToJar(sourceDirectory, jos);
 			jos.close();
 		}
 		catch (Exception e)
