@@ -46,70 +46,29 @@ package org.alice.stageide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+public class ConeFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
 	private static class SingletonHolder {
-		private static BillboardFieldDeclarationOperation instance = new BillboardFieldDeclarationOperation();
+		private static ConeFieldDeclarationOperation instance = new ConeFieldDeclarationOperation();
 	}
-	public static BillboardFieldDeclarationOperation getInstance() {
+	public static ConeFieldDeclarationOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private String frontPaintLabelText;
-	private String backPaintLabelText;
-	private BillboardFieldDeclarationOperation() {
+	private ConeFieldDeclarationOperation() {
 		super( 
-				java.util.UUID.fromString( "1ce5a991-d315-40d3-a0ad-d711835e8140" ), 
-				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Billboard.class ), false, 
+				java.util.UUID.fromString( "15ce46f1-0ffc-436d-85c3-1f98be9a5e67" ), 
+				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Cone.class ), false, 
 				false, false, 
 				"", true, 
-				org.alice.ide.ast.AstUtilities.createInstanceCreation( org.lgna.story.Billboard.class ), false 
+				org.alice.ide.ast.AstUtilities.createInstanceCreation( org.lgna.story.Cone.class ), false 
 		);
 	}
 	@Override
-	protected void localize() {
-		super.localize();
-		this.frontPaintLabelText = this.findLocalizedText( "paintLabel", BillboardFieldDeclarationOperation.class );
-		this.backPaintLabelText = this.findLocalizedText( "backPaintLabel", BillboardFieldDeclarationOperation.class );
-	}
-
-	public String getFrontPaintLabelText() {
-		return this.frontPaintLabelText;
-	}
-	public String getBackPaintLabelText() {
-		return this.backPaintLabelText;
-	}
-	
-	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( org.lgna.project.ast.JavaMethod getter ) {
-		return org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( org.lgna.croquet.Application.INHERIT_GROUP, getter );
-	}
-	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( Class<?> cls, String name, Class<?>... parameterTypes ) {
-		return getStateForGetter( org.lgna.project.ast.JavaMethod.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, name, parameterTypes ) ) );
-	}
-
-	public org.alice.ide.croquet.models.ast.PropertyState getFrontPaintState() {
-		return this.getStateForGetter( org.lgna.story.Model.class, "getPaint" );
-	}
-	public org.alice.ide.croquet.models.ast.PropertyState getBackPaintState() {
-		return this.getStateForGetter( org.lgna.story.Billboard.class, "getBackPaint" );
-	}
-	@Override
-	protected org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.stageide.croquet.components.declaration.BillboardFieldDeclarationPanel( this );
+	protected org.alice.stageide.croquet.components.declaration.ConeFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.stageide.croquet.components.declaration.ConeFieldDeclarationPanel( this );
 	}
 	@Override
 	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		super.customize( step, declaringType, field, rv );
-		org.alice.ide.croquet.models.ast.PropertyState frontState = this.getFrontPaintState();
-		org.alice.ide.croquet.models.ast.PropertyState backState = this.getBackPaintState();
-		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
-				false, field, 
-				frontState.getSetter(), 
-				frontState.getValue()
-		) );
-		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
-				false, field, 
-				backState.getSetter(), 
-				backState.getValue()
-		) );
 		return rv;
 	}
 }
