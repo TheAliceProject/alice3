@@ -52,7 +52,7 @@ public abstract class ModelImp extends TransformableImp {
 		protected void internalSetValue(org.lgna.story.Paint value) {
 			edu.cmu.cs.dennisc.color.Color4f color4f = org.lgna.story.ImplementationAccessor.getColor4f( value, edu.cmu.cs.dennisc.color.Color4f.WHITE );
 			edu.cmu.cs.dennisc.texture.Texture texture = org.lgna.story.ImplementationAccessor.getTexture( value, null );
-			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
+			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgPaintAppearances() ) {
 				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( color4f, sgAppearance.diffuseColor.getValue() ) ) {
 					//pass
 				} else {
@@ -72,17 +72,18 @@ public abstract class ModelImp extends TransformableImp {
 	public final FloatProperty opacity = new FloatProperty( ModelImp.this ) {
 		@Override
 		public Float getValue() {
-			return ModelImp.this.getSgAppearances()[ 0 ].opacity.getValue();
+			return ModelImp.this.getSgOpacityAppearances()[ 0 ].opacity.getValue();
 		}
 		@Override
 		protected void handleSetValue( Float value ) {
-			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgAppearances() ) {
+			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgOpacityAppearances() ) {
 				sgAppearance.opacity.setValue( value );
 			}
 		}
 	};
 	
-	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances();
+	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances();
+	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 		
 	

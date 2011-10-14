@@ -42,7 +42,7 @@
  */
 package org.lgna.story;
 
-//definitely feels like some double negatives going on here
+import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
@@ -52,18 +52,17 @@ public class Billboard extends Model {
 	/*package-private*/ org.lgna.story.implementation.BillboardImp getImplementation() {
 		return this.implementation;
 	}
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	public Paint getFrontPaint() {
-		return this.implementation.getFrontPaint();
-	}
-	public void setFrontPaint( Paint frontPaint ) {
-		this.implementation.setFrontPaint( frontPaint );
-	}
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	@GetterTemplate(isPersistent = true)
 	public Paint getBackPaint() {
-		return this.implementation.getBackPaint();
+		return this.getImplementation().backPaint.getValue();
 	}
-	public void setBackPaint( Paint frontPaint ) {
-		this.implementation.setBackPaint( frontPaint );
+	@MethodTemplate(isFollowedByLongerMethod = true)
+	public void setBackPaint( Paint paint ) {
+		this.setBackPaint( paint, new SetPropertyDetails.Value() );
+	}
+	@MethodTemplate()
+	public void setBackPaint( Paint paint, SetPropertyDetails.Value details ) {
+		this.getImplementation().backPaint.animateValue( paint, details.getDuration(), details.getStyle() );
 	}
 }

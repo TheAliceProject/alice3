@@ -82,7 +82,6 @@ public abstract class MarkerImp extends ModelImp {
 	
 	
 	protected abstract void createVisuals();
-	protected abstract edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getOpacityAppearances();
 	
 	public Boolean isShowing() {
 		return this.isShowing;
@@ -144,18 +143,18 @@ public abstract class MarkerImp extends ModelImp {
 	
 	public Color4f getMarkerColor()
 	{
-		return this.getSgAppearances()[0].diffuseColor.getValue();
+		return this.getSgPaintAppearances()[0].diffuseColor.getValue();
 	}
 	
 	public void setMarkerColor( Color4f color )
 	{
-		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgAppearances() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgPaintAppearances() ) {
 			sgAppearance.diffuseColor.setValue( color );
 		}
 	}
 	
 	public float getMarkerOpacity() {
-		float actualValue = this.getOpacityAppearances()[0].opacity.getValue();
+		float actualValue = this.getSgOpacityAppearances()[0].opacity.getValue();
 		float scaledValue = actualValue / this.getDefaultMarkerOpacity();
 		return scaledValue;
 	}
@@ -163,7 +162,7 @@ public abstract class MarkerImp extends ModelImp {
 	protected void setMarkerOpacity(float opacity)
 	{
 		float scaledValue = opacity * this.getDefaultMarkerOpacity();
-		for( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance : this.getOpacityAppearances() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgOpacityAppearances() ) {
 			sgAppearance.opacity.setValue( scaledValue );
 		}
 	}

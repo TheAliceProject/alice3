@@ -86,7 +86,7 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 	}
 
 	public org.alice.ide.croquet.models.ast.PropertyState getFrontPaintState() {
-		return this.getStateForGetter( org.lgna.story.Billboard.class, "getFrontPaint" );
+		return this.getStateForGetter( org.lgna.story.Model.class, "getPaint" );
 	}
 	public org.alice.ide.croquet.models.ast.PropertyState getBackPaintState() {
 		return this.getStateForGetter( org.lgna.story.Billboard.class, "getBackPaint" );
@@ -101,12 +101,12 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 		org.alice.ide.croquet.models.ast.PropertyState frontState = this.getFrontPaintState();
 		org.alice.ide.croquet.models.ast.PropertyState backState = this.getBackPaintState();
 		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
-				true, field, 
+				false, field, 
 				frontState.getSetter(), 
 				frontState.getValue()
 		) );
 		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
-				true, field, 
+				false, field, 
 				backState.getSetter(), 
 				backState.getValue()
 		) );

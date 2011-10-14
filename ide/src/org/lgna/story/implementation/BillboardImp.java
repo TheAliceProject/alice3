@@ -52,6 +52,13 @@ public class BillboardImp extends ModelImp {
 	private static final float MIN_V = 1.0f;
 	private static final float MAX_V = 0.0f;
 
+	public final PaintProperty backPaint = new PaintProperty( BillboardImp.this ) {
+		@Override
+		protected void internalSetValue(org.lgna.story.Paint value) {
+			BillboardImp.this.sgBackFace.setPaint( value );
+		}
+	};
+
 	private class Face extends edu.cmu.cs.dennisc.scenegraph.Visual {
 		private org.lgna.story.Paint paint;
 		private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
@@ -143,7 +150,8 @@ public class BillboardImp extends ModelImp {
 	private final Face sgFrontFace = new Face( true );
 	private final Face sgBackFace = new Face( false );
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
 
 	private final org.lgna.story.Billboard abstraction;
 	public BillboardImp( org.lgna.story.Billboard abstraction ) {
@@ -205,8 +213,12 @@ public class BillboardImp extends ModelImp {
 		return this.sgVisuals;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgAppearances() {
-		return this.sgAppearances;
+	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
+		return this.sgPaintAppearances;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
+		return this.sgOpacityAppearances;
 	}
 	@Override
 	protected double getBoundingSphereRadius() {
