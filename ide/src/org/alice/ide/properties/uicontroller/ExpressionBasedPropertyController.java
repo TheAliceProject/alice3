@@ -99,7 +99,10 @@ public class ExpressionBasedPropertyController<P> implements PropertyAdapterCont
 	{
 			this.propertyAdapter = propertyAdapter;
 			this.mainPanel.removeAllComponents();
-			this.mainPanel.addComponent(this.propertyAdapter.getExpressionState().createEditor(org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance()), Constraint.CENTER);
+			if (propertyAdapter != null)
+			{
+				this.mainPanel.addComponent(this.propertyAdapter.getExpressionState().createEditor(org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance()), Constraint.CENTER);
+			}
 	}
 
 }
