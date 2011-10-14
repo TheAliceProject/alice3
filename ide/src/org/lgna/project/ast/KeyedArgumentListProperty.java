@@ -41,44 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.x.components;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeywordsView extends org.alice.ide.croquet.components.RefreshPanel {
-	private final org.alice.ide.x.AstI18nFactory factory;
-	private final org.lgna.project.ast.KeyedArguments keyedArguments;
-	public KeywordsView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.KeyedArguments keyedArguments ) {
-		this.factory = factory;
-		this.keyedArguments = keyedArguments;
-	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
-	}
-	
-	private void handleMethodInvocation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-		org.lgna.project.ast.Expression expression = methodInvocation.expression.getValue();
-		if( expression instanceof org.lgna.project.ast.TypeExpression ) {
-			org.lgna.project.ast.TypeExpression typeExpression = (org.lgna.project.ast.TypeExpression)expression;
-			boolean isExpressionComponentDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired();
-			if( isExpressionComponentDesired ) {
-				this.internalAddComponent(  factory.createExpressionPane( typeExpression ) );
-			}
-		} else if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-			this.handleMethodInvocation( (org.lgna.project.ast.MethodInvocation)expression );
-		} else {
-			this.internalAddComponent( new org.lgna.croquet.components.Label( "todo: handle expression: " + expression ) );
-		}
-		this.internalAddComponent( new org.lgna.croquet.components.Label( methodInvocation.method.getValue().getName() ) );
-	}
-	@Override
-	protected void internalRefresh() {
-		for( org.lgna.project.ast.JavaKeyMethodExpressionPair keyExpressionPair : this.keyedArguments.keyExpressionPairs ) {
-			this.internalAddComponent( new org.lgna.croquet.components.Label( keyExpressionPair.keyMethod.getName() + ": " ) );
-			this.internalAddComponent( this.factory.createExpressionPropertyPane( keyExpressionPair.expression ) );
-		}
-		this.internalAddComponent( new org.lgna.croquet.components.Label( "more:" ) );
+public class KeyedArgumentListProperty extends ArgumentListProperty< JavaKeyedArgument > {
+	public KeyedArgumentListProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+		super( owner );
 	}
 }

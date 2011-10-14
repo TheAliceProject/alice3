@@ -55,7 +55,7 @@ public abstract class ImportNewSourceFillIn< E, R extends org.alice.virtualmachi
 	private org.lgna.project.ast.InstanceCreation createValue( org.lgna.project.ast.Expression expression ) {
 		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( getSourceClass(), getResourceClass() );
 		org.lgna.project.ast.AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
-		org.lgna.project.ast.Argument argument0 = new org.lgna.project.ast.Argument( parameter0, expression );
+		org.lgna.project.ast.SimpleArgument argument0 = new org.lgna.project.ast.SimpleArgument( parameter0, expression );
 		return new org.lgna.project.ast.InstanceCreation( constructor, argument0 );
 	}
 	

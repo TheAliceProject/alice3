@@ -46,10 +46,8 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class SuperConstructorInvocationStatement extends ConstructorInvocationStatement {
-	public SuperConstructorInvocationStatement() {
-	}
-	public SuperConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument... arguments ){
-		super( constructor, arguments );
+public class SimpleArgumentListProperty extends ArgumentListProperty< SimpleArgument > {
+	public SimpleArgumentListProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+		super( owner );
 	}
 }

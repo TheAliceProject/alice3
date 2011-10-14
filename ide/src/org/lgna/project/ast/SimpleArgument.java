@@ -46,12 +46,10 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class VariableLengthArguments extends AbstractArgument {
-	public ExpressionListProperty expressions = new ExpressionListProperty( this );
-	public VariableLengthArguments() {
+public class SimpleArgument extends AbstractArgument {
+	public SimpleArgument() {
 	}
-	public VariableLengthArguments( AbstractParameter parameter, Expression... expressions ) {
-		super( parameter );
-		this.expressions.setValue( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( expressions ) );
+	public SimpleArgument( AbstractParameter parameter, Expression expression ) {
+		super( parameter, expression );
 	}
 }

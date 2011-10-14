@@ -41,28 +41,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.project.ast;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JavaKeyMethodExpressionPair extends AbstractNode {
-	public DeclarationProperty< JavaMethod > keyMethod = new DeclarationProperty< JavaMethod >( this ) {
-		@Override
-		public boolean isReference() {
-			return true;
-		}
-	};
-	public ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?,?,?> getExpressionType() {
-			return JavaType.getInstance( Boolean.class );
-		}
-	};
-	public JavaKeyMethodExpressionPair() {
+public class KeyedArgumentView extends ArgumentView< org.lgna.project.ast.JavaKeyedArgument > {
+	public KeyedArgumentView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
+		super( factory, keyedArgument );
 	}
-	public JavaKeyMethodExpressionPair( JavaMethod keywordMethod, Expression expression ) {
-		this.keyMethod.setValue( keywordMethod );
-		this.expression.setValue( expression );
+	
+	@Override
+	protected String getName() {
+		return this.getArgument().keyMethod.getValue().getName();
 	}
+//	private void handleMethodInvocation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+//		org.lgna.project.ast.Expression expression = methodInvocation.expression.getValue();
+//		if( expression instanceof org.lgna.project.ast.TypeExpression ) {
+//			org.lgna.project.ast.TypeExpression typeExpression = (org.lgna.project.ast.TypeExpression)expression;
+//			boolean isExpressionComponentDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired();
+//			if( isExpressionComponentDesired ) {
+//				this.internalAddComponent(  factory.createExpressionPane( typeExpression ) );
+//			}
+//		} else if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+//			this.handleMethodInvocation( (org.lgna.project.ast.MethodInvocation)expression );
+//		} else {
+//			this.internalAddComponent( new org.lgna.croquet.components.Label( "todo: handle expression: " + expression ) );
+//		}
+//		this.internalAddComponent( new org.lgna.croquet.components.Label( methodInvocation.method.getValue().getName() ) );
+//	}
+//	@Override
+//	protected void internalRefresh() {
+//		for( org.lgna.project.ast.JavaKeyMethodExpressionPair keyExpressionPair : this.keyedArguments.keyExpressionPairs ) {
+//			this.internalAddComponent( new org.lgna.croquet.components.Label( keyExpressionPair.keyMethod.getName() + ": " ) );
+//			this.internalAddComponent( this.factory.createExpressionPropertyPane( keyExpressionPair.expression ) );
+//		}
+//		this.internalAddComponent( new org.lgna.croquet.components.Label( "more:" ) );
+//	}
 }

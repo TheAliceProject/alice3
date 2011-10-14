@@ -46,12 +46,12 @@ package org.alice.ide.preview;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.x.PreviewAstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty property ) {
+	public ArgumentListPropertyPane( org.alice.ide.x.PreviewAstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
 		super( factory, property );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.AbstractArgument argument ) {
-		org.lgna.croquet.components.Component< ? > expressionComponent = this.getFactory().createExpressionPane( ((org.lgna.project.ast.Argument)argument).expression.getValue() );
+	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.SimpleArgument argument ) {
+		org.lgna.croquet.components.Component< ? > expressionComponent = this.getFactory().createExpressionPane( ((org.lgna.project.ast.SimpleArgument)argument).expression.getValue() );
 		final boolean IS_PARAMETER_NAME_DESIRED = false;
 		if( IS_PARAMETER_NAME_DESIRED ) {
 			String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( argument.parameter.getValue() );

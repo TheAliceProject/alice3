@@ -78,7 +78,7 @@ public class TypeManager {
 				}
 				org.lgna.project.ast.UserParameter userParameterI = new org.lgna.project.ast.UserParameter( name, javaParameterI.getValueType() );
 				userConstructor.parameters.add( userParameterI );
-				superConstructorInvocationStatement.arguments.add( new org.lgna.project.ast.Argument( javaParameterI, new org.lgna.project.ast.ParameterAccess( userParameterI ) ) );
+				superConstructorInvocationStatement.arguments.add( new org.lgna.project.ast.SimpleArgument( javaParameterI, new org.lgna.project.ast.ParameterAccess( userParameterI ) ) );
 			}
 			
 			body.constructorInvocationStatement.setValue( superConstructorInvocationStatement );

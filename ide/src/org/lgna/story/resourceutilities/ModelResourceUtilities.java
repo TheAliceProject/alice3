@@ -57,7 +57,7 @@ import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 
 import org.alice.ide.ast.AstUtilities;
-import org.lgna.project.ast.Argument;
+import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ConstructorBlockStatement;
 import org.lgna.project.ast.ConstructorInvocationStatement;
@@ -454,7 +454,7 @@ public class ModelResourceUtilities {
 	{
 		UserParameter parameter = new UserParameter("modelResource", resourceClass);
 		ParameterAccess parameterAccessor = new ParameterAccess(parameter);
-		Argument superArgument = new Argument(constructorAndParameter.getParameter(), parameterAccessor);
+		SimpleArgument superArgument = new SimpleArgument(constructorAndParameter.getParameter(), parameterAccessor);
 		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(constructorAndParameter.getConstructor(), superArgument);
 		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement(superInvocation);
 		UserParameter[] parameters = {parameter};
@@ -466,7 +466,7 @@ public class ModelResourceUtilities {
 	{
 		JavaField javaField = JavaField.getInstance(resourceField);
 		FieldAccess fieldAccess = AstUtilities.createStaticFieldAccess(javaField);
-		Argument superArgument = new Argument(constructorAndParameter.getParameter(), fieldAccess);
+		SimpleArgument superArgument = new SimpleArgument(constructorAndParameter.getParameter(), fieldAccess);
 		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(constructorAndParameter.getConstructor(), superArgument);
 		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement(superInvocation);
 		UserParameter[] parameters = {};
@@ -521,16 +521,16 @@ public class ModelResourceUtilities {
 		Class< ? >[] methodParameterClasses = { org.lgna.story.JointedModel.class, org.lgna.story.resources.JointId.class };
 		org.lgna.project.ast.JavaMethod methodExpression = org.lgna.project.ast.JavaMethod.getInstance(org.lgna.story.Joint.class, "getJoint", methodParameterClasses);
 		
-		org.lgna.project.ast.Argument thisArgument = new org.lgna.project.ast.Argument( methodExpression.getRequiredParameters().get(0), new org.lgna.project.ast.ThisExpression() );
+		org.lgna.project.ast.SimpleArgument thisArgument = new org.lgna.project.ast.SimpleArgument( methodExpression.getRequiredParameters().get(0), new org.lgna.project.ast.ThisExpression() );
 		
 		org.lgna.project.ast.FieldAccess jointField = new org.lgna.project.ast.FieldAccess( 
 				new org.lgna.project.ast.TypeExpression( jointIdType ), 
 				org.lgna.project.ast.JavaField.getInstance(partField.getDeclaringClass(), partField.getName() ) 
 		);
 		
-		org.lgna.project.ast.Argument jointArgument = new org.lgna.project.ast.Argument( methodExpression.getRequiredParameters().get(1), jointField );
+		org.lgna.project.ast.SimpleArgument jointArgument = new org.lgna.project.ast.SimpleArgument( methodExpression.getRequiredParameters().get(1), jointField );
 		
-		org.lgna.project.ast.Argument[] methodArguments = { thisArgument, jointArgument};
+		org.lgna.project.ast.SimpleArgument[] methodArguments = { thisArgument, jointArgument};
 		org.lgna.project.ast.MethodInvocation getJointMethodInvocation = new org.lgna.project.ast.MethodInvocation( typeExpression, methodExpression, methodArguments );
 		ReturnStatement returnStatement = new ReturnStatement(jointIdType, getJointMethodInvocation);
 		UserMethod newMethod = new UserMethod(methodName, returnClass, parameters, new BlockStatement(returnStatement));

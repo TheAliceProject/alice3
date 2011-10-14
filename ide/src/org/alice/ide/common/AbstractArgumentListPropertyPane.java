@@ -45,8 +45,8 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractArgumentListPropertyPane extends org.alice.ide.croquet.components.AbstractListPropertyPane< org.lgna.project.ast.ArgumentListProperty, org.lgna.project.ast.AbstractArgument > {
-	public AbstractArgumentListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty property ) {
+public abstract class AbstractArgumentListPropertyPane extends org.alice.ide.croquet.components.AbstractListPropertyPane< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > {
+	public AbstractArgumentListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
 	}
 	@Override

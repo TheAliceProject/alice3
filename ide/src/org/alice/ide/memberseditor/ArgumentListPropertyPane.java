@@ -46,11 +46,11 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty property ) {
+	public ArgumentListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
 		super( factory, property );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.AbstractArgument argument ) {
+	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.SimpleArgument argument ) {
 		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
 		rv.setBackgroundColor( new java.awt.Color( 255, 255, 255, 127 ) );
 		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.OutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
@@ -60,8 +60,8 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		if( parameterName != null && parameterName.length() > 0 ) {
 			rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 		}
-		if( argument instanceof org.lgna.project.ast.Argument ) {
-			org.lgna.project.ast.Argument simpleArgument = (org.lgna.project.ast.Argument)argument;
+		if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
+			org.lgna.project.ast.SimpleArgument simpleArgument = (org.lgna.project.ast.SimpleArgument)argument;
 			rv.addComponent( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)simpleArgument.expression.getValue() ) );
 		}
 		return rv;

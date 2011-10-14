@@ -16,7 +16,7 @@ public abstract class SourceFillIn<T extends org.alice.virtualmachine.Resource> 
 		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( this.sourceCls, this.resourceCls );
 		org.lgna.project.ast.ResourceExpression resourceExpression = new org.lgna.project.ast.ResourceExpression( this.resourceCls, this.resource );
 		org.lgna.project.ast.AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
-		org.lgna.project.ast.Argument argument0 = new org.lgna.project.ast.Argument( parameter0, resourceExpression );
+		org.lgna.project.ast.SimpleArgument argument0 = new org.lgna.project.ast.SimpleArgument( parameter0, resourceExpression );
 		return new org.lgna.project.ast.InstanceCreation( constructor, argument0 );
 	}
 	@Override

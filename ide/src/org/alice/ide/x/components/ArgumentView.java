@@ -41,17 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.project.ast;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedArguments extends AbstractArgument {
-	public final NodeListProperty< JavaKeyMethodExpressionPair > keyExpressionPairs = new NodeListProperty< JavaKeyMethodExpressionPair >( this );
-	public KeyedArguments() {
+public abstract class ArgumentView< N extends org.lgna.project.ast.AbstractArgument > extends org.alice.ide.croquet.components.RefreshPanel {
+	private final org.alice.ide.x.AstI18nFactory factory;
+	private final N argument;
+	public ArgumentView( org.alice.ide.x.AstI18nFactory factory, N argument ) {
+		this.factory = factory;
+		this.argument = argument;
 	}
-	public KeyedArguments( AbstractParameter parameter, JavaKeyMethodExpressionPair... keywordExpressionPairs  ) {
-		this.parameter.setValue( parameter );
-		this.keyExpressionPairs.setValue( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( keywordExpressionPairs ) );
+	public N getArgument() {
+		return this.argument;
+	}
+	@Override
+	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+	}
+
+	protected abstract String getName();
+	@Override
+	protected void internalRefresh() {
+		String name = this.getName();
+		if( name != null ) {
+			this.internalAddComponent( new org.lgna.croquet.components.Label( name + ": " ) );
+		}
+		this.internalAddComponent( this.factory.createExpressionPropertyPane( argument.expression ) );
+		this.internalAddComponent( new org.lgna.croquet.components.Label( "more:" ) );
 	}
 }

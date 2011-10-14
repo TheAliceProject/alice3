@@ -65,8 +65,8 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 		binaryEncoder.encode( this.argumentExpression.getUUID() );
 	}
 
-	private org.lgna.project.ast.Argument getArgumentAt( org.lgna.project.ast.MethodInvocation methodInvocation, int index ) {
-		return (org.lgna.project.ast.Argument)methodInvocation.arguments.get( index );
+	private org.lgna.project.ast.SimpleArgument getArgumentAt( org.lgna.project.ast.MethodInvocation methodInvocation, int index ) {
+		return (org.lgna.project.ast.SimpleArgument)methodInvocation.arguments.get( index );
 	}
 	
 	@Override

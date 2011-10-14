@@ -78,8 +78,8 @@ public abstract class I18nFactory {
 				}
 			}
 			rv = label;
-		} else if( owner instanceof org.lgna.project.ast.Argument && methodName.equals( "getParameterNameText" ) ) {
-			org.lgna.project.ast.Argument argument = (org.lgna.project.ast.Argument)owner;
+		} else if( owner instanceof org.lgna.project.ast.SimpleArgument && methodName.equals( "getParameterNameText" ) ) {
+			org.lgna.project.ast.SimpleArgument argument = (org.lgna.project.ast.SimpleArgument)owner;
 			rv = new org.alice.ide.ast.components.DeclarationNameLabel( argument.parameter.getValue() );
 		} else if( owner instanceof org.lgna.project.ast.AbstractConstructor && methodName.equals( "getDeclaringType" ) ) {
 			org.lgna.project.ast.AbstractConstructor constructor = (org.lgna.project.ast.AbstractConstructor)owner;

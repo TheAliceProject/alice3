@@ -72,7 +72,7 @@ public class EditableAstI18Factory extends AstI18nFactory {
 		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty ) {
+	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
 		return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override

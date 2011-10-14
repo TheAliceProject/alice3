@@ -53,8 +53,8 @@ public abstract class AstI18nFactory extends I18nFactory {
 	}
 	
 	public org.lgna.croquet.components.JComponent< ? > createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.Component< ? > prefixPane ) {
-		if( argument instanceof org.lgna.project.ast.Argument ) {
-			org.lgna.project.ast.Argument simpleArgument = (org.lgna.project.ast.Argument)argument;
+		if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
+			org.lgna.project.ast.SimpleArgument simpleArgument = (org.lgna.project.ast.SimpleArgument)argument;
 			org.lgna.project.ast.ExpressionProperty expressionProperty = simpleArgument.expression;
 			org.lgna.project.ast.Expression expression = expressionProperty.getValue();
 			org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
@@ -64,9 +64,9 @@ public abstract class AstI18nFactory extends I18nFactory {
 				rv = expressionPropertyDropDownPane;
 			}
 			return rv;
-		} else if( argument instanceof org.lgna.project.ast.KeyedArguments ) {
-			org.lgna.project.ast.KeyedArguments keywordArguments = (org.lgna.project.ast.KeyedArguments)argument;
-			return new org.alice.ide.x.components.KeywordsView( this, keywordArguments );
+		} else if( argument instanceof org.lgna.project.ast.JavaKeyedArgument ) {
+			org.lgna.project.ast.JavaKeyedArgument keyedArgument = (org.lgna.project.ast.JavaKeyedArgument)argument;
+			return new org.alice.ide.x.components.KeyedArgumentView( this, keyedArgument );
 		} else {
 			throw new RuntimeException( "todo: " + argument );
 		}
@@ -118,7 +118,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 	protected org.lgna.croquet.components.JComponent< ? > createStatementListPropertyPane( org.lgna.project.ast.StatementListProperty statementListProperty ) {
 		return new org.alice.ide.x.components.StatementListPropertyView( this, statementListProperty );
 	}
-	protected abstract org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.ArgumentListProperty argumentListProperty );
+	protected abstract org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty );
 	protected org.lgna.croquet.components.JComponent< ? > createExpressionListPropertyPane( org.lgna.project.ast.ExpressionListProperty expressionListProperty ) {
 		return new org.alice.ide.x.components.ExpressionListPropertyPane( this, expressionListProperty );
 	}
@@ -230,8 +230,8 @@ public abstract class AstI18nFactory extends I18nFactory {
 					if( property instanceof org.lgna.project.ast.NodeListProperty< ? > ) {
 						if( property instanceof org.lgna.project.ast.StatementListProperty ) {
 							rv = this.createStatementListPropertyPane( (org.lgna.project.ast.StatementListProperty)property );
-						} else if( property instanceof org.lgna.project.ast.ArgumentListProperty ) {
-							rv = this.createArgumentListPropertyPane( (org.lgna.project.ast.ArgumentListProperty)property );
+						} else if( property instanceof org.lgna.project.ast.SimpleArgumentListProperty ) {
+							rv = this.createArgumentListPropertyPane( (org.lgna.project.ast.SimpleArgumentListProperty)property );
 						} else if( property instanceof org.lgna.project.ast.ExpressionListProperty ) {
 							rv = this.createExpressionListPropertyPane( (org.lgna.project.ast.ExpressionListProperty)property );
 						} else {

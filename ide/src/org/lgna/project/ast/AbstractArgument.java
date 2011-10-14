@@ -48,15 +48,23 @@ package org.lgna.project.ast;
  */
 public abstract class AbstractArgument extends AbstractNode {
 	public DeclarationProperty< AbstractParameter > parameter = new DeclarationProperty< AbstractParameter >( this );
+	public ExpressionProperty expression = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType<?,?,?> getExpressionType() {
+			return AbstractArgument.this.parameter.getValue().getValueType();
+		}
+	};
 	public AbstractArgument() {
 	}
-	public AbstractArgument( AbstractParameter parameter ) {
+	public AbstractArgument( AbstractParameter parameter, Expression expression ) {
 		this.parameter.setValue( parameter );
+		this.expression.setValue( expression );
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//return super.appendRepr( rv, locale );
 		NodeUtilities.safeAppendRepr( rv, this.parameter.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
 		return rv;
 	}
 }

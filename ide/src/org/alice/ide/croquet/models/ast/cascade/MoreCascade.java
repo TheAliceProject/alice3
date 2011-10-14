@@ -80,7 +80,7 @@ public class MoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.
 		this.nextMethodInvocation = new org.lgna.project.ast.MethodInvocation();
 		this.nextMethodInvocation.method.setValue( nextMethod );
 		for( org.lgna.project.ast.AbstractParameter parameter : nextMethod.getRequiredParameters() ) {
-			org.lgna.project.ast.Argument argument = new org.lgna.project.ast.Argument( parameter, null );
+			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, null );
 			this.nextMethodInvocation.arguments.add( argument );
 		}
 //		this.updateToolTipText();

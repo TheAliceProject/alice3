@@ -46,22 +46,23 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class Argument extends AbstractArgument {
-	public ExpressionProperty expression = new ExpressionProperty( this ) {
+public class JavaKeyedArgument extends AbstractArgument {
+	public DeclarationProperty< JavaMethod > keyMethod = new DeclarationProperty< JavaMethod >( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
-			return Argument.this.parameter.getValue().getValueType();
+		public boolean isReference() {
+			return true;
 		}
 	};
-	public Argument() {
+	public JavaKeyedArgument() {
 	}
-	public Argument( AbstractParameter parameter, Expression expression ) {
-		super( parameter );
-		this.expression.setValue( expression );
+	public JavaKeyedArgument( AbstractParameter parameter, Expression expression, JavaMethod keyMethod ) {
+		super( parameter, expression );
+		this.keyMethod.setValue( keyMethod );
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
+		super.appendRepr( rv, locale );
+		NodeUtilities.safeAppendRepr( rv, this.keyMethod.getValue(), locale );
 		return rv;
 	}
 }
