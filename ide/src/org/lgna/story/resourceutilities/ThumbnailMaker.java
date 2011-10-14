@@ -294,9 +294,9 @@ public class ThumbnailMaker {
 		return testPosition;
 	}
 	
-	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int width, int height) throws Exception {
+	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int inputWidth, int inputHeight) throws Exception {
 //		initializeIfNecessary(width, height);
-		this.setSize((int)(width*SEARCH_FACTOR), (int)(height*SEARCH_FACTOR));
+		this.setSize((int)(inputWidth*SEARCH_FACTOR), (int)(inputHeight*SEARCH_FACTOR));
 		
 		v.setParent(this.sgModelTransformable);
 		world.getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox));
@@ -341,7 +341,7 @@ public class ThumbnailMaker {
 		
 		world.getSGCameraVehicle().setTranslationOnly(lastGoodPosition, world);
 		
-		this.setSize((int)(width*ANTI_ALIAS_FACTOR), (int)(height*ANTI_ALIAS_FACTOR));
+		this.setSize((int)(inputWidth*ANTI_ALIAS_FACTOR), (int)(inputHeight*ANTI_ALIAS_FACTOR));
 		
 		offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
@@ -350,7 +350,7 @@ public class ThumbnailMaker {
 		
 		v.setParent(null);
 		
-		Image returnImage = rv.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
+		Image returnImage = rv.getScaledInstance(inputWidth, inputHeight, Image.SCALE_SMOOTH);
 		if (returnImage instanceof java.awt.image.BufferedImage)
 		{
 			return (java.awt.image.BufferedImage)returnImage;
