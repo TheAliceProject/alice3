@@ -23,7 +23,7 @@ public class GenericModelAdapter< E extends Model > extends edu.cmu.cs.dennisc.l
 	}
 	@Override
 	protected void renderGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
-		m_element.render();
+		m_element.render(rc.gl, rc.getGlobalBrightness());
 	}
 	@Override
 	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
