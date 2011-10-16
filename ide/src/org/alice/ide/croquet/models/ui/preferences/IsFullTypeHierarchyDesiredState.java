@@ -40,33 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
 
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class IsFullTypeHierarchyDesiredState extends org.lgna.croquet.BooleanState {
 	private static class SingletonHolder {
-		private static PreferencesMenuModel instance = new PreferencesMenuModel();
+		private static IsFullTypeHierarchyDesiredState instance = new IsFullTypeHierarchyDesiredState();
 	}
-	public static PreferencesMenuModel getInstance() {
+	public static IsFullTypeHierarchyDesiredState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private PreferencesMenuModel() {
-		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
-				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getMenuModel(),
-				org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().getMenuModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.recursion.RecursionDialogOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				GalleryMenuModel.getInstance()
-		);
+	private IsFullTypeHierarchyDesiredState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b389ea56-2b42-4354-a54e-3467846f0c06" ), false );
+		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}
 }

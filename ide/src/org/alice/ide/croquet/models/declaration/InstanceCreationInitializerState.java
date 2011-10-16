@@ -54,7 +54,30 @@ public class InstanceCreationInitializerState extends org.alice.ide.croquet.mode
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.InstanceCreation > blankNode ) {
-		for( org.lgna.project.ast.AbstractType< ?,?,? > type : org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes() ) {
+		java.util.List< org.lgna.project.ast.JavaType > topLevelTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
+
+		org.lgna.project.ast.InstanceCreation prevInstanceCreation = this.getValue();
+		if( prevInstanceCreation != null ) {
+			org.lgna.project.ast.AbstractConstructor constructor = prevInstanceCreation.constructor.getValue();
+			org.lgna.project.ast.JavaType javaType = constructor.getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
+			org.lgna.project.ast.NamedUserType ancestorType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType );
+
+//			org.lgna.project.ast.JavaConstructor javaConstructor = (org.lgna.project.ast.JavaConstructor)ancestorType.getDeclaredConstructors().get( 0 );
+//			org.lgna.project.ast.JavaType parameter0Type = (org.lgna.project.ast.JavaType)constructor.getRequiredParameters().get( 0 ).getValueType();
+
+			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)prevInstanceCreation.arguments.get( 0 ).expression.getValue();
+			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
+			org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( ancestorType, field );
+			
+			org.lgna.project.ast.AbstractType< ?,?,? > type = userType;
+			while( type instanceof org.lgna.project.ast.NamedUserType ) {
+				rv.add( InstanceCreationFillInWithPredeterminedFieldAccessArgument.getInstance( type.getDeclaredConstructors().get( 0 ), field ) );
+				type = type.getSuperType();
+			}
+			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		}
+		
+		for( org.lgna.project.ast.AbstractType< ?,?,? > type : topLevelTypes ) {
 			if( type instanceof org.lgna.project.ast.JavaType ) {
 				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
 				type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType );

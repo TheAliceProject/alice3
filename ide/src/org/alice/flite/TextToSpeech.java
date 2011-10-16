@@ -52,7 +52,6 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import org.alice.virtualmachine.resources.AudioResource;
-import org.lgna.story.AudioSource;
 
 public class TextToSpeech 
 {
@@ -139,7 +138,13 @@ public class TextToSpeech
 			long dumpToFileTime = System.currentTimeMillis();
 			AudioResource ttsAudioResource = new AudioResource(audioFile);
 			long doneLoadingTime = System.currentTimeMillis();
-			AudioSource ttsAudioSource = new AudioSource(ttsAudioResource);
+
+			
+			
+//			org.lgna.story.AudioSource ttsAudioSource = new org.lgna.story.AudioSource(ttsAudioResource);
+
+			
+			
 //			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 //			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( ttsAudioSource.getAudioResource(), ttsAudioSource.getVolume(), ttsAudioSource.getStartTime(), ttsAudioSource.getStopTime() );
 			long endTime = System.currentTimeMillis();

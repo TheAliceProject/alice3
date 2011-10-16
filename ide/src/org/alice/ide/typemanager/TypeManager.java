@@ -52,9 +52,10 @@ public class TypeManager {
 	}
 	
 	private static org.lgna.project.Project prevProject;
-	private static java.util.Map< org.lgna.project.ast.JavaType, org.lgna.project.ast.NamedUserType > prevProjectMap;
+	private static java.util.Map< org.lgna.project.ast.JavaType, org.lgna.project.ast.NamedUserType > prevProjectJavaTypeToUserTypeMap;
+	private static java.util.Map< org.lgna.project.ast.JavaField, org.lgna.project.ast.NamedUserType > prevProjectFieldToUserTypeMap;
 	
-	private static org.lgna.project.ast.NamedUserType createTypeFor( org.lgna.project.ast.JavaType javaType ) {
+	private static org.lgna.project.ast.NamedUserType createTypeFor( org.lgna.project.ast.JavaType javaType, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		org.lgna.project.ast.NamedUserType rv = new org.lgna.project.ast.NamedUserType();
 		rv.name.setValue( "My" + javaType.getName() ); //todo
 		rv.superType.setValue( javaType );
@@ -67,19 +68,27 @@ public class TypeManager {
 			org.lgna.project.ast.SuperConstructorInvocationStatement superConstructorInvocationStatement = new org.lgna.project.ast.SuperConstructorInvocationStatement();
 
 			superConstructorInvocationStatement.contructor.setValue( javaConstructor );
+			
 			final int N = javaParameters.size();
 			for( int i=0; i<N; i++ ) {
 				org.lgna.project.ast.AbstractParameter javaParameterI = javaParameters.get( i );
-				String name = javaParameterI.getName(); //todo?
-				if( name != null ) {
-					//pass
+				org.lgna.project.ast.Expression argumentExpressionI;
+				if( argumentExpressions != null ) {
+					argumentExpressionI = argumentExpressions[ i ];
 				} else {
-					name = "p"+i;
+					String name = javaParameterI.getName(); //todo?
+					if( name != null ) {
+						//pass
+					} else {
+						name = "p"+i;
+					}
+					org.lgna.project.ast.UserParameter userParameterI = new org.lgna.project.ast.UserParameter( name, javaParameterI.getValueType() );
+					userConstructor.parameters.add( userParameterI );
+					argumentExpressionI = new org.lgna.project.ast.ParameterAccess( userParameterI );
 				}
-				org.lgna.project.ast.UserParameter userParameterI = new org.lgna.project.ast.UserParameter( name, javaParameterI.getValueType() );
-				userConstructor.parameters.add( userParameterI );
-				superConstructorInvocationStatement.arguments.add( new org.lgna.project.ast.SimpleArgument( javaParameterI, new org.lgna.project.ast.ParameterAccess( userParameterI ) ) );
+				superConstructorInvocationStatement.arguments.add( new org.lgna.project.ast.SimpleArgument( javaParameterI, argumentExpressionI ) );
 			}
+			
 			
 			body.constructorInvocationStatement.setValue( superConstructorInvocationStatement );
 			userConstructor.body.setValue( body );
@@ -104,17 +113,146 @@ public class TypeManager {
 			}
 		}
 		if( project == prevProject ) {
-			org.lgna.project.ast.NamedUserType prevType = prevProjectMap.get( javaType );
+			org.lgna.project.ast.NamedUserType prevType = prevProjectJavaTypeToUserTypeMap.get( javaType );
 			if( prevType != null ) {
 				return prevType;
 			}
 		} else {
-			prevProjectMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			prevProjectJavaTypeToUserTypeMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			prevProject = project;
 		}
 		
-		org.lgna.project.ast.NamedUserType rv = createTypeFor( javaType );
-		prevProjectMap.put( javaType, rv );
+		org.lgna.project.ast.NamedUserType rv = createTypeFor( javaType, null );
+		prevProjectJavaTypeToUserTypeMap.put( javaType, rv );
 		return rv;
 	}
+
+	private static org.lgna.project.ast.JavaType getContructorParameter0Type( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		return (org.lgna.project.ast.JavaType)type.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
+	}
+	private static abstract class ExtendsTypeCriterion implements edu.cmu.cs.dennisc.pattern.Criterion< org.lgna.project.ast.NamedUserType > {
+		private final org.lgna.project.ast.AbstractType< ?,?,? > superType;
+		public ExtendsTypeCriterion( org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
+			this.superType = superType;
+		}
+		public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
+			return userType.superType.getValue() == this.superType;
+		}
+	}
+	private static class ExtendsTypeWithConstructorParameterTypeCriterion extends ExtendsTypeCriterion {
+		private final org.lgna.project.ast.AbstractType< ?,?,? > parameterType;
+		public ExtendsTypeWithConstructorParameterTypeCriterion( org.lgna.project.ast.AbstractType< ?,?,? > superType, org.lgna.project.ast.AbstractType< ?,?,? > parameterType ) {
+			super( superType );
+			this.parameterType = parameterType;
+		}
+		@Override
+		public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
+			return super.accept( userType ) && true; // todo
+		}
+	}
+	private static class ExtendsTypeWithSuperArgumentFieldCriterion extends ExtendsTypeCriterion {
+		private final org.lgna.project.ast.AbstractField superArgumentField;
+		public ExtendsTypeWithSuperArgumentFieldCriterion( org.lgna.project.ast.AbstractType< ?,?,? > superType, org.lgna.project.ast.AbstractField superArgumentField ) {
+			super( superType );
+			this.superArgumentField = superArgumentField;
+		}
+		@Override
+		public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
+			return super.accept( userType ) && true; // todo
+		}
+	}
+	
+	private static org.lgna.project.ast.NamedUserType createTypeFor2( org.lgna.project.ast.AbstractType<?,?,?> superType, String typeName, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		org.lgna.project.ast.NamedUserType rv = new org.lgna.project.ast.NamedUserType();
+		rv.name.setValue( typeName );
+		rv.superType.setValue( superType );
+		
+		for( org.lgna.project.ast.AbstractConstructor superConstructor : superType.getDeclaredConstructors() ) {
+			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > javaParameters = superConstructor.getRequiredParameters();
+			
+			org.lgna.project.ast.NamedUserConstructor userConstructor = new org.lgna.project.ast.NamedUserConstructor();
+			org.lgna.project.ast.ConstructorBlockStatement body = new org.lgna.project.ast.ConstructorBlockStatement();
+			org.lgna.project.ast.SuperConstructorInvocationStatement superConstructorInvocationStatement = new org.lgna.project.ast.SuperConstructorInvocationStatement();
+
+			superConstructorInvocationStatement.contructor.setValue( superConstructor );
+			
+			final int N = javaParameters.size();
+			for( int i=0; i<N; i++ ) {
+				org.lgna.project.ast.AbstractParameter javaParameterI = javaParameters.get( i );
+				org.lgna.project.ast.Expression argumentExpressionI;
+				if( argumentExpressions != null ) {
+					argumentExpressionI = argumentExpressions[ i ];
+				} else {
+					String parameterName = javaParameterI.getName(); //todo?
+					if( parameterName != null ) {
+						//pass
+					} else {
+						parameterName = "p"+i;
+					}
+					org.lgna.project.ast.UserParameter userParameterI = new org.lgna.project.ast.UserParameter( parameterName, javaParameterI.getValueType() );
+					userConstructor.parameters.add( userParameterI );
+					argumentExpressionI = new org.lgna.project.ast.ParameterAccess( userParameterI );
+				}
+				superConstructorInvocationStatement.arguments.add( new org.lgna.project.ast.SimpleArgument( javaParameterI, argumentExpressionI ) );
+			}
+
+			body.constructorInvocationStatement.setValue( superConstructorInvocationStatement );
+			userConstructor.body.setValue( body );
+			
+			rv.constructors.add( userConstructor );
+		}
+		return rv;
+	}
+
+	private static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.AbstractType<?,?,?> ancestorType, org.lgna.project.ast.JavaType argumentType, org.lgna.project.ast.JavaField argumentField ) {
+		org.lgna.project.ast.JavaType argumentTypeForSuper;
+		if( Enum.class.isAssignableFrom( argumentType.getClassReflectionProxy().getReification() ) ) {
+			argumentTypeForSuper = argumentType.getInterfaces()[ 0 ];
+		} else {
+			argumentTypeForSuper = argumentType.getSuperType();
+		}
+		org.lgna.project.ast.AbstractType< ?,?,? > superType;
+		if( argumentTypeForSuper == getContructorParameter0Type( ancestorType ) || argumentTypeForSuper == null ) {
+			superType = ancestorType;
+		} else {
+			superType = getNamedUserTypeFor( ancestorType, argumentTypeForSuper, null );
+		}
+		ExtendsTypeCriterion criterion;
+		if( argumentField != null ) {
+			criterion = new ExtendsTypeWithSuperArgumentFieldCriterion( superType, argumentField );
+		} else {
+			criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, argumentTypeForSuper );
+		}
+		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
+		for( org.lgna.project.ast.NamedUserType existingType : existingTypes ) {
+			if( criterion.accept( existingType ) ) {
+				return existingType;
+			}
+		}
+		return createTypeFor2( superType, "My"+argumentType.getName().replace( "Resource", "" ), null );
+	}
+
+	private static org.lgna.project.ast.JavaField getEnumConstantFieldIfOneAndOnly( org.lgna.project.ast.JavaType type ) { 
+		org.lgna.project.ast.JavaField rv = null;
+		if( type.isAssignableTo( Enum.class ) ) {
+			Class<Enum<?>> cls = (Class<Enum<?>>)type.getClassReflectionProxy().getReification();
+			Enum<?>[] constants = cls.getEnumConstants();
+			if( constants.length == 1 ) {
+				Enum<?> constant = constants[ 0 ];
+				rv = org.lgna.project.ast.JavaField.getInstance( constant.getClass(), constant.name() );
+			}
+		}
+		return rv;
+	}
+	
+	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.AbstractType<?,?,?> ancestorType, org.lgna.project.ast.JavaType argumentType ) {
+		org.lgna.project.ast.JavaField argumentField = getEnumConstantFieldIfOneAndOnly( argumentType );
+		return getNamedUserTypeFor( ancestorType, argumentType, argumentField );
+	}
+	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.AbstractType<?,?,?> ancestorType, org.lgna.project.ast.JavaField argumentField ) {
+		org.lgna.project.ast.JavaType argumentType = argumentField.getDeclaringType();
+		return getNamedUserTypeFor( ancestorType, argumentType, getEnumConstantFieldIfOneAndOnly( argumentType ) );
+	}
+	
 }

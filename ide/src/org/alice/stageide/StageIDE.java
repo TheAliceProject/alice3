@@ -159,7 +159,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		} else if( declaringType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) && valueType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) ) {
 			Class<?> resourceClass = ((org.lgna.project.ast.JavaType)field.getValueType()).getClassReflectionProxy().getReification();
 			java.awt.image.BufferedImage thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(resourceClass, field.getName());
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 32, 32 );
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 20, 20 );
 		}
 		return null;
 	}

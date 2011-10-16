@@ -76,6 +76,19 @@ class CustomMonster extends CustomBiped {
 	}
 }
 
+class CustomOgre extends CustomMonster {
+	public CustomOgre( org.lgna.story.resources.monster.Ogre resource ) {
+		super( resource );
+	}
+}
+
+class CustomOgreGreen extends CustomOgre {
+	public CustomOgreGreen() {
+		super( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
+	}
+}
+
+
 class DesertScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground desert = new Ground();

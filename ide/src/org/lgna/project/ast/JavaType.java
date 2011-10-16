@@ -237,11 +237,11 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		return null;
 	}
 	@Override
-	public AbstractPackage getPackage() {
+	public JavaPackage getPackage() {
 		return JavaPackage.getInstance( this.classReflectionProxy.getPackageReflectionProxy() );
 	}
 	@Override
-	public AbstractType<?,?,?> getSuperType() {
+	public JavaType getSuperType() {
 		Class< ? > cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
 			return JavaType.getInstance( cls.getSuperclass() );
@@ -390,6 +390,11 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		return JavaType.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( cls ) );
 	}
 
+	public JavaType[] getInterfaces() {
+		Class< ? > cls = this.classReflectionProxy.getReification();
+		assert cls != null;
+		return JavaType.getInstances( cls.getInterfaces() );
+	}
 	@Override
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof JavaType ) {
