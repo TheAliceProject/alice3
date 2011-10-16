@@ -63,13 +63,36 @@ public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project
 		super( java.util.UUID.fromString( "cc1fda14-598c-475f-afed-19cc7c5feb92" ) );
 		this.type = type;
 	}
+	
+	private int getDepth( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		if( type instanceof org.lgna.project.ast.JavaType ) {
+			return -1;
+		} else {
+			return 1 + this.getDepth( type.getSuperType() );
+		}
+	}
+	
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, Void > step ) {
-		throw new AssertionError();
+		int depth = this.getDepth( this.type );
+		if( depth > 0 ) {
+			StringBuilder sb = new StringBuilder();
+			for( int i=0; i<depth; i++ ) {
+				sb.append( "+" );
+			}
+			return new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( sb.toString() ), org.alice.ide.common.TypeComponent.createInstance( this.type ) ).getAwtComponent();
+		} else {
+			throw new AssertionError();
+		}
 	}
 	@Override
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, Void > step ) {
-		return org.alice.ide.common.TypeIcon.getInstance( this.type );
+		int depth = this.getDepth( this.type );
+		if( depth > 0 ) {
+			return super.getMenuItemIcon( step );
+		} else {
+			return org.alice.ide.common.TypeIcon.getInstance( this.type );
+		}
 	}
 	@Override
 	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.NamedUserType, Void > step ) {

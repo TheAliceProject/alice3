@@ -56,14 +56,69 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 	private TypeState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "99019283-9a9e-4500-95a4-c4748d762137" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.NamedUserType.class ), null );
 	}
+	
+	
+	private static class Node {
+		public final org.lgna.project.ast.NamedUserType value;
+		public final java.util.List< Node > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		public Node( org.lgna.project.ast.NamedUserType value ) {
+			this.value = value;
+		}
+	}
+	
+	private Node getNode( org.lgna.project.ast.NamedUserType type, java.util.List< Node > list, java.util.Map< org.lgna.project.ast.NamedUserType, Node > map ) {
+		Node rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new Node( type );
+			map.put( type, rv );
+			org.lgna.project.ast.AbstractType< ?,?,? > superType = type.getSuperType();
+			if( superType instanceof org.lgna.project.ast.NamedUserType ) {
+				Node superNode = getNode( (org.lgna.project.ast.NamedUserType)superType, list, map );
+				superNode.children.add( rv );
+			} else {
+				list.add( rv );
+			}
+		}
+		return rv;
+	}
+	
+	private java.util.List< Node > createTree( Iterable< org.lgna.project.ast.NamedUserType > types ) {
+		java.util.List< Node > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.Map< org.lgna.project.ast.NamedUserType, Node > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		for( org.lgna.project.ast.NamedUserType type : types ) {
+			getNode( type, list, map );
+		}
+		
+		return list;
+	}
+	
+	private java.util.List< org.lgna.croquet.CascadeBlankChild > addTypeFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, Node node ) {
+		rv.add( TypeFillIn.getInstance( node.value ) );
+		for( Node child : node.children ) {
+			addTypeFillIns( rv, child );
+		}
+		return rv;
+	}
+	
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.NamedUserType > blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
 		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
+
+		java.util.List< Node > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.Map< org.lgna.project.ast.NamedUserType, Node > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		for( org.lgna.project.ast.NamedUserType type : types ) {
-			rv.add( TypeFillIn.getInstance( type ) );
+			getNode( type, list, map );
 		}
+		for( Node node : list ) {
+			addTypeFillIns( rv, node );
+		}
+//		for( org.lgna.project.ast.NamedUserType type : types ) {
+//			rv.add( TypeFillIn.getInstance( type ) );
+//		}
 		return rv;
 	}
 }

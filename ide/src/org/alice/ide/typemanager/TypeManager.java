@@ -51,6 +51,7 @@ public class TypeManager {
 		throw new AssertionError();
 	}
 	
+	//todo: remove
 	private static org.lgna.project.Project prevProject;
 	private static java.util.Map< org.lgna.project.ast.JavaType, org.lgna.project.ast.NamedUserType > prevProjectJavaTypeToUserTypeMap;
 	private static java.util.Map< org.lgna.project.ast.JavaField, org.lgna.project.ast.NamedUserType > prevProjectFieldToUserTypeMap;
