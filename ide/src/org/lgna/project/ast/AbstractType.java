@@ -123,15 +123,18 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 	public C getDeclaredConstructor( AbstractType<?,?,?>... parameterTypes ) {
 		C rv = null;
 		for( C constructor : getDeclaredConstructors() ) {
-			rv = constructor;
 			java.util.ArrayList< ? extends AbstractParameter > parameters = constructor.getRequiredParameters();
-			for( int i=0; i<parameterTypes.length; i++ ) {
-				AbstractType<?,?,?> parameterType = parameterTypes[ i ];
-				if( parameterType.equals( parameters.get( i ).getValueType() ) ) {
-					//pass
-				} else {
-					rv = null;
-					break;
+			if( parameters.size() == parameterTypes.length ) {
+				rv = constructor;
+				for( int i=0; i<parameterTypes.length; i++ ) {
+					AbstractType<?,?,?> parameterType = parameterTypes[ i ];
+					assert parameterType != null;
+					if( parameterType.equals( parameters.get( i ).getValueType() ) ) {
+						//pass
+					} else {
+						rv = null;
+						break;
+					}
 				}
 			}
 			if( rv != null ) {
