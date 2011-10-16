@@ -69,9 +69,15 @@ public class InstanceCreationInitializerState extends org.alice.ide.croquet.mode
 			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
 			org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( ancestorType, field );
 			
+			final int INSERT_LOCATION = rv.size();
 			org.lgna.project.ast.AbstractType< ?,?,? > type = userType;
 			while( type instanceof org.lgna.project.ast.NamedUserType ) {
-				rv.add( InstanceCreationFillInWithPredeterminedFieldAccessArgument.getInstance( type.getDeclaredConstructors().get( 0 ), field ) );
+				org.lgna.project.ast.AbstractConstructor typeConstructor = type.getDeclaredConstructors().get( 0 );
+				if( constructor.getRequiredParameters().size() == 1 ) {
+					rv.add( INSERT_LOCATION, InstanceCreationFillInWithPredeterminedFieldAccessArgument.getInstance( typeConstructor, field ) );
+				} else {
+					rv.add( InstanceCreationFillIn.getInstance( typeConstructor ) );
+				}
 				type = type.getSuperType();
 			}
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
