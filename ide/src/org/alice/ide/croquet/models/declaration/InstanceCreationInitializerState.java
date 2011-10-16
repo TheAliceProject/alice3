@@ -73,7 +73,7 @@ public class InstanceCreationInitializerState extends org.alice.ide.croquet.mode
 			org.lgna.project.ast.AbstractType< ?,?,? > type = userType;
 			while( type instanceof org.lgna.project.ast.NamedUserType ) {
 				org.lgna.project.ast.AbstractConstructor typeConstructor = type.getDeclaredConstructors().get( 0 );
-				if( constructor.getRequiredParameters().size() == 1 ) {
+				if( typeConstructor.getRequiredParameters().size() == 1 ) {
 					rv.add( INSERT_LOCATION, InstanceCreationFillInWithPredeterminedFieldAccessArgument.getInstance( typeConstructor, field ) );
 				} else {
 					rv.add( InstanceCreationFillIn.getInstance( typeConstructor ) );

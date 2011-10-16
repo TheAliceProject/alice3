@@ -230,7 +230,18 @@ public class TypeManager {
 				return existingType;
 			}
 		}
-		return createTypeFor( superType, "My"+argumentType.getName().replace( "Resource", "" ), null );
+		org.lgna.project.ast.Expression[] expressions;
+		if( argumentField != null ) {
+			expressions = new org.lgna.project.ast.Expression[] {
+				new org.lgna.project.ast.FieldAccess(
+						new org.lgna.project.ast.TypeExpression( argumentField.getDeclaringType() ),
+						argumentField
+				)	
+			};
+		} else {
+			expressions = null;
+		}
+		return createTypeFor( superType, "My"+argumentType.getName().replace( "Resource", "" ), expressions );
 	}
 
 	private static org.lgna.project.ast.JavaField getEnumConstantFieldIfOneAndOnly( org.lgna.project.ast.JavaType type ) { 
@@ -246,10 +257,10 @@ public class TypeManager {
 		return rv;
 	}
 	
-	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.AbstractType<?,?,?> ancestorType, org.lgna.project.ast.JavaType argumentType ) {
-		org.lgna.project.ast.JavaField argumentField = getEnumConstantFieldIfOneAndOnly( argumentType );
-		return getNamedUserTypeFor( ancestorType, argumentType, argumentField );
-	}
+//	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.AbstractType<?,?,?> ancestorType, org.lgna.project.ast.JavaType argumentType ) {
+//		org.lgna.project.ast.JavaField argumentField = getEnumConstantFieldIfOneAndOnly( argumentType );
+//		return getNamedUserTypeFor( ancestorType, argumentType, argumentField );
+//	}
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.AbstractType<?,?,?> ancestorType, org.lgna.project.ast.JavaField argumentField ) {
 		org.lgna.project.ast.JavaType argumentType = argumentField.getDeclaringType();
 		return getNamedUserTypeFor( ancestorType, argumentType, getEnumConstantFieldIfOneAndOnly( argumentType ) );
