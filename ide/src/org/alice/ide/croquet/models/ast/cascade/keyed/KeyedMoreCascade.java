@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.keyed;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedMoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
+public class KeyedMoreCascade extends org.lgna.croquet.Cascade<org.lgna.project.ast.JavaKeyedArgument > {
 	private static java.util.Map< org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument >, KeyedMoreCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized KeyedMoreCascade getInstance( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
 		KeyedMoreCascade rv = map.get( argumentListProperty );
@@ -60,11 +60,11 @@ public class KeyedMoreCascade extends org.lgna.croquet.Cascade< org.lgna.project
 	}
 	private final org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty;
 	private KeyedMoreCascade( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "bd6e2ff6-f27a-4197-88a2-af25111eab40" ), org.lgna.project.ast.Expression.class, KeyedBlank.getInstance( argumentListProperty ) );
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "bd6e2ff6-f27a-4197-88a2-af25111eab40" ), org.lgna.project.ast.JavaKeyedArgument.class, KeyedBlank.getInstance( argumentListProperty ) );
 		this.argumentListProperty = argumentListProperty;
 	}
 	@Override
-	protected org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit(org.lgna.croquet.history.CascadeCompletionStep<org.lgna.project.ast.Expression> step, org.lgna.project.ast.Expression[] values) {
+	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.JavaKeyedArgument >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.JavaKeyedArgument > completionStep, org.lgna.project.ast.JavaKeyedArgument[] values ) {
 		return null;
 	}
 }

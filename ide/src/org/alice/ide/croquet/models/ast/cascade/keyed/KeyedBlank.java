@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.keyed;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+public class KeyedBlank extends org.lgna.croquet.CascadeBlank< org.lgna.project.ast.JavaKeyedArgument > {
 	private static java.util.Map< org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument >, KeyedBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized KeyedBlank getInstance( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
 		KeyedBlank rv = map.get( argumentListProperty );
@@ -59,20 +59,14 @@ public class KeyedBlank extends org.alice.ide.croquet.models.cascade.ExpressionB
 		return rv;
 	}
 	
-	private static org.lgna.project.ast.AbstractParameter getParameter( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
-		return argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter();
-	}
 	private final org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty;
 	private KeyedBlank( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
-		super( java.util.UUID.fromString( "c9b684e5-9e91-4c38-8cdf-ffce14de6a18" ), 
-				getParameter( argumentListProperty ).getValueType(), 
-				getParameter( argumentListProperty ).getDetails() 
-		);
+		super( java.util.UUID.fromString( "c9b684e5-9e91-4c38-8cdf-ffce14de6a18" ) );
 		this.argumentListProperty = argumentListProperty;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > valueType = getParameter( this.argumentListProperty ).getValueType();
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.JavaKeyedArgument > blankNode ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType();
 		org.lgna.project.ast.AbstractType< ?,?,? > keywordFactoryType = valueType.getKeywordFactoryType();
 		if( keywordFactoryType != null ) {
 			Class<?> cls = ((org.lgna.project.ast.JavaType)keywordFactoryType).getClassReflectionProxy().getReification();
