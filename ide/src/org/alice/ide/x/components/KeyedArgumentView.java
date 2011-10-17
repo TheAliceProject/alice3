@@ -50,32 +50,8 @@ public class KeyedArgumentView extends ArgumentView< org.lgna.project.ast.JavaKe
 	public KeyedArgumentView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
 		super( factory, keyedArgument );
 	}
-	
 	@Override
 	protected String getName() {
 		return this.getArgument().keyMethod.getValue().getName();
 	}
-//	private void handleMethodInvocation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-//		org.lgna.project.ast.Expression expression = methodInvocation.expression.getValue();
-//		if( expression instanceof org.lgna.project.ast.TypeExpression ) {
-//			org.lgna.project.ast.TypeExpression typeExpression = (org.lgna.project.ast.TypeExpression)expression;
-//			boolean isExpressionComponentDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired();
-//			if( isExpressionComponentDesired ) {
-//				this.internalAddComponent(  factory.createExpressionPane( typeExpression ) );
-//			}
-//		} else if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-//			this.handleMethodInvocation( (org.lgna.project.ast.MethodInvocation)expression );
-//		} else {
-//			this.internalAddComponent( new org.lgna.croquet.components.Label( "todo: handle expression: " + expression ) );
-//		}
-//		this.internalAddComponent( new org.lgna.croquet.components.Label( methodInvocation.method.getValue().getName() ) );
-//	}
-//	@Override
-//	protected void internalRefresh() {
-//		for( org.lgna.project.ast.JavaKeyMethodExpressionPair keyExpressionPair : this.keyedArguments.keyExpressionPairs ) {
-//			this.internalAddComponent( new org.lgna.croquet.components.Label( keyExpressionPair.keyMethod.getName() + ": " ) );
-//			this.internalAddComponent( this.factory.createExpressionPropertyPane( keyExpressionPair.expression ) );
-//		}
-//		this.internalAddComponent( new org.lgna.croquet.components.Label( "more:" ) );
-//	}
 }

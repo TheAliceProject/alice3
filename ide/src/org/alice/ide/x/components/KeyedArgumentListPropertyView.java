@@ -51,6 +51,11 @@ public class KeyedArgumentListPropertyView extends ArgumentListPropertyView< org
 		super( factory, argumentListProperty );
 	}
 	@Override
+	protected java.lang.String getInitialPrefix() {
+		//todo: check to see if requiredParameters.size() > 0
+		return SEPARATOR;
+	}
+	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
 		if( org.alice.ide.ast.AstUtilities.isKeyedArgumentListPropertyComplete( this.getArgumentListProperty() ) ) {
