@@ -41,12 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.edits.ast.cascade.keyed;
+package org.alice.ide.croquet.edits.ast.keyed;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.ast.cascade.keyed.KeyedMoreCascade > {
+public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade > {
 	private final org.lgna.project.ast.JavaKeyedArgument keyedArgument;
 	public AddKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
 		super( completionStep );

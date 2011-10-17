@@ -53,9 +53,6 @@ public class InstanceCreation extends Expression implements ArgumentOwner {
 			return ( this.getValue() instanceof AnonymousUserConstructor ) == false; 
 		}
 	};
-	public org.lgna.project.ast.DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
-		return this.constructor;
-	}
 	public SimpleArgumentListProperty arguments = new SimpleArgumentListProperty( this );
 	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
@@ -79,6 +76,18 @@ public class InstanceCreation extends Expression implements ArgumentOwner {
 //	public InstanceCreation( java.lang.reflect.Constructor< ? > cnstrctr, Argument... arguments ) {
 //		this( ConstructorDeclaredInJava.get( cnstrctr ), arguments );
 //	}
+	public org.lgna.project.ast.DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
+		return this.constructor;
+	}
+	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
+		return this.arguments;
+	}
+	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
+		return this.variableArguments;
+	}
+	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
+		return this.keyedArguments;
+	}
 	@Override
 	public AbstractType<?,?,?> getType() {
 		return constructor.getValue().getDeclaringType();

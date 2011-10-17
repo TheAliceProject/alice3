@@ -41,35 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.keyed;
+package org.alice.ide.croquet.edits.ast.keyed;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedMoreCascade extends org.lgna.croquet.Cascade<org.lgna.project.ast.JavaKeyedArgument > {
-	private static java.util.Map< org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument >, KeyedMoreCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized KeyedMoreCascade getInstance( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
-		KeyedMoreCascade rv = map.get( argumentListProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new KeyedMoreCascade( argumentListProperty );
-			map.put( argumentListProperty, rv );
-		}
-		return rv;
+public class RemoveKeyedArgumentEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.ast.keyed.RemoveKeyedArgumentOperation > {
+	public RemoveKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
+		super( completionStep );
 	}
-	private final org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty;
-	private KeyedMoreCascade( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "bd6e2ff6-f27a-4197-88a2-af25111eab40" ), org.lgna.project.ast.JavaKeyedArgument.class, KeyedBlank.getInstance( argumentListProperty ) );
-		this.argumentListProperty = argumentListProperty;
-	}
-	public org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > getArgumentListProperty() {
-		return this.argumentListProperty;
+	public RemoveKeyedArgumentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 	}
 	@Override
-	protected org.alice.ide.croquet.edits.ast.cascade.keyed.AddKeyedArgumentEdit createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.JavaKeyedArgument > completionStep, org.lgna.project.ast.JavaKeyedArgument[] values ) {
-		org.lgna.project.ast.JavaKeyedArgument javaKeyedArgument = values[ 0 ];
-		javaKeyedArgument.parameter.setValue( this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter() );
-		return new org.alice.ide.croquet.edits.ast.cascade.keyed.AddKeyedArgumentEdit( completionStep, javaKeyedArgument );
+	protected final void doOrRedoInternal( boolean isDo ) {
+		int index = this.getModel().getArgumentListProperty().indexOf( this.getModel().getArgument() );
+		this.getModel().getArgumentListProperty().remove( index );
+	}
+	@Override
+	protected final void undoInternal() {
+		this.getModel().getArgumentListProperty().add( this.getModel().getArgument() );
+	}
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "add: " );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getModel().getArgument(), locale );
+		return rv;
 	}
 }

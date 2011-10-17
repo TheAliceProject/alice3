@@ -107,50 +107,7 @@ public class EditableAstI18Factory extends AstI18nFactory {
 	@Override
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( dragModel, statement, statementListProperty );
-		abstractStatementPane.setPopupPrepModel( new org.lgna.croquet.PredeterminedMenuModel(
-				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
-				this.createPopupOperations( abstractStatementPane ) 
-		).getPopupPrepModel() );
+		abstractStatementPane.setPopupPrepModel( org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
 		return abstractStatementPane;
-	}
-	protected java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		org.lgna.project.ast.StatementListProperty property = abstractStatementPane.getOwner();
-		org.lgna.project.ast.Statement statement = abstractStatementPane.getStatement();
-		if( statement instanceof org.lgna.project.ast.Comment ) {
-			//pass
-		} else {
-			rv.add( org.alice.ide.croquet.models.ast.IsStatementEnabledState.getInstance( statement ).getMenuItemPrepModel() );
-		}
-		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-				if( method instanceof org.lgna.project.ast.UserMethod ) {
-					rv.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( method ).getMenuItemPrepModel() );
-				}
-			}
-		}
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( org.alice.ide.croquet.models.ast.DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
-		if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
-			org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
-			rv.add( org.alice.ide.croquet.models.ast.DissolveStatementWithBodyOperation.getInstance( statementWithBody ).getMenuItemPrepModel() );
-			if( statementWithBody instanceof org.lgna.project.ast.DoInOrder ) {
-				org.lgna.project.ast.DoInOrder doInOrder = (org.lgna.project.ast.DoInOrder)statementWithBody;
-				rv.add( org.alice.ide.croquet.models.ast.ConvertDoInOrderToDoTogetherOperation.getInstance( doInOrder ).getMenuItemPrepModel() );
-			} else if( statementWithBody instanceof org.lgna.project.ast.DoTogether ) {
-				org.lgna.project.ast.DoTogether doTogether = (org.lgna.project.ast.DoTogether)statementWithBody;
-				rv.add( org.alice.ide.croquet.models.ast.ConvertDoTogetherToDoInOrderOperation.getInstance( doTogether ).getMenuItemPrepModel() );
-			}
-		} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
-			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
-			//todo: dissolve to if, dissolve to else
-		}
-		return rv;
-	}
-	private java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		return this.updatePopupOperations( new java.util.LinkedList< org.lgna.croquet.StandardMenuItemPrepModel >(), abstractStatementPane );
 	}
 }

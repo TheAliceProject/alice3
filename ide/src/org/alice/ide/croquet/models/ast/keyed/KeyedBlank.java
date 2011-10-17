@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.keyed;
+package org.alice.ide.croquet.models.ast.keyed;
 
 /**
  * @author Dennis Cosgrove
