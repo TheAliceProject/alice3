@@ -130,7 +130,8 @@ public class Decoder {
 					rv = decode( xmlValue, map );
 				} catch( RuntimeException re ) {
 					re.printStackTrace();
-					rv = new NullLiteral();
+					//rv = new NullLiteral();
+					rv = null;
 				}
 			} else if( tagName.equals( "collection" ) ) {
 				java.util.Collection collection = (java.util.Collection)newInstance( xmlValue );
