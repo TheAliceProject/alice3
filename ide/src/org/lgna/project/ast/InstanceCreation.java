@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceCreation extends Expression {
+public class InstanceCreation extends Expression implements ArgumentOwner {
 	//todo: AbstractConstructor -> Expression<AbstractConstructor>
 	public DeclarationProperty< AbstractConstructor > constructor = new DeclarationProperty< AbstractConstructor >( this ) {
 		@Override
@@ -53,16 +53,28 @@ public class InstanceCreation extends Expression {
 			return ( this.getValue() instanceof AnonymousUserConstructor ) == false; 
 		}
 	};
+	public org.lgna.project.ast.DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
+		return this.constructor;
+	}
 	public SimpleArgumentListProperty arguments = new SimpleArgumentListProperty( this );
 	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 
 	public InstanceCreation() {
 	}
-	public InstanceCreation( AbstractConstructor constructor, SimpleArgument... arguments ) {
+	public InstanceCreation( AbstractConstructor constructor, SimpleArgument... requiredArguments ){
+		this( constructor, requiredArguments, null, null );
+	}
+	public InstanceCreation( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
 		assert constructor != null;
 		this.constructor.setValue( constructor );
-		this.arguments.add( arguments );
+		this.arguments.add( requiredArguments );
+		if( variableArguments != null ) {
+			this.variableArguments.add( variableArguments );
+		}
+		if( keyedArguments != null ) {
+			this.keyedArguments.add( keyedArguments );
+		}
 	}
 //	public InstanceCreation( java.lang.reflect.Constructor< ? > cnstrctr, Argument... arguments ) {
 //		this( ConstructorDeclaredInJava.get( cnstrctr ), arguments );

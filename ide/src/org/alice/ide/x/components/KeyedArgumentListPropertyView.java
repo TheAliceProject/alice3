@@ -40,14 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.pattern.Nameable, edu.cmu.cs.dennisc.property.InstancePropertyOwner {
-	public java.util.UUID getUUID();
-	public Node getParent();
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
+public class KeyedArgumentListPropertyView extends ArgumentListPropertyView< org.lgna.project.ast.JavaKeyedArgument > {
+	public KeyedArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
+		super( factory, argumentListProperty );
+	}
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		this.addComponent( new org.alice.ide.croquet.PopupButton( org.alice.ide.croquet.models.ast.cascade.keyed.KeyedMoreCascade.getInstance( this.getArgumentListProperty() ).getRoot().getPopupPrepModel() ) );
+	}
 }

@@ -40,14 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+
+package org.alice.ide.croquet.models.ast.cascade.keyed;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.pattern.Nameable, edu.cmu.cs.dennisc.property.InstancePropertyOwner {
-	public java.util.UUID getUUID();
-	public Node getParent();
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
+public class KeyedMoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
+	private static java.util.Map< org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument >, KeyedMoreCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized KeyedMoreCascade getInstance( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
+		KeyedMoreCascade rv = map.get( argumentListProperty );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new KeyedMoreCascade( argumentListProperty );
+			map.put( argumentListProperty, rv );
+		}
+		return rv;
+	}
+	private final org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty;
+	private KeyedMoreCascade( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "bd6e2ff6-f27a-4197-88a2-af25111eab40" ), org.lgna.project.ast.Expression.class, KeyedBlank.getInstance( argumentListProperty ) );
+		this.argumentListProperty = argumentListProperty;
+	}
+	@Override
+	protected org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit(org.lgna.croquet.history.CascadeCompletionStep<org.lgna.project.ast.Expression> step, org.lgna.project.ast.Expression[] values) {
+		return null;
+	}
 }

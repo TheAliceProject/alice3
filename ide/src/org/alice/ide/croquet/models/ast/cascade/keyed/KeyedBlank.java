@@ -40,14 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+
+package org.alice.ide.croquet.models.ast.cascade.keyed;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.pattern.Nameable, edu.cmu.cs.dennisc.property.InstancePropertyOwner {
-	public java.util.UUID getUUID();
-	public Node getParent();
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
+public class KeyedBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+	private static java.util.Map< org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument >, KeyedBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized KeyedBlank getInstance( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
+		KeyedBlank rv = map.get( argumentListProperty );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new KeyedBlank( argumentListProperty );
+			map.put( argumentListProperty, rv );
+		}
+		return rv;
+	}
+	private final org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty;
+	private KeyedBlank( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
+		super( java.util.UUID.fromString( "c9b684e5-9e91-4c38-8cdf-ffce14de6a18" ), 
+				argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType(), 
+				argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getDetails() 
+		);
+		this.argumentListProperty = argumentListProperty;
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType();
+		org.lgna.project.ast.AbstractType< ?,?,? > keywordFactoryType = valueType.getKeywordFactoryType();
+		if( keywordFactoryType != null ) {
+			Class<?> cls = ((org.lgna.project.ast.JavaType)keywordFactoryType).getClassReflectionProxy().getReification();
+			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
+				org.lgna.project.ast.JavaType returnType = org.lgna.project.ast.JavaType.getInstance( mthd.getReturnType() );
+				if( returnType == valueType ) {
+					rv.add( org.alice.ide.croquet.models.cascade.KeywordMenuModel.getInstance( org.lgna.project.ast.JavaMethod.getInstance( mthd ) ) );
+				}
+			}
+		}
+		return rv;
+	}
 }

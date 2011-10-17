@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class KeyedArgumentListProperty extends ArgumentListProperty< JavaKeyedArgument > {
-	public KeyedArgumentListProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+	public KeyedArgumentListProperty( ArgumentOwner owner ) {
 		super( owner );
 	}
 }

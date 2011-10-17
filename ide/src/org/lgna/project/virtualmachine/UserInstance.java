@@ -80,7 +80,7 @@ public class UserInstance {
 		
 		ConstructorBlockStatement constructorBlockStatement = constructor.body.getValue();
 		ConstructorInvocationStatement constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
-		AbstractConstructor nextConstructor = constructorInvocationStatement.contructor.getValue();
+		AbstractConstructor nextConstructor = constructorInvocationStatement.constructor.getValue();
 		java.util.Map<org.lgna.project.ast.AbstractParameter,Object> stackMap = new java.util.HashMap< org.lgna.project.ast.AbstractParameter, Object >();
 		for( int i=0; i<arguments.length; i++ ) {
 			stackMap.put( constructor.parameters.get( i ), arguments[ i ] );

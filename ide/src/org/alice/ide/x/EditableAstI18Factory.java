@@ -63,6 +63,19 @@ public class EditableAstI18Factory extends AstI18nFactory {
 	}
 	
 	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
+		org.lgna.project.ast.ArgumentOwner owner = argumentListProperty.getOwner();
+		org.lgna.project.ast.DeclarationProperty< ? extends org.lgna.project.ast.AbstractCode > codeProperty = owner.getParameterOwnerProperty();
+		org.lgna.project.ast.AbstractCode code = codeProperty.getValue();
+		if( code.getKeyedParameter() != null ) {
+			return new org.alice.ide.x.components.KeyedArgumentListPropertyView( this, argumentListProperty );
+		} else {
+			return new org.lgna.croquet.components.Label();
+		}
+		
+	}
+
+	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createIdeExpressionPane( org.alice.ide.ast.IdeExpression ideExpression ) {
 		throw new RuntimeException( ideExpression.toString() );
 	}
@@ -72,7 +85,7 @@ public class EditableAstI18Factory extends AstI18nFactory {
 		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
+	protected org.lgna.croquet.components.JComponent< ? > createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
 		return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override

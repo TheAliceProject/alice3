@@ -118,7 +118,8 @@ public abstract class AstI18nFactory extends I18nFactory {
 	protected org.lgna.croquet.components.JComponent< ? > createStatementListPropertyPane( org.lgna.project.ast.StatementListProperty statementListProperty ) {
 		return new org.alice.ide.x.components.StatementListPropertyView( this, statementListProperty );
 	}
-	protected abstract org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty );
+	protected abstract org.lgna.croquet.components.JComponent< ? > createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty );
+	protected abstract org.lgna.croquet.components.JComponent< ? > createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty );
 	protected org.lgna.croquet.components.JComponent< ? > createExpressionListPropertyPane( org.lgna.project.ast.ExpressionListProperty expressionListProperty ) {
 		return new org.alice.ide.x.components.ExpressionListPropertyPane( this, expressionListProperty );
 	}
@@ -231,7 +232,9 @@ public abstract class AstI18nFactory extends I18nFactory {
 						if( property instanceof org.lgna.project.ast.StatementListProperty ) {
 							rv = this.createStatementListPropertyPane( (org.lgna.project.ast.StatementListProperty)property );
 						} else if( property instanceof org.lgna.project.ast.SimpleArgumentListProperty ) {
-							rv = this.createArgumentListPropertyPane( (org.lgna.project.ast.SimpleArgumentListProperty)property );
+							rv = this.createSimpleArgumentListPropertyPane( (org.lgna.project.ast.SimpleArgumentListProperty)property );
+						} else if( property instanceof org.lgna.project.ast.KeyedArgumentListProperty ) {
+							rv = this.createKeyedArgumentListPropertyPane( (org.lgna.project.ast.KeyedArgumentListProperty)property );
 						} else if( property instanceof org.lgna.project.ast.ExpressionListProperty ) {
 							rv = this.createExpressionListPropertyPane( (org.lgna.project.ast.ExpressionListProperty)property );
 						} else {

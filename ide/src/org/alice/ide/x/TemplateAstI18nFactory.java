@@ -60,7 +60,11 @@ public class TemplateAstI18nFactory extends IdeAstI18nFactory {
 		return this.createExpressionPane( expressionProperty.getValue() );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
+	protected org.lgna.croquet.components.JComponent< ? > createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
 		return new org.alice.ide.memberseditor.ArgumentListPropertyPane( this, argumentListProperty );
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
+		return new org.lgna.croquet.components.Label();
 	}
 }

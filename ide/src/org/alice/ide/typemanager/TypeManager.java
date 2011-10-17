@@ -111,7 +111,7 @@ public class TypeManager {
 			org.lgna.project.ast.ConstructorBlockStatement body = new org.lgna.project.ast.ConstructorBlockStatement();
 			org.lgna.project.ast.SuperConstructorInvocationStatement superConstructorInvocationStatement = new org.lgna.project.ast.SuperConstructorInvocationStatement();
 
-			superConstructorInvocationStatement.contructor.setValue( superConstructor );
+			superConstructorInvocationStatement.constructor.setValue( superConstructor );
 			
 			final int N = javaParameters.size();
 			for( int i=0; i<N; i++ ) {

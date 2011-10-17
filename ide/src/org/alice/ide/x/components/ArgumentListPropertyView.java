@@ -46,7 +46,7 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentListPropertyView< N extends org.lgna.project.ast.AbstractArgument > extends LineAxisRefreshPanel {
+public abstract class ArgumentListPropertyView< N extends org.lgna.project.ast.AbstractArgument > extends LineAxisRefreshPanel {
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final org.lgna.project.ast.ArgumentListProperty< N > argumentListProperty;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< N > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< N >() {
@@ -61,6 +61,13 @@ public class ArgumentListPropertyView< N extends org.lgna.project.ast.AbstractAr
 	public ArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty< N > argumentListProperty ) {
 		this.factory = factory;
 		this.argumentListProperty = argumentListProperty;
+	}
+	
+	public org.alice.ide.x.AstI18nFactory getFactory() {
+		return this.factory;
+	}
+	public org.lgna.project.ast.ArgumentListProperty< N > getArgumentListProperty() {
+		return this.argumentListProperty;
 	}
 	
 	@Override

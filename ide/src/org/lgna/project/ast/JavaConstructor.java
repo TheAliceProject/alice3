@@ -103,7 +103,7 @@ public class JavaConstructor extends AbstractConstructor {
 	@Override
 	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		if( this.variableOrKeyedParameter != null ) {
-			if( variableOrKeyedParameter.getValueType().getKeywordFactoryType() != null ) {
+			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
 				return this.variableOrKeyedParameter;
 			} else {
 				return null;
@@ -115,7 +115,7 @@ public class JavaConstructor extends AbstractConstructor {
 	@Override
 	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
 		if( this.variableOrKeyedParameter != null ) {
-			if( variableOrKeyedParameter.getValueType().getKeywordFactoryType() != null ) {
+			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
 				return null;
 			} else {
 				return this.variableOrKeyedParameter;

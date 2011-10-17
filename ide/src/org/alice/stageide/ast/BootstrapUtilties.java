@@ -54,7 +54,7 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.NamedUserConstructor constructor = new org.lgna.project.ast.NamedUserConstructor();
 		org.lgna.project.ast.ConstructorBlockStatement constructorBlockStatement = new org.lgna.project.ast.ConstructorBlockStatement();
 		org.lgna.project.ast.SuperConstructorInvocationStatement superConstructorInvocationStatement = new org.lgna.project.ast.SuperConstructorInvocationStatement();
-		superConstructorInvocationStatement.contructor.setValue( superType.getDeclaredConstructor() );
+		superConstructorInvocationStatement.constructor.setValue( superType.getDeclaredConstructor() );
 		constructorBlockStatement.constructorInvocationStatement.setValue( superConstructorInvocationStatement );
 		constructor.body.setValue( constructorBlockStatement );
 		rv.constructors.add( constructor );

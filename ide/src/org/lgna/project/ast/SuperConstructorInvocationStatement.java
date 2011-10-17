@@ -52,4 +52,7 @@ public class SuperConstructorInvocationStatement extends ConstructorInvocationSt
 	public SuperConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument... arguments ){
 		super( constructor, arguments );
 	}
+	public SuperConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
+		super( constructor, requiredArguments, variableArguments, keyedArguments );
+	}
 }

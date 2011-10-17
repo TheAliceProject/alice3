@@ -51,5 +51,8 @@ public abstract class LineAxisRefreshPanel extends org.alice.ide.croquet.compone
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 	}
+	public void addComponent( org.lgna.croquet.components.Component< ? > component ) {
+		this.internalAddComponent( component );
+	}
 }
 

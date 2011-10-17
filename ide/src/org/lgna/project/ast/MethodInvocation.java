@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocation extends Expression {
+public class MethodInvocation extends Expression implements ArgumentOwner {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
@@ -60,7 +60,10 @@ public class MethodInvocation extends Expression {
 
 	public MethodInvocation() {
 	}
-	public MethodInvocation( Expression expression, AbstractMethod method, SimpleArgument... arguments ){
+	public MethodInvocation( Expression expression, AbstractMethod method, SimpleArgument... requiredArguments ){
+		this( expression, method, requiredArguments, null, null );
+	}
+	public MethodInvocation( Expression expression, AbstractMethod method, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ){
 		if( expression instanceof NullLiteral ) {
 			//pass
 		} else {
@@ -75,11 +78,20 @@ public class MethodInvocation extends Expression {
 		}
 		this.expression.setValue( expression );
 		this.method.setValue( method );
-		this.arguments.add( arguments );
+		this.arguments.add( requiredArguments );
+		if( variableArguments != null ) {
+			this.variableArguments.add( variableArguments );
+		}
+		if( keyedArguments != null ) {
+			this.keyedArguments.add( keyedArguments );
+		}
+	}
+	public DeclarationProperty< ? extends AbstractCode > getParameterOwnerProperty() {
+		return this.method;
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {
-		return method.getValue().getReturnType();
+		return this.method.getValue().getReturnType();
 	}
 	
 	public boolean isValid() {

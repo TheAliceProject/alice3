@@ -52,4 +52,7 @@ public class ThisConstructorInvocationStatement extends ConstructorInvocationSta
 	public ThisConstructorInvocationStatement( NamedUserConstructor constructor, SimpleArgument... arguments ){
 		super( constructor, arguments );
 	}
+	public ThisConstructorInvocationStatement( NamedUserConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
+		super( constructor, requiredArguments, variableArguments, keyedArguments );
+	}
 }

@@ -46,8 +46,8 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ConstructorInvocationStatement extends Statement {
-	public DeclarationProperty< AbstractConstructor > contructor = new DeclarationProperty< AbstractConstructor >( this ) {
+public abstract class ConstructorInvocationStatement extends Statement implements ArgumentOwner {
+	public DeclarationProperty< AbstractConstructor > constructor = new DeclarationProperty< AbstractConstructor >( this ) {
 		@Override
 		public boolean isReference() {
 			return true;
@@ -58,9 +58,21 @@ public abstract class ConstructorInvocationStatement extends Statement {
 	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 	public ConstructorInvocationStatement() {
 	}
-	public ConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument[] arguments ){
+	public ConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument... requiredArguments ){
+		this( constructor, requiredArguments, null, null );
+	}
+	public ConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
 		assert constructor != null;
-		this.contructor.setValue( constructor );
-		this.arguments.add( arguments );
+		this.constructor.setValue( constructor );
+		this.arguments.add( requiredArguments );
+		if( variableArguments != null ) {
+			this.variableArguments.add( variableArguments );
+		}
+		if( keyedArguments != null ) {
+			this.keyedArguments.add( keyedArguments );
+		}
+	}
+	public DeclarationProperty< ? extends AbstractCode > getParameterOwnerProperty() {
+		return this.constructor;
 	}
 }
