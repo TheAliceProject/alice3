@@ -417,11 +417,30 @@ public abstract class ProjectUtilities {
 		}
 		return null;
 	}
+	
+	private static edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > getNode( org.lgna.project.ast.NamedUserType type, edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > root ) {
+		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > rv = root.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( type );
+			org.lgna.project.ast.AbstractType< ?,?,? > superType = type.getSuperType();
+			if( superType instanceof org.lgna.project.ast.NamedUserType ) {
+				edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > superNode = getNode( (org.lgna.project.ast.NamedUserType)superType, root );
+				superNode.addChild( rv );
+			} else {
+				root.addChild( rv );
+			}
+		}
+		return rv;
+	}
 
-//	public static java.util.List< org.lgna.project.ast.NamedUserType > getTypes( org.lgna.project.Project project ) {
-//		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.NamedUserType > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
-//		final org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
-//		programType.crawl( crawler, true );
-//		return crawler.getList();
-//	}
+	public static edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > getNamedUserTypesAsTree( org.lgna.project.Project project ) {
+		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > root = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( null );
+		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
+		for( org.lgna.project.ast.NamedUserType type : types ) {
+			getNode( type, root );
+		}
+		return root;
+	}
 }

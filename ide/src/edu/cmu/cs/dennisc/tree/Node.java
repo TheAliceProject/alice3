@@ -41,38 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.typeeditor;
+package edu.cmu.cs.dennisc.tree;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.NamedUserType > {
-	private static class SingletonHolder {
-		private static TypeState instance = new TypeState();
-	}
-	public static TypeState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private TypeState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "99019283-9a9e-4500-95a4-c4748d762137" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.NamedUserType.class ), null );
-	}
-
-	private java.util.List< org.lgna.croquet.CascadeBlankChild > addTypeFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node ) {
-		rv.add( TypeFillIn.getInstance( node.getValue() ) );
-		for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > child : node.getChildren() ) {
-			addTypeFillIns( rv, child );
-		}
-		return rv;
-	}
-	
-	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.NamedUserType > blankNode ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
-		for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node : root.getChildren() ) {
-			addTypeFillIns( rv, node );
-		}
-		return rv;
-	}
+public interface Node<T> {
+	public T getValue();
+	public Iterable<? extends Node<T>> getChildren();
+	public boolean contains( T value );
+	public Node<T> get( T value );
 }

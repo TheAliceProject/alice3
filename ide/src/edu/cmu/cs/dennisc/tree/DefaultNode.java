@@ -41,38 +41,57 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.typeeditor;
+package edu.cmu.cs.dennisc.tree;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.NamedUserType > {
-	private static class SingletonHolder {
-		private static TypeState instance = new TypeState();
+public class DefaultNode< T > implements Node< T > {
+	private final T value;
+	private final java.util.List< DefaultNode<T> > children;
+	public static <T> DefaultNode< T > createUnsafeInstance( T value ) {
+		return new DefaultNode< T >( value, false );
 	}
-	public static TypeState getInstance() {
-		return SingletonHolder.instance;
+	public static <T> DefaultNode< T > createSafeInstance( T value ) {
+		return new DefaultNode< T >( value, true );
 	}
-	private TypeState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "99019283-9a9e-4500-95a4-c4748d762137" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.NamedUserType.class ), null );
-	}
-
-	private java.util.List< org.lgna.croquet.CascadeBlankChild > addTypeFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node ) {
-		rv.add( TypeFillIn.getInstance( node.getValue() ) );
-		for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > child : node.getChildren() ) {
-			addTypeFillIns( rv, child );
+	private DefaultNode( T value, boolean isCopyOnWrite ) {
+		this.value = value;
+		if( isCopyOnWrite ) {
+			this.children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		} else {
+			this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		}
+	}
+	public void addChild( DefaultNode<T> node ) {
+		this.children.add( node );
+	}
+	public DefaultNode< T > addChild( T child ) {
+		DefaultNode< T > rv = new DefaultNode< T >( child, this.children instanceof java.util.concurrent.CopyOnWriteArrayList );
+		this.addChild( rv );
 		return rv;
+	}
+	public T getValue() {
+		return this.value;
+	}
+	public Iterable< DefaultNode< T > > getChildren() {
+		return this.children;
 	}
 	
-	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.NamedUserType > blankNode ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
-		for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node : root.getChildren() ) {
-			addTypeFillIns( rv, node );
+	public boolean contains(T value) {
+		return get( value ) != null;
+	}
+	public edu.cmu.cs.dennisc.tree.DefaultNode<T> get(T value) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, value ) ) {
+			return this;
+		} else {
+			for( DefaultNode<T> child : this.children ) {
+				DefaultNode<T> rv = child.get( value );
+				if( rv != null ) {
+					return rv;
+				}
+			}
+			return null;
 		}
-		return rv;
 	}
 }
