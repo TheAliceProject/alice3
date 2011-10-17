@@ -42,14 +42,24 @@
  */
 package org.alice.stageide.sceneeditor;
 
+
+import org.alice.ide.ast.CurrentThisExpression;
+import org.alice.ide.common.SelectedInstanceFactoryExpressionPanel;
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
+import org.alice.ide.instancefactory.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.SnapGrid;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.snap.SnapState;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.components.AbstractButton;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.croquet.components.HorizontalSplitPane;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.Accessible;
+import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.UserField;
@@ -58,8 +68,10 @@ import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.BookmarkCameraMarker;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.ObjectMarker;
+import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.MarkerImp;
 import org.lgna.story.implementation.ProgramImp;
+import org.lgna.story.implementation.TransformableImp;
 
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
@@ -134,6 +146,112 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 	};
 	
+	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = true;
+			org.lgna.project.ast.Expression expression = nextValue != null ? nextValue.createTransientExpression() : null;
+			if (expression instanceof FieldAccess)
+			{
+				FieldAccess fa = (FieldAccess)expression;
+				AbstractField field = fa.field.getValue();
+				if (field instanceof UserField)
+				{
+					UserField uf = (UserField)field;
+					StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
+				}
+			}
+			else if (expression instanceof CurrentThisExpression)
+			{
+				UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
+				StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
+			}
+			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = false;
+		}
+	};
+	
+//	private static class FieldRadioButtons extends org.lgna.croquet.components.CustomRadioButtons< org.lgna.project.ast.Accessible > {
+//		private static final int SUB_FIELD_LEFT_INSET = 10;
+//		private static final int INTRA_FIELD_PAD = 1;
+//		private javax.swing.SpringLayout springLayout;
+//		public FieldRadioButtons( ListSelectionState<org.lgna.project.ast.Accessible> model ) {
+//			super( model );
+//		}
+//		@Override
+//		protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+//			this.springLayout = new javax.swing.SpringLayout() {
+//				@Override
+//				public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) {
+//					java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
+//					for( java.awt.Component component : parent.getComponents() ) {
+//						java.awt.Dimension componentSize = component.getPreferredSize();
+//						rv.width = Math.max( rv.width, componentSize.width );
+//						rv.height += componentSize.height;
+//						rv.height += INTRA_FIELD_PAD;
+//					}
+//					rv.width += SUB_FIELD_LEFT_INSET;
+//					rv.width += INSET;
+//					rv.height += INSET;
+//					return rv;
+//				}
+//			};
+//			return this.springLayout;
+//		}
+//		
+//		@Override
+//		protected org.lgna.croquet.components.BooleanStateButton< ? > createBooleanStateButton( org.lgna.project.ast.Accessible item, BooleanState booleanState ) {
+//			return new FieldTile( item, booleanState );
+//		}
+//		
+//		private org.lgna.croquet.components.Component<?> previousComponent;
+//		private org.lgna.croquet.components.Component<?> rootComponent;
+//		@Override
+//		protected void removeAllDetails() {
+//			this.internalRemoveAllComponents();
+//		}
+//		@Override
+//		protected void addPrologue(int count) {
+//			this.previousComponent = null;
+//			this.rootComponent = null;
+//		}
+//		
+//		
+////		@Override
+////		protected void addItem( org.lgna.croquet.components.RadioButtonItemDetails<org.lgna.project.ast.Accessible> itemDetails) {
+////			AbstractButton<?,?> button = itemDetails.getButton();
+////			if( this.previousComponent != null ) {
+////				this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, button.getAwtComponent(), INTRA_FIELD_PAD, javax.swing.SpringLayout.SOUTH, this.previousComponent.getAwtComponent() );
+////				this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, button.getAwtComponent(), SUB_FIELD_LEFT_INSET, javax.swing.SpringLayout.WEST, this.rootComponent.getAwtComponent() );
+////				this.internalAddComponent(button);
+////			} else {
+////				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( this.getAwtComponent(), button.getAwtComponent(), INSET );
+////				this.rootComponent = button;
+////			}
+////			this.previousComponent = button;
+////		}
+//		@Override
+//		protected void addEpilogue() {
+//			this.previousComponent = null;
+//			this.rootComponent = null;
+//		}
+//		
+//		public FieldTile getFieldTileForField(org.lgna.project.ast.UserField field)
+//		{
+//			for (org.lgna.croquet.components.ItemSelectablePanel.ItemDetails item : this.getAllItemDetails())
+//			{
+//				FieldTile fieldTile = (FieldTile)item.getButton();
+//				Accessible itemField = fieldTile.getAccessible();
+//				if (itemField == field)
+//				{
+//					return fieldTile;
+//				}
+//			}
+//			return null;
+//		}
+//	}
+//	
+	
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
@@ -143,6 +261,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImplementation;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.components.PushButton expandCollapseButton;
+	
+	private boolean selectionIsFromManipulator = false;
+	private boolean selectionIsFromInstanceSelector = false;
+	private boolean selectionIsFromMain = false;
 	
 	protected SnapGrid snapGrid;
 	
@@ -158,18 +280,28 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	@Override
 	public void setSelectedField(UserType<?> declaringType, UserField field) {
-		super.setSelectedField(declaringType, field);
-		this.setActiveFieldOnPropertyPanel(field);
-	}
-	
-	private void setActiveFieldOnPropertyPanel(UserField field)
-	{	
-		getPropertyPanel().setField(field);
-//		this.propertiesPanel.removeAllComponents();
-//		for (org.lgna.project.ast.JavaMethod getter : getterMethods)
-//		{
-//			this.propertiesPanel.addComponent(new Label(getter.getName()));
-//		}
+		if (!this.selectionIsFromMain)
+		{
+			this.selectionIsFromMain = true;
+			super.setSelectedField(declaringType, field);
+			getPropertyPanel().setField(field);
+			if (!this.selectionIsFromInstanceSelector)
+			{
+				if (field == this.getActiveSceneField() )
+				{
+					InstanceFactoryState.getInstance().setValueTransactionlessly(org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON);
+				}
+				else if (field != null)
+				{
+					InstanceFactoryState.getInstance().setValueTransactionlessly(org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance(field));
+				}
+			}
+			if (!this.selectionIsFromManipulator)
+			{
+				this.globalDragAdapter.setSelectedImplementation(this.getInstanceInJavaVMForField(field, TransformableImp.class));
+			}
+			this.selectionIsFromMain = false;
+		}
 	}
 	
 	protected void setSceneCamera(org.lgna.project.ast.UserField cameraField)
@@ -230,6 +362,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return ObjectPropertiesTab.getInstance().getMainComponent();
 	}
 	
+	private void handleManipulatorSelection(org.alice.interact.event.SelectionEvent e)
+	{
+		this.selectionIsFromManipulator = true;
+		EntityImp imp = e.getTransformable();
+		if (imp != null)
+		{
+			UserField field = this.getFieldForInstanceInJavaVM(imp.getAbstraction());
+			this.setSelectedField(field.getDeclaringType(), field);
+		}
+		this.selectionIsFromManipulator = false;
+	}
+	
 	@Override
 	protected void initializeComponents() {
 		if( this.globalDragAdapter != null ) {
@@ -243,8 +387,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);
 			SnapState.getInstance().getSnapGridSpacingState().addAndInvokeValueObserver(this.snapGridSpacingObserver);
 			
+			InstanceFactoryState.getInstance().addAndInvokeValueObserver(this.instanceFactorySelectionObserver);
+			
 			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter(this);
-//			this.globalDragAdapter.setSnapState(this.snapState);
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 			this.onscreenLookingGlass.addLookingGlassListener(this);
 			this.globalDragAdapter.setAnimator( animator );
@@ -257,13 +402,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			
 			doCameraDependentInitialization();
 			
-//			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
-//				public void selecting( org.alice.interact.event.SelectionEvent e ) {
-//				}
-//				public void selected( org.alice.interact.event.SelectionEvent e ) {
-//					MoveAndTurnSceneEditor.this.handleSelectionEvent( e );
-//				}
-//			} );
+			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
+				public void selecting( org.alice.interact.event.SelectionEvent e ) {
+				}
+				public void selected( org.alice.interact.event.SelectionEvent e ) {
+					StorytellingSceneEditor.this.handleManipulatorSelection( e );
+				}
+			} );
 //			
 			
 //			this.sidePane = new SidePane(this);
