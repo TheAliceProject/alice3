@@ -60,6 +60,10 @@ public class JavaKeyedArgument extends AbstractArgument {
 		this.keyMethod.setValue( keyMethod );
 	}
 	@Override
+	protected AbstractType< ?, ?, ? > getExpressionTypeForParameterType( AbstractType< ?, ?, ? > parameterType ) {
+		return parameterType.getComponentType();
+	}
+	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		super.appendRepr( rv, locale );
 		NodeUtilities.safeAppendRepr( rv, this.keyMethod.getValue(), locale );

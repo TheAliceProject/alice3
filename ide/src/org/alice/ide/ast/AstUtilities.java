@@ -46,6 +46,50 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class AstUtilities {
+
+	private static boolean isValidMethod( java.lang.reflect.Method mthd, org.lgna.project.ast.AbstractType< ?,?,? > valueType ) {
+		int modifiers = mthd.getModifiers();
+		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers )  ) {
+			return valueType.isAssignableFrom( mthd.getReturnType() ); 
+		} else {
+			return false;
+		}
+	}
+	public static Iterable< org.lgna.project.ast.JavaMethod > getKeyMethods( org.lgna.project.ast.AbstractParameter parameter ) {
+		java.util.List< org.lgna.project.ast.JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.lgna.project.ast.AbstractType< ?,?,? > valueType = parameter.getValueType().getComponentType();
+		org.lgna.project.ast.AbstractType< ?,?,? > keywordFactoryType = valueType.getKeywordFactoryType();
+		if( keywordFactoryType != null ) {
+			Class<?> cls = ((org.lgna.project.ast.JavaType)keywordFactoryType).getClassReflectionProxy().getReification();
+			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
+				if( isValidMethod( mthd, valueType ) ) {
+					org.lgna.project.ast.JavaMethod keyMethod = org.lgna.project.ast.JavaMethod.getInstance( mthd );
+					rv.add( keyMethod );
+				}
+			}
+		}
+		return rv;
+	}
+	public static Iterable< org.lgna.project.ast.JavaMethod > getKeyMethods( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
+		return getKeyMethods( argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter() );
+	}
+	public static boolean isKeyedArgumentListPropertyComplete( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
+		for( org.lgna.project.ast.JavaMethod method : getKeyMethods( argumentListProperty ) ) {
+			boolean isFound = false;
+			for( org.lgna.project.ast.JavaKeyedArgument argument : argumentListProperty ) {
+				if( argument.keyMethod.getValue() == method ) {
+					isFound = true;
+					break;
+				}
+			}
+			if( isFound ) {
+				//pass
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	private static java.util.List< org.lgna.project.ast.JavaMethod > updatePersistentPropertyGetters( java.util.List< org.lgna.project.ast.JavaMethod > rv, org.lgna.project.ast.JavaType javaType ) {
 		for( org.lgna.project.ast.JavaMethod method : javaType.getDeclaredMethods() ) { 

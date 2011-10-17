@@ -75,22 +75,22 @@ public class SceneImplementation extends EntityImp {
 	
 	public final ColorProperty atmosphereColor = new ColorProperty( SceneImplementation.this ) {
 		@Override
-		public edu.cmu.cs.dennisc.color.Color4f getValue() {
-			return SceneImplementation.this.sgBackground.color.getValue();
+		public org.lgna.story.Color getValue() {
+			return org.lgna.story.ImplementationAccessor.createColor( SceneImplementation.this.sgBackground.color.getValue() );
 		}
 		@Override
-		protected void handleSetValue(edu.cmu.cs.dennisc.color.Color4f value) {
-			SceneImplementation.this.sgBackground.color.setValue( value );
+		protected void handleSetValue(org.lgna.story.Color value) {
+			SceneImplementation.this.sgBackground.color.setValue( org.lgna.story.ImplementationAccessor.getColor4f( value ) );
 		}
 	};
 	public final ColorProperty ambientLightColor = new ColorProperty( SceneImplementation.this ) {
 		@Override
-		public edu.cmu.cs.dennisc.color.Color4f getValue() {
-			return SceneImplementation.this.sgAmbientLight.color.getValue();
+		public org.lgna.story.Color getValue() {
+			return org.lgna.story.ImplementationAccessor.createColor( SceneImplementation.this.sgAmbientLight.color.getValue() );
 		}
 		@Override
-		protected void handleSetValue(edu.cmu.cs.dennisc.color.Color4f value) {
-			SceneImplementation.this.sgAmbientLight.color.setValue( value );
+		protected void handleSetValue(org.lgna.story.Color value) {
+			SceneImplementation.this.sgAmbientLight.color.setValue( org.lgna.story.ImplementationAccessor.getColor4f( value ) );
 		}
 	};
 	public final FloatProperty globalLightBrightness = new FloatProperty( SceneImplementation.this ) {

@@ -46,21 +46,21 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ColorProperty extends Property< edu.cmu.cs.dennisc.color.Color4f > {
-	private edu.cmu.cs.dennisc.color.Color4f value;
+public abstract class ColorProperty extends Property< org.lgna.story.Color > {
+//	private org.lgna.story.Color value;
 	public ColorProperty( EntityImp owner ) {
-		super( owner, edu.cmu.cs.dennisc.color.Color4f.class );
+		super( owner, org.lgna.story.Color.class );
 	}
+//	@Override
+//	public org.lgna.story.Color getValue() {
+//		return this.value;
+//	}
+//	@Override
+//	protected void handleSetValue( org.lgna.story.Color value ) {
+//		this.value = value;
+//	}
 	@Override
-	public edu.cmu.cs.dennisc.color.Color4f getValue() {
-		return this.value;
-	}
-	@Override
-	protected void handleSetValue( edu.cmu.cs.dennisc.color.Color4f value ) {
-		this.value = value;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.color.Color4f interpolate( edu.cmu.cs.dennisc.color.Color4f a, edu.cmu.cs.dennisc.color.Color4f b, double portion ) {
-		return edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a, b, (float)portion );
+	protected org.lgna.story.Color interpolate( org.lgna.story.Color a, org.lgna.story.Color b, double portion ) {
+		return org.lgna.story.ImplementationAccessor.createInterpolation( a, b, (float)portion );
 	}
 }

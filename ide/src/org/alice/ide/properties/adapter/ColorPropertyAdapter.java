@@ -48,24 +48,26 @@ import java.util.Locale;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
 import org.alice.ide.swing.icons.ColorIcon;
-import edu.cmu.cs.dennisc.color.Color4f;
+import org.lgna.story.Color;
 
-public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, O> 
+public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<org.lgna.story.Color, O> 
 {
-	public ColorPropertyAdapter(O instance, org.lgna.story.implementation.Property<edu.cmu.cs.dennisc.color.Color4f> property, StandardExpressionState expressionState)
+	public ColorPropertyAdapter(O instance, org.lgna.story.implementation.Property<org.lgna.story.Color> property, StandardExpressionState expressionState)
 	{
 		this("Color", instance, property, expressionState);
 	}
 	
-	public ColorPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<edu.cmu.cs.dennisc.color.Color4f> property, StandardExpressionState expressionState )
+	public ColorPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<org.lgna.story.Color> property, StandardExpressionState expressionState )
 	{
 		super(repr, instance, property, expressionState);
 	}
 	
 	@Override
-	public Color4f getValueCopyIfMutable() 
+	public Color getValueCopyIfMutable() 
 	{
-		return new Color4f(this.getValue());
+		System.err.println( "Color is immutable.  No need to copy???" );
+		//return new Color4f(this.getValue());
+		return this.getValue();
 	}
 	
 	@Override

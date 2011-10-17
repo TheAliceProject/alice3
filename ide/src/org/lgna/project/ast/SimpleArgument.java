@@ -52,4 +52,8 @@ public class SimpleArgument extends AbstractArgument {
 	public SimpleArgument( AbstractParameter parameter, Expression expression ) {
 		super( parameter, expression );
 	}
+	@Override
+	protected AbstractType< ?, ?, ? > getExpressionTypeForParameterType( AbstractType< ?, ?, ? > parameterType ) {
+		return parameterType;
+	}
 }

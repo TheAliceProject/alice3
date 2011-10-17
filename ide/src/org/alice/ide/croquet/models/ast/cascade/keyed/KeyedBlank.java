@@ -59,6 +59,14 @@ public class KeyedBlank extends org.lgna.croquet.CascadeBlank< org.lgna.project.
 		return rv;
 	}
 	
+	private static boolean isValidMethod( java.lang.reflect.Method mthd, org.lgna.project.ast.AbstractType< ?,?,? > valueType ) {
+		int modifiers = mthd.getModifiers();
+		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers )  ) {
+			return valueType.isAssignableFrom( mthd.getReturnType() ); 
+		} else {
+			return false;
+		}
+	}
 	private final org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty;
 	private KeyedBlank( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
 		super( java.util.UUID.fromString( "c9b684e5-9e91-4c38-8cdf-ffce14de6a18" ) );
@@ -66,14 +74,25 @@ public class KeyedBlank extends org.lgna.croquet.CascadeBlank< org.lgna.project.
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.JavaKeyedArgument > blankNode ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType();
+		org.lgna.project.ast.AbstractType< ?,?,? > valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType().getComponentType();
 		org.lgna.project.ast.AbstractType< ?,?,? > keywordFactoryType = valueType.getKeywordFactoryType();
 		if( keywordFactoryType != null ) {
 			Class<?> cls = ((org.lgna.project.ast.JavaType)keywordFactoryType).getClassReflectionProxy().getReification();
 			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
-				org.lgna.project.ast.JavaType returnType = org.lgna.project.ast.JavaType.getInstance( mthd.getReturnType() );
-				if( returnType == valueType ) {
-					rv.add( org.alice.ide.croquet.models.cascade.KeywordMenuModel.getInstance( org.lgna.project.ast.JavaMethod.getInstance( mthd ) ) );
+				if( isValidMethod( mthd, valueType ) ) {
+					org.lgna.project.ast.JavaMethod keyMethod = org.lgna.project.ast.JavaMethod.getInstance( mthd );
+					boolean isAlreadyFilledIn = false;
+					for( org.lgna.project.ast.JavaKeyedArgument keyedArgument : this.argumentListProperty ) {
+						if( keyedArgument.keyMethod.getValue() == keyMethod ) {
+							isAlreadyFilledIn = true;
+							break;
+						}
+					}
+					if( isAlreadyFilledIn ) {
+						//pass
+					} else {
+						rv.add( JavaKeyedArgumentFillIn.getInstance( org.lgna.project.ast.JavaMethod.getInstance( mthd ) ) );
+					}
 				}
 			}
 		}

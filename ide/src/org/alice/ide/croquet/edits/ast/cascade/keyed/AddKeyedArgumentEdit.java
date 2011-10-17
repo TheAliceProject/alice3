@@ -41,17 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.x.components;
+package org.alice.ide.croquet.edits.ast.cascade.keyed;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedArgumentView extends ArgumentView< org.lgna.project.ast.JavaKeyedArgument > {
-	public KeyedArgumentView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
-		super( factory, keyedArgument );
+public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.ast.cascade.keyed.KeyedMoreCascade > {
+	private final org.lgna.project.ast.JavaKeyedArgument keyedArgument;
+	public AddKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
+		super( completionStep );
+		this.keyedArgument = keyedArgument;
+	}
+	public AddKeyedArgumentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.keyedArgument = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.JavaKeyedArgument.class ).decodeValue( binaryDecoder );
 	}
 	@Override
-	protected String getName() {
-		return this.getArgument().keyMethod.getValue().getName();
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.JavaKeyedArgument.class ).encodeValue( binaryEncoder, this.keyedArgument );
+	}
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.getModel().getArgumentListProperty().add( this.keyedArgument );
+	}
+	@Override
+	protected final void undoInternal() {
+		int index = this.getModel().getArgumentListProperty().indexOf( this.keyedArgument );
+		this.getModel().getArgumentListProperty().remove( index );
+	}
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "add: " );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.keyedArgument, locale );
+		return rv;
 	}
 }

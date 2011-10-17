@@ -69,6 +69,5 @@ public abstract class ArgumentView< N extends org.lgna.project.ast.AbstractArgum
 			this.internalAddComponent( new org.lgna.croquet.components.Label( name + ": " ) );
 		}
 		this.internalAddComponent( this.factory.createExpressionPropertyPane( argument.expression ) );
-		this.internalAddComponent( new org.lgna.croquet.components.Label( "more:" ) );
 	}
 }

@@ -98,7 +98,7 @@ public abstract class Scene extends Entity {
 	@GetterTemplate(isPersistent = true)
 	@MethodTemplate()
 	public Color getAtmosphereColor() {
-		return Color.createInstance( this.implementation.atmosphereColor.getValue() );
+		return this.implementation.atmosphereColor.getValue();
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setAtmosphereColor( Color color ) {
@@ -106,12 +106,12 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate()
 	public void setAtmosphereColor( Color color, SetPropertyDetails.Value details ) {
-		this.implementation.atmosphereColor.animateValue( color.getInternal(), details.getDuration(), details.getStyle() );
+		this.implementation.atmosphereColor.animateValue( color, details.getDuration(), details.getStyle() );
 	}
 	@GetterTemplate(isPersistent = true)
 	@MethodTemplate()
 	public Color getAmbientLightColor() {
-		return Color.createInstance( this.implementation.ambientLightColor.getValue() );
+		return this.implementation.ambientLightColor.getValue();
 	}
 	@MethodTemplate(isFollowedByLongerMethod = true)
 	public void setAmbientLightColor( Color color ) {
@@ -119,6 +119,6 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate()
 	public void setAmbientLightColor( Color color, SetPropertyDetails.Value details ) {
-		this.implementation.ambientLightColor.animateValue( color.getInternal(), details.getDuration(), details.getStyle() );
+		this.implementation.ambientLightColor.animateValue( color, details.getDuration(), details.getStyle() );
 	}
 }

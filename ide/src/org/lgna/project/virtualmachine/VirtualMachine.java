@@ -295,7 +295,7 @@ public abstract class VirtualMachine {
 			Object array = java.lang.reflect.Array.newInstance( componentCls, KEYED_N );
 			for( int i=0; i<KEYED_N; i++ ) {
 				//todo: support primitive types
-				java.lang.reflect.Array.set( array, i, this.evaluateJavaKeyedArgument( keyedArguments.get( rvIndex ) ) );
+				java.lang.reflect.Array.set( array, i, this.evaluateJavaKeyedArgument( keyedArguments.get( i ) ) );
 			}
 			rv[ rvIndex ] = array;
 //
