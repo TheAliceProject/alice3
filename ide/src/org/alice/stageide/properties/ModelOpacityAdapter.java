@@ -143,7 +143,7 @@ public class ModelOpacityAdapter extends AbstractPropertyAdapter<Double, ModelIm
 	}
 
 	@Override
-	public Double getValueCopy() {
+	public Double getValueCopyIfMutable() {
 		return new Double(this.getValue());
 	}
 	

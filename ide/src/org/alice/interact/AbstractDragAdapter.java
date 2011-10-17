@@ -68,6 +68,8 @@ import org.alice.interact.event.SelectionListener;
 import org.alice.interact.handle.HandleManager;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
+import org.alice.interact.handle.ManipulationHandle3D;
+import org.alice.interact.handle.StoodUpRotationRingHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
@@ -92,6 +94,7 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
@@ -713,6 +716,16 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
+	private static <E> E getParentOfClass( edu.cmu.cs.dennisc.scenegraph.Component object, Class<E> cls) {
+		if( object != null ) {
+			if( cls.isAssignableFrom( object.getClass() ) ) {
+				return cls.cast( object );
+			}
+			return getParentOfClass(object.getParent(), cls);
+		}
+		return null;
+	}
+	
 	public static PickHint getPickType( edu.cmu.cs.dennisc.scenegraph.Component pickedObject )
 	{
 		List<PickHint.PickType> pickTypes = new LinkedList<PickHint.PickType>();
@@ -771,13 +784,24 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 						camera = (edu.cmu.cs.dennisc.scenegraph.AbstractCamera)c;
 					}
 				}
-				if (camera instanceof SymmetricPerspectiveCamera)
+				if (camera != null)
 				{
-					pickTypes.add(PickHint.PickType.PERSPECTIVE_CAMERA);
+					if (camera instanceof SymmetricPerspectiveCamera)
+					{
+						pickTypes.add(PickHint.PickType.PERSPECTIVE_CAMERA);
+					}
+					else if (camera instanceof OrthographicCamera)
+					{
+						pickTypes.add(PickHint.PickType.ORTHOGRAPHIC_CAMERA);
+					}
 				}
-				else if (camera instanceof OrthographicCamera)
+				else
 				{
-					pickTypes.add(PickHint.PickType.ORTHOGRAPHIC_CAMERA);
+					ManipulationHandle3D handle3D = getParentOfClass(pickedObject, ManipulationHandle3D.class);
+					if (handle3D != null)
+					{
+						pickTypes.add(PickHint.PickType.THREE_D_HANDLE);
+					}
 				}
 			}
 		}

@@ -88,7 +88,7 @@ public class TextValuePropertyAdapter extends AbstractPropertyAdapter<String, Te
 	}
 	
 	@Override
-	public String getValueCopy() 
+	public String getValueCopyIfMutable() 
 	{
 		return new String(this.getValue());
 	}

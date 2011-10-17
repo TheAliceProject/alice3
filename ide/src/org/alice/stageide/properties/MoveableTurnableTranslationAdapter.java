@@ -103,7 +103,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 	}
 	
 	@Override
-	public Point3 getValueCopy() 
+	public Point3 getValueCopyIfMutable() 
 	{
 		return new Point3(this.getValue());
 	}

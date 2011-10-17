@@ -63,7 +63,7 @@ public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapt
 	}
 	
 	@Override
-	public Color4f getValueCopy() 
+	public Color4f getValueCopyIfMutable() 
 	{
 		return new Color4f(this.getValue());
 	}

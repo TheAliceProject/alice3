@@ -200,7 +200,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 	}
 	
 	@Override
-	public Entity getValueCopy() 
+	public Entity getValueCopyIfMutable() 
 	{
 		return this.getValue();
 	}

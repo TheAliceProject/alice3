@@ -45,6 +45,7 @@ package org.alice.interact;
 import java.awt.event.InputEvent;
 
 import org.alice.interact.handle.ManipulationHandle;
+import org.alice.interact.handle.ManipulationHandle3D;
 import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
@@ -378,6 +379,10 @@ public class InputState {
 		if (object == null)
 		{
 			return null;
+		}
+		if (object instanceof ManipulationHandle3D)
+		{
+			return object;
 		}
 		if ( EntityImp.getInstance(object) != null )
 		{

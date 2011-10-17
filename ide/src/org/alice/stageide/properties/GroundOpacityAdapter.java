@@ -143,7 +143,7 @@ public class GroundOpacityAdapter extends AbstractPropertyAdapter<Double, Ground
 	}
 
 	@Override
-	public Double getValueCopy() {
+	public Double getValueCopyIfMutable() {
 		return new Double(this.getValue());
 	}
 	

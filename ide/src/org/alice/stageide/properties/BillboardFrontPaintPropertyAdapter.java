@@ -88,7 +88,7 @@ public class BillboardFrontPaintPropertyAdapter extends AbstractPropertyAdapter<
 	}
 	
 	@Override
-	public Paint getValueCopy() 
+	public Paint getValueCopyIfMutable() 
 	{
 		return this.getValue();
 	}

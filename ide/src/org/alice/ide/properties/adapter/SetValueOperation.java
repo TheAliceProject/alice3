@@ -64,7 +64,7 @@ public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation
 	@Override
 	protected void perform(org.lgna.croquet.history.ActionOperationStep step) 
 	{
-		this.originalValue = this.propertyAdapter.getValueCopy();
+		this.originalValue = this.propertyAdapter.getValueCopyIfMutable();
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) 
