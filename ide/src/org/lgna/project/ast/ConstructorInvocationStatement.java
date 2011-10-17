@@ -75,4 +75,13 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 	public DeclarationProperty< ? extends AbstractCode > getParameterOwnerProperty() {
 		return this.constructor;
 	}
+	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
+		return this.arguments;
+	}
+	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
+		return this.variableArguments;
+	}
+	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
+		return this.keyedArguments;
+	}
 }
