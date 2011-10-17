@@ -68,6 +68,16 @@ public class ImplementationAccessor {
 	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Color color ) {
 		return color.getInternal();
 	}
+	
+	
+	public static Color createColor( edu.cmu.cs.dennisc.color.Color4f internal ) {
+		return Color.createInstance( internal );
+	}
+	public static Color createInterpolation( Color a, Color b, float portion ) {
+		return Color.createInstance( 
+				edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a.getInternal(), b.getInternal(), portion )
+		);
+	}
 
 	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Paint paint, edu.cmu.cs.dennisc.color.Color4f defaultValue ) {
 		if( paint instanceof org.lgna.story.Color ) {
