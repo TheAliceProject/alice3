@@ -74,6 +74,7 @@ public abstract class RefreshPanel extends org.lgna.croquet.components.Panel {
 			} else {
 				this.isInTheMidstOfRefreshing = true;
 				try {
+					//this.forgetAndRemoveAllComponents();
 					this.internalRefresh();
 					this.isRefreshNecessary = false;
 				} finally {

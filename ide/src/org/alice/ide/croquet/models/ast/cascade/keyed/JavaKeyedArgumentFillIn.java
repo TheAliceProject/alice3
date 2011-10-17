@@ -46,64 +46,55 @@ package org.alice.ide.croquet.models.ast.cascade.keyed;
 /**
  * @author Dennis Cosgrove
  */
-public class JavaKeyedArgumentFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, JavaKeyedArgumentFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized JavaKeyedArgumentFactoryFillIn getInstance( org.lgna.project.ast.NamedUserType type ) {
-		JavaKeyedArgumentFactoryFillIn rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new JavaKeyedArgumentFactoryFillIn( type );
-			map.put( type, rv );
+public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > {
+	private static java.util.Map< org.lgna.project.ast.JavaMethod, JavaKeyedArgumentFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static JavaKeyedArgumentFillIn getInstance( org.lgna.project.ast.JavaMethod value ) {
+		synchronized( map ) {
+			JavaKeyedArgumentFillIn rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new JavaKeyedArgumentFillIn( value );
+				map.put( value, rv );
+			}
+			return rv;
 		}
-		return rv;
 	}
-	private org.lgna.project.ast.NamedUserType type;
-	private JavaKeyedArgumentFactoryFillIn( org.lgna.project.ast.NamedUserType type ) {
+	private final org.lgna.project.ast.JavaKeyedArgument transientValue;
+	private JavaKeyedArgumentFillIn( org.lgna.project.ast.JavaMethod keyMethod ) {
 		super( java.util.UUID.fromString( "cc1fda14-598c-475f-afed-19cc7c5feb92" ) );
-		this.type = type;
-	}
-	
-	private int getDepth( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		if( type instanceof org.lgna.project.ast.JavaType ) {
-			return -1;
-		} else {
-			return 1 + this.getDepth( type.getSuperType() );
+		org.lgna.project.ast.AbstractParameter parameter = null; //todo?
+		org.lgna.project.ast.Expression expression = new org.alice.ide.ast.EmptyExpression( keyMethod.getReturnType() );
+		this.transientValue = new org.lgna.project.ast.JavaKeyedArgument( parameter, expression, keyMethod );
+
+		for( org.lgna.project.ast.AbstractParameter requiredParameter : keyMethod.getRequiredParameters() ) {
+			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( requiredParameter ) );
 		}
 	}
 	
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > step ) {
-		int depth = this.getDepth( this.type );
-		if( depth > 0 ) {
-			StringBuilder sb = new StringBuilder();
-			for( int i=0; i<depth; i++ ) {
-				sb.append( "+" );
-			}
-			return new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( sb.toString() ), org.alice.ide.common.TypeComponent.createInstance( this.type ) ).getAwtComponent();
-		} else {
-			throw new AssertionError();
-		}
+	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > step ) {
+		return this.transientValue.keyMethod.getValue().getName();
 	}
 	@Override
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > step ) {
-		int depth = this.getDepth( this.type );
-		if( depth > 0 ) {
-			return super.getMenuItemIcon( step );
-		} else {
-			return org.alice.ide.common.TypeIcon.getInstance( this.type );
-		}
-	}
-	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > step ) {
 		return null;
+	}
+
+	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > step ) {
+		throw new AssertionError();
 	}
 	@Override
 	public org.lgna.project.ast.JavaKeyedArgument createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > step ) {
-		return null;
+		return new org.lgna.project.ast.JavaKeyedArgument( 
+				this.transientValue.parameter.getValue(), 
+				this.createFromBlanks( step, org.lgna.project.ast.Expression.class )[ 0 ], 
+				this.transientValue.keyMethod.getValue() 
+		);
 	}
 	@Override
 	public org.lgna.project.ast.JavaKeyedArgument getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > step ) {
-		return null;
+		return this.transientValue;
 	}
 }

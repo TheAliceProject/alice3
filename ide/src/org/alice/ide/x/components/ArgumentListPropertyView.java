@@ -82,8 +82,9 @@ public abstract class ArgumentListPropertyView< N extends org.lgna.project.ast.A
 	}
 	@Override
 	protected void internalRefresh() {
+		this.forgetAndRemoveAllComponents();
 		for( N argument : this.argumentListProperty ) {
-			this.factory.createArgumentPane( argument, null );
+			this.addComponent( this.factory.createArgumentPane( argument, null ) );
 		}
 	}
 }

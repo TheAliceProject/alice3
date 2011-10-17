@@ -51,15 +51,18 @@ public abstract class AbstractArgument extends AbstractNode {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
-			return AbstractArgument.this.parameter.getValue().getValueType();
+			return AbstractArgument.this.getExpressionTypeForParameterType( AbstractArgument.this.parameter.getValue().getValueType() );		
 		}
 	};
+	
 	public AbstractArgument() {
 	}
 	public AbstractArgument( AbstractParameter parameter, Expression expression ) {
 		this.parameter.setValue( parameter );
 		this.expression.setValue( expression );
 	}
+	
+	protected abstract AbstractType< ?,?,? > getExpressionTypeForParameterType( AbstractType< ?,?,? > parameterType );
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//return super.appendRepr( rv, locale );
