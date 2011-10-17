@@ -42,6 +42,8 @@
  */
 package org.alice.ide.sceneeditor;
 
+import org.lgna.project.virtualmachine.UserInstance;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -133,7 +135,14 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 
 	public Object getInstanceInJavaVMForField( org.lgna.project.ast.AbstractField field) {
 		assert field instanceof org.lgna.project.ast.UserField;
-		return getActiveSceneInstance().getFieldValueInstanceInJava((org.lgna.project.ast.UserField)field);
+		if (field == this.getActiveSceneField())
+		{
+			return getActiveSceneInstance().getInstanceInJava();
+		}
+		else
+		{
+			return getActiveSceneInstance().getFieldValueInstanceInJava((org.lgna.project.ast.UserField)field);
+		}
 	}
 
 	public <E> E getInstanceInJavaVMForField( org.lgna.project.ast.AbstractField field, Class<E> cls) {
@@ -159,7 +168,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	
 	public void setSelectedField(org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field)
 	{
-		assert declaringType == this.getActiveSceneType();
+		assert declaringType == this.getActiveSceneType() || field == this.getActiveSceneField();
 		this.selectedField = field;
 	}
 	
