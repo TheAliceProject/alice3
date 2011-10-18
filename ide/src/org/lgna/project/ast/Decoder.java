@@ -249,7 +249,22 @@ public class Decoder {
 				JavaConstructor constructorDeclaredInJava = (JavaConstructor)decodeValue( xmlConstructor, map );
 				org.w3c.dom.Element xmlIndex = (org.w3c.dom.Element)nodeList.item( 1 );
 				int index = Integer.parseInt( xmlIndex.getTextContent() );
-				rv = constructorDeclaredInJava.getRequiredParameters().get( index );
+				
+				final int REQUIRED_N = constructorDeclaredInJava.getRequiredParameters().size();
+				if( index < REQUIRED_N ) {
+					rv = constructorDeclaredInJava.getRequiredParameters().get( index );
+				} else {
+					if( index == REQUIRED_N ) {
+						rv = constructorDeclaredInJava.getVariableLengthParameter();
+						if( rv != null ) {
+							//pass;
+						} else {
+							rv = constructorDeclaredInJava.getKeyedParameter();
+						}
+					} else {
+						rv = null;
+					}
+				}
 			} else if( clsName.equals( JavaMethodParameter.class.getName() ) ) {
 				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
 				assert nodeList.getLength() == 2;
@@ -257,7 +272,21 @@ public class Decoder {
 				JavaMethod methodDeclaredInJava = (JavaMethod)decodeValue( xmlMethod, map );
 				org.w3c.dom.Element xmlIndex = (org.w3c.dom.Element)nodeList.item( 1 );
 				int index = Integer.parseInt( xmlIndex.getTextContent() );
-				rv = methodDeclaredInJava.getRequiredParameters().get( index );
+				final int REQUIRED_N = methodDeclaredInJava.getRequiredParameters().size();
+				if( index < REQUIRED_N ) {
+					rv = methodDeclaredInJava.getRequiredParameters().get( index );
+				} else {
+					if( index == REQUIRED_N ) {
+						rv = methodDeclaredInJava.getVariableLengthParameter();
+						if( rv != null ) {
+							//pass;
+						} else {
+							rv = methodDeclaredInJava.getKeyedParameter();
+						}
+					} else {
+						rv = null;
+					}
+				}
 			} else {
 				rv = (AbstractNode)newInstance( xmlElement );
 				assert rv != null;

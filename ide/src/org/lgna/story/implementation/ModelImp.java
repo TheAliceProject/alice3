@@ -76,7 +76,6 @@ public abstract class ModelImp extends TransformableImp {
 		}
 		@Override
 		protected void handleSetValue( Float value ) {
-			System.err.println( "handleSetValue: " + value );
 			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgOpacityAppearances() ) {
 				sgAppearance.opacity.setValue( value );
 			}

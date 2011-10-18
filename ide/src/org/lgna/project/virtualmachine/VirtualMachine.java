@@ -254,7 +254,7 @@ public abstract class VirtualMachine {
 		org.lgna.project.ast.AbstractParameter keyedParameter = code.getKeyedParameter();
 		
 		final int REQUIRED_N = arguments.size();
-		assert requiredParameters.size() == REQUIRED_N;
+		assert requiredParameters.size() == REQUIRED_N : code.getName() + " " + requiredParameters.size() + " " + arguments.size();
 
 		int length = REQUIRED_N;
 		if( variableParameter != null ) {
@@ -561,9 +561,16 @@ public abstract class VirtualMachine {
 
 	protected Object evaluateMethodInvocation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		if( methodInvocation.isValid() ) {
-			assert methodInvocation.method.getValue().getRequiredParameters().size() == methodInvocation.arguments.size() : methodInvocation.method.getValue().getName();
-			Object[] arguments = this.evaluateArguments( methodInvocation.method.getValue(), methodInvocation.arguments, methodInvocation.variableArguments, methodInvocation.keyedArguments );
-			return this.invoke( this.evaluate( methodInvocation.expression.getValue() ), methodInvocation.method.getValue(), arguments );
+			Object[] allArguments = this.evaluateArguments( methodInvocation.method.getValue(), methodInvocation.arguments, methodInvocation.variableArguments, methodInvocation.keyedArguments );
+			int parameterCount = methodInvocation.method.getValue().getRequiredParameters().size();
+			if( methodInvocation.method.getValue().getVariableLengthParameter() != null ) {
+				parameterCount += 1;
+			}
+			if( methodInvocation.method.getValue().getKeyedParameter() != null ) {
+				parameterCount += 1;
+			}
+			assert parameterCount == allArguments.length : methodInvocation.method.getValue().getName();
+			return this.invoke( this.evaluate( methodInvocation.expression.getValue() ), methodInvocation.method.getValue(), allArguments );
 		} else {
 			javax.swing.JOptionPane.showMessageDialog( null, "skipping invalid methodInvocation: " + methodInvocation.method.getValue().getName() );
 			return null;

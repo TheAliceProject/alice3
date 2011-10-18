@@ -357,12 +357,14 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 	}
 	private static org.w3c.dom.Element encodeConstructor( org.w3c.dom.Document xmlDocument, String nodeName, ConstructorReflectionProxy constructorReflectionProxy ) {
 		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, constructorReflectionProxy );
+		rv.setAttribute( "isVarArgs", Boolean.toString( constructorReflectionProxy.isVarArgs() ) );
 		rv.appendChild( encodeParameters( xmlDocument, constructorReflectionProxy.getParameterClassReflectionProxies() ) );
 		return rv;
 	}
 	private static org.w3c.dom.Element encodeMethod( org.w3c.dom.Document xmlDocument, String nodeName, MethodReflectionProxy methodReflectionProxy ) {
 		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, methodReflectionProxy );
 		rv.setAttribute( "name", methodReflectionProxy.getName() );
+		rv.setAttribute( "isVarArgs", Boolean.toString( methodReflectionProxy.isVarArgs() ) );
 		rv.appendChild( encodeParameters( xmlDocument, methodReflectionProxy.getParameterClassReflectionProxies() ) );
 		return rv;
 	}

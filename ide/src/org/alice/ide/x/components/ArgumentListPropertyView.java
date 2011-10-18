@@ -47,7 +47,7 @@ package org.alice.ide.x.components;
  * @author Dennis Cosgrove
  */
 public abstract class ArgumentListPropertyView< N extends org.lgna.project.ast.AbstractArgument > extends LineAxisRefreshPanel {
-	protected final static String SEPARATOR = ", ";
+	protected final static String SEPARATOR = ",";
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final org.lgna.project.ast.ArgumentListProperty< N > argumentListProperty;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< N > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< N >() {
