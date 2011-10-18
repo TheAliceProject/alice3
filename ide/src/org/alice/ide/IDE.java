@@ -242,11 +242,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void loadProjectFrom( java.net.URI uri ) {
 		super.loadProjectFrom( uri );
 		this.mapUUIDToNode.clear();
-		org.lgna.project.ast.AbstractField sceneField = getSceneField();
-		if( sceneField != null ) {
-			org.lgna.project.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
-			setFocusedCode( runMethod );
-		}
 	}
 
 	protected org.lgna.project.ast.Expression createPredeterminedExpressionIfAppropriate( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
@@ -898,7 +893,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON );
+				NamedUserType sceneType = IDE.this.getSceneType();
+				if( sceneType != null ) {
+					final int N = sceneType.fields.size();
+					if( N > 0 ) {
+						org.lgna.project.ast.UserField field = sceneType.fields.get( N-1 );
+						org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+					}
+				}
+//				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON );
 			}
 		} );
 	}
