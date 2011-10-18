@@ -76,12 +76,12 @@ public abstract class Scene extends Entity {
 		this.implementation.setProgram( program.getImplementation() );
 		this.implementation.setGlobalBrightness( 0.0f );
 		this.changeActiveStatus( program, true, activeCount );
-		this.implementation.animateGlobalBrightness( 1.0f, 1.0, TraditionalStyle.BEGIN_AND_END_GENTLY );
+		this.implementation.animateGlobalBrightness( 1.0f, 0.5, TraditionalStyle.BEGIN_AND_END_GENTLY.getInternal() );
 	}
 	/*package-private*/void deactivate( Program program ) {
 		deactiveCount++;
 		assert deactiveCount == activeCount;
-		this.implementation.animateGlobalBrightness( 0.0f, 0.5, TraditionalStyle.BEGIN_AND_END_GENTLY );
+		this.implementation.animateGlobalBrightness( 0.0f, 0.25, TraditionalStyle.BEGIN_AND_END_GENTLY.getInternal() );
 		this.changeActiveStatus( program, false, activeCount );
 		this.implementation.setProgram( null );
 	}
@@ -102,7 +102,7 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate()
 	public void setAtmosphereColor( Color color, SetAtmosphereColor.Detail... details ) {
-		this.implementation.atmosphereColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ) );
+		this.implementation.atmosphereColor.animateValue( color, Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
 	}
 	@GetterTemplate(isPersistent = true)
 	@MethodTemplate()
@@ -111,6 +111,6 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate()
 	public void setAmbientLightColor( Color color, SetAmbientLightColor.Detail... details ) {
-		this.implementation.ambientLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ) );
+		this.implementation.ambientLightColor.animateValue( color, Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
 	}
 }

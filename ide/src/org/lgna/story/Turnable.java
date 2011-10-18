@@ -57,7 +57,7 @@ public abstract class Turnable extends Entity {
 				amount.doubleValue(), 
 				AsSeenBy.getValue( details, this ).getImplementation(), 
 				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ) 
+				TraditionalStyle.getValue( details ).getInternal() 
 		);
 	}
 	@MethodTemplate()
@@ -67,7 +67,7 @@ public abstract class Turnable extends Entity {
 				amount.doubleValue(), 
 				AsSeenBy.getValue( details, this ).getImplementation(), 
 				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ) 
+				TraditionalStyle.getValue( details ).getInternal()
 		);
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)

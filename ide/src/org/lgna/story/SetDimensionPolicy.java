@@ -45,7 +45,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public enum SetDimensionPolicy {
+public enum SetDimensionPolicy implements SetWidth.Detail, SetHeight.Detail, SetDepth.Detail {
 	PRESERVE_VOLUME( true, false ),
 	PRESERVE_ASPECT_RATIO( false, true ),
 	PRESERVE_NOTHING( false, false );

@@ -59,6 +59,6 @@ public class Billboard extends Model {
 	}
 	@MethodTemplate()
 	public void setBackPaint( Paint paint, SetBackPaint.Detail... details ) {
-		this.getImplementation().backPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ) );
+		this.getImplementation().backPaint.animateValue( paint, Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
 	}
 }

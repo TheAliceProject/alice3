@@ -45,24 +45,51 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public enum TraditionalStyle implements Style {
+public enum TraditionalStyle implements 
+		//Turnable
+		Turn.Detail, Roll.Detail,
+		//MoveableTurnable
+		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
+		MoveTo.Detail, MoveAndOrientTo.Detail,
+		//Visual
+		SetPaint.Detail, SetOpacity.Detail,
+		//Resizable
+		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail, 
+		//Billboard
+		SetBackPaint.Detail,
+		//Camera,
+		MoveAndOrientToAGoodVantagePointOf.Detail,
+		//Scene
+		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail,
+		//Sphere
+		SetRadius.Detail,
+		//Cone
+		SetBaseRadius.Detail, SetLength.Detail
+{
 	BEGIN_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
 	BEGIN_GENTLY_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
 	BEGIN_ABRUPTLY_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
 	BEGIN_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
-	private edu.cmu.cs.dennisc.animation.TraditionalStyle internal;
-	public static TraditionalStyle valueOf( boolean[] beginAndEndGentlies ) {
-		for( TraditionalStyle value : TraditionalStyle.values() ) {
-			if( value.internal.isSlowInDesired() == beginAndEndGentlies[ 0 ] && value.internal.isSlowOutDesired() == beginAndEndGentlies[ 1 ] ) {
-				return value;
-			}
-		}
-		throw new AssertionError();
-	}
-	TraditionalStyle( edu.cmu.cs.dennisc.animation.TraditionalStyle internal ) {
+
+	private static final TraditionalStyle DEFAULT_VALUE = TraditionalStyle.BEGIN_AND_END_GENTLY;
+	private edu.cmu.cs.dennisc.animation.Style internal;
+	TraditionalStyle( edu.cmu.cs.dennisc.animation.Style internal ) {
 		this.internal = internal;
 	}
-	public double calculatePortion( double timeElapsed, double timeTotal ) {
-		return this.internal.calculatePortion( timeElapsed, timeTotal );
+	/*package-private*/ edu.cmu.cs.dennisc.animation.Style getInternal() {
+		return this.internal;
+	}
+
+	private static TraditionalStyle getValue( Object[] details, TraditionalStyle defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof TraditionalStyle ) {
+				TraditionalStyle animationStyle = (TraditionalStyle)detail;
+				return animationStyle;
+			}
+		}
+		return defaultValue;
+	}
+	/*package-private*/ static TraditionalStyle getValue( Object[] details ) {
+		return getValue( details, DEFAULT_VALUE );
 	}
 }

@@ -459,7 +459,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			return;
 		}
 		//Make a new animation and launch it
-		this.opacityAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentOpacity, targetOpacity)
+		this.opacityAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentOpacity, targetOpacity)
 		{
 			@Override
 			protected void updateValue(Double v) 
@@ -489,7 +489,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			return;
 		}
 		//Make a new animation and launch it
-		this.colorAnimation = new Color4fInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentColor, targetColor) 
+		this.colorAnimation = new Color4fInterruptibleAnimation(ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentColor, targetColor) 
 		{
 			@Override
 			protected void updateValue(Color4f v) 

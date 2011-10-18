@@ -255,7 +255,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 			return;
 		}
 		//Make a new animation and launch it
-		this.radiusAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentRadius, desiredRadius)
+		this.radiusAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentRadius, desiredRadius)
 		{
 			@Override
 			protected void updateValue(Double v) 

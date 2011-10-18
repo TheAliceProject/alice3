@@ -83,7 +83,7 @@ public class Ground extends Entity implements MutableRider, Visual {
 	}
 	@MethodTemplate()
 	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details )  );
+		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal()  );
 	}
 
 	@MethodTemplate()
@@ -94,6 +94,6 @@ public class Ground extends Entity implements MutableRider, Visual {
 	}
 	@MethodTemplate()
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
+		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
 	}
 }

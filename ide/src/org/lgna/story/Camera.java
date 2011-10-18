@@ -58,6 +58,6 @@ public class Camera extends MovableTurnable implements MutableRider {
 	}
 	@MethodTemplate()
 	public void moveAndOrientToAGoodVantagePointOf( Entity entity, MoveAndOrientToAGoodVantagePointOf.Detail... details ) {
-		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
+		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
 	}
 }

@@ -200,7 +200,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 			return;
 		}
 		//Make a new animation and launch it
-		this.lengthAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentLength, desiredLength)
+		this.lengthAnimation = new DoubleInterruptibleAnimation(ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentLength, desiredLength)
 		{
 			@Override
 			protected void updateValue(Double v) 

@@ -54,7 +54,7 @@ public class Duration implements
 		MoveTo.Detail, MoveAndOrientTo.Detail,
 		//Visual
 		SetPaint.Detail, SetOpacity.Detail,
-		//Resizeable
+		//Resizable
 		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail, 
 		//Billboard
 		SetBackPaint.Detail,
