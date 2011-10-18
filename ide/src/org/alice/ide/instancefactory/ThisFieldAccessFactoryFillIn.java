@@ -47,6 +47,14 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
+	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
+		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		}
+		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			ThisFieldAccessFactoryFillIn.this.markDirty();
+		}
+	}
+	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
 	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static ThisFieldAccessFactoryFillIn getInstance( org.lgna.project.ast.UserField value ) {
 		synchronized( map ) {
@@ -62,6 +70,7 @@ public class ThisFieldAccessFactoryFillIn extends InstanceFactoryFillInWithoutBl
 	}
 	private ThisFieldAccessFactoryFillIn( org.lgna.project.ast.UserField field ) {
 		super( java.util.UUID.fromString( "01f7980c-ee24-4a40-94e5-9e0318ecbe1a" ), ThisFieldAccessFactory.getInstance( field ) );
+		field.name.addPropertyListener( this.namePropertyAdapter );
 	}
 	@Override
 	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {

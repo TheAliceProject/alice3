@@ -47,6 +47,14 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
+	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
+		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		}
+		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			ThisFieldAccessMethodInvocationFactoryFillIn.this.markDirty();
+		}
+	}
+	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
 	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactoryFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static synchronized ThisFieldAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
 		assert field != null;
@@ -65,6 +73,7 @@ public class ThisFieldAccessMethodInvocationFactoryFillIn extends InstanceFactor
 	
 	private ThisFieldAccessMethodInvocationFactoryFillIn( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "ccd03251-addf-4f26-b777-3ff8c3151a38" ), ThisFieldAccessMethodInvocationFactory.getInstance( field, method ) );
+		field.name.addPropertyListener( this.namePropertyAdapter );
 	}
 	@Override
 	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {

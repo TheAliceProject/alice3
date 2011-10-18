@@ -79,6 +79,9 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements Ca
 	protected void markClean() {
 		this.isDirty = false;
 	}
+	protected void markDirty() {
+		this.isDirty = true;
+	}
 	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.cascade.ItemNode<? super F,B> step ) {
 		if( this.menuProxy != null ) {
 			//pass
