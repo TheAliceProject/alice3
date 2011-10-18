@@ -126,7 +126,7 @@ public class InitializerPane extends org.lgna.croquet.components.CardPanel {
 			return this.bogusNode.componentExpression.getValue();
 		} else {
 			java.util.List<org.lgna.project.ast.Expression> expressions = this.bogusNode.arrayExpressions.getValue();
-			return org.alice.ide.ast.AstUtilities.createArrayInstanceCreation(this.bogusNode.getType(), expressions);
+			return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation(this.bogusNode.getType(), expressions);
 		}
 	}
 

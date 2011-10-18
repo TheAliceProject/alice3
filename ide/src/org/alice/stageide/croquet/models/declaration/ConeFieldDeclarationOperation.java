@@ -59,7 +59,7 @@ public class ConeFieldDeclarationOperation extends org.alice.ide.croquet.models.
 				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Cone.class ), false, 
 				false, false, 
 				"", true, 
-				org.alice.ide.ast.AstUtilities.createInstanceCreation( org.lgna.story.Cone.class ), false 
+				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.Cone.class ), false 
 		);
 	}
 	@Override

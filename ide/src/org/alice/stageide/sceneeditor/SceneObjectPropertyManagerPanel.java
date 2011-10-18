@@ -50,7 +50,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.ide.IDE;
-import org.alice.ide.ast.AstUtilities;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.ast.PropertyState;
 import org.alice.ide.properties.adapter.AbstractImplementationPropertyAdapter;
@@ -233,7 +232,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	
 	private org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter(org.lgna.project.ast.JavaMethod getter, JavaType declaringType, EntityImp entityImp)
 	{
-		org.lgna.project.ast.JavaMethod setter = org.alice.ide.ast.AstUtilities.getSetterForGetter( getter, declaringType );
+		org.lgna.project.ast.JavaMethod setter = org.lgna.project.ast.AstUtilities.getSetterForGetter( getter, declaringType );
 		org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForSetter( IDE.PROJECT_GROUP, setter );
 		boolean isVisible = setter == null || setter.getVisibility() == null || setter.getVisibility() == Visibility.PRIME_TIME;
 		if (setter != null && isVisible)
@@ -370,7 +369,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		
 		List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>>();
 		
-		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = AstUtilities.getPersistentPropertyGetters(this.selectedField.getValueType());
+		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters(this.selectedField.getValueType());
 		JavaType declaringType = field.getValueType().getFirstTypeEncounteredDeclaredInJava();
 		propertyAdapters.add(new FieldNameAdapter(this.selectedField, (StandardExpressionState)null));
 		

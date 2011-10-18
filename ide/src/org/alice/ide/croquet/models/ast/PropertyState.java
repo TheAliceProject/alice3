@@ -60,7 +60,7 @@ public class PropertyState extends org.alice.ide.croquet.models.StandardExpressi
 		return rv;
 	}
 	public static synchronized PropertyState getInstanceForGetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod getter ) {
-		return getInstanceForSetter( group, org.alice.ide.ast.AstUtilities.getSetterForGetter( getter ) );
+		return getInstanceForSetter( group, org.lgna.project.ast.AstUtilities.getSetterForGetter( getter ) );
 	}
 	private final org.lgna.project.ast.JavaMethod setter;
 	private PropertyState( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {

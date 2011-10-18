@@ -61,7 +61,7 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Billboard.class ), false, 
 				false, false, 
 				"", true, 
-				org.alice.ide.ast.AstUtilities.createInstanceCreation( org.lgna.story.Billboard.class ), false 
+				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.Billboard.class ), false 
 		);
 	}
 	@Override

@@ -60,12 +60,12 @@ public class SetUpMethodGenerator {
 	}
 
 	private static org.lgna.project.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? > parameterCls, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression argumentExpression ) {
-		org.lgna.project.ast.AbstractMethod method = org.alice.ide.ast.AstUtilities.lookupMethod( declarationCls, methodName, parameterCls );
-		return org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpression );
+		org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.AstUtilities.lookupMethod( declarationCls, methodName, parameterCls );
+		return org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpression );
 	}
 	private static org.lgna.project.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? >[] parameterClses, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... argumentExpressions ) {
-		org.lgna.project.ast.AbstractMethod method = org.alice.ide.ast.AstUtilities.lookupMethod( declarationCls, methodName, parameterClses );
-		return org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
+		org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.AstUtilities.lookupMethod( declarationCls, methodName, parameterClses );
+		return org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
 	}
 
 	public static org.lgna.project.ast.InstanceCreation createSims2PersonRecourseInstanceCreation( org.lgna.story.resources.sims2.PersonResource personResource ) throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
@@ -85,7 +85,7 @@ public class SetUpMethodGenerator {
 				getExpressionCreator().createExpression( personResource.getObesityLevel() ),
 				getExpressionCreator().createExpression( personResource.getOutfit() )
 		};
-		return org.alice.ide.ast.AstUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
+		return org.lgna.project.ast.AstUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
 	}
 	
 		
@@ -128,7 +128,7 @@ public class SetUpMethodGenerator {
 	}
 	
 	public static org.lgna.project.ast.Statement createSetterStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod setter, org.lgna.project.ast.Expression expression ) {
-		return org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( 
+		return org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( 
 				SetUpMethodGenerator.createInstanceExpression( isThis, field ),
 				setter, 
 				expression 
@@ -143,10 +143,10 @@ public class SetUpMethodGenerator {
 			}
 			Class<?> instanceCls = instance.getClass();
 			org.lgna.project.ast.JavaType javaType = org.lgna.project.ast.JavaType.getInstance( instanceCls );
-			for( org.lgna.project.ast.JavaMethod getter : org.alice.ide.ast.AstUtilities.getPersistentPropertyGetters( javaType ) ) {
+			for( org.lgna.project.ast.JavaMethod getter : org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters( javaType ) ) {
 				java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
 				Object value = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, gttr );
-				org.lgna.project.ast.JavaMethod setter = org.alice.ide.ast.AstUtilities.getSetterForGetter( getter, javaType );
+				org.lgna.project.ast.JavaMethod setter = org.lgna.project.ast.AstUtilities.getSetterForGetter( getter, javaType );
 				if( setter != null ) {
 					try {
 						org.lgna.project.ast.Expression expression;
@@ -159,7 +159,7 @@ public class SetUpMethodGenerator {
 							expression = getExpressionCreator().createExpression( value );
 						}
 						bodyStatementsProperty.add( 
-								org.alice.ide.ast.AstUtilities.createMethodInvocationStatement( 
+								org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( 
 										SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
 										setter, 
 										expression 

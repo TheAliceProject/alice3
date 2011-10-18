@@ -403,7 +403,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		}
 		String name = "My" + superType.getName();
-		return org.alice.ide.ast.AstUtilities.createType( name, superType );
+		return org.lgna.project.ast.AstUtilities.createType( name, superType );
 	}
 	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( Class< ? > superCls ) {
 		return getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType.getInstance( superCls ) );
@@ -411,7 +411,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
-		if( org.alice.ide.ast.AstUtilities.isKeywordExpression( expression ) ) {
+		if( org.lgna.project.ast.AstUtilities.isKeywordExpression( expression ) ) {
 			return false;
 		}
 		return (expression instanceof org.lgna.project.ast.TypeExpression || expression instanceof org.lgna.project.ast.ResourceExpression) == false;

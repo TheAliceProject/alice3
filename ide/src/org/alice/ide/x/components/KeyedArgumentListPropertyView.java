@@ -58,7 +58,7 @@ public class KeyedArgumentListPropertyView extends ArgumentListPropertyView< org
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		if( org.alice.ide.ast.AstUtilities.isKeyedArgumentListPropertyComplete( this.getArgumentListProperty() ) ) {
+		if( org.lgna.project.ast.AstUtilities.isKeyedArgumentListPropertyComplete( this.getArgumentListProperty() ) ) {
 			//pass
 		} else {
 			this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );

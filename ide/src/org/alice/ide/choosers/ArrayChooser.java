@@ -141,6 +141,6 @@ public class ArrayChooser extends AbstractRowsPaneChooser< org.lgna.project.ast.
 	@Override
 	public org.lgna.project.ast.ArrayInstanceCreation getValue() {
 		java.util.List< org.lgna.project.ast.Expression > expressions = this.bogusNode.arrayExpressions.getValue();
-		return org.alice.ide.ast.AstUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );
+		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );
 	}
 }

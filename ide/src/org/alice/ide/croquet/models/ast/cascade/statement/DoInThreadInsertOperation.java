@@ -64,6 +64,6 @@ public class DoInThreadInsertOperation extends StatementInsertOperation {
 	}
 	@Override
 	protected final org.lgna.project.ast.Statement createStatement() {
-		return org.alice.ide.ast.AstUtilities.createDoInThread();
+		return org.lgna.project.ast.AstUtilities.createDoInThread();
 	}
 }

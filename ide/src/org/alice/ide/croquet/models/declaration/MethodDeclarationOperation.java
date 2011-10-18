@@ -78,7 +78,7 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< o
 	@Override
 	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
 		assert initializer == null;
-		org.lgna.project.ast.UserMethod method = org.alice.ide.ast.AstUtilities.createMethod( declarationName, valueType );
+		org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createMethod( declarationName, valueType );
 		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( step, declaringType, method );
 	}
 }

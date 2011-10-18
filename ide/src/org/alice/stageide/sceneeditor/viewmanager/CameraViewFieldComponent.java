@@ -71,7 +71,7 @@ public class CameraViewFieldComponent extends GetterTemplate {
 	
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.AstUtilities.createFieldAccess(new ThisExpression(), this.field );
+		return org.lgna.project.ast.AstUtilities.createFieldAccess(new ThisExpression(), this.field );
 	}
 
 }

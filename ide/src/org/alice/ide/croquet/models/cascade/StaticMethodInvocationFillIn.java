@@ -78,7 +78,7 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
 	}
 	@Override
 	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return org.alice.ide.ast.AstUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
+		return org.lgna.project.ast.AstUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
 	}
 	@Override
 	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation,org.lgna.project.ast.Expression > step ) {

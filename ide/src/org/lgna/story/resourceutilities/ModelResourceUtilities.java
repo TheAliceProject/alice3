@@ -56,7 +56,6 @@ import java.util.zip.ZipFile;
 
 import javax.imageio.ImageIO;
 
-import org.alice.ide.ast.AstUtilities;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ConstructorBlockStatement;
@@ -465,7 +464,7 @@ public class ModelResourceUtilities {
 	public static NamedUserConstructor createConstructorForResourceField(Field resourceField, ConstructorParameterPair constructorAndParameter)
 	{
 		JavaField javaField = JavaField.getInstance(resourceField);
-		FieldAccess fieldAccess = AstUtilities.createStaticFieldAccess(javaField);
+		FieldAccess fieldAccess = org.lgna.project.ast.AstUtilities.createStaticFieldAccess(javaField);
 		SimpleArgument superArgument = new SimpleArgument(constructorAndParameter.getParameter(), fieldAccess);
 		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement(constructorAndParameter.getConstructor(), superArgument);
 		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement(superInvocation);
