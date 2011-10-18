@@ -86,6 +86,6 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( this.method );
+		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( this.method );
 	}
 }

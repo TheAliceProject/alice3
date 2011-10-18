@@ -64,7 +64,7 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn< org
 	private JavaKeyedArgumentFillIn( org.lgna.project.ast.JavaMethod keyMethod ) {
 		super( java.util.UUID.fromString( "cc1fda14-598c-475f-afed-19cc7c5feb92" ) );
 		this.transientValue = new org.lgna.project.ast.JavaKeyedArgument();
-		this.transientValue.expression.setValue( org.alice.ide.ast.AstUtilities.createIncompleteStaticMethodInvocation( keyMethod ) );
+		this.transientValue.expression.setValue( org.alice.ide.ast.IncompleteAstUtilities.createIncompleteStaticMethodInvocation( keyMethod ) );
 		for( org.lgna.project.ast.AbstractParameter requiredParameter : keyMethod.getRequiredParameters() ) {
 			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( requiredParameter ) );
 		}

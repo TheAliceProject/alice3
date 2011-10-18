@@ -64,7 +64,7 @@ public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade
 		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
 			this.addBlank( GalleryResourceBlank.getInstance( parameter.getValueType() ) );
 		}
-		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteInstanceCreation( constructor );
+		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteInstanceCreation( constructor );
 	}
 	@Override
 	protected org.lgna.project.ast.InstanceCreation createValue(org.lgna.project.ast.Expression[] expressions) {

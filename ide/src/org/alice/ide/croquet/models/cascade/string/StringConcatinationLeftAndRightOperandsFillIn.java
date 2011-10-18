@@ -59,7 +59,7 @@ public class StringConcatinationLeftAndRightOperandsFillIn extends org.alice.ide
 		super( java.util.UUID.fromString( "58068432-cef0-4f9d-bfef-c841ea165172" ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
-		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteStringConcatenation();
+		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteStringConcatenation();
 	}
 	@Override
 	protected org.lgna.project.ast.StringConcatenation createValue( org.lgna.project.ast.Expression[] expressions ) {

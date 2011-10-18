@@ -47,6 +47,6 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class WhileLoopTemplate extends CascadingUbiquitousStatementTemplate {
 	public WhileLoopTemplate() {
-		super( org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance(), org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.AstUtilities.createIncompleteWhileLoop() );
+		super( org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance(), org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteWhileLoop() );
 	}
 }

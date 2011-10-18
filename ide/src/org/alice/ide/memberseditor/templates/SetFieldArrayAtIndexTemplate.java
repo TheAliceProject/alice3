@@ -61,7 +61,7 @@ package org.alice.ide.memberseditor.templates;
 				this.field.getValueType().getComponentType(), 
 				new org.lgna.project.ast.ArrayAccess( 
 						field.getValueType(), 
-						org.alice.ide.ast.AstUtilities.createIncompleteFieldAccess( this.field ), 
+						org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( this.field ), 
 						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
 				), 
 				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 

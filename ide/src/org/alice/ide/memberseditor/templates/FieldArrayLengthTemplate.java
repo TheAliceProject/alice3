@@ -57,6 +57,6 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return new org.lgna.project.ast.ArrayLength( org.alice.ide.ast.AstUtilities.createIncompleteFieldAccess( field ) );
+		return new org.lgna.project.ast.ArrayLength( org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field ) );
 	}
 }

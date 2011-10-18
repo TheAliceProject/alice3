@@ -48,7 +48,7 @@ package org.alice.ide.ubiquitouspane.templates;
 public class ParameterArrayAssignmentStatementTemplate extends ArrayAssignmentStatementTemplate {
 	private org.lgna.project.ast.UserParameter parameter;
 	public ParameterArrayAssignmentStatementTemplate( org.lgna.project.ast.UserParameter parameter ) {
-		super( org.alice.ide.ast.draganddrop.statement.ParameterArrayAtIndexAssignmentTemplateDragModel.getInstance( parameter ), org.alice.ide.ast.AstUtilities.createIncompleteParameterArrayAssignmentStatement( parameter ) );
+		super( org.alice.ide.ast.draganddrop.statement.ParameterArrayAtIndexAssignmentTemplateDragModel.getInstance( parameter ), org.alice.ide.ast.IncompleteAstUtilities.createIncompleteParameterArrayAssignmentStatement( parameter ) );
 		this.parameter = parameter;
 	}
 	@Override

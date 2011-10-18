@@ -58,6 +58,6 @@ public class GetterTemplate extends org.alice.ide.templates.ExpressionTemplate {
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.AstUtilities.createIncompleteFieldAccess( field );
+		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field );
 	}
 }

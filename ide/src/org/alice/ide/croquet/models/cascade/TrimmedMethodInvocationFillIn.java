@@ -51,7 +51,7 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 	private final org.lgna.project.ast.MethodInvocation transientValue;
 	public TrimmedMethodInvocationFillIn( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "4efeb642-4a7c-4de7-a736-9f8950f2836a" ) );
-		this.transientValue = org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( expression, method );
+		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( expression, method );
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
 			ParameterBlank parameterBlank = ParameterBlank.getInstance( parameter );
 			this.addBlank( parameterBlank );

@@ -47,6 +47,6 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class ConditionalStatementTemplate extends CascadingUbiquitousStatementTemplate {
 	public ConditionalStatementTemplate() {
-		super( org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance(), org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.AstUtilities.createIncompleteConditionalStatement() );
+		super( org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance(), org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteConditionalStatement() );
 	}
 }

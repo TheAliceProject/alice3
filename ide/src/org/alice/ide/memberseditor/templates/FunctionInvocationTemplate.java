@@ -66,7 +66,7 @@ package org.alice.ide.memberseditor.templates;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.AstUtilities.createIncompleteMethodInvocation( this.method );
+		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( this.method );
 	}
 	@Override
 	protected void handleDisplayable() {

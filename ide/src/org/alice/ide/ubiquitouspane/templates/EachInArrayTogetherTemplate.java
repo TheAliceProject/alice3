@@ -47,6 +47,6 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementTemplate {
 	public EachInArrayTogetherTemplate() {
-		super( org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance(), org.lgna.project.ast.EachInArrayTogether.class, org.alice.ide.ast.AstUtilities.createIncompleteEachInArrayTogether() );
+		super( org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance(), org.lgna.project.ast.EachInArrayTogether.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteEachInArrayTogether() );
 	}
 }

@@ -47,6 +47,6 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class CountLoopTemplate extends CascadingUbiquitousStatementTemplate {
 	public CountLoopTemplate() {
-		super( org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(), org.lgna.project.ast.CountLoop.class, org.alice.ide.ast.AstUtilities.createIncompleteCountLoop() );
+		super( org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(), org.lgna.project.ast.CountLoop.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteCountLoop() );
 	}
 }
