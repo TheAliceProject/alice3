@@ -70,7 +70,7 @@ public enum Access {
 	Access( int... modifiers ) {
 		m_modifiers = modifiers;
 	}
-	public java.util.Set< Integer > updateModifiers( java.util.Set< Integer > rv ) {
+	public java.util.Collection< Integer > updateModifiers( java.util.Collection< Integer > rv ) {
 		for( int modifier : m_modifiers ) {
 			rv.add( modifier );
 		}
