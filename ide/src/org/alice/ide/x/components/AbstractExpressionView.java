@@ -55,10 +55,14 @@ public class AbstractExpressionView extends org.alice.ide.common.ExpressionLikeS
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		if( this.expression != null ) {
-			if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
+			if( org.alice.ide.ast.AstUtilities.isKeywordExpression( expression ) ) {
 				return false;
 			} else {
-				return super.isExpressionTypeFeedbackDesired();
+				if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
+					return false;
+				} else {
+					return super.isExpressionTypeFeedbackDesired();
+				}
 			}
 		} else {
 			return true;

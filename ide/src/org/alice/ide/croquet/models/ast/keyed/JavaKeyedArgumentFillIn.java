@@ -63,10 +63,8 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn< org
 	private final org.lgna.project.ast.JavaKeyedArgument transientValue;
 	private JavaKeyedArgumentFillIn( org.lgna.project.ast.JavaMethod keyMethod ) {
 		super( java.util.UUID.fromString( "cc1fda14-598c-475f-afed-19cc7c5feb92" ) );
-		org.lgna.project.ast.AbstractParameter parameter = null; //todo?
-		org.lgna.project.ast.Expression expression = new org.alice.ide.ast.EmptyExpression( keyMethod.getReturnType() );
-		this.transientValue = new org.lgna.project.ast.JavaKeyedArgument( parameter, expression, keyMethod );
-
+		this.transientValue = new org.lgna.project.ast.JavaKeyedArgument();
+		this.transientValue.expression.setValue( org.alice.ide.ast.AstUtilities.createIncompleteStaticMethodInvocation( keyMethod ) );
 		for( org.lgna.project.ast.AbstractParameter requiredParameter : keyMethod.getRequiredParameters() ) {
 			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( requiredParameter ) );
 		}
@@ -74,7 +72,7 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn< org
 	
 	@Override
 	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > step ) {
-		return this.transientValue.keyMethod.getValue().getName();
+		return this.transientValue.getKeyMethod().getName();
 	}
 	@Override
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > step ) {
@@ -87,10 +85,12 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn< org
 	}
 	@Override
 	public org.lgna.project.ast.JavaKeyedArgument createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > step ) {
+		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( step, org.lgna.project.ast.Expression.class );
+		org.lgna.project.ast.JavaMethod keyMethod = this.transientValue.getKeyMethod();
 		return new org.lgna.project.ast.JavaKeyedArgument( 
 				this.transientValue.parameter.getValue(), 
-				this.createFromBlanks( step, org.lgna.project.ast.Expression.class )[ 0 ], 
-				this.transientValue.keyMethod.getValue() 
+				keyMethod, 
+				argumentExpressions 
 		);
 	}
 	@Override

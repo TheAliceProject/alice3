@@ -52,6 +52,7 @@ public class KeyedArgumentView extends ArgumentView< org.lgna.project.ast.JavaKe
 	}
 	@Override
 	protected String getName() {
-		return this.getArgument().keyMethod.getValue().getName();
+		//return this.getArgument().keyMethod.getValue().getName();
+		return null;
 	}
 }

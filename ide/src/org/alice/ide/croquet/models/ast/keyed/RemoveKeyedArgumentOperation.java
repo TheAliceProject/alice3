@@ -68,7 +68,7 @@ public class RemoveKeyedArgumentOperation extends org.lgna.croquet.ActionOperati
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setName( "Remove " + this.argument.keyMethod.getValue().getName() + " Argument" );
+		this.setName( "Remove " + this.argument.getKeyMethod().getName() + " Argument" );
 	}
 	public org.lgna.project.ast.JavaKeyedArgument getArgument() {
 		return this.argument;

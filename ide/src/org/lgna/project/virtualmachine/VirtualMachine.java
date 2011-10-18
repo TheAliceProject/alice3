@@ -240,18 +240,11 @@ public abstract class VirtualMachine {
 		}
 	}
 	
-	private Object evaluateSimpleArgument( org.lgna.project.ast.SimpleArgument simpleArgument ) {
-		assert simpleArgument != null;
-		org.lgna.project.ast.Expression expression = simpleArgument.expression.getValue();
+	private Object evaluateArgument( org.lgna.project.ast.AbstractArgument argument ) {
+		assert argument != null;
+		org.lgna.project.ast.Expression expression = argument.expression.getValue();
 		assert expression != null;
 		return this.evaluate( expression );
-	}
-	private Object evaluateJavaKeyedArgument( org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
-		org.lgna.project.ast.JavaMethod method = keyedArgument.keyMethod.getValue();
-		assert method.isStatic();
-		Object instance = null;
-		java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, mthd, this.evaluate( keyedArgument.expression.getValue() ) );
 	}
 	
 	protected Object[] evaluateArguments( org.lgna.project.ast.AbstractCode code, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.SimpleArgument > arguments, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.SimpleArgument > variableArguments, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.JavaKeyedArgument > keyedArguments ) {
@@ -273,7 +266,7 @@ public abstract class VirtualMachine {
 		Object[] rv = new Object[ length ];
 		int rvIndex;
 		for( rvIndex=0; rvIndex<REQUIRED_N; rvIndex++ ) {
-			rv[ rvIndex ] = this.evaluateSimpleArgument( arguments.get( rvIndex ) );
+			rv[ rvIndex ] = this.evaluateArgument( arguments.get( rvIndex ) );
 		}
 		if( variableParameter != null ) {
 			final int VARIABLE_N = variableArguments.size();
@@ -283,7 +276,7 @@ public abstract class VirtualMachine {
 			Object array = java.lang.reflect.Array.newInstance( componentCls, VARIABLE_N );
 			for( int i=0; i<VARIABLE_N; i++ ) {
 				//todo: support primitive types
-				java.lang.reflect.Array.set( array, i, this.evaluateSimpleArgument( variableArguments.get( rvIndex ) ) );
+				java.lang.reflect.Array.set( array, i, this.evaluateArgument( variableArguments.get( rvIndex ) ) );
 			}
 			rv[ rvIndex ] = array;
 		}
@@ -295,7 +288,7 @@ public abstract class VirtualMachine {
 			Object array = java.lang.reflect.Array.newInstance( componentCls, KEYED_N );
 			for( int i=0; i<KEYED_N; i++ ) {
 				//todo: support primitive types
-				java.lang.reflect.Array.set( array, i, this.evaluateJavaKeyedArgument( keyedArguments.get( i ) ) );
+				java.lang.reflect.Array.set( array, i, this.evaluateArgument( keyedArguments.get( i ) ) );
 			}
 			rv[ rvIndex ] = array;
 //

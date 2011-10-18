@@ -47,17 +47,27 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaKeyedArgument extends AbstractArgument {
-	public DeclarationProperty< JavaMethod > keyMethod = new DeclarationProperty< JavaMethod >( this ) {
-		@Override
-		public boolean isReference() {
-			return true;
-		}
-	};
+//	public DeclarationProperty< JavaMethod > keyMethod = new DeclarationProperty< JavaMethod >( this ) {
+//		@Override
+//		public boolean isReference() {
+//			return true;
+//		}
+//	};
 	public JavaKeyedArgument() {
 	}
-	public JavaKeyedArgument( AbstractParameter parameter, Expression expression, JavaMethod keyMethod ) {
-		super( parameter, expression );
-		this.keyMethod.setValue( keyMethod );
+	public JavaKeyedArgument( AbstractParameter parameter, JavaMethod keyMethod, Expression... argumentExpressions ) {
+		super( parameter, org.alice.ide.ast.AstUtilities.createStaticMethodInvocation( keyMethod, argumentExpressions ) );
+	}
+	public JavaMethod getKeyMethod() {
+		Expression expression = this.expression.getValue();
+		if( expression != null ) {
+			assert expression instanceof MethodInvocation;
+			MethodInvocation methodInvocation = (MethodInvocation)expression;
+			assert methodInvocation.method.getValue() instanceof JavaMethod;
+			return (JavaMethod)methodInvocation.method.getValue();
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected AbstractType< ?, ?, ? > getExpressionTypeForParameterType( AbstractType< ?, ?, ? > parameterType ) {
@@ -66,7 +76,7 @@ public class JavaKeyedArgument extends AbstractArgument {
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		super.appendRepr( rv, locale );
-		NodeUtilities.safeAppendRepr( rv, this.keyMethod.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.getKeyMethod(), locale );
 		return rv;
 	}
 }

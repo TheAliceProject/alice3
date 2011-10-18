@@ -47,6 +47,19 @@ package org.alice.ide.ast;
  */
 public class AstUtilities {
 
+	public static boolean isKeywordExpression( org.lgna.project.ast.Expression expression ) {
+		if( expression != null ) {
+//			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+//			org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+//			if( methodInvocation.method.getValue().isStatic() ) {
+				return expression.getParent() instanceof org.lgna.project.ast.JavaKeyedArgument;
+//			}
+//		}
+		} else {
+			return false;
+		}
+	}
+
 	private static boolean isValidMethod( java.lang.reflect.Method mthd, org.lgna.project.ast.AbstractType< ?,?,? > valueType ) {
 		int modifiers = mthd.getModifiers();
 		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers )  ) {
@@ -77,7 +90,7 @@ public class AstUtilities {
 		for( org.lgna.project.ast.JavaMethod method : getKeyMethods( argumentListProperty ) ) {
 			boolean isFound = false;
 			for( org.lgna.project.ast.JavaKeyedArgument argument : argumentListProperty ) {
-				if( argument.keyMethod.getValue() == method ) {
+				if( argument.getKeyMethod() == method ) {
 					isFound = true;
 					break;
 				}

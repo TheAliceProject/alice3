@@ -411,6 +411,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
+		if( org.alice.ide.ast.AstUtilities.isKeywordExpression( expression ) ) {
+			return false;
+		}
 		return (expression instanceof org.lgna.project.ast.TypeExpression || expression instanceof org.lgna.project.ast.ResourceExpression) == false;
 	}
 	public org.alice.ide.common.TypeComponent getComponentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
