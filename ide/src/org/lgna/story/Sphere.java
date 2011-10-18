@@ -59,12 +59,8 @@ public class Sphere extends Shape {
 	public Double getRadius() {
 		return this.implementation.radius.getValue();
 	}
-	@MethodTemplate( isFollowedByLongerMethod=true )
-	public void setRadius( Number radius ) {
-		this.setRadius( radius, new SetPropertyDetails.Value() );
-	}
 	@MethodTemplate()
-	public void setRadius( Number radius, SetPropertyDetails.Value details ) {
-		this.implementation.radius.animateValue( radius.doubleValue(), details.getDuration(), details.getStyle() );
+	public void setRadius( Number radius, SetRadius.Detail... details ) {
+		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 }

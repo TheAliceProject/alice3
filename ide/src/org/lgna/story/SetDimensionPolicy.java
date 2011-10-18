@@ -61,4 +61,18 @@ public enum SetDimensionPolicy {
 	/*package-private*/ boolean isAspectRatioPreserved() {
 		return this.isAspectRatioPreserved;
 	}
+
+	private static final SetDimensionPolicy DEFAULT_VALUE = SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
+	private static SetDimensionPolicy getValue( Object[] details, SetDimensionPolicy defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof SetDimensionPolicy ) {
+				SetDimensionPolicy policy = (SetDimensionPolicy)detail;
+				return policy;
+			}
+		}
+		return defaultValue;
+	}
+	/*package-private*/ static SetDimensionPolicy getValue( Object[] details ) {
+		return getValue( details, DEFAULT_VALUE );
+	}
 }

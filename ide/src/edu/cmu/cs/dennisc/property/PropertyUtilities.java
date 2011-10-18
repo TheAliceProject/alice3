@@ -58,6 +58,39 @@ public final class PropertyUtilities {
 		}
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
 	}
+	
+	private static java.lang.reflect.Method getSetter( Class< ? > cls, String methodName, Class< ? >[] parameterTypes ) {
+		java.lang.reflect.Method rv;
+		try {
+			rv = cls.getMethod( methodName, parameterTypes );
+		} catch( NoSuchMethodException nsme ) {
+			rv = null;
+			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
+				if( methodName.equals( mthd.getName() ) ) {
+					if( mthd.isVarArgs() ) {
+						Class< ? >[] mthdParameterTypes = mthd.getParameterTypes();
+						if( mthdParameterTypes.length == parameterTypes.length + 1 ) {
+							boolean isMatch = true;
+							for( int i=0; i<parameterTypes.length; i++ ) {
+								if( mthdParameterTypes[ i ] == parameterTypes[ i ] ) {
+									//pass
+								} else {
+									isMatch = false;
+									break;
+								}
+							}
+							if( isMatch ) {
+								rv = mthd;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		return rv;
+	}
+	
 	public static java.lang.reflect.Method getSetter( Class< ? > cls, String propertyName ) {
 		java.lang.reflect.Method getter = getGetter( cls, propertyName );
 		Class< ? > valueClass = getter.getReturnType();
@@ -68,16 +101,17 @@ public final class PropertyUtilities {
 		} else {
 			methodName = "set" + propertyName;
 		}
-		try {
-			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
-		} catch( RuntimeException re ) {
+
+		java.lang.reflect.Method rv = getSetter( cls, methodName, parameterTypes );
+		if( rv != null ) {
+			//pass
+		} else {
 			if( valueClass.equals( Double.TYPE ) || valueClass.equals( Double.class ) ) {
 				parameterTypes[ 0 ] = Number.class;
-				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
-			} else {
-				return null;
+				rv = getSetter( cls, methodName, parameterTypes );
 			}
 		}
+		return rv;
 	}
 
 	public static boolean hasGetter( Class< ? > cls, String propertyName ) {

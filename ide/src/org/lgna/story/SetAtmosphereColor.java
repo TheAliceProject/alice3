@@ -43,39 +43,14 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Turnable extends Entity {
-	@Override
-	/*package-private*/abstract org.lgna.story.implementation.AbstractTransformableImp getImplementation();
-	@MethodTemplate()
-	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, Turn.Detail... details ) {
-		this.getImplementation().animateApplyRotationInRevolutions( 
-				direction.getAxis(), 
-				amount.doubleValue(), 
-				AsSeenBy.getValue( details, this ).getImplementation(), 
-				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ) 
-		);
+public class SetAtmosphereColor extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetAtmosphereColor.class )
+	public static interface Detail {
 	}
-	@MethodTemplate()
-	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, Roll.Detail... details ) {
-		this.getImplementation().animateApplyRotationInRevolutions( 
-				direction.getAxis(), 
-				amount.doubleValue(), 
-				AsSeenBy.getValue( details, this ).getImplementation(), 
-				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ) 
-		);
-	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public Orientation getOrientationRelativeToVehicle() {
-		return Orientation.createInstance( this.getImplementation().getLocalOrientation() );
-	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setOrientationRelativeToVehicle( Orientation position ) {
-		this.getImplementation().setLocalOrientation( position.getInternal() );
+	private SetAtmosphereColor() {
+		super();
 	}
 }

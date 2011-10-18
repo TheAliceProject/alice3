@@ -46,31 +46,11 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class SetPropertyDetails {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetPropertyDetails.class )
-	public static class Value extends AbstractAnimationDetails {
-		/*package-private*/ Value() {
-		}
-		public Value duration( Number value ) {
-			this.duration = value.doubleValue();
-			return this;
-		}
-		public Value style( org.lgna.story.Style value ) {
-			this.style = value;
-			return this;
-		}
+public class SetWidth extends DurationAnimationStyleSetDimensionPolicyArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetWidth.class )
+	public static interface Detail {
 	}
-	private SetPropertyDetails() {
-		throw new AssertionError();
-	}
-	public static Value duration( Number value ) {
-		Value rv = new Value();
-		rv.duration( value );
-		return rv;
-	}
-	public static Value style( Style value ) {
-		Value rv = new Value();
-		rv.style( value );
-		return rv;
+	private SetWidth() {
+		super();
 	}
 }

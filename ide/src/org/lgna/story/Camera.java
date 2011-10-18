@@ -56,12 +56,8 @@ public class Camera extends MovableTurnable implements MutableRider {
 	/*package-private*/ org.lgna.story.implementation.SymmetricPerspectiveCameraImp getImplementation() {
 		return this.implementation;
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void moveAndOrientToAGoodVantagePointOf( Entity entity ) {
-		this.moveAndOrientToAGoodVantagePointOf( entity, new VantagePointDetails.Value() );
-	}
 	@MethodTemplate()
-	public void moveAndOrientToAGoodVantagePointOf( Entity entity, VantagePointDetails.Value animationDetails ) {
-		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), animationDetails.getDuration(), animationDetails.getStyle() );
+	public void moveAndOrientToAGoodVantagePointOf( Entity entity, MoveAndOrientToAGoodVantagePointOf.Detail... details ) {
+		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 }

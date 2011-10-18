@@ -46,7 +46,27 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class AnimationStyle implements Turn.Detail, Roll.Detail {
+public class AnimationStyle implements 
+		//Turnable
+		Turn.Detail, Roll.Detail,
+		//MoveableTurnable
+		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
+		MoveTo.Detail, MoveAndOrientTo.Detail,
+		//Visual
+		SetPaint.Detail, SetOpacity.Detail,
+		//Resizeable
+		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail, 
+		//Billboard
+		SetBackPaint.Detail,
+		//Camera,
+		MoveAndOrientToAGoodVantagePointOf.Detail,
+		//Scene
+		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail,
+		//Sphere
+		SetRadius.Detail,
+		//Cone
+		SetBaseRadius.Detail, SetLength.Detail
+{
 	private static final boolean[] DEFAULT_VALUE = { true, true };
 	private final boolean[] value;
 	public AnimationStyle( Boolean isBegunGently, Boolean isEndedGently ) {

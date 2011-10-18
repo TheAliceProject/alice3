@@ -46,44 +46,11 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class SetDimensionDetails {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetDimensionDetails.class )
-	public static class Value extends AbstractAnimationDetails {
-		protected org.lgna.story.SetDimensionPolicy policy = org.lgna.story.SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
-		/*package-private*/ Value() {
-		}
-		public Value policy( org.lgna.story.SetDimensionPolicy value ) {
-			this.policy = value;
-			return this;
-		}
-		public Value duration( Number value ) {
-			this.duration = value.doubleValue();
-			return this;
-		}
-		public Value style( org.lgna.story.Style value ) {
-			this.style = value;
-			return this;
-		}
-		/*package-private*/ org.lgna.story.SetDimensionPolicy getPolicy() {
-			return this.policy;
-		}
+public class MoveAwayFrom extends DurationAnimationStyleAsSeenByArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=MoveAwayFrom.class )
+	public static interface Detail {
 	}
-	/*package-private*/ SetDimensionDetails() {
-		throw new AssertionError();
-	}
-	public static Value policy( SetDimensionPolicy value ) {
-		Value rv = new Value();
-		rv.policy( value );
-		return rv;
-	}
-	public static Value duration( Number value ) {
-		Value rv = new Value();
-		rv.duration( value );
-		return rv;
-	}
-	public static Value style( Style value ) {
-		Value rv = new Value();
-		rv.style( value );
-		return rv;
+	private MoveAwayFrom() {
+		super();
 	}
 }

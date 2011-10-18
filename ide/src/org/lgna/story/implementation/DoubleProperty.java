@@ -52,6 +52,6 @@ public abstract class DoubleProperty extends Property< Double > {
 	}
 	@Override
 	protected Double interpolate( Double a, Double b, double portion ) {
-		return a + ((a+b)*portion);
+		return a + ((b-a)*portion);
 	}
 }

@@ -46,7 +46,27 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements Turn.Detail, Roll.Detail {
+public class Duration implements
+		//Turnable
+		Turn.Detail, Roll.Detail,
+		//MoveableTurnable
+		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
+		MoveTo.Detail, MoveAndOrientTo.Detail,
+		//Visual
+		SetPaint.Detail, SetOpacity.Detail,
+		//Resizeable
+		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail, 
+		//Billboard
+		SetBackPaint.Detail,
+		//Camera,
+		MoveAndOrientToAGoodVantagePointOf.Detail,
+		//Scene
+		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail,
+		//Sphere
+		SetRadius.Detail,
+		//Cone
+		SetBaseRadius.Detail, SetLength.Detail
+{
 	private static final double DEFAULT_VALUE = 1.0;
 	private final double value;
 	public Duration( Number value ) {

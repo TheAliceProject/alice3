@@ -46,13 +46,11 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class AbstractAnimationDetails {
-	protected double duration = 1.0;
-	protected org.lgna.story.Style style = org.lgna.story.TraditionalStyle.BEGIN_AND_END_GENTLY;
-	/*package-private*/ double getDuration() {
-		return this.duration;
+public class SetRadius extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetRadius.class )
+	public static interface Detail {
 	}
-	/*package-private*/ org.lgna.story.Style getStyle() {
-		return this.style;
+	private SetRadius() {
+		super();
 	}
 }

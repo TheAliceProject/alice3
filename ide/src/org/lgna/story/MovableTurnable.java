@@ -58,53 +58,57 @@ public abstract class MovableTurnable extends Turnable {
 		this.getImplementation().setLocalPosition( position.getInternal() );
 	}
 
-	@MethodTemplate( isFollowedByLongerMethod=true )
-	public void move( MoveDirection direction, Number amount ) {
-		this.move( direction, amount, new VantagePointWithAsSeenByDetails.Value() );
-	}
 	@MethodTemplate()
-	public void move( MoveDirection direction, Number amount, VantagePointWithAsSeenByDetails.Value details ) {
-		this.getImplementation().animateApplyTranslation( direction.createTranslation( amount.doubleValue() ), details.getAsSeenBy( this ).getImplementation(), details.getDuration(), details.getStyle() );
+	public void move( MoveDirection direction, Number amount, Move.Detail... details ) {
+		this.getImplementation().animateApplyTranslation( 
+				direction.createTranslation( amount.doubleValue() ), 
+				AsSeenBy.getValue( details, this ).getImplementation(), 
+				Duration.getValue( details ), 
+				AnimationStyle.getValue( details ) 
+		);
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void moveToward( Entity target, Number amount ) {
-		this.moveToward( target, amount, new VantagePointDetails.Value() );
-	}
-	@MethodTemplate()
-	public void moveToward( Entity target, Number amount, VantagePointDetails.Value details ) {
+	
+	private void internalMoveToward( Entity target, double amount, double duration, edu.cmu.cs.dennisc.animation.Style animationStyle ) {
 		edu.cmu.cs.dennisc.math.Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
 		edu.cmu.cs.dennisc.math.Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
 		edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( tTarget, tThis );
 		double length = v.calculateMagnitude();
 		if( length > 0 ) {
-			v.multiply( amount.doubleValue() / length );
+			v.multiply( amount / length );
 		} else {
-			v.set( 0, 0, amount.doubleValue() );
+			v.set( 0, 0, amount );
 		}
-		this.getImplementation().animateApplyTranslation( v.x, v.y, v.z, org.lgna.story.implementation.AsSeenBy.SCENE, details.getDuration(), details.getStyle() );
-	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void moveAwayFrom( Entity target, Number amount ) {
-		this.moveAwayFrom( target, amount, new VantagePointDetails.Value() );
-	}
-	@MethodTemplate()
-	public void moveAwayFrom( Entity target, Number amount, VantagePointDetails.Value details ) {
-		this.moveToward( target, -amount.doubleValue(), details );
-	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void moveTo( Entity target ) {
-		this.moveTo( target, new VantagePointDetails.Value() );
+		this.getImplementation().animateApplyTranslation( 
+				v.x, v.y, v.z, 
+				org.lgna.story.implementation.AsSeenBy.SCENE, 
+				duration, 
+				animationStyle 
+		);
 	}
 	@MethodTemplate()
-	public void moveTo( Entity target, VantagePointDetails.Value details ) {
-		this.getImplementation().animatePositionOnly( target.getImplementation(), null, details.getDuration(), details.getStyle() );
-	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void moveAndOrientTo( Entity target ) {
-		this.moveAndOrientTo( target, new VantagePointDetails.Value() );
+	public void moveToward( Entity target, Number amount, MoveToward.Detail... details ) {
+		this.internalMoveToward( 
+				target, 
+				amount.doubleValue(), 
+				Duration.getValue( details ), 
+				AnimationStyle.getValue( details ) 
+		);
 	}
 	@MethodTemplate()
-	public void moveAndOrientTo( Entity target, VantagePointDetails.Value details ) {
-		this.getImplementation().animateTransformation( target.getImplementation(), null, details.getDuration(), details.getStyle() );
+	public void moveAwayFrom( Entity target, Number amount, MoveAwayFrom.Detail... details ) {
+		this.internalMoveToward( 
+				target, 
+				-amount.doubleValue(), 
+				Duration.getValue( details ), 
+				AnimationStyle.getValue( details ) 
+		);
+	}
+	@MethodTemplate()
+	public void moveTo( Entity target, MoveTo.Detail... details ) {
+		this.getImplementation().animatePositionOnly( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ) );
+	}
+	@MethodTemplate()
+	public void moveAndOrientTo( Entity target, MoveAndOrientTo.Detail... details ) {
+		this.getImplementation().animateTransformation( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 }

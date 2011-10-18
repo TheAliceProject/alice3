@@ -46,44 +46,11 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class ResizeDimensionDetails {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=ResizeDimensionDetails.class )
-	public static class Value extends AbstractAnimationDetails {
-		private Boolean isVolumePreserved = true;
-		/*package-private*/ Value() {
-		}
-		public Value isVolumePreserved( Boolean value ) {
-			this.isVolumePreserved = value;
-			return this;
-		}
-		public Value duration( Number value ) {
-			this.duration = value.doubleValue();
-			return this;
-		}
-		public Value style( org.lgna.story.Style value ) {
-			this.style = value;
-			return this;
-		}
-		/*package-private*/ Boolean isVolumePreserved() {
-			return this.isVolumePreserved;
-		}
+public class SetPaint extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetPaint.class )
+	public static interface Detail {
 	}
-	private ResizeDimensionDetails() {
-		throw new AssertionError();
-	}
-	public static Value isVolumePreserved( Boolean value ) {
-		Value rv = new Value();
-		rv.isVolumePreserved( value );
-		return rv;
-	}
-	public static Value duration( Number value ) {
-		Value rv = new Value();
-		rv.duration( value );
-		return rv;
-	}
-	public static Value style( Style value ) {
-		Value rv = new Value();
-		rv.style( value );
-		return rv;
+	private SetPaint() {
+		super();
 	}
 }

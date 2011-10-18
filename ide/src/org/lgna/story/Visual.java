@@ -48,9 +48,7 @@ package org.lgna.story;
  */
 public interface Visual {
 	public Paint getPaint();
-	public void setPaint( Paint color );
-	public void setPaint( Paint color, SetPropertyDetails.Value details );
+	public void setPaint( Paint paint, SetPaint.Detail... details );
 	public Double getOpacity();
-	public void setOpacity( Number opacity );
-	public void setOpacity( Number opacity, SetPropertyDetails.Value details );
+	public void setOpacity( Number opacity, SetOpacity.Detail... details );
 }

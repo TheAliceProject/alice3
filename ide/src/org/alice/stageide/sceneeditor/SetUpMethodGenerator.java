@@ -200,7 +200,7 @@ public class SetUpMethodGenerator {
 				try {
 					bodyStatementsProperty.add( 
 							createStatement( 
-									org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class }, 
+									org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class, org.lgna.story.SetScale.Detail[].class }, 
 									SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
 									getExpressionCreator().createExpression( scale ) 
 							)

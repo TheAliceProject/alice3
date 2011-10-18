@@ -60,13 +60,9 @@ public abstract class Model extends MovableTurnable implements MutableRider, Res
 	public Paint getPaint() {
 		return this.getImplementation().paint.getValue();
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setPaint( Paint paint ) {
-		this.setPaint( paint, new SetPropertyDetails.Value() );
-	}
 	@MethodTemplate()
-	public void setPaint( Paint paint, SetPropertyDetails.Value details ) {
-		this.getImplementation().paint.animateValue( paint, details.getDuration(), details.getStyle() );
+	public void setPaint( Paint paint, SetPaint.Detail... details ) {
+		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details )  );
 	}
 
 	@MethodTemplate()
@@ -75,109 +71,69 @@ public abstract class Model extends MovableTurnable implements MutableRider, Res
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setOpacity( Number opacity ) {
-		this.setOpacity( opacity, new SetPropertyDetails.Value() );
-	}
 	@MethodTemplate()
-	public void setOpacity( Number opacity, SetPropertyDetails.Value details ) {
-		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
+	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
+		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public Scale getScale() {
 		return Scale.createInstance( this.getImplementation().getScale() );
 	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY, isFollowedByLongerMethod = true)
-	public void setScale( Scale scale ) {
-		this.setScale( scale, new SetPropertyDetails.Value() );
-	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setScale( Scale scale, SetPropertyDetails.Value details ) {
-		this.getImplementation().animateSetScale( Scale.getInternal( scale ), details.getDuration(), details.getStyle() );
+	public void setScale( Scale scale, SetScale.Detail... details ) {
+		this.getImplementation().animateSetScale( Scale.getInternal( scale ), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public Size getSize() {
 		return Size.createInstance( this.getImplementation().getSize() );
 	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY, isFollowedByLongerMethod = true)
-	public void setSize( Size size ) {
-		this.setSize( size, new SetPropertyDetails.Value() );
-	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setSize( Size size, SetPropertyDetails.Value details ) {
-		this.getImplementation().animateSetSize( Size.getInternal( size ), details.getDuration(), details.getStyle() );
+	public void setSize( Size size, SetSize.Detail... details ) {
+		this.getImplementation().animateSetSize( Size.getInternal( size ), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 	@MethodTemplate()
 	public Double getWidth() {
 		return this.getImplementation().getSize().x;
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setWidth( Number width ) {
-		this.setWidth( width, new SetDimensionDetails.Value() );
-	}
 	@MethodTemplate()
-	public void setWidth( Number width, SetDimensionDetails.Value details ) {
-		SetDimensionPolicy policy = details.getPolicy();
-		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
+	public void setWidth( Number width, SetWidth.Detail... details ) {
+		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
+		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 	@MethodTemplate()
 	public Double getHeight() {
 		return this.getImplementation().getSize().y;
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setHeight( Number height ) {
-		this.setHeight( height, new SetDimensionDetails.Value() );
-	}
 	@MethodTemplate()
-	public void setHeight( Number height, SetDimensionDetails.Value details ) {
-		SetDimensionPolicy policy = details.getPolicy();
-		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
+	public void setHeight( Number height, SetHeight.Detail... details ) {
+		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
+		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 	@MethodTemplate()
 	public Double getDepth() {
 		return this.getImplementation().getSize().z;
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setDepth( Number depth ) {
-		this.setDepth( depth, new SetDimensionDetails.Value() );
+	@MethodTemplate()
+	public void setDepth( Number depth, SetDepth.Detail... details ) {
+		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
+		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 	@MethodTemplate()
-	public void setDepth( Number depth, SetDimensionDetails.Value details ) {
-		SetDimensionPolicy policy = details.getPolicy();
-		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), details.getDuration(), details.getStyle() );
-	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void resize( Number factor ) {
-		this.resize( factor, new SetPropertyDetails.Value() );
+	public void resize( Number factor, Resize.Detail... details ) {
+		this.getImplementation().animateResize( factor.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 	@MethodTemplate()
-	public void resize( Number factor, SetPropertyDetails.Value details ) {
-		this.getImplementation().animateResize( factor.doubleValue(), details.getDuration(), details.getStyle() );
-	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void resizeWidth( Number factor ) {
-		this.resizeWidth( factor, new ResizeDimensionDetails.Value() );
+	public void resizeWidth( Number factor, ResizeWidth.Detail... details ) {
+		this.getImplementation().animateResizeWidth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 	@MethodTemplate()
-	public void resizeWidth( Number factor, ResizeDimensionDetails.Value details ) {
-		this.getImplementation().animateResizeWidth( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
-	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void resizeHeight( Number factor ) {
-		this.resizeHeight( factor, new ResizeDimensionDetails.Value() );
+	public void resizeHeight( Number factor, ResizeHeight.Detail... details ) {
+		this.getImplementation().animateResizeHeight( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 	@MethodTemplate()
-	public void resizeHeight( Number factor, ResizeDimensionDetails.Value details ) {
-		this.getImplementation().animateResizeHeight( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
-	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void resizeDepth( Number factor ) {
-		this.resizeDepth( factor, new ResizeDimensionDetails.Value() );
-	}
-	@MethodTemplate()
-	public void resizeDepth( Number factor, ResizeDimensionDetails.Value details ) {
-		this.getImplementation().animateResizeDepth( factor.doubleValue(), details.isVolumePreserved(), details.getDuration(), details.getStyle() );
+	public void resizeDepth( Number factor, ResizeDepth.Detail... details ) {
+		this.getImplementation().animateResizeDepth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 }

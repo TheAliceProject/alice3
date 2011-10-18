@@ -81,13 +81,9 @@ public class Ground extends Entity implements MutableRider, Visual {
 	public Paint getPaint() {
 		return this.getImplementation().paint.getValue();
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setPaint( Paint paint ) {
-		this.setPaint( paint, new SetPropertyDetails.Value() );
-	}
 	@MethodTemplate()
-	public void setPaint( Paint paint, SetPropertyDetails.Value details ) {
-		this.getImplementation().paint.animateValue( paint, details.getDuration(), details.getStyle() );
+	public void setPaint( Paint paint, SetPaint.Detail... details ) {
+		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details )  );
 	}
 
 	@MethodTemplate()
@@ -96,12 +92,8 @@ public class Ground extends Entity implements MutableRider, Visual {
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
-	@MethodTemplate( isFollowedByLongerMethod = true )
-	public void setOpacity( Number opacity ) {
-		this.setOpacity( opacity, new SetPropertyDetails.Value() );
-	}
 	@MethodTemplate()
-	public void setOpacity( Number opacity, SetPropertyDetails.Value details ) {
-		this.getImplementation().opacity.animateValue( opacity.floatValue(), details.getDuration(), details.getStyle() );
+	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
+		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 }

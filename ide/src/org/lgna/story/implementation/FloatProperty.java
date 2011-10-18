@@ -52,6 +52,6 @@ public abstract class FloatProperty extends Property< Float > {
 	}
 	@Override
 	protected Float interpolate( Float a, Float b, double portion ) {
-		return a + (float)((a+b)*portion);
+		return a + (float)((b-a)*portion);
 	}
 }

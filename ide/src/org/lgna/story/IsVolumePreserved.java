@@ -43,39 +43,25 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Turnable extends Entity {
-	@Override
-	/*package-private*/abstract org.lgna.story.implementation.AbstractTransformableImp getImplementation();
-	@MethodTemplate()
-	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, Turn.Detail... details ) {
-		this.getImplementation().animateApplyRotationInRevolutions( 
-				direction.getAxis(), 
-				amount.doubleValue(), 
-				AsSeenBy.getValue( details, this ).getImplementation(), 
-				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ) 
-		);
+public class IsVolumePreserved implements ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail {
+	private static final boolean DEFAULT_VALUE = true;
+	private final boolean value;
+	public IsVolumePreserved( Boolean value ) {
+		this.value = value.booleanValue(); 
 	}
-	@MethodTemplate()
-	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, Roll.Detail... details ) {
-		this.getImplementation().animateApplyRotationInRevolutions( 
-				direction.getAxis(), 
-				amount.doubleValue(), 
-				AsSeenBy.getValue( details, this ).getImplementation(), 
-				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ) 
-		);
+	private static boolean getValue( Object[] details, boolean defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof IsVolumePreserved ) {
+				IsVolumePreserved isVolumePreserved = (IsVolumePreserved)detail;
+				return isVolumePreserved.value;
+			}
+		}
+		return defaultValue;
 	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public Orientation getOrientationRelativeToVehicle() {
-		return Orientation.createInstance( this.getImplementation().getLocalOrientation() );
-	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setOrientationRelativeToVehicle( Orientation position ) {
-		this.getImplementation().setLocalOrientation( position.getInternal() );
+	/*package-private*/ static boolean getValue( Object[] details ) {
+		return getValue( details, DEFAULT_VALUE );
 	}
 }

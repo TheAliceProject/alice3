@@ -57,12 +57,8 @@ public class Billboard extends Model {
 	public Paint getBackPaint() {
 		return this.getImplementation().backPaint.getValue();
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setBackPaint( Paint paint ) {
-		this.setBackPaint( paint, new SetPropertyDetails.Value() );
-	}
 	@MethodTemplate()
-	public void setBackPaint( Paint paint, SetPropertyDetails.Value details ) {
-		this.getImplementation().backPaint.animateValue( paint, details.getDuration(), details.getStyle() );
+	public void setBackPaint( Paint paint, SetBackPaint.Detail... details ) {
+		this.getImplementation().backPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 }

@@ -59,25 +59,17 @@ public class Cone extends Shape {
 	public Double getBaseRadius() {
 		return this.implementation.baseRadius.getValue();
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setBaseRadius( Number baseRadius ) {
-		this.setBaseRadius( baseRadius, new SetPropertyDetails.Value() );
-	}
 	@MethodTemplate()
-	public void setBaseRadius( Number baseRadius, SetPropertyDetails.Value details ) {
-		this.implementation.baseRadius.animateValue( baseRadius.doubleValue(), details.getDuration(), details.getStyle() );
+	public void setBaseRadius( Number baseRadius, SetBaseRadius.Detail... details ) {
+		this.implementation.baseRadius.animateValue( baseRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 	@GetterTemplate(isPersistent=true)
 	@MethodTemplate()
 	public Double getLength() {
 		return this.implementation.length.getValue();
 	}
-	@MethodTemplate(isFollowedByLongerMethod = true)
-	public void setLength( Number length ) {
-		this.setLength( length, new SetPropertyDetails.Value() );
-	}
 	@MethodTemplate()
-	public void setLength( Number length, SetPropertyDetails.Value details ) {
-		this.implementation.length.animateValue( length.doubleValue(), details.getDuration(), details.getStyle() );
+	public void setLength( Number length, SetLength.Detail... details ) {
+		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ) );
 	}
 }

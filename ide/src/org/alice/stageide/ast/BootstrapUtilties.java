@@ -157,7 +157,7 @@ public class BootstrapUtilties {
 			throw new RuntimeException( ccee );
 		}
 		
-		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setPaint", org.lgna.story.Paint.class );
+		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
 
 		org.lgna.project.ast.UserMethod performCustomSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, "performCustomSetup" );
