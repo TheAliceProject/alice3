@@ -151,8 +151,8 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 	private TestOperation testOperation = new TestOperation();
 
 	private static org.lgna.project.ast.Expression getArgumentExpressionAt( org.lgna.project.ast.InstanceCreation instanceCreation, int index ) {
-		assert instanceCreation.arguments.size() >= index;
-		org.lgna.project.ast.AbstractArgument arg = instanceCreation.arguments.get( index );
+		assert instanceCreation.requiredArguments.size() >= index;
+		org.lgna.project.ast.AbstractArgument arg = instanceCreation.requiredArguments.get( index );
 		assert arg != null;
 		assert arg instanceof org.lgna.project.ast.SimpleArgument;
 		return ((org.lgna.project.ast.SimpleArgument)arg).expression.getValue();
@@ -167,7 +167,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractRowsPaneC
 		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression instanceof org.lgna.project.ast.InstanceCreation ) {
 			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)previousExpression;
-			int n = instanceCreation.arguments.size();
+			int n = instanceCreation.requiredArguments.size();
 			if( n > 0 ) {
 				org.lgna.project.ast.Expression expression0 = getArgumentExpressionAt( instanceCreation, 0 );
 				if( expression0 instanceof org.lgna.project.ast.ResourceExpression ) {

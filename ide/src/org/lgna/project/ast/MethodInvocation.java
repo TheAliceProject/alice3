@@ -54,7 +54,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 		}
 	};
 	public DeclarationProperty< AbstractMethod > method = new DeclarationProperty< AbstractMethod >( this );
-	public SimpleArgumentListProperty arguments = new SimpleArgumentListProperty( this );
+	public SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 
@@ -78,7 +78,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 		}
 		this.expression.setValue( expression );
 		this.method.setValue( method );
-		this.arguments.add( requiredArguments );
+		this.requiredArguments.add( requiredArguments );
 		if( variableArguments != null ) {
 			this.variableArguments.add( variableArguments );
 		}
@@ -90,7 +90,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 		return this.method;
 	}
 	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
-		return this.arguments;
+		return this.requiredArguments;
 	}
 	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
@@ -142,7 +142,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 		NodeUtilities.safeAppendRepr( rv, this.method.getValue(), locale );
 		rv.append( "(" );
 		String separator = "";
-		for( AbstractArgument argument : this.arguments ) {
+		for( AbstractArgument argument : this.requiredArguments ) {
 			rv.append( separator );
 			NodeUtilities.safeAppendRepr( rv, argument, locale );
 			separator = ", ";

@@ -133,10 +133,10 @@ public class TypeManager {
 						parameterTypeI = javaParameterI.getValueType();
 					}
 					org.lgna.project.ast.UserParameter userParameterI = new org.lgna.project.ast.UserParameter( parameterName, parameterTypeI );
-					userConstructor.parameters.add( userParameterI );
+					userConstructor.requiredParameters.add( userParameterI );
 					argumentExpressionI = new org.lgna.project.ast.ParameterAccess( userParameterI );
 				}
-				superConstructorInvocationStatement.arguments.add( new org.lgna.project.ast.SimpleArgument( javaParameterI, argumentExpressionI ) );
+				superConstructorInvocationStatement.requiredArguments.add( new org.lgna.project.ast.SimpleArgument( javaParameterI, argumentExpressionI ) );
 			}
 
 			body.constructorInvocationStatement.setValue( superConstructorInvocationStatement );
@@ -221,8 +221,8 @@ public class TypeManager {
 			if( constructor != null ) {
 				org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
 				if( constructorInvocationStatement instanceof org.lgna.project.ast.SuperConstructorInvocationStatement ) {
-					if( constructorInvocationStatement.arguments.size() == 1 ) {
-						org.lgna.project.ast.Expression argumentExpression = constructorInvocationStatement.arguments.get( 0 ).expression.getValue();
+					if( constructorInvocationStatement.requiredArguments.size() == 1 ) {
+						org.lgna.project.ast.Expression argumentExpression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
 						if( argumentExpression instanceof org.lgna.project.ast.FieldAccess ) {
 							org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)argumentExpression;
 							return super.accept( userType ) && fieldAccess.field.getValue() == this.superArgumentField;

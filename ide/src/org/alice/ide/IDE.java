@@ -346,12 +346,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
 					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
 					if( methodInvocation.method.getValue() == code ) {
-						this.list.add( methodInvocation.arguments );
+						this.list.add( methodInvocation.requiredArguments );
 					}
 				} else if( crawlable instanceof org.lgna.project.ast.InstanceCreation ) {
 					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)crawlable;
 					if( instanceCreation.constructor.getValue() == code ) {
-						this.list.add( instanceCreation.arguments );
+						this.list.add( instanceCreation.requiredArguments );
 					}
 				}
 			}

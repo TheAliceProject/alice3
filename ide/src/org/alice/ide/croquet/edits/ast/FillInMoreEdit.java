@@ -66,7 +66,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 	}
 
 	private org.lgna.project.ast.SimpleArgument getArgumentAt( org.lgna.project.ast.MethodInvocation methodInvocation, int index ) {
-		return (org.lgna.project.ast.SimpleArgument)methodInvocation.arguments.get( index );
+		return (org.lgna.project.ast.SimpleArgument)methodInvocation.requiredArguments.get( index );
 	}
 	
 	@Override
@@ -78,7 +78,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 		org.lgna.project.ast.Expression instanceExpression = prevMethodInvocation.expression.getValue();
 		//prevMethodInvocation.expression.setValue( null );
 		nextMethodInvocation.expression.setValue( instanceExpression );
-		final int N = prevMethodInvocation.arguments.size();
+		final int N = prevMethodInvocation.requiredArguments.size();
 		for( int i=0; i<N; i++ ) {
 			org.lgna.project.ast.Expression expressionI = this.getArgumentAt( prevMethodInvocation, i ).expression.getValue();
 			//prevMethodInvocation.arguments.get( i ).expression.setValue( null );
@@ -97,7 +97,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 		org.lgna.project.ast.Expression instanceExpression = nextMethodInvocation.expression.getValue();
 		nextMethodInvocation.expression.setValue( null );
 		prevMethodInvocation.expression.setValue( instanceExpression );
-		final int N = prevMethodInvocation.arguments.size();
+		final int N = prevMethodInvocation.requiredArguments.size();
 		for( int i=0; i<N; i++ ) {
 			org.lgna.project.ast.Expression expressionI =  this.getArgumentAt( nextMethodInvocation, i ).expression.getValue();
 			//nextMethodInvocation.arguments.get( i ).expression.setValue( null );
@@ -118,8 +118,8 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 			rv.append( "more: " );
 			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), locale );
 			rv.append( " " );
-			final int N = nextMethodInvocation.arguments.size(); 
-			org.lgna.project.ast.AbstractArgument argument = nextMethodInvocation.arguments.get( N-1 );
+			final int N = nextMethodInvocation.requiredArguments.size(); 
+			org.lgna.project.ast.AbstractArgument argument = nextMethodInvocation.requiredArguments.get( N-1 );
 			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, argument, locale );
 		}
 		return rv;

@@ -104,7 +104,7 @@ public class IncompleteAstUtilities {
 		rv.method.setValue( method );
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
 			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, new EmptyExpression( parameter.getValueType() ) );
-			rv.arguments.add( argument );
+			rv.requiredArguments.add( argument );
 		}
 		return rv;
 	}
@@ -117,6 +117,11 @@ public class IncompleteAstUtilities {
 	public static org.lgna.project.ast.FieldAccess createIncompleteFieldAccess( org.lgna.project.ast.AbstractField field ) {
 		return org.lgna.project.ast.AstUtilities.createFieldAccess( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
 	}
+	
+	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression... argumentExpressions ) {
+		return org.lgna.project.ast.AstUtilities.completeMethodInvocation( rv, org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), argumentExpressions );
+	}
+	
 	private static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.FieldAccess fieldAccess = org.lgna.project.ast.AstUtilities.createFieldAccess( expression, field );
 		org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
@@ -129,7 +134,7 @@ public class IncompleteAstUtilities {
 		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
 		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
 			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, new EmptyExpression( parameter.getValueType() ) );
-			rv.arguments.add( argument );
+			rv.requiredArguments.add( argument );
 		}
 		return rv;
 	}

@@ -62,7 +62,7 @@ public class InstanceCreationFillInWithPredeterminedFieldAccessArgument extends 
 	private final org.lgna.project.ast.InstanceCreation transientValue;
 	private static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
-		rv.arguments.add( new org.lgna.project.ast.SimpleArgument( constructor.getRequiredParameters().get( 0 ), new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ), field ) ) );
+		rv.requiredArguments.add( new org.lgna.project.ast.SimpleArgument( constructor.getRequiredParameters().get( 0 ), new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ), field ) ) );
 		return rv;
 	}
 	private InstanceCreationFillInWithPredeterminedFieldAccessArgument( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {

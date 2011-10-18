@@ -53,7 +53,7 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 			return true;
 		}
 	};
-	public SimpleArgumentListProperty arguments = new SimpleArgumentListProperty( this );
+	public SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 	public ConstructorInvocationStatement() {
@@ -64,7 +64,7 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 	public ConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
 		assert constructor != null;
 		this.constructor.setValue( constructor );
-		this.arguments.add( requiredArguments );
+		this.requiredArguments.add( requiredArguments );
 		if( variableArguments != null ) {
 			this.variableArguments.add( variableArguments );
 		}
@@ -76,7 +76,7 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 		return this.constructor;
 	}
 	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
-		return this.arguments;
+		return this.requiredArguments;
 	}
 	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;

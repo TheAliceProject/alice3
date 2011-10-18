@@ -90,7 +90,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 			if( type.isAssignableFrom( org.lgna.story.Model.class ) ) {
 				org.lgna.project.ast.UserMethod enclosingMethod = previousExpression.getFirstAncestorAssignableTo( org.lgna.project.ast.UserMethod.class );
 				if( enclosingMethod != null ) {
-					for( org.lgna.project.ast.UserParameter parameter : enclosingMethod.parameters ) {
+					for( org.lgna.project.ast.UserParameter parameter : enclosingMethod.requiredParameters ) {
 						org.lgna.project.ast.JavaType typeMouseButtonEvent = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.MouseButtonEvent.class );
 						if( parameter.getValueType() == typeMouseButtonEvent ) {
 							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
@@ -105,7 +105,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 			} else if( type.isAssignableFrom( Boolean.class ) ) {
 				org.lgna.project.ast.UserMethod enclosingMethod = previousExpression.getFirstAncestorAssignableTo( org.lgna.project.ast.UserMethod.class );
 				if( enclosingMethod != null ) {
-					for( org.lgna.project.ast.UserParameter parameter : enclosingMethod.parameters ) {
+					for( org.lgna.project.ast.UserParameter parameter : enclosingMethod.requiredParameters ) {
 						org.lgna.project.ast.JavaType typeKeyEvent = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.KeyEvent.class );
 						if( parameter.getValueType() == typeKeyEvent ) {
 							{

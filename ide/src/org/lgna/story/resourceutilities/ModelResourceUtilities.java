@@ -478,9 +478,9 @@ public class ModelResourceUtilities {
 		for (int i=0; i<aliceType.constructors.size(); i++)
 		{
 			NamedUserConstructor constructor = aliceType.constructors.get(i);
-			if (constructor.parameters.size() == 1)
+			if (constructor.requiredParameters.size() == 1)
 			{
-				UserParameter parameter = constructor.parameters.get(0);
+				UserParameter parameter = constructor.requiredParameters.get(0);
 				if (parameter.getValueType().isAssignableTo(ModelResource.class))
 				{
 					return new ConstructorParameterPair(constructor, parameter);

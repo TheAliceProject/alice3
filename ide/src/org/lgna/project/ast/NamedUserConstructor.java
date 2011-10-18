@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class NamedUserConstructor extends UserConstructor implements UserCode {
-	public NodeListProperty< UserParameter > parameters = new NodeListProperty< UserParameter >( this );
+	public NodeListProperty< UserParameter > requiredParameters = new NodeListProperty< UserParameter >( this );
 	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
 	public NodeProperty< ConstructorBlockStatement > body = new NodeProperty< ConstructorBlockStatement >( this );
 	public edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel > managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel >( this, ManagementLevel.NONE );
@@ -60,7 +60,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	public NamedUserConstructor() {
 	}
 	public NamedUserConstructor( UserParameter[] parameters, ConstructorBlockStatement body ) {
-		this.parameters.add( parameters );
+		this.requiredParameters.add( parameters );
 		this.body.setValue( body );
 	}
 
@@ -91,7 +91,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 		return this.body;
 	}
 	public NodeListProperty< UserParameter > getParamtersProperty() {
-		return this.parameters;
+		return this.requiredParameters;
 	}
 	@Override
 	public UserType<?> getDeclaringType() {
@@ -119,7 +119,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	
 	@Override
 	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
-		return parameters.getValue();
+		return requiredParameters.getValue();
 	}
 
 	@Override
