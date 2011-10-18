@@ -826,6 +826,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	private boolean isRespondingToRefreshAccessibles = true;
 	public void refreshAccessibles() {
+		System.err.println( "refreshAccessibles" );
 //		if( isRespondingToRefreshAccessibles ) {
 //			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
 //
