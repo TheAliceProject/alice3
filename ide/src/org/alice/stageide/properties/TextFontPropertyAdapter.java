@@ -88,7 +88,7 @@ public class TextFontPropertyAdapter extends AbstractPropertyAdapter<java.awt.Fo
 	}
 	
 	@Override
-	public java.awt.Font getValueCopy() 
+	public java.awt.Font getValueCopyIfMutable() 
 	{
 		return this.getValue();
 	}

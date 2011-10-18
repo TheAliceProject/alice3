@@ -59,6 +59,12 @@ public class MousePressCondition extends MouseDragCondition {
 	}
 	
 	@Override
+	protected boolean testState( InputState state ) {
+		boolean inputTest = testInputs(state);
+		return  inputTest;
+	}
+	
+	@Override
 	public boolean stateChanged( InputState currentState, InputState previousState ) {
 		boolean currentStateStatus = testState(currentState);
 		boolean previousStateStatus = testState(previousState);

@@ -121,7 +121,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 	
 	public abstract P getValue();
 	public abstract Class<P> getPropertyType();
-	public abstract P getValueCopy();
+	public abstract P getValueCopyIfMutable();
 	
 	public void addValueChangeObserver(ValueChangeObserver<P> observer)
 	{

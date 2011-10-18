@@ -99,7 +99,7 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
 	}
 
 	@Override
-	public Dimension3 getValueCopy() {
+	public Dimension3 getValueCopyIfMutable() {
 		return new Dimension3(this.getValue());
 	}
 }

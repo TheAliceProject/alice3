@@ -66,6 +66,7 @@ import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.BookmarkCameraMarker;
+import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.ObjectMarker;
 import org.lgna.story.implementation.EntityImp;
@@ -278,6 +279,24 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
 	}
 	
+	private void setSelectedFieldOnManipulator(UserField field)
+	{
+		if (this.globalDragAdapter != null)
+		{
+			Entity selectedEntity = this.getInstanceInJavaVMForField(field, Entity.class);
+			TransformableImp transImp = null;
+			if (selectedEntity != null)
+			{
+				EntityImp imp = ImplementationAccessor.getImplementation(selectedEntity);
+				if (imp instanceof TransformableImp)
+				{
+					transImp = (TransformableImp)imp;
+				}
+			}
+			this.globalDragAdapter.setSelectedImplementation(transImp);
+		}
+	}
+	
 	@Override
 	public void setSelectedField(UserType<?> declaringType, UserField field) {
 		if (!this.selectionIsFromMain)
@@ -296,9 +315,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 					InstanceFactoryState.getInstance().setValueTransactionlessly(org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance(field));
 				}
 			}
-			if (!this.selectionIsFromManipulator)
+			if (/*!this.selectionIsFromManipulator &&*/ this.globalDragAdapter != null)
 			{
-				this.globalDragAdapter.setSelectedImplementation(this.getInstanceInJavaVMForField(field, TransformableImp.class));
+				setSelectedFieldOnManipulator(field);
 			}
 			this.selectionIsFromMain = false;
 		}
@@ -371,6 +390,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			UserField field = this.getFieldForInstanceInJavaVM(imp.getAbstraction());
 			this.setSelectedField(field.getDeclaringType(), field);
 		}
+		else
+		{
+			UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
+			StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
+		}
 		this.selectionIsFromManipulator = false;
 	}
 	
@@ -393,6 +417,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 			this.onscreenLookingGlass.addLookingGlassListener(this);
 			this.globalDragAdapter.setAnimator( animator );
+			if (this.getSelectedField() != null)
+			{
+				setSelectedFieldOnManipulator(this.getSelectedField());
+			}
 			
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
 			

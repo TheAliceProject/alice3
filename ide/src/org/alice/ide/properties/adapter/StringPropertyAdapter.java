@@ -69,7 +69,7 @@ public class StringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<St
 	}
 	
 	@Override
-	public String getValueCopy() 
+	public String getValueCopyIfMutable() 
 	{
 		return new String(this.getValue());
 	}

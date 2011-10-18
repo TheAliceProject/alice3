@@ -534,12 +534,13 @@ public class ModelResourceExporter {
 		return sb.toString();
 	}
 	
-	private void add(File source, JarOutputStream target) throws IOException
+	private void add(File source, JarOutputStream target, boolean recursive) throws IOException
 	{
 		String root = source.getAbsolutePath().replace("\\", "/")+"/";
-		this.add(source, target, root);
+		this.add(source, target, root, recursive);
 	}
-	private void add(File source, JarOutputStream target, String root) throws IOException
+	
+	private void add(File source, JarOutputStream target, String root, boolean recursive) throws IOException
 	{
 	  BufferedInputStream in = null;
 	  try
@@ -568,7 +569,12 @@ public class ModelResourceExporter {
 	        }
 	      }
 	      for (File nestedFile: source.listFiles())
-	        add(nestedFile, target, root);
+	      {
+	    	  if (!nestedFile.isDirectory() || recursive)
+	    	  {
+	    		  add(nestedFile, target, root, recursive);
+	    	  }
+	      }
 	      return;
 	    }
 
@@ -718,15 +724,15 @@ public class ModelResourceExporter {
         return thumbnailFiles;
 	}
 	
-	public boolean addToJar(String sourceDirectory, JarOutputStream jos)
+	public boolean addToJar(String sourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream)
 	{
 		if (!sourceDirectory.endsWith("/") && !sourceDirectory.endsWith("\\")) {
 			sourceDirectory += File.separator;
         }
 		File javaFile = createJavaCode(sourceDirectory);
+		File sourceDir = javaFile.getParentFile();
 		
-		String[] args = new String[]{javaFile.getAbsolutePath(), "-classpath", System.getProperty("java.class.path")};
-//		com.sun.tools.javac.Main javac = new com.sun.tools.javac.Main();
+		String[] args = new String[]{javaFile.getAbsolutePath(), "-target", "1.5", "-classpath", System.getProperty("java.class.path")};
 		PrintWriter pw = new PrintWriter(System.out);
 		int status = com.sun.tools.javac.Main.compile(args, pw);
 		
@@ -736,11 +742,14 @@ public class ModelResourceExporter {
 		}
 		
 		File xmlFile = createXMLFile(sourceDirectory);
+		File resourceDir = xmlFile.getParentFile();
 		List<File> thumbnailFiles = createThumbnails(sourceDirectory);
 		try
 		{
-			System.out.println("Adding "+sourceDirectory);
-			add(new File(sourceDirectory), jos);
+			System.out.println("Adding "+sourceDir);
+			add(sourceDir, sourceJarStream, sourceDirectory, false);
+			System.out.println("Adding "+resourceDir);
+			add(resourceDir, resourceJarStream, sourceDirectory, true);
 			return true;
 		}
 		catch (Exception e)
@@ -748,6 +757,11 @@ public class ModelResourceExporter {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public boolean addToJar(String sourceDirectory, JarOutputStream jos)
+	{
+		return addToJar(sourceDirectory, jos, jos);
 	}
 	
 	public File export(String sourceDirectory, String outputDir)

@@ -64,7 +64,7 @@ public class PaintPropertyAdapter<O> extends AbstractImplementationPropertyAdapt
 	}
 	
 	@Override
-	public org.lgna.story.Paint getValueCopy() 
+	public org.lgna.story.Paint getValueCopyIfMutable() 
 	{
 		return this.getValue();
 	}

@@ -63,7 +63,7 @@ public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapt
 	}
 	
 	@Override
-	public Color getValueCopy() 
+	public Color getValueCopyIfMutable() 
 	{
 		System.err.println( "Color is immutable.  No need to copy???" );
 		//return new Color4f(this.getValue());
