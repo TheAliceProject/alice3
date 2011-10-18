@@ -259,21 +259,21 @@ public class AstUtilities {
 		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getRequiredParameters();
 		final int N = parameters.size();
 		for( int i=0; i<N-1; i++ ) {
-			org.lgna.project.ast.AbstractArgument argument = prevMethodInvocation.arguments.get( i );
+			org.lgna.project.ast.AbstractArgument argument = prevMethodInvocation.requiredArguments.get( i );
 			if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
-				rv.arguments.add( new org.lgna.project.ast.SimpleArgument( parameters.get( i ), ((org.lgna.project.ast.SimpleArgument)argument).expression.getValue() ) );
+				rv.requiredArguments.add( new org.lgna.project.ast.SimpleArgument( parameters.get( i ), ((org.lgna.project.ast.SimpleArgument)argument).expression.getValue() ) );
 			} else {
 				throw new RuntimeException();
 			}
 		}
-		rv.arguments.add( new org.lgna.project.ast.SimpleArgument( parameters.get( N-1 ), expression ) );
+		rv.requiredArguments.add( new org.lgna.project.ast.SimpleArgument( parameters.get( N-1 ), expression ) );
 		return rv;
 	}
 
 	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... argumentExpressions ) {
 		rv.expression.setValue( instanceExpression );
 		int i = 0;
-		for( org.lgna.project.ast.AbstractArgument argument : rv.arguments ) {
+		for( org.lgna.project.ast.AbstractArgument argument : rv.requiredArguments ) {
 			if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
 				((org.lgna.project.ast.SimpleArgument)argument).expression.setValue( argumentExpressions[ i ] );
 			} else {
@@ -294,7 +294,7 @@ public class AstUtilities {
 		int i = 0;
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
 			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, argumentExpressions[ i ] );
-			rv.arguments.add( argument );
+			rv.requiredArguments.add( argument );
 			i++;
 		}
 		return rv;
@@ -314,7 +314,7 @@ public class AstUtilities {
 		int i = 0;
 		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
 			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, argumentExpressions[ i ] );
-			rv.arguments.add( argument );
+			rv.requiredArguments.add( argument );
 			i++;
 		}
 		return rv;

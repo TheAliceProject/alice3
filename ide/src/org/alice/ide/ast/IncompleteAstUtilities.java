@@ -104,7 +104,7 @@ public class IncompleteAstUtilities {
 		rv.method.setValue( method );
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
 			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, new EmptyExpression( parameter.getValueType() ) );
-			rv.arguments.add( argument );
+			rv.requiredArguments.add( argument );
 		}
 		return rv;
 	}
@@ -129,7 +129,7 @@ public class IncompleteAstUtilities {
 		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
 		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
 			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, new EmptyExpression( parameter.getValueType() ) );
-			rv.arguments.add( argument );
+			rv.requiredArguments.add( argument );
 		}
 		return rv;
 	}

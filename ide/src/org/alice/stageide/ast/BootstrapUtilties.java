@@ -165,8 +165,8 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.UserMethod handleActiveChangedMethod = createMethod( org.lgna.project.ast.Access.PROTECTED, Void.TYPE, "handleActiveChanged" );
 		org.lgna.project.ast.UserParameter isActiveParameter = new org.lgna.project.ast.UserParameter( "isActive", Boolean.class );
 		org.lgna.project.ast.UserParameter activeCountParameter = new org.lgna.project.ast.UserParameter( "activeCount", Integer.class );
-		handleActiveChangedMethod.parameters.add( isActiveParameter );
-		handleActiveChangedMethod.parameters.add( activeCountParameter );
+		handleActiveChangedMethod.requiredParameters.add( isActiveParameter );
+		handleActiveChangedMethod.requiredParameters.add( activeCountParameter );
 		handleActiveChangedMethod.isSignatureLocked.setValue( true );
 		handleActiveChangedMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 
@@ -237,7 +237,7 @@ public class BootstrapUtilties {
 		
 		org.lgna.project.ast.UserParameter argsParameter = new org.lgna.project.ast.UserParameter( "args", String[].class );
 		org.lgna.project.ast.UserMethod mainMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "main" );
-		mainMethod.parameters.add( argsParameter );
+		mainMethod.requiredParameters.add( argsParameter );
 		org.lgna.project.ast.BlockStatement mainBody = mainMethod.body.getValue();
 
 		mainMethod.isStatic.setValue( true );

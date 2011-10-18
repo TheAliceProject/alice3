@@ -402,7 +402,7 @@ public abstract class VirtualMachine {
 		UserInstance instanceInAlice = (UserInstance)instance;
 		java.util.Map<org.lgna.project.ast.AbstractParameter,Object> map = new java.util.HashMap< org.lgna.project.ast.AbstractParameter, Object >();
 		for( int i=0; i<arguments.length; i++ ) {
-			map.put( method.parameters.get( i ), arguments[ i ] );
+			map.put( method.requiredParameters.get( i ), arguments[ i ] );
 		}
 		this.pushMethodFrame( instanceInAlice, map );
 		try {
@@ -477,7 +477,7 @@ public abstract class VirtualMachine {
 	}
 	protected Object evaluateInstanceCreation( org.lgna.project.ast.InstanceCreation classInstanceCreation ) {
 //		AbstractType classType =classInstanceCreation.constructor.getValue().getDeclaringType();
-		Object[] arguments = this.evaluateArguments( classInstanceCreation.constructor.getValue(), classInstanceCreation.arguments, classInstanceCreation.variableArguments, classInstanceCreation.keyedArguments );
+		Object[] arguments = this.evaluateArguments( classInstanceCreation.constructor.getValue(), classInstanceCreation.requiredArguments, classInstanceCreation.variableArguments, classInstanceCreation.keyedArguments );
 		return this.createInstance( classInstanceCreation.constructor.getValue(), arguments );
 	}
 	protected Object evaluateArrayInstanceCreation( org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation ) {
@@ -561,7 +561,7 @@ public abstract class VirtualMachine {
 
 	protected Object evaluateMethodInvocation( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		if( methodInvocation.isValid() ) {
-			Object[] allArguments = this.evaluateArguments( methodInvocation.method.getValue(), methodInvocation.arguments, methodInvocation.variableArguments, methodInvocation.keyedArguments );
+			Object[] allArguments = this.evaluateArguments( methodInvocation.method.getValue(), methodInvocation.requiredArguments, methodInvocation.variableArguments, methodInvocation.keyedArguments );
 			int parameterCount = methodInvocation.method.getValue().getRequiredParameters().size();
 			if( methodInvocation.method.getValue().getVariableLengthParameter() != null ) {
 				parameterCount += 1;

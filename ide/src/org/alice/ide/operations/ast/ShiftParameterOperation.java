@@ -85,15 +85,15 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 	}
 	private void swap( org.lgna.project.ast.UserMethod method, int aIndex, int bIndex ) {
 		java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
-		org.lgna.project.ast.UserParameter aParam = method.parameters.get( aIndex );
-		org.lgna.project.ast.UserParameter bParam = method.parameters.get( bIndex );
-		method.parameters.set( aIndex, bParam, aParam );
+		org.lgna.project.ast.UserParameter aParam = method.requiredParameters.get( aIndex );
+		org.lgna.project.ast.UserParameter bParam = method.requiredParameters.get( bIndex );
+		method.requiredParameters.set( aIndex, bParam, aParam );
 		for( org.lgna.project.ast.MethodInvocation methodInvocation : methodInvocations ) {
-			org.lgna.project.ast.SimpleArgument aArg = methodInvocation.arguments.get( aIndex );
-			org.lgna.project.ast.SimpleArgument bArg = methodInvocation.arguments.get( bIndex );
+			org.lgna.project.ast.SimpleArgument aArg = methodInvocation.requiredArguments.get( aIndex );
+			org.lgna.project.ast.SimpleArgument bArg = methodInvocation.requiredArguments.get( bIndex );
 			assert aArg.parameter.getValue() == aParam;
 			assert bArg.parameter.getValue() == bParam;
-			methodInvocation.arguments.set( aIndex, bArg, aArg );
+			methodInvocation.requiredArguments.set( aIndex, bArg, aArg );
 		}
 	}
 }

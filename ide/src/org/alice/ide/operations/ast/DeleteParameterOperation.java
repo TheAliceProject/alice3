@@ -57,7 +57,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		final java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		final org.lgna.project.ast.UserMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), org.lgna.project.ast.UserMethod.class );
-		final int index = method.parameters.indexOf( this.getParameter() );
+		final int index = method.requiredParameters.indexOf( this.getParameter() );
 		if( method != null && index >= 0 ) {
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ParameterAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ParameterAccess >( org.lgna.project.ast.ParameterAccess.class ) {
 				@Override

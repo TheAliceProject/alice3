@@ -68,14 +68,14 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
-			((org.lgna.project.ast.UserMethod)this.method).parameters.addListPropertyListener( this.parameterAdapter );
+			((org.lgna.project.ast.UserMethod)this.method).requiredParameters.addListPropertyListener( this.parameterAdapter );
 			this.refresh();
 		}
 	}
 	@Override
 	protected void handleUndisplayable() {
 		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
-			((org.lgna.project.ast.UserMethod)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
+			((org.lgna.project.ast.UserMethod)this.method).requiredParameters.removeListPropertyListener( this.parameterAdapter );
 		}
 		super.handleUndisplayable();
 	}

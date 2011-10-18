@@ -83,12 +83,12 @@ public class UserInstance {
 		AbstractConstructor nextConstructor = constructorInvocationStatement.constructor.getValue();
 		java.util.Map<org.lgna.project.ast.AbstractParameter,Object> stackMap = new java.util.HashMap< org.lgna.project.ast.AbstractParameter, Object >();
 		for( int i=0; i<arguments.length; i++ ) {
-			stackMap.put( constructor.parameters.get( i ), arguments[ i ] );
+			stackMap.put( constructor.requiredParameters.get( i ), arguments[ i ] );
 		}
 		org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)constructor.getDeclaringType();
 		vm.pushConstructorFrame( type, stackMap );
 		try {
-			Object[] nextArguments = vm.evaluateArguments( nextConstructor, constructorInvocationStatement.arguments, constructorInvocationStatement.variableArguments, constructorInvocationStatement.keyedArguments );
+			Object[] nextArguments = vm.evaluateArguments( nextConstructor, constructorInvocationStatement.requiredArguments, constructorInvocationStatement.variableArguments, constructorInvocationStatement.keyedArguments );
 			if( nextConstructor.isDeclaredInAlice() ) {
 				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
 			} else {

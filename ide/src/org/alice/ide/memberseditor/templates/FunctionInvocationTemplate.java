@@ -73,13 +73,13 @@ package org.alice.ide.memberseditor.templates;
 		super.handleDisplayable();
 		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
 			this.refresh();
-			((org.lgna.project.ast.UserMethod)this.method).parameters.addListPropertyListener( this.parameterAdapter );
+			((org.lgna.project.ast.UserMethod)this.method).requiredParameters.addListPropertyListener( this.parameterAdapter );
 		}
 	}
 	@Override
 	protected void handleUndisplayable() {
 		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
-			((org.lgna.project.ast.UserMethod)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
+			((org.lgna.project.ast.UserMethod)this.method).requiredParameters.removeListPropertyListener( this.parameterAdapter );
 		}
 		super.handleUndisplayable();
 	}

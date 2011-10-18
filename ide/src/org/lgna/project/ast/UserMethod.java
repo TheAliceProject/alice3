@@ -56,7 +56,7 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public DeclarationProperty< AbstractType<?,?,?> > returnType = new DeclarationProperty< AbstractType<?,?,?> >( this );
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public NodeListProperty< UserParameter > parameters = new NodeListProperty< UserParameter >( this );
+	public NodeListProperty< UserParameter > requiredParameters = new NodeListProperty< UserParameter >( this );
 	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
 	public edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel > managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel >( this, ManagementLevel.NONE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
@@ -70,7 +70,7 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	public UserMethod( String name, AbstractType<?,?,?> returnType, UserParameter[] parameters, BlockStatement body ) {
 		this.name.setValue( name );
 		this.returnType.setValue( returnType );
-		this.parameters.add( parameters );
+		this.requiredParameters.add( parameters );
 		this.body.setValue( body );
 	}
 	public UserMethod( String name, Class<?> returnCls, UserParameter[] parameters, BlockStatement body ) {
@@ -85,7 +85,7 @@ public class UserMethod extends AbstractMethod implements UserCode {
 		return this.body;
 	}
 	public NodeListProperty< UserParameter > getParamtersProperty() {
-		return this.parameters;
+		return this.requiredParameters;
 	}
 	
 	@Override
@@ -107,7 +107,7 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	}
 	@Override
 	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
-		return parameters.getValue();
+		return requiredParameters.getValue();
 	}
 	@Override
 	public UserType<?> getDeclaringType() {
