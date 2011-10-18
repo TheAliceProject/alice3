@@ -48,22 +48,21 @@ package org.lgna.story.implementation;
  */
 public class GroundImp extends SimpleModelImp {
 	private final org.lgna.story.Ground abstraction;
-	private org.lgna.story.Ground.SurfaceAppearance appearance = null;
 	public GroundImp( org.lgna.story.Ground abstraction ) {
 		this.abstraction = abstraction;
 		
 		edu.cmu.cs.dennisc.scenegraph.QuadArray plane = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
 		
-		double xzMin = -10.0;
-		double xzMax = +10.0;
+		double xzMin = -200.0;
+		double xzMax = +200.0;
 		double y = 0.0;
 
 		float i = 0.0f;
 		float j = 1.0f;
 		float k = 0.0f;
 		
-		float uvMin = -1.0f;
-		float uvMax = +1.0f;
+		float uvMin = -20.0f;
+		float uvMax = +20.0f;
 
 		plane.vertices.setValue(
 				new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
@@ -73,38 +72,13 @@ public class GroundImp extends SimpleModelImp {
 						edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xzMin, y, xzMin, i, j, k, uvMin, uvMin )
 				}
 		);
-		
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { plane } );
 	}
 	@Override
 	public org.lgna.story.Ground getAbstraction() {
 		return this.abstraction;
 	}
-//	public org.lgna.story.Ground.SurfaceAppearance getAppearance() {
-//		return this.appearance;
-//	}
-//	public void setAppearance( org.lgna.story.Ground.SurfaceAppearance appearance ) {
-//		if( this.appearance != null ) {
-//			
-//		}
-//		this.appearance = appearance;
-//		edu.cmu.cs.dennisc.texture.BufferedImageTexture diffuseColorTexture;
-//		if( this.appearance != null ) {
-//			//todo
-//			java.net.URL resource = this.appearance.getResource();
-//			try {
-//				java.awt.image.BufferedImage bufferedImage = javax.imageio.ImageIO.read( resource );
-//				diffuseColorTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
-//				diffuseColorTexture.setBufferedImage( bufferedImage );
-//			} catch( java.io.IOException ioe ) {
-//				throw new RuntimeException( ioe );
-//			}
-//		} else {
-//			diffuseColorTexture = null;
-//		}
-//		this.setDiffuseColorTexture( diffuseColorTexture );
-//	}
-	
+
 	@Override
 	protected double getBoundingSphereRadius() {
 		return Double.POSITIVE_INFINITY;
