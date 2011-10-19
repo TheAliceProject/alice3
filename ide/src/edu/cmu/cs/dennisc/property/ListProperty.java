@@ -255,7 +255,7 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 		edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e = new edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E >( this, fromIndex, this.subListCopy( fromIndex, upToButExcludingIndex ) );
 		fireRemoving( e );
 		for( int i=fromIndex; i<upToButExcludingIndex; i++ ) {
-			getValue().remove( i );
+			getValue().remove( fromIndex );
 		}
 		fireRemoved( e );
 	}

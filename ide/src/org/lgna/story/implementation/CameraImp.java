@@ -51,6 +51,7 @@ public abstract class CameraImp<S extends edu.cmu.cs.dennisc.scenegraph.Abstract
 	public CameraImp( S sgCamera ) {
 		this.sgCamera = sgCamera;
 		this.sgCamera.setParent( this.getSgComposite() );
+		this.putInstance( this.sgCamera );
 	}
 	public final S getSgCamera() {
 		return this.sgCamera;

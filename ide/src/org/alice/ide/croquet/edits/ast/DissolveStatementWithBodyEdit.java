@@ -58,7 +58,7 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit< org.alice
 		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
 		org.lgna.project.ast.AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
 		this.index = blockStatement.statements.indexOf( statementWithBody );
-		this.statements = null;
+		this.statements = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( statementWithBody.body.getValue().statements.getValue(), org.lgna.project.ast.Statement.class );
 	}
 	public DissolveStatementWithBodyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
@@ -77,19 +77,26 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit< org.alice
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		//todo: check 
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
-		blockStatement.statements.remove( index );
-		blockStatement.statements.add( index, statements );
+		org.lgna.project.ast.BlockStatement owner = this.getBlockStatement();
+		org.lgna.project.ast.AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
+		
+		
+		owner.statements.remove( index );
+		statementWithBody.body.getValue().statements.clear();
+		owner.statements.add( index, statements );
 		//todo: remove
 		org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 	}
 	@Override
 	protected final void undoInternal() {
 		//todo: check 
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
+		org.lgna.project.ast.BlockStatement owner = this.getBlockStatement();
 		org.lgna.project.ast.AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
-		blockStatement.statements.removeExclusive( this.index, this.index + this.statements.length );
-		blockStatement.statements.add( index, statementWithBody );
+		owner.statements.removeExclusive( this.index, this.index + this.statements.length );
+		statementWithBody.body.getValue().statements.add( this.statements );
+		owner.statements.add( index, statementWithBody );
+		
+		
 		//todo: remove
 		org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
 	}
