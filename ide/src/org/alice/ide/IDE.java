@@ -112,8 +112,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.galleryBrowser = this.createClassGalleryBrowser(this.getClassGalleryRoot());
 		this.membersEditor = this.createClassMembersEditor();
 		this.ubiquitousPane = this.createUbiquitousPane();
-		
-		this.contextView = new org.alice.ide.contextview.ContextView( new org.alice.ide.typehierarchyview.TypeHierarchyView(), this.membersEditor );
+		this.typeHierarchyView = new org.alice.ide.typehierarchyview.TypeHierarchyView();
+		this.contextView = new org.alice.ide.contextview.ContextView( this.typeHierarchyView, this.membersEditor );
 
 		final int MINIMUM_SIZE = 24;
 		this.right.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
@@ -156,6 +156,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private org.lgna.croquet.components.JComponent< ? > galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
+	private org.alice.ide.typehierarchyview.TypeHierarchyView typeHierarchyView;
 	private org.alice.ide.contextview.ContextView contextView;
 
 
@@ -829,7 +830,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	private boolean isRespondingToRefreshAccessibles = true;
 	public void refreshAccessibles() {
-		System.err.println( "refreshAccessibles" );
+		this.typeHierarchyView.refresh();
 //		if( isRespondingToRefreshAccessibles ) {
 //			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
 //

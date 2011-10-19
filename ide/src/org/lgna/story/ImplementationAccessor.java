@@ -78,6 +78,16 @@ public class ImplementationAccessor {
 				edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a.getInternal(), b.getInternal(), portion )
 		);
 	}
+	
+	public static Position createPosition( edu.cmu.cs.dennisc.math.Point3 xyz ) {
+		return Position.createInstance( xyz );
+	}
+	public static Orientation createOrientation( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m ) {
+		return Orientation.createInstance( m );
+	}
+	public static VantagePoint createVantagePoint( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+		return VantagePoint.createInstance( m );
+	}
 
 	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Paint paint, edu.cmu.cs.dennisc.color.Color4f defaultValue ) {
 		if( paint instanceof org.lgna.story.Color ) {

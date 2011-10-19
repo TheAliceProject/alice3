@@ -106,7 +106,8 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 				index = this.indexOf( selection );
 				index = Math.max( index, 0 );
 			} else {
-				index = -1;
+				index = this.getItemCount()-1;
+				//index = -1;
 			}
 			this.setSelectedIndex( index );
 		} else {
