@@ -77,33 +77,29 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	protected void doOrRedoInternal( boolean isDo ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
-//		org.lgna.project.virtualmachine.VirtualMachine vm = ide.getVirtualMachineForSceneEditor();
-//		org.lgna.project.virtualmachine.UserInstance sceneInstanceInAlice = (org.lgna.project.virtualmachine.UserInstance)sceneEditor.getInstanceInAliceVMForField( sceneEditor.getSceneField() );
-
-		org.lgna.project.ast.Expression methodInvocation = org.lgna.project.ast.AstUtilities.createMethodInvocation( 
-				new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field ), 
-				method, 
-				argumentExpressions 
-		);
-		
-		org.lgna.project.ast.ExpressionStatement statement = new org.lgna.project.ast.ExpressionStatement( methodInvocation );
-		
-		//sceneEditor.executeStatements( statement );
-		//ssceneEditor.
-//		Object instance = sceneEditor.getInstanceInAliceVMForField( this.field );
-//		if( instance instanceof org.lgna.project.virtualmachine.UserInstance ) {
-//			org.lgna.project.virtualmachine.UserInstance instanceInAlice = (org.lgna.project.virtualmachine.UserInstance)instance;
-//			org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)sceneEditor.getInstanceInJavaVMForField( this.field );
-//			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( turnable );
-//			this.m = this.transformable.getLocalTransformation();
-//			vm.ENTRY_POINT_invoke( instanceInAlice, this.method, vm.ENTRY_POINT_evaluate( sceneInstanceInAlice, this.argumentExpressions ) );
-//		} else {
-//			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "cannot perform " + this.method.getName() + " for " + instance, "failure", org.lgna.croquet.MessageType.ERROR );
-//		}
+		Object instance = sceneEditor.getInstanceInJavaVMForField( field );
+		if( instance instanceof org.lgna.story.MovableTurnable ) {
+			org.lgna.story.MovableTurnable movableTurnable = (org.lgna.story.MovableTurnable)instance;
+			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( movableTurnable );
+			this.m = this.transformable.getLocalTransformation();
+			org.lgna.project.ast.Expression methodInvocation = org.lgna.project.ast.AstUtilities.createMethodInvocation( 
+					new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field ), 
+					method, 
+					argumentExpressions 
+			);
+			
+			org.lgna.project.ast.ExpressionStatement statement = new org.lgna.project.ast.ExpressionStatement( methodInvocation );
+			sceneEditor.executeStatements( statement );
+		} else {
+			this.transformable = null;
+			this.m = null;
+		}
 	}
 	@Override
 	protected void undoInternal() {
-		this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.SELF, this.m );
+		if( this.transformable != null && this.m != null ) {
+			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.PARENT, this.m );
+		}
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
