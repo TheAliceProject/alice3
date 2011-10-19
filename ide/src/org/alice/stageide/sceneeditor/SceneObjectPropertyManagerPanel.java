@@ -292,6 +292,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	public void setField( UserField field )
 	{
 		this.selectedField = field;
+		
 		Object instance = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( field );
 		if( instance instanceof org.lgna.story.Entity ) {
 			this.selectedEntity = (org.lgna.story.Entity)instance;
@@ -303,7 +304,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			this.selectedEntity = this.selectedImp.getAbstraction();
 		}
 		this.selectedObject = instance;
-		
+		boolean isScene = this.selectedImp instanceof SceneImplementation;
 		for (LabelValueControllerPair activeController : this.activeControllers)
 		{
 			if (activeController.controller != null)
@@ -323,7 +324,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		
 		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters(this.selectedField.getValueType());
 		JavaType declaringType = field.getValueType().getFirstTypeEncounteredDeclaredInJava();
-		propertyAdapters.add(new FieldNameAdapter(this.selectedField, (StandardExpressionState)null));
+		propertyAdapters.add(new FieldNameAdapter(this.selectedField, (StandardExpressionState)null, !isScene));
 		
 		for (org.lgna.project.ast.JavaMethod getter : getterMethods )
 		{

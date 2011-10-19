@@ -60,6 +60,7 @@ import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
+import org.lgna.project.ast.UserField;
 
 
 public class FieldNamePropertyController extends BasicPropertyController<String>
@@ -101,11 +102,6 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
         this.label.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         
         Component itemSelector = new org.alice.ide.croquet.components.InstanceFactoryDropDown( org.alice.ide.instancefactory.InstanceFactoryState.getInstance() );
-        
-        this.editButton = RenameFieldOperation.getInstance( ((FieldNameAdapter)this.propertyAdapter).getInstance() ).createButton();
-        this.editButton.getAwtComponent().setText("Rename...");
-        
-        
         GridBagPanel componentPanel = new GridBagPanel();
         int xIndex = 0;
         componentPanel.addComponent(itemSelector, new GridBagConstraints(
@@ -121,19 +117,25 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
                 0, // ipadX
                 0) // ipadY
                 );
-        componentPanel.addComponent(this.editButton, new GridBagConstraints(
-                xIndex++, // gridX
-                0, // gridY
-                0, // gridWidth
-                1, // gridHeight
-                0.0, // weightX
-                0.0, // weightY
-                GridBagConstraints.WEST, // anchor
-                GridBagConstraints.HORIZONTAL, // fill
-                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
-                0, // ipadX
-                0) // ipadY
-                );
+        FieldNameAdapter fieldNameAdapter = (FieldNameAdapter)this.propertyAdapter;
+        if (fieldNameAdapter.allowsEdit())
+        {
+	        this.editButton = RenameFieldOperation.getInstance( fieldNameAdapter.getInstance() ).createButton();
+	        this.editButton.getAwtComponent().setText("Rename...");
+	        componentPanel.addComponent(this.editButton, new GridBagConstraints(
+	                xIndex++, // gridX
+	                0, // gridY
+	                0, // gridWidth
+	                1, // gridHeight
+	                0.0, // weightX
+	                0.0, // weightY
+	                GridBagConstraints.WEST, // anchor
+	                GridBagConstraints.HORIZONTAL, // fill
+	                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+	                0, // ipadX
+	                0) // ipadY
+	                );
+        }
         
         return componentPanel;
     }
