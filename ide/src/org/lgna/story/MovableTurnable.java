@@ -64,7 +64,7 @@ public abstract class MovableTurnable extends Turnable {
 				direction.createTranslation( amount.doubleValue() ), 
 				AsSeenBy.getValue( details, this ).getImplementation(), 
 				Duration.getValue( details ), 
-				TraditionalStyle.getValue( details ).getInternal() 
+				AnimationStyle.getValue( details ).getInternal() 
 		);
 	}
 	
@@ -91,7 +91,7 @@ public abstract class MovableTurnable extends Turnable {
 				target, 
 				amount.doubleValue(), 
 				Duration.getValue( details ), 
-				TraditionalStyle.getValue( details ).getInternal() 
+				AnimationStyle.getValue( details ).getInternal() 
 		);
 	}
 	@MethodTemplate()
@@ -100,15 +100,15 @@ public abstract class MovableTurnable extends Turnable {
 				target, 
 				-amount.doubleValue(), 
 				Duration.getValue( details ), 
-				TraditionalStyle.getValue( details ).getInternal() 
+				AnimationStyle.getValue( details ).getInternal() 
 		);
 	}
 	@MethodTemplate()
 	public void moveTo( Entity target, MoveTo.Detail... details ) {
-		this.getImplementation().animatePositionOnly( target.getImplementation(), null, Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animatePositionOnly( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public void moveAndOrientTo( Entity target, MoveAndOrientTo.Detail... details ) {
-		this.getImplementation().animateTransformation( target.getImplementation(), null, Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateTransformation( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

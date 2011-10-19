@@ -56,7 +56,7 @@ public class DurationAnimationStyleArgumentFactory {
 //	public static AnimationStyle animationStyle( Boolean isBegunGently, Boolean isEndedGently ) {
 //		return new AnimationStyle( isBegunGently, isEndedGently );
 //	}
-	public static TraditionalStyle animationStyle( TraditionalStyle animationStyle ) {
+	public static AnimationStyle animationStyle( AnimationStyle animationStyle ) {
 		return animationStyle;
 	}
 }

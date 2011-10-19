@@ -40,56 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum TraditionalStyle implements 
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail, 
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail,
-		//Sphere
-		SetRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
-	BEGIN_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
-	BEGIN_GENTLY_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
-	BEGIN_ABRUPTLY_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
-	BEGIN_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
-
-	private static final TraditionalStyle DEFAULT_VALUE = TraditionalStyle.BEGIN_AND_END_GENTLY;
-	private edu.cmu.cs.dennisc.animation.Style internal;
-	TraditionalStyle( edu.cmu.cs.dennisc.animation.Style internal ) {
-		this.internal = internal;
+public class StandUp extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=StandUp.class )
+	public static interface Detail {
 	}
-	/*package-private*/ edu.cmu.cs.dennisc.animation.Style getInternal() {
-		return this.internal;
-	}
-
-	private static TraditionalStyle getValue( Object[] details, TraditionalStyle defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof TraditionalStyle ) {
-				TraditionalStyle animationStyle = (TraditionalStyle)detail;
-				return animationStyle;
-			}
-		}
-		return defaultValue;
-	}
-	/*package-private*/ static TraditionalStyle getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+	private StandUp() {
+		super();
 	}
 }

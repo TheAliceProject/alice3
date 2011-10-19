@@ -57,7 +57,7 @@ public abstract class Turnable extends Entity {
 				amount.doubleValue(), 
 				AsSeenBy.getValue( details, this ).getImplementation(), 
 				Duration.getValue( details ), 
-				TraditionalStyle.getValue( details ).getInternal() 
+				AnimationStyle.getValue( details ).getInternal() 
 		);
 	}
 	@MethodTemplate()
@@ -67,9 +67,34 @@ public abstract class Turnable extends Entity {
 				amount.doubleValue(), 
 				AsSeenBy.getValue( details, this ).getImplementation(), 
 				Duration.getValue( details ), 
-				TraditionalStyle.getValue( details ).getInternal()
+				AnimationStyle.getValue( details ).getInternal()
 		);
 	}
+	
+	@MethodTemplate()
+	public void turnToFace( Entity target, TurnToFace.Detail... details ) {
+		this.getImplementation().setOrientationOnlyToFace( target.getImplementation() );
+		//todo
+		//this.getImplementation().animateTurnToFace( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+	@MethodTemplate()
+	public void standUp( StandUp.Detail... details ) {
+		this.getImplementation().setOrientationOnlyToStandUp();
+		//todo
+		//this.getImplementation().animateStandUp( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+	@MethodTemplate()
+	public void pointAt( Entity target, PointAt.Detail... details ) {
+		this.getImplementation().setOrientationOnlyToPointAt( target.getImplementation() );
+		//todo
+		//this.getImplementation().animatePointAt( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+
+	@MethodTemplate()
+	public void orientTo( Entity target, OrientTo.Detail... details ) {
+		this.getImplementation().animateOrientationOnly( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+	
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public Orientation getOrientationRelativeToVehicle() {
 		return Orientation.createInstance( this.getImplementation().getLocalOrientation() );

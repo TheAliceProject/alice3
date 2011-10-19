@@ -40,13 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements
+public enum AnimationStyle implements 
 		//Turnable
 		Turn.Detail, Roll.Detail,
 		OrientTo.Detail, TurnToFace.Detail, StandUp.Detail, PointAt.Detail,
@@ -68,21 +67,30 @@ public class Duration implements
 		//Cone
 		SetBaseRadius.Detail, SetLength.Detail
 {
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
-	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
+	BEGIN_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
+	BEGIN_GENTLY_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
+	BEGIN_ABRUPTLY_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
+	BEGIN_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+
+	private static final AnimationStyle DEFAULT_VALUE = AnimationStyle.BEGIN_AND_END_GENTLY;
+	private edu.cmu.cs.dennisc.animation.Style internal;
+	AnimationStyle( edu.cmu.cs.dennisc.animation.Style internal ) {
+		this.internal = internal;
 	}
-	private static double getValue( Object[] details, double defaultValue ) {
+	/*package-private*/ edu.cmu.cs.dennisc.animation.Style getInternal() {
+		return this.internal;
+	}
+
+	private static AnimationStyle getValue( Object[] details, AnimationStyle defaultValue ) {
 		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
-				return duration.value;
+			if( detail instanceof AnimationStyle ) {
+				AnimationStyle animationStyle = (AnimationStyle)detail;
+				return animationStyle;
 			}
 		}
 		return defaultValue;
 	}
-	/*package-private*/ static double getValue( Object[] details ) {
+	/*package-private*/ static AnimationStyle getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
 }

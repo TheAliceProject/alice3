@@ -42,7 +42,7 @@
  */
 package org.alice.interact.handle;
 
-import org.lgna.story.TraditionalStyle;
+import org.lgna.story.AnimationStyle;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
