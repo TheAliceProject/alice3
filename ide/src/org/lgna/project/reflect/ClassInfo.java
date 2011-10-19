@@ -127,6 +127,7 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 						return methodInfo;
 					}
 				} catch( RuntimeException re ) {
+					//re.printStackTrace();
 					this.outOfDateMethodInfos.add( methodInfo ); 
 				}
 			}

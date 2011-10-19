@@ -40,63 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.reflect;
 
-import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberWithParametersInfo extends MemberInfo {
-	private transient Class<?>[] parameterClses;
-	private final String[] parameterClassNames;
-	private final String[] parameterNames;
-	public MemberWithParametersInfo( ClassInfo declaringClassInfo, String[] parameterClassNames, String[] parameterNames ) {
-		super( declaringClassInfo );
-		this.parameterClassNames = parameterClassNames;
-		this.parameterNames = parameterNames;
+public class IsProgramTypeDisplayed extends org.lgna.croquet.BooleanState {
+	private static class SingletonHolder {
+		private static IsProgramTypeDisplayed instance = new IsProgramTypeDisplayed();
 	}
-	public MemberWithParametersInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.parameterClassNames = binaryDecoder.decodeStringArray();
-		this.parameterNames = binaryDecoder.decodeStringArray();
+	public static IsProgramTypeDisplayed getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.parameterClassNames );
-		binaryEncoder.encode( this.parameterNames );
-	}
-	public Class<?>[] getParameterClses() {
-		if( this.parameterClses != null ) {
-			//pass
-		} else {
-			this.parameterClses = new Class<?>[ this.parameterClassNames.length ];
-			int i = 0;
-			for( String name : this.parameterClassNames ) {
-//				boolean isArray = name.startsWith( "L[" ) && name.endsWith( ";" );
-//				if( isArray ) {
-//					name = name.substring( 2, name.length()-1 );
-//				}
-				boolean isArray = name.endsWith( "[]" );
-				if( isArray ) {
-					name = name.substring( 0, name.length()-2 );
-				}
-				this.parameterClses[ i ] = ReflectionUtilities.getClassForName( name );
-				if( isArray ) {
-					this.parameterClses[ i ] = ReflectionUtilities.getArrayClass( this.parameterClses[ i ] );
-				}
-				if( this.parameterClses[ i ] != null ) {
-					//pass
-				} else {
-					throw new NullPointerException( name );
-				}
-				i++;
-			}
-		}
-		return this.parameterClses;
-	}
-	public String[] getParameterNames() {
-		return this.parameterNames;
+	private IsProgramTypeDisplayed() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "052fef4d-cac4-431f-b8d9-8c50ff1823d1" ), false );
+		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}
 }
