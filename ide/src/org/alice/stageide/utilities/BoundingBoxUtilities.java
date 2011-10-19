@@ -43,8 +43,9 @@
 
 package org.alice.stageide.utilities;
 
-import org.alice.interact.GlobalDragAdapter;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
@@ -56,14 +57,10 @@ public class BoundingBoxUtilities {
 		AxisAlignedBox boundingBox = null;
 		if ( sgTransformable != null)
 		{
-			Object bbox = sgTransformable.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
-			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
+			EntityImp entityImp = EntityImp.getInstance(sgTransformable);
+			if (entityImp instanceof ModelImp)
 			{
-				boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
-				if (boundingBox.isNaN())
-				{
-					boundingBox = null;
-				}
+				boundingBox = ((ModelImp)entityImp).getAxisAlignedMinimumBoundingBox();
 			}
 		}
 		if (boundingBox != null && scaled)

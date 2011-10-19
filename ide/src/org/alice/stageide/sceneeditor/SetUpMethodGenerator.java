@@ -42,6 +42,12 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import org.lgna.project.ast.AbstractType;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Orientation;
+
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -139,14 +145,46 @@ public class SetUpMethodGenerator {
 		);
 	}
 	
-	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance ) {
-		if( instance != null ) {
-			if( instance instanceof org.lgna.story.Entity ) {
-				org.lgna.story.Entity entity = (org.lgna.story.Entity)instance;
-				entity.setName( field.getName() );
+	public static org.lgna.project.ast.Statement[] getSetupStatementsForField(boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, AffineMatrix4x4 initialTransform)
+	{
+		java.util.List< org.lgna.project.ast.Statement > statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		
+		org.lgna.project.ast.AbstractType<?,?,?> abstractType = field.getValueType();
+		org.lgna.project.ast.JavaType javaType = abstractType.getFirstTypeEncounteredDeclaredInJava();
+		if (javaType.isAssignableTo(org.lgna.story.MutableRider.class))
+		{
+			statements.add(createSetVehicleStatement(field, initialVehicle, (initialVehicle == null) ));
+		}
+		if (javaType.isAssignableTo(org.lgna.story.Turnable.class))
+		{
+			try {
+				statements.add(createOrientationStatement(isThis, field, ImplementationAccessor.createOrientation(initialTransform.orientation)));
+			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+				throw new RuntimeException( ccee );
 			}
-			Class<?> instanceCls = instance.getClass();
-			org.lgna.project.ast.JavaType javaType = org.lgna.project.ast.JavaType.getInstance( instanceCls );
+		}
+		if (javaType.isAssignableTo(org.lgna.story.MovableTurnable.class))
+		{
+			try {
+				statements.add(createPositionStatement(isThis, field, ImplementationAccessor.createPosition(initialTransform.translation)));
+			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+				throw new RuntimeException( ccee );
+			}
+		}
+		
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( statements, org.lgna.project.ast.Statement.class );
+	}
+	
+	public static org.lgna.project.ast.Statement[] getSetupStatementsForInstance(boolean isThis, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance)
+	{
+		java.util.List< org.lgna.project.ast.Statement > statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		
+		if (instance != null)
+		{
+			org.lgna.project.ast.AbstractField field = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(instance);
+			org.lgna.project.ast.AbstractType<?,?,?> abstractType = field.getValueType();
+			org.lgna.project.ast.JavaType javaType = abstractType.getFirstTypeEncounteredDeclaredInJava();
+			
 			for( org.lgna.project.ast.JavaMethod getter : org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters( javaType ) ) {
 				java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
 				Object value = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, gttr );
@@ -162,7 +200,7 @@ public class SetUpMethodGenerator {
 						} else {
 							expression = getExpressionCreator().createExpression( value );
 						}
-						bodyStatementsProperty.add( 
+						statements.add( 
 								org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( 
 										SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
 										setter, 
@@ -180,7 +218,7 @@ public class SetUpMethodGenerator {
 				org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)instance;
 				org.lgna.story.Orientation orientation = turnable.getOrientationRelativeToVehicle();
 				try {
-					bodyStatementsProperty.add( 
+					statements.add( 
 							createOrientationStatement( isThis, field, orientation )
 					);
 				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
@@ -190,7 +228,7 @@ public class SetUpMethodGenerator {
 					org.lgna.story.MovableTurnable movableTurnable = (org.lgna.story.MovableTurnable)turnable;
 					org.lgna.story.Position position = movableTurnable.getPositionRelativeToVehicle();
 					try {
-						bodyStatementsProperty.add( 
+						statements.add( 
 								createPositionStatement( isThis, field, position )
 						);
 					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
@@ -202,7 +240,7 @@ public class SetUpMethodGenerator {
 				org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
 				org.lgna.story.Scale scale = resizable.getScale();
 				try {
-					bodyStatementsProperty.add( 
+					statements.add( 
 							createStatement( 
 									org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class, org.lgna.story.SetScale.Detail[].class }, 
 									SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
@@ -213,6 +251,20 @@ public class SetUpMethodGenerator {
 					throw new RuntimeException( ccee );
 				}
 			}
+		}
+		
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( statements, org.lgna.project.ast.Statement.class );
+	}
+	
+	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance ) {
+		if( instance != null ) {
+			if( instance instanceof org.lgna.story.Entity ) {
+				org.lgna.story.Entity entity = (org.lgna.story.Entity)instance;
+				entity.setName( field.getName() );
+			}
+			
+			org.lgna.project.ast.Statement[] setupStatements = getSetupStatementsForInstance(isThis, instance, sceneInstance);
+			bodyStatementsProperty.add(setupStatements);
 		}
 	}
 }

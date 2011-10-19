@@ -160,8 +160,13 @@ public class ModelResourceUtilities {
 		String name = getName(modelResource);
 		try {
 			InputStream is = modelResource.getResourceAsStream("resources/"+name+".xml");
-			Document doc = XMLUtilities.read(is);
-			return getBoundingBoxFromXML(doc);
+			if (is != null) {
+				Document doc = XMLUtilities.read(is);
+				return getBoundingBoxFromXML(doc);
+			}
+			else {
+				return null;
+			}
 		}
 		catch (Exception e)
 		{

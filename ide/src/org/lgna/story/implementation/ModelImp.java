@@ -177,7 +177,8 @@ public abstract class ModelImp extends TransformableImp {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox()
+	{
 		edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = getSgVisuals();
 		edu.cmu.cs.dennisc.math.AxisAlignedBox bBox = edu.cmu.cs.dennisc.math.AxisAlignedBox.createNaN();
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : sgVisuals ) {
@@ -185,7 +186,11 @@ public abstract class ModelImp extends TransformableImp {
 			bBox.union( bb );
 		}
 		assert bBox.isNaN() == false;
-		return bBox.getSize();
+		return bBox;
+	}
+	
+	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
+		return getAxisAlignedMinimumBoundingBox().getSize();
 	}
 	public double getWidth() {
 		return this.getSize().x;

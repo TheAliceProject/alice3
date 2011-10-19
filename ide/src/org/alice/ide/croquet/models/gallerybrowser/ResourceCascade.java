@@ -47,28 +47,31 @@ package org.alice.ide.croquet.models.gallerybrowser;
  *
  */
 public class ResourceCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ResourceCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ResourceCascade getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		synchronized( map ) {
-			ResourceCascade rv = map.get( type );
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractType< ?,?,? >, org.lgna.croquet.DropSite, ResourceCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static ResourceCascade getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type, org.lgna.croquet.DropSite dropSite ) {
+		synchronized( mapToMap ) {
+			ResourceCascade rv = mapToMap.get( type, dropSite );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ResourceCascade( type );
-				map.put( type, rv );
+				rv = new ResourceCascade( type, dropSite );
+				mapToMap.put( type, dropSite, rv );
 			}
 			return rv;
 		}
 	}
 	private final org.lgna.project.ast.AbstractConstructor constructor;
-	private ResourceCascade( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	private final org.lgna.croquet.DropSite dropSite;
+	private ResourceCascade( org.lgna.project.ast.AbstractType< ?,?,? > type,  org.lgna.croquet.DropSite dropSite ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "53db430a-0d90-47d2-ad03-487e1dffb47d" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.declaration.GalleryResourceBlank.getInstance( type ) );
 		this.constructor = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceConstructorFor( type );
+		this.dropSite = dropSite;
 	}
 	@Override
 	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > completionStep, org.lgna.project.ast.Expression[] values ) {
 		org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)values[ 0 ];
-		org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( this.constructor, fieldAccess.field.getValue() ).fire();
+		org.alice.stageide.sceneeditor.draganddrop.SceneDropSite sceneDropSite = (this.dropSite instanceof org.alice.stageide.sceneeditor.draganddrop.SceneDropSite) ? (org.alice.stageide.sceneeditor.draganddrop.SceneDropSite)this.dropSite : null;
+		org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( this.constructor, fieldAccess.field.getValue(), sceneDropSite ).fire();
 		//todo
 		return null;
 	}

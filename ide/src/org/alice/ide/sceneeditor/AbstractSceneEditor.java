@@ -42,6 +42,8 @@
  */
 package org.alice.ide.sceneeditor;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -83,6 +85,12 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	public abstract void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 	
 	public abstract void generateCodeForSetUp( org.lgna.project.ast.StatementListProperty bodyStatementsProperty );
+	
+	public abstract org.lgna.project.ast.Statement[] getDoStatementsForAddField(org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform);
+	public abstract org.lgna.project.ast.Statement[] getUndoStatementsForAddField(org.lgna.project.ast.UserField field);
+	
+	public abstract org.lgna.project.ast.Statement[] getDoStatementsForRemoveField(org.lgna.project.ast.UserField field);
+	public abstract org.lgna.project.ast.Statement[] getUndoStatementsForRemoveField(org.lgna.project.ast.UserField field);
 	
 	protected abstract void handleExpandContractChange( boolean isExpanded );
 	

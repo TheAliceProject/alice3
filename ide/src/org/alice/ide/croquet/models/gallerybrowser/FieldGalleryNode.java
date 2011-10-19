@@ -100,7 +100,14 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 		org.lgna.project.ast.AbstractField field = this.getDeclaration();
 		org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
 		org.lgna.project.ast.AbstractConstructor constructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( valueType );
-		return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field );
+		if (dropSite instanceof org.alice.stageide.sceneeditor.draganddrop.SceneDropSite)
+		{
+			return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field, (org.alice.stageide.sceneeditor.draganddrop.SceneDropSite)dropSite );
+		}
+		else {
+			return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field, null );
+		}
+			
 	}
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {

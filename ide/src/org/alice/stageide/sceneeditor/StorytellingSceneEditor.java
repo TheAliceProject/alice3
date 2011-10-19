@@ -43,8 +43,11 @@
 package org.alice.stageide.sceneeditor;
 
 
+import java.awt.Point;
+
 import org.alice.ide.ast.CurrentThisExpression;
 import org.alice.ide.common.SelectedInstanceFactoryExpressionPanel;
+import org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode;
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.instancefactory.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
@@ -56,6 +59,7 @@ import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
+import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
@@ -65,6 +69,7 @@ import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.Accessible;
 import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.UserField;
@@ -78,6 +83,9 @@ import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.MarkerImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.TransformableImp;
+import org.lgna.story.resourceutilities.ModelResourceUtilities;
+
+import com.sun.media.rtsp.protocol.SetupMessage;
 
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
@@ -85,6 +93,8 @@ import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -609,6 +619,45 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 //		cameraParent.setTransformation(currentCameraTransformable, this.scene.getSGReferenceFrame());
 	}
 	
+	@Override
+	public org.lgna.project.ast.Statement[] getDoStatementsForAddField(org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform) {
+		if (initialTransform == null)
+		{
+			org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
+			JavaType javaType = type.getFirstTypeEncounteredDeclaredInJava();
+			Class<?> cls = javaType.getClassReflectionProxy().getReification();
+			AxisAlignedBox box = ModelResourceUtilities.getBoundingBox(cls);
+			double y = box != null ? -box.getXMinimum() : 0;
+			Point3 location = new Point3(0, y, 0);
+			initialTransform = new AffineMatrix4x4(OrthogonalMatrix3x3.createIdentity(), location);
+		}
+		return SetUpMethodGenerator.getSetupStatementsForField(false, field, this.getActiveSceneInstance(), null, initialTransform);
+	}
+	
+	@Override
+	public org.lgna.project.ast.Statement[] getUndoStatementsForAddField(org.lgna.project.ast.UserField field) {
+		java.util.List< org.lgna.project.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		
+		undoStatements.add(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false));
+		
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( undoStatements, org.lgna.project.ast.Statement.class );
+	}
+	
+	@Override
+	public org.lgna.project.ast.Statement[] getDoStatementsForRemoveField(org.lgna.project.ast.UserField field) {
+		java.util.List< org.lgna.project.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		
+		doStatements.add(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false));
+		
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( doStatements, org.lgna.project.ast.Statement.class );
+	}
+	@Override
+	public org.lgna.project.ast.Statement[] getUndoStatementsForRemoveField(org.lgna.project.ast.UserField field) {
+		Object instance = this.getInstanceInJavaVMForField(field);
+		return org.alice.stageide.sceneeditor.SetUpMethodGenerator.getSetupStatementsForInstance(false, instance, this.getActiveSceneInstance());
+	}
+	
+	
 	private boolean HACK_isDisplayableAlreadyHandled = false;
 	
 	@Override
@@ -716,13 +765,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 
 	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep dragStep ) {
 		if (isDropLocationOverLookingGlass(dragStep)) {
-			org.lgna.croquet.DropSite dropSite = null;
+			org.lgna.croquet.DropSite dropSite = new SceneDropSite(this.globalDragAdapter.getDropTargetTransformation());
 			org.lgna.croquet.Model model = dragStep.getModel().getDropModel( dragStep, dropSite );
-//			if (model instanceof GalleryClassOperation) {
-//				// AffineMatrix4x4 dropTargetPosition =
-//				// this.globalDragAdapter.getDropTargetTransformation();
-//				// ((GalleryClassOperation)model).setDesiredTransformation(dropTargetPosition);
-//			}
 			return model;
 		}
 		return null;
