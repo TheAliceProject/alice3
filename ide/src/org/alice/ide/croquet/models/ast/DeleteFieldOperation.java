@@ -61,10 +61,6 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 		return rv;
 	}
 
-	//todo
-	//note: instance not preserved and restored
-	//in the case where it is undone across sessions, it will not know what to pass to the scene editor
-	private transient Object instance = null;
 	private DeleteFieldOperation( org.lgna.project.ast.UserField field, org.lgna.project.ast.UserType< ? > declaringType ) {
 		super( java.util.UUID.fromString( "29e5416c-c0c4-4b6d-9146-5461d5c73c42" ), field, declaringType );
 	}
@@ -109,14 +105,28 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 	
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
-		this.instance = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaForUndo( this.getMember() );
-		super.doOrRedoInternal( isDo );
+		org.lgna.project.ast.UserField field = this.getMember();
+		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( 
+					this.getDeclaringType(), 
+					field, 
+					org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) 
+			);
+		} else {
+			super.doOrRedoInternal( isDo );
+		}
 	}
 	@Override
 	public void undoInternal() {
-		if( this.instance != null ) {
-			org.alice.ide.IDE.getActiveInstance().getSceneEditor().putInstanceForInitializingPendingField( this.getMember(), this.instance );
+		org.lgna.project.ast.UserField field = this.getMember();
+		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( 
+					this.getDeclaringType(), 
+					field, 
+					org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true ) 
+			);
+		} else {
+			super.undoInternal();
 		}
-		super.undoInternal();
 	}
 }

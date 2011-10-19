@@ -334,7 +334,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	}
 
 	public void setOrientationOnlyToFace( ReferenceFrame target ) {
-		//todo
+		javax.swing.JOptionPane.showMessageDialog( null, "todo: turnToFace" );
 	}
 	public void setOrientationOnlyToStandUp() {
 		this.getSgComposite().setAxesOnlyToStandUp();

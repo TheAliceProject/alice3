@@ -11,6 +11,7 @@ public class Vehicle extends JointedModel {
 	}
 	
 	public void driveTo( Entity entity ) {
+		javax.swing.JOptionPane.showMessageDialog( null, "todo: driveTo" );
 	}
 	
 	public Joint getRightDoor() {

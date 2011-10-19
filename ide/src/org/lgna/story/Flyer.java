@@ -57,8 +57,10 @@ public class Flyer extends JointedModel implements Articulable {
 	}
 	
 	public void walkTo( Entity entity ) {
+		javax.swing.JOptionPane.showMessageDialog( null, "todo: walkTo" );
 	}
 	public void touch( Entity entity ) {
+		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );
 	}
 	
 	public Joint getPelvisUpperBody() {

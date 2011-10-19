@@ -71,6 +71,8 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		} else {
 			yFactor = 0.9;
 		}
+		yFactor *= 0.65;
+		xzFactor *= 0.65;
 		if( this.getScene() != null ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
 			this.getCamera().setTransformation( this.getScene().createOffsetStandIn( -0.3*xzFactor, height*yFactor, -height*xzFactor ) );
