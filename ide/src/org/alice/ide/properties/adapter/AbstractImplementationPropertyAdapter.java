@@ -92,6 +92,7 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 	public AbstractImplementationPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<P> property, StandardExpressionState expressionState ){
 		super(repr, instance, expressionState);
 		this.property = property;
+		this.initializeExpressionState();
 	}
 	
 	@Override
