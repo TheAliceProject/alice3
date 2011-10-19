@@ -174,14 +174,19 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		this.selectedField = field;
 	}
 	
+	public void executeStatements(org.lgna.project.ast.Statement... statements)
+	{
+		for (org.lgna.project.ast.Statement statement : statements)
+		{
+			this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement(this.getActiveSceneInstance(), statement);
+		}
+	}
+	
 	public void addField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
 		assert declaringType == this.getActiveSceneType();
 		this.getActiveSceneType().fields.add(field);
 		this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField(this.getActiveSceneInstance(), field);
-		for (org.lgna.project.ast.Statement statement : statements)
-		{ 
-			this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement(this.getActiveSceneInstance(), statement);
-		}
+		this.executeStatements(statements);
 		this.setSelectedField(declaringType, field);
 	}
 	
@@ -194,18 +199,13 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 				this.getActiveSceneType().fields.remove(i);
 				break;
 			}
-		
-		for (org.lgna.project.ast.Statement statement : statements)
-		{
-			this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement(this.getActiveSceneInstance(), statement);
 		}
+		this.executeStatements(statements);
 		if (this.selectedField == field)
 		{
 			UserField uf = this.getActiveSceneField();
 			this.setSelectedField(uf.getDeclaringType(), uf);
 		}
-	}
-	
 	}
 	
 	public org.lgna.project.ast.NamedUserType getActiveSceneType()

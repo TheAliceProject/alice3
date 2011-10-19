@@ -704,33 +704,27 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	public void dragEntered(org.lgna.croquet.history.DragStep dragAndDropContext) {
 	}
 
-	private boolean isDropLocationOverLookingGlass(
-			org.lgna.croquet.history.DragStep dragAndDropContext) {
-		java.awt.event.MouseEvent eSource = dragAndDropContext
-				.getLatestMouseEvent();
-		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities
-				.convertPoint(eSource.getComponent(), eSource.getPoint(),
-						this.lookingGlassPanel.getAwtComponent());
-		return this.lookingGlassPanel.getAwtComponent().contains(
-				pointInLookingGlass);
+	private boolean isDropLocationOverLookingGlass(org.lgna.croquet.history.DragStep dragAndDropContext) {
+		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
+		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint(eSource.getComponent(), eSource.getPoint(), this.lookingGlassPanel.getAwtComponent());
+		return this.lookingGlassPanel.getAwtComponent().contains(pointInLookingGlass);
 	}
 
 	private boolean overLookingGlass = false;
 
-	public org.lgna.croquet.DropSite dragUpdated(
-			org.lgna.croquet.history.DragStep dragAndDropContext) {
-		if (isDropLocationOverLookingGlass(dragAndDropContext)) {
-			if (!overLookingGlass) {
-				overLookingGlass = true;
-				// this.globalDragAdapter.dragEntered(dragAndDropContext);
-			}
-			// this.globalDragAdapter.dragUpdated(dragAndDropContext);
-		} else {
-			if (overLookingGlass) {
-				overLookingGlass = false;
-				// this.globalDragAdapter.dragExited(dragAndDropContext);
-			}
-		}
+	public org.lgna.croquet.DropSite dragUpdated(org.lgna.croquet.history.DragStep dragAndDropContext) {
+//		if (isDropLocationOverLookingGlass(dragAndDropContext)) {
+//			if (!overLookingGlass) {
+//				overLookingGlass = true;
+//				this.globalDragAdapter.dragEntered(dragAndDropContext);
+//			}
+//			this.globalDragAdapter.dragUpdated(dragAndDropContext);
+//		} else {
+//			if (overLookingGlass) {
+//				overLookingGlass = false;
+//				this.globalDragAdapter.dragExited(dragAndDropContext);
+//			}
+//		}
 		return null;
 	}
 
