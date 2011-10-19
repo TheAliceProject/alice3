@@ -125,7 +125,7 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 		
 		org.lgna.croquet.components.Component< ? > viewportView = new org.lgna.croquet.components.SwingAdapter( this.jTree );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( viewportView );
-		this.addComponent( new org.lgna.croquet.components.Label( "extremely alpha", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ), Constraint.PAGE_START );
+		this.addComponent( new org.lgna.croquet.components.Label( "extremely alpha", 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ), Constraint.PAGE_START );
 		this.addComponent( scrollPane, Constraint.CENTER );
 	}
 	

@@ -365,17 +365,19 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				this.setTransformation( target, offset );
 			}
 		} else {
-			if( offset.isNaN() ) {
-				this.alreadyAdjustedDelay( duration );
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m1;
+			if( offset != null ) {
+				m1 = offset;
 			} else {
-				edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0 = getTransformation( target );
-				perform( new edu.cmu.cs.dennisc.math.animation.AffineMatrix4x4Animation( duration, style, m0, offset ) {
-					@Override
-					protected void updateValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
-						setTransformation( target, m );
-					}
-				} );
+				m1 = edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity();
 			}
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0 = getTransformation( target );
+			perform( new edu.cmu.cs.dennisc.math.animation.AffineMatrix4x4Animation( duration, style, m0, m1 ) {
+				@Override
+				protected void updateValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+					setTransformation( target, m );
+				}
+			} );
 		}
 	}
 	public void animateTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset, double duration ) {
