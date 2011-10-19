@@ -64,7 +64,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	@Override
 	protected org.lgna.project.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( org.lgna.project.ast.AbstractType<?,?,?> interfaceType ) {
 		if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Style.class ) ) {
-			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TraditionalStyle.class );
+			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.AnimationStyle.class );
 		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.EyeColor.class ) ) {
 			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseEyeColor.class );
 		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.SkinTone.class ) ) {

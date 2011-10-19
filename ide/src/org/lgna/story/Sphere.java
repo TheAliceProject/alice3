@@ -61,6 +61,6 @@ public class Sphere extends Shape {
 	}
 	@MethodTemplate()
 	public void setRadius( Number radius, SetRadius.Detail... details ) {
-		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

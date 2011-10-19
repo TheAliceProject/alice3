@@ -63,7 +63,7 @@ public class LocalTransformationMethodInvocationFillIn extends MethodInvocationF
 	}
 	public static LocalTransformationMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
 		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
-		assert method != null;
+		assert method != null : methodName;
 		return getInstance( field, method );
 	}
 	public static LocalTransformationMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractField field, Class<?> cls, String methodName, Class<?>... parameterClses ) {

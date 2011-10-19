@@ -62,7 +62,7 @@ public abstract class Model extends MovableTurnable implements MutableRider, Res
 	}
 	@MethodTemplate()
 	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate()
@@ -73,7 +73,7 @@ public abstract class Model extends MovableTurnable implements MutableRider, Res
 	}
 	@MethodTemplate()
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
@@ -82,7 +82,7 @@ public abstract class Model extends MovableTurnable implements MutableRider, Res
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public void setScale( Scale scale, SetScale.Detail... details ) {
-		this.getImplementation().animateSetScale( Scale.getInternal( scale ), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateSetScale( Scale.getInternal( scale ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
@@ -91,7 +91,7 @@ public abstract class Model extends MovableTurnable implements MutableRider, Res
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public void setSize( Size size, SetSize.Detail... details ) {
-		this.getImplementation().animateSetSize( Size.getInternal( size ), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateSetSize( Size.getInternal( size ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public Double getWidth() {
@@ -100,7 +100,7 @@ public abstract class Model extends MovableTurnable implements MutableRider, Res
 	@MethodTemplate()
 	public void setWidth( Number width, SetWidth.Detail... details ) {
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
-		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public Double getHeight() {
@@ -109,7 +109,7 @@ public abstract class Model extends MovableTurnable implements MutableRider, Res
 	@MethodTemplate()
 	public void setHeight( Number height, SetHeight.Detail... details ) {
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
-		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public Double getDepth() {
@@ -118,22 +118,22 @@ public abstract class Model extends MovableTurnable implements MutableRider, Res
 	@MethodTemplate()
 	public void setDepth( Number depth, SetDepth.Detail... details ) {
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
-		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public void resize( Number factor, Resize.Detail... details ) {
-		this.getImplementation().animateResize( factor.doubleValue(), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateResize( factor.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public void resizeWidth( Number factor, ResizeWidth.Detail... details ) {
-		this.getImplementation().animateResizeWidth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateResizeWidth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public void resizeHeight( Number factor, ResizeHeight.Detail... details ) {
-		this.getImplementation().animateResizeHeight( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateResizeHeight( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public void resizeDepth( Number factor, ResizeDepth.Detail... details ) {
-		this.getImplementation().animateResizeDepth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), TraditionalStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateResizeDepth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

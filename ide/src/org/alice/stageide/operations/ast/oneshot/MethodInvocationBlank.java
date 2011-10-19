@@ -67,22 +67,24 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< MethodInvocationEditFactory > blankNode ) {
-		if( this.field.getValueType().isAssignableTo( org.lgna.story.Turnable.class ) ) {
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "move", org.lgna.story.MoveDirection.class, Number.class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "turn", org.lgna.story.TurnDirection.class, Number.class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "roll", org.lgna.story.RollDirection.class, Number.class ) );
+		boolean isTurnable = this.field.getValueType().isAssignableTo( org.lgna.story.Turnable.class );
+		boolean isMovable = this.field.getValueType().isAssignableTo( org.lgna.story.MovableTurnable.class );
+		if( isMovable ) {
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.MovableTurnable.class, "move", org.lgna.story.MoveDirection.class, Number.class, org.lgna.story.Move.Detail[].class ) );
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class ) );
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "roll", org.lgna.story.RollDirection.class, Number.class, org.lgna.story.Roll.Detail[].class ) );
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "moveTo", org.lgna.story.Entity.class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "moveToward", Number.class, org.lgna.story.Entity.class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "moveAwayFrom", Number.class, org.lgna.story.Entity.class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "orientTo", org.lgna.story.Entity.class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "turnToFace", org.lgna.story.Entity.class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "pointAt", org.lgna.story.Entity.class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "moveAndOrientTo", org.lgna.story.Entity.class ) );
-			//rv.add( LocalTransformationMethodInvocationFillIn.getInstance( org.lookingglassandalice.storytelling.Transformable.class, "standUp" ) );
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.MovableTurnable.class, "moveTo", org.lgna.story.Entity.class, org.lgna.story.MoveTo.Detail[].class ) );
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.MovableTurnable.class, "moveToward", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveToward.Detail[].class ) );
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.MovableTurnable.class, "moveAwayFrom", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveAwayFrom.Detail[].class ) );
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "turnToFace", org.lgna.story.Entity.class, org.lgna.story.TurnToFace.Detail[].class ) );
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "pointAt", org.lgna.story.Entity.class, org.lgna.story.PointAt.Detail[].class ) );
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "orientTo", org.lgna.story.Entity.class, org.lgna.story.OrientTo.Detail[].class ) );
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.MovableTurnable.class, "moveAndOrientTo", org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientTo.Detail[].class ) );
+			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "standUp", org.lgna.story.StandUp.Detail[].class ) );
 			
 			//rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			//rv.add( ColorMethodInvocationFillIn.getInstance( org.lookingglassandalice.storytelling.Model.class, "setColor", org.lookingglassandalice.storytelling.Color.class ) );
+			//rv.add( ColorMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Model.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class ) );
 		}
 		return rv;
 	}
