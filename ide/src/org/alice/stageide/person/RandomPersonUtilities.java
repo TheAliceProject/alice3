@@ -51,7 +51,8 @@ public class RandomPersonUtilities {
 		throw new AssertionError();
 	}
 	public static org.lgna.story.resources.sims2.PersonResource createRandomResource() {
-		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
+//		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
+		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT };
 		org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.random.RandomUtilities.getRandomValueFrom( potentialLifeStages );
 		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
 		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
