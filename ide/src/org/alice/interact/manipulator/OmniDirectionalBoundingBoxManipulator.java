@@ -46,10 +46,15 @@ package org.alice.interact.manipulator;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode;
+import org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.lgna.croquet.components.DragComponent;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -208,18 +213,22 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			DragComponent dragSource = dragStep.getDragSource();
 			dragSource.hideDragProxy();
 			edu.cmu.cs.dennisc.math.AxisAlignedBox box = null;
-			if (dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryNode)
+			if (dragModel instanceof TypeGalleryNode)
 			{
-				org.alice.ide.croquet.models.gallerybrowser.GalleryNode galleryNode = (org.alice.ide.croquet.models.gallerybrowser.GalleryNode)dragModel;
-				System.err.println( "todo: galleryNode.getResourceClass();" );
-				Class<?> resourceClass = null;//galleryNode.getResourceClass();
-				if( resourceClass != null ) {
-					box = ModelResourceUtilities.getBoundingBox(resourceClass);
-				}
+				org.lgna.project.ast.AbstractType<?,?,?> type = ((TypeGalleryNode)dragModel).getDeclaration();
+				JavaType javaType = type.getFirstTypeEncounteredDeclaredInJava();
+				box = ModelResourceUtilities.getBoundingBox(javaType.getClassReflectionProxy().getReification());
+			}
+			else if (dragModel instanceof FieldGalleryNode)
+			{
+				AbstractField field = ((FieldGalleryNode)dragModel).getDeclaration();
+				org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
+				JavaType javaType = type.getFirstTypeEncounteredDeclaredInJava();
+				box = ModelResourceUtilities.getBoundingBox(javaType.getClassReflectionProxy().getReification());
 			}
 			if (box == null)
 			{
-				box = new AxisAlignedBox(new Point3(-1, 0, -1), new Point3(1,1,1));
+				box = new AxisAlignedBox(new Point3(-.5, 0, -.5), new Point3(.5,1,.5));
 			}
 			
 			AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();

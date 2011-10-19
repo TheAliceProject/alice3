@@ -713,18 +713,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private boolean overLookingGlass = false;
 
 	public org.lgna.croquet.DropSite dragUpdated(org.lgna.croquet.history.DragStep dragAndDropContext) {
-//		if (isDropLocationOverLookingGlass(dragAndDropContext)) {
-//			if (!overLookingGlass) {
-//				overLookingGlass = true;
-//				this.globalDragAdapter.dragEntered(dragAndDropContext);
-//			}
-//			this.globalDragAdapter.dragUpdated(dragAndDropContext);
-//		} else {
-//			if (overLookingGlass) {
-//				overLookingGlass = false;
-//				this.globalDragAdapter.dragExited(dragAndDropContext);
-//			}
-//		}
+		if (isDropLocationOverLookingGlass(dragAndDropContext)) {
+			if (!overLookingGlass) {
+				overLookingGlass = true;
+				this.globalDragAdapter.dragEntered(dragAndDropContext);
+			}
+			this.globalDragAdapter.dragUpdated(dragAndDropContext);
+		} else {
+			if (overLookingGlass) {
+				overLookingGlass = false;
+				this.globalDragAdapter.dragExited(dragAndDropContext);
+			}
+		}
 		return null;
 	}
 
@@ -748,7 +748,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 
 	public void dragStopped(org.lgna.croquet.history.DragStep dragAndDropContext) {
-		// this.globalDragAdapter.dragExited(dragAndDropContext);
+		 this.globalDragAdapter.dragExited(dragAndDropContext);
 	}
 
 	public String getTutorialNoteText(org.lgna.croquet.Model model,

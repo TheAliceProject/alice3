@@ -153,6 +153,10 @@ public class ModelResourceUtilities {
 	
 	public static AxisAlignedBox getBoundingBox(Class<?> modelResource)
 	{
+		if (modelResource == null)
+		{
+			return null;
+		}
 		String name = getName(modelResource);
 		try {
 			InputStream is = modelResource.getResourceAsStream("resources/"+name+".xml");
