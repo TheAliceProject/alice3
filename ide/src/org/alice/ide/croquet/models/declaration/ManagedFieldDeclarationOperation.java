@@ -43,6 +43,9 @@
 
 package org.alice.ide.croquet.models.declaration;
 
+import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
+import org.lgna.story.Position;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -121,6 +124,12 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 	
 	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true));
+//		try {
+//			rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement(false, field, new Position(0, 1, 0 )));
+//		} catch( CannotCreateExpressionException ccee ) {
+//			throw new RuntimeException( ccee );
+//		}
+		rv.addUndoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false));
 		return rv;
 	}
 
