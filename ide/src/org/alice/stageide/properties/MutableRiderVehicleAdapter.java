@@ -51,6 +51,7 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.Model;
+import org.lgna.project.ast.NullLiteral;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
@@ -91,14 +92,21 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 		if (this.expressionState != null && this.sceneInstance != null)
 		{
 			org.lgna.project.ast.Expression expressionValue;
-			org.lgna.story.Entity entity = (org.lgna.story.Entity)value;
-			org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
-			org.lgna.project.ast.Expression thisExpression = new org.lgna.project.ast.ThisExpression();
-			if (value instanceof org.lgna.story.Scene) {
-				expressionValue = thisExpression;
+			if (value != null)
+			{
+				org.lgna.story.Entity entity = (org.lgna.story.Entity)value;
+				org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
+				org.lgna.project.ast.Expression thisExpression = new org.lgna.project.ast.ThisExpression();
+				if (value instanceof org.lgna.story.Scene) {
+					expressionValue = thisExpression;
+				}
+				else {
+					expressionValue = new org.lgna.project.ast.FieldAccess( thisExpression, entityField );
+				}
 			}
-			else {
-				expressionValue = new org.lgna.project.ast.FieldAccess( thisExpression, entityField );
+			else
+			{
+				expressionValue = new NullLiteral();
 			}
 			this.expressionState.setValue(expressionValue);
 		}

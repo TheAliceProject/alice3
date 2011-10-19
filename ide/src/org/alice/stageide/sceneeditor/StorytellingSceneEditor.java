@@ -49,7 +49,12 @@ import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.instancefactory.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.InputState;
+import org.alice.interact.PickHint;
 import org.alice.interact.SnapGrid;
+import org.alice.interact.condition.ClickedObjectCondition;
+import org.alice.interact.condition.PickCondition;
+import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.BooleanState;
@@ -398,6 +403,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		this.selectionIsFromManipulator = false;
 	}
 	
+	private void showRightClickMenuForModel(InputState clickInput)
+	{
+		edu.cmu.cs.dennisc.scenegraph.Element element = clickInput.getClickPickedTransformable(true);
+		if (element != null)
+		{
+			EntityImp entityImp = EntityImp.getInstance(element);
+			Entity entity = entityImp.getAbstraction();
+			UserField field = this.getFieldForInstanceInJavaVM(entity);
+			System.out.println("right-clicked on "+field);
+		}
+	}
+	
 	@Override
 	protected void initializeComponents() {
 		if( this.globalDragAdapter != null ) {
@@ -437,6 +454,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 					StorytellingSceneEditor.this.handleManipulatorSelection( e );
 				}
 			} );
+			
+			ClickedObjectCondition rightMouseAndInteractive = new ClickedObjectCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.PickType.TURNABLE.pickHint() ) );
+			ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
+				public void onClick(InputState clickInput) {
+					showRightClickMenuForModel(clickInput);
+					
+				}
+			};
+			this.globalDragAdapter.addClickAdapter(rightClickAdapter, rightMouseAndInteractive);
+			
 //			
 			
 //			this.sidePane = new SidePane(this);
@@ -450,14 +477,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 //			ObjectMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.objectMarkerFieldSelectionObserver);
 //			
 //			
-//			ClickedObjectCondition rightMouseAndInteractive = new ClickedObjectCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.MOVEABLE_OBJECTS ) );
-//			ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
-//				public void onClick(InputState clickInput) {
-//					showRightClickMenuForModel(clickInput);
-//					
-//				}
-//			};
-//			this.globalDragAdapter.addClickAdapter(rightClickAdapter, rightMouseAndInteractive);
+			
 //			
 //			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
 //			this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
