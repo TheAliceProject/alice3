@@ -56,8 +56,10 @@ public class Biped extends JointedModel implements Articulable {
 		return this.implementation;
 	}
 	public void walkTo( Entity entity ) {
+		javax.swing.JOptionPane.showMessageDialog( null, "todo: walkTo" );
 	}
 	public void touch( Entity entity ) {
+		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );
 	}
 	
 	public Joint getPelvisForLowerBody() {

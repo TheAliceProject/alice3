@@ -11,6 +11,7 @@ public class Swimmer extends JointedModel {
 	}
 	
 	public void swimTo( Entity entity ) {
+		javax.swing.JOptionPane.showMessageDialog( null, "todo: swimTo" );
 	}
 
 	public Joint getNeck() {
