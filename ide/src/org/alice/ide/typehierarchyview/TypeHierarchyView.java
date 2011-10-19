@@ -43,70 +43,6 @@
 
 package org.alice.ide.typehierarchyview;
 
-//class TreeNodeAdpater<T> implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.tree.Node< T > > {
-//	private final edu.cmu.cs.dennisc.tree.Node< T > value;
-//	public TreeNodeAdpater( edu.cmu.cs.dennisc.tree.Node< T > value ) {
-//		this.value = value;
-//	}
-//	public java.util.Enumeration<T> children() {
-//		return null;
-//	}
-//	public boolean getAllowsChildren() {
-//		//return this.value.getChildren().size() > 0;
-//		return true; //?
-//	}
-//	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.tree.Node< T > > getChildAt( int childIndex ) {
-//		return null;
-//	}
-//	public int getChildCount() {
-//		return this.value.getChildren().size();
-//	}
-//	public int getIndex( javax.swing.tree.TreeNode node ) {
-//		return this.value.getChildren().indexOf( (TreeNodeAdpater<T>).value );
-//	}
-//	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.tree.Node< T > > getParent() {
-//		return null;
-//	}
-//	public edu.cmu.cs.dennisc.tree.Node< T > getValue() {
-//		return this.value;
-//	}
-//	public boolean isLeaf() {
-//		return this.value.getChildren().size() > 0;
-//	}
-//	public java.util.Iterator< edu.cmu.cs.dennisc.javax.swing.models.TreeNode< edu.cmu.cs.dennisc.tree.Node< T > >> iterator() {
-//		return null;
-//	}
-//}
-//
-//
-//class NamedUserTypeTreeNodeAdapter extends TreeNodeAdpater< org.lgna.project.ast.NamedUserType > {
-//	public NamedUserTypeTreeNodeAdapter( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > value ) {
-//		super( value );
-//	}
-//}
-//
-//class RootNamedUserTypeNode implements edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > {
-//	public RootNamedUserTypeNode() {
-//	}
-//	public boolean contains( org.lgna.project.ast.NamedUserType value ) {
-//		return false;
-//	}
-//	public edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > get( org.lgna.project.ast.NamedUserType value ) {
-//		return null;
-//	}
-//	public java.lang.Iterable< ? extends edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType >> getChildren() {
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-//		org.lgna.project.Project project = ide.getProject();
-//		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > tree = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
-//		return tree.getChildren();
-//	}
-//	public org.lgna.project.ast.NamedUserType getValue() {
-//		return null;
-//	}
-//}
-
-//class NamedUserTypeTreeModel implements edu.cmu.cs.dennisc.javax.swing.models.TreeModel< org.lgna.project.ast.NamedUserType > {
-//}
 class NamedUserTypeTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractTreeModel< edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > > {
 	public edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > getChild( java.lang.Object parent, int index ) {
 		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node = (edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType >)parent;
@@ -137,25 +73,54 @@ class NamedUserTypeTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstr
 		return this.getChildCount( node ) == 0;
 	}
 	public void refresh() {
-		System.err.println( "refresh" );
-		//this.fireTreeNodeChanged( source, path, childIndices, children );
+		this.fireTreeStructureChanged(this, new Object[] { this.getRoot() }, null, null);
 	}
 }
+
+class NamedUserTypeTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > > {
+	@Override
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( node != null ? node.getValue() : null ) );
+		rv.setText( null );
+		return rv;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
 public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 	private final NamedUserTypeTreeModel treeModel = new NamedUserTypeTreeModel();
 	public TypeHierarchyView() {
-		javax.swing.JTree jTree = new javax.swing.JTree( this.treeModel );
-		//jTree.setRootVisible( false );
+		final javax.swing.JTree jTree = new javax.swing.JTree( this.treeModel );
+		jTree.addKeyListener( new java.awt.event.KeyListener() {
+			public void keyPressed( java.awt.event.KeyEvent e ) {
+				treeModel.refresh();
+				for( int i=0; i<jTree.getRowCount(); i++ ) {
+					jTree.expandRow( i );
+				}
+			}
+			public void keyReleased( java.awt.event.KeyEvent e ) {
+			}
+			public void keyTyped( java.awt.event.KeyEvent e ) {
+			}
+		} );
+		jTree.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
+			public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
+				javax.swing.tree.TreePath treePath = jTree.getSelectionPath();
+				Object last = treePath.getLastPathComponent();
+				if( last instanceof edu.cmu.cs.dennisc.tree.Node ) {
+					edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node = (edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType >)last;
+					org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValue( node.getValue() );
+				}
+			}
+		} );
+		jTree.setRootVisible( false );
+		jTree.setCellRenderer( new NamedUserTypeTreeCellRenderer() );
+		jTree.setBackground( org.alice.ide.IDE.getActiveInstance().getTheme().getTypeColor() );
 		org.lgna.croquet.components.Component< ? > viewportView = new org.lgna.croquet.components.SwingAdapter( jTree );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( viewportView );
+		this.addComponent( new org.lgna.croquet.components.Label( "extremely alpha", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ), Constraint.PAGE_START );
 		this.addComponent( scrollPane, Constraint.CENTER );
-	}
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.treeModel.refresh();
 	}
 }
