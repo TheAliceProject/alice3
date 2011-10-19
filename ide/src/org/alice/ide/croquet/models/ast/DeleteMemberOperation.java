@@ -47,17 +47,17 @@ package org.alice.ide.croquet.models.ast;
  */
 public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.AbstractMember > extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
 	private N member;
-	private org.lgna.project.ast.UserType<?> delaringType;
+	private org.lgna.project.ast.UserType<?> declaringType;
 	
 	//todo
 	//note: index not preserved and restored
 	//in the case where it is undone across sessions, it will not know where to insert the declaration
 	private transient int index = -1;
 	
-	public DeleteMemberOperation( java.util.UUID individualId, N node, org.lgna.project.ast.UserType<?> delaringType ) {
+	public DeleteMemberOperation( java.util.UUID individualId, N node, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		this.member = node;
-		this.delaringType = delaringType;
+		this.declaringType = declaringType;
 	}
 	protected abstract Class<N> getNodeParameterType();
 	@Override
@@ -93,11 +93,14 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 	}
 	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.member.getUUID() );
-		binaryEncoder.encode( this.delaringType.getUUID() );
+		binaryEncoder.encode( this.declaringType.getUUID() );
 		binaryEncoder.encode( this.index );
 	}
 	
 	
+	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
+		return this.declaringType;
+	}
 	protected N getMember() {
 		return this.member;
 	}
@@ -105,12 +108,12 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 	protected abstract boolean isClearToDelete( N node );
 	
 	public void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.delaringType );
+		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
 		this.index = owner.indexOf( this.member );
 		owner.remove( index );
 	}
 	public void undoInternal() {
-		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.delaringType );
+		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
 		if( this.index == -1 ) {
 			this.index += owner.size();
 		}
@@ -120,11 +123,11 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 		org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>>)edit;
 		DeleteMemberOperation<N> replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.member, replacement.member );
-		retargeter.addKeyValuePair( this.delaringType, replacement.delaringType );
+		retargeter.addKeyValuePair( this.declaringType, replacement.declaringType );
 	}
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.member = retargeter.retarget( this.member );
-		this.delaringType = retargeter.retarget( this.delaringType );
+		this.declaringType = retargeter.retarget( this.declaringType );
 	}
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
 		return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
