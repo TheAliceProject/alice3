@@ -42,10 +42,6 @@
  */
 package org.alice.ide.sceneeditor;
 
-import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.virtualmachine.UserInstance;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -85,9 +81,6 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	
 	public abstract void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 	public abstract void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
-
-	public abstract void putInstanceForInitializingPendingField( org.lgna.project.ast.UserField field, Object instance );
-	public abstract Object getInstanceInJavaForUndo( org.lgna.project.ast.UserField field );
 	
 	public abstract void generateCodeForSetUp( org.lgna.project.ast.StatementListProperty bodyStatementsProperty );
 	
@@ -117,19 +110,6 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	public org.lgna.project.ast.UserField getSceneField() {
 		return SceneFieldListSelectionState.getInstance().getSelectedItem();
 	}
-
-	@Deprecated
-	public Object getInstanceInAliceVMForField(
-			org.lgna.project.ast.AbstractField field) {
-		return null;
-	}
-
-	@Deprecated
-	public org.lgna.project.ast.UserField getFieldForInstanceInAliceVM(
-			Object instance) {
-		return null;
-	}
-
 	public org.lgna.project.ast.UserField getFieldForInstanceInJavaVM(
 			Object instanceInJava) {
 		return getActiveSceneInstance().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(instanceInJava);
@@ -203,7 +183,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		this.executeStatements(statements);
 		if (this.selectedField == field)
 		{
-			UserField uf = this.getActiveSceneField();
+			org.lgna.project.ast.UserField uf = this.getActiveSceneField();
 			this.setSelectedField(uf.getDeclaringType(), uf);
 		}
 	}

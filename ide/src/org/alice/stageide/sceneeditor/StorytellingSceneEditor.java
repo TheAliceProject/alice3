@@ -588,20 +588,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.onscreenLookingGlass.setRenderingEnabled(false);
 		}
 	}
-
-	@Override
-	public void putInstanceForInitializingPendingField(
-			UserField field, Object instance) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Object getInstanceInJavaForUndo(UserField field) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field) {
 		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaVMForField(field), this.getActiveSceneInstance() );
 	}
