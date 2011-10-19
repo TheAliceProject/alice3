@@ -142,49 +142,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		this.sceneInstance = sceneInstance;
 	}
 	
-	public static List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> getPropertyAdaptersForObject(Object object, StandardExpressionState expressionState)
-	{
-		List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> propertyList = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>>();
-//		if (object != null)
-//		{
-//			for (Class<?> adapterClass : PROPERTY_ADAPTER_CLASSES)
-//			{
-//				Constructor<?>[] constructors = adapterClass.getConstructors();
-//				for (Constructor<?> constructor : constructors)
-//				{
-//					if (constructor.getParameterTypes().length > 0)
-//					{
-//						if (constructor.getParameterTypes()[0].isAssignableFrom(object.getClass()))
-//						{
-//							try
-//							{
-//								System.out.println("Selecting "+adapterClass.getSimpleName());
-//								org.alice.ide.properties.adapter.PropertyAdapter<?,?> propertyAdapter = null;
-//								if (constructor.getParameterTypes().length == 1)
-//								{
-//									propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object);
-//								}
-//								else if (constructor.getParameterTypes().length == 2)
-//								{
-//									propertyAdapter = (org.alice.ide.properties.adapter.PropertyAdapter<?,?>)constructor.newInstance(object, expressionState);
-//								}
-//								if (propertyAdapter != null)
-//								{
-//									propertyList.add(propertyAdapter);
-//								}
-//							}
-//							catch (Exception e)
-//							{
-//								e.printStackTrace();
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-		return propertyList;
-	}
-	
 	private Label createLabel(String labelText)
 	{
 		return new Label(labelText, 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
@@ -224,11 +181,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	{
 	    this.addNameAndControllerToPanel(propertyPair.label, propertyPair.controller.getPanel(), panel, index);
 	}
-	
-	private static org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
-	}
-
 	
 	private org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter(org.lgna.project.ast.JavaMethod getter, JavaType declaringType, EntityImp entityImp)
 	{
