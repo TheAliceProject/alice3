@@ -49,8 +49,16 @@ import org.alice.ide.properties.adapter.StringPropertyAdapter;
 
 public class FieldNameAdapter extends StringPropertyAdapter<org.lgna.project.ast.UserField> {
 	
-	public FieldNameAdapter(org.lgna.project.ast.UserField instance, StandardExpressionState expressionState)
+	private final boolean allowEdit;
+	
+	public FieldNameAdapter(org.lgna.project.ast.UserField instance, StandardExpressionState expressionState, boolean allowEdit)
 	{
 		super("Name", instance, instance.name, expressionState);
+		this.allowEdit = allowEdit;
+	}
+	
+	public boolean allowsEdit()
+	{
+		return this.allowEdit;
 	}
 }
