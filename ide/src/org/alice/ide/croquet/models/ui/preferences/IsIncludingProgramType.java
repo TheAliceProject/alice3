@@ -46,14 +46,14 @@ package org.alice.ide.croquet.models.ui.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsProgramTypeDisplayed extends org.lgna.croquet.BooleanState {
+public class IsIncludingProgramType extends org.lgna.croquet.BooleanState {
 	private static class SingletonHolder {
-		private static IsProgramTypeDisplayed instance = new IsProgramTypeDisplayed();
+		private static IsIncludingProgramType instance = new IsIncludingProgramType();
 	}
-	public static IsProgramTypeDisplayed getInstance() {
+	public static IsIncludingProgramType getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsProgramTypeDisplayed() {
+	private IsIncludingProgramType() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "052fef4d-cac4-431f-b8d9-8c50ff1823d1" ), false );
 		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}

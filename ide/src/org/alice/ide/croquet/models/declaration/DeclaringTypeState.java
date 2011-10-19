@@ -55,9 +55,12 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.UserType > blankNode ) {
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
 		for( org.lgna.project.ast.NamedUserType type : types ) {
-			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+			if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || type != programType ) {
+				rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+			}
 		}
 		return rv;
 	}

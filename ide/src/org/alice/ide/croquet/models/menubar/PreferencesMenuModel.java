@@ -63,6 +63,7 @@ public class PreferencesMenuModel extends org.lgna.croquet.PredeterminedMenuMode
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.recursion.RecursionDialogOperation.getInstance().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,

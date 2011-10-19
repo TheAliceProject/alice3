@@ -72,7 +72,7 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
 		for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node : root.getChildren() ) {
-			if( org.alice.ide.croquet.models.ui.preferences.IsProgramTypeDisplayed.getInstance().getValue() || node != programType ) {
+			if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || node.getValue() != programType ) {
 				addTypeFillIns( rv, node );
 			}
 		}
