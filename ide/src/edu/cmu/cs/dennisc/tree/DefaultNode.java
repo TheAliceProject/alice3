@@ -74,7 +74,7 @@ public class DefaultNode< T > implements Node< T > {
 	public T getValue() {
 		return this.value;
 	}
-	public Iterable< DefaultNode< T > > getChildren() {
+	public java.util.List< DefaultNode< T > > getChildren() {
 		return this.children;
 	}
 	
