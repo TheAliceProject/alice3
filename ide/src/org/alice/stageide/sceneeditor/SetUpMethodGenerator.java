@@ -182,73 +182,82 @@ public class SetUpMethodGenerator {
 		if (instance != null)
 		{
 			org.lgna.project.ast.AbstractField field = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(instance);
-			org.lgna.project.ast.AbstractType<?,?,?> abstractType = field.getValueType();
-			org.lgna.project.ast.JavaType javaType = abstractType.getFirstTypeEncounteredDeclaredInJava();
-			
-			for( org.lgna.project.ast.JavaMethod getter : org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters( javaType ) ) {
-				java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
-				Object value = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, gttr );
-				org.lgna.project.ast.JavaMethod setter = org.lgna.project.ast.AstUtilities.getSetterForGetter( getter, javaType );
-				if( setter != null ) {
-					try {
-						org.lgna.project.ast.Expression expression;
-						if( value instanceof org.lgna.story.Entity ) {
-							org.lgna.story.Entity entity = (org.lgna.story.Entity)value;
-							boolean isEntityScene = (entity instanceof org.lgna.story.Scene);
-							org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
-							expression = SetUpMethodGenerator.createInstanceExpression( isEntityScene, entityField );
-						} else {
-							expression = getExpressionCreator().createExpression( value );
+			if( field != null ) {
+				org.lgna.project.ast.AbstractType<?,?,?> abstractType = field.getValueType();
+				org.lgna.project.ast.JavaType javaType = abstractType.getFirstTypeEncounteredDeclaredInJava();
+				
+				for( org.lgna.project.ast.JavaMethod getter : org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters( javaType ) ) {
+					java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
+					Object value = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, gttr );
+					org.lgna.project.ast.JavaMethod setter = org.lgna.project.ast.AstUtilities.getSetterForGetter( getter, javaType );
+					if( setter != null ) {
+						try {
+							org.lgna.project.ast.Expression expression;
+							if( value instanceof org.lgna.story.Entity ) {
+								org.lgna.story.Entity entity = (org.lgna.story.Entity)value;
+								boolean isEntityScene = (entity instanceof org.lgna.story.Scene);
+								org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
+								expression = SetUpMethodGenerator.createInstanceExpression( isEntityScene, entityField );
+							} else {
+								expression = getExpressionCreator().createExpression( value );
+							}
+							statements.add( 
+									org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( 
+											SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
+											setter, 
+											expression 
+									)
+							);
+						} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+							System.err.println( "cannot create expression for: " + value );
 						}
+					} else {
+						System.err.println( "setter is null for: " + getter );
+					}
+				}
+				if( instance instanceof org.lgna.story.Turnable ) {
+					org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)instance;
+					org.lgna.story.Orientation orientation = turnable.getOrientationRelativeToVehicle();
+					try {
 						statements.add( 
-								org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( 
-										SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
-										setter, 
-										expression 
-								)
+								createOrientationStatement( isThis, field, orientation )
 						);
 					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-						System.err.println( "cannot create expression for: " + value );
+						throw new RuntimeException( ccee );
 					}
-				} else {
-					System.err.println( "setter is null for: " + getter );
+					if( turnable instanceof org.lgna.story.MovableTurnable ) {
+						org.lgna.story.MovableTurnable movableTurnable = (org.lgna.story.MovableTurnable)turnable;
+						org.lgna.story.Position position = movableTurnable.getPositionRelativeToVehicle();
+						try {
+							statements.add( 
+									createPositionStatement( isThis, field, position )
+							);
+						} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+							throw new RuntimeException( ccee );
+						}
+					}
 				}
-			}
-			if( instance instanceof org.lgna.story.Turnable ) {
-				org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)instance;
-				org.lgna.story.Orientation orientation = turnable.getOrientationRelativeToVehicle();
-				try {
-					statements.add( 
-							createOrientationStatement( isThis, field, orientation )
-					);
-				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-					throw new RuntimeException( ccee );
-				}
-				if( turnable instanceof org.lgna.story.MovableTurnable ) {
-					org.lgna.story.MovableTurnable movableTurnable = (org.lgna.story.MovableTurnable)turnable;
-					org.lgna.story.Position position = movableTurnable.getPositionRelativeToVehicle();
+				if( instance instanceof org.lgna.story.Resizable ) {
+					org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
+					org.lgna.story.Scale scale = resizable.getScale();
 					try {
 						statements.add( 
-								createPositionStatement( isThis, field, position )
+								createStatement( 
+										org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class, org.lgna.story.SetScale.Detail[].class }, 
+										SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
+										getExpressionCreator().createExpression( scale ) 
+								)
 						);
 					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 						throw new RuntimeException( ccee );
 					}
 				}
-			}
-			if( instance instanceof org.lgna.story.Resizable ) {
-				org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
-				org.lgna.story.Scale scale = resizable.getScale();
-				try {
-					statements.add( 
-							createStatement( 
-									org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class, org.lgna.story.SetScale.Detail[].class }, 
-									SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
-									getExpressionCreator().createExpression( scale ) 
-							)
-					);
-				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-					throw new RuntimeException( ccee );
+			} else {
+				if( instance instanceof org.lgna.story.Scene ) {
+					org.lgna.story.Scene scene = (org.lgna.story.Scene)instance;
+					System.err.println( "todo: handle scene: " + scene );
+				} else {
+					System.err.println( "todo: handle unknown: " + instance );
 				}
 			}
 		}
