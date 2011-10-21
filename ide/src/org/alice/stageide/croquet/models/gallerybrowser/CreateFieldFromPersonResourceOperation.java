@@ -43,6 +43,9 @@
 
 package org.alice.stageide.croquet.models.gallerybrowser;
 
+import org.alice.ide.typemanager.TypeManager;
+import org.lgna.project.ast.JavaType;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -68,8 +71,8 @@ public class CreateFieldFromPersonResourceOperation extends org.alice.ide.croque
 			try {
 				org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
 				org.lgna.project.ast.InstanceCreation expression = org.lgna.project.ast.AstUtilities.createInstanceCreation( 
-						org.lgna.story.Biped.class, 
-						new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
+						TypeManager.getNamedUserTypeFor( JavaType.getInstance( org.lgna.story.Biped.class ) ).getDeclaredConstructors().get(0), 
+//						new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
 						argumentExpression 
 				);
 				this.getInitializerState().setValueTransactionlessly( expression );
