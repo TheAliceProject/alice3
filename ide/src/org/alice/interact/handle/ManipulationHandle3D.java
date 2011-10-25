@@ -51,7 +51,6 @@ import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.stageide.utilities.BoundingBoxUtilities;
-import org.lgna.story.AnimationStyle;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;

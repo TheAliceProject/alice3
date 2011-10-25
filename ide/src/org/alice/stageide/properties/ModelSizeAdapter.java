@@ -43,12 +43,8 @@
 
 package org.alice.stageide.properties;
 
-import java.util.Locale;
-
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractInstancePropertyAdapter;
-import org.alice.ide.properties.adapter.SetValueOperation;
-import org.lgna.croquet.Operation;
 
 import edu.cmu.cs.dennisc.math.Dimension3;
 

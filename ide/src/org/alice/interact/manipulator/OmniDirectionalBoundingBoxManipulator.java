@@ -53,7 +53,6 @@ import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 

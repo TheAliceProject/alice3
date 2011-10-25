@@ -42,8 +42,6 @@
  */
 package org.alice.ide.properties.adapter;
 
-import java.util.Locale;
-
 import org.alice.ide.croquet.models.StandardExpressionState;
 
 /**

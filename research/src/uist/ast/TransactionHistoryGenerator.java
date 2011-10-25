@@ -178,11 +178,11 @@ public class TransactionHistoryGenerator {
 	
 	public static void main( String[] args ) {
 		org.lgna.project.ast.BlockStatement dst = new org.lgna.project.ast.BlockStatement(
-				org.alice.ide.ast.AstUtilities.createDoInOrder()
+				org.lgna.project.ast.AstUtilities.createDoInOrder()
 		);
 		org.lgna.project.ast.BlockStatement src = new org.lgna.project.ast.BlockStatement(
-				org.alice.ide.ast.AstUtilities.createDoTogether(),
-				org.alice.ide.ast.AstUtilities.createCountLoop( new org.lgna.project.ast.IntegerLiteral( 3 ) )
+				org.lgna.project.ast.AstUtilities.createDoTogether(),
+				org.lgna.project.ast.AstUtilities.createCountLoop( new org.lgna.project.ast.IntegerLiteral( 3 ) )
 		);
 		
 		TransactionHistoryGenerator generator = new TransactionHistoryGenerator( src, dst, 1 );

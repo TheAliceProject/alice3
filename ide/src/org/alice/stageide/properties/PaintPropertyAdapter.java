@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.properties;
 
-import java.util.Locale;
-
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractImplementationPropertyAdapter;
 

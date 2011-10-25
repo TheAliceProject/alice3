@@ -43,8 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-
 /**
  * @author Dennis Cosgrove
  */

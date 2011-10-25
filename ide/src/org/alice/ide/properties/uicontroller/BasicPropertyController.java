@@ -45,8 +45,6 @@ package org.alice.ide.properties.uicontroller;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.components.BoxUtilities;

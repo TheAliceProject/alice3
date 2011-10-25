@@ -43,7 +43,6 @@
 package org.alice.interact.handle;
 
 
-import org.lgna.story.AnimationStyle;
 import org.alice.ide.IDE;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;

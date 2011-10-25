@@ -47,20 +47,17 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
-import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
 import org.alice.stageide.properties.FieldNameAdapter;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
-import org.lgna.project.ast.UserField;
 
 
 public class FieldNamePropertyController extends BasicPropertyController<String>

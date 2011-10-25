@@ -46,8 +46,6 @@ package org.alice.ide.properties.adapter;
 import java.util.Locale;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState;
-import org.alice.ide.swing.icons.ColorIcon;
 import org.lgna.story.Color;
 
 public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<org.lgna.story.Color, O> 

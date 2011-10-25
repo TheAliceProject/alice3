@@ -48,8 +48,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.properties.adapter.ScalePropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.GridBagPanel;
@@ -57,7 +57,6 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.Panel;
 import org.lgna.croquet.components.SwingAdapter;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public class Point3PropertyController extends AbstractAdapterController<Point3>

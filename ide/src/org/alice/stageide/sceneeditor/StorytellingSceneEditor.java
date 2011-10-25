@@ -43,11 +43,7 @@
 package org.alice.stageide.sceneeditor;
 
 
-import java.awt.Point;
-
 import org.alice.ide.ast.CurrentThisExpression;
-import org.alice.ide.common.SelectedInstanceFactoryExpressionPanel;
-import org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode;
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.instancefactory.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
@@ -61,13 +57,9 @@ import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.components.AbstractButton;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.Accessible;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
@@ -84,8 +76,6 @@ import org.lgna.story.implementation.MarkerImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.TransformableImp;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
-
-import com.sun.media.rtsp.protocol.SetupMessage;
 
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;

@@ -45,7 +45,6 @@ package org.lgna.story.implementation;
 import org.lgna.story.OrthographicCameraMarker;
 
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**

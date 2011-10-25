@@ -55,7 +55,6 @@ import org.alice.ide.properties.uicontroller.DoubleTextField;
 import org.alice.stageide.properties.IsScaleLinkedState;
 import org.alice.stageide.properties.LinkScaleButton;
 import org.alice.stageide.properties.ModelSizeAdapter;
-import org.alice.stageide.utilities.BoundingBoxUtilities;
 import org.lgna.croquet.components.BooleanStateButton;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Button;
@@ -64,7 +63,6 @@ import org.lgna.croquet.components.Panel;
 import org.lgna.croquet.components.SwingAdapter;
 import org.lgna.story.implementation.ModelImp;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Dimension3;
 
 public class ModelSizePropertyController extends AbstractAdapterController<Dimension3>

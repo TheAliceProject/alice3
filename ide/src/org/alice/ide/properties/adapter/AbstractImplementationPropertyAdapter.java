@@ -46,10 +46,6 @@ package org.alice.ide.properties.adapter;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.lgna.story.implementation.Property.Listener;
 
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-
 public abstract class AbstractImplementationPropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
 
 	private Listener<P> propertyListener;

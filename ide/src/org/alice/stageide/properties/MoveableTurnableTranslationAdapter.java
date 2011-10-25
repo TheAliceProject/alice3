@@ -43,11 +43,9 @@
 
 package org.alice.stageide.properties;
 
-import java.util.Locale;
-
-import org.lgna.story.ImplementationAccessor;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.lgna.story.ImplementationAccessor;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;

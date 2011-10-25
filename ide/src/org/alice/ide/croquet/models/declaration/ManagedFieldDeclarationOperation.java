@@ -43,9 +43,6 @@
 
 package org.alice.ide.croquet.models.declaration;
 
-import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
-import org.lgna.story.Position;
-
 /**
  * @author Dennis Cosgrove
  */

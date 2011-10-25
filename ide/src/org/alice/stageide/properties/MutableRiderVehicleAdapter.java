@@ -43,14 +43,9 @@
 
 package org.alice.stageide.properties;
 
-import java.util.Locale;
-
 import org.alice.ide.IDE;
-import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.ide.properties.adapter.SetValueOperation;
-import org.lgna.croquet.Model;
 import org.lgna.project.ast.NullLiteral;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.Entity;

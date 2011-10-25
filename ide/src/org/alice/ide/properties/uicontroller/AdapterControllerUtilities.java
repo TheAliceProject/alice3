@@ -43,7 +43,6 @@
 
 package org.alice.ide.properties.uicontroller;
 
-import org.lgna.story.Entity;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.stageide.properties.FieldNameAdapter;
 import org.alice.stageide.properties.ModelSizeAdapter;
@@ -52,8 +51,6 @@ import org.alice.stageide.properties.uicontroller.CompositePropertyController;
 import org.alice.stageide.properties.uicontroller.FieldNamePropertyController;
 import org.alice.stageide.properties.uicontroller.ModelSizePropertyController;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public class AdapterControllerUtilities 

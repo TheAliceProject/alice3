@@ -47,8 +47,6 @@ import java.util.Locale;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
 
-import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
-
 public class FloatPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Float, O> 
 {
 	public FloatPropertyAdapter(O instance, org.lgna.story.implementation.Property<Float> property, StandardExpressionState expressionState)

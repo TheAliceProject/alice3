@@ -42,9 +42,7 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import org.lgna.project.ast.AbstractType;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Orientation;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
