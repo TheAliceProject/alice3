@@ -47,6 +47,6 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class DoInThreadTemplate extends CascadingUbiquitousStatementTemplate {
 	public DoInThreadTemplate() {
-		super( org.alice.ide.ast.draganddrop.statement.DoInThreadTemplateDragModel.getInstance(), org.lgna.project.ast.DoInThread.class, org.lgna.project.ast.AstUtilities.createDoInThread() );
+		super( org.alice.ide.ast.draganddrop.statement.DoInThreadTemplateDragModel.getInstance(), org.lgna.project.ast.AstUtilities.createDoInThread() );
 	}
 }

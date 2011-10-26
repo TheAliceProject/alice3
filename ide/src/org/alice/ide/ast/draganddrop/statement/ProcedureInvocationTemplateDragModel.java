@@ -60,7 +60,7 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 	}
 	private org.lgna.project.ast.AbstractMethod method;
 	private ProcedureInvocationTemplateDragModel( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ) );
+		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ), org.lgna.project.ast.ExpressionStatement.class );
 		this.method = method;
 		assert this.method.isProcedure();
 	}

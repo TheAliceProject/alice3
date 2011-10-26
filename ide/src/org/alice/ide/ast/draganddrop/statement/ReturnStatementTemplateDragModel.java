@@ -54,7 +54,7 @@ public class ReturnStatementTemplateDragModel extends StatementTemplateDragModel
 		return SingletonHolder.instance;
 	}
 	private ReturnStatementTemplateDragModel() {
-		super( java.util.UUID.fromString( "7c9b66c3-9cb9-4fbc-bce1-d8dbf33808b2" ) );
+		super( java.util.UUID.fromString( "7c9b66c3-9cb9-4fbc-bce1-d8dbf33808b2" ), org.lgna.project.ast.ReturnStatement.class );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

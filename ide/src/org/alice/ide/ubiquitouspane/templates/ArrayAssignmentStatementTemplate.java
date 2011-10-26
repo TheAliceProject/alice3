@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public abstract class ArrayAssignmentStatementTemplate extends CascadingUbiquitousStatementTemplate {
 	public ArrayAssignmentStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel, org.lgna.project.ast.Statement incompleteStatement ) {
-		super( dragModel, org.lgna.project.ast.ExpressionStatement.class, incompleteStatement );
+		super( dragModel, incompleteStatement );
 	}
 	
 	protected abstract String getTransientName();

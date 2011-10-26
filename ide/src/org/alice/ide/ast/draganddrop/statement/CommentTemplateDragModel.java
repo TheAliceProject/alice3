@@ -54,7 +54,7 @@ public class CommentTemplateDragModel extends StatementTemplateDragModel {
 		return SingletonHolder.instance;
 	}
 	private CommentTemplateDragModel() {
-		super( java.util.UUID.fromString( "6ef0a017-c3e7-4c4b-85c9-348ca34641fa" ) );
+		super( java.util.UUID.fromString( "6ef0a017-c3e7-4c4b-85c9-348ca34641fa" ), org.lgna.project.ast.Comment.class );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

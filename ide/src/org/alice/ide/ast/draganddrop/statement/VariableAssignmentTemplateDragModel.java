@@ -60,7 +60,7 @@ public class VariableAssignmentTemplateDragModel extends StatementTemplateDragMo
 	}
 	private org.lgna.project.ast.UserVariable variable;
 	private VariableAssignmentTemplateDragModel( org.lgna.project.ast.UserVariable variable ) {
-		super( java.util.UUID.fromString( "8fc94780-2193-4cb9-8db4-ef39e9ece075" ) );
+		super( java.util.UUID.fromString( "8fc94780-2193-4cb9-8db4-ef39e9ece075" ), org.lgna.project.ast.ExpressionStatement.class );
 		this.variable = variable;
 	}
 	@Override

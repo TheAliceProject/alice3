@@ -54,7 +54,7 @@ public class WhileLoopTemplateDragModel extends StatementTemplateDragModel {
 		return SingletonHolder.instance;
 	}
 	private WhileLoopTemplateDragModel() {
-		super( java.util.UUID.fromString( "fef12a3b-6ebd-4cc3-81f0-8bc0d34cada3" ) );
+		super( java.util.UUID.fromString( "fef12a3b-6ebd-4cc3-81f0-8bc0d34cada3" ), org.lgna.project.ast.WhileLoop.class );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

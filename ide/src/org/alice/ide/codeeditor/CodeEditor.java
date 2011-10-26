@@ -235,6 +235,8 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 			this.internalAddComponent( this.scrollPane, java.awt.BorderLayout.CENTER );
+
+			this.addComponent( new org.alice.ide.controlflow.ControlFlowPanel(), Constraint.PAGE_END );
 		}
 
 		this.revalidateAndRepaint();

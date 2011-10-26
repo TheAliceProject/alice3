@@ -54,7 +54,7 @@ public class DeclareLocalDragModel extends StatementTemplateDragModel {
 		return SingletonHolder.instance;
 	}
 	private DeclareLocalDragModel() {
-		super( java.util.UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ) );
+		super( java.util.UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ), org.lgna.project.ast.LocalDeclarationStatement.class );
 	}
 	@Override
 	public org.lgna.croquet.Operation< ? > getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

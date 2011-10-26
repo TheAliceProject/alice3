@@ -41,23 +41,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.draganddrop.statement;
+package org.alice.ide.controlflow;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopTemplateDragModel extends StatementTemplateDragModel {
+public class ControlFlowComposite extends org.lgna.croquet.Composite {
 	private static class SingletonHolder {
-		private static CountLoopTemplateDragModel instance = new CountLoopTemplateDragModel();
+		private static ControlFlowComposite instance = new ControlFlowComposite();
 	}
-	public static CountLoopTemplateDragModel getInstance() {
+	public static ControlFlowComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private CountLoopTemplateDragModel() {
-		super( java.util.UUID.fromString( "61ad4ccc-a384-42fa-8a18-7964cd513f8e" ), org.lgna.project.ast.CountLoop.class );
+	private final java.util.List< ? extends org.lgna.croquet.DragModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+			org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance(),
+			null,
+			org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(),
+			org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance(),
+			org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance(),
+			null,
+			org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance(),
+			null,
+			org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance(),
+			org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance(),
+			null,
+			org.alice.ide.ast.draganddrop.statement.DoInThreadTemplateDragModel.getInstance(),
+			null,
+			org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(),
+			null,
+			org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance()
+	);
+	private ControlFlowComposite() {
+		super( java.util.UUID.fromString( "27ff6dfc-2519-4378-bb4f-d8c2c2fb19e9" ) );
 	}
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.getInstance( blockStatementIndexPair );
+	protected void localize() {
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return this.models.contains( model );
+	}
+	public java.util.List< ? extends org.lgna.croquet.DragModel > getModels() {
+		return this.models;
 	}
 }

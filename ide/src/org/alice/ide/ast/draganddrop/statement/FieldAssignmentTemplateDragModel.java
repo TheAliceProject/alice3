@@ -60,7 +60,7 @@ public class FieldAssignmentTemplateDragModel extends StatementTemplateDragModel
 	}
 	private org.lgna.project.ast.AbstractField field;
 	private FieldAssignmentTemplateDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "c2116770-a3e7-44cc-ad48-e52d22404d35" ) );
+		super( java.util.UUID.fromString( "c2116770-a3e7-44cc-ad48-e52d22404d35" ), org.lgna.project.ast.ExpressionStatement.class );
 		this.field = field;
 	}
 	@Override

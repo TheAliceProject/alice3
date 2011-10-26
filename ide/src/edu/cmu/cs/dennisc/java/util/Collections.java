@@ -65,8 +65,8 @@ public class Collections {
 		rv.addAll( other );
 		return rv;
 	}
-	public static <E> java.util.ArrayList<E> newLinkedList( E... array ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
+	public static <E> java.util.LinkedList<E> newLinkedList( E... array ) {
+		java.util.LinkedList<E> rv = new java.util.LinkedList< E >();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}

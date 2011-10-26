@@ -47,8 +47,10 @@ package org.alice.ide.ast.draganddrop.statement;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplateDragModel extends AbstractStatementDragModel {
-	public StatementTemplateDragModel( java.util.UUID id ) {
+	private final Class<? extends org.lgna.project.ast.Statement > statementCls;
+	public StatementTemplateDragModel( java.util.UUID id, Class<? extends org.lgna.project.ast.Statement > statementCls ) {
 		super( id );
+		this.statementCls = statementCls;
 	}
 	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair dropSite );
 	@Override
@@ -56,5 +58,8 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		assert dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
 		return this.getDropModel( step, blockStatementIndexPair );
+	}
+	public Class< ? extends org.lgna.project.ast.Statement > getStatementCls() {
+		return this.statementCls;
 	}
 }

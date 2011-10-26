@@ -54,7 +54,7 @@ public class ConditionalStatementTemplateDragModel extends StatementTemplateDrag
 		return SingletonHolder.instance;
 	}
 	private ConditionalStatementTemplateDragModel() {
-		super( java.util.UUID.fromString( "b777b20e-9d46-4e42-a980-a155f0604773" ) );
+		super( java.util.UUID.fromString( "b777b20e-9d46-4e42-a980-a155f0604773" ), org.lgna.project.ast.ConditionalStatement.class );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

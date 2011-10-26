@@ -54,7 +54,7 @@ public class DoTogetherTemplateDragModel extends StatementTemplateDragModel {
 		return SingletonHolder.instance;
 	}
 	private DoTogetherTemplateDragModel() {
-		super( java.util.UUID.fromString( "7d494762-cb12-4fd1-92d4-869a1b3e244a" ) );
+		super( java.util.UUID.fromString( "7d494762-cb12-4fd1-92d4-869a1b3e244a" ), org.lgna.project.ast.DoTogether.class );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

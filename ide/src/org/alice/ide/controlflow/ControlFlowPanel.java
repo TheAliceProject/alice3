@@ -41,23 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.draganddrop.statement;
+package org.alice.ide.controlflow;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopTemplateDragModel extends StatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static CountLoopTemplateDragModel instance = new CountLoopTemplateDragModel();
-	}
-	public static CountLoopTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CountLoopTemplateDragModel() {
-		super( java.util.UUID.fromString( "61ad4ccc-a384-42fa-8a18-7964cd513f8e" ), org.lgna.project.ast.CountLoop.class );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.getInstance( blockStatementIndexPair );
+public class ControlFlowPanel extends org.lgna.croquet.components.WrappedFlowPanel {
+	public ControlFlowPanel() {
+		for( org.lgna.croquet.DragModel dragModel : ControlFlowComposite.getInstance().getModels() ) {
+			if( dragModel != null ) {
+				this.addComponent( new org.lgna.croquet.components.Label( dragModel.getClass().getSimpleName() ) );
+			} else {
+				this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+			}
+		}
 	}
 }
