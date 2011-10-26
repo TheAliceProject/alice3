@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui.locale;
 /**
  * @author Dennis Cosgrove
  */
-public class LocaleSelectionState extends org.lgna.croquet.DefaultListSelectionState< java.util.Locale > {
+public class LocaleSelectionState extends org.lgna.croquet.preferences.PreferenceListSelectionState< java.util.Locale > {
 	private static class SingletonHolder {
 		private static LocaleSelectionState instance = new LocaleSelectionState();
 	}
@@ -80,7 +80,7 @@ public class LocaleSelectionState extends org.lgna.croquet.DefaultListSelectionS
 				new java.util.Locale( "zh" ),
 				new java.util.Locale( "ko" )
 		);
-		org.alice.ide.PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
+		org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
 		this.addValueObserver( new ValueObserver< java.util.Locale >() {
 			public void changing( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 			}

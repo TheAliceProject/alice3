@@ -16,7 +16,6 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		StorytellingResources.getInstance().loadSimsBundles();
 	}
 	
-	
     public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
         Manager.initializeIfNecessary();
     }

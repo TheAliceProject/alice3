@@ -45,6 +45,7 @@ package org.alice.ide;
 import org.lgna.croquet.components.JComponent;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.croquet.preferences.PreferenceManager;
 
 /**
  * @author Dennis Cosgrove

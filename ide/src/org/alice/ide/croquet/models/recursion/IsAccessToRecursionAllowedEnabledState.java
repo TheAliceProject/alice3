@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.recursion;
 /**
  * @author Dennis Cosgrove
  */
-public class IsAccessToRecursionAllowedEnabledState extends org.lgna.croquet.BooleanState {
+public class IsAccessToRecursionAllowedEnabledState extends org.lgna.croquet.preferences.PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsAccessToRecursionAllowedEnabledState instance = new IsAccessToRecursionAllowedEnabledState();
 	}
@@ -54,6 +54,5 @@ public class IsAccessToRecursionAllowedEnabledState extends org.lgna.croquet.Boo
 	}
 	private IsAccessToRecursionAllowedEnabledState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "feb28c71-be9f-46a4-84db-57e9205bc220" ), false );
-		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}
 }

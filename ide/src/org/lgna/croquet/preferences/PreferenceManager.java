@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide;
+package org.lgna.croquet.preferences;
 
 /**
  * @author Dennis Cosgrove
@@ -49,16 +49,71 @@ public class PreferenceManager {
 	private PreferenceManager() {
 		throw new AssertionError();
 	}
-
-	private static void clearAllPreferencesIfRequested( java.util.prefs.Preferences userPreferences ) {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
-			try {
-				userPreferences.clear();
-			} catch( java.util.prefs.BackingStoreException bse ) {
-				throw new RuntimeException( bse );
+	public static java.util.prefs.Preferences getUserPreferences() {
+		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+		if( application != null ) {
+			java.util.prefs.Preferences rv = java.util.prefs.Preferences.userNodeForPackage( application.getClass() );
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+				try {
+					rv.clear();
+				} catch( java.util.prefs.BackingStoreException bse ) {
+					throw new RuntimeException( bse );
+				}
 			}
+			return rv;
+		} else {
+			return null;
 		}
 	}
+
+	//	private static java.util.List< org.lgna.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//	private static java.util.List< org.lgna.croquet.StringState > stringStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > listSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+	//	public static void registerAndInitializePreference( org.lgna.croquet.BooleanState booleanState ) {
+	//		IDE ide = IDE.getActiveInstance();
+	//		if( ide != null ) {
+	//			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
+	//			clearAllPreferencesIfRequested( userPreferences );
+	//			java.util.UUID id = booleanState.getId();
+	//			boolean value = userPreferences.getBoolean( id.toString(), booleanState.getValue() );
+	//			booleanState.setValue( value );
+	//			booleanStatePreferences.add( booleanState );
+	//		} else {
+	//			System.err.println( "registerAndInitializePreference: " + booleanState );
+	//		}
+	//	}
+	//	public static void registerAndInitializePreference( org.lgna.croquet.StringState stringState ) {
+	//		IDE ide = IDE.getActiveInstance();
+	//		if( ide != null ) {
+	//			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
+	//			clearAllPreferencesIfRequested( userPreferences );
+	//			java.util.UUID id = stringState.getId();
+	//			String value = userPreferences.get( id.toString(), stringState.getValue() );
+	//			stringState.setValue( value );
+	//			stringStatePreferences.add( stringState );
+	//		} else {
+	//			System.err.println( "registerAndInitializePreference: " + stringState );
+	//		}
+	//	}
+	//	public static void registerAndInitializePreference( org.lgna.croquet.ListSelectionState< ? > listSelectionState ) {
+	//		IDE ide = IDE.getActiveInstance();
+	//		if( ide != null ) {
+	//			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
+	//			clearAllPreferencesIfRequested( userPreferences );
+	//			try {
+	//				decode( listSelectionState, userPreferences );
+	//			} catch( Throwable t ) {
+	//				t.printStackTrace();
+	//			}
+	//			listSelectionStatePreferences.add( listSelectionState );
+	//		} else {
+	//			System.err.println( "registerAndInitializePreference: " + listSelectionState );
+	//		}
+	//	}
+
+	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > selectionOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 	private static String getKey( org.lgna.croquet.Model model ) {
 		return model.getId().toString();
@@ -115,7 +170,7 @@ public class PreferenceManager {
 			//pass
 		} else {
 			E value = decodeItem( encoding, codec );
-			rv.setValueTransactionlessly( value );
+			rv.setSelectedItem( value );
 		}
 		return rv;
 	}
@@ -147,42 +202,11 @@ public class PreferenceManager {
 		String key = getKey( listSelectionState );
 		userPreferences.putByteArray( key, encoding );
 	}
-	private static java.util.List< org.lgna.croquet.BooleanState > booleanStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private static java.util.List< org.lgna.croquet.StringState > stringStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > selectionOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
-	public static void registerAndInitializeBooleanState( org.lgna.croquet.BooleanState booleanState ) {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
-			clearAllPreferencesIfRequested( userPreferences );
-			java.util.UUID id = booleanState.getId();
-			boolean value = userPreferences.getBoolean( id.toString(), booleanState.getValue() );
-			booleanState.setValueTransactionlessly( value );
-			booleanStatePreferences.add( booleanState );
-		} else {
-			System.err.println( "registerAndInitializePreference: " + booleanState );
-		}
-	}
-	public static void registerAndInitializeStringState( org.lgna.croquet.StringState stringState ) {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
-			clearAllPreferencesIfRequested( userPreferences );
-			java.util.UUID id = stringState.getId();
-			String value = userPreferences.get( id.toString(), stringState.getValue() );
-			stringState.setValueTransactionlessly( value );
-			stringStatePreferences.add( stringState );
-		} else {
-			System.err.println( "registerAndInitializePreference: " + stringState );
-		}
-	}
+	//todo:
 	public static void registerAndInitializeSelectionOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState< ? > listSelectionState ) {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
-			clearAllPreferencesIfRequested( userPreferences );
+		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+		if( userPreferences != null ) {
 			try {
 				decodeSelection( listSelectionState, userPreferences );
 			} catch( Throwable t ) {
@@ -193,11 +217,10 @@ public class PreferenceManager {
 			System.err.println( "registerAndInitializePreference: " + listSelectionState );
 		}
 	}
+	//todo:
 	public static void registerAndInitializeDataOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState< ? > listSelectionState ) {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
-			clearAllPreferencesIfRequested( userPreferences );
+		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+		if( userPreferences != null ) {
 			try {
 				decodeData( listSelectionState, userPreferences );
 			} catch( Throwable t ) {
@@ -208,16 +231,12 @@ public class PreferenceManager {
 			System.err.println( "registerAndInitializePreference: " + listSelectionState );
 		}
 	}
-	/*package-private*/ static void preservePreferences() throws java.util.prefs.BackingStoreException {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( ide.getClass() );
-			for( org.lgna.croquet.BooleanState booleanState : booleanStatePreferences ) {
-				userPreferences.putBoolean( booleanState.getId().toString(), booleanState.getValue() );
-			}
-			for( org.lgna.croquet.StringState stringState : stringStatePreferences ) {
-				userPreferences.put( stringState.getId().toString(), stringState.getValue() );
-			}
+
+	public static void preservePreferences() throws java.util.prefs.BackingStoreException {
+		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+		if( userPreferences != null ) {
+			org.lgna.croquet.preferences.PreferenceBooleanState.preserveAll( userPreferences );
+			org.lgna.croquet.preferences.PreferenceStringState.preserveAll( userPreferences );
 			for( org.lgna.croquet.ListSelectionState< ? > listSelectionState : selectionOfListSelectionStatePreferences ) {
 				try {
 					encodeSelection( listSelectionState, userPreferences );

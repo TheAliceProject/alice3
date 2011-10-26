@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ui.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsIncludingProgramType extends org.lgna.croquet.BooleanState {
+public class IsIncludingProgramType extends org.lgna.croquet.preferences.PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsIncludingProgramType instance = new IsIncludingProgramType();
 	}
@@ -55,6 +55,5 @@ public class IsIncludingProgramType extends org.lgna.croquet.BooleanState {
 	}
 	private IsIncludingProgramType() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "052fef4d-cac4-431f-b8d9-8c50ff1823d1" ), false );
-		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}
 }

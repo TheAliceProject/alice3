@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsExposingReassignableStatusState extends org.lgna.croquet.BooleanState {
+public class IsExposingReassignableStatusState extends org.lgna.croquet.preferences.PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsExposingReassignableStatusState instance = new IsExposingReassignableStatusState();
 	}
@@ -54,6 +54,5 @@ public class IsExposingReassignableStatusState extends org.lgna.croquet.BooleanS
 	}
 	private IsExposingReassignableStatusState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "81c41ccf-657e-4e95-ae96-67c90b7075b5" ), false );
-		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}
 }

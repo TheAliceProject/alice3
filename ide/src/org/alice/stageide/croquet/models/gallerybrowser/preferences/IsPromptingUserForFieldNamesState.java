@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsPromptingUserForFieldNamesState extends org.lgna.croquet.BooleanState {
+public class IsPromptingUserForFieldNamesState extends org.lgna.croquet.preferences.PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsPromptingUserForFieldNamesState instance = new IsPromptingUserForFieldNamesState();
 	}
@@ -54,6 +54,5 @@ public class IsPromptingUserForFieldNamesState extends org.lgna.croquet.BooleanS
 	}
 	private IsPromptingUserForFieldNamesState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "ed88aee1-3edf-42b7-bb2d-9424769a075b" ), true );
-		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}
 }

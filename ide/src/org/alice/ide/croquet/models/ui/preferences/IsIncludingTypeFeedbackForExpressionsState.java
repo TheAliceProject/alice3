@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsIncludingTypeFeedbackForExpressionsState extends org.lgna.croquet.BooleanState {
+public class IsIncludingTypeFeedbackForExpressionsState extends org.lgna.croquet.preferences.PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsIncludingTypeFeedbackForExpressionsState instance = new IsIncludingTypeFeedbackForExpressionsState();
 	}
@@ -54,6 +54,5 @@ public class IsIncludingTypeFeedbackForExpressionsState extends org.lgna.croquet
 	}
 	private IsIncludingTypeFeedbackForExpressionsState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), true );
-		org.alice.ide.PreferenceManager.registerAndInitializeBooleanState( this );
 	}
 }
