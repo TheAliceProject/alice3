@@ -41,24 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.stageide.sceneeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ManagedFieldState extends AbstractManagedFieldState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ManagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		ManagedFieldState rv = map.get( type );
+public class MarkerManagedFieldState extends org.alice.ide.typeeditor.AbstractManagedFieldState {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, MarkerManagedFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized MarkerManagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		MarkerManagedFieldState rv = map.get( type );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ManagedFieldState( type );
+			rv = new MarkerManagedFieldState( type );
 			map.put( type, rv );
 		}
 		return rv;
 	}
-	private ManagedFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe" ), type );
+	private MarkerManagedFieldState( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "5546e1c2-4786-4fbd-a245-1154894d2dab" ), type );
+	}
+	@Override
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
+		if( super.isAcceptableItem( value ) ) {
+			return value.getValueType().isAssignableTo( org.lgna.story.Marker.class );
+		} else {
+			return false;
+		}
 	}
 }

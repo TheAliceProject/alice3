@@ -46,19 +46,12 @@ package org.alice.ide.typeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ManagedFieldState extends AbstractManagedFieldState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ManagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		ManagedFieldState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ManagedFieldState( type );
-			map.put( type, rv );
-		}
-		return rv;
+public abstract class AbstractManagedFieldState extends FieldState {
+	public AbstractManagedFieldState( java.util.UUID id, org.lgna.project.ast.NamedUserType type ) {
+		super( id, type );
 	}
-	private ManagedFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe" ), type );
+	@Override
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
+		return value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
 	}
 }
