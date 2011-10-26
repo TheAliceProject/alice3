@@ -47,7 +47,48 @@ package org.alice.ide.controlflow;
  * @author Dennis Cosgrove
  */
 public class ControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
+	private org.alice.ide.ubiquitouspane.templates.UbiquitousStatementImplementor implementor;
+	private org.lgna.croquet.components.Label label;
 	public ControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
 		super( dragModel, dragModel.getStatementCls() );
+		this.implementor = new org.alice.ide.ubiquitouspane.templates.UbiquitousStatementImplementor( dragModel.getPossiblyIncompleteStatement() );
+	}
+	
+	protected String getLabelText() {
+		return this.implementor.getLabelText();
+	}
+	protected void updateLabel() {
+		this.label.setText( this.getLabelText() );
+	}
+	
+	@Override
+	public org.lgna.croquet.components.JComponent< ? > getSubject() {
+		return this.implementor.getIncompleteStatementPane();
+	}
+	@Override
+	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
+		return this.implementor.getToolTip();
+	}
+	
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		if( this.label != null ) {
+			//pass
+		} else {
+			this.label = new org.lgna.croquet.components.Label( this.getLabelText() );
+			if( org.lgna.project.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
+				this.label.setForegroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getCommentForegroundColor() );
+			}
+			//this.label.setFontToScaledFont( 1.2f );
+			this.addComponent( this.label );
+			this.setToolTipText( "" );
+		}
+	}
+	
+	@Override
+	protected void handleUndisplayable() {
+//		this.removeAllComponents();
+		super.handleUndisplayable();
 	}
 }

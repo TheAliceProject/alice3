@@ -60,7 +60,20 @@ public class FieldArrayAtIndexAssignmentTemplateDragModel extends StatementTempl
 	}
 	private org.lgna.project.ast.AbstractField field;
 	private FieldArrayAtIndexAssignmentTemplateDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "099819b6-500a-4f77-b53f-9067f8bb9e75" ), org.lgna.project.ast.ExpressionStatement.class );
+		super( java.util.UUID.fromString( "099819b6-500a-4f77-b53f-9067f8bb9e75" ), org.lgna.project.ast.ExpressionStatement.class,
+			new org.lgna.project.ast.ExpressionStatement(
+					new org.lgna.project.ast.AssignmentExpression( 
+						field.getValueType().getComponentType(), 
+						new org.lgna.project.ast.ArrayAccess( 
+								field.getValueType(), 
+								org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field ), 
+								new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
+						), 
+						org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 
+						new org.alice.ide.ast.EmptyExpression( field.getValueType().getComponentType() )
+				)
+			)
+		);
 		this.field = field;
 	}
 	@Override

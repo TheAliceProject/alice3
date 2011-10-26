@@ -54,7 +54,7 @@ public class CountLoopTemplateDragModel extends StatementTemplateDragModel {
 		return SingletonHolder.instance;
 	}
 	private CountLoopTemplateDragModel() {
-		super( java.util.UUID.fromString( "61ad4ccc-a384-42fa-8a18-7964cd513f8e" ), org.lgna.project.ast.CountLoop.class );
+		super( java.util.UUID.fromString( "61ad4ccc-a384-42fa-8a18-7964cd513f8e" ), org.lgna.project.ast.CountLoop.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteCountLoop() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

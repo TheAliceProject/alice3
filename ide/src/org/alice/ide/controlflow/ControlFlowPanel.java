@@ -46,14 +46,22 @@ package org.alice.ide.controlflow;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowPanel extends org.lgna.croquet.components.WrappedFlowPanel {
+public class ControlFlowPanel extends org.lgna.croquet.components.ViewPanel {
 	public ControlFlowPanel() {
-		for( org.lgna.croquet.DragModel dragModel : ControlFlowComposite.getInstance().getModels() ) {
+		super( ControlFlowComposite.getInstance() );
+		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : ControlFlowComposite.getInstance().getModels() ) {
 			if( dragModel != null ) {
-				this.addComponent( new org.lgna.croquet.components.Label( dragModel.getClass().getSimpleName() ) );
+				this.internalAddComponent( new ControlFlowStatementTemplate( dragModel ) );
 			} else {
-				this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+				this.internalAddComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 			}
 		}
+		this.setBackgroundColor( null );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,0,0,0 ) );
 	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING, 0, 0 );
+	}
+	
 }

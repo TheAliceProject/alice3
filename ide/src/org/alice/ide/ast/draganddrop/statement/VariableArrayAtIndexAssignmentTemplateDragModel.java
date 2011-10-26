@@ -60,7 +60,7 @@ public class VariableArrayAtIndexAssignmentTemplateDragModel extends StatementTe
 	}
 	private org.lgna.project.ast.UserVariable variable;
 	private VariableArrayAtIndexAssignmentTemplateDragModel( org.lgna.project.ast.UserVariable variable ) {
-		super( java.util.UUID.fromString( "634df8b1-e171-4121-9405-533c4c4d78ed" ), org.lgna.project.ast.ExpressionStatement.class );
+		super( java.util.UUID.fromString( "634df8b1-e171-4121-9405-533c4c4d78ed" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteVariableArrayAssignmentStatement( variable ) );
 		this.variable = variable;
 	}
 	@Override

@@ -54,7 +54,7 @@ public class DoInOrderTemplateDragModel extends StatementTemplateDragModel {
 		return SingletonHolder.instance;
 	}
 	private DoInOrderTemplateDragModel() {
-		super( java.util.UUID.fromString( "cdbe6179-5721-49a9-a77e-79187adaadc2" ), org.lgna.project.ast.DoInOrder.class );
+		super( java.util.UUID.fromString( "cdbe6179-5721-49a9-a77e-79187adaadc2" ), org.lgna.project.ast.DoInOrder.class, org.lgna.project.ast.AstUtilities.createDoInOrder() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

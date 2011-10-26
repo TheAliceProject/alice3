@@ -54,7 +54,7 @@ public class EachInArrayTogetherTemplateDragModel extends StatementTemplateDragM
 		return SingletonHolder.instance;
 	}
 	private EachInArrayTogetherTemplateDragModel() {
-		super( java.util.UUID.fromString( "34fe45c5-d5cf-4a22-a1b0-c76a9a08adba" ), org.lgna.project.ast.EachInArrayTogether.class );
+		super( java.util.UUID.fromString( "34fe45c5-d5cf-4a22-a1b0-c76a9a08adba" ), org.lgna.project.ast.EachInArrayTogether.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteEachInArrayTogether() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

@@ -47,6 +47,6 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class DoInOrderTemplate extends CascadingUbiquitousStatementTemplate {
 	public DoInOrderTemplate() {
-		super( org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance(), org.lgna.project.ast.AstUtilities.createDoInOrder() );
+		super( org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance() );
 	}
 }

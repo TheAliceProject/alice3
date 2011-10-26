@@ -47,6 +47,6 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class DoTogetherTemplate extends CascadingUbiquitousStatementTemplate {
 	public DoTogetherTemplate() {
-		super( org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance(), org.lgna.project.ast.AstUtilities.createDoTogether() );
+		super( org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance() );
 	}
 }

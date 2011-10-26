@@ -54,7 +54,7 @@ public class ForEachInArrayLoopTemplateDragModel extends StatementTemplateDragMo
 		return SingletonHolder.instance;
 	}
 	private ForEachInArrayLoopTemplateDragModel() {
-		super( java.util.UUID.fromString( "1126a2d4-0f95-4e1f-bda1-79727e6f88fd" ), org.lgna.project.ast.ForEachInArrayLoop.class );
+		super( java.util.UUID.fromString( "1126a2d4-0f95-4e1f-bda1-79727e6f88fd" ), org.lgna.project.ast.ForEachInArrayLoop.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteForEachInArrayLoop() );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

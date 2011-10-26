@@ -53,7 +53,7 @@ public class ControlFlowComposite extends org.lgna.croquet.Composite {
 	public static ControlFlowComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final java.util.List< ? extends org.lgna.croquet.DragModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+	private final java.util.List< ? extends org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
 			org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance(),
 			null,
 			org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(),
@@ -81,7 +81,7 @@ public class ControlFlowComposite extends org.lgna.croquet.Composite {
 	public boolean contains( org.lgna.croquet.Model model ) {
 		return this.models.contains( model );
 	}
-	public java.util.List< ? extends org.lgna.croquet.DragModel > getModels() {
+	public java.util.List< ? extends org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > getModels() {
 		return this.models;
 	}
 }

@@ -111,17 +111,24 @@ public class IncompleteAstUtilities {
 	public static org.lgna.project.ast.MethodInvocation createIncompleteMethodInvocation( org.lgna.project.ast.AbstractMethod method ) {
 		return IncompleteAstUtilities.createIncompleteMethodInvocation( new SelectedInstanceFactoryExpression( method.getDeclaringType() ), method );
 	}
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteMethodInvocationStatement( org.lgna.project.ast.AbstractMethod method ) {
+		return new org.lgna.project.ast.ExpressionStatement( createIncompleteMethodInvocation( method ) );
+	}
 	public static org.lgna.project.ast.MethodInvocation createIncompleteStaticMethodInvocation( org.lgna.project.ast.AbstractMethod method ) {
 		return IncompleteAstUtilities.createIncompleteMethodInvocation( new org.lgna.project.ast.TypeExpression( method.getDeclaringType() ), method );
 	}
-	public static org.lgna.project.ast.FieldAccess createIncompleteFieldAccess( org.lgna.project.ast.AbstractField field ) {
-		return org.lgna.project.ast.AstUtilities.createFieldAccess( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteStaticMethodInvocationStatement( org.lgna.project.ast.AbstractMethod method ) {
+		return new org.lgna.project.ast.ExpressionStatement( createIncompleteStaticMethodInvocation( method ) );
 	}
 	
 	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression... argumentExpressions ) {
 		return org.lgna.project.ast.AstUtilities.completeMethodInvocation( rv, org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), argumentExpressions );
 	}
 	
+	public static org.lgna.project.ast.FieldAccess createIncompleteFieldAccess( org.lgna.project.ast.AbstractField field ) {
+		return org.lgna.project.ast.AstUtilities.createFieldAccess( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
+	}
+
 	private static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.FieldAccess fieldAccess = org.lgna.project.ast.AstUtilities.createFieldAccess( expression, field );
 		org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
@@ -130,6 +137,13 @@ public class IncompleteAstUtilities {
 	public static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.AbstractField field ) {
 		return IncompleteAstUtilities.createIncompleteAssignmentExpression( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
 	}
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteAssignmentExpressionStatement( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
+		return new org.lgna.project.ast.ExpressionStatement( createIncompleteAssignmentExpression( expression, field ) );
+	}
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteAssignmentExpressionStatement( org.lgna.project.ast.AbstractField field ) {
+		return new org.lgna.project.ast.ExpressionStatement( createIncompleteAssignmentExpression( field ) );
+	}
+
 	public static org.lgna.project.ast.InstanceCreation createIncompleteInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor ) {
 		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
 		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {

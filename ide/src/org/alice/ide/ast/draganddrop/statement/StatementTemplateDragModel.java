@@ -48,9 +48,14 @@ package org.alice.ide.ast.draganddrop.statement;
  */
 public abstract class StatementTemplateDragModel extends AbstractStatementDragModel {
 	private final Class<? extends org.lgna.project.ast.Statement > statementCls;
-	public StatementTemplateDragModel( java.util.UUID id, Class<? extends org.lgna.project.ast.Statement > statementCls ) {
+	private final org.lgna.project.ast.Statement possiblyIncompleteStatement;
+	public StatementTemplateDragModel( java.util.UUID id, Class<? extends org.lgna.project.ast.Statement > statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement ) {
 		super( id );
 		this.statementCls = statementCls;
+		this.possiblyIncompleteStatement = possiblyIncompleteStatement;
+	}
+	public org.lgna.project.ast.Statement getPossiblyIncompleteStatement() {
+		return this.possiblyIncompleteStatement;
 	}
 	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair dropSite );
 	@Override

@@ -47,6 +47,6 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class ForEachInArrayLoopTemplate extends CascadingUbiquitousStatementTemplate {
 	public ForEachInArrayLoopTemplate() {
-		super( org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance(), org.alice.ide.ast.IncompleteAstUtilities.createIncompleteForEachInArrayLoop() );
+		super( org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance() );
 	}
 }

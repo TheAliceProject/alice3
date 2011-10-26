@@ -49,7 +49,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	private UbiquitousStatementImplementor implementor;
 	public DeclareLocalTemplate() {
 		super( org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(), org.lgna.project.ast.LocalDeclarationStatement.class );
-		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.IncompleteAstUtilities.createIncompleteVariableDeclarationStatement() );
+		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance().getPossiblyIncompleteStatement() );
 		this.addComponent( new org.lgna.croquet.components.Label( this.getLabelText() ) );
 		this.setToolTipText( "" );
 	}
