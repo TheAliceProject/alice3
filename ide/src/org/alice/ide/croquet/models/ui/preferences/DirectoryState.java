@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ui.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryState extends org.lgna.croquet.StringState {
+public abstract class DirectoryState extends org.lgna.croquet.preferences.PreferenceStringState {
 	public DirectoryState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
 		super( group, id, initialValue );
 	}

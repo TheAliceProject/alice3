@@ -16,7 +16,6 @@ public class UserProjectsDirectoryState extends DirectoryState {
 				java.util.UUID.fromString( "b6cf8508-35ce-46b5-a208-b53784ebeca6" ), 
 				UserApplicationDirectoryState.KEY + java.io.File.separator + "MyProjects"
 		);
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 	@Override
 	protected String getPath() {
