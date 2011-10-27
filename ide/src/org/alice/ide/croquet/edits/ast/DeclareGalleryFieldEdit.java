@@ -70,11 +70,11 @@ public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( this.getDeclaringType(), this.getField(), this.doStatements );
+		org.alice.ide.IDE.getActiveInstance().getMainComponent().getSceneEditor().addField( this.getDeclaringType(), this.getField(), this.doStatements );
 	}
 
 	@Override
 	protected final void undoInternal() {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( this.getDeclaringType(), this.getField(), this.undoStatements );
+		org.alice.ide.IDE.getActiveInstance().getMainComponent().getSceneEditor().removeField( this.getDeclaringType(), this.getField(), this.undoStatements );
 	}
 }

@@ -63,7 +63,7 @@ public class ExportToPovRayOperation extends org.lgna.croquet.ActionOperation {
 	}
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor();
 		org.lgna.project.ast.UserField sceneField = sceneEditor.getActiveSceneField();
 		org.lgna.project.ast.AbstractField cameraField = sceneField.getValueType().getDeclaredField( "camera" );
 		org.lgna.story.Camera camera = (org.lgna.story.Camera)sceneEditor.getInstanceInJavaVMForField( cameraField );

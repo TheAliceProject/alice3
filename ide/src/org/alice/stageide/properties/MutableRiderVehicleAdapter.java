@@ -145,7 +145,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 	{
 		if (vehicle != null)
 		{
-			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
+			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getMainComponent().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
 				org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
@@ -166,7 +166,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 	{
 		if (vehicle != null)
 		{
-			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
+			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getMainComponent().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
 				org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();

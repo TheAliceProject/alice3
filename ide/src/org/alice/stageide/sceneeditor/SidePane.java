@@ -90,7 +90,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	{
 		if (this.sceneGraphViewer != null)
 		{
-			Component root = IDE.getActiveInstance().getSceneEditor().getActiveSceneImplementation().getSgComposite();
+			Component root = IDE.getActiveInstance().getMainComponent().getSceneEditor().getActiveSceneImplementation().getSgComposite();
 			SidePane.this.sceneGraphViewer.setRoot(root);
 		}
 	}
@@ -129,7 +129,7 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	{
 		if (this.lookingglassViewer != null)
 		{
-			SceneAdapter root = (SceneAdapter)AdapterFactory.getAdapterFor( IDE.getActiveInstance().getSceneEditor().getActiveSceneImplementation().getSgComposite() );
+			SceneAdapter root = (SceneAdapter)AdapterFactory.getAdapterFor( IDE.getActiveInstance().getMainComponent().getSceneEditor().getActiveSceneImplementation().getSgComposite() );
 			SidePane.this.lookingglassViewer.setRoot(root);
 		}
 	}

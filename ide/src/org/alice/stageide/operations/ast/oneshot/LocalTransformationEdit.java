@@ -76,7 +76,7 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lg
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
+		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getMainComponent().getSceneEditor();
 		Object instance = sceneEditor.getInstanceInJavaVMForField( field );
 		if( instance instanceof org.lgna.story.MovableTurnable ) {
 			org.lgna.story.MovableTurnable movableTurnable = (org.lgna.story.MovableTurnable)instance;

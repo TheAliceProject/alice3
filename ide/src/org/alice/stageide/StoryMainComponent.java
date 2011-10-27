@@ -40,50 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.print;
+
+package org.alice.stageide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PrintSceneEditorOperation extends PrintOperation {
-	private static class SingletonHolder {
-		private static PrintSceneEditorOperation instance = new PrintSceneEditorOperation();
-	}
-	public static PrintSceneEditorOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private PrintSceneEditorOperation() {
-		super( java.util.UUID.fromString( "b38997ea-e970-416e-86db-58623d1c3352" ) );
-	}
+public class StoryMainComponent extends org.alice.ide.MainComponent {
 	@Override
-	protected java.awt.print.Printable getPrintable() {
-		return new java.awt.print.Printable() {
-			public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-				if( pageIndex > 0 ) {
-					return NO_SUCH_PAGE;
-				}
-				if( pageIndex > 0 ) {
-					return NO_SUCH_PAGE;
-				} else {
-					org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-					org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getMainComponent().getSceneEditor();
-					if( sceneEditor != null ) {
-						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-						int width = sceneEditor.getWidth();
-						int height = sceneEditor.getHeight();
-						double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
-						g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-						if( scale > 1.0 ) {
-							g2.scale( 1.0/scale, 1.0/scale );
-						}
-						sceneEditor.getAwtComponent().paintAll( g2 );
-						return PAGE_EXISTS;
-					} else {
-						return NO_SUCH_PAGE;
-					}
-				}
-			}
-		};
+	protected org.lgna.croquet.components.JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< org.lgna.project.ast.JavaType > root ) {
+		assert root instanceof org.lgna.story.resourceutilities.ModelResourceTreeNode;
+		//return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( (ModelResourceTreeNode)root );
+		return new org.alice.stageide.gallerybrowser.GalleryBrowser();
 	}
 	
+	@Override
+	public org.lgna.story.resourceutilities.ModelResourceTreeNode getClassGalleryRoot() {
+		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryTree();
+	}
+	@Override
+	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
+		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	}
 }

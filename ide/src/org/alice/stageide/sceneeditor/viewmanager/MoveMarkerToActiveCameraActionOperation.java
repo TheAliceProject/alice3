@@ -99,7 +99,7 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			CameraMarkerImp marker = IDE.getActiveInstance().getSceneEditor().getImplementation(this.markerField);
+			CameraMarkerImp marker = IDE.getActiveInstance().getMainComponent().getSceneEditor().getImplementation(this.markerField);
 			if (marker != null)
 			{
 //				this.imageIcon.setLeftImage(marker.getIcon());				

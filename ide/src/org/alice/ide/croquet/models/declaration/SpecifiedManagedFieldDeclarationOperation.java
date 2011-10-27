@@ -79,11 +79,11 @@ public class SpecifiedManagedFieldDeclarationOperation extends InitializerManage
 	@Override
 	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		AffineMatrix4x4 initialTransform = this.sceneDropSite != null ? this.sceneDropSite.getTransform() : null;
-		org.lgna.project.ast.Statement[] doStatements = IDE.getActiveInstance().getSceneEditor().getDoStatementsForAddField(field, initialTransform);
+		org.lgna.project.ast.Statement[] doStatements = IDE.getActiveInstance().getMainComponent().getSceneEditor().getDoStatementsForAddField(field, initialTransform);
 		for (org.lgna.project.ast.Statement s : doStatements) {
 			rv.addDoStatement(s);
 		}	
-		org.lgna.project.ast.Statement[] undoStatements = IDE.getActiveInstance().getSceneEditor().getUndoStatementsForAddField(field);
+		org.lgna.project.ast.Statement[] undoStatements = IDE.getActiveInstance().getMainComponent().getSceneEditor().getUndoStatementsForAddField(field);
 		for (org.lgna.project.ast.Statement s : undoStatements) {
 			rv.addUndoStatement(s);
 		}

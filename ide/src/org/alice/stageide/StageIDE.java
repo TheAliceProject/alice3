@@ -42,20 +42,11 @@
  */
 package org.alice.stageide;
 
-import org.alice.stageide.ast.SceneAdapter;
-import org.lgna.croquet.components.JComponent;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.virtualmachine.VirtualMachine;
-import org.lgna.story.Scene;
-import org.lgna.story.resourceutilities.ModelResourceTreeNode;
-import org.lgna.story.resourceutilities.StorytellingResources;
-
-import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
-
 public class StageIDE extends org.alice.ide.IDE {
 	public static StageIDE getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(  org.alice.ide.IDE.getActiveInstance(), StageIDE.class );
 	}
+	private StoryMainComponent mainComponent = new StoryMainComponent();
 	private org.alice.ide.cascade.CascadeManager cascadeManager = new org.alice.stageide.cascade.CascadeManager();
 	public StageIDE() {
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
@@ -74,12 +65,20 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 	@Override
+	public StoryMainComponent getMainComponent() {
+		return this.mainComponent;
+	}
+	@Override
+	protected org.lgna.croquet.components.Component< ? > createContentPane() {
+		return this.mainComponent;
+	}
+	@Override
 	public org.alice.ide.ApiConfigurationManager getApiConfigurationManager() {
 		return StoryApiConfigurationManager.SINGLETON;
 	}
 	@Override
-	protected void registerAdapters(VirtualMachine vm) {
-		vm.registerAnonymousAdapter( Scene.class, SceneAdapter.class );
+	protected void registerAdapters(org.lgna.project.virtualmachine.VirtualMachine vm) {
+		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 	}
 	private org.lgna.project.ast.JavaType MOUSE_BUTTON_LISTENER_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.MouseButtonListener.class );
 	private org.lgna.project.ast.JavaType KEY_LISTENER_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.KeyListener.class );
@@ -134,7 +133,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	private static final org.lgna.project.ast.JavaType COLOR_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class );
-	private static final JavaType JOINTED_MODEL_RESOURCE_TYPE = JavaType.getInstance( org.lgna.story.resources.JointedModelResource.class );
+	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.JointedModelResource.class );
 
 	private java.util.Map< org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon > mapFieldToIcon = new java.util.HashMap< org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon >();
 
@@ -275,11 +274,6 @@ public class StageIDE extends org.alice.ide.IDE {
 //	}
 
 	@Override
-	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
-	}
-	
-	@Override
 	public org.lgna.croquet.Operation< ? > getAboutOperation() {
 		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
 	}
@@ -343,19 +337,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.CameraMarker.class ) );
 		return rv;
 	}
-	
-	@Override
-	protected JComponent<?> createClassGalleryBrowser(TreeNode<JavaType> root) {
-		assert root instanceof ModelResourceTreeNode;
-		//return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( (ModelResourceTreeNode)root );
-		return new org.alice.stageide.gallerybrowser.GalleryBrowser();
-	}
-	
-	@Override
-	public ModelResourceTreeNode getClassGalleryRoot() {
-		return StorytellingResources.getInstance().getGalleryTree();
-	}
-	
+		
 //	@Override
 //	public boolean isDeclareFieldOfPredeterminedTypeSupported( org.lgna.project.ast.TypeDeclaredInAlice valueType ) {
 //		org.lgna.project.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
@@ -404,7 +386,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
 			offscreenLookingGlass.setSize( THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT );
 		}
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = this.getSceneEditor();
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = this.getMainComponent().getSceneEditor();
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSGCameraForCreatingThumbnails();
 		boolean isClearingAndAddingRequired;
 		if( offscreenLookingGlass.getCameraCount() == 1 ) {

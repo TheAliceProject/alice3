@@ -42,8 +42,6 @@
  */
 package org.alice.ide;
 
-import org.lgna.croquet.components.JComponent;
-import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.croquet.preferences.PreferenceManager;
 
@@ -92,7 +90,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
 	}
 
-	private final org.alice.ide.typeeditor.TypeEditor typeEditor = new org.alice.ide.typeeditor.TypeEditor();
+	public void refreshUbiquitousPane() {
+//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
+//				if( IDE.this.ubiquitousPane != null ) {
+//					IDE.this.ubiquitousPane.refresh();
+//				}
+//			}
+//		} );
+	}
+	public void refreshAccessibles() {
+		this.getMainComponent().refreshAccessibles();
+	}
+
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -107,34 +117,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		this.promptForLicenseAgreements();
 
-		this.getRunOperation().setEnabled( false );
-
-		//this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRoot() );
-		this.galleryBrowser = this.createClassGalleryBrowser(this.getClassGalleryRoot());
-		this.membersEditor = this.createClassMembersEditor();
-		this.ubiquitousPane = this.createUbiquitousPane();
-		this.typeHierarchyView = new org.alice.ide.typehierarchyview.TypeHierarchyView();
-		this.contextView = new org.alice.ide.contextview.ContextView( this.typeHierarchyView, this.membersEditor );
-
-		final int MINIMUM_SIZE = 24;
-		this.right.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
-		this.left.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
-
-		this.right.addComponent( this.typeEditor, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		
-		//this.right.addComponent( new org.lgna.croquet.Label( "hello" ), org.lgna.croquet.BorderPanel.Constraint.CENTER );
-
 		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addAndInvokeValueObserver( this.isAlwaysShowingBlocksObserver );
 		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
 
-		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
-			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				setSceneEditorExpanded( nextValue );
-			}
-		} );
 
+		this.getRunOperation().setEnabled( false );
 		this.addProjectObserver( new ProjectObserver() {
 			public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
 			}
@@ -142,30 +129,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				getRunOperation().setEnabled( nextProject != null );
 			}
 		} );
-
-		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
-			public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			}
-			public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-				refreshAccessibles();
-			}
-		} );
 	}
-	private int rootDividerLocation = 340;
-	private int leftDividerLocation = 240;
 
-	private org.lgna.croquet.components.JComponent< ? > galleryBrowser;
-	private org.alice.ide.memberseditor.MembersEditor membersEditor;
-	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
-	private org.alice.ide.typehierarchyview.TypeHierarchyView typeHierarchyView;
-	private org.alice.ide.contextview.ContextView contextView;
-
-
-	private org.lgna.croquet.components.VerticalSplitPane left = new org.lgna.croquet.components.VerticalSplitPane();
-	private org.lgna.croquet.components.BorderPanel right = new org.lgna.croquet.components.BorderPanel();
-	private org.lgna.croquet.components.HorizontalSplitPane root = new org.lgna.croquet.components.HorizontalSplitPane( left, right );
-
-	
+	public abstract MainComponent getMainComponent();
 	public abstract ApiConfigurationManager getApiConfigurationManager();
 	
 	@Override
@@ -174,15 +140,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.croquet.components.Frame frame = this.getFrame();
 		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );		
 	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createContentPane() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
-		rv.addComponent( this.root, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		this.setSceneEditorExpanded( false );
-		return rv;
-	}
-
+	
+//	@Override
+//	protected org.lgna.croquet.components.Component< ? > createContentPane() {
+////		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+////		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
+////		rv.addComponent( this.root, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+////		return rv;
+//	}
+	
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
 		if( dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
@@ -193,40 +159,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			return getCodeEditorInFocus();
 		}
 		return null;
-	}
-	private void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
-		this.refreshAccessibles();
-		if( isSceneEditorExpanded ) {
-			if( this.root.getAwtComponent().isValid() ) {
-				this.rootDividerLocation = this.root.getDividerLocation();
-			}
-			if( this.left.getAwtComponent().isValid() ) {
-				this.leftDividerLocation = this.left.getDividerLocation();
-			}
-			this.left.setResizeWeight( 1.0 );
-			this.root.setLeftComponent( this.left );
-			this.left.setTopComponent( this.getSceneEditor() );
-			this.left.setBottomComponent( this.galleryBrowser );
-			//this.root.setRightComponent( null );
-			this.right.setVisible( false );
-			this.root.setDividerSize( 0 );
-			this.left.setDividerLocation( this.getFrame().getHeight() - 304 );
-		} else {
-			this.left.setResizeWeight( 0.0 );
-			this.root.setLeftComponent( this.left );
-			this.right.setVisible( true );
-			//this.root.setRightComponent( this.right );
-			this.root.setDividerLocation( this.rootDividerLocation );
-			this.left.setTopComponent( this.getSceneEditor() );
-			this.left.setBottomComponent( this.contextView );
-			this.left.setDividerLocation( this.leftDividerLocation );
-			//			if( this.right.getComponentCount() == 0 ) {
-			//				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.SOUTH );
-			//				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
-			//				this.right.add( this.declarationsUIResource, java.awt.BorderLayout.NORTH );
-			//			}
-			this.root.setDividerSize( this.left.getDividerSize() );
-		}
 	}
 
 	private Theme theme;
@@ -365,34 +297,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	
 
-//	private org.alice.ide.memberseditor.Factory templatesFactory = new org.alice.ide.memberseditor.Factory();
-//
-//	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
-//		return this.templatesFactory;
-//	}
-//
-//	private org.alice.ide.codeeditor.Factory codeFactory = new org.alice.ide.codeeditor.Factory();
-//
-//	public org.alice.ide.codeeditor.Factory getCodeFactory() {
-//		return this.codeFactory;
-//	}
-//
-//	private org.alice.ide.preview.Factory previewFactory = new org.alice.ide.preview.Factory();
-//
-//	public org.alice.ide.preview.Factory getPreviewFactory() {
-//		return this.previewFactory;
-//	}
-
-	public void refreshUbiquitousPane() {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				if( IDE.this.ubiquitousPane != null ) {
-					IDE.this.ubiquitousPane.refresh();
-				}
-			}
-		} );
-	}
-
 	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType superType ) {
 		java.util.List< org.lgna.project.ast.NamedUserType > aliceTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addAliceTypes( aliceTypes, true );
@@ -476,27 +380,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.addAliceTypes( rv, true );
 		return rv;
 	}
-
-	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getClassGalleryRoot();
-	protected abstract JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> root );
-	
-	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
-		return new org.alice.ide.memberseditor.MembersEditor();
-	}
-	protected org.alice.ide.ubiquitouspane.UbiquitousPane createUbiquitousPane() {
-		return new org.alice.ide.ubiquitouspane.UbiquitousPane();
-	}
-
-	public org.alice.ide.ubiquitouspane.UbiquitousPane getUbiquitousPane() {
-		return this.ubiquitousPane;
-	}
-	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
-		return this.membersEditor;
-	}
-	public org.lgna.croquet.components.JComponent< ? > getGalleryBrowser() {
-		return this.galleryBrowser;
-	}
-	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
 
 	private java.util.Map< org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory > mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
@@ -736,34 +619,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	private java.util.Stack< ReasonToDisableSomeAmountOfRendering > reasonToDisableSomeAmountOfRenderingStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-
-	public void disableRendering( ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-		this.reasonToDisableSomeAmountOfRenderingStack.push( reasonToDisableSomeAmountOfRendering );
-		if( reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
-			//pass
-		} else {
-			this.root.setIgnoreRepaint( true );
-			this.left.setIgnoreRepaint( true );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: true" );
-		}
-		this.getSceneEditor().disableRendering( reasonToDisableSomeAmountOfRendering );
-	}
-	public void enableRendering() {
-		if( reasonToDisableSomeAmountOfRenderingStack.size() > 0 ) {
-			ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = reasonToDisableSomeAmountOfRenderingStack.pop();
-			if( reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
-				//pass
-			} else {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: false" );
-				this.root.setIgnoreRepaint( false );
-				this.left.setIgnoreRepaint( false );
-			}
-			this.getSceneEditor().enableRendering( reasonToDisableSomeAmountOfRendering );
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate extra enableRendering" );
-		}
-	}
 	public void handleDragStarted( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		this.potentialDragSource = null;
 		if( this.stencil != null && this.holes != null ) {
@@ -775,7 +630,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			reasonToDisableSomeAmountOfRendering = ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
 		}
-		this.disableRendering( reasonToDisableSomeAmountOfRendering );
+		this.getMainComponent().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		//		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
@@ -790,35 +645,35 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	public void handleDragStopped( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		this.enableRendering();
+		this.getMainComponent().enableRendering();
 	}
 
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField >() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.refreshAccessibles();
+			IDE.this.getMainComponent().refreshAccessibles();
 		}
 
 		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
 		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.refreshAccessibles();
+			IDE.this.getMainComponent().refreshAccessibles();
 		}
 
 		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
 		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.refreshAccessibles();
+			IDE.this.getMainComponent().refreshAccessibles();
 		}
 
 		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.refreshAccessibles();
+			IDE.this.getMainComponent().refreshAccessibles();
 		}
 	};
-
+	
 	private org.lgna.project.ast.UserField rootField;
 
 	private org.lgna.project.ast.NamedUserType getRootTypeDeclaredInAlice() {
@@ -829,63 +684,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	
-	private boolean isRespondingToRefreshAccessibles = true;
-	public void refreshAccessibles() {
-		this.typeHierarchyView.refresh();
-//		if( isRespondingToRefreshAccessibles ) {
-//			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
-//
-//			org.lgna.project.ast.AbstractCode code = this.getFocusedCode();
-//			org.lgna.project.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-//
-//			java.util.List< org.lgna.project.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//			if( this.rootField != null ) {
-//				accessibles.add( this.rootField );
-//				for( org.lgna.project.ast.AbstractField field : this.getRootTypeDeclaredInAlice().fields ) {
-//					if( this.isAccessibleDesired( field ) ) {
-//						accessibles.add( field );
-//					}
-//				}
-//			}
-//
-//			int indexOfLastField = accessibles.size() - 1;
-//			if( code instanceof org.lgna.project.ast.CodeDeclaredInAlice ) {
-//				org.lgna.project.ast.CodeDeclaredInAlice codeDeclaredInAlice = (org.lgna.project.ast.CodeDeclaredInAlice)code;
-//				for( org.lgna.project.ast.ParameterDeclaredInAlice parameter : codeDeclaredInAlice.getParamtersProperty() ) {
-//					if( this.isAccessibleDesired( parameter ) ) {
-//						accessibles.add( parameter );
-//					}
-//				}
-//				for( org.lgna.project.ast.VariableDeclaredInAlice variable : IDE.getVariables( code ) ) {
-//					if( this.isAccessibleDesired( variable ) ) {
-//						accessibles.add( variable );
-//					}
-//				}
-//				for( org.lgna.project.ast.ConstantDeclaredInAlice constant : IDE.getConstants( code ) ) {
-//					if( this.isAccessibleDesired( constant ) ) {
-//						accessibles.add( constant );
-//					}
-//				}
-//			}
-//
-//			int selectedIndex;
-//			if( accessible != null ) {
-//				selectedIndex = accessibles.indexOf( accessible );
-//			} else {
-//				selectedIndex = -1;
-//			}
-//			if( selectedIndex == -1 ) {
-//				if( code != null ) {
-//					accessible = this.mapCodeToAccessible.get( code );
-//					selectedIndex = accessibles.indexOf( accessible );
-//				}
-//			}
-//			if( selectedIndex == -1 ) {
-//				selectedIndex = indexOfLastField;
-//			}
-//			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setListData( selectedIndex, accessibles );
-//		}
-	}
 	
 	private void setRootField( org.lgna.project.ast.UserField rootField ) {
 		if( this.rootField != null ) {
@@ -895,7 +693,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.rootField != null ) {
 			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
 		}
-		this.refreshAccessibles();
+		this.getMainComponent().refreshAccessibles();
 		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -911,15 +709,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		} );
 	}
+
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
-		this.isRespondingToRefreshAccessibles = false;
+		this.getMainComponent().isRespondingToRefreshAccessibles = false;
 		try {
 			this.setRootField( this.getSceneField() );
 		} finally {
-			this.isRespondingToRefreshAccessibles = true;
-			this.refreshAccessibles();
+			this.getMainComponent().isRespondingToRefreshAccessibles = true;
+			this.getMainComponent().refreshAccessibles();
 		}
 	}
 
@@ -1095,7 +894,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		org.lgna.project.ast.AbstractCode code = this.getFocusedCode();
 		if( code != null ) {
-			return this.typeEditor.getCodeEditorInFocus();
+			return this.getMainComponent().getTypeEditor().getCodeEditorInFocus();
 		} else {
 			return null;
 		}
@@ -1113,7 +912,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.project.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new org.lgna.project.ast.Comment( GENERATED_CODE_WARNING ) );
-		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
+		this.getMainComponent().getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
 	}
 
 	@Deprecated

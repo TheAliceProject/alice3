@@ -76,7 +76,7 @@ public class MarkerFieldTile extends LineAxisPanel
 	}
 	
 	public void setSelected( boolean isSelected ) {
-		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField(field);
+		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getMarkerForField(field);
 		java.awt.Color foregroundColor = java.awt.Color.BLACK;
 		if( marker != null ) {
 			foregroundColor = marker.getMarkerColor().getAsAWTColor();
@@ -96,7 +96,7 @@ public class MarkerFieldTile extends LineAxisPanel
 		
 		this.textLabel.setText( this.field.getName() );
 		
-		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField(field);
+		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getMarkerForField(field);
 		if (marker != null)
 		{
 			Color4f color = marker.getMarkerColor();

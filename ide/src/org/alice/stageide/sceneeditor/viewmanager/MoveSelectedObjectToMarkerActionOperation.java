@@ -98,7 +98,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			ObjectMarkerImp marker = IDE.getActiveInstance().getSceneEditor().getImplementation(this.markerField);
+			ObjectMarkerImp marker = IDE.getActiveInstance().getMainComponent().getSceneEditor().getImplementation(this.markerField);
 //			if (marker != null)
 //			{
 //				this.imageIcon.setRightImage(marker.getIcon());
