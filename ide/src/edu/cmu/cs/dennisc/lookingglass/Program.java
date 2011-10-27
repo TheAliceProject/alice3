@@ -119,11 +119,11 @@ public abstract class Program extends edu.cmu.cs.dennisc.program.Program {
 //	protected void handleShownForTheFirstTime() {
 //	}
 	@Override
-	protected boolean handleWindowClosing( java.awt.event.WindowEvent e ) {
-		s_lookingGlassFactory.decrementAutomaticDisplayCount();
+	protected boolean isAcceptableToClose( java.awt.event.WindowEvent e ) {
 		return true;
 	}
 	@Override
-	protected void handleWindowClosed( java.awt.event.WindowEvent e ) {
+	protected void handleShutDown() {
+		s_lookingGlassFactory.decrementAutomaticDisplayCount();
 	}
 }

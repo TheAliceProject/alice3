@@ -69,11 +69,11 @@ public abstract class DefaultProgram extends Program {
 //	protected void handleShownForTheFirstTime() {
 //	}
 	@Override
-	protected boolean handleWindowClosing( java.awt.event.WindowEvent e ) {
+	protected boolean isAcceptableToClose( java.awt.event.WindowEvent e ) {
 		return true;
 	}
 	@Override
-	protected void handleWindowClosed( java.awt.event.WindowEvent e ) {
+	protected void handleShutDown() {
 	}
 	
 }

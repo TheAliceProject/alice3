@@ -157,8 +157,8 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	}
 
 	@Override
-	protected void handleWindowClosed( java.awt.event.WindowEvent e ) {
-		super.handleWindowClosed( e );
+	protected void handleShutDown() {
+		super.handleShutDown();
 		this.animator.completeAll( null );
 	}
 	public void perform( Animation animation, AnimationObserver animationObserver ) {
