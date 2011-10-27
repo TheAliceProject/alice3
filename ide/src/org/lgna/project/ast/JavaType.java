@@ -244,7 +244,16 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	public JavaType getSuperType() {
 		Class< ? > cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
-			return JavaType.getInstance( cls.getSuperclass() );
+//			if( cls.isInterface() ) {
+//				Class<?>[] superInterfaces = cls.getInterfaces();
+//				if( superInterfaces.length == 1 ) {
+//					return JavaType.getInstance( superInterfaces[ 0 ] );
+//				} else {
+//					return null;
+//				}
+//			} else {
+				return JavaType.getInstance( cls.getSuperclass() );
+//			}
 		} else {
 			return null;
 		}

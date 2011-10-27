@@ -94,4 +94,13 @@ public class DefaultNode< T > implements Node< T > {
 			return null;
 		}
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "DefaultNode[" );
+		sb.append( this.value != null ? this.value.toString() : null );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }
