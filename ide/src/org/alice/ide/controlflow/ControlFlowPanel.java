@@ -47,9 +47,9 @@ package org.alice.ide.controlflow;
  * @author Dennis Cosgrove
  */
 public class ControlFlowPanel extends org.lgna.croquet.components.ViewPanel {
-	public ControlFlowPanel() {
-		super( ControlFlowComposite.getInstance() );
-		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : ControlFlowComposite.getInstance().getModels() ) {
+	public ControlFlowPanel( org.lgna.project.ast.AbstractCode code ) {
+		super( ControlFlowComposite.getInstance( code ) );
+		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : ControlFlowComposite.getInstance( code ).getModels() ) {
 			if( dragModel != null ) {
 				this.internalAddComponent( new ControlFlowStatementTemplate( dragModel ) );
 			} else {
@@ -61,7 +61,6 @@ public class ControlFlowPanel extends org.lgna.croquet.components.ViewPanel {
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING, 0, 0 );
+		return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING, 1, 0 );
 	}
-	
 }

@@ -47,14 +47,29 @@ package org.alice.ide.ast.draganddrop.statement;
  * @author Dennis Cosgrove
  */
 public class ReturnStatementTemplateDragModel extends StatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static ReturnStatementTemplateDragModel instance = new ReturnStatementTemplateDragModel();
+	private static java.util.Map< org.lgna.project.ast.UserMethod, ReturnStatementTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ReturnStatementTemplateDragModel getInstance( org.lgna.project.ast.UserMethod method ) {
+		ReturnStatementTemplateDragModel rv = map.get( method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ReturnStatementTemplateDragModel( method );
+			map.put( method, rv );
+		}
+		return rv;
 	}
-	public static ReturnStatementTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ReturnStatementTemplateDragModel() {
-		super( java.util.UUID.fromString( "7c9b66c3-9cb9-4fbc-bce1-d8dbf33808b2" ), org.lgna.project.ast.ReturnStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteReturnStatement( org.lgna.project.ast.JavaType.OBJECT_TYPE ) );
+
+	private final org.lgna.project.ast.UserMethod method;
+	private ReturnStatementTemplateDragModel( org.lgna.project.ast.UserMethod method ) {
+		super( 
+				java.util.UUID.fromString( "7c9b66c3-9cb9-4fbc-bce1-d8dbf33808b2" ), 
+				org.lgna.project.ast.ReturnStatement.class, 
+				org.alice.ide.ast.IncompleteAstUtilities.createIncompleteReturnStatement(
+						//todo
+						method != null ? method.getReturnType() : org.lgna.project.ast.JavaType.OBJECT_TYPE 
+				) 
+		);
+		this.method = method;
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

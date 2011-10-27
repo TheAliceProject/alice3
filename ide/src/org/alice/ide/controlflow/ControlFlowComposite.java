@@ -47,13 +47,22 @@ package org.alice.ide.controlflow;
  * @author Dennis Cosgrove
  */
 public class ControlFlowComposite extends org.lgna.croquet.Composite {
-	private static class SingletonHolder {
-		private static ControlFlowComposite instance = new ControlFlowComposite();
+	private static java.util.Map< org.lgna.project.ast.AbstractCode, ControlFlowComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ControlFlowComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
+		ControlFlowComposite rv = map.get( code );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ControlFlowComposite( code );
+			map.put( code, rv );
+		}
+		return rv;
 	}
-	public static ControlFlowComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private final java.util.List< ? extends org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+
+	private final java.util.List< org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private ControlFlowComposite( org.lgna.project.ast.AbstractCode code ) {
+		super( java.util.UUID.fromString( "27ff6dfc-2519-4378-bb4f-d8c2c2fb19e9" ) );
+		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.models,  
 			org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance(),
 			null,
 			org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(),
@@ -69,10 +78,19 @@ public class ControlFlowComposite extends org.lgna.croquet.Composite {
 			null,
 			org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(),
 			null,
-			org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance()
-	);
-	private ControlFlowComposite() {
-		super( java.util.UUID.fromString( "27ff6dfc-2519-4378-bb4f-d8c2c2fb19e9" ) );
+			org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance(),
+			null
+		);
+		if( code instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+			if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
+				//pass
+			} else {
+				this.models.add( 
+						org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( method ) 
+				);
+			}
+		}
 	}
 	@Override
 	protected void localize() {
@@ -81,7 +99,7 @@ public class ControlFlowComposite extends org.lgna.croquet.Composite {
 	public boolean contains( org.lgna.croquet.Model model ) {
 		return this.models.contains( model );
 	}
-	public java.util.List< ? extends org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > getModels() {
+	public java.util.List< org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > getModels() {
 		return this.models;
 	}
 }

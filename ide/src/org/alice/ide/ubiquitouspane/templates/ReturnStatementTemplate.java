@@ -47,6 +47,6 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class ReturnStatementTemplate extends CascadingUbiquitousStatementTemplate {
 	public ReturnStatementTemplate() {
-		super( org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance() );
+		super( org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( null ) );
 	}
 }
