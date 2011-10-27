@@ -77,7 +77,7 @@ class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCe
 	private static final javax.swing.Icon FILE_DOES_NOT_EXIST_ICON = new AbstractNotAvailableIcon() {
 		@Override
 		protected String getText() {
-			return "file does not exist";
+			return "snapshot does not exist";
 		}
 	};
 	@Override
