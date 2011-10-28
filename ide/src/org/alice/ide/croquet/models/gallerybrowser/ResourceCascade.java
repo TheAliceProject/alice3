@@ -69,14 +69,7 @@ public class ResourceCascade extends org.lgna.croquet.Cascade< org.lgna.project.
 	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > completionStep, org.lgna.project.ast.Expression[] values ) {
 		org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)values[ 0 ];
 		org.lgna.project.ast.AbstractField argumentField = fieldAccess.field.getValue();
-		org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = argumentField.getValueType();
-		
-		org.lgna.project.ast.AbstractConstructor bogusConstructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( valueType );
-		org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( bogusConstructor.getDeclaringType().getFirstTypeEncounteredDeclaredInJava(), (org.lgna.project.ast.JavaField)argumentField );
-		org.lgna.project.ast.AbstractConstructor constructor = namedUserType.constructors.get( 0 );
-
-		org.alice.stageide.sceneeditor.draganddrop.SceneDropSite sceneDropSite = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.dropSite, org.alice.stageide.sceneeditor.draganddrop.SceneDropSite.class );
-		org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, argumentField, sceneDropSite ).fire();
+		org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( argumentField, this.dropSite ).fire();
 		//todo
 		return null;
 	}

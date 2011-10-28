@@ -43,8 +43,6 @@
 
 package org.alice.stageide.gallerybrowser;
 
-import org.alice.ide.ast.declaration.TypeDeclarationOperation;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -61,19 +59,22 @@ public class TypeTab extends org.lgna.croquet.PredeterminedTab {
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( TypeDeclarationOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		//rv.addComponent( TypeDeclarationOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		//todo
 		
-		org.lgna.croquet.components.LineAxisPanel panel = new org.lgna.croquet.components.LineAxisPanel();
+//		org.lgna.croquet.components.LineAxisPanel panel = new org.lgna.croquet.components.LineAxisPanel();
+//		
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+//		org.lgna.project.Project project = ide.getProject();
+//		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
+//		
+//		java.util.List< org.lgna.project.ast.JavaType > javaTypes = ide.getApiConfigurationManager().getTopLevelGalleryTypes();
+//		java.util.List< org.lgna.project.ast.NamedUserType > userTypes = org.alice.ide.typemanager.TypeManager.getNamedUserTypesFor( javaTypes );
+//		for( org.lgna.project.ast.NamedUserType userType : userTypes ) {
+//			panel.addComponent( new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( TypeDragModel.getInstance( userType ) ) );
+//		}
 		
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		java.util.List< org.lgna.project.ast.JavaType > javaTypes = ide.getApiConfigurationManager().getTopLevelGalleryTypes();
-		java.util.List< org.lgna.project.ast.NamedUserType > userTypes = org.alice.ide.typemanager.TypeManager.getNamedUserTypesFor( javaTypes );
-		for( org.lgna.project.ast.NamedUserType userType : userTypes ) {
-			panel.addComponent( new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( TypeDragModel.getInstance( userType ) ) );
-		}
-		
-		rv.addComponent( panel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		rv.addComponent( new MyTypesView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 
 		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
 		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );

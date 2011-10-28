@@ -46,49 +46,63 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, TypeDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static TypeDragModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		TypeDragModel rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new TypeDragModel( type );
-			map.put( type, rv );
+public class MyTypesView extends org.alice.ide.croquet.components.RefreshPanel {
+	private class RefreshAction extends javax.swing.AbstractAction {
+		public RefreshAction() {
+			this.putValue( NAME, "refresh" );
 		}
-		return rv;
-	}
-	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
-	private TypeDragModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( java.util.UUID.fromString( "547192e8-12cc-4c62-b05d-8108205c0b06" ) );
-		this.type = type;
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		org.lgna.project.ast.AbstractConstructor constructor = this.type.getDeclaredConstructors().get( 0 );
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = constructor.getRequiredParameters();
-		if( requiredParameters.size() > 0 ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > parameterType = requiredParameters.get( 0 ).getValueType();
-			return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType, dropSite );
-		} else {
-			org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( constructor );
-			return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( argumentField, dropSite );
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			MyTypesView.this.refreshLater();
 		}
 	}
+	private final org.lgna.croquet.components.SwingAdapter refreshAdapter = new org.lgna.croquet.components.SwingAdapter( new javax.swing.JButton( new RefreshAction() ) );
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return null;
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.GridBagLayout();
+	}
+	
+	private void addComponent( org.lgna.croquet.components.Component< ? > component, java.awt.GridBagConstraints gbc ) {
+		this.internalAddComponent( component, gbc );
+	}
+	
+	private void addComponents( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node, int depth, java.awt.GridBagConstraints gbc ) {
+		org.lgna.project.ast.NamedUserType type = node.getValue();
+		if( type == null || type.isAssignableTo( org.lgna.story.Turnable.class ) ) {
+			if( type != null ) {
+				org.lgna.croquet.components.JComponent< ? > component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( TypeDragModel.getInstance( type ) );
+				gbc.insets.top = 8 + depth*12;
+				this.addComponent( component, gbc );
+			}
+			for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > child : node.getChildren() ) {
+				addComponents( child, depth+1, gbc );
+			}
+		}
+	}
+	
+	@Override
+	protected void internalRefresh() {
+		this.forgetAndRemoveAllComponents();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.Project project = ide.getProject();
+		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
+
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
+		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0.0;
+		gbc.weighty = 1.0;
+		gbc.insets.top = 4;
+		gbc.insets.left = 4;
+		gbc.insets.right = 24;
+		this.addComponent( refreshAdapter, gbc );
+		gbc.insets.right = 2;
+		this.addComponents( root, -1, gbc );
+		gbc.weightx = 1.0;
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue(), gbc );
 	}
 	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return org.alice.ide.common.TypeIcon.getInstance( this.type );
-	}
-	@Override
-	public javax.swing.Icon getSmallIcon() {
-		return null;
-	}
-	@Override
-	public String getText() {
-		return null;//this.type.getName();
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.refreshLater();
 	}
 }

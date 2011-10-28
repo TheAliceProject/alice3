@@ -57,19 +57,24 @@ public class ConstructorArgumentUtilities {
 		org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)arguments.get( 0 ).expression.getValue();
 		return (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
 	}
+	public static org.lgna.project.ast.JavaField getArgumentField( org.lgna.project.ast.AbstractConstructor constructor ) {
+		if( constructor instanceof org.lgna.project.ast.NamedUserConstructor ) {
+			org.lgna.project.ast.NamedUserConstructor namedUserConstructor = (org.lgna.project.ast.NamedUserConstructor)constructor;
+			org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
+			return getField( constructorInvocationStatement.requiredArguments );
+		}
+		return null;
+	}
 	public static org.lgna.project.ast.JavaField getArgumentField( org.lgna.project.ast.InstanceCreation instanceCreation ) {
 		if( instanceCreation != null ) {
 			org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 			if( instanceCreation.requiredArguments.size() == 1 ) {
 				return getField( instanceCreation.requiredArguments );
 			} else {
-				if( constructor instanceof org.lgna.project.ast.NamedUserConstructor ) {
-					org.lgna.project.ast.NamedUserConstructor namedUserConstructor = (org.lgna.project.ast.NamedUserConstructor)constructor;
-					org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
-					return getField( constructorInvocationStatement.requiredArguments );
-				}
+				return getArgumentField( constructor );
 			}
+		} else {
+			return null;
 		}
-		return null;
 	}
 }
