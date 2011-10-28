@@ -57,29 +57,24 @@ public class TypeTab extends org.lgna.croquet.PredeterminedTab {
 		super( java.util.UUID.fromString( "86ebb5e5-8cae-4f3b-ae46-35f3a7f4a00c" ) );
 	}
 	@Override
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+		return null;
+	}
+	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		//rv.addComponent( TypeDeclarationOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		//todo
+
+		MyTypesView myTypesView = new MyTypesView();
 		
-//		org.lgna.croquet.components.LineAxisPanel panel = new org.lgna.croquet.components.LineAxisPanel();
-//		
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-//		org.lgna.project.Project project = ide.getProject();
-//		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
-//		
-//		java.util.List< org.lgna.project.ast.JavaType > javaTypes = ide.getApiConfigurationManager().getTopLevelGalleryTypes();
-//		java.util.List< org.lgna.project.ast.NamedUserType > userTypes = org.alice.ide.typemanager.TypeManager.getNamedUserTypesFor( javaTypes );
-//		for( org.lgna.project.ast.NamedUserType userType : userTypes ) {
-//			panel.addComponent( new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( TypeDragModel.getInstance( userType ) ) );
-//		}
-		
-		rv.addComponent( new MyTypesView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( myTypesView );
+		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 
 		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
 		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
 		rv.addComponent( lineEndPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 
+		myTypesView.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		return rv;
 	}
