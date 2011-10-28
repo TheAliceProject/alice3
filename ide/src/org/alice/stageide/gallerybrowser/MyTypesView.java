@@ -47,7 +47,7 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class MyTypesView extends org.alice.ide.croquet.components.RefreshPanel {
-	private static final javax.swing.Icon REFRESH_ICON = new javax.swing.ImageIcon( MyTypesView.class.getResource( "images/refresh.png" ) );
+	private static final javax.swing.Icon REFRESH_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( MyTypesView.class.getResource( "images/refresh.png" ) );
 	private class RefreshAction extends javax.swing.AbstractAction {
 		public RefreshAction() {
 			this.putValue( NAME, "refresh" );
