@@ -47,15 +47,23 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class MyTypesView extends org.alice.ide.croquet.components.RefreshPanel {
+	private static final javax.swing.Icon REFRESH_ICON = new javax.swing.ImageIcon( MyTypesView.class.getResource( "images/refresh.png" ) );
 	private class RefreshAction extends javax.swing.AbstractAction {
 		public RefreshAction() {
 			this.putValue( NAME, "refresh" );
+			this.putValue( SMALL_ICON, REFRESH_ICON );
 		}
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			MyTypesView.this.refreshLater();
 		}
 	}
-	private final org.lgna.croquet.components.SwingAdapter refreshAdapter = new org.lgna.croquet.components.SwingAdapter( new javax.swing.JButton( new RefreshAction() ) );
+	private final org.lgna.croquet.components.SwingAdapter refreshAdapter;
+	public MyTypesView() {
+		javax.swing.JButton jButton = new javax.swing.JButton( new RefreshAction() );
+		jButton.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
+		jButton.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
+		this.refreshAdapter = new org.lgna.croquet.components.SwingAdapter( jButton );
+	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.GridBagLayout();
