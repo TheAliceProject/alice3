@@ -101,7 +101,7 @@ public class TypeManager {
 		return rv;
 	}
 
-	private static org.lgna.project.ast.JavaType getContructorParameter0Type( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public static org.lgna.project.ast.JavaType getContructorParameter0Type( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		return (org.lgna.project.ast.JavaType)type.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
 	}
 	private static abstract class ExtendsTypeCriterion implements edu.cmu.cs.dennisc.pattern.Criterion< org.lgna.project.ast.NamedUserType > {
@@ -235,13 +235,6 @@ public class TypeManager {
 		return getNamedUserTypeFor( ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly( argumentTypes[ 0 ] ) );
 	}
 
-	public static java.util.List< org.lgna.project.ast.NamedUserType > getNamedUserTypesFor( java.util.List< org.lgna.project.ast.JavaType > javaTypes ) {
-		java.util.ArrayList< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( javaTypes.size() );
-		for( org.lgna.project.ast.JavaType javaType : javaTypes ) {
-			rv.add( getNamedUserTypeFor( javaType ) );
-		}
-		return rv;
-	}
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.JavaType javaType ) {
 		ExtendsTypeCriterion criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( javaType, getContructorParameter0Type( javaType ) );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
@@ -252,6 +245,13 @@ public class TypeManager {
 			}
 		}
 		return createTypeFor( javaType, "My" + javaType.getName(), null, null );
+	}
+	public static java.util.List< org.lgna.project.ast.NamedUserType > getNamedUserTypesFor( java.util.List< org.lgna.project.ast.JavaType > javaTypes ) {
+		java.util.ArrayList< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( javaTypes.size() );
+		for( org.lgna.project.ast.JavaType javaType : javaTypes ) {
+			rv.add( getNamedUserTypeFor( javaType ) );
+		}
+		return rv;
 	}
 	
 //	private static void printlns( edu.cmu.cs.dennisc.tree.Node<?> node, int indent ) {

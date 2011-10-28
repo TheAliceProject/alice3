@@ -74,4 +74,13 @@ public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade
 	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
 		return this.transientValue;
 	}
+	
+//	@Override
+//	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
+//		return this.transientValue.constructor.getValue().getDeclaringType().getName();
+//	}
+//	@Override
+//	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
+//		return null;
+//	}
 }

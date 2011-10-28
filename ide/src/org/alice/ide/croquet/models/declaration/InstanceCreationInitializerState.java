@@ -54,39 +54,31 @@ public class InstanceCreationInitializerState extends org.alice.ide.croquet.mode
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.InstanceCreation > blankNode ) {
-		java.util.List< org.lgna.project.ast.JavaType > topLevelTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
-
 		org.lgna.project.ast.InstanceCreation prevInstanceCreation = this.getValue();
 		if( prevInstanceCreation != null ) {
 			org.lgna.project.ast.AbstractConstructor constructor = prevInstanceCreation.constructor.getValue();
 			org.lgna.project.ast.JavaType javaType = constructor.getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
-			//org.lgna.project.ast.NamedUserType ancestorType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType );
-
-			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)prevInstanceCreation.requiredArguments.get( 0 ).expression.getValue();
-			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
-			org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType, field );
-			
-			final int INSERT_LOCATION = rv.size();
-			org.lgna.project.ast.AbstractType< ?,?,? > type = userType;
-			while( type instanceof org.lgna.project.ast.NamedUserType ) {
-				org.lgna.project.ast.AbstractConstructor typeConstructor = type.getDeclaredConstructors().get( 0 );
-				if( typeConstructor.getRequiredParameters().size() == 1 ) {
-					rv.add( INSERT_LOCATION, InstanceCreationFillInWithPredeterminedFieldAccessArgument.getInstance( typeConstructor, field ) );
-				} else {
-					rv.add( InstanceCreationFillIn.getInstance( typeConstructor ) );
+			if( prevInstanceCreation.requiredArguments.size() > 0 ) {
+				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)prevInstanceCreation.requiredArguments.get( 0 ).expression.getValue();
+				org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
+				org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType, field );
+				
+				final int INSERT_LOCATION = rv.size();
+				org.lgna.project.ast.AbstractType< ?,?,? > type = userType;
+				while( type instanceof org.lgna.project.ast.NamedUserType ) {
+					org.lgna.project.ast.AbstractConstructor typeConstructor = type.getDeclaredConstructors().get( 0 );
+					if( typeConstructor.getRequiredParameters().size() == 1 ) {
+						rv.add( INSERT_LOCATION, InstanceCreationFillInWithPredeterminedFieldAccessArgument.getInstance( typeConstructor, field ) );
+					} else {
+						rv.add( InstanceCreationFillIn.getInstance( typeConstructor ) );
+					}
+					type = type.getSuperType();
 				}
-				type = type.getSuperType();
 			}
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
-		
-		for( org.lgna.project.ast.AbstractType< ?,?,? > type : topLevelTypes ) {
-			if( type instanceof org.lgna.project.ast.JavaType ) {
-				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
-				type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType );
-			}
-			rv.add( InstanceCreationFillIn.getInstance( type.getDeclaredConstructors().get( 0 ) ) );
-		}
+
+		rv.add( ChangeResourceMenuModel.getInstance() );
 		return rv;
 	}
 }
