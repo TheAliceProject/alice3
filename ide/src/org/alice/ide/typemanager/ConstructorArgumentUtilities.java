@@ -41,37 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.declaration;
+package org.alice.ide.typemanager;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceCreationInitializerState extends org.alice.ide.croquet.models.ExpressionState< org.lgna.project.ast.InstanceCreation > {
-	private final DeclarationOperation<?> owner;
-	public InstanceCreationInitializerState( DeclarationOperation<?> owner, org.lgna.project.ast.InstanceCreation initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "1e753e61-b420-4315-b654-c7f030537923" ), org.lgna.project.ast.InstanceCreation.class, initialValue );
-		this.owner = owner;
+public class ConstructorArgumentUtilities {
+	private ConstructorArgumentUtilities() {
+		throw new AssertionError();
 	}
-	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.InstanceCreation > blankNode ) {
-		org.lgna.project.ast.InstanceCreation prevInstanceCreation = this.getValue();
-		org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( prevInstanceCreation );
-		if( argumentField != null ) {
-			org.lgna.project.ast.JavaType javaType = prevInstanceCreation.constructor.getValue().getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
-			org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType, argumentField );
-			org.lgna.project.ast.AbstractType< ?,?,? > type = userType;
-			while( type instanceof org.lgna.project.ast.NamedUserType ) {
-				org.lgna.project.ast.AbstractConstructor typeConstructor = type.getDeclaredConstructors().get( 0 );
-				if( typeConstructor.getRequiredParameters().size() == 1 ) {
-					rv.add( InstanceCreationFillInWithPredeterminedFieldAccessArgument.getInstance( typeConstructor, argumentField ) );
-				} else {
-					rv.add( InstanceCreationFillIn.getInstance( typeConstructor ) );
+	public static org.lgna.project.ast.JavaType getContructorParameter0Type( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		return (org.lgna.project.ast.JavaType)type.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
+	}
+	private static org.lgna.project.ast.JavaField getField( org.lgna.project.ast.SimpleArgumentListProperty arguments ) {
+		org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)arguments.get( 0 ).expression.getValue();
+		return (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
+	}
+	public static org.lgna.project.ast.JavaField getArgumentField( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		if( instanceCreation != null ) {
+			org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+			if( instanceCreation.requiredArguments.size() == 1 ) {
+				return getField( instanceCreation.requiredArguments );
+			} else {
+				if( constructor instanceof org.lgna.project.ast.NamedUserConstructor ) {
+					org.lgna.project.ast.NamedUserConstructor namedUserConstructor = (org.lgna.project.ast.NamedUserConstructor)constructor;
+					org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
+					return getField( constructorInvocationStatement.requiredArguments );
 				}
-				type = type.getSuperType();
 			}
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
-		rv.add( ChangeResourceMenuModel.getInstance() );
-		return rv;
+		return null;
 	}
 }

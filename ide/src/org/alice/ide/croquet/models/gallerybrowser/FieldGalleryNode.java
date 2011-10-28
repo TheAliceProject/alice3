@@ -99,15 +99,13 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		org.lgna.project.ast.AbstractField field = this.getDeclaration();
 		org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
-		org.lgna.project.ast.AbstractConstructor constructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( valueType );
-		if (dropSite instanceof org.alice.stageide.sceneeditor.draganddrop.SceneDropSite)
-		{
-			return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field, (org.alice.stageide.sceneeditor.draganddrop.SceneDropSite)dropSite );
-		}
-		else {
-			return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field, null );
-		}
-			
+		
+		org.lgna.project.ast.AbstractConstructor bogusConstructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( valueType );
+		org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( bogusConstructor.getDeclaringType().getFirstTypeEncounteredDeclaredInJava(), (org.lgna.project.ast.JavaField)field );
+		org.lgna.project.ast.AbstractConstructor constructor = namedUserType.constructors.get( 0 );
+
+		org.alice.stageide.sceneeditor.draganddrop.SceneDropSite sceneDropSite = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( dropSite, org.alice.stageide.sceneeditor.draganddrop.SceneDropSite.class );
+		return org.alice.ide.croquet.models.declaration.SpecifiedManagedFieldDeclarationOperation.getInstance( constructor, field, sceneDropSite );
 	}
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {

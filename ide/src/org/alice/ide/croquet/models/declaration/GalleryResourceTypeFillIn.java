@@ -62,11 +62,11 @@ public class GalleryResourceTypeFillIn extends org.alice.ide.croquet.models.casc
 	private GalleryResourceTypeFillIn( org.lgna.project.ast.JavaType ancestorType ) {
 		super( java.util.UUID.fromString( "281ad60a-090e-4fd8-bb47-da03a2508a4a" ) );
 		this.ancestorType = ancestorType;
-		this.addBlank( GalleryResourceBlank.getInstance( org.alice.ide.typemanager.TypeManager.getContructorParameter0Type( this.ancestorType ) ) );
+		this.addBlank( GalleryResourceBlank.getInstance( org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructorParameter0Type( this.ancestorType ) ) );
 	}
 	@Override
 	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
-		return org.alice.ide.typemanager.TypeManager.getContructorParameter0Type( ancestorType ).getName();
+		return org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructorParameter0Type( this.ancestorType ).getName();
 	}
 	@Override
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {

@@ -101,9 +101,6 @@ public class TypeManager {
 		return rv;
 	}
 
-	public static org.lgna.project.ast.JavaType getContructorParameter0Type( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		return (org.lgna.project.ast.JavaType)type.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
-	}
 	private static abstract class ExtendsTypeCriterion implements edu.cmu.cs.dennisc.pattern.Criterion< org.lgna.project.ast.NamedUserType > {
 		private final org.lgna.project.ast.AbstractType< ?,?,? > superType;
 		public ExtendsTypeCriterion( org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
@@ -178,7 +175,7 @@ public class TypeManager {
 	}
 	private static org.lgna.project.ast.JavaType[] getArgumentTypes( org.lgna.project.ast.JavaType ancestorType, org.lgna.project.ast.JavaField field ) {
 		java.util.List< org.lgna.project.ast.JavaType > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		updateArgumentTypes( types, getContructorParameter0Type( ancestorType ), field.getDeclaringType() );
+		updateArgumentTypes( types, ConstructorArgumentUtilities.getContructorParameter0Type( ancestorType ), field.getDeclaringType() );
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( types, org.lgna.project.ast.JavaType.class );
 	}
  	private static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.JavaType ancestorType, org.lgna.project.ast.JavaType[] argumentTypes, int i, org.lgna.project.ast.JavaField argumentField ) {
@@ -189,7 +186,7 @@ public class TypeManager {
 		} else {
 			superType = ancestorType;
 		}
-		ExtendsTypeCriterion criterion;
+		edu.cmu.cs.dennisc.pattern.Criterion< org.lgna.project.ast.NamedUserType > criterion;
 		if( argumentField != null ) {
 			criterion = new ExtendsTypeWithSuperArgumentFieldCriterion( superType, argumentField );
 		} else {
@@ -236,7 +233,7 @@ public class TypeManager {
 	}
 
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.JavaType javaType ) {
-		ExtendsTypeCriterion criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( javaType, getContructorParameter0Type( javaType ) );
+		ExtendsTypeCriterion criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( javaType, ConstructorArgumentUtilities.getContructorParameter0Type( javaType ) );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 		java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
 		for( org.lgna.project.ast.NamedUserType existingType : existingTypes ) {
