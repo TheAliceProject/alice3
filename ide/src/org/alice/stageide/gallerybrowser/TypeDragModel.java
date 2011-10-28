@@ -47,8 +47,8 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, TypeDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static TypeDragModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, TypeDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static TypeDragModel getInstance( org.lgna.project.ast.NamedUserType type ) {
 		TypeDragModel rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -58,10 +58,25 @@ public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.G
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
-	private TypeDragModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	private final org.lgna.project.ast.NamedUserType type;
+	private final javax.swing.Icon largeIcon;
+	private TypeDragModel( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "547192e8-12cc-4c62-b05d-8108205c0b06" ) );
 		this.type = type;
+		org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( this.type.constructors.get( 0 ) );
+		if( argumentField != null ) {
+			java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
+			java.awt.Image thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(fld.getDeclaringClass(), fld.getName());
+			if( thumbnail != null ) {
+				//thumbnail = thumbnail.getScaledInstance( 64, 64, java.awt.Image.SCALE_SMOOTH );
+				this.largeIcon = new javax.swing.ImageIcon(thumbnail);
+			} else {
+				this.largeIcon = null;
+			}
+		} else {
+			this.largeIcon = null;
+		}
+
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
@@ -81,7 +96,7 @@ public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.G
 	}
 	@Override
 	public javax.swing.Icon getLargeIcon() {
-		return org.alice.ide.common.TypeIcon.getInstance( this.type );
+		return this.largeIcon;
 	}
 	@Override
 	public javax.swing.Icon getSmallIcon() {
@@ -89,6 +104,6 @@ public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.G
 	}
 	@Override
 	public String getText() {
-		return null;//this.type.getName();
+		return this.type.getName();
 	}
 }

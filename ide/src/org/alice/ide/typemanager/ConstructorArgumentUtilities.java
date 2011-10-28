@@ -54,8 +54,14 @@ public class ConstructorArgumentUtilities {
 		return (org.lgna.project.ast.JavaType)type.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
 	}
 	private static org.lgna.project.ast.JavaField getField( org.lgna.project.ast.SimpleArgumentListProperty arguments ) {
-		org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)arguments.get( 0 ).expression.getValue();
-		return (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
+		if( arguments.size() > 0 ) {
+			org.lgna.project.ast.Expression expression = arguments.get( 0 ).expression.getValue();
+			if( expression instanceof org.lgna.project.ast.FieldAccess ) {
+				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
+				return (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
+			}
+		}
+		return null;
 	}
 	public static org.lgna.project.ast.JavaField getArgumentField( org.lgna.project.ast.AbstractConstructor constructor ) {
 		if( constructor instanceof org.lgna.project.ast.NamedUserConstructor ) {
