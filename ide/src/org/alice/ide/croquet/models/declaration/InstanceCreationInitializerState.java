@@ -60,11 +60,11 @@ public class InstanceCreationInitializerState extends org.alice.ide.croquet.mode
 		if( prevInstanceCreation != null ) {
 			org.lgna.project.ast.AbstractConstructor constructor = prevInstanceCreation.constructor.getValue();
 			org.lgna.project.ast.JavaType javaType = constructor.getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
-			org.lgna.project.ast.NamedUserType ancestorType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType );
+			//org.lgna.project.ast.NamedUserType ancestorType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType );
 
 			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)prevInstanceCreation.requiredArguments.get( 0 ).expression.getValue();
 			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldAccess.field.getValue();
-			org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( ancestorType, field );
+			org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType, field );
 			
 			final int INSERT_LOCATION = rv.size();
 			org.lgna.project.ast.AbstractType< ?,?,? > type = userType;
