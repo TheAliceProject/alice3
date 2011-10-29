@@ -58,10 +58,8 @@ class NamedUserTypeTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstr
 	}
 	public edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > getRoot() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		if( project != null ) {
-			edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > tree = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
-			return tree;
+		if( ide != null ) {
+			return ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
 		} else {
 			return null;
 		}

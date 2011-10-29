@@ -59,6 +59,7 @@ public abstract class AbstractExpressionDragModel extends org.alice.ide.croquet.
 			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
 			if( codeEditor != null ) {
 				codeEditor.addPotentialDropReceptors( rv, this.getExpressionType() );
+				//codeEditor.addPotentialDropReceptors( rv, org.lgna.project.ast.JavaType.VOID_TYPE );
 			} else {
 				//todo: investigate
 			}

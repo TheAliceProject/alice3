@@ -91,8 +91,7 @@ public class MyTypesView extends org.alice.ide.croquet.components.RefreshPanel {
 	protected void internalRefresh() {
 		this.forgetAndRemoveAllComponents();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
+		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForGallery();
 
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;

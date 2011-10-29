@@ -297,22 +297,21 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	
 
-	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType superType ) {
-		java.util.List< org.lgna.project.ast.NamedUserType > aliceTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.addAliceTypes( aliceTypes, true );
-		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : aliceTypes ) {
-			assert type != null;
-			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
-				return (org.lgna.project.ast.NamedUserType)type;
-			}
-		}
-		String name = "My" + superType.getName();
-		return org.lgna.project.ast.AstUtilities.createType( name, superType );
-	}
-	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( Class< ? > superCls ) {
-		return getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType.getInstance( superCls ) );
-
-	}
+//	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType superType ) {
+//		java.util.List< org.lgna.project.ast.NamedUserType > aliceTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//		this.addAliceTypes( aliceTypes, true );
+//		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : aliceTypes ) {
+//			assert type != null;
+//			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
+//				return (org.lgna.project.ast.NamedUserType)type;
+//			}
+//		}
+//		String name = "My" + superType.getName();
+//		return org.lgna.project.ast.AstUtilities.createType( name, superType );
+//	}
+//	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( Class< ? > superCls ) {
+//		return getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType.getInstance( superCls ) );
+//	}
 
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
 		if( org.lgna.project.ast.AstUtilities.isKeywordExpression( expression ) ) {
@@ -326,59 +325,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public String getTextFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		return null;
-	}
-
-	protected java.util.List< ? super org.lgna.project.ast.JavaType > addPrimeTimeJavaTypes( java.util.List< ? super org.lgna.project.ast.JavaType > rv ) {
-		rv.add( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE );
-		rv.add( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE );
-		rv.add( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( String.class ) );
-		return rv;
-	}
-	protected java.util.List< ? super org.lgna.project.ast.JavaType > addSecondaryJavaTypes( java.util.List< ? super org.lgna.project.ast.JavaType > rv ) {
-		return rv;
-	}
-
-	protected boolean isInclusionOfTypeDesired( org.lgna.project.ast.UserType< ? > valueTypeInAlice ) {
-		return true;
-		//return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
-	}
-
-	protected java.util.List< ? super org.lgna.project.ast.NamedUserType > addAliceTypes( java.util.List< ? super org.lgna.project.ast.NamedUserType > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
-		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
-		if( sceneType != null ) {
-			rv.add( sceneType );
-			for( org.lgna.project.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-				org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
-				if( valueType instanceof org.lgna.project.ast.NamedUserType ) {
-					org.lgna.project.ast.NamedUserType valueTypeInAlice = (org.lgna.project.ast.NamedUserType)valueType;
-					if( rv.contains( valueType ) ) {
-						//pass
-					} else {
-						if( isInclusionOfTypesWithoutMembersDesired || isInclusionOfTypeDesired( valueTypeInAlice ) ) {
-							rv.add( valueTypeInAlice );
-						}
-					}
-				}
-			}
-		}
-		return rv;
-	}
-
-	public java.util.List< org.lgna.project.ast.JavaType > getPrimeTimeSelectableTypesDeclaredInJava() {
-		java.util.List< org.lgna.project.ast.JavaType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.addPrimeTimeJavaTypes( rv );
-		return rv;
-	}
-	public java.util.List< org.lgna.project.ast.JavaType > getSecondarySelectableTypesDeclaredInJava() {
-		java.util.List< org.lgna.project.ast.JavaType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.addSecondaryJavaTypes( rv );
-		return rv;
-	}
-	public java.util.List< org.lgna.project.ast.NamedUserType > getTypesDeclaredInAlice() {
-		java.util.List< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.addAliceTypes( rv, true );
-		return rv;
 	}
 
 	private java.util.Map< org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory > mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

@@ -491,8 +491,8 @@ public abstract class ProjectUtilities {
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > getNamedUserTypesAsTree( org.lgna.project.Project project ) {
-		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > root = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( null );
+	public static edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > getNamedUserTypesAsTree( org.lgna.project.Project project ) {
+		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > root = edu.cmu.cs.dennisc.tree.DefaultNode.createSafeInstance( null );
 		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
 		for( org.lgna.project.ast.NamedUserType type : types ) {
 			getNode( type, root );

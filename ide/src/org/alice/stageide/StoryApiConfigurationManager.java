@@ -46,8 +46,22 @@ package org.alice.stageide;
 /**
  * @author Dennis Cosgrove
  */
-public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurationManager {
-	SINGLETON;
+public class StoryApiConfigurationManager extends org.alice.ide.ApiConfigurationManager {
+	private static class SingletonHolder {
+		private static StoryApiConfigurationManager instance = new StoryApiConfigurationManager();
+	}
+	public static StoryApiConfigurationManager getInstance() {
+		return SingletonHolder.instance;
+	}
+	
+	@Override
+	protected boolean isNamedUserTypesAcceptableForGallery( org.lgna.project.ast.NamedUserType type ) {
+		return type.isAssignableTo( org.lgna.story.Model.class );
+	}
+	@Override
+	protected boolean isNamedUserTypesAcceptableForSelection( org.lgna.project.ast.NamedUserType type ) {
+		return type.isAssignableTo( org.lgna.story.Program.class ) == false || org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue();
+	}
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private StoryApiConfigurationManager() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.Entity.class );
@@ -125,21 +139,27 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 //			}
 //		} );
 	}
+	@Override
 	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
 		return type.isAssignableTo( org.lgna.story.Scene.class );
 	}
+	@Override
 	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		return type.isAssignableTo( org.lgna.story.Entity.class );
 	}
+	@Override
 	public java.util.List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes() {
 		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getTopLevelGalleryTypes();
 	}
+	@Override
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceParentFor( type );
 	}
+	@Override
 	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceChildrenFor(type);
 	}
+	@Override
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		if( org.alice.stageide.instancefactory.JointedMenuModel.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.ThisJointedMenuModel.getInstance( type );
@@ -148,6 +168,7 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		}
 	}
 	
+	@Override
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
 		if( org.alice.stageide.instancefactory.JointedMenuModel.isJointed( type ) ) {
@@ -157,6 +178,7 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		}
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?, ?, ? > argumentType ) {
 		java.util.List< org.lgna.project.ast.NamedUserType > types = org.alice.ide.typemanager.TypeManager.getNamedUserTypesFor( getTopLevelGalleryTypes() );
 		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : types ) {
@@ -189,6 +211,7 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		return new ThisFieldAccessNameLabel( field );
 	}
 
+	@Override
 	public org.lgna.croquet.components.JComponent< ? > createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		org.lgna.project.ast.Expression fieldExpression = fieldAccess.expression.getValue();
 		if( fieldExpression instanceof org.lgna.project.ast.ThisExpression || fieldExpression instanceof org.alice.ide.ast.CurrentThisExpression ) {
@@ -202,6 +225,7 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 		}
 		return null;
 	}
+	@Override
 	public org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails ) {
 		if( valueDetails instanceof org.lgna.story.annotation.PortionDetails ) {
 			return org.alice.stageide.croquet.models.custom.CustomPortionInputDialogOperation.getInstance().getFillIn();
@@ -209,7 +233,31 @@ public enum StoryApiConfigurationManager implements org.alice.ide.ApiConfigurati
 			return null;
 		}
 	}
+	@Override
 	public org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
 		return this.expressionCreator;
+	}
+
+	
+	@Override
+	protected java.util.List< ? super org.lgna.project.ast.JavaType > addPrimeTimeJavaTypes( java.util.List< ? super org.lgna.project.ast.JavaType > rv ) {
+		rv = super.addPrimeTimeJavaTypes( rv );
+//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
+//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class ) );
+		return rv;
+	}
+
+	@Override
+	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes(java.util.List<? super org.lgna.project.ast.JavaType> rv) {
+		super.addSecondaryJavaTypes(rv);
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MoveDirection.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TurnDirection.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.RollDirection.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Marker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.ObjectMarker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.CameraMarker.class ) );
+		return rv;
 	}
 }

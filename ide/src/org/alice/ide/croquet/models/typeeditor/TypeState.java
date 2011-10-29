@@ -58,7 +58,7 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 	}
 
 	private java.util.List< org.lgna.croquet.CascadeBlankChild > addTypeFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node ) {
-		rv.add( TypeFillIn.getInstance( node.getValue() ) );
+		rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( node.getValue() ) );
 		for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > child : node.getChildren() ) {
 			addTypeFillIns( rv, child );
 		}
@@ -69,12 +69,9 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.NamedUserType > blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
-		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
+		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
 		for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node : root.getChildren() ) {
-			if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || node.getValue() != programType ) {
-				addTypeFillIns( rv, node );
-			}
+			addTypeFillIns( rv, node );
 		}
 		return rv;
 	}

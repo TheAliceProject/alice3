@@ -55,12 +55,23 @@ public class MyTypesMenuModel extends org.lgna.croquet.CascadeMenuModel< org.lgn
 	private MyTypesMenuModel() {
 		super( java.util.UUID.fromString( "71f303de-54a8-481e-b57f-f5c8ade814ea" ) );
 	}
+	
+	private java.util.List< org.lgna.croquet.CascadeBlankChild > addTypeFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node ) {
+		org.lgna.project.ast.NamedUserType type = node.getValue();
+		if( type != null ) {
+			rv.add( TypeFillIn.getInstance( node.getValue() ) );
+		}
+		for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > child : node.getChildren() ) {
+			addTypeFillIns( rv, child );
+		}
+		return rv;
+	}
+	
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
-		java.util.List< org.lgna.project.ast.NamedUserType > aliceTypes = org.alice.ide.IDE.getActiveInstance().getTypesDeclaredInAlice();
-		for( org.lgna.project.ast.NamedUserType aliceType : aliceTypes ) {
-			rv.add( TypeFillIn.getInstance( aliceType ) );
-		}
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
+		addTypeFillIns( rv, root );
 		return rv;
 	}
 }

@@ -74,7 +74,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	@Override
 	public org.alice.ide.ApiConfigurationManager getApiConfigurationManager() {
-		return StoryApiConfigurationManager.SINGLETON;
+		return StoryApiConfigurationManager.getInstance();
 	}
 	@Override
 	protected void registerAdapters(org.lgna.project.virtualmachine.VirtualMachine vm) {
@@ -314,28 +314,6 @@ public class StageIDE extends org.alice.ide.IDE {
 			mapTypeToText.put( org.lgna.project.ast.JavaType.getInstance( String.class ), createExampleText( "\"hello\", \"goodbye\"" ) );
 		}
 		return mapTypeToText.get( type );
-	}
-
-	@Override
-	protected java.util.List< ? super org.lgna.project.ast.JavaType > addPrimeTimeJavaTypes( java.util.List< ? super org.lgna.project.ast.JavaType > rv ) {
-		rv = super.addPrimeTimeJavaTypes( rv );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
-		return rv;
-	}
-
-	@Override
-	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes(java.util.List<? super org.lgna.project.ast.JavaType> rv) {
-		super.addSecondaryJavaTypes(rv);
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MoveDirection.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TurnDirection.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.RollDirection.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Marker.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.ObjectMarker.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.CameraMarker.class ) );
-		return rv;
 	}
 		
 //	@Override

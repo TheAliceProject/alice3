@@ -71,6 +71,20 @@ public class DefaultNode< T > implements Node< T > {
 		this.addChild( rv );
 		return rv;
 	}
+	public void removeChild( DefaultNode<T> node ) {
+		this.children.remove( node );
+	}
+	public DefaultNode< T > removeChild( T child ) {
+		java.util.ListIterator< DefaultNode< T > > listIterator = this.children.listIterator();
+		while( listIterator.hasNext() ) {
+			DefaultNode< T > node = listIterator.next();
+			if( node.getValue().equals( child ) ) {
+				listIterator.remove();
+				return node;
+			}
+		}
+		return null;
+	}
 	public T getValue() {
 		return this.value;
 	}

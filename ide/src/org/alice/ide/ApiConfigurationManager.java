@@ -46,16 +46,117 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public interface ApiConfigurationManager {
-	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type );
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
-	public java.util.List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes();
-	public org.lgna.project.ast.AbstractType< ?,?,? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?,?,? > type );
-	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
-	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?,?,? > argumentType );
-	public org.lgna.croquet.components.JComponent< ? > createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
-	public org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails );
-	public org.alice.ide.ast.ExpressionCreator getExpressionCreator();
+public abstract class ApiConfigurationManager {
+	
+	//override to create user types if desired
+	public org.lgna.project.ast.AbstractType< ?,?,? > getTypeFor( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		return type;
+	}
+	public final org.lgna.project.ast.AbstractType< ?,?,? > getTypeFor( Class<?> cls ) {
+		return this.getTypeFor( org.lgna.project.ast.JavaType.getInstance( cls ) );
+	}
+
+	private final edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > getNamedUserTypesAsTree() {
+		IDE ide = IDE.getActiveInstance();
+		org.lgna.project.Project project = ide.getProject();
+		if( project != null ) {
+			return org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
+		} else {
+			return null;
+		}
+	}
+	
+	
+	protected abstract boolean isNamedUserTypesAcceptableForSelection( org.lgna.project.ast.NamedUserType type );
+	public final edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > getNamedUserTypesAsTreeFilteredForSelection() {
+		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > rv = getNamedUserTypesAsTree();
+		if( rv != null ) {
+			for( edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > child : rv.getChildren() ) {
+				if( this.isNamedUserTypesAcceptableForSelection( child.getValue() ) ) {
+					//pass
+				} else {
+					rv.removeChild( child );
+				}
+			}
+		}
+		return rv;
+	}
+	protected abstract boolean isNamedUserTypesAcceptableForGallery( org.lgna.project.ast.NamedUserType type );
+	public final edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > getNamedUserTypesAsTreeFilteredForGallery() {
+		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > rv = getNamedUserTypesAsTree();
+		if( rv != null ) {
+			for( edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > child : rv.getChildren() ) {
+				if( this.isNamedUserTypesAcceptableForGallery( child.getValue() ) ) {
+					//pass
+				} else {
+					rv.removeChild( child );
+				}
+			}
+		}
+		return rv;
+	}
+	
+	public final java.util.List< org.lgna.project.ast.JavaType > getPrimeTimeSelectableTypesDeclaredInJava() {
+		java.util.List< org.lgna.project.ast.JavaType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.addPrimeTimeJavaTypes( rv );
+		return rv;
+	}
+	public final java.util.List< org.lgna.project.ast.JavaType > getSecondarySelectableTypesDeclaredInJava() {
+		java.util.List< org.lgna.project.ast.JavaType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.addSecondaryJavaTypes( rv );
+		return rv;
+	}
+//	public final java.util.List< org.lgna.project.ast.NamedUserType > getTypesDeclaredInAlice() {
+//		java.util.List< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//		this.addAliceTypes( rv, true );
+//		return rv;
+//	}
+	protected java.util.List< ? super org.lgna.project.ast.JavaType > addPrimeTimeJavaTypes( java.util.List< ? super org.lgna.project.ast.JavaType > rv ) {
+		rv.add( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE );
+		rv.add( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE );
+		rv.add( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( String.class ) );
+		return rv;
+	}
+	protected java.util.List< ? super org.lgna.project.ast.JavaType > addSecondaryJavaTypes( java.util.List< ? super org.lgna.project.ast.JavaType > rv ) {
+		return rv;
+	}
+
+	protected boolean isInclusionOfTypeDesired( org.lgna.project.ast.UserType< ? > valueTypeInAlice ) {
+		return true;
+		//return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
+	}
+//	protected java.util.List< ? super org.lgna.project.ast.NamedUserType > addAliceTypes( java.util.List< ? super org.lgna.project.ast.NamedUserType > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
+//		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
+//		if( sceneType != null ) {
+//			rv.add( sceneType );
+//			for( org.lgna.project.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+//				org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
+//				if( valueType instanceof org.lgna.project.ast.NamedUserType ) {
+//					org.lgna.project.ast.NamedUserType valueTypeInAlice = (org.lgna.project.ast.NamedUserType)valueType;
+//					if( rv.contains( valueType ) ) {
+//						//pass
+//					} else {
+//						if( isInclusionOfTypesWithoutMembersDesired || isInclusionOfTypeDesired( valueTypeInAlice ) ) {
+//							rv.add( valueTypeInAlice );
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return rv;
+//	}
+	
+
+	public abstract boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type );
+	public abstract boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
+	public abstract org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type );
+	public abstract org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
+	public abstract java.util.List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes();
+	public abstract org.lgna.project.ast.AbstractType< ?,?,? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?,?,? > type );
+	public abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );
+	public abstract org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?,?,? > argumentType );
+	public abstract org.lgna.croquet.components.JComponent< ? > createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
+	public abstract org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails );
+	public abstract org.alice.ide.ast.ExpressionCreator getExpressionCreator();
 }

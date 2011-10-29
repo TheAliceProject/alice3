@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.AbstractType, Void > {
+public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.AbstractType<?,?,?>, Void > {
 	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, TypeFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized TypeFillIn getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		TypeFillIn rv = map.get( type );
@@ -67,23 +67,44 @@ public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeFillIn >( this, this.type, org.lgna.project.ast.AbstractType.class );
 	}
 	@Override
-	public org.lgna.project.ast.AbstractType createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType, Void > step ) {
+	public org.lgna.project.ast.AbstractType createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType<?,?,?>, Void > step ) {
 		return this.type;
 	}
 	@Override
-	public org.lgna.project.ast.AbstractType getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType, Void > step ) {
+	public org.lgna.project.ast.AbstractType getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType<?,?,?>, Void > step ) {
 		return this.type;
 	}
-	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType, Void > step ) {
-		throw new AssertionError();
+	private int getDepth( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		if( type instanceof org.lgna.project.ast.JavaType ) {
+			return -1;
+		} else {
+			return 1 + this.getDepth( type.getSuperType() );
+		}
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType, Void > step ) {
-		return org.alice.ide.common.TypeIcon.getInstance( this.type );
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType<?,?,?>, Void > step ) {
+		int depth = this.getDepth( this.type );
+		if( depth > 0 ) {
+			StringBuilder sb = new StringBuilder();
+			for( int i=0; i<depth; i++ ) {
+				sb.append( "+" );
+			}
+			return new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( sb.toString() ), org.alice.ide.common.TypeComponent.createInstance( this.type ) ).getAwtComponent();
+		} else {
+			throw new AssertionError();
+		}
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType, Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType<?,?,?>, Void > step ) {
+		int depth = this.getDepth( this.type );
+		if( depth > 0 ) {
+			return super.getMenuItemIcon( step );
+		} else {
+			return org.alice.ide.common.TypeIcon.getInstance( this.type );
+		}
+	}
+	@Override
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType<?,?,?>, Void > step ) {
 		return org.alice.ide.IDE.getActiveInstance().getTextFor( type );
 	}
 }

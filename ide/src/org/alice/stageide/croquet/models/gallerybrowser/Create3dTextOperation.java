@@ -366,7 +366,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		CreateTextPane createTextPane = (CreateTextPane)context.getMainPanel();
 		org.lgna.story.Text text = createTextPane.createText();
 		if( text != null ) {
-			org.lgna.project.ast.NamedUserType type = org.alice.ide.IDE.getActiveInstance().getTypeDeclaredInAliceFor( org.lgna.story.Text.class );
+			org.lgna.project.ast.AbstractType< ?,?,? > type = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeFor( org.lgna.story.Text.class );
 			org.lgna.project.ast.Expression initializer = org.lgna.project.ast.AstUtilities.createInstanceCreation( type );
 			org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField( text.getName(), type, initializer );
 			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
