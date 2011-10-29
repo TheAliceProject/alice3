@@ -47,27 +47,47 @@ package org.alice.ide.controlflow;
  * @author Dennis Cosgrove
  */
 public class ControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
-	private UbiquitousStatementImplementor implementor;
+	private final org.lgna.project.ast.Statement incompleteStatement;
+	private org.lgna.croquet.components.JComponent< ? > incompleteStatementPane;
 	private org.lgna.croquet.components.Label label;
+	private javax.swing.JToolTip toolTip;
 	public ControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
 		super( dragModel, dragModel.getStatementCls() );
-		this.implementor = new UbiquitousStatementImplementor( dragModel.getPossiblyIncompleteStatement() );
+		this.incompleteStatement = dragModel.getPossiblyIncompleteStatement();
 	}
 	
-	protected String getLabelText() {
-		return this.implementor.getLabelText();
+
+	private String labelText;
+	private String getLabelText() {
+		if( this.labelText != null ) {
+			//pass
+		} else {
+			Class<?> cls = this.incompleteStatement.getClass();
+			this.labelText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.controlflow.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
+		}
+		return this.labelText;
 	}
-	protected void updateLabel() {
-		this.label.setText( this.getLabelText() );
+	private org.lgna.croquet.components.JComponent< ? > getIncompleteStatementPane() {
+		if( this.incompleteStatementPane != null ) {
+			//pass
+		} else {
+			this.incompleteStatementPane = org.alice.ide.x.TemplateAstI18nFactory.getInstance().createStatementPane( this.incompleteStatement );
+		}
+		return this.incompleteStatementPane;
 	}
-	
 	@Override
 	public org.lgna.croquet.components.JComponent< ? > getSubject() {
-		return this.implementor.getIncompleteStatementPane();
+		return this.getIncompleteStatementPane();
 	}
+
 	@Override
 	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
-		return this.implementor.getToolTip();
+		if( this.toolTip != null ) {
+			//pass
+		} else {
+			this.toolTip = new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( this.getIncompleteStatementPane().getAwtComponent() );
+		}
+		return this.toolTip;
 	}
 	
 	@Override
