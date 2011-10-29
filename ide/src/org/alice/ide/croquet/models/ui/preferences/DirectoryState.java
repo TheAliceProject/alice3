@@ -47,12 +47,23 @@ package org.alice.ide.croquet.models.ui.preferences;
  * @author Dennis Cosgrove
  */
 public abstract class DirectoryState extends org.lgna.croquet.preferences.PreferenceStringState {
+	protected static final String URI_SEPARATOR = "/"; // do not use java.io.File.separator
 	public DirectoryState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
 		super( group, id, initialValue );
 	}
 	protected abstract String getPath();
 	private java.io.File getDirectory() {
-		return new java.io.File( this.getPath() );
+		String path = this.getPath();
+		java.io.File rv;
+		try {
+			java.net.URI uri = new java.net.URI( path );
+			rv = new java.io.File( uri );
+		} catch( java.net.URISyntaxException urise ) {
+			//throw new RuntimeException( path, urise );
+			System.err.println( "warning: URI failure: " + path );
+			rv = new java.io.File( path );
+		}
+		return rv;
 	}
 	public java.io.File getDirectoryEnsuringExistance() {
 		java.io.File rv = this.getDirectory();
