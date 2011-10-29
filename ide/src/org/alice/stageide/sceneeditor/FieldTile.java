@@ -200,12 +200,7 @@ package org.alice.stageide.sceneeditor;
 			if( thisFieldAccessFactory.getField() == this.accessible ) {
 				color = java.awt.Color.YELLOW;
 			} else {
-				if( ide.isAccessibleInScope( this.accessible ) ) {
-					color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.75, 0.75 );
-				} else {
-					color = java.awt.Color.GRAY;
-				}
-				//color = edu.cmu.cs.dennisc.awt.ColorUtilities.setAlpha( color, 191 );
+				color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.75, 0.75 );
 			}
 		} else {
 			color = java.awt.Color.RED;

@@ -64,12 +64,6 @@ public class CameraViewFieldComponent extends GetterTemplate {
 	}
 	
 	@Override
-	protected boolean isInScope() 
-	{
-		return true;
-	}
-	
-	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.lgna.project.ast.AstUtilities.createFieldAccess(new ThisExpression(), this.field );
 	}

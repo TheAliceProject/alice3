@@ -76,29 +76,4 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	protected boolean isPressed() {
 		return false;
 	}
-	
-	@Override
-	protected boolean isInScope() {
-		return org.alice.ide.IDE.getActiveInstance().isSelectedAccessibleInScope();
-	}
-	
-	@Override
-	protected boolean contains( int x, int y, boolean jContains ) {
-		if( this.isInScope() ) {
-			return super.contains( x, y, jContains );
-		} else {
-			return false;
-		}
-	}
-		
-	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		super.paintEpilogue( g2, x, y, width, height );
-		if( this.isInScope() ) {
-			//pass
-		} else {
-			g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
-			this.fillBounds( g2 );
-		}
-	}
 }

@@ -50,9 +50,6 @@ public abstract class NodeLikeSubstance extends org.alice.ide.croquet.components
 		super( model );
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
-	protected boolean isInScope() {
-		return true;
-	}
 	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
 		if( this.isActive() ) {
 			if( this.isPressed() ) {

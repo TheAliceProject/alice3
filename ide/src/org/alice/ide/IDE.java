@@ -73,19 +73,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		performSceneEditorGeneratedSetUpMethodNameSet.add( GENERATED_SET_UP_METHOD_NAME );
 	}
 
-//	private org.lgna.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
-//		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-//		}
-//		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-//			if( nextValue ) {
-//				IDE.this.right.addComponent( IDE.this.ubiquitousPane, org.lgna.croquet.components.BorderPanel.Constraint.NORTH );
-//			} else {
-//				IDE.this.right.removeComponent( IDE.this.ubiquitousPane );
-//			}
-//			IDE.this.right.revalidateAndRepaint();
-//		}
-//	};
-
 	public static IDE getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
 	}
@@ -117,9 +104,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		this.promptForLicenseAgreements();
 
-		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addAndInvokeValueObserver( this.isAlwaysShowingBlocksObserver );
 		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
-
 
 		this.getRunOperation().setEnabled( false );
 		this.addProjectObserver( new ProjectObserver() {
@@ -173,12 +158,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			this.theme = this.createTheme();
 		}
 		return this.theme;
-	}
-
-	@Override
-	public void loadProjectFrom( java.net.URI uri ) {
-		super.loadProjectFrom( uri );
-		this.mapUUIDToNode.clear();
 	}
 
 	protected org.lgna.project.ast.Expression createPredeterminedExpressionIfAppropriate( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
@@ -935,15 +914,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return text;
 	}
 
-	@Deprecated
-	public final boolean isAccessibleInScope( org.lgna.project.ast.Accessible accessible ) {
-		return true;
-	}
-	@Deprecated
-	public final boolean isSelectedAccessibleInScope() {
-		return true;
-	}
-
 	@Override
 	public void setDragInProgress( boolean isDragInProgress ) {
 		super.setDragInProgress( isDragInProgress );
@@ -962,64 +932,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return (E)ancestor;
 	}
 
-	private java.util.Map< java.util.UUID, org.lgna.project.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, org.lgna.project.ast.Node >();
-
 	protected void ensureNodeVisible( org.lgna.project.ast.Node node ) {
 		org.lgna.project.ast.AbstractCode nextFocusedCode = getAncestor( node, org.lgna.project.ast.AbstractCode.class );
 		if( nextFocusedCode != null ) {
 			this.setFocusedCode( nextFocusedCode );
 		}
 	}
-	private org.lgna.project.ast.Node getNodeForUUID( java.util.UUID uuid ) {
-		org.lgna.project.ast.Node rv = mapUUIDToNode.get( uuid );
-		if( rv != null ) {
-			//pass
-		} else {
-			org.lgna.project.ast.NamedUserType type = this.getProgramType();
-			type.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
-				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-					if( crawlable instanceof org.lgna.project.ast.Node ) {
-						org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)crawlable;
-						mapUUIDToNode.put( node.getUUID(), node );
-					}
-				}
-			}, true );
-			rv = mapUUIDToNode.get( uuid );
-		}
-		return rv;
-	}
-
 	public org.lgna.croquet.components.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
-
-//	public org.lgna.croquet.components.Component< ? > getComponentForNode( org.lgna.project.ast.Node node, boolean scrollToVisible ) {
-//		if( node instanceof org.lgna.project.ast.Statement ) {
-//			final org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
-//			ensureNodeVisible( node );
-//			org.alice.ide.common.AbstractStatementPane rv = getCodeFactory().lookup( statement );
-//			if( scrollToVisible ) {
-//				//todo: use ScrollUtilities.scrollRectToVisible
-//				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//					public void run() {
-//						org.alice.ide.common.AbstractStatementPane pane = getCodeFactory().lookup( statement );
-//						if( pane != null ) {
-//							pane.scrollToVisible();
-//						}
-//					}
-//				} );
-//			}
-//			return rv;
-//		} else {
-//			return null;
-//		}
-//	}
-//	public org.lgna.croquet.components.Component< ? > getComponentForNode( java.util.UUID uuid, boolean scrollToVisible ) {
-//		return getComponentForNode( getNodeForUUID( uuid ), scrollToVisible );
-//	}
-//	public org.lgna.croquet.components.Component< ? > getComponentForNode( java.util.UUID uuid ) {
-//		return getComponentForNode( uuid, false );
-//	}
 
 	public String getApplicationSubPath() {
 		String rv = getApplicationName();
@@ -1031,10 +952,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public java.io.File getMyTypesDirectory() {
 		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
-	}
-
-	public boolean isInstanceLineDesired() {
-		return true;
 	}
 
 	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType typeInAlice );
