@@ -47,11 +47,11 @@ package org.alice.ide.controlflow;
  * @author Dennis Cosgrove
  */
 public class ControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
-	private org.alice.ide.ubiquitouspane.templates.UbiquitousStatementImplementor implementor;
+	private UbiquitousStatementImplementor implementor;
 	private org.lgna.croquet.components.Label label;
 	public ControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
 		super( dragModel, dragModel.getStatementCls() );
-		this.implementor = new org.alice.ide.ubiquitouspane.templates.UbiquitousStatementImplementor( dragModel.getPossiblyIncompleteStatement() );
+		this.implementor = new UbiquitousStatementImplementor( dragModel.getPossiblyIncompleteStatement() );
 	}
 	
 	protected String getLabelText() {

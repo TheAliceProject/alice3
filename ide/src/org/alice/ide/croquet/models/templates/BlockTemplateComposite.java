@@ -71,7 +71,7 @@ public class BlockTemplateComposite extends TemplateComposite {
 	}
 	@Override
 	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.ubiquitouspane.UbiquitousPane();
+		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.controlflow.ControlFlowPanel( null );
 		rv.setBackgroundColor( new java.awt.Color( 250, 150, 105 ) );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		return rv;

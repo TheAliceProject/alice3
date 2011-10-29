@@ -56,7 +56,6 @@ public abstract class MainComponent extends org.lgna.croquet.components.BorderPa
 
 	private final org.lgna.croquet.components.JComponent< ? > galleryBrowser;
 	private final org.alice.ide.memberseditor.MembersEditor membersEditor;
-	private final org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 	private final org.alice.ide.typehierarchyview.TypeHierarchyView typeHierarchyView;
 	private final org.alice.ide.contextview.ContextView contextView;
 
@@ -65,7 +64,6 @@ public abstract class MainComponent extends org.lgna.croquet.components.BorderPa
 	public MainComponent() {
 		this.galleryBrowser = this.createClassGalleryBrowser(this.getClassGalleryRoot());
 		this.membersEditor = this.createClassMembersEditor();
-		this.ubiquitousPane = this.createUbiquitousPane();
 		this.typeHierarchyView = new org.alice.ide.typehierarchyview.TypeHierarchyView();
 		this.contextView = new org.alice.ide.contextview.ContextView( this.typeHierarchyView, this.membersEditor );
 
@@ -97,15 +95,8 @@ public abstract class MainComponent extends org.lgna.croquet.components.BorderPa
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
 	}
-	protected org.alice.ide.ubiquitouspane.UbiquitousPane createUbiquitousPane() {
-		return new org.alice.ide.ubiquitouspane.UbiquitousPane();
-	}
-
 	public org.alice.ide.typeeditor.TypeEditor getTypeEditor() {
 		return this.typeEditor;
-	}
-	public org.alice.ide.ubiquitouspane.UbiquitousPane getUbiquitousPane() {
-		return this.ubiquitousPane;
 	}
 	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
 		return this.membersEditor;
