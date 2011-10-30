@@ -139,25 +139,24 @@ public class ECardApplication extends org.lgna.croquet.Application {
 	}
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor(org.lgna.croquet.DropSite dropSite) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
 	protected void handleWindowOpened(java.awt.event.WindowEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-	@Override
-	protected void handleAbout(org.lgna.croquet.triggers.Trigger trigger) {
-	}
-	@Override
-	protected void handlePreferences(org.lgna.croquet.triggers.Trigger trigger) {
 	}
 	@Override
 	protected void handleQuit(org.lgna.croquet.triggers.Trigger trigger) {
 		System.exit(0);
 	}
 
+	@Override
+	protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+		return null;
+	}
+	@Override
+	protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+		return null;
+	}
 	@Override
 	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
 	}

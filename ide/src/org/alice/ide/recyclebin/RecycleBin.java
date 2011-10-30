@@ -79,20 +79,22 @@ public class RecycleBin extends org.lgna.croquet.components.JComponent< javax.sw
 				return null;
 			}
 			@Override
-			protected void handleAbout( org.lgna.croquet.triggers.Trigger trigger ) {
+			protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+				return null;
+			}
+			@Override
+			protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+				return null;
+			}
+			@Override
+			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}
 			@Override
 			protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
 			}
 			@Override
-			protected void handlePreferences( org.lgna.croquet.triggers.Trigger trigger ) {
-			}
-			@Override
 			protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 				System.exit( 0 );
-			}
-			@Override
-			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}
 		};
 		application.initialize( args );

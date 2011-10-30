@@ -108,10 +108,16 @@ public abstract class Application {
 		} );
 		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
 			public void handleAbout( java.util.EventObject e ) {
-				Application.this.handleAbout( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
+				Operation< ? > aboutOperation = Application.this.getAboutOperation();
+				if( aboutOperation != null ) {
+					aboutOperation.fire( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
+				}
 			}
 			public void handlePreferences( java.util.EventObject e ) {
-				Application.this.handlePreferences( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
+				Operation< ? > preferencesOperation = Application.this.getPreferencesOperation();
+				if( preferencesOperation != null ) {
+					preferencesOperation.fire( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
+				}
 			}
 			public void handleQuit( java.util.EventObject e ) {
 				Application.this.handleQuit( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
@@ -157,11 +163,12 @@ public abstract class Application {
 		}
 	}
 
-	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-	protected abstract void handleAbout( org.lgna.croquet.triggers.Trigger trigger );
-	protected abstract void handlePreferences( org.lgna.croquet.triggers.Trigger trigger );
-	protected abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract Operation< ? > getAboutOperation();
+	protected abstract Operation< ? > getPreferencesOperation();
+	
 	protected abstract void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
+	protected abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		if( message instanceof org.lgna.croquet.components.Component<?> ) {

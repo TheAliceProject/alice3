@@ -152,10 +152,12 @@ public class MemoryUsagePanel extends org.lgna.croquet.components.BorderPanel {
 				return null;
 			}
 			@Override
-			protected void handleAbout( org.lgna.croquet.triggers.Trigger trigger ) {
+			protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+				return null;
 			}
 			@Override
-			protected void handlePreferences( org.lgna.croquet.triggers.Trigger trigger ) {
+			protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+				return null;
 			}
 			@Override
 			protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {

@@ -179,12 +179,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		}
 	}
-	public final org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+	@Override
+	public org.lgna.croquet.Operation< ? > getPreferencesOperation() {
 		return null;
 	}
 	public abstract org.lgna.croquet.Operation< ? > getRunOperation();
 	public abstract org.lgna.croquet.Operation< ? > getRestartOperation();
-	public abstract org.lgna.croquet.Operation< ? > getAboutOperation();
 
 	public abstract org.lgna.croquet.Operation< ? > createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
@@ -694,16 +694,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	@Override
-	protected void handleAbout( org.lgna.croquet.triggers.Trigger trigger ) {
-		this.getAboutOperation().fire( trigger );
-	}
-	@Override
 	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
-	}
-
-	@Override
-	protected void handlePreferences( org.lgna.croquet.triggers.Trigger trigger ) {
-		this.getPreferencesOperation().fire( trigger );
 	}
 	protected void preservePreferences() {
 		try {
