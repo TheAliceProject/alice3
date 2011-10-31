@@ -47,6 +47,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import org.alice.ide.typeeditor.FieldList;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.GridBagPanel;
@@ -58,40 +59,20 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     
     protected Button moveToMarkerButton;
     protected Button moveToObjectButton;
-    protected MutableList<UserField> fieldList;
+    protected FieldList fieldList;
     
-    protected abstract MutableList<UserField> createMutableList(org.lgna.croquet.components.MutableList.Factory<UserField> factory);
-    protected abstract org.lgna.croquet.Operation<?> getAddItemOperation();
     protected abstract String getTitleString();
-    
     protected abstract Button getMovetoMarkerButton();
     protected abstract Button getMoveToObjectButton();
-    
+    protected abstract FieldList getFieldList( org.lgna.project.ast.UserType<?> type );
     public abstract void updateButtons();
+   
     
-    public AbstractMarkerManagerPanel()
+    public void setType(org.lgna.project.ast.UserType<?> type)
     {
-        super();
-        org.lgna.croquet.components.MutableList.Factory<UserField> factory = new org.lgna.croquet.components.MutableList.Factory<UserField>() {
-                public org.lgna.croquet.components.Component<?> createLeadingComponent() {
-                    return null;
-                }
-                public org.lgna.croquet.components.Component<?> createMainComponent() {
-                    return new MarkerFieldTile();
-                }
-                public org.lgna.croquet.components.Component<?> createTrailingComponent() {
-                    return null;
-                }
-                public void update(org.lgna.croquet.components.Component<?> leadingComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> trailingComponent, int index, UserField item) {
-                    ((MarkerFieldTile)mainComponent).setField(item);
-                }
-                public void updateSelection(org.lgna.croquet.components.Component<?> leadingComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> trailingComponent, boolean isSelected) {
-                    ((MarkerFieldTile)mainComponent).setSelected( isSelected );
-                }
-                public org.lgna.croquet.Operation<?> getAddItemOperation() {
-                    return AbstractMarkerManagerPanel.this.getAddItemOperation();
-                }
-        };
+    	this.removeAllComponents();
+    	this.fieldList = this.getFieldList( type );
+    	this.fieldList.setBackgroundColor(this.getBackgroundColor());
         this.addComponent( new org.lgna.croquet.components.Label( getTitleString(), 1.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
                 0, //gridX
                 0, //gridY
@@ -133,7 +114,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
                 0, //ipadX
                 0 ) //ipadY
         );
-        this.fieldList = this.createMutableList( factory );
+        
         this.addComponent(this.fieldList, new GridBagConstraints( 
                 0, //gridX
                 1, //gridY
@@ -160,19 +141,23 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
                 0, //ipadX
                 0 ) //ipadY
         );
+        
+        this.updateButtons();
     }
     
     @Override
     public void setBackgroundColor(Color color)
     {
         super.setBackgroundColor(color);
-        this.fieldList.setBackgroundColor(color);
-        this.fieldList.setUnselectedBackgroundColor(color);
+        if (this.fieldList != null) {
+        	this.fieldList.setBackgroundColor(color);
+        }
+//        this.fieldList.setUnselectedBackgroundColor(color);
     }
     
     public void setSelectedItemBackgroundColor(Color color)
     {
-        this.fieldList.setSelectedBackgroundColor(color);
+//        this.fieldList.setSelectedBackgroundColor(color);
     }
 
 }

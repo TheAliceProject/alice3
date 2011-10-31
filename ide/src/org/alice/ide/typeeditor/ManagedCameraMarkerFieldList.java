@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.typeeditor;
+
+import org.alice.stageide.sceneeditor.viewmanager.CreateCameraMarkerActionOperation;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public abstract class AbstractDeclareFieldActionOperation extends org.lgna.croquet.ActionOperation {
-	protected abstract org.lgna.project.ast.NamedUserType getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[]> createFieldAndStatements( org.lgna.croquet.history.ActionOperationStep step, org.lgna.project.ast.NamedUserType ownerType );
-	protected abstract boolean isInstanceValid();
-	public AbstractDeclareFieldActionOperation( java.util.UUID individualId ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
-	}
-	@Override
-	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		org.lgna.project.ast.NamedUserType ownerType = this.getOwnerType();
-		if( ownerType != null ) {
-			final edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[]> tuple = this.createFieldAndStatements( step, ownerType );
-			if( tuple != null ) {
-				org.lgna.project.ast.UserField field = tuple.getA();
-				if( field != null ) {
-					org.lgna.project.ast.Statement[] doStatements = tuple.getB();
-					org.lgna.project.ast.Statement[] undoStatements = tuple.getC(); 
-					step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( step, ownerType, field, doStatements, undoStatements ));
-				} else {
-					step.cancel();
-				}
-			} else {
-				step.cancel();
-			}
-		} else {
-			step.cancel();
-		}
+public class ManagedCameraMarkerFieldList extends MarkerFieldList {
+	public ManagedCameraMarkerFieldList( org.lgna.project.ast.NamedUserType type ) {
+		super( ManagedCameraMarkerFieldState.getInstance( type ), CreateCameraMarkerActionOperation.getInstance() );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 }

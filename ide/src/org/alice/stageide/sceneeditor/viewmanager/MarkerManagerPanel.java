@@ -53,12 +53,12 @@ import org.lgna.croquet.components.GridBagPanel;
 
 public class MarkerManagerPanel extends GridBagPanel
 {
-    private SceneViewManagerPanel cameraMarkerManagerPanel = null;
+    private SceneCameraMarkerManagerPanel cameraMarkerManagerPanel = null;
     private SceneObjectMarkerManagerPanel objectMarkerManagerPanel = null;
     
     public MarkerManagerPanel()
     {
-        this.cameraMarkerManagerPanel = new SceneViewManagerPanel();
+        this.cameraMarkerManagerPanel = new SceneCameraMarkerManagerPanel();
         this.objectMarkerManagerPanel = new SceneObjectMarkerManagerPanel();
         
         int index = 0;
@@ -137,7 +137,7 @@ public class MarkerManagerPanel extends GridBagPanel
         return this.objectMarkerManagerPanel;
     }
     
-    public SceneViewManagerPanel getCameraMarkerPanel()
+    public SceneCameraMarkerManagerPanel getCameraMarkerPanel()
     {
         return this.cameraMarkerManagerPanel;
     }

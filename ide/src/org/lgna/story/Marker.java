@@ -43,11 +43,40 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.ValueTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Marker extends MovableTurnable implements MutableRider {
+	
+	@Override
+	/*package-private*/abstract org.lgna.story.implementation.MarkerImp getImplementation();
+	
 	public void setVehicle( Entity vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+	}
+	
+	@MethodTemplate()
+	@GetterTemplate(isPersistent = true)
+	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
+	public Double getOpacity() {
+		return (double)this.getImplementation().opacity.getValue();
+	}
+	@MethodTemplate()
+	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
+		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+	
+	@MethodTemplate()
+	@GetterTemplate(isPersistent = true)
+	public Paint getPaint() {
+		return this.getImplementation().paint.getValue();
+	}
+	@MethodTemplate()
+	public void setPaint( Paint paint, SetPaint.Detail... details ) {
+		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

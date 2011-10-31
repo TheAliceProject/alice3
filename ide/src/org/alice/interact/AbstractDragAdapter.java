@@ -83,6 +83,8 @@ import org.lgna.story.implementation.ObjectMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 import org.lgna.story.implementation.TransformableImp;
 
+import com.sun.tools.doclets.internal.toolkit.util.DocFinder.Input;
+
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
@@ -729,11 +731,8 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		List<PickHint.PickType> pickTypes = new LinkedList<PickHint.PickType>();
 		if (pickedObject != null)
 		{
-			EntityImp entityImplementation = EntityImp.getInstance(pickedObject);
-			if (entityImplementation == null)
-			{
-				entityImplementation = EntityImp.getInstance(pickedObject.getParent());
-			}
+			edu.cmu.cs.dennisc.scenegraph.Component mainComponent = InputState.getFirstClassFromComponent(pickedObject);
+			EntityImp entityImplementation = EntityImp.getInstance(mainComponent);
 			if (entityImplementation != null)
 			{
 				Entity entity = entityImplementation.getAbstraction();

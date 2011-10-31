@@ -92,8 +92,8 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp{
 	private TexturedAppearance sgLaserLinesFrontFacingAppearance;
 	
 	private edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { sgAppearance };
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance;
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances;
 	private List<Visual> sgDetailedComponents;
 	
 	protected boolean showDetail = false;
@@ -116,6 +116,10 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp{
 
 	@Override
 	protected void createVisuals() {
+		
+		this.sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
+		this.sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[]{ sgAppearance };
+		
 		this.sgDetailedComponents = new LinkedList<Visual>();
 		this.farClippingPlane = 100;
 		this.horizontalViewAngle = new edu.cmu.cs.dennisc.math.AngleInDegrees(90);
@@ -287,6 +291,8 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp{
 		sgTransformableCylinder1.setParent( this.getSgComposite() );
 		sgTransformableCylinder2.setParent( this.getSgComposite() );
 		sgBoxVisual.setParent( this.getSgComposite() );
+		
+		this.sgVisuals = new Visual[]{sgLensVisual, sgCylinder1Visual, sgCylinder2Visual, sgBoxVisual};
 		
 		setDetailedViewShowing(false);
 		updateDetailIsShowing();

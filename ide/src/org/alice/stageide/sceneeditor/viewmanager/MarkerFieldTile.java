@@ -43,8 +43,11 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import java.awt.Color;
+
 import javax.swing.BorderFactory;
 
+import org.alice.stageide.sceneeditor.MarkerUtilities;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.project.ast.UserField;
@@ -96,13 +99,15 @@ public class MarkerFieldTile extends LineAxisPanel
 		
 		this.textLabel.setText( this.field.getName() );
 		
-		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getMarkerForField(field);
-		if (marker != null)
-		{
-			Color4f color = marker.getMarkerColor();
-			this.textLabel.setForegroundColor(color.getAsAWTColor());
-//			this.iconLabel.setIcon(marker.getIcon());
-		}
+		org.lgna.story.Color color = MarkerUtilities.getColorForMarkerName(field.name.getValue());
+		this.textLabel.setForegroundColor(new Color(color.getRed().floatValue(), color.getGreen().floatValue(), color.getBlue().floatValue()));
+//		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getMarkerForField(field);
+//		if (marker != null)
+//		{
+//			Color4f color = marker.getMarkerColor();
+//			this.textLabel.setForegroundColor(color.getAsAWTColor());
+////			this.iconLabel.setIcon(marker.getIcon());
+//		}
 		this.addComponent( iconLabel );
 		this.addComponent( this.textLabel );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ) );

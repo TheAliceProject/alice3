@@ -42,10 +42,13 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import java.util.LinkedList;
+import java.util.List;
 
 import org.alice.ide.ast.CurrentThisExpression;
 import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.instancefactory.InstanceFactoryState;
+import org.alice.ide.name.validators.MarkerColorValidator;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
@@ -54,14 +57,25 @@ import org.alice.interact.SnapGrid;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
+import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
+import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
+import org.alice.stageide.sceneeditor.viewmanager.CreateObjectMarkerActionOperation;
+import org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation;
+import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation;
+import org.alice.stageide.sceneeditor.viewmanager.SceneCameraMarkerManagerPanel;
+import org.alice.stageide.sceneeditor.viewmanager.SceneObjectMarkerManagerPanel;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.UserField;
@@ -70,12 +84,18 @@ import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.BookmarkCameraMarker;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Marker;
 import org.lgna.story.ObjectMarker;
+import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.MarkerImp;
+import org.lgna.story.implementation.OrthographicCameraMarkerImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.TransformableImp;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
+
+import com.jogamp.common.util.IntIntHashMap;
+
 
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
@@ -86,6 +106,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
+import edu.cmu.cs.dennisc.pattern.Tuple3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -268,7 +289,29 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.components.PushButton expandCollapseButton;
 	
-	private boolean selectionIsFromManipulator = false;
+	private org.lgna.story.CameraMarker expandedViewSelectedMarker = null;
+	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera = null;
+	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgPerspectiveCamera = null;
+	private OrthographicCameraMarkerImp topOrthoMarker = null;
+	private OrthographicCameraMarkerImp frontOrthoMarker = null;
+	private OrthographicCameraMarkerImp sideOrthoMarker = null;
+	private List<org.lgna.story.CameraMarker> orthographicCameraMarkers = new LinkedList<org.lgna.story.CameraMarker>();
+	private org.lgna.story.PerspectiveCameraMarker openingSceneMarker;
+	private org.lgna.story.PerspectiveCameraMarker sceneViewMarker;
+	
+	private ComboBox<View> mainCameraViewSelector;
+	private CameraMarkerTracker mainCameraViewTracker;
+	
+	private org.lgna.croquet.ListSelectionState.ValueObserver<View> mainCameraViewSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<View>() {
+		public void changing( org.lgna.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
+			StorytellingSceneEditor.this.handleMainCameraViewSelection( mainCameraViewTracker.getCameraMarker( nextValue ) );
+		}
+	};
+	
+	private ListSelectionState<View> mainCameraMarkerList = org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance();
+	
 	private boolean selectionIsFromInstanceSelector = false;
 	private boolean selectionIsFromMain = false;
 	
@@ -320,7 +363,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 					InstanceFactoryState.getInstance().setValueTransactionlessly(org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance(field));
 				}
 			}
-			if (/*!this.selectionIsFromManipulator &&*/ this.globalDragAdapter != null)
+			if (this.globalDragAdapter != null)
 			{
 				setSelectedFieldOnManipulator(field);
 			}
@@ -386,9 +429,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return ObjectPropertiesTab.getInstance().getMainComponent();
 	}
 	
+	private SceneCameraMarkerManagerPanel getCameraMarkerPanel()
+	{
+		return MarkerPanelTab.getInstance().getMainComponent().getCameraMarkerPanel();
+	}
+	
+	private SceneObjectMarkerManagerPanel getObjectMarkerPanel()
+	{
+		return MarkerPanelTab.getInstance().getMainComponent().getObjectMarkerPanel();
+	}
+	
 	private void handleManipulatorSelection(org.alice.interact.event.SelectionEvent e)
 	{
-		this.selectionIsFromManipulator = true;
 		EntityImp imp = e.getTransformable();
 		if (imp != null)
 		{
@@ -400,7 +452,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
 			StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
 		}
-		this.selectionIsFromManipulator = false;
 	}
 	
 	private void showRightClickMenuForModel(InputState clickInput)
@@ -413,6 +464,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			UserField field = this.getFieldForInstanceInJavaVM(entity);
 			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( field ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.InputEventTrigger( clickInput.getInputEvent() ) );
 		}
+	}
+	
+	private void handleMainCameraViewSelection( CameraMarkerImp cameraMarker )
+	{
+		MoveActiveCameraToMarkerActionOperation.getInstance().setCameraMarker(cameraMarker);
+		MoveMarkerToActiveCameraActionOperation.getInstance().setCameraMarker(cameraMarker);
 	}
 	
 	@Override
@@ -560,6 +617,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getInstanceInJava();
 		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 		getPropertyPanel().setSceneInstance(sceneAliceInstance);
+		getObjectMarkerPanel().setType(sceneAliceInstance.getType());
+		getCameraMarkerPanel().setType(sceneAliceInstance.getType());
 		for (org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields())
 		{
 			if( field.getValueType().isAssignableTo(org.lgna.story.Camera.class)) 
@@ -611,6 +670,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	@Override
 	public org.lgna.project.ast.Statement[] getDoStatementsForAddField(org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform) {
+		return this.getDoStatementsForAddField(field, initialTransform, null);
+	}
+	
+	public org.lgna.project.ast.Statement[] getDoStatementsForAddField(org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform, org.lgna.story.Paint initialPaint) {
 		if (initialTransform == null)
 		{
 			org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
@@ -621,7 +684,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			Point3 location = new Point3(0, y, 0);
 			initialTransform = new AffineMatrix4x4(OrthogonalMatrix3x3.createIdentity(), location);
 		}
-		return SetUpMethodGenerator.getSetupStatementsForField(false, field, this.getActiveSceneInstance(), null, initialTransform);
+		return SetUpMethodGenerator.getSetupStatementsForField(false, field, this.getActiveSceneInstance(), null, initialTransform, initialPaint);
 	}
 	
 	@Override
@@ -782,12 +845,48 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	public void setHandleVisibilityForObject( Transformable sgComposite, boolean b ) {
 		throw new RuntimeException( "todo" );
 	}
-	public Tuple2< UserField, BookmarkCameraMarker > createCameraMarkerField( NamedUserType ownerType ) {
-		throw new RuntimeException( "todo" );
+	public Tuple3< UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[] > createCameraMarkerField( NamedUserType ownerType ) {
+		org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
+		field.managementLevel.setValue( ManagementLevel.MANAGED );
+		field.valueType.setValue( JavaType.getInstance( BookmarkCameraMarker.class ) );
+		field.name.setValue( MarkerUtilities.getNameForCameraMarker( ownerType ) );
+		field.initializer.setValue( AstUtilities.createInstanceCreation(BookmarkCameraMarker.class));
+		
+		AffineMatrix4x4 initialTransform = this.sceneCameraImplementation.getAbsoluteTransformation();
+		
+		org.lgna.story.Paint initialColor = MarkerUtilities.getColorForMarkerName(field.name.getValue());
+		org.lgna.project.ast.Statement[] doStatements = this.getDoStatementsForAddField(field, initialTransform, initialColor);
+		org.lgna.project.ast.Statement[] undoStatements = this.getUndoStatementsForAddField(field);
+
+		return edu.cmu.cs.dennisc.pattern.Tuple3.createInstance( field, doStatements, undoStatements );
 	}
-	public Tuple2< UserField, ObjectMarker > createObjectMarkerField( NamedUserType ownerType ) {
-		throw new RuntimeException( "todo" );
+	
+	public Tuple3< UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[] > createObjectMarkerField( NamedUserType ownerType ) {
+		
+		org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
+		field.managementLevel.setValue( ManagementLevel.MANAGED );
+		field.valueType.setValue( JavaType.getInstance( ObjectMarker.class ) );
+		field.name.setValue( MarkerUtilities.getNameForObjectMarker( ownerType, this.getSelectedField() ) );
+		field.initializer.setValue( AstUtilities.createInstanceCreation(ObjectMarker.class));
+		
+		org.lgna.story.implementation.EntityImp selectedImp = this.getImplementation(this.getSelectedField());
+		AffineMatrix4x4 initialTransform = null;
+		if (selectedImp != null)
+		{
+			initialTransform = selectedImp.getAbsoluteTransformation();
+		}
+		else
+		{
+			initialTransform = AffineMatrix4x4.createIdentity();
+		}
+		
+		org.lgna.story.Paint initialColor = MarkerUtilities.getColorForMarkerName(field.name.getValue());
+		org.lgna.project.ast.Statement[] doStatements = this.getDoStatementsForAddField(field, initialTransform, initialColor);
+		org.lgna.project.ast.Statement[] undoStatements = this.getUndoStatementsForAddField(field);
+
+		return edu.cmu.cs.dennisc.pattern.Tuple3.createInstance( field, doStatements, undoStatements );
 	}
+	
 	public void switchToOthographicCamera() {
 		throw new RuntimeException( "todo" );
 	}
@@ -798,7 +897,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		throw new RuntimeException( "todo" );
 	}
 	public MarkerImp getMarkerForField( UserField field ) {
-		throw new RuntimeException( "todo" );
+		Object obj = this.getInstanceInJavaVMForField(field);
+		if (obj instanceof Marker)
+		{
+			return ImplementationAccessor.getImplementation((Marker)obj);
+		}
+		return null;
 	}
 	public AbstractCamera getSGCameraForCreatingThumbnails() {
 		throw new RuntimeException( "todo" );

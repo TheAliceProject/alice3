@@ -42,38 +42,25 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import org.alice.ide.typeeditor.FieldList;
+import org.alice.ide.typeeditor.ManagedCameraMarkerFieldList;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.MutableList;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 
 
 /**
  * @author David Culyba
  */
-public class SceneViewManagerPanel extends AbstractMarkerManagerPanel{
+public class SceneCameraMarkerManagerPanel extends AbstractMarkerManagerPanel{
 	
-	public SceneViewManagerPanel()
-    {
-        super();
-    }
-
-	@Override
-	protected MutableList<UserField> createMutableList(org.lgna.croquet.components.MutableList.Factory<UserField> factory)
-	{
-	    return org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance().createMutableList( factory );
-	}
-	
-    @Override
-    protected Operation<?> getAddItemOperation()
-    {
-        return CreateCameraMarkerActionOperation.getInstance();
-    }
     
     @Override
     protected String getTitleString()
     {
-        java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SceneViewManagerPanel.class.getPackage().getName() + ".cameraMarkers" );
+        java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SceneCameraMarkerManagerPanel.class.getPackage().getName() + ".cameraMarkers" );
         return resourceBundle.getString( "cameraMarkersTitle" );
     }
     
@@ -94,6 +81,15 @@ public class SceneViewManagerPanel extends AbstractMarkerManagerPanel{
 	{
 		this.moveToMarkerButton.setVisible(MoveActiveCameraToMarkerActionOperation.getInstance().isEnabled());
 		this.moveToObjectButton.setVisible(MoveMarkerToActiveCameraActionOperation.getInstance().isEnabled());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.alice.stageide.sceneeditor.viewmanager.AbstractMarkerManagerPanel#getFieldList(org.lgna.project.ast.NamedUserType)
+	 */
+	@Override
+	protected FieldList getFieldList(org.lgna.project.ast.UserType<?> type) {
+		assert type instanceof NamedUserType;
+		return new ManagedCameraMarkerFieldList((NamedUserType)type);
 	}
 
 }

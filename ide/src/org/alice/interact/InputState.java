@@ -374,7 +374,7 @@ public class InputState {
 		this.clickPickTransformable = clickPickTransformable;
 	}
 
-	protected Component getFirstClassFromComponent( Component object )
+	public static Component getFirstClassFromComponent( Component object )
 	{
 		if (object == null)
 		{

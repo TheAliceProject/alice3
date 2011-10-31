@@ -60,14 +60,14 @@ public class ObjectMarkerImp extends MarkerImp{
 	private double scale = 1.0;
 
 	private edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { sgAppearance };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgRedAppearance = new TexturedAppearance();
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgGreenAppearance = new TexturedAppearance();
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgBlueAppearance = new TexturedAppearance();
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgWhiteAppearance = new TexturedAppearance();
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance;
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances;
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgRedAppearance;
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgGreenAppearance;
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgBlueAppearance;
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgWhiteAppearance;
 
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] opacityAppearances = {sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] opacityAppearances = {sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
 	
 	public ObjectMarkerImp(org.lgna.story.ObjectMarker abstraction){
 		super(abstraction);
@@ -90,6 +90,15 @@ public class ObjectMarkerImp extends MarkerImp{
 	
 	private void createAxes( double unitLength, double forwardFactor ) {
 		axisToSGAppearanceMap = new java.util.HashMap< Cylinder.BottomToTopAxis, TexturedAppearance >();
+		
+		this.sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
+		this.sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[]{ sgAppearance };
+		this.sgRedAppearance = new TexturedAppearance();
+		this.sgGreenAppearance = new TexturedAppearance();
+		this.sgBlueAppearance = new TexturedAppearance();
+		this.sgWhiteAppearance = new TexturedAppearance();
+		this.opacityAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[]{sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
+		
 		
 		sgRedAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.RED );
 		sgGreenAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.GREEN );

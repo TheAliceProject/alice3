@@ -81,6 +81,9 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 					} else {
 						color = MemberList.this.getBackgroundColor().darker();
 					}
+//					if ( this.getModel().isSelected() ) {
+//						color = java.awt.Color.RED;
+//					}
 					g.setColor( color );
 					edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight() - 5 );
 					g.drawRoundRect( 0, 0, this.getWidth()-1, this.getHeight()-1, 8, 8 );

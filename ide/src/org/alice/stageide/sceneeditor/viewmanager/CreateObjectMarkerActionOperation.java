@@ -62,7 +62,7 @@ public class CreateObjectMarkerActionOperation extends AbstractSceneDeclareField
 	}
 	
 	@Override
-	protected Tuple2< UserField, org.lgna.story.ObjectMarker > createFieldAndInstance( org.lgna.croquet.history.ActionOperationStep step, NamedUserType ownerType ) 
+	protected edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[]> createFieldAndStatements( org.lgna.croquet.history.ActionOperationStep step, NamedUserType ownerType )  
 	{
 		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().createObjectMarkerField( ownerType );
 	}

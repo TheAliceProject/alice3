@@ -43,6 +43,11 @@
 package org.alice.stageide.sceneeditor;
 
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Paint;
+import org.lgna.story.SetOpacity;
+import org.lgna.story.SetPaint;
+
+import com.jogamp.common.util.IntIntHashMap;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
@@ -121,6 +126,30 @@ public class SetUpMethodGenerator {
 		}
 		return null;
 	}
+	
+	public static org.lgna.project.ast.ExpressionStatement createSetPaintStatement(org.lgna.project.ast.AbstractField field, org.lgna.story.Paint paint)
+	{
+		if (paint != null ) {
+			org.lgna.project.ast.Expression paintExpression = null;
+			try {
+				paintExpression = getExpressionCreator().createExpression( paint );
+			}
+			catch (Exception e) {
+				paintExpression = null;
+			}
+			if (paintExpression != null) {
+				if (field.getValueType().isAssignableFrom(org.lgna.story.Model.class))
+				{
+					return createStatement( org.lgna.story.Model.class, "setPaint", new Class< ? >[] { org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class }, SetUpMethodGenerator.createInstanceExpression( false, field ), paintExpression  );
+				}
+				else if (field.getValueType().isAssignableTo(org.lgna.story.Marker.class))
+				{
+					return createStatement( org.lgna.story.Marker.class, "setPaint", new Class< ? >[] { org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class }, SetUpMethodGenerator.createInstanceExpression( false, field ), paintExpression );
+				}
+			}
+		}
+		return null;
+	}
 
 	public static org.lgna.project.ast.Statement createOrientationStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.story.Orientation orientation ) throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
 		return createStatement( 
@@ -144,6 +173,11 @@ public class SetUpMethodGenerator {
 	}
 	
 	public static org.lgna.project.ast.Statement[] getSetupStatementsForField(boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, AffineMatrix4x4 initialTransform)
+	{
+		return getSetupStatementsForField(isThis, field, sceneInstance, initialVehicle, initialTransform, null);
+	}
+	
+	public static org.lgna.project.ast.Statement[] getSetupStatementsForField(boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, AffineMatrix4x4 initialTransform, Paint initialPaint)
 	{
 		java.util.List< org.lgna.project.ast.Statement > statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
@@ -169,7 +203,13 @@ public class SetUpMethodGenerator {
 				throw new RuntimeException( ccee );
 			}
 		}
-		
+		if (initialPaint != null)
+		{
+			org.lgna.project.ast.Statement setPaintStatement = createSetPaintStatement(field, initialPaint);
+			if (setPaintStatement != null ) {
+				statements.add(setPaintStatement);
+			}
+		}
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( statements, org.lgna.project.ast.Statement.class );
 	}
 	
@@ -244,6 +284,19 @@ public class SetUpMethodGenerator {
 										org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class, org.lgna.story.SetScale.Detail[].class }, 
 										SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
 										getExpressionCreator().createExpression( scale ) 
+								)
+						);
+					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+						throw new RuntimeException( ccee );
+					}
+				}
+				if (instance instanceof org.lgna.story.Marker ) {
+					try {
+						statements.add( 
+								createStatement( 
+										org.lgna.story.Marker.class, "setOpacity", new Class< ? >[] { java.lang.Number.class, org.lgna.story.SetOpacity.Detail[].class }, 
+										SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
+										getExpressionCreator().createExpression( 0 ) 
 								)
 						);
 					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
