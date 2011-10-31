@@ -44,13 +44,9 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.typeeditor.FieldList;
-import org.alice.ide.typeeditor.ManagedCameraMarkerFieldList;
 import org.alice.ide.typeeditor.ManagedObjectMarkerFieldList;
-import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.Button;
-import org.lgna.croquet.components.MutableList;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
 
 
 public class SceneObjectMarkerManagerPanel extends AbstractMarkerManagerPanel {

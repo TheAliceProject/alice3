@@ -53,8 +53,6 @@ import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.MarkerImp;
 
-import edu.cmu.cs.dennisc.color.Color4f;
-
 public class MarkerFieldTile extends LineAxisPanel
 {
 	private UserField field;

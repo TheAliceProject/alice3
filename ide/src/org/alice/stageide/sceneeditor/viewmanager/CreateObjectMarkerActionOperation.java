@@ -44,9 +44,6 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-
-import edu.cmu.cs.dennisc.pattern.Tuple2;
 
 public class CreateObjectMarkerActionOperation extends AbstractSceneDeclareFieldOperation {
 
