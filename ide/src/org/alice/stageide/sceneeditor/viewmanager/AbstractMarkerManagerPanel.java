@@ -51,9 +51,6 @@ import org.alice.ide.typeeditor.FieldList;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.GridBagPanel;
-import org.lgna.croquet.components.MutableList;
-import org.lgna.project.ast.UserField;
-
 
 public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     

@@ -44,10 +44,6 @@ package org.alice.stageide.sceneeditor;
 
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Paint;
-import org.lgna.story.SetOpacity;
-import org.lgna.story.SetPaint;
-
-import com.jogamp.common.util.IntIntHashMap;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 

@@ -42,10 +42,7 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.NamedUserType;
-
-import edu.cmu.cs.dennisc.pattern.Tuple2;
 
 /**
  * @author David Culyba

@@ -43,7 +43,6 @@
 package org.alice.ide.typeeditor;
 
 import org.lgna.story.CameraMarker;
-import org.lgna.story.ObjectMarker;
 
 /**
  * @author dculyba

@@ -83,8 +83,6 @@ import org.lgna.story.implementation.ObjectMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 import org.lgna.story.implementation.TransformableImp;
 
-import com.sun.tools.doclets.internal.toolkit.util.DocFinder.Input;
-
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
