@@ -46,7 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.ide.ast.CurrentThisExpression;
-import org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState;
 import org.alice.ide.instancefactory.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter.CameraView;
@@ -281,7 +280,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImplementation;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
-	private org.lgna.croquet.components.PushButton expandCollapseButton;
+	private org.lgna.croquet.components.BooleanStateButton< ? > expandCollapseButton;
 	
 	private org.lgna.story.CameraMarker expandedViewSelectedMarker = null;
 	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera = null;
@@ -492,7 +491,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
 			
-			this.expandCollapseButton = IsSceneEditorExpandedState.getInstance().createPushButton();
+			this.expandCollapseButton = new ExpandCollapseButton();
 			
 			this.propertiesSplitPane.setResizeWeight(1.0);
 			
