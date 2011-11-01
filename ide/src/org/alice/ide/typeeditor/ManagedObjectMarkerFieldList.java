@@ -57,16 +57,16 @@ public class ManagedObjectMarkerFieldList extends MarkerFieldList {
 	
 	@Override
 	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
-		org.lgna.croquet.components.LineAxisPanel lineStartPanel = new org.lgna.croquet.components.LineAxisPanel();
-		lineStartPanel.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton() );
-		button.addComponent( lineStartPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		org.lgna.croquet.components.LineAxisPanel buttonPanel = new org.lgna.croquet.components.LineAxisPanel();
 		button.addComponent( 
 				new MarkerFieldTile(item),
 				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
 		);
+		buttonPanel.addComponent(org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton());
 		if( item.isDeletionAllowed.getValue() ) {
-			button.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+			buttonPanel.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() );
 		}
+		button.addComponent( buttonPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 		return new FieldItemDetails( this, item, button );
 	}
 }
