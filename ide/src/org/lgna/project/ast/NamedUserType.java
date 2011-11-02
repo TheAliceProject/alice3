@@ -50,7 +50,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 	public DeclarationProperty< UserPackage > _package = new DeclarationProperty< UserPackage >( this );
 	public NodeListProperty< NamedUserConstructor > constructors = new NodeListProperty< NamedUserConstructor >( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
+	public edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel > accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel >( this, AccessLevel.PUBLIC );
 	public edu.cmu.cs.dennisc.property.EnumProperty< TypeModifierFinalAbstractOrNeither > finalAbstractOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty< TypeModifierFinalAbstractOrNeither >( this, TypeModifierFinalAbstractOrNeither.NEITHER );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
@@ -113,8 +113,8 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 	}
 	
 	@Override
-	public Access getAccess() {
-		return this.access.getValue();
+	public AccessLevel getAccessLevel() {
+		return this.accessLevel.getValue();
 	}
 
 	@Override

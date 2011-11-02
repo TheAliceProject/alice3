@@ -72,7 +72,7 @@ public class AnonymousUserConstructor extends UserConstructor {
 		this.type = type;
 	}
 	@Override
-	public org.lgna.project.ast.Access getAccess() {
+	public org.lgna.project.ast.AccessLevel getAccessLevel() {
 		return null;
 	}
 	@Override

@@ -196,10 +196,10 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	@Override
-	public Access getAccess() {
+	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null;
-		return Access.get( mthd.getModifiers() );
+		return AccessLevel.get( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isStatic() {

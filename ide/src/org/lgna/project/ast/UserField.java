@@ -49,7 +49,7 @@ package org.lgna.project.ast;
 public class UserField extends AbstractField implements UserMember {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
+	public edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel > accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel >( this, AccessLevel.PUBLIC );
 	public edu.cmu.cs.dennisc.property.EnumProperty< FieldModifierFinalVolatileOrNeither > finalVolatileOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty< FieldModifierFinalVolatileOrNeither >( this, FieldModifierFinalVolatileOrNeither.NEITHER );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isTransient = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
@@ -111,8 +111,8 @@ public class UserField extends AbstractField implements UserMember {
 	}
 
 	@Override
-	public Access getAccess() {
-		return this.access.getValue();
+	public AccessLevel getAccessLevel() {
+		return this.accessLevel.getValue();
 	}
 	
 	@Override

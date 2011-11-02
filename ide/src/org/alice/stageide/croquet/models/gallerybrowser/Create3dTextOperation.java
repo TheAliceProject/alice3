@@ -370,7 +370,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 			org.lgna.project.ast.Expression initializer = org.lgna.project.ast.AstUtilities.createInstanceCreation( type );
 			org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField( text.getName(), type, initializer );
 			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-			field.access.setValue( org.lgna.project.ast.Access.PRIVATE );
+			field.accessLevel.setValue( org.lgna.project.ast.AccessLevel.PRIVATE );
 			return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( field, text );
 		} else {
 			return null;

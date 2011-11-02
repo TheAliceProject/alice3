@@ -83,6 +83,7 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 		if( this.isFieldFinal() ) {
 			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		}
+		field.accessLevel.setValue( org.lgna.project.ast.AccessLevel.PRIVATE );
 		field.managementLevel.setValue( this.getManagementLevel() );
 		field.valueType.setValue( valueType );
 		field.name.setValue( declarationName );

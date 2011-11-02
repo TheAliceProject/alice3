@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class UserMethod extends AbstractMethod implements UserCode {
-	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
+	public edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel > accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel >( this, AccessLevel.PUBLIC );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isAbstract = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isFinal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
@@ -134,8 +134,8 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	}
 	
 	@Override
-	public Access getAccess() {
-		return this.access.getValue();
+	public AccessLevel getAccessLevel() {
+		return this.accessLevel.getValue();
 	}
 
 	@Override

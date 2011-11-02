@@ -175,10 +175,10 @@ public class JavaConstructor extends AbstractConstructor {
 	}
 
 	@Override
-	public Access getAccess() {
+	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getReification();
 		if( cnstrctr != null ) {
-			return Access.get( cnstrctr.getModifiers() );
+			return AccessLevel.get( cnstrctr.getModifiers() );
 		} else {
 			return null;
 		}

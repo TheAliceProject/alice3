@@ -48,7 +48,7 @@ package org.lgna.project.ast;
  */
 public class NamedUserConstructor extends UserConstructor implements UserCode {
 	public NodeListProperty< UserParameter > requiredParameters = new NodeListProperty< UserParameter >( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
+	public edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel > accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel >( this, AccessLevel.PUBLIC );
 	public NodeProperty< ConstructorBlockStatement > body = new NodeProperty< ConstructorBlockStatement >( this );
 	public edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel > managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel >( this, ManagementLevel.NONE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
@@ -123,7 +123,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 
 	@Override
-	public Access getAccess() {
-		return this.access.getValue();
+	public AccessLevel getAccessLevel() {
+		return this.accessLevel.getValue();
 	}
 }

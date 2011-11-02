@@ -113,10 +113,10 @@ public class JavaField extends AbstractField {
 	}
 	
 	@Override
-	public Access getAccess() {
+	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		assert fld != null;
-		return Access.get( fld.getModifiers() );
+		return AccessLevel.get( fld.getModifiers() );
 	}	
 	@Override
 	public boolean isStatic() {

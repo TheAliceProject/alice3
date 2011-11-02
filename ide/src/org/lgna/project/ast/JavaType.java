@@ -345,10 +345,10 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	}
 
 	@Override
-	public Access getAccess() {
+	public AccessLevel getAccessLevel() {
 		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
-		return Access.get( cls.getModifiers() );
+		return AccessLevel.get( cls.getModifiers() );
 	}
 
 	@Override
