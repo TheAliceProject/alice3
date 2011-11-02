@@ -76,20 +76,26 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 					Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 					java.awt.Color color;
+
+					color = MemberList.this.getBackgroundColor();
+					if( this.getModel().isSelected() ) {
+						color = color.darker();
+					}
+					g.setColor( color );
+					g.fillRoundRect( 0, 0, this.getWidth()-1, this.getHeight()-1, 8, 8 );
 					if( this.getModel().isRollover() ) {
 						color = java.awt.Color.DARK_GRAY;
 					} else {
 						color = MemberList.this.getBackgroundColor().darker();
 					}
-//					if ( this.getModel().isSelected() ) {
-//						color = java.awt.Color.RED;
-//					}
 					g.setColor( color );
 					edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight() - 5 );
 					g.drawRoundRect( 0, 0, this.getWidth()-1, this.getHeight()-1, 8, 8 );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+					
 				}
 			};
+			rv.setOpaque( false );
 			rv.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 			rv.setRolloverEnabled( true );
 			return rv;
