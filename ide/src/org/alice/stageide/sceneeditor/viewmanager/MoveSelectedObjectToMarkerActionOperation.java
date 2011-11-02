@@ -47,9 +47,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.alice.ide.IDE;
+import org.alice.stageide.sceneeditor.MarkerUtilities;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.UserField;
+import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ObjectMarkerImp;
 
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
@@ -98,11 +100,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			ObjectMarkerImp marker = IDE.getActiveInstance().getMainComponent().getSceneEditor().getImplementation(this.markerField);
-//			if (marker != null)
-//			{
-//				this.imageIcon.setRightImage(marker.getIcon());
-//			}
+			this.imageIcon.setRightImage(MarkerUtilities.getIconForMarker(this.markerField));
 		}
 		this.updateBasedOnSettings();
 	}
@@ -119,8 +117,8 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		}
 		if (this.selectedField != null)
 		{
-			org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
-			Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( valueType );
+			EntityImp entityImp = IDE.getActiveInstance().getMainComponent().getSceneEditor().getImplementation(this.selectedField);
+			Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForImplementation(entityImp);
 			if (icon != null)
 			{
 				if (icon instanceof ImageIcon)

@@ -162,8 +162,6 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	
 	public SidePane() {
 	    
-	    ToolPaletteTabbedPane<PredeterminedTab> tptp = PropertyAndMarkerPanelSelectionState.getInstance().createDefaultToolPaletteTabbedPane();
-	    
 		this.mainPanel = new GridBagPanel();
 		this.snapControlPanel = new SnapControlPanel();
 		

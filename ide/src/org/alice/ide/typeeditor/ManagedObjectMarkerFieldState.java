@@ -66,6 +66,6 @@ public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
 	
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableFrom(ObjectMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
+		return value.valueType.getValue().isAssignableTo(ObjectMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
 	}
 }

@@ -66,6 +66,6 @@ public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
 	
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableFrom(CameraMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
+		return value.valueType.getValue().isAssignableTo(CameraMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
 	}
 }

@@ -42,6 +42,10 @@
  */
 package org.alice.stageide.gallerybrowser;
 
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.resourceutilities.ModelResourceUtilities;
+
+
 /**
  * @author Dennis Cosgrove
  */
@@ -160,9 +164,9 @@ public class ResourceManager {
 		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( getLargeIconResourceForType(type) );
 	}
 	
-	private static java.util.Map<org.lgna.project.ast.JavaType, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.JavaType, javax.swing.Icon> typeToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static void registerSmallIcon( org.lgna.project.ast.JavaType typeInJava, javax.swing.Icon icon ) {
-		map.put(typeInJava, icon);
+		typeToIconMap.put(typeInJava, icon);
 	}
 	public static void registerSmallIcon( Class<?> cls, javax.swing.Icon icon ) {
 		registerSmallIcon(org.lgna.project.ast.JavaType.getInstance(cls), icon);
@@ -171,8 +175,8 @@ public class ResourceManager {
 	public static javax.swing.Icon getSmallIconForType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
 			org.lgna.project.ast.JavaType typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-			if( map.containsKey( typeInJava ) ) {
-				return map.get( typeInJava );
+			if( typeToIconMap.containsKey( typeInJava ) ) {
+				return typeToIconMap.get( typeInJava );
 			} else {
 				return getSmallIconFor( getLargeIconForType(type) );
 			}
@@ -181,36 +185,34 @@ public class ResourceManager {
 		}
 	}
 	
-
-	public static edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedBox( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
-		String path = treeNode.getValue();
-		String resourceName = "boxes" + path.substring( PACKAGE_NAME_PREFIX.length()+1+"images".length(), path.length()-3 ) + "bin";
-		java.io.InputStream is = ResourceManager.class.getResourceAsStream( resourceName );
-
-		if( is != null ) {
-			edu.cmu.cs.dennisc.math.AxisAlignedBox rv = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary(is, edu.cmu.cs.dennisc.math.AxisAlignedBox.class);
-			return rv;
-		} else {
-			System.err.println( "no axis aligned bounding box information for: " + resourceName );
-			return new edu.cmu.cs.dennisc.math.AxisAlignedBox( -0.5, 0, -0.5, 0.5, 1, 0.5 );
+	
+	
+	public static javax.swing.Icon getLargeIconForImplementation(org.lgna.story.implementation.EntityImp imp) {
+		if (imp != null) {
+			if (imp instanceof org.lgna.story.implementation.JointedModelImp<? , ?>) {
+				org.lgna.story.implementation.JointedModelImp<? , ?> jointedImp = (org.lgna.story.implementation.JointedModelImp<? , ?>)imp;
+				Class<?> resourceCls = jointedImp.getResource().getClass();
+				String instanceName = null;
+				for (Object e : resourceCls.getEnumConstants()) {
+					System.out.println("Resource: "+e);
+					if (e == jointedImp.getResource()) {
+						instanceName = e.toString();
+					}
+				}
+				return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(ModelResourceUtilities.getThumbnailURL(resourceCls, instanceName));
+			}
+			else {
+				return getLargeIconForType(org.lgna.project.ast.JavaType.getInstance(imp.getAbstraction().getClass()));
+			}
 		}
+		return null;
 	}
 	
-	public static Class<?> getGalleryCls( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> treeNode ) {
-		if( treeNode != null ) {
-			final String IMAGES_TEXT = ".images.";
-			String path = treeNode.getValue();
-			path = path.replace( '/', '.' );
-			assert path.startsWith( PACKAGE_NAME_PREFIX + IMAGES_TEXT ) : path;
-			assert path.endsWith( ".png" ) : path;
-			path = path.substring( PACKAGE_NAME_PREFIX.length()+IMAGES_TEXT.length(), path.length()-4 );
-			try {
-				return edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( path );
-			} catch( ClassNotFoundException cnfe ) {
-				throw new RuntimeException( path, cnfe );
-			}
-		} else {
-			return null;
+	public static javax.swing.Icon getSmallIconForImplementation(org.lgna.story.implementation.EntityImp imp) {
+		if (imp != null) {
+			return getSmallIconFor(getLargeIconForImplementation(imp));
 		}
+		return null;
 	}
+	
 }

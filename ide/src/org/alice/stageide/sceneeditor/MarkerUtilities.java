@@ -42,12 +42,19 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import java.util.HashMap;
+
 import javax.swing.Icon;
 
 import org.alice.ide.name.validators.MarkerColorValidator;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
+import org.lgna.story.implementation.CameraImp;
+import org.lgna.story.implementation.CameraMarkerImp;
+
+import edu.cmu.cs.dennisc.pattern.Tuple2;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author dculyba
@@ -57,6 +64,9 @@ public class MarkerUtilities {
 	private static final String DEFAULT_CAMERA_MARKER_NAME;
 	private static final String[] COLOR_NAMES;
 	private static final org.lgna.story.Color[] COLORS;
+	
+	private static final HashMap<CameraMarkerImp, Tuple2<Icon, Icon>> cameraToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final HashMap<UserField, Icon> markerToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	static
 	{
@@ -104,6 +114,29 @@ public class MarkerUtilities {
 		return -1;
 	}
 	
+	private static int getColorIndexForColor(org.lgna.story.Color color)
+	{
+		for (int i=0; i<COLORS.length; i++)
+		{
+			if (COLORS[i].equals(color))
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	private static String getColorName(org.lgna.story.Color color)
+	{
+		int index = getColorIndexForColor(color);
+		if (index != -1) {
+			String colorName = COLOR_NAMES[index];
+			String properName = colorName.substring(0, 1).toUpperCase() + colorName.substring(1);
+			return properName;
+		}
+		return "White";
+	}
+	
 	private static String getIconSuffixForMarkerName(String markerName)
 	{
 		int colorIndex = getColorIndexForName(markerName);
@@ -114,17 +147,53 @@ public class MarkerUtilities {
 		else return "_White.png";
 	}
 	
-	public static Icon getIconForCameraMarkerName(String markerName)
+	private static String getIconSuffixForMarkerColor(org.lgna.story.Color color)
 	{
-		String iconName = "images/markerIcon"+getIconSuffixForMarkerName(markerName);
-		return new javax.swing.ImageIcon(MarkerUtilities.class.getResource(iconName));
+		String colorName = getColorName(color);
+		return "_"+colorName+".png";
 	}
 	
-	public static Icon getIconForObjectMarkerName(String markerName)
-	{
-		String iconName = "images/axis"+getIconSuffixForMarkerName(markerName);
-		return new javax.swing.ImageIcon(MarkerUtilities.class.getResource(iconName));
+	public static void addIconForCamera(CameraMarkerImp camera, String iconName) {
+		java.net.URL normalIconURL = MarkerUtilities.class.getResource("images/"+iconName+"Icon.png");
+		assert normalIconURL != null;
+		Icon normalIcon = new javax.swing.ImageIcon(normalIconURL);
+		java.net.URL highlightedIconURL = MarkerUtilities.class.getResource("images/"+iconName+"Icon_highlighted.png");
+		assert highlightedIconURL != null;
+		Icon highlightedIcon = new javax.swing.ImageIcon(highlightedIconURL);
+		
+		cameraToIconMap.put(camera, Tuple2.createInstance(normalIcon, highlightedIcon));
 	}
+	
+	public static void addIconForCameraMarker(UserField cameraMarker, org.lgna.story.Color color) {
+		java.net.URL markerIconURL = MarkerUtilities.class.getResource("images/markerIcon"+getIconSuffixForMarkerColor(color));
+		assert markerIconURL != null;
+		Icon markerIcon = new javax.swing.ImageIcon(markerIconURL);
+		markerToIconMap.put(cameraMarker, markerIcon);
+	}
+	
+	public static void addIconForObjectMarker(UserField objectMarker, org.lgna.story.Color color) {
+		java.net.URL markerIconURL = MarkerUtilities.class.getResource("images/axis"+getIconSuffixForMarkerColor(color));
+		assert markerIconURL != null;
+		Icon markerIcon = new javax.swing.ImageIcon(markerIconURL);
+		markerToIconMap.put(objectMarker, markerIcon);
+	}
+	
+	public static Icon getIconForMarker(UserField marker)
+	{
+		assert markerToIconMap.containsKey(marker);
+		return markerToIconMap.get(marker);
+	}
+	
+	public static Icon getIconForCamera(CameraMarkerImp camera) {
+		assert cameraToIconMap.containsKey(camera);
+		return cameraToIconMap.get(camera).getA();
+	}
+	
+	public static Icon getHighlightedIconForCamera(CameraMarkerImp camera) {
+		assert cameraToIconMap.containsKey(camera);
+		return cameraToIconMap.get(camera).getB();
+	}
+	
 	
 	public static org.lgna.story.Color getColorForMarkerName(String markerName)
 	{

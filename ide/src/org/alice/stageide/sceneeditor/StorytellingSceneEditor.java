@@ -48,6 +48,8 @@ import java.util.List;
 import org.alice.ide.ast.CurrentThisExpression;
 import org.alice.ide.instancefactory.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.alice.ide.typeeditor.ManagedCameraMarkerFieldState;
+import org.alice.ide.typeeditor.ManagedObjectMarkerFieldState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
@@ -55,13 +57,17 @@ import org.alice.interact.SnapGrid;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
+import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState;
 import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
+import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 import org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation;
+import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation;
+import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.SceneCameraMarkerManagerPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SceneObjectMarkerManagerPanel;
 import org.lgna.croquet.ListSelectionState;
@@ -69,11 +75,13 @@ import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
@@ -163,6 +171,22 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 		public void changed( org.lgna.croquet.State< Double > state, Double prevValue, Double nextValue, boolean isAdjusting ) {
 			StorytellingSceneEditor.this.setSnapGridSpacing(nextValue);
+		}
+	};
+	
+	private org.lgna.croquet.State.ValueObserver<UserField> cameraMarkerFieldSelectionObserver = new org.lgna.croquet.State.ValueObserver<UserField>() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.UserField > state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.UserField > state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
+			StorytellingSceneEditor.this.handleCameraMarkerFieldSelection( nextValue );
+		}
+	};
+	
+	private org.lgna.croquet.State.ValueObserver<UserField> objectMarkerFieldSelectionObserver = new org.lgna.croquet.State.ValueObserver<UserField>() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.UserField > state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.UserField > state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
+			StorytellingSceneEditor.this.handleObjectMarkerFieldSelection( nextValue );
 		}
 	};
 	
@@ -345,6 +369,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.selectionIsFromMain = true;
 			super.setSelectedField(declaringType, field);
 			getPropertyPanel().setField(field);
+			
+			MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(field);
+			MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(field);
+			
 			if (!this.selectionIsFromInstanceSelector)
 			{
 				if (field == this.getActiveSceneField() )
@@ -432,6 +460,26 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return MarkerPanelTab.getInstance().getMainComponent().getObjectMarkerPanel();
 	}
 	
+	private void handleCameraMarkerFieldSelection( UserField cameraMarkerField )
+	{
+//		MarkerImp newMarker = this.getMarkerForField(cameraMarkerField);
+//		this.globalDragAdapter.setSelectedCameraMarker(newMarker);
+		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
+		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
+		MarkerPanelTab.getInstance().getMainComponent().getCameraMarkerPanel().updateButtons();
+	}
+	
+	private void handleObjectMarkerFieldSelection( UserField objectMarkerField )
+	{
+//		MarkerImp newMarker = this.getMarkerForField(objectMarkerField);
+//		this.globalDragAdapter.setSelectedObjectMarker(newMarker);
+		
+		MoveSelectedObjectToMarkerActionOperation.getInstance().setMarkerField(objectMarkerField);
+		MoveMarkerToSelectedObjectActionOperation.getInstance().setMarkerField(objectMarkerField);
+		MarkerPanelTab.getInstance().getMainComponent().getObjectMarkerPanel().updateButtons();
+		
+	}
+	
 	private void handleManipulatorSelection(org.alice.interact.event.SelectionEvent e)
 	{
 		EntityImp imp = e.getTransformable();
@@ -477,6 +525,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			SnapState.getInstance().getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
 			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);
 			SnapState.getInstance().getSnapGridSpacingState().addAndInvokeValueObserver(this.snapGridSpacingObserver);
+			
 			
 			InstanceFactoryState.getInstance().addAndInvokeValueObserver(this.instanceFactorySelectionObserver);
 			
@@ -600,6 +649,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	@Override
+	public void addField(UserType<?> declaringType, UserField field, Statement... statements) {
+		super.addField(declaringType, field, statements);
+		if (field.getValueType().isAssignableTo(org.lgna.story.Marker.class)) {
+			org.lgna.story.Marker marker = this.getInstanceInJavaVMForField(field, org.lgna.story.Marker.class);
+			MarkerImp markerImp = ImplementationAccessor.getImplementation(marker);
+			markerImp.setDisplayVisuals(true);
+			markerImp.setShowing(true);
+		}
+	}
+	
+	@Override
 	protected void setActiveScene( org.lgna.project.ast.UserField sceneField ) {
 		super.setActiveScene(sceneField);
 		
@@ -619,6 +679,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				this.setSceneCamera((org.lgna.project.ast.UserField)field);
 			}
 		}
+		
+		ManagedCameraMarkerFieldState.getInstance((NamedUserType)sceneAliceInstance.getType()).addAndInvokeValueObserver(this.cameraMarkerFieldSelectionObserver);
+		ManagedObjectMarkerFieldState.getInstance((NamedUserType)sceneAliceInstance.getType()).addAndInvokeValueObserver(this.objectMarkerFieldSelectionObserver);
 		
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( 1.0 );
 	}
@@ -847,10 +910,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		
 		AffineMatrix4x4 initialTransform = this.sceneCameraImplementation.getAbsoluteTransformation();
 		
-		org.lgna.story.Paint initialColor = MarkerUtilities.getColorForMarkerName(field.name.getValue());
+		org.lgna.story.Color initialColor = MarkerUtilities.getColorForMarkerName(field.name.getValue());
 		org.lgna.project.ast.Statement[] doStatements = this.getDoStatementsForAddField(field, initialTransform, initialColor);
 		org.lgna.project.ast.Statement[] undoStatements = this.getUndoStatementsForAddField(field);
 
+		MarkerUtilities.addIconForCameraMarker(field, initialColor);
+		
 		return edu.cmu.cs.dennisc.pattern.Tuple3.createInstance( field, doStatements, undoStatements );
 	}
 	
@@ -873,9 +938,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			initialTransform = AffineMatrix4x4.createIdentity();
 		}
 		
-		org.lgna.story.Paint initialColor = MarkerUtilities.getColorForMarkerName(field.name.getValue());
+		org.lgna.story.Color initialColor = MarkerUtilities.getColorForMarkerName(field.name.getValue());
 		org.lgna.project.ast.Statement[] doStatements = this.getDoStatementsForAddField(field, initialTransform, initialColor);
 		org.lgna.project.ast.Statement[] undoStatements = this.getUndoStatementsForAddField(field);
+		
+		MarkerUtilities.addIconForObjectMarker(field, initialColor);
 
 		return edu.cmu.cs.dennisc.pattern.Tuple3.createInstance( field, doStatements, undoStatements );
 	}

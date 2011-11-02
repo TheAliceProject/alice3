@@ -95,9 +95,13 @@ public class ModelResourceUtilities {
 		return modelResource.getSimpleName();
 	}
 	
+	private static java.net.URL getThumbnailURLInternal(Class<?> modelResource, String name) {
+		return modelResource.getResource("resources/"+ name+".png");
+	}
+	
 	private static BufferedImage getThumbnailInternal(Class<?> modelResource, String name)
 	{
-		URL resourceURL = modelResource.getResource("resources/"+ name+".png");
+		URL resourceURL = getThumbnailURLInternal(modelResource, name);
 		if (resourceURL != null)
 		{
 			try
@@ -125,6 +129,16 @@ public class ModelResourceUtilities {
 	public static BufferedImage getThumbnail(Class<?> modelResource)
 	{
 		return getThumbnailInternal(modelResource, getName(modelResource));
+	}
+	
+	public static java.net.URL getThumbnailURL(Class<?> modelResource)
+	{
+		return getThumbnailURLInternal(modelResource, getName(modelResource));
+	}
+	
+	public static java.net.URL getThumbnailURL(Class<?> modelResource, String instanceName)
+	{
+		return getThumbnailURLInternal(modelResource, getName(modelResource)+"_"+instanceName);
 	}
 	
 	private static AxisAlignedBox getBoundingBoxFromXML(Document doc)

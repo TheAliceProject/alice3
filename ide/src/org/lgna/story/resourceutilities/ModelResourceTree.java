@@ -19,7 +19,6 @@ import org.lgna.story.resources.ModelResource;
 
 public class ModelResourceTree {
 	
-	private Map<Class<?>, Class<?>> resourceClassToModelClassMap = new HashMap<Class<?>, Class<?>>();
 	private Map<Object, ModelResourceTreeNode> resourceClassToNodeMap = new HashMap<Object, ModelResourceTreeNode>();
 	
 	private final ModelResourceTreeNode galleryTree;
@@ -179,13 +178,9 @@ public class ModelResourceTree {
 			while (currentClass != null)
 			{
 				classStack.push(currentClass);
-				Class<?> modelClass = ModelResourceUtilities.getModelClassForResourceClass(currentClass);
+				Class<? extends org.lgna.story.Model> modelClass = ModelResourceUtilities.getModelClassForResourceClass(currentClass);
 				if (modelClass != null)
 				{
-					if (!resourceClassToModelClassMap.containsKey(currentClass))
-					{
-						resourceClassToModelClassMap.put(currentClass, modelClass);
-					}
 					break;
 				}
 				

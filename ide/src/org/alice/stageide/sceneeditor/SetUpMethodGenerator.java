@@ -140,7 +140,8 @@ public class SetUpMethodGenerator {
 				}
 				else if (field.getValueType().isAssignableTo(org.lgna.story.Marker.class))
 				{
-					return createStatement( org.lgna.story.Marker.class, "setPaint", new Class< ? >[] { org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class }, SetUpMethodGenerator.createInstanceExpression( false, field ), paintExpression );
+					assert paint instanceof org.lgna.story.Color;
+					return createStatement( org.lgna.story.Marker.class, "setColorId", new Class< ? >[] { org.lgna.story.Color.class }, SetUpMethodGenerator.createInstanceExpression( false, field ), paintExpression );
 				}
 			}
 		}
@@ -280,19 +281,6 @@ public class SetUpMethodGenerator {
 										org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class, org.lgna.story.SetScale.Detail[].class }, 
 										SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
 										getExpressionCreator().createExpression( scale ) 
-								)
-						);
-					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-						throw new RuntimeException( ccee );
-					}
-				}
-				if (instance instanceof org.lgna.story.Marker ) {
-					try {
-						statements.add( 
-								createStatement( 
-										org.lgna.story.Marker.class, "setOpacity", new Class< ? >[] { java.lang.Number.class, org.lgna.story.SetOpacity.Detail[].class }, 
-										SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
-										getExpressionCreator().createExpression( 0 ) 
 								)
 						);
 					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
