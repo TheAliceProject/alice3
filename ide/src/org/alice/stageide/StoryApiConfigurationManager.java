@@ -117,12 +117,12 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		final java.awt.Stroke JOINT_OUTLINE_STROKE = new java.awt.BasicStroke( 1.0f );
 		final int INSET_X = 6;
 		final int INSET_Y = 6;
-		final int JOINT_A_CENTER_X = INSET_X;
-		final int JOINT_A_CENTER_Y = INSET_Y;
-		final int JOINT_B_CENTER_X = 3*SMALL_ICON_SIZE/4;
-		final int JOINT_B_CENTER_Y = 2*SMALL_ICON_SIZE/5;
-		final int JOINT_C_CENTER_X = SMALL_ICON_SIZE/2;
-		final int JOINT_C_CENTER_Y = SMALL_ICON_SIZE-INSET_Y;
+		final int JOINT_A_X = INSET_X;
+		final int JOINT_A_Y = INSET_Y;
+		final int JOINT_B_X = 3*SMALL_ICON_SIZE/4;
+		final int JOINT_B_Y = 2*SMALL_ICON_SIZE/5;
+		final int JOINT_C_X = SMALL_ICON_SIZE/2;
+		final int JOINT_C_Y = SMALL_ICON_SIZE-INSET_Y;
 		final int JOINT_WIDTH = 8;
 		final int JOINT_HEIGHT = 8;
 		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Joint.class, new javax.swing.Icon() {
@@ -150,12 +150,12 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 				try {
 					g2.setStroke( BONE_STROKE );
-					g2.drawLine( JOINT_A_CENTER_X, JOINT_A_CENTER_Y, JOINT_B_CENTER_X, JOINT_B_CENTER_Y );
-					g2.drawLine( JOINT_C_CENTER_X, JOINT_C_CENTER_Y, JOINT_B_CENTER_X, JOINT_B_CENTER_Y );
+					g2.drawLine( JOINT_A_X, JOINT_A_Y, JOINT_B_X, JOINT_B_Y );
+					g2.drawLine( JOINT_B_X, JOINT_B_Y, JOINT_C_X, JOINT_C_Y );
 					g2.setStroke( JOINT_OUTLINE_STROKE );
-					this.drawJoint( g2, JOINT_B_CENTER_X, JOINT_B_CENTER_Y, java.awt.Color.RED, java.awt.Color.BLACK );
-					this.drawJoint( g2, JOINT_A_CENTER_X, JOINT_A_CENTER_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
-					this.drawJoint( g2, JOINT_C_CENTER_X, JOINT_C_CENTER_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
+					this.drawJoint( g2, JOINT_B_X, JOINT_B_Y, java.awt.Color.RED, java.awt.Color.BLACK );
+					this.drawJoint( g2, JOINT_A_X, JOINT_A_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
+					this.drawJoint( g2, JOINT_C_X, JOINT_C_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
 				} finally {
 					g2.setStroke( prevStroke );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
