@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public enum Access {
+public enum AccessLevel {
 //1.6
 //	PUBLIC( int.PUBLIC ),
 //	PROTECTED( javax.lang.model.element.Modifier.PROTECTED ),
@@ -67,7 +67,7 @@ public enum Access {
 	PRIVATE( java.lang.reflect.Modifier.PRIVATE ),
 	PACKAGE();
 	private int[] m_modifiers;
-	Access( int... modifiers ) {
+	AccessLevel( int... modifiers ) {
 		m_modifiers = modifiers;
 	}
 	public java.util.Collection< Integer > updateModifiers( java.util.Collection< Integer > rv ) {
@@ -78,15 +78,15 @@ public enum Access {
 	}
 	
 	//todo: rename
-	public static Access get( int modifiers ) {
+	public static AccessLevel get( int modifiers ) {
 		if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
-			return Access.PUBLIC;
+			return AccessLevel.PUBLIC;
 		} else if( java.lang.reflect.Modifier.isProtected( modifiers ) ) {
-			return Access.PROTECTED;
+			return AccessLevel.PROTECTED;
 		} else if( java.lang.reflect.Modifier.isPrivate( modifiers ) ) {
-			return Access.PRIVATE;
+			return AccessLevel.PRIVATE;
 		} else {
-			return Access.PACKAGE;
+			return AccessLevel.PACKAGE;
 		}
 	}
 }

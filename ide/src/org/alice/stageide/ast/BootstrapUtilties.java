@@ -66,7 +66,7 @@ public class BootstrapUtilties {
 	
 	private static org.lgna.project.ast.UserField createPrivateFinalField( org.lgna.project.ast.AbstractType< ?,?,? > valueType, String name ) {
 		org.lgna.project.ast.UserField rv = new org.lgna.project.ast.UserField();
-		rv.access.setValue( org.lgna.project.ast.Access.PRIVATE );
+		rv.accessLevel.setValue( org.lgna.project.ast.AccessLevel.PRIVATE );
 		rv.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 		rv.valueType.setValue( valueType );
 		rv.name.setValue( name );
@@ -77,15 +77,15 @@ public class BootstrapUtilties {
 		return createPrivateFinalField( org.lgna.project.ast.JavaType.getInstance( cls ), name );
 	}
 	
-	private static org.lgna.project.ast.UserMethod createMethod( org.lgna.project.ast.Access access, org.lgna.project.ast.AbstractType< ?,?,? > returnType, String name ) {
+	private static org.lgna.project.ast.UserMethod createMethod( org.lgna.project.ast.AccessLevel access, org.lgna.project.ast.AbstractType< ?,?,? > returnType, String name ) {
 		org.lgna.project.ast.UserMethod rv = new org.lgna.project.ast.UserMethod();
-		rv.access.setValue( access );
+		rv.accessLevel.setValue( access );
 		rv.returnType.setValue( returnType );
 		rv.name.setValue( name );
 		rv.body.setValue( new org.lgna.project.ast.BlockStatement() );
 		return rv;
 	}
-	private static org.lgna.project.ast.UserMethod createMethod( org.lgna.project.ast.Access access, Class< ? > cls, String name ) {
+	private static org.lgna.project.ast.UserMethod createMethod( org.lgna.project.ast.AccessLevel access, Class< ? > cls, String name ) {
 		return createMethod( access, org.lgna.project.ast.JavaType.getInstance( cls ), name );
 	}
 	
@@ -115,9 +115,9 @@ public class BootstrapUtilties {
 		groundField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		cameraField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 
-		org.lgna.project.ast.UserMethod myFirstMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "myFirstMethod" );
+		org.lgna.project.ast.UserMethod myFirstMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "myFirstMethod" );
 
-		org.lgna.project.ast.UserMethod performGeneratedSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, org.alice.ide.IDE.GENERATED_SET_UP_METHOD_NAME );
+		org.lgna.project.ast.UserMethod performGeneratedSetupMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, org.alice.ide.IDE.GENERATED_SET_UP_METHOD_NAME );
 		performGeneratedSetupMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		org.lgna.project.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 		
@@ -160,9 +160,9 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
 
-		org.lgna.project.ast.UserMethod performCustomSetupMethod = createMethod( org.lgna.project.ast.Access.PRIVATE, Void.TYPE, "performCustomSetup" );
+		org.lgna.project.ast.UserMethod performCustomSetupMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, "performCustomSetup" );
 
-		org.lgna.project.ast.UserMethod handleActiveChangedMethod = createMethod( org.lgna.project.ast.Access.PROTECTED, Void.TYPE, "handleActiveChanged" );
+		org.lgna.project.ast.UserMethod handleActiveChangedMethod = createMethod( org.lgna.project.ast.AccessLevel.PROTECTED, Void.TYPE, "handleActiveChanged" );
 		org.lgna.project.ast.UserParameter isActiveParameter = new org.lgna.project.ast.UserParameter( "isActive", Boolean.class );
 		org.lgna.project.ast.UserParameter activeCountParameter = new org.lgna.project.ast.UserParameter( "activeCount", Integer.class );
 		handleActiveChangedMethod.requiredParameters.add( isActiveParameter );
@@ -213,7 +213,7 @@ public class BootstrapUtilties {
 		sceneType.methods.add( myFirstMethod );
 
 		org.lgna.project.ast.UserField sceneField = createPrivateFinalField( sceneType, "myScene" );
-		org.lgna.project.ast.UserMethod playOutStoryMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "playOutStory" );
+		org.lgna.project.ast.UserMethod playOutStoryMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "playOutStory" );
 		org.lgna.project.ast.BlockStatement playOutStoryBody = playOutStoryMethod.body.getValue();
 		playOutStoryBody.statements.add( 
 				createMethodInvocationStatement( 
@@ -236,7 +236,7 @@ public class BootstrapUtilties {
 		
 		
 		org.lgna.project.ast.UserParameter argsParameter = new org.lgna.project.ast.UserParameter( "args", String[].class );
-		org.lgna.project.ast.UserMethod mainMethod = createMethod( org.lgna.project.ast.Access.PUBLIC, Void.TYPE, "main" );
+		org.lgna.project.ast.UserMethod mainMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "main" );
 		mainMethod.requiredParameters.add( argsParameter );
 		org.lgna.project.ast.BlockStatement mainBody = mainMethod.body.getValue();
 

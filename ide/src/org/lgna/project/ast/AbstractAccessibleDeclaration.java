@@ -47,17 +47,17 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractAccessibleDeclaration extends AbstractDeclaration {
-	public abstract Access getAccess();
+	public abstract AccessLevel getAccessLevel();
 	public boolean isPublicAccess() {
-		return getAccess() == Access.PUBLIC;
+		return getAccessLevel() == AccessLevel.PUBLIC;
 	}
 	public boolean isProtectedAccess() {
-		return getAccess() == Access.PROTECTED;
+		return getAccessLevel() == AccessLevel.PROTECTED;
 	}
 	public boolean isPrivateAccess() {
-		return getAccess() == Access.PRIVATE;
+		return getAccessLevel() == AccessLevel.PRIVATE;
 	}
 	public boolean isPackageAccess() {
-		return getAccess() == Access.PACKAGE;
+		return getAccessLevel() == AccessLevel.PACKAGE;
 	}
 }

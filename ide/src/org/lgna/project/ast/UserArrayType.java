@@ -154,8 +154,8 @@ public class UserArrayType extends AbstractType {
 		return new java.util.ArrayList< AbstractMethod >();
 	}
 	@Override
-	public Access getAccess() {
-		return m_leafType.getAccess();
+	public AccessLevel getAccessLevel() {
+		return m_leafType.getAccessLevel();
 	}
 	@Override
 	public boolean isInterface() {

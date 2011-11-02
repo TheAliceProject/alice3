@@ -76,7 +76,7 @@ public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
 		return null;
 	}
 	@Override
-	public Access getAccess() {
+	public AccessLevel getAccessLevel() {
 		//todo?
 		return null;
 	}
