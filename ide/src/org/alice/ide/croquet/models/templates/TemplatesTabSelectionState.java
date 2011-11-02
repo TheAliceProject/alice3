@@ -134,27 +134,19 @@ package org.alice.ide.croquet.models.templates;
 //	}
 //}
 
-public class TemplatesTabSelectionState extends org.lgna.croquet.TabSelectionState< TemplateComposite > {
-	private static class SingletonHolder {
-		private static TemplatesTabSelectionState instance = new TemplatesTabSelectionState();
-	}
-	public static TemplatesTabSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private TemplatesTabSelectionState() {
+public abstract class TemplatesTabSelectionState extends org.lgna.croquet.TabSelectionState< TemplateComposite > {
+	public TemplatesTabSelectionState( java.util.UUID id, TemplateComposite... composites ) {
 		super( 
 				org.alice.ide.IDE.UI_STATE_GROUP, 
-				java.util.UUID.fromString( "5bf41daf-eaf6-46f2-9165-99ccb6928936" ), 
+				id, 
 				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.croquet.models.templates.TemplateComposite.class ), 
 				0,
-				ProcedureTemplateComposite.getInstance(),
-				FunctionTemplateComposite.getInstance(),
-				FieldTemplateComposite.getInstance(),
-				BlockTemplateComposite.getInstance()
+				composites
 		);
 	}
-	public org.lgna.croquet.components.ToolPaletteTabbedPane< TemplateComposite > createToolPaletteTabbedPane() {
-		return this.createToolPaletteTabbedPane( new TabCreator< TemplateComposite >() {
+	protected abstract org.lgna.croquet.components.AbstractTabbedPane< ?,?,? > createTabbedPane( TabCreator< TemplateComposite > tabCreator );
+	public final org.lgna.croquet.components.AbstractTabbedPane< ?,?,? > createTabbedPane() {
+		return this.createTabbedPane( new TabCreator< TemplateComposite >() {
 			public org.lgna.croquet.components.JComponent< ? > createMainComponent( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
 				return item.createMainComponent();
 			}

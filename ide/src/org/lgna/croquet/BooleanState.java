@@ -107,7 +107,24 @@ public abstract class BooleanState extends State< Boolean > {
 	public class SwingModel {
 		private final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
+			@Override
+			public Object getValue(String key) {
+				if( NAME.equals( key ) ) {
+					return BooleanState.this.getTextFor( buttonModel.isSelected() );
+				} else if( SMALL_ICON.equals( key ) ) {
+					return BooleanState.this.getIconFor( buttonModel.isSelected() );
+				} else {
+					return super.getValue( key );
+				}
+			}
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				boolean isSelected = buttonModel.isSelected();
+				if( isTextVariable() ) {
+					this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
+				}
+				if( isIconVariable() ) {
+					this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
+				}
 			}
 		};
 		private SwingModel() {
@@ -235,6 +252,16 @@ public abstract class BooleanState extends State< Boolean > {
 //		}
 //	}
 
+	private boolean isTextVariable() {
+		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.getTrueText(), this.getFalseText() );
+	}
+	private boolean isIconVariable() {
+		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.getTrueIcon(), this.getFalseIcon() );
+	}
+
+	public final String getTextFor( boolean value ) {
+		return value ? this.getTrueText() : this.getFalseText();
+	}
 	public String getTrueText() {
 		return this.trueText;
 	}
@@ -248,6 +275,9 @@ public abstract class BooleanState extends State< Boolean > {
 		this.trueText = trueText;
 		this.falseText = falseText;
 		this.updateNameAndIcon();
+	}
+	public final javax.swing.Icon getIconFor( boolean value ) {
+		return value ? this.getTrueIcon() : this.getFalseIcon();
 	}
 	public javax.swing.Icon getTrueIcon() {
 		return this.trueIcon;

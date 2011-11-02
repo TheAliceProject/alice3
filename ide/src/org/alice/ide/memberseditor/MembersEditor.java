@@ -62,99 +62,9 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 	private final java.util.Map< Boolean, org.lgna.croquet.components.CardPanel.Key > keys = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public MembersEditor() {
 		final float FONT_SCALAR = 1.4f;
-//		class AccessibleCellRenderer extends javax.swing.JLabel implements javax.swing.ListCellRenderer {
-//			private boolean isInScope = true;
-//			public AccessibleCellRenderer() {
-//				this.setOpaque( true );
-//			}
-//			public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-//				org.lgna.project.ast.Accessible accessible = (org.lgna.project.ast.Accessible)value;
-//				if( accessible != null ) {
-//					this.isInScope = true;
-//					StringBuilder sb = new StringBuilder();
-//					sb.append( "<html>" );
-//					if( accessible instanceof org.lgna.project.ast.AbstractField ) {
-//						//pass
-//					} else if( accessible instanceof org.lgna.project.ast.AbstractParameter ) {
-//						sb.append( "<i>parameter:</i> " );
-//					} else if( accessible instanceof org.lgna.project.ast.VariableDeclaredInAlice ) {
-//						sb.append( "<i>variable:</i> " );
-//					} else if( accessible instanceof org.lgna.project.ast.ConstantDeclaredInAlice ) {
-//						sb.append( "<i>constant:</i> " );
-//					}
-//					sb.append( "<strong>" );
-//					sb.append( accessible.getValidName() );
-//					sb.append( "</strong>" );
-//
-//					//rv.setEnabled( true );
-//					if( accessible instanceof org.lgna.project.ast.AbstractField ) {
-//						org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)accessible;
-//						org.lgna.project.ast.AbstractCode focusedCode = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
-//						if( focusedCode != null ) {
-//							org.lgna.project.ast.AbstractType<?,?,?> scopeType = focusedCode.getDeclaringType();
-//							if( field.getValueType() == scopeType ) {
-//								sb.append( " <em>(this)</em>" );
-//							} else if( field.getDeclaringType() == scopeType ) {
-//								//pass
-//							} else {
-//								this.isInScope = false;
-//								sb.append( " -out-of-scope-" );
-//							}
-//						}
-//					}
-//					sb.append( "</html>" );
-//					this.setText( sb.toString() );
-//					
-//					org.lgna.project.ast.AbstractType<?,?,?> valueType = accessible.getValueType();
-////					org.lgna.project.ast.TypeDeclaredInJava valueTypeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
-////					String className = valueTypeInJava.getClassReflectionProxy().getName();
-//					
-//					this.setIcon( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( valueType ) );
-//					if( this.isInScope ) {
-//						if( isSelected ) {
-//							this.setForeground( list.getSelectionForeground() );
-//							this.setBackground( list.getSelectionBackground() );
-//						} else {
-//							this.setForeground( list.getForeground() );
-//							this.setBackground( list.getBackground() );
-//						}
-//					} else {
-//						if( isSelected ) {
-//							this.setForeground( java.awt.Color.LIGHT_GRAY );
-//							this.setBackground( java.awt.Color.GRAY );
-//						} else {
-//							this.setForeground( java.awt.Color.DARK_GRAY );
-//							this.setBackground( list.getBackground() );
-//						}
-//					}
-//				}
-//				return this;
-//			}
-//			@Override
-//			public void paint(java.awt.Graphics g) {
-//				super.paint(g);
-//				if( this.isInScope ) {
-//					//pass
-//				} else {
-//					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//					g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
-//					g2.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-//				}
-//			}
-//		}
-
 		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
 		instanceLabel.scaleFont( FONT_SCALAR );
-//		
-//		final org.lgna.project.ast.JavaField PROTOTYPE_FIELD;
-//		try {
-//			PROTOTYPE_FIELD = org.lgna.project.ast.JavaField.getInstance( MembersEditor.class.getField( "PROTOTYPE" ) );
-//		} catch( NoSuchFieldException nsfe ) {
-//			throw new RuntimeException( nsfe );
-//		}
-//		
 		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
-		
 		instancePanel.addComponent( instanceLabel );
 		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryDropDown( org.alice.ide.instancefactory.InstanceFactoryState.getInstance() ) );
 		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
@@ -176,13 +86,19 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		if( rv != null ) {
 			//pass
 		} else {
-			org.lgna.croquet.components.AbstractTabbedPane<?,?,?> tabbedPane;
+			org.alice.ide.croquet.models.templates.TemplatesTabSelectionState tabState;
 			if( isAlwaysShowingBlocks ) {
-				tabbedPane = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance().createDefaultFolderTabbedPane();
+				tabState = org.alice.ide.croquet.models.templates.ProcedureFunctionPropertyTabState.getInstance();
 			} else {
-				tabbedPane = org.alice.ide.croquet.models.templates.TemplatesTabSelectionState.getInstance().createToolPaletteTabbedPane();
-				tabbedPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
+				tabState = org.alice.ide.croquet.models.templates.ProcedureFunctionControlFlowTabState.getInstance();
 			}
+			org.lgna.croquet.components.AbstractTabbedPane<?,?,?> tabbedPane = tabState.createTabbedPane();
+//			if( isAlwaysShowingBlocks ) {
+//				tabbedPane = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance().createDefaultFolderTabbedPane();
+//			} else {
+//				tabbedPane = org.alice.ide.croquet.models.templates.TemplatesTabSelectionState.getInstance().createToolPaletteTabbedPane();
+//				tabbedPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
+//			}
 			rv = this.cardPanel.createKey( tabbedPane, tabbedPane.getModel().getId() );
 			this.cardPanel.addComponent( rv );
 			this.keys.put( isAlwaysShowingBlocks, rv );
