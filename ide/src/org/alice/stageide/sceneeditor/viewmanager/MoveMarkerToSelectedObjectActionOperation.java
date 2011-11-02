@@ -47,6 +47,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.alice.ide.IDE;
+import org.alice.stageide.sceneeditor.MarkerUtilities;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraMarkerImp;
@@ -97,11 +98,7 @@ public class MoveMarkerToSelectedObjectActionOperation extends org.lgna.croquet.
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			CameraMarkerImp marker = IDE.getActiveInstance().getMainComponent().getSceneEditor().getImplementation(this.markerField);
-//			if (marker != null)
-//			{
-//				this.imageIcon.setLeftImage(marker.getIcon());				
-//			}
+			this.imageIcon.setLeftImage(MarkerUtilities.getIconForMarker(markerField));				
 		}
 		this.updateBasedOnSettings();
 	}

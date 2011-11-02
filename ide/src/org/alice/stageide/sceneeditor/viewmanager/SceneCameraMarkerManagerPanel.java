@@ -76,8 +76,10 @@ public class SceneCameraMarkerManagerPanel extends AbstractMarkerManagerPanel{
 	@Override
     public void updateButtons()
 	{
-		this.moveToMarkerButton.setVisible(MoveActiveCameraToMarkerActionOperation.getInstance().isEnabled());
-		this.moveToObjectButton.setVisible(MoveMarkerToActiveCameraActionOperation.getInstance().isEnabled());
+		if (this.moveToMarkerButton != null && this.moveToObjectButton != null ) {
+			this.moveToMarkerButton.setVisible(MoveActiveCameraToMarkerActionOperation.getInstance().isEnabled());
+			this.moveToObjectButton.setVisible(MoveMarkerToActiveCameraActionOperation.getInstance().isEnabled());
+		}
 	}
 
 	/* (non-Javadoc)

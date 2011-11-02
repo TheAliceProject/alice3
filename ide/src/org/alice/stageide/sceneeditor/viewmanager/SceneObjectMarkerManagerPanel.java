@@ -73,8 +73,10 @@ public class SceneObjectMarkerManagerPanel extends AbstractMarkerManagerPanel {
     @Override
     public void updateButtons()
     {
-        this.moveToMarkerButton.setVisible(MoveSelectedObjectToMarkerActionOperation.getInstance().isEnabled());
-        this.moveToObjectButton.setVisible(MoveMarkerToSelectedObjectActionOperation.getInstance().isEnabled());
+    	if (this.moveToMarkerButton != null && this.moveToObjectButton != null ) {
+	        this.moveToMarkerButton.setVisible(MoveSelectedObjectToMarkerActionOperation.getInstance().isEnabled());
+	        this.moveToObjectButton.setVisible(MoveMarkerToSelectedObjectActionOperation.getInstance().isEnabled());
+    	}
     }
 
 
