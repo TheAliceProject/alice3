@@ -161,7 +161,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				java.awt.image.BufferedImage thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(resourceClass, field.getName());
 				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 20, 20 );
 			} else {
-				return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( field );
+				return null;
 			}
 		}
 		return null;

@@ -50,13 +50,25 @@ public abstract class MemberTemplateComposite extends TemplateComposite {
 	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
-			org.lgna.project.ast.AbstractType< ?, ?, ? > type; 
+//			org.lgna.project.ast.AbstractType< ?, ?, ? > type; 
+//			if( instanceFactory != null ) {
+//				type = instanceFactory.getValueType();
+//			} else {
+//				type = null;
+//			}
+//			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( type );
+
 			if( instanceFactory != null ) {
-				type = instanceFactory.getValueType();
+				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
+					org.lgna.project.ast.AbstractField field = thisFieldAccessFactory.getField();
+					return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( thisFieldAccessFactory.getField() );
+				} else {
+					return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( instanceFactory.getValueType() );
+				}
 			} else {
-				type = null;
+				return null;
 			}
-			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( type );
 		}
 		public int getIconHeight() {
 			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
