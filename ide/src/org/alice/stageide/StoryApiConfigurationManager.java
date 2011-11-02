@@ -112,6 +112,56 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 				}
 			}
 		} );
+		
+		final java.awt.Stroke BONE_STROKE = new java.awt.BasicStroke( 3.0f );
+		final java.awt.Stroke JOINT_OUTLINE_STROKE = new java.awt.BasicStroke( 1.0f );
+		final int INSET_X = 6;
+		final int INSET_Y = 6;
+		final int JOINT_A_CENTER_X = INSET_X;
+		final int JOINT_A_CENTER_Y = INSET_Y;
+		final int JOINT_B_CENTER_X = 3*SMALL_ICON_SIZE/4;
+		final int JOINT_B_CENTER_Y = 2*SMALL_ICON_SIZE/5;
+		final int JOINT_C_CENTER_X = SMALL_ICON_SIZE/2;
+		final int JOINT_C_CENTER_Y = SMALL_ICON_SIZE-INSET_Y;
+		final int JOINT_WIDTH = 8;
+		final int JOINT_HEIGHT = 8;
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Joint.class, new javax.swing.Icon() {
+			public int getIconWidth() {
+				return SMALL_ICON_SIZE;
+			}
+			public int getIconHeight() {
+				return SMALL_ICON_SIZE;
+			}
+			private void drawJoint( java.awt.Graphics2D g2, int x, int y, java.awt.Paint fillPaint, java.awt.Paint outlinePaint ) {
+				if( fillPaint != null ) {
+					g2.setPaint( fillPaint );
+					g2.fillOval( x-4, y-4, JOINT_WIDTH, JOINT_HEIGHT );
+				}
+				if( outlinePaint != null ) {
+					g2.setPaint( outlinePaint );
+					g2.drawOval( x-4, y-4, JOINT_WIDTH, JOINT_HEIGHT );
+				}
+
+			}
+			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+				java.awt.Stroke prevStroke = g2.getStroke();
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				try {
+					g2.setStroke( BONE_STROKE );
+					g2.drawLine( JOINT_A_CENTER_X, JOINT_A_CENTER_Y, JOINT_B_CENTER_X, JOINT_B_CENTER_Y );
+					g2.drawLine( JOINT_C_CENTER_X, JOINT_C_CENTER_Y, JOINT_B_CENTER_X, JOINT_B_CENTER_Y );
+					g2.setStroke( JOINT_OUTLINE_STROKE );
+					this.drawJoint( g2, JOINT_B_CENTER_X, JOINT_B_CENTER_Y, java.awt.Color.RED, java.awt.Color.BLACK );
+					this.drawJoint( g2, JOINT_A_CENTER_X, JOINT_A_CENTER_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
+					this.drawJoint( g2, JOINT_C_CENTER_X, JOINT_C_CENTER_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
+				} finally {
+					g2.setStroke( prevStroke );
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+				}
+			}
+		} );
 		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Camera.class, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.gallerybrowser.ResourceManager.class.getResource( "images/SymmetricPerspectiveCamera.png" ) ) );
 //		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lookingglassandalice.storytelling.Camera.class, new javax.swing.Icon() {
 //			public int getIconWidth() {

@@ -59,13 +59,17 @@ public abstract class MemberTemplateComposite extends TemplateComposite {
 //			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( type );
 
 			if( instanceFactory != null ) {
+				javax.swing.Icon rv = null;
 				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
 					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-					org.lgna.project.ast.AbstractField field = thisFieldAccessFactory.getField();
-					return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( thisFieldAccessFactory.getField() );
+					rv = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( thisFieldAccessFactory.getField() );
+				} 
+				if( rv != null ) {
+					//pass
 				} else {
-					return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( instanceFactory.getValueType() );
+					rv = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( instanceFactory.getValueType() );
 				}
+				return rv;
 			} else {
 				return null;
 			}
