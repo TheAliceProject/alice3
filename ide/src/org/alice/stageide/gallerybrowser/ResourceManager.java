@@ -185,6 +185,34 @@ public class ResourceManager {
 		}
 	}
 	
+	public static javax.swing.Icon getSmallIconForField( org.lgna.project.ast.AbstractField field ) {
+		if( field instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
+			org.lgna.project.ast.Expression initializer = userField.initializer.getValue();
+			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
+				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
+				org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( instanceCreation );
+				if( argumentField != null ) {
+					if( argumentField.isStatic() ) {
+						java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
+						try {
+							Object o = fld.get( null );
+							if( o != null ) {
+								if( o.getClass().isEnum() ) {
+									Enum<?> e = (Enum<?>)o;
+									return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(ModelResourceUtilities.getThumbnailURL(e.getClass(), e.name()));
+								}
+							}
+						} catch( IllegalAccessException iae ) {
+							iae.printStackTrace();
+							return null;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
 	
 	
 	public static javax.swing.Icon getLargeIconForImplementation(org.lgna.story.implementation.EntityImp imp) {
