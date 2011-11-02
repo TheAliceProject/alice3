@@ -117,19 +117,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		}
 		if (this.selectedField != null)
 		{
-			EntityImp entityImp = IDE.getActiveInstance().getMainComponent().getSceneEditor().getImplementation(this.selectedField);
-			Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForImplementation(entityImp);
-			if (icon != null)
-			{
-				if (icon instanceof ImageIcon)
-				{
-					icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( ((javax.swing.ImageIcon)icon).getImage(), MoveToImageIcon.SUB_ICON_WIDTH,  MoveToImageIcon.SUB_ICON_HEIGHT );
-				}
-				else if (icon instanceof ScaledImageIcon)
-				{
-					icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( ((ScaledImageIcon)icon).getImage(), MoveToImageIcon.SUB_ICON_WIDTH,  MoveToImageIcon.SUB_ICON_HEIGHT );
-				}
-			}
+			Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField(this.selectedField);
 			this.imageIcon.setLeftImage(icon);
 		}
 		else

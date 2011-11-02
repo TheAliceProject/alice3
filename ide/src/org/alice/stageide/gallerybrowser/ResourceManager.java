@@ -217,32 +217,32 @@ public class ResourceManager {
 		return getSmallIconFor( getLargeIconForField( field ) );
 	}
 
-	public static javax.swing.Icon getLargeIconForImplementation( org.lgna.story.implementation.EntityImp imp ) {
-		if( imp != null ) {
-			if( imp instanceof org.lgna.story.implementation.JointedModelImp< ?, ? > ) {
-				org.lgna.story.implementation.JointedModelImp< ?, ? > jointedImp = (org.lgna.story.implementation.JointedModelImp< ?, ? >)imp;
-				Class< ? > resourceCls = jointedImp.getResource().getClass();
-				if( resourceCls.isEnum() ) {
-					String instanceName = null;
-					for( Object e : resourceCls.getEnumConstants() ) {
-						System.out.println( "Resource: " + e );
-						if( e == jointedImp.getResource() ) {
-							instanceName = e.toString();
-						}
-					}
-					return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( ModelResourceUtilities.getThumbnailURL( resourceCls, instanceName ) );
-				} else {
-					return null;
-				}
-			} else {
-				return getLargeIconForType( org.lgna.project.ast.JavaType.getInstance( imp.getAbstraction().getClass() ) );
-			}
-		}
-		return null;
-	}
-
-	public static javax.swing.Icon getSmallIconForImplementation( org.lgna.story.implementation.EntityImp imp ) {
-		return getSmallIconFor( getLargeIconForImplementation( imp ) );
-	}
+//	public static javax.swing.Icon getLargeIconForImplementation( org.lgna.story.implementation.EntityImp imp ) {
+//		if( imp != null ) {
+//			if( imp instanceof org.lgna.story.implementation.JointedModelImp< ?, ? > ) {
+//				org.lgna.story.implementation.JointedModelImp< ?, ? > jointedImp = (org.lgna.story.implementation.JointedModelImp< ?, ? >)imp;
+//				Class< ? > resourceCls = jointedImp.getResource().getClass();
+//				if( resourceCls.isEnum() ) {
+//					String instanceName = null;
+//					for( Object e : resourceCls.getEnumConstants() ) {
+//						System.out.println( "Resource: " + e );
+//						if( e == jointedImp.getResource() ) {
+//							instanceName = e.toString();
+//						}
+//					}
+//					return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( ModelResourceUtilities.getThumbnailURL( resourceCls, instanceName ) );
+//				} else {
+//					return null;
+//				}
+//			} else {
+//				return getLargeIconForType( org.lgna.project.ast.JavaType.getInstance( imp.getAbstraction().getClass() ) );
+//			}
+//		}
+//		return null;
+//	}
+//
+//	public static javax.swing.Icon getSmallIconForImplementation( org.lgna.story.implementation.EntityImp imp ) {
+//		return getSmallIconFor( getLargeIconForImplementation( imp ) );
+//	}
 
 }
