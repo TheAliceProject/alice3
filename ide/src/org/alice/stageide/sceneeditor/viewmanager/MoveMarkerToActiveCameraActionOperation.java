@@ -44,6 +44,7 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.IDE;
+import org.alice.stageide.sceneeditor.MarkerUtilities;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.OrthographicCameraMarkerImp;
@@ -99,11 +100,7 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			CameraMarkerImp marker = IDE.getActiveInstance().getMainComponent().getSceneEditor().getImplementation(this.markerField);
-			if (marker != null)
-			{
-//				this.imageIcon.setLeftImage(marker.getIcon());				
-			}
+			this.imageIcon.setLeftImage(MarkerUtilities.getIconForMarker(this.markerField));	
 		}
 		this.updateBasedOnSettings();
 	}
@@ -111,10 +108,10 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 	public void setCameraMarker(CameraMarkerImp cameraMarker)
 	{
 		this.cameraMarker = cameraMarker;
-//		if (this.cameraMarker != null)
-//		{
-//			this.imageIcon.setRightImage(this.cameraMarker.getIcon());
-//		}
+		if (this.cameraMarker != null)
+		{
+			this.imageIcon.setRightImage(MarkerUtilities.getIconForCamera(cameraMarker));
+		}
 		this.updateBasedOnSettings();
 	}
 

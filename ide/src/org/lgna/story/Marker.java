@@ -59,24 +59,28 @@ public abstract class Marker extends MovableTurnable implements MutableRider {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 	
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
-	public Double getOpacity() {
-		return (double)this.getImplementation().opacity.getValue();
-	}
-	@MethodTemplate()
-	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void setColorId( org.lgna.story.Color color ){
+		this.getImplementation().paint.setValue(color);
 	}
 	
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	public Paint getPaint() {
-		return this.getImplementation().paint.getValue();
-	}
-	@MethodTemplate()
-	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+//	@MethodTemplate()
+//	@GetterTemplate(isPersistent = true)
+//	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
+//	public Double getOpacity() {
+//		return (double)this.getImplementation().opacity.getValue();
+//	}
+//	@MethodTemplate()
+//	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
+//		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+//	}
+//	
+//	@MethodTemplate()
+//	@GetterTemplate(isPersistent = true)
+//	public Paint getPaint() {
+//		return this.getImplementation().paint.getValue();
+//	}
+//	@MethodTemplate()
+//	public void setPaint( Paint paint, SetPaint.Detail... details ) {
+//		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+//	}
 }

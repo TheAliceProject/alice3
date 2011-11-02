@@ -75,11 +75,13 @@ import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
@@ -643,6 +645,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 //		
 //			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
 //			this.fieldRadioButtons = new FieldRadioButtons( org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance() );
+		}
+	}
+	
+	@Override
+	public void addField(UserType<?> declaringType, UserField field, Statement... statements) {
+		super.addField(declaringType, field, statements);
+		if (field.getValueType().isAssignableTo(org.lgna.story.Marker.class)) {
+			org.lgna.story.Marker marker = this.getInstanceInJavaVMForField(field, org.lgna.story.Marker.class);
+			MarkerImp markerImp = ImplementationAccessor.getImplementation(marker);
+			markerImp.setDisplayVisuals(true);
+			markerImp.setShowing(true);
 		}
 	}
 	

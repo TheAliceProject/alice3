@@ -70,7 +70,7 @@ public abstract class MarkerImp extends ModelImp {
 		this.boundingBox = this.calculateBoundingBox();
 		setMarkerColor(getDefaultMarkerColor());
 		setMarkerOpacity(getDefaultMarkerOpacity());
-		this.setShowing(this.getDisplayEnabled());
+		this.setShowing(false);
 	}
 	
 	@Override
