@@ -40,22 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui;
+
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsSceneEditorExpandedState extends org.lgna.croquet.BooleanState {
-	private static javax.swing.Icon EXPAND_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IsSceneEditorExpandedState.class.getResource( "images/24/expand.png" ) );
-	private static javax.swing.Icon CONTRACT_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IsSceneEditorExpandedState.class.getResource( "images/24/contract.png" ) );
+public class IsIncludingProtectedMembers extends org.lgna.croquet.preferences.PreferenceBooleanState {
 	private static class SingletonHolder {
-		private static IsSceneEditorExpandedState instance = new IsSceneEditorExpandedState();
+		private static IsIncludingProtectedMembers instance = new IsIncludingProtectedMembers();
 	}
-	public static IsSceneEditorExpandedState getInstance() {
+	public static IsIncludingProtectedMembers getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsSceneEditorExpandedState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "704ea7d2-9da8-461f-b7dd-d086815c3e52" ), false );
-		this.setIconForTrueAndIconForFalse( CONTRACT_ICON, EXPAND_ICON );
+	private IsIncludingProtectedMembers() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "edd78ac7-6abb-4622-9b86-e4481d841379" ), false );
 	}
 }

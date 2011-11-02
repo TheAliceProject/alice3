@@ -47,11 +47,8 @@ package org.alice.stageide.sceneeditor;
  * @author Dennis Cosgrove
  */
 public class ExpandCollapseButton extends org.lgna.croquet.components.BooleanStateButton< javax.swing.JButton > {
-	private static javax.swing.Icon EXPAND_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( ExpandCollapseButton.class.getResource( "images/24/expand.png" ) );
-	private static javax.swing.Icon CONTRACT_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( ExpandCollapseButton.class.getResource( "images/24/contract.png" ) );
 	public ExpandCollapseButton() {
 		super( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance() );
-		this.getModel().setIconForTrueAndIconForFalse( CONTRACT_ICON, EXPAND_ICON );
 	}
 	@Override
 	protected javax.swing.JButton createAwtComponent() {

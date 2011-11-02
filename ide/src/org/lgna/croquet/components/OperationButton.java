@@ -49,17 +49,18 @@ package org.lgna.croquet.components;
 public abstract class OperationButton< J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Operation<?> > extends AbstractButton< J, M > {
 	public OperationButton( M model ) {
 		super( model );
-	}
-	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-		M model = this.getModel();
 		this.setAction( model.getSwingModel().getAction() );
 	}
 	@Override
+	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+		M model = this.getModel();
+		this.setAction( model.getSwingModel().getAction() );
+		super.handleAddedTo( parent );
+	}
+	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
-		this.setAction( null );
 		super.handleRemovedFrom( parent );
+		this.setAction( null );
 	}
 //	@Override
 //	protected void handleDisplayable() {

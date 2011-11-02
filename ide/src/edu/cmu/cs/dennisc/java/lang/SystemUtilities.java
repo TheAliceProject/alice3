@@ -114,7 +114,8 @@ public class SystemUtilities {
 	}
 	
 	public static boolean areIconsDisplayedInMenus() {
-		return isWindows();
+		//return isWindows();
+		return false;
 	}
 	
 	public static <E> E[] returnArray( Class<E> componentType, E... rv ) {
