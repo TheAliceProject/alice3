@@ -45,26 +45,28 @@ package org.alice.stageide.sceneeditor.viewmanager;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class MoveToImageIcon extends ImageIcon {
 	
-	public static int SUB_ICON_WIDTH = 25;
-	public static int SUB_ICON_HEIGHT = 20;
-	private final static int HALF_CENTER_SPACE = 8; 
+	public static int SUB_ICON_WIDTH = 32;
+	public static int SUB_ICON_HEIGHT = 32;
+	
+	private static int HORIZONTAL_OFFSET = -4;
 
 	private Icon leftImage;
 	private Icon rightImage;
+	private Icon arrowImage;
 	
-	private int leftOffsetX;
-	private int rightOffsetX;
-	private int rightOffsetY;
 	
 	public MoveToImageIcon()
 	{
-		super(org.alice.stageide.sceneeditor.StorytellingSceneEditor.class.getResource("images/moveToTemplateIcon.png"));
+		super();
+		this.arrowImage = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.sceneeditor.StorytellingSceneEditor.class.getResource("images/moveToArrowIcon.png") );
+//		this.setImage(new BufferedImage(SUB_ICON_WIDTH*2 + this.arrowImage.getIconWidth(), SUB_ICON_HEIGHT, BufferedImage.TYPE_INT_ARGB));
 	}
 	
 	public MoveToImageIcon(Icon leftImage, Icon rightImage)
@@ -75,14 +77,23 @@ public class MoveToImageIcon extends ImageIcon {
 		
 	}
 
+	private void setSizeIfNeeded() {
+		if (this.leftImage != null && this.rightImage != null) {
+            int totalHeight = Math.max( this.arrowImage.getIconHeight(), Math.max(this.leftImage.getIconHeight(), this.rightImage.getIconHeight() ) );
+            int totalWidth = this.arrowImage.getIconWidth() + this.leftImage.getIconWidth() + this.rightImage.getIconWidth() + 2*HORIZONTAL_OFFSET;
+            if (totalHeight != this.getIconHeight() || totalWidth != this.getIconWidth())
+            {
+            	this.setImage(new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_ARGB));
+            }
+		}
+	}
+	
 	public void setLeftImage(Icon leftImage)
 	{
 		this.leftImage = leftImage;
 		if (this.leftImage != null)
         {
-            int thisWidth = this.getIconWidth();
-            int imageWidth = this.leftImage.getIconWidth();
-            this.leftOffsetX = (thisWidth/2 - HALF_CENTER_SPACE) - imageWidth;
+            setSizeIfNeeded();
         }
 	}
 	
@@ -91,10 +102,7 @@ public class MoveToImageIcon extends ImageIcon {
 		this.rightImage = rightImage;
 		if (this.rightImage != null)
 		{
-			int thisWidth = this.getIconWidth();
-			int imageWidth = this.rightImage.getIconWidth();
-			this.rightOffsetX = thisWidth/2 + HALF_CENTER_SPACE;
-			this.rightOffsetY = 0;
+			setSizeIfNeeded();
 		}
 	}
 	
@@ -102,13 +110,22 @@ public class MoveToImageIcon extends ImageIcon {
 	public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
 		// TODO Auto-generated method stub
 		super.paintIcon(c, g, x, y);
+		int xPos = HORIZONTAL_OFFSET;
 		if (this.leftImage != null)
 		{
-			this.leftImage.paintIcon(c, g, x+this.leftOffsetX, y);
+			int yOffset = (int)((this.getIconHeight() - this.leftImage.getIconHeight()) *.5);
+			this.leftImage.paintIcon(c, g, x+xPos, y + yOffset);
+			xPos += this.leftImage.getIconWidth();
+		}
+		if (this.arrowImage != null) {
+			int yOffset = (int)((this.getIconHeight() - this.arrowImage.getIconHeight()) *.5);
+			this.arrowImage.paintIcon(c, g, x+xPos, y + yOffset);
+			xPos += this.arrowImage.getIconWidth();
 		}
 		if (this.rightImage != null)
 		{
-			this.rightImage.paintIcon(c, g, x+this.rightOffsetX, y+this.rightOffsetY);
+			int yOffset = (int)((this.getIconHeight() - this.rightImage.getIconHeight()) *.5);
+			this.rightImage.paintIcon(c, g, x+xPos, y + yOffset);
 		}
 	}
 	
