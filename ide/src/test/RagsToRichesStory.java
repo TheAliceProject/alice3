@@ -178,6 +178,39 @@ class SnowScene extends Scene {
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
+		
+
+////keywords
+////chain
+//this.ogre.move( MoveDirection.LEFT, 1.5 );
+//this.ogre.move( MoveDirection.LEFT, 1.5, 1.0 );
+//this.ogre.move( MoveDirection.LEFT, 1.5, 1.0, this.camera );
+//this.ogre.move( MoveDirection.LEFT, 1.5, 1.0, this.camera, AnimationStyle.BEGIN_AND_END_GENTLY );
+//
+////builder
+//this.ogre.move( new MoveArguments.Builder( MoveDirection.LEFT, 1.5 ).asSeenBy( this.camera ).duration( 1.0 ).build() );
+////builder more palatable
+//this.ogre.move( MoveDirection.LEFT, 1.5, MoveArguments.asSeenBy( this.camera ).duration( 1.0 ) );
+//
+////varargs
+//this.ogre.move( MoveDirection.LEFT, 1.5 );
+//this.ogre.move( MoveDirection.LEFT, 1.5, Move.asSeenBy( this.camera ), Move.duration( 1.0 ) );
+//
+//
+//
+////inner classes
+//DoTogether.invokeAndWait(
+//		new Runnable() {
+//			public void run() {
+//				SnowScene.this.ogre.move( MoveDirection.LEFT, 1.5 );
+//			}
+//		},
+//		new Runnable() {
+//			public void run() {
+//				SnowScene.this.ogre.move( MoveDirection.UP, 1.5 );
+//			}
+//		}
+//);
 	}
 	private void performCustomSetup() {
 	}

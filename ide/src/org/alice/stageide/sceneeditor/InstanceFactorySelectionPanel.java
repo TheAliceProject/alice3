@@ -79,6 +79,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 				//pass
 			} else {
 				rv = new InternalButton( instanceFactory );
+				map.put( instanceFactory, rv );
 			}
 			return rv;
 		}
@@ -95,10 +96,35 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 				this.internalAddComponent( button );
 				this.buttonGroup.add( button.getAwtComponent() );
 			}
+			this.setSelected( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue() );
 			this.revalidateAndRepaint();
+		}
+		
+		private void setSelected( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+			InternalButton button;
+			if( instanceFactory != null ) {
+				button = this.map.get( instanceFactory );
+			} else {
+				button = null;
+			}
+			if( button != null ) {
+				this.buttonGroup.setSelected( button.getAwtComponent().getModel(), true );
+			} else {
+				javax.swing.ButtonModel buttonModel = this.buttonGroup.getSelection();
+				if( buttonModel != null ) {
+					this.buttonGroup.setSelected( buttonModel, false );
+				}
+			}
 		}
 	}
 	
+	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.instancefactory.InstanceFactory > instanceFactoryListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.instancefactory.InstanceFactory >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+			InstanceFactorySelectionPanel.this.handleInstanceFactoryChanged();
+		}
+	};
 	private final InternalPanel internalPanel = new InternalPanel();
 	public InstanceFactorySelectionPanel() {
 		super( org.alice.ide.instancefactory.InstanceFactoryState.getInstance() );
@@ -110,5 +136,18 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 		rv.setOpaque( false );
 		rv.add( this.internalPanel.getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;
+	}
+	private void handleInstanceFactoryChanged() {
+		this.internalPanel.refreshLater();
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().addAndInvokeValueObserver( this.instanceFactoryListener );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.getModel().removeValueObserver( this.instanceFactoryListener );
+		super.handleUndisplayable();
 	}
 }
