@@ -101,5 +101,4 @@ public abstract class RefreshPanel extends org.lgna.croquet.components.Panel {
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
 	}
-	
 }

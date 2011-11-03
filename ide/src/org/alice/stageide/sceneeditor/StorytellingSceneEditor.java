@@ -305,6 +305,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImplementation;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 	private org.lgna.croquet.components.BooleanStateButton< ? > expandCollapseButton;
+	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 	
 	private org.lgna.story.CameraMarker expandedViewSelectedMarker = null;
 	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera = null;
@@ -427,17 +428,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	@Override
 	protected void handleExpandContractChange(boolean isExpanded) {
+		this.mainPanel.removeAllComponents();
 		if (isExpanded)
 		{
-			this.mainPanel.removeAllComponents();
+			this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
 			this.propertiesSplitPane.setLeftComponent(this.lookingGlassPanel);
 			this.propertiesSplitPane.setRightComponent(this.sidePanel);
 			this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
 		}
 		else
 		{
-			this.mainPanel.removeAllComponents();
 			this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
+			this.lookingGlassPanel.setNorthWestComponent( null );
 		}
 		this.mainCameraNavigatorWidget.setExpanded(isExpanded);
 		this.lookingGlassPanel.setSouthEastComponent(this.expandCollapseButton);
@@ -541,6 +543,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
 			
 			this.expandCollapseButton = new ExpandCollapseButton();
+			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
 			
 			this.propertiesSplitPane.setResizeWeight(1.0);
 			
