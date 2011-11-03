@@ -49,12 +49,26 @@ package org.alice.stageide.sceneeditor;
 public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.ViewController< javax.swing.JPanel, org.alice.ide.instancefactory.InstanceFactoryState > {
 	private static final class InternalButton extends org.lgna.croquet.components.JComponent< javax.swing.AbstractButton > {
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+		private final javax.swing.Action action = new javax.swing.AbstractAction() {
+			@Override
+			public Object getValue(String key) {
+				if( NAME.equals( key ) ) {
+					return instanceFactory.getRepr();
+				} else {
+					return super.getValue( key );
+				}
+			}
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( InternalButton.this.instanceFactory );
+			}
+			
+		};
 		public InternalButton( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 			this.instanceFactory = instanceFactory;
 		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
-			javax.swing.JRadioButton rv = new javax.swing.JRadioButton( this.instanceFactory.getRepr() );
+			javax.swing.JRadioButton rv = new javax.swing.JRadioButton( this.action );
 			if( this.instanceFactory instanceof org.alice.ide.instancefactory.ThisInstanceFactory ) {
 				//pass
 			} else {
@@ -66,8 +80,6 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 	private static final class InternalPanel extends org.alice.ide.croquet.components.RefreshPanel {
 		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 		private final java.util.Map< org.alice.ide.instancefactory.InstanceFactory, InternalButton > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-		public InternalPanel() {
-		}
 		@Override
 		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
