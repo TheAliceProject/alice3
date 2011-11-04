@@ -55,52 +55,60 @@ public class CompassPointSpringPanel extends CornerSpringPanel {
 		return this.northComponent;
 	}
 	public void setNorthComponent( Component< ? > northComponent ) {
-		if( this.northComponent != null ) {
-			this.removeComponent( this.northComponent );
-		}
-		this.northComponent = northComponent;
-		if( this.northComponent != null ) {
-			int pad = getPad();
-			this.addComponent( this.northComponent, Horizontal.CENTER, 0, Vertical.NORTH, pad );
+		if( this.northComponent != northComponent ) {
+			if( this.northComponent != null ) {
+				this.removeComponent( this.northComponent );
+			}
+			this.northComponent = northComponent;
+			if( this.northComponent != null ) {
+				int pad = getPad();
+				this.addComponent( this.northComponent, Horizontal.CENTER, 0, Vertical.NORTH, pad );
+			}
 		}
 	}
 	public Component< ? > getEastComponent() {
 		return this.eastComponent;
 	}
 	public void setEastComponent( Component< ? > eastComponent ) {
-		if( this.eastComponent != null ) {
-			this.removeComponent( this.eastComponent );
-		}
-		this.eastComponent = eastComponent;
-		if( this.eastComponent != null ) {
-			int pad = getPad();
-			this.addComponent( this.eastComponent, Horizontal.EAST, -pad, Vertical.CENTER, 0 );
+		if( this.eastComponent != eastComponent ) {
+			if( this.eastComponent != null ) {
+				this.removeComponent( this.eastComponent );
+			}
+			this.eastComponent = eastComponent;
+			if( this.eastComponent != null ) {
+				int pad = getPad();
+				this.addComponent( this.eastComponent, Horizontal.EAST, -pad, Vertical.CENTER, 0 );
+			}
 		}
 	}
 	public Component< ? > getSouthComponent() {
 		return this.southComponent;
 	}
 	public void setSouthComponent( Component< ? > southComponent ) {
-		if( this.southComponent != null ) {
-			this.removeComponent( this.southComponent );
-		}
-		this.southComponent = southComponent;
-		if( this.southComponent != null ) {
-			int pad = getPad();
-			this.addComponent( this.southComponent, Horizontal.CENTER, 0, Vertical.SOUTH, -pad );
+		if( this.southComponent != southComponent ) {
+			if( this.southComponent != null ) {
+				this.removeComponent( this.southComponent );
+			}
+			this.southComponent = southComponent;
+			if( this.southComponent != null ) {
+				int pad = getPad();
+				this.addComponent( this.southComponent, Horizontal.CENTER, 0, Vertical.SOUTH, -pad );
+			}
 		}
 	}
 	public Component< ? > getWestComponent() {
 		return this.westComponent;
 	}
 	public void setWestComponent( Component< ? > westComponent ) {
-		if( this.westComponent != null ) {
-			this.removeComponent( this.westComponent );
-		}
-		this.westComponent = westComponent;
-		if( this.westComponent != null ) {
-			int pad = getPad();
-			this.addComponent( this.westComponent, Horizontal.WEST, -pad, Vertical.CENTER, 0 );
+		if( this.westComponent != westComponent ) {
+			if( this.westComponent != null ) {
+				this.removeComponent( this.westComponent );
+			}
+			this.westComponent = westComponent;
+			if( this.westComponent != null ) {
+				int pad = getPad();
+				this.addComponent( this.westComponent, Horizontal.WEST, -pad, Vertical.CENTER, 0 );
+			}
 		}
 	}
 }
