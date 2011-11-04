@@ -50,31 +50,93 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 	private static final class InternalButton extends org.lgna.croquet.components.JComponent< javax.swing.AbstractButton > {
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
-			@Override
-			public Object getValue(String key) {
-				if( NAME.equals( key ) ) {
-					return instanceFactory.getRepr();
-				} else {
-					return super.getValue( key );
-				}
-			}
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( InternalButton.this.instanceFactory );
 			}
 			
 		};
+		
+		private final edu.cmu.cs.dennisc.java.awt.event.AltTriggerMouseAdapter altTriggerMouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.AltTriggerMouseAdapter() {
+			@Override
+			protected void altTriggered( java.awt.event.MouseEvent e ) {
+				System.err.println( e );
+			}
+		};
+		
 		public InternalButton( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 			this.instanceFactory = instanceFactory;
 		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
-			javax.swing.JRadioButton rv = new javax.swing.JRadioButton( this.action );
+			javax.swing.JRadioButton rv = new javax.swing.JRadioButton( this.action ) {
+				@Override
+				protected void paintComponent( java.awt.Graphics g ) {
+					//note: do not invoke super
+					//super.paintComponent( g );
+				}
+				@Override
+				protected void paintChildren( java.awt.Graphics g ) {
+					//todo: better indication of selection/rollover
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					
+					java.awt.Composite prevComposite = g2.getComposite();
+					
+					java.awt.Composite nextComposite = prevComposite;
+					float alpha;
+					if( model.isSelected() ) {
+						if( model.isRollover() ) {
+							alpha = 1.0f;
+						} else {
+							alpha = 0.9f;
+						}
+						nextComposite = prevComposite;
+					} else {
+						if( model.isRollover() ) {
+							alpha = 0.5f;
+						} else {
+							alpha = 0.25f;
+						}
+					}
+					nextComposite = java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, alpha );
+					
+					g2.setComposite( nextComposite );
+					try {
+						super.paintChildren( g );
+					} finally {
+						g2.setComposite( prevComposite );
+					}
+				}
+			};
+			rv.setOpaque( false );
+
+			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
+			org.lgna.project.ast.Expression expression = this.instanceFactory.createTransientExpression();
+			rv.add( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent() );
+
+			//todo: replace w/ spring layout (or something)
+			int top = 0;
+			int left = 0;
+			int bottom = 0;
+			int right = 0;
 			if( this.instanceFactory instanceof org.alice.ide.instancefactory.ThisInstanceFactory ) {
 				//pass
 			} else {
-				rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
+				left += 16;
 			}
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( top, left, bottom, right ) );
+			
 			return rv;
+		}
+		
+		@Override
+		protected void handleDisplayable() {
+			super.handleDisplayable();
+			this.addMouseListener( this.altTriggerMouseAdapter );
+		}
+		@Override
+		protected void handleUndisplayable() {
+			this.removeMouseListener( this.altTriggerMouseAdapter );
+			super.handleUndisplayable();
 		}
 	}
 	private static final class InternalPanel extends org.alice.ide.croquet.components.RefreshPanel {
