@@ -66,7 +66,6 @@ public class MoveToImageIcon extends ImageIcon {
 	{
 		super();
 		this.arrowImage = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.sceneeditor.StorytellingSceneEditor.class.getResource("images/moveToArrowIcon.png") );
-//		this.setImage(new BufferedImage(SUB_ICON_WIDTH*2 + this.arrowImage.getIconWidth(), SUB_ICON_HEIGHT, BufferedImage.TYPE_INT_ARGB));
 	}
 	
 	public MoveToImageIcon(Icon leftImage, Icon rightImage)

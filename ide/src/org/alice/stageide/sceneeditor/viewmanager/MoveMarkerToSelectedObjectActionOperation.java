@@ -100,7 +100,7 @@ public class MoveMarkerToSelectedObjectActionOperation extends org.lgna.croquet.
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			this.imageIcon.setLeftImage(MarkerUtilities.getIconForMarker(markerField));				
+			this.imageIcon.setLeftImage(MarkerUtilities.getIconForObjectMarker(markerField));				
 		}
 		this.updateBasedOnSettings();
 	}

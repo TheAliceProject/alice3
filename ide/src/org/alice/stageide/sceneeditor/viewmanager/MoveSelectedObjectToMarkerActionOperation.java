@@ -100,7 +100,7 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		this.markerField = markerField;
 		if (this.markerField != null)
 		{
-			this.imageIcon.setRightImage(MarkerUtilities.getIconForMarker(this.markerField));
+			this.imageIcon.setRightImage(MarkerUtilities.getIconForObjectMarker(this.markerField));
 		}
 		this.updateBasedOnSettings();
 	}

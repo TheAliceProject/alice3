@@ -57,6 +57,7 @@ import org.alice.interact.SnapGrid;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
+import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
 import org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState;
 import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
 import org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState;
@@ -372,6 +373,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			
 			MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(field);
 			MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(field);
+			ObjectMarkerFieldDeclarationOperation.getInstance().setSelectedField(field);
 			
 			if (!this.selectionIsFromInstanceSelector)
 			{
@@ -648,6 +650,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 	}
 	
+	public void setSelectedObjectMarker( UserField objectMarkerField ) {
+		ManagedObjectMarkerFieldState.getInstance((NamedUserType)getActiveSceneInstance().getType()).setSelectedItem(objectMarkerField);
+	}
+	
+	public void setSelectedCameraMarker( UserField cameraMarkerField ) {
+		ManagedCameraMarkerFieldState.getInstance((NamedUserType)getActiveSceneInstance().getType()).setSelectedItem(cameraMarkerField);
+	}
+	
 	@Override
 	public void addField(UserType<?> declaringType, UserField field, Statement... statements) {
 		super.addField(declaringType, field, statements);
@@ -656,6 +666,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			MarkerImp markerImp = ImplementationAccessor.getImplementation(marker);
 			markerImp.setDisplayVisuals(true);
 			markerImp.setShowing(true);
+			
+			if (field.getValueType().isAssignableTo(org.lgna.story.CameraMarker.class)) {
+				this.setSelectedCameraMarker(field);
+			}
+			else if (field.getValueType().isAssignableTo(org.lgna.story.ObjectMarker.class)) {
+				this.setSelectedObjectMarker(field);
+			}
 		}
 	}
 	
@@ -730,7 +747,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	public org.lgna.project.ast.Statement[] getDoStatementsForAddField(org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform, org.lgna.story.Paint initialPaint) {
-		if (initialTransform == null)
+		if (initialTransform == null && field.getValueType().isAssignableTo(org.lgna.story.Model.class))
 		{
 			org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
 			JavaType javaType = type.getFirstTypeEncounteredDeclaredInJava();
@@ -901,6 +918,42 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	public void setHandleVisibilityForObject( Transformable sgComposite, boolean b ) {
 		throw new RuntimeException( "todo" );
 	}
+	
+	public AffineMatrix4x4 getTransformForNewCameraMarker() {
+		AffineMatrix4x4 cameraTransform = this.sceneCameraImplementation.getAbsoluteTransformation();
+		return cameraTransform;
+	}
+	
+	public AffineMatrix4x4 getTransformForNewObjectMarker() {
+		org.lgna.story.implementation.EntityImp selectedImp = this.getImplementation(this.getSelectedField());
+		AffineMatrix4x4 initialTransform = null;
+		if (selectedImp != null)
+		{
+			initialTransform = selectedImp.getAbsoluteTransformation();
+		}
+		else
+		{
+			initialTransform = AffineMatrix4x4.createIdentity();
+		}
+		return initialTransform;
+	}
+	
+	public String getSuggestedNameForNewObjectMarker() {
+		return MarkerUtilities.getNameForObjectMarker( this.getActiveSceneType(), this.getSelectedField() );
+	}
+	
+	public String getSuggestedNameForNewCameraMarker() {
+		return MarkerUtilities.getNameForCameraMarker( this.getActiveSceneType() );
+	}
+	
+	public org.lgna.story.Color getColorForNewObjectMarker() {
+		return MarkerUtilities.getColorForMarkerName(getSuggestedNameForNewObjectMarker());
+	}
+	
+	public org.lgna.story.Color getColorForNewCameraMarker() {
+		return MarkerUtilities.getColorForMarkerName(getSuggestedNameForNewCameraMarker());
+	}
+	
 	public Tuple3< UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[] > createCameraMarkerField( NamedUserType ownerType ) {
 		org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
 		field.managementLevel.setValue( ManagementLevel.MANAGED );

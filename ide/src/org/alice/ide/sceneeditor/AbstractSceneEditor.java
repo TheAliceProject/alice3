@@ -172,9 +172,11 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	
 	public void addField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
 		assert declaringType == this.getActiveSceneType();
-		this.getActiveSceneType().fields.add(field);
+		//NOTE: manually calling setDeclaringType so that we can call field.add() at the end of initialization so listeners will have an initialized field on trigger
+		field.setDeclaringType(this.getActiveSceneType());
 		this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField(this.getActiveSceneInstance(), field);
 		this.executeStatements(statements);
+		this.getActiveSceneType().fields.add(field);
 		this.setSelectedField(declaringType, field);
 	}
 	

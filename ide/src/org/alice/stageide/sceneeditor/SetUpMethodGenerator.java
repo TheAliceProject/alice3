@@ -184,20 +184,22 @@ public class SetUpMethodGenerator {
 		{
 			statements.add(createSetVehicleStatement(field, initialVehicle, (initialVehicle == null) ));
 		}
-		if (javaType.isAssignableTo(org.lgna.story.Turnable.class))
-		{
-			try {
-				statements.add(createOrientationStatement(isThis, field, ImplementationAccessor.createOrientation(initialTransform.orientation)));
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-				throw new RuntimeException( ccee );
+		if (initialTransform != null) {
+			if (javaType.isAssignableTo(org.lgna.story.Turnable.class))
+			{
+				try {
+					statements.add(createOrientationStatement(isThis, field, ImplementationAccessor.createOrientation(initialTransform.orientation)));
+				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+					throw new RuntimeException( ccee );
+				}
 			}
-		}
-		if (javaType.isAssignableTo(org.lgna.story.MovableTurnable.class))
-		{
-			try {
-				statements.add(createPositionStatement(isThis, field, ImplementationAccessor.createPosition(initialTransform.translation)));
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-				throw new RuntimeException( ccee );
+			if (javaType.isAssignableTo(org.lgna.story.MovableTurnable.class))
+			{
+				try {
+					statements.add(createPositionStatement(isThis, field, ImplementationAccessor.createPosition(initialTransform.translation)));
+				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+					throw new RuntimeException( ccee );
+				}
 			}
 		}
 		if (initialPaint != null)

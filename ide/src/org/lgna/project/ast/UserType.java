@@ -50,7 +50,9 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 	protected class Adapter<E extends AbstractMember> implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > {
 		private void handleAdd( E member ) {
 			assert member instanceof UserMember;
-			assert member.getDeclaringType() == null : member.getDeclaringType();
+			if (member.getDeclaringType() != null) {
+				System.err.println("NOTE: Declaring type of "+member+" is non-null before being added to "+this+". This was probably done to initialize the member before triggering member-added listeners.");
+			}
 			UserMember memberDeclaredInAlice = (UserMember)member;
 			memberDeclaredInAlice.setDeclaringType( UserType.this );
 		}

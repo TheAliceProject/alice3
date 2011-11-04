@@ -96,9 +96,8 @@ public class MarkerFieldTile extends LineAxisPanel
 		this.field = field;
 		
 		this.textLabel.setText( this.field.getName() );
-		
-		org.lgna.story.Color color = MarkerUtilities.getColorForMarkerName(field.name.getValue());
-		this.textLabel.setForegroundColor(new Color(color.getRed().floatValue(), color.getGreen().floatValue(), color.getBlue().floatValue()));
+		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getMarkerForField(field);
+		this.textLabel.setForegroundColor(marker.getMarkerColor().getAsAWTColor());
 //		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getMarkerForField(field);
 //		if (marker != null)
 //		{

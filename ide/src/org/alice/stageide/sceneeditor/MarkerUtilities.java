@@ -52,6 +52,7 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.CameraMarkerImp;
+import org.lgna.story.implementation.MarkerImp;
 
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -67,6 +68,9 @@ public class MarkerUtilities {
 	
 	private static final HashMap<CameraMarkerImp, Tuple2<Icon, Icon>> cameraToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static final HashMap<UserField, Icon> markerToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private static final HashMap<org.lgna.story.Color, Icon> colorToObjectIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final HashMap<org.lgna.story.Color, Icon> colorToCameraIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	static
 	{
@@ -164,24 +168,54 @@ public class MarkerUtilities {
 		cameraToIconMap.put(camera, Tuple2.createInstance(normalIcon, highlightedIcon));
 	}
 	
-	public static void addIconForCameraMarker(UserField cameraMarker, org.lgna.story.Color color) {
-		java.net.URL markerIconURL = MarkerUtilities.class.getResource("images/markerIcon"+getIconSuffixForMarkerColor(color));
-		assert markerIconURL != null;
-		Icon markerIcon = new javax.swing.ImageIcon(markerIconURL);
-		markerToIconMap.put(cameraMarker, markerIcon);
-	}
-	
-	public static void addIconForObjectMarker(UserField objectMarker, org.lgna.story.Color color) {
+	private static Icon loadIconForObjectMarker(org.lgna.story.Color color) {
 		java.net.URL markerIconURL = MarkerUtilities.class.getResource("images/axis"+getIconSuffixForMarkerColor(color));
 		assert markerIconURL != null;
 		Icon markerIcon = new javax.swing.ImageIcon(markerIconURL);
-		markerToIconMap.put(objectMarker, markerIcon);
+		return markerIcon;
 	}
 	
-	public static Icon getIconForMarker(UserField marker)
+	public static Icon loadIconForCameraMarker(org.lgna.story.Color color) {
+		java.net.URL markerIconURL = MarkerUtilities.class.getResource("images/markerIcon"+getIconSuffixForMarkerColor(color));
+		assert markerIconURL != null;
+		Icon markerIcon = new javax.swing.ImageIcon(markerIconURL);
+		return markerIcon;
+	}
+	
+	@Deprecated
+	public static void addIconForCameraMarker(UserField cameraMarker, org.lgna.story.Color color) {
+		markerToIconMap.put(cameraMarker, loadIconForCameraMarker(color));
+	}
+	
+	@Deprecated
+	public static void addIconForObjectMarker(UserField objectMarker, org.lgna.story.Color color) {
+		markerToIconMap.put(objectMarker, loadIconForObjectMarker(color));
+	}
+	
+	public static Icon getIconForObjectMarker(UserField marker)
 	{
-		assert markerToIconMap.containsKey(marker);
-		return markerToIconMap.get(marker);
+		org.lgna.story.Color markerColor = getColorForMarkerField(marker);
+		if (colorToObjectIconMap.containsKey(markerColor)) {
+			return colorToObjectIconMap.get(markerColor);
+		}
+		else {
+			Icon icon = loadIconForObjectMarker(markerColor);
+			colorToObjectIconMap.put(markerColor, icon);
+			return icon;
+		}
+	}
+	
+	public static Icon getIconForCameraMarker(UserField marker)
+	{
+		org.lgna.story.Color markerColor = getColorForMarkerField(marker);
+		if (colorToCameraIconMap.containsKey(markerColor)) {
+			return colorToCameraIconMap.get(markerColor);
+		}
+		else {
+			Icon icon = loadIconForCameraMarker(markerColor);
+			colorToCameraIconMap.put(markerColor, icon);
+			return icon;
+		}
 	}
 	
 	public static Icon getIconForCamera(CameraMarkerImp camera) {
@@ -194,6 +228,18 @@ public class MarkerUtilities {
 		return cameraToIconMap.get(camera).getB();
 	}
 	
+	
+	public static org.lgna.story.Color getColorForMarkerField(UserField markerField)
+	{
+		org.lgna.story.Marker marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getInstanceInJavaVMForField(markerField, org.lgna.story.Marker.class);
+		if (marker != null)
+		{
+			return marker.getColorId();
+		}
+		else {
+			return org.lgna.story.Color.WHITE;
+		}
+	}
 	
 	public static org.lgna.story.Color getColorForMarkerName(String markerName)
 	{

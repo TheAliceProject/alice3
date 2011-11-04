@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,51 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story;
-
-import org.lgna.project.annotations.GetterTemplate;
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.project.annotations.ValueTemplate;
+package org.alice.stageide.croquet.components.declaration;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public abstract class Marker extends MovableTurnable implements MutableRider {
-	
+public class ObjectMarkerDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation > {
+	public ObjectMarkerDeclarationPanel( final org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation model ) {
+		super( model );
+//		class SidePanel extends org.lgna.croquet.components.GridBagPanel {
+//			public SidePanel() {
+//				java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+//				gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+//				gbc.weighty = 0.0;
+//				gbc.fill = java.awt.GridBagConstraints.BOTH;
+//				gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
+//				this.addComponent( new org.lgna.croquet.components.Label( model.getFrontPaintLabelText() ), gbc );
+//				this.addComponent( new PaintView( model.getFrontPaintState() ), gbc );
+//				this.addComponent( new org.lgna.croquet.components.Label( model.getBackPaintLabelText() ), gbc );
+//				this.addComponent( new PaintView( model.getBackPaintState() ), gbc );
+//				gbc.weighty = 1.0;
+//				this.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue(), gbc );
+//				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 32, 0, 0 ) );
+//			}
+//		}
+//		SidePanel sidePanel = new SidePanel();
+//		this.addComponent( sidePanel, Constraint.LINE_END );
+	}
 	@Override
-	/*package-private*/abstract org.lgna.story.implementation.MarkerImp getImplementation();
-	
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation model ) {
+		super.updateComponentRows( rv, model );
+//		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getFrontPaintLabelText()+":", model.getFrontPaintState().createEditor( this.getFactory() ) ) );
+//		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getBackPaintLabelText()+":", model.getBackPaintState().createEditor(  this.getFactory() ) ) );
+		return rv;
 	}
-	
-	public org.lgna.story.Color getColorId(){
-		return (org.lgna.story.Color)this.getImplementation().paint.getValue();
-	}
-	
-	public void setColorId( org.lgna.story.Color color ){
-		this.getImplementation().paint.setValue(color);
-	}
-	
-//	@MethodTemplate()
-//	@GetterTemplate(isPersistent = true)
-//	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
-//	public Double getOpacity() {
-//		return (double)this.getImplementation().opacity.getValue();
-//	}
-//	@MethodTemplate()
-//	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-//		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-//	}
-//	
-//	@MethodTemplate()
-//	@GetterTemplate(isPersistent = true)
-//	public Paint getPaint() {
-//		return this.getImplementation().paint.getValue();
-//	}
-//	@MethodTemplate()
-//	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-//		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-//	}
 }

@@ -42,6 +42,7 @@
  */
 package org.alice.ide.typeeditor;
 
+import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
 import org.alice.stageide.sceneeditor.viewmanager.CreateObjectMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerFieldTile;
 
@@ -51,7 +52,7 @@ import org.alice.stageide.sceneeditor.viewmanager.MarkerFieldTile;
  */
 public class ManagedObjectMarkerFieldList extends MarkerFieldList {
 	public ManagedObjectMarkerFieldList( org.lgna.project.ast.NamedUserType type ) {
-		super( ManagedObjectMarkerFieldState.getInstance( type ), CreateObjectMarkerActionOperation.getInstance() );
+		super( ManagedObjectMarkerFieldState.getInstance( type ), ObjectMarkerFieldDeclarationOperation.getInstance() );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 	
