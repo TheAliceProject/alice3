@@ -117,7 +117,7 @@ public class BootstrapUtilties {
 
 		org.lgna.project.ast.UserMethod myFirstMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "myFirstMethod" );
 
-		org.lgna.project.ast.UserMethod performGeneratedSetupMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, org.alice.ide.IDE.GENERATED_SET_UP_METHOD_NAME );
+		org.lgna.project.ast.UserMethod performGeneratedSetupMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
 		performGeneratedSetupMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		org.lgna.project.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 		

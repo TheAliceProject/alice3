@@ -42,9 +42,6 @@
  */
 package org.alice.ide;
 
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.croquet.preferences.PreferenceManager;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -55,11 +52,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final String DEBUG_DRAW_PROPERTY_KEY = "org.alice.ide.DebugDrawMode";
 
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
-	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
-
-	public static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
-	public static final String EDITOR_GENERATED_SET_UP_METHOD_NAME = "performEditorGeneratedSetUp";
-	public static final String SCENE_EDITOR_GENERATED_SET_UP_METHOD_NAME = "performSceneEditorGeneratedSetUp";
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
 
@@ -68,9 +60,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
 		}
-		performSceneEditorGeneratedSetUpMethodNameSet.add( SCENE_EDITOR_GENERATED_SET_UP_METHOD_NAME );
-		performSceneEditorGeneratedSetUpMethodNameSet.add( EDITOR_GENERATED_SET_UP_METHOD_NAME );
-		performSceneEditorGeneratedSetUpMethodNameSet.add( GENERATED_SET_UP_METHOD_NAME );
 	}
 
 	public static IDE getActiveInstance() {
@@ -202,17 +191,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod() {
-		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
-		if( sceneType != null ) {
-			for( org.lgna.project.ast.UserMethod method : sceneType.methods ) {
-				if( IDE.performSceneEditorGeneratedSetUpMethodNameSet.contains( method.name.getValue() ) ) {
-					return method;
-				}
-			}
-		}
-		return null;
-	}
+	public abstract org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod();
 
 	public org.lgna.project.ast.NamedUserType getStrippedProgramType() {
 		org.lgna.project.ast.NamedUserType rv = this.getProgramType();
@@ -619,10 +598,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
 		}
 		this.getMainComponent().refreshAccessibles();
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (NamedUserType)rootField.getValueType() );
+		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				NamedUserType sceneType = IDE.this.getSceneType();
+				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();
 				if( sceneType != null ) {
 					final int N = sceneType.fields.size();
 					if( N > 0 ) {
@@ -698,7 +677,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	protected void preservePreferences() {
 		try {
-			PreferenceManager.preservePreferences();
+			org.lgna.croquet.preferences.PreferenceManager.preservePreferences();
 		} catch( java.util.prefs.BackingStoreException bse ) {
 			bse.printStackTrace();
 		}
@@ -797,7 +776,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
 		if( nextFocusedCode != null ) {
-			org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (NamedUserType)nextFocusedCode.getDeclaringType() );
+			org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)nextFocusedCode.getDeclaringType() );
 			org.alice.ide.croquet.models.typeeditor.DeclarationComposite composite = org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( nextFocusedCode );
 			if( org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().containsItem( composite ) ) {
 				//pass
