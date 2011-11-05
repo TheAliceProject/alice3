@@ -128,6 +128,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private StorytellingSceneEditor() {
 	}
 
+	private static javax.swing.Icon EXPAND_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/expand.png" ) );
+	private static javax.swing.Icon CONTRACT_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/contract.png" ) );
+
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
 			StorytellingSceneEditor.this.animator.update();
@@ -304,7 +307,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImplementation;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
-	private org.lgna.croquet.components.BooleanStateButton< ? > expandCollapseButton;
+	private org.lgna.croquet.components.Button expandButton;
+	private org.lgna.croquet.components.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 	
 	private org.lgna.story.CameraMarker expandedViewSelectedMarker = null;
@@ -435,14 +439,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.propertiesSplitPane.setLeftComponent(this.lookingGlassPanel);
 			this.propertiesSplitPane.setRightComponent(this.sidePanel);
 			this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
+			this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
 		}
 		else
 		{
 			this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
 			this.lookingGlassPanel.setNorthWestComponent( null );
+			this.lookingGlassPanel.setSouthEastComponent(this.expandButton);
 		}
 		this.mainCameraNavigatorWidget.setExpanded(isExpanded);
-		this.lookingGlassPanel.setSouthEastComponent(this.expandCollapseButton);
 		this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
 	}
 	
@@ -542,7 +547,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
 			
-			this.expandCollapseButton = new ExpandCollapseButton();
+			this.expandButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ).createButton();
+			this.expandButton.setIcon( EXPAND_ICON );
+			//todo
+			this.expandButton.getAwtComponent().setText( null );
+			this.expandButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
+
+			this.contractButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.ide.perspectives.CodePerspective.getInstance() ).createButton();
+			this.contractButton.setIcon( CONTRACT_ICON );
+			this.contractButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
 			
 			this.propertiesSplitPane.setResizeWeight(1.0);

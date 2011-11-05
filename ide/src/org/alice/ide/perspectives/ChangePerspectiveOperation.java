@@ -41,19 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor;
+package org.alice.ide.perspectives;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpandCollapseButton extends org.lgna.croquet.components.BooleanStateButton< javax.swing.JButton > {
-	public ExpandCollapseButton() {
-		super( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance() );
+public class ChangePerspectiveOperation extends org.lgna.croquet.ActionOperation {
+	private static java.util.Map< org.alice.ide.perspectives.IdePerspective, ChangePerspectiveOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ChangePerspectiveOperation getInstance( org.alice.ide.perspectives.IdePerspective perspective ) {
+		ChangePerspectiveOperation rv = map.get( perspective );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ChangePerspectiveOperation( perspective );
+			map.put( perspective, rv );
+		}
+		return rv;
+	}
+
+	private final org.alice.ide.perspectives.IdePerspective perspective;
+	private ChangePerspectiveOperation( org.alice.ide.perspectives.IdePerspective perspective ) {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "2fc3846a-f943-4384-8af9-2292a3c405cd" ) );
+		this.perspective = perspective;
 	}
 	@Override
-	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton();
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
-		return rv;
+	protected java.lang.Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
+		return this.perspective.getClass();
+	}
+	@Override
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( this.perspective );
+		step.finish();
 	}
 }

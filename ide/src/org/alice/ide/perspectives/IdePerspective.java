@@ -63,11 +63,6 @@ public abstract class IdePerspective extends org.lgna.croquet.Perspective {
 		view.handleDeactivated( mainComponent );
 	}
 	public void handleActivation( org.alice.ide.MainComponent mainComponent ) {
-		//todo: remove
-		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().setValue( this instanceof org.alice.stageide.perspectives.SetupScenePerspective );
-
-		
-		
 		mainComponent.removeAllComponents();
 		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
 		

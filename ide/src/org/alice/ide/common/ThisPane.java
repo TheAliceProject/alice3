@@ -64,7 +64,7 @@ public class ThisPane extends AccessiblePane {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.updateBasedOnFocusedDeclaration( org.alice.ide.IDE.getActiveInstance().getFocusedDeclaration() );
+		this.updateBasedOnFocusedDeclaration( org.alice.ide.MetaDeclarationState.getInstance().getValue() );
 		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( this.codeSelectionObserver );
 	}
 	@Override
