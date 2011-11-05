@@ -41,34 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.draganddrop.statement;
+package org.alice.ide.croquet.models.ast.cascade.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariableAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.UserVariable, VariableAssignmentTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized VariableAssignmentTemplateDragModel getInstance( org.lgna.project.ast.UserVariable variable ) {
-		VariableAssignmentTemplateDragModel rv = map.get( variable );
+public class LocalAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized LocalAccessOperation getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		assert local != null;
+		assert expressionProperty != null;
+		LocalAccessOperation rv = map.get( local, expressionProperty );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new VariableAssignmentTemplateDragModel( variable );
-			map.put( variable, rv );
+			rv = new LocalAccessOperation( local, expressionProperty );
+			map.put( local, expressionProperty, rv );
 		}
 		return rv;
 	}
-	private org.lgna.project.ast.UserVariable variable;
-	private VariableAssignmentTemplateDragModel( org.lgna.project.ast.UserVariable variable ) {
-		super( java.util.UUID.fromString( "8fc94780-2193-4cb9-8db4-ef39e9ece075" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteVariableAssignmentStatement( variable ) );
-		this.variable = variable;
+	private final org.lgna.project.ast.UserLocal local;
+	private LocalAccessOperation( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "e3a514b8-1414-47a1-b9ec-82cd4678417c" ), expressionProperty );
+		this.local = local;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< VariableAssignmentTemplateDragModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< VariableAssignmentTemplateDragModel >( this, this.variable, org.lgna.project.ast.UserVariable.class );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.ast.cascade.statement.VariableAssignmentInsertCascade( blockStatementIndexPair, this.variable );
+	protected org.lgna.project.ast.Expression createExpression() {
+		return new org.lgna.project.ast.LocalAccess( this.local );
 	}
 }

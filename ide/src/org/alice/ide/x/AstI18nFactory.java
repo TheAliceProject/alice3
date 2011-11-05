@@ -93,17 +93,11 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
 
-	protected org.lgna.croquet.components.JComponent< ? > createVariableDeclarationPane( org.lgna.project.ast.UserVariable userVariable ) {
-		return new org.alice.ide.common.VariableDeclarationPane( userVariable, this.createVariablePane( userVariable ) );
+	protected org.lgna.croquet.components.JComponent< ? > createLocalDeclarationPane( org.lgna.project.ast.UserLocal userLocal ) {
+		return new org.alice.ide.common.LocalDeclarationPane( userLocal, this.createLocalPane( userLocal ) );
 	}
-	protected org.lgna.croquet.components.JComponent< ? > createConstantDeclarationPane( org.lgna.project.ast.UserConstant userConstant ) {
-		return new org.alice.ide.common.ConstantDeclarationPane( userConstant, this.createConstantPane( userConstant ) );
-	}
-	protected org.lgna.croquet.components.JComponent< ? > createVariablePane( org.lgna.project.ast.UserVariable userVariable ) {
-		return new org.alice.ide.common.VariablePane( userVariable );
-	}
-	protected org.lgna.croquet.components.JComponent< ? > createConstantPane( org.lgna.project.ast.UserConstant userConstant ) {
-		return new org.alice.ide.common.ConstantPane( userConstant );
+	protected org.lgna.croquet.components.JComponent< ? > createLocalPane( org.lgna.project.ast.UserLocal userLocal ) {
+		return new org.alice.ide.common.LocalPane( userLocal );
 	}
 	protected org.lgna.croquet.components.JComponent< ? > createGenericNodePropertyPane( org.lgna.project.ast.NodeProperty< ? > nodeProperty ) {
 		return new org.alice.ide.x.components.NodePropertyView( this, nodeProperty );
@@ -191,6 +185,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 	
 	
 
+	private static final java.util.Set< String > LOCAL_PROPERTY_NAMES = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "local", "item", "variable", "constant" );
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property, int underscoreCount ) {
 		//todo:
@@ -199,18 +194,14 @@ public abstract class AstI18nFactory extends I18nFactory {
 		
 		org.lgna.croquet.components.JComponent< ? > rv;
 		if( underscoreCount == 2 ) {
-			if( "variable".equals( propertyName ) ) {
-				rv = this.createVariableDeclarationPane( (org.lgna.project.ast.UserVariable)property.getValue() );
-			} else if( "constant".equals( propertyName ) ) {
-				rv = this.createConstantDeclarationPane( (org.lgna.project.ast.UserConstant)property.getValue() );
+			if( LOCAL_PROPERTY_NAMES.contains( propertyName ) ) {
+				rv = this.createLocalDeclarationPane( (org.lgna.project.ast.UserLocal)property.getValue() );
 			} else {
 				rv = new org.lgna.croquet.components.Label( "TODO: handle underscore count 2: " + propertyName );
 			}
 		} else if( underscoreCount == 1 ) {
-			if( "variable".equals( propertyName ) ) {
-				rv = this.createVariablePane( (org.lgna.project.ast.UserVariable)property.getValue() );
-			} else if( "constant".equals( propertyName ) ) {
-				rv = this.createConstantPane( (org.lgna.project.ast.UserConstant)property.getValue() );
+			if( LOCAL_PROPERTY_NAMES.contains( propertyName ) ) {
+				rv = this.createLocalPane( (org.lgna.project.ast.UserLocal)property.getValue() );
 			} else {
 				rv = new org.lgna.croquet.components.Label( "TODO: handle underscore count 1: " + propertyName );
 			}

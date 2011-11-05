@@ -41,19 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.models.cascade.array;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariableArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
-	private final org.lgna.project.ast.UserVariable variable;
-	public VariableArrayAtIndexAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserVariable variable ) {
-		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, variable.getValueType(), null );
-		this.variable = variable;
+public class LocalArrayLengthFillIn extends ArrayLengthFillIn {
+	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized LocalArrayLengthFillIn getInstance( org.lgna.project.ast.UserLocal local ) {
+		assert local != null;
+		LocalArrayLengthFillIn rv = map.get( local );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new LocalArrayLengthFillIn( local );
+			map.put( local, rv );
+		}
+		return rv;
+	}
+	private final org.lgna.project.ast.UserLocal local;
+	private LocalArrayLengthFillIn( org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "007ec992-c623-4a2b-afcc-5642dfd7be75" ) );
+		this.local = local;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.VariableAccess( this.variable ); 
+		return new org.lgna.project.ast.LocalAccess( this.local );
 	}
 }

@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractForEachLoop extends AbstractLoop {
-	public DeclarationProperty< UserVariable > variable = new DeclarationProperty< UserVariable >( this ) {
+	public DeclarationProperty< UserLocal > item = new DeclarationProperty< UserLocal >( this ) {
 		@Override
 		public boolean isReference() {
 			return false;
@@ -55,8 +55,9 @@ public abstract class AbstractForEachLoop extends AbstractLoop {
 	};
 	public AbstractForEachLoop() {
 	}
-	public AbstractForEachLoop( UserVariable variable, BlockStatement body ) {
+	public AbstractForEachLoop( UserLocal item, BlockStatement body ) {
 		super( body );
-		this.variable.setValue( variable );
+		assert item.isFinal.getValue();
+		this.item.setValue( item );
 	}
 }

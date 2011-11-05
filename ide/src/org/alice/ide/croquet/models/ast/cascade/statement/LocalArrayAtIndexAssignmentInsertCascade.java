@@ -40,14 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-
-public class ConstantDeclarationPane extends LocalDeclarationPane {
-	public ConstantDeclarationPane( org.lgna.project.ast.UserConstant constantDeclaredInAlice, org.lgna.croquet.components.JComponent< ? > constantPane ) {
-		super( constantDeclaredInAlice, constantPane );
+public class LocalArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
+	private final org.lgna.project.ast.UserLocal local;
+	public LocalArrayAtIndexAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, local.getValueType(), null );
+		this.local = local;
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createAccessExpression() {
+		return new org.lgna.project.ast.LocalAccess( this.local ); 
 	}
 }

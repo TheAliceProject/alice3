@@ -41,36 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.alice.ide.ast.draganddrop.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariableArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserVariable, org.lgna.project.ast.ExpressionProperty, VariableArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized VariableArrayAccessCascade getInstance( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		assert variable != null;
-		assert expressionProperty != null;
-		VariableArrayAccessCascade rv = map.get( variable, expressionProperty );
+public class LocalAccessDragModel extends AbstractExpressionDragModel {
+	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAccessDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized LocalAccessDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
+		LocalAccessDragModel rv = map.get( local );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new VariableArrayAccessCascade( variable, expressionProperty );
-			map.put( variable, expressionProperty, rv );
+			rv = new LocalAccessDragModel( local );
+			map.put( local, rv );
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.UserVariable variable;
-	private VariableArrayAccessCascade( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
-		this.variable = variable;
+	private org.lgna.project.ast.UserLocal local;
+	private LocalAccessDragModel( org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "57dbd70e-11e0-4311-905e-954a95403950" ) );
+		this.local = local;
 	}
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.VariableAccess( this.variable );
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		return this.local.getValueType();
 	}
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getArrayType() {
-		return this.variable.getValueType();
+	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		return org.alice.ide.croquet.models.ast.cascade.expression.LocalAccessOperation.getInstance( this.local, expressionProperty );
 	}
 }

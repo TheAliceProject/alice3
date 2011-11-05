@@ -46,27 +46,31 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserConstant, org.lgna.project.ast.ExpressionProperty, ConstantArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ConstantArrayLengthOperation getInstance( org.lgna.project.ast.UserConstant constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		assert constant != null;
+public class LocalArrayAccessCascade extends ArrayAccessCascade {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized LocalArrayAccessCascade getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		assert local != null;
 		assert expressionProperty != null;
-		ConstantArrayLengthOperation rv = map.get( constant, expressionProperty );
+		LocalArrayAccessCascade rv = map.get( local, expressionProperty );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ConstantArrayLengthOperation( constant, expressionProperty );
-			map.put( constant, expressionProperty, rv );
+			rv = new LocalArrayAccessCascade( local, expressionProperty );
+			map.put( local, expressionProperty, rv );
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.UserConstant constant;
-	private ConstantArrayLengthOperation( org.lgna.project.ast.UserConstant constant, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "96bc22e4-9d7c-4ed7-abc2-130a56b0d5b9" ), expressionProperty );
-		this.constant = constant;
+	private final org.lgna.project.ast.UserLocal local;
+	private LocalArrayAccessCascade( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
+		this.local = local;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.ConstantAccess( this.constant );
+		return new org.lgna.project.ast.LocalAccess( this.local );
+	}
+	@Override
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getArrayType() {
+		return this.local.getValueType();
 	}
 }

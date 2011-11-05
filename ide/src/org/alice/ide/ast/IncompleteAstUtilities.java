@@ -79,9 +79,9 @@ public class IncompleteAstUtilities {
 	public static org.lgna.project.ast.LogicalComplement createIncompleteLogicalComplement() {
 		return new org.lgna.project.ast.LogicalComplement( new EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) );
 	}
-	public static org.lgna.project.ast.VariableDeclarationStatement createIncompleteVariableDeclarationStatement() {
+	public static org.lgna.project.ast.LocalDeclarationStatement createIncompleteLocalDeclarationStatement() {
 		org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.JavaType.OBJECT_TYPE;
-		return org.lgna.project.ast.AstUtilities.createVariableDeclarationStatement( new org.lgna.project.ast.UserVariable( "???", type ), new org.alice.ide.ast.EmptyExpression( type ) );
+		return org.lgna.project.ast.AstUtilities.createLocalDeclarationStatement( new org.lgna.project.ast.UserLocal( "???", type, false ), new org.alice.ide.ast.EmptyExpression( type ) );
 	}
 	public static org.lgna.project.ast.CountLoop createIncompleteCountLoop() {
 		return org.lgna.project.ast.AstUtilities.createCountLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) );
@@ -155,12 +155,12 @@ public class IncompleteAstUtilities {
 	public static org.lgna.project.ast.ReturnStatement createIncompleteReturnStatement( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		return org.lgna.project.ast.AstUtilities.createReturnStatement( type, new EmptyExpression( type ) );
 	}
-	public static org.lgna.project.ast.ExpressionStatement createIncompleteVariableAssignmentStatement( org.lgna.project.ast.UserVariable variable ) {
-		return org.lgna.project.ast.AstUtilities.createVariableAssignmentStatement( variable, new EmptyExpression( variable.valueType.getValue() ) );
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteLocalAssignmentStatement( org.lgna.project.ast.UserLocal local ) {
+		return org.lgna.project.ast.AstUtilities.createLocalAssignmentStatement( local, new EmptyExpression( local.valueType.getValue() ) );
 	}
 
-	public static org.lgna.project.ast.ExpressionStatement createIncompleteVariableArrayAssignmentStatement( org.lgna.project.ast.UserVariable variable ) {
-		return org.lgna.project.ast.AstUtilities.createVariableArrayAssignmentStatement( variable, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( variable.valueType.getValue().getComponentType() ) );
+	public static org.lgna.project.ast.ExpressionStatement createIncompleteLocalArrayAssignmentStatement( org.lgna.project.ast.UserLocal local ) {
+		return org.lgna.project.ast.AstUtilities.createLocalArrayAssignmentStatement( local, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( local.valueType.getValue().getComponentType() ) );
 	}
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteParameterArrayAssignmentStatement( org.lgna.project.ast.UserParameter parameter ) {
 		return org.lgna.project.ast.AstUtilities.createParameterArrayAssignmentStatement( parameter, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );

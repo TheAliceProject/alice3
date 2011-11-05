@@ -97,8 +97,7 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 				org.lgna.project.ast.EachInArrayTogether.class,
 				org.lgna.project.ast.DoInThread.class,
 				org.lgna.project.ast.Comment.class,
-				org.lgna.project.ast.VariableDeclarationStatement.class,
-				org.lgna.project.ast.ConstantDeclarationStatement.class,
+				org.lgna.project.ast.LocalDeclarationStatement.class,
 				org.lgna.project.ast.ExpressionStatement.class
 			};
 			

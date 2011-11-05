@@ -62,6 +62,7 @@ public abstract class I18nFactory {
 		int underscoreCount = propertyChunk.getUnderscoreCount();
 		String propertyName = propertyChunk.getPropertyName();
 		edu.cmu.cs.dennisc.property.InstanceProperty< ? > property = owner.getInstancePropertyNamed( propertyName );
+		assert property != null : propertyName;
 		return createPropertyComponent( property, underscoreCount );
 	}
 	protected org.lgna.croquet.components.JComponent< ? > createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {

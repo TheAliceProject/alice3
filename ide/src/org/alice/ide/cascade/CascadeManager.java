@@ -93,7 +93,7 @@ public abstract class CascadeManager {
 			org.lgna.project.ast.Statement statementI = blockStatement.statements.get( index );
 			if( statementI instanceof org.lgna.project.ast.LocalDeclarationStatement ) {
 				org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = (org.lgna.project.ast.LocalDeclarationStatement)statementI;
-				rv.add( localDeclarationStatement.getLocal() );
+				rv.add( localDeclarationStatement.local.getValue() );
 			}
 		}
 		return rv;
@@ -118,10 +118,10 @@ public abstract class CascadeManager {
 				}
 			} else if( statementParent instanceof org.lgna.project.ast.AbstractForEachLoop ) {
 				org.lgna.project.ast.AbstractForEachLoop forEachLoopParent = (org.lgna.project.ast.AbstractForEachLoop)statementParent;
-				rv.add( forEachLoopParent.variable.getValue() );
+				rv.add( forEachLoopParent.item.getValue() );
 			} else if( statementParent instanceof org.lgna.project.ast.AbstractEachInTogether ) {
 				org.lgna.project.ast.AbstractEachInTogether eachInTogetherParent = (org.lgna.project.ast.AbstractEachInTogether)statementParent;
-				rv.add( eachInTogetherParent.variable.getValue() );
+				rv.add( eachInTogetherParent.item.getValue() );
 			}
 			updateAccessibleLocals( rv, statementParent );
 		}
@@ -201,39 +201,16 @@ public abstract class CascadeManager {
 				for( org.lgna.project.ast.UserLocal local : this.getAccessibleLocals( this.contextBlockStatementIndexPair.getBlockStatement(), this.contextBlockStatementIndexPair.getIndex() ) ) {
 					org.lgna.project.ast.AbstractType<?,?,?> localType = local.getValueType();
 					if( type.isAssignableFrom( localType ) ) {
-						org.lgna.project.ast.Expression expression;
-						if( local instanceof org.lgna.project.ast.UserVariable ) {
-							org.lgna.project.ast.UserVariable variable = (org.lgna.project.ast.UserVariable)local;
-							expression = new org.lgna.project.ast.VariableAccess( variable );
-						} else if( local instanceof org.lgna.project.ast.UserConstant ) {
-							org.lgna.project.ast.UserConstant constant = (org.lgna.project.ast.UserConstant)local;
-							expression = new org.lgna.project.ast.ConstantAccess( constant );
-						} else {
-							expression = null;
-						}
-						if( expression != null ) {
-							this.addFillInAndPossiblyPartFillIns( rv, expression, localType, type );
-						}
+						this.addFillInAndPossiblyPartFillIns( rv, new org.lgna.project.ast.LocalAccess( local ), localType, type );
 					}
 					if( localType.isArray() ) {
 						org.lgna.project.ast.AbstractType<?,?,?> localArrayComponentType = localType.getComponentType();
-						if( local instanceof org.lgna.project.ast.UserVariable ) {
-							org.lgna.project.ast.UserVariable variable = (org.lgna.project.ast.UserVariable)local;
-							if( type.isAssignableFrom( localArrayComponentType ) ) {
-								rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new org.lgna.project.ast.VariableAccess( variable ) ) );
-							}
-							if( localType.isArray() ) {
-								if( arrayLengthFillIns != null ) {
-									arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.VariableArrayLengthFillIn.getInstance( variable ) );
-								}
-							}
-						} else if( local instanceof org.lgna.project.ast.UserConstant ) {
-							org.lgna.project.ast.UserConstant constant = (org.lgna.project.ast.UserConstant)local;
-							if( type.isAssignableFrom( localArrayComponentType ) ) {
-								rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new org.lgna.project.ast.ConstantAccess( constant ) ) );
-							}
+						if( type.isAssignableFrom( localArrayComponentType ) ) {
+							rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new org.lgna.project.ast.LocalAccess( local ) ) );
+						}
+						if( localType.isArray() ) {
 							if( arrayLengthFillIns != null ) {
-								arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.ConstantArrayLengthFillIn.getInstance( constant ) );
+								arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.LocalArrayLengthFillIn.getInstance( local ) );
 							}
 						}
 					}

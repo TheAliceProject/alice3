@@ -55,8 +55,8 @@ public abstract class ForEachInIterableLoop extends AbstractForEachLoop {
 	};
 	public ForEachInIterableLoop() {
 	}
-	public ForEachInIterableLoop( UserVariable variable, Expression iterable, BlockStatement body ) {
-		super( variable, body );
+	public ForEachInIterableLoop( UserLocal item, Expression iterable, BlockStatement body ) {
+		super( item, body );
 		this.iterable.setValue( iterable );
 	}
 	@Override

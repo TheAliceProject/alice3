@@ -458,9 +458,9 @@ public abstract class VirtualMachine {
 			if( leftHandExpression instanceof org.lgna.project.ast.FieldAccess ) {
 				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)leftHandExpression;
 				this.set( fieldAccess.field.getValue(), this.evaluate( fieldAccess.expression.getValue() ), rightHandValue );
-			} else if( leftHandExpression instanceof org.lgna.project.ast.VariableAccess ){
-				org.lgna.project.ast.VariableAccess variableAccess = (org.lgna.project.ast.VariableAccess)leftHandExpression;
-				this.setLocal( variableAccess.variable.getValue(), rightHandValue );
+			} else if( leftHandExpression instanceof org.lgna.project.ast.LocalAccess ){
+				org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)leftHandExpression;
+				this.setLocal( localAccess.local.getValue(), rightHandValue );
 			} else if( leftHandExpression instanceof org.lgna.project.ast.ArrayAccess ){
 				org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)leftHandExpression;
 				this.setItemAtIndex( arrayAccess.arrayType.getValue(), this.evaluate( arrayAccess.array.getValue() ), this.evaluate( arrayAccess.index.getValue(), Integer.class ), rightHandValue );
@@ -500,11 +500,8 @@ public abstract class VirtualMachine {
 	protected Object evaluateFieldAccess( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		return this.get( fieldAccess.field.getValue(), this.evaluate( fieldAccess.expression.getValue() ) );
 	}
-	protected Object evaluateVariableAccess( org.lgna.project.ast.VariableAccess variableAccess ) {
-		return this.getLocal( variableAccess.variable.getValue() );
-	}
-	protected Object evaluateConstantAccess( org.lgna.project.ast.ConstantAccess constantAccess ) {
-		return this.getLocal( constantAccess.constant.getValue() );
+	protected Object evaluateLocalAccess( org.lgna.project.ast.LocalAccess localAccess ) {
+		return this.getLocal( localAccess.local.getValue() );
 	}
 	protected Object evaluateArithmeticInfixExpression( org.lgna.project.ast.ArithmeticInfixExpression arithmeticInfixExpression ) {
 		Number leftOperand = (Number)this.evaluate( arithmeticInfixExpression.leftOperand.getValue() );
@@ -627,10 +624,8 @@ public abstract class VirtualMachine {
 				return this.evaluateArrayAccess( (org.lgna.project.ast.ArrayAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 				return this.evaluateFieldAccess( (org.lgna.project.ast.FieldAccess)expression );
-			} else if( expression instanceof org.lgna.project.ast.ConstantAccess ) {
-				return this.evaluateConstantAccess( (org.lgna.project.ast.ConstantAccess)expression );
-			} else if( expression instanceof org.lgna.project.ast.VariableAccess ) {
-				return this.evaluateVariableAccess( (org.lgna.project.ast.VariableAccess)expression );
+			} else if( expression instanceof org.lgna.project.ast.LocalAccess ) {
+				return this.evaluateLocalAccess( (org.lgna.project.ast.LocalAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.ArithmeticInfixExpression ) {
 				return this.evaluateArithmeticInfixExpression( (org.lgna.project.ast.ArithmeticInfixExpression)expression );
 			} else if( expression instanceof org.lgna.project.ast.BitwiseInfixExpression ) {
@@ -718,8 +713,8 @@ public abstract class VirtualMachine {
 	protected void executeComment( org.lgna.project.ast.Comment comment ) {
 	}
 	protected void executeCountLoop( org.lgna.project.ast.CountLoop countLoop ) throws ReturnException {
-		org.lgna.project.ast.UserVariable variable = countLoop.variable.getValue();
-		org.lgna.project.ast.UserConstant constant = countLoop.constant.getValue();
+		org.lgna.project.ast.UserLocal variable = countLoop.variable.getValue();
+		org.lgna.project.ast.UserLocal constant = countLoop.constant.getValue();
 		this.pushLocal( variable, -1 );
 		try {
 			final int n = this.evaluate( countLoop.count.getValue(), Integer.class );
@@ -799,16 +794,16 @@ public abstract class VirtualMachine {
 		Object unused = this.evaluate( expressionStatement.expression.getValue() );
 	}
 	private void excecuteForEachLoop( org.lgna.project.ast.AbstractForEachLoop forEachInLoop, Object[] array ) throws ReturnException {
-		org.lgna.project.ast.UserVariable variable = forEachInLoop.variable.getValue();
+		org.lgna.project.ast.UserLocal item = forEachInLoop.item.getValue();
 		org.lgna.project.ast.BlockStatement blockStatement = forEachInLoop.body.getValue();
-		this.pushLocal( variable, -1 );
+		this.pushLocal( item, -1 );
 		try {
 			for( Object o : array ) {
-				this.setLocal( variable, o );
+				this.setLocal( item, o );
 				this.execute( blockStatement );
 			}
 		} finally {
-			this.popLocal( variable );
+			this.popLocal( item );
 		}
 
 	}
@@ -823,18 +818,18 @@ public abstract class VirtualMachine {
 	}
 	
 	private void excecuteForEachTogether( org.lgna.project.ast.AbstractEachInTogether forEachInTogether, final Object[] array ) throws ReturnException {
-		final org.lgna.project.ast.UserVariable variable = forEachInTogether.variable.getValue();
+		final org.lgna.project.ast.UserLocal item = forEachInTogether.item.getValue();
 		final org.lgna.project.ast.BlockStatement blockStatement = forEachInTogether.body.getValue();
 
 		switch( array.length ) {
 		case 0:
 			break;
 		case 1:
-			VirtualMachine.this.pushLocal( variable, array[ 0 ] );
+			VirtualMachine.this.pushLocal( item, array[ 0 ] );
 			try {
 				VirtualMachine.this.execute( blockStatement );
 			} finally {
-				VirtualMachine.this.popLocal(variable);
+				VirtualMachine.this.popLocal(item);
 			}
 			break;
 		default:
@@ -843,13 +838,13 @@ public abstract class VirtualMachine {
 				public void run( Object value ) {
 					pushCurrentThread( owner );
 					try {
-						VirtualMachine.this.pushLocal( variable, value );
+						VirtualMachine.this.pushLocal( item, value );
 						try {
 							VirtualMachine.this.execute( blockStatement );
 						} catch( ReturnException re ) {
 							//todo
 						} finally {
-							VirtualMachine.this.popLocal(variable);
+							VirtualMachine.this.popLocal(item);
 						}
 					} finally {
 						popCurrentThread();
@@ -878,12 +873,8 @@ public abstract class VirtualMachine {
 	}
 
 	
-	protected void executeVariableDeclarationStatement( org.lgna.project.ast.VariableDeclarationStatement variableDeclarationStatement ) {
-		this.pushLocal( variableDeclarationStatement.variable.getValue(), this.evaluate( variableDeclarationStatement.initializer.getValue() ) );
-		//handle pop on exit of owning block statement
-	}
-	protected void executeConstantDeclarationStatement( org.lgna.project.ast.ConstantDeclarationStatement constantDeclarationStatement ) {
-		this.pushLocal( constantDeclarationStatement.constant.getValue(), this.evaluate( constantDeclarationStatement.initializer.getValue() ) );
+	protected void executeLocalDeclarationStatement( org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement ) {
+		this.pushLocal( localDeclarationStatement.local.getValue(), this.evaluate( localDeclarationStatement.initializer.getValue() ) );
 		//handle pop on exit of owning block statement
 	}
 
@@ -920,10 +911,8 @@ public abstract class VirtualMachine {
 				this.executeReturnStatement( (org.lgna.project.ast.ReturnStatement)statement );
 			} else if( statement instanceof org.lgna.project.ast.WhileLoop ) {
 				this.executeWhileLoop( (org.lgna.project.ast.WhileLoop)statement );
-			} else	if( statement instanceof org.lgna.project.ast.ConstantDeclarationStatement ) {
-				this.executeConstantDeclarationStatement( (org.lgna.project.ast.ConstantDeclarationStatement)statement );
-			} else if( statement instanceof org.lgna.project.ast.VariableDeclarationStatement ) {
-				this.executeVariableDeclarationStatement( (org.lgna.project.ast.VariableDeclarationStatement)statement );
+			} else	if( statement instanceof org.lgna.project.ast.LocalDeclarationStatement ) {
+				this.executeLocalDeclarationStatement( (org.lgna.project.ast.LocalDeclarationStatement)statement );
 			} else {
 				throw new RuntimeException();
 			}

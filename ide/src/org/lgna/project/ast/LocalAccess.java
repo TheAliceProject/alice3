@@ -41,32 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariableArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserVariable, org.lgna.project.ast.ExpressionProperty, VariableArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized VariableArrayLengthOperation getInstance( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		assert variable != null;
-		assert expressionProperty != null;
-		VariableArrayLengthOperation rv = map.get( variable, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new VariableArrayLengthOperation( variable, expressionProperty );
-			map.put( variable, expressionProperty, rv );
-		}
-		return rv;
+public class LocalAccess extends Expression {
+	public DeclarationProperty< UserLocal > local = new DeclarationProperty< UserLocal >( this );
+	public LocalAccess() {
 	}
-	private final org.lgna.project.ast.UserVariable variable;
-	private VariableArrayLengthOperation( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
-		this.variable = variable;
+	public LocalAccess( UserLocal local ){
+		this.local.setValue( local );
 	}
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.VariableAccess( this.variable );
+	public AbstractType<?,?,?> getType() {
+		return this.local.getValue().valueType.getValue();
 	}
 }

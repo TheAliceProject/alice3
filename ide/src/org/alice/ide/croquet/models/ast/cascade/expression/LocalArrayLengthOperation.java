@@ -41,31 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.cascade.array;
+package org.alice.ide.croquet.models.ast.cascade.expression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map< org.lgna.project.ast.UserConstant, ConstantArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ConstantArrayLengthFillIn getInstance( org.lgna.project.ast.UserConstant constant ) {
-		assert constant != null;
-		ConstantArrayLengthFillIn rv = map.get( constant );
+public class LocalArrayLengthOperation extends ArrayLengthOperation {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized LocalArrayLengthOperation getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		assert local != null;
+		assert expressionProperty != null;
+		LocalArrayLengthOperation rv = map.get( local, expressionProperty );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ConstantArrayLengthFillIn( constant );
-			map.put( constant, rv );
+			rv = new LocalArrayLengthOperation( local, expressionProperty );
+			map.put( local, expressionProperty, rv );
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.UserConstant constant;
-	private ConstantArrayLengthFillIn( org.lgna.project.ast.UserConstant constant ) {
-		super( java.util.UUID.fromString( "b9ef605a-403e-4b18-b495-c4cf5782870a" ) );
-		this.constant = constant;
+	private final org.lgna.project.ast.UserLocal local;
+	private LocalArrayLengthOperation( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		super( java.util.UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
+		this.local = local;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.ConstantAccess( this.constant );
+		return new org.lgna.project.ast.LocalAccess( this.local );
 	}
 }

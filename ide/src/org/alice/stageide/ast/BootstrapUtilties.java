@@ -96,9 +96,9 @@ public class BootstrapUtilties {
 		return org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( expression, method, argumentExpressions );
 	}
 
-	private static org.lgna.project.ast.VariableDeclarationStatement createVariableDeclarationStatementInitializedByInstanceCreation( String name, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		org.lgna.project.ast.UserVariable variable = new org.lgna.project.ast.UserVariable( name, type );
-		return org.lgna.project.ast.AstUtilities.createVariableDeclarationStatement( variable, new org.lgna.project.ast.InstanceCreation( type.getDeclaredConstructor() ) );
+	private static org.lgna.project.ast.LocalDeclarationStatement createLocalDeclarationStatementInitializedByInstanceCreation( String name, org.lgna.project.ast.AbstractType< ?,?,? > type, boolean isFinal ) {
+		org.lgna.project.ast.UserLocal local = new org.lgna.project.ast.UserLocal( name, type, isFinal );
+		return org.lgna.project.ast.AstUtilities.createLocalDeclarationStatement( local, new org.lgna.project.ast.InstanceCreation( type.getDeclaredConstructor() ) );
 	}
 	
 	private static org.lgna.project.ast.FieldAccess createFieldAccess( Enum<?> value ) {
@@ -243,11 +243,11 @@ public class BootstrapUtilties {
 		mainMethod.isStatic.setValue( true );
 		mainMethod.isSignatureLocked.setValue( true );
 		
-		org.lgna.project.ast.VariableDeclarationStatement variableDeclarationStatement = createVariableDeclarationStatementInitializedByInstanceCreation( "story", rv );
-		org.lgna.project.ast.UserVariable storyVariable = variableDeclarationStatement.variable.getValue();
-		mainBody.statements.add( variableDeclarationStatement );
-		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.VariableAccess( storyVariable ), rv.findMethod( "initializeInFrame", String[].class ), new org.lgna.project.ast.ParameterAccess( argsParameter ) ) );
-		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.VariableAccess( storyVariable ), playOutStoryMethod ) );
+		org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = createLocalDeclarationStatementInitializedByInstanceCreation( "story", rv, true );
+		org.lgna.project.ast.UserLocal storyLocal = localDeclarationStatement.local.getValue();
+		mainBody.statements.add( localDeclarationStatement );
+		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), rv.findMethod( "initializeInFrame", String[].class ), new org.lgna.project.ast.ParameterAccess( argsParameter ) ) );
+		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), playOutStoryMethod ) );
 		rv.methods.add( mainMethod );
 		
 		return rv;

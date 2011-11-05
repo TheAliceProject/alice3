@@ -41,34 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.draganddrop.statement;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariableArrayAtIndexAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.UserVariable, VariableArrayAtIndexAssignmentTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized VariableArrayAtIndexAssignmentTemplateDragModel getInstance( org.lgna.project.ast.UserVariable variable ) {
-		VariableArrayAtIndexAssignmentTemplateDragModel rv = map.get( variable );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new VariableArrayAtIndexAssignmentTemplateDragModel( variable );
-			map.put( variable, rv );
-		}
-		return rv;
-	}
-	private org.lgna.project.ast.UserVariable variable;
-	private VariableArrayAtIndexAssignmentTemplateDragModel( org.lgna.project.ast.UserVariable variable ) {
-		super( java.util.UUID.fromString( "634df8b1-e171-4121-9405-533c4c4d78ed" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteVariableArrayAssignmentStatement( variable ) );
-		this.variable = variable;
+public class LocalAssignmentInsertCascade extends ExpressionStatementInsertCascade {
+	private final org.lgna.project.ast.UserLocal local;
+	public LocalAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( local.getValueType() ) );
+		this.local = local;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< VariableArrayAtIndexAssignmentTemplateDragModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< VariableArrayAtIndexAssignmentTemplateDragModel >( this, this.variable, org.lgna.project.ast.UserVariable.class );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.ast.cascade.statement.VariableArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.variable );
+	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
+		return org.lgna.project.ast.AstUtilities.createLocalAssignment( this.local, expressions[ 0 ] );
 	}
 }
