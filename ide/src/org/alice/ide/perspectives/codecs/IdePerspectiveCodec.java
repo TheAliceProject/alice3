@@ -41,14 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
+package org.alice.ide.perspectives.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StoryMainComponent extends org.alice.ide.MainComponent {
-	@Override
-	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.perspectives.IdePerspective > {
+	SINGLETON;
+	public Class< org.alice.ide.perspectives.IdePerspective > getValueClass() {
+		return org.alice.ide.perspectives.IdePerspective.class;
+	}
+	public org.alice.ide.perspectives.IdePerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		org.lgna.croquet.resolvers.CodableResolver< org.alice.ide.perspectives.IdePerspective > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		return resolver.getResolved();
+	}
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.IdePerspective value ) {
+		binaryEncoder.encode( value.getCodableResolver() );
+	}
+	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.perspectives.IdePerspective value, java.util.Locale locale) {
+		rv.append( value );
+		return rv;
 	}
 }

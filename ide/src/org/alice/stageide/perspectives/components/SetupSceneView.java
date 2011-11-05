@@ -41,14 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
+package org.alice.stageide.perspectives.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StoryMainComponent extends org.alice.ide.MainComponent {
+public class SetupSceneView extends IdePerspectiveView< javax.swing.JSplitPane, org.alice.stageide.perspectives.SetupScenePerspective > {
+	private static class SingletonHolder {
+		private static SetupSceneView instance = new SetupSceneView();
+	}
+	public static SetupSceneView getInstance() {
+		return SingletonHolder.instance;
+	}
+	private Integer mainDividerLocation = null;
+	private SetupSceneView() {
+		super( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
+		this.getAwtComponent().setRightComponent( new org.alice.stageide.gallerybrowser.GalleryBrowser().getAwtComponent() );
+	}
 	@Override
-	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	protected javax.swing.JSplitPane createAwtComponent() {
+		return new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
+	}
+	@Override
+	public void handleDeactivated() {
+		this.mainDividerLocation = this.getAwtComponent().getDividerLocation();
+	}
+	@Override
+	public void handleActivated() {
+		if( this.mainDividerLocation != null ) {
+			//pass
+		} else {
+			this.mainDividerLocation = 720;
+		}
+		this.getAwtComponent().setLeftComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getAwtComponent() );
+		this.getAwtComponent().setDividerLocation( this.mainDividerLocation );
 	}
 }

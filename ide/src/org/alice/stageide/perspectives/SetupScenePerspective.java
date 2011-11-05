@@ -41,14 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
+package org.alice.stageide.perspectives;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StoryMainComponent extends org.alice.ide.MainComponent {
+public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspective {
+	private static class SingletonHolder {
+		private static SetupScenePerspective instance = new SetupScenePerspective();
+	}
+	public static SetupScenePerspective getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SetupScenePerspective() {
+		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ) );
+	}
 	@Override
-	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
+	}
+	@Override
+	protected org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > getView() {
+		return org.alice.stageide.perspectives.components.SetupSceneView.getInstance();
 	}
 }

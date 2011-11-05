@@ -41,14 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StoryMainComponent extends org.alice.ide.MainComponent {
+public abstract class Perspective extends Composite {
+	private String name;
+	public Perspective( java.util.UUID id ) {
+		super( id );
+	}
 	@Override
-	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	protected final void localize() {
+		this.name = this.getDefaultLocalizedText();
+	}
+	@Override
+	protected StringBuilder appendRepr( java.lang.StringBuilder rv ) {
+		//note: do not invoke super
+		//super.appendRepr( rv );
+		if( this.name != null ) {
+			//pass
+		} else {
+			this.localize();
+		}
+		rv.append( this.name );
+		return rv;
 	}
 }

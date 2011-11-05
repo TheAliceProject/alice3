@@ -172,6 +172,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.lgna.croquet.Operation< ? > getPreferencesOperation() {
 		return null;
 	}
+	public abstract org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.IdePerspective > getPerspectiveState();
 	public abstract org.lgna.croquet.Operation< ? > getRunOperation();
 	public abstract org.lgna.croquet.Operation< ? > getRestartOperation();
 

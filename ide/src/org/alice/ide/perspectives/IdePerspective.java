@@ -41,14 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
+package org.alice.ide.perspectives;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StoryMainComponent extends org.alice.ide.MainComponent {
-	@Override
-	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+public abstract class IdePerspective extends org.lgna.croquet.Perspective {
+	public IdePerspective( java.util.UUID id ) {
+		super( id );
+	}
+	protected abstract org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > getView();
+	
+	public void handleDeactivation( org.alice.ide.MainComponent mainComponent ) {
+		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
+		view.handleDeactivated();
+	}
+	public void handleActivation( org.alice.ide.MainComponent mainComponent ) {
+		//todo: remove
+		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().setValue( this instanceof org.alice.stageide.perspectives.SetupScenePerspective );
+
+		
+		
+		mainComponent.removeAllComponents();
+		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
+		
+		view.handleActivated();
+		
+		mainComponent.addComponent( view, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		mainComponent.revalidateAndRepaint();
 	}
 }

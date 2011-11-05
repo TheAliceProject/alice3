@@ -251,6 +251,12 @@ public class StageIDE extends org.alice.ide.IDE {
 	public org.lgna.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return new org.alice.stageide.croquet.models.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
+
+	@Override
+	public org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.IdePerspective > getPerspectiveState() {
+		return org.alice.stageide.perspectives.PerspectiveState.getInstance();
+	}
+
 //	@Override
 //	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, org.lgna.project.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 //		this.ensureProjectCodeUpToDate();

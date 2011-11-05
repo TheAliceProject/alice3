@@ -41,14 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
+package org.alice.stageide.perspectives.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StoryMainComponent extends org.alice.ide.MainComponent {
-	@Override
-	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+public abstract class IdePerspectiveView< J extends javax.swing.JComponent, P extends org.alice.ide.perspectives.IdePerspective > extends org.lgna.croquet.components.View< J, P > {
+	public IdePerspectiveView( P perspective ) {
+		super( perspective );
 	}
+	public abstract void handleDeactivated();
+	public abstract void handleActivated();
 }

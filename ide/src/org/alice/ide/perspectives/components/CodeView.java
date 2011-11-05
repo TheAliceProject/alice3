@@ -41,14 +41,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide;
+package org.alice.ide.perspectives.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StoryMainComponent extends org.alice.ide.MainComponent {
+public class CodeView extends org.alice.stageide.perspectives.components.IdePerspectiveView< javax.swing.JSplitPane, org.alice.ide.perspectives.CodePerspective > {
+	private static class SingletonHolder {
+		private static CodeView instance = new CodeView();
+	}
+	public static CodeView getInstance() {
+		return SingletonHolder.instance;
+	}
+	private Integer leftDividerLocation = null;
+	private final org.lgna.croquet.components.VerticalSplitPane left = new org.lgna.croquet.components.VerticalSplitPane();
+	private CodeView() {
+		super( org.alice.ide.perspectives.CodePerspective.getInstance() );
+		
+		org.alice.ide.memberseditor.MembersEditor membersEditor = new org.alice.ide.memberseditor.MembersEditor();
+		org.alice.ide.typehierarchyview.TypeHierarchyView typeHierarchyView = new org.alice.ide.typehierarchyview.TypeHierarchyView();
+		org.alice.ide.contextview.ContextView contextView = new org.alice.ide.contextview.ContextView( typeHierarchyView, membersEditor );
+		this.left.setBottomComponent( contextView );
+
+		org.alice.ide.typeeditor.TypeEditor typeEditor = new org.alice.ide.typeeditor.TypeEditor();
+
+		javax.swing.JSplitPane jSplitPane = this.getAwtComponent();
+		jSplitPane.setLeftComponent( this.left.getAwtComponent() );
+		jSplitPane.setRightComponent( typeEditor.getAwtComponent() );
+	}
 	@Override
-	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	protected javax.swing.JSplitPane createAwtComponent() {
+		return new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+	}
+	@Override
+	public void handleDeactivated() {
+		this.leftDividerLocation = this.left.getDividerLocation();
+	}
+	@Override
+	public void handleActivated() {
+		if( this.leftDividerLocation != null ) {
+			//pass
+		} else {
+			this.leftDividerLocation = 240;
+		}
+		this.left.setTopComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
+		this.left.setDividerLocation( this.leftDividerLocation );
 	}
 }
