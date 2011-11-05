@@ -40,23 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.stageide.choosers;
-
-
 
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< org.lgna.project.ast.DoubleLiteral > {
-	private org.lgna.croquet.components.Component< ? >[] components = { org.alice.stageide.croquet.models.custom.PortionState.getInstance().createSlider() };
-	public PortionChooser() {
+public class ColorChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< org.lgna.project.ast.Expression > {
+	private org.lgna.croquet.components.Component< ? >[] components = { 
+			ColorRedState.getInstance().createSlider(), 
+			ColorGreenState.getInstance().createSlider(),
+			ColorBlueState.getInstance().createSlider() 
+	};
+	private static final String[] LABEL_TEXTS = { "red:", "green:", "blue:" };
+	@Override
+	protected String[] getLabelTexts() {
+		return LABEL_TEXTS;
+	}
+	
+	public ColorChooser() {
 		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression != null ) {
-			if( previousExpression instanceof org.lgna.project.ast.DoubleLiteral ) {
-				org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)previousExpression;
-				double dValue = doubleLiteral.value.getValue();
-				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValueTransactionlessly( dValue );
-			}
+			//todo
+//			if( previousExpression instanceof org.lgna.project.ast.InstanceCreation ) {
+//				
+//			} else {
+//				
+//			}
+//			ColorRedState.getInstance().setValueTransactionlessly( rValue );
+//			ColorGreenState.getInstance().setValueTransactionlessly( gValue );
+//			ColorBlueState.getInstance().setValueTransactionlessly( bValue );
 		}
 	}
 	@Override
@@ -64,10 +77,18 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 		return this.components;
 	}
 	@Override
-	public org.lgna.project.ast.DoubleLiteral getValue() {
-		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue();
-		org.lgna.project.ast.DoubleLiteral doubleLiteral = new org.lgna.project.ast.DoubleLiteral( value );
-		return doubleLiteral;
+	public org.lgna.project.ast.Expression getValue() {
+		double rValue = ColorRedState.getInstance().getValue();
+		double gValue = ColorGreenState.getInstance().getValue();
+		double bValue = ColorBlueState.getInstance().getValue();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.alice.ide.ast.ExpressionCreator expressionCreator = ide.getApiConfigurationManager().getExpressionCreator();
+		try {
+			return expressionCreator.createExpression( new org.lgna.story.Color( rValue, gValue, bValue ) );
+		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			ccee.printStackTrace();
+			return null;
+		}
 	}
 	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {

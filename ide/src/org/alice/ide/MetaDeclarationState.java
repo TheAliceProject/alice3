@@ -116,5 +116,4 @@ public class MetaDeclarationState {
 	private void handleDeclarationTabChanged() {
 		this.fireChanged();
 	}
-	
 }

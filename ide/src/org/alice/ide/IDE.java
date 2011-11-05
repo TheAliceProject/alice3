@@ -253,23 +253,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		programType.crawl( crawler, true );
 		return crawler.getList();
 	}
-	
-
-//	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType superType ) {
-//		java.util.List< org.lgna.project.ast.NamedUserType > aliceTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//		this.addAliceTypes( aliceTypes, true );
-//		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : aliceTypes ) {
-//			assert type != null;
-//			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
-//				return (org.lgna.project.ast.NamedUserType)type;
-//			}
-//		}
-//		String name = "My" + superType.getName();
-//		return org.lgna.project.ast.AstUtilities.createType( name, superType );
-//	}
-//	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( Class< ? > superCls ) {
-//		return getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType.getInstance( superCls ) );
-//	}
 
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
 		if( org.lgna.project.ast.AstUtilities.isKeywordExpression( expression ) ) {
@@ -277,10 +260,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return (expression instanceof org.lgna.project.ast.TypeExpression || expression instanceof org.lgna.project.ast.ResourceExpression) == false;
 	}
-	public org.alice.ide.common.TypeComponent getComponentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		//todo:
-		return org.alice.ide.common.TypeComponent.createInstance( type );
-	}
+	
 	public String getTextFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		return null;
 	}

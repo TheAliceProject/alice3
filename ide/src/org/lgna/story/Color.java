@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.ValueTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,7 +67,10 @@ public final class Color implements Paint {
 	public static final Color BROWN = new Color( edu.cmu.cs.dennisc.color.Color4f.BROWN );
 
 	private final edu.cmu.cs.dennisc.color.Color4f internal;
-	public Color( Number red, Number green, Number blue ) {
+	public Color( 
+			@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)Number red, 
+			@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)Number green, 
+			@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)Number blue ) {
 		this( new edu.cmu.cs.dennisc.color.Color4f( red.floatValue(), green.floatValue(), blue.floatValue(), 1.0f ) );
 	}
 	private Color( edu.cmu.cs.dennisc.color.Color4f internal ) {

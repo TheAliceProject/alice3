@@ -40,38 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.stageide.choosers;
-
-
 
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< org.lgna.project.ast.DoubleLiteral > {
-	private org.lgna.croquet.components.Component< ? >[] components = { org.alice.stageide.croquet.models.custom.PortionState.getInstance().createSlider() };
-	public PortionChooser() {
-		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression != null ) {
-			if( previousExpression instanceof org.lgna.project.ast.DoubleLiteral ) {
-				org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)previousExpression;
-				double dValue = doubleLiteral.value.getValue();
-				org.alice.stageide.croquet.models.custom.PortionState.getInstance().setValueTransactionlessly( dValue );
-			}
-		}
+public class ColorRedState extends ColorChannelState {
+	private static class SingletonHolder {
+		private static ColorRedState instance = new ColorRedState();
 	}
-	@Override
-	public org.lgna.croquet.components.Component< ? >[] getRowComponents() {
-		return this.components;
+	public static ColorRedState getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public org.lgna.project.ast.DoubleLiteral getValue() {
-		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue();
-		org.lgna.project.ast.DoubleLiteral doubleLiteral = new org.lgna.project.ast.DoubleLiteral( value );
-		return doubleLiteral;
-	}
-	@Override
-	public String getExplanationIfOkButtonShouldBeDisabled() {
-		return null;
+	private ColorRedState() {
+		super( java.util.UUID.fromString( "27812581-1793-43ab-92c5-5888352ade2d" ) );
 	}
 }
-
