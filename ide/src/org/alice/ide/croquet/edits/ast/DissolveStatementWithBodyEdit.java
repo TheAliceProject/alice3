@@ -84,8 +84,10 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit< org.alice
 		owner.statements.remove( index );
 		statementWithBody.body.getValue().statements.clear();
 		owner.statements.add( index, statements );
+
+		
 		//todo: remove
-		org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
 	@Override
 	protected final void undoInternal() {
@@ -98,7 +100,7 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit< org.alice
 		
 		
 		//todo: remove
-		org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

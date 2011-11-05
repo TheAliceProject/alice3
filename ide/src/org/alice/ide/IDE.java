@@ -66,19 +66,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
 	}
 
-	public void refreshUbiquitousPane() {
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				if( IDE.this.ubiquitousPane != null ) {
-//					IDE.this.ubiquitousPane.refresh();
-//				}
-//			}
-//		} );
-	}
-//	public void refreshAccessibles() {
-//		this.getMainComponent().refreshAccessibles();
-//	}
-
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
