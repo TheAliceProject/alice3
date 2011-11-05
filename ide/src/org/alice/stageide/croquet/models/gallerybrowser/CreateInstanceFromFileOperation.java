@@ -62,7 +62,7 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 		sb.append( " is able to create instances from class files saved by " );
 		sb.append( applicationName );
 		sb.append( ".\n\nLook for files with an " );
-		sb.append( org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION );
+		sb.append( org.lgna.project.io.IoUtilities.TYPE_EXTENSION );
 		sb.append( " extension." );
 		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 	}
@@ -73,16 +73,16 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		java.io.File directory = this.getInitialDirectory();
 		System.err.println( directory );
-		java.io.File file = application.showOpenFileDialog( directory, null, org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION, true );
+		java.io.File file = application.showOpenFileDialog( directory, null, org.lgna.project.io.IoUtilities.TYPE_EXTENSION, true );
 		if( file != null ) {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2c" ) ) {
 				application.showMessageDialog( "Alice3 does not load Alice2 characters", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
-			} else if( lcFilename.endsWith( org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() ) ) {
-				application.showMessageDialog( file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION + " extension.",
+			} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() ) ) {
+				application.showMessageDialog( file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.TYPE_EXTENSION + " extension.",
 						"Incorrect File Type", org.lgna.croquet.MessageType.INFORMATION );
 			} else {
-				boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() );
+				boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() );
 				java.util.zip.ZipFile zipFile;
 				try {
 					zipFile = new java.util.zip.ZipFile( file );
@@ -97,7 +97,7 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 				if( zipFile != null ) {
 					org.lgna.project.ast.AbstractType<?,?,?> type;
 					try {
-						edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > tuple = org.lgna.project.project.ProjectUtilities.readType( zipFile );
+						edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > tuple = org.lgna.project.io.IoUtilities.readType( zipFile );
 						type = tuple.getA();
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
 					} catch( java.io.IOException ioe ) {

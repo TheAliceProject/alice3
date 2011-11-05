@@ -55,7 +55,7 @@ public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation
 	}
 	@Override
 	protected String getExtension() {
-		return org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION;
+		return org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
 	}
 	@Override
 	protected String getInitialFilename() {

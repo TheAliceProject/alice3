@@ -79,7 +79,7 @@ public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi
 	}
 	@Override
 	protected String getExtension() {
-		return org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION;
+		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
 	}
 	@Override
 	protected String getInitialFilename() {
@@ -87,7 +87,7 @@ public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi
 	}
 	@Override
 	protected void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException {
-		org.lgna.project.project.ProjectUtilities.writeType( file, this.type );
+		org.lgna.project.io.IoUtilities.writeType( file, this.type );
 	}
 	@Override
 	protected boolean isPromptNecessary( java.io.File file ) {

@@ -63,9 +63,9 @@ public class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
 		java.util.UUID statementId = binaryDecoder.decodeId();
-		this.statement = org.lgna.project.project.ProjectUtilities.lookupNode( project, statementId );
+		this.statement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, statementId );
 		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		this.originalBlockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( project, blockStatementId );
+		this.originalBlockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, blockStatementId );
 		this.originalIndex = binaryDecoder.decodeInt();
 	}
 	@Override

@@ -60,7 +60,7 @@ public abstract class ApiConfigurationManager {
 		IDE ide = IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
 		if( project != null ) {
-			return org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
+			return org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
 		} else {
 			return null;
 		}

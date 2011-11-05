@@ -58,9 +58,9 @@ public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edi
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
 		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
-		this.prevExpression = org.lgna.project.project.ProjectUtilities.lookupNode( project, prevExpressionId );
+		this.prevExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, prevExpressionId );
 		java.util.UUID nextExpressionId = binaryDecoder.decodeId();
-		this.nextExpression = org.lgna.project.project.ProjectUtilities.lookupNode( project, nextExpressionId );
+		this.nextExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, nextExpressionId );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

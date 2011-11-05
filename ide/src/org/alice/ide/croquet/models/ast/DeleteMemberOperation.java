@@ -87,8 +87,8 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 		java.util.UUID declaringTypeId = binaryDecoder.decodeId();
 		int index = binaryDecoder.decodeInt();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.BlockStatement member = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), memberId );
-		org.lgna.project.ast.Statement declaringType = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), declaringTypeId );
+		org.lgna.project.ast.BlockStatement member = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), memberId );
+		org.lgna.project.ast.Statement declaringType = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), declaringTypeId );
 		return new Object[] { member, declaringType, index };
 	}
 	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

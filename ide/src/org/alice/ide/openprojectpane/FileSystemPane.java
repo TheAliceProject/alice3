@@ -79,7 +79,7 @@ public class FileSystemPane extends TabContentPanel {
 
 			@Override
 			protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-				java.io.File file = org.lgna.croquet.Application.getActiveInstance().showOpenFileDialog(org.alice.ide.ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION, true);
+				java.io.File file = org.lgna.croquet.Application.getActiveInstance().showOpenFileDialog(org.alice.ide.ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, org.lgna.project.io.IoUtilities.PROJECT_EXTENSION, true);
 				if (file != null) {
 					FileSystemPane.this.textState.setValueTransactionlessly(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
 				}

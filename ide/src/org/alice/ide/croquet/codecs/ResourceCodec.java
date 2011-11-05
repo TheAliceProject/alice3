@@ -69,7 +69,7 @@ public class ResourceCodec< R extends org.alice.virtualmachine.Resource > implem
 		if( valueIsNotNull ) {
 			java.util.UUID id = binaryDecoder.decodeId();
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			return org.lgna.project.project.ProjectUtilities.lookupResource( ide.getProject(), id );
+			return org.lgna.project.ProgramTypeUtilities.lookupResource( ide.getProject(), id );
 		} else {
 			return null;
 		}

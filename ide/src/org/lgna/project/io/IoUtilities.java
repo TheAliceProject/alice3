@@ -40,42 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.project;
+package org.lgna.project.io;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectUtilities {
-	private ProjectUtilities() {
-	}
-
-	public static java.util.Set< org.alice.virtualmachine.Resource > getReferencedResources( org.lgna.project.Project project ) {
-		org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
-		java.util.Set< org.alice.virtualmachine.Resource > resources = project.getResources();
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ResourceExpression > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ResourceExpression >( org.lgna.project.ast.ResourceExpression.class ) {
-			@Override
-			protected boolean isAcceptable( org.lgna.project.ast.ResourceExpression resourceExpression ) {
-				return true;
-			}
-		};
-		programType.crawl( crawler, true );
-		
-		java.util.Set< org.alice.virtualmachine.Resource > rv = new java.util.HashSet< org.alice.virtualmachine.Resource >();
-		for( org.lgna.project.ast.ResourceExpression resourceExpression : crawler.getList() ) {
-			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
-			if( resources.contains( resource ) ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: adding missing resource", resource );
-				resources.add( resource );
-			}
-			rv.add( resource );
-		}
-		return rv;
+public abstract class IoUtilities {
+	private IoUtilities() {
+		throw new AssertionError();
 	}
 
 	public static final String PROJECT_EXTENSION = "a3p";
 	public static final String TYPE_EXTENSION = "a3c";
+	
+	public static java.io.File[] listProjectFiles( java.io.File directory ) {
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, PROJECT_EXTENSION );
+	}
+	public static java.io.File[] listTypeFiles( java.io.File directory ) {
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, TYPE_EXTENSION );
+	}
+	
+	
 	private static String PROPERTIES_ENTRY_NAME = "properties.bin";
 	private static String PROGRAM_TYPE_ENTRY_NAME = "programType.xml";
 	private static String VERSION_ENTRY_NAME = "version.txt";
@@ -88,12 +73,6 @@ public abstract class ProjectUtilities {
 	private static String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
 	private static String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
 
-	public static java.io.File[] listProjectFiles( java.io.File directory ) {
-		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, PROJECT_EXTENSION );
-	}
-	public static java.io.File[] listTypeFiles( java.io.File directory ) {
-		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, TYPE_EXTENSION );
-	}
 
 	private static interface ZipEntryContainer {
 		public java.io.InputStream getInputStream( String name ) throws java.io.IOException;
@@ -443,60 +422,9 @@ public abstract class ProjectUtilities {
 
 	public static <N extends org.lgna.project.ast.Node > N decodeNode( org.lgna.project.Project project, edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		java.util.UUID id = binaryDecoder.decodeId();
-		return (N)lookupNode( project, id );
+		return (N)org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
 	}
 	public static void encodeNode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.project.ast.Node node ) {
 		binaryEncoder.encode( node.getUUID() );
-	}
-	
-	public static <N extends org.lgna.project.ast.Node > N lookupNode( org.lgna.project.Project project, final java.util.UUID id ) {
-		final org.lgna.project.ast.Node[] buffer = { null };
-		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-		edu.cmu.cs.dennisc.pattern.Crawler crawler = new edu.cmu.cs.dennisc.pattern.Crawler() {
-			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof org.lgna.project.ast.Node ) {
-					org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)crawlable;
-					if( id.equals( node.getUUID() ) ) {
-						buffer[ 0 ] = node;
-					}
-				}
-			}
-		};
-		programType.crawl( crawler, true );
-		return (N)buffer[ 0 ];
-	}
-	public static <R extends org.alice.virtualmachine.Resource > R lookupResource( org.lgna.project.Project project, java.util.UUID id ) {
-		for( org.alice.virtualmachine.Resource resource : project.getResources() ) {
-			if( resource.getId() == id ) {
-				return (R)resource;
-			}
-		}
-		return null;
-	}
-	
-	private static edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > getNode( org.lgna.project.ast.NamedUserType type, edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > root ) {
-		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > rv = root.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( type );
-			org.lgna.project.ast.AbstractType< ?,?,? > superType = type.getSuperType();
-			if( superType instanceof org.lgna.project.ast.NamedUserType ) {
-				edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > superNode = getNode( (org.lgna.project.ast.NamedUserType)superType, root );
-				superNode.addChild( rv );
-			} else {
-				root.addChild( rv );
-			}
-		}
-		return rv;
-	}
-
-	public static edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > getNamedUserTypesAsTree( org.lgna.project.Project project ) {
-		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > root = edu.cmu.cs.dennisc.tree.DefaultNode.createSafeInstance( null );
-		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType type : types ) {
-			getNode( type, root );
-		}
-		return root;
 	}
 }

@@ -92,7 +92,7 @@ public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends or
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.AbstractField field = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
+		org.lgna.project.ast.AbstractField field = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), statementId );
 		return new Object[] { blockStatementIndexPair, field };
 	}
 	@Override

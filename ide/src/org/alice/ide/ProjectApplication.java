@@ -101,7 +101,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		sb.append( " is able to open projects from files saved by " );
 		sb.append( this.getApplicationName() );
 		sb.append( ".\n\nLook for files with an " );
-		sb.append( org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION );
+		sb.append( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION );
 		sb.append( " extension." );
 		this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 	}
@@ -125,10 +125,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 				String lcFilename = file.getName().toLowerCase();
 				if( lcFilename.endsWith( ".a2w" ) ) {
 					this.showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
-				} else if( lcFilename.endsWith( org.lgna.project.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
-					this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
+				} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
+					this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
 				} else {
-					boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() );
+					boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() );
 					java.util.zip.ZipFile zipFile;
 					try {
 						zipFile = new java.util.zip.ZipFile( file );
@@ -143,7 +143,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 					if( zipFile != null ) {
 						org.lgna.project.Project project;
 						try {
-							project = org.lgna.project.project.ProjectUtilities.readProject( zipFile );
+							project = org.lgna.project.io.IoUtilities.readProject( zipFile );
 						} catch( java.io.IOException ioe ) {
 							if( isWorthyOfException ) {
 								throw new RuntimeException( file.getAbsolutePath(), ioe );
@@ -320,7 +320,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		} catch( Throwable t ) {
 			dataSources = new edu.cmu.cs.dennisc.zip.DataSource[] {};
 		}
-		org.lgna.project.project.ProjectUtilities.writeProject( file, project, dataSources );
+		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
 		this.uri = file.toURI();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
 		this.updateHistoryLengthAtLastFileOperation();

@@ -56,7 +56,7 @@ public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec< org
 		if( valueIsNotNull ) {
 			java.util.UUID id = binaryDecoder.decodeId();
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			org.lgna.project.ast.AbstractDeclaration code = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), id );
+			org.lgna.project.ast.AbstractDeclaration code = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
 			return org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( code );
 		} else {
 			return null;
