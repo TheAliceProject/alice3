@@ -47,9 +47,42 @@ package org.alice.stageide.perspectives.components;
  * @author Dennis Cosgrove
  */
 public abstract class IdePerspectiveView< J extends javax.swing.JComponent, P extends org.alice.ide.perspectives.IdePerspective > extends org.lgna.croquet.components.View< J, P > {
+	protected static int SPLIT_MINIMUM_SIZE = 24;
 	public IdePerspectiveView( P perspective ) {
 		super( perspective );
 	}
-	public abstract void handleDeactivated();
-	public abstract void handleActivated();
+	public abstract void handleDeactivated( org.alice.ide.MainComponent mainComponent );
+	public abstract void handleActivated( org.alice.ide.MainComponent mainComponent );
+
+	private java.util.Stack< org.alice.ide.ReasonToDisableSomeAmountOfRendering > reasonToDisableSomeAmountOfRenderingStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	
+	protected abstract void setIgnoreRepaintOnSplitPanes( boolean isIgnoreRepaint );
+	private org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
+		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	}
+	
+	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+		this.reasonToDisableSomeAmountOfRenderingStack.push( reasonToDisableSomeAmountOfRendering );
+		if( reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
+			//pass
+		} else {
+			this.setIgnoreRepaintOnSplitPanes( true );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: true" );
+		}
+		this.getSceneEditor().disableRendering( reasonToDisableSomeAmountOfRendering );
+	}
+	public void enableRendering() {
+		if( reasonToDisableSomeAmountOfRenderingStack.size() > 0 ) {
+			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = reasonToDisableSomeAmountOfRenderingStack.pop();
+			if( reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
+				//pass
+			} else {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: false" );
+				this.setIgnoreRepaintOnSplitPanes( false );
+			}
+			this.getSceneEditor().enableRendering( reasonToDisableSomeAmountOfRendering );
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate extra enableRendering" );
+		}
+	}
 }

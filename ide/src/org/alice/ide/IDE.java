@@ -515,7 +515,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			reasonToDisableSomeAmountOfRendering = ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
 		}
-		this.getMainComponent().disableRendering( reasonToDisableSomeAmountOfRendering );
+		getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		//		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
@@ -530,7 +530,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	public void handleDragStopped( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		this.getMainComponent().enableRendering();
+		getPerspectiveState().getValue().enableRendering();
 	}
 
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField >() {
@@ -770,7 +770,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		org.lgna.project.ast.AbstractCode code = this.getFocusedCode();
 		if( code != null ) {
-			return this.getMainComponent().getTypeEditor().getCodeEditorInFocus();
+			return org.alice.ide.perspectives.components.CodeView.getInstance().getTypeEditor().getCodeEditorInFocus();
 		} else {
 			return null;
 		}

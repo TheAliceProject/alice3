@@ -52,9 +52,15 @@ public abstract class IdePerspective extends org.lgna.croquet.Perspective {
 	}
 	protected abstract org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > getView();
 	
+	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+		this.getView().disableRendering( reasonToDisableSomeAmountOfRendering );
+	}
+	public void enableRendering() {
+		this.getView().enableRendering();
+	}
 	public void handleDeactivation( org.alice.ide.MainComponent mainComponent ) {
 		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
-		view.handleDeactivated();
+		view.handleDeactivated( mainComponent );
 	}
 	public void handleActivation( org.alice.ide.MainComponent mainComponent ) {
 		//todo: remove
@@ -65,7 +71,7 @@ public abstract class IdePerspective extends org.lgna.croquet.Perspective {
 		mainComponent.removeAllComponents();
 		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
 		
-		view.handleActivated();
+		view.handleActivated( mainComponent );
 		
 		mainComponent.addComponent( view, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 		mainComponent.revalidateAndRepaint();

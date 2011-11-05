@@ -47,19 +47,6 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class MainComponent extends org.lgna.croquet.components.BorderPanel {
-	private int rootDividerLocation = 340;
-	private int leftDividerLocation = 240;
-
-	private final org.lgna.croquet.components.VerticalSplitPane left = new org.lgna.croquet.components.VerticalSplitPane();
-	private final org.lgna.croquet.components.BorderPanel right = new org.lgna.croquet.components.BorderPanel();
-	private final org.lgna.croquet.components.HorizontalSplitPane root = new org.lgna.croquet.components.HorizontalSplitPane( left, right );
-
-	private final org.alice.ide.memberseditor.MembersEditor membersEditor;
-	private final org.alice.ide.typehierarchyview.TypeHierarchyView typeHierarchyView;
-	private final org.alice.ide.contextview.ContextView contextView;
-
-	private final org.alice.ide.typeeditor.TypeEditor typeEditor = new org.alice.ide.typeeditor.TypeEditor();
-	
 	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.perspectives.IdePerspective > perspectiveListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.perspectives.IdePerspective >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
 		}
@@ -69,22 +56,6 @@ public abstract class MainComponent extends org.lgna.croquet.components.BorderPa
 	};
 
 	public MainComponent() {
-		this.membersEditor = this.createClassMembersEditor();
-		this.typeHierarchyView = new org.alice.ide.typehierarchyview.TypeHierarchyView();
-		this.contextView = new org.alice.ide.contextview.ContextView( this.typeHierarchyView, this.membersEditor );
-
-		final int MINIMUM_SIZE = 24;
-		this.right.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
-		this.left.getAwtComponent().setMinimumSize( new java.awt.Dimension( MINIMUM_SIZE, MINIMUM_SIZE ) );
-
-		this.right.addComponent( this.typeEditor, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
-			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				setSceneEditorExpanded( nextValue );
-			}
-		} );
 		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
 			public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 			}
@@ -93,55 +64,15 @@ public abstract class MainComponent extends org.lgna.croquet.components.BorderPa
 			}
 		} );
 		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		//this.addComponent( this.root, Constraint.CENTER );
-		
 		IDE.getActiveInstance().getPerspectiveState().addAndInvokeValueObserver( this.perspectiveListener );
 	}
 	
-	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
-		return new org.alice.ide.memberseditor.MembersEditor();
-	}
-	public org.alice.ide.typeeditor.TypeEditor getTypeEditor() {
-		return this.typeEditor;
-	}
-	public org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
-		return this.membersEditor;
-	}
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
-
-	private java.util.Stack< ReasonToDisableSomeAmountOfRendering > reasonToDisableSomeAmountOfRenderingStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-
-	public void disableRendering( ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-		this.reasonToDisableSomeAmountOfRenderingStack.push( reasonToDisableSomeAmountOfRendering );
-		if( reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
-			//pass
-		} else {
-			this.root.setIgnoreRepaint( true );
-			this.left.setIgnoreRepaint( true );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: true" );
-		}
-		this.getSceneEditor().disableRendering( reasonToDisableSomeAmountOfRendering );
-	}
-	public void enableRendering() {
-		if( reasonToDisableSomeAmountOfRenderingStack.size() > 0 ) {
-			ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = reasonToDisableSomeAmountOfRenderingStack.pop();
-			if( reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
-				//pass
-			} else {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: false" );
-				this.root.setIgnoreRepaint( false );
-				this.left.setIgnoreRepaint( false );
-			}
-			this.getSceneEditor().enableRendering( reasonToDisableSomeAmountOfRendering );
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate extra enableRendering" );
-		}
-	}
 
 	//todo remove
 	/*package-private*/ boolean isRespondingToRefreshAccessibles = true;
 	public void refreshAccessibles() {
-		this.typeHierarchyView.refresh();
+//		this.typeHierarchyView.refresh();
 //		if( isRespondingToRefreshAccessibles ) {
 //			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
 //
@@ -205,39 +136,4 @@ public abstract class MainComponent extends org.lgna.croquet.components.BorderPa
 		}
 		nextPerspective.handleActivation( this );
 	}
-	private void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
-//		this.addComponent( org.alice.ide.perspectives.components.CodeView.getInstance(), Constraint.CENTER );
-//
-//		if( isSceneEditorExpanded ) {
-//			if( this.root.getAwtComponent().isValid() ) {
-//				this.rootDividerLocation = this.root.getDividerLocation();
-//			}
-//			if( this.left.getAwtComponent().isValid() ) {
-//				this.leftDividerLocation = this.left.getDividerLocation();
-//			}
-//			this.left.setResizeWeight( 1.0 );
-//			this.root.setLeftComponent( this.left );
-//			this.left.setTopComponent( this.getSceneEditor() );
-//			this.left.setBottomComponent( this.galleryBrowser );
-//			//this.root.setRightComponent( null );
-//			this.right.setVisible( false );
-//			this.root.setDividerSize( 0 );
-//			this.left.setDividerLocation( this.getHeight() - 256 );
-//		} else {
-//			this.left.setResizeWeight( 0.0 );
-//			this.root.setLeftComponent( this.left );
-//			this.right.setVisible( true );
-//			//this.root.setRightComponent( this.right );
-//			this.root.setDividerLocation( this.rootDividerLocation );
-//			this.left.setTopComponent( this.getSceneEditor() );
-//			this.left.setBottomComponent( this.contextView );
-//			this.left.setDividerLocation( this.leftDividerLocation );
-//			//			if( this.right.getComponentCount() == 0 ) {
-//			//				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.SOUTH );
-//			//				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
-//			//				this.right.add( this.declarationsUIResource, java.awt.BorderLayout.NORTH );
-//			//			}
-//			this.root.setDividerSize( this.left.getDividerSize() );
-//		}
-	}	
 }

@@ -57,21 +57,26 @@ public class SetupSceneView extends IdePerspectiveView< javax.swing.JSplitPane, 
 	private SetupSceneView() {
 		super( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
 		this.getAwtComponent().setRightComponent( new org.alice.stageide.gallerybrowser.GalleryBrowser().getAwtComponent() );
+		this.getAwtComponent().getRightComponent().setMinimumSize( new java.awt.Dimension( SPLIT_MINIMUM_SIZE, SPLIT_MINIMUM_SIZE ) );
 	}
 	@Override
 	protected javax.swing.JSplitPane createAwtComponent() {
 		return new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
 	}
 	@Override
-	public void handleDeactivated() {
+	protected void setIgnoreRepaintOnSplitPanes( boolean isIgnoreRepaint ) {
+		this.getAwtComponent().setIgnoreRepaint( isIgnoreRepaint );
+	}
+	@Override
+	public void handleDeactivated( org.alice.ide.MainComponent mainComponent ) {
 		this.mainDividerLocation = this.getAwtComponent().getDividerLocation();
 	}
 	@Override
-	public void handleActivated() {
+	public void handleActivated( org.alice.ide.MainComponent mainComponent ) {
 		if( this.mainDividerLocation != null ) {
 			//pass
 		} else {
-			this.mainDividerLocation = 720;
+			this.mainDividerLocation = mainComponent.getHeight() - 256;
 		}
 		this.getAwtComponent().setLeftComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getAwtComponent() );
 		this.getAwtComponent().setDividerLocation( this.mainDividerLocation );

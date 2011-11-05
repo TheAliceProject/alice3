@@ -55,6 +55,7 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 	}
 	private Integer leftDividerLocation = null;
 	private final org.lgna.croquet.components.VerticalSplitPane left = new org.lgna.croquet.components.VerticalSplitPane();
+	private final org.alice.ide.typeeditor.TypeEditor typeEditor = new org.alice.ide.typeeditor.TypeEditor();
 	private CodeView() {
 		super( org.alice.ide.perspectives.CodePerspective.getInstance() );
 		
@@ -63,22 +64,31 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 		org.alice.ide.contextview.ContextView contextView = new org.alice.ide.contextview.ContextView( typeHierarchyView, membersEditor );
 		this.left.setBottomComponent( contextView );
 
-		org.alice.ide.typeeditor.TypeEditor typeEditor = new org.alice.ide.typeeditor.TypeEditor();
 
 		javax.swing.JSplitPane jSplitPane = this.getAwtComponent();
 		jSplitPane.setLeftComponent( this.left.getAwtComponent() );
-		jSplitPane.setRightComponent( typeEditor.getAwtComponent() );
+		jSplitPane.setRightComponent( this.typeEditor.getAwtComponent() );
+		
+		jSplitPane.setMinimumSize( new java.awt.Dimension( SPLIT_MINIMUM_SIZE, SPLIT_MINIMUM_SIZE ) );
+		jSplitPane.getLeftComponent().setMinimumSize( new java.awt.Dimension( SPLIT_MINIMUM_SIZE, SPLIT_MINIMUM_SIZE ) );
+		jSplitPane.getRightComponent().setMinimumSize( new java.awt.Dimension( SPLIT_MINIMUM_SIZE, SPLIT_MINIMUM_SIZE ) );
+		
+	}
+	@Override
+	protected void setIgnoreRepaintOnSplitPanes( boolean isIgnoreRepaint ) {
+		this.getAwtComponent().setIgnoreRepaint( isIgnoreRepaint );
+		this.left.setIgnoreRepaint( isIgnoreRepaint );
 	}
 	@Override
 	protected javax.swing.JSplitPane createAwtComponent() {
 		return new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	}
 	@Override
-	public void handleDeactivated() {
+	public void handleDeactivated( org.alice.ide.MainComponent mainComponent ) {
 		this.leftDividerLocation = this.left.getDividerLocation();
 	}
 	@Override
-	public void handleActivated() {
+	public void handleActivated( org.alice.ide.MainComponent mainComponent ) {
 		if( this.leftDividerLocation != null ) {
 			//pass
 		} else {
@@ -86,5 +96,9 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 		}
 		this.left.setTopComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
 		this.left.setDividerLocation( this.leftDividerLocation );
+	}
+	
+	public org.alice.ide.typeeditor.TypeEditor getTypeEditor() {
+		return this.typeEditor;
 	}
 }

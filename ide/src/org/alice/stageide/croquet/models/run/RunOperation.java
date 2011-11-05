@@ -145,7 +145,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		if( ide.getProject() != null ) {
 			ide.ensureProjectCodeUpToDate();
 
-			ide.getMainComponent().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
+			ide.getPerspectiveState().getValue().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 
 			new Thread() {
 				@Override
@@ -183,6 +183,6 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	@Override
 	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		super.handleFinally( step, dialog, contentPane );
-		org.alice.ide.IDE.getActiveInstance().getMainComponent().enableRendering();
+		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().enableRendering();
 	}
 }
