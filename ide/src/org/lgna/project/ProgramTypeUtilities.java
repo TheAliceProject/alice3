@@ -50,6 +50,67 @@ public class ProgramTypeUtilities {
 	private ProgramTypeUtilities() {
 		throw new AssertionError();
 	}
+	private static Iterable< org.lgna.project.ast.UserVariable > getVariables( org.lgna.project.ast.AbstractCode codeInFocus ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserVariable > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserVariable.class );
+		codeInFocus.crawl( crawler, false );
+		return crawler.getList();
+	}
+	private static Iterable< org.lgna.project.ast.UserConstant > getConstants( org.lgna.project.ast.AbstractCode codeInFocus ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserConstant > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserConstant.class );
+		codeInFocus.crawl( crawler, false );
+		return crawler.getList();
+	}
+
+	public static java.util.List< org.lgna.project.ast.FieldAccess > getFieldAccesses( org.lgna.project.ast.NamedUserType programType, final org.lgna.project.ast.AbstractField field ) {
+		assert programType != null;
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess >( org.lgna.project.ast.FieldAccess.class ) {
+			@Override
+			protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( fieldAccess.field.getValue() );
+				return fieldAccess.field.getValue() == field;
+			}
+		};
+		programType.crawl( crawler, true );
+		return crawler.getList();
+	}
+	public static java.util.List< org.lgna.project.ast.MethodInvocation > getMethodInvocations( org.lgna.project.ast.NamedUserType programType, final org.lgna.project.ast.AbstractMethod method ) {
+		assert programType != null;
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.MethodInvocation >(
+				org.lgna.project.ast.MethodInvocation.class ) {
+			@Override
+			protected boolean isAcceptable( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+				return methodInvocation.method.getValue() == method;
+			}
+		};
+		programType.crawl( crawler, true );
+		return crawler.getList();
+	}
+	public static java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > getArgumentLists( org.lgna.project.ast.NamedUserType programType, final org.lgna.project.ast.UserCode code ) {
+		assert programType != null;
+		class ArgumentListCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
+			private final java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
+					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
+					if( methodInvocation.method.getValue() == code ) {
+						this.list.add( methodInvocation.requiredArguments );
+					}
+				} else if( crawlable instanceof org.lgna.project.ast.InstanceCreation ) {
+					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)crawlable;
+					if( instanceCreation.constructor.getValue() == code ) {
+						this.list.add( instanceCreation.requiredArguments );
+					}
+				}
+			}
+			public java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > getList() {
+				return this.list;
+			}
+		}
+		ArgumentListCrawler crawler = new ArgumentListCrawler();
+		programType.crawl( crawler, true );
+		return crawler.getList();
+	}
+
 	public static java.util.Set< org.alice.virtualmachine.Resource > getReferencedResources( org.lgna.project.Project project ) {
 		org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
 		java.util.Set< org.alice.virtualmachine.Resource > resources = project.getResources();

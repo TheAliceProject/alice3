@@ -204,55 +204,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public java.util.List< org.lgna.project.ast.FieldAccess > getFieldAccesses( final org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
-		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess >( org.lgna.project.ast.FieldAccess.class ) {
-			@Override
-			protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( fieldAccess.field.getValue() );
-				return fieldAccess.field.getValue() == field;
-			}
-		};
-		programType.crawl( crawler, true );
-		return crawler.getList();
+		return org.lgna.project.ProgramTypeUtilities.getFieldAccesses( programType, field );
 	}
 	public java.util.List< org.lgna.project.ast.MethodInvocation > getMethodInvocations( final org.lgna.project.ast.AbstractMethod method ) {
 		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
-		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.MethodInvocation >(
-				org.lgna.project.ast.MethodInvocation.class ) {
-			@Override
-			protected boolean isAcceptable( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-				return methodInvocation.method.getValue() == method;
-			}
-		};
-		programType.crawl( crawler, true );
-		return crawler.getList();
+		return org.lgna.project.ProgramTypeUtilities.getMethodInvocations( programType, method );
 	}
 	public java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > getArgumentLists( final org.lgna.project.ast.UserCode code ) {
 		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
-		assert programType != null;
-		class ArgumentListCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-			private final java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
-					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
-					if( methodInvocation.method.getValue() == code ) {
-						this.list.add( methodInvocation.requiredArguments );
-					}
-				} else if( crawlable instanceof org.lgna.project.ast.InstanceCreation ) {
-					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)crawlable;
-					if( instanceCreation.constructor.getValue() == code ) {
-						this.list.add( instanceCreation.requiredArguments );
-					}
-				}
-			}
-			public java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > getList() {
-				return this.list;
-			}
-		}
-		ArgumentListCrawler crawler = new ArgumentListCrawler();
-		programType.crawl( crawler, true );
-		return crawler.getList();
+		return org.lgna.project.ProgramTypeUtilities.getArgumentLists( programType, code );
 	}
 
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
@@ -670,16 +630,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //		}
 //	}
 
-	private static Iterable< org.lgna.project.ast.UserVariable > getVariables( org.lgna.project.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserVariable > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserVariable.class );
-		codeInFocus.crawl( crawler, false );
-		return crawler.getList();
-	}
-	private static Iterable< org.lgna.project.ast.UserConstant > getConstants( org.lgna.project.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserConstant > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserConstant.class );
-		codeInFocus.crawl( crawler, false );
-		return crawler.getList();
-	}
 
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getTypeInScope() {
 		org.lgna.project.ast.AbstractCode codeInFocus = this.getFocusedCode();
