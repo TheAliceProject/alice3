@@ -533,37 +533,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		getPerspectiveState().getValue().enableRendering();
 	}
 
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField >() {
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
-		}
-
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
-		}
-
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
-		}
-
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
-		}
-	};
 	
-	private org.lgna.project.ast.UserField rootField;
-
-	private org.lgna.project.ast.NamedUserType getRootTypeDeclaredInAlice() {
-		return (org.lgna.project.ast.NamedUserType)this.rootField.valueType.getValue();
-	}
+//	private org.lgna.project.ast.UserField rootField;
+//
+//	private org.lgna.project.ast.NamedUserType getRootTypeDeclaredInAlice() {
+//		return (org.lgna.project.ast.NamedUserType)this.rootField.valueType.getValue();
+//	}
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
 		return accessible.getValueType().isArray() == false;
 	}
@@ -571,14 +546,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	
 	private void setRootField( org.lgna.project.ast.UserField rootField ) {
-		if( this.rootField != null ) {
-			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
-		}
-		this.rootField = rootField;
-		if( this.rootField != null ) {
-			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
-		}
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
+//		if( this.rootField != null ) {
+//			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
+//		}
+//		this.rootField = rootField;
+//		if( this.rootField != null ) {
+//			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
+//		}
+//		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
 		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -598,12 +573,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().isRespondingToRefreshAccessibles = false;
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
 		try {
 			this.setRootField( this.getSceneField() );
 		} finally {
-			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().isRespondingToRefreshAccessibles = true;
-			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
+			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().popIgnoreAstChanges();
 		}
 	}
 

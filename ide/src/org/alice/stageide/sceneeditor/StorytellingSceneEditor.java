@@ -549,7 +549,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			
 			this.expandButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ).createButton();
 			this.expandButton.setIcon( EXPAND_ICON );
-			//todo
+			//todo: tool tip text
 			this.expandButton.getAwtComponent().setText( null );
 			this.expandButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 

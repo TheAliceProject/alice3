@@ -127,22 +127,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			if( step.isCanceled() ) {
 				//pass
 			} else {
-				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
-					@Override
-					protected final void doOrRedoInternal( boolean isDo ) {
-						org.lgna.project.ast.AstUtilities.removeParameter( map, method, getParameter(), index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( method ) );
-					}
-					@Override
-					protected final void undoInternal() {
-						org.lgna.project.ast.AstUtilities.addParameter( map, method, getParameter(), index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( method ) );
-					}
-					@Override
-					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-						rv.append( "delete:" );
-						org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), locale);
-						return rv;
-					}
-				} );
+				step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeleteParameterEdit( step, this.getParameter() ) );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DeleteParameterOperation" );

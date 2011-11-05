@@ -45,48 +45,30 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterDeclarationEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation > {
-	private org.lgna.project.ast.UserParameter parameter;
-	private transient java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private transient int index;
-
-	public ParameterDeclarationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserParameter parameter ) {
-		super( completionStep );
-		this.parameter = parameter;
+public class AddParameterEdit extends ParameterEdit< org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation > {
+	public AddParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserParameter parameter ) {
+		super( completionStep, parameter );
 	}
-	public ParameterDeclarationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public AddParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.parameter = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserParameter.class ).decodeValue( binaryDecoder );
-	}
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserParameter.class ).encodeValue( binaryEncoder, this.parameter );
 	}
 
+	@Override
+	protected org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > getParametersProperty() {
+		return this.getModel().getCode().getParamtersProperty();
+	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.UserCode code = this.getModel().getCode();
-		this.index = code.getParamtersProperty().size();
-		org.lgna.project.ast.AstUtilities.addParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
+		this.addParameter();
 	}
 	@Override
 	protected final void undoInternal() {
-		org.lgna.project.ast.UserCode code = this.getModel().getCode();
-		org.lgna.project.ast.AstUtilities.removeParameter( map, code, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
+		this.removeParameter();
 	}
 	@Override
 	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 		rv.append( "declare:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, parameter, locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getParameter(), locale);
 		return rv;
-	}
-	@Override
-	public boolean canUndo() {
-		return true;
-	}
-	@Override
-	public boolean canRedo() {
-		return true;
 	}
 }

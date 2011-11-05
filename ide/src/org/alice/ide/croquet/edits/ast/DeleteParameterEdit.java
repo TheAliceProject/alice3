@@ -40,36 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
 
-import org.lgna.project.ast.NodeListProperty;
-import org.lgna.project.ast.UserParameter;
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodeParameterOperation extends AbstractCodeActionOperation {
-	private UserParameter parameter;
-	private NodeListProperty< UserParameter > parametersProperty;
-	public AbstractCodeParameterOperation( java.util.UUID individualId, NodeListProperty< UserParameter > parametersProperty, UserParameter parameter ) {
-		super( individualId );
-		this.parametersProperty = parametersProperty;
-		this.parameter = parameter;
+public class DeleteParameterEdit extends ParameterEdit< org.alice.ide.operations.ast.DeleteParameterOperation > {
+	public DeleteParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserParameter parameter ) {
+		super( completionStep, parameter );
 	}
-	public NodeListProperty< UserParameter > getParametersProperty() {
-		return this.parametersProperty;
+	public DeleteParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 	}
-	protected org.lgna.project.ast.UserParameter getParameter() {
-		return this.parameter;
-	}
-	protected int getIndex() {
-		return this.parametersProperty.indexOf( this.parameter );
-	}
-	protected int getParameterCount() {
-		return this.parametersProperty.size();
+	
+	@Override
+	protected org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > getParametersProperty() {
+		return this.getModel().getParametersProperty();
 	}
 	@Override
-	protected org.lgna.project.ast.UserCode getCode() {
-		return (org.lgna.project.ast.UserCode)this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.removeParameter();
+	}
+	@Override
+	protected final void undoInternal() {
+		this.addParameter();
+	}
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		rv.append( "delete:" );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), locale);
+		return rv;
 	}
 }
