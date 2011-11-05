@@ -75,9 +75,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //			}
 //		} );
 	}
-	public void refreshAccessibles() {
-		this.getMainComponent().refreshAccessibles();
-	}
+//	public void refreshAccessibles() {
+//		this.getMainComponent().refreshAccessibles();
+//	}
 
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
@@ -537,25 +537,25 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.getMainComponent().refreshAccessibles();
+			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
 		}
 
 		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
 		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.getMainComponent().refreshAccessibles();
+			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
 		}
 
 		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
 		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.getMainComponent().refreshAccessibles();
+			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
 		}
 
 		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
 		}
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.getMainComponent().refreshAccessibles();
+			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
 		}
 	};
 	
@@ -578,7 +578,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.rootField != null ) {
 			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
 		}
-		this.getMainComponent().refreshAccessibles();
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
 		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -598,12 +598,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
-		this.getMainComponent().isRespondingToRefreshAccessibles = false;
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().isRespondingToRefreshAccessibles = false;
 		try {
 			this.setRootField( this.getSceneField() );
 		} finally {
-			this.getMainComponent().isRespondingToRefreshAccessibles = true;
-			this.getMainComponent().refreshAccessibles();
+			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().isRespondingToRefreshAccessibles = true;
+			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
 		}
 	}
 

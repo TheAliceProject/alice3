@@ -54,80 +54,11 @@ public abstract class MainComponent extends org.lgna.croquet.components.BorderPa
 			MainComponent.this.handlePerspectiveChanged( prevValue, nextValue );
 		}
 	};
-
 	public MainComponent() {
-		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
-			public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			}
-			public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-				refreshAccessibles();
-			}
-		} );
 		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		IDE.getActiveInstance().getPerspectiveState().addAndInvokeValueObserver( this.perspectiveListener );
 	}
-	
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
-
-	//todo remove
-	/*package-private*/ boolean isRespondingToRefreshAccessibles = true;
-	public void refreshAccessibles() {
-//		this.typeHierarchyView.refresh();
-//		if( isRespondingToRefreshAccessibles ) {
-//			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
-//
-//			org.lgna.project.ast.AbstractCode code = this.getFocusedCode();
-//			org.lgna.project.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-//
-//			java.util.List< org.lgna.project.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//			if( this.rootField != null ) {
-//				accessibles.add( this.rootField );
-//				for( org.lgna.project.ast.AbstractField field : this.getRootTypeDeclaredInAlice().fields ) {
-//					if( this.isAccessibleDesired( field ) ) {
-//						accessibles.add( field );
-//					}
-//				}
-//			}
-//
-//			int indexOfLastField = accessibles.size() - 1;
-//			if( code instanceof org.lgna.project.ast.CodeDeclaredInAlice ) {
-//				org.lgna.project.ast.CodeDeclaredInAlice codeDeclaredInAlice = (org.lgna.project.ast.CodeDeclaredInAlice)code;
-//				for( org.lgna.project.ast.ParameterDeclaredInAlice parameter : codeDeclaredInAlice.getParamtersProperty() ) {
-//					if( this.isAccessibleDesired( parameter ) ) {
-//						accessibles.add( parameter );
-//					}
-//				}
-//				for( org.lgna.project.ast.VariableDeclaredInAlice variable : IDE.getVariables( code ) ) {
-//					if( this.isAccessibleDesired( variable ) ) {
-//						accessibles.add( variable );
-//					}
-//				}
-//				for( org.lgna.project.ast.ConstantDeclaredInAlice constant : IDE.getConstants( code ) ) {
-//					if( this.isAccessibleDesired( constant ) ) {
-//						accessibles.add( constant );
-//					}
-//				}
-//			}
-//
-//			int selectedIndex;
-//			if( accessible != null ) {
-//				selectedIndex = accessibles.indexOf( accessible );
-//			} else {
-//				selectedIndex = -1;
-//			}
-//			if( selectedIndex == -1 ) {
-//				if( code != null ) {
-//					accessible = this.mapCodeToAccessible.get( code );
-//					selectedIndex = accessibles.indexOf( accessible );
-//				}
-//			}
-//			if( selectedIndex == -1 ) {
-//				selectedIndex = indexOfLastField;
-//			}
-//			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setListData( selectedIndex, accessibles );
-//		}
-	}
-	
 	private void handlePerspectiveChanged( org.alice.ide.perspectives.IdePerspective prevPerspective, org.alice.ide.perspectives.IdePerspective nextPerspective ) {
 		if( prevPerspective != null ) {
 			if( prevPerspective != nextPerspective ) {

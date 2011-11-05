@@ -114,6 +114,6 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		org.alice.ide.IDE.getActiveInstance().refreshAccessibles();
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
 	}
 }
