@@ -66,10 +66,10 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 		
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
-		org.lgna.project.ast.AbstractNode node = org.lgna.project.project.ProjectUtilities.lookupNode( project, expressionPropertyNodeId );
+		org.lgna.project.ast.AbstractNode node = org.lgna.project.ProgramTypeUtilities.lookupNode( project, expressionPropertyNodeId );
 		this.expressionProperty = (org.lgna.project.ast.ExpressionProperty)node.getPropertyNamed( propertyName );
-		this.prevExpression = org.lgna.project.project.ProjectUtilities.lookupNode( project, prevExpressionId );
-		this.nextExpression = org.lgna.project.project.ProjectUtilities.lookupNode( project, nextExpressionId );
+		this.prevExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, prevExpressionId );
+		this.nextExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, nextExpressionId );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

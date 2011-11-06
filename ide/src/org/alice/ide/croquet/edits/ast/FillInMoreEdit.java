@@ -57,7 +57,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
 		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
-		this.argumentExpression = org.lgna.project.project.ProjectUtilities.lookupNode( project, prevExpressionId );
+		this.argumentExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, prevExpressionId );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

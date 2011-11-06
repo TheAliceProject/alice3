@@ -66,15 +66,15 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
 		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		this.blockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( project, blockStatementId );
+		this.blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, blockStatementId );
 		this.specifiedIndex = binaryDecoder.decodeInt();
 		java.util.UUID statementId = binaryDecoder.decodeId();
-		this.statement = org.lgna.project.project.ProjectUtilities.lookupNode( project, statementId );
+		this.statement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, statementId );
 		java.util.UUID[] ids = binaryDecoder.decodeIdArray();
 		final int N = ids.length;
 		this.initialExpressions = new org.lgna.project.ast.Expression[ N ];
 		for( int i=0; i<N; i++ ) {
-			this.initialExpressions[ i ] = org.lgna.project.project.ProjectUtilities.lookupNode( project, ids[ i ] );
+			this.initialExpressions[ i ] = org.lgna.project.ProgramTypeUtilities.lookupNode( project, ids[ i ] );
 		}
 	}
 	@Override
@@ -103,7 +103,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		int actualIndex = this.getActualIndex();
 		this.blockStatement.statements.add( actualIndex, this.statement );
 		//todo: remove
-		org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		if( this.blockStatement.statements.get( actualIndex ) == this.statement ) {
 			this.blockStatement.statements.remove( actualIndex );
 			//todo: remove
-			org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
+			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}

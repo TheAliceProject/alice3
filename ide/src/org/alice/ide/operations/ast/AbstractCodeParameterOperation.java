@@ -56,6 +56,9 @@ public abstract class AbstractCodeParameterOperation extends AbstractCodeActionO
 		this.parametersProperty = parametersProperty;
 		this.parameter = parameter;
 	}
+	public NodeListProperty< UserParameter > getParametersProperty() {
+		return this.parametersProperty;
+	}
 	protected org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}

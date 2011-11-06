@@ -544,7 +544,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 				}
 			}
 		}
-		postDecode();
+		this.postDecode();
 	}
 
 	protected void postDecode() {

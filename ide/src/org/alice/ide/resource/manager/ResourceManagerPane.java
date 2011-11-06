@@ -611,7 +611,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 				ide.ensureProjectCodeUpToDate();
 
 				org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( project.getResources(), org.alice.virtualmachine.Resource.class, true );
-				java.util.Set< org.alice.virtualmachine.Resource > referencedResources = org.lgna.project.project.ProjectUtilities.getReferencedResources( project );
+				java.util.Set< org.alice.virtualmachine.Resource > referencedResources = org.lgna.project.ProgramTypeUtilities.getReferencedResources( project );
 				javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );
 				this.table.setModel( tableModel );
 				this.table.getColumn( this.table.getColumnName( ResourceTableModel.IS_REFERENCED_COLUMN_INDEX ) ).setCellRenderer( new ResourceIsReferencedTableCellRenderer() );

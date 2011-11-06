@@ -48,17 +48,6 @@ package org.alice.stageide;
  */
 public class StoryMainComponent extends org.alice.ide.MainComponent {
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createClassGalleryBrowser( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< org.lgna.project.ast.JavaType > root ) {
-		assert root instanceof org.lgna.story.resourceutilities.ModelResourceTreeNode;
-		//return new org.alice.stageide.gallerybrowser.ClassBasedGalleryBrowser( (ModelResourceTreeNode)root );
-		return new org.alice.stageide.gallerybrowser.GalleryBrowser();
-	}
-	
-	@Override
-	public org.lgna.story.resourceutilities.ModelResourceTreeNode getClassGalleryRoot() {
-		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryTree();
-	}
-	@Override
 	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
 		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 	}

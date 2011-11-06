@@ -93,7 +93,7 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.reso
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		for( int i=0; i<N; i++ ) {
 			java.util.UUID id = binaryDecoder.decodeId();
-			rv[ i ] = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), id );
+			rv[ i ] = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
 		}
 		return rv;
 	}

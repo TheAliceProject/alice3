@@ -78,7 +78,7 @@ public class ConvertStatementWithBodyEdit extends BlockStatementEdit< org.alice.
 		replacement.body.setValue( body );
 		property.add( index, replacement );
 		//todo: remove
-		org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
 	@Override
 	protected final void undoInternal() {
@@ -92,7 +92,7 @@ public class ConvertStatementWithBodyEdit extends BlockStatementEdit< org.alice.
 		original.body.setValue( body );
 		property.add( index, original );
 		//todo: remove
-		org.alice.ide.IDE.getActiveInstance().refreshUbiquitousPane();
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

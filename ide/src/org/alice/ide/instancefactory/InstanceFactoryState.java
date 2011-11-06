@@ -54,33 +54,43 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		return SingletonHolder.instance;
 	}
 	
-	private static org.lgna.project.ast.AbstractType< ?,?,? > getDeclaringType( org.alice.ide.croquet.models.typeeditor.DeclarationComposite declarationComposite ) { 
-		if( declarationComposite != null ) {
-			org.lgna.project.ast.AbstractDeclaration declaration = declarationComposite.getDeclaration();
-			if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
-				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
-				return method.getDeclaringType();
-			} else if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
-				org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
-				return type;
-			}
+	private static org.lgna.project.ast.AbstractType< ?,?,? > getDeclaringType( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
+			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
+			return method.getDeclaringType();
+		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
+			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
+			return type;
+		} else {
+			return null;
 		}
-		return null;
 	}
-	
-	private ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > declarationObserver = new ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+//	private static org.lgna.project.ast.AbstractType< ?,?,? > getDeclaringType( org.alice.ide.croquet.models.typeeditor.DeclarationComposite declarationComposite ) { 
+//		if( declarationComposite != null ) {
+//			return getDeclaringType( declarationComposite.getDeclaration() );
+//		} else {
+//			return null;
+//		}
+//	}
+//	private ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > declarationObserver = new ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
+//		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+//		}
+//		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+//			InstanceFactoryState.this.handleDeclaringTypeChange( getDeclaringType( prevValue ), getDeclaringType( nextValue ) );
+//		}
+//	};
+
+	private final org.alice.ide.MetaDeclarationState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationState.ValueListener() {
+		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
 			InstanceFactoryState.this.handleDeclaringTypeChange( getDeclaringType( prevValue ), getDeclaringType( nextValue ) );
 		}
 	};
-	
 	private java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private InstanceFactory value;
 	private InstanceFactoryState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), InstanceFactoryCodec.SINGLETON );
-		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addValueObserver( declarationObserver );
+		//org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addValueObserver( declarationObserver );
+		org.alice.ide.MetaDeclarationState.getInstance().addValueListener( declarationListener );
 	}
 	private void handleDeclaringTypeChange( org.lgna.project.ast.AbstractType< ?,?,? > prevType, org.lgna.project.ast.AbstractType< ?,?,? > nextType ) {
 		if( prevType != nextType ) {
@@ -110,7 +120,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< InstanceFactory > blankNode ) {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager();
 		
-		org.lgna.project.ast.AbstractType< ?,?,? > type = getDeclaringType( org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getValue() );
+		org.lgna.project.ast.AbstractType< ?,?,? > type = getDeclaringType( org.alice.ide.MetaDeclarationState.getInstance().getValue() );
 
 		ThisInstanceFactoryFillIn thisFillIn = ThisInstanceFactoryFillIn.getInstance();
 		org.lgna.croquet.CascadeMenuModel< InstanceFactory > thisSubMenu = apiConfigurationManager.getInstanceFactorySubMenuForThis( type );
@@ -144,4 +154,77 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	protected void updateSwingModel( org.alice.ide.instancefactory.InstanceFactory value ) {
 		this.value = value;
 	}
+	
+	
+	private int ignoreCount = 0;
+	public void pushIgnoreAstChanges() {
+		ignoreCount++;
+	}
+	public void popIgnoreAstChanges() {
+		ignoreCount--;
+		if( ignoreCount == 0 ) {
+			this.handleAstChangeTheCouldBeOfInterest();
+		}
+	}
+	public void handleAstChangeTheCouldBeOfInterest() {
+		
+	}
+////	//todo remove
+//	public boolean isRespondingToRefreshAccessibles = true;
+//	public void refreshAccessibles() {
+////		this.typeHierarchyView.refresh();
+////		if( isRespondingToRefreshAccessibles ) {
+////			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
+////
+////			org.lgna.project.ast.AbstractCode code = this.getFocusedCode();
+////			org.lgna.project.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
+////
+////			java.util.List< org.lgna.project.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+////			if( this.rootField != null ) {
+////				accessibles.add( this.rootField );
+////				for( org.lgna.project.ast.AbstractField field : this.getRootTypeDeclaredInAlice().fields ) {
+////					if( this.isAccessibleDesired( field ) ) {
+////						accessibles.add( field );
+////					}
+////				}
+////			}
+////
+////			int indexOfLastField = accessibles.size() - 1;
+////			if( code instanceof org.lgna.project.ast.CodeDeclaredInAlice ) {
+////				org.lgna.project.ast.CodeDeclaredInAlice codeDeclaredInAlice = (org.lgna.project.ast.CodeDeclaredInAlice)code;
+////				for( org.lgna.project.ast.ParameterDeclaredInAlice parameter : codeDeclaredInAlice.getParamtersProperty() ) {
+////					if( this.isAccessibleDesired( parameter ) ) {
+////						accessibles.add( parameter );
+////					}
+////				}
+////				for( org.lgna.project.ast.VariableDeclaredInAlice variable : IDE.getVariables( code ) ) {
+////					if( this.isAccessibleDesired( variable ) ) {
+////						accessibles.add( variable );
+////					}
+////				}
+////				for( org.lgna.project.ast.ConstantDeclaredInAlice constant : IDE.getConstants( code ) ) {
+////					if( this.isAccessibleDesired( constant ) ) {
+////						accessibles.add( constant );
+////					}
+////				}
+////			}
+////
+////			int selectedIndex;
+////			if( accessible != null ) {
+////				selectedIndex = accessibles.indexOf( accessible );
+////			} else {
+////				selectedIndex = -1;
+////			}
+////			if( selectedIndex == -1 ) {
+////				if( code != null ) {
+////					accessible = this.mapCodeToAccessible.get( code );
+////					selectedIndex = accessibles.indexOf( accessible );
+////				}
+////			}
+////			if( selectedIndex == -1 ) {
+////				selectedIndex = indexOfLastField;
+////			}
+////			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setListData( selectedIndex, accessibles );
+////		}
+//	}
 }

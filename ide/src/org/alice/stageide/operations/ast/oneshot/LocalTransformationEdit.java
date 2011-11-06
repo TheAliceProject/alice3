@@ -61,16 +61,16 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit {
 	public LocalTransformationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		this.field = org.lgna.project.project.ProjectUtilities.decodeNode( project, binaryDecoder );
-		this.method = org.lgna.project.project.ProjectUtilities.decodeNode( project, binaryDecoder );
+		this.field = org.lgna.project.io.IoUtilities.decodeNode( project, binaryDecoder );
+		this.method = org.lgna.project.io.IoUtilities.decodeNode( project, binaryDecoder );
 		this.argumentExpressions = null;
 		assert false : this.argumentExpressions;
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.lgna.project.project.ProjectUtilities.encodeNode( binaryEncoder, this.field );
-		org.lgna.project.project.ProjectUtilities.encodeNode( binaryEncoder, this.method );
+		org.lgna.project.io.IoUtilities.encodeNode( binaryEncoder, this.field );
+		org.lgna.project.io.IoUtilities.encodeNode( binaryEncoder, this.method );
 		assert false : this.argumentExpressions;
 	}
 	@Override

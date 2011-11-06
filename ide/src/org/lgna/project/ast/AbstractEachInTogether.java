@@ -48,7 +48,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEachInTogether extends AbstractStatementWithBody {
-	public DeclarationProperty< UserVariable > variable = new DeclarationProperty< UserVariable >( this ) {
+	public DeclarationProperty< UserLocal > item = new DeclarationProperty< UserLocal >( this ) {
 		@Override
 		public boolean isReference() {
 			return false;
@@ -56,8 +56,9 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody {
 	};
 	public AbstractEachInTogether() {
 	}
-	public AbstractEachInTogether( UserVariable variable, BlockStatement body ) {
+	public AbstractEachInTogether( UserLocal item, BlockStatement body ) {
 		super( body );
-		this.variable.setValue( variable );
+		assert item.isFinal.getValue();
+		this.item.setValue( item );
 	}
 }

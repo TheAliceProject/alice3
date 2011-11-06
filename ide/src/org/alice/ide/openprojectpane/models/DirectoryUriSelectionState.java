@@ -59,7 +59,7 @@ public abstract class DirectoryUriSelectionState extends UriSelectionState {
 	protected java.net.URI[] createArray() {
 		java.net.URI[] rv;
 		if( directory != null ) {
-			java.io.File[] files = org.lgna.project.project.ProjectUtilities.listProjectFiles( this.directory );
+			java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( this.directory );
 			final int N = files.length;
 			rv = new java.net.URI[ N ];
 			for( int i=0; i<N; i++ ) {

@@ -89,13 +89,13 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 					parent.addComponent( new org.lgna.croquet.components.Label( "( " ) );
 				}
 			}
-		} else if( expression instanceof org.lgna.project.ast.VariableAccess ) {
-			org.lgna.project.ast.VariableAccess variableAccess = (org.lgna.project.ast.VariableAccess)expression;
-			org.lgna.project.ast.UserVariable variable = variableAccess.variable.getValue();
+		} else if( expression instanceof org.lgna.project.ast.LocalAccess ) {
+			org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)expression;
+			org.lgna.project.ast.UserLocal local = localAccess.local.getValue();
 			//todo?
-			//desiredValueType = variable.getDesiredValueType();
+			//desiredValueType = local.getDesiredValueType();
 			valueType = null;
-			parent.addComponent( new VariablePane( variable ) );
+			parent.addComponent( new LocalPane( local ) );
 		} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
 			org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)expression;
 			org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();

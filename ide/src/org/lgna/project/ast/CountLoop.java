@@ -47,13 +47,13 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class CountLoop extends AbstractLoop {
-	public DeclarationProperty< UserVariable > variable = new DeclarationProperty< UserVariable >( this ) {
+	public DeclarationProperty< UserLocal > variable = new DeclarationProperty< UserLocal >( this ) {
 		@Override
 		public boolean isReference() {
 			return false;
 		}
 	};
-	public DeclarationProperty< UserConstant > constant = new DeclarationProperty< UserConstant >( this ) {
+	public DeclarationProperty< UserLocal > constant = new DeclarationProperty< UserLocal >( this ) {
 		@Override
 		public boolean isReference() {
 			return false;
@@ -67,21 +67,11 @@ public class CountLoop extends AbstractLoop {
 	};
 	public CountLoop() {
 	}
-	public CountLoop( UserVariable variable, UserConstant constant, Expression count, BlockStatement body ) {
+	public CountLoop( UserLocal variable, UserLocal constant, Expression count, BlockStatement body ) {
 		super( body );
 		this.variable.setValue( variable );
 		this.constant.setValue( constant );
 		this.count.setValue( count );
-	}
-	@Override
-	protected void postDecode() {
-		super.postDecode();
-		if( this.variable.getValue() == null ) {
-			this.variable.setValue( new UserVariable( null, Integer.class ) );
-		}
-		if( this.constant.getValue() == null ) {
-			this.constant.setValue( new UserConstant( null, Integer.class ) );
-		}
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {

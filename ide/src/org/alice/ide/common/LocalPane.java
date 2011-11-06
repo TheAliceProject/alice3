@@ -45,10 +45,11 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LocalPane extends TransientPane {
-	public LocalPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model, org.lgna.project.ast.UserLocal local ) {
-		super( model );
+public class LocalPane extends TransientPane {
+	public LocalPane( org.lgna.project.ast.UserLocal local ) {
+		super( org.alice.ide.ast.draganddrop.expression.LocalAccessDragModel.getInstance( local ) );
 		this.addComponent( new org.alice.ide.ast.components.LocalValidNameLabel( local ) );
 		this.setPopupPrepModel( org.alice.ide.croquet.models.ast.LocalMenuModel.getInstance( local ).getPopupPrepModel() );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.LocalAccess.class ) );
 	}
 }

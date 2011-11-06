@@ -111,9 +111,4 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 		}
 		//this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );
 	}
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		org.alice.ide.IDE.getActiveInstance().refreshAccessibles();
-	}
 }

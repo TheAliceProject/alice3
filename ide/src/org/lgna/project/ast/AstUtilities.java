@@ -185,16 +185,16 @@ public class AstUtilities {
 		return new org.lgna.project.ast.Comment();
 	}
 	
-	public static org.lgna.project.ast.VariableDeclarationStatement createVariableDeclarationStatement( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.Expression initializerExpression ) {
-		return new org.lgna.project.ast.VariableDeclarationStatement(
-				variable,
+	public static org.lgna.project.ast.LocalDeclarationStatement createLocalDeclarationStatement( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.Expression initializerExpression ) {
+		return new org.lgna.project.ast.LocalDeclarationStatement(
+				local,
 				initializerExpression 
 		);
 	}
 	public static org.lgna.project.ast.CountLoop createCountLoop( org.lgna.project.ast.Expression count ) {
 		return new org.lgna.project.ast.CountLoop(
-				new org.lgna.project.ast.UserVariable( null, org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ),
-				new org.lgna.project.ast.UserConstant( null, org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ),
+				new org.lgna.project.ast.UserLocal( null, org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, false ),
+				new org.lgna.project.ast.UserLocal( null, org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, true ),
 				count, 
 				new org.lgna.project.ast.BlockStatement() 
 		);
@@ -217,18 +217,18 @@ public class AstUtilities {
 		);
 	}
 	public static org.lgna.project.ast.ForEachInArrayLoop createForEachInArrayLoop( org.lgna.project.ast.Expression arrayExpression ) {
-		org.lgna.project.ast.UserVariable variable = new org.lgna.project.ast.UserVariable( null, arrayExpression.getType().getComponentType() );
+		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( null, arrayExpression.getType().getComponentType(), true );
 		return new org.lgna.project.ast.ForEachInArrayLoop(
-				variable,
+				item,
 				arrayExpression, 
 				new org.lgna.project.ast.BlockStatement() 
 		);
 	}
 
 	public static org.lgna.project.ast.EachInArrayTogether createEachInArrayTogether( org.lgna.project.ast.Expression arrayExpression ) {
-		org.lgna.project.ast.UserVariable variable = new org.lgna.project.ast.UserVariable( null, arrayExpression.getType().getComponentType() );
+		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( null, arrayExpression.getType().getComponentType(), true );
 		return new org.lgna.project.ast.EachInArrayTogether(
-				variable,
+				item,
 				arrayExpression, 
 				new org.lgna.project.ast.BlockStatement() 
 		);
@@ -350,18 +350,19 @@ public class AstUtilities {
 		return new org.lgna.project.ast.ReturnStatement( type, expression );
 	}
 	
-	public static org.lgna.project.ast.Expression createVariableAssignment( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.Expression valueExpression ) {
-		org.lgna.project.ast.Expression variableAccess = new org.lgna.project.ast.VariableAccess( variable ); 
-		return new org.lgna.project.ast.AssignmentExpression( variable.valueType.getValue(), variableAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+	public static org.lgna.project.ast.Expression createLocalAssignment( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.Expression valueExpression ) {
+		assert local.isFinal.getValue() == false;
+		org.lgna.project.ast.Expression localAccess = new org.lgna.project.ast.LocalAccess( local ); 
+		return new org.lgna.project.ast.AssignmentExpression( local.valueType.getValue(), localAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
 	}
-	public static org.lgna.project.ast.ExpressionStatement createVariableAssignmentStatement( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.Expression valueExpression ) {
-		return new org.lgna.project.ast.ExpressionStatement( createVariableAssignment( variable, valueExpression) );
+	public static org.lgna.project.ast.ExpressionStatement createLocalAssignmentStatement( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.Expression valueExpression ) {
+		return new org.lgna.project.ast.ExpressionStatement( createLocalAssignment( local, valueExpression) );
 	}
 
-	public static org.lgna.project.ast.ExpressionStatement createVariableArrayAssignmentStatement( org.lgna.project.ast.UserVariable variable, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
-		org.lgna.project.ast.Expression variableAccess = new org.lgna.project.ast.VariableAccess( variable ); 
-		org.lgna.project.ast.ArrayAccess arrayAccess = new org.lgna.project.ast.ArrayAccess( variable.valueType.getValue(), variableAccess, indexExpression ); 
-		org.lgna.project.ast.Expression expression = new org.lgna.project.ast.AssignmentExpression( variable.valueType.getValue().getComponentType(), arrayAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+	public static org.lgna.project.ast.ExpressionStatement createLocalArrayAssignmentStatement( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
+		org.lgna.project.ast.Expression localAccess = new org.lgna.project.ast.LocalAccess( local ); 
+		org.lgna.project.ast.ArrayAccess arrayAccess = new org.lgna.project.ast.ArrayAccess( local.valueType.getValue(), localAccess, indexExpression ); 
+		org.lgna.project.ast.Expression expression = new org.lgna.project.ast.AssignmentExpression( local.valueType.getValue().getComponentType(), arrayAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
 		return new org.lgna.project.ast.ExpressionStatement( expression );
 	}
 	public static org.lgna.project.ast.ExpressionStatement createParameterArrayAssignmentStatement( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
@@ -384,11 +385,11 @@ public class AstUtilities {
 //		return parameters.get( parameters.size()-1 );
 //	}
 	
-	public static java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > removeParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > rv, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
+	public static java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > removeParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > rv,  NodeListProperty< UserParameter > parametersProperty, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
 		assert rv != null;
-		assert code.getParamtersProperty().get( index ) == parameterDeclaredInAlice;
+		assert parametersProperty.get( index ) == parameterDeclaredInAlice;
 		rv.clear();
-		code.getParamtersProperty().remove( index );
+		parametersProperty.remove( index );
 		for( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
 			org.lgna.project.ast.SimpleArgument argument = argumentListProperty.remove( index );
 			if( argument != null ) {
@@ -397,10 +398,10 @@ public class AstUtilities {
 		}
 		return rv;
 	}
-	public static void addParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > map, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
-		code.getParamtersProperty().add( index, parameterDeclaredInAlice );
+	public static void addParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > map, NodeListProperty< UserParameter > parametersProperty, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
+		parametersProperty.add( index, parameterDeclaredInAlice );
 		for( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
-			org.lgna.project.ast.SimpleArgument argument = map.get( code );
+			org.lgna.project.ast.SimpleArgument argument = map.get( argumentListProperty );
 			if( argument != null ) {
 				//pass
 			} else {

@@ -43,6 +43,8 @@
 package org.alice.stageide;
 
 public class StageIDE extends org.alice.ide.IDE {
+	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
+
 	public static StageIDE getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(  org.alice.ide.IDE.getActiveInstance(), StageIDE.class );
 	}
@@ -249,6 +251,12 @@ public class StageIDE extends org.alice.ide.IDE {
 	public org.lgna.croquet.Operation<?> createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return new org.alice.stageide.croquet.models.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
+
+	@Override
+	public org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.IdePerspective > getPerspectiveState() {
+		return org.alice.stageide.perspectives.PerspectiveState.getInstance();
+	}
+
 //	@Override
 //	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.ModelContext context, org.lgna.project.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 //		this.ensureProjectCodeUpToDate();
@@ -397,5 +405,19 @@ public class StageIDE extends org.alice.ide.IDE {
 		//rv.add( new edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > >( "Key", org.lookingglassandalice.storytelling.Key.class ) );
 		return rv;
 	}
+	
+	@Override
+	public org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod() {
+		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
+		if( sceneType != null ) {
+			for( org.lgna.project.ast.UserMethod method : sceneType.methods ) {
+				if( PERFORM_GENERATED_SET_UP_METHOD_NAME.equals( method.name.getValue() ) ) {
+					return method;
+				}
+			}
+		}
+		return null;
+	}
+
 
 }

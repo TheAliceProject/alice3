@@ -67,12 +67,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractRowsPaneChoos
 	public org.lgna.project.ast.DoubleLiteral getValue() {
 		double value = org.alice.stageide.croquet.models.custom.PortionState.getInstance().getValue();
 		org.lgna.project.ast.DoubleLiteral doubleLiteral = new org.lgna.project.ast.DoubleLiteral( value );
-//		final boolean IS_LITERAL_DESIRED = true;
-//		if( IS_LITERAL_DESIRED ) {
-			return doubleLiteral;
-//		} else {
-//			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
-//		}
+		return doubleLiteral;
 	}
 	@Override
 	public String getExplanationIfOkButtonShouldBeDisabled() {

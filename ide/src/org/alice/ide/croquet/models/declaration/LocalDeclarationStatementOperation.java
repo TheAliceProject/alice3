@@ -81,8 +81,9 @@ public class LocalDeclarationStatementOperation extends DeclarationLikeSubstance
 		return new org.alice.ide.croquet.components.declaration.LocalDeclarationPanel( this );
 	}
 	private org.lgna.project.ast.LocalDeclarationStatement createLocalDeclarationStatement() {
-		org.lgna.project.ast.UserVariable variable = new org.lgna.project.ast.UserVariable( this.getDeclarationName(), this.getValueType() );
-		return new org.lgna.project.ast.VariableDeclarationStatement( variable, this.getInitializer() );
+		boolean isFinal = false;
+		org.lgna.project.ast.UserLocal variable = new org.lgna.project.ast.UserLocal( this.getDeclarationName(), this.getValueType(), isFinal );
+		return new org.lgna.project.ast.LocalDeclarationStatement( variable, this.getInitializer() );
 	}
 	@Override
 	public org.lgna.project.ast.LocalDeclarationStatement createPreviewDeclaration() {

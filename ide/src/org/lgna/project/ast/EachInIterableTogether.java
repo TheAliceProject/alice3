@@ -55,7 +55,7 @@ public class EachInIterableTogether extends AbstractEachInTogether {
 	};
 	public EachInIterableTogether() {
 	}
-	public EachInIterableTogether( UserVariable variable, Expression iterable, BlockStatement body ) {
-		super( variable, body );
+	public EachInIterableTogether( UserLocal item, Expression iterable, BlockStatement body ) {
+		super( item, body );
 	}
 }

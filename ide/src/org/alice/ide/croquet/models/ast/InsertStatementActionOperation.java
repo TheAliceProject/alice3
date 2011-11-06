@@ -73,8 +73,8 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		int index = binaryDecoder.decodeInt();
 		java.util.UUID statementId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.BlockStatement blockStatement = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), blockStatementId );
-		org.lgna.project.ast.Statement statement = org.lgna.project.project.ProjectUtilities.lookupNode( ide.getProject(), statementId );
+		org.lgna.project.ast.BlockStatement blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), blockStatementId );
+		org.lgna.project.ast.Statement statement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), statementId );
 		return new Object[] { blockStatement, index, statement };
 	}
 	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

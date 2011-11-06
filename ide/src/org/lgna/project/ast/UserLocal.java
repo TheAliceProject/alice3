@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UserLocal extends AbstractTransient {
+public class UserLocal extends AbstractTransient {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null ) {
 		@Override
 		protected boolean isNullAcceptable() {
@@ -54,14 +54,16 @@ public abstract class UserLocal extends AbstractTransient {
 		}
 	};
 	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
+	public edu.cmu.cs.dennisc.property.BooleanProperty isFinal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 	public UserLocal() {
 	}
-	public UserLocal( String name, AbstractType<?,?,?> valueType ) {
+	public UserLocal( String name, AbstractType<?,?,?> valueType, boolean isFinal ) {
 		this.name.setValue( name );
 		this.valueType.setValue( valueType );
+		this.isFinal.setValue( isFinal );
 	}
-	public UserLocal( String name, Class<?> valueCls ) {
-		this( name, JavaType.getInstance( valueCls ) );
+	public UserLocal( String name, Class<?> valueCls, boolean isFinal ) {
+		this( name, JavaType.getInstance( valueCls ), isFinal );
 	}
 	
 	@Override
@@ -81,8 +83,14 @@ public abstract class UserLocal extends AbstractTransient {
 	public boolean isDeclaredInAlice() {
 		return true;
 	}
-	public abstract boolean isFinal();
-	protected abstract String generateName( Node context );
+	protected String generateName( Node context ) {
+		//todo
+		if( this.isFinal.getValue() ) {
+			return "N";
+		} else {
+			return "i";
+		}
+	}
 	public final String getValidName( Node context ) {
 		String name = this.name.getValue();
 		if( name != null ) {

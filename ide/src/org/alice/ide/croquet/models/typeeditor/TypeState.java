@@ -53,10 +53,54 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 	public static TypeState getInstance() {
 		return SingletonHolder.instance;
 	}
+
+	
+	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField >() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+		}
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+			TypeState.this.handleFieldsChanged();
+		}
+
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+		}
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+			TypeState.this.handleFieldsChanged();
+		}
+
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+		}
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+			TypeState.this.handleFieldsChanged();
+		}
+
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+		}
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+			TypeState.this.handleFieldsChanged();
+		}
+	};
+
 	private TypeState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "99019283-9a9e-4500-95a4-c4748d762137" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.NamedUserType.class ), null );
 	}
 
+	private void handleFieldsChanged() {
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+	}
+
+	@Override
+	protected void fireChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		super.fireChanged( prevValue, nextValue, isAdjusting );
+		if( prevValue != nextValue ) {
+			if( prevValue != null ) {
+				prevValue.fields.addListPropertyListener( this.fieldsAdapter );
+			}
+			if( nextValue != null ) {
+				nextValue.fields.addListPropertyListener( this.fieldsAdapter );
+			}
+		}
+	}
 	private java.util.List< org.lgna.croquet.CascadeBlankChild > addTypeFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node ) {
 		rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( node.getValue() ) );
 		for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > child : node.getChildren() ) {
@@ -64,7 +108,6 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 		}
 		return rv;
 	}
-	
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.NamedUserType > blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();

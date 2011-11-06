@@ -50,15 +50,15 @@ public class ForEachInArrayLoop extends AbstractForEachLoop {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
-			UserVariable variable = ForEachInArrayLoop.this.variable.getValue();
-			AbstractType<?,?,?> type = variable.valueType.getValue();
+			UserLocal item = ForEachInArrayLoop.this.item.getValue();
+			AbstractType<?,?,?> type = item.valueType.getValue();
 			return type.getArrayType();
 		}
 	};
 	public ForEachInArrayLoop() {
 	}
-	public ForEachInArrayLoop( UserVariable variable, Expression array, BlockStatement body ) {
-		super( variable, body );
+	public ForEachInArrayLoop( UserLocal item, Expression array, BlockStatement body ) {
+		super( item, body );
 		this.array.setValue( array );
 	}
 	@Override

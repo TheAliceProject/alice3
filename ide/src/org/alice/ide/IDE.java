@@ -42,9 +42,6 @@
  */
 package org.alice.ide;
 
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.croquet.preferences.PreferenceManager;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -55,11 +52,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final String DEBUG_DRAW_PROPERTY_KEY = "org.alice.ide.DebugDrawMode";
 
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
-	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
-
-	public static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
-	public static final String EDITOR_GENERATED_SET_UP_METHOD_NAME = "performEditorGeneratedSetUp";
-	public static final String SCENE_EDITOR_GENERATED_SET_UP_METHOD_NAME = "performSceneEditorGeneratedSetUp";
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
 
@@ -68,26 +60,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
 		}
-		performSceneEditorGeneratedSetUpMethodNameSet.add( SCENE_EDITOR_GENERATED_SET_UP_METHOD_NAME );
-		performSceneEditorGeneratedSetUpMethodNameSet.add( EDITOR_GENERATED_SET_UP_METHOD_NAME );
-		performSceneEditorGeneratedSetUpMethodNameSet.add( GENERATED_SET_UP_METHOD_NAME );
 	}
 
 	public static IDE getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
-	}
-
-	public void refreshUbiquitousPane() {
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				if( IDE.this.ubiquitousPane != null ) {
-//					IDE.this.ubiquitousPane.refresh();
-//				}
-//			}
-//		} );
-	}
-	public void refreshAccessibles() {
-		this.getMainComponent().refreshAccessibles();
 	}
 
 	public IDE() {
@@ -183,6 +159,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.lgna.croquet.Operation< ? > getPreferencesOperation() {
 		return null;
 	}
+	public abstract org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.IdePerspective > getPerspectiveState();
 	public abstract org.lgna.croquet.Operation< ? > getRunOperation();
 	public abstract org.lgna.croquet.Operation< ? > getRestartOperation();
 
@@ -202,17 +179,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod() {
-		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
-		if( sceneType != null ) {
-			for( org.lgna.project.ast.UserMethod method : sceneType.methods ) {
-				if( IDE.performSceneEditorGeneratedSetUpMethodNameSet.contains( method.name.getValue() ) ) {
-					return method;
-				}
-			}
-		}
-		return null;
-	}
+	public abstract org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod();
 
 	public org.lgna.project.ast.NamedUserType getStrippedProgramType() {
 		org.lgna.project.ast.NamedUserType rv = this.getProgramType();
@@ -224,73 +191,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public java.util.List< org.lgna.project.ast.FieldAccess > getFieldAccesses( final org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
-		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess >( org.lgna.project.ast.FieldAccess.class ) {
-			@Override
-			protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( fieldAccess.field.getValue() );
-				return fieldAccess.field.getValue() == field;
-			}
-		};
-		programType.crawl( crawler, true );
-		return crawler.getList();
+		return org.lgna.project.ProgramTypeUtilities.getFieldAccesses( programType, field );
 	}
 	public java.util.List< org.lgna.project.ast.MethodInvocation > getMethodInvocations( final org.lgna.project.ast.AbstractMethod method ) {
 		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
-		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.MethodInvocation >(
-				org.lgna.project.ast.MethodInvocation.class ) {
-			@Override
-			protected boolean isAcceptable( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-				return methodInvocation.method.getValue() == method;
-			}
-		};
-		programType.crawl( crawler, true );
-		return crawler.getList();
+		return org.lgna.project.ProgramTypeUtilities.getMethodInvocations( programType, method );
 	}
 	public java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > getArgumentLists( final org.lgna.project.ast.UserCode code ) {
 		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
-		assert programType != null;
-		class ArgumentListCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-			private final java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
-					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
-					if( methodInvocation.method.getValue() == code ) {
-						this.list.add( methodInvocation.requiredArguments );
-					}
-				} else if( crawlable instanceof org.lgna.project.ast.InstanceCreation ) {
-					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)crawlable;
-					if( instanceCreation.constructor.getValue() == code ) {
-						this.list.add( instanceCreation.requiredArguments );
-					}
-				}
-			}
-			public java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > getList() {
-				return this.list;
-			}
-		}
-		ArgumentListCrawler crawler = new ArgumentListCrawler();
-		programType.crawl( crawler, true );
-		return crawler.getList();
+		return org.lgna.project.ProgramTypeUtilities.getArgumentLists( programType, code );
 	}
-	
-
-//	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType superType ) {
-//		java.util.List< org.lgna.project.ast.NamedUserType > aliceTypes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//		this.addAliceTypes( aliceTypes, true );
-//		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : aliceTypes ) {
-//			assert type != null;
-//			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
-//				return (org.lgna.project.ast.NamedUserType)type;
-//			}
-//		}
-//		String name = "My" + superType.getName();
-//		return org.lgna.project.ast.AstUtilities.createType( name, superType );
-//	}
-//	public org.lgna.project.ast.NamedUserType getTypeDeclaredInAliceFor( Class< ? > superCls ) {
-//		return getTypeDeclaredInAliceFor( org.lgna.project.ast.JavaType.getInstance( superCls ) );
-//	}
 
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
 		if( org.lgna.project.ast.AstUtilities.isKeywordExpression( expression ) ) {
@@ -298,10 +208,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return (expression instanceof org.lgna.project.ast.TypeExpression || expression instanceof org.lgna.project.ast.ResourceExpression) == false;
 	}
-	public org.alice.ide.common.TypeComponent getComponentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		//todo:
-		return org.alice.ide.common.TypeComponent.createInstance( type );
-	}
+	
 	public String getTextFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		return null;
 	}
@@ -555,7 +462,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			reasonToDisableSomeAmountOfRendering = ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
 		}
-		this.getMainComponent().disableRendering( reasonToDisableSomeAmountOfRendering );
+		getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		//		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
@@ -570,40 +477,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	public void handleDragStopped( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		this.getMainComponent().enableRendering();
+		getPerspectiveState().getValue().enableRendering();
 	}
 
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField >() {
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.getMainComponent().refreshAccessibles();
-		}
-
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.getMainComponent().refreshAccessibles();
-		}
-
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.getMainComponent().refreshAccessibles();
-		}
-
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< org.lgna.project.ast.UserField > e ) {
-			IDE.this.getMainComponent().refreshAccessibles();
-		}
-	};
 	
-	private org.lgna.project.ast.UserField rootField;
-
-	private org.lgna.project.ast.NamedUserType getRootTypeDeclaredInAlice() {
-		return (org.lgna.project.ast.NamedUserType)this.rootField.valueType.getValue();
-	}
+//	private org.lgna.project.ast.UserField rootField;
+//
+//	private org.lgna.project.ast.NamedUserType getRootTypeDeclaredInAlice() {
+//		return (org.lgna.project.ast.NamedUserType)this.rootField.valueType.getValue();
+//	}
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
 		return accessible.getValueType().isArray() == false;
 	}
@@ -611,18 +493,18 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	
 	private void setRootField( org.lgna.project.ast.UserField rootField ) {
-		if( this.rootField != null ) {
-			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
-		}
-		this.rootField = rootField;
-		if( this.rootField != null ) {
-			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
-		}
-		this.getMainComponent().refreshAccessibles();
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (NamedUserType)rootField.getValueType() );
+//		if( this.rootField != null ) {
+//			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
+//		}
+//		this.rootField = rootField;
+//		if( this.rootField != null ) {
+//			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
+//		}
+//		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
+		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				NamedUserType sceneType = IDE.this.getSceneType();
+				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();
 				if( sceneType != null ) {
 					final int N = sceneType.fields.size();
 					if( N > 0 ) {
@@ -638,12 +520,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
-		this.getMainComponent().isRespondingToRefreshAccessibles = false;
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
 		try {
 			this.setRootField( this.getSceneField() );
 		} finally {
-			this.getMainComponent().isRespondingToRefreshAccessibles = true;
-			this.getMainComponent().refreshAccessibles();
+			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().popIgnoreAstChanges();
 		}
 	}
 
@@ -698,7 +579,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	protected void preservePreferences() {
 		try {
-			PreferenceManager.preservePreferences();
+			org.lgna.croquet.preferences.PreferenceManager.preservePreferences();
 		} catch( java.util.prefs.BackingStoreException bse ) {
 			bse.printStackTrace();
 		}
@@ -736,16 +617,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //		}
 //	}
 
-	private static Iterable< org.lgna.project.ast.UserVariable > getVariables( org.lgna.project.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserVariable > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserVariable.class );
-		codeInFocus.crawl( crawler, false );
-		return crawler.getList();
-	}
-	private static Iterable< org.lgna.project.ast.UserConstant > getConstants( org.lgna.project.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserConstant > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserConstant.class );
-		codeInFocus.crawl( crawler, false );
-		return crawler.getList();
-	}
 
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getTypeInScope() {
 		org.lgna.project.ast.AbstractCode codeInFocus = this.getFocusedCode();
@@ -775,20 +646,20 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 	}
 	
-	public org.lgna.project.ast.AbstractDeclaration getFocusedDeclaration() {
-		if( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().getValue() ) {
-			return this.getPerformEditorGeneratedSetUpMethod();
-		} else {
-			org.alice.ide.croquet.models.typeeditor.DeclarationComposite item = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getSelectedItem();
-			if( item != null ) {
-				return item.getDeclaration();
-			} else {
-				return null;
-			}
-		}
-	}
+//	public org.lgna.project.ast.AbstractDeclaration getFocusedDeclaration() {
+//		if( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().getValue() ) {
+//			return this.getPerformEditorGeneratedSetUpMethod();
+//		} else {
+//			org.alice.ide.croquet.models.typeeditor.DeclarationComposite item = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getSelectedItem();
+//			if( item != null ) {
+//				return item.getDeclaration();
+//			} else {
+//				return null;
+//			}
+//		}
+//	}
 	public org.lgna.project.ast.AbstractCode getFocusedCode() {
-		org.lgna.project.ast.AbstractDeclaration declaration = this.getFocusedDeclaration();
+		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationState.getInstance().getValue();
 		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
 			return (org.lgna.project.ast.AbstractCode)declaration;
 		} else {
@@ -797,7 +668,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
 		if( nextFocusedCode != null ) {
-			org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (NamedUserType)nextFocusedCode.getDeclaringType() );
+			org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)nextFocusedCode.getDeclaringType() );
 			org.alice.ide.croquet.models.typeeditor.DeclarationComposite composite = org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( nextFocusedCode );
 			if( org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().containsItem( composite ) ) {
 				//pass
@@ -810,7 +681,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		org.lgna.project.ast.AbstractCode code = this.getFocusedCode();
 		if( code != null ) {
-			return this.getMainComponent().getTypeEditor().getCodeEditorInFocus();
+			return org.alice.ide.perspectives.components.CodeView.getInstance().getTypeEditor().getCodeEditorInFocus();
 		} else {
 			return null;
 		}
