@@ -61,12 +61,12 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 		
 		org.alice.ide.memberseditor.MembersEditor membersEditor = new org.alice.ide.memberseditor.MembersEditor();
 		org.alice.ide.typehierarchyview.TypeHierarchyView typeHierarchyView = new org.alice.ide.typehierarchyview.TypeHierarchyView();
-		org.alice.ide.contextview.ContextView contextView = new org.alice.ide.contextview.ContextView( typeHierarchyView, membersEditor );
-		this.left.setBottomComponent( contextView );
+		org.alice.ide.contextview.ContextView contextView = new org.alice.ide.contextview.ContextView( typeHierarchyView, this.left );
+		this.left.setBottomComponent( membersEditor );
 
 
 		javax.swing.JSplitPane jSplitPane = this.getAwtComponent();
-		jSplitPane.setLeftComponent( this.left.getAwtComponent() );
+		jSplitPane.setLeftComponent( contextView.getAwtComponent() );
 		jSplitPane.setRightComponent( this.typeEditor.getAwtComponent() );
 		
 		jSplitPane.setMinimumSize( new java.awt.Dimension( SPLIT_MINIMUM_SIZE, SPLIT_MINIMUM_SIZE ) );
