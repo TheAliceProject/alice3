@@ -58,12 +58,16 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     protected Button moveToObjectButton;
     protected FieldList fieldList;
     
-    protected abstract String getTitleString();
     protected abstract Button getMovetoMarkerButton();
     protected abstract Button getMoveToObjectButton();
     protected abstract FieldList getFieldList( org.lgna.project.ast.UserType<?> type );
     public abstract void updateButtons();
    
+    protected String getTitleString()
+    {
+        java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( AbstractMarkerManagerPanel.class.getPackage().getName() + ".croquet" );
+        return resourceBundle.getString( this.getClass().getSimpleName()+".title" );
+    }
     
     public void setType(org.lgna.project.ast.UserType<?> type)
     {
@@ -91,7 +95,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
                 1, //gridHeight
                 0.0, //weightX
                 0.0, //weightY
-                GridBagConstraints.CENTER, //anchor 
+                GridBagConstraints.WEST, //anchor 
                 GridBagConstraints.NONE, //fill
                 new Insets(0,0,0,0), //insets
                 0, //ipadX
@@ -105,7 +109,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
                 1, //gridHeight
                 0.0, //weightX
                 0.0, //weightY
-                GridBagConstraints.CENTER, //anchor 
+                GridBagConstraints.WEST, //anchor 
                 GridBagConstraints.NONE, //fill
                 new Insets(0,0,0,0), //insets
                 0, //ipadX

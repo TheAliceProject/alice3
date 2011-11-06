@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,42 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.croquet.components.declaration;
 
-package org.alice.stageide.sceneeditor.viewmanager;
-
-import org.lgna.project.ast.NamedUserType;
-
-public class CreateObjectMarkerActionOperation extends AbstractSceneDeclareFieldOperation {
-
-	private static class SingletonHolder {
-		private static CreateObjectMarkerActionOperation instance = new CreateObjectMarkerActionOperation();
+/**
+ * @author dculyba
+ *
+ */
+public class MarkerDeclarationPanel<T extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation > extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<T> {
+	public MarkerDeclarationPanel( final T model ) {
+		super( model );
 	}
-	public static CreateObjectMarkerActionOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private CreateObjectMarkerActionOperation() {
-		super( java.util.UUID.fromString( "84196555-4775-4660-a510-b9581ba79633" ) );
-	}
-	
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[]> createFieldAndStatements( org.lgna.croquet.history.ActionOperationStep step, NamedUserType ownerType )  
-	{
-		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().createObjectMarkerField( ownerType );
+	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, T model ) {
+		super.updateComponentRows( rv, model );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getColorFieldLabel()+":", model.getColorIdState().createEditor( this.getFactory() ) ) );
+		return rv;
 	}
-	
-	//TODO: Localize this
-	public void setFieldName(String fieldName)
-	{
-		if (fieldName != null)
-		{
-			this.setName("Create "+fieldName+" marker...");
-		}
-		else
-		{
-			this.setName("Create object marker...");
-		}
-	}
-
-
 }

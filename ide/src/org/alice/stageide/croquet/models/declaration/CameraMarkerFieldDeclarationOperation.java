@@ -40,39 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.components.declaration;
+package org.alice.stageide.croquet.models.declaration;
+
+import org.lgna.story.Color;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author dculyba
  *
  */
-public class ObjectMarkerDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation > {
-	public ObjectMarkerDeclarationPanel( final org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation model ) {
-		super( model );
-//		class SidePanel extends org.lgna.croquet.components.GridBagPanel {
-//			public SidePanel() {
-//				java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-//				gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-//				gbc.weighty = 0.0;
-//				gbc.fill = java.awt.GridBagConstraints.BOTH;
-//				gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
-//				this.addComponent( new org.lgna.croquet.components.Label( model.getFrontPaintLabelText() ), gbc );
-//				this.addComponent( new PaintView( model.getFrontPaintState() ), gbc );
-//				this.addComponent( new org.lgna.croquet.components.Label( model.getBackPaintLabelText() ), gbc );
-//				this.addComponent( new PaintView( model.getBackPaintState() ), gbc );
-//				gbc.weighty = 1.0;
-//				this.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue(), gbc );
-//				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 32, 0, 0 ) );
-//			}
-//		}
-//		SidePanel sidePanel = new SidePanel();
-//		this.addComponent( sidePanel, Constraint.LINE_END );
+public class CameraMarkerFieldDeclarationOperation extends MarkerFieldDeclarationOperation {
+	private static class SingletonHolder {
+		private static CameraMarkerFieldDeclarationOperation instance = new CameraMarkerFieldDeclarationOperation();
 	}
+	public static CameraMarkerFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	public CameraMarkerFieldDeclarationOperation() {
+		super( java.util.UUID.fromString( "93addd81-69ea-4fc9-9664-f641229cbf5d" ),  org.lgna.story.BookmarkCameraMarker.class );
+	}
+	
 	@Override
-	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation model ) {
-		super.updateComponentRows( rv, model );
-//		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getFrontPaintLabelText()+":", model.getFrontPaintState().createEditor( this.getFactory() ) ) );
-//		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getBackPaintLabelText()+":", model.getBackPaintState().createEditor(  this.getFactory() ) ) );
-		return rv;
+	protected org.alice.stageide.croquet.components.declaration.MarkerDeclarationPanel<CameraMarkerFieldDeclarationOperation> createMainComponent( ) {
+		return new org.alice.stageide.croquet.components.declaration.MarkerDeclarationPanel<CameraMarkerFieldDeclarationOperation>( this );
 	}
+
+	@Override
+	protected Color getInitialMarkerColor() {
+		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getColorForNewCameraMarker();
+	}
+
+	@Override
+	protected String getInitialMarkerName(Color color) {
+		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getSuggestedNameForNewCameraMarker(color);
+	}
+
+	@Override
+	protected AffineMatrix4x4 getInitialMarkerTransform() {
+		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getTransformForNewCameraMarker();
+	}
+	
 }

@@ -40,14 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.viewmanager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.swing.Icon;
 
 import org.alice.ide.name.validators.MarkerColorValidator;
-import org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel;
+import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.Element;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraImp;
@@ -62,33 +68,28 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  *
  */
 public class MarkerUtilities {
-	private static final String DEFAULT_CAMERA_MARKER_NAME;
-	private static final String[] COLOR_NAMES;
+	private static final String[] COLOR_NAME_KEYS;
 	private static final org.lgna.story.Color[] COLORS;
 	
 	private static final HashMap<CameraMarkerImp, Tuple2<Icon, Icon>> cameraToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static final HashMap<UserField, Icon> markerToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private static final HashMap<org.lgna.story.Color, Icon> colorToObjectIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static final HashMap<org.lgna.story.Color, Icon> colorToCameraIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	static
 	{
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( MarkerManagerPanel.class.getPackage().getName() + ".cameraMarkers" );
-		DEFAULT_CAMERA_MARKER_NAME = resourceBundle.getString("defaultMarkerName");
-		
-		String[] colorNames = {
-				resourceBundle.getString("red"),
-				resourceBundle.getString("green"),
-//				resourceBundle.getString("blue"),
-				resourceBundle.getString("magenta"),
-				resourceBundle.getString("yellow"),
-//				resourceBundle.getString("cyan"),
-				resourceBundle.getString("orange"),
-				resourceBundle.getString("pink"),
-				resourceBundle.getString("purple"),
+		String[] colorNameKeys = {
+				"red",
+				"green",
+//				"blue",
+				"magenta",
+				"yellow",
+//				"cyan",
+				"orange",
+				"pink",
+				"purple",
 		};
-		COLOR_NAMES = colorNames;
+		COLOR_NAME_KEYS = colorNameKeys;
 		
 		org.lgna.story.Color[] colors = { 
 				org.lgna.story.Color.RED,
@@ -104,12 +105,32 @@ public class MarkerUtilities {
 		COLORS = colors;
 	}
 	
+	private static String findLocalizedText(String subKey ) {
+		String bundleName = MarkerUtilities.class.getPackage().getName() + ".croquet";
+		try {
+			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+			String key = MarkerUtilities.class.getSimpleName();
+			
+			if( subKey != null ) {
+				StringBuilder sb = new StringBuilder();
+				sb.append( key );
+				sb.append( "." );
+				sb.append( subKey );
+				key = sb.toString();
+			}
+			String rv = resourceBundle.getString( key );
+			return rv;
+		} catch( java.util.MissingResourceException mre ) {
+			return null;
+		}
+	}
+	
 	private static int getColorIndexForName(String name)
 	{
 		String lowerName = name.toLowerCase();
-		for (int i=0; i<COLOR_NAMES.length; i++)
+		for (int i=0; i<getColorCount(); i++)
 		{
-			String currentColor = COLOR_NAMES[i].toLowerCase();
+			String currentColor = getColorNameForIndex(i).toLowerCase();
 			if (lowerName.endsWith(currentColor))
 			{
 				return i;
@@ -120,9 +141,9 @@ public class MarkerUtilities {
 	
 	private static int getColorIndexForColor(org.lgna.story.Color color)
 	{
-		for (int i=0; i<COLORS.length; i++)
+		for (int i=0; i<getColorCount() ; i++)
 		{
-			if (COLORS[i].equals(color))
+			if (getColorForIndex(i).equals(color))
 			{
 				return i;
 			}
@@ -130,38 +151,41 @@ public class MarkerUtilities {
 		return -1;
 	}
 	
-	private static String getColorName(org.lgna.story.Color color)
+	private static int getColorCount() {
+		return COLORS.length;
+	}
+	
+	private static org.lgna.story.Color getColorForIndex(int i) {
+		return COLORS[i];
+	}
+	
+	private static String getColorNameForIndex(int i) {
+		return findLocalizedText(COLOR_NAME_KEYS[i]);
+	}
+	
+	
+	private static String getColorFileName(org.lgna.story.Color color)
 	{
 		int index = getColorIndexForColor(color);
 		if (index != -1) {
-			String colorName = COLOR_NAMES[index];
+			String colorName = COLOR_NAME_KEYS[index];
 			String properName = colorName.substring(0, 1).toUpperCase() + colorName.substring(1);
 			return properName;
 		}
 		return "White";
 	}
 	
-	private static String getIconSuffixForMarkerName(String markerName)
-	{
-		int colorIndex = getColorIndexForName(markerName);
-		if (colorIndex != -1)
-		{
-			return "_"+COLOR_NAMES[colorIndex]+".png"; 
-		}
-		else return "_White.png";
-	}
-	
 	private static String getIconSuffixForMarkerColor(org.lgna.story.Color color)
 	{
-		String colorName = getColorName(color);
+		String colorName = getColorFileName(color);
 		return "_"+colorName+".png";
 	}
 	
 	public static void addIconForCamera(CameraMarkerImp camera, String iconName) {
-		java.net.URL normalIconURL = MarkerUtilities.class.getResource("images/"+iconName+"Icon.png");
+		java.net.URL normalIconURL = StorytellingSceneEditor.class.getResource("images/"+iconName+"Icon.png");
 		assert normalIconURL != null;
 		Icon normalIcon = new javax.swing.ImageIcon(normalIconURL);
-		java.net.URL highlightedIconURL = MarkerUtilities.class.getResource("images/"+iconName+"Icon_highlighted.png");
+		java.net.URL highlightedIconURL = StorytellingSceneEditor.class.getResource("images/"+iconName+"Icon_highlighted.png");
 		assert highlightedIconURL != null;
 		Icon highlightedIcon = new javax.swing.ImageIcon(highlightedIconURL);
 		
@@ -169,31 +193,24 @@ public class MarkerUtilities {
 	}
 	
 	private static Icon loadIconForObjectMarker(org.lgna.story.Color color) {
-		java.net.URL markerIconURL = MarkerUtilities.class.getResource("images/axis"+getIconSuffixForMarkerColor(color));
-		assert markerIconURL != null;
+		java.net.URL markerIconURL = StorytellingSceneEditor.class.getResource("images/axis"+getIconSuffixForMarkerColor(color));
+		assert markerIconURL != null : color;
 		Icon markerIcon = new javax.swing.ImageIcon(markerIconURL);
 		return markerIcon;
 	}
 	
-	public static Icon loadIconForCameraMarker(org.lgna.story.Color color) {
-		java.net.URL markerIconURL = MarkerUtilities.class.getResource("images/markerIcon"+getIconSuffixForMarkerColor(color));
+	private static Icon loadIconForCameraMarker(org.lgna.story.Color color) {
+		java.net.URL markerIconURL = StorytellingSceneEditor.class.getResource("images/markerIcon"+getIconSuffixForMarkerColor(color));
 		assert markerIconURL != null;
 		Icon markerIcon = new javax.swing.ImageIcon(markerIconURL);
 		return markerIcon;
-	}
-	
-	@Deprecated
-	public static void addIconForCameraMarker(UserField cameraMarker, org.lgna.story.Color color) {
-		markerToIconMap.put(cameraMarker, loadIconForCameraMarker(color));
-	}
-	
-	@Deprecated
-	public static void addIconForObjectMarker(UserField objectMarker, org.lgna.story.Color color) {
-		markerToIconMap.put(objectMarker, loadIconForObjectMarker(color));
 	}
 	
 	public static Icon getIconForObjectMarker(UserField marker)
 	{
+		if (marker == null) {
+			return null;
+		}
 		org.lgna.story.Color markerColor = getColorForMarkerField(marker);
 		if (colorToObjectIconMap.containsKey(markerColor)) {
 			return colorToObjectIconMap.get(markerColor);
@@ -218,6 +235,16 @@ public class MarkerUtilities {
 		}
 	}
 	
+	public static Icon getIconForMarkerField(UserField markerField) {
+		if (markerField.getValueType().isAssignableTo(org.lgna.story.CameraMarker.class)) {
+			return getIconForCameraMarker(markerField);
+		}
+		else if (markerField.getValueType().isAssignableFrom(org.lgna.story.ObjectMarker.class)) {
+			return getIconForObjectMarker(markerField);
+		}
+		return null;
+	}
+	
 	public static Icon getIconForCamera(CameraMarkerImp camera) {
 		assert cameraToIconMap.containsKey(camera);
 		return cameraToIconMap.get(camera).getA();
@@ -228,6 +255,40 @@ public class MarkerUtilities {
 		return cameraToIconMap.get(camera).getB();
 	}
 	
+	private static org.lgna.story.Color getNewMarkerColor(Class<? extends org.lgna.story.Marker> markerCls) {
+		AbstractType<?, ?, ?> sceneType = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getActiveSceneField().getValueType();
+		int[] colorCounts = new int[getColorCount()];
+		Arrays.fill(colorCounts, 0);
+		ArrayList<? extends AbstractField> fields = sceneType.getDeclaredFields();
+		for (AbstractField f : fields) {
+			if (f.getValueType().isAssignableTo(markerCls)) {
+				org.lgna.story.Marker marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getInstanceInJavaVMForField(f, markerCls);
+				if (marker != null) {
+					int colorIndex = getColorIndexForColor(marker.getColorId());
+					if (colorIndex != -1) {
+						colorCounts[colorIndex]++;
+					}
+				}
+			}
+		}
+		int minIndex = 0;
+		int minCount = Integer.MAX_VALUE;
+		for (int i=0; i<colorCounts.length; i++) {
+			if (colorCounts[i] < minCount) {
+				minIndex = i;
+				minCount = colorCounts[i];
+			}
+		}
+		return getColorForIndex(minIndex);
+	}
+	
+	public static org.lgna.story.Color getNewObjectMarkerColor() {
+		return getNewMarkerColor(org.lgna.story.ObjectMarker.class);
+	}
+	
+	public static org.lgna.story.Color getNewCameraMarkerColor() {
+		return getNewMarkerColor(org.lgna.story.CameraMarker.class);
+	}
 	
 	public static org.lgna.story.Color getColorForMarkerField(UserField markerField)
 	{
@@ -246,7 +307,7 @@ public class MarkerUtilities {
 		int colorIndex = getColorIndexForName(markerName);
 		if (colorIndex != -1)
 		{
-			return COLORS[colorIndex]; 
+			return getColorForIndex(colorIndex); 
 		}
 		else 
 		{	
@@ -254,9 +315,10 @@ public class MarkerUtilities {
 		}
 	}
 	
-	private static String makeMarkerName(String baseName, int colorIndex, int addOnNumber)
+	private static String makeMarkerName(String baseName, org.lgna.story.Color color, int addOnNumber)
 	{
-		String markerName = baseName + "_" + COLOR_NAMES[colorIndex];
+		String colorName = getNameForColor(color);
+		String markerName = baseName + "_" + colorName;
 		if (addOnNumber > 0)
 		{
 			markerName += "_"+ Integer.toString( addOnNumber );
@@ -264,37 +326,32 @@ public class MarkerUtilities {
 		return markerName;
 	}
 	
-	public static String getNameForCameraMarker( NamedUserType ownerType ) {
+	private static String getNameForColor(org.lgna.story.Color color) {
+		int colorIndex = getColorIndexForColor(color);
+		if (colorIndex != -1){
+			return getColorNameForIndex(colorIndex);
+		}
+		else {
+			return "";
+		}
+	}
+	
+	private static String getNameForMarker( NamedUserType ownerType, String baseMarkerName, org.lgna.story.Color color ) {
 		MarkerColorValidator nameValidator = new MarkerColorValidator( ownerType );
-		int colorIndex = 0;
 		int addOnNumber = 0;
-		String markerName = makeMarkerName(DEFAULT_CAMERA_MARKER_NAME, colorIndex, addOnNumber);
+		String markerName = makeMarkerName(baseMarkerName, color, addOnNumber);
 		while( nameValidator.getExplanationIfOkButtonShouldBeDisabled( markerName ) != null ) {
-			colorIndex++;
-			if (colorIndex >= COLOR_NAMES.length)
-			{
-				colorIndex = 0;
-				addOnNumber++;
-			}
-			markerName = makeMarkerName(DEFAULT_CAMERA_MARKER_NAME, colorIndex, addOnNumber);
+			addOnNumber++;
+			markerName = makeMarkerName(baseMarkerName, color, addOnNumber);
 		}
 		return markerName;
 	}
 	
-	public static String getNameForObjectMarker( NamedUserType ownerType, UserField selectedField ) {
-		MarkerColorValidator nameValidator = new MarkerColorValidator( ownerType );
-		int colorIndex = 0;
-		int addOnNumber = 0;
-		String markerName = makeMarkerName(selectedField.getName(), colorIndex, addOnNumber);
-		while( nameValidator.getExplanationIfOkButtonShouldBeDisabled( markerName ) != null ) {
-			colorIndex++;
-			if (colorIndex >= COLOR_NAMES.length)
-			{
-				colorIndex = 0;
-				addOnNumber++;
-			}
-			markerName = makeMarkerName(selectedField.getName(), colorIndex, addOnNumber);
-		}
-		return markerName;
+	public static String getNameForCameraMarker( NamedUserType ownerType, org.lgna.story.Color color ) {
+		return getNameForMarker(ownerType, findLocalizedText( "defaultCameraMarkerName"), color);
+	}
+	
+	public static String getNameForObjectMarker( NamedUserType ownerType, UserField selectedField, org.lgna.story.Color color ) {
+		return getNameForMarker(ownerType, selectedField.getName(), color);
 	}
 }

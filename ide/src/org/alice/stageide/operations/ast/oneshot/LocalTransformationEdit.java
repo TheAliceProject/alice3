@@ -46,7 +46,7 @@ package org.alice.stageide.operations.ast.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.Cascade<MethodInvocationEditFactory> > {
+public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit {
 	private final org.lgna.project.ast.AbstractField field;
 	private final org.lgna.project.ast.AbstractMethod method;
 	private final org.lgna.project.ast.Expression[] argumentExpressions;

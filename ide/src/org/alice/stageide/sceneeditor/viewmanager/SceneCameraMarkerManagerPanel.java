@@ -52,14 +52,6 @@ import org.lgna.project.ast.NamedUserType;
  * @author David Culyba
  */
 public class SceneCameraMarkerManagerPanel extends AbstractMarkerManagerPanel{
-	
-    
-    @Override
-    protected String getTitleString()
-    {
-        java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SceneCameraMarkerManagerPanel.class.getPackage().getName() + ".cameraMarkers" );
-        return resourceBundle.getString( "cameraMarkersTitle" );
-    }
     
     @Override
     protected Button getMovetoMarkerButton()

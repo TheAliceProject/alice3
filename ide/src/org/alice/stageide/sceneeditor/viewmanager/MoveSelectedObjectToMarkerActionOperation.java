@@ -43,20 +43,9 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
-import org.alice.ide.IDE;
-import org.alice.stageide.sceneeditor.MarkerUtilities;
-import org.lgna.croquet.ActionOperation;
-import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.UserField;
-import org.lgna.story.implementation.EntityImp;
-import org.lgna.story.implementation.ObjectMarkerImp;
 
-import edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon;
-
-public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
+public class MoveSelectedObjectToMarkerActionOperation extends ObjectMarkerMoveActionOperation {
 
 	private static class SingletonHolder {
 		private static MoveSelectedObjectToMarkerActionOperation instance = new MoveSelectedObjectToMarkerActionOperation();
@@ -66,110 +55,14 @@ public class MoveSelectedObjectToMarkerActionOperation extends ActionOperation {
 		return SingletonHolder.instance;
 	}
 	
-	private UserField markerField;
-	private UserField selectedField;
-	private MoveToImageIcon imageIcon;
-
 	private MoveSelectedObjectToMarkerActionOperation() {
-		super(org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "f7f7c4f7-4b12-472a-9fac-77bed71a7de2" ));
-		this.markerField = null;
-		this.selectedField = null;
-		this.setToolTipText("Move the camera to this marker.");
-		this.imageIcon = new MoveToImageIcon();
-		this.setSmallIcon(imageIcon);
-		this.updateBasedOnSettings();
-	}
-
-	private void updateBasedOnSettings()
-	{
-		if (this.markerField != null && this.selectedField != null)
-		{
-			this.setToolTipText("Move "+this.selectedField.getName()+" to the point of view of "+this.markerField.getName()+".");
-			this.setEnabled(true);
-		}
-		else
-		{
-			this.setEnabled(false);
-		}
-		this.setSmallIcon(null);
-		this.setSmallIcon(this.imageIcon);
-	}
-	
-	public void setMarkerField(UserField markerField)
-	{
-		this.markerField = markerField;
-		if (this.markerField != null)
-		{
-			this.imageIcon.setRightImage(MarkerUtilities.getIconForObjectMarker(this.markerField));
-		}
-		this.updateBasedOnSettings();
-	}
-	
-	public void setSelectedField(AbstractField field)
-	{
-		if (field instanceof UserField)
-		{
-			this.selectedField = (UserField)field;
-		}
-		else
-		{
-			this.selectedField = null;
-		}
-		if (this.selectedField != null)
-		{
-			Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField(this.selectedField);
-			this.imageIcon.setLeftImage(icon);
-		}
-		else
-		{
-			this.imageIcon.setLeftImage(null);
-		}
-		this.updateBasedOnSettings();
+		super(java.util.UUID.fromString( "f7f7c4f7-4b12-472a-9fac-77bed71a7de2" ));
 	}
 	
 	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		final ObjectMarkerImp objectMarker;
-		final org.lgna.story.VantagePoint prevPOV;
-		final org.lgna.story.VantagePoint nextPOV;
-		
-//		MoveAndTurnSceneEditor sceneEditor = (MoveAndTurnSceneEditor)(IDE.getActiveInstance().getSceneEditor());
-//		FieldDeclaredInAlice selectedField = (FieldDeclaredInAlice)org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-//		final Turnable selectedTransformable = sceneEditor.getTransformableForField(selectedField);
-//		objectMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.lookingglassandalice.storytelling.ObjectMarker.class);
-//		if( objectMarker != null ) {
-//			nextPOV = objectMarker.getPointOfView( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE );
-//			prevPOV = selectedTransformable.getPointOfView(org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE);
-//			if( nextPOV.getInternal().isNaN() ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveSelectedObjectToMarkerActionOperation isNaN" );
-//				step.cancel();
-//			} else {
-//				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
-//					@Override
-//					public void doOrRedoInternal( boolean isDo ) {
-//						setAbsolutePOV( selectedTransformable, nextPOV );
-//					}
-//					@Override
-//					public void undoInternal() {
-//						setAbsolutePOV( selectedTransformable, prevPOV );
-//					}
-//					@Override
-//					protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-//						rv.append( MoveSelectedObjectToMarkerActionOperation.this.getName() );
-//						return rv;
-//					}
-//				} );
-//			}
-//		} else {
-//			step.cancel();
-//		}
+	protected void updateMoveFields(UserField markerField, UserField selectedField) {
+		this.setToMoveField(selectedField, org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField(selectedField));
+		this.setToMoveToField(markerField, MarkerUtilities.getIconForObjectMarker(markerField));
 	}
 	
-	private static void setAbsolutePOV( org.lgna.story.Turnable transformable, org.lgna.story.VantagePoint pov ) {
-//		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
-//		assert scene != null;
-//		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );
-	}
-
-
 }

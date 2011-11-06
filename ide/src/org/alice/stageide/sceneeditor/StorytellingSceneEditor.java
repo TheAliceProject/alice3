@@ -65,6 +65,7 @@ import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
+import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
 import org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation;
@@ -734,7 +735,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 //		EntityImplementation cameraParent = this.sceneCameraImplementation.getVehicle();
 //		cameraParent.setTransformation(this.openingSceneMarker.getTransformation(AsSeenBy.SCENE), this.scene.getSGReferenceFrame());
 		
-		org.lgna.project.ast.AbstractField sceneField = this.getSceneField();
+		org.lgna.project.ast.AbstractField sceneField = this.getActiveSceneField();
 		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
 		for( org.lgna.project.ast.AbstractField field : this.getActiveSceneType() .getDeclaredFields() ) {
 			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
@@ -941,66 +942,20 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return initialTransform;
 	}
 	
-	public String getSuggestedNameForNewObjectMarker() {
-		return MarkerUtilities.getNameForObjectMarker( this.getActiveSceneType(), this.getSelectedField() );
+	public String getSuggestedNameForNewObjectMarker(org.lgna.story.Color color) {
+		return MarkerUtilities.getNameForObjectMarker( this.getActiveSceneType(), this.getSelectedField(), color );
 	}
 	
-	public String getSuggestedNameForNewCameraMarker() {
-		return MarkerUtilities.getNameForCameraMarker( this.getActiveSceneType() );
+	public String getSuggestedNameForNewCameraMarker(org.lgna.story.Color color) {
+		return MarkerUtilities.getNameForCameraMarker( this.getActiveSceneType(), color );
 	}
 	
 	public org.lgna.story.Color getColorForNewObjectMarker() {
-		return MarkerUtilities.getColorForMarkerName(getSuggestedNameForNewObjectMarker());
+		return MarkerUtilities.getNewObjectMarkerColor();
 	}
 	
 	public org.lgna.story.Color getColorForNewCameraMarker() {
-		return MarkerUtilities.getColorForMarkerName(getSuggestedNameForNewCameraMarker());
-	}
-	
-	public Tuple3< UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[] > createCameraMarkerField( NamedUserType ownerType ) {
-		org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
-		field.managementLevel.setValue( ManagementLevel.MANAGED );
-		field.valueType.setValue( JavaType.getInstance( BookmarkCameraMarker.class ) );
-		field.name.setValue( MarkerUtilities.getNameForCameraMarker( ownerType ) );
-		field.initializer.setValue( AstUtilities.createInstanceCreation(BookmarkCameraMarker.class));
-		
-		AffineMatrix4x4 initialTransform = this.sceneCameraImplementation.getAbsoluteTransformation();
-		
-		org.lgna.story.Color initialColor = MarkerUtilities.getColorForMarkerName(field.name.getValue());
-		org.lgna.project.ast.Statement[] doStatements = this.getDoStatementsForAddField(field, initialTransform, initialColor);
-		org.lgna.project.ast.Statement[] undoStatements = this.getUndoStatementsForAddField(field);
-
-		MarkerUtilities.addIconForCameraMarker(field, initialColor);
-		
-		return edu.cmu.cs.dennisc.pattern.Tuple3.createInstance( field, doStatements, undoStatements );
-	}
-	
-	public Tuple3< UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[] > createObjectMarkerField( NamedUserType ownerType ) {
-		
-		org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
-		field.managementLevel.setValue( ManagementLevel.MANAGED );
-		field.valueType.setValue( JavaType.getInstance( ObjectMarker.class ) );
-		field.name.setValue( MarkerUtilities.getNameForObjectMarker( ownerType, this.getSelectedField() ) );
-		field.initializer.setValue( AstUtilities.createInstanceCreation(ObjectMarker.class));
-		
-		org.lgna.story.implementation.EntityImp selectedImp = this.getImplementation(this.getSelectedField());
-		AffineMatrix4x4 initialTransform = null;
-		if (selectedImp != null)
-		{
-			initialTransform = selectedImp.getAbsoluteTransformation();
-		}
-		else
-		{
-			initialTransform = AffineMatrix4x4.createIdentity();
-		}
-		
-		org.lgna.story.Color initialColor = MarkerUtilities.getColorForMarkerName(field.name.getValue());
-		org.lgna.project.ast.Statement[] doStatements = this.getDoStatementsForAddField(field, initialTransform, initialColor);
-		org.lgna.project.ast.Statement[] undoStatements = this.getUndoStatementsForAddField(field);
-		
-		MarkerUtilities.addIconForObjectMarker(field, initialColor);
-
-		return edu.cmu.cs.dennisc.pattern.Tuple3.createInstance( field, doStatements, undoStatements );
+		return MarkerUtilities.getNewCameraMarkerColor();
 	}
 	
 	public void switchToOthographicCamera() {

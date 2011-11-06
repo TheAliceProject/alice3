@@ -42,7 +42,8 @@
  */
 package org.alice.ide.typeeditor;
 
-import org.alice.stageide.sceneeditor.viewmanager.CreateCameraMarkerActionOperation;
+import org.alice.stageide.croquet.models.declaration.CameraMarkerFieldDeclarationOperation;
+import org.alice.stageide.sceneeditor.viewmanager.MarkerFieldTile;
 
 /**
  * @author dculyba
@@ -50,7 +51,22 @@ import org.alice.stageide.sceneeditor.viewmanager.CreateCameraMarkerActionOperat
  */
 public class ManagedCameraMarkerFieldList extends MarkerFieldList {
 	public ManagedCameraMarkerFieldList( org.lgna.project.ast.NamedUserType type ) {
-		super( ManagedCameraMarkerFieldState.getInstance( type ), CreateCameraMarkerActionOperation.getInstance() );
+		super( ManagedCameraMarkerFieldState.getInstance( type ), CameraMarkerFieldDeclarationOperation.getInstance() );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+	}
+	
+	@Override
+	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
+		org.lgna.croquet.components.LineAxisPanel buttonPanel = new org.lgna.croquet.components.LineAxisPanel();
+		button.addComponent( 
+				new MarkerFieldTile(item),
+				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
+		);
+		buttonPanel.addComponent(org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton());
+		if( item.isDeletionAllowed.getValue() ) {
+			buttonPanel.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() );
+		}
+		button.addComponent( buttonPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+		return new FieldItemDetails( this, item, button );
 	}
 }

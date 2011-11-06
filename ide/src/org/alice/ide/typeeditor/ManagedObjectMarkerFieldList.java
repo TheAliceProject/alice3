@@ -43,7 +43,6 @@
 package org.alice.ide.typeeditor;
 
 import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
-import org.alice.stageide.sceneeditor.viewmanager.CreateObjectMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerFieldTile;
 
 /**

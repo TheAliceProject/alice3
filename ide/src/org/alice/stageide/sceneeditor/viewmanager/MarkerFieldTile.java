@@ -47,7 +47,6 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 
-import org.alice.stageide.sceneeditor.MarkerUtilities;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.project.ast.UserField;
@@ -98,13 +97,7 @@ public class MarkerFieldTile extends LineAxisPanel
 		this.textLabel.setText( this.field.getName() );
 		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getMarkerForField(field);
 		this.textLabel.setForegroundColor(marker.getMarkerColor().getAsAWTColor());
-//		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getMarkerForField(field);
-//		if (marker != null)
-//		{
-//			Color4f color = marker.getMarkerColor();
-//			this.textLabel.setForegroundColor(color.getAsAWTColor());
-////			this.iconLabel.setIcon(marker.getIcon());
-//		}
+		this.iconLabel.setIcon(MarkerUtilities.getIconForMarkerField(field));
 		this.addComponent( iconLabel );
 		this.addComponent( this.textLabel );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ) );

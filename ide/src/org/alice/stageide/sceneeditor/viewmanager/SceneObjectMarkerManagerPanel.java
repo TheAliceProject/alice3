@@ -52,13 +52,6 @@ import org.lgna.project.ast.NamedUserType;
 public class SceneObjectMarkerManagerPanel extends AbstractMarkerManagerPanel {
 
     @Override
-    protected String getTitleString()
-    {
-        java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( SceneObjectMarkerManagerPanel.class.getPackage().getName() + ".objectMarkers" );
-        return resourceBundle.getString( "objectMarkersTitle" );
-    }
-    
-    @Override
     protected Button getMovetoMarkerButton()
     {
         return MoveSelectedObjectToMarkerActionOperation.getInstance().createButton();
