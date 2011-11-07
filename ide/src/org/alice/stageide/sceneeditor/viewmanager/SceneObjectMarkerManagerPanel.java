@@ -52,29 +52,20 @@ import org.lgna.project.ast.NamedUserType;
 public class SceneObjectMarkerManagerPanel extends AbstractMarkerManagerPanel {
 
     @Override
-    protected Button getMovetoMarkerButton()
+    protected Button createMovetoMarkerButton()
     {
         return MoveSelectedObjectToMarkerActionOperation.getInstance().createButton();
     }
     
     @Override
-    protected Button getMoveToObjectButton()
+    protected Button createMoveToObjectButton()
     {
         return MoveMarkerToSelectedObjectActionOperation.getInstance().createButton();
-    }
-    
-    @Override
-    public void updateButtons()
-    {
-    	if (this.moveToMarkerButton != null && this.moveToObjectButton != null ) {
-	        this.moveToMarkerButton.setVisible(MoveSelectedObjectToMarkerActionOperation.getInstance().isEnabled());
-	        this.moveToObjectButton.setVisible(MoveMarkerToSelectedObjectActionOperation.getInstance().isEnabled());
-    	}
     }
 
 
 	@Override
-	protected FieldList getFieldList(org.lgna.project.ast.UserType<?> type) {
+	protected FieldList createFieldList(org.lgna.project.ast.UserType<?> type) {
 		assert type instanceof NamedUserType;
 		return new ManagedObjectMarkerFieldList((NamedUserType)type);
 	}

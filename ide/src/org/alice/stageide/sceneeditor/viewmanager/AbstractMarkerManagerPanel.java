@@ -58,10 +58,9 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     protected Button moveToObjectButton;
     protected FieldList fieldList;
     
-    protected abstract Button getMovetoMarkerButton();
-    protected abstract Button getMoveToObjectButton();
-    protected abstract FieldList getFieldList( org.lgna.project.ast.UserType<?> type );
-    public abstract void updateButtons();
+    protected abstract Button createMovetoMarkerButton();
+    protected abstract Button createMoveToObjectButton();
+    protected abstract FieldList createFieldList( org.lgna.project.ast.UserType<?> type );
    
     protected String getTitleString()
     {
@@ -72,7 +71,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     public void setType(org.lgna.project.ast.UserType<?> type)
     {
     	this.removeAllComponents();
-    	this.fieldList = this.getFieldList( type );
+    	this.fieldList = this.createFieldList( type );
     	this.fieldList.setBackgroundColor(this.getBackgroundColor());
         this.addComponent( new org.lgna.croquet.components.Label( getTitleString(), 1.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD), new GridBagConstraints( 
                 0, //gridX
@@ -87,7 +86,9 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
                 0, //ipadX
                 0 ) //ipadY
         );
-        this.moveToMarkerButton = getMovetoMarkerButton();
+        if (this.moveToMarkerButton == null) {
+        	this.moveToMarkerButton = createMovetoMarkerButton();
+        }
         this.addComponent( this.moveToMarkerButton, new GridBagConstraints( 
                 1, //gridX
                 0, //gridY
@@ -101,7 +102,9 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
                 0, //ipadX
                 0 ) //ipadY
         );
-        this.moveToObjectButton = getMoveToObjectButton();
+        if (this.moveToObjectButton ==  null) {
+        	this.moveToObjectButton = createMoveToObjectButton();
+        }
         this.addComponent( this.moveToObjectButton, new GridBagConstraints( 
                 2, //gridX
                 0, //gridY
@@ -144,6 +147,18 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
         );
         
         this.updateButtons();
+    }
+    
+    public void updateButtons() {
+    	
+    }
+    
+    protected Button getMoveToMarkerButton() {
+    	return this.moveToMarkerButton;
+    }
+    
+    protected Button getMoveToObjectButton() {
+    	return this.moveToObjectButton;
     }
     
     @Override

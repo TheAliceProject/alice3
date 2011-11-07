@@ -50,7 +50,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-public class MoveToImageIcon extends ImageIcon {
+public class MoveToImageIcon implements Icon {
 	
 	public static int SUB_ICON_WIDTH = 32;
 	public static int SUB_ICON_HEIGHT = 32;
@@ -68,6 +68,7 @@ public class MoveToImageIcon extends ImageIcon {
 		this.arrowImage = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.sceneeditor.StorytellingSceneEditor.class.getResource("images/moveToArrowIcon.png") );
 	}
 	
+	
 	public MoveToImageIcon(Icon leftImage, Icon rightImage)
 	{
 		this();
@@ -75,46 +76,40 @@ public class MoveToImageIcon extends ImageIcon {
 		this.setRightImage(rightImage);
 		
 	}
+	
+	public int getIconWidth() {
+		int leftIconWidth = this.leftImage != null ? this.leftImage.getIconWidth() : SUB_ICON_WIDTH;
+		int rightIconWidth = this.rightImage != null ? this.rightImage.getIconWidth() : SUB_ICON_WIDTH;
+		return leftIconWidth + this.arrowImage.getIconWidth() + rightIconWidth + HORIZONTAL_OFFSET*2;
+	}
 
-	private void setSizeIfNeeded() {
-		if (this.leftImage != null && this.rightImage != null) {
-            int totalHeight = Math.max( this.arrowImage.getIconHeight(), Math.max(this.leftImage.getIconHeight(), this.rightImage.getIconHeight() ) );
-            int totalWidth = this.arrowImage.getIconWidth() + this.leftImage.getIconWidth() + this.rightImage.getIconWidth() + 2*HORIZONTAL_OFFSET;
-            if (totalHeight != this.getIconHeight() || totalWidth != this.getIconWidth())
-            {
-            	this.setImage(new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_ARGB));
-            }
-		}
+
+	public int getIconHeight() {
+		int leftIconHeight = this.leftImage != null ? this.leftImage.getIconHeight() : SUB_ICON_HEIGHT;
+		int rightIconHeight = this.rightImage != null ? this.rightImage.getIconHeight() : SUB_ICON_HEIGHT;
+		return Math.max( this.arrowImage.getIconHeight(), Math.max(leftIconHeight, rightIconHeight ) );
 	}
 	
 	public void setLeftImage(Icon leftImage)
 	{
 		this.leftImage = leftImage;
-		if (this.leftImage != null)
-        {
-            setSizeIfNeeded();
-        }
 	}
 	
 	public void setRightImage(Icon rightImage)
 	{
 		this.rightImage = rightImage;
-		if (this.rightImage != null)
-		{
-			setSizeIfNeeded();
-		}
 	}
 	
-	@Override
 	public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
-		// TODO Auto-generated method stub
-		super.paintIcon(c, g, x, y);
 		int xPos = HORIZONTAL_OFFSET;
 		if (this.leftImage != null)
 		{
 			int yOffset = (int)((this.getIconHeight() - this.leftImage.getIconHeight()) *.5);
 			this.leftImage.paintIcon(c, g, x+xPos, y + yOffset);
 			xPos += this.leftImage.getIconWidth();
+		}
+		else {
+			xPos += SUB_ICON_WIDTH;
 		}
 		if (this.arrowImage != null) {
 			int yOffset = (int)((this.getIconHeight() - this.arrowImage.getIconHeight()) *.5);
@@ -127,5 +122,8 @@ public class MoveToImageIcon extends ImageIcon {
 			this.rightImage.paintIcon(c, g, x+xPos, y + yOffset);
 		}
 	}
+
+
+	
 	
 }

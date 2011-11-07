@@ -42,8 +42,11 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import java.text.MessageFormat;
+
 import javax.swing.Icon;
 
+import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
 import org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.history.ActionOperationStep;
@@ -69,7 +72,6 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		super(org.alice.ide.IDE.PROJECT_GROUP, id);
 		this.markerField = null;
 		this.selectedField = null;
-		this.setToolTipText("Move the camera to this marker.");
 		this.imageIcon = new MoveToImageIcon();
 		this.setSmallIcon(imageIcon);
 		this.updateBasedOnSettings();
@@ -89,17 +91,25 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	
 	private void updateBasedOnSettings()
 	{
+		
 		if (this.toMoveToField != null && this.toMoveField != null)
 		{
-			this.setToolTipText("Move "+this.toMoveField.getName()+" to the point of view of "+this.toMoveToField.getName()+".");
+			String unformattedTooltipText = this.findLocalizedText("tooltip", ObjectMarkerFieldDeclarationOperation.class);
+			MessageFormat formatter = new MessageFormat("");
+			formatter.setLocale(javax.swing.JComponent.getDefaultLocale());
+			formatter.applyPattern(unformattedTooltipText);
+			String tooltipText = formatter.format(new Object[]{this.toMoveField.getName(), this.toMoveToField.getName()});
+			this.setToolTipText(tooltipText);
 			this.setEnabled(true);
 		}
 		else
 		{
+			this.setToolTipText(this.findLocalizedText("disabledTooltip", ObjectMarkerFieldDeclarationOperation.class));
 			this.setEnabled(false);
 		}
 		this.setSmallIcon(null);
 		this.setSmallIcon(this.imageIcon);
+		
 	}
 	
 	public void setMarkerField(UserField markerField)
