@@ -96,6 +96,7 @@ import org.lgna.story.ObjectMarker;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.MarkerImp;
+import org.lgna.story.implementation.OrthographicCameraImp;
 import org.lgna.story.implementation.OrthographicCameraMarkerImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.TransformableImp;
@@ -314,7 +315,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 	
 	private org.lgna.story.CameraMarker expandedViewSelectedMarker = null;
-	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera = null;
+	private OrthographicCameraImp orthographicCameraImp = null;
 	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgPerspectiveCamera = null;
 	private OrthographicCameraMarkerImp topOrthoMarker = null;
 	private OrthographicCameraMarkerImp frontOrthoMarker = null;
@@ -381,6 +382,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(field);
 			ObjectMarkerFieldDeclarationOperation.getInstance().setSelectedField(field);
 			
+			this.getCameraMarkerPanel().revalidateAndRepaint();
+			this.getObjectMarkerPanel().revalidateAndRepaint();
+			
 			if (!this.selectionIsFromInstanceSelector)
 			{
 				if (field == this.getActiveSceneField() )
@@ -411,6 +415,70 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 //		this.snapGrid.setCurrentCamera(perspectiveCamera);
 	}
 		
+	private void createOrthographicCamera()
+	{
+		if( this.orthographicCameraImp != null ) {
+			//pass
+		} else {
+			this.orthographicCameraImp = new OrthographicCameraImp();
+			this.orthographicCameraImp.getSgCamera().nearClippingPlaneDistance.setValue(.01d);
+		}
+	}
+	
+	private void createOrthographicCameraMarkers()
+	{
+//		this.orthographicCameraMarkers.clear();
+//		this.topOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
+//		this.topOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon.png")));
+//		this.topOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/topIcon_highlighted.png")));
+//		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
+//		topTransform.translation.y = 10;
+//		topTransform.translation.z = -10;
+//		topTransform.orientation.up.set( 0, 0, 1 );
+//		topTransform.orientation.right.set( -1, 0, 0 );
+//		topTransform.orientation.backward.set( 0, 1, 0 );
+//		assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+//		this.topOrthoMarker.setLocalTransformation( topTransform );
+//		ClippedZPlane picturePlane = new ClippedZPlane();
+//		picturePlane.setCenter(0, 0);
+//		picturePlane.setHeight(16);
+//		this.topOrthoMarker.setPicturePlane(picturePlane);
+//		orthographicCameraMarkers.add(this.topOrthoMarker);
+//
+//		this.sideOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
+//		this.sideOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon.png")));
+//		this.sideOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/sideIcon_highlighted.png")));
+//		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
+//		sideTransform.translation.x = 10;
+//		sideTransform.translation.y = 1;
+//		sideTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()) );
+//		assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+//		this.sideOrthoMarker.setLocalTransformation( sideTransform );
+//		picturePlane.setHeight(4);
+//		this.sideOrthoMarker.setPicturePlane(picturePlane);
+//		orthographicCameraMarkers.add(this.sideOrthoMarker);
+//
+//		this.frontOrthoMarker = new org.lookingglassandalice.storytelling.OrthographicCameraMarker();
+//		this.frontOrthoMarker.setIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon.png")));
+//		this.frontOrthoMarker.setHighlightedIcon(new javax.swing.ImageIcon(MoveAndTurnSceneEditor.class.getResource("images/frontIcon_highlighted.png")));
+//		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
+//		frontTransform.translation.z = -10;
+//		frontTransform.translation.y = 1;
+//		frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()) );
+//		assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+//		this.frontOrthoMarker.setLocalTransformation( frontTransform );
+//		picturePlane.setHeight(4);
+//		this.frontOrthoMarker.setPicturePlane(picturePlane);
+//		orthographicCameraMarkers.add(this.frontOrthoMarker);
+//		
+//		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( MoveAndTurnSceneEditor.class.getPackage().getName() + ".cameraViews" );
+//		this.openingSceneMarker.setName( resourceBundle.getString( "sceneCameraView" ) );
+//		this.sceneViewMarker.setName( resourceBundle.getString( "layoutPerspectiveView" ) );
+//		this.topOrthoMarker.setName( resourceBundle.getString( "topOrthographicView" ) );
+//		this.sideOrthoMarker.setName( resourceBundle.getString( "leftOrthographicView" ) );
+//		this.frontOrthoMarker.setName( resourceBundle.getString( "frontOrthographicView" ) );
+	}
+	
 	private void doCameraDependentInitialization()
 	{
 		if (this.globalDragAdapter != null && this.sceneCameraImplementation != null)
