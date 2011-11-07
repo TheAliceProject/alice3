@@ -48,7 +48,10 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class LineAxisPanel extends AxisPanel {
+	public LineAxisPanel( org.lgna.croquet.Composite composite, Component<?>... components ) {
+		super( composite, javax.swing.BoxLayout.LINE_AXIS, components );
+	}
 	public LineAxisPanel( Component<?>... components ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, components );
+		this( null, components );
 	}
 }

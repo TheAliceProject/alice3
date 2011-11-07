@@ -47,8 +47,9 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class AxisPanel extends Panel {
-	private int axis;
-	protected AxisPanel( int axis, Component<?>... components ) {
+	private final int axis;
+	protected AxisPanel( org.lgna.croquet.Composite composite, int axis, Component<?>... components ) {
+		super( composite );
 		this.axis = axis;
 		for( Component<?> component : components ) {
 			this.addComponent( component );

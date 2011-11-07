@@ -71,12 +71,19 @@ public class BorderPanel extends Panel {
 			return this.internal;
 		}
 	}
-	private int hgap;
-	private int vgap;
+	private final int hgap;
+	private final int vgap;
 	public BorderPanel() {
-		this( 0, 0 );
+		this( null );
 	}
 	public BorderPanel( int hgap, int vgap ) {
+		this( null, hgap, vgap );
+	}
+	public BorderPanel( org.lgna.croquet.Composite composite ) {
+		this( composite, 0, 0 );
+	}
+	public BorderPanel( org.lgna.croquet.Composite composite, int hgap, int vgap ) {
+		super( composite );
 		this.hgap = hgap;
 		this.vgap = vgap;
 	}

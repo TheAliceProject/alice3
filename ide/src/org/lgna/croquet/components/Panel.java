@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Panel extends JComponent< javax.swing.JPanel > {
+public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.Composite > {
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	protected class DefaultJPanel extends javax.swing.JPanel {
 		public DefaultJPanel() {
@@ -68,6 +68,14 @@ public abstract class Panel extends JComponent< javax.swing.JPanel > {
 			return rv;
 		}
 	}
+	
+	public Panel() {
+		this( null );
+	}
+	public Panel( org.lgna.croquet.Composite composite ) {
+		super( composite );
+	}
+	
 	protected javax.swing.JPanel createJPanel() {
 		return new DefaultJPanel();
 	}

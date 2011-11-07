@@ -48,11 +48,18 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class CardPanel extends Panel {
-	private java.awt.CardLayout cardLayout;
+	private final java.awt.CardLayout cardLayout;
 	public CardPanel() {
-		this( 0, 0 );
+		this( null );
 	}
 	public CardPanel( int hgap, int vgap ) {
+		this( null, hgap, vgap );
+	}
+	public CardPanel( org.lgna.croquet.Composite composite ) {
+		this( composite, 0, 0 );
+	}
+	public CardPanel( org.lgna.croquet.Composite composite, int hgap, int vgap ) {
+		super( composite );
 		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
 		this.show( null );
 	}

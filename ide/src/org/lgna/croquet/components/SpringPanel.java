@@ -71,7 +71,14 @@ public abstract class SpringPanel extends Panel {
 			return internal;
 		}
 	}
-	private javax.swing.SpringLayout springLayout = new javax.swing.SpringLayout();
+	private final javax.swing.SpringLayout springLayout = new javax.swing.SpringLayout();
+	
+	public SpringPanel() {
+		this( null );
+	}
+	public SpringPanel( org.lgna.croquet.Composite composite ) {
+		super( composite );
+	}
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return this.springLayout;

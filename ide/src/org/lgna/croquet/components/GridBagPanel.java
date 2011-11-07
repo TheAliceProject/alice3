@@ -48,6 +48,10 @@ package org.lgna.croquet.components;
  */
 public class GridBagPanel extends Panel {
 	public GridBagPanel() {
+		this( null );
+	}
+	public GridBagPanel( org.lgna.croquet.Composite composite ) {
+		super( composite );
 	}
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

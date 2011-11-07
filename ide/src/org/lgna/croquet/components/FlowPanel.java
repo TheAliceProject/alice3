@@ -61,16 +61,26 @@ public class FlowPanel extends Panel {
 			this.internal = internal;
 		}
 	}
-	private Alignment alignment;
-	private int hgap;
-	private int vgap;
+	private final Alignment alignment;
+	private final int hgap;
+	private final int vgap;
 	public FlowPanel() {
-		this( Alignment.CENTER );
+		this( (org.lgna.croquet.Composite)null );
 	}
 	public FlowPanel( Alignment alignment ) {
-		this( alignment, 0, 0 );
+		this( null, alignment );
 	}
 	public FlowPanel( Alignment alignment, int hgap, int vgap ) {
+		this( null, alignment, hgap, vgap );
+	}
+	public FlowPanel( org.lgna.croquet.Composite composite ) {
+		this( composite, Alignment.CENTER );
+	}
+	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment ) {
+		this( composite, alignment, 0, 0 );
+	}
+	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, int hgap, int vgap ) {
+		super( composite );
 		this.alignment = alignment;
 		this.hgap = hgap;
 		this.vgap = vgap;

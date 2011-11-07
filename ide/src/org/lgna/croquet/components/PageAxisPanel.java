@@ -47,7 +47,10 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class PageAxisPanel extends AxisPanel {
+	public PageAxisPanel( org.lgna.croquet.Composite composite, Component<?>... components ) {
+		super( composite, javax.swing.BoxLayout.PAGE_AXIS, components );
+	}
 	public PageAxisPanel( Component<?>... components ) {
-		super( javax.swing.BoxLayout.PAGE_AXIS, components );
+		this( null, components );
 	}
 }
