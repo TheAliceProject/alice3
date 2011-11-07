@@ -91,6 +91,11 @@ public class CardPanel extends Panel {
 		String cardLayoutKey = id.toString();
 		return this.map.get( cardLayoutKey );
 	}
+	
+	public Key createKey( View< ?, ? > view ) {
+		return this.createKey( view, view.getComposite().getId() );
+	}
+	
 	public void addComponent( Key key ) {
 		this.internalAddComponent( key.child, key.cardLayoutKey );
 	}
