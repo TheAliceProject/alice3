@@ -101,6 +101,9 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 		{
 			this.imageIcon.setLeftImage(MarkerUtilities.getIconForCameraMarker(this.markerField));	
 		}
+		else {
+			this.imageIcon.setLeftImage(null);
+		}
 		this.updateBasedOnSettings();
 	}
 	
@@ -110,6 +113,9 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 		if (this.cameraMarker != null)
 		{
 			this.imageIcon.setRightImage(MarkerUtilities.getIconForCamera(cameraMarker));
+		}
+		else {
+			this.imageIcon.setRightImage(null);
 		}
 		this.updateBasedOnSettings();
 	}
