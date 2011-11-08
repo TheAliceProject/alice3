@@ -57,8 +57,10 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 				org.alice.ide.members.MembersComposite.getInstance() 
 		);
 		this.left.setBottomComponent( contextView );
-		this.left.setTopComponent( org.alice.stageide.typecontext.TypeContextComposite.getInstance().getView() );
-		
+		this.left.setTopComponent( new org.alice.stageide.typecontext.components.SceneOrNonSceneCardPanel( 
+				org.alice.stageide.typecontext.SceneTypeComposite.getInstance(),
+				org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance()
+		) );
 		javax.swing.JSplitPane jSplitPane = this.getAwtComponent();
 		jSplitPane.setLeftComponent( this.left.getAwtComponent() );
 		jSplitPane.setRightComponent( this.typeEditor.getAwtComponent() );

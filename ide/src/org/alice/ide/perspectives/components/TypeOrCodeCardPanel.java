@@ -82,5 +82,4 @@ public class TypeOrCodeCardPanel extends org.lgna.croquet.components.CardPanel {
 		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().removeValueObserver( this.declarationListener );
 		super.handleRemovedFrom( parent );
 	}
-
 }
