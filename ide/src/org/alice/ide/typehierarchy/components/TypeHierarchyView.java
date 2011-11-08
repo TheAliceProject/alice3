@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typehierarchyview;
+package org.alice.ide.typehierarchy.components;
 
 class NamedUserTypeTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractTreeModel< edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > > {
 	public edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > getChild( Object parent, int index ) {
@@ -93,7 +93,8 @@ class NamedUserTypeTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rende
 public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 	private final NamedUserTypeTreeModel treeModel = new NamedUserTypeTreeModel();
 	private final javax.swing.JTree jTree;
-	public TypeHierarchyView() {
+	public TypeHierarchyView( org.alice.ide.typehierarchy.TypeHierarchyComposite composite ) {
+		super( composite );
 		this.jTree = new javax.swing.JTree( this.treeModel );
 		this.jTree.addKeyListener( new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {

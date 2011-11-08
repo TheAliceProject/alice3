@@ -41,14 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.typecontext.components;
+package org.alice.ide.typehierarchy;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NonSceneTypeView extends org.lgna.croquet.components.BorderPanel {
-	public NonSceneTypeView( org.alice.stageide.typecontext.NonSceneTypeComposite composite ) {
-		super( composite );
-		this.addComponent( new org.lgna.croquet.components.Label( "non-scene" ), Constraint.CENTER );
+public class TypeHierarchyComposite extends org.alice.ide.croquet.SingletonViewComposite {
+	private static class SingletonHolder {
+		private static TypeHierarchyComposite instance = new TypeHierarchyComposite();
+	}
+	public static TypeHierarchyComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private TypeHierarchyComposite() {
+		super( java.util.UUID.fromString( "fb9a3554-8ee3-478a-8773-5d73d26e39cf" ) );
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return true;
+	}
+	@Override
+	protected org.lgna.croquet.components.View< ?, ? > createView() {
+		return new org.alice.ide.typehierarchy.components.TypeHierarchyView( this );
 	}
 }

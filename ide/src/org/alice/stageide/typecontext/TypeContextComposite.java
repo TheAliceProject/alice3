@@ -63,6 +63,6 @@ public class TypeContextComposite extends org.alice.ide.croquet.SingletonViewCom
 	}
 	@Override
 	protected org.lgna.croquet.components.View< ?, ? > createView() {
-		return new org.alice.stageide.typecontext.components.TypeContextView();
+		return new org.alice.stageide.typecontext.components.TypeContextView( this );
 	}
 }

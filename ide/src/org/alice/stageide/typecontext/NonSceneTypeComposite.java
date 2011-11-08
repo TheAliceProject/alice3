@@ -63,6 +63,6 @@ public class NonSceneTypeComposite extends org.alice.ide.croquet.SingletonViewCo
 	}
 	@Override
 	protected org.lgna.croquet.components.View< ?, ? > createView() {
-		return new org.alice.stageide.typecontext.components.NonSceneTypeView();
+		return new org.alice.stageide.typecontext.components.NonSceneTypeView( this );
 	}
 }

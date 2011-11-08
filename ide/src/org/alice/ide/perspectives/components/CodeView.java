@@ -52,11 +52,10 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 	private final org.alice.ide.typeeditor.TypeEditor typeEditor = org.alice.ide.typeeditor.TypeEditor.getInstance();
 	public CodeView() {
 		super( org.alice.ide.perspectives.CodePerspective.getInstance() );
-		
-		org.alice.ide.memberseditor.MembersEditor membersEditor = new org.alice.ide.memberseditor.MembersEditor();
-		org.alice.ide.typehierarchyview.TypeHierarchyView typeHierarchyView = new org.alice.ide.typehierarchyview.TypeHierarchyView();
-
-		org.alice.ide.contextview.ContextView contextView = new org.alice.ide.contextview.ContextView( typeHierarchyView, membersEditor );
+		org.alice.ide.perspectives.components.TypeOrCodeCardPanel contextView = new org.alice.ide.perspectives.components.TypeOrCodeCardPanel( 
+				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), 
+				org.alice.ide.members.MembersComposite.getInstance() 
+		);
 		this.left.setBottomComponent( contextView );
 		this.left.setTopComponent( org.alice.stageide.typecontext.TypeContextComposite.getInstance().getView() );
 		

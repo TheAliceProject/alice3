@@ -47,7 +47,7 @@ package org.alice.stageide.typecontext.components;
  * @author Dennis Cosgrove
  */
 public class SceneTypeView extends org.lgna.croquet.components.BorderPanel {
-	public SceneTypeView() {
-		super( org.alice.stageide.typecontext.SceneTypeComposite.getInstance() );
+	public SceneTypeView( org.alice.stageide.typecontext.SceneTypeComposite composite ) {
+		super( composite );
 	}
 }

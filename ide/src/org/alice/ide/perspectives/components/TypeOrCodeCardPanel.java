@@ -41,24 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.contextview;
+package org.alice.ide.perspectives.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ContextView extends org.lgna.croquet.components.CardPanel {
+public class TypeOrCodeCardPanel extends org.lgna.croquet.components.CardPanel {
 	private final Key typeKey;
 	private final Key codeKey;
 	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			ContextView.this.handleDeclarationStateChanged( nextValue );
+			TypeOrCodeCardPanel.this.handleDeclarationStateChanged( nextValue );
 		}
 	};
-	public ContextView( org.lgna.croquet.components.Component< ? > typeComponent, org.lgna.croquet.components.Component< ? > codeComponent ) {
-		this.typeKey = this.createKey( typeComponent, java.util.UUID.fromString( "fcf3b397-499b-45e4-b85c-50ccc62461e7" ) );
-		this.codeKey = this.createKey( codeComponent, java.util.UUID.fromString( "ed8cf670-ad01-4973-91d5-97d421e90035" ) );
+	public TypeOrCodeCardPanel( org.alice.ide.croquet.SingletonViewComposite typeComposite, org.alice.ide.croquet.SingletonViewComposite codeComposite ) {
+		this.typeKey = this.createKey( typeComposite.getView() );
+		this.codeKey = this.createKey( codeComposite.getView() );
 		this.addComponent( this.typeKey );
 		this.addComponent( this.codeKey );
 	}
@@ -82,4 +82,5 @@ public class ContextView extends org.lgna.croquet.components.CardPanel {
 		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().removeValueObserver( this.declarationListener );
 		super.handleRemovedFrom( parent );
 	}
+
 }

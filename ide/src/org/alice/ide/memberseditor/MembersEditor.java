@@ -60,7 +60,8 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 	}
 	private final org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
 	private final java.util.Map< Boolean, org.lgna.croquet.components.CardPanel.Key > keys = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public MembersEditor() {
+	public MembersEditor( org.alice.ide.members.MembersComposite composite ) {
+		super( composite );
 		final float FONT_SCALAR = 1.4f;
 		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
 		instanceLabel.scaleFont( FONT_SCALAR );

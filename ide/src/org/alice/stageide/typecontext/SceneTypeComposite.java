@@ -63,6 +63,6 @@ public class SceneTypeComposite extends org.alice.ide.croquet.SingletonViewCompo
 	}
 	@Override
 	protected org.lgna.croquet.components.View< ?, ? > createView() {
-		return new org.alice.stageide.typecontext.components.SceneTypeView();
+		return new org.alice.stageide.typecontext.components.SceneTypeView( this );
 	}
 }

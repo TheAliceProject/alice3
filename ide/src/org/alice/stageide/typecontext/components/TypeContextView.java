@@ -49,8 +49,8 @@ package org.alice.stageide.typecontext.components;
 public class TypeContextView extends org.lgna.croquet.components.CardPanel {
 	private final Key sceneKey;
 	private final Key nonSceneKey;
-	public TypeContextView() {
-		super( org.alice.stageide.typecontext.TypeContextComposite.getInstance() );
+	public TypeContextView( org.alice.stageide.typecontext.TypeContextComposite composite ) {
+		super( composite );
 		//this.sceneKey = this.createKey( child, id );
 		this.sceneKey = this.createKey( org.alice.stageide.typecontext.SceneTypeComposite.getInstance().getView() );
 		this.nonSceneKey = this.createKey( org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance().getView() );
