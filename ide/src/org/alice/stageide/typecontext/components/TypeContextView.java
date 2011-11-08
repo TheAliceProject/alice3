@@ -47,19 +47,13 @@ package org.alice.stageide.typecontext.components;
  * @author Dennis Cosgrove
  */
 public class TypeContextView extends org.lgna.croquet.components.CardPanel {
-	private static class SingletonHolder {
-		private static TypeContextView instance = new TypeContextView();
-	}
-	public static TypeContextView getInstance() {
-		return SingletonHolder.instance;
-	}
 	private final Key sceneKey;
 	private final Key nonSceneKey;
-	private TypeContextView() {
+	public TypeContextView() {
 		super( org.alice.stageide.typecontext.TypeContextComposite.getInstance() );
 		//this.sceneKey = this.createKey( child, id );
-		this.sceneKey = this.createKey( SceneTypeView.getInstance() );
-		this.nonSceneKey = this.createKey( new NonSceneTypeView() );
+		this.sceneKey = this.createKey( org.alice.stageide.typecontext.SceneTypeComposite.getInstance().getView() );
+		this.nonSceneKey = this.createKey( org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance().getView() );
 		this.addComponent( this.sceneKey );
 		this.addComponent( this.nonSceneKey );
 		this.show( this.sceneKey );

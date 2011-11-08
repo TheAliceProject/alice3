@@ -41,27 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives;
+package org.alice.ide.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-//todo: rename
-public class RenderingComposite extends org.lgna.croquet.Composite {
-	private static class SingletonHolder {
-		private static RenderingComposite instance = new RenderingComposite();
-	}
-	public static RenderingComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private RenderingComposite() {
-		super( java.util.UUID.fromString( "0402ab35-b3b9-406d-a882-f89ecceed597" ) );
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
+public abstract class SingletonViewComposite extends org.lgna.croquet.Composite {
+	private org.lgna.croquet.components.View< ?, ? > view;
+	public SingletonViewComposite( java.util.UUID id ) {
+		super( id );
 	}
 	@Override
 	protected void localize() {
+	}
+	
+	protected abstract org.lgna.croquet.components.View< ?, ? > createView();
+	public synchronized org.lgna.croquet.components.View< ?, ? > getView() {
+		if( this.view != null ) {
+			//pass
+		} else {
+			this.view = this.createView();
+		}
+		return this.view;
 	}
 }

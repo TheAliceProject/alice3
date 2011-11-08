@@ -46,7 +46,7 @@ package org.alice.stageide.typecontext;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeContextComposite extends org.lgna.croquet.Composite {
+public class TypeContextComposite extends org.alice.ide.croquet.SingletonViewComposite {
 	private static class SingletonHolder {
 		private static TypeContextComposite instance = new TypeContextComposite();
 	}
@@ -59,9 +59,10 @@ public class TypeContextComposite extends org.lgna.croquet.Composite {
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
 		//todo
-		return false;
+		return true;
 	}
 	@Override
-	protected void localize() {
+	protected org.lgna.croquet.components.View< ?, ? > createView() {
+		return new org.alice.stageide.typecontext.components.TypeContextView();
 	}
 }

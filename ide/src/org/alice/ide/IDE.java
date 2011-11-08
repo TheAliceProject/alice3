@@ -646,18 +646,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 	}
 	
-//	public org.lgna.project.ast.AbstractDeclaration getFocusedDeclaration() {
-//		if( org.alice.ide.croquet.models.ui.IsSceneEditorExpandedState.getInstance().getValue() ) {
-//			return this.getPerformEditorGeneratedSetUpMethod();
-//		} else {
-//			org.alice.ide.croquet.models.typeeditor.DeclarationComposite item = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getSelectedItem();
-//			if( item != null ) {
-//				return item.getDeclaration();
-//			} else {
-//				return null;
-//			}
-//		}
-//	}
 	public org.lgna.project.ast.AbstractCode getFocusedCode() {
 		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationState.getInstance().getValue();
 		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
@@ -679,15 +667,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		org.lgna.project.ast.AbstractCode code = this.getFocusedCode();
-		if( code != null ) {
-			return org.alice.ide.perspectives.components.CodeView.getInstance().getTypeEditor().getCodeEditorInFocus();
+		org.alice.ide.perspectives.IdePerspective perspective = this.getPerspectiveState().getValue();
+		if( perspective != null ) {
+			return perspective.getCodeEditorInFocus();
 		} else {
 			return null;
 		}
 	}
-	
-
 	@Override
 	public void ensureProjectCodeUpToDate() {
 		this.generateCodeForSceneSetUp();

@@ -47,16 +47,10 @@ package org.alice.ide.perspectives.components;
  * @author Dennis Cosgrove
  */
 public class CodeView extends org.alice.stageide.perspectives.components.IdePerspectiveView< javax.swing.JSplitPane, org.alice.ide.perspectives.CodePerspective > {
-	private static class SingletonHolder {
-		private static CodeView instance = new CodeView();
-	}
-	public static CodeView getInstance() {
-		return SingletonHolder.instance;
-	}
 	private Integer leftDividerLocation = null;
 	private final org.lgna.croquet.components.VerticalSplitPane left = new org.lgna.croquet.components.VerticalSplitPane();
-	private final org.alice.ide.typeeditor.TypeEditor typeEditor = new org.alice.ide.typeeditor.TypeEditor();
-	private CodeView() {
+	private final org.alice.ide.typeeditor.TypeEditor typeEditor = org.alice.ide.typeeditor.TypeEditor.getInstance();
+	public CodeView() {
 		super( org.alice.ide.perspectives.CodePerspective.getInstance() );
 		
 		org.alice.ide.memberseditor.MembersEditor membersEditor = new org.alice.ide.memberseditor.MembersEditor();
@@ -64,7 +58,7 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 
 		org.alice.ide.contextview.ContextView contextView = new org.alice.ide.contextview.ContextView( typeHierarchyView, membersEditor );
 		this.left.setBottomComponent( contextView );
-		this.left.setTopComponent( org.alice.stageide.typecontext.components.TypeContextView.getInstance() );
+		this.left.setTopComponent( org.alice.stageide.typecontext.TypeContextComposite.getInstance().getView() );
 		
 		javax.swing.JSplitPane jSplitPane = this.getAwtComponent();
 		jSplitPane.setLeftComponent( this.left.getAwtComponent() );
@@ -95,7 +89,7 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 		} else {
 			this.leftDividerLocation = 240;
 		}
-		org.alice.stageide.typecontext.components.SceneTypeView.getInstance().addComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		org.alice.stageide.typecontext.SceneTypeComposite.getInstance().getView().getAwtComponent().add( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getAwtComponent(), java.awt.BorderLayout.CENTER );
 		this.left.setDividerLocation( this.leftDividerLocation );
 	}
 	
