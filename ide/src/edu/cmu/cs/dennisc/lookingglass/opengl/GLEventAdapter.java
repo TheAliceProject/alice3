@@ -363,7 +363,9 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		this.drawable.setAutoSwapBufferMode( false );
 		try {
 			this.pickParameters = new PickParameters( this.drawable, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
-			this.drawable.display();
+			if( this.drawable.isRealized() ) {
+				this.drawable.display();
+			}
 			return this.pickParameters.accessFrontMostPickResult();
 		} finally {
 			this.drawable.setAutoSwapBufferMode( true );

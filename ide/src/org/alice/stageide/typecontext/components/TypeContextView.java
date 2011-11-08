@@ -52,7 +52,7 @@ public class TypeContextView extends org.lgna.croquet.components.CardPanel {
 	public TypeContextView() {
 		super( org.alice.stageide.typecontext.TypeContextComposite.getInstance() );
 		//this.sceneKey = this.createKey( child, id );
-		this.sceneKey = null;//this.createKey( new SceneTypeView() );
+		this.sceneKey = this.createKey( new SceneTypeView() );
 		this.nonSceneKey = this.createKey( new NonSceneTypeView() );
 	}
 }
