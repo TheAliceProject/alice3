@@ -61,12 +61,13 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 		
 		org.alice.ide.memberseditor.MembersEditor membersEditor = new org.alice.ide.memberseditor.MembersEditor();
 		org.alice.ide.typehierarchyview.TypeHierarchyView typeHierarchyView = new org.alice.ide.typehierarchyview.TypeHierarchyView();
-		org.alice.ide.contextview.ContextView contextView = new org.alice.ide.contextview.ContextView( typeHierarchyView, this.left );
-		this.left.setBottomComponent( membersEditor );
 
-
+		org.alice.ide.contextview.ContextView contextView = new org.alice.ide.contextview.ContextView( typeHierarchyView, membersEditor );
+		this.left.setBottomComponent( contextView );
+		this.left.setTopComponent( org.alice.stageide.typecontext.components.TypeContextView.getInstance() );
+		
 		javax.swing.JSplitPane jSplitPane = this.getAwtComponent();
-		jSplitPane.setLeftComponent( contextView.getAwtComponent() );
+		jSplitPane.setLeftComponent( this.left.getAwtComponent() );
 		jSplitPane.setRightComponent( this.typeEditor.getAwtComponent() );
 		
 		jSplitPane.setMinimumSize( new java.awt.Dimension( SPLIT_MINIMUM_SIZE, SPLIT_MINIMUM_SIZE ) );
@@ -94,7 +95,7 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 		} else {
 			this.leftDividerLocation = 240;
 		}
-		this.left.setTopComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
+		org.alice.stageide.typecontext.components.SceneTypeView.getInstance().addComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 		this.left.setDividerLocation( this.leftDividerLocation );
 	}
 	
