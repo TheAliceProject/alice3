@@ -53,13 +53,21 @@ public abstract class RowsSpringPanel extends SpringPanel {
 	private int yPad;
 	protected abstract java.util.List< Component< ? >[] > updateComponentRows( java.util.List< Component< ? >[] > rv );
 	public RowsSpringPanel() {
-		this( 12, 12 );
+		this( null );
 	}
 	public RowsSpringPanel( int xPad, int yPad ) {
+		this( null, xPad, yPad );
+	}
+	public RowsSpringPanel( org.lgna.croquet.Composite composite ) {
+		this( composite, 12, 12 );
+	}
+	public RowsSpringPanel( org.lgna.croquet.Composite composite, int xPad, int yPad ) {
+		super( composite );
 		this.xPad = xPad;
 		this.yPad = yPad;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();

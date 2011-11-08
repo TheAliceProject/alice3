@@ -46,9 +46,9 @@ package org.alice.stageide.typecontext.components;
 /**
  * @author Dennis Cosgrove
  */
-public class NonSceneTypeView extends org.lgna.croquet.components.BorderPanel {
+public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPanel {
 	public NonSceneTypeView( org.alice.stageide.typecontext.NonSceneTypeComposite composite ) {
 		super( composite );
-		this.addComponent( new org.lgna.croquet.components.Label( "non-scene" ), Constraint.CENTER );
+		this.setNorthEastComponent( org.alice.stageide.typecontext.SelectSceneTypeOperation.getInstance().createButton() );
 	}
 }
