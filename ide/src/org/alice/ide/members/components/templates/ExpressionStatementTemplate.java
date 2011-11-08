@@ -40,24 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.members.components.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-//todo: reduce visibility
-public class GetterTemplate extends org.alice.ide.templates.ExpressionTemplate {
-	private org.lgna.project.ast.AbstractField field;
-	protected GetterTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.ast.draganddrop.expression.FieldAccessDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
+/*package-private*/ abstract class ExpressionStatementTemplate extends org.alice.ide.templates.StatementTemplate {
+	public ExpressionStatementTemplate( org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel dragAndDropModel ) {
+		super( dragAndDropModel, org.lgna.project.ast.ExpressionStatement.class );
+	}
+	protected abstract org.lgna.project.ast.Expression createIncompleteExpression();
+	
+	private boolean isInitialized = false;
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		if( this.isInitialized ) {
+			//pass
+		} else {
+			this.refresh();
+			this.isInitialized = true;
 		}
 	}
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field );
+	protected void handleUndisplayable() {
+		//this.removeAllComponents();
+		super.handleUndisplayable();
 	}
+	protected void refresh() {
+		this.removeAllComponents();
+		org.lgna.project.ast.Expression incompleteExpression = this.createIncompleteExpression();
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( incompleteExpression ) );
+		this.addComponent( org.alice.ide.x.TemplateAstI18nFactory.getInstance().createExpressionPane( incompleteExpression ) );
+	}
+
+//	@Override
+//	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
+//		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
+//		if( expression != null ) {
+//			return new org.lgna.project.ast.ExpressionStatement( expression );
+//		} else {
+//			return null;
+//		}
+//	}
+	
 }

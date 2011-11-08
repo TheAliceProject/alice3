@@ -40,62 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.members.components.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
-	@Override
-	protected void refresh( java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types ) {
-		this.removeAllComponents();
-		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
-
-		if( types.size() > 0 ) {
-			boolean isSeparatorDesired = types.get( 0 ) instanceof org.lgna.project.ast.NamedUserType;
-			for( org.lgna.project.ast.AbstractType<?,?,?> type : types ) {
-				boolean isFirstNonConsumedTypeEncounteredInJava = false;
-				if( type instanceof org.lgna.project.ast.JavaType ) {
-					if( isSeparatorDesired ) {
-						this.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
-						this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
-						isSeparatorDesired = false;
-					}
-					if( isNonConsumedTypeDeclaredInJavaAlreadyEncountered ) {
-						//pass
-					} else {
-						if( type.isConsumptionBySubClassDesired() ) {
-							//pass
-						} else {
-							isFirstNonConsumedTypeEncounteredInJava = true;
-							isNonConsumedTypeDeclaredInJavaAlreadyEncountered = true;
-						}
-					}
-				}
-				if( type.isConsumptionBySubClassDesired() ) {
-					//pass
-				} else {
-					if( /*org.alice.ide.IDE.getActiveInstance().isEmphasizingClasses() ||*/ type instanceof org.lgna.project.ast.NamedUserType || isFirstNonConsumedTypeEncounteredInJava ) {
-						this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
-					}
-				}
-				this.addComponent( this.getTypeMembersPane( type ) );
-			}
+//todo: reduce visibility
+public class GetterTemplate extends org.alice.ide.templates.ExpressionTemplate {
+	private org.lgna.project.ast.AbstractField field;
+	protected GetterTemplate( org.lgna.project.ast.AbstractField field ) {
+		super( org.alice.ide.ast.draganddrop.expression.FieldAccessDragModel.getInstance( field ) );
+		this.field = field;
+		if( this.field instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
+			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
 		}
-		this.revalidateAndRepaint();
 	}
-
-	private java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< org.lgna.project.ast.AbstractType<?,?,?>, AbstractTypeMembersPane >();
-	protected abstract AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type );
-	protected AbstractTypeMembersPane getTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		AbstractTypeMembersPane rv = this.mapTypeToPane.get( type );
-		if( rv != null ) {
-			//todo?
-			rv.refresh();
-		} else {
-			rv = this.createTypeMembersPane( type );
-			this.mapTypeToPane.put( type, rv );
-		}
-		return rv;
+	@Override
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
+		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field );
 	}
 }

@@ -40,12 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.members.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
+public class MembersView extends org.lgna.croquet.components.BorderPanel {
 	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, org.lgna.project.ast.AbstractType<?,?,?>, org.lgna.croquet.components.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static final byte PROTOTYPE = 0;
 	public static org.lgna.croquet.components.Component< ? > getComponentFor( Class< ? > cls, org.lgna.project.ast.AbstractType<?,?,?> type ) {
@@ -60,7 +60,7 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 	}
 	private final org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
 	private final java.util.Map< Boolean, org.lgna.croquet.components.CardPanel.Key > keys = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public MembersEditor( org.alice.ide.members.MembersComposite composite ) {
+	public MembersView( org.alice.ide.members.MembersComposite composite ) {
 		super( composite );
 		final float FONT_SCALAR = 1.4f;
 		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
@@ -78,7 +78,7 @@ public class MembersEditor extends org.lgna.croquet.components.BorderPanel {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			MembersEditor.this.cardPanel.show( MembersEditor.this.getKey( nextValue ) );
+			MembersView.this.cardPanel.show( MembersView.this.getKey( nextValue ) );
 		}
 	};
 	

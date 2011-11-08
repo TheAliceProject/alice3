@@ -40,20 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.members.components.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class MethodPopupMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	public MethodPopupMenuModel( org.lgna.project.ast.UserMethod methodInAlice ) {
-		super( 
-			java.util.UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),
-			org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( methodInAlice ).getMenuItemPrepModel(),
-			org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( methodInAlice ).getMenuItemPrepModel(),
-			org.alice.ide.operations.ast.FocusCodeOperation.getInstance( methodInAlice ).getMenuItemPrepModel(),
-			org.lgna.croquet.MenuModel.SEPARATOR,
-			org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( methodInAlice ).getMenuItemPrepModel()
+/*package-private*/ class SetFieldArrayAtIndexTemplate extends ExpressionStatementTemplate {
+	private org.lgna.project.ast.AbstractField field;
+	public SetFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
+		super( org.alice.ide.ast.draganddrop.statement.FieldArrayAtIndexAssignmentTemplateDragModel.getInstance( field ) );
+		this.field = field;
+		if( this.field instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
+			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
+		}
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
+		return new org.lgna.project.ast.AssignmentExpression( 
+				this.field.getValueType().getComponentType(), 
+				new org.lgna.project.ast.ArrayAccess( 
+						field.getValueType(), 
+						org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( this.field ), 
+						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
+				), 
+				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 
+				new org.alice.ide.ast.EmptyExpression( this.field.getValueType().getComponentType() )
 		);
 	}
 }

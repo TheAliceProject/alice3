@@ -40,50 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.members.components.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersContentPanel extends org.lgna.croquet.components.PageAxisPanel {
-	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-			MembersContentPanel.this.handleInstanceFactorySelection( nextValue );
-		}
-	};
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addValueObserver( this.instanceFactorySelectionObserver );
-	}
-	@Override
-	protected void handleUndisplayable() {
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactorySelectionObserver );
-		super.handleUndisplayable();
-	}
-	
-	protected abstract void refresh( java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types );
-	
-	private void refresh() {
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
-		java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		if( instanceFactory != null ) {
-			org.lgna.project.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();
-			while( type != null ) {
-				types.add( type );
-				if( type.isFollowToSuperClassDesired() ) {
-					type = type.getSuperType();
-				} else {
-					break;
-				}
-			}
-		}
-		this.refresh( types );
-	}
-	private void handleInstanceFactorySelection( org.alice.ide.instancefactory.InstanceFactory accessible ) {
-		this.refresh();
+/*package-private*/ class FieldMenu extends org.lgna.croquet.PredeterminedMenuModel {
+	public FieldMenu( org.lgna.project.ast.UserField field ) {
+		super( 
+			java.util.UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
+			org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel(),
+			org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel()
+		);
 	}
 }
-

@@ -163,7 +163,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public abstract org.lgna.croquet.Operation< ? > getRunOperation();
 	public abstract org.lgna.croquet.Operation< ? > getRestartOperation();
 
-	public abstract org.lgna.croquet.Operation< ? > createPreviewOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
+	public abstract org.lgna.croquet.Operation< ? > createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
 	public enum AccessorAndMutatorDisplayStyle {
 		GETTER_AND_SETTER, ACCESS_AND_ASSIGNMENT

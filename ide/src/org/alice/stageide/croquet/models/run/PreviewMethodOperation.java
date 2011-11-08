@@ -46,8 +46,8 @@ package org.alice.stageide.croquet.models.run;
  * @author Dennis Cosgrove
  */
 public class PreviewMethodOperation extends org.lgna.croquet.ActionOperation {
-	private org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
-	public PreviewMethodOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+	private org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
+	public PreviewMethodOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}

@@ -40,27 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.members.components.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class AccessFieldArrayAtIndexTemplate extends org.alice.ide.templates.ExpressionTemplate {
-	private org.lgna.project.ast.AbstractField field;
-	public AccessFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.ast.draganddrop.expression.FieldArrayAtIndexDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
+/*package-private*/ class FunctionInvocationTemplate extends org.alice.ide.templates.ExpressionTemplate {
+	private org.lgna.project.ast.AbstractMethod method;
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserParameter > parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.UserParameter >() {
+		@Override
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.UserParameter > e ) {
+		}
+		@Override
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.UserParameter > e ) {
+			FunctionInvocationTemplate.this.refresh();
+		}
+	};
+	public FunctionInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
+		super( org.alice.ide.ast.draganddrop.expression.FunctionInvocationDragModel.getInstance( method ) );
+		this.method = method;
+		if( method instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod methodInAlice = (org.lgna.project.ast.UserMethod)method;
+			this.setPopupPrepModel( new MethodPopupMenuModel( methodInAlice ).getPopupPrepModel() );
 		}
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return new org.lgna.project.ast.ArrayAccess( 
-				field.getValueType(), 
-				org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field ), 
-				new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
-		);
+		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( this.method );
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
+			this.refresh();
+			((org.lgna.project.ast.UserMethod)this.method).requiredParameters.addListPropertyListener( this.parameterAdapter );
+		}
+	}
+	@Override
+	protected void handleUndisplayable() {
+		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
+			((org.lgna.project.ast.UserMethod)this.method).requiredParameters.removeListPropertyListener( this.parameterAdapter );
+		}
+		super.handleUndisplayable();
 	}
 }

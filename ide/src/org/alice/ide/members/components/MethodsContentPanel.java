@@ -40,17 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.members.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProceduresContentPanel extends MethodsContentPanel {
-	public ProceduresContentPanel() {
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
-	}
-	@Override
-	protected AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		return new TypeProceduresPane( type );
-	}
+abstract class MethodsContentPanel extends OrganizedByTypeMembersContentPanel {
 }

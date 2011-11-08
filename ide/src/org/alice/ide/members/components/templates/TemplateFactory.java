@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.members.components.templates;
 
 /**
  * @author Dennis Cosgrove
@@ -64,7 +64,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate( method );
+			rv = new org.alice.ide.members.components.templates.ProcedureInvocationTemplate( method );
 			mapMethodToProcedureInvocationTemplate.put( method, rv );
 		}
 		return rv;
@@ -74,7 +74,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.FunctionInvocationTemplate( method );
+			rv = new org.alice.ide.members.components.templates.FunctionInvocationTemplate( method );
 			mapMethodToFunctionInvocationTemplate.put( method, rv );
 		}
 		return rv;
@@ -84,7 +84,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.GetterTemplate( field );
+			rv = new org.alice.ide.members.components.templates.GetterTemplate( field );
 			mapMethodToAccessorTemplate.put( field, rv );
 		}
 		return rv;
@@ -94,7 +94,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.AccessFieldArrayAtIndexTemplate( field );
+			rv = new org.alice.ide.members.components.templates.AccessFieldArrayAtIndexTemplate( field );
 			mapMethodToAccessArrayAtIndexTemplate.put( field, rv );
 		}
 		return rv;
@@ -104,7 +104,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.FieldArrayLengthTemplate( field );
+			rv = new org.alice.ide.members.components.templates.FieldArrayLengthTemplate( field );
 			mapMethodToArrayLengthTemplate.put( field, rv );
 		}
 		return rv;
@@ -115,7 +115,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.SetFieldTemplate( field );
+			rv = new org.alice.ide.members.components.templates.SetFieldTemplate( field );
 			mapMethodToMutatorTemplate.put( field, rv );
 		}
 		return rv;
@@ -125,7 +125,7 @@ public class TemplateFactory {
 		if( rv != null ) {
 			
 		} else {
-			rv = new org.alice.ide.memberseditor.templates.SetFieldArrayAtIndexTemplate( field );
+			rv = new org.alice.ide.members.components.templates.SetFieldArrayAtIndexTemplate( field );
 			mapMethodToMutateArrayAtIndexTemplate.put( field, rv );
 		}
 		return rv;

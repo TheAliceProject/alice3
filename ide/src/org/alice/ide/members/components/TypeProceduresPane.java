@@ -40,17 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.members.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
-	public FieldsContentPanel() {
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+public class TypeProceduresPane extends AbstractTypeMethodsPane {
+	public TypeProceduresPane(org.lgna.project.ast.AbstractType<?, ?, ?> type) {
+		super(type);
 	}
+
 	@Override
-	protected AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		return new TypeFieldsPane( type );
+	protected edu.cmu.cs.dennisc.property.ListProperty<? extends org.lgna.project.ast.UserMember>[] getListPropertiesToListenTo(org.lgna.project.ast.NamedUserType type) {
+		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods };
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Button createDeclareMemberButton(org.lgna.project.ast.NamedUserType type) {
+		return org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance(type).createButton();
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Button createEditConstructorButton(org.lgna.project.ast.NamedUserType type) {
+		return null;
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Component<?> createFunctionTemplate(org.lgna.project.ast.AbstractMethod method) {
+		return null;
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Component<?> createProcedureTemplate(org.lgna.project.ast.AbstractMethod method) {
+		return org.alice.ide.members.components.templates.TemplateFactory.getProcedureInvocationTemplate(method);
 	}
 }

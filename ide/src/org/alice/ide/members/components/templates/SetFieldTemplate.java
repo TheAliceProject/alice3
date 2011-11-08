@@ -40,10 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.members.components.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class MethodsContentPanel extends OrganizedByTypeMembersContentPanel {
+/*package-private*/ class SetFieldTemplate extends ExpressionStatementTemplate {
+	private org.lgna.project.ast.AbstractField field;
+	public SetFieldTemplate( org.lgna.project.ast.AbstractField field ) {
+		super( org.alice.ide.ast.draganddrop.statement.FieldAssignmentTemplateDragModel.getInstance( field ) );
+		this.field = field;
+		if( this.field instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
+			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
+		}
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
+		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpression( this.field );
+	}
 }

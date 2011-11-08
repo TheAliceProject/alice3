@@ -40,23 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.members.components;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class SetFieldTemplate extends ExpressionStatementTemplate {
-	private org.lgna.project.ast.AbstractField field;
-	public SetFieldTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.ast.draganddrop.statement.FieldAssignmentTemplateDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
-		}
+public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
+	public AbstractTypeMethodsPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		super( type );
+	}
+	protected abstract org.lgna.croquet.components.Component< ? > createProcedureTemplate( org.lgna.project.ast.AbstractMethod method );
+	protected abstract org.lgna.croquet.components.Component< ? > createFunctionTemplate( org.lgna.project.ast.AbstractMethod method );
+
+	@Override
+	protected Iterable< org.lgna.croquet.components.Component< ? >> createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair ) {
+		return null;
 	}
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpression( this.field );
+	protected Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member ) {
+		org.lgna.croquet.components.Component< ? > component;
+		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
+			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
+			if( method.getNextShorterInChain() != null ) {
+				component = null;
+			} else {
+				if( method.isProcedure() ) {
+					component = createProcedureTemplate( method );
+				} else if( method.isFunction() ) {
+					component = createFunctionTemplate( method );
+				} else {
+					component = null;
+				}
+			}
+		} else {
+			component = null;
+		}
+		java.util.List< org.lgna.croquet.components.Component< ? > > rv;
+		if( component != null ) {
+			//line.add( javax.swing.Box.createHorizontalStrut( INDENT ) );
+			//if( member.isDeclaredInAlice() ) {
+			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+				//pass
+			} else {
+				if( member instanceof org.lgna.project.ast.AbstractCode ) {
+					org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)member;
+					if( code.isDeclaredInAlice() ) {
+						org.lgna.croquet.components.LineAxisPanel line = new org.lgna.croquet.components.LineAxisPanel();
+						line.addComponent( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( code ).createButton() );
+						line.addComponent( component );
+						component = line;
+					}
+				}
+			}
+			rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new org.lgna.croquet.components.Component< ? >[] { component } );
+		} else {
+			rv = null;
+		}
+		return rv;
 	}
 }

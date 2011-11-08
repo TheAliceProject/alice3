@@ -40,17 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.members.components.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldMenu extends org.lgna.croquet.PredeterminedMenuModel {
-	public FieldMenu( org.lgna.project.ast.UserField field ) {
-		super( 
-			java.util.UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
-			org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel(),
-			org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel()
+/*package-private*/ class AccessFieldArrayAtIndexTemplate extends org.alice.ide.templates.ExpressionTemplate {
+	private org.lgna.project.ast.AbstractField field;
+	public AccessFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
+		super( org.alice.ide.ast.draganddrop.expression.FieldArrayAtIndexDragModel.getInstance( field ) );
+		this.field = field;
+		if( this.field instanceof org.lgna.project.ast.UserField ) {
+			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
+			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
+		}
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
+		return new org.lgna.project.ast.ArrayAccess( 
+				field.getValueType(), 
+				org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field ), 
+				new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
 		);
 	}
 }

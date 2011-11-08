@@ -43,7 +43,7 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.ide.memberseditor.templates.GetterTemplate;
+import org.alice.ide.members.components.templates.GetterTemplate;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.ThisExpression;
 

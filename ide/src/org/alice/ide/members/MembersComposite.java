@@ -63,6 +63,6 @@ public class MembersComposite extends org.alice.ide.croquet.SingletonViewComposi
 	}
 	@Override
 	protected org.lgna.croquet.components.View< ?, ? > createView() {
-		return new org.alice.ide.memberseditor.MembersEditor( this );
+		return new org.alice.ide.members.components.MembersView( this );
 	}
 }

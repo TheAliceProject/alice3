@@ -40,48 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.members.components;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class ExpressionStatementTemplate extends org.alice.ide.templates.StatementTemplate {
-	public ExpressionStatementTemplate( org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel dragAndDropModel ) {
-		super( dragAndDropModel, org.lgna.project.ast.ExpressionStatement.class );
-	}
-	protected abstract org.lgna.project.ast.Expression createIncompleteExpression();
-	
-	private boolean isInitialized = false;
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.isInitialized ) {
-			//pass
-		} else {
-			this.refresh();
-			this.isInitialized = true;
-		}
+public class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
+	public FieldsContentPanel() {
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 	@Override
-	protected void handleUndisplayable() {
-		//this.removeAllComponents();
-		super.handleUndisplayable();
+	protected AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		return new TypeFieldsPane( type );
 	}
-	protected void refresh() {
-		this.removeAllComponents();
-		org.lgna.project.ast.Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( incompleteExpression ) );
-		this.addComponent( org.alice.ide.x.TemplateAstI18nFactory.getInstance().createExpressionPane( incompleteExpression ) );
-	}
-
-//	@Override
-//	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-//		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
-//		if( expression != null ) {
-//			return new org.lgna.project.ast.ExpressionStatement( expression );
-//		} else {
-//			return null;
-//		}
-//	}
-	
 }

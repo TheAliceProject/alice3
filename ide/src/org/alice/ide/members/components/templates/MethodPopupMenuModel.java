@@ -40,34 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.members.components.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeFunctionsPane extends AbstractTypeMethodsPane {
-	public TypeFunctionsPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		super( type );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type ) {
-		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods, type.constructors };
-	}
-	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type ) {
-		//return org.alice.ide.croquet.models.ast.DeclareFunctionOperation.getInstance( type ).createButton();
-		return org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( type ).createButton();
-	}
-	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
-		return org.alice.ide.operations.ast.FocusCodeOperation.getInstance( type.getDeclaredConstructor() ).createButton();
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createFunctionTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.memberseditor.templates.TemplateFactory.getFunctionInvocationTemplate( method );
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createProcedureTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		return null;
+/*package-private*/ class MethodPopupMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+	public MethodPopupMenuModel( org.lgna.project.ast.UserMethod methodInAlice ) {
+		super( 
+			java.util.UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),
+			org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( methodInAlice ).getMenuItemPrepModel(),
+			org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( methodInAlice ).getMenuItemPrepModel(),
+			org.alice.ide.operations.ast.FocusCodeOperation.getInstance( methodInAlice ).getMenuItemPrepModel(),
+			org.lgna.croquet.MenuModel.SEPARATOR,
+			org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( methodInAlice ).getMenuItemPrepModel()
+		);
 	}
 }

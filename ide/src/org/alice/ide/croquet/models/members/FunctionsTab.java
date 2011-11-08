@@ -57,6 +57,6 @@ public class FunctionsTab extends MemberTab {
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		return new org.alice.ide.memberseditor.FunctionsContentPanel();
+		return new org.alice.ide.members.components.FunctionsContentPanel();
 	}
 }
