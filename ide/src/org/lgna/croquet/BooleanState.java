@@ -155,6 +155,13 @@ public abstract class BooleanState extends State< Boolean > {
 		this.swingModel.buttonModel.addItemListener( this.itemListener );
 	}
 
+	public boolean isEnabled() {
+		return this.swingModel.action.isEnabled();
+	}
+	public void setEnabled( boolean isEnabled ) {
+		this.swingModel.action.setEnabled( isEnabled );
+	}
+
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}

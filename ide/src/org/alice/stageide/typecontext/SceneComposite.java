@@ -41,68 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.typecontext;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupPrepModel extends PrepModel {
-	private javax.swing.Action action = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			PopupPrepModel.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
-		}
-	};
-	public PopupPrepModel( java.util.UUID id ) {
-		super( id );
+public class SceneComposite extends org.lgna.croquet.Composite {
+	private static class SingletonHolder {
+		private static SceneComposite instance = new SceneComposite();
 	}
-	
+	public static SceneComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SceneComposite() {
+		super( java.util.UUID.fromString( "d0484679-2f78-4cc5-9ac5-0de8bcf31db1" ) );
+	}
 	@Override
-	protected final void localize() {
-		String name = this.getDefaultLocalizedText();
-		if( name != null ) {
-			this.setName( name );
-//			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
-//			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
-		}
+	protected void localize() {
 	}
-	
-	public javax.swing.Action getAction() {
-		return this.action;
-	}
-	private String getName() {
-		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
-	}
-	private void setName( String name ) {
-		this.action.putValue( javax.swing.Action.NAME, name );
-	}
-//	public void setShortDescription( String shortDescription ) {
-//		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
-//	}
-//	public void setLongDescription( String longDescription ) {
-//		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
-//	}
-//	public void setSmallIcon( javax.swing.Icon icon ) {
-//		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
-//	}
-//	public void setMnemonicKey( int mnemonicKey ) {
-//		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
-//	}
-//	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-//		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
-//	}
-	
-	
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		return rv;
-	}
-	public org.lgna.croquet.components.PopupButton createPopupButton() {
-		return new org.lgna.croquet.components.PopupButton( this );
-	}
-
-	protected abstract org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger );
-	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		return this.perform( trigger );
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
 	}
 }

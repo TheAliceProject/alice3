@@ -56,20 +56,20 @@ public abstract class Model extends Element implements org.lgna.croquet.resolver
 	
 	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 	
-	private boolean isEnabled = true;
-	public boolean isEnabled() {
-		return this.isEnabled;
-	}
-	public void setEnabled( boolean isEnabled ) {
-		if( this.isEnabled != isEnabled ) {
-			this.isEnabled = isEnabled;
-			synchronized( this.components ) {
-				for( org.lgna.croquet.components.JComponent<?> component : this.components ) {
-					component.getAwtComponent().setEnabled( this.isEnabled );
-				}
-			}
-		}
-	}
+//	private boolean isEnabled = true;
+//	public boolean isEnabled() {
+//		return this.isEnabled;
+//	}
+//	public void setEnabled( boolean isEnabled ) {
+//		if( this.isEnabled != isEnabled ) {
+//			this.isEnabled = isEnabled;
+//			synchronized( this.components ) {
+//				for( org.lgna.croquet.components.JComponent<?> component : this.components ) {
+//					component.getAwtComponent().setEnabled( this.isEnabled );
+//				}
+//			}
+//		}
+//	}
 
 	private String toolTipText = null;
 	public String getToolTipText() {
@@ -96,7 +96,7 @@ public abstract class Model extends Element implements org.lgna.croquet.resolver
 		synchronized( this.components ) {
 			this.components.add( component );
 		}
-		component.getAwtComponent().setEnabled( this.isEnabled );
+//		component.getAwtComponent().setEnabled( this.isEnabled );
 		component.setToolTipText( this.toolTipText );
 	}
 	public void removeComponent( org.lgna.croquet.components.JComponent<?> component ) {

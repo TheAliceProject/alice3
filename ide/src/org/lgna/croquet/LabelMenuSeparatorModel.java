@@ -49,7 +49,6 @@ public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel 
 	private javax.swing.Icon icon;
 	public LabelMenuSeparatorModel( java.util.UUID id ) {
 		super( id );
-		this.setEnabled( false );
 	}
 	@Override
 	public Iterable< ? extends Model > getChildren() {

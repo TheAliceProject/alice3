@@ -108,6 +108,13 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 //		}
 		return replacementEdit;
 	}
+	
+	public boolean isEnabled() {
+		return this.swingModel.action.isEnabled();
+	}
+	public void setEnabled( boolean isEnabled ) {
+		this.swingModel.action.setEnabled( isEnabled );
+	}
 
 	@Override
 	public final S fire( org.lgna.croquet.triggers.Trigger trigger ) {

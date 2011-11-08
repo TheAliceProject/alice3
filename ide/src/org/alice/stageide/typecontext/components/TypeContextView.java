@@ -46,12 +46,13 @@ package org.alice.stageide.typecontext.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeContextView extends org.lgna.croquet.components.View< javax.swing.JPanel, org.alice.stageide.typecontext.TypeContextComposite > {
+public class TypeContextView extends org.lgna.croquet.components.CardPanel {
+	private final Key sceneKey;
+	private final Key nonSceneKey;
 	public TypeContextView() {
 		super( org.alice.stageide.typecontext.TypeContextComposite.getInstance() );
-	}
-	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		return new javax.swing.JPanel();
+		//this.sceneKey = this.createKey( child, id );
+		this.sceneKey = null;//this.createKey( new SceneTypeView() );
+		this.nonSceneKey = this.createKey( new NonSceneTypeView() );
 	}
 }
