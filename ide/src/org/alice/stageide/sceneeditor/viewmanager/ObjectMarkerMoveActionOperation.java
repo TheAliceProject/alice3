@@ -81,12 +81,22 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	
 	protected void setToMoveToField(UserField toMoveTo, Icon icon) {
 		this.toMoveToField = toMoveTo;
-		this.imageIcon.setRightImage(icon);
+		if (this.toMoveToField != null) {
+			this.imageIcon.setRightImage(icon);
+		}
+		else {
+			this.imageIcon.setRightImage(null);
+		}
 	}
 	
 	protected void setToMoveField(UserField toMove, Icon icon) {
 		this.toMoveField = toMove;
-		this.imageIcon.setLeftImage(icon);
+		if (this.toMoveField != null ) {
+			this.imageIcon.setLeftImage(icon);
+		}
+		else {
+			this.imageIcon.setLeftImage(null);
+		}
 	}
 	
 	private void updateBasedOnSettings()
