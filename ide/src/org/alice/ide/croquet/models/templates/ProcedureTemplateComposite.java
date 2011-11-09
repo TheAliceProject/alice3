@@ -63,7 +63,7 @@ public class ProcedureTemplateComposite extends MemberTemplateComposite {
 	}
 	@Override
 	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		return new org.alice.ide.memberseditor.ProceduresContentPanel();
+		return new org.alice.ide.members.components.ProceduresContentPanel();
 	}
 	@Override
 	protected String getTextForTabTitle() {

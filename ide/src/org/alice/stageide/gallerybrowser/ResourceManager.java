@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-import org.lgna.project.ast.JavaType;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
 /**

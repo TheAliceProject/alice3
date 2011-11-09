@@ -42,13 +42,8 @@
  */
 package org.alice.stageide.croquet.models.declaration;
 
-import java.text.MessageFormat;
-
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
-import org.alice.ide.croquet.components.PanelWithPreview;
-import org.alice.ide.croquet.components.declaration.DeclarationPanel;
 import org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation;
-import org.lgna.croquet.history.InputDialogOperationStep;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.ImplementationAccessor;
 

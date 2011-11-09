@@ -46,12 +46,20 @@ package org.alice.ide.perspectives;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdePerspective extends org.lgna.croquet.Perspective {
+public abstract class IdePerspective extends org.lgna.croquet.Perspective< org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > > {
+	private org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > view;
 	public IdePerspective( java.util.UUID id ) {
 		super( id );
 	}
-	protected abstract org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > getView();
-	
+	public abstract org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus();
+	public synchronized org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > getView() {
+		if( this.view != null ) {
+			//pass
+		} else {
+			this.view = this.createView();
+		}
+		return this.view;
+	}
 	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 		this.getView().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}

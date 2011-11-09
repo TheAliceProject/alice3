@@ -53,6 +53,7 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspec
 	public static SetupScenePerspective getInstance() {
 		return SingletonHolder.instance;
 	}
+	private org.alice.stageide.perspectives.components.SetupSceneView view;
 	private SetupScenePerspective() {
 		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ) );
 	}
@@ -61,7 +62,11 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspec
 		return false;
 	}
 	@Override
-	protected org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > getView() {
-		return org.alice.stageide.perspectives.components.SetupSceneView.getInstance();
+	public org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > createView() {
+		return new org.alice.stageide.perspectives.components.SetupSceneView( this );
+	}
+	@Override
+	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
+		return null;
 	}
 }

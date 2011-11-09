@@ -49,9 +49,7 @@ import java.util.HashMap;
 import javax.swing.Icon;
 
 import org.alice.ide.name.validators.MarkerColorValidator;
-import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
-import org.lgna.croquet.Element;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.NamedUserType;
@@ -59,10 +57,8 @@ import org.lgna.project.ast.UserField;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.CameraMarkerImp;
-import org.lgna.story.implementation.MarkerImp;
 
 import edu.cmu.cs.dennisc.pattern.Tuple2;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author dculyba

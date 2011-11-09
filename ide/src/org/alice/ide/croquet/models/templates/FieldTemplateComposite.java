@@ -58,7 +58,7 @@ public class FieldTemplateComposite extends MemberTemplateComposite {
 	}
 	@Override
 	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		return new org.alice.ide.memberseditor.FieldsContentPanel();
+		return new org.alice.ide.members.components.FieldsContentPanel();
 	}
 	@Override
 	protected String getTextForTabTitle() {

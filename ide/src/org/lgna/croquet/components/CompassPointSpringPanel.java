@@ -51,6 +51,12 @@ public class CompassPointSpringPanel extends CornerSpringPanel {
 	private Component< ? > southComponent;
 	private Component< ? > westComponent;
 	
+	public CompassPointSpringPanel() {
+		this( null );
+	}
+	public CompassPointSpringPanel( org.lgna.croquet.Composite composite ) {
+		super( composite );
+	}
 	public Component< ? > getNorthComponent() {
 		return this.northComponent;
 	}

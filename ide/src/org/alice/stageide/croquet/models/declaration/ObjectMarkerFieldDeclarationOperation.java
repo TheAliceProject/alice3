@@ -44,19 +44,9 @@ package org.alice.stageide.croquet.models.declaration;
 
 import java.text.MessageFormat;
 
-import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
-import org.alice.ide.croquet.components.PanelWithPreview;
-import org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation;
-import org.lgna.croquet.history.InputDialogOperationStep;
-import org.lgna.project.ast.UserField;
 import org.lgna.story.Color;
-import org.lgna.story.ImplementationAccessor;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.pattern.event.NameEvent;
-import edu.cmu.cs.dennisc.pattern.event.NameListener;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 /**
  * @author dculyba

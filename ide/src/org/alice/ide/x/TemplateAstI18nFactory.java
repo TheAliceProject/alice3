@@ -61,7 +61,7 @@ public class TemplateAstI18nFactory extends IdeAstI18nFactory {
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
-		return new org.alice.ide.memberseditor.ArgumentListPropertyPane( this, argumentListProperty );
+		return new org.alice.ide.members.components.ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {

@@ -58,7 +58,7 @@ public class FunctionTemplateComposite extends MemberTemplateComposite {
 	}
 	@Override
 	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		return new org.alice.ide.memberseditor.FunctionsContentPanel();
+		return new org.alice.ide.members.components.FunctionsContentPanel();
 	}
 	@Override
 	protected String getTextForTabTitle() {

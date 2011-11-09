@@ -51,6 +51,11 @@ public abstract class TemplateComposite extends org.lgna.croquet.Composite {
 		super( id );
 	}
 	@Override
+	public org.lgna.croquet.components.View createView() {
+		System.err.println( "todo: createView " + this );
+		return null;
+	}
+	@Override
 	protected void localize() {
 	}
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {

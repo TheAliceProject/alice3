@@ -51,6 +51,12 @@ public class CornerSpringPanel extends SpringPanel {
 	private Component< ? > southWestComponent;
 	private Component< ? > southEastComponent;
 	
+	public CornerSpringPanel() {
+		this( null );
+	}
+	public CornerSpringPanel( org.lgna.croquet.Composite composite ) {
+		super( composite );
+	}
 	protected int getPad() {
 		return 8;
 	}

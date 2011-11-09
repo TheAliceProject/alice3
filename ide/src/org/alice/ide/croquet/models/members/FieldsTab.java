@@ -57,6 +57,6 @@ public class FieldsTab extends MemberTab {
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		return new org.alice.ide.memberseditor.FieldsContentPanel();
+		return new org.alice.ide.members.components.FieldsContentPanel();
 	}
 }

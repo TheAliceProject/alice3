@@ -47,15 +47,9 @@ package org.alice.stageide.perspectives.components;
  * @author Dennis Cosgrove
  */
 public class SetupSceneView extends IdePerspectiveView< javax.swing.JSplitPane, org.alice.stageide.perspectives.SetupScenePerspective > {
-	private static class SingletonHolder {
-		private static SetupSceneView instance = new SetupSceneView();
-	}
-	public static SetupSceneView getInstance() {
-		return SingletonHolder.instance;
-	}
 	private Integer mainDividerLocation = null;
-	private SetupSceneView() {
-		super( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
+	public SetupSceneView( org.alice.stageide.perspectives.SetupScenePerspective perspective ) {
+		super( perspective );
 		this.getAwtComponent().setRightComponent( new org.alice.stageide.gallerybrowser.GalleryBrowser().getAwtComponent() );
 		this.getAwtComponent().getRightComponent().setMinimumSize( new java.awt.Dimension( SPLIT_MINIMUM_SIZE, SPLIT_MINIMUM_SIZE ) );
 	}

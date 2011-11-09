@@ -47,7 +47,7 @@ package org.lgna.croquet;
  */
 public interface WizardStage {
 	public String getTitle();
-	public org.lgna.croquet.components.Component< ? > getComponent();
+	public org.lgna.croquet.components.JComponent< ? > getComponent();
 	public String getExplanationIfProcedeButtonShouldBeDisabled();
 	public boolean isFinishPotentiallyEnabled();
 }

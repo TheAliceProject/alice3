@@ -43,7 +43,6 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.ide.IDE;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.OrthographicCameraMarkerImp;

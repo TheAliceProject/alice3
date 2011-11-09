@@ -47,8 +47,14 @@ package org.alice.ide.typeeditor;
  * @author Dennis Cosgrove
  */
 public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
+	private static class SingletonHolder {
+		private static TypeEditor instance = new TypeEditor();
+	}
+	public static TypeEditor getInstance() {
+		return SingletonHolder.instance;
+	}
 	private final org.lgna.croquet.components.FolderTabbedPane< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > tabbedPane;
-	public TypeEditor() {
+	private TypeEditor() {
 		this.tabbedPane = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().createFolderTabbedPane( DeclarationTabCreator.SINGLETON );
 		this.tabbedPane.setHeaderLeadingComponent( org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton() );
 		this.addComponent( tabbedPane, Constraint.CENTER );

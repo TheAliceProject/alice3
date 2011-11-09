@@ -43,8 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import org.alice.stageide.gallerybrowser.ResourceManager;
-
 /**
  * @author Dennis Cosgrove
  */

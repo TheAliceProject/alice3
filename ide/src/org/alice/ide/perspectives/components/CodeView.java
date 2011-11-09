@@ -47,25 +47,23 @@ package org.alice.ide.perspectives.components;
  * @author Dennis Cosgrove
  */
 public class CodeView extends org.alice.stageide.perspectives.components.IdePerspectiveView< javax.swing.JSplitPane, org.alice.ide.perspectives.CodePerspective > {
-	private static class SingletonHolder {
-		private static CodeView instance = new CodeView();
-	}
-	public static CodeView getInstance() {
-		return SingletonHolder.instance;
-	}
 	private Integer leftDividerLocation = null;
 	private final org.lgna.croquet.components.VerticalSplitPane left = new org.lgna.croquet.components.VerticalSplitPane();
-	private final org.alice.ide.typeeditor.TypeEditor typeEditor = new org.alice.ide.typeeditor.TypeEditor();
-	private CodeView() {
-		super( org.alice.ide.perspectives.CodePerspective.getInstance() );
-		
-		org.alice.ide.memberseditor.MembersEditor membersEditor = new org.alice.ide.memberseditor.MembersEditor();
-		org.alice.ide.typehierarchyview.TypeHierarchyView typeHierarchyView = new org.alice.ide.typehierarchyview.TypeHierarchyView();
-
-		org.alice.ide.contextview.ContextView contextView = new org.alice.ide.contextview.ContextView( typeHierarchyView, membersEditor );
+	private final org.alice.ide.typeeditor.TypeEditor typeEditor = org.alice.ide.typeeditor.TypeEditor.getInstance();
+	private final org.alice.stageide.typecontext.components.SceneOrNonSceneCardPanel sceneOrNonSceneCardPanel;
+	public CodeView( org.alice.ide.perspectives.CodePerspective perspective ) {
+		super( perspective );
+		org.alice.ide.perspectives.components.TypeOrCodeCardPanel contextView = new org.alice.ide.perspectives.components.TypeOrCodeCardPanel( 
+				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), 
+				org.alice.ide.members.MembersComposite.getInstance() 
+		);
 		this.left.setBottomComponent( contextView );
-		this.left.setTopComponent( org.alice.stageide.typecontext.components.TypeContextView.getInstance() );
 		
+		this.sceneOrNonSceneCardPanel = new org.alice.stageide.typecontext.components.SceneOrNonSceneCardPanel( 
+				org.alice.stageide.typecontext.SceneTypeComposite.getInstance(),
+				org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance()
+		);
+		this.left.setTopComponent( this.sceneOrNonSceneCardPanel );
 		javax.swing.JSplitPane jSplitPane = this.getAwtComponent();
 		jSplitPane.setLeftComponent( this.left.getAwtComponent() );
 		jSplitPane.setRightComponent( this.typeEditor.getAwtComponent() );
@@ -95,7 +93,8 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 		} else {
 			this.leftDividerLocation = 240;
 		}
-		org.alice.stageide.typecontext.components.SceneTypeView.getInstance().addComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		org.lgna.croquet.components.CardPanel.Key key = this.sceneOrNonSceneCardPanel.getKey( org.alice.stageide.typecontext.SceneTypeComposite.getInstance() );
+		key.getView().getAwtComponent().add( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getAwtComponent(), java.awt.BorderLayout.CENTER );
 		this.left.setDividerLocation( this.leftDividerLocation );
 	}
 	
