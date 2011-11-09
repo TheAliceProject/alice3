@@ -43,8 +43,6 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.awt.Color;
-
 import javax.swing.BorderFactory;
 
 import org.lgna.croquet.components.Label;

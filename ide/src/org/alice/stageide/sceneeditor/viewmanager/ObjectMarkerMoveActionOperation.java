@@ -49,7 +49,6 @@ import javax.swing.Icon;
 import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
 import org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.history.ActionOperationStep;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.UserField;

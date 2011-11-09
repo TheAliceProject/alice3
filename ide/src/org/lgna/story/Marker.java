@@ -43,10 +43,6 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.GetterTemplate;
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.project.annotations.ValueTemplate;
-
 /**
  * @author Dennis Cosgrove
  */
