@@ -40,28 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing;
+
+package edu.cmu.cs.dennisc.javax.swing.icons;
 
 /**
  * @author Dennis Cosgrove
- *
  */
-public class IconUtilities {
-	private IconUtilities() {
-		throw new AssertionError();
+public class AlphaIcon implements javax.swing.Icon {
+	private final javax.swing.Icon icon;
+	private final float alpha;
+
+	public AlphaIcon( javax.swing.Icon icon, float alpha ) {
+		this.icon = icon;
+		this.alpha = alpha;
 	}
-	public static javax.swing.ImageIcon createImageIcon( java.net.URL url ) {
-		if( url != null ) {
-			return new javax.swing.ImageIcon( url );
-		} else {
-			return null;
-		}
+	public int getIconWidth() {
+		return this.icon.getIconWidth();
 	}
-	public static javax.swing.ImageIcon createImageIcon( java.awt.Image image ) {
-		if( image != null ) {
-			return new javax.swing.ImageIcon( image );
-		} else {
-			return null;
+	public int getIconHeight() {
+		return this.icon.getIconHeight();
+	}
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.Composite prevComposite = g2.getComposite();
+		g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, this.alpha ) );
+		try {
+			this.icon.paintIcon( c, g2, x, y );
+		} finally {
+			g2.setComposite( prevComposite );
 		}
 	}
 }

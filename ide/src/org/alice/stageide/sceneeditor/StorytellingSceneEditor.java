@@ -1048,8 +1048,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 		return null;
 	}
-	public AbstractCamera getSGCameraForCreatingThumbnails() {
-		throw new RuntimeException( "todo" );
+	public AbstractCamera getSgCameraForCreatingThumbnails() {
+		if( this.sceneCameraImplementation != null ) {
+			return this.sceneCameraImplementation.getSgCamera();
+		} else {
+			return null;
+		}
 	}
 	
 	public void setShowSnapGrid( boolean showSnapGrid ) {

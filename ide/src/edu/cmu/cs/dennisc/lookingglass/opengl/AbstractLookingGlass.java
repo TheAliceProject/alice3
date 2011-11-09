@@ -206,6 +206,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		m_description = description;
 	}
 	public void addCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+		assert camera != null;
 		synchronized( m_cameras ) {
 			m_cameras.add( camera );
 		}
@@ -217,6 +218,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 	public void removeCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+		assert camera != null;
 		synchronized( m_cameras ) {
 			m_cameras.remove( camera );
 		}
@@ -227,11 +229,13 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 	public void clearCameras() {
-		synchronized( m_cameras ) {
-			m_cameras.clear();
-		}
-		if( m_glEventAdapter.isListening() ) {
-			m_glEventAdapter.stopListening( getGLAutoDrawable() );
+		if( m_cameras.size() > 0 ) {
+			synchronized( m_cameras ) {
+				m_cameras.clear();
+			}
+			if( m_glEventAdapter.isListening() ) {
+				m_glEventAdapter.stopListening( getGLAutoDrawable() );
+			}
 		}
 	}
 	public int getCameraCount() {
