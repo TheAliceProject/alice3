@@ -68,33 +68,34 @@ public class CardPanel extends Panel {
 		return this.cardLayout;
 	}
 	
-	public class Key {
-		private JComponent< ? > child;
-		private String cardLayoutKey;
-		private Key( JComponent< ? > child, String cardLayoutKey ) {
-			this.child = child;
-			this.cardLayoutKey = cardLayoutKey;
+	public static final class Key {
+		private final JComponent< ? > view;
+		private final java.util.UUID id;
+		private Key( JComponent< ? > view, java.util.UUID id ) {
+			this.view = view;
+			this.id = id;
 		}
+		public java.util.UUID getId() {
+			return this.id;
+		}	
 		public JComponent< ? > getView() {
-			return this.child;
+			return this.view;
 		}
 	}
-	private java.util.Map< String, Key > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< java.util.UUID, Key > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private Key nullKey;
 	@Deprecated
 	public Key createKey( JComponent< ? > child, java.util.UUID id ) {
-		String cardLayoutKey = id.toString();
-		if( map.containsKey( cardLayoutKey ) ) {
+		if( map.containsKey( id ) ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: CardPanel replacing key" );
 		}
-		Key rv = new Key( child, cardLayoutKey );
-		this.map.put( cardLayoutKey, rv );
+		Key rv = new Key( child, id );
+		this.map.put( id, rv );
 		return rv;
 	}
 	@Deprecated
 	public Key getKey( java.util.UUID id ) {
-		String cardLayoutKey = id.toString();
-		return this.map.get( cardLayoutKey );
+		return this.map.get( id );
 	}
 
 	public Key getKey( org.lgna.croquet.Composite< ? > composite ) {
@@ -105,10 +106,10 @@ public class CardPanel extends Panel {
 	}
 	
 	public void addComponent( Key key ) {
-		this.internalAddComponent( key.child, key.cardLayoutKey );
+		this.internalAddComponent( key.view, key.id.toString() );
 	}
 	public void removeComponent( Key key ) {
-		this.internalRemoveComponent( key.child );
+		this.internalRemoveComponent( key.view );
 	}
 	public void show( Key key ) {
 		if( key != null ) {
@@ -126,6 +127,6 @@ public class CardPanel extends Panel {
 			}
 			key = this.nullKey;
 		}
-		this.cardLayout.show( this.getAwtComponent(), key.cardLayoutKey );
+		this.cardLayout.show( this.getAwtComponent(), key.id.toString() );
 	}
 }

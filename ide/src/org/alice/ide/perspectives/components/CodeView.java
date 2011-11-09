@@ -94,7 +94,10 @@ public class CodeView extends org.alice.stageide.perspectives.components.IdePers
 			this.leftDividerLocation = 240;
 		}
 		org.lgna.croquet.components.CardPanel.Key key = this.sceneOrNonSceneCardPanel.getKey( org.alice.stageide.typecontext.SceneTypeComposite.getInstance() );
-		key.getView().getAwtComponent().add( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getAwtComponent(), java.awt.BorderLayout.CENTER );
+		assert key != null;
+		if( key != null ) {
+			key.getView().getAwtComponent().add( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getAwtComponent(), java.awt.BorderLayout.CENTER );
+		}
 		this.left.setDividerLocation( this.leftDividerLocation );
 	}
 	
