@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Perspective extends Composite {
+public abstract class Perspective< V extends org.lgna.croquet.components.View< ?, ? > > extends Composite< V > {
 	private String name;
 	public Perspective( java.util.UUID id ) {
 		super( id );

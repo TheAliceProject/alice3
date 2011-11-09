@@ -102,4 +102,9 @@ public class ControlFlowComposite extends org.lgna.croquet.Composite {
 	public java.util.List< org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > getModels() {
 		return this.models;
 	}
+	@Override
+	public org.lgna.croquet.components.View createView() {
+		System.err.println( "todo: createView " + this );
+		return null;
+	}
 }

@@ -64,6 +64,11 @@ public abstract class PredeterminedTab extends Composite {
 	protected void localize() {
 		this.setTitleText( this.getDefaultLocalizedText() );
 	}
+	@Override
+	public org.lgna.croquet.components.View<?,?> createView() {
+		System.err.println( "todo: createView " + this );
+		return null;
+	}
 	public String getTitleText() {
 		return this.titleText;
 	}

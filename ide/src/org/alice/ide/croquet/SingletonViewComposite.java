@@ -46,8 +46,8 @@ package org.alice.ide.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingletonViewComposite extends org.lgna.croquet.Composite {
-	private org.lgna.croquet.components.View< ?, ? > view;
+public abstract class SingletonViewComposite< V extends org.lgna.croquet.components.View< ?, ? > > extends org.lgna.croquet.Composite< V > {
+//	private V view;
 	public SingletonViewComposite( java.util.UUID id ) {
 		super( id );
 	}
@@ -55,13 +55,12 @@ public abstract class SingletonViewComposite extends org.lgna.croquet.Composite 
 	protected void localize() {
 	}
 	
-	protected abstract org.lgna.croquet.components.View< ?, ? > createView();
-	public synchronized org.lgna.croquet.components.View< ?, ? > getView() {
-		if( this.view != null ) {
-			//pass
-		} else {
-			this.view = this.createView();
-		}
-		return this.view;
-	}
+//	public synchronized V getView() {
+//		if( this.view != null ) {
+//			//pass
+//		} else {
+//			this.view = this.createView();
+//		}
+//		return this.view;
+//	}
 }

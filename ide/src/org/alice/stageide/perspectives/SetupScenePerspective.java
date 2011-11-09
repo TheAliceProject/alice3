@@ -62,8 +62,8 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspec
 		return false;
 	}
 	@Override
-	protected org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > createView() {
-		return new org.alice.stageide.perspectives.components.SetupSceneView();
+	public org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > createView() {
+		return new org.alice.stageide.perspectives.components.SetupSceneView( this );
 	}
 	@Override
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {

@@ -64,6 +64,11 @@ public class DeclarationComposite extends org.lgna.croquet.Composite {
 		this.declaration = declaration;
 	}
 	@Override
+	public org.lgna.croquet.components.View createView() {
+		System.err.println( "todo: createView " + this );
+		return null;
+	}
+	@Override
 	protected void localize() {
 	}
 	public org.lgna.project.ast.AbstractDeclaration getDeclaration() {

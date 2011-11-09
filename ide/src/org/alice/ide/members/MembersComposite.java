@@ -46,7 +46,7 @@ package org.alice.ide.members;
 /**
  * @author Dennis Cosgrove
  */
-public class MembersComposite extends org.alice.ide.croquet.SingletonViewComposite {
+public class MembersComposite extends org.alice.ide.croquet.SingletonViewComposite< org.alice.ide.members.components.MembersView > {
 	private static class SingletonHolder {
 		private static MembersComposite instance = new MembersComposite();
 	}
@@ -62,7 +62,7 @@ public class MembersComposite extends org.alice.ide.croquet.SingletonViewComposi
 		return true;
 	}
 	@Override
-	protected org.lgna.croquet.components.View< ?, ? > createView() {
+	public org.alice.ide.members.components.MembersView createView() {
 		return new org.alice.ide.members.components.MembersView( this );
 	}
 }

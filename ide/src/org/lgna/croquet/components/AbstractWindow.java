@@ -226,7 +226,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		this.menuBarModel = menuBarModel;
 		javax.swing.JMenuBar jMenuBar;
 		if( this.menuBarModel != null ) {
-			jMenuBar = menuBarModel.createMenuBar().getAwtComponent();
+			jMenuBar = menuBarModel.createView().getAwtComponent();
 		} else {
 			jMenuBar = null;
 		}

@@ -46,7 +46,7 @@ package org.alice.ide.typehierarchy;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeHierarchyComposite extends org.alice.ide.croquet.SingletonViewComposite {
+public class TypeHierarchyComposite extends org.alice.ide.croquet.SingletonViewComposite< org.alice.ide.typehierarchy.components.TypeHierarchyView > {
 	private static class SingletonHolder {
 		private static TypeHierarchyComposite instance = new TypeHierarchyComposite();
 	}
@@ -62,7 +62,7 @@ public class TypeHierarchyComposite extends org.alice.ide.croquet.SingletonViewC
 		return true;
 	}
 	@Override
-	protected org.lgna.croquet.components.View< ?, ? > createView() {
+	public org.alice.ide.typehierarchy.components.TypeHierarchyView createView() {
 		return new org.alice.ide.typehierarchy.components.TypeHierarchyView( this );
 	}
 }

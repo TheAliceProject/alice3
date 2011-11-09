@@ -57,8 +57,8 @@ public class TypeOrCodeCardPanel extends org.lgna.croquet.components.CardPanel {
 		}
 	};
 	public TypeOrCodeCardPanel( org.alice.ide.croquet.SingletonViewComposite typeComposite, org.alice.ide.croquet.SingletonViewComposite codeComposite ) {
-		this.typeKey = this.createKey( typeComposite.getView() );
-		this.codeKey = this.createKey( codeComposite.getView() );
+		this.typeKey = this.createKey( typeComposite );
+		this.codeKey = this.createKey( codeComposite );
 		this.addComponent( this.typeKey );
 		this.addComponent( this.codeKey );
 	}

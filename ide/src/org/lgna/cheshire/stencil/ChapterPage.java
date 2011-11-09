@@ -395,7 +395,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 		this.setLayoutHint( new java.awt.Point( x, y ) );
 	}
 	
-	public org.lgna.croquet.components.Component< ? > getCard() {
+	public org.lgna.croquet.components.JComponent< ? > getCard() {
 		return this.stepPanel;
 	}
 

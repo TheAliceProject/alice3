@@ -69,16 +69,20 @@ public class CardPanel extends Panel {
 	}
 	
 	public class Key {
-		private Component<?> child;
+		private JComponent< ? > child;
 		private String cardLayoutKey;
-		private Key( Component<?> child, String cardLayoutKey ) {
+		private Key( JComponent< ? > child, String cardLayoutKey ) {
 			this.child = child;
 			this.cardLayoutKey = cardLayoutKey;
+		}
+		public JComponent< ? > getView() {
+			return this.child;
 		}
 	}
 	private java.util.Map< String, Key > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private Key nullKey;
-	public Key createKey( Component<?> child, java.util.UUID id ) {
+	@Deprecated
+	public Key createKey( JComponent< ? > child, java.util.UUID id ) {
 		String cardLayoutKey = id.toString();
 		if( map.containsKey( cardLayoutKey ) ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: CardPanel replacing key" );
@@ -87,13 +91,17 @@ public class CardPanel extends Panel {
 		this.map.put( cardLayoutKey, rv );
 		return rv;
 	}
+	@Deprecated
 	public Key getKey( java.util.UUID id ) {
 		String cardLayoutKey = id.toString();
 		return this.map.get( cardLayoutKey );
 	}
-	
-	public Key createKey( View< ?, ? > view ) {
-		return this.createKey( view, view.getComposite().getId() );
+
+	public Key getKey( org.lgna.croquet.Composite< ? > composite ) {
+		return this.getKey( composite.getId() );
+	}
+	public Key createKey( org.lgna.croquet.Composite< ? > composite ) {
+		return this.createKey( composite.createView(), composite.getId() );
 	}
 	
 	public void addComponent( Key key ) {

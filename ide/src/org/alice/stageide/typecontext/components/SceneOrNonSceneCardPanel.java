@@ -57,8 +57,8 @@ public class SceneOrNonSceneCardPanel extends org.lgna.croquet.components.CardPa
 		}
 	};
 	public SceneOrNonSceneCardPanel( org.alice.ide.croquet.SingletonViewComposite sceneComposite, org.alice.ide.croquet.SingletonViewComposite nonSceneComposite ) {
-		this.sceneKey = this.createKey( sceneComposite.getView() );
-		this.nonSceneKey = this.createKey( nonSceneComposite.getView() );
+		this.sceneKey = this.createKey( sceneComposite );
+		this.nonSceneKey = this.createKey( nonSceneComposite );
 		this.addComponent( this.sceneKey );
 		this.addComponent( this.nonSceneKey );
 	}
