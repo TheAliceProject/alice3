@@ -112,7 +112,7 @@ public class MoveMarkerToActiveCameraActionOperation extends org.lgna.croquet.Ac
 		this.cameraMarker = cameraMarker;
 		if (this.cameraMarker != null)
 		{
-			this.imageIcon.setRightImage(MarkerUtilities.getIconForCamera(cameraMarker));
+			this.imageIcon.setRightImage(MarkerUtilities.getIconForCameraImp(cameraMarker));
 		}
 		else {
 			this.imageIcon.setRightImage(null);

@@ -378,7 +378,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.selectedObject;
 	}
 	
-	public void setHandleShowingForgetSelectedImplementation( TransformableImp object, boolean handlesShowing)
+	public void setHandleShowingForSelectedImplementation( TransformableImp object, boolean handlesShowing)
 	{
 		if (this.selectedObject == object)
 		{

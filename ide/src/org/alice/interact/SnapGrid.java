@@ -230,8 +230,10 @@ public class SnapGrid extends Transformable implements PropertyListener{
 	
 	private void setSnapGridBasedOnCameraPosition()
 	{
-		AffineMatrix4x4 currentCameraPosition = currentCamera.getAbsoluteTransformation();
-		this.setTranslationOnly(getClosestSnapLocation(currentCameraPosition.translation), AsSeenBy.SCENE);
+		if (this.currentCamera != null) {
+			AffineMatrix4x4 currentCameraPosition = this.currentCamera.getAbsoluteTransformation();
+			this.setTranslationOnly(getClosestSnapLocation(currentCameraPosition.translation), AsSeenBy.SCENE);
+		}
 	}
 	
 	public void setSpacing(double spacing)

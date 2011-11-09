@@ -74,7 +74,7 @@ public abstract class MarkerImp extends ModelImp {
 	}
 	
 	@Override
-	public Entity getAbstraction() {
+	public org.lgna.story.Marker getAbstraction() {
 		// TODO Auto-generated method stub
 		return this.abstraction;
 	}
@@ -92,9 +92,12 @@ public abstract class MarkerImp extends ModelImp {
 			this.isShowing = isShowing;
 			if (this.getDisplayEnabled())
 			{
-				for (Visual v : this.getSgVisuals())
-				{
-					v.isShowing.setValue(this.isShowing);
+				Visual[] visuals = this.getSgVisuals();
+				if (visuals != null && visuals.length > 0) {
+					for (Visual v : visuals)
+					{
+						v.isShowing.setValue(this.isShowing);
+					}
 				}
 			}
 		}
@@ -110,9 +113,12 @@ public abstract class MarkerImp extends ModelImp {
 		this.displayEnabled = useDisplay;
 		if (!this.displayEnabled)
 		{
-			for (Visual v : this.getSgVisuals())
-			{
-				v.isShowing.setValue(false);
+			Visual[] visuals = this.getSgVisuals();
+			if (visuals != null && visuals.length > 0) {
+				for (Visual v : visuals)
+				{
+					v.isShowing.setValue(false);
+				}
 			}
 		}
 	}
@@ -120,11 +126,14 @@ public abstract class MarkerImp extends ModelImp {
 	protected AxisAlignedBox calculateBoundingBox()
 	{
 		AxisAlignedBox bbox = new AxisAlignedBox();
-		for (Visual v : this.getSgVisuals())
-		{
-			for (Geometry g : v.geometries.getValue())
+		Visual[] visuals = this.getSgVisuals();
+		if (visuals != null && visuals.length > 0) {
+			for (Visual v : this.getSgVisuals())
 			{
-				bbox.union(g.getAxisAlignedMinimumBoundingBox());
+				for (Geometry g : v.geometries.getValue())
+				{
+					bbox.union(g.getAxisAlignedMinimumBoundingBox());
+				}
 			}
 		}
 		return bbox;
@@ -142,27 +151,41 @@ public abstract class MarkerImp extends ModelImp {
 	
 	public Color4f getMarkerColor()
 	{
-		return this.getSgPaintAppearances()[0].diffuseColor.getValue();
+		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgPaintAppearances();
+		if (appearances != null && appearances.length > 0) {
+			return appearances[0].diffuseColor.getValue();
+		}
+		return Color4f.WHITE;
 	}
 	
 	public void setMarkerColor( Color4f color )
 	{
-		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgPaintAppearances() ) {
-			sgAppearance.diffuseColor.setValue( color );
+		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgPaintAppearances();
+		if (appearances != null && appearances.length > 0) {
+			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgPaintAppearances() ) {
+				sgAppearance.diffuseColor.setValue( color );
+			}
 		}
 	}
 	
 	public float getMarkerOpacity() {
-		float actualValue = this.getSgOpacityAppearances()[0].opacity.getValue();
-		float scaledValue = actualValue / this.getDefaultMarkerOpacity();
-		return scaledValue;
+		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgOpacityAppearances();
+		if (appearances != null && appearances.length > 0) {
+			float actualValue = appearances[0].opacity.getValue();
+			float scaledValue = actualValue / this.getDefaultMarkerOpacity();
+			return scaledValue;
+		}
+		return 1;
 	}
 
 	protected void setMarkerOpacity(float opacity)
 	{
+		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgOpacityAppearances();
 		float scaledValue = opacity * this.getDefaultMarkerOpacity();
-		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgOpacityAppearances() ) {
-			sgAppearance.opacity.setValue( scaledValue );
+		if (appearances != null && appearances.length > 0) {
+			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgOpacityAppearances() ) {
+				sgAppearance.opacity.setValue( scaledValue );
+			}
 		}
 	}
 	@Override

@@ -236,7 +236,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 			this.markerToUpdate.setShowing(false);
 			this.markerToUpdate.setLocalTransformation(AffineMatrix4x4.accessIdentity());
 			this.markerToUpdate.getSgComposite().setParent(cameraParent);
-			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate.getSgComposite(), false);
+			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate, false);
 		}
 	}
 	
@@ -248,7 +248,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 			this.markerToUpdate.getSgComposite().setParent(this.markerToUpdate.getSgComposite().getRoot());
 			this.markerToUpdate.getSgComposite().setTransformation(previousMarkerTransform, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);
 			this.markerToUpdate.setShowing(true);
-			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate.getSgComposite(), true);
+			this.sceneEditor.setHandleVisibilityForObject(this.markerToUpdate, true);
 		}
 		this.markerToUpdate = null;
 	}
