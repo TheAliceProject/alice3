@@ -49,21 +49,21 @@ package org.alice.stageide.typecontext.components;
 public class SceneOrNonSceneCardPanel extends org.lgna.croquet.components.CardPanel {
 	private final Key sceneKey;
 	private final Key nonSceneKey;
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > declarationListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-			SceneOrNonSceneCardPanel.this.handleDeclarationStateChanged( nextValue );
+			SceneOrNonSceneCardPanel.this.handleTypeStateChanged( nextValue );
 		}
 	};
-	public SceneOrNonSceneCardPanel( org.alice.ide.croquet.SingletonViewComposite sceneComposite, org.alice.ide.croquet.SingletonViewComposite nonSceneComposite ) {
+	public SceneOrNonSceneCardPanel( org.alice.stageide.typecontext.SceneTypeComposite sceneComposite, org.alice.stageide.typecontext.NonSceneTypeComposite nonSceneComposite ) {
 		this.sceneKey = this.createKey( sceneComposite );
 		this.nonSceneKey = this.createKey( nonSceneComposite );
 		this.addComponent( this.sceneKey );
 		this.addComponent( this.nonSceneKey );
 	}
 	
-	private void handleDeclarationStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
+	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		Key key;
 		if( nextValue != null ) {
 			if( nextValue.isAssignableTo( org.lgna.story.Scene.class ) ) {
@@ -71,6 +71,11 @@ public class SceneOrNonSceneCardPanel extends org.lgna.croquet.components.CardPa
 			} else {
 				key = this.nonSceneKey;
 			}
+//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
+//			if( view instanceof NonSceneTypeView ) {
+//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
+//				nonSceneTypeView.handlePreShow();
+//			}
 		} else {
 			key = null;
 		}
@@ -79,13 +84,11 @@ public class SceneOrNonSceneCardPanel extends org.lgna.croquet.components.CardPa
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleAddedTo( parent );
-		//org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addValueObserver( this.instanceFactorySelectionObserver );
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().addAndInvokeValueObserver( this.declarationListener );
+		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
 	}
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
-		//org.alice.ide.instancefactory.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactorySelectionObserver );
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().removeValueObserver( this.declarationListener );
+		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().removeValueObserver( this.typeListener );
 		super.handleRemovedFrom( parent );
 	}
 }

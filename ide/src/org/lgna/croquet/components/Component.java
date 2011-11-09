@@ -180,7 +180,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 	
 	private static boolean isWarningAlreadyPrinted = false;
-	protected final void handleHierarchyChanged( java.awt.event.HierarchyEvent e ) {
+	protected void handleHierarchyChanged( java.awt.event.HierarchyEvent e ) {
 		//assert e.getComponent() == this.awtComponent : this;
 		java.awt.Component awtComponent = e.getComponent();
 		java.awt.Component awtChanged = e.getChanged();
