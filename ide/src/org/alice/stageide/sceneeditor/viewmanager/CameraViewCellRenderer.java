@@ -44,9 +44,6 @@ package org.alice.stageide.sceneeditor.viewmanager;
 
 import java.awt.Color;
 
-import javax.swing.JLabel;
-import javax.swing.JList;
-
 import org.alice.stageide.sceneeditor.View;
 import org.lgna.story.implementation.CameraMarkerImp;
 

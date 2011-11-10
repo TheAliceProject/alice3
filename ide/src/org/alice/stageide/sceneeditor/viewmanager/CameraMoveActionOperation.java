@@ -46,20 +46,13 @@ import java.text.MessageFormat;
 
 import javax.swing.Icon;
 
-import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
 import org.alice.stageide.operations.ast.MoveAndOrientToEdit;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.history.ActionOperationStep;
 import org.lgna.project.ast.UserField;
-import org.lgna.story.PerspectiveCameraMarker;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.CameraMarkerImp;
-import org.lgna.story.implementation.OrthographicCameraMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
-import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
 import org.lgna.story.implementation.TransformableImp;
-
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author dculyba

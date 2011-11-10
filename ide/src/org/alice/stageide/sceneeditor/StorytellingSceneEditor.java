@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -92,7 +91,6 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Marker;
 import org.lgna.story.OrthographicCameraMarker;
 import org.lgna.story.PerspectiveCameraMarker;
-import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.MarkerImp;
@@ -116,12 +114,10 @@ import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.pattern.Tuple3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author dculyba

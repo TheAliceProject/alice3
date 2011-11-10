@@ -43,8 +43,6 @@
 package org.lgna.story.implementation;
 
 
-import org.lgna.story.Entity;
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;

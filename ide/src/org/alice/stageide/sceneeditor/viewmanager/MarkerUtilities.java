@@ -56,7 +56,6 @@ import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.CameraMarker;
-import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 
 import edu.cmu.cs.dennisc.pattern.Tuple2;
