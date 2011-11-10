@@ -64,6 +64,7 @@ import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
+import org.alice.stageide.sceneeditor.viewmanager.CameraViewCellRenderer;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
 import org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation;
@@ -229,86 +230,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 	};
 	
-//	private static class FieldRadioButtons extends org.lgna.croquet.components.CustomRadioButtons< org.lgna.project.ast.Accessible > {
-//		private static final int SUB_FIELD_LEFT_INSET = 10;
-//		private static final int INTRA_FIELD_PAD = 1;
-//		private javax.swing.SpringLayout springLayout;
-//		public FieldRadioButtons( ListSelectionState<org.lgna.project.ast.Accessible> model ) {
-//			super( model );
-//		}
-//		@Override
-//		protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
-//			this.springLayout = new javax.swing.SpringLayout() {
-//				@Override
-//				public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) {
-//					java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
-//					for( java.awt.Component component : parent.getComponents() ) {
-//						java.awt.Dimension componentSize = component.getPreferredSize();
-//						rv.width = Math.max( rv.width, componentSize.width );
-//						rv.height += componentSize.height;
-//						rv.height += INTRA_FIELD_PAD;
-//					}
-//					rv.width += SUB_FIELD_LEFT_INSET;
-//					rv.width += INSET;
-//					rv.height += INSET;
-//					return rv;
-//				}
-//			};
-//			return this.springLayout;
-//		}
-//		
-//		@Override
-//		protected org.lgna.croquet.components.BooleanStateButton< ? > createBooleanStateButton( org.lgna.project.ast.Accessible item, BooleanState booleanState ) {
-//			return new FieldTile( item, booleanState );
-//		}
-//		
-//		private org.lgna.croquet.components.Component<?> previousComponent;
-//		private org.lgna.croquet.components.Component<?> rootComponent;
-//		@Override
-//		protected void removeAllDetails() {
-//			this.internalRemoveAllComponents();
-//		}
-//		@Override
-//		protected void addPrologue(int count) {
-//			this.previousComponent = null;
-//			this.rootComponent = null;
-//		}
-//		
-//		
-////		@Override
-////		protected void addItem( org.lgna.croquet.components.RadioButtonItemDetails<org.lgna.project.ast.Accessible> itemDetails) {
-////			AbstractButton<?,?> button = itemDetails.getButton();
-////			if( this.previousComponent != null ) {
-////				this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, button.getAwtComponent(), INTRA_FIELD_PAD, javax.swing.SpringLayout.SOUTH, this.previousComponent.getAwtComponent() );
-////				this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, button.getAwtComponent(), SUB_FIELD_LEFT_INSET, javax.swing.SpringLayout.WEST, this.rootComponent.getAwtComponent() );
-////				this.internalAddComponent(button);
-////			} else {
-////				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( this.getAwtComponent(), button.getAwtComponent(), INSET );
-////				this.rootComponent = button;
-////			}
-////			this.previousComponent = button;
-////		}
-//		@Override
-//		protected void addEpilogue() {
-//			this.previousComponent = null;
-//			this.rootComponent = null;
-//		}
-//		
-//		public FieldTile getFieldTileForField(org.lgna.project.ast.UserField field)
-//		{
-//			for (org.lgna.croquet.components.ItemSelectablePanel.ItemDetails item : this.getAllItemDetails())
-//			{
-//				FieldTile fieldTile = (FieldTile)item.getButton();
-//				Accessible itemField = fieldTile.getAccessible();
-//				if (itemField == field)
-//				{
-//					return fieldTile;
-//				}
-//			}
-//			return null;
-//		}
-//	}
-//	
+	private boolean isInitialized = false;
 	
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
@@ -410,16 +332,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.selectionIsFromMain = false;
 		}
 	}
-		
-	private void createOrthographicCamera()
-	{
-		if( this.orthographicCameraImp != null ) {
-			//pass
-		} else {
-			this.orthographicCameraImp = new OrthographicCameraImp();
-			this.orthographicCameraImp.getSgCamera().nearClippingPlaneDistance.setValue(.01d);
-		}
-	}
 	
 	private void initializeCameraMarkers()
 	{
@@ -482,11 +394,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		orthographicCameraMarkerImps.add(this.frontOrthoMarkerImp);
 		
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( StorytellingSceneEditor.class.getPackage().getName() + ".cameraViews" );
-		this.openingSceneMarkerImp.getAbstraction().setName( resourceBundle.getString( "sceneCameraView" ) );
-		this.sceneViewMarkerImp.getAbstraction().setName( resourceBundle.getString( "layoutPerspectiveView" ) );
-		this.topOrthoMarkerImp.getAbstraction().setName( resourceBundle.getString( "topOrthographicView" ) );
-		this.sideOrthoMarkerImp.getAbstraction().setName( resourceBundle.getString( "leftOrthographicView" ) );
-		this.frontOrthoMarkerImp.getAbstraction().setName( resourceBundle.getString( "frontOrthographicView" ) );
+		this.openingSceneMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForView(View.STARTING_CAMERA_VIEW) );
+		this.sceneViewMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForView(View.LAYOUT_SCENE_VIEW) );
+		this.topOrthoMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForView(View.TOP) );
+		this.sideOrthoMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForView(View.SIDE) );
+		this.frontOrthoMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForView(View.FRONT) );
 	}
 	
 	private void clearCameras()
@@ -648,13 +560,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	@Override
 	protected void initializeComponents() {
-		if( this.globalDragAdapter != null ) {
+		if( this.isInitialized ) {
 			//pass
 		} else {
 			
 //			
 			this.snapGrid = new SnapGrid();
-//			this.snapState = new SnapState();
 			SnapState.getInstance().getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
 			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);
 			SnapState.getInstance().getSnapGridSpacingState().addAndInvokeValueObserver(this.snapGridSpacingObserver);
@@ -686,7 +597,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			
 			this.propertiesSplitPane.setResizeWeight(1.0);
 			
-			createOrthographicCamera();
+			this.orthographicCameraImp = new OrthographicCameraImp();
+			this.orthographicCameraImp.getSgCamera().nearClippingPlaneDistance.setValue(.01d);
+			
 			initializeCameraMarkers();
 			
 			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
@@ -706,48 +619,24 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			};
 			this.globalDragAdapter.addClickAdapter(rightClickAdapter, rightMouseAndInteractive);
 			
-			CameraMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.cameraMarkerFieldSelectionObserver);
-			ObjectMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.objectMarkerFieldSelectionObserver);
-		
-			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
+			org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.cameraMarkerFieldSelectionObserver);
+			org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.objectMarkerFieldSelectionObserver);
+			
 			this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
 			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewTracker);
 			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewSelectionObserver);
 			this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
 			this.mainCameraViewSelector.setFontSize(15);
-
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.STARTING_CAMERA_VIEW, this.openingSceneMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.LAYOUT_SCENE_VIEW, this.sceneViewMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.TOP, this.topOrthoMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.SIDE, this.sideOrthoMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.FRONT, this.frontOrthoMarkerImp );
-			this.mainCameraViewSelector.setRenderer(new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< View >() {
-				private final javax.swing.border.Border separatorBelowBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 8, 0 );
-				private final javax.swing.border.Border emptyBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 0 );
-				@Override
-				protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, View view, int index, boolean isSelected, boolean cellHasFocus) {
-					CameraMarkerImp value = mainCameraViewTracker.getCameraMarker( view );
-					if( index == 0 ) {
-						rv.setBorder( separatorBelowBorder );
-					} else {
-						rv.setBorder( emptyBorder );
-					}
-					if (isSelected)
-					{
-						rv.setOpaque(true);
-						rv.setBackground(new Color(57, 105, 138));
-						rv.setForeground(Color.WHITE);
-					}
-					else
-					{
-						rv.setOpaque(false);
-						rv.setForeground(Color.BLACK);
-					}
-					return rv;
-				}
-			});
+			this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer(this.mainCameraViewTracker));
 
 			this.lookingGlassPanel.addComponent(this.mainCameraViewSelector, Horizontal.CENTER, 0, Vertical.NORTH, 20);
+			
+			this.isInitialized = true;
 		}
 	}
 	
@@ -878,9 +767,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	@Override
 	public void generateCodeForSetUp( StatementListProperty bodyStatementsProperty ) {
 		//Set the camera to have the point of view of the opening scene marker
-//		AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImplementation.getAbsoluteTransformation();
-//		EntityImplementation cameraParent = this.sceneCameraImplementation.getVehicle();
-//		cameraParent.setTransformation(this.openingSceneMarker.getTransformation(AsSeenBy.SCENE), this.scene.getSGReferenceFrame());
+		AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImp.getLocalTransformation();
+		this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
 		
 		org.lgna.project.ast.AbstractField sceneField = this.getActiveSceneField();
 		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
@@ -889,7 +777,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 		
 		//Set the camera back to its original position
-//		cameraParent.setTransformation(currentCameraTransformable, this.scene.getSGReferenceFrame());
+		this.sceneCameraImp.setLocalTransformation(currentCameraTransformable);
 	}
 	
 	@Override

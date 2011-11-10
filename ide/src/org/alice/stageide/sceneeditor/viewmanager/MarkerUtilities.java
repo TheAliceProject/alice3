@@ -50,6 +50,7 @@ import javax.swing.Icon;
 
 import org.alice.ide.name.validators.MarkerColorValidator;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.alice.stageide.sceneeditor.View;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.NamedUserType;
@@ -176,6 +177,18 @@ public class MarkerUtilities {
 	{
 		String colorName = getColorFileName(color);
 		return "_"+colorName+".png";
+	}
+	
+	public static String getNameForView(View view) {
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( StorytellingSceneEditor.class.getPackage().getName() + ".cameraViews" );
+		switch (view) {
+			case STARTING_CAMERA_VIEW : return resourceBundle.getString( "sceneCameraView" );
+			case LAYOUT_SCENE_VIEW : return resourceBundle.getString( "layoutPerspectiveView" );
+			case TOP : return resourceBundle.getString( "topOrthographicView" );
+			case SIDE : return resourceBundle.getString( "sideOrthographicView" );
+			case FRONT : return resourceBundle.getString( "frontOrthographicView" );
+		}
+		return "";
 	}
 	
 	public static void addIconForCameraImp(CameraMarkerImp cameraImp, String iconName) {

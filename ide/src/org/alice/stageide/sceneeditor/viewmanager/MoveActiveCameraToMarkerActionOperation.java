@@ -43,9 +43,13 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import org.alice.stageide.operations.ast.MoveAndOrientToEdit;
+import org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit;
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.OrthographicCameraMarkerImp;
+import org.lgna.story.implementation.TransformableImp;
 
 public class MoveActiveCameraToMarkerActionOperation extends org.lgna.croquet.ActionOperation {
 	
@@ -59,6 +63,10 @@ public class MoveActiveCameraToMarkerActionOperation extends org.lgna.croquet.Ac
 	
 	private UserField markerField;
 	private CameraMarkerImp cameraMarker;
+	
+	private TransformableImp toMoveImp;
+	private TransformableImp toMoveToImp;
+	
 	private MoveToImageIcon imageIcon;
 
 	private MoveActiveCameraToMarkerActionOperation() {
@@ -122,50 +130,17 @@ public class MoveActiveCameraToMarkerActionOperation extends org.lgna.croquet.Ac
 	@Override
 	protected void perform(org.lgna.croquet.history.ActionOperationStep step) 
 	{
+		if (this.toMoveImp != null && this.toMoveToImp != null && 
+			this.toMoveImp.getAbstraction() instanceof org.lgna.story.MovableTurnable &&
+			this.toMoveToImp.getAbstraction() != null) {
+
+			MoveAndOrientToEdit edit = new MoveAndOrientToEdit(step, (org.lgna.story.MovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction());
+			step.commitAndInvokeDo(edit);
+		} else {
+			step.cancel();
+		}
+
 		
-//		final CameraMarker cameraMarker;
-//		final org.lookingglassandalice.storytelling.Camera camera;
-//		final org.lookingglassandalice.storytelling.VantagePoint prevPOV;
-//		final org.lookingglassandalice.storytelling.VantagePoint nextPOV;
-//		
-//		AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
-//		
-//		cameraMarker = sceneEditor.getInstanceInJavaVMForField(this.markerField, org.lookingglassandalice.storytelling.CameraMarker.class);
-//		AbstractCamera sgCamera = sceneEditor.getSGPerspectiveCamera();
-//		camera = (org.lookingglassandalice.storytelling.Camera)Element.getElement(sgCamera);
-//		if( cameraMarker != null ) {
-//			nextPOV = cameraMarker.getPointOfView( org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE );
-//			prevPOV = camera.getPointOfView(org.lookingglassandalice.storytelling.implementation.AsSeenBy.SCENE);
-//			if( nextPOV.getInternal().isNaN() ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MoveActiveCameraToMarkerActionOperation isNaN" );
-//				step.cancel();
-//			} else {
-//				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
-//					@Override
-//					protected final void doOrRedoInternal( boolean isDo ) {
-//						setAbsolutePOV( camera, nextPOV );
-//					}
-//					@Override
-//					protected final void undoInternal() {
-//						setAbsolutePOV( camera, prevPOV );
-//					}
-//					@Override
-//					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-//						rv.append( MoveActiveCameraToMarkerActionOperation.this.getName() );
-//						return rv;
-//					}
-//				} );
-//			}
-//		} else {
-//			step.cancel();
-//		}
-		
-	}
-	
-	private static void setAbsolutePOV( org.lgna.story.Turnable transformable, org.lgna.story.VantagePoint pov ) {
-//		org.lookingglassandalice.storytelling.Scene scene = transformable.getScene();
-//		assert scene != null;
-//		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );
 	}
 
 }
