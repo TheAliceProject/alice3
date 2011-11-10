@@ -46,24 +46,21 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArgumentView< N extends org.lgna.project.ast.AbstractArgument > extends org.alice.ide.croquet.components.RefreshPanel {
+public abstract class ArgumentView< N extends org.lgna.project.ast.AbstractArgument > extends org.lgna.croquet.components.LineAxisPanel {
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final N argument;
 	public ArgumentView( org.alice.ide.x.AstI18nFactory factory, N argument ) {
 		this.factory = factory;
 		this.argument = argument;
+		this.refreshLater();
 	}
 	public N getArgument() {
 		return this.argument;
 	}
-	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
-	}
-
 	protected abstract String getName();
 	@Override
 	protected void internalRefresh() {
+		super.internalRefresh();
 		String name = this.getName();
 		if( name != null ) {
 			this.internalAddComponent( new org.lgna.croquet.components.Label( name + ": " ) );

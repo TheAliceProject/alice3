@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class MyTypesView extends org.alice.ide.croquet.components.RefreshPanel {
+public class MyTypesView extends org.lgna.croquet.components.GridBagPanel {
 //	private static final javax.swing.Icon REFRESH_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( MyTypesView.class.getResource( "images/refresh.png" ) );
 //	private class RefreshAction extends javax.swing.AbstractAction {
 //		public RefreshAction() {
@@ -59,6 +59,7 @@ public class MyTypesView extends org.alice.ide.croquet.components.RefreshPanel {
 //	}
 //	private final org.lgna.croquet.components.SwingAdapter refreshAdapter;
 	public MyTypesView() {
+		this.refreshLater();
 //		javax.swing.JButton jButton = new javax.swing.JButton( new RefreshAction() );
 //		jButton.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 //		jButton.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
@@ -79,15 +80,6 @@ public class MyTypesView extends org.alice.ide.croquet.components.RefreshPanel {
 		org.alice.ide.ast.AstEventManager.removeTypeHierarchyListener( this.typeHierarchyListener );
 	}
 
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridBagLayout();
-	}
-	
-	private void addComponent( org.lgna.croquet.components.Component< ? > component, java.awt.GridBagConstraints gbc ) {
-		this.internalAddComponent( component, gbc );
-	}
-	
 	private void addComponents( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node, int depth, java.awt.GridBagConstraints gbc ) {
 		org.lgna.project.ast.NamedUserType type = node.getValue();
 		if( type == null || type.isAssignableTo( org.lgna.story.Turnable.class ) ) {

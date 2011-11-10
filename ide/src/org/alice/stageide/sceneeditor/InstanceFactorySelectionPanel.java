@@ -149,14 +149,9 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 			super.handleUndisplayable();
 		}
 	}
-	private static final class InternalPanel extends org.alice.ide.croquet.components.RefreshPanel {
+	private static final class InternalPanel extends org.lgna.croquet.components.PageAxisPanel {
 		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 		private final java.util.Map< org.alice.ide.instancefactory.InstanceFactory, InternalButton > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-		@Override
-		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
-		}
-		
 		private InternalButton getButtonFor( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 			InternalButton rv = map.get( instanceFactory );
 			if( rv != null ) {
@@ -170,6 +165,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 		
 		@Override
 		protected void internalRefresh() {
+			super.internalRefresh();
 			this.removeAllComponents();
 			java.util.List< InternalButton > buttons = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON ) );

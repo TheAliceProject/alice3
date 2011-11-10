@@ -96,9 +96,9 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	}
 
 	@Override
-	protected JRefreshPanel createJPanel() {
+	protected DefaultJPanel createJPanel() {
 		final java.awt.Color FEEDBACK_COLOR = java.awt.Color.GREEN.darker().darker();
-		class FeedbackJPanel extends JRefreshPanel {
+		class FeedbackJPanel extends DefaultJPanel {
 			@Override
 			public void paint(java.awt.Graphics g) {
 				super.paint(g);

@@ -46,7 +46,7 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArgumentListPropertyView< N extends org.lgna.project.ast.AbstractArgument > extends LineAxisRefreshPanel {
+public abstract class ArgumentListPropertyView< N extends org.lgna.project.ast.AbstractArgument > extends org.lgna.croquet.components.LineAxisPanel {
 	protected final static String SEPARATOR = ",";
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final org.lgna.project.ast.ArgumentListProperty< N > argumentListProperty;
@@ -62,6 +62,7 @@ public abstract class ArgumentListPropertyView< N extends org.lgna.project.ast.A
 	public ArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty< N > argumentListProperty ) {
 		this.factory = factory;
 		this.argumentListProperty = argumentListProperty;
+		this.refreshLater();
 	}
 	
 	public org.alice.ide.x.AstI18nFactory getFactory() {

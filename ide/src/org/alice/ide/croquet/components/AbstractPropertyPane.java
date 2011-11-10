@@ -45,7 +45,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPropertyPane< P extends edu.cmu.cs.dennisc.property.InstanceProperty< T >, T > extends RefreshPanel {
+public abstract class AbstractPropertyPane< P extends edu.cmu.cs.dennisc.property.InstanceProperty< T >, T > extends org.lgna.croquet.components.Panel {
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final P property;
 	private final int axis;
