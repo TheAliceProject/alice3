@@ -40,28 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing;
+
+package org.alice.stageide.sceneeditor;
 
 /**
  * @author Dennis Cosgrove
- *
  */
-public class IconUtilities {
-	private IconUtilities() {
+public class ThumbnailGenerator {
+	private ThumbnailGenerator() {
 		throw new AssertionError();
 	}
-	public static javax.swing.ImageIcon createImageIcon( java.net.URL url ) {
-		if( url != null ) {
-			return new javax.swing.ImageIcon( url );
+	private static edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
+	
+	public static synchronized java.awt.image.BufferedImage createThumbnail( int width, int height ) {
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
+		if( sgCamera != null ) {
+			if( offscreenLookingGlass != null ) {
+				//pass
+			} else {
+				offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
+			}
+			offscreenLookingGlass.setSize( width, height );
+			boolean isClearingAndAddingRequired;
+			if( offscreenLookingGlass.getCameraCount() == 1 ) {
+				if( offscreenLookingGlass.getCameraAt( 0 ) == sgCamera ) {
+					isClearingAndAddingRequired = false;
+				} else {
+					isClearingAndAddingRequired = true;
+				}
+			} else {
+				isClearingAndAddingRequired = true;
+			}
+			if( isClearingAndAddingRequired ) {
+				offscreenLookingGlass.clearCameras();
+				offscreenLookingGlass.addCamera( sgCamera );
+			}
+			return offscreenLookingGlass.getColorBuffer();
 		} else {
 			return null;
 		}
 	}
-	public static javax.swing.ImageIcon createImageIcon( java.awt.Image image ) {
-		if( image != null ) {
-			return new javax.swing.ImageIcon( image );
-		} else {
-			return null;
-		}
-	}
+	
+	
 }

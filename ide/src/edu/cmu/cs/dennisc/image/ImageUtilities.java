@@ -527,7 +527,7 @@ public class ImageUtilities {
 		return pixels;
 	}
 
-	public static java.awt.image.BufferedImage constructBufferedImage( java.awt.Image image, int imageType ) {
+	public static java.awt.image.BufferedImage createBufferedImage( java.awt.Image image, int imageType ) {
 		int width = getWidth( image );
 		int height = getHeight( image );
 		// int type;
@@ -541,5 +541,26 @@ public class ImageUtilities {
 		g.drawImage( image, 0, 0, accessImageObserver() );
 		g.dispose();
 		return bi;
+	}
+	
+	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter painter, float alpha ) {
+		int width = getWidth( image );
+		int height = getHeight( image );
+		java.awt.image.BufferedImage rv = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
+		java.awt.Graphics2D g2 = rv.createGraphics();
+		g2.drawImage( image, 0, 0, null );
+
+		java.awt.image.BufferedImage alphaImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
+		java.awt.Graphics2D ag2 = alphaImage.createGraphics();
+		painter.paint( ag2, width, height );
+		ag2.dispose();
+		
+		g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.DST_IN, alpha ) );
+		g2.drawImage( alphaImage, 0, 0, null );
+		g2.dispose();
+		return rv;
+	}
+	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter painter ) {
+		return createAlphaMaskedImage( image, painter, 1.0f );
 	}
 }

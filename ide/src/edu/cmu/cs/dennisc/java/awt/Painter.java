@@ -40,28 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing;
+
+package edu.cmu.cs.dennisc.java.awt;
 
 /**
  * @author Dennis Cosgrove
- *
  */
-public class IconUtilities {
-	private IconUtilities() {
-		throw new AssertionError();
-	}
-	public static javax.swing.ImageIcon createImageIcon( java.net.URL url ) {
-		if( url != null ) {
-			return new javax.swing.ImageIcon( url );
-		} else {
-			return null;
-		}
-	}
-	public static javax.swing.ImageIcon createImageIcon( java.awt.Image image ) {
-		if( image != null ) {
-			return new javax.swing.ImageIcon( image );
-		} else {
-			return null;
-		}
-	}
+public interface Painter {
+	public void paint( java.awt.Graphics2D g2, int width, int height );
 }
