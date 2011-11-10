@@ -128,8 +128,22 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 		this.addComponent( scrollPane, Constraint.CENTER );
 	}
 	
+	private final org.alice.ide.ast.AstEventManager.TypeHierarchyListener typeHierarchyListener = new org.alice.ide.ast.AstEventManager.TypeHierarchyListener() {
+		public void typeHierarchyHasPotentiallyChanged() {
+			TypeHierarchyView.this.refresh();
+		}
+	};
+	@Override
+	protected void handleAddedTo(org.lgna.croquet.components.Component<?> parent) {
+		org.alice.ide.ast.AstEventManager.addAndInvokeTypeHierarchyListener( this.typeHierarchyListener );
+	}
+	@Override
+	protected void handleRemovedFrom(org.lgna.croquet.components.Component<?> parent) {
+		org.alice.ide.ast.AstEventManager.removeTypeHierarchyListener( this.typeHierarchyListener );
+	}
+	
 //	private boolean isRefreshing = false;
-	public void refresh() {
+	private void refresh() {
 //		if( this.isRefreshing ) {
 //			//pass
 //		} else {

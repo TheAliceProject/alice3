@@ -47,23 +47,38 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class MyTypesView extends org.alice.ide.croquet.components.RefreshPanel {
-	private static final javax.swing.Icon REFRESH_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( MyTypesView.class.getResource( "images/refresh.png" ) );
-	private class RefreshAction extends javax.swing.AbstractAction {
-		public RefreshAction() {
-			this.putValue( NAME, "refresh" );
-			this.putValue( SMALL_ICON, REFRESH_ICON );
-		}
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+//	private static final javax.swing.Icon REFRESH_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( MyTypesView.class.getResource( "images/refresh.png" ) );
+//	private class RefreshAction extends javax.swing.AbstractAction {
+//		public RefreshAction() {
+//			this.putValue( NAME, "refresh" );
+//			this.putValue( SMALL_ICON, REFRESH_ICON );
+//		}
+//		public void actionPerformed( java.awt.event.ActionEvent e ) {
+//			MyTypesView.this.refreshLater();
+//		}
+//	}
+//	private final org.lgna.croquet.components.SwingAdapter refreshAdapter;
+	public MyTypesView() {
+//		javax.swing.JButton jButton = new javax.swing.JButton( new RefreshAction() );
+//		jButton.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
+//		jButton.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
+//		this.refreshAdapter = new org.lgna.croquet.components.SwingAdapter( jButton );
+	}
+	
+	private final org.alice.ide.ast.AstEventManager.TypeHierarchyListener typeHierarchyListener = new org.alice.ide.ast.AstEventManager.TypeHierarchyListener() {
+		public void typeHierarchyHasPotentiallyChanged() {
 			MyTypesView.this.refreshLater();
 		}
+	};
+	@Override
+	protected void handleAddedTo(org.lgna.croquet.components.Component<?> parent) {
+		org.alice.ide.ast.AstEventManager.addAndInvokeTypeHierarchyListener( this.typeHierarchyListener );
 	}
-	private final org.lgna.croquet.components.SwingAdapter refreshAdapter;
-	public MyTypesView() {
-		javax.swing.JButton jButton = new javax.swing.JButton( new RefreshAction() );
-		jButton.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
-		jButton.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
-		this.refreshAdapter = new org.lgna.croquet.components.SwingAdapter( jButton );
+	@Override
+	protected void handleRemovedFrom(org.lgna.croquet.components.Component<?> parent) {
+		org.alice.ide.ast.AstEventManager.removeTypeHierarchyListener( this.typeHierarchyListener );
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.GridBagLayout();
@@ -101,15 +116,10 @@ public class MyTypesView extends org.alice.ide.croquet.components.RefreshPanel {
 		gbc.insets.top = 4;
 		gbc.insets.left = 4;
 		gbc.insets.right = 24;
-		this.addComponent( refreshAdapter, gbc );
+//		this.addComponent( refreshAdapter, gbc );
 		gbc.insets.right = 2;
 		this.addComponents( root, -1, gbc );
 		gbc.weightx = 1.0;
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue(), gbc );
-	}
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.refreshLater();
 	}
 }
