@@ -356,7 +356,7 @@ public class ThumbnailMaker {
 		}
 		else if (returnImage != null)
 		{
-			return ImageUtilities.constructBufferedImage(returnImage, BufferedImage.TYPE_INT_ARGB);
+			return ImageUtilities.createBufferedImage(returnImage, BufferedImage.TYPE_INT_ARGB);
 		}
 		else
 		{
