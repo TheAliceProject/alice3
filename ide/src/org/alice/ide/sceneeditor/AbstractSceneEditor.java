@@ -124,6 +124,9 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	public Object getInstanceInJavaVMForField( org.lgna.project.ast.AbstractField field) {
+		if (field == null) {
+			return null;
+		}
 		assert field instanceof org.lgna.project.ast.UserField;
 		if (field == this.getActiveSceneField())
 		{
@@ -140,6 +143,9 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 	
 	public  <T extends org.lgna.story.implementation.EntityImp> T getImplementation( org.lgna.project.ast.AbstractField field ) {
+		if (field == null) {
+			return null;
+		}
 		org.lgna.story.Entity entity = getInstanceInJavaVMForField(field, org.lgna.story.Entity.class);
 		if (entity != null)
 		{

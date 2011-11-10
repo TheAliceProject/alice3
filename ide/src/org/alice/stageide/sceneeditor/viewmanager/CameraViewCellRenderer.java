@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,17 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.viewmanager;
 
-package org.alice.stageide.sceneeditor;
+import java.awt.Color;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
+
+import org.alice.stageide.sceneeditor.View;
+import org.lgna.story.implementation.CameraMarkerImp;
+
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public enum View {
-	STARTING_CAMERA_VIEW,
-	LAYOUT_SCENE_VIEW,
-	TOP,
-	SIDE,
-	FRONT;
+public class CameraViewCellRenderer extends ListCellRenderer< View > {
+
+	private final javax.swing.border.Border separatorBelowBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 8, 0 );
+	private final javax.swing.border.Border emptyBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 0 );
+	
+	private final CameraMarkerTracker cameraMarkerTracker;
+	
+	public CameraViewCellRenderer(CameraMarkerTracker cameraMarkerTracker) {
+		this.cameraMarkerTracker = cameraMarkerTracker;
+	}
+	
+	@Override
+	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, View view, int index, boolean isSelected, boolean cellHasFocus) {
+		CameraMarkerImp value = this.cameraMarkerTracker.getCameraMarker( view );
+		rv.setText(MarkerUtilities.getNameForView(view));
+		if( index == 0 ) {
+			rv.setBorder( separatorBelowBorder );
+		} else {
+			rv.setBorder( emptyBorder );
+		}
+		if (isSelected)
+		{
+			rv.setOpaque(true);
+			rv.setBackground(new Color(57, 105, 138));
+			rv.setForeground(Color.WHITE);
+			rv.setIcon(MarkerUtilities.getHighlightedIconForCameraImp(value));
+		}
+		else
+		{
+			rv.setOpaque(false);
+			rv.setForeground(Color.BLACK);
+			rv.setIcon(MarkerUtilities.getIconForCameraImp(value));
+		}
+		return rv;
+	}
 
 }

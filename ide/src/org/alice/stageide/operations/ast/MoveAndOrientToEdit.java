@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,17 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.operations.ast;
 
-package org.alice.stageide.sceneeditor;
+import org.lgna.croquet.edits.Edit;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public enum View {
-	STARTING_CAMERA_VIEW,
-	LAYOUT_SCENE_VIEW,
-	TOP,
-	SIDE,
-	FRONT;
+public class MoveAndOrientToEdit extends Edit {
+	private final org.lgna.story.MovableTurnable toMove;
+	private final org.lgna.story.Entity target;
+	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
+	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
+	public MoveAndOrientToEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.story.MovableTurnable toMove, org.lgna.story.Entity target) {
+		super( completionStep );
+		this.toMove = toMove;
+		this.target = target;
+	}
+	public MoveAndOrientToEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+			super( binaryDecoder, step );
+			this.toMove = null;
+			this.target = null;
+			
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		assert false : "Not implemented yet";
+	}
+	@Override
+	protected void doOrRedoInternal( boolean isDo ) {
+		if( this.toMove != null && this.target != null ) {
+			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( this.toMove );
+			this.m = this.transformable.getAbsoluteTransformation();
+			org.lgna.story.implementation.EntityImp targetImp = org.lgna.story.ImplementationAccessor.getImplementation( this.target );
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransform = targetImp.getAbsoluteTransformation();
+			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, targetTransform );
+		} else {
+			this.transformable = null;
+			this.m = null;
+		}
+	}
+	@Override
+	protected void undoInternal() {
+		if( this.transformable != null && this.m != null ) {
+			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, this.m );
+		}
+	}
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+		return null;
+	}
 
 }
