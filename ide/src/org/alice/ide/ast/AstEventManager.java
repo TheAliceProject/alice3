@@ -40,33 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.edits.ast;
+
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit< org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation > {
-	private transient int index;
-	public DeclareNonGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
-		super( step, declaringType, field );
+public class AstEventManager {
+	public static interface TypeHierarchyListener {
+		public void typeHierarchyHasPotentiallyChanged();
 	}
-	public DeclareNonGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
+	private static final java.util.List< TypeHierarchyListener > typeHierarchyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private AstEventManager() {
+		throw new AssertionError();
 	}
 	
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.index = this.getDeclaringType().fields.size(); 
-		this.getDeclaringType().fields.add(this.index, this.getField());
-		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
+	public static void addTypeHierarchyListener( TypeHierarchyListener typeHierarchyListener ) {
+		typeHierarchyListeners.add( typeHierarchyListener );
 	}
-
-	@Override
-	protected final void undoInternal() {
-		if (this.getDeclaringType().fields.get(this.index) == this.getField()) {
-			this.getDeclaringType().fields.remove(this.index);
-		} else {
-			throw new javax.swing.undo.CannotUndoException();
+	public static void addAndInvokeTypeHierarchyListener( TypeHierarchyListener typeHierarchyListener ) {
+		addTypeHierarchyListener( typeHierarchyListener );
+		typeHierarchyListener.typeHierarchyHasPotentiallyChanged();
+	}
+	public static void removeTypeHierarchyListener( TypeHierarchyListener typeHierarchyListener ) {
+		typeHierarchyListeners.remove( typeHierarchyListener );
+	}
+	public static void fireTypeHierarchyListeners() {
+		for( TypeHierarchyListener typeHierarchyListener : typeHierarchyListeners ) {
+			typeHierarchyListener.typeHierarchyHasPotentiallyChanged();
 		}
 	}
 }

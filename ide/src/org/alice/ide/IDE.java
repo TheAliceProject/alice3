@@ -515,6 +515,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON );
 			}
 		} );
+		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
 	}
 
 	@Override
