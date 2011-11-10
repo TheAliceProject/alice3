@@ -70,6 +70,7 @@ public class MarkerUtilities {
 	private static final org.lgna.story.Color[] COLORS;
 	
 	private static final HashMap<CameraMarker, Tuple2<Icon, Icon>> cameraToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final HashMap<CameraMarker, View> cameraToViewMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private static final HashMap<org.lgna.story.Color, Icon> colorToObjectIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static final HashMap<org.lgna.story.Color, Icon> colorToCameraIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -181,18 +182,49 @@ public class MarkerUtilities {
 	
 	public static String getNameForView(View view) {
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( StorytellingSceneEditor.class.getPackage().getName() + ".cameraViews" );
-		switch (view) {
-			case STARTING_CAMERA_VIEW : return resourceBundle.getString( "sceneCameraView" );
-			case LAYOUT_SCENE_VIEW : return resourceBundle.getString( "layoutPerspectiveView" );
-			case TOP : return resourceBundle.getString( "topOrthographicView" );
-			case SIDE : return resourceBundle.getString( "sideOrthographicView" );
-			case FRONT : return resourceBundle.getString( "frontOrthographicView" );
+		if (view != null) {
+			switch (view) {
+				case STARTING_CAMERA_VIEW : return resourceBundle.getString( "sceneCameraView" );
+				case LAYOUT_SCENE_VIEW : return resourceBundle.getString( "layoutPerspectiveView" );
+				case TOP : return resourceBundle.getString( "topOrthographicView" );
+				case SIDE : return resourceBundle.getString( "sideOrthographicView" );
+				case FRONT : return resourceBundle.getString( "frontOrthographicView" );
+			}
 		}
 		return "";
 	}
 	
+	public static String getNameForCameraImp(CameraMarkerImp cameraImp) {
+		return getNameForView(getViewForCameraImp(cameraImp));
+	}
+	
+	public static String getNameForCamera(CameraMarker camera) {
+		return getNameForView(getViewForCamera(camera));
+	}
+	
 	public static void addIconForCameraImp(CameraMarkerImp cameraImp, String iconName) {
+		assert cameraImp != null;
 		addIconForCamera(cameraImp.getAbstraction(), iconName);
+	}
+	
+	public static void setViewForCameraImp(CameraMarkerImp cameraImp, View view) {
+		assert cameraImp != null;
+		setViewForCamera(cameraImp.getAbstraction(), view);
+	}
+	
+	public static void setViewForCamera(CameraMarker camera, View view) {
+		cameraToViewMap.put(camera, view);
+	}
+	
+	public static View getViewForCameraImp(CameraMarkerImp cameraImp) {
+		if (cameraImp != null) {
+			return cameraToViewMap.get(cameraImp.getAbstraction());
+		}
+		return null;
+	}
+	
+	public static View getViewForCamera(CameraMarker camera) {
+		return cameraToViewMap.get(camera);
 	}
 	
 	public static void addIconForCamera(CameraMarker camera, String iconName) {
@@ -222,39 +254,44 @@ public class MarkerUtilities {
 	
 	public static Icon getIconForObjectMarker(UserField marker)
 	{
-		if (marker == null) {
-			return null;
+		if (marker != null) {
+			org.lgna.story.Color markerColor = getColorForMarkerField(marker);
+			if (colorToObjectIconMap.containsKey(markerColor)) {
+				return colorToObjectIconMap.get(markerColor);
+			}
+			else {
+				Icon icon = loadIconForObjectMarker(markerColor);
+				colorToObjectIconMap.put(markerColor, icon);
+				return icon;
+			}
 		}
-		org.lgna.story.Color markerColor = getColorForMarkerField(marker);
-		if (colorToObjectIconMap.containsKey(markerColor)) {
-			return colorToObjectIconMap.get(markerColor);
-		}
-		else {
-			Icon icon = loadIconForObjectMarker(markerColor);
-			colorToObjectIconMap.put(markerColor, icon);
-			return icon;
-		}
+		return null;
 	}
 	
 	public static Icon getIconForCameraMarker(UserField marker)
 	{
-		org.lgna.story.Color markerColor = getColorForMarkerField(marker);
-		if (colorToCameraIconMap.containsKey(markerColor)) {
-			return colorToCameraIconMap.get(markerColor);
+		if (marker != null) {
+			org.lgna.story.Color markerColor = getColorForMarkerField(marker);
+			if (colorToCameraIconMap.containsKey(markerColor)) {
+				return colorToCameraIconMap.get(markerColor);
+			}
+			else {
+				Icon icon = loadIconForCameraMarker(markerColor);
+				colorToCameraIconMap.put(markerColor, icon);
+				return icon;
+			}
 		}
-		else {
-			Icon icon = loadIconForCameraMarker(markerColor);
-			colorToCameraIconMap.put(markerColor, icon);
-			return icon;
-		}
+		return null;
 	}
 	
 	public static Icon getIconForMarkerField(UserField markerField) {
-		if (markerField.getValueType().isAssignableTo(org.lgna.story.CameraMarker.class)) {
-			return getIconForCameraMarker(markerField);
-		}
-		else if (markerField.getValueType().isAssignableFrom(org.lgna.story.ObjectMarker.class)) {
-			return getIconForObjectMarker(markerField);
+		if (markerField != null ){
+			if (markerField.getValueType().isAssignableTo(org.lgna.story.CameraMarker.class)) {
+				return getIconForCameraMarker(markerField);
+			}
+			else if (markerField.getValueType().isAssignableFrom(org.lgna.story.ObjectMarker.class)) {
+				return getIconForObjectMarker(markerField);
+			}
 		}
 		return null;
 	}
@@ -270,7 +307,10 @@ public class MarkerUtilities {
 	}
 	
 	public static Icon getIconForCameraImp(CameraMarkerImp camera) {
-		return getIconForCamera((CameraMarker)camera.getAbstraction());
+		if (camera != null) {
+			return getIconForCamera((CameraMarker)camera.getAbstraction());
+		}
+		return null;
 	}
 	
 	public static Icon getHighlightedIconForCameraImp(CameraMarkerImp camera) {

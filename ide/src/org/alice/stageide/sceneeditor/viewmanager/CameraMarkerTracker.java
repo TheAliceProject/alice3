@@ -201,6 +201,21 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 		}
 	}
 	
+	public void startTrackingCameraView(org.alice.stageide.sceneeditor.View view) {
+		if (this.perspectiveCamera == null || this.orthographicCamera == null)
+		{
+			return;
+		}
+		else
+		{
+			this.activeMarker = this.getCameraMarker( view );
+			if (this.activeMarker != null)
+			{
+				setCameraToSelectedMarker();
+			}
+		}
+	}
+	
 	private void setCameraToSelectedMarker()
 	{
 		stopTrackingCamera();

@@ -73,7 +73,7 @@ public class MoveAndOrientToEdit extends Edit {
 	protected void doOrRedoInternal( boolean isDo ) {
 		if( this.toMove != null && this.target != null ) {
 			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( this.toMove );
-			this.m = this.transformable.getLocalTransformation();
+			this.m = this.transformable.getAbsoluteTransformation();
 			org.lgna.story.implementation.EntityImp targetImp = org.lgna.story.ImplementationAccessor.getImplementation( this.target );
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransform = targetImp.getAbsoluteTransformation();
 			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, targetTransform );
@@ -85,7 +85,7 @@ public class MoveAndOrientToEdit extends Edit {
 	@Override
 	protected void undoInternal() {
 		if( this.transformable != null && this.m != null ) {
-			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.PARENT, this.m );
+			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, this.m );
 		}
 	}
 	@Override

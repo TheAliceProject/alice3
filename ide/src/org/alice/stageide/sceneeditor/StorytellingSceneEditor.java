@@ -244,7 +244,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private org.lgna.croquet.components.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 	
-	private PerspectiveCameraMarkerImp expandedViewSelectedMarker = null;
 	private OrthographicCameraImp orthographicCameraImp = null;
 	private OrthographicCameraMarkerImp topOrthoMarkerImp = null;
 	private OrthographicCameraMarkerImp frontOrthoMarkerImp = null;
@@ -340,6 +339,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		this.openingSceneMarkerImp = ImplementationAccessor.getImplementation(openingSceneMarker);
 		this.openingSceneMarkerImp.setDisplayVisuals(true);
 		MarkerUtilities.addIconForCameraImp(this.openingSceneMarkerImp, "mainCamera");
+		MarkerUtilities.setViewForCameraImp(this.openingSceneMarkerImp, View.STARTING_CAMERA_VIEW);
 		
 		
 		PerspectiveCameraMarker sceneViewMarker = new PerspectiveCameraMarker();
@@ -347,12 +347,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		this.sceneViewMarkerImp = ImplementationAccessor.getImplementation(sceneViewMarker);
 		this.sceneViewMarkerImp.setDisplayVisuals(true);
 		MarkerUtilities.addIconForCameraImp(this.sceneViewMarkerImp, "sceneEditorCamera");
+		MarkerUtilities.setViewForCameraImp(this.sceneViewMarkerImp, View.LAYOUT_SCENE_VIEW);
 		
 		
 		this.orthographicCameraMarkerImps.clear();
 		OrthographicCameraMarker topOrthoMarker = new OrthographicCameraMarker();
 		this.topOrthoMarkerImp = ImplementationAccessor.getImplementation(topOrthoMarker);
 		MarkerUtilities.addIconForCameraImp(this.topOrthoMarkerImp, "top");
+		MarkerUtilities.setViewForCameraImp(this.topOrthoMarkerImp, View.TOP);
 		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
 		topTransform.translation.y = 10;
 		topTransform.translation.z = -10;
@@ -370,6 +372,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		OrthographicCameraMarker sideOrthoMarker = new OrthographicCameraMarker();
 		this.sideOrthoMarkerImp = ImplementationAccessor.getImplementation(sideOrthoMarker);
 		MarkerUtilities.addIconForCameraImp(this.sideOrthoMarkerImp, "side");
+		MarkerUtilities.setViewForCameraImp(this.sideOrthoMarkerImp, View.SIDE);
 		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
 		sideTransform.translation.x = 10;
 		sideTransform.translation.y = 1;
@@ -383,6 +386,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		OrthographicCameraMarker frontOrthoMarker = new OrthographicCameraMarker();
 		this.frontOrthoMarkerImp = ImplementationAccessor.getImplementation(frontOrthoMarker);
 		MarkerUtilities.addIconForCameraImp(this.frontOrthoMarkerImp, "front");
+		MarkerUtilities.setViewForCameraImp(this.frontOrthoMarkerImp, View.FRONT);
 		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
 		frontTransform.translation.z = -10;
 		frontTransform.translation.y = 1;
@@ -393,12 +397,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		this.frontOrthoMarkerImp.setPicturePlane(picturePlane);
 		orthographicCameraMarkerImps.add(this.frontOrthoMarkerImp);
 		
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( StorytellingSceneEditor.class.getPackage().getName() + ".cameraViews" );
-		this.openingSceneMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForView(View.STARTING_CAMERA_VIEW) );
-		this.sceneViewMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForView(View.LAYOUT_SCENE_VIEW) );
-		this.topOrthoMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForView(View.TOP) );
-		this.sideOrthoMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForView(View.SIDE) );
-		this.frontOrthoMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForView(View.FRONT) );
+		this.openingSceneMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForCameraImp(this.openingSceneMarkerImp) );
+		this.sceneViewMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForCameraImp(this.sceneViewMarkerImp) );
+		this.topOrthoMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForCameraImp(this.topOrthoMarkerImp) );
+		this.sideOrthoMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForCameraImp(this.sideOrthoMarkerImp) );
+		this.frontOrthoMarkerImp.getAbstraction().setName( MarkerUtilities.getNameForCameraImp(this.frontOrthoMarkerImp) );
 	}
 	
 	private void clearCameras()
@@ -703,6 +706,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			
 			//Initialize stuff that needs a camera
 			this.setCameras(this.sceneCameraImp.getSgCamera(), this.orthographicCameraImp.getSgCamera());
+			MoveActiveCameraToMarkerActionOperation.getInstance().setCamera(this.sceneCameraImp);
+			MoveMarkerToActiveCameraActionOperation.getInstance().setCamera(this.sceneCameraImp);
 			
 			//Add the orthographic camera to this scene
 			sceneImp.getSgComposite().addComponent( this.orthographicCameraImp.getSgCamera().getParent() );
@@ -734,6 +739,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				sceneEditorViewTransform.applyTranslationAlongZAxis(10.0);
 				sceneEditorViewTransform.applyRotationAboutXAxis(new AngleInDegrees(-40));
 				this.sceneViewMarkerImp.setLocalTransformation(sceneEditorViewTransform);
+				
+			
+			this.mainCameraViewTracker.startTrackingCameraView(this.mainCameraMarkerList.getSelectedItem());
 				
 		}
 		
@@ -1005,8 +1013,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return null;
 	}
 	public AbstractCamera getSgCameraForCreatingThumbnails() {
-		if( this.sceneCameraImplementation != null ) {
-			return this.sceneCameraImplementation.getSgCamera();
+		if( this.sceneCameraImp != null ) {
+			return this.sceneCameraImp.getSgCamera();
 		} else {
 			return null;
 		}
