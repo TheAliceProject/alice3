@@ -41,40 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.edits.ast;
+package org.alice.ide.perspectives;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
-	private final org.lgna.project.ast.Statement[] doStatements;
-	private final org.lgna.project.ast.Statement[] undoStatements;
-
-	public DeclareGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement[] doStatements, org.lgna.project.ast.Statement[] undoStatements ) {
-		super( step, declaringType, field );
-		this.doStatements = doStatements;
-		this.undoStatements = undoStatements;
+public class CodePerspectiveComposite  extends org.lgna.croquet.SplitComposite {
+	private static class SingletonHolder {
+		private static CodePerspectiveComposite instance = new CodePerspectiveComposite();
 	}
-	public DeclareGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		assert false : "todo";
-		this.doStatements = null;
-		this.undoStatements = null;
+	public static CodePerspectiveComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	
+	private CodePerspectiveComposite() {
+		super( java.util.UUID.fromString( "85b956ec-4d3e-4750-a3b4-03f0e6de61ce" ) );
+	}
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		assert false : "todo";
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
 	}
-
 	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( this.getDeclaringType(), this.getField(), this.doStatements );
+	public org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > createView() {
+		return new org.alice.ide.perspectives.components.CodePerspectiveView( this );
 	}
-
 	@Override
-	protected final void undoInternal() {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( this.getDeclaringType(), this.getField(), this.undoStatements );
+	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
+		return org.alice.ide.typeeditor.TypeEditor.getInstance().getCodeEditorInFocus();
 	}
 }

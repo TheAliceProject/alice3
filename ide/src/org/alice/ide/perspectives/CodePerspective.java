@@ -54,15 +54,7 @@ public class CodePerspective extends IdePerspective {
 		return SingletonHolder.instance;
 	}
 	private CodePerspective() {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ) );
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
-	public org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > createView() {
-		return new org.alice.ide.perspectives.components.CodePerspectiveView( this );
+		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), CodePerspectiveComposite.getInstance() );
 	}
 	@Override
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {

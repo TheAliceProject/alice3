@@ -107,7 +107,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 	public void doOrRedoInternal( boolean isDo ) {
 		org.lgna.project.ast.UserField field = this.getMember();
 		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.alice.ide.IDE.getActiveInstance().getMainComponent().getSceneEditor().removeField( 
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( 
 					this.getDeclaringType(), 
 					field, 
 					org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) 
@@ -120,7 +120,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 	public void undoInternal() {
 		org.lgna.project.ast.UserField field = this.getMember();
 		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.alice.ide.IDE.getActiveInstance().getMainComponent().getSceneEditor().addField( 
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( 
 					this.getDeclaringType(), 
 					field, 
 					org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true ) 

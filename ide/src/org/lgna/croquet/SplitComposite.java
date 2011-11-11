@@ -47,28 +47,28 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class SplitComposite extends Composite< org.lgna.croquet.components.SplitPane >{
-	private final Composite< ? > startComposite;
-	private final Composite< ? > endComposite;
-	public SplitComposite( java.util.UUID id, Composite< ? > startComposite, Composite< ? > endComposite ) {
+	private final Composite< ? > leadingComposite;
+	private final Composite< ? > trailingComposite;
+	public SplitComposite( java.util.UUID id, Composite< ? > leadingComposite, Composite< ? > trailingComposite ) {
 		super( id );
-		this.startComposite = startComposite;
-		this.endComposite = endComposite;
+		this.leadingComposite = leadingComposite;
+		this.trailingComposite = trailingComposite;
 	}
-	public Composite< ? > getStartComposite() {
-		return this.startComposite;
+	public Composite< ? > getLeadingComposite() {
+		return this.leadingComposite;
 	}
-	public Composite< ? > getEndComposite() {
-		return this.endComposite;
+	public Composite< ? > getTrailingComposite() {
+		return this.trailingComposite;
 	}
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		if( this.startComposite != null ) {
-			if( this.startComposite.contains( model ) ) {
+		if( this.leadingComposite != null ) {
+			if( this.leadingComposite.contains( model ) ) {
 				return true;
 			}
 		}
-		if( this.endComposite != null ) {
-			if( this.endComposite.contains( model ) ) {
+		if( this.trailingComposite != null ) {
+			if( this.trailingComposite.contains( model ) ) {
 				return true;
 			}
 		}

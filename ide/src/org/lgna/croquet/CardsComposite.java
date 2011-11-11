@@ -41,40 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.edits.ast;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
-	private final org.lgna.project.ast.Statement[] doStatements;
-	private final org.lgna.project.ast.Statement[] undoStatements;
-
-	public DeclareGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement[] doStatements, org.lgna.project.ast.Statement[] undoStatements ) {
-		super( step, declaringType, field );
-		this.doStatements = doStatements;
-		this.undoStatements = undoStatements;
+public abstract class CardsComposite extends Composite< org.lgna.croquet.components.CardPanel > {
+	private final java.util.List< Composite< ? > > cards; 
+	public CardsComposite( java.util.UUID id, Composite< ? >... cards ) {
+		super( id );
+		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
 	}
-	public DeclareGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		assert false : "todo";
-		this.doStatements = null;
-		this.undoStatements = null;
-	}
-	
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		assert false : "todo";
+	protected void localize() {
 	}
-
 	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( this.getDeclaringType(), this.getField(), this.doStatements );
+	public boolean contains( org.lgna.croquet.Model model ) {
+		for( Composite< ? > card : this.cards ) {
+			//todo
+			if( card.contains( model ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
-
+	public java.util.List< Composite< ? >> getCards() {
+		return this.cards;
+	}
 	@Override
-	protected final void undoInternal() {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( this.getDeclaringType(), this.getField(), this.undoStatements );
+	public org.lgna.croquet.components.CardPanel createView() {
+		return new org.lgna.croquet.components.CardPanel( this );
 	}
 }

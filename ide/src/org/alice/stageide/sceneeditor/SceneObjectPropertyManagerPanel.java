@@ -286,7 +286,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	{
 		this.selectedField = field;
 		
-		Object instance = IDE.getActiveInstance().getMainComponent().getSceneEditor().getInstanceInJavaVMForField( field );
+		Object instance = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( field );
 		if( instance instanceof org.lgna.story.Entity ) {
 			this.selectedEntity = (org.lgna.story.Entity)instance;
 			this.selectedImp = ImplementationAccessor.getImplementation(this.selectedEntity);

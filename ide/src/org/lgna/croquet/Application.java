@@ -56,17 +56,30 @@ public abstract class Application {
 		return singleton;
 	}
 
+	private final org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
+	private final java.util.Stack< org.lgna.croquet.components.AbstractWindow< ? > > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.components.AbstractWindow< ? >[] { this.frame } );
+	private Perspective perspective;
+
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
 		org.lgna.croquet.history.TransactionManager.startListeningToMenuSelection();
 	}
 
-	protected abstract org.lgna.croquet.components.Component< ? > createContentPane();
-
-	private org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
-	private java.util.Stack< org.lgna.croquet.components.AbstractWindow< ? > > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.components.AbstractWindow< ? >[] { frame } );
-	
+	public Perspective getPerspective() {
+		return this.perspective;
+	}
+	public void setPerspective( Perspective perspective ) {
+		if( this.perspective != perspective ) {
+			if( this.perspective != null ) {
+				this.frame.getContentPanel().removeAllComponents();
+			}
+			this.perspective = perspective;
+			if( this.perspective != null ) {
+				this.frame.getContentPanel().addComponent( this.perspective.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+			}
+		}
+	}
 	public void pushWindow( org.lgna.croquet.components.AbstractWindow< ? > window ) {
 		this.stack.push( window );
 	}
@@ -75,18 +88,17 @@ public abstract class Application {
 		this.stack.pop();
 		return rv;
 	}
-	
+
 	public org.lgna.croquet.components.AbstractWindow< ? > getOwnerWindow() {
 		return this.stack.peek();
 	}
-	
+
 	public org.lgna.croquet.components.Frame getFrame() {
 		return this.frame;
 	}
-	
+
 	public abstract DropReceptor getDropReceptor( DropSite dropSite );
 	public void initialize( String[] args ) {
-		this.frame.getContentPanel().addComponent( this.createContentPane(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 		this.frame.setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.DO_NOTHING );
 		this.frame.addWindowListener( new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
@@ -140,9 +152,9 @@ public abstract class Application {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.JComponent.getDefaultLocale()", javax.swing.JComponent.getDefaultLocale() );
 				java.util.Locale.setDefault( locale );
 				javax.swing.JComponent.setDefaultLocale( locale );
-				
+
 				Manager.localizeAllModels();
-				
+
 				try {
 					javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getLookAndFeel() );
 				} catch( javax.swing.UnsupportedLookAndFeelException ulafe ) {
@@ -165,14 +177,14 @@ public abstract class Application {
 
 	protected abstract Operation< ? > getAboutOperation();
 	protected abstract Operation< ? > getPreferencesOperation();
-	
+
 	protected abstract void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger );
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 	protected abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		if( message instanceof org.lgna.croquet.components.Component<?> ) {
-			message = ((org.lgna.croquet.components.Component<?>)message).getAwtComponent();
+		if( message instanceof org.lgna.croquet.components.Component< ? > ) {
+			message = ((org.lgna.croquet.components.Component< ? >)message).getAwtComponent();
 		}
 		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.internal, icon );
 	}
@@ -255,6 +267,7 @@ public abstract class Application {
 	}
 
 	private boolean isDragInProgress = false;
+
 	@Deprecated
 	public final boolean isDragInProgress() {
 		return this.isDragInProgress;

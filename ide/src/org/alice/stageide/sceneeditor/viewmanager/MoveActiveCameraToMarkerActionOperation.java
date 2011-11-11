@@ -65,7 +65,7 @@ public class MoveActiveCameraToMarkerActionOperation extends CameraMoveActionOpe
 
 	@Override
 	protected void updateMoveFields(UserField markerField, CameraMarkerImp cameraMarkerImp) {
-		TransformableImp markerImp = IDE.getActiveInstance().getMainComponent().getSceneEditor().getImplementation(markerField);
+		TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation(markerField);
 		String markerName = markerField != null ? markerField.getName() : "";
 		this.setToMoveToImp(markerImp, MarkerUtilities.getIconForCameraMarker(markerField), markerName);
 		this.setToMoveImp(this.getCamera(), MarkerUtilities.getIconForCameraImp(cameraMarkerImp), MarkerUtilities.getNameForCameraImp(cameraMarkerImp));

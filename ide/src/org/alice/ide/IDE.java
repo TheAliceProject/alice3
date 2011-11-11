@@ -92,7 +92,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 	}
 
-	public abstract MainComponent getMainComponent();
 	public abstract ApiConfigurationManager getApiConfigurationManager();
 	
 	@Override
@@ -122,6 +121,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
+	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
+	
 	private Theme theme;
 
 	protected Theme createTheme() {
@@ -686,7 +687,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.project.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new org.lgna.project.ast.Comment( GENERATED_CODE_WARNING ) );
-		this.getMainComponent().getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
+		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
 	}
 
 	@Deprecated

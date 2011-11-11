@@ -48,7 +48,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	public static StageIDE getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(  org.alice.ide.IDE.getActiveInstance(), StageIDE.class );
 	}
-	private StoryMainComponent mainComponent = new StoryMainComponent();
 	private org.alice.ide.cascade.CascadeManager cascadeManager = new org.alice.stageide.cascade.CascadeManager();
 	public StageIDE() {
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
@@ -67,12 +66,8 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 	@Override
-	public StoryMainComponent getMainComponent() {
-		return this.mainComponent;
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createContentPane() {
-		return this.mainComponent;
+	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
+		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 	}
 	@Override
 	public org.alice.ide.ApiConfigurationManager getApiConfigurationManager() {

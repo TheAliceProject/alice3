@@ -680,7 +680,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
 			
-			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getMainComponent().getSceneEditor();
+			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
 			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( arbitrarilyChosenSource );
 			final int N = statementListPropertyPaneInfos.length;
 			for( int i=0; i<N; i++ ) {

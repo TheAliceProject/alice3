@@ -50,16 +50,22 @@ public class VerticalSplitPane extends SplitPane {
 	public VerticalSplitPane( org.lgna.croquet.SplitComposite splitComposite ) {
 		super( splitComposite, javax.swing.JSplitPane.VERTICAL_SPLIT );
 	}
-//	public VerticalSplitPane() {
-//		super( javax.swing.JSplitPane.VERTICAL_SPLIT );
-//	}
-//	public VerticalSplitPane( Component<?> topComponent, Component<?> bottomComponent ) {
-//		super( javax.swing.JSplitPane.VERTICAL_SPLIT, topComponent, bottomComponent );
-//	}
-//	public void setTopComponent( Component<?> component ) {
-//		this.setTopOrLeftComponent( component );
-//	}
-//	public void setBottomComponent( Component<?> component ) {
-//		this.setBottomOrRightComponent( component );
-//	}
+	@Deprecated
+	public VerticalSplitPane() {
+		this( null );
+	}
+	@Deprecated
+	public VerticalSplitPane( Component<?> topComponent, Component<?> bottomComponent ) {
+		this();
+		this.setTopComponent( topComponent );
+		this.setBottomComponent( bottomComponent );
+	}
+	@Deprecated
+	public void setTopComponent( Component<?> component ) {
+		this.setTopOrLeftComponent( component );
+	}
+	@Deprecated
+	public void setBottomComponent( Component<?> component ) {
+		this.setBottomOrRightComponent( component );
+	}
 }

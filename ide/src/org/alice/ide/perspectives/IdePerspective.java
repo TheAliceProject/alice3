@@ -46,37 +46,28 @@ package org.alice.ide.perspectives;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdePerspective extends org.lgna.croquet.Perspective< org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > > {
-	private org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > view;
-	public IdePerspective( java.util.UUID id ) {
-		super( id );
+public abstract class IdePerspective extends org.lgna.croquet.Perspective {
+	public IdePerspective( java.util.UUID id, org.lgna.croquet.Composite< ? > composite ) {
+		super( id, composite );
 	}
 	public abstract org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus();
-	public synchronized org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > getView() {
-		if( this.view != null ) {
-			//pass
-		} else {
-			this.view = this.createView();
-		}
-		return this.view;
-	}
 	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-		this.getView().disableRendering( reasonToDisableSomeAmountOfRendering );
+//		this.getView().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	public void enableRendering() {
-		this.getView().enableRendering();
+//		this.getView().enableRendering();
 	}
-	public void handleDeactivation( org.alice.ide.MainComponent mainComponent ) {
-		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
-		view.handleDeactivated( mainComponent );
-	}
-	public void handleActivation( org.alice.ide.MainComponent mainComponent ) {
-		mainComponent.removeAllComponents();
-		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
-		
-		view.handleActivated( mainComponent );
-		
-		mainComponent.addComponent( view, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		mainComponent.revalidateAndRepaint();
-	}
+//	public void handleDeactivation( org.alice.ide.MainComponent mainComponent ) {
+//		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
+//		view.handleDeactivated( mainComponent );
+//	}
+//	public void handleActivation( org.alice.ide.MainComponent mainComponent ) {
+//		mainComponent.removeAllComponents();
+//		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
+//		
+//		view.handleActivated( mainComponent );
+//		
+//		mainComponent.addComponent( view, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+//		mainComponent.revalidateAndRepaint();
+//	}
 }

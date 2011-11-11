@@ -68,37 +68,37 @@ public class RecycleBin extends org.lgna.croquet.components.JComponent< javax.sw
 		};
 	}
 	
-	public static void main( String[] args ) {
-		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
-			@Override
-			protected org.lgna.croquet.components.Component< ? > createContentPane() {
-				return new RecycleBin();
-			}
-			@Override
-			public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-				return null;
-			}
-			@Override
-			protected org.lgna.croquet.Operation< ? > getAboutOperation() {
-				return null;
-			}
-			@Override
-			protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
-				return null;
-			}
-			@Override
-			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-			}
-			@Override
-			protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
-			}
-			@Override
-			protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
-				System.exit( 0 );
-			}
-		};
-		application.initialize( args );
-		application.getFrame().pack();
-		application.getFrame().setVisible( true );
-	}
+//	public static void main( String[] args ) {
+//		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
+//			@Override
+//			protected org.lgna.croquet.components.Component< ? > createContentPane() {
+//				return new RecycleBin();
+//			}
+//			@Override
+//			public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
+//				return null;
+//			}
+//			@Override
+//			protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+//				return null;
+//			}
+//			@Override
+//			protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+//				return null;
+//			}
+//			@Override
+//			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+//			}
+//			@Override
+//			protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+//			}
+//			@Override
+//			protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+//				System.exit( 0 );
+//			}
+//		};
+//		application.initialize( args );
+//		application.getFrame().pack();
+//		application.getFrame().setVisible( true );
+//	}
 }

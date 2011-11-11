@@ -55,12 +55,18 @@ public class CardPanel extends Panel {
 	public CardPanel( int hgap, int vgap ) {
 		this( null, hgap, vgap );
 	}
-	public CardPanel( org.lgna.croquet.Composite composite ) {
+	public CardPanel( org.lgna.croquet.CardsComposite composite ) {
 		this( composite, 0, 0 );
 	}
-	public CardPanel( org.lgna.croquet.Composite composite, int hgap, int vgap ) {
+	public CardPanel( org.lgna.croquet.CardsComposite composite, int hgap, int vgap ) {
 		super( composite );
 		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
+		if( composite != null ) {
+			for( org.lgna.croquet.Composite< ? > card : composite.getCards() ) {
+				Key key = this.createKey( card );
+				this.addComponent( key );
+			}
+		}
 		this.show( null );
 	}
 	@Override
