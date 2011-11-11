@@ -54,7 +54,7 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 		return SingletonHolder.instance;
 	}
 	private CodeContextSplitComposite() {
-		super( java.util.UUID.fromString( "29c477cc-3c1b-4de4-ab5f-8b0399155760" ), null, null );
+		super( java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ), null, null );
 	}
 	@Override
 	public org.lgna.croquet.components.SplitPane createView() {

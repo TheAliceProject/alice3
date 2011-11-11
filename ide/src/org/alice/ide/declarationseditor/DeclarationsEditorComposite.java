@@ -41,30 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.perspectives;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
+public class DeclarationsEditorComposite extends org.lgna.croquet.Composite< org.alice.ide.typeeditor.TypeEditor > {
 	private static class SingletonHolder {
-		private static CodePerspectiveComposite instance = new CodePerspectiveComposite();
+		private static DeclarationsEditorComposite instance = new DeclarationsEditorComposite();
 	}
-	public static CodePerspectiveComposite getInstance() {
+	public static DeclarationsEditorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private CodePerspectiveComposite() {
-		super( java.util.UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ),
-				CodeContextSplitComposite.getInstance(),
-				org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance()
-		);
+	private DeclarationsEditorComposite() {
+		super( java.util.UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
+	}
+	@Override
+	public org.alice.ide.typeeditor.TypeEditor createView() {
+		return org.alice.ide.typeeditor.TypeEditor.getInstance();
+	}
+	@Override
+	protected void localize() {
 	}
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
-	public org.lgna.croquet.components.SplitPane createView() {
-		return this.createHorizontalSplitPane();
+		//todo
+		return true;
 	}
 }

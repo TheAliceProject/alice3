@@ -41,30 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.perspectives;
+package uist.ecard;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
+public class MainPerspective extends org.lgna.croquet.Perspective {
 	private static class SingletonHolder {
-		private static CodePerspectiveComposite instance = new CodePerspectiveComposite();
+		private static MainPerspective instance = new MainPerspective();
 	}
-	public static CodePerspectiveComposite getInstance() {
+	public static MainPerspective getInstance() {
 		return SingletonHolder.instance;
 	}
-	private CodePerspectiveComposite() {
-		super( java.util.UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ),
-				CodeContextSplitComposite.getInstance(),
-				org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance()
-		);
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
-	public org.lgna.croquet.components.SplitPane createView() {
-		return this.createHorizontalSplitPane();
+	private MainPerspective() {
+		super( java.util.UUID.fromString( "99a45510-224d-44d9-88d9-514761261b31" ), MainComposite.getInstance() );
 	}
 }

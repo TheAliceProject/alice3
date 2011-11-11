@@ -66,6 +66,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
 	}
 
+	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.perspectives.IdePerspective > perspectiveListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.perspectives.IdePerspective >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
+			IDE.this.setPerspective( nextValue );
+		}
+	};
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -98,7 +105,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void initialize( String[] args ) {
 		super.initialize( args );
 		org.lgna.croquet.components.Frame frame = this.getFrame();
-		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );		
+		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );
+		this.getPerspectiveState().addAndInvokeValueObserver( this.perspectiveListener );
 	}
 	
 //	@Override
