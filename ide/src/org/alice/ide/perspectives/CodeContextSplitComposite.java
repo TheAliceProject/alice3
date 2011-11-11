@@ -41,38 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives.components;
+package org.alice.ide.perspectives;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupSceneView extends IdePerspectiveView< javax.swing.JSplitPane, org.alice.stageide.perspectives.SetupScenePerspective > {
-	private Integer mainDividerLocation = null;
-	public SetupSceneView( org.alice.stageide.perspectives.SetupScenePerspective perspective ) {
-		super( perspective );
-		this.getAwtComponent().setRightComponent( new org.alice.stageide.gallerybrowser.GalleryBrowser().getAwtComponent() );
-		this.getAwtComponent().getRightComponent().setMinimumSize( new java.awt.Dimension( SPLIT_MINIMUM_SIZE, SPLIT_MINIMUM_SIZE ) );
+public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
+	private static class SingletonHolder {
+		private static CodeContextSplitComposite instance = new CodeContextSplitComposite();
+	}
+	public static CodeContextSplitComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CodeContextSplitComposite() {
+		super( java.util.UUID.fromString( "29c477cc-3c1b-4de4-ab5f-8b0399155760" ), null, null );
 	}
 	@Override
-	protected javax.swing.JSplitPane createAwtComponent() {
-		return new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
-	}
-	@Override
-	protected void setIgnoreRepaintOnSplitPanes( boolean isIgnoreRepaint ) {
-		this.getAwtComponent().setIgnoreRepaint( isIgnoreRepaint );
-	}
-	@Override
-	public void handleDeactivated( org.alice.ide.MainComponent mainComponent ) {
-		this.mainDividerLocation = this.getAwtComponent().getDividerLocation();
-	}
-	@Override
-	public void handleActivated( org.alice.ide.MainComponent mainComponent ) {
-		if( this.mainDividerLocation != null ) {
-			//pass
-		} else {
-			this.mainDividerLocation = mainComponent.getHeight() - 256;
-		}
-		this.getAwtComponent().setLeftComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getAwtComponent() );
-		this.getAwtComponent().setDividerLocation( this.mainDividerLocation );
+	public org.lgna.croquet.components.SplitPane createView() {
+		return this.createHorizontalSplitPane();
 	}
 }

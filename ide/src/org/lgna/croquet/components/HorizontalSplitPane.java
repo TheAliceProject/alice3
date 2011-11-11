@@ -51,18 +51,21 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class HorizontalSplitPane extends SplitPane {
-	public HorizontalSplitPane() {
-		super( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+	public HorizontalSplitPane( org.lgna.croquet.SplitComposite splitComposite ) {
+		super( splitComposite, javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	}
-	public HorizontalSplitPane( Component<?> leftComponent, Component<?> rightComponent ) {
-		super( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
-		this.setLeftComponent( leftComponent );
-		this.setRightComponent( rightComponent );
-	}
-	public void setLeftComponent( Component<?> component ) {
-		this.setTopOrLeftComponent( component );
-	}
-	public void setRightComponent( Component<?> component ) {
-		this.setBottomOrRightComponent( component );
-	}
+//	public HorizontalSplitPane() {
+//		super( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+//	}
+//	public HorizontalSplitPane( Component<?> leftComponent, Component<?> rightComponent ) {
+//		super( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+//		this.setLeftComponent( leftComponent );
+//		this.setRightComponent( rightComponent );
+//	}
+//	public void setLeftComponent( Component<?> component ) {
+//		this.setTopOrLeftComponent( component );
+//	}
+//	public void setRightComponent( Component<?> component ) {
+//		this.setBottomOrRightComponent( component );
+//	}
 }

@@ -62,7 +62,7 @@ public class CodePerspective extends IdePerspective {
 	}
 	@Override
 	public org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > createView() {
-		return new org.alice.ide.perspectives.components.CodeView( this );
+		return new org.alice.ide.perspectives.components.CodePerspectiveView( this );
 	}
 	@Override
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {

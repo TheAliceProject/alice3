@@ -41,31 +41,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives;
+package org.alice.stageide.perspectives.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspective {
-	private static class SingletonHolder {
-		private static SetupScenePerspective instance = new SetupScenePerspective();
-	}
-	public static SetupScenePerspective getInstance() {
-		return SingletonHolder.instance;
-	}
-	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ) );
+public class SetupScenePerspectiveView extends IdePerspectiveView< javax.swing.JSplitPane, org.alice.stageide.perspectives.SetupScenePerspective > {
+	private Integer mainDividerLocation = null;
+	public SetupScenePerspectiveView( org.alice.stageide.perspectives.SetupScenePerspective perspective ) {
+		super( perspective );
+		this.getAwtComponent().setRightComponent( new org.alice.stageide.gallerybrowser.GalleryBrowser().getAwtComponent() );
+		this.getAwtComponent().getRightComponent().setMinimumSize( new java.awt.Dimension( SPLIT_MINIMUM_SIZE, SPLIT_MINIMUM_SIZE ) );
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
+	protected javax.swing.JSplitPane createAwtComponent() {
+		return new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
 	}
 	@Override
-	public org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > createView() {
-		return new org.alice.stageide.perspectives.components.SetupScenePerspectiveView( this );
+	protected void setIgnoreRepaintOnSplitPanes( boolean isIgnoreRepaint ) {
+		this.getAwtComponent().setIgnoreRepaint( isIgnoreRepaint );
 	}
 	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return null;
+	public void handleDeactivated( org.alice.ide.MainComponent mainComponent ) {
+		this.mainDividerLocation = this.getAwtComponent().getDividerLocation();
+	}
+	@Override
+	public void handleActivated( org.alice.ide.MainComponent mainComponent ) {
+		if( this.mainDividerLocation != null ) {
+			//pass
+		} else {
+			this.mainDividerLocation = mainComponent.getHeight() - 256;
+		}
+		this.getAwtComponent().setLeftComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getAwtComponent() );
+		this.getAwtComponent().setDividerLocation( this.mainDividerLocation );
 	}
 }

@@ -41,31 +41,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspective {
-	private static class SingletonHolder {
-		private static SetupScenePerspective instance = new SetupScenePerspective();
+public abstract class SplitComposite extends Composite< org.lgna.croquet.components.SplitPane >{
+	private final Composite< ? > startComposite;
+	private final Composite< ? > endComposite;
+	public SplitComposite( java.util.UUID id, Composite< ? > startComposite, Composite< ? > endComposite ) {
+		super( id );
+		this.startComposite = startComposite;
+		this.endComposite = endComposite;
 	}
-	public static SetupScenePerspective getInstance() {
-		return SingletonHolder.instance;
+	public Composite< ? > getStartComposite() {
+		return this.startComposite;
 	}
-	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ) );
+	public Composite< ? > getEndComposite() {
+		return this.endComposite;
 	}
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
+		if( this.startComposite != null ) {
+			if( this.startComposite.contains( model ) ) {
+				return true;
+			}
+		}
+		if( this.endComposite != null ) {
+			if( this.endComposite.contains( model ) ) {
+				return true;
+			}
+		}
 		return false;
 	}
 	@Override
-	public org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > createView() {
-		return new org.alice.stageide.perspectives.components.SetupScenePerspectiveView( this );
+	protected void localize() {
 	}
-	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return null;
+	public org.lgna.croquet.components.HorizontalSplitPane createHorizontalSplitPane() {
+		return new org.lgna.croquet.components.HorizontalSplitPane( this );
+	}
+	public org.lgna.croquet.components.VerticalSplitPane createVerticalSplitPane() {
+		return new org.lgna.croquet.components.VerticalSplitPane( this );
 	}
 }

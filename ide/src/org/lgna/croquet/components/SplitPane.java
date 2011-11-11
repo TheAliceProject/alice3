@@ -46,11 +46,12 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SplitPane extends JComponent< javax.swing.JSplitPane > {
-	protected SplitPane( int orientation ) {
-		this( orientation, null, null );
+public abstract class SplitPane extends View< javax.swing.JSplitPane, org.lgna.croquet.SplitComposite > {
+	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation ) {
+		this( splitComposite, orientation, null, null );
 	}
-	protected SplitPane( int orientation, Component<?> topOrLeftComponent, Component<?> bottomOrRightComponent ) {
+	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation, Component<?> topOrLeftComponent, Component<?> bottomOrRightComponent ) {
+		super( splitComposite );
 		this.getAwtComponent().setOrientation( orientation );
 		this.setTopOrLeftComponent( topOrLeftComponent );
 		this.setBottomOrRightComponent( bottomOrRightComponent );

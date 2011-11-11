@@ -46,12 +46,12 @@ package org.alice.ide.perspectives.components;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeView extends org.alice.stageide.perspectives.components.IdePerspectiveView< javax.swing.JSplitPane, org.alice.ide.perspectives.CodePerspective > {
+public class CodePerspectiveView extends org.alice.stageide.perspectives.components.IdePerspectiveView< javax.swing.JSplitPane, org.alice.ide.perspectives.CodePerspective > {
 	private Integer leftDividerLocation = null;
 	private final org.lgna.croquet.components.VerticalSplitPane left = new org.lgna.croquet.components.VerticalSplitPane();
 	private final org.alice.ide.typeeditor.TypeEditor typeEditor = org.alice.ide.typeeditor.TypeEditor.getInstance();
 	private final org.alice.stageide.typecontext.components.SceneOrNonSceneCardPanel sceneOrNonSceneCardPanel;
-	public CodeView( org.alice.ide.perspectives.CodePerspective perspective ) {
+	public CodePerspectiveView( org.alice.ide.perspectives.CodePerspective perspective ) {
 		super( perspective );
 		org.alice.ide.perspectives.components.TypeOrCodeCardPanel contextView = new org.alice.ide.perspectives.components.TypeOrCodeCardPanel( 
 				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), 
