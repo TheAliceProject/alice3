@@ -41,23 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.perspectives;
+package org.alice.stageide.perspectives.code;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspective extends IdePerspective {
+public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 	private static class SingletonHolder {
-		private static CodePerspective instance = new CodePerspective();
+		private static TypeOrCodeCardComposite instance = new TypeOrCodeCardComposite();
 	}
-	public static CodePerspective getInstance() {
+	public static TypeOrCodeCardComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private CodePerspective() {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), CodePerspectiveComposite.getInstance() );
+	private TypeOrCodeCardComposite() {
+		super( java.util.UUID.fromString( "698a5480-5af2-47af-8faa-9cc8d82f4fe8" ),
+				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), 
+				org.alice.ide.members.MembersComposite.getInstance() 
+		);
 	}
 	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return org.alice.ide.typeeditor.TypeEditor.getInstance().getCodeEditorInFocus();
+	public org.lgna.croquet.components.CardPanel createView() {
+		org.lgna.croquet.components.CardPanel rv = super.createView();
+		rv.show( rv.getKey( org.alice.ide.members.MembersComposite.getInstance() ) );
+		return rv;
 	}
 }

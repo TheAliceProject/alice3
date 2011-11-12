@@ -589,7 +589,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.expandButton.getAwtComponent().setText( null );
 			this.expandButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 
-			this.contractButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.ide.perspectives.CodePerspective.getInstance() ).createButton();
+			this.contractButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.stageide.perspectives.CodePerspective.getInstance() ).createButton();
 			this.contractButton.setIcon( CONTRACT_ICON );
 			this.contractButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();

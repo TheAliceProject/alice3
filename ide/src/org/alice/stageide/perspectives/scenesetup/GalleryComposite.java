@@ -41,26 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives;
-
-import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
-
+package org.alice.stageide.perspectives.scenesetup;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspective {
+public class GalleryComposite extends org.lgna.croquet.Composite< org.alice.stageide.gallerybrowser.GalleryBrowser > {
 	private static class SingletonHolder {
-		private static SetupScenePerspective instance = new SetupScenePerspective();
+		private static GalleryComposite instance = new GalleryComposite();
 	}
-	public static SetupScenePerspective getInstance() {
+	public static GalleryComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), SetupScenePerspectiveComposite.getInstance() );
+	private GalleryComposite() {
+		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
 	}
 	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return null;
+	protected void localize() {
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
+	}
+	@Override
+	public org.alice.stageide.gallerybrowser.GalleryBrowser createView() {
+		return new org.alice.stageide.gallerybrowser.GalleryBrowser();
 	}
 }

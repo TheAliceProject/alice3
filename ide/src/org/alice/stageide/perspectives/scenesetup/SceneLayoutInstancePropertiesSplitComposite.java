@@ -41,26 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives;
-
-import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
-
+package org.alice.stageide.perspectives.scenesetup;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspective {
+public class SceneLayoutInstancePropertiesSplitComposite extends org.lgna.croquet.SplitComposite {
 	private static class SingletonHolder {
-		private static SetupScenePerspective instance = new SetupScenePerspective();
+		private static SceneLayoutInstancePropertiesSplitComposite instance = new SceneLayoutInstancePropertiesSplitComposite();
 	}
-	public static SetupScenePerspective getInstance() {
+	public static SceneLayoutInstancePropertiesSplitComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), SetupScenePerspectiveComposite.getInstance() );
+	private SceneLayoutInstancePropertiesSplitComposite() {
+		super( 
+				java.util.UUID.fromString( "a71c7d3f-49d7-497e-825e-491163a05d4f" ), 
+				SceneLayoutComposite.getInstance(), 
+				InstancePropertiesComposite.getInstance()
+		);
 	}
 	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return null;
+	public org.lgna.croquet.components.SplitPane createView() {
+		return this.createHorizontalSplitPane();
 	}
 }

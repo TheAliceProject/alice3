@@ -41,22 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.perspectives;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeOrCodeCardComposite extends org.lgna.croquet.CardsComposite {
-	private static class SingletonHolder {
-		private static TypeOrCodeCardComposite instance = new TypeOrCodeCardComposite();
+public abstract class CardComposite extends Composite< org.lgna.croquet.components.CardPanel > {
+	private final java.util.List< Composite< ? > > cards; 
+	public CardComposite( java.util.UUID id, Composite< ? >... cards ) {
+		super( id );
+		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
 	}
-	public static TypeOrCodeCardComposite getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	protected void localize() {
 	}
-	private TypeOrCodeCardComposite() {
-		super( java.util.UUID.fromString( "698a5480-5af2-47af-8faa-9cc8d82f4fe8" ),
-				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), 
-				org.alice.ide.members.MembersComposite.getInstance() 
-		);
+	@Override
+	public final boolean contains( org.lgna.croquet.Model model ) {
+		for( Composite< ? > card : this.cards ) {
+			//todo
+			if( card.contains( model ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public java.util.List< Composite< ? >> getCards() {
+		return this.cards;
+	}
+	@Override
+	public org.lgna.croquet.components.CardPanel createView() {
+		return new org.lgna.croquet.components.CardPanel( this );
 	}
 }

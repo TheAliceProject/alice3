@@ -41,26 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives;
-
-import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
-
+package org.alice.stageide.typecontext;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspective {
+public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite {
 	private static class SingletonHolder {
-		private static SetupScenePerspective instance = new SetupScenePerspective();
+		private static SceneOrNonSceneCardComposite instance = new SceneOrNonSceneCardComposite();
 	}
-	public static SetupScenePerspective getInstance() {
+	public static SceneOrNonSceneCardComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), SetupScenePerspectiveComposite.getInstance() );
+	private SceneOrNonSceneCardComposite() {
+		super( java.util.UUID.fromString( "9d3525cd-c560-4a00-9de4-7c2b5a926ae9" ),
+				SceneTypeComposite.getInstance(), 
+				NonSceneTypeComposite.getInstance() 
+		);
 	}
 	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return null;
+	public org.lgna.croquet.components.CardPanel createView() {
+		org.lgna.croquet.components.CardPanel rv = super.createView();
+		rv.show( rv.getKey( SceneTypeComposite.getInstance() ) );
+		return rv;
 	}
 }

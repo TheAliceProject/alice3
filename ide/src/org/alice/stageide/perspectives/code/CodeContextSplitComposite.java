@@ -41,26 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives;
-
-import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
-
+package org.alice.stageide.perspectives.code;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspective {
+public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 	private static class SingletonHolder {
-		private static SetupScenePerspective instance = new SetupScenePerspective();
+		private static CodeContextSplitComposite instance = new CodeContextSplitComposite();
 	}
-	public static SetupScenePerspective getInstance() {
+	public static CodeContextSplitComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), SetupScenePerspectiveComposite.getInstance() );
+	private CodeContextSplitComposite() {
+		super( 
+				java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ), 
+				org.alice.stageide.typecontext.SceneOrNonSceneCardComposite.getInstance(), 
+				TypeOrCodeCardComposite.getInstance()
+		);
 	}
 	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return null;
+	public org.lgna.croquet.components.SplitPane createView() {
+		return this.createVerticalSplitPane();
 	}
 }

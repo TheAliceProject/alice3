@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives;
+package org.alice.stageide.perspectives.scenesetup;
 
 /**
  * @author Dennis Cosgrove
@@ -55,13 +55,9 @@ public class SetupScenePerspectiveComposite extends org.lgna.croquet.SplitCompos
 	}
 	private SetupScenePerspectiveComposite() {
 		super( java.util.UUID.fromString( "aa47fc0f-0500-4e9a-b710-b481b802f8c5" ),
-				null,
-				null
+				SceneLayoutInstancePropertiesSplitComposite.getInstance(),
+				GalleryComposite.getInstance()
 		);
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
 	}
 	@Override
 	public org.lgna.croquet.components.SplitPane createView() {

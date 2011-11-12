@@ -51,6 +51,8 @@ public abstract class SplitComposite extends Composite< org.lgna.croquet.compone
 	private final Composite< ? > trailingComposite;
 	public SplitComposite( java.util.UUID id, Composite< ? > leadingComposite, Composite< ? > trailingComposite ) {
 		super( id );
+		assert leadingComposite != null;
+		assert trailingComposite != null;
 		this.leadingComposite = leadingComposite;
 		this.trailingComposite = trailingComposite;
 	}
@@ -61,7 +63,7 @@ public abstract class SplitComposite extends Composite< org.lgna.croquet.compone
 		return this.trailingComposite;
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
+	public final boolean contains( org.lgna.croquet.Model model ) {
 		if( this.leadingComposite != null ) {
 			if( this.leadingComposite.contains( model ) ) {
 				return true;

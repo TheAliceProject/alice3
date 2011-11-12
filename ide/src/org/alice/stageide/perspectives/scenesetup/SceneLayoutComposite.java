@@ -41,35 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.perspectives.scenesetup;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardsComposite extends Composite< org.lgna.croquet.components.CardPanel > {
-	private final java.util.List< Composite< ? > > cards; 
-	public CardsComposite( java.util.UUID id, Composite< ? >... cards ) {
-		super( id );
-		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
+public class SceneLayoutComposite extends org.lgna.croquet.Composite< org.alice.stageide.sceneeditor.StorytellingSceneEditor > {
+	private static class SingletonHolder {
+		private static SceneLayoutComposite instance = new SceneLayoutComposite();
+	}
+	public static SceneLayoutComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SceneLayoutComposite() {
+		super( java.util.UUID.fromString( "c1bb78a0-814c-4658-93b5-2a00c058b756" ) );
 	}
 	@Override
 	protected void localize() {
 	}
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		for( Composite< ? > card : this.cards ) {
-			//todo
-			if( card.contains( model ) ) {
-				return true;
-			}
-		}
 		return false;
 	}
-	public java.util.List< Composite< ? >> getCards() {
-		return this.cards;
-	}
 	@Override
-	public org.lgna.croquet.components.CardPanel createView() {
-		return new org.lgna.croquet.components.CardPanel( this );
+	public org.alice.stageide.sceneeditor.StorytellingSceneEditor createView() {
+		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 	}
 }
