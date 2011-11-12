@@ -68,7 +68,7 @@ public class MenuBarComposite extends Composite< org.lgna.croquet.components.Men
 	}
 
 	@Override
-	public org.lgna.croquet.components.MenuBar createView() {
+	protected org.lgna.croquet.components.MenuBar createView() {
 		return new org.lgna.croquet.components.MenuBar( this );
 	}
 	

@@ -60,7 +60,7 @@ public class SetupScenePerspectiveComposite extends org.lgna.croquet.SplitCompos
 		);
 	}
 	@Override
-	public org.lgna.croquet.components.SplitPane createView() {
+	protected org.lgna.croquet.components.SplitPane createView() {
 		return this.createVerticalSplitPane();
 	}
 }

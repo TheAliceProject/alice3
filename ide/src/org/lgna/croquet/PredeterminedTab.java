@@ -65,7 +65,7 @@ public abstract class PredeterminedTab extends Composite {
 		this.setTitleText( this.getDefaultLocalizedText() );
 	}
 	@Override
-	public org.lgna.croquet.components.View<?,?> createView() {
+	protected org.lgna.croquet.components.View<?,?> createView() {
 		System.err.println( "todo: createView " + this );
 		return null;
 	}

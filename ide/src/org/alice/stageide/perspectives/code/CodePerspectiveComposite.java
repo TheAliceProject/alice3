@@ -43,8 +43,6 @@
 
 package org.alice.stageide.perspectives.code;
 
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -62,7 +60,7 @@ public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
 		);
 	}
 	@Override
-	public org.lgna.croquet.components.SplitPane createView() {
+	protected org.lgna.croquet.components.SplitPane createView() {
 		return this.createHorizontalSplitPane();
 	}
 }

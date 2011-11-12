@@ -46,7 +46,7 @@ package org.alice.stageide.typecontext;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneTypeComposite extends org.alice.ide.croquet.SingletonViewComposite< org.alice.stageide.typecontext.components.SceneTypeView > {
+public class SceneTypeComposite extends org.lgna.croquet.Composite< org.alice.stageide.typecontext.components.SceneTypeView > {
 	private static class SingletonHolder {
 		private static SceneTypeComposite instance = new SceneTypeComposite();
 	}
@@ -62,7 +62,10 @@ public class SceneTypeComposite extends org.alice.ide.croquet.SingletonViewCompo
 		return true;
 	}
 	@Override
-	public org.alice.stageide.typecontext.components.SceneTypeView createView() {
+	protected void localize() {
+	}
+	@Override
+	protected org.alice.stageide.typecontext.components.SceneTypeView createView() {
 		return new org.alice.stageide.typecontext.components.SceneTypeView( this );
 	}
 }

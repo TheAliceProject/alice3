@@ -64,7 +64,7 @@ public class SceneLayoutComposite extends org.lgna.croquet.Composite< org.alice.
 		return false;
 	}
 	@Override
-	public org.alice.stageide.sceneeditor.StorytellingSceneEditor createView() {
+	protected org.alice.stageide.sceneeditor.StorytellingSceneEditor createView() {
 		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 	}
 }

@@ -64,7 +64,7 @@ public class InstancePropertiesComposite extends org.lgna.croquet.Composite< org
 		return false;
 	}
 	@Override
-	public org.lgna.croquet.components.BorderPanel createView() {
+	protected org.lgna.croquet.components.BorderPanel createView() {
 		return new org.lgna.croquet.components.BorderPanel();
 	}
 }

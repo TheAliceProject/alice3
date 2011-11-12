@@ -61,7 +61,7 @@ public class SceneLayoutInstancePropertiesSplitComposite extends org.lgna.croque
 		);
 	}
 	@Override
-	public org.lgna.croquet.components.SplitPane createView() {
+	protected org.lgna.croquet.components.SplitPane createView() {
 		return this.createHorizontalSplitPane();
 	}
 }

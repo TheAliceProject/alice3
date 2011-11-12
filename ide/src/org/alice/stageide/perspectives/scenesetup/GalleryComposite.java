@@ -64,7 +64,7 @@ public class GalleryComposite extends org.lgna.croquet.Composite< org.alice.stag
 		return false;
 	}
 	@Override
-	public org.alice.stageide.gallerybrowser.GalleryBrowser createView() {
+	protected org.alice.stageide.gallerybrowser.GalleryBrowser createView() {
 		return new org.alice.stageide.gallerybrowser.GalleryBrowser();
 	}
 }

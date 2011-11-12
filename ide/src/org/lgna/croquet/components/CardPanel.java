@@ -108,7 +108,7 @@ public class CardPanel extends Panel {
 		return this.getKey( composite.getId() );
 	}
 	public Key createKey( org.lgna.croquet.Composite< ? > composite ) {
-		return this.createKey( composite.createView(), composite.getId() );
+		return this.createKey( composite.getView(), composite.getId() );
 	}
 	
 	public void addComponent( Key key ) {

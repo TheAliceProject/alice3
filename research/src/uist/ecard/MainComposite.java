@@ -68,7 +68,7 @@ public class MainComposite extends org.lgna.croquet.Composite< org.lgna.croquet.
 		return false;
 	}
 	@Override
-	public org.lgna.croquet.components.BorderPanel createView() {
+	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 
 		ECardApplication app = ECardApplication.getActiveInstance();

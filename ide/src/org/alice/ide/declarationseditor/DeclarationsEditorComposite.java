@@ -57,7 +57,7 @@ public class DeclarationsEditorComposite extends org.lgna.croquet.Composite< org
 		super( java.util.UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
 	}
 	@Override
-	public org.alice.ide.typeeditor.TypeEditor createView() {
+	protected org.alice.ide.typeeditor.TypeEditor createView() {
 		return org.alice.ide.typeeditor.TypeEditor.getInstance();
 	}
 	@Override

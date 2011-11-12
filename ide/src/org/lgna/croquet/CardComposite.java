@@ -69,7 +69,7 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 		return this.cards;
 	}
 	@Override
-	public org.lgna.croquet.components.CardPanel createView() {
+	protected org.lgna.croquet.components.CardPanel createView() {
 		return new org.lgna.croquet.components.CardPanel( this );
 	}
 }

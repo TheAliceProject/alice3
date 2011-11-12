@@ -52,5 +52,14 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		Manager.registerComposite( this );
 	}
 	public abstract boolean contains( Model model );
-	public abstract V createView();
+	protected abstract V createView();
+	private V view;
+	public final V getView() {
+		if( view != null ) {
+			//pass
+		} else {
+			this.view = this.createView();
+		}
+		return this.view;
+	}
 }

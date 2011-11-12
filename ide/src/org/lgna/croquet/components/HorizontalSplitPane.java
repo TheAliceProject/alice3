@@ -43,10 +43,6 @@
 
 package org.lgna.croquet.components;
 
-
-
-//todo: leading and trailing to support right to left languages
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,7 +50,6 @@ public class HorizontalSplitPane extends SplitPane {
 	public HorizontalSplitPane( org.lgna.croquet.SplitComposite splitComposite ) {
 		super( splitComposite, javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	}
-	
 	@Deprecated
 	public HorizontalSplitPane() {
 		this( null );
