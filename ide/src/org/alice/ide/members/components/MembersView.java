@@ -78,7 +78,7 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			MembersView.this.cardPanel.show( MembersView.this.getKey( nextValue ) );
+			MembersView.this.cardPanel.showKey( MembersView.this.getKey( nextValue ) );
 		}
 	};
 	

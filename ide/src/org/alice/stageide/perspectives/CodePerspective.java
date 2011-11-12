@@ -63,4 +63,11 @@ public class CodePerspective extends IdePerspective {
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		return org.alice.ide.typeeditor.TypeEditor.getInstance().getCodeEditorInFocus();
 	}
+	@Override
+	public void handleActivation() {
+		org.alice.stageide.typecontext.SceneOrNonSceneCardComposite.getInstance().handleActivation();
+	}
+	@Override
+	public void handleDeactivation() {
+	}
 }

@@ -49,9 +49,11 @@ package org.lgna.croquet.components;
  */
 public class CardPanel extends Panel {
 	private final java.awt.CardLayout cardLayout;
+	@Deprecated
 	public CardPanel() {
 		this( null );
 	}
+	@Deprecated
 	public CardPanel( int hgap, int vgap ) {
 		this( null, hgap, vgap );
 	}
@@ -63,11 +65,10 @@ public class CardPanel extends Panel {
 		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
 		if( composite != null ) {
 			for( org.lgna.croquet.Composite< ? > card : composite.getCards() ) {
-				Key key = this.createKey( card );
-				this.addComponent( key );
+				this.addComposite( card );
 			}
 		}
-		this.show( null );
+		this.showComposite( null );
 	}
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
@@ -103,21 +104,16 @@ public class CardPanel extends Panel {
 	public Key getKey( java.util.UUID id ) {
 		return this.map.get( id );
 	}
-
-	public Key getKey( org.lgna.croquet.Composite< ? > composite ) {
-		return this.getKey( composite.getId() );
-	}
-	public Key createKey( org.lgna.croquet.Composite< ? > composite ) {
-		return this.createKey( composite.getView(), composite.getId() );
-	}
-	
+	@Deprecated
 	public void addComponent( Key key ) {
 		this.internalAddComponent( key.view, key.id.toString() );
 	}
+	@Deprecated
 	public void removeComponent( Key key ) {
 		this.internalRemoveComponent( key.view );
 	}
-	public void show( Key key ) {
+	@Deprecated
+	public void showKey( Key key ) {
 		if( key != null ) {
 			//pass
 		} else {
@@ -135,4 +131,31 @@ public class CardPanel extends Panel {
 		}
 		this.cardLayout.show( this.getAwtComponent(), key.id.toString() );
 	}
+
+	private Key getKey( org.lgna.croquet.Composite< ? > composite ) {
+		if( composite != null ) {
+			java.util.UUID id = composite.getId();
+			Key key = this.getKey( id );
+			if( key != null ) {
+				//pass
+			} else {
+				key = this.createKey( composite.getView(), id );
+			}
+			return key;
+		} else {
+			return null;
+		}
+	}
+	public void addComposite( org.lgna.croquet.Composite< ? > composite ) {
+		assert composite != null;
+		this.addComponent( this.getKey( composite ) );
+	}
+	public void removeComposite( org.lgna.croquet.Composite< ? > composite ) {
+		assert composite != null;
+		this.removeComponent( this.getKey( composite ) );
+	}
+	public void showComposite( org.lgna.croquet.Composite< ? > composite ) {
+		this.showKey( this.getKey( composite ) );
+	}
+	
 }

@@ -62,10 +62,10 @@ public class VerticalSplitPane extends SplitPane {
 	}
 	@Deprecated
 	public void setTopComponent( Component<?> component ) {
-		this.setTopOrLeftComponent( component );
+		this.setLeadingComponent( component );
 	}
 	@Deprecated
 	public void setBottomComponent( Component<?> component ) {
-		this.setBottomOrRightComponent( component );
+		this.setTrailingComponent( component );
 	}
 }

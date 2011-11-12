@@ -50,11 +50,11 @@ public abstract class SplitPane extends View< javax.swing.JSplitPane, org.lgna.c
 	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation ) {
 		this( splitComposite, orientation, splitComposite != null ? splitComposite.getLeadingComposite().getView() : null, splitComposite != null ? splitComposite.getTrailingComposite().getView() : null );
 	}
-	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation, Component<?> topOrLeftComponent, Component<?> bottomOrRightComponent ) {
+	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation, Component<?> leadingComponent, Component<?> trailingComponent ) {
 		super( splitComposite );
 		this.getAwtComponent().setOrientation( orientation );
-		this.setTopOrLeftComponent( topOrLeftComponent );
-		this.setBottomOrRightComponent( bottomOrRightComponent );
+		this.setLeadingComponent( leadingComponent );
+		this.setTrailingComponent( trailingComponent );
 	}
 	@Override
 	protected javax.swing.JSplitPane createAwtComponent() {
@@ -78,14 +78,14 @@ public abstract class SplitPane extends View< javax.swing.JSplitPane, org.lgna.c
 //		};
 	}
 	
-	protected void setTopOrLeftComponent( Component<?> component ) {
+	public void setLeadingComponent( Component<?> component ) {
 		if( component != null ) {
 			this.getAwtComponent().setLeftComponent( component.getAwtComponent() );
 		} else {
 			this.getAwtComponent().setLeftComponent( null );
 		}
 	}
-	protected void setBottomOrRightComponent( Component<?> component ) {
+	public void setTrailingComponent( Component<?> component ) {
 		if( component != null ) {
 			this.getAwtComponent().setRightComponent( component.getAwtComponent() );
 		} else {

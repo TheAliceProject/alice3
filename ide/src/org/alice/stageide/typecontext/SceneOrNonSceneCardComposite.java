@@ -53,6 +53,15 @@ public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite
 	public static SceneOrNonSceneCardComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+	
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+			SceneOrNonSceneCardComposite.this.handleTypeStateChanged( nextValue );
+		}
+	};
+
 	private SceneOrNonSceneCardComposite() {
 		super( java.util.UUID.fromString( "9d3525cd-c560-4a00-9de4-7c2b5a926ae9" ),
 				SceneTypeComposite.getInstance(), 
@@ -62,7 +71,30 @@ public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite
 	@Override
 	public org.lgna.croquet.components.CardPanel createView() {
 		org.lgna.croquet.components.CardPanel rv = super.createView();
-		rv.show( rv.getKey( SceneTypeComposite.getInstance() ) );
+		rv.showComposite( SceneTypeComposite.getInstance() );
 		return rv;
+	}
+
+	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
+		org.lgna.croquet.Composite< ? > composite;
+		if( nextValue != null ) {
+			if( nextValue.isAssignableTo( org.lgna.story.Scene.class ) ) {
+				composite = SceneTypeComposite.getInstance();
+			} else {
+				composite = NonSceneTypeComposite.getInstance();
+			}
+//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
+//			if( view instanceof NonSceneTypeView ) {
+//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
+//				nonSceneTypeView.handlePreShow();
+//			}
+		} else {
+			composite = null;
+		}
+		this.getView().showComposite( composite );
+	}
+
+	public void handleActivation() {
+		this.getView().addComposite( SceneTypeComposite.getInstance() );
 	}
 }

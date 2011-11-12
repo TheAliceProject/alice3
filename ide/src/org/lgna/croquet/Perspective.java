@@ -81,4 +81,6 @@ public abstract class Perspective extends Element {
 		rv.append( this.name );
 		return rv;
 	}
+	public abstract void handleActivation();
+	public abstract void handleDeactivation();
 }

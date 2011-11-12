@@ -100,7 +100,7 @@ public class InitializerPane extends org.lgna.croquet.components.CardPanel {
 		} else {
 			key = this.itemKey;
 		}
-		this.show( key );
+		this.showKey( key );
 //		this.revalidateAndRepaint();
 //		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 //			public void run() {

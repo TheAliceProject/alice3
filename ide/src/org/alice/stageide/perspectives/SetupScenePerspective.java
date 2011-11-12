@@ -43,9 +43,6 @@
 
 package org.alice.stageide.perspectives;
 
-import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -57,10 +54,17 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspec
 		return SingletonHolder.instance;
 	}
 	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), SetupScenePerspectiveComposite.getInstance() );
+		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance() );
 	}
 	@Override
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		return null;
+	}
+	@Override
+	public void handleActivation() {
+		org.alice.stageide.perspectives.scenesetup.SceneLayoutInstancePropertiesSplitComposite.getInstance().handleActivation();
+	}
+	@Override
+	public void handleDeactivation() {
 	}
 }

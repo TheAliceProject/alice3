@@ -62,7 +62,7 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 	@Override
 	public org.lgna.croquet.components.CardPanel createView() {
 		org.lgna.croquet.components.CardPanel rv = super.createView();
-		rv.show( rv.getKey( org.alice.ide.members.MembersComposite.getInstance() ) );
+		rv.showComposite( org.alice.ide.members.MembersComposite.getInstance() );
 		return rv;
 	}
 }

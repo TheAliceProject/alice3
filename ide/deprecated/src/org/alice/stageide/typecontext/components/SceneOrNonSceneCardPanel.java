@@ -79,7 +79,7 @@ public class SceneOrNonSceneCardPanel extends org.lgna.croquet.components.CardPa
 		} else {
 			key = null;
 		}
-		this.show( key );
+		this.showKey( key );
 	}
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
