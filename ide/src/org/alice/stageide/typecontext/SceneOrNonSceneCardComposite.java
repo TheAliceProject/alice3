@@ -91,15 +91,16 @@ public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite
 		} else {
 			composite = null;
 		}
-		this.getView().showComposite( composite );
+		this.showCard( composite );
 	}
-
-	public void handleActivation() {
-		this.getView().addComposite( SceneTypeComposite.getInstance() );
+	@Override
+	public void handlePreActivated() {
+		super.handlePreActivated();
 		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
 	}
-	public void handleDeactivation() {
+	@Override
+	public void handlePostDectivated() {
 		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().removeValueObserver( this.typeListener );
-		this.getView().removeComposite( SceneTypeComposite.getInstance() );
+		super.handlePostDectivated();
 	}
 }

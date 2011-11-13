@@ -80,10 +80,14 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 			this.getView().showComposite( org.alice.ide.members.MembersComposite.getInstance() );
 		}
 	}
-	public void handleActivation() {
+	@Override
+	public void handlePreActivated() {
+		super.handlePreActivated();
 		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( this.declarationListener );
 	}
-	public void handleDeactivation() {
+	@Override
+	public void handlePostDectivated() {
 		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().removeValueObserver( this.declarationListener );
+		super.handlePostDectivated();
 	}
 }

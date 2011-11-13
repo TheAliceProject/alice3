@@ -47,7 +47,8 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CardComposite extends Composite< org.lgna.croquet.components.CardPanel > {
-	private final java.util.List< Composite< ? > > cards; 
+	private final java.util.List< Composite< ? > > cards;
+	private Composite<?> showingCard;
 	public CardComposite( java.util.UUID id, Composite< ? >... cards ) {
 		super( id );
 		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
@@ -71,5 +72,30 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 	@Override
 	protected org.lgna.croquet.components.CardPanel createView() {
 		return new org.lgna.croquet.components.CardPanel( this );
+	}
+	
+	public void showCard( Composite< ? > card ) {
+		if( this.showingCard != null ) {
+			this.showingCard.handlePostDectivated();
+		}
+		this.showingCard = card;
+		this.getView().showComposite( this.showingCard );
+		if( this.showingCard != null ) {
+			this.showingCard.handlePreActivated();
+		}
+	}
+	@Override
+	public void handlePreActivated() {
+		super.handlePreActivated();
+		if( this.showingCard != null ) {
+			this.showingCard.handlePreActivated();
+		}
+	}
+	@Override
+	public void handlePostDectivated() {
+		if( this.showingCard != null ) {
+			this.showingCard.handlePostDectivated();
+		}
+		super.handlePostDectivated();
 	}
 }
