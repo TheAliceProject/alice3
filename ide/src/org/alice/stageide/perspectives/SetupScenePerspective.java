@@ -60,11 +60,4 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspec
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		return null;
 	}
-	@Override
-	public void handleActivation() {
-		org.alice.stageide.perspectives.scenesetup.SceneLayoutInstancePropertiesSplitComposite.getInstance().handleActivation();
-	}
-	@Override
-	public void handleDeactivation() {
-	}
 }

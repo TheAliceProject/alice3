@@ -47,10 +47,11 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class SplitPane extends View< javax.swing.JSplitPane, org.lgna.croquet.SplitComposite > {
+	private static final java.awt.Dimension MINIMUM_SIZE = new java.awt.Dimension( 24, 24 );
 	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation ) {
 		this( splitComposite, orientation, splitComposite != null ? splitComposite.getLeadingComposite().getView() : null, splitComposite != null ? splitComposite.getTrailingComposite().getView() : null );
 	}
-	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation, Component<?> leadingComponent, Component<?> trailingComponent ) {
+	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation, JComponent<?> leadingComponent, JComponent<?> trailingComponent ) {
 		super( splitComposite );
 		this.getAwtComponent().setOrientation( orientation );
 		this.setLeadingComponent( leadingComponent );
@@ -78,16 +79,18 @@ public abstract class SplitPane extends View< javax.swing.JSplitPane, org.lgna.c
 //		};
 	}
 	
-	public void setLeadingComponent( Component<?> component ) {
+	public void setLeadingComponent( JComponent<?> component ) {
 		if( component != null ) {
 			this.getAwtComponent().setLeftComponent( component.getAwtComponent() );
+			component.getAwtComponent().setMinimumSize( MINIMUM_SIZE );
 		} else {
 			this.getAwtComponent().setLeftComponent( null );
 		}
 	}
-	public void setTrailingComponent( Component<?> component ) {
+	public void setTrailingComponent( JComponent<?> component ) {
 		if( component != null ) {
 			this.getAwtComponent().setRightComponent( component.getAwtComponent() );
+			component.getAwtComponent().setMinimumSize( MINIMUM_SIZE );
 		} else {
 			this.getAwtComponent().setRightComponent( null );
 		}

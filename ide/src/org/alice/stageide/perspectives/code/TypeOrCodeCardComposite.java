@@ -81,13 +81,13 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 		}
 	}
 	@Override
-	public void handlePreActivated() {
-		super.handlePreActivated();
+	public void handlePreActivation() {
+		super.handlePreActivation();
 		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( this.declarationListener );
 	}
 	@Override
-	public void handlePostDectivated() {
+	public void handlePostDectivation() {
 		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().removeValueObserver( this.declarationListener );
-		super.handlePostDectivated();
+		super.handlePostDectivation();
 	}
 }

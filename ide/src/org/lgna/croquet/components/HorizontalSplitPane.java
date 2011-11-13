@@ -55,17 +55,9 @@ public class HorizontalSplitPane extends SplitPane {
 		this( null );
 	}
 	@Deprecated
-	public HorizontalSplitPane( Component<?> leftComponent, Component<?> rightComponent ) {
+	public HorizontalSplitPane( JComponent<?> leftComponent, JComponent<?> rightComponent ) {
 		this();
-		this.setLeftComponent( leftComponent );
-		this.setRightComponent( rightComponent );
-	}
-	@Deprecated
-	public void setLeftComponent( Component<?> component ) {
-		this.setLeadingComponent( component );
-	}
-	@Deprecated
-	public void setRightComponent( Component<?> component ) {
-		this.setTrailingComponent( component );
+		this.setLeadingComponent( leftComponent );
+		this.setTrailingComponent( rightComponent );
 	}
 }

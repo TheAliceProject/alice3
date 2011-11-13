@@ -92,23 +92,23 @@ public abstract class SplitComposite extends Composite< org.lgna.croquet.compone
 		return new org.lgna.croquet.components.VerticalSplitPane( this );
 	}
 	@Override
-	public void handlePreActivated() {
-		super.handlePreActivated();
+	public void handlePreActivation() {
+		super.handlePreActivation();
 		if( this.leadingComposite != null ) {
-			this.leadingComposite.handlePreActivated();
+			this.leadingComposite.handlePreActivation();
 		}
 		if( this.trailingComposite != null ) {
-			this.trailingComposite.handlePreActivated();
+			this.trailingComposite.handlePreActivation();
 		}
 	}
 	@Override
-	public void handlePostDectivated() {
+	public void handlePostDectivation() {
 		if( this.leadingComposite != null ) {
-			this.leadingComposite.handlePostDectivated();
+			this.leadingComposite.handlePostDectivation();
 		}
 		if( this.trailingComposite != null ) {
-			this.trailingComposite.handlePostDectivated();
+			this.trailingComposite.handlePostDectivation();
 		}
-		super.handlePostDectivated();
+		super.handlePostDectivation();
 	}
 }

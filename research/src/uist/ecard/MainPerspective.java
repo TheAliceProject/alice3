@@ -56,10 +56,4 @@ public class MainPerspective extends org.lgna.croquet.Perspective {
 	private MainPerspective() {
 		super( java.util.UUID.fromString( "99a45510-224d-44d9-88d9-514761261b31" ), MainComposite.getInstance() );
 	}
-	@Override
-	public void handleActivation() {
-	}
-	@Override
-	public void handleDeactivation() {
-	}
 }

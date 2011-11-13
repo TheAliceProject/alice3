@@ -69,8 +69,8 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 //	public void setActive( boolean isActive ) {
 //		this.isActive = isActive;
 //	}
-	public void handlePreActivated() {
+	public void handlePreActivation() {
 	}
-	public void handlePostDectivated() {
+	public void handlePostDectivation() {
 	}
 }

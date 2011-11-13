@@ -81,10 +81,10 @@ public abstract class Perspective extends Element {
 		rv.append( this.name );
 		return rv;
 	}
-	public void handleActivation() {
-		this.composite.handlePreActivated();
+	public final void handlePreActivation() {
+		this.composite.handlePreActivation();
 	}
-	public void handleDeactivation() {
-		this.composite.handlePostDectivated();
+	public final void handlePostDeactivation() {
+		this.composite.handlePostDectivation();
 	}
 }

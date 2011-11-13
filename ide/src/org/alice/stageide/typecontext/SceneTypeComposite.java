@@ -69,12 +69,13 @@ public class SceneTypeComposite extends org.lgna.croquet.Composite< org.alice.st
 		return new org.alice.stageide.typecontext.components.SceneTypeView( this );
 	}
 	@Override
-	public void handlePreActivated() {
-		super.handlePreActivated();		
+	public void handlePreActivation() {
+		super.handlePreActivation();		
 		this.getView().addComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 	}
 	@Override
-	public void handlePostDectivated() {
-		super.handlePostDectivated();		
+	public void handlePostDectivation() {
+		this.getView().removeComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
+		super.handlePostDectivation();		
 	}
 }

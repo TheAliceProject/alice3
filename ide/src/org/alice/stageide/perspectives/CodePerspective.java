@@ -60,15 +60,4 @@ public class CodePerspective extends org.alice.ide.perspectives.IdePerspective {
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		return org.alice.ide.typeeditor.TypeEditor.getInstance().getCodeEditorInFocus();
 	}
-//	@Override
-//	public void handleActivation() {
-//		org.alice.stageide.typecontext.SceneOrNonSceneCardComposite.getInstance().handleActivation();
-//		org.alice.stageide.perspectives.code.TypeOrCodeCardComposite.getInstance().handleActivation();
-//		org.alice.stageide.typecontext.SceneTypeComposite.getInstance().handleActivation();
-//	}
-//	@Override
-//	public void handleDeactivation() {
-//		org.alice.stageide.perspectives.code.TypeOrCodeCardComposite.getInstance().handleDeactivation();
-//		org.alice.stageide.typecontext.SceneOrNonSceneCardComposite.getInstance().handleDeactivation();
-//	}
 }

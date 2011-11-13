@@ -439,8 +439,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		if (isExpanded)
 		{
 			this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
-			this.propertiesSplitPane.setLeftComponent(this.lookingGlassPanel);
-			this.propertiesSplitPane.setRightComponent(this.sidePanel);
+			this.propertiesSplitPane.setLeadingComponent(this.lookingGlassPanel);
+			this.propertiesSplitPane.setTrailingComponent(this.sidePanel);
 			this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
 			this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
 		}
@@ -1029,10 +1029,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 	}
 	
-	public org.lgna.croquet.components.CompassPointSpringPanel getLookingGlassPanel() {
-		return this.lookingGlassPanel;
-	}
-	public SidePane getSidePanel() {
-		return this.sidePanel;
-	}
+//	public org.lgna.croquet.components.CompassPointSpringPanel getLookingGlassPanel() {
+//		return this.lookingGlassPanel;
+//	}
+//	public SidePane getSidePanel() {
+//		return this.sidePanel;
+//	}
 }

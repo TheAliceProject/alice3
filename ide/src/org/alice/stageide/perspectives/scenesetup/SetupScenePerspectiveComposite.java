@@ -55,12 +55,22 @@ public class SetupScenePerspectiveComposite extends org.lgna.croquet.SplitCompos
 	}
 	private SetupScenePerspectiveComposite() {
 		super( java.util.UUID.fromString( "aa47fc0f-0500-4e9a-b710-b481b802f8c5" ),
-				SceneLayoutInstancePropertiesSplitComposite.getInstance(),
+				SceneLayoutComposite.getInstance(),
 				GalleryComposite.getInstance()
 		);
 	}
 	@Override
 	protected org.lgna.croquet.components.SplitPane createView() {
 		return this.createVerticalSplitPane();
+	}
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();		
+		this.getView().setLeadingComponent( SceneLayoutComposite.getInstance().getView() );
+	}
+	@Override
+	public void handlePostDectivation() {
+		this.getView().setLeadingComponent( null );
+		super.handlePostDectivation();
 	}
 }
