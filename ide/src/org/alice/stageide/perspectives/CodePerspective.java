@@ -43,13 +43,10 @@
 
 package org.alice.stageide.perspectives;
 
-import org.alice.ide.perspectives.IdePerspective;
-import org.alice.stageide.perspectives.code.CodePerspectiveComposite;
-
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspective extends IdePerspective {
+public class CodePerspective extends org.alice.ide.perspectives.IdePerspective {
 	private static class SingletonHolder {
 		private static CodePerspective instance = new CodePerspective();
 	}
@@ -57,7 +54,7 @@ public class CodePerspective extends IdePerspective {
 		return SingletonHolder.instance;
 	}
 	private CodePerspective() {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), CodePerspectiveComposite.getInstance() );
+		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), org.alice.stageide.perspectives.code.CodePerspectiveComposite.getInstance() );
 	}
 	@Override
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
@@ -66,8 +63,11 @@ public class CodePerspective extends IdePerspective {
 	@Override
 	public void handleActivation() {
 		org.alice.stageide.typecontext.SceneOrNonSceneCardComposite.getInstance().handleActivation();
+		org.alice.stageide.perspectives.code.TypeOrCodeCardComposite.getInstance().handleActivation();
 	}
 	@Override
 	public void handleDeactivation() {
+		org.alice.stageide.perspectives.code.TypeOrCodeCardComposite.getInstance().handleDeactivation();
+		org.alice.stageide.typecontext.SceneOrNonSceneCardComposite.getInstance().handleDeactivation();
 	}
 }

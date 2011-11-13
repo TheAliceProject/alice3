@@ -53,6 +53,14 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 	public static TypeOrCodeCardComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
+	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+			TypeOrCodeCardComposite.this.handleDeclarationStateChanged( nextValue );
+		}
+	};
 	private TypeOrCodeCardComposite() {
 		super( java.util.UUID.fromString( "698a5480-5af2-47af-8faa-9cc8d82f4fe8" ),
 				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), 
@@ -64,5 +72,18 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 		org.lgna.croquet.components.CardPanel rv = super.createView();
 		rv.showComposite( org.alice.ide.members.MembersComposite.getInstance() );
 		return rv;
+	}
+	private void handleDeclarationStateChanged( org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue ) {
+		if( nextValue != null && nextValue.getDeclaration() instanceof org.lgna.project.ast.AbstractType ) {
+			this.getView().showComposite( org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance() );
+		} else {
+			this.getView().showComposite( org.alice.ide.members.MembersComposite.getInstance() );
+		}
+	}
+	public void handleActivation() {
+		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( this.declarationListener );
+	}
+	public void handleDeactivation() {
+		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().removeValueObserver( this.declarationListener );
 	}
 }
