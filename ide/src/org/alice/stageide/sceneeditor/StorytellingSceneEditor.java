@@ -1029,4 +1029,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 	}
 	
+	public org.lgna.croquet.components.CompassPointSpringPanel getLookingGlassPanel() {
+		return this.lookingGlassPanel;
+	}
+	public SidePane getSidePanel() {
+		return this.sidePanel;
+	}
 }

@@ -250,6 +250,11 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 	
 	protected void setActiveScene( org.lgna.project.ast.UserField sceneField ) {
+		//note: added by dennisc
+		this.initializeIfNecessary();
+		//
+		
+		
 		SceneFieldListSelectionState.getInstance().setSelectedItem(sceneField);
 
 		//Run the "setActiveScene" call on the program to get the active scene set in the right state

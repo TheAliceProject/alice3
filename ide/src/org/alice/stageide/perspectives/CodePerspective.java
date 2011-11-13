@@ -64,6 +64,7 @@ public class CodePerspective extends org.alice.ide.perspectives.IdePerspective {
 	public void handleActivation() {
 		org.alice.stageide.typecontext.SceneOrNonSceneCardComposite.getInstance().handleActivation();
 		org.alice.stageide.perspectives.code.TypeOrCodeCardComposite.getInstance().handleActivation();
+		org.alice.stageide.typecontext.SceneTypeComposite.getInstance().handleActivation();
 	}
 	@Override
 	public void handleDeactivation() {

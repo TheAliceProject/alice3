@@ -80,6 +80,7 @@ public abstract class Application {
 				this.perspective.handleActivation();
 				this.frame.getContentPanel().addComponent( this.perspective.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 			}
+			this.frame.getContentPanel().revalidateAndRepaint();
 		}
 	}
 	public void pushWindow( org.lgna.croquet.components.AbstractWindow< ? > window ) {
