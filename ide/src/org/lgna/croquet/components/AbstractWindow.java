@@ -67,7 +67,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	}
 
 	@Override
-	/*protected*/ public final W getAwtComponent() {
+	public final W getAwtComponent() {
 		return this.window;
 	}
 	

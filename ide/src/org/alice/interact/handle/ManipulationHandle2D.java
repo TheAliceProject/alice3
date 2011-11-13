@@ -275,10 +275,4 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 	{
 		//Do Nothing
 	}
-	
-	@Override
-	public String toString() 
-	{
-		return this.getClass().getSimpleName()+":"+this.hashCode();
-	}
 }

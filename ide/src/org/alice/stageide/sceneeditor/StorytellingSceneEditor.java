@@ -827,16 +827,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	
-	private boolean HACK_isDisplayableAlreadyHandled = false;
-	
+//	private boolean HACK_isDisplayableAlreadyHandled = false;
+//	
 	@Override
 	protected void handleDisplayable() {
-		if( HACK_isDisplayableAlreadyHandled ) {
-			System.err.println( "TODO: investigate is displayed" );
-		} else {
+//		if( HACK_isDisplayableAlreadyHandled ) {
+//			System.err.println( "TODO: investigate is displayed" );
+//		} else {
 			super.handleDisplayable();
-			HACK_isDisplayableAlreadyHandled = true;
-		}
+//			HACK_isDisplayableAlreadyHandled = true;
+//		}
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.showLookingGlassPanel();
@@ -1028,11 +1028,4 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.snapGrid.setSpacing(gridSpacing);
 		}
 	}
-	
-//	public org.lgna.croquet.components.CompassPointSpringPanel getLookingGlassPanel() {
-//		return this.lookingGlassPanel;
-//	}
-//	public SidePane getSidePanel() {
-//		return this.sidePanel;
-//	}
 }

@@ -63,14 +63,19 @@ public class SetupScenePerspectiveComposite extends org.lgna.croquet.SplitCompos
 	protected org.lgna.croquet.components.SplitPane createView() {
 		return this.createVerticalSplitPane();
 	}
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();		
-		this.getView().setLeadingComponent( SceneLayoutComposite.getInstance().getView() );
-	}
-	@Override
-	public void handlePostDectivation() {
-		this.getView().setLeadingComponent( null );
-		super.handlePostDectivation();
-	}
+//	@Override
+//	public void handlePreActivation() {
+////		this.setLeadingComposite( SceneLayoutComposite.getInstance() );
+//		super.handlePreActivation();
+////		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+////			public void run() {
+////				SetupScenePerspectiveComposite.this.getView().setDividerLocation( 200 );
+////			}
+////		} );
+//	}
+//	@Override
+//	public void handlePostDectivation() {
+//		super.handlePostDectivation();
+////		this.setLeadingComposite( null );
+//	}
 }

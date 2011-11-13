@@ -59,14 +59,16 @@ public abstract class SplitComposite extends Composite< org.lgna.croquet.compone
 	}
 	public void setLeadingComposite(Composite<?> leadingComposite) {
 		this.leadingComposite = leadingComposite;
-		this.getView().setLeadingComponent( trailingComposite != null ? trailingComposite.getView() : null );
+		this.getView().setLeadingComponent( this.leadingComposite != null ? this.leadingComposite.getView() : null );
+		this.getView().revalidateAndRepaint();
 	}
 	public Composite< ? > getTrailingComposite() {
 		return this.trailingComposite;
 	}
 	public void setTrailingComposite(Composite<?> trailingComposite) {
 		this.trailingComposite = trailingComposite;
-		this.getView().setTrailingComponent( trailingComposite != null ? trailingComposite.getView() : null );
+		this.getView().setTrailingComponent( this.trailingComposite != null ? this.trailingComposite.getView() : null );
+		this.getView().revalidateAndRepaint();
 	}
 	@Override
 	public final boolean contains( org.lgna.croquet.Model model ) {

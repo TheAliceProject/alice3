@@ -54,4 +54,11 @@ public abstract class View< J extends javax.swing.JComponent, C extends org.lgna
 	public C getComposite() {
 		return composite;
 	}
+	@Override
+	protected java.lang.StringBuilder appendRepr( java.lang.StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "composite=" );
+		rv.append( composite );
+		return rv;
+	}	
 }

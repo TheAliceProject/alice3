@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives.scenesetup;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneLayoutComposite extends org.lgna.croquet.Composite< org.alice.stageide.sceneeditor.StorytellingSceneEditor > {
+public class SceneLayoutComposite extends org.lgna.croquet.Composite< org.lgna.croquet.components.BorderPanel > {
 	private static class SingletonHolder {
 		private static SceneLayoutComposite instance = new SceneLayoutComposite();
 	}
@@ -64,7 +64,17 @@ public class SceneLayoutComposite extends org.lgna.croquet.Composite< org.alice.
 		return false;
 	}
 	@Override
-	protected org.alice.stageide.sceneeditor.StorytellingSceneEditor createView() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	protected org.lgna.croquet.components.BorderPanel createView() {
+		return new org.lgna.croquet.components.BorderPanel();
+	}
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.getView().addComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+	}
+	@Override
+	public void handlePostDectivation() {
+		this.getView().removeAllComponents();
+		super.handlePostDectivation();
 	}
 }
