@@ -274,28 +274,30 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 	
 	protected void setProgramType( org.lgna.project.ast.NamedUserType programType ) {
-		this.programType = programType;
-		SceneFieldListSelectionState.getInstance().removeValueObserver(this.selectedSceneObserver);
-		SceneFieldListSelectionState.getInstance().clear();
-		mapSceneFieldToInstance.clear();
-		mapSceneInstanceToField.clear();
-		if( this.programType != null ) {
-			setProgramInstance((org.lgna.project.virtualmachine.UserInstance)getVM().ENTRY_POINT_createInstance(this.programType));
-			for (org.lgna.project.ast.AbstractField programField : this.programType.getDeclaredFields())
-			{
-				if( programField.getValueType().isAssignableTo(org.lgna.story.Scene.class)) 
+		if (this.programType != programType) {
+			this.programType = programType;
+			SceneFieldListSelectionState.getInstance().removeValueObserver(this.selectedSceneObserver);
+			SceneFieldListSelectionState.getInstance().clear();
+			mapSceneFieldToInstance.clear();
+			mapSceneInstanceToField.clear();
+			if( this.programType != null ) {
+				setProgramInstance((org.lgna.project.virtualmachine.UserInstance)getVM().ENTRY_POINT_createInstance(this.programType));
+				for (org.lgna.project.ast.AbstractField programField : this.programType.getDeclaredFields())
 				{
-					this.addScene((org.lgna.project.ast.UserField)programField);
+					if( programField.getValueType().isAssignableTo(org.lgna.story.Scene.class)) 
+					{
+						this.addScene((org.lgna.project.ast.UserField)programField);
+					}
 				}
+			} else {
+				setProgramInstance( null );
 			}
-		} else {
-			setProgramInstance( null );
+			if (SceneFieldListSelectionState.getInstance().getItemCount() > 0)
+			{
+				SceneFieldListSelectionState.getInstance().setSelectedIndex(0);
+			}
+			SceneFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.selectedSceneObserver);
 		}
-		if (SceneFieldListSelectionState.getInstance().getItemCount() > 0)
-		{
-			SceneFieldListSelectionState.getInstance().setSelectedIndex(0);
-		}
-		SceneFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.selectedSceneObserver);
 	}
 	
 	@Override

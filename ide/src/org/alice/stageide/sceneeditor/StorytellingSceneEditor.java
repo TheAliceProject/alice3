@@ -43,6 +43,8 @@
 package org.alice.stageide.sceneeditor;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -104,6 +106,7 @@ import org.lgna.story.implementation.SceneImplementation;
 import org.lgna.story.implementation.TransformableImp;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
+import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
@@ -853,6 +856,32 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		super.handleUndisplayable();
 	}
+	
+	private void paintHorizonLine(Graphics graphics, LightweightOnscreenLookingGlass lookingGlass, OrthographicCamera camera)
+	{
+		AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
+		double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
+		if (dotProd == 1 || dotProd == -1)
+		{
+			Dimension lookingGlassSize = lookingGlass.getSize();
+			
+			Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
+			
+			ClippedZPlane dummyPlane = new ClippedZPlane(camera.picturePlane.getValue(), lookingGlass.getActualViewport(camera));
+			
+			double lookingGlassHeight = lookingGlassSize.getHeight();
+			
+			double yRatio = this.onscreenLookingGlass.getHeight() / dummyPlane.getHeight();
+			double horizonInCameraSpace = 0.0d - cameraPosition.y;
+			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
+			int horizonLinePixelVal = (int)(yRatio * distanceFromMaxY);
+			if (horizonLinePixelVal >= 0 && horizonLinePixelVal <= lookingGlassHeight)
+			{
+				graphics.setColor(Color.BLACK);
+				graphics.drawLine(0, horizonLinePixelVal, lookingGlassSize.width, horizonLinePixelVal);
+			}
+		}
+	}
 
 // ######### Begin implementation of edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter
 	public void initialized(LookingGlassInitializeEvent e) {
@@ -862,12 +891,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 
 	public void rendered(LookingGlassRenderEvent e) {
-//		 if (this.onscreenLookingGlass.getCameraCount() > 0 &&
-//		 this.onscreenLookingGlass.getCameraAt(0) instanceof
-//		 OrthographicCamera){
-//		 paintHorizonLine(e.getGraphics2D(), this.onscreenLookingGlass,
-//		 (OrthographicCamera)this.onscreenLookingGlass.getCameraAt(0));
-//		 }
+		 if (this.onscreenLookingGlass.getCameraCount() > 0 && this.onscreenLookingGlass.getCameraAt(0) instanceof OrthographicCamera){
+			 paintHorizonLine(e.getGraphics2D(), this.onscreenLookingGlass, (OrthographicCamera)this.onscreenLookingGlass.getCameraAt(0));
+		 }
 	}
 
 	public void resized(LookingGlassResizeEvent e) {
