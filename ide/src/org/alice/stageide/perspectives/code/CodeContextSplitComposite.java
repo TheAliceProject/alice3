@@ -41,18 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.x.components;
+package org.alice.stageide.perspectives.code;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LineAxisRefreshPanel extends org.alice.ide.croquet.components.RefreshPanel {
-	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
+	private static class SingletonHolder {
+		private static CodeContextSplitComposite instance = new CodeContextSplitComposite();
 	}
-	public void addComponent( org.lgna.croquet.components.Component< ? > component ) {
-		this.internalAddComponent( component );
+	public static CodeContextSplitComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CodeContextSplitComposite() {
+		super( 
+				java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ), 
+				org.alice.stageide.typecontext.SceneOrNonSceneCardComposite.getInstance(), 
+				TypeOrCodeCardComposite.getInstance()
+		);
+	}
+	@Override
+	protected org.lgna.croquet.components.SplitPane createView() {
+		return this.createVerticalSplitPane();
 	}
 }
-

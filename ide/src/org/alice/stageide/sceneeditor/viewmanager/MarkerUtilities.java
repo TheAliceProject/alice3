@@ -56,7 +56,6 @@ import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.CameraMarker;
-import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 
 import edu.cmu.cs.dennisc.pattern.Tuple2;
@@ -318,13 +317,13 @@ public class MarkerUtilities {
 	}
 	
 	private static org.lgna.story.Color getNewMarkerColor(Class<? extends org.lgna.story.Marker> markerCls) {
-		AbstractType<?, ?, ?> sceneType = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getActiveSceneField().getValueType();
+		AbstractType<?, ?, ?> sceneType = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getActiveSceneField().getValueType();
 		int[] colorCounts = new int[getColorCount()];
 		Arrays.fill(colorCounts, 0);
 		ArrayList<? extends AbstractField> fields = sceneType.getDeclaredFields();
 		for (AbstractField f : fields) {
 			if (f.getValueType().isAssignableTo(markerCls)) {
-				org.lgna.story.Marker marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getInstanceInJavaVMForField(f, markerCls);
+				org.lgna.story.Marker marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(f, markerCls);
 				if (marker != null) {
 					int colorIndex = getColorIndexForColor(marker.getColorId());
 					if (colorIndex != -1) {
@@ -354,7 +353,7 @@ public class MarkerUtilities {
 	
 	public static org.lgna.story.Color getColorForMarkerField(UserField markerField)
 	{
-		org.lgna.story.Marker marker = org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getInstanceInJavaVMForField(markerField, org.lgna.story.Marker.class);
+		org.lgna.story.Marker marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(markerField, org.lgna.story.Marker.class);
 		if (marker != null)
 		{
 			return marker.getColorId();

@@ -44,10 +44,8 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.IDE;
-import org.lgna.croquet.Element;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraMarkerImp;
-import org.lgna.story.implementation.OrthographicCameraMarkerImp;
 import org.lgna.story.implementation.TransformableImp;
 
 public class MoveMarkerToActiveCameraActionOperation extends CameraMoveActionOperation {
@@ -67,7 +65,7 @@ public class MoveMarkerToActiveCameraActionOperation extends CameraMoveActionOpe
 
 	@Override
 	protected void updateMoveFields(UserField markerField, CameraMarkerImp cameraMarkerImp) {
-		TransformableImp markerImp = IDE.getActiveInstance().getMainComponent().getSceneEditor().getImplementation(markerField);
+		TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation(markerField);
 		String markerName = markerField != null ? markerField.getName() : "";
 		this.setToMoveImp(markerImp, MarkerUtilities.getIconForCameraMarker(markerField), markerName);
 		this.setToMoveToImp(this.getCamera(), MarkerUtilities.getIconForCameraImp(cameraMarkerImp), MarkerUtilities.getNameForCameraImp(cameraMarkerImp));

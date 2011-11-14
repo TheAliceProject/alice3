@@ -57,6 +57,7 @@ public abstract class State<T> extends CompletionModel {
 		this.prevValue = initialValue;
 	}
 	public void addValueObserver( ValueObserver<T> valueObserver ) {
+		assert this.valueObservers.contains( valueObserver ) == false : valueObserver;
 		this.valueObservers.add( valueObserver );
 	}
 	public void addAndInvokeValueObserver( ValueObserver<T> valueObserver ) {
@@ -64,6 +65,11 @@ public abstract class State<T> extends CompletionModel {
 		valueObserver.changed( this, null, this.getValue(), false );
 	}
 	public void removeValueObserver( ValueObserver<T> valueObserver ) {
+		if( this.valueObservers.contains( valueObserver ) ) {
+			//pass
+		} else {
+			System.err.println( "WARNING: listener not contained " + valueObserver );
+		}
 		this.valueObservers.remove( valueObserver );
 	}
 	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {

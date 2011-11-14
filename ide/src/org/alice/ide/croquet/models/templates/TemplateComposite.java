@@ -51,7 +51,7 @@ public abstract class TemplateComposite extends org.lgna.croquet.Composite {
 		super( id );
 	}
 	@Override
-	public org.lgna.croquet.components.View createView() {
+	protected org.lgna.croquet.components.View createView() {
 		System.err.println( "todo: createView " + this );
 		return null;
 	}

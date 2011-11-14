@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.Composite > {
+public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.Composite<?> > {
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	protected class DefaultJPanel extends javax.swing.JPanel {
 		public DefaultJPanel() {
@@ -54,6 +54,16 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 			this.setBackground( null );
 			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+		}
+//		@Override
+//		public void doLayout() {
+//			Panel.this.refreshIfNecessary();
+//			super.doLayout();
+//		}
+		@Override
+		public void invalidate() {
+			super.invalidate();
+			Panel.this.refreshIfNecessary();
 		}
 		@Override
 		public java.awt.Dimension getPreferredSize() {
@@ -72,15 +82,12 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 	public Panel() {
 		this( null );
 	}
-	public Panel( org.lgna.croquet.Composite composite ) {
+	public Panel( org.lgna.croquet.Composite<?> composite ) {
 		super( composite );
 	}
-	
 	protected javax.swing.JPanel createJPanel() {
 		return new DefaultJPanel();
 	}
-	
-	
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = this.createJPanel();
@@ -104,5 +111,43 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 	}
 	public void forgetAndRemoveAllComponents() {
 		this.internalForgetAndRemoveAllComponents();
+	}
+	private boolean isInTheMidstOfRefreshing = false;
+	private boolean isRefreshNecessary = false;
+	protected void internalRefresh() {
+	}
+	private void refreshIfNecessary() {
+		if( this.isRefreshNecessary ) {
+			if( this.isInTheMidstOfRefreshing ) {
+				//pass
+			} else {
+				this.isInTheMidstOfRefreshing = true;
+				try {
+					//this.forgetAndRemoveAllComponents();
+					this.internalRefresh();
+					this.isRefreshNecessary = false;
+				} finally {
+					this.isInTheMidstOfRefreshing = false;
+				}
+			}
+		}
+	}
+	public final void refreshLater() {
+		//System.err.println( "refreshLater: " + Integer.toString( this.hashCode(), 16 ) );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				Panel.this.isRefreshNecessary = true;
+				Panel.this.revalidateAndRepaint();
+			}
+		} );
+	}
+	@Override
+	protected void handleDisplayable() {
+		this.refreshIfNecessary();
+		super.handleDisplayable();
+	}
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
 	}
 }

@@ -53,17 +53,8 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspec
 	public static SetupScenePerspective getInstance() {
 		return SingletonHolder.instance;
 	}
-	private org.alice.stageide.perspectives.components.SetupSceneView view;
 	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ) );
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
-	public org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > createView() {
-		return new org.alice.stageide.perspectives.components.SetupSceneView( this );
+		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance() );
 	}
 	@Override
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {

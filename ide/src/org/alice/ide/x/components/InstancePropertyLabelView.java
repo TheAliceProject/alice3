@@ -50,9 +50,11 @@ public class InstancePropertyLabelView extends org.alice.ide.croquet.components.
 	public InstancePropertyLabelView( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.InstanceProperty< Object > property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
 		this.addComponent( this.label );
+		this.refreshLater();
 	}
 	@Override
 	protected void internalRefresh() {
+		super.internalRefresh();
 		this.label.setText( getProperty().getValue().toString() );
 	}
 }

@@ -52,6 +52,7 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
 	public ResourcePropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ResourceProperty property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
+		this.refreshLater();
 	}
 	
 	private edu.cmu.cs.dennisc.pattern.event.NameListener getNameListener() {
@@ -83,6 +84,7 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 
 	@Override
 	protected void internalRefresh() {
+		super.internalRefresh();
 		if( this.label != null ) {
 			//pass
 		} else {

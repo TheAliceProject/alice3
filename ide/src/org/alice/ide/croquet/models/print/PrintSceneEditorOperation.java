@@ -66,7 +66,7 @@ public class PrintSceneEditorOperation extends PrintOperation {
 					return NO_SUCH_PAGE;
 				} else {
 					org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-					org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getMainComponent().getSceneEditor();
+					org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
 					if( sceneEditor != null ) {
 						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 						int width = sceneEditor.getWidth();

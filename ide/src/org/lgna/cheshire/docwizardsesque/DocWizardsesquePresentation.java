@@ -146,7 +146,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		cardPanel.addComponent( this.previewKey );
 		cardPanel.addComponent( this.offTrackKey );
 		cardPanel.setMinimumPreferredHeight( 50 );
-		cardPanel.show( this.previewKey );
+		cardPanel.showKey( this.previewKey );
 		
 		org.lgna.croquet.components.VerticalSplitPane splitPane = new org.lgna.croquet.components.VerticalSplitPane(flowPanel, this.cardPanel );
 		
@@ -181,7 +181,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 				transactionChapter.setReplacementAcceptability( replacementAcceptability );
 				this.incrementSelectedIndex();
 			} else {
-				this.cardPanel.show( this.offTrackKey );
+				this.cardPanel.showKey( this.offTrackKey );
 			}
 		}
 	}
@@ -245,7 +245,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	
 	/*package-private*/ void getBackOnTrack() {
 		this.restoreHistoryIndicesDueToCancel();
-		this.cardPanel.show( this.previewKey );
+		this.cardPanel.showKey( this.previewKey );
 	}
 	@Override
 	public void setVisible( boolean isVisible ) {

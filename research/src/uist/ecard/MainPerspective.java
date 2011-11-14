@@ -41,64 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components;
+package uist.ecard;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RefreshPanel extends org.lgna.croquet.components.Panel {
-	protected class JRefreshPanel extends DefaultJPanel {
-//		@Override
-//		public void doLayout() {
-//			RefreshPanel.this.refreshIfNecessary();
-//			super.doLayout();
-//		}
-		@Override
-		public void invalidate() {
-			super.invalidate();
-			RefreshPanel.this.refreshIfNecessary();
-		}
+public class MainPerspective extends org.lgna.croquet.Perspective {
+	private static class SingletonHolder {
+		private static MainPerspective instance = new MainPerspective();
 	}
-
-	@Override
-	protected JRefreshPanel createJPanel() {
-		return new JRefreshPanel();
+	public static MainPerspective getInstance() {
+		return SingletonHolder.instance;
 	}
-	private boolean isInTheMidstOfRefreshing = false;
-	private boolean isRefreshNecessary = true;
-	protected abstract void internalRefresh();
-	private void refreshIfNecessary() {
-		if( this.isRefreshNecessary ) {
-			if( this.isInTheMidstOfRefreshing ) {
-				//pass
-			} else {
-				this.isInTheMidstOfRefreshing = true;
-				try {
-					//this.forgetAndRemoveAllComponents();
-					this.internalRefresh();
-					this.isRefreshNecessary = false;
-				} finally {
-					this.isInTheMidstOfRefreshing = false;
-				}
-			}
-		}
-	}
-	public final void refreshLater() {
-		//System.err.println( "refreshLater: " + Integer.toString( this.hashCode(), 16 ) );
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				RefreshPanel.this.isRefreshNecessary = true;
-				RefreshPanel.this.revalidateAndRepaint();
-			}
-		} );
-	}
-	@Override
-	protected void handleDisplayable() {
-		this.refreshIfNecessary();
-		super.handleDisplayable();
-	}
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
+	private MainPerspective() {
+		super( java.util.UUID.fromString( "99a45510-224d-44d9-88d9-514761261b31" ), MainComposite.getInstance() );
 	}
 }

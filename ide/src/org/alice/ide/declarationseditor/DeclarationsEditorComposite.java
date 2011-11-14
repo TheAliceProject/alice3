@@ -41,26 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingletonViewComposite< V extends org.lgna.croquet.components.View< ?, ? > > extends org.lgna.croquet.Composite< V > {
-//	private V view;
-	public SingletonViewComposite( java.util.UUID id ) {
-		super( id );
+public class DeclarationsEditorComposite extends org.lgna.croquet.Composite< org.alice.ide.typeeditor.TypeEditor > {
+	private static class SingletonHolder {
+		private static DeclarationsEditorComposite instance = new DeclarationsEditorComposite();
+	}
+	public static DeclarationsEditorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DeclarationsEditorComposite() {
+		super( java.util.UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
+	}
+	@Override
+	protected org.alice.ide.typeeditor.TypeEditor createView() {
+		return org.alice.ide.typeeditor.TypeEditor.getInstance();
 	}
 	@Override
 	protected void localize() {
 	}
-	
-//	public synchronized V getView() {
-//		if( this.view != null ) {
-//			//pass
-//		} else {
-//			this.view = this.createView();
-//		}
-//		return this.view;
-//	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return true;
+	}
 }

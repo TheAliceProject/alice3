@@ -42,7 +42,6 @@
  */
 package org.lgna.story.implementation;
 
-import org.lgna.story.Marker;
 
 
 /**

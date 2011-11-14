@@ -63,7 +63,7 @@ import org.lgna.croquet.TabSelectionState;
 	public void setSelected(boolean isSelected) {
 		super.setSelected(isSelected);
 		if( isSelected ) {
-			this.getPanel().getCardPanel().show( this.cardPanelKey );
+			this.getPanel().getCardPanel().showKey( this.cardPanelKey );
 			this.getPanel().getCardPanel().revalidateAndRepaint();
 		}
 	}

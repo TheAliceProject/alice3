@@ -250,6 +250,11 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 	
 	protected void setActiveScene( org.lgna.project.ast.UserField sceneField ) {
+		//note: added by dennisc
+		this.initializeIfNecessary();
+		//
+		
+		
 		SceneFieldListSelectionState.getInstance().setSelectedItem(sceneField);
 
 		//Run the "setActiveScene" call on the program to get the active scene set in the right state
@@ -300,18 +305,23 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 	
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		initializeIfNecessary();
-	}
+//	@Override
+//	protected void handleDisplayable() {
+//		super.handleDisplayable();
+//		initializeIfNecessary();
+//	}
 	
+	private boolean EPIC_HACK_isFirstAddedTo = true;
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		org.lgna.project.Project project = org.alice.ide.ProjectApplication.getActiveInstance().getProject();
-		if( project != null ) {
-			this.projectObserver.projectOpened(null, project);
+		if( EPIC_HACK_isFirstAddedTo ) {
+			org.lgna.project.Project project = org.alice.ide.ProjectApplication.getActiveInstance().getProject();
+			if( project != null ) {
+				this.projectObserver.projectOpened(null, project);
+			}
+			EPIC_HACK_isFirstAddedTo = false;
 		}
+		this.initializeIfNecessary();
 		org.alice.ide.ProjectApplication.getActiveInstance().addProjectObserver( this.projectObserver );
 		super.handleAddedTo( parent );
 	}

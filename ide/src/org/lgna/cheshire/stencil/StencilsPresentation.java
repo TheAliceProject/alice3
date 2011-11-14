@@ -304,7 +304,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 					key = this.stencil.cardPanel.createKey( chapterPage.getCard(), transactionId );
 					this.stencil.cardPanel.addComponent( key );
 				}
-				this.stencil.cardPanel.show( key );
+				this.stencil.cardPanel.showKey( key );
 				this.stencil.revalidateAndRepaint();
 
 				int selectedIndex = this.getBook().getSelectedIndex();

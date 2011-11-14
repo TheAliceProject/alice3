@@ -82,7 +82,7 @@ public class ArgumentFieldSpecifiedManagedFieldDeclarationOperation extends Init
 	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		org.alice.stageide.sceneeditor.draganddrop.SceneDropSite sceneDropSite = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.dropSite, org.alice.stageide.sceneeditor.draganddrop.SceneDropSite.class );
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform = sceneDropSite != null ? sceneDropSite.getTransform() : null;
-		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getMainComponent().getSceneEditor();
+		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
 		org.lgna.project.ast.Statement[] doStatements = sceneEditor.getDoStatementsForAddField(field, initialTransform);
 		for (org.lgna.project.ast.Statement s : doStatements) {
 			rv.addDoStatement(s);

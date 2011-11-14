@@ -75,6 +75,7 @@ public abstract class AbstractListPropertyPane< P extends edu.cmu.cs.dennisc.pro
 	}; 
 	public AbstractListPropertyPane( org.alice.ide.x.AstI18nFactory factory, P property, int axis ) {
 		super( factory, property, axis );
+		this.refreshLater();
 	}
 	protected abstract org.lgna.croquet.components.Component< ? > createComponent( T instance );
 	protected void addPrefixComponents() {
@@ -98,6 +99,7 @@ public abstract class AbstractListPropertyPane< P extends edu.cmu.cs.dennisc.pro
 	
 	@Override
 	protected void internalRefresh() {
+		super.internalRefresh();
 		this.forgetAndRemoveAllComponents();
 		this.addPrefixComponents();
 		final int N = getProperty().size();

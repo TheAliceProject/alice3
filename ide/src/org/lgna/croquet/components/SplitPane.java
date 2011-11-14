@@ -46,14 +46,17 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SplitPane extends JComponent< javax.swing.JSplitPane > {
-	protected SplitPane( int orientation ) {
-		this( orientation, null, null );
-	}
-	protected SplitPane( int orientation, Component<?> topOrLeftComponent, Component<?> bottomOrRightComponent ) {
+public abstract class SplitPane extends View< javax.swing.JSplitPane, org.lgna.croquet.SplitComposite > {
+	private static final java.awt.Dimension MINIMUM_SIZE = new java.awt.Dimension( 24, 24 );
+	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation ) {
+		super( splitComposite );
 		this.getAwtComponent().setOrientation( orientation );
-		this.setTopOrLeftComponent( topOrLeftComponent );
-		this.setBottomOrRightComponent( bottomOrRightComponent );
+		if( splitComposite != null ) {
+			org.lgna.croquet.Composite< ? > leadingComposite = splitComposite.getLeadingComposite();
+			org.lgna.croquet.Composite< ? > trailingComposite = splitComposite.getTrailingComposite();
+			this.setLeadingComponent( leadingComposite != null ? leadingComposite.getView() : null );
+			this.setTrailingComponent( trailingComposite != null ? trailingComposite.getView() : null );
+		}
 	}
 	@Override
 	protected javax.swing.JSplitPane createAwtComponent() {
@@ -77,18 +80,30 @@ public abstract class SplitPane extends JComponent< javax.swing.JSplitPane > {
 //		};
 	}
 	
-	protected void setTopOrLeftComponent( Component<?> component ) {
+	public void setLeadingComponent( JComponent<?> component ) {
+		javax.swing.JComponent jComponent;
 		if( component != null ) {
-			this.getAwtComponent().setLeftComponent( component.getAwtComponent() );
+			jComponent = component.getAwtComponent();
+			jComponent.setMinimumSize( MINIMUM_SIZE );
 		} else {
-			this.getAwtComponent().setLeftComponent( null );
+			jComponent = null;
+		}
+		if( this.getAwtComponent().getLeftComponent() != jComponent ) {
+			this.getAwtComponent().setLeftComponent( jComponent );
+			this.revalidateAndRepaint();
 		}
 	}
-	protected void setBottomOrRightComponent( Component<?> component ) {
+	public void setTrailingComponent( JComponent<?> component ) {
+		javax.swing.JComponent jComponent;
 		if( component != null ) {
-			this.getAwtComponent().setRightComponent( component.getAwtComponent() );
+			jComponent = component.getAwtComponent();
+			jComponent.setMinimumSize( MINIMUM_SIZE );
 		} else {
-			this.getAwtComponent().setRightComponent( null );
+			jComponent = null;
+		}
+		if( this.getAwtComponent().getRightComponent() != jComponent ) {
+			this.getAwtComponent().setRightComponent( jComponent );
+			this.revalidateAndRepaint();
 		}
 	}
 	

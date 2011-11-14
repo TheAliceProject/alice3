@@ -68,17 +68,17 @@ public class CameraMarkerFieldDeclarationOperation extends MarkerFieldDeclaratio
 
 	@Override
 	protected Color getInitialMarkerColor() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getColorForNewCameraMarker();
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getColorForNewCameraMarker();
 	}
 
 	@Override
 	protected String getInitialMarkerName(Color color) {
-		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getSuggestedNameForNewCameraMarker(color);
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getSuggestedNameForNewCameraMarker(color);
 	}
 
 	@Override
 	protected AffineMatrix4x4 getInitialMarkerTransform() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getTransformForNewCameraMarker();
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getTransformForNewCameraMarker();
 	}
 	
 }

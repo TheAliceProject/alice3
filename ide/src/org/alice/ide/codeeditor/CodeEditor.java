@@ -166,7 +166,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	@Override
 	protected void handleUndisplayable() {
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().removeValueObserver( this.typeFeedbackObserver );
-		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().addValueObserver( formatterSelectionObserver );
+		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().removeValueObserver( formatterSelectionObserver );
 		super.handleUndisplayable();
 	}
 
@@ -680,7 +680,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		if( statementListProperty != null ) {
 			//choose any non-ancestor
 			
-			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getMainComponent().getSceneEditor();
+			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
 			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( arbitrarilyChosenSource );
 			final int N = statementListPropertyPaneInfos.length;
 			for( int i=0; i<N; i++ ) {

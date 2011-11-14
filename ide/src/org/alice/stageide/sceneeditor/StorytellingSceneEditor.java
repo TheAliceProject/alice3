@@ -42,7 +42,6 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.LinkedList;
@@ -94,7 +93,6 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Marker;
 import org.lgna.story.OrthographicCameraMarker;
 import org.lgna.story.PerspectiveCameraMarker;
-import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.MarkerImp;
@@ -119,12 +117,10 @@ import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.pattern.Tuple3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author dculyba
@@ -346,7 +342,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		
 		
 		PerspectiveCameraMarker sceneViewMarker = new PerspectiveCameraMarker();
-		sceneViewMarker.setColorId(org.lgna.story.Color.BLUE);
+		sceneViewMarker.setColorId(org.lgna.story.Color.LIGHT_BLUE);
 		this.sceneViewMarkerImp = ImplementationAccessor.getImplementation(sceneViewMarker);
 		this.sceneViewMarkerImp.setDisplayVisuals(true);
 		MarkerUtilities.addIconForCameraImp(this.sceneViewMarkerImp, "sceneEditorCamera");
@@ -446,8 +442,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		if (isExpanded)
 		{
 			this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
-			this.propertiesSplitPane.setLeftComponent(this.lookingGlassPanel);
-			this.propertiesSplitPane.setRightComponent(this.sidePanel);
+			this.propertiesSplitPane.setLeadingComponent(this.lookingGlassPanel);
+			this.propertiesSplitPane.setTrailingComponent(this.sidePanel);
 			this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
 			this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
 		}
@@ -596,7 +592,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.expandButton.getAwtComponent().setText( null );
 			this.expandButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 
-			this.contractButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.ide.perspectives.CodePerspective.getInstance() ).createButton();
+			this.contractButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.stageide.perspectives.CodePerspective.getInstance() ).createButton();
 			this.contractButton.setIcon( CONTRACT_ICON );
 			this.contractButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
@@ -834,16 +830,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	
-	private boolean HACK_isDisplayableAlreadyHandled = false;
-	
+//	private boolean HACK_isDisplayableAlreadyHandled = false;
+//	
 	@Override
 	protected void handleDisplayable() {
-		if( HACK_isDisplayableAlreadyHandled ) {
-			System.err.println( "TODO: investigate is displayed" );
-		} else {
+//		if( HACK_isDisplayableAlreadyHandled ) {
+//			System.err.println( "TODO: investigate is displayed" );
+//		} else {
 			super.handleDisplayable();
-			HACK_isDisplayableAlreadyHandled = true;
-		}
+//			HACK_isDisplayableAlreadyHandled = true;
+//		}
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.showLookingGlassPanel();
@@ -877,7 +873,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			int horizonLinePixelVal = (int)(yRatio * distanceFromMaxY);
 			if (horizonLinePixelVal >= 0 && horizonLinePixelVal <= lookingGlassHeight)
 			{
-				graphics.setColor(Color.BLACK);
+				graphics.setColor(java.awt.Color.BLACK);
 				graphics.drawLine(0, horizonLinePixelVal, lookingGlassSize.width, horizonLinePixelVal);
 			}
 		}
@@ -1058,5 +1054,4 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.snapGrid.setSpacing(gridSpacing);
 		}
 	}
-	
 }

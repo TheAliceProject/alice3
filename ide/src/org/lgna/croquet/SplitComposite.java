@@ -41,31 +41,76 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.perspectives;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspective extends IdePerspective {
-	private static class SingletonHolder {
-		private static CodePerspective instance = new CodePerspective();
+public abstract class SplitComposite extends Composite< org.lgna.croquet.components.SplitPane >{
+	private Composite< ? > leadingComposite;
+	private Composite< ? > trailingComposite;
+	public SplitComposite( java.util.UUID id, Composite< ? > leadingComposite, Composite< ? > trailingComposite ) {
+		super( id );
+		this.leadingComposite = leadingComposite;
+		this.trailingComposite = trailingComposite;
 	}
-	public static CodePerspective getInstance() {
-		return SingletonHolder.instance;
+	public Composite< ? > getLeadingComposite() {
+		return this.leadingComposite;
 	}
-	private CodePerspective() {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ) );
+	public void setLeadingComposite(Composite<?> leadingComposite) {
+		this.leadingComposite = leadingComposite;
+		this.getView().setLeadingComponent( this.leadingComposite != null ? this.leadingComposite.getView() : null );
+		this.getView().revalidateAndRepaint();
+	}
+	public Composite< ? > getTrailingComposite() {
+		return this.trailingComposite;
+	}
+	public void setTrailingComposite(Composite<?> trailingComposite) {
+		this.trailingComposite = trailingComposite;
+		this.getView().setTrailingComponent( this.trailingComposite != null ? this.trailingComposite.getView() : null );
+		this.getView().revalidateAndRepaint();
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
+	public final boolean contains( org.lgna.croquet.Model model ) {
+		if( this.leadingComposite != null ) {
+			if( this.leadingComposite.contains( model ) ) {
+				return true;
+			}
+		}
+		if( this.trailingComposite != null ) {
+			if( this.trailingComposite.contains( model ) ) {
+				return true;
+			}
+		}
 		return false;
 	}
 	@Override
-	public org.alice.stageide.perspectives.components.IdePerspectiveView< ?, ? > createView() {
-		return new org.alice.ide.perspectives.components.CodeView( this );
+	protected void localize() {
+	}
+	protected org.lgna.croquet.components.HorizontalSplitPane createHorizontalSplitPane() {
+		return new org.lgna.croquet.components.HorizontalSplitPane( this );
+	}
+	protected org.lgna.croquet.components.VerticalSplitPane createVerticalSplitPane() {
+		return new org.lgna.croquet.components.VerticalSplitPane( this );
 	}
 	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return org.alice.ide.typeeditor.TypeEditor.getInstance().getCodeEditorInFocus();
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		if( this.leadingComposite != null ) {
+			this.leadingComposite.handlePreActivation();
+		}
+		if( this.trailingComposite != null ) {
+			this.trailingComposite.handlePreActivation();
+		}
+	}
+	@Override
+	public void handlePostDectivation() {
+		if( this.leadingComposite != null ) {
+			this.leadingComposite.handlePostDectivation();
+		}
+		if( this.trailingComposite != null ) {
+			this.trailingComposite.handlePostDectivation();
+		}
+		super.handlePostDectivation();
 	}
 }

@@ -56,7 +56,7 @@ public abstract class GalleryDragModel extends org.alice.ide.croquet.models.IdeD
 	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
 	@Override
 	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
-		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getMainComponent().getSceneEditor();
+		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
 		if( sceneEditor instanceof org.lgna.croquet.DropReceptor ) {
 			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( (org.lgna.croquet.DropReceptor)sceneEditor );
 		} else {

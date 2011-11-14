@@ -555,8 +555,16 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		edu.cmu.cs.dennisc.java.awt.ComponentUtilities.makeStandOut( this.getAwtComponent() );
 	}
 
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		return rv;
+	}
 	@Override
-	public String toString() {
-		return this.getClass().getName() + "[]";
+	public final String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		this.appendRepr( sb );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

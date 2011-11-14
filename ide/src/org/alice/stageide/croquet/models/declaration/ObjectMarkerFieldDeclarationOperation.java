@@ -85,17 +85,17 @@ public class ObjectMarkerFieldDeclarationOperation extends MarkerFieldDeclaratio
 
 	@Override
 	protected Color getInitialMarkerColor() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getColorForNewObjectMarker();
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getColorForNewObjectMarker();
 	}
 
 	@Override
 	protected String getInitialMarkerName(Color color) {
-		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getSuggestedNameForNewObjectMarker(color);
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getSuggestedNameForNewObjectMarker(color);
 	}
 
 	@Override
 	protected AffineMatrix4x4 getInitialMarkerTransform() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getMainComponent().getSceneEditor().getTransformForNewObjectMarker();
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getTransformForNewObjectMarker();
 	}
 
 

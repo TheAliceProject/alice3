@@ -41,54 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.typecontext.components;
+package org.alice.stageide.perspectives.code;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SceneOrNonSceneCardPanel extends org.lgna.croquet.components.CardPanel {
-	private final Key sceneKey;
-	private final Key nonSceneKey;
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-			SceneOrNonSceneCardPanel.this.handleTypeStateChanged( nextValue );
-		}
-	};
-	public SceneOrNonSceneCardPanel( org.alice.stageide.typecontext.SceneTypeComposite sceneComposite, org.alice.stageide.typecontext.NonSceneTypeComposite nonSceneComposite ) {
-		this.sceneKey = this.createKey( sceneComposite );
-		this.nonSceneKey = this.createKey( nonSceneComposite );
-		this.addComponent( this.sceneKey );
-		this.addComponent( this.nonSceneKey );
+public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
+	private static class SingletonHolder {
+		private static CodePerspectiveComposite instance = new CodePerspectiveComposite();
 	}
-	
-	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
-		Key key;
-		if( nextValue != null ) {
-			if( nextValue.isAssignableTo( org.lgna.story.Scene.class ) ) {
-				key = this.sceneKey;
-			} else {
-				key = this.nonSceneKey;
-			}
-//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
-//			if( view instanceof NonSceneTypeView ) {
-//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
-//				nonSceneTypeView.handlePreShow();
-//			}
-		} else {
-			key = null;
-		}
-		this.show( key );
+	public static CodePerspectiveComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CodePerspectiveComposite() {
+		super( java.util.UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ),
+				CodeContextSplitComposite.getInstance(),
+				org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance()
+		);
 	}
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		super.handleAddedTo( parent );
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
-	}
-	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().removeValueObserver( this.typeListener );
-		super.handleRemovedFrom( parent );
+	protected org.lgna.croquet.components.SplitPane createView() {
+		return this.createHorizontalSplitPane();
 	}
 }

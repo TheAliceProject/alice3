@@ -242,10 +242,10 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 	}
 	private void handleCardChange( WizardDialogOperation.Card nextValue ) {
 		if( nextValue != null ) {
-			this.cardPanel.show( nextValue.key );
+			this.cardPanel.showKey( nextValue.key );
 			this.title.setText( nextValue.step.getTitle() );
 		} else {
-			this.cardPanel.show( null );
+			this.cardPanel.showKey( null );
 			this.title.setText( "" );
 		}
 		int index = this.cardSelectionState.getSelectedIndex();

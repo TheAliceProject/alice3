@@ -46,7 +46,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class SelectedInstanceFactoryExpressionPanel extends org.alice.ide.croquet.components.RefreshPanel {
+public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.components.LineAxisPanel {
 	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
@@ -57,13 +57,11 @@ public class SelectedInstanceFactoryExpressionPanel extends org.alice.ide.croque
 	private final org.alice.ide.x.AstI18nFactory factory;
 	public SelectedInstanceFactoryExpressionPanel( org.alice.ide.x.AstI18nFactory factory ) {
 		this.factory = factory;
-	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+		this.refreshLater();
 	}
 	@Override
 	protected void internalRefresh() {
+		super.internalRefresh();
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
 		org.lgna.project.ast.Expression expression = instanceFactory != null ? instanceFactory.createTransientExpression() : null;
 		this.forgetAndRemoveAllComponents();
