@@ -113,7 +113,7 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 		this.internalForgetAndRemoveAllComponents();
 	}
 	private boolean isInTheMidstOfRefreshing = false;
-	private boolean isRefreshNecessary = false;
+	private boolean isRefreshNecessary = true;
 	protected void internalRefresh() {
 	}
 	private void refreshIfNecessary() {

@@ -46,7 +46,7 @@ package org.alice.ide.controlflow.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowPanel extends org.lgna.croquet.components.ViewPanel {
+public class ControlFlowPanel extends org.lgna.croquet.components.Panel {
 	public ControlFlowPanel( org.alice.ide.controlflow.ControlFlowComposite composite ) {
 		super( composite );
 		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : composite.getModels() ) {

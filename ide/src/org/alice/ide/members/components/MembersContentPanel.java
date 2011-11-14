@@ -59,7 +59,7 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addValueObserver( this.instanceFactorySelectionObserver );
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
