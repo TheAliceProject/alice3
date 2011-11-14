@@ -46,7 +46,8 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 public class ProceduresContentPanel extends MethodsContentPanel {
-	public ProceduresContentPanel() {
+	public ProceduresContentPanel( org.alice.ide.croquet.models.templates.ProcedureTemplateComposite composite ) {
+		super( composite );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
 	}
 	@Override

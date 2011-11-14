@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsTab extends ContentTab {
+public class RecentProjectsTab extends ContentTab<org.alice.ide.openprojectpane.RecentPane> {
 	private static class SingletonHolder {
 		private static RecentProjectsTab instance = new RecentProjectsTab();
 	}
@@ -57,11 +57,12 @@ public class RecentProjectsTab extends ContentTab {
 		super( java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" ) );
 	}
 	@Override
-	public java.net.URI getSelectedUri() {
-		return org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().getSelectedItem();
+	protected org.alice.ide.openprojectpane.RecentPane createView() {
+		return new org.alice.ide.openprojectpane.RecentPane( this );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		return new org.alice.ide.openprojectpane.RecentPane();
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
 	}
 }

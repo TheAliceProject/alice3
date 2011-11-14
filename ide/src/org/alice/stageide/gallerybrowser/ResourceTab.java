@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceTab extends org.lgna.croquet.PredeterminedTab {
+public class ResourceTab extends org.lgna.croquet.TabComposite< org.lgna.croquet.components.View< ?,? > > {
 	private static class SingletonHolder {
 		private static ResourceTab instance = new ResourceTab();
 	}
@@ -56,8 +56,13 @@ public class ResourceTab extends org.lgna.croquet.PredeterminedTab {
 	private ResourceTab() {
 		super( java.util.UUID.fromString( "811380db-5339-4a2e-84e3-695b502188af" ) );
 	}
+	
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+	public boolean isCloseable() {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.components.View< ?, ? > createView() {
 		class ResourceView extends org.lgna.croquet.components.BorderPanel {
 			public ResourceView() {
 				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel();
@@ -91,5 +96,10 @@ public class ResourceTab extends org.lgna.croquet.PredeterminedTab {
 			}
 		}
 		return new ResourceView();
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
 	}
 }

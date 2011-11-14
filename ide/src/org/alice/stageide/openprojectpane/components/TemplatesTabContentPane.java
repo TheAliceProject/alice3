@@ -43,8 +43,8 @@
 package org.alice.stageide.openprojectpane.components;
 
 public class TemplatesTabContentPane extends org.alice.ide.openprojectpane.ListContentPanel< org.alice.stageide.openprojectpane.models.TemplateUriSelectionState > {
-	public TemplatesTabContentPane() {
-		super( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getInstance() );
+	public TemplatesTabContentPane( org.alice.ide.croquet.models.openproject.TemplatesTab composite ) {
+		super( composite, org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getInstance() );
 	}
 	@Override
 	protected String getTextForZeroProjects() {

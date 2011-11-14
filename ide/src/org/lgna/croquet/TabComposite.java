@@ -41,26 +41,73 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.controlflow;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowPanel extends org.lgna.croquet.components.ViewPanel {
-	public ControlFlowPanel( org.lgna.project.ast.AbstractCode code ) {
-		super( ControlFlowComposite.getInstance( code ) );
-		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : ControlFlowComposite.getInstance( code ).getModels() ) {
-			if( dragModel != null ) {
-				this.internalAddComponent( new ControlFlowStatementTemplate( dragModel ) );
-			} else {
-				this.internalAddComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-			}
-		}
-		this.setBackgroundColor( null );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,0,0,0 ) );
+public abstract class TabComposite< V extends org.lgna.croquet.components.View<?,?> > extends Composite< V > {
+	private String titleText;
+	private javax.swing.Icon titleIcon;
+
+	private org.lgna.croquet.BooleanState booleanState;
+	//todo: remove
+	private org.lgna.croquet.components.BooleanStateButton< ? > button = null;
+
+	public TabComposite( java.util.UUID id ) {
+		super( id );
+	}
+	public java.util.UUID getTabId() {
+		return this.getMigrationId();
+	}
+	public abstract boolean isCloseable();
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		return rv;
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING, 1, 0 );
+	protected void localize() {
+		this.setTitleText( this.getDefaultLocalizedText() );
 	}
+	public String getTitleText() {
+		return this.titleText;
+	}
+	private void setTitleText( String titleText ) {
+		this.titleText = titleText;
+		this.updateTitleText();
+	}
+	public javax.swing.Icon getTitleIcon() {
+		return this.titleIcon;
+	}
+	public void setTitleIcon( javax.swing.Icon titleIcon ) {
+		this.titleIcon = titleIcon;
+		this.updateTitleIcon();
+	}
+	private void updateTitleText() {
+		if( this.button != null ) {
+			this.booleanState.setTextForBothTrueAndFalse( this.getTitleText() );
+		}
+	}
+	private void updateTitleIcon() {
+		if( this.button != null ) {
+			this.button.getAwtComponent().setIcon( this.getTitleIcon() );
+		}
+	}
+	
+	@Override
+	protected final StringBuilder appendRepr( StringBuilder rv ) {
+		rv.append( this.getTitleText() );
+		return rv;
+	}
+	
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+		this.initializeIfNecessary();
+		this.booleanState = booleanState;
+		this.button = button;
+		this.updateTitleText();
+		this.updateTitleIcon();
+	}
+    public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+    }
 }

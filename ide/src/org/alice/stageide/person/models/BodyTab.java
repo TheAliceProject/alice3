@@ -46,7 +46,7 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class BodyTab extends ContentTab {
+public class BodyTab extends ContentTab<org.lgna.croquet.components.BorderPanel> {
 	private static class SingletonHolder {
 		private static BodyTab instance = new BodyTab();
 	}
@@ -57,7 +57,12 @@ public class BodyTab extends ContentTab {
 		super( java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.List< ? > list = new org.alice.stageide.person.components.FullBodyOutfitList();
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
 		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );

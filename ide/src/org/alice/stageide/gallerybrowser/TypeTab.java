@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeTab extends org.lgna.croquet.PredeterminedTab {
+public class TypeTab extends org.lgna.croquet.TabComposite< org.lgna.croquet.components.View<?,?> > {
 	private static class SingletonHolder {
 		private static TypeTab instance = new TypeTab();
 	}
@@ -61,7 +61,11 @@ public class TypeTab extends org.lgna.croquet.PredeterminedTab {
 		return null;
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+	public boolean isCloseable() {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.components.View<?,?> createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 
 		MyTypesView myTypesView = new MyTypesView();
@@ -77,5 +81,10 @@ public class TypeTab extends org.lgna.croquet.PredeterminedTab {
 		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		return rv;
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
 	}
 }

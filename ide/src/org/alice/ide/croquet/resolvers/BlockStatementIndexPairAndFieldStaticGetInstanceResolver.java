@@ -98,6 +98,6 @@ public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends or
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.getInstance().getBlockStatementIndexPair() );
-		binaryEncoder.encode( this.getInstance().getField().getUUID() );
+		binaryEncoder.encode( this.getInstance().getField().getId() );
 	}
 }

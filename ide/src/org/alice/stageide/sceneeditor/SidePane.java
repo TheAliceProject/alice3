@@ -58,15 +58,11 @@ import org.alice.stageide.croquet.models.sceneditor.PropertyAndMarkerPanelSelect
 import org.alice.stageide.sceneeditor.snap.SnapControlPanel;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.PredeterminedTab;
-import org.lgna.croquet.TabSelectionState.TabCreator;
 import org.lgna.croquet.components.BooleanStateButton;
 import org.lgna.croquet.components.DefaultRadioButtons;
 import org.lgna.croquet.components.GridBagPanel;
-import org.lgna.croquet.components.JComponent;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.PushButton;
-import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.ToolPaletteTabbedPane;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
@@ -317,32 +313,32 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
                 0) // ipadY
                 );
 		
-		TabCreator< PredeterminedTab > tabCreator = new TabCreator< PredeterminedTab >() {
-	        public final java.util.UUID getId(PredeterminedTab item) {
-	            java.util.UUID rv = item.getId();
-	            assert rv != null;
-	            return rv;
-	        }
-	        public final JComponent<?> createMainComponent(PredeterminedTab item) {
-	            return item.getMainComponent();
-	        }
-	        public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.lgna.croquet.PredeterminedTab item ) {
-	            item.customizeTitleComponent( booleanState, button );
-	            button.scaleFont(1.2f);
-	            button.setFont(edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( button.getAwtComponent(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
-//	            button.getAwtComponent().revalidate();
-	        }
-	        public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.lgna.croquet.PredeterminedTab item ) {
-	        	item.releaseTitleComponent( booleanState, button );
-	        }
-	        public final ScrollPane createScrollPane( PredeterminedTab item ) {
-	            return item.createScrollPane();
-	        }
-	        public final boolean isCloseable(org.lgna.croquet.PredeterminedTab item) {
-	            return false;
-	        }
-	    };
-		ToolPaletteTabbedPane<PredeterminedTab> propertyMarkerToolPalette =  new ToolPaletteTabbedPane< PredeterminedTab >( PropertyAndMarkerPanelSelectionState.getInstance(), tabCreator );
+//		TabCreator< PredeterminedTab > tabCreator = new TabCreator< PredeterminedTab >() {
+//	        public final java.util.UUID getId(PredeterminedTab item) {
+//	            java.util.UUID rv = item.getId();
+//	            assert rv != null;
+//	            return rv;
+//	        }
+//	        public final JComponent<?> createMainComponent(PredeterminedTab item) {
+//	            return item.getMainComponent();
+//	        }
+//	        public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.lgna.croquet.PredeterminedTab item ) {
+//	            item.customizeTitleComponent( booleanState, button );
+//	            button.scaleFont(1.2f);
+//	            button.setFont(edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( button.getAwtComponent(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
+////	            button.getAwtComponent().revalidate();
+//	        }
+//	        public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.lgna.croquet.PredeterminedTab item ) {
+//	        	item.releaseTitleComponent( booleanState, button );
+//	        }
+//	        public final ScrollPane createScrollPane( PredeterminedTab item ) {
+//	            return item.createScrollPane();
+//	        }
+//	        public final boolean isCloseable(org.lgna.croquet.PredeterminedTab item) {
+//	            return false;
+//	        }
+//	    };
+		ToolPaletteTabbedPane propertyMarkerToolPalette = PropertyAndMarkerPanelSelectionState.getInstance().createToolPaletteTabbedPane();
 		
 //		ScrollPane mainScrollPane = new ScrollPane(this.mainPanel, ScrollPane.VerticalScrollbarPolicy.ALWAYS, ScrollPane.HorizontalScrollbarPolicy.NEVER);
 //        mainScrollPane.setBorder(null);
@@ -365,9 +361,9 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 		this.mainPanel.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor());
         this.snapControlPanel.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor());
         
-        ObjectPropertiesTab.getInstance().getMainComponent().setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor());
-        MarkerPanelTab.getInstance().getMainComponent().setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor());
-        MarkerPanelTab.getInstance().getMainComponent().setSelectedItemColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor());
+        ObjectPropertiesTab.getInstance().getView().setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor());
+        MarkerPanelTab.getInstance().getView().setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor());
+        MarkerPanelTab.getInstance().getView().setSelectedItemColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor());
         
         headerPanel.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor());
 	        

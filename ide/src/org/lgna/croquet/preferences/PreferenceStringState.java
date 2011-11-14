@@ -58,7 +58,7 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 	private static java.util.List< PreferenceStringState > instances = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
 		for( PreferenceStringState state : instances ) {
-			userPreferences.put( state.getId().toString(), state.getValue() );
+			userPreferences.put( state.getMigrationId().toString(), state.getValue() );
 		}
 	}
 	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {

@@ -57,7 +57,7 @@ public class ProcedureFunctionPropertyTabState extends TemplatesTabSelectionStat
 		super( java.util.UUID.fromString( "96e32c76-8786-4b34-a022-34b5820a73ff" ), ProcedureTemplateComposite.getInstance(), FunctionTemplateComposite.getInstance(), FieldTemplateComposite.getInstance() );
 	}
 	@Override
-	protected org.lgna.croquet.components.AbstractTabbedPane< ?, ?, ? > createTabbedPane( org.lgna.croquet.TabSelectionState.TabCreator< org.alice.ide.croquet.models.templates.TemplateComposite > tabCreator ) {
-		return this.createFolderTabbedPane( tabCreator );
+	public org.lgna.croquet.components.AbstractTabbedPane< ?, ?, ? > createTabbedPane() {
+		return this.createFolderTabbedPane();
 	}
 }

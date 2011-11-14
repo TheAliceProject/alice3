@@ -49,7 +49,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 	private java.util.UUID m_uuid = java.util.UUID.randomUUID();
 	private AbstractNode parent;
 	
-	public java.util.UUID getUUID() {
+	public java.util.UUID getId() {
 		return m_uuid;
 	}
 	/*package-private*/ void setUUID( java.util.UUID uuid ) {

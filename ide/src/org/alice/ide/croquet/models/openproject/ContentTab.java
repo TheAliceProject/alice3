@@ -46,11 +46,17 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class ContentTab extends org.lgna.croquet.PredeterminedTab {
+public abstract class ContentTab< V extends org.alice.ide.openprojectpane.TabContentPanel > extends org.lgna.croquet.TabComposite< V > {
 	public ContentTab( java.util.UUID id ) {
 		super( id );
 	}
-	public abstract java.net.URI getSelectedUri();
+	public final java.net.URI getSelectedUri() {
+		return getView().getSelectedUri();
+	}
+	@Override
+	public boolean isCloseable() {
+		return false;
+	}
 	@Override
 	public org.lgna.croquet.components.ScrollPane createScrollPane() {
 		org.lgna.croquet.components.ScrollPane rv = super.createScrollPane();

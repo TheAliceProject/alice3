@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class FileSystemTab extends ContentTab {
+public class FileSystemTab extends ContentTab< org.alice.ide.openprojectpane.FileSystemPane > {
 	private static class SingletonHolder {
 		private static FileSystemTab instance = new FileSystemTab();
 	}
@@ -57,11 +57,12 @@ public class FileSystemTab extends ContentTab {
 		super( java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ) );
 	}
 	@Override
-	public java.net.URI getSelectedUri() {
-		return ((org.alice.ide.openprojectpane.FileSystemPane)this.getMainComponent()).getSelectedURI();
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
 	}
 	@Override
-	protected org.alice.ide.openprojectpane.FileSystemPane createMainComponent() {
-		return new org.alice.ide.openprojectpane.FileSystemPane();
+	protected org.alice.ide.openprojectpane.FileSystemPane createView() {
+		return new org.alice.ide.openprojectpane.FileSystemPane( this );
 	}
 }

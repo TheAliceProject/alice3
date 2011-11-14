@@ -425,6 +425,6 @@ public abstract class IoUtilities {
 		return (N)org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
 	}
 	public static void encodeNode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.project.ast.Node node ) {
-		binaryEncoder.encode( node.getUUID() );
+		binaryEncoder.encode( node.getId() );
 	}
 }

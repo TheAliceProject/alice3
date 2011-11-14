@@ -85,10 +85,10 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 		return new Object[] { fromBlockStatement, fromIndex, statement, toBlockStatement, toIndex };
 	}
 	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.fromBlockStatement.getUUID() );
+		binaryEncoder.encode( this.fromBlockStatement.getId() );
 		binaryEncoder.encode( this.fromIndex );
-		binaryEncoder.encode( this.statement.getUUID() );
-		binaryEncoder.encode( this.toBlockStatement.getUUID() );
+		binaryEncoder.encode( this.statement.getId() );
+		binaryEncoder.encode( this.toBlockStatement.getId() );
 		binaryEncoder.encode( this.toIndex );
 	}
 	private int getToDelta() {

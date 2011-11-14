@@ -41,33 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.components;
+package org.alice.ide.controlflow.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ViewPanel extends View< javax.swing.JPanel, org.lgna.croquet.Composite > {
-	public ViewPanel( org.lgna.croquet.Composite composite ) {
+public class ControlFlowPanel extends org.lgna.croquet.components.Panel {
+	public ControlFlowPanel( org.alice.ide.controlflow.ControlFlowComposite composite ) {
 		super( composite );
+		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : composite.getModels() ) {
+			if( dragModel != null ) {
+				this.internalAddComponent( new ControlFlowStatementTemplate( dragModel ) );
+			} else {
+				this.internalAddComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+			}
+		}
+		this.setBackgroundColor( null );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,0,0,0 ) );
 	}
 	@Override
-	protected final javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel();
-		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
-		rv.setLayout( layoutManager );
-		return rv;
-	}
-	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
-	public void removeComponent( Component< ? > component ) {
-		this.internalRemoveComponent( component );
-	}
-	public void forgetAndRemoveComponent( Component< ? > component ) {
-		this.internalForgetAndRemoveComponent( component );
-	}
-	public void removeAllComponents() {
-		this.internalRemoveAllComponents();
-	}
-	public void forgetAndRemoveAllComponents() {
-		this.internalForgetAndRemoveAllComponents();
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING, 1, 0 );
+		} else {
+			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+		}
 	}
 }

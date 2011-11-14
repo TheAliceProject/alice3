@@ -55,7 +55,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	}
 	private final org.lgna.croquet.components.FolderTabbedPane< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > tabbedPane;
 	private TypeEditor() {
-		this.tabbedPane = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().createFolderTabbedPane( DeclarationTabCreator.SINGLETON );
+		this.tabbedPane = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().createFolderTabbedPane();
 		this.tabbedPane.setHeaderLeadingComponent( org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton() );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 	}

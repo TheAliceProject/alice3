@@ -116,7 +116,7 @@ public class PreferenceManager {
 	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 	private static String getKey( org.lgna.croquet.Model model ) {
-		return model.getId().toString();
+		return model.getMigrationId().toString();
 	}
 	private static <T> T decodeItem( byte[] data, org.lgna.croquet.ItemCodec< T > codec ) {
 		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );

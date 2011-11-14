@@ -46,7 +46,7 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class BodyHeadTabSelectionModel extends org.lgna.croquet.PredeterminedTabSelectionState< ContentTab >{
+public class BodyHeadTabSelectionModel extends org.lgna.croquet.TabSelectionState< ContentTab >{
 	private static class SingletonHolder {
 		private static BodyHeadTabSelectionModel instance = new BodyHeadTabSelectionModel();
 	}

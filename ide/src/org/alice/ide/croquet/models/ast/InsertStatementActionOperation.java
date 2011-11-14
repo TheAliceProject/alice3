@@ -78,9 +78,9 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		return new Object[] { blockStatement, index, statement };
 	}
 	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.blockStatement.getUUID() );
+		binaryEncoder.encode( this.blockStatement.getId() );
 		binaryEncoder.encode( this.index );
-		binaryEncoder.encode( this.statement.getUUID() );
+		binaryEncoder.encode( this.statement.getId() );
 	}
 	
 	public void doOrRedoInternal( boolean isDo ) {

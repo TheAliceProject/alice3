@@ -61,7 +61,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.Retargeta
 		this.index = binaryDecoder.decodeInt(); 
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.blockStatement.getUUID() );
+		binaryEncoder.encode( this.blockStatement.getId() );
 		binaryEncoder.encode( this.index );
 	}
 	

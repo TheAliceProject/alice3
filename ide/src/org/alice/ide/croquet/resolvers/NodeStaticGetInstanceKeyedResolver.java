@@ -101,7 +101,7 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.reso
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.nodes.length );
 		for( org.lgna.project.ast.Node node : nodes ) {
-			binaryEncoder.encode( node.getUUID() );
+			binaryEncoder.encode( node.getId() );
 		}
 	}
 }

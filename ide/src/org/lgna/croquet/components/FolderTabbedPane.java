@@ -48,13 +48,12 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.TabSelectionState;
 
-/*package-private*/ class FolderTabItemDetails<E> extends TabItemDetails<E, FolderTabItemDetails<E>, FolderTabbedPane<E>> {
+/*package-private*/ class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite< ? >> extends TabItemDetails<E, FolderTabItemDetails<E>, FolderTabbedPane<E>> {
 	private final CardPanel.Key cardPanelKey;
-	public FolderTabItemDetails( FolderTabbedPane< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button, java.util.UUID id, ScrollPane scrollPane, JComponent<?> mainComponent ) {
-		super( panel, item, button, id, scrollPane, mainComponent );
-		this.cardPanelKey = panel.getCardPanel().createKey( this.getRootComponent(), this.getId() );
+	public FolderTabItemDetails( FolderTabbedPane< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button, ScrollPane scrollPane ) {
+		super( panel, item, button, scrollPane );
+		this.cardPanelKey = panel.getCardPanel().createKey( this.getRootComponent(), this.getTabId() );
 	}
 	public CardPanel.Key getCardPanelKey() {
 		return this.cardPanelKey;
@@ -72,7 +71,7 @@ import org.lgna.croquet.TabSelectionState;
 /**
  * @author Dennis Cosgrove
  */
-public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabItemDetails<E>, FolderTabbedPane<E> > {
+public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> extends AbstractTabbedPane< E, FolderTabItemDetails<E>, FolderTabbedPane<E> > {
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
 	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicButtonUI {
@@ -309,10 +308,10 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabI
 	}
 	
 
-	private CardPanel cardPanel = new CardPanel();
-	private TitlesPanel titlesPanel = new TitlesPanel();
-	private BorderPanel innerHeaderPanel = new BorderPanel();
-	private BorderPanel outerHeaderPanel = new BorderPanel();
+	private final CardPanel cardPanel = new CardPanel();
+	private final TitlesPanel titlesPanel = new TitlesPanel();
+	private final BorderPanel innerHeaderPanel = new BorderPanel();
+	private final BorderPanel outerHeaderPanel = new BorderPanel();
 	
 	//private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.Action getActionFor( E item ) {
@@ -385,8 +384,8 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabI
 		}
 	}
 
-	public FolderTabbedPane( ListSelectionState<E> model, TabSelectionState.TabCreator< E > tabCreator ) {
-		super( model, tabCreator );
+	public FolderTabbedPane( ListSelectionState<E> model ) {
+		super( model );
 		this.cardPanel.setBackgroundColor( null );
 		this.innerHeaderPanel.setBackgroundColor( null );
 		this.innerHeaderPanel.getAwtComponent().setOpaque( false );
@@ -483,15 +482,10 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabI
 		return new FolderTabTitle( booleanState, closeButtonActionListener );
 	}
 	@Override
-	protected FolderTabItemDetails<E> createTabItemDetails( E item, java.util.UUID id, BooleanStateButton< ? extends javax.swing.AbstractButton > titleButton, ScrollPane scrollPane, JComponent<?> mainComponent ) {
-		JComponent<?> root;
-		if( scrollPane != null ) {
-			root = scrollPane;
-		} else {
-			root = mainComponent;
-		}
-		root.setVisible( false );
-		return new FolderTabItemDetails<E>( this, item, titleButton, id, scrollPane, mainComponent );
+	protected FolderTabItemDetails<E> createTabItemDetails( E item, BooleanStateButton< ? extends javax.swing.AbstractButton > titleButton, ScrollPane scrollPane ) {
+		FolderTabItemDetails<E> rv = new FolderTabItemDetails<E>( this, item, titleButton, scrollPane );
+		rv.getRootComponent().setVisible( false );
+		return rv;
 	};
 	
 

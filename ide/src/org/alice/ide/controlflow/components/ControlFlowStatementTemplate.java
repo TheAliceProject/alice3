@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.controlflow;
+package org.alice.ide.controlflow.components;
 
 /**
  * @author Dennis Cosgrove

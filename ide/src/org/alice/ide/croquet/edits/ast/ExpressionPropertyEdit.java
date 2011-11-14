@@ -75,11 +75,11 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)this.expressionProperty.getOwner();
-		binaryEncoder.encode( node.getUUID() );
+		binaryEncoder.encode( node.getId() );
 		binaryEncoder.encode( this.expressionProperty.getName() );
 		
-		binaryEncoder.encode( this.prevExpression.getUUID() );
-		binaryEncoder.encode( this.nextExpression.getUUID() );
+		binaryEncoder.encode( this.prevExpression.getId() );
+		binaryEncoder.encode( this.nextExpression.getId() );
 	}
 
 	@Override

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureTemplateComposite extends MemberTemplateComposite {
+public class ProcedureTemplateComposite extends MemberTemplateComposite<org.alice.ide.members.components.ProceduresContentPanel> {
 	private static class SingletonHolder {
 		private static ProcedureTemplateComposite instance = new ProcedureTemplateComposite();
 	}
@@ -62,11 +62,7 @@ public class ProcedureTemplateComposite extends MemberTemplateComposite {
 		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade;
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		return new org.alice.ide.members.components.ProceduresContentPanel();
-	}
-	@Override
-	protected String getTextForTabTitle() {
-		return "Actions";
+	protected org.alice.ide.members.components.ProceduresContentPanel createView() {
+		return new org.alice.ide.members.components.ProceduresContentPanel( this );
 	}
 }

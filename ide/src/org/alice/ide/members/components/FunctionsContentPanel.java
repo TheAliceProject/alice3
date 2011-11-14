@@ -46,7 +46,8 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 public class FunctionsContentPanel extends MethodsContentPanel {
-	public FunctionsContentPanel() {
+	public FunctionsContentPanel( org.alice.ide.croquet.models.templates.FunctionTemplateComposite composite ) {
+		super( composite );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}
 	@Override

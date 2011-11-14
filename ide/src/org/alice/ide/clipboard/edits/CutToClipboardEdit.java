@@ -71,8 +71,8 @@ public class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.statement.getUUID() );
-		binaryEncoder.encode( this.originalBlockStatement.getUUID() );
+		binaryEncoder.encode( this.statement.getId() );
+		binaryEncoder.encode( this.originalBlockStatement.getId() );
 		binaryEncoder.encode( this.originalIndex );
 	}
 	@Override
