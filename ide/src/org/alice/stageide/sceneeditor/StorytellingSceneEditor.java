@@ -458,17 +458,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private SceneObjectPropertyManagerPanel getPropertyPanel()
 	{
-		return ObjectPropertiesTab.getInstance().getMainComponent();
+		return ObjectPropertiesTab.getInstance().getView();
 	}
 	
 	private SceneCameraMarkerManagerPanel getCameraMarkerPanel()
 	{
-		return MarkerPanelTab.getInstance().getMainComponent().getCameraMarkerPanel();
+		return MarkerPanelTab.getInstance().getView().getCameraMarkerPanel();
 	}
 	
 	private SceneObjectMarkerManagerPanel getObjectMarkerPanel()
 	{
-		return MarkerPanelTab.getInstance().getMainComponent().getObjectMarkerPanel();
+		return MarkerPanelTab.getInstance().getView().getObjectMarkerPanel();
 	}
 	
 	private void handleCameraMarkerFieldSelection( UserField cameraMarkerField )
@@ -477,7 +477,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 //		this.globalDragAdapter.setSelectedCameraMarker(newMarker);
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
-		MarkerPanelTab.getInstance().getMainComponent().getCameraMarkerPanel().updateButtons();
+		MarkerPanelTab.getInstance().getView().getCameraMarkerPanel().updateButtons();
 	}
 	
 	private void handleObjectMarkerFieldSelection( UserField objectMarkerField )
@@ -487,7 +487,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		
 		MoveSelectedObjectToMarkerActionOperation.getInstance().setMarkerField(objectMarkerField);
 		MoveMarkerToSelectedObjectActionOperation.getInstance().setMarkerField(objectMarkerField);
-		MarkerPanelTab.getInstance().getMainComponent().getObjectMarkerPanel().updateButtons();
+		MarkerPanelTab.getInstance().getView().getObjectMarkerPanel().updateButtons();
 		
 	}
 	

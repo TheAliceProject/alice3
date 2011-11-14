@@ -77,7 +77,7 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
-			binaryEncoder.encode( value.getUUID() );
+			binaryEncoder.encode( value.getId() );
 		}
 	}
 	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {

@@ -53,6 +53,9 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 			MembersContentPanel.this.handleInstanceFactorySelection( nextValue );
 		}
 	};
+	public MembersContentPanel( org.lgna.croquet.TabComposite< ? > composite ) {
+		super( composite );
+	}
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
@@ -65,8 +68,8 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 	}
 	
 	protected abstract void refresh( java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types );
-	
-	private void refresh() {
+	@Override
+	protected void internalRefresh() {
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
 		java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( instanceFactory != null ) {
@@ -83,7 +86,7 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 		this.refresh( types );
 	}
 	private void handleInstanceFactorySelection( org.alice.ide.instancefactory.InstanceFactory accessible ) {
-		this.refresh();
+		this.refreshLater();
 	}
 }
 

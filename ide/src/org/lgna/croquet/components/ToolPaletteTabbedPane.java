@@ -43,9 +43,9 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/ class ToolPaletteTabItemDetails<E> extends TabItemDetails<E, ToolPaletteTabItemDetails<E>, ToolPaletteTabbedPane<E>> {
-	public ToolPaletteTabItemDetails( ToolPaletteTabbedPane< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button, java.util.UUID id, ScrollPane scrollPane, JComponent<?> mainComponent ) {
-		super( panel, item, button, id, scrollPane, mainComponent );
+/*package-private*/ class ToolPaletteTabItemDetails<E extends org.lgna.croquet.TabComposite< ? >> extends TabItemDetails<E, ToolPaletteTabItemDetails<E>, ToolPaletteTabbedPane<E>> {
+	public ToolPaletteTabItemDetails( ToolPaletteTabbedPane< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button, ScrollPane scrollPane ) {
+		super( panel, item, button, scrollPane );
 	}
 	@Override
 	public void setSelected(boolean isSelected) {
@@ -60,9 +60,9 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>, ToolPaletteTabbedPane<E>> {
-	public ToolPaletteTabbedPane( org.lgna.croquet.ListSelectionState<E> model, org.lgna.croquet.TabSelectionState.TabCreator< E > tabCreator ) {
-		super( model, tabCreator );
+public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>, ToolPaletteTabbedPane<E>> {
+	public ToolPaletteTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
+		super( model );
 	}
 
 	@Override
@@ -70,11 +70,11 @@ public final class ToolPaletteTabbedPane<E> extends AbstractTabbedPane<E, ToolPa
 		return new ToolPaletteTitle( booleanState );
 	}
 	@Override
-	protected ToolPaletteTabItemDetails<E> createTabItemDetails( E item, java.util.UUID id, BooleanStateButton< ? extends javax.swing.AbstractButton > button, ScrollPane scrollPane, final JComponent<?> mainComponent ) {
+	protected ToolPaletteTabItemDetails<E> createTabItemDetails( E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button, ScrollPane scrollPane ) {
 		if( scrollPane != null ) {
 			scrollPane.setVisible( false );
 		}
-		return new ToolPaletteTabItemDetails<E>( this, item, button, id, scrollPane, mainComponent );
+		return new ToolPaletteTabItemDetails<E>( this, item, button, scrollPane );
 	};
 	
 	@Override

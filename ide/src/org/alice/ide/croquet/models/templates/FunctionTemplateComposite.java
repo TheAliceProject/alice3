@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionTemplateComposite extends MemberTemplateComposite {
+public class FunctionTemplateComposite extends MemberTemplateComposite< org.alice.ide.members.components.FunctionsContentPanel > {
 	private static class SingletonHolder {
 		private static FunctionTemplateComposite instance = new FunctionTemplateComposite();
 	}
@@ -57,11 +57,7 @@ public class FunctionTemplateComposite extends MemberTemplateComposite {
 		super( java.util.UUID.fromString( "75657f8d-aeb5-4031-9b33-7e95568bc8fb" ) );
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		return new org.alice.ide.members.components.FunctionsContentPanel();
-	}
-	@Override
-	protected String getTextForTabTitle() {
-		return "Questions";
+	protected org.alice.ide.members.components.FunctionsContentPanel createView() {
+		return new org.alice.ide.members.components.FunctionsContentPanel( this );
 	}
 }

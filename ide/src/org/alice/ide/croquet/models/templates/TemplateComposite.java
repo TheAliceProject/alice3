@@ -46,17 +46,9 @@ package org.alice.ide.croquet.models.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite extends org.lgna.croquet.Composite {
+public abstract class TemplateComposite<V extends org.lgna.croquet.components.View< ?,? >> extends org.lgna.croquet.TabComposite< V > {
 	public TemplateComposite( java.util.UUID id ) {
 		super( id );
-	}
-	@Override
-	protected org.lgna.croquet.components.View createView() {
-		System.err.println( "todo: createView " + this );
-		return null;
-	}
-	@Override
-	protected void localize() {
 	}
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
 //		button.getAwtComponent().setIcon( ICON );
@@ -65,11 +57,13 @@ public abstract class TemplateComposite extends org.lgna.croquet.Composite {
 
 		button.scaleFont( 1.5f );
 		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		booleanState.setTextForBothTrueAndFalse( this.getTextForTabTitle() );
+		booleanState.setTextForBothTrueAndFalse( this.getDefaultLocalizedText() );
 	}
 	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
 	}
 	
-	public abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
-	protected abstract String getTextForTabTitle();
+	@Override
+	public boolean isCloseable() {
+		return false;
+	}
 }

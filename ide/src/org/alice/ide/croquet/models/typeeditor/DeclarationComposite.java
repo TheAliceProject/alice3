@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.typeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationComposite extends org.lgna.croquet.Composite {
+public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.lgna.croquet.components.View<?,?> > {
 	private static java.util.Map< org.lgna.project.ast.AbstractDeclaration, DeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized DeclarationComposite getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		DeclarationComposite rv = map.get( declaration );
@@ -64,24 +64,49 @@ public class DeclarationComposite extends org.lgna.croquet.Composite {
 		this.declaration = declaration;
 	}
 	@Override
-	protected org.lgna.croquet.components.View createView() {
-		System.err.println( "todo: createView " + this );
-		return null;
-	}
-	@Override
-	protected void localize() {
+	public java.util.UUID getTabId() {
+		return this.declaration.getId();
 	}
 	public org.lgna.project.ast.AbstractDeclaration getDeclaration() {
 		return this.declaration;
 	}
+	
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
 		System.err.println( "todo: DeclarationComposite contains" );
 		return false;
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		rv.append( this.declaration.getName() );
-		return rv;
+	public boolean isCloseable() {
+		return this.declaration instanceof org.lgna.project.ast.AbstractCode;
+	}
+	@Override
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+		super.customizeTitleComponent( booleanState, button );
+		if( this.declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			button.scaleFont( 1.2f );
+		} else {
+			button.scaleFont( 1.6f );
+		}
+	}
+	
+	@Override
+	public String getTitleText() {
+		return this.declaration.getName();
+	}
+	@Override
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+		return null;
+	}
+	@Override
+	protected org.lgna.croquet.components.View< ?, ? > createView() {
+		if( this.declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			return org.alice.ide.codeeditor.CodeEditor.getInstance( (org.lgna.project.ast.AbstractCode)this.declaration );
+		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ){
+			//return new org.alice.ide.editorstabbedpane.EditTypePanel( (org.lgna.project.ast.NamedUserType)declaration, -1 );
+			return new org.alice.ide.typeeditor.TypeDeclarationPane( (org.lgna.project.ast.NamedUserType)this.declaration );
+		} else {
+			return new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "todo" ) );
+		}
 	}
 }

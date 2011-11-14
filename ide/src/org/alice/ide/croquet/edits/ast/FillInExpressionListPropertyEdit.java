@@ -65,8 +65,8 @@ public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edi
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.prevExpression.getUUID() );
-		binaryEncoder.encode( this.nextExpression.getUUID() );
+		binaryEncoder.encode( this.prevExpression.getId() );
+		binaryEncoder.encode( this.nextExpression.getId() );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {

@@ -80,13 +80,13 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.blockStatement.getUUID() );
+		binaryEncoder.encode( this.blockStatement.getId() );
 		binaryEncoder.encode( this.specifiedIndex );
-		binaryEncoder.encode( this.statement.getUUID() );
+		binaryEncoder.encode( this.statement.getId() );
 		final int N = this.initialExpressions.length;
 		java.util.UUID[] ids = new java.util.UUID[ N ];
 		for( int i=0; i<N; i++ ) {
-			ids[ i ] = this.initialExpressions[ i ].getUUID();
+			ids[ i ] = this.initialExpressions[ i ].getId();
 		}
 		binaryEncoder.encode( ids );
 	}

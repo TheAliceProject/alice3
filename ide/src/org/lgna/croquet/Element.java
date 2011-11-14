@@ -78,21 +78,21 @@ public abstract class Element {
 	}
 
 	
-	private final java.util.UUID id;
+	private final java.util.UUID migrationId;
 	private org.lgna.croquet.resolvers.CodableResolver<Element> codableResolver;
-	public Element( java.util.UUID id ) {
-		this.id = id;
+	public Element( java.util.UUID migrationId ) {
+		this.migrationId = migrationId;
 		if( map != null ) {
-			Class<? extends Element> cls = map.get( id );
+			Class<? extends Element> cls = map.get( migrationId );
 			if( cls != null ) {
-				assert cls == this.getClass() : id + " " + this.getClass();
+				assert cls == this.getClass() : migrationId + " " + this.getClass();
 			} else {
-				map.put( id, this.getClass() );
+				map.put( migrationId, this.getClass() );
 			}
 		}
 	}
-	public java.util.UUID getId() {
-		return this.id;
+	public java.util.UUID getMigrationId() {
+		return this.migrationId;
 	}
 	private boolean isInitialized = false;
 	protected void initialize() {

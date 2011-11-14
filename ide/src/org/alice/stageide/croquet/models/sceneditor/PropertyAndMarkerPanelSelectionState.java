@@ -43,10 +43,7 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-import org.lgna.croquet.PredeterminedTabSelectionState;
-
-
-public class PropertyAndMarkerPanelSelectionState extends PredeterminedTabSelectionState
+public class PropertyAndMarkerPanelSelectionState extends org.lgna.croquet.TabSelectionState< org.lgna.croquet.TabComposite >
 {
 
     private static class SingletonHolder {
@@ -59,7 +56,7 @@ public class PropertyAndMarkerPanelSelectionState extends PredeterminedTabSelect
         super( 
                 org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
                 java.util.UUID.fromString( "96044656-6e0b-442a-ad4d-549dccc3e657" ), 
-                org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.PredeterminedTab.class ), 
+                org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.TabComposite.class ), 
                 0,
                 ObjectPropertiesTab.getInstance(), MarkerPanelTab.getInstance()
         );

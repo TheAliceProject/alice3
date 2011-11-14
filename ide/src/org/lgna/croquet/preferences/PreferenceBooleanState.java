@@ -58,7 +58,7 @@ public abstract class PreferenceBooleanState extends org.lgna.croquet.BooleanSta
 	private static java.util.List< PreferenceBooleanState > instances = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
 		for( PreferenceBooleanState state : instances ) {
-			userPreferences.putBoolean( state.getId().toString(), state.getValue() );
+			userPreferences.putBoolean( state.getMigrationId().toString(), state.getValue() );
 		}
 	}
 	public PreferenceBooleanState( org.lgna.croquet.Group group, java.util.UUID id, boolean initialValue ) {

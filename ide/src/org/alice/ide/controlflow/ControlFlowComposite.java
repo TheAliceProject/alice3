@@ -46,7 +46,7 @@ package org.alice.ide.controlflow;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowComposite extends org.lgna.croquet.Composite {
+public class ControlFlowComposite extends org.alice.ide.croquet.models.templates.TemplateComposite< org.alice.ide.controlflow.components.ControlFlowPanel > {
 	private static java.util.Map< org.lgna.project.ast.AbstractCode, ControlFlowComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ControlFlowComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
 		ControlFlowComposite rv = map.get( code );
@@ -93,9 +93,6 @@ public class ControlFlowComposite extends org.lgna.croquet.Composite {
 		}
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
 		return this.models.contains( model );
 	}
@@ -103,8 +100,11 @@ public class ControlFlowComposite extends org.lgna.croquet.Composite {
 		return this.models;
 	}
 	@Override
-	protected org.lgna.croquet.components.View createView() {
-		System.err.println( "todo: createView " + this );
-		return null;
+	public boolean isCloseable() {
+		return false;
+	}
+	@Override
+	protected org.alice.ide.controlflow.components.ControlFlowPanel createView() {
+		return new org.alice.ide.controlflow.components.ControlFlowPanel( this );
 	}
 }

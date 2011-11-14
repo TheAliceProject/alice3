@@ -44,8 +44,8 @@
 package org.alice.ide.openprojectpane;
 
 public class RecentPane extends ListContentPanel< org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState > {
-	public RecentPane() {
-		super( org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance() );
+	public RecentPane( org.alice.ide.croquet.models.openproject.RecentProjectsTab composite ) {
+		super( composite, org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance() );
 	}
 	@Override
 	protected String getTextForZeroProjects() {

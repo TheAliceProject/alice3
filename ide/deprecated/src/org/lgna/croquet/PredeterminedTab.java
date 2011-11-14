@@ -40,58 +40,74 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.templates;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BlockTemplateComposite extends TemplateComposite {
-	private static class SingletonHolder {
-		private static BlockTemplateComposite instance = new BlockTemplateComposite();
-	}
-	public static BlockTemplateComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private final java.util.Set< Class<?> > clses = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-	private BlockTemplateComposite() {
-		super( java.util.UUID.fromString( "c61a35cf-5378-44d1-ae4d-8efd7ab40fd3" ) );
-		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.class );
-		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertCascade.class );
-		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation.class );
-		clses.add( org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.class );
-		//todo
+public abstract class PredeterminedTab< V extends org.lgna.croquet.components.View<?,?> > extends TabComposite< V > {
+	private String titleText;
+	private javax.swing.Icon titleIcon;
+
+	private org.lgna.croquet.BooleanState booleanState;
+	//todo: remove
+	private org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button = null;
+	
+	public PredeterminedTab( java.util.UUID id ) {
+		super( id );
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		if( clses.contains( model.getClass() ) ) {
-			return true;
+	protected void localize() {
+		this.setTitleText( this.getDefaultLocalizedText() );
+	}
+	public String getTitleText() {
+		return this.titleText;
+	}
+	private void setTitleText( String titleText ) {
+		this.titleText = titleText;
+		this.updateTitleText();
+	}
+	public javax.swing.Icon getTitleIcon() {
+		return this.titleIcon;
+	}
+	public void setTitleIcon( javax.swing.Icon titleIcon ) {
+		this.titleIcon = titleIcon;
+		this.updateTitleIcon();
+	}
+	private void updateTitleText() {
+		if( this.button != null ) {
+			this.booleanState.setTextForBothTrueAndFalse( this.titleText );
 		}
-		return false;
 	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		org.lgna.croquet.components.JComponent< ? > rv = new org.alice.ide.controlflow.ControlFlowPanel( null );
-		rv.setBackgroundColor( new java.awt.Color( 250, 150, 105 ) );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+	private void updateTitleIcon() {
+		if( this.button != null ) {
+			this.button.getAwtComponent().setIcon( this.titleIcon );
+		}
+	}
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
+		this.initializeIfNecessary();
+		this.booleanState = booleanState;
+		this.button = button;
+		this.updateTitleText();
+		this.updateTitleIcon();
+	}
+    public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
+    }
+	
+	
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		return rv;
 	}
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-		super.customizeTitleComponent( booleanState, button );
-		button.getAwtComponent().setIcon( new javax.swing.Icon() {
-			public int getIconHeight() {
-				return 24;
-			}
-			public int getIconWidth() {
-				return 0;//32;
-			}
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-			}
-		} );
+	public boolean contains( Model model ) {
+		System.err.println( "todo: PredeterminedTab contains" );
+		return false;
 	}
 	@Override
-	protected String getTextForTabTitle() {
-		return "Action Ordering Boxes";
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		rv.append( this.titleText );
+		return rv;
 	}
-}
+};

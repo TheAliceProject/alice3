@@ -66,7 +66,7 @@ public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec< org
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
-			binaryEncoder.encode( value.getDeclaration().getUUID() );
+			binaryEncoder.encode( value.getDeclaration().getId() );
 		}
 	}
 	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.croquet.models.typeeditor.DeclarationComposite value, java.util.Locale locale) {

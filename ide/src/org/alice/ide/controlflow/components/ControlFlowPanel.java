@@ -41,15 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.controlflow;
+package org.alice.ide.controlflow.components;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ControlFlowPanel extends org.lgna.croquet.components.ViewPanel {
-	public ControlFlowPanel( org.lgna.project.ast.AbstractCode code ) {
-		super( ControlFlowComposite.getInstance( code ) );
-		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : ControlFlowComposite.getInstance( code ).getModels() ) {
+	public ControlFlowPanel( org.alice.ide.controlflow.ControlFlowComposite composite ) {
+		super( composite );
+		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : composite.getModels() ) {
 			if( dragModel != null ) {
 				this.internalAddComponent( new ControlFlowStatementTemplate( dragModel ) );
 			} else {
@@ -61,6 +61,10 @@ public class ControlFlowPanel extends org.lgna.croquet.components.ViewPanel {
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING, 1, 0 );
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING, 1, 0 );
+		} else {
+			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+		}
 	}
 }

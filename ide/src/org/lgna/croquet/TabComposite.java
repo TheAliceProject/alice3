@@ -40,53 +40,74 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PredeterminedTabSelectionState<T extends PredeterminedTab> extends TabSelectionState< T > {
-	private static class PredeterminedTabCreator<T extends PredeterminedTab> implements TabCreator< T > {
-		public final java.util.UUID getId(T item) {
-			java.util.UUID rv = item.getId();
-			assert rv != null;
-			return rv;
-		}
-		public final org.lgna.croquet.components.JComponent<?> createMainComponent(T item) {
-			return item.getMainComponent();
-		}
-		public void customizeTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item ) {
-			item.customizeTitleComponent( booleanState, button );
-		}
-        public void releaseTitleComponent( BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, BooleanState > button, T item ) {
-        	item.releaseTitleComponent( booleanState, button );
-        }
-		public final org.lgna.croquet.components.ScrollPane createScrollPane( T item ) {
-			return item.createScrollPane();
-		}
-		public final boolean isCloseable(T item) {
-			return false;
-		}
-	};
-	public PredeterminedTabSelectionState( Group group, java.util.UUID id, ItemCodec< T > codec, int selectionIndex, T... tabs ) {
-		super( group, id, codec, selectionIndex, tabs );
-	}
+public abstract class TabComposite< V extends org.lgna.croquet.components.View<?,?> > extends Composite< V > {
+	private String titleText;
+	private javax.swing.Icon titleIcon;
 
-	public org.lgna.croquet.components.FolderTabbedPane<T> createDefaultFolderTabbedPane() {
-		return this.createFolderTabbedPane( new PredeterminedTabCreator<T>() );
-	}
+	private org.lgna.croquet.BooleanState booleanState;
+	//todo: remove
+	private org.lgna.croquet.components.BooleanStateButton< ? > button = null;
 
-	public org.lgna.croquet.components.ToolPaletteTabbedPane<T> createDefaultToolPaletteTabbedPane() {
-		return this.createToolPaletteTabbedPane( new PredeterminedTabCreator<T>() );
+	public TabComposite( java.util.UUID id ) {
+		super( id );
 	}
-
-	@Deprecated
-	public T getItemForId( java.util.UUID id ) {
-		for( T predeterminedTab : this ) {
-			if( predeterminedTab.getId().equals( id ) ) {
-				return predeterminedTab;
-			}
+	public java.util.UUID getTabId() {
+		return this.getMigrationId();
+	}
+	public abstract boolean isCloseable();
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		return rv;
+	}
+	@Override
+	protected void localize() {
+		this.setTitleText( this.getDefaultLocalizedText() );
+	}
+	public String getTitleText() {
+		return this.titleText;
+	}
+	private void setTitleText( String titleText ) {
+		this.titleText = titleText;
+		this.updateTitleText();
+	}
+	public javax.swing.Icon getTitleIcon() {
+		return this.titleIcon;
+	}
+	public void setTitleIcon( javax.swing.Icon titleIcon ) {
+		this.titleIcon = titleIcon;
+		this.updateTitleIcon();
+	}
+	private void updateTitleText() {
+		if( this.button != null ) {
+			this.booleanState.setTextForBothTrueAndFalse( this.getTitleText() );
 		}
-		return null;
 	}
+	private void updateTitleIcon() {
+		if( this.button != null ) {
+			this.button.getAwtComponent().setIcon( this.getTitleIcon() );
+		}
+	}
+	
+	@Override
+	protected final StringBuilder appendRepr( StringBuilder rv ) {
+		rv.append( this.getTitleText() );
+		return rv;
+	}
+	
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+		this.initializeIfNecessary();
+		this.booleanState = booleanState;
+		this.button = button;
+		this.updateTitleText();
+		this.updateTitleIcon();
+	}
+    public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+    }
 }

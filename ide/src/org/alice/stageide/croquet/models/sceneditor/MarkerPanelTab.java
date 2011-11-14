@@ -43,11 +43,7 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-import org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel;
-import org.lgna.croquet.PredeterminedTab;
-
-
-public class MarkerPanelTab extends PredeterminedTab
+public class MarkerPanelTab extends org.lgna.croquet.TabComposite< org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel >
 {
     private static class SingletonHolder {
         private static MarkerPanelTab instance = new MarkerPanelTab();
@@ -59,18 +55,16 @@ public class MarkerPanelTab extends PredeterminedTab
         super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
     }
     @Override
-    protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-        return new MarkerManagerPanel();
+    protected org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel createView() {
+    	return new org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel( this );
     }
-    
     @Override
-    public MarkerManagerPanel getMainComponent()
-    {
-        org.lgna.croquet.components.JComponent< ? > c = super.getMainComponent();
-        if ( c instanceof MarkerManagerPanel)
-        {
-            return (MarkerManagerPanel)c;
-        }
-        return null;
+    public boolean isCloseable() {
+    	return false;
     }
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
+	}
 }

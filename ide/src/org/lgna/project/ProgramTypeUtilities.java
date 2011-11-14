@@ -137,7 +137,7 @@ public class ProgramTypeUtilities {
 			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 				if( crawlable instanceof org.lgna.project.ast.Node ) {
 					org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)crawlable;
-					if( id.equals( node.getUUID() ) ) {
+					if( id.equals( node.getId() ) ) {
 						buffer[ 0 ] = node;
 					}
 				}

@@ -82,7 +82,7 @@ public class Manager {
 	}
 	
 	/*package-private*/ static void registerModel( Model model ) {
-		java.util.UUID id = model.getId();
+		java.util.UUID id = model.getMigrationId();
 		synchronized ( mapIdToModels ) {
 			java.util.Set< Model > set = mapIdToModels.get( id );
 			if( set != null ) {
@@ -96,7 +96,7 @@ public class Manager {
 	}
 	/*package-private*/ static void unregisterModel( Model model ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
-		java.util.UUID id = model.getId();
+		java.util.UUID id = model.getMigrationId();
 		synchronized ( mapIdToModels ) {
 			java.util.Set< Model > set = mapIdToModels.get( id );
 			if( set != null ) {

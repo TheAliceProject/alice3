@@ -92,8 +92,8 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 		return new Object[] { member, declaringType, index };
 	}
 	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.member.getUUID() );
-		binaryEncoder.encode( this.declaringType.getUUID() );
+		binaryEncoder.encode( this.member.getId() );
+		binaryEncoder.encode( this.declaringType.getId() );
 		binaryEncoder.encode( this.index );
 	}
 	

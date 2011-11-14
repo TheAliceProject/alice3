@@ -134,7 +134,7 @@ public class CardPanel extends Panel {
 
 	private Key getKey( org.lgna.croquet.Composite< ? > composite ) {
 		if( composite != null ) {
-			java.util.UUID id = composite.getId();
+			java.util.UUID id = composite.getMigrationId();
 			Key key = this.getKey( id );
 			if( key != null ) {
 				//pass

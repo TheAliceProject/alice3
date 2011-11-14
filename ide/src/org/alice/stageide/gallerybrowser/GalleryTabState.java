@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryTabState extends org.lgna.croquet.PredeterminedTabSelectionState< org.lgna.croquet.PredeterminedTab > {
+public class GalleryTabState extends org.lgna.croquet.TabSelectionState< org.lgna.croquet.TabComposite > {
 	private static class SingletonHolder {
 		private static GalleryTabState instance = new GalleryTabState();
 	}
@@ -57,7 +57,7 @@ public class GalleryTabState extends org.lgna.croquet.PredeterminedTabSelectionS
 		super( 
 				org.alice.ide.IDE.UI_STATE_GROUP, 
 				java.util.UUID.fromString( "46bffcb8-9f19-4328-aae3-550b0fc72f43" ), 
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.PredeterminedTab.class ), 
+				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.TabComposite.class ), 
 				0,
 				ResourceTab.getInstance(), TypeTab.getInstance()
 		);

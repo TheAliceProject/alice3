@@ -58,17 +58,17 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 			tabbedPane.repaint();
 		}
 	};
-	private org.lgna.croquet.State.ValueObserver<org.lgna.croquet.PredeterminedTab> tabChangeAdapter = new org.lgna.croquet.State.ValueObserver<org.lgna.croquet.PredeterminedTab>() {
-		public void changing( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.State.ValueObserver<org.lgna.croquet.TabComposite> tabChangeAdapter = new org.lgna.croquet.State.ValueObserver<org.lgna.croquet.TabComposite>() {
+		public void changing( org.lgna.croquet.State< org.lgna.croquet.TabComposite > state, org.lgna.croquet.TabComposite prevValue, org.lgna.croquet.TabComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.croquet.PredeterminedTab > state, org.lgna.croquet.PredeterminedTab prevValue, org.lgna.croquet.PredeterminedTab nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.lgna.croquet.TabComposite > state, org.lgna.croquet.TabComposite prevValue, org.lgna.croquet.TabComposite nextValue, boolean isAdjusting ) {
 			//todo
 		}
 	};
 	private final PersonViewer personViewer;
 	public MainPanel( PersonViewer personViewer ) {
 		this.personViewer = personViewer;
-		this.tabbedPane = org.alice.stageide.person.models.BodyHeadTabSelectionModel.getInstance().createDefaultFolderTabbedPane();
+		this.tabbedPane = org.alice.stageide.person.models.BodyHeadTabSelectionModel.getInstance().createFolderTabbedPane();
 		this.tabbedPane.scaleFont( 1.5f );
 
 		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel();

@@ -43,11 +43,7 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-import org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel;
-import org.lgna.croquet.PredeterminedTab;
-
-
-public class ObjectPropertiesTab extends PredeterminedTab
+public class ObjectPropertiesTab extends org.lgna.croquet.TabComposite<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> 
 {
     private static class SingletonHolder {
         private static ObjectPropertiesTab instance = new ObjectPropertiesTab();
@@ -59,20 +55,16 @@ public class ObjectPropertiesTab extends PredeterminedTab
         super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
     }
     @Override
-    protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-        return new SceneObjectPropertyManagerPanel();
+    protected org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel createView() {
+        return new org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel();
     }
-
     @Override
-    public SceneObjectPropertyManagerPanel getMainComponent()
-    {
-        org.lgna.croquet.components.JComponent< ? > c = super.getMainComponent();
-        if ( c instanceof SceneObjectPropertyManagerPanel)
-        {
-            return (SceneObjectPropertyManagerPanel)c;
-        }
-        return null;
+    public boolean isCloseable() {
+    	return false;
     }
-    
-    
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
+	}
 }

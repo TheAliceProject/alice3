@@ -56,8 +56,9 @@ public class MarkerManagerPanel extends GridBagPanel
     private SceneCameraMarkerManagerPanel cameraMarkerManagerPanel = null;
     private SceneObjectMarkerManagerPanel objectMarkerManagerPanel = null;
     
-    public MarkerManagerPanel()
+    public MarkerManagerPanel( org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab tab )
     {
+    	super( tab );
         this.cameraMarkerManagerPanel = new SceneCameraMarkerManagerPanel();
         this.objectMarkerManagerPanel = new SceneObjectMarkerManagerPanel();
         

@@ -48,7 +48,8 @@ package org.alice.ide.openprojectpane;
  */
 public class FileSystemPane extends TabContentPanel {
 	private org.lgna.croquet.StringState textState = new org.lgna.croquet.StringState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" ) {};
-	public FileSystemPane() {
+	public FileSystemPane( org.alice.ide.croquet.models.openproject.FileSystemTab composite ) {
+		super( composite );
 //		this.textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 //			private void handleUpdate(javax.swing.event.DocumentEvent e) {
 //				FileSystemPane.this.updateOKButton();
@@ -97,7 +98,7 @@ public class FileSystemPane extends TabContentPanel {
 	}
 
 	@Override
-	public java.net.URI getSelectedURI() {
+	public java.net.URI getSelectedUri() {
 		String path = this.textState.getValue();
 		java.io.File file = new java.io.File(path);
 		if (file.exists()) {

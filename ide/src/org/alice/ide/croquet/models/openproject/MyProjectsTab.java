@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class MyProjectsTab extends ContentTab {
+public class MyProjectsTab extends ContentTab< org.alice.ide.openprojectpane.DirectoryListContentPanel > {
 	private static class SingletonHolder {
 		private static MyProjectsTab instance = new MyProjectsTab();
 	}
@@ -57,11 +57,12 @@ public class MyProjectsTab extends ContentTab {
 		super( java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ) );
 	}
 	@Override
-	public java.net.URI getSelectedUri() {
-		return org.alice.ide.openprojectpane.models.MyProjectsUriSelectionState.getInstance().getSelectedItem();
+	protected org.alice.ide.openprojectpane.DirectoryListContentPanel createView() {
+		return new org.alice.ide.openprojectpane.DirectoryListContentPanel( this, org.alice.ide.openprojectpane.models.MyProjectsUriSelectionState.getInstance() );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		return new org.alice.ide.openprojectpane.DirectoryListContentPanel( org.alice.ide.openprojectpane.models.MyProjectsUriSelectionState.getInstance() );
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
 	}
 }

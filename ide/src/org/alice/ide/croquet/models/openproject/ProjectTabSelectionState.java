@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.openproject;
  * @author Dennis Cosgrove
  */
 
-public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabSelectionState< ContentTab > {
+public class ProjectTabSelectionState extends org.lgna.croquet.TabSelectionState< ContentTab > {
 	private static class SingletonHolder {
 		private static ProjectTabSelectionState instance = new ProjectTabSelectionState();
 	}
@@ -58,12 +58,7 @@ public class ProjectTabSelectionState extends org.lgna.croquet.PredeterminedTabS
 		super( 
 				org.lgna.croquet.Application.UI_STATE_GROUP,
 				java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ), 
-				new org.lgna.croquet.PredeterminedTabCodec( ContentTab.class ) {
-					@Override
-					protected org.lgna.croquet.PredeterminedTab lookUp( java.util.UUID id ) {
-						throw new RuntimeException( "todo" );
-					}
-				}, 
+				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( ContentTab.class ), 
 				-1, 
 				TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance()
 		);

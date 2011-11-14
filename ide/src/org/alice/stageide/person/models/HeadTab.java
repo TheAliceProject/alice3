@@ -46,7 +46,7 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTab extends ContentTab {
+public class HeadTab extends ContentTab<org.lgna.croquet.components.RowsSpringPanel> {
 	private static class SingletonHolder {
 		private static HeadTab instance = new HeadTab();
 	}
@@ -57,7 +57,7 @@ public class HeadTab extends ContentTab {
 		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
+	protected org.lgna.croquet.components.RowsSpringPanel createView() {
 		org.lgna.croquet.components.RowsSpringPanel rv = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
 			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
@@ -71,5 +71,10 @@ public class HeadTab extends ContentTab {
 		rv.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 		return rv;
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
 	}
 };

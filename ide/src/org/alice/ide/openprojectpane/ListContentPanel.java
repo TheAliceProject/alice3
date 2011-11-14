@@ -48,7 +48,8 @@ package org.alice.ide.openprojectpane;
  */
 public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.models.UriSelectionState > extends TabContentPanel {
 	private final M state;
-	public ListContentPanel( M state ) {
+	public ListContentPanel( org.lgna.croquet.TabComposite< ? > composite, M state ) {
+		super( composite );
 		this.state = state;
 		final org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
 		list.setBackgroundColor( null );
@@ -87,7 +88,7 @@ public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.
 	}
 	protected abstract String getTextForZeroProjects();
 	@Override
-	public java.net.URI getSelectedURI() {
+	public java.net.URI getSelectedUri() {
 		return this.state.getSelectedItem();
 	}
 }
