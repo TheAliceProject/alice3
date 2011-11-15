@@ -48,7 +48,7 @@ import org.lgna.story.resourceutilities.ModelResourceUtilities;
  * @author Dennis Cosgrove
  */
 public class ResourceManager {
-	private static final int SMALL_ICON_SIZE = 32;
+	private static final int SMALL_ICON_SIZE = 24;
 	private static final String PACKAGE_NAME_PREFIX = ResourceManager.class.getPackage().getName();
 
 	private ResourceManager() {

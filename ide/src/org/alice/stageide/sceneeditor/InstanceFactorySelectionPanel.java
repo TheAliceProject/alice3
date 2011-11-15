@@ -124,7 +124,6 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 				left += 16;
 			}
 			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( top, left, bottom, right ) );
-			
 			return rv;
 		}
 		

@@ -65,7 +65,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private StoryApiConfigurationManager() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.Entity.class );
-		final int SMALL_ICON_SIZE = 32;
+		final int SMALL_ICON_SIZE = 24;
 		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Sun.class, new javax.swing.Icon() {
 
 			public int getIconWidth() {
@@ -89,8 +89,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 				try {
-					java.awt.Shape innerArc = this.createArc( 20.0f );
-					java.awt.Shape outerArc = this.createArc( 22.0f );
+					java.awt.Shape innerArc = this.createArc( 16.0f );
+					java.awt.Shape outerArc = this.createArc( 18.0f );
 					
 					g2.translate( 4.0f, 4.0f );
 					java.awt.geom.GeneralPath pathRays = new java.awt.geom.GeneralPath();
@@ -99,7 +99,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 					g2.setColor( new java.awt.Color( 255, 210, 0 ) );
 					for( double theta = 0.0; theta<=thetaN; theta += thetaDelta ) {
 						pathRays.moveTo( 0.0f, 0.0f );
-						pathRays.lineTo( (float)( Math.cos( theta ) * 26.0 ), (float)( Math.sin( theta ) * 26.0 ) ); 
+						pathRays.lineTo( (float)( Math.cos( theta ) * 20.0 ), (float)( Math.sin( theta ) * 20.0 ) ); 
 					}
 					g2.draw( pathRays );
 					g2.fill( outerArc );
@@ -123,8 +123,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		final int JOINT_B_Y = 2*SMALL_ICON_SIZE/5;
 		final int JOINT_C_X = SMALL_ICON_SIZE/2;
 		final int JOINT_C_Y = SMALL_ICON_SIZE-INSET_Y;
-		final int JOINT_WIDTH = 8;
-		final int JOINT_HEIGHT = 8;
+		final int JOINT_WIDTH = 6;
+		final int JOINT_HEIGHT = 6;
 		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Joint.class, new javax.swing.Icon() {
 			public int getIconWidth() {
 				return SMALL_ICON_SIZE;
@@ -162,7 +162,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 				}
 			}
 		} );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Camera.class, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.gallerybrowser.ResourceManager.class.getResource( "images/SymmetricPerspectiveCamera.png" ) ) );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Camera.class, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.gallerybrowser.ResourceManager.class.getResource( "images/camera-video.png" ) ) );
 //		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lookingglassandalice.storytelling.Camera.class, new javax.swing.Icon() {
 //			public int getIconWidth() {
 //				return SMALL_ICON_SIZE;

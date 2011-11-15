@@ -102,12 +102,12 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 				edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.Node > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.Node.class );
 				programType.crawl( crawler, true );
 				for( org.lgna.project.ast.Node node : crawler.getList() ) {
-					mapIdToReplacementNode.put( node.getUUID(), node );
+					mapIdToReplacementNode.put( node.getId(), node );
 				}
 			}
 			public void addKeyValuePair( Object key, Object value ) {
 				if( key instanceof org.lgna.project.ast.Node && value instanceof org.lgna.project.ast.Node ) {
-					mapIdToReplacementNode.put( ((org.lgna.project.ast.Node)key).getUUID(), (org.lgna.project.ast.Node)value );
+					mapIdToReplacementNode.put( ((org.lgna.project.ast.Node)key).getId(), (org.lgna.project.ast.Node)value );
 				} else {
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: IGNORING addKeyValuePair", key, value );
 				}
@@ -115,7 +115,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			public <N> N retarget(N value) {
 				if( value instanceof org.lgna.project.ast.Node ) {
 					org.lgna.project.ast.Node originalNode = (org.lgna.project.ast.Node)value;
-					org.lgna.project.ast.Node retargetedNode = mapIdToReplacementNode.get( originalNode.getUUID() );
+					org.lgna.project.ast.Node retargetedNode = mapIdToReplacementNode.get( originalNode.getId() );
 					if( retargetedNode != null ) {
 						return (N)retargetedNode;
 					} else {
