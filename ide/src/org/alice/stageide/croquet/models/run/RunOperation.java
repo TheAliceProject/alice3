@@ -160,7 +160,6 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 					org.lgna.story.Program program = programInstance.getInstanceInJava( org.lgna.story.Program.class );
 					org.lgna.story.implementation.ProgramImp programImplementation = org.lgna.story.ImplementationAccessor.getImplementation( program );
 					programImplementation.initializeInAwtContainer( rv.getAwtComponent() );
-					rv.makeStandOut();
 					//vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
 					vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
 				}

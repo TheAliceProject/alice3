@@ -365,6 +365,8 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			this.pickParameters = new PickParameters( this.drawable, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
 			if( this.drawable.isRealized() ) {
 				this.drawable.display();
+			} else {
+				Thread.dumpStack();
 			}
 			return this.pickParameters.accessFrontMostPickResult();
 		} finally {

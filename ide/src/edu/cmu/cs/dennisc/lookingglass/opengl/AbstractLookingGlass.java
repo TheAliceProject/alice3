@@ -233,9 +233,9 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 			synchronized( m_cameras ) {
 				m_cameras.clear();
 			}
-			if( m_glEventAdapter.isListening() ) {
-				m_glEventAdapter.stopListening( getGLAutoDrawable() );
-			}
+		}
+		if( m_glEventAdapter.isListening() ) {
+			m_glEventAdapter.stopListening( getGLAutoDrawable() );
 		}
 	}
 	public int getCameraCount() {
