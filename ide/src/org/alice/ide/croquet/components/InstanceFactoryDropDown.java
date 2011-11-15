@@ -51,12 +51,12 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 		private void refresh( org.alice.ide.instancefactory.InstanceFactory nextValue ) {
 			this.forgetAndRemoveAllComponents();
 			this.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null ), Constraint.CENTER );
-			//javax.swing.JPanel rv = new javax.swing.JPanel();
-//			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
-			this.addComponent( new org.lgna.croquet.components.Label( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( nextValue.getValueType() ) ), Constraint.LINE_START );
-//			rv.add( expressionPane );
-//			return rv;
-
+			if( nextValue != null ) {
+				javax.swing.Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( nextValue.getValueType() );
+				if( icon != null ) {
+					this.addComponent( new org.lgna.croquet.components.Label( icon ), Constraint.LINE_START );
+				}
+			}
 			this.revalidateAndRepaint();
 		}
 	};
