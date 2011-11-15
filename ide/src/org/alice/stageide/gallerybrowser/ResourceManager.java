@@ -50,9 +50,17 @@ import org.lgna.story.resourceutilities.ModelResourceUtilities;
 public class ResourceManager {
 	private static final int SMALL_ICON_SIZE = 24;
 	private static final String PACKAGE_NAME_PREFIX = ResourceManager.class.getPackage().getName();
+	private static java.util.Map< org.lgna.project.ast.JavaType, javax.swing.Icon > typeToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private ResourceManager() {
 	}
+	public static void registerSmallIcon( org.lgna.project.ast.JavaType typeInJava, javax.swing.Icon icon ) {
+		typeToIconMap.put( typeInJava, icon );
+	}
+	public static void registerSmallIcon( Class< ? > cls, javax.swing.Icon icon ) {
+		registerSmallIcon( org.lgna.project.ast.JavaType.getInstance( cls ), icon );
+	}
+
 	private static javax.swing.Icon getSmallIconFor( javax.swing.Icon largeIcon ) {
 		if( largeIcon != null ) {
 			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( ((javax.swing.ImageIcon)largeIcon).getImage(), SMALL_ICON_SIZE, SMALL_ICON_SIZE );
@@ -159,16 +167,13 @@ public class ResourceManager {
 	}
 
 	public static javax.swing.Icon getLargeIconForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( getLargeIconResourceForType( type ) );
-	}
-
-	private static java.util.Map< org.lgna.project.ast.JavaType, javax.swing.Icon > typeToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static void registerSmallIcon( org.lgna.project.ast.JavaType typeInJava, javax.swing.Icon icon ) {
-		typeToIconMap.put( typeInJava, icon );
-	}
-	public static void registerSmallIcon( Class< ? > cls, javax.swing.Icon icon ) {
-		registerSmallIcon( org.lgna.project.ast.JavaType.getInstance( cls ), icon );
+		java.net.URL url = getLargeIconResourceForType( type );
+//		if( url != null ) {
+//			//pass
+//		} else {
+//			//url = ModelResourceUtilities.getThumbnailURL( modelResource );
+//		}
+		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( url );
 	}
 
 	public static javax.swing.Icon getSmallIconForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {

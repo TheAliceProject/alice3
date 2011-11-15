@@ -113,6 +113,19 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			}
 		} );
 		
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Ground.class, new javax.swing.Icon() {
+			public int getIconWidth() {
+				return SMALL_ICON_SIZE;
+			}
+			public int getIconHeight() {
+				return SMALL_ICON_SIZE;
+			}
+			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+				g.setColor( java.awt.Color.DARK_GRAY );
+				g.drawRect( x+2, y+2, SMALL_ICON_SIZE-5, SMALL_ICON_SIZE-5 );
+			}
+		} );
+
 		final java.awt.Stroke BONE_STROKE = new java.awt.BasicStroke( 3.0f );
 		final java.awt.Stroke JOINT_OUTLINE_STROKE = new java.awt.BasicStroke( 1.0f );
 		final int INSET_X = 6;

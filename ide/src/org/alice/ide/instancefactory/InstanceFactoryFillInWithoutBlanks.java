@@ -59,6 +59,7 @@ public abstract class InstanceFactoryFillInWithoutBlanks extends org.lgna.croque
 
 		javax.swing.JPanel rv = new javax.swing.JPanel();
 		rv.setLayout( new java.awt.BorderLayout() );
+		
 		rv.add( new javax.swing.JLabel( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( this.transientValue.getValueType() ) ), java.awt.BorderLayout.LINE_START );
 		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
 		rv.setOpaque( false );
