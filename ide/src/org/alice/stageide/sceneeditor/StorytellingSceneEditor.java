@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -94,6 +96,7 @@ import org.lgna.story.PerspectiveCameraMarker;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.MarkerImp;
+import org.lgna.story.implementation.ObjectMarkerImp;
 import org.lgna.story.implementation.OrthographicCameraImp;
 import org.lgna.story.implementation.OrthographicCameraMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
@@ -102,6 +105,7 @@ import org.lgna.story.implementation.SceneImplementation;
 import org.lgna.story.implementation.TransformableImp;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
+import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
@@ -331,7 +335,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private void initializeCameraMarkers()
 	{
 		PerspectiveCameraMarker openingSceneMarker = new PerspectiveCameraMarker();
-		openingSceneMarker.setColorId(org.lgna.story.Color.BLACK);
+		openingSceneMarker.setColorId(org.lgna.story.Color.DARK_GRAY);
 		this.openingSceneMarkerImp = ImplementationAccessor.getImplementation(openingSceneMarker);
 		this.openingSceneMarkerImp.setDisplayVisuals(true);
 		MarkerUtilities.addIconForCameraImp(this.openingSceneMarkerImp, "mainCamera");
@@ -339,12 +343,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		
 		
 		PerspectiveCameraMarker sceneViewMarker = new PerspectiveCameraMarker();
-		sceneViewMarker.setColorId(org.lgna.story.Color.BLUE);
+		sceneViewMarker.setColorId(org.lgna.story.Color.LIGHT_BLUE);
 		this.sceneViewMarkerImp = ImplementationAccessor.getImplementation(sceneViewMarker);
 		this.sceneViewMarkerImp.setDisplayVisuals(true);
 		MarkerUtilities.addIconForCameraImp(this.sceneViewMarkerImp, "sceneEditorCamera");
 		MarkerUtilities.setViewForCameraImp(this.sceneViewMarkerImp, View.LAYOUT_SCENE_VIEW);
-		
 		
 		this.orthographicCameraMarkerImps.clear();
 		OrthographicCameraMarker topOrthoMarker = new OrthographicCameraMarker();
@@ -421,8 +424,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	
-	private static final int INSET = 8;
-	
 	private void showLookingGlassPanel()
 	{
 		this.addComponent( this.mainPanel, Constraint.CENTER );
@@ -473,8 +474,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private void handleCameraMarkerFieldSelection( UserField cameraMarkerField )
 	{
-//		MarkerImp newMarker = this.getMarkerForField(cameraMarkerField);
-//		this.globalDragAdapter.setSelectedCameraMarker(newMarker);
+		CameraMarkerImp newMarker = (CameraMarkerImp)this.getMarkerForField(cameraMarkerField);
+		this.globalDragAdapter.setSelectedCameraMarker(newMarker);
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MarkerPanelTab.getInstance().getView().getCameraMarkerPanel().updateButtons();
@@ -482,13 +483,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private void handleObjectMarkerFieldSelection( UserField objectMarkerField )
 	{
-//		MarkerImp newMarker = this.getMarkerForField(objectMarkerField);
-//		this.globalDragAdapter.setSelectedObjectMarker(newMarker);
-		
+		ObjectMarkerImp newMarker = (ObjectMarkerImp)this.getMarkerForField(objectMarkerField);
+		this.globalDragAdapter.setSelectedObjectMarker(newMarker);
 		MoveSelectedObjectToMarkerActionOperation.getInstance().setMarkerField(objectMarkerField);
 		MoveMarkerToSelectedObjectActionOperation.getInstance().setMarkerField(objectMarkerField);
 		MarkerPanelTab.getInstance().getView().getObjectMarkerPanel().updateButtons();
-		
 	}
 	
 	private void handleManipulatorSelection(org.alice.interact.event.SelectionEvent e)
@@ -497,7 +496,20 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		if (imp != null)
 		{
 			UserField field = this.getFieldForInstanceInJavaVM(imp.getAbstraction());
-			this.setSelectedField(field.getDeclaringType(), field);
+			if (field != null) {
+				if (field.getValueType().isAssignableFrom(org.lgna.story.CameraMarker.class)) {
+					this.setSelectedCameraMarker(field);
+				}
+				else if (field.getValueType().isAssignableFrom(org.lgna.story.ObjectMarker.class)) {
+					this.setSelectedObjectMarker(field);
+				}
+				else {
+					this.setSelectedField(field.getDeclaringType(), field);
+				}
+			}
+			else if (imp == this.openingSceneMarkerImp) {
+				this.setSelectedField(this.getActiveSceneType(), this.getFieldForInstanceInJavaVM(this.sceneCameraImp.getAbstraction()));
+			}
 		}
 		else
 		{
@@ -526,20 +538,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private void switchToCamera( AbstractCamera camera ) {
 		assert camera != null;
-		boolean isClearingAndAddingRequired;
-		if( this.onscreenLookingGlass.getCameraCount() == 1 ) {
-			if( onscreenLookingGlass.getCameraAt( 0 ) == camera ) {
-				isClearingAndAddingRequired = false;
-			} else {
-				isClearingAndAddingRequired = true;
-			}
-		} else {
-			isClearingAndAddingRequired = true;
-		}
-		if( isClearingAndAddingRequired ) {
-			onscreenLookingGlass.clearCameras();
-			onscreenLookingGlass.addCamera( camera );
-		}
+		assert this.onscreenLookingGlass.getCameraCount() == 1;
 		this.snapGrid.setCurrentCamera(camera);
 		this.onscreenLookingGlass.repaint();
 		this.revalidateAndRepaint();
@@ -563,7 +562,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			//pass
 		} else {
 			
-//			
 			this.snapGrid = new SnapGrid();
 			SnapState.getInstance().getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
 			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);
@@ -849,6 +847,32 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		super.handleUndisplayable();
 	}
+	
+	private void paintHorizonLine(Graphics graphics, LightweightOnscreenLookingGlass lookingGlass, OrthographicCamera camera)
+	{
+		AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
+		double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
+		if (dotProd == 1 || dotProd == -1)
+		{
+			Dimension lookingGlassSize = lookingGlass.getSize();
+			
+			Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
+			
+			ClippedZPlane dummyPlane = new ClippedZPlane(camera.picturePlane.getValue(), lookingGlass.getActualViewport(camera));
+			
+			double lookingGlassHeight = lookingGlassSize.getHeight();
+			
+			double yRatio = this.onscreenLookingGlass.getHeight() / dummyPlane.getHeight();
+			double horizonInCameraSpace = 0.0d - cameraPosition.y;
+			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
+			int horizonLinePixelVal = (int)(yRatio * distanceFromMaxY);
+			if (horizonLinePixelVal >= 0 && horizonLinePixelVal <= lookingGlassHeight)
+			{
+				graphics.setColor(java.awt.Color.BLACK);
+				graphics.drawLine(0, horizonLinePixelVal, lookingGlassSize.width, horizonLinePixelVal);
+			}
+		}
+	}
 
 // ######### Begin implementation of edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter
 	public void initialized(LookingGlassInitializeEvent e) {
@@ -858,12 +882,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 
 	public void rendered(LookingGlassRenderEvent e) {
-//		 if (this.onscreenLookingGlass.getCameraCount() > 0 &&
-//		 this.onscreenLookingGlass.getCameraAt(0) instanceof
-//		 OrthographicCamera){
-//		 paintHorizonLine(e.getGraphics2D(), this.onscreenLookingGlass,
-//		 (OrthographicCamera)this.onscreenLookingGlass.getCameraAt(0));
-//		 }
+		 if (this.onscreenLookingGlass.getCameraCount() > 0 && this.onscreenLookingGlass.getCameraAt(0) instanceof OrthographicCamera){
+			 paintHorizonLine(e.getGraphics2D(), this.onscreenLookingGlass, (OrthographicCamera)this.onscreenLookingGlass.getCameraAt(0));
+		 }
 	}
 
 	public void resized(LookingGlassResizeEvent e) {
