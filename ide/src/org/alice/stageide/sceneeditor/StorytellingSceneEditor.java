@@ -96,6 +96,7 @@ import org.lgna.story.PerspectiveCameraMarker;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.MarkerImp;
+import org.lgna.story.implementation.ObjectMarkerImp;
 import org.lgna.story.implementation.OrthographicCameraImp;
 import org.lgna.story.implementation.OrthographicCameraMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
@@ -334,7 +335,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private void initializeCameraMarkers()
 	{
 		PerspectiveCameraMarker openingSceneMarker = new PerspectiveCameraMarker();
-		openingSceneMarker.setColorId(org.lgna.story.Color.BLACK);
+		openingSceneMarker.setColorId(org.lgna.story.Color.DARK_GRAY);
 		this.openingSceneMarkerImp = ImplementationAccessor.getImplementation(openingSceneMarker);
 		this.openingSceneMarkerImp.setDisplayVisuals(true);
 		MarkerUtilities.addIconForCameraImp(this.openingSceneMarkerImp, "mainCamera");
@@ -347,7 +348,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		this.sceneViewMarkerImp.setDisplayVisuals(true);
 		MarkerUtilities.addIconForCameraImp(this.sceneViewMarkerImp, "sceneEditorCamera");
 		MarkerUtilities.setViewForCameraImp(this.sceneViewMarkerImp, View.LAYOUT_SCENE_VIEW);
-		
 		
 		this.orthographicCameraMarkerImps.clear();
 		OrthographicCameraMarker topOrthoMarker = new OrthographicCameraMarker();
@@ -424,8 +424,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	
-	private static final int INSET = 8;
-	
 	private void showLookingGlassPanel()
 	{
 		this.addComponent( this.mainPanel, Constraint.CENTER );
@@ -476,8 +474,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private void handleCameraMarkerFieldSelection( UserField cameraMarkerField )
 	{
-//		MarkerImp newMarker = this.getMarkerForField(cameraMarkerField);
-//		this.globalDragAdapter.setSelectedCameraMarker(newMarker);
+		CameraMarkerImp newMarker = (CameraMarkerImp)this.getMarkerForField(cameraMarkerField);
+		this.globalDragAdapter.setSelectedCameraMarker(newMarker);
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
 		MarkerPanelTab.getInstance().getView().getCameraMarkerPanel().updateButtons();
@@ -485,13 +483,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private void handleObjectMarkerFieldSelection( UserField objectMarkerField )
 	{
-//		MarkerImp newMarker = this.getMarkerForField(objectMarkerField);
-//		this.globalDragAdapter.setSelectedObjectMarker(newMarker);
-		
+		ObjectMarkerImp newMarker = (ObjectMarkerImp)this.getMarkerForField(objectMarkerField);
+		this.globalDragAdapter.setSelectedObjectMarker(newMarker);
 		MoveSelectedObjectToMarkerActionOperation.getInstance().setMarkerField(objectMarkerField);
 		MoveMarkerToSelectedObjectActionOperation.getInstance().setMarkerField(objectMarkerField);
 		MarkerPanelTab.getInstance().getView().getObjectMarkerPanel().updateButtons();
-		
 	}
 	
 	private void handleManipulatorSelection(org.alice.interact.event.SelectionEvent e)
@@ -500,7 +496,20 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		if (imp != null)
 		{
 			UserField field = this.getFieldForInstanceInJavaVM(imp.getAbstraction());
-			this.setSelectedField(field.getDeclaringType(), field);
+			if (field != null) {
+				if (field.getValueType().isAssignableFrom(org.lgna.story.CameraMarker.class)) {
+					this.setSelectedCameraMarker(field);
+				}
+				else if (field.getValueType().isAssignableFrom(org.lgna.story.ObjectMarker.class)) {
+					this.setSelectedObjectMarker(field);
+				}
+				else {
+					this.setSelectedField(field.getDeclaringType(), field);
+				}
+			}
+			else if (imp == this.openingSceneMarkerImp) {
+				this.setSelectedField(this.getActiveSceneType(), this.getFieldForInstanceInJavaVM(this.sceneCameraImp.getAbstraction()));
+			}
 		}
 		else
 		{
@@ -529,20 +538,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private void switchToCamera( AbstractCamera camera ) {
 		assert camera != null;
-		boolean isClearingAndAddingRequired;
-		if( this.onscreenLookingGlass.getCameraCount() == 1 ) {
-			if( onscreenLookingGlass.getCameraAt( 0 ) == camera ) {
-				isClearingAndAddingRequired = false;
-			} else {
-				isClearingAndAddingRequired = true;
-			}
-		} else {
-			isClearingAndAddingRequired = true;
-		}
-		if( isClearingAndAddingRequired ) {
-			onscreenLookingGlass.clearCameras();
-			onscreenLookingGlass.addCamera( camera );
-		}
+		assert this.onscreenLookingGlass.getCameraCount() == 1;
 		this.snapGrid.setCurrentCamera(camera);
 		this.onscreenLookingGlass.repaint();
 		this.revalidateAndRepaint();
@@ -566,7 +562,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			//pass
 		} else {
 			
-//			
 			this.snapGrid = new SnapGrid();
 			SnapState.getInstance().getShowSnapGridState().addAndInvokeValueObserver(this.showSnapGridObserver);
 			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueObserver(this.snapEnabledObserver);

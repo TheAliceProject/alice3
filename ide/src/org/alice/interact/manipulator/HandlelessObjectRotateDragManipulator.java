@@ -44,13 +44,17 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
+import org.alice.ide.IDE;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.handle.HandleSet;
+import org.alice.interact.handle.ManipulationHandle3D;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AngleUtilities;
@@ -71,9 +75,19 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	
 	protected Point initialPoint;
 	protected Vector3 absoluteRotationAxis;
+	protected Transformable standUpReference = new Transformable();
 	
 	
 	protected AbstractCamera camera = null;
+	
+	public HandlelessObjectRotateDragManipulator() {
+		super();
+		this.standUpReference.setName("Rotation StandUp Reference");
+		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		{
+			this.standUpReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+		}
+	}
 	
 	public AbstractCamera getCamera()
 	{
@@ -160,7 +174,10 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 			if (currentAngle != null && previousAngle != null)
 			{
 				Angle angleDif = AngleUtilities.createSubtraction( currentAngle, previousAngle );
-				this.manipulatedTransformable.applyRotationAboutArbitraryAxis( this.rotateAxis, angleDif, this.manipulatedTransformable );
+				this.standUpReference.setParent( this.manipulatedTransformable );
+				this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
+				this.standUpReference.setAxesOnlyToStandUp();
+				this.manipulatedTransformable.applyRotationAboutArbitraryAxis( this.rotateAxis, angleDif, this.standUpReference );
 			}
 		}
 

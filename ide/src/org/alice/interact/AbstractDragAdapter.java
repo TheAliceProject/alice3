@@ -746,7 +746,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				{
 					pickTypes.add(PickHint.PickType.RESIZABLE);
 				}
-				if (entity instanceof org.lgna.story.Camera || entity instanceof org.lgna.story.Model)
+				if (entity instanceof org.lgna.story.Camera || entity instanceof org.lgna.story.Model || entity instanceof org.lgna.story.Marker)
 				{
 					pickTypes.add(PickHint.PickType.SELECTABLE);
 				}
