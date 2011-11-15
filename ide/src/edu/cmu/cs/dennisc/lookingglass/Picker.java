@@ -40,40 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.ui.lookingglass;
+
+package edu.cmu.cs.dennisc.lookingglass;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PickMouseAdapter implements java.awt.event.MouseListener {
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass m_onscreenLookingGlass;
+public interface Picker {
+	public static final boolean SUB_ELEMENT_IS_REQUIRED = true;
+	public static final boolean SUB_ELEMENT_IS_NOT_REQUIRED = false;
+	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
 
-	public PickMouseAdapter() {
-		this( null );
-	}
-	public PickMouseAdapter( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		setOnscreenLookingGlass( onscreenLookingGlass );
-	}
-
-	protected abstract void handlePickResult( edu.cmu.cs.dennisc.lookingglass.PickResult pickResult );
-	
-	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return m_onscreenLookingGlass;
-	}
-	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		m_onscreenLookingGlass = onscreenLookingGlass;
-	}
-
-	public void mousePressed( java.awt.event.MouseEvent e ) {
-		assert m_onscreenLookingGlass != null;
-		handlePickResult( m_onscreenLookingGlass.getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.NOT_REQUIRED ) );
-	}
-	public void mouseReleased( java.awt.event.MouseEvent e ) {
-	}
-	public void mouseClicked( java.awt.event.MouseEvent arg0 ) {
-	}
-	public void mouseEntered( java.awt.event.MouseEvent e ) {
-	}
-	public void mouseExited( java.awt.event.MouseEvent e ) {
-	}
+	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
 }

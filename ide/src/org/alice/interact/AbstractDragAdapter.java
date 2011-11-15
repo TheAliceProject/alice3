@@ -1109,7 +1109,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 //		PrintUtilities.println(System.currentTimeMillis()+": Picking object");
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
 		assert onscreenLookingGlass != null;
-		edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = onscreenLookingGlass.pickFrontMost( mouseLocation.x, mouseLocation.y, /*isSubElementRequired=*/false );
+		edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = onscreenLookingGlass.getPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.NOT_REQUIRED );
 //		PrintUtilities.println(System.currentTimeMillis()+": Done picking object");
 		return pickResult;
 	}

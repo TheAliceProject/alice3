@@ -40,40 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.ui.lookingglass;
+
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PickMouseAdapter implements java.awt.event.MouseListener {
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass m_onscreenLookingGlass;
-
-	public PickMouseAdapter() {
-		this( null );
+public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
+	/*package-private*/ final AbstractLookingGlass lookingGlass;
+	public Picker( AbstractLookingGlass lookingGlass ) {
+		this.lookingGlass = lookingGlass;
 	}
-	public PickMouseAdapter( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		setOnscreenLookingGlass( onscreenLookingGlass );
+	public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy ) {
+		return this.pickAll( xPixel, yPixel, pickSubElementPolicy, null );
 	}
-
-	protected abstract void handlePickResult( edu.cmu.cs.dennisc.lookingglass.PickResult pickResult );
-	
-	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return m_onscreenLookingGlass;
+	public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+		return this.lookingGlass.pickAll( xPixel, yPixel, pickSubElementPolicy, pickObserver );
 	}
-	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		m_onscreenLookingGlass = onscreenLookingGlass;
+	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost(int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy ) {
+		return this.pickFrontMost( xPixel, yPixel, pickSubElementPolicy, null );
 	}
-
-	public void mousePressed( java.awt.event.MouseEvent e ) {
-		assert m_onscreenLookingGlass != null;
-		handlePickResult( m_onscreenLookingGlass.getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.NOT_REQUIRED ) );
-	}
-	public void mouseReleased( java.awt.event.MouseEvent e ) {
-	}
-	public void mouseClicked( java.awt.event.MouseEvent arg0 ) {
-	}
-	public void mouseEntered( java.awt.event.MouseEvent e ) {
-	}
-	public void mouseExited( java.awt.event.MouseEvent e ) {
+	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+		return this.lookingGlass.pickFrontMost( xPixel, yPixel, pickSubElementPolicy, pickObserver );
 	}
 }
