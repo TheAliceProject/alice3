@@ -117,7 +117,10 @@ public class ProgramImp {
 		} );
 	}
 	public void initializeInAwtContainer( java.awt.Container container ) {
-		container.add( ProgramImp.this.getOnscreenLookingGlass().getAWTComponent() );
+		assert container.getLayout() instanceof java.awt.BorderLayout;
+		java.awt.Component awtComponent = ProgramImp.this.getOnscreenLookingGlass().getAWTComponent();
+		assert awtComponent != null;
+		container.add( awtComponent, java.awt.BorderLayout.CENTER );
 		if (container instanceof JComponent	) {
 			((JComponent) container).revalidate();
 		}

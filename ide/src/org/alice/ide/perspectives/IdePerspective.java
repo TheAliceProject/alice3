@@ -51,11 +51,14 @@ public abstract class IdePerspective extends org.lgna.croquet.Perspective {
 		super( id, composite );
 	}
 	public abstract org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus();
+	private java.util.Stack< org.alice.ide.ReasonToDisableSomeAmountOfRendering > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-//		this.getView().disableRendering( reasonToDisableSomeAmountOfRendering );
+		this.stack.push( reasonToDisableSomeAmountOfRendering );
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	public void enableRendering() {
-//		this.getView().enableRendering();
+		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 //	public void handleDeactivation( org.alice.ide.MainComponent mainComponent ) {
 //		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();

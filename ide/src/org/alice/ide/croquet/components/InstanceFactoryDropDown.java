@@ -45,7 +45,7 @@ package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
- */
+ */	
 public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState< org.alice.ide.instancefactory.InstanceFactory > > extends org.lgna.croquet.components.ItemDropDown< org.alice.ide.instancefactory.InstanceFactory, M > {
 	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
 		private void refresh( org.alice.ide.instancefactory.InstanceFactory nextValue ) {
