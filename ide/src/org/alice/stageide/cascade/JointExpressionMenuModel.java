@@ -41,32 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory;
+package org.alice.stageide.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisFieldAccessJointedMenuModel getInstance( org.lgna.project.ast.UserField value ) {
-		synchronized( map ) {
-			ThisFieldAccessJointedMenuModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisFieldAccessJointedMenuModel( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
+public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> {
+	private final org.lgna.project.ast.Expression expression;
+	public JointExpressionMenuModel( org.lgna.project.ast.Expression expression ) {
+		super( java.util.UUID.fromString( "c70ca3a5-b1e0-4ed9-8648-14acd52a4091" ) );
+		this.expression = expression;
 	}
-	private final org.lgna.project.ast.UserField field;
-	private ThisFieldAccessJointedMenuModel( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
-		this.field = field;
+	protected org.lgna.croquet.CascadeItem getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		return JointExpressionFillIn.getInstance( expression, method );
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( this.field, method );
+	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+		org.lgna.project.ast.AbstractType< ?, ?, ? > type = this.expression.getType();
+		java.util.List< org.lgna.project.ast.AbstractMethod > getters = org.alice.stageide.ast.JointedModelUtilities.getJointGetters( type );
+		for( org.lgna.project.ast.AbstractMethod method : getters ) {
+			rv.add( this.getFillIn( method ) );
+		}
+		return rv;
 	}
 }

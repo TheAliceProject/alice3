@@ -41,32 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory;
+package org.alice.stageide.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisFieldAccessJointedMenuModel getInstance( org.lgna.project.ast.UserField value ) {
+public class JointExpressionFillIn extends org.alice.ide.croquet.models.cascade.MethodInvocationFillIn {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.Expression, org.lgna.project.ast.AbstractMethod, JointExpressionFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static JointExpressionFillIn getInstance( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {
-			ThisFieldAccessJointedMenuModel rv = map.get( value );
+			JointExpressionFillIn rv = map.get( expression, method );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ThisFieldAccessJointedMenuModel( value );
-				map.put( value, rv );
+				rv = new JointExpressionFillIn( expression, method );
+				map.put( expression, method, rv );
 			}
 			return rv;
 		}
 	}
-	private final org.lgna.project.ast.UserField field;
-	private ThisFieldAccessJointedMenuModel( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
-		this.field = field;
+
+	private JointExpressionFillIn( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "0a118b23-0dde-4a8e-a769-9f967d16f2e9" ), expression, method );
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( this.field, method );
+	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression transientValueExpression ) {
+		return org.alice.ide.IDE.getActiveInstance().createCopy( transientValueExpression );
 	}
 }

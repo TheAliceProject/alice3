@@ -46,7 +46,7 @@ package org.alice.stageide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisJointedMenuModel extends JointedMenuModel {
+public class ThisJointedMenuModel extends JointInstanceFactoryMenuModel {
 	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ThisJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static ThisJointedMenuModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
 		synchronized( map ) {

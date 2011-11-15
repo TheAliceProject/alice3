@@ -41,32 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisFieldAccessJointedMenuModel getInstance( org.lgna.project.ast.UserField value ) {
+public class ParameterAccessMethodInvocationFillIn extends MethodInvocationFillIn {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static ParameterAccessMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {
-			ThisFieldAccessJointedMenuModel rv = map.get( value );
+			ParameterAccessMethodInvocationFillIn rv = map.get( parameter, method );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ThisFieldAccessJointedMenuModel( value );
-				map.put( value, rv );
+				rv = new ParameterAccessMethodInvocationFillIn( parameter, method );
+				map.put( parameter, method, rv );
 			}
 			return rv;
 		}
 	}
-	private final org.lgna.project.ast.UserField field;
-	private ThisFieldAccessJointedMenuModel( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
-		this.field = field;
+
+	private ParameterAccessMethodInvocationFillIn( org.lgna.project.ast.AbstractParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "356231af-d038-417c-a58b-f4ad3d77a743" ), new org.lgna.project.ast.ParameterAccess( parameter ), method );
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( this.field, method );
+	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression transientValueExpression ) {
+		org.lgna.project.ast.ParameterAccess transientValueParameterAccess = (org.lgna.project.ast.ParameterAccess)transientValueExpression;
+		return new org.lgna.project.ast.ParameterAccess( transientValueParameterAccess.parameter.getValue() );
 	}
 }

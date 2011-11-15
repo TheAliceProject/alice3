@@ -46,27 +46,18 @@ package org.alice.stageide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisFieldAccessJointedMenuModel getInstance( org.lgna.project.ast.UserField value ) {
-		synchronized( map ) {
-			ThisFieldAccessJointedMenuModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisFieldAccessJointedMenuModel( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
+public abstract class JointInstanceFactoryMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
+	private final java.util.List< org.lgna.project.ast.AbstractMethod > getters;
+	public JointInstanceFactoryMenuModel( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( id );
+		this.getters = org.alice.stageide.ast.JointedModelUtilities.getJointGetters( type );
 	}
-	private final org.lgna.project.ast.UserField field;
-	private ThisFieldAccessJointedMenuModel( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
-		this.field = field;
-	}
+	protected abstract org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method );
 	@Override
-	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( this.field, method );
+	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
+		for( org.lgna.project.ast.AbstractMethod method : this.getters ) {
+			rv.add( this.getFillIn( method ) );
+		}
+		return rv;
 	}
 }

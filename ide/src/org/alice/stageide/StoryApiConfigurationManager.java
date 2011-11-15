@@ -224,7 +224,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 	@Override
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		if( org.alice.stageide.instancefactory.JointedMenuModel.isJointed( type ) ) {
+		if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.ThisJointedMenuModel.getInstance( type );
 		} else {
 			return null;
@@ -234,7 +234,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
-		if( org.alice.stageide.instancefactory.JointedMenuModel.isJointed( type ) ) {
+		if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.ThisFieldAccessJointedMenuModel.getInstance( field );
 		} else {
 			return null;

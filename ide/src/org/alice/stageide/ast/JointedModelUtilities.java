@@ -41,12 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory;
+package org.alice.stageide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointedMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
+public class JointedModelUtilities {
+	private JointedModelUtilities() {
+		throw new AssertionError();
+	}
 	private static final org.lgna.project.ast.JavaType JOINT_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class );
 	private static boolean isJointGetter( org.lgna.project.ast.AbstractMethod method ) {
 		if( method.isPublicAccess() ) {
@@ -86,7 +89,7 @@ public abstract class JointedMenuModel extends org.lgna.croquet.CascadeMenuModel
 			return false;
 		}
 	}
-	public static void updateJointGetters( java.util.List< org.lgna.project.ast.AbstractMethod > getters, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	public static java.util.List< org.lgna.project.ast.AbstractMethod > updateJointGetters( java.util.List< org.lgna.project.ast.AbstractMethod > getters, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		if( type != null ) {
 			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 				if( isJointGetter( method ) ) {
@@ -97,18 +100,13 @@ public abstract class JointedMenuModel extends org.lgna.croquet.CascadeMenuModel
 				updateJointGetters( getters, type.getSuperType() );
 			}
 		}
+		return getters;
 	}
-	private final java.util.List< org.lgna.project.ast.AbstractMethod > getters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	public JointedMenuModel( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( id );
-		updateJointGetters( getters, type );
-	}
-	protected abstract org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method );
-	@Override
-	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
-		for( org.lgna.project.ast.AbstractMethod method : this.getters ) {
-			rv.add( this.getFillIn( method ) );
-		}
+	
+	public static java.util.List< org.lgna.project.ast.AbstractMethod > getJointGetters( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		java.util.List< org.lgna.project.ast.AbstractMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		updateJointGetters( rv, type );
 		return rv;
 	}
+	
 }

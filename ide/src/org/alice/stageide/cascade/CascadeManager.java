@@ -96,8 +96,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
 							for( String methodName : methodNames ) {
 								org.lgna.project.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodName );
-								org.lgna.project.ast.Expression expression = new org.lgna.project.ast.ParameterAccess( parameter );
-								rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, method ) );
+								rv.add( org.alice.ide.croquet.models.cascade.ParameterAccessMethodInvocationFillIn.getInstance( parameter, method ) );
 							}
 						}
 					}
@@ -110,14 +109,12 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 						if( parameter.getValueType() == typeKeyEvent ) {
 							{
 								org.lgna.project.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( "isKey", org.lgna.story.Key.class );
-								org.lgna.project.ast.Expression expression = new org.lgna.project.ast.ParameterAccess( parameter );
-								rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, method ) );
+								rv.add( org.alice.ide.croquet.models.cascade.ParameterAccessMethodInvocationFillIn.getInstance( parameter, method ) );
 							}
 							String[] methodNames = new String[] { "isLetter", "isDigit" };
 							for( String methodName : methodNames ) {
 								org.lgna.project.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodName );
-								org.lgna.project.ast.Expression expression = new org.lgna.project.ast.ParameterAccess( parameter );
-								rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, method ) );
+								rv.add( org.alice.ide.croquet.models.cascade.ParameterAccessMethodInvocationFillIn.getInstance( parameter, method ) );
 							}
 						}
 					}
@@ -130,22 +127,10 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 	@Override
 	protected org.lgna.croquet.CascadeBlankChild createBlankChildForFillInAndPossiblyPartFillIns( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractType< ?, ?, ? > type2 ) {
 		org.lgna.croquet.CascadeFillIn fillIn = (org.lgna.croquet.CascadeFillIn)super.createBlankChildForFillInAndPossiblyPartFillIns( expression, type, type2 );
-		if( type.isAssignableTo( org.lgna.story.Biped.class ) ) {
-			org.lgna.project.ast.JavaType typeInJava = null;
-			Class< ? > paramCls = null;
+		if( type.isAssignableTo( org.lgna.story.JointedModel.class ) ) {
 			if( type2.isAssignableFrom( org.lgna.story.Joint.class ) ) {
-				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
-				for( Class innerCls : cls.getDeclaredClasses() ) {
-					if( innerCls.getSimpleName().equals( "Part" ) ) {
-						paramCls = innerCls;
-					}
-				}
-			}
-			if( paramCls != null ) {
-				org.lgna.project.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
-				if( getPartMethod != null ) {
-					return new org.lgna.croquet.CascadeFillInMenuCombo( fillIn, new org.alice.ide.croquet.models.cascade.TrimmedMethodInvocationFillIn( expression, getPartMethod ) );
+				if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
+					return new org.lgna.croquet.CascadeFillInMenuCombo( fillIn, new JointExpressionMenuModel( expression ) );
 				}
 			}
 		}
