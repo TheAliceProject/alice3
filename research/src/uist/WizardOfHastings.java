@@ -52,8 +52,8 @@ class WizardOfHastings {
 		org.lgna.project.ast.AbstractType<?,?,?> replacementSceneType = replacementProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();
 		org.lgna.project.ast.AbstractField replacementField = replacementSceneType.getDeclaredField( replacementFieldName );
 		
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "original:", originalField.getName(), originalField.getValueType().getName(), originalField.getValueType().getUUID() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "replacement:", replacementField.getName(), replacementField.getValueType().getName(), replacementField.getValueType().getUUID() );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "original:", originalField.getName(), originalField.getValueType().getName(), originalField.getValueType().getId() );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "replacement:", replacementField.getName(), replacementField.getValueType().getName(), replacementField.getValueType().getId() );
 		retargeter.addKeyValuePair( originalField, replacementField );
 		retargeter.addKeyValuePair( originalField.getValueType(), replacementField.getValueType() );
 	}

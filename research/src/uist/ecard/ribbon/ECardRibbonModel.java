@@ -1,6 +1,6 @@
 package uist.ecard.ribbon;
 
-public class ECardRibbonModel extends org.lgna.croquet.PredeterminedTabSelectionState {
+public class ECardRibbonModel extends org.lgna.croquet.TabSelectionState {
 	private static class SingletonHolder {
 		private static ECardRibbonModel instance = new ECardRibbonModel();
 	}
@@ -11,7 +11,7 @@ public class ECardRibbonModel extends org.lgna.croquet.PredeterminedTabSelection
 	private ECardRibbonModel() {
 		super( org.alice.ide.IDE.UI_STATE_GROUP, 
 				java.util.UUID.fromString( "ad55dddc-74f6-418e-ba2b-7627e0cea43c" ), 
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.PredeterminedTab.class ), 
+				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.TabComposite.class ), 
 				0,
 				HomeRibbonModel.getInstance(),
 				InsertRibbonModel.getInstance(),

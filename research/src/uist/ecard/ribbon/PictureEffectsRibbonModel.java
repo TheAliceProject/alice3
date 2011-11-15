@@ -4,7 +4,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-public class PictureEffectsRibbonModel extends org.lgna.croquet.PredeterminedTab {
+public class PictureEffectsRibbonModel extends org.lgna.croquet.TabComposite {
 	private static class SingletonHolder {
 		private static PictureEffectsRibbonModel instance = new PictureEffectsRibbonModel();
 	}
@@ -25,12 +25,16 @@ public class PictureEffectsRibbonModel extends org.lgna.croquet.PredeterminedTab
 		super( java.util.UUID.fromString( "e0b095cb-1cba-443d-b320-c0fc4f7c3312" ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+	public boolean isCloseable() {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.components.View createView() {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.weightx = 0.0;
-		org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel();
+		org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel( this );
 		rv.setBorder( BorderFactory.createEmptyBorder( 4,2,4,2 ) );
 		rv.setBackgroundColor(java.awt.SystemColor.control);
 
