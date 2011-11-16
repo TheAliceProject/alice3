@@ -278,7 +278,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 	//	}
 
 
-	private static final double VERSION = 3.0;
+	private static final double VERSION = 3.1;
 
 	private static org.w3c.dom.Element encodeValue( Object value, org.w3c.dom.Document xmlDocument, java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Element rv;
