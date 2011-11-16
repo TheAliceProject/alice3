@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.alice.ide.IDE;
 import org.alice.ide.ResourcePathManager;
+import org.lgna.project.ast.JavaType;
+
+import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
 
 public class StorytellingResources {
 	private static class SingletonHolder {
@@ -129,10 +132,14 @@ public class StorytellingResources {
 	}
 	
 	public  org.lgna.project.ast.AbstractType< ?, ?, ? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		ModelResourceTreeNode child = this.getGalleryResourceTreeNodeForJavaType(type);
+		TreeNode<JavaType> child = this.getGalleryResourceTreeNodeForJavaType(type);
 		if (child != null)
 		{
 			ModelResourceTreeNode parent = (ModelResourceTreeNode)child.getParent();
+			//Go up an extra level if the node we're returning is a node with a single child (this mirrors what is happening in getResourceChildren)
+			if (parent != null && hasSingleLeafChild(parent)) {
+				parent = (ModelResourceTreeNode)parent.getParent();
+			}
 			return parent.getResourceJavaType();
 		}
 		else
@@ -140,13 +147,25 @@ public class StorytellingResources {
 			return null;
 		}
 	}
+	
+	private boolean hasSingleLeafChild(TreeNode<?> node) {
+		return (node.getChildCount() == 1 && node.getChildAt(0).getChildCount() == 0);
+	}
+	
 	public List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) 
 	{
 		System.out.println("Getting children for type: "+type);
 		java.util.List<org.lgna.project.ast.AbstractDeclaration> toReturn = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-		java.util.List<? extends ModelResourceTreeNode> nodes = this.galleryTree.getGalleryResourceChildrenForJavaType(type);
-		for (ModelResourceTreeNode node : nodes)
+		TreeNode<JavaType> typeNode = this.getGalleryResourceTreeNodeForJavaType(type);
+		
+		for (int i=0; i<typeNode.getChildCount(); i++)
 		{
+			TreeNode<JavaType> child = typeNode.getChildAt(i);
+			//If the child has a single leaf child, go down a level and return that
+			if (hasSingleLeafChild(child)) {
+				child = child.getChildAt(0);
+			}
+			ModelResourceTreeNode node = (ModelResourceTreeNode)child;
 			if (node.isLeaf() && node.getJavaField() != null)
 			{
 				System.out.println("  Returning field: "+node.getJavaField());
@@ -162,7 +181,7 @@ public class StorytellingResources {
 		
 	}
 	
-	public ModelResourceTreeNode getGalleryResourceTreeNodeForJavaType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) 
+	private ModelResourceTreeNode getGalleryResourceTreeNodeForJavaType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) 
 	{
 		return this.galleryTree.getGalleryResourceTreeNodeForJavaType(type);
 	}

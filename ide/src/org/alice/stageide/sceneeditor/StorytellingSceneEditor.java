@@ -538,7 +538,20 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private void switchToCamera( AbstractCamera camera ) {
 		assert camera != null;
-		assert this.onscreenLookingGlass.getCameraCount() == 1;
+		boolean isClearingAndAddingRequired;
+		if( this.onscreenLookingGlass.getCameraCount() == 1 ) {
+			if( onscreenLookingGlass.getCameraAt( 0 ) == camera ) {
+				isClearingAndAddingRequired = false;
+			} else {
+				isClearingAndAddingRequired = true;
+			}
+		} else {
+			isClearingAndAddingRequired = true;
+		}
+		if( isClearingAndAddingRequired ) {
+			onscreenLookingGlass.clearCameras();
+			onscreenLookingGlass.addCamera( camera );
+		}
 		this.snapGrid.setCurrentCamera(camera);
 		this.onscreenLookingGlass.repaint();
 		this.revalidateAndRepaint();
