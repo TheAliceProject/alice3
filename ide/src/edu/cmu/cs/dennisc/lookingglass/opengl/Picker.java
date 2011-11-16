@@ -80,19 +80,30 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 	private javax.media.opengl.GLPbuffer getUpToDateBuffer() {
 		java.awt.Dimension lgSize = this.lookingGlass.getSize();
-		assert lgSize.width > 0 : lgSize;
-		assert lgSize.height > 0 : lgSize;
-		javax.media.opengl.GLContext share = this.lookingGlass.getGLAutoDrawable().getContext();
-		if (this.drawable != null) {
-			if (lgSize.width != this.drawable.getWidth() || lgSize.height != this.drawable.getHeight()) {
-				this.release();
+		if( lgSize.width > 0 && lgSize.height > 0 ) {
+			javax.media.opengl.GLAutoDrawable shareDrawable = this.lookingGlass.getGLAutoDrawable(); 
+			if( shareDrawable != null ) {
+				javax.media.opengl.GLContext shareContext;
+				try {
+					shareContext = shareDrawable.getContext();
+				} catch( NullPointerException npe ) {
+					shareContext = null;
+					Thread.dumpStack();
+				}
+				if (this.drawable != null) {
+					if (lgSize.width != this.drawable.getWidth() || lgSize.height != this.drawable.getHeight()) {
+						this.release();
+					}
+				}
+				if( shareContext != null ) {
+					if( this.drawable != null ) {
+						//pass
+					} else {
+						this.drawable = LookingGlassFactory.getSingleton().createGLPbuffer( lgSize.width, lgSize.height, shareContext );
+						this.drawable.addGLEventListener( this.glEventListener );
+					}
+				}
 			}
-		}
-		if( this.drawable != null ) {
-			//pass
-		} else {
-			this.drawable = LookingGlassFactory.getSingleton().createGLPbuffer( lgSize.width, lgSize.height, share );
-			this.drawable.addGLEventListener( this.glEventListener );
 		}
 		return this.drawable;
 	}
