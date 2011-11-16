@@ -135,8 +135,15 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 		super.handleHierarchyChanged( e );
 		final int WIDTH = 64;
 		final int HEIGHT = (WIDTH*3)/4;
-		java.awt.image.BufferedImage image = org.alice.stageide.sceneeditor.ThumbnailGenerator.createThumbnail( WIDTH, HEIGHT );
 		javax.swing.Icon icon;
+		java.awt.image.BufferedImage image;
+		
+		try {
+			image = org.alice.stageide.sceneeditor.ThumbnailGenerator.createThumbnail( WIDTH, HEIGHT );
+		} catch( Throwable t ) {
+			image = null;
+			t.printStackTrace();
+		}
 		if( image != null ) {
 //			final float INSET = 20.0f;
 //			final float SIZE_REDUCTION = INSET*2.0f+1.0f;
