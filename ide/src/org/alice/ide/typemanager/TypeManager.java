@@ -214,14 +214,17 @@ public class TypeManager {
 		return createTypeFor( superType, name, new org.lgna.project.ast.AbstractType[] { argumentTypes[ i ] }, expressions );
 	}
 
-	private static org.lgna.project.ast.JavaField getEnumConstantFieldIfOneAndOnly( org.lgna.project.ast.JavaType type ) { 
+	public static org.lgna.project.ast.JavaField getEnumConstantFieldIfOneAndOnly( org.lgna.project.ast.AbstractType<?,?,?> type ) { 
 		org.lgna.project.ast.JavaField rv = null;
-		if( type.isAssignableTo( Enum.class ) ) {
-			Class<Enum<?>> cls = (Class<Enum<?>>)type.getClassReflectionProxy().getReification();
-			Enum<?>[] constants = cls.getEnumConstants();
-			if( constants.length == 1 ) {
-				Enum<?> constant = constants[ 0 ];
-				rv = org.lgna.project.ast.JavaField.getInstance( constant.getClass(), constant.name() );
+		if( type instanceof org.lgna.project.ast.JavaType ) {
+			org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+			if( type.isAssignableTo( Enum.class ) ) {
+				Class<Enum<?>> cls = (Class<Enum<?>>)javaType.getClassReflectionProxy().getReification();
+				Enum<?>[] constants = cls.getEnumConstants();
+				if( constants.length == 1 ) {
+					Enum<?> constant = constants[ 0 ];
+					rv = org.lgna.project.ast.JavaField.getInstance( constant.getClass(), constant.name() );
+				}
 			}
 		}
 		return rv;

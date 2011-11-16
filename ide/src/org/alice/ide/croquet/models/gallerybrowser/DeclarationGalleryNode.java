@@ -50,8 +50,9 @@ public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.Abs
 	public static DeclarationGalleryNode<?> getDeclarationNodeInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
 			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
-//			if( TopLevelTypeGalleryNode.hasInstance( type ) ) {
-//				return TopLevelTypeGalleryNode.getInstance( type );
+//			org.lgna.project.ast.JavaField enumConstantField = org.alice.ide.typemanager.TypeManager.getEnumConstantFieldIfOneAndOnly( type );
+//			if( enumConstantField != null ) {
+//				return FieldGalleryNode.getInstance( enumConstantField );
 //			} else {
 				return ArgumentTypeGalleryNode.getInstance( type );
 //			}

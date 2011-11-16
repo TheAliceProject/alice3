@@ -116,7 +116,9 @@ public abstract class State<T> extends CompletionModel {
 	
 	public abstract T getValue();
 	public final void setValue( T value ) {
-		this.changeValue( value, false, null );
+		if( this.prevValue != null ) {
+			this.changeValue( value, false, null );
+		}
 	}
 
 	private void changeValueTransactionlessly( T value, boolean isAdjusting ) {

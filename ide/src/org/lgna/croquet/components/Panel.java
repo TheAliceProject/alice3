@@ -133,13 +133,12 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 		}
 	}
 	public final void refreshLater() {
-		//System.err.println( "refreshLater: " + Integer.toString( this.hashCode(), 16 ) );
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
+//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
 				Panel.this.isRefreshNecessary = true;
 				Panel.this.revalidateAndRepaint();
-			}
-		} );
+//			}
+//		} );
 	}
 	@Override
 	protected void handleDisplayable() {
