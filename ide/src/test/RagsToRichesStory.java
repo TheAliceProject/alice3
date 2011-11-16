@@ -59,20 +59,20 @@ class CustomBiped extends Biped {
 }
 
 class CustomMonster extends CustomBiped {
-	public CustomMonster( MonsterResource resource ) {
+	public CustomMonster( BipedResource resource ) {
 		super( resource );
 	}
 }
 
 class CustomOgre extends CustomMonster {
-	public CustomOgre( org.lgna.story.resources.monster.Ogre resource ) {
+	public CustomOgre( org.lgna.story.resources.biped.Ogre resource ) {
 		super( resource );
 	}
 }
 
 class CustomOgreGreen extends CustomOgre {
 	public CustomOgreGreen() {
-		super( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
+		super( org.lgna.story.resources.biped.Ogre.BEAST );
 	}
 }
 
@@ -271,7 +271,7 @@ class RagsToRichesStory extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final CustomMonster ogre = new CustomMonster( org.lgna.story.resources.monster.Ogre.BEAST_DIFFUSE );
+	private final CustomMonster ogre = new CustomMonster( org.lgna.story.resources.biped.Ogre.BEAST );
 //	private final CustomAdult ogre = new CustomAdult( 
 //			new AdultPersonResource(
 //					Gender.MALE,
