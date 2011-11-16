@@ -48,7 +48,10 @@ class TreeNodeUtilities {
 	}
 	public static <T> java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode, TreeSelectionState< T > model, T node ) {
 		for( T childNode : model.getChildren( node ) ) {
-			rv.add( model.getBlankChildFor( childNode ) );
+			CascadeBlankChild< T > child = model.getBlankChildFor( childNode );
+			if( child != null ) {
+				rv.add( child );
+			}
 		}
 		return rv;
 	}
@@ -303,8 +306,8 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		return this.isLeaf( childNode ) == false;
 	}
 	protected CascadeBlankChild< T > getBlankChildFor( T childNode ) {
-		TreeNodeFillIn< T > fillIn = TreeNodeFillIn.getInstance( this, childNode );
 		CascadeBlankChild< T > blankChild;
+		TreeNodeFillIn< T > fillIn = TreeNodeFillIn.getInstance( this, childNode );
 		if( this.isComboDesired( childNode ) ) {
 			blankChild = new CascadeFillInMenuCombo< T >( fillIn, TreeNodeMenu.getInstance( this, childNode ) );
 		} else {

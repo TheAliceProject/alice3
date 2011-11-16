@@ -42,9 +42,20 @@
  */
 package test;
 
-import org.lgna.story.*;
+import org.lgna.story.Biped;
+import org.lgna.story.Camera;
+import org.lgna.story.Color;
+import org.lgna.story.Cone;
+import org.lgna.story.Ground;
+import org.lgna.story.Move;
+import org.lgna.story.MoveDirection;
+import org.lgna.story.Program;
+import org.lgna.story.RollDirection;
+import org.lgna.story.Scene;
+import org.lgna.story.Sphere;
+import org.lgna.story.Sun;
+import org.lgna.story.TurnDirection;
 import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.MonsterResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
 import org.lgna.story.resources.sims2.BaseSkinTone;

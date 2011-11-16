@@ -116,7 +116,7 @@ public abstract class State<T> extends CompletionModel {
 	
 	public abstract T getValue();
 	public final void setValue( T value ) {
-		if( this.prevValue != null ) {
+		if( this.prevValue != value ) {
 			this.changeValue( value, false, null );
 		}
 	}

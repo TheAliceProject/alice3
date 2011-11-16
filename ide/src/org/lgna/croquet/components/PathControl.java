@@ -54,15 +54,17 @@ import org.lgna.croquet.*;
 		//PopupButton selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupPrepModel().createPopupButton();
 		PopupButton selectChildButton = treeSelectionState.getCascadeFor( treeNode ).getRoot().getPopupPrepModel().createPopupButton();
 		if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
-			selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 2 ) );
+			selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 		} else {
 			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
 		}
 		ActionOperation operation = treeSelectionState.getSelectionOperationFor( treeNode );
 		//initializer.configure( operation, treeNode );
 		Button button = operation.createButton();
+//		selectChildButton.getAwtComponent().putClientProperty("JComponent.sizeVariant", "small");
 		this.addComponent( button, Constraint.CENTER );
 		this.addComponent( selectChildButton, Constraint.LINE_END );
+		
 	}
 
 	@Override
@@ -108,6 +110,12 @@ public class PathControl<T> extends ViewController< javax.swing.JComponent, Tree
 		if( treePath != null ) {
 			final int N = treePath.getPathCount();
 			for( int i=0; i<N; i++ ) {
+				//todo: remove when look and feel magic is performed   
+				if( i > 0 ) {
+					this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
+					this.internalAddComponent( new VerticalSeparator() );
+					this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
+				}
 				T treeNode = (T)treePath.getPathComponent( i );
 				if( treeModel.isLeaf( treeNode ) ) {
 					//pass

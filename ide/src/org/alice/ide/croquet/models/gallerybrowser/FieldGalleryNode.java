@@ -104,4 +104,11 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return this.getDropModel( null, null );
 	}
+	
+//	//todo
+//	public org.lgna.croquet.CascadeBlankChild< GalleryNode > getBlankChild() {
+//		return null;
+////		org.lgna.project.ast.AbstractField field = this.getDeclaration();
+////		return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( field, null ).getCascadeBlankChild();
+//	}
 }
