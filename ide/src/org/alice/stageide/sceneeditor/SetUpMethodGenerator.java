@@ -219,10 +219,8 @@ public class SetUpMethodGenerator {
 		if (instance != null)
 		{
 			org.lgna.project.ast.AbstractField field = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(instance);
-			if( field != null ) {
-				org.lgna.project.ast.AbstractType<?,?,?> abstractType = field.getValueType();
-				org.lgna.project.ast.JavaType javaType = abstractType.getFirstTypeEncounteredDeclaredInJava();
-				
+			if( field != null || isThis) {
+				org.lgna.project.ast.JavaType javaType = org.lgna.project.ast.JavaType.getInstance(instance.getClass()); 
 				for( org.lgna.project.ast.JavaMethod getter : org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters( javaType ) ) {
 					java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
 					Object value = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, gttr );
@@ -289,14 +287,7 @@ public class SetUpMethodGenerator {
 						throw new RuntimeException( ccee );
 					}
 				}
-			} else {
-				if( instance instanceof org.lgna.story.Scene ) {
-					org.lgna.story.Scene scene = (org.lgna.story.Scene)instance;
-					System.err.println( "todo: handle scene: " + scene );
-				} else {
-					System.err.println( "todo: handle unknown: " + instance );
-				}
-			}
+			} 
 		}
 		
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( statements, org.lgna.project.ast.Statement.class );
