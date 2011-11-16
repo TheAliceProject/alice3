@@ -53,7 +53,7 @@ public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.
 		this.state = state;
 		final org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
 		list.setBackgroundColor( null );
-		list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
+		list.setCellRenderer( this.createListCellRenderer() );
 		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
 		list.setVisibleRowCount( -1 );
 		
@@ -82,6 +82,9 @@ public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.
 			}
 		} );
 		this.addComponent(  list, Constraint.CENTER );
+	}
+	protected javax.swing.ListCellRenderer createListCellRenderer() {
+		return new ProjectSnapshotListCellRenderer();
 	}
 	protected M getState() {
 		return this.getState();
