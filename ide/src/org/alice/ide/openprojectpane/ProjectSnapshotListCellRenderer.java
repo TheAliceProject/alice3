@@ -67,7 +67,7 @@ abstract class AbstractNotAvailableIcon implements javax.swing.Icon {
 /**
  * @author Dennis Cosgrove
  */
-class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCellRenderer {
+public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCellRenderer {
 	private static final javax.swing.Icon SNAPSHOT_NOT_AVAILABLE_ICON = new AbstractNotAvailableIcon() {
 		@Override
 		protected String getText() {
@@ -85,10 +85,9 @@ class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCe
 		java.net.URI uri = (java.net.URI)value;
 		String text;
 		javax.swing.Icon icon;
-		if( uri.isAbsolute() ) {
-			java.io.File file = new java.io.File( uri );
-
-			if( file != null ) {
+		if( uri != null ) {
+			if( uri.isAbsolute() ) {
+				java.io.File file = new java.io.File( uri );
 				text = file.getName();
 				if( file.exists() ) {
 					//todo: remove
@@ -128,11 +127,11 @@ class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCe
 					icon = FILE_DOES_NOT_EXIST_ICON;
 				}
 			} else {
-				text = null;
+				text = uri.toString();
 				icon = FILE_DOES_NOT_EXIST_ICON;
 			}
 		} else {
-			text = uri.toString();
+			text = null;
 			icon = FILE_DOES_NOT_EXIST_ICON;
 		}
 		
