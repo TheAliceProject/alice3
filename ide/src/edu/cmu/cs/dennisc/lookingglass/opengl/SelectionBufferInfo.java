@@ -73,9 +73,9 @@ class SelectionBufferInfo {
 		zBackAsLong &= PickContext.MAX_UNSIGNED_INTEGER;
 		
 //		int[] atDepth = { -1 };
-//		pc.gl.glGetIntegerv( GL.GL_DEPTH_BITS, atDepth, 0 );
+//		pc.gl.glGetIntegerv( GL_DEPTH_BITS, atDepth, 0 );
 //		int[] atClearValue = { -1 };
-//		pc.gl.glGetIntegerv( GL.GL_DEPTH_CLEAR_VALUE, atClearValue, 0 );
+//		pc.gl.glGetIntegerv( GL_DEPTH_CLEAR_VALUE, atClearValue, 0 );
 //		edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectionBufferInfo:", atDepth[ 0 ], Long.toHexString( atClearValue[ 0 ] ), Long.toHexString( RenderContext.MAX_UNSIGNED_INTEGER ), Integer.toHexString( zFrontAsInt ), Long.toHexString( zFrontAsLong ), Integer.toHexString( zBackAsInt ), Long.toHexString( zBackAsLong )  );
 
 		this.zBack = (float)zBackAsLong;

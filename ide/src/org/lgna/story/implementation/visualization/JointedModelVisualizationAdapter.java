@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation.visualization;
 
+import static javax.media.opengl.GL.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,7 +80,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 			edu.cmu.cs.dennisc.math.Point3 xyz = child.getLocalPosition();
 			this.preBone();
-			context.gl.glBegin( javax.media.opengl.GL2.GL_LINES );
+			context.gl.glBegin( GL_LINES );
 			context.gl.glVertex3d( 0.0, 0.0, 0.0 );
 			context.gl.glVertex3d( xyz.x, xyz.y, xyz.z );
 			context.gl.glEnd();

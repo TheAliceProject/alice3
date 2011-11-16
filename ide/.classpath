@@ -20,11 +20,8 @@
 	<classpathentry kind="lib" path="share/gallery/resources/mtwtGalleryBoxes.jar"/>
 	<classpathentry kind="lib" path="share/gallery/resources/mtwtGalleryLargeIcons.jar"/>
 	<classpathentry kind="lib" path="share/gallery/resources/stagePersonEditorLargeIcons.jar"/>
-	<classpathentry kind="lib" path="lib/jogl2/gluegen-gl.jar"/>
-	<classpathentry kind="lib" path="lib/jogl2/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="lib/jogl2/jogl.all.jar"/>
-	<classpathentry kind="lib" path="lib/jogl2/nativewindow.all.jar"/>
-	<classpathentry kind="lib" path="lib/jogl2/newt.all.jar"/>
 	<classpathentry kind="lib" path="share/gallery/assets/alice/AliceModels.jar"/>
+	<classpathentry kind="lib" path="lib/jogl/lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="lib/jogl/lib/jogl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

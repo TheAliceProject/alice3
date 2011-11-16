@@ -43,17 +43,19 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import static javax.media.opengl.GL.*;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TriangleArrayAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.TriangleArray > {
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
-    	renderPrimative( rc, javax.media.opengl.GL.GL_TRIANGLES );
+    	renderPrimative( rc, GL_TRIANGLES );
     }
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-    	pickPrimative( pc, javax.media.opengl.GL.GL_TRIANGLES );
+    	pickPrimative( pc, GL_TRIANGLES );
 	}    
 	@Override
 	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {

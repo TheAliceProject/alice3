@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import static javax.media.opengl.GL.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +51,7 @@ public class GetUtilities {
 	public static boolean getBoolean( javax.media.opengl.GL gl, int which ) {
 		byte[] tmp = new byte[ 1 ];
 		gl.glGetBooleanv( which, tmp, 0 );
-		return tmp[ 0 ] != javax.media.opengl.GL.GL_FALSE;
+		return tmp[ 0 ] != GL_FALSE;
 	}
 	public static int getInteger( javax.media.opengl.GL gl, int which ) {
 		int[] tmp = new int[ 1 ];
@@ -61,7 +63,7 @@ public class GetUtilities {
 		gl.glGetFloatv( which, tmp, 0 );
 		return tmp[ 0 ];
 	}
-	public static double getDouble( javax.media.opengl.GL2 gl, int which ) {
+	public static double getDouble( javax.media.opengl.GL gl, int which ) {
 		double[] tmp = new double[ 1 ];
 		gl.glGetDoublev( which, tmp, 0 );
 		return tmp[ 0 ];

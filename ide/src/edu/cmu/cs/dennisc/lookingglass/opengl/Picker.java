@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL2.*;
+import static javax.media.opengl.GL.*;
 
 /**
  * @author Dennis Cosgrove
@@ -62,10 +62,12 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int arg1, int arg2, int arg3, int arg4 ) {
 		}
 		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
-			Picker.this.performPick( drawable.getGL().getGL2() );
+			Picker.this.performPick( drawable.getGL() );
 		}
-		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
+		public void displayChanged( javax.media.opengl.GLAutoDrawable arg0, boolean arg1, boolean arg2 ) {
 		}
+//		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
+//		}
 	};
 	
 	public Picker( AbstractLookingGlass lookingGlass ) {
@@ -103,7 +105,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	}
 
 	private static ConformanceTestResults conformanceTestResults = null;
-	private void performPick( javax.media.opengl.GL2 gl ) {
+	private void performPick( javax.media.opengl.GL gl ) {
 		this.pickContext.gl = gl;
 		if( conformanceTestResults != null ) {
 			//pass
@@ -250,11 +252,11 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 		this.pickParameters = new PickParameters( pBuffer, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
 		try {
 			if( sgCamera != null ) {
-				if( pBuffer.isRealized() ) {
+//				if( pBuffer.isRealized() ) {
 					pBuffer.display();
-				} else {
-					Thread.dumpStack();
-				}
+//				} else {
+//					Thread.dumpStack();
+//				}
 			}
 			return this.pickParameters.accessFrontMostPickResult();
 		} finally {
@@ -266,11 +268,11 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 		this.pickParameters = new PickParameters( pBuffer, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
 		try {
 			if( sgCamera != null ) {
-				if( pBuffer.isRealized() ) {
+//				if( pBuffer.isRealized() ) {
 					pBuffer.display();
-				} else {
-					Thread.dumpStack();
-				}
+//				} else {
+//					Thread.dumpStack();
+//				}
 			}
 			return this.pickParameters.accessAllPickResults();
 		} finally {

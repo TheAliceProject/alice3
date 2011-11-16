@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import static javax.media.opengl.GL.*;
+
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.EulerAngles;
@@ -278,9 +280,9 @@ public class Joint extends Transformable
             this.localTransformation.getValue().getAsColumnMajorArray16(m_local);
             rc.gl.glMultMatrixd(m_localBuffer);
             {
-                rc.gl.glDisable( javax.media.opengl.GL2.GL_LIGHTING );
-                rc.gl.glDisable( javax.media.opengl.GL2.GL_TEXTURE_2D );
-                rc.gl.glBegin( javax.media.opengl.GL2.GL_LINES );
+                rc.gl.glDisable( GL_LIGHTING );
+                rc.gl.glDisable( GL_TEXTURE_2D );
+                rc.gl.glBegin( GL_LINES );
         
                 rc.gl.glColor3f( 1.0f, 0.0f, 0.0f );
                 rc.gl.glVertex3d( 0, 0, 0 );
@@ -306,7 +308,7 @@ public class Joint extends Transformable
                     Point3 max = this.boundingBox.getValue().getMaximum();
                     
                     //Bottom
-                    rc.gl.glBegin( javax.media.opengl.GL2.GL_LINE_LOOP );
+                    rc.gl.glBegin( GL_LINE_LOOP );
                     rc.gl.glVertex3d( min.x, min.y, min.z );
                     rc.gl.glVertex3d( min.x, min.y, max.z );
                     rc.gl.glVertex3d( max.x, min.y, max.z );
@@ -314,7 +316,7 @@ public class Joint extends Transformable
                     rc.gl.glEnd();
                     
                     //Top
-                    rc.gl.glBegin( javax.media.opengl.GL2.GL_LINE_LOOP );
+                    rc.gl.glBegin( GL_LINE_LOOP );
                     rc.gl.glVertex3d( min.x, max.y, min.z );
                     rc.gl.glVertex3d( min.x, max.y, max.z );
                     rc.gl.glVertex3d( max.x, max.y, max.z );
@@ -322,29 +324,29 @@ public class Joint extends Transformable
                     rc.gl.glEnd();
                     
                     //Sides
-                    rc.gl.glBegin( javax.media.opengl.GL2.GL_LINES );
+                    rc.gl.glBegin( GL_LINES );
                     rc.gl.glVertex3d( min.x, min.y, min.z );
                     rc.gl.glVertex3d( min.x, max.y, min.z );
                     rc.gl.glEnd();
                     
-                    rc.gl.glBegin( javax.media.opengl.GL2.GL_LINES );
+                    rc.gl.glBegin( GL_LINES );
                     rc.gl.glVertex3d( max.x, min.y, min.z );
                     rc.gl.glVertex3d( max.x, max.y, min.z );
                     rc.gl.glEnd();
                     
-                    rc.gl.glBegin( javax.media.opengl.GL2.GL_LINES );
+                    rc.gl.glBegin( GL_LINES );
                     rc.gl.glVertex3d( min.x, min.y, max.z );
                     rc.gl.glVertex3d( min.x, max.y, max.z );
                     rc.gl.glEnd();
                     
-                    rc.gl.glBegin( javax.media.opengl.GL2.GL_LINES );
+                    rc.gl.glBegin( GL_LINES );
                     rc.gl.glVertex3d( max.x, min.y, max.z );
                     rc.gl.glVertex3d( max.x, max.y, max.z );
                     rc.gl.glEnd();
                 }
                 
-                rc.gl.glEnable( javax.media.opengl.GL2.GL_TEXTURE_2D );
-                rc.gl.glEnable( javax.media.opengl.GL2.GL_LIGHTING );
+                rc.gl.glEnable( GL_TEXTURE_2D );
+                rc.gl.glEnable( GL_LIGHTING );
             }
         }
     }

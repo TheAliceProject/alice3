@@ -1,7 +1,6 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
+import static javax.media.opengl.GL.*;
 
 public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> extends AppearanceAdapter<E> {
 	private boolean m_isShaded;
@@ -35,23 +34,23 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 		rc.setIsShadingEnabled( m_isShaded );
 		//todo: investigate if specular, emissive, ambient should use an opacity of 1.0f
 		if( m_isShaded ) {
-			rc.gl.glMaterialf( face, GL2.GL_SHININESS, m_shininess );
-			rc.setMaterial( face, GL2.GL_SPECULAR, m_specular, m_opacity );
-			rc.setMaterial( face, GL2.GL_EMISSION, m_emissive, m_opacity );
+			rc.gl.glMaterialf( face, GL_SHININESS, m_shininess );
+			rc.setMaterial( face, GL_SPECULAR, m_specular, m_opacity );
+			rc.setMaterial( face, GL_EMISSION, m_emissive, m_opacity );
 			if( m_isAmbientLinkedToDiffuse ) {
-				rc.gl.glColorMaterial( face, GL2.GL_AMBIENT_AND_DIFFUSE );
+				rc.gl.glColorMaterial( face, GL_AMBIENT_AND_DIFFUSE );
 			} else {
-				rc.setMaterial( face, GL2.GL_AMBIENT, m_ambient, m_opacity );
-				rc.gl.glColorMaterial( face, GL2.GL_DIFFUSE );
+				rc.setMaterial( face, GL_AMBIENT, m_ambient, m_opacity );
+				rc.gl.glColorMaterial( face, GL_DIFFUSE );
 			}
 		}
 		rc.setColor( m_diffuse, m_opacity );
 		rc.gl.glPolygonMode( face, m_polygonMode );
 		//todo
 		if( m_isEthereal ) {
-			rc.gl.glDepthFunc( GL.GL_LEQUAL );
+			rc.gl.glDepthFunc( GL_LEQUAL );
 		} else {
-			rc.gl.glDepthFunc( GL.GL_LESS );
+			rc.gl.glDepthFunc( GL_LESS );
 		}
 	}
 
@@ -71,11 +70,11 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 		} else if( property == m_element.fillingStyle ) {
 			edu.cmu.cs.dennisc.scenegraph.FillingStyle fillingStyle = m_element.fillingStyle.getValue();
 			if( fillingStyle.equals( edu.cmu.cs.dennisc.scenegraph.FillingStyle.SOLID ) ) {
-				m_polygonMode = GL2.GL_FILL;
+				m_polygonMode = GL_FILL;
 			} else if( fillingStyle.equals( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME ) ) {
-				m_polygonMode = GL2.GL_LINE;
+				m_polygonMode = GL_LINE;
 			} else if( fillingStyle.equals( edu.cmu.cs.dennisc.scenegraph.FillingStyle.POINTS ) ) {
-				m_polygonMode = GL2.GL_POINT;
+				m_polygonMode = GL_POINT;
 			} else {
 				throw new RuntimeException();
 			}
