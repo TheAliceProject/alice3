@@ -553,7 +553,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map, boolean isUUIDDecodingDesired ) {
 		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
 		double xmlVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
-		assert xmlVersion == VERSION;
+		assert xmlVersion == VERSION : xmlVersion;
 		
 		Decoder decoder = new Decoder( projectVersion, org.lgna.project.Version.getCurrentVersionText(), isUUIDDecodingDesired );
 		return decoder.decode( xmlElement, map );

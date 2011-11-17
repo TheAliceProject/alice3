@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GL2;
+import static javax.media.opengl.GL.*;
 
 /**
  * @author Dennis Cosgrove
@@ -79,7 +79,7 @@ public class PickContext extends Context {
 		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
 	}
 	public void pickScene( AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		gl.glMatrixMode( GL2.GL_MODELVIEW );
+		gl.glMatrixMode( GL_MODELVIEW );
 		synchronized( cameraAdapter ) {
 			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
 		}

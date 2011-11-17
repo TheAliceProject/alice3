@@ -30,11 +30,11 @@ public class PersonAdapter extends GenericModelAdapter< Person > {
 //				rc.gl.glPushMatrix();
 //				java.nio.DoubleBuffer m_absBuf = java.nio.DoubleBuffer.wrap( transform.getAsColumnMajorArray16() );
 //				rc.gl.glMultMatrixd( m_absBuf );
-//				rc.gl.glEnable( GL.GL_NORMALIZE );
+//				rc.gl.glEnable( GL_NORMALIZE );
 //				{
-//					rc.gl.glDisable( GL.GL_LIGHTING );
+//					rc.gl.glDisable( GL_LIGHTING );
 //
-//					rc.gl.glBegin( GL.GL_LINES );
+//					rc.gl.glBegin( GL_LINES );
 //
 //					rc.gl.glColor3f( 1.0f, 0.0f, 0.0f );
 //					rc.gl.glVertex3d( 0, 0, 0 );
@@ -54,7 +54,7 @@ public class PersonAdapter extends GenericModelAdapter< Person > {
 //
 //					rc.gl.glEnd();
 //
-//					rc.gl.glEnable( GL.GL_LIGHTING );
+//					rc.gl.glEnable( GL_LIGHTING );
 //				}
 //				rc.gl.glPopMatrix();
 //			}

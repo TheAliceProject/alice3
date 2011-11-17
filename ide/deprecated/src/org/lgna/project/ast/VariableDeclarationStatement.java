@@ -56,14 +56,14 @@ public class VariableDeclarationStatement extends LocalDeclarationStatement {
 	public VariableDeclarationStatement() {
 	}
 	public VariableDeclarationStatement( UserVariable variable, Expression initializer ) {
-		super( initializer );
+		super( variable, initializer );
 		this.variable.setValue( variable );
 	}
 //	@Override
 //	protected AbstractType getLocalType() {
 //		return this.variable.getValue().valueType.getValue();
 //	}
-	@Override
+	
 	public org.lgna.project.ast.UserLocal getLocal() {
 		return this.variable.getValue();
 	}

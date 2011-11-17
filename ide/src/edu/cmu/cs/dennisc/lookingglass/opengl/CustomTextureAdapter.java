@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.texture.CustomTexture > {
-	private com.jogamp.opengl.util.awt.TextureRenderer m_textureRenderer = null;
+	private com.sun.opengl.util.j2d.TextureRenderer m_textureRenderer = null;
 	@Override
 	protected boolean isDirty() {
 		return m_element.isAnimated() || super.isDirty();
@@ -59,7 +59,7 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 //		if( m_textureRenderer != null ) {
 //			m_textureRenderer.dispose();
 //		}
-//		m_textureRenderer = new com.jogamp.opengl.util.awt.TextureRenderer( sgCustomTexture.getWidth(), sgCustomTexture.getHeight(), sgCustomTexture.isPotentiallyAlphaBlended() );
+//		m_textureRenderer = new com.sun.opengl.util.awt.TextureRenderer( sgCustomTexture.getWidth(), sgCustomTexture.getHeight(), sgCustomTexture.isPotentiallyAlphaBlended() );
 		java.awt.Graphics2D g = m_textureRenderer.createGraphics();
 //		sgCustomTexture.paint( g );
 		//m_textureRenderer.beginOrthoRendering( m_textureRenderer.getWidth(), m_textureRenderer.getHeight() );
@@ -79,7 +79,7 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 	}
 		
 	@Override
-	protected com.jogamp.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.Texture currentTexture ) {
+	protected com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.sun.opengl.util.texture.Texture currentTexture ) {
 		boolean isNewTextureRendererRequired;
 		if( currentTexture != null ) {
 			if( m_textureRenderer != null ) {
@@ -95,7 +95,7 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 			if( m_textureRenderer != null ) {
 				m_textureRenderer.dispose();
 			}
-			m_textureRenderer = new com.jogamp.opengl.util.awt.TextureRenderer( m_element.getWidth(), m_element.getHeight(), m_element.isPotentiallyAlphaBlended() );
+			m_textureRenderer = new com.sun.opengl.util.j2d.TextureRenderer( m_element.getWidth(), m_element.getHeight(), m_element.isPotentiallyAlphaBlended() );
 		}
 		java.awt.Graphics2D g = m_textureRenderer.createGraphics();
 		m_element.paint( g, m_textureRenderer.getWidth(), m_textureRenderer.getHeight() );

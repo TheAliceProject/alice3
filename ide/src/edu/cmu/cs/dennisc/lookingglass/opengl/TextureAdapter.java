@@ -106,14 +106,15 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		return v;
 	}
 
-	private com.jogamp.opengl.util.texture.Texture m_glTexture;
+	private com.sun.opengl.util.texture.Texture m_glTexture;
 
-	protected static com.jogamp.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
-		com.jogamp.opengl.util.texture.TextureData textureData = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
-		return com.jogamp.opengl.util.texture.TextureIO.newTexture( textureData );
+	protected static com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
+		//com.jogamp.opengl.util.texture.TextureData textureData = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
+		com.sun.opengl.util.texture.TextureData textureData = com.sun.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
+		return com.sun.opengl.util.texture.TextureIO.newTexture( textureData );
 	}
-	protected abstract com.jogamp.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.Texture currentTexture );
-	public com.jogamp.opengl.util.texture.Texture getTexture( RenderContext rc ) {
+	protected abstract com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.sun.opengl.util.texture.Texture currentTexture );
+	public com.sun.opengl.util.texture.Texture getTexture( RenderContext rc ) {
 		boolean isNewTextureRequired;
 		if( m_glTexture != null ) {
 			if( isDirty() ) {
@@ -126,7 +127,7 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 			isNewTextureRequired = true;
 		}
 		if( isNewTextureRequired ) {
-			com.jogamp.opengl.util.texture.Texture glTexture = newTexture( rc.gl, m_glTexture );
+			com.sun.opengl.util.texture.Texture glTexture = newTexture( rc.gl, m_glTexture );
 			if( m_glTexture != glTexture ) {
 				if( m_glTexture != null ) {
 					m_glTexture.dispose();

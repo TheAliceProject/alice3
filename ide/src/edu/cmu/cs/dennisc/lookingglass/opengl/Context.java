@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public abstract class Context {
-	public javax.media.opengl.GL2 gl;
+	public javax.media.opengl.GL gl;
 	public javax.media.opengl.glu.GLU glu;
 
 	private javax.media.opengl.glu.GLUquadric m_quadric;
@@ -70,7 +70,7 @@ public abstract class Context {
 //	public boolean isGLChanged() {
 //		return this.isGLChanged;
 //	}
-	public void setGL( javax.media.opengl.GL2 gl ) {
+	public void setGL( javax.media.opengl.GL gl ) {
 //		this.isGLChanged = this.gl != gl;
 //		if( this.isGLChanged ) {
 		if( this.gl != gl ) {

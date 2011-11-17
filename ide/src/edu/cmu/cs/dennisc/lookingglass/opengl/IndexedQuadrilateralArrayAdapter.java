@@ -43,13 +43,15 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import static javax.media.opengl.GL.*;
+
 /**
  * @author Dennis Cosgrove
  */
 public class IndexedQuadrilateralArrayAdapter extends IndexedPolygonArrayAdapter< edu.cmu.cs.dennisc.scenegraph.IndexedQuadrilateralArray > {
 	@Override
 	protected int getMode() {
-		return javax.media.opengl.GL2.GL_QUADS;
+		return GL_QUADS;
 	}
 	@Override
 	protected int getIndicesPerPolygon() {

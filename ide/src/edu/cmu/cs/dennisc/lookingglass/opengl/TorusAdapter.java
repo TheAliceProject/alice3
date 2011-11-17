@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import static javax.media.opengl.GL.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -91,7 +93,7 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 		double theta = 0;
 		for( int i = 0; i < N - 1; i++ ) {
 			double phi = 0;
-			context.gl.glBegin( javax.media.opengl.GL2.GL_QUAD_STRIP );
+			context.gl.glBegin( GL_QUAD_STRIP );
 			for( int j = 0; j < M; j++ ) {
 				glVertex( context, coordinatePlane, majorRadius, minorRadius, theta, phi, isLightingEnabled );
 				glVertex( context, coordinatePlane, majorRadius, minorRadius, theta + dTheta, phi, isLightingEnabled );

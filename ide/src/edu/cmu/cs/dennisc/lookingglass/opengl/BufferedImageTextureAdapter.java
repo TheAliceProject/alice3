@@ -61,7 +61,7 @@ public class BufferedImageTextureAdapter extends TextureAdapter< edu.cmu.cs.denn
 	}
 	
 	@Override
-	protected com.jogamp.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.Texture currentTexture ) {
+	protected com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.sun.opengl.util.texture.Texture currentTexture ) {
 		if( currentTexture != null ) {
 			currentTexture.dispose();
 		}

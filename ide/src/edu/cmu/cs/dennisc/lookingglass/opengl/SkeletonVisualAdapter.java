@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.media.opengl.GL;
+import static javax.media.opengl.GL.*;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
@@ -183,7 +183,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                 edu.cmu.cs.dennisc.math.Point3 max = boundingBox.getMaximum();
                 
                 //Bottom
-                rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
+                rc.gl.glBegin( GL_LINE_LOOP );
                 rc.gl.glVertex3d( min.x, min.y, min.z );
                 rc.gl.glVertex3d( min.x, min.y, max.z );
                 rc.gl.glVertex3d( max.x, min.y, max.z );
@@ -191,7 +191,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                 rc.gl.glEnd();
                 
                 //Top
-                rc.gl.glBegin( javax.media.opengl.GL.GL_LINE_LOOP );
+                rc.gl.glBegin( GL_LINE_LOOP );
                 rc.gl.glVertex3d( min.x, max.y, min.z );
                 rc.gl.glVertex3d( min.x, max.y, max.z );
                 rc.gl.glVertex3d( max.x, max.y, max.z );
@@ -199,22 +199,22 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                 rc.gl.glEnd();
                 
                 //Sides
-                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                rc.gl.glBegin( GL_LINES );
                 rc.gl.glVertex3d( min.x, min.y, min.z );
                 rc.gl.glVertex3d( min.x, max.y, min.z );
                 rc.gl.glEnd();
                 
-                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                rc.gl.glBegin( GL_LINES );
                 rc.gl.glVertex3d( max.x, min.y, min.z );
                 rc.gl.glVertex3d( max.x, max.y, min.z );
                 rc.gl.glEnd();
                 
-                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                rc.gl.glBegin( GL_LINES );
                 rc.gl.glVertex3d( min.x, min.y, max.z );
                 rc.gl.glVertex3d( min.x, max.y, max.z );
                 rc.gl.glEnd();
                 
-                rc.gl.glBegin( javax.media.opengl.GL.GL_LINES );
+                rc.gl.glBegin( GL_LINES );
                 rc.gl.glVertex3d( max.x, min.y, max.z );
                 rc.gl.glVertex3d( max.x, max.y, max.z );
                 rc.gl.glEnd();
@@ -235,15 +235,15 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
             {
         		if (!wmc.weightedMesh.cullBackfaces.getValue())
         		{
-        			rc.gl.glDisable( GL.GL_CULL_FACE );
+        			rc.gl.glDisable( GL_CULL_FACE );
         		}
         		else
         		{
-        			rc.gl.glEnable( GL.GL_CULL_FACE );
-        			rc.gl.glCullFace( GL.GL_BACK );
+        			rc.gl.glEnable( GL_CULL_FACE );
+        			rc.gl.glCullFace( GL_BACK );
         		}
                 wmc.renderGeometry(rc);
-                rc.gl.glEnable( GL.GL_CULL_FACE );
+                rc.gl.glEnable( GL_CULL_FACE );
             }
         	MeshAdapter[] meshAdapters = this.appearanceToGeometryAdapaters.get(controlEntry.getKey());
         	if (meshAdapters != null)
@@ -252,15 +252,15 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         		{
         			if (!((Mesh)ma.m_element).cullBackfaces.getValue())
             		{
-            			rc.gl.glDisable( GL.GL_CULL_FACE );
+            			rc.gl.glDisable( GL_CULL_FACE );
             		}
             		else
             		{
-            			rc.gl.glEnable( GL.GL_CULL_FACE );
-            			rc.gl.glCullFace( GL.GL_BACK );
+            			rc.gl.glEnable( GL_CULL_FACE );
+            			rc.gl.glCullFace( GL_BACK );
             		}
         			ma.render(rc);
-        			rc.gl.glEnable( GL.GL_CULL_FACE );
+        			rc.gl.glEnable( GL_CULL_FACE );
         		}
         	}
         }
