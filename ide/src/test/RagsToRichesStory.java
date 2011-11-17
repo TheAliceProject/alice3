@@ -83,7 +83,7 @@ class CustomOgre extends CustomMonster {
 
 class CustomOgreGreen extends CustomOgre {
 	public CustomOgreGreen() {
-		super( org.lgna.story.resources.biped.Ogre.BEAST );
+		super( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
 	}
 }
 
@@ -282,7 +282,7 @@ class RagsToRichesStory extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final CustomMonster ogre = new CustomMonster( org.lgna.story.resources.biped.Ogre.BEAST );
+	private final CustomMonster ogre = new CustomMonster( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
 //	private final CustomAdult ogre = new CustomAdult( 
 //			new AdultPersonResource(
 //					Gender.MALE,
