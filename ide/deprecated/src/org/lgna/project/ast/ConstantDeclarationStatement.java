@@ -56,14 +56,14 @@ public class ConstantDeclarationStatement extends LocalDeclarationStatement {
 	public ConstantDeclarationStatement() {
 	}
 	public ConstantDeclarationStatement( UserConstant constant, Expression initializer ) {
-		super( initializer );
+		super( constant, initializer );
 		this.constant.setValue( constant );
 	}
 //	@Override
 //	protected AbstractType getLocalType() {
 //		return this.constant.getValue().valueType.getValue();
 //	}
-	@Override
+
 	public org.lgna.project.ast.UserLocal getLocal() {
 		return this.constant.getValue();
 	}

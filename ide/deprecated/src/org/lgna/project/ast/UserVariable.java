@@ -50,12 +50,11 @@ public class UserVariable extends UserLocal {
 	public UserVariable() {
 	}
 	public UserVariable( String name, AbstractType<?,?,?> valueType ) {
-		super( name, valueType );
+		super( name, valueType, false );
 	}
 	public UserVariable( String name, Class<?> valueCls ) {
 		this( name, JavaType.getInstance( valueCls ) );
 	}
-	@Override
 	public boolean isFinal() {
 		return false;
 	}

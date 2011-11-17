@@ -50,12 +50,12 @@ public class UserConstant extends UserLocal {
 	public UserConstant() {
 	}
 	public UserConstant( String name, AbstractType<?,?,?> valueType ) {
-		super( name, valueType );
+		super( name, valueType, true );
 	}
 	public UserConstant( String name, Class<?> valueCls ) {
 		this( name, JavaType.getInstance( valueCls ) );
 	}
-	@Override
+	
 	public boolean isFinal() {
 		return true;
 	}
