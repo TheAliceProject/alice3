@@ -112,7 +112,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 			}
 		}
 		
-//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (Real Number) { ==, !=, <, <=, >=, > }" ) {
+//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (DecimalNumber) { ==, !=, <, <=, >=, > }" ) {
 //			@Override
 //			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 //				for( org.lgna.project.ast.RelationalInfixExpression.Operator operator : org.lgna.project.ast.RelationalInfixExpression.Operator.values() ) {
@@ -120,7 +120,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 //				}
 //			}
 //		} );
-//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (Integer) { ==, !=, <, <=, >=, > }" ) {
+//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (WholeNumber) { ==, !=, <, <=, >=, > }" ) {
 //			@Override
 //			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 //				for( org.lgna.project.ast.RelationalInfixExpression.Operator operator : org.lgna.project.ast.RelationalInfixExpression.Operator.values() ) {
