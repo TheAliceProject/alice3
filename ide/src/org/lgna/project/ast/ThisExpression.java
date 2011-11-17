@@ -53,7 +53,7 @@ public class ThisExpression extends Expression {
 		if( rv != null ) {
 			//pass
 		} else {
-			System.err.println( "WARNING: ThisExpression cannot find type" );
+			//System.err.println( "WARNING: ThisExpression cannot find type" );
 			//Thread.dumpStack();
 		}
 		return rv;
