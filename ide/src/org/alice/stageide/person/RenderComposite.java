@@ -41,68 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.person;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardComposite extends Composite< org.lgna.croquet.components.CardPanel > {
-	private final java.util.List< Composite< ? > > cards;
-	private Composite<?> showingCard;
-	public CardComposite( java.util.UUID id, Composite< ? >... cards ) {
-		super( id );
-		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
+public class RenderComposite extends org.lgna.croquet.Composite< org.alice.stageide.person.components.PersonViewer > {
+	private static class SingletonHolder {
+		private static RenderComposite instance = new RenderComposite();
+	}
+	public static RenderComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private RenderComposite() {
+		super( java.util.UUID.fromString( "248ab13c-60cf-400b-9023-cfe46a1dd8df" ) );
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
 	}
 	@Override
 	protected void localize() {
 	}
-	@Override
-	public final boolean contains( org.lgna.croquet.Model model ) {
-		for( Composite< ? > card : this.cards ) {
-			//todo
-			if( card.contains( model ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	public java.util.List< Composite< ? >> getCards() {
-		return this.cards;
+	private org.lgna.story.resources.sims2.PersonResource createPersonResource() {
+		return org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
 	}
 	@Override
-	protected org.lgna.croquet.components.CardPanel createView() {
-		return new org.lgna.croquet.components.CardPanel( this );
+	protected org.alice.stageide.person.components.PersonViewer createView() {
+		org.alice.stageide.person.components.PersonViewer rv = org.alice.stageide.person.PersonResourceManager.SINGLETON.allocatePersonViewer( this.createPersonResource() );
+		return rv;
 	}
 	@Override
 	public void releaseView() {
-		for( Composite< ? > card : this.cards ) {
-			card.releaseView();
-		}
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.releasePersonViewer( this.getView() );		
 		super.releaseView();
-	}
-	
-	public void showCard( Composite< ? > card ) {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDectivation();
-		}
-		this.showingCard = card;
-		this.getView().showComposite( this.showingCard );
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
-	}
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
-	}
-	@Override
-	public void handlePostDectivation() {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDectivation();
-		}
-		super.handlePostDectivation();
 	}
 }

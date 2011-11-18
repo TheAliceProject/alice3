@@ -57,8 +57,8 @@ public class CreatePersonResourceOperation extends PersonResourceOperation {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ) );
 	}
 	@Override
-	protected org.lgna.story.resources.sims2.PersonResource createInitialPersonResource() {
-		return org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
+	protected org.alice.stageide.person.PersonComposite getPersonComposite() {
+		return org.alice.stageide.person.CreatePersonComposite.getInstance();
 	}
 	@Override
 	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.story.resources.sims2.PersonResource personResource ) {

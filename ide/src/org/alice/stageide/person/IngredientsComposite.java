@@ -41,68 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.person;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardComposite extends Composite< org.lgna.croquet.components.CardPanel > {
-	private final java.util.List< Composite< ? > > cards;
-	private Composite<?> showingCard;
-	public CardComposite( java.util.UUID id, Composite< ? >... cards ) {
-		super( id );
-		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
+public class IngredientsComposite extends org.lgna.croquet.Composite< org.alice.stageide.person.components.IngredientsPanel > {
+	private static class SingletonHolder {
+		private static IngredientsComposite instance = new IngredientsComposite();
+	}
+	public static IngredientsComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IngredientsComposite() {
+		super( java.util.UUID.fromString( "a782a11f-fd56-4f6f-b178-1116acbeb1e6" ) );
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
 	}
 	@Override
 	protected void localize() {
 	}
 	@Override
-	public final boolean contains( org.lgna.croquet.Model model ) {
-		for( Composite< ? > card : this.cards ) {
-			//todo
-			if( card.contains( model ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	public java.util.List< Composite< ? >> getCards() {
-		return this.cards;
-	}
-	@Override
-	protected org.lgna.croquet.components.CardPanel createView() {
-		return new org.lgna.croquet.components.CardPanel( this );
-	}
-	@Override
-	public void releaseView() {
-		for( Composite< ? > card : this.cards ) {
-			card.releaseView();
-		}
-		super.releaseView();
-	}
-	
-	public void showCard( Composite< ? > card ) {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDectivation();
-		}
-		this.showingCard = card;
-		this.getView().showComposite( this.showingCard );
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
-	}
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
-	}
-	@Override
-	public void handlePostDectivation() {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDectivation();
-		}
-		super.handlePostDectivation();
+	protected org.alice.stageide.person.components.IngredientsPanel createView() {
+		return new org.alice.stageide.person.components.IngredientsPanel( this );
 	}
 }

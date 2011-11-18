@@ -62,6 +62,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		}
 		return this.view;
 	}
+	public void releaseView() {
+		this.view = null;
+	}
 	public abstract boolean contains( Model model );
 //	private boolean isActive;
 //	public boolean isActive() {

@@ -78,7 +78,7 @@ public abstract class Application {
 			this.perspective = perspective;
 			if( this.perspective != null ) {
 				this.perspective.handlePreActivation();
-				this.frame.getContentPanel().addComponent( this.perspective.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+				this.frame.getContentPanel().addComponent( this.perspective.getComposite().getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 			}
 			this.frame.getContentPanel().revalidateAndRepaint();
 		}

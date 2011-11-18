@@ -11,7 +11,6 @@ public class Person extends Model {
 	static {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Person.class, PersonAdapter.class );
 	}
-
 	public Person( Object o ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		initialize( o );
 	}
@@ -23,6 +22,4 @@ public class Person extends Model {
 	public native void setEyeColor( Object o );
 	public native void setHair( Object o );
 	public native void setAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair);
-
-
 }

@@ -63,7 +63,7 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 	@Override
 	protected org.lgna.croquet.components.SplitPane createView() {
 		org.lgna.croquet.components.SplitPane rv = this.createVerticalSplitPane();
-		rv.getAwtComponent().setResizeWeight( 0.45 );
+		rv.setResizeWeight( 0.45 );
 		return rv;
 	}
 }

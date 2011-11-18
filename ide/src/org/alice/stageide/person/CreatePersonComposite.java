@@ -41,68 +41,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.person;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardComposite extends Composite< org.lgna.croquet.components.CardPanel > {
-	private final java.util.List< Composite< ? > > cards;
-	private Composite<?> showingCard;
-	public CardComposite( java.util.UUID id, Composite< ? >... cards ) {
-		super( id );
-		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
+public class CreatePersonComposite extends PersonComposite {
+	private static class SingletonHolder {
+		private static CreatePersonComposite instance = new CreatePersonComposite();
 	}
-	@Override
-	protected void localize() {
+	public static PersonComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public final boolean contains( org.lgna.croquet.Model model ) {
-		for( Composite< ? > card : this.cards ) {
-			//todo
-			if( card.contains( model ) ) {
-				return true;
+	private CreatePersonComposite() {
+		super( java.util.UUID.fromString( "38ef6581-b196-4937-88d7-bcc75ec5d4a8" ), RenderComposite.getInstance() );
+	}
+	public static void main( String[] args ) {
+		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
+			@Override
+			public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
+				return null;
 			}
-		}
-		return false;
-	}
-	public java.util.List< Composite< ? >> getCards() {
-		return this.cards;
-	}
-	@Override
-	protected org.lgna.croquet.components.CardPanel createView() {
-		return new org.lgna.croquet.components.CardPanel( this );
-	}
-	@Override
-	public void releaseView() {
-		for( Composite< ? > card : this.cards ) {
-			card.releaseView();
-		}
-		super.releaseView();
-	}
-	
-	public void showCard( Composite< ? > card ) {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDectivation();
-		}
-		this.showingCard = card;
-		this.getView().showComposite( this.showingCard );
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
-	}
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
-	}
-	@Override
-	public void handlePostDectivation() {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDectivation();
-		}
-		super.handlePostDectivation();
+			@Override
+			protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+				return null;
+			}
+			@Override
+			protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+				return null;
+			}
+			@Override
+			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+			}
+			@Override
+			protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+			}
+			@Override
+			protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+				System.exit( 0 );
+			}
+		};
+		application.initialize( args );
+		application.setPerspective( new org.lgna.croquet.Perspective( java.util.UUID.randomUUID(), CreatePersonComposite.getInstance() ) {} );
+		application.getFrame().setSize( 1280, 720 );
+		application.getFrame().setVisible( true );
 	}
 }
