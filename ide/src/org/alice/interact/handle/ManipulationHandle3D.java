@@ -69,7 +69,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
@@ -85,7 +85,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	public static final double ANIMATION_DURATION = .25;
 	
 	protected Visual sgVisual = new Visual();
-	protected TexturedAppearance sgFrontFacingAppearance = new TexturedAppearance();
+	protected SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 	protected Transformable manipulatedObject;
 	protected Animator animator;
 	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
@@ -412,7 +412,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	public Visual getSGVisual() {
 		return sgVisual;
 	}
-	public TexturedAppearance getSGFrontFacingAppearance() {
+	public SimpleAppearance getSGFrontFacingAppearance() {
 		return sgFrontFacingAppearance;
 	}
 	

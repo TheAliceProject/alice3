@@ -79,6 +79,8 @@ public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter< edu.cmu.
 			m_isDiffuseColorTextureClamped = m_element.isDiffuseColorTextureClamped.getValue();
 		} else if( property == m_element.bumpTexture ) {
 			m_bumpTextureAdapter = AdapterFactory.getAdapterFor( m_element.bumpTexture.getValue() );
+		} else if( property == m_element.textureId ) {
+			System.err.println( "todo: handle textureId? " + property.getValue() + " " + this.m_element.hashCode() + " " + this.m_element );
 		} else {
 			super.propertyChanged( property );
 		}

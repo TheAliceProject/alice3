@@ -46,7 +46,6 @@ import java.util.LinkedList;
 
 
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
-import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 
@@ -56,18 +55,18 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  */
 public class ObjectMarkerImp extends MarkerImp{
 
-	private java.util.Map< Cylinder.BottomToTopAxis, TexturedAppearance > axisToSGAppearanceMap;
+	private java.util.Map< Cylinder.BottomToTopAxis, edu.cmu.cs.dennisc.scenegraph.SimpleAppearance > axisToSGAppearanceMap;
 	private double scale = 1.0;
 
 	private edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance;
-	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances;
-	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgRedAppearance;
-	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgGreenAppearance;
-	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgBlueAppearance;
-	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgWhiteAppearance;
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance;
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] sgAppearances;
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgRedAppearance;
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgGreenAppearance;
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgBlueAppearance;
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgWhiteAppearance;
 
-	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] opacityAppearances = {sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] opacityAppearances = {sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
 	
 	public ObjectMarkerImp(org.lgna.story.ObjectMarker abstraction){
 		super(abstraction);
@@ -89,15 +88,15 @@ public class ObjectMarkerImp extends MarkerImp{
 	}
 	
 	private void createAxes( double unitLength, double forwardFactor ) {
-		axisToSGAppearanceMap = new java.util.HashMap< Cylinder.BottomToTopAxis, TexturedAppearance >();
+		axisToSGAppearanceMap = new java.util.HashMap< Cylinder.BottomToTopAxis, edu.cmu.cs.dennisc.scenegraph.SimpleAppearance >();
 		
-		this.sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
-		this.sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[]{ sgAppearance };
-		this.sgRedAppearance = new TexturedAppearance();
-		this.sgGreenAppearance = new TexturedAppearance();
-		this.sgBlueAppearance = new TexturedAppearance();
-		this.sgWhiteAppearance = new TexturedAppearance();
-		this.opacityAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[]{sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
+		this.sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+		this.sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[]{ sgAppearance };
+		this.sgRedAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+		this.sgGreenAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+		this.sgBlueAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+		this.sgWhiteAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+		this.opacityAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[]{sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
 		
 		
 		sgRedAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.RED );
@@ -132,11 +131,11 @@ public class ObjectMarkerImp extends MarkerImp{
 	}
 	
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
+	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances() {
 		return this.sgAppearances;
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgOpacityAppearances() {
+	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
 		return this.opacityAppearances;
 	}
 
