@@ -143,4 +143,13 @@ public class Collections {
 	public static <K,V> java.util.WeakHashMap< K,V > newWeakHashMap() {
 		return new java.util.WeakHashMap< K,V >();
 	}
+	
+	public static <A,B>	java.util.HashMap< B,A > newInverseHashMap( java.util.Map< A,B > map ) {
+		java.util.HashMap< B,A > rv = newHashMap();
+		for( A a : map.keySet() ) {
+			B b = map.get( a );
+			rv.put( b, a );
+		}
+		return rv;
+	}
 }

@@ -72,7 +72,7 @@ public class UserInstance {
 	private final Object nextInstance;
 	private final UserType<?> type;
 	private final java.util.Map< UserField, Object > fieldMap;
-	private final java.util.Map< Object, UserField > inverseFieldMap;
+	private java.util.Map< Object, UserField > inverseFieldMap;
 	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments, java.util.Map< UserField, Object > fieldMap, java.util.Map< Object, UserField > inverseFieldMap ) {
 		this.type = constructor.getDeclaringType();
 		this.fieldMap = fieldMap;
@@ -114,6 +114,13 @@ public class UserInstance {
 		}
 	}
 
+	public void ensureInverseMapExists() {
+		if( this.inverseFieldMap != null ) {
+			//pass
+		} else {
+			this.inverseFieldMap = edu.cmu.cs.dennisc.java.util.Collections.newInverseHashMap( this.fieldMap );
+		}
+	}
 	public Object createAndSetFieldInstance( VirtualMachine vm, UserField field ) {
 		Expression expression = field.initializer.getValue();
 		assert expression != null;
