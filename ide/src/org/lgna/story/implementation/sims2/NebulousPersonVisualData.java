@@ -59,12 +59,17 @@ public class NebulousPersonVisualData extends NebulousVisualData< edu.cmu.cs.den
 	
 	public static NebulousPersonVisualData createInstance( org.lgna.story.resources.sims2.PersonResource personResource ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		NebulousPersonVisualData rv = new NebulousPersonVisualData( personResource.getLifeStage() );
-		rv.setGender( personResource.getGender() );
-		rv.setOutfit( personResource.getOutfit() );
-		rv.setSkinTone( personResource.getSkinTone() );
-		rv.setObesityLevel( personResource.getObesityLevel() );
-		rv.setHair( personResource.getHair() );
-		rv.setEyeColor( personResource.getEyeColor() );
+		rv.pushAtomic();
+		try {
+			rv.setGender( personResource.getGender() );
+			rv.setOutfit( personResource.getOutfit() );
+			rv.setSkinTone( personResource.getSkinTone() );
+			rv.setObesityLevel( personResource.getObesityLevel() );
+			rv.setHair( personResource.getHair() );
+			rv.setEyeColor( personResource.getEyeColor() );
+		} finally {
+			rv.popAtomic();
+		}
 		return rv;
 	}
 
@@ -85,7 +90,7 @@ public class NebulousPersonVisualData extends NebulousVisualData< edu.cmu.cs.den
 	public void popAtomic() {
 		this.atomicCount--;
 		if( this.atomicCount == 0 ) {
-			//this.nebPerson.setAll( this.gender, this.skinTone, this.eyeColor, this.hair, this.outfit, this.obesityLevel );
+			this.getNebModel().setAll( this.gender, this.skinTone, this.eyeColor, this.hair, this.outfit, this.obesityLevel );
 		}
 	}
 	
@@ -95,42 +100,54 @@ public class NebulousPersonVisualData extends NebulousVisualData< edu.cmu.cs.den
 	}
 	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
 		this.gender = gender;
-		this.getNebModel().setGender( this.gender );
+		if( this.atomicCount == 0 ) {
+			this.getNebModel().setGender( this.gender );
+		}
 	}
 	public org.lgna.story.resources.sims2.Outfit getOutfit() {
 		return this.outfit;
 	}
 	public void setOutfit( org.lgna.story.resources.sims2.Outfit outfit ) {
 		this.outfit = outfit;
-		this.getNebModel().setOutfit( this.outfit );
+		if( this.atomicCount == 0 ) {
+			this.getNebModel().setOutfit( this.outfit );
+		}
 	}
 	public org.lgna.story.resources.sims2.SkinTone getSkinTone() {
 		return this.skinTone;
 	}
 	public void setSkinTone( org.lgna.story.resources.sims2.SkinTone skinTone ) {
 		this.skinTone = skinTone;
-		this.getNebModel().setSkinTone( this.skinTone );
+		if( this.atomicCount == 0 ) {
+			this.getNebModel().setSkinTone( this.skinTone );
+		}
 	}
 	public double getObesityLevel() {
 		return this.obesityLevel;
 	}
 	public void setObesityLevel( double obesityLevel ) {
 		this.obesityLevel = obesityLevel;
-		this.getNebModel().setObesityLevel( this.obesityLevel );
+		if( this.atomicCount == 0 ) {
+			this.getNebModel().setObesityLevel( this.obesityLevel );
+		}
 	}
 	public org.lgna.story.resources.sims2.Hair getHair() {
 		return this.hair;
 	}
 	public void setHair( org.lgna.story.resources.sims2.Hair hair ) {
 		this.hair = hair;
-		this.getNebModel().setHair( this.hair );
+		if( this.atomicCount == 0 ) {
+			this.getNebModel().setHair( this.hair );
+		}
 	}
 	public org.lgna.story.resources.sims2.EyeColor getEyeColor() {
 		return this.eyeColor;
 	}
 	public void setEyeColor( org.lgna.story.resources.sims2.EyeColor eyeColor ) {
 		this.eyeColor = eyeColor;
-		this.getNebModel().setEyeColor( this.eyeColor );
+		if( this.atomicCount == 0 ) {
+			this.getNebModel().setEyeColor( this.eyeColor );
+		}
 	}
 
 //	@Override

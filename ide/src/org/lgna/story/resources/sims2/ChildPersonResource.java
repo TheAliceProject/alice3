@@ -52,6 +52,6 @@ public class ChildPersonResource extends PersonResource {
 	}
 	@Override
 	public LifeStage getLifeStage() {
-		return LifeStage.ADULT;
+		return LifeStage.CHILD;
 	}
 }

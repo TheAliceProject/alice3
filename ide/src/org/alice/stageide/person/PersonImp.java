@@ -95,40 +95,11 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		org.lgna.story.resources.sims2.Hair hair = PersonResourceManager.SINGLETON.getHair();
 		org.lgna.story.resources.sims2.Outfit outfit = PersonResourceManager.SINGLETON.getOutfit();
 		
-		nebPerson.setGender( gender );
-		nebPerson.setSkinTone( skinTone );
-		nebPerson.setEyeColor( eyeColor );
-		nebPerson.setObesityLevel( obesityLevel );
-		nebPerson.setHair( hair );
-		nebPerson.setOutfit( outfit );
+		nebPerson.setAll( gender, outfit, skinTone, obesityLevel, eyeColor, hair );
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();
 		if( nebPerson != sgGeometry ) {
+//			Thread.dumpStack();
 			this.setSgGeometry( nebPerson );
-		}
-	}
-	
-//	private org.lgna.story.resources.sims2.LifeStage prevLifeStage;
-//	private org.lgna.story.resources.sims2.Gender prevGender;
-//	private org.lgna.story.resources.sims2.EyeColor prevEyeColor;
-//	private org.lgna.story.resources.sims2.Hair prevHair;
-//	private org.lgna.story.resources.sims2.Outfit prevOutfit;
-
-	private int atomicCount = 0;
-	public void pushAtomic() {
-		if( this.atomicCount == 0 ) {
-//			this.prevLifeStage = this.getLifeStage();
-//			this.prevGender = this.getGender();
-//			this.prevEyeColor = this.getEyeColor();
-//			this.prevHair = this.getHair();
-//			this.prevOutfit = this.getOutfit();
-		}
-		this.atomicCount++;
-		
-	}
-	public void popAtomic() {
-		this.atomicCount--;
-		if( this.atomicCount == 0 ) {
-			this.updateNebPerson();
 		}
 	}
 }

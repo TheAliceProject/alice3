@@ -75,7 +75,7 @@ public class IngredientsPanel extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.croquet.components.RowsSpringPanel ubiquitousPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
 			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
-				//rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "life stage:", new org.alice.stageide.person.components.LifeStageList() ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "life stage:", new org.alice.stageide.person.components.LifeStageList() ) );
 				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "gender:", new org.alice.stageide.person.components.GenderList() ) );
 				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "skin tone:", new org.alice.stageide.person.components.BaseSkinToneList() ) );
 				return rv;

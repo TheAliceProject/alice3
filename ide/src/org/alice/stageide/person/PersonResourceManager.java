@@ -117,6 +117,9 @@ public enum PersonResourceManager {
 			popAtomic();
 		}
 	};
+
+//	private void handleCataclysm( boolean isLifeStage, boolean isGender, boolean isHairColor ) {
+//	}
 	private void addListeners() {
 		org.alice.stageide.person.models.LifeStageState.getInstance().addValueObserver( this.lifeStageObserver );
 		org.alice.stageide.person.models.GenderState.getInstance().addValueObserver( this.genderObserver );
@@ -198,7 +201,7 @@ public enum PersonResourceManager {
 	private static org.lgna.story.resources.sims2.Gender getGender( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		return personResource != null ? personResource.getGender() : null;
 	}
-	private static String getHairColor( org.lgna.story.resources.sims2.PersonResource personResource ) {
+	private static String getHairColorName( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		if( personResource != null ) {
 			org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
 			return hair!=null ? hair.toString() : null;
@@ -214,10 +217,6 @@ public enum PersonResourceManager {
 	private int atomicCount = 0;
 	public void pushAtomic() {
 		if( this.atomicCount == 0 ) {
-			this.prevPersonResource = this.createResourceFromStates();
-			if( this.prevPersonResource != null ) {
-				this.mapToMap.put( this.prevPersonResource.getLifeStage(), this.prevPersonResource.getGender(), this.prevPersonResource );
-			}
 		}
 		this.atomicCount++;
 	}
@@ -226,10 +225,11 @@ public enum PersonResourceManager {
 		if( this.atomicCount == 0 ) {
 			this.removeListenersIfAppropriate();
 			try {
-				org.lgna.story.resources.sims2.LifeStage lifeStage = this.getLifeStage();
-				boolean isLifeStageChanged = getLifeStage( this.prevPersonResource ) != lifeStage;
+				org.lgna.story.resources.sims2.LifeStage prevLifeStage = getLifeStage( this.prevPersonResource );
+				org.lgna.story.resources.sims2.LifeStage nextLifeStage = this.getLifeStage();
+				boolean isLifeStageChanged = prevLifeStage != nextLifeStage;
 				if( isLifeStageChanged ) {
-					String[] hairColors = getHairColors( lifeStage );
+					String[] hairColors = getHairColors( nextLifeStage );
 					if( hairColors != getHairColors( getLifeStage( this.prevPersonResource ) ) ) {
 						String hairColor = org.alice.stageide.person.models.HairColorNameState.getInstance().getSelectedItem();
 						int index = java.util.Arrays.asList( hairColors ).indexOf( hairColor );
@@ -241,17 +241,19 @@ public enum PersonResourceManager {
 						org.alice.stageide.person.models.HairColorNameState.getInstance().setListData( index, hairColors );
 					}
 				}
-				org.lgna.story.resources.sims2.Gender gender = this.getGender();
-				boolean isGenderChanged = getGender( this.prevPersonResource ) != gender;
+				org.lgna.story.resources.sims2.Gender nextGender = this.getGender();
+				org.lgna.story.resources.sims2.Gender prevGender = getGender( this.prevPersonResource );
+				boolean isGenderChanged = prevGender != nextGender;
 
-				final String hairColor = org.alice.stageide.person.models.HairColorNameState.getInstance().getSelectedItem();
-				boolean isHairColorChanged = edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( getHairColor( this.prevPersonResource ), hairColor );
+				String prevHairColorName = getHairColorName( this.prevPersonResource );
+				final String nextHairColorName = org.alice.stageide.person.models.HairColorNameState.getInstance().getSelectedItem();
+				boolean isHairColorChanged = edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( prevHairColorName, nextHairColorName );
 				if( isLifeStageChanged || isGenderChanged || isHairColorChanged ) {
 					java.util.List< org.lgna.story.resources.sims2.Hair > list = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-							org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+							org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( nextLifeStage, nextGender ), 
 							new edu.cmu.cs.dennisc.pattern.Criterion< org.lgna.story.resources.sims2.Hair >() {
 								public boolean accept( org.lgna.story.resources.sims2.Hair hair ) {
-									return hair.toString().equals( hairColor );
+									return hair.toString().equals( nextHairColorName );
 								}
 							} 
 					);
@@ -273,7 +275,7 @@ public enum PersonResourceManager {
 				}
 				if( isLifeStageChanged || isGenderChanged ) {
 					java.util.List< org.lgna.story.resources.sims2.FullBodyOutfit > list = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants( 
-							org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ), 
+							org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( nextLifeStage, nextGender ), 
 							null 
 					);
 					int index = 0;
@@ -286,6 +288,11 @@ public enum PersonResourceManager {
 				this.addListenersIfAppropriate();
 			}
 			this.personImp.updateNebPerson();
+
+			this.prevPersonResource = this.createResourceFromStates();
+			if( this.prevPersonResource != null ) {
+				this.mapToMap.put( this.prevPersonResource.getLifeStage(), this.prevPersonResource.getGender(), this.prevPersonResource );
+			}
 		}
 	}
 	
