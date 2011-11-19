@@ -50,12 +50,34 @@ import org.alice.ide.x.components.StatementListPropertyView;
  * @author Dennis Cosgrove
  */
 public class CodeEditor extends org.lgna.croquet.components.BorderPanel implements org.lgna.croquet.DropReceptor, java.awt.print.Printable {
-	private StatementListPropertyView EPIC_HACK_desiredStatementListPropertyPane = null;
-	private int EPIC_HACK_desiredIndex = -1;
+	private static class RootStatementListPropertyPane extends StatementListPropertyView {
+		private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
+		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
+			super( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), userCode.getBodyProperty().getValue().statements );
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 48, 0 ) );
+			org.lgna.project.ast.BlockStatement body = userCode.getBodyProperty().getValue();
+			if( body instanceof org.lgna.project.ast.ConstructorBlockStatement ) {
+				org.lgna.project.ast.ConstructorBlockStatement constructorBlockStatement = (org.lgna.project.ast.ConstructorBlockStatement)body;
+				org.lgna.project.ast.ConstructorInvocationStatement	constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
+				assert constructorInvocationStatement != null;
+				superInvocationComponent = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( constructorInvocationStatement );
+			} else {
+				superInvocationComponent = null;
+			}
+		}
+		@Override
+		protected void addPrefixComponents() {
+			super.addPrefixComponents();
+			if( this.superInvocationComponent != null ) {
+				this.addComponent( this.superInvocationComponent );
+			}
+		}
+	}
 
-	private org.lgna.project.ast.AbstractCode code;
+	private final org.lgna.project.ast.AbstractCode code;
+	private final org.lgna.croquet.components.ScrollPane scrollPane;
+	private final RootStatementListPropertyPane rootStatementListPropertyPane;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
-	private org.lgna.croquet.components.ScrollPane scrollPane;
 
 	private static java.util.Map< org.lgna.project.ast.AbstractCode, CodeEditor > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized CodeEditor getInstance( org.lgna.project.ast.AbstractCode code ) {
@@ -70,8 +92,38 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	}
 	private CodeEditor( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
+		assert this.code instanceof org.lgna.project.ast.UserCode;
+		this.rootStatementListPropertyPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)this.code );
+		org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( this.rootStatementListPropertyPane );
+
+		this.scrollPane = new org.lgna.croquet.components.ScrollPane( bodyPane );
+		this.scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+		this.scrollPane.setBorder( null );
+		this.scrollPane.setBackgroundColor( null );
+		this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
+		this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
+		this.internalAddComponent( this.scrollPane, java.awt.BorderLayout.CENTER );
+
+		final org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)this.code;
+		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), userCode );
+		AbstractCodeHeaderPane header;
+		if( code instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod methodDeclaredInAlice = (org.lgna.project.ast.UserMethod)code;
+			header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane, false );
+		} else if( code instanceof org.lgna.project.ast.NamedUserConstructor ) {
+			org.lgna.project.ast.NamedUserConstructor constructorDeclaredInAlice = (org.lgna.project.ast.NamedUserConstructor)code;
+			header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane, false );
+		} else {
+			throw new RuntimeException();
+		}
+		this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			this.addComponent( org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView(), Constraint.PAGE_END );
+		}
+
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		java.awt.Color color = getIDE().getTheme().getCodeDeclaredInAliceColor( this.code );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		java.awt.Color color = ide.getTheme().getCodeDeclaredInAliceColor( this.code );
 		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
 		this.setBackgroundColor( color );
 	}
@@ -147,14 +199,14 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			CodeEditor.this.refresh();
+			CodeEditor.this.rootStatementListPropertyPane.refreshLater();
 		}
 	};
 	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter > formatterSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.formatter.Formatter > state, org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.formatter.Formatter > state, org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue, boolean isAdjusting ) {
-			//CodeEditor.this.refresh();
+			CodeEditor.this.rootStatementListPropertyPane.refreshLater();
 		}
 	};
 	@Override
@@ -170,82 +222,6 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		super.handleUndisplayable();
 	}
 
-	private void refresh() {
-		if( this.scrollPane != null ) {
-			final java.awt.Point viewPosition = this.scrollPane.getAwtComponent().getViewport().getViewPosition();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reset view position:", viewPosition );
-		}
-
-		this.forgetAndRemoveAllComponents();
-		if( this.code instanceof org.lgna.project.ast.UserCode ) {
-			final org.lgna.project.ast.UserCode codeDeclaredInAlice = (org.lgna.project.ast.UserCode)this.code;
-			ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), codeDeclaredInAlice );
-			AbstractCodeHeaderPane header;
-//			org.lgna.croquet.components.Component< ? > superInvocationPane = null;
-			if( code instanceof org.lgna.project.ast.UserMethod ) {
-				org.lgna.project.ast.UserMethod methodDeclaredInAlice = (org.lgna.project.ast.UserMethod)code;
-				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane, false );
-			} else if( code instanceof org.lgna.project.ast.NamedUserConstructor ) {
-				org.lgna.project.ast.NamedUserConstructor constructorDeclaredInAlice = (org.lgna.project.ast.NamedUserConstructor)code;
-				header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane, false );
-//				superInvocationPane = new org.lgna.croquet.components.Label( "super()" );
-			} else {
-				throw new RuntimeException();
-			}
-			class RootStatementListPropertyPane extends StatementListPropertyView {
-				private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
-				public RootStatementListPropertyPane() {
-					super( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), codeDeclaredInAlice.getBodyProperty().getValue().statements );
-					this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 48, 0 ) );
-					org.lgna.project.ast.BlockStatement body = codeDeclaredInAlice.getBodyProperty().getValue();
-					if( body instanceof org.lgna.project.ast.ConstructorBlockStatement ) {
-						org.lgna.project.ast.ConstructorBlockStatement constructorBlockStatement = (org.lgna.project.ast.ConstructorBlockStatement)body;
-						org.lgna.project.ast.ConstructorInvocationStatement	constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
-						assert constructorInvocationStatement != null;
-						superInvocationComponent = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( constructorInvocationStatement );
-					} else {
-						superInvocationComponent = null;
-					}
-				}
-				@Override
-				protected void addPrefixComponents() {
-					super.addPrefixComponents();
-					if( this.superInvocationComponent != null ) {
-						this.addComponent( this.superInvocationComponent );
-					}
-				}
-			}
-			
-//			org.lgna.croquet.components.Component< ? > scrollView;
-			org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( new RootStatementListPropertyPane() );
-			this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
-//			if( superInvocationPane != null ) {
-//				this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
-//				org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel();
-//				borderPanel.addComponent( superInvocationPane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-//				borderPanel.addComponent( bodyPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-//				scrollView = borderPanel;
-//			} else {
-//				scrollView = bodyPane;
-//			}
-			this.scrollPane = new org.lgna.croquet.components.ScrollPane( bodyPane );
-			this.scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-			this.scrollPane.setBorder( null );
-			this.scrollPane.setBackgroundColor( null );
-			this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
-			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
-			this.internalAddComponent( this.scrollPane, java.awt.BorderLayout.CENTER );
-
-			if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-				this.addComponent( org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView(), Constraint.PAGE_END );
-			}
-		}
-
-		this.revalidateAndRepaint();
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getActiveInstance();
-	}
 	public java.util.List< org.lgna.croquet.DropReceptor > addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > rv, final org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type == org.lgna.project.ast.JavaType.VOID_TYPE ) {
 			rv.add( this );
@@ -277,8 +253,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		return rv;
 	}
 	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel ) {
-			return getIDE().getFocusedCode() == this.code;
+			return ide.getFocusedCode() == this.code;
 		} else {
 			return false;
 		}
@@ -462,23 +439,6 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		final StatementListPropertyView statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
 			final int index = statementListPropertyPane.calculateIndex( dragSource.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
-
-			if( EPIC_HACK_desiredStatementListPropertyPane != null && EPIC_HACK_desiredIndex != -1 ) {
-				int desiredIndex;
-				if( EPIC_HACK_desiredIndex == Short.MAX_VALUE ) {
-					desiredIndex = statementListPropertyPane.getProperty().size();
-				} else {
-					desiredIndex = EPIC_HACK_desiredIndex;
-				}
-				if( EPIC_HACK_desiredStatementListPropertyPane != statementListPropertyPane || desiredIndex != index ) {
-//					EPIC_HACK_desiredStatementListPropertyPane = null;
-//					EPIC_HACK_desiredIndex = -1;
-//					source.hideDropProxyIfNecessary();
-					step.cancelTransaction();
-					return null;
-				}
-			}
-			
 			if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel ) {
 				if( org.alice.ide.croquet.models.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
 					//pass
@@ -539,7 +499,8 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 						org.lgna.project.ast.BlockStatement prevBlockStatement = (org.lgna.project.ast.BlockStatement)prevOwner.getOwner();
 						org.lgna.project.ast.BlockStatement nextBlockStatement = (org.lgna.project.ast.BlockStatement)nextOwner.getOwner();
 						if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-							org.lgna.project.ast.Statement copy = getIDE().createCopy( statement );
+							org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+							org.lgna.project.ast.Statement copy = ide.createCopy( statement );
 							rv = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( nextBlockStatement, nextIndex, copy );
 						} else {
 							if( prevOwner == nextOwner && ( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) ) {
@@ -554,25 +515,13 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		}
 		return rv;
 	}
-	private void resetScrollPane( final java.awt.Point viewPosition ) {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				CodeEditor.this.scrollPane.getAwtComponent().getViewport().setViewPosition( viewPosition );
-				CodeEditor.this.repaint();
-			}
-		} );
-	}
 	public final void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
 		//todo: listen to step
-		StatementListPropertyView.EPIC_HACK_ignoreDrawingDesired = true;
 		this.setCurrentUnder( null, null );
-		StatementListPropertyView.EPIC_HACK_ignoreDrawingDesired = false;
 		this.repaint();
 	}
 	public final void dragStopped( org.lgna.croquet.history.DragStep step ) {
-		EPIC_HACK_desiredStatementListPropertyPane = null;
-		EPIC_HACK_desiredIndex = -1;
 	}
 
 	private static int convertY( org.lgna.croquet.components.Component<?> from, int y, org.lgna.croquet.components.Component<?> to ) {
@@ -711,11 +660,6 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					
 					java.awt.Rectangle boundsAtIndex = new java.awt.Rectangle( bounds.x, yMinimum, bounds.width, yMaximum - yMinimum + 1 );
 
-					if( EPIC_HACK_isDropConstraintDesired ) {
-						CodeEditor.this.EPIC_HACK_desiredStatementListPropertyPane = statementListPropertyPane;
-						CodeEditor.this.EPIC_HACK_desiredIndex = index;
-					}
-					
 					return new StatementListIndexTrackableShape(statementListProperty, index, statementListPropertyPane, boundsAtIndex);
 //					return new org.lgna.croquet.TrackableShape() {
 //						public java.awt.Shape getShape( org.lgna.croquet.ScreenElement asSeenBy, java.awt.Insets insets ) {

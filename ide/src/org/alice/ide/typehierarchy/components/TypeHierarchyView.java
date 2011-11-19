@@ -136,7 +136,7 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 		this.jTree.setCellRenderer( new NamedUserTypeTreeCellRenderer() );
 		this.jTree.setBackground( org.alice.ide.IDE.getActiveInstance().getTheme().getTypeColor() );
 		
-		org.lgna.croquet.components.Component< ? > viewportView = new org.lgna.croquet.components.SwingAdapter( this.jTree );
+		org.lgna.croquet.components.JComponent< ? > viewportView = new org.lgna.croquet.components.SwingAdapter( this.jTree );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( viewportView );
 		scrollPane.setBorder( null );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "type heirarchy", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
