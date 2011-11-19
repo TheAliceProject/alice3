@@ -238,10 +238,12 @@ public class TypeManager {
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.JavaType javaType ) {
 		ExtendsTypeCriterion criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( javaType, ConstructorArgumentUtilities.getContructorParameter0Type( javaType ) );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType existingType : existingTypes ) {
-			if( criterion.accept( existingType ) ) {
-				return existingType;
+		if( project != null ) {
+			java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
+			for( org.lgna.project.ast.NamedUserType existingType : existingTypes ) {
+				if( criterion.accept( existingType ) ) {
+					return existingType;
+				}
 			}
 		}
 		return createTypeFor( javaType, "My" + javaType.getName(), null, null );

@@ -81,15 +81,17 @@ public class MyTypesView extends org.lgna.croquet.components.GridBagPanel {
 	}
 
 	private void addComponents( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node, int depth, java.awt.GridBagConstraints gbc ) {
-		org.lgna.project.ast.NamedUserType type = node.getValue();
-		if( type == null || type.isAssignableTo( org.lgna.story.Turnable.class ) ) {
-			if( type != null ) {
-				org.lgna.croquet.components.JComponent< ? > component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( TypeDragModel.getInstance( type ) );
-				gbc.insets.top = 8 + depth*12;
-				this.addComponent( component, gbc );
-			}
-			for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > child : node.getChildren() ) {
-				addComponents( child, depth+1, gbc );
+		if( node != null ) {
+			org.lgna.project.ast.NamedUserType type = node.getValue();
+			if( type == null || type.isAssignableTo( org.lgna.story.Turnable.class ) ) {
+				if( type != null ) {
+					org.lgna.croquet.components.JComponent< ? > component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( TypeDragModel.getInstance( type ) );
+					gbc.insets.top = 8 + depth*12;
+					this.addComponent( component, gbc );
+				}
+				for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > child : node.getChildren() ) {
+					addComponents( child, depth+1, gbc );
+				}
 			}
 		}
 	}

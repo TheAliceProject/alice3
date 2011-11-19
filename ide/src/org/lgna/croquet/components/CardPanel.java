@@ -68,6 +68,8 @@ public class CardPanel extends Panel {
 				this.addComposite( card );
 			}
 		}
+		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		//this.setBackgroundColor( null );
 		this.showComposite( null );
 	}
 	@Override

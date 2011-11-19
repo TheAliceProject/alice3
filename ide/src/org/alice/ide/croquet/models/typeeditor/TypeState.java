@@ -113,8 +113,10 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
 		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
-		for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node : root.getChildren() ) {
-			addTypeFillIns( rv, node );
+		if( root != null ) {
+			for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node : root.getChildren() ) {
+				addTypeFillIns( rv, node );
+			}
 		}
 		return rv;
 	}
