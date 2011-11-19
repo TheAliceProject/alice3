@@ -243,7 +243,16 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	
 	protected void addScene( org.lgna.project.ast.UserField sceneField ) {
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType) sceneField.getValueType();
-		org.lgna.project.virtualmachine.UserInstance rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap(sceneType);
+		Object userInstance = this.programInstance.getFieldValue(sceneField);
+		org.lgna.project.virtualmachine.UserInstance rv;
+		if (userInstance != null){
+			assert userInstance instanceof org.lgna.project.virtualmachine.UserInstance;
+			rv = (org.lgna.project.virtualmachine.UserInstance)userInstance;
+		}
+		else {
+			rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap(sceneType);
+		}
+		rv.ensureInverseMapExists();
 		mapSceneFieldToInstance.put(sceneField, rv);
 		mapSceneInstanceToField.put(rv, sceneField);
 		SceneFieldListSelectionState.getInstance().addItem(sceneField);

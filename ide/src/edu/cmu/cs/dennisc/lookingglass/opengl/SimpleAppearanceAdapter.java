@@ -32,6 +32,7 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 	@Override
 	public void setPipelineState( RenderContext rc, int face ) {
 		rc.setIsShadingEnabled( m_isShaded );
+		rc.gl.glDisable( GL_TEXTURE_2D );
 		//todo: investigate if specular, emissive, ambient should use an opacity of 1.0f
 		if( m_isShaded ) {
 			rc.gl.glMaterialf( face, GL_SHININESS, m_shininess );
