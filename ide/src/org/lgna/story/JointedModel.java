@@ -49,4 +49,7 @@ package org.lgna.story;
 public abstract class JointedModel extends Model {
 	@Override
 	/*package-private*/abstract org.lgna.story.implementation.JointedModelImp getImplementation();
+	public void straightenOutJoints( StraightenOutJoints.Detail... details ) {
+		this.getImplementation().animateStraightenOutJoints( Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
 }

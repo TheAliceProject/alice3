@@ -56,6 +56,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		public R getResource();
 		public JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
 		public VisualData createVisualData( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation );
+		public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId );
 	}
 	private final JointImplementationAndVisualDataFactory<R> factory;
 	private final A abstraction;
@@ -104,6 +105,9 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			}
 			return rv;
 		}
+	}
+	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
+		return this.factory.getOriginalJointOrientation( jointId );
 	}
 	
 	public abstract org.lgna.story.resources.JointId[] getRootJointIds();
@@ -164,5 +168,104 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		for( org.lgna.story.resources.JointId root : this.getRootJointIds() ) {
 			this.treeWalk( root, observer );
 		}
+	}
+	
+	
+	private static class JointData {
+		private final JointImp jointImp;
+		private final edu.cmu.cs.dennisc.math.UnitQuaternion q0;
+		private final edu.cmu.cs.dennisc.math.UnitQuaternion q1;
+		public JointData( JointImp jointImp ) {
+			this.jointImp = jointImp;
+			this.q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
+			edu.cmu.cs.dennisc.math.UnitQuaternion q = this.jointImp.getOriginalOrientation();
+			if( q != null ) {
+				if( this.q0.isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon( q ) ) {
+					this.q1 = null;
+				} else {
+					this.q1 = q;
+				}
+			} else {
+				this.q1 = null;
+			}
+		}
+//		public JointImp getJointImp() {
+//			return this.jointImp;
+//		}
+//		public edu.cmu.cs.dennisc.math.UnitQuaternion getQ0() {
+//			return this.q0;
+//		}
+//		public edu.cmu.cs.dennisc.math.UnitQuaternion getQ1() {
+//			return this.q1;
+//		}
+		public void setPortion( double portion ) {
+			if( this.q1 != null ) {
+				this.jointImp.setLocalOrientationOnly( edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( this.q0, this.q1, portion ).createOrthogonalMatrix3x3() );
+			} else {
+				//System.err.println( "skipping: " + this.jointImp );
+			}
+		}
+		public void epilogue() {
+			if( this.q1 != null ) {
+				this.jointImp.setLocalOrientationOnly( this.q1.createOrthogonalMatrix3x3() );
+			} else {
+				//System.err.println( "skipping: " + this.jointImp );
+			}
+		}
+	}
+	private static class StraightenTreeWalkObserver implements TreeWalkObserver {
+		private java.util.List< JointData > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		public void pushJoint(JointImp jointImp) {
+			if( jointImp != null ) {
+				list.add( new JointData( jointImp ) );
+			}
+		}
+		public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
+		}	
+		public void popJoint(JointImp joint) {
+		}
+	};
+	public void straightenOutJoints() {
+		StraightenTreeWalkObserver treeWalkObserver = new StraightenTreeWalkObserver();
+		this.treeWalk( treeWalkObserver );
+		for( JointData jointData : treeWalkObserver.list ) {
+			jointData.epilogue();
+		}
+	}
+	public void animateStraightenOutJoints( double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		duration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			this.straightenOutJoints();
+		} else {
+			final StraightenTreeWalkObserver treeWalkObserver = new StraightenTreeWalkObserver();
+			this.treeWalk( treeWalkObserver );
+			class StraightenOutJointsAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
+				public StraightenOutJointsAnimation( double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+					super( duration, style );
+				}
+				@Override
+				protected void prologue() {
+				}
+				@Override
+				protected void setPortion( double portion ) {
+					for( JointData jointData : treeWalkObserver.list ) {
+						jointData.setPortion( portion );
+					}
+				}
+				@Override
+				protected void epilogue() {
+					for( JointData jointData : treeWalkObserver.list ) {
+						jointData.epilogue();
+					}
+				}
+			}
+			perform( new StraightenOutJointsAnimation( duration, style ) );
+		}
+	}
+	public void animateStraightenOutJoints( double duration ) {
+		this.animateStraightenOutJoints( duration, DEFAULT_STYLE );
+	}
+	public void animateStraightenOutJoints() {
+		this.animateStraightenOutJoints( DEFAULT_DURATION );
 	}
 }

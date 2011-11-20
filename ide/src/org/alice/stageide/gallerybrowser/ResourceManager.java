@@ -82,7 +82,7 @@ public class ResourceManager {
 			if( rv != null ) {
 				//pass
 			} else {
-				System.err.println( resourceName );
+				System.err.println( "failed to getResource: " + resourceName );
 			}
 			return rv;
 			//			}

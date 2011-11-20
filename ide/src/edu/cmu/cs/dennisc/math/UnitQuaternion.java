@@ -216,6 +216,9 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 	public boolean isWithinEpsilonOrIsNegativeWithinEpsilon( UnitQuaternion q, double epsilon ) {
 		return UnitQuaternion.isWithinEpsilon( this.x, this.y, this.z, this.w, q, epsilon ) || UnitQuaternion.isWithinEpsilon( -this.x, -this.y, -this.z, -this.w, q, epsilon );
 	}
+	public boolean isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon( UnitQuaternion q ) {
+		return UnitQuaternion.isWithinEpsilon( this.x, this.y, this.z, this.w, q, EpsilonUtilities.REASONABLE_EPSILON ) || UnitQuaternion.isWithinEpsilon( -this.x, -this.y, -this.z, -this.w, q, EpsilonUtilities.REASONABLE_EPSILON );
+	}
 
 	public void set( double x, double y, double z, double w ) {
 		this.x = x;

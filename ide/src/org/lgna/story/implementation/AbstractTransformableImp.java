@@ -293,6 +293,14 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	}
 	
 
+	public void setLocalOrientationOnly( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 localOrientation ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevM = this.getSgComposite().getLocalTransformation();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = new edu.cmu.cs.dennisc.math.AffineMatrix4x4(
+				localOrientation,
+				prevM.translation
+		);
+		this.getSgComposite().setLocalTransformation( m );
+	}
 	public void setOrientationOnly( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset ) {
 		this.getSgComposite().setAxesOnly( offset != null ? offset : edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.accessIdentity(), target.getSgComposite() );
 	}

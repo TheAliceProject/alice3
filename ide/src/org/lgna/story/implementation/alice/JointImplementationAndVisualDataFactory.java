@@ -100,10 +100,18 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			String key = jointId.toString();
 			edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
 			edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
-			return new org.lgna.story.implementation.alice.JointImplementation( jointedModelImplementation, jointId, sgJoint );
+			if( sgJoint != null  ) {
+				return new org.lgna.story.implementation.alice.JointImplementation( jointedModelImplementation, jointId, sgJoint );
+			} else {
+				System.err.println( "WARNING: joint " + jointId + " not found for " + jointedModelImplementation );
+				return null;
+			}
 		} else {
 			return null;
 		}
+	}
+	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
+		return AliceResourceUtilties.getOriginalJointOrientation( this.resource, jointId );
 	}
 	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData( org.lgna.story.implementation.JointedModelImp jointedModelImplementation ) {
 		return new VisualData( this.resource );

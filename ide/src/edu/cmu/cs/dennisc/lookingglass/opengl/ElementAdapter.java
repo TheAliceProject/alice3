@@ -65,7 +65,6 @@ public abstract class ElementAdapter< E extends edu.cmu.cs.dennisc.scenegraph.El
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		// todo:
 		System.err.println( "unhandled property: " + property );
-		Thread.dumpStack();
 	}
 
 	public static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {

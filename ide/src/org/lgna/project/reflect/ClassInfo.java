@@ -93,7 +93,7 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 					this.cls = Class.forName( this.clsName );
 					assert this.cls != null : this.clsName;
 				} catch( Throwable t ) {
-					System.err.println( t + " " + this.clsName );
+					System.err.println( "getCls" + t + " " + this.clsName );
 				}
 //			}
 		}

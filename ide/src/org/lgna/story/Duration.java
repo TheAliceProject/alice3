@@ -57,6 +57,8 @@ public class Duration implements
 		SetPaint.Detail, SetOpacity.Detail,
 		//Resizable
 		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail, 
+		//JointedModel
+		StraightenOutJoints.Detail,
 		//Billboard
 		SetBackPaint.Detail,
 		//Camera,

@@ -242,4 +242,10 @@ public class AliceResourceUtilties {
 		rv.scale.setValue(scaleCopy);
 		return rv;
 	}
+	public static edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointedModelResource resource, org.lgna.story.resources.JointId jointId ) {
+		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal = getVisual( resource );
+		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( jointId.toString() );
+		return sgJoint.getLocalTransformation().orientation.createUnitQuaternion();
+	}
 }

@@ -70,4 +70,8 @@ public abstract class JointImp extends AbstractTransformableImp {
 	protected double getBoundingSphereRadius() {
 		return 0;
 	}
+	
+	protected edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
+		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
+	}
 }
