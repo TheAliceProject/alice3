@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneImplementation extends EntityImp {
+public class SceneImp extends EntityImp {
 	private static class Capsule {
 		private final TransformableImp transformable;
 		private EntityImp vehicle;
@@ -73,38 +73,38 @@ public class SceneImplementation extends EntityImp {
 	private ProgramImp program;
 	private final org.lgna.story.Scene abstraction;
 	
-	public final ColorProperty atmosphereColor = new ColorProperty( SceneImplementation.this ) {
+	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this ) {
 		@Override
 		public org.lgna.story.Color getValue() {
-			return org.lgna.story.ImplementationAccessor.createColor( SceneImplementation.this.sgBackground.color.getValue() );
+			return org.lgna.story.ImplementationAccessor.createColor( SceneImp.this.sgBackground.color.getValue() );
 		}
 		@Override
 		protected void handleSetValue(org.lgna.story.Color value) {
-			SceneImplementation.this.sgBackground.color.setValue( org.lgna.story.ImplementationAccessor.getColor4f( value ) );
+			SceneImp.this.sgBackground.color.setValue( org.lgna.story.ImplementationAccessor.getColor4f( value ) );
 		}
 	};
-	public final ColorProperty ambientLightColor = new ColorProperty( SceneImplementation.this ) {
+	public final ColorProperty ambientLightColor = new ColorProperty( SceneImp.this ) {
 		@Override
 		public org.lgna.story.Color getValue() {
-			return org.lgna.story.ImplementationAccessor.createColor( SceneImplementation.this.sgAmbientLight.color.getValue() );
+			return org.lgna.story.ImplementationAccessor.createColor( SceneImp.this.sgAmbientLight.color.getValue() );
 		}
 		@Override
 		protected void handleSetValue(org.lgna.story.Color value) {
-			SceneImplementation.this.sgAmbientLight.color.setValue( org.lgna.story.ImplementationAccessor.getColor4f( value ) );
+			SceneImp.this.sgAmbientLight.color.setValue( org.lgna.story.ImplementationAccessor.getColor4f( value ) );
 		}
 	};
-	public final FloatProperty globalLightBrightness = new FloatProperty( SceneImplementation.this ) {
+	public final FloatProperty globalLightBrightness = new FloatProperty( SceneImp.this ) {
 		@Override
 		public Float getValue() {
-			return SceneImplementation.this.sgScene.globalBrightness.getValue();
+			return SceneImp.this.sgScene.globalBrightness.getValue();
 		}
 		@Override
 		protected void handleSetValue( Float value ) {
-			SceneImplementation.this.sgScene.globalBrightness.setValue( value );
+			SceneImp.this.sgScene.globalBrightness.setValue( value );
 		}
 	};
 
-	public SceneImplementation( org.lgna.story.Scene abstraction ) {
+	public SceneImp( org.lgna.story.Scene abstraction ) {
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
 		this.sgScene.background.setValue( this.sgBackground );
@@ -122,7 +122,7 @@ public class SceneImplementation extends EntityImp {
 	}
 
 	@Override
-	protected SceneImplementation getScene() {
+	protected SceneImp getScene() {
 		return this;
 	}
 	@Override
@@ -176,7 +176,7 @@ public class SceneImplementation extends EntityImp {
 			this.perform( new edu.cmu.cs.dennisc.animation.interpolation.FloatAnimation( duration, style, this.sgScene.globalBrightness.getValue(), globalBrightness ) {
 				@Override
 				protected void updateValue( Float globalBrightness ) {
-					SceneImplementation.this.setGlobalBrightness( globalBrightness );
+					SceneImp.this.setGlobalBrightness( globalBrightness );
 				}
 			} );
 		}

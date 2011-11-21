@@ -73,9 +73,7 @@ public abstract class Turnable extends Entity {
 	
 	@MethodTemplate()
 	public void turnToFace( Entity target, TurnToFace.Detail... details ) {
-		this.getImplementation().setOrientationOnlyToFace( target.getImplementation() );
-		//todo
-		//this.getImplementation().animateTurnToFace( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateOrientationOnlyToFace( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public void standUp( StandUp.Detail... details ) {

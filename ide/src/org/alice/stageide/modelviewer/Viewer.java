@@ -49,7 +49,7 @@ package org.alice.stageide.modelviewer;
 abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	private org.lgna.story.implementation.SceneImplementation scene = new org.lgna.story.implementation.SceneImplementation( null );
+	private org.lgna.story.implementation.SceneImp scene = new org.lgna.story.implementation.SceneImp( null );
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp camera = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( null );
 	private org.lgna.story.implementation.SunImp sunLight = new org.lgna.story.implementation.SunImp( null );
 	private org.lgna.croquet.components.Component<?> adapter;
@@ -78,7 +78,7 @@ abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
-	protected org.lgna.story.implementation.SceneImplementation getScene() {
+	protected org.lgna.story.implementation.SceneImp getScene() {
 		return this.scene;
 	}
 	protected org.lgna.story.implementation.SymmetricPerspectiveCameraImp getCamera() {

@@ -80,12 +80,12 @@ public abstract class EntityImp implements ReferenceFrame {
 		this.getSgComposite().setParent( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 	
-	protected SceneImplementation getScene() {
+	protected SceneImp getScene() {
 		EntityImp vehicle = this.getVehicle();
 		return vehicle != null ? vehicle.getScene() : null;
 	}
 	protected ProgramImp getProgram() {
-		SceneImplementation scene = this.getScene();
+		SceneImp scene = this.getScene();
 		return scene != null ? scene.getProgram() : null;
 	}
 	

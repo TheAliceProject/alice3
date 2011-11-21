@@ -53,7 +53,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 		this.jointedModelImplementation = jointedModelImplementation;
 	}
 	@Override
-	protected org.lgna.story.implementation.SceneImplementation getScene() {
+	protected org.lgna.story.implementation.SceneImp getScene() {
 		return this.jointedModelImplementation.getScene();
 	}
 	public abstract org.lgna.story.resources.JointId getJointId();

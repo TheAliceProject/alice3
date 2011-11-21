@@ -48,10 +48,10 @@ import org.lgna.project.annotations.*;
  * @author Dennis Cosgrove
  */
 public abstract class Scene extends Entity {
-	private final org.lgna.story.implementation.SceneImplementation implementation = new org.lgna.story.implementation.SceneImplementation( this );
+	private final org.lgna.story.implementation.SceneImp implementation = new org.lgna.story.implementation.SceneImp( this );
 
 	@Override
-	/*package-private*/org.lgna.story.implementation.SceneImplementation getImplementation() {
+	/*package-private*/org.lgna.story.implementation.SceneImp getImplementation() {
 		return this.implementation;
 	}
 

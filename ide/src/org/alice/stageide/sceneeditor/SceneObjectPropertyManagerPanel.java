@@ -84,7 +84,7 @@ import org.lgna.story.implementation.ConeImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.GroundImp;
 import org.lgna.story.implementation.ModelImp;
-import org.lgna.story.implementation.SceneImplementation;
+import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.SphereImp;
 import org.lgna.story.implementation.TextImp;
 
@@ -213,16 +213,16 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			}
 			else if (setter.getName().equalsIgnoreCase("setAtmosphereColor"))
 			{
-				if (entityImp instanceof SceneImplementation)
+				if (entityImp instanceof SceneImp)
 				{
-					return new ColorPropertyAdapter<SceneImplementation>("Atmosphere Color", (SceneImplementation)entityImp, ((SceneImplementation)entityImp).atmosphereColor, state);
+					return new ColorPropertyAdapter<SceneImp>("Atmosphere Color", (SceneImp)entityImp, ((SceneImp)entityImp).atmosphereColor, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setAmbientLightColor"))
 			{
-				if (entityImp instanceof SceneImplementation)
+				if (entityImp instanceof SceneImp)
 				{
-					return new ColorPropertyAdapter<SceneImplementation>("Light Color", (SceneImplementation)entityImp, ((SceneImplementation)entityImp).ambientLightColor, state);
+					return new ColorPropertyAdapter<SceneImp>("Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).ambientLightColor, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setBackPaint"))
@@ -297,7 +297,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			this.selectedEntity = this.selectedImp.getAbstraction();
 		}
 		this.selectedObject = instance;
-		boolean isScene = this.selectedImp instanceof SceneImplementation;
+		boolean isScene = this.selectedImp instanceof SceneImp;
 		for (LabelValueControllerPair activeController : this.activeControllers)
 		{
 			if (activeController.controller != null)

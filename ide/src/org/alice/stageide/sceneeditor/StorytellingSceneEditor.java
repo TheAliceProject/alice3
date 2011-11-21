@@ -101,7 +101,7 @@ import org.lgna.story.implementation.OrthographicCameraImp;
 import org.lgna.story.implementation.OrthographicCameraMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 import org.lgna.story.implementation.ProgramImp;
-import org.lgna.story.implementation.SceneImplementation;
+import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.TransformableImp;
 import org.lgna.story.resourceutilities.ModelResourceUtilities;
 
@@ -705,7 +705,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sceneCameraImp.getSgCamera(), null );
 			this.globalDragAdapter.makeCameraActive( this.sceneCameraImp.getSgCamera() );
 		
-			SceneImplementation sceneImp =  this.getActiveSceneImplementation();
+			SceneImp sceneImp =  this.getActiveSceneImplementation();
 			//Add and set up the snap grid (this needs to happen before setting the camera)
 			sceneImp.getSgComposite().addComponent(this.snapGrid);
 			this.snapGrid.setTranslationOnly(0, 0, 0, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE);

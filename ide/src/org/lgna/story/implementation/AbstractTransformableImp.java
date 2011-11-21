@@ -293,14 +293,169 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	}
 	
 
-	public void setLocalOrientationOnly( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 localOrientation ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevM = this.getSgComposite().getLocalTransformation();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = new edu.cmu.cs.dennisc.math.AffineMatrix4x4(
-				localOrientation,
-				prevM.translation
-		);
-		this.getSgComposite().setLocalTransformation( m );
+	private static abstract class OrientationData {
+		private final AbstractTransformableImp subject;
+
+		public OrientationData( AbstractTransformableImp subject ) {
+			this.subject = subject;
+		}
+		public AbstractTransformableImp getSubject() {
+			return this.subject;
+		}
+
+		protected abstract void setM( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m );
+		protected final void setQ( edu.cmu.cs.dennisc.math.UnitQuaternion q ) {
+			this.setM( q.createOrthogonalMatrix3x3() );
+		}
+		protected abstract edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getM0();
+		protected abstract edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getM1();
+		protected abstract edu.cmu.cs.dennisc.math.UnitQuaternion getQ0();
+		protected abstract edu.cmu.cs.dennisc.math.UnitQuaternion getQ1();
+
+		public void setPortion( double portion ) {
+			edu.cmu.cs.dennisc.math.UnitQuaternion q0 = this.getQ0();
+			edu.cmu.cs.dennisc.math.UnitQuaternion q1 = this.getQ1();
+			this.setQ( edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( q0, q1, portion ) );
+		}
+		public void epilogue() {
+			this.setM( this.getM1() );
+		}
 	}
+	private static abstract class PreSetOrientationData extends OrientationData {
+		private final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m0;
+		private final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m1;
+		private edu.cmu.cs.dennisc.math.UnitQuaternion q0;
+		private edu.cmu.cs.dennisc.math.UnitQuaternion q1;
+		public PreSetOrientationData( AbstractTransformableImp subject, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m0, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m1 ) {
+			super( subject );
+			this.m0 = m0;
+			this.m1 = m1;
+		}
+		@Override
+		protected final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getM0() {
+			return this.m0;
+		}
+		@Override
+		protected final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getM1() {
+			return this.m1;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.UnitQuaternion getQ0() {
+			if( this.q0 != null ) {
+				//pass
+			} else {
+				this.q0 = this.m0.createUnitQuaternion();
+			}
+			return this.q0;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.UnitQuaternion getQ1() {
+			if( this.q1 != null ) {
+				//pass
+			} else {
+				this.q1 = this.m1.createUnitQuaternion();
+			}
+			return this.q1;
+		}
+	}
+	private static class LocalOrientationData extends PreSetOrientationData {
+		public LocalOrientationData( AbstractTransformableImp subject, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m1 ) {
+			super( subject, subject.getSgComposite().getLocalTransformation().orientation, m1 );
+		}
+		@Override
+		protected void setM( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation ) {
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevM = this.getSubject().getSgComposite().getLocalTransformation();
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextM = new edu.cmu.cs.dennisc.math.AffineMatrix4x4(
+					orientation,
+					prevM.translation
+			);
+			this.getSubject().getSgComposite().setLocalTransformation( nextM );
+		}
+	}
+	private static edu.cmu.cs.dennisc.pattern.DefaultPool< StandInImp > s_standInPool = new edu.cmu.cs.dennisc.pattern.DefaultPool< StandInImp >( StandInImp.class );
+
+	protected static StandInImp acquireStandIn( EntityImp composite ) {
+		StandInImp rv = s_standInPool.acquire();
+		rv.setVehicle( composite );
+		rv.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
+		return rv;
+	}
+	protected static void releaseStandIn( StandInImp standIn ) {
+		s_standInPool.release( standIn );
+	}
+
+	protected static edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 calculateTurnToFaceAxes( AbstractTransformableImp subject, EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
+		//todo: handle offset
+		SceneImp asSeenBy = subject.getScene();
+		assert asSeenBy != null;
+		StandInImp standInA = acquireStandIn( asSeenBy );
+		try {
+			standInA.setPositionOnly( subject );
+			edu.cmu.cs.dennisc.math.Point3 targetPos = target.getTransformation( standInA ).translation;
+			double targetTheta = Math.atan2( targetPos.z, targetPos.x );
+
+			StandInImp standInB = acquireStandIn( subject );
+			try {
+				standInB.applyTranslation( 0, 0, -1.0, standInB );
+	
+				edu.cmu.cs.dennisc.math.Point3 forwardPos = standInB.getTransformation( standInA ).translation;
+				double forwardTheta = Math.atan2( forwardPos.z, forwardPos.x );
+				
+				standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
+				standInB.applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis(), targetTheta - forwardTheta, standInA );
+				
+				return standInB.getTransformation( asSeenBy ).orientation;
+			} finally {
+				releaseStandIn( standInB );
+			}
+		} finally {
+			releaseStandIn( standInA );
+		}
+	}
+	private static class TurnToFaceOrientationData extends LocalOrientationData {
+		public TurnToFaceOrientationData( AbstractTransformableImp subject, EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
+			super( subject, calculateTurnToFaceAxes( subject, target, offset ) );
+		}
+	}
+	
+	
+	private void setOrientationOnly( OrientationData data ) {
+		data.epilogue();
+	}
+	private void animateOrientationOnly( final OrientationData data, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		duration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			data.epilogue();
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( adjustDurationIfNecessary( duration ), style ) {
+				@Override
+				protected void prologue() {
+				}
+				@Override
+				protected void setPortion(double portion) {
+					data.setPortion( portion );
+				}
+				@Override
+				protected void epilogue() {
+					data.epilogue();
+				}
+			} );
+		}
+	}
+	public void setLocalOrientationOnly( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 localOrientation ) {
+		this.setOrientationOnly( new LocalOrientationData( this, localOrientation ) );
+	}
+	public void animateLocalOrientationOnly( final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 localOrientation, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateOrientationOnly( new LocalOrientationData( this, localOrientation ), duration, style );
+	}
+	
+//	private edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 createOrientation( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset ) {
+//		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getTransformation( target );
+//		if( offset != null ) {
+//			//todo
+//		}
+//		return m.orientation;
+//	}
 	public void setOrientationOnly( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset ) {
 		this.getSgComposite().setAxesOnly( offset != null ? offset : edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.accessIdentity(), target.getSgComposite() );
 	}
@@ -339,9 +494,22 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		this.animateOrientationOnly( target, edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity() );
 	}
 
-	public void setOrientationOnlyToFace( ReferenceFrame target ) {
-		javax.swing.JOptionPane.showMessageDialog( null, "todo: turnToFace" );
+	public void setOrientationOnlyToFace( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
+		this.setOrientationOnly( new TurnToFaceOrientationData( this, target, offset ) );
 	}
+	public void animateOrientationOnlyToFace( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateOrientationOnly( new TurnToFaceOrientationData( this, target, offset ), duration, style );
+	}
+	public void animateOrientationOnlyToFace( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset, double duration ) {
+		this.animateOrientationOnly( target, offset, duration, DEFAULT_STYLE );
+	}
+	public void animateOrientationOnlyToFace( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset ) {
+		this.animateOrientationOnly( target, offset, DEFAULT_DURATION );
+	}
+	public void animateOrientationOnlyToFace( EntityImp target ) {
+		this.animateOrientationOnly( target, edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity() );
+	}
+
 	public void setOrientationOnlyToStandUp() {
 		this.getSgComposite().setAxesOnlyToStandUp();
 	}

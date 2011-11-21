@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class StandInImp extends AbstractTransformableImp {
+public class StandInImp extends AbstractTransformableImp implements edu.cmu.cs.dennisc.pattern.Reusable {
 	private final edu.cmu.cs.dennisc.scenegraph.StandIn sgStandIn = new edu.cmu.cs.dennisc.scenegraph.StandIn();
 	public StandInImp() {
 		this.putInstance( this.sgStandIn );
