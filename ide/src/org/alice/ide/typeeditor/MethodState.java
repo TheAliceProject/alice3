@@ -54,11 +54,11 @@ public abstract class MethodState extends FilteredMemberState< org.lgna.project.
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
 		org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();
 		if( accessLevel == org.lgna.project.ast.AccessLevel.PRIVATE ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateMethods.getInstance().getValue();
+			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getValue();
 		} else if( accessLevel == org.lgna.project.ast.AccessLevel.PROTECTED ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedMethods.getInstance().getValue();
+			return org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getValue();
 		} else if( accessLevel == org.lgna.project.ast.AccessLevel.PACKAGE ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateMethods.getInstance().getValue();
+			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getValue();
 		} else {
 			return true;
 		}
