@@ -118,7 +118,11 @@ public class UserInstance {
 		if( this.inverseFieldMap != null ) {
 			//pass
 		} else {
-			this.inverseFieldMap = edu.cmu.cs.dennisc.java.util.Collections.newInverseHashMap( this.fieldMap );
+			this.inverseFieldMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			for( UserField field : this.fieldMap.keySet() ) {
+				Object value = this.fieldMap.get( field );
+				this.inverseFieldMap.put( getInstanceInJavaIfNecessary( value ), field );
+			}
 		}
 	}
 	public Object createAndSetFieldInstance( VirtualMachine vm, UserField field ) {
