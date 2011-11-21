@@ -40,29 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
 
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class IsIncludingProtectedMethods extends org.lgna.croquet.preferences.PreferenceBooleanState {
 	private static class SingletonHolder {
-		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
+		private static IsIncludingProtectedMethods instance = new IsIncludingProtectedMethods();
 	}
-	public static InternalTestingMenuModel getInstance() {
+	public static IsIncludingProtectedMethods getInstance() {
 		return SingletonHolder.instance;
 	}
-	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().getMenuItemPrepModel(),
-				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel()
-		);
+	private IsIncludingProtectedMethods() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "edd78ac7-6abb-4622-9b86-e4481d841379" ), true );
 	}
 }
