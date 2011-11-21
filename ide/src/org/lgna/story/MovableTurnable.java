@@ -111,4 +111,9 @@ public abstract class MovableTurnable extends Turnable {
 	public void moveAndOrientTo( Entity target, MoveAndOrientTo.Detail... details ) {
 		this.getImplementation().animateTransformation( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
+	
+	@MethodTemplate()
+	public void place( SpatialRelation spatialRelation, Entity target, Place.Detail... details ) {
+		this.getImplementation().animatePlace( spatialRelation.getImp(), target != null ? target.getImplementation() : null, AlongAxisOffset.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
 }

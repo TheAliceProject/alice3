@@ -274,7 +274,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.setPositionOnly( target, offset );
 		} else {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0 = this.getTransformation( target );
-			perform( new edu.cmu.cs.dennisc.math.animation.Point3Animation( adjustDurationIfNecessary( duration ), style, m0.translation, offset != null ? offset : edu.cmu.cs.dennisc.math.Point3.ORIGIN ) {
+			perform( new edu.cmu.cs.dennisc.math.animation.Point3Animation( duration, style, m0.translation, offset != null ? offset : edu.cmu.cs.dennisc.math.Point3.ORIGIN ) {
 				@Override
 				protected void updateValue( edu.cmu.cs.dennisc.math.Point3 t ) {
 					AbstractTransformableImp.this.setPositionOnly( target, t );
@@ -293,6 +293,51 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	}
 	
 
+	protected static final double DEFAULT_PLACE_ALONG_AXIS_OFFSET = 0.0;
+
+	private static class PlaceAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
+		private final SpatialRelationImp spatialRelation;
+		private final EntityImp target;
+		private final double alongAxisOffset;
+		public PlaceAnimation( double duration, edu.cmu.cs.dennisc.animation.Style style, SpatialRelationImp spatialRelation, final EntityImp target, double alongAxisOffset ) {
+			super( duration, style );
+			this.spatialRelation = spatialRelation;
+			this.target = target;
+			this.alongAxisOffset = alongAxisOffset;
+		}
+		@Override
+		protected void prologue() {
+		}
+		@Override
+		protected void setPortion( double portion ) {
+		}
+		@Override
+		protected void epilogue() {
+		}
+	}
+	public void place( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset ) {
+	}
+	public void place( SpatialRelationImp spatialRelation, EntityImp target ) {
+		this.place( spatialRelation, target, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
+	}
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		duration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			this.place( spatialRelation, target, alongAxisOffset );
+		} else {
+			perform( new PlaceAnimation( duration, style, spatialRelation, target, alongAxisOffset ) );
+		}
+	}
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, double duration ) {
+		this.animatePlace( spatialRelation, target, alongAxisOffset, duration, DEFAULT_STYLE );
+	}
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset ) {
+		this.animatePlace( spatialRelation, target, alongAxisOffset, DEFAULT_DURATION );
+	}
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target ) {
+		this.animatePlace( spatialRelation, target, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
+	}
+	
 	private static abstract class OrientationData {
 		private final AbstractTransformableImp subject;
 
@@ -427,7 +472,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
 			data.epilogue();
 		} else {
-			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( adjustDurationIfNecessary( duration ), style ) {
+			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration, style ) {
 				@Override
 				protected void prologue() {
 				}
@@ -475,7 +520,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			} else {
 				q1 = edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity();
 			}
-			perform( new edu.cmu.cs.dennisc.math.animation.UnitQuaternionAnimation( adjustDurationIfNecessary( duration ), style, q0, q1 ) {
+			perform( new edu.cmu.cs.dennisc.math.animation.UnitQuaternionAnimation( duration, style, q0, q1 ) {
 				@Override
 				protected void updateValue( edu.cmu.cs.dennisc.math.UnitQuaternion q ) {
 					buffer.setValue( q );

@@ -41,51 +41,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, StandUp.Detail, PointAt.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail, 
-		//JointedModel
-		StraightenOutJoints.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail,
-		//Sphere
-		SetRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
-	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
+public enum SpatialRelationImp {
+	LEFT_OF(new edu.cmu.cs.dennisc.math.Point3( -1, 0, 0 )),
+	RIGHT_OF(new edu.cmu.cs.dennisc.math.Point3( 1, 0, 0 )),
+	ABOVE(new edu.cmu.cs.dennisc.math.Point3( 0, 1, 0 )),
+	BELOW(new edu.cmu.cs.dennisc.math.Point3( 0, -1, 0 )),
+	IN_FRONT_OF(new edu.cmu.cs.dennisc.math.Point3( 0, 0, -1 )),
+	BEHIND(new edu.cmu.cs.dennisc.math.Point3( 0, 0, 1 ));
+
+	//	FRONT_RIGHT_OF ( new edu.cmu.cs.dennisc.math.Point3( 0.7071068, 0, -0.7071068 ) ),
+	//	FRONT_LEFT_OF ( new edu.cmu.cs.dennisc.math.Point3( -0.7071068, 0, -0.7071068 ) ),
+	//	BEHIND_RIGHT_OF ( new edu.cmu.cs.dennisc.math.Point3(  0.7071068, 0, 0.7071068 ) ),
+	//	BEHIND_LEFT_OF ( new edu.cmu.cs.dennisc.math.Point3( -0.7071068, 0, 0.7071068 ) );
+
+	//public static final SpatialRelation IN = new SpatialRelation();
+	//public static final SpatialRelation ON = new SpatialRelation();
+	//public static final SpatialRelation AT = new SpatialRelation();
+
+	private final edu.cmu.cs.dennisc.math.Point3 placeAxis;
+
+	SpatialRelationImp( edu.cmu.cs.dennisc.math.Point3 placeAxis ) {
+		this.placeAxis = placeAxis;
 	}
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
-				return duration.value;
-			}
+
+	public edu.cmu.cs.dennisc.math.Point3 getPlaceLocation( double amount, edu.cmu.cs.dennisc.math.AxisAlignedBox subjectBoundingBox, edu.cmu.cs.dennisc.math.AxisAlignedBox objectBoundingBox ) {
+		double x = amount * this.placeAxis.x;
+		double y = amount * this.placeAxis.y;
+		double z = amount * this.placeAxis.z;
+
+		if( this.placeAxis.x > 0 ) {
+			x += this.placeAxis.x * (objectBoundingBox.getMaximum().x - subjectBoundingBox.getMinimum().x);
+		} else if( this.placeAxis.x < 0 ) {
+			x += this.placeAxis.x * (subjectBoundingBox.getMaximum().x - objectBoundingBox.getMinimum().x);
 		}
-		return defaultValue;
-	}
-	/*package-private*/ static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+		if( this.placeAxis.y > 0 ) {
+			y += this.placeAxis.y * (objectBoundingBox.getMaximum().y - subjectBoundingBox.getMinimum().y);
+		} else if( this.placeAxis.y < 0 ) {
+			y += this.placeAxis.y * (subjectBoundingBox.getMaximum().y - objectBoundingBox.getMinimum().y);
+		}
+		if( this.placeAxis.z > 0 ) {
+			z += this.placeAxis.z * (subjectBoundingBox.getMaximum().z - objectBoundingBox.getMinimum().z);
+		} else if( this.placeAxis.z < 0 ) {
+			z += this.placeAxis.z * (objectBoundingBox.getMaximum().z - subjectBoundingBox.getMinimum().z);
+		}
+
+		return new edu.cmu.cs.dennisc.math.Point3( x, y, z );
+
 	}
 }

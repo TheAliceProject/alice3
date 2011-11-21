@@ -46,46 +46,26 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, StandUp.Detail, PointAt.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail, 
-		//JointedModel
-		StraightenOutJoints.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail,
-		//Sphere
-		SetRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
+public class AlongAxisOffset implements 
+	//MoveableTurnable
+	Place.Detail
 {
-	private static final double DEFAULT_VALUE = 1.0;
+	private static final double DEFAULT_VALUE = 0.0;
 	private final double value;
-	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
+
+	public AlongAxisOffset( Number value ) {
+		this.value = value.doubleValue();
 	}
 	private static double getValue( Object[] details, double defaultValue ) {
 		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
+			if( detail instanceof AlongAxisOffset ) {
+				AlongAxisOffset duration = (AlongAxisOffset)detail;
 				return duration.value;
 			}
 		}
 		return defaultValue;
 	}
-	/*package-private*/ static double getValue( Object[] details ) {
+	/*package-private*/static double getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
 }

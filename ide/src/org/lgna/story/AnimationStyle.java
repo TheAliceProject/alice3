@@ -52,6 +52,7 @@ public enum AnimationStyle implements
 		//MoveableTurnable
 		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
 		MoveTo.Detail, MoveAndOrientTo.Detail,
+		Place.Detail,
 		//Visual
 		SetPaint.Detail, SetOpacity.Detail,
 		//Resizable
