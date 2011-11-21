@@ -90,7 +90,7 @@ public class NebulousPersonVisualData extends NebulousVisualData< edu.cmu.cs.den
 	public void popAtomic() {
 		this.atomicCount--;
 		if( this.atomicCount == 0 ) {
-			this.getNebModel().setAll( this.gender, this.skinTone, this.eyeColor, this.hair, this.outfit, this.obesityLevel );
+			this.getNebModel().setAll( this.gender, this.outfit, this.skinTone, this.obesityLevel, this.eyeColor, this.hair );
 		}
 	}
 	
