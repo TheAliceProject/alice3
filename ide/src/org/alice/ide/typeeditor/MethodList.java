@@ -64,7 +64,11 @@ public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMe
 		);
 		button.addComponent( lineStart, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		button.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( item, null, true, item.getDeclaringType() ), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		button.addComponent( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+		if( item.isSignatureLocked.getValue() ) {
+			//pass
+		} else {
+			button.addComponent( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+		}
 		return new MethodItemDetails( this, item, button );
 	}
 }

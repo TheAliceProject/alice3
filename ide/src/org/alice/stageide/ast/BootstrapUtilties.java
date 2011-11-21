@@ -192,7 +192,7 @@ public class BootstrapUtilties {
 		ifOuterTrueBody.statements.add( ifInner );
 
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performGeneratedSetupMethod ) );
-		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performGeneratedSetupMethod ) );
+		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performCustomSetupMethod ) );
 
 		Class< ? > sceneCls = org.lgna.story.Scene.class;
 		
