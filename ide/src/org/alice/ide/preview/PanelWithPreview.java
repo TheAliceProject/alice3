@@ -48,8 +48,10 @@ package org.alice.ide.preview;
 public abstract class PanelWithPreview< F > extends org.lgna.croquet.components.CascadeInputDialogPanel< F > {
 	class PreviewPane extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
 		public void refresh() {
-			this.internalForgetAndRemoveAllComponents();
-			this.internalAddComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.CENTER );
+			synchronized( this.getTreeLock() ) {
+				this.internalForgetAndRemoveAllComponents();
+				this.internalAddComponent( PanelWithPreview.this.createPreviewSubComponent(), java.awt.BorderLayout.CENTER );
+			}
 			this.revalidateAndRepaint();
 		}
 		@Override
