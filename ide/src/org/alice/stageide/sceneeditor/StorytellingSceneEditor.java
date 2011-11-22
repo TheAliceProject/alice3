@@ -244,6 +244,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private org.lgna.croquet.components.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 	
+	private org.lgna.croquet.components.Button runButton = org.alice.stageide.croquet.models.run.RunOperation.getInstance().createButton();
+	
 	private OrthographicCameraImp orthographicCameraImp = null;
 	private OrthographicCameraMarkerImp topOrthoMarkerImp = null;
 	private OrthographicCameraMarkerImp frontOrthoMarkerImp = null;
@@ -437,6 +439,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	@Override
 	protected void handleExpandContractChange(boolean isExpanded) {
 		this.mainPanel.removeAllComponents();
+		this.mainCameraNavigatorWidget.setExpanded(isExpanded);
+		this.lookingGlassPanel.setNorthEastComponent( this.runButton );
 		if (isExpanded)
 		{
 			this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
@@ -444,16 +448,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.propertiesSplitPane.setTrailingComponent(this.sidePanel);
 			this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
 			this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
+
+			this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
 		}
 		else
 		{
 			this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
 			this.lookingGlassPanel.setNorthWestComponent( null );
 			this.lookingGlassPanel.setSouthEastComponent(this.expandButton);
+			this.lookingGlassPanel.setSouthComponent(null);
 		}
 		this.mainCameraViewSelector.setVisible(isExpanded);
-		this.mainCameraNavigatorWidget.setExpanded(isExpanded);
-		this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
 	}
 	
 	
@@ -597,7 +602,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.expandButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ).createButton();
 			this.expandButton.setIcon( EXPAND_ICON );
 			//todo: tool tip text
-			this.expandButton.getAwtComponent().setText( null );
+			//this.expandButton.getAwtComponent().setText( null );
 			this.expandButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 
 			this.contractButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.stageide.perspectives.CodePerspective.getInstance() ).createButton();
