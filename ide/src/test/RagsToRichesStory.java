@@ -63,40 +63,27 @@ import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
-class CustomBiped extends Biped {
-	public CustomBiped( BipedResource resource ) {
+class MyBiped extends Biped {
+	public MyBiped( BipedResource resource ) {
 		super( resource );
 	}
 }
 
-class CustomMonster extends CustomBiped {
-	public CustomMonster( BipedResource resource ) {
+class MyOgre extends MyBiped {
+	public MyOgre( org.lgna.story.resources.biped.Ogre resource ) {
 		super( resource );
 	}
 }
-
-class CustomOgre extends CustomMonster {
-	public CustomOgre( org.lgna.story.resources.biped.Ogre resource ) {
-		super( resource );
-	}
-}
-
-class CustomOgreGreen extends CustomOgre {
-	public CustomOgreGreen() {
-		super( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-	}
-}
-
 
 class DesertScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground desert = new Ground();
 	private final Sphere sphere = new Sphere();
-//	private final CustomAdult fellowLaborer = new CustomAdult( org.lgna.story.resources.people.Ogre.BEAST_DIFFUSE );
+	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
 	private final org.lgna.story.Billboard billboard = new org.lgna.story.Billboard();
 	private final Camera camera;
-	private final CustomMonster ogre;
-	public DesertScene( Camera camera, CustomMonster ogre ) {
+	private final MyOgre ogre;
+	public DesertScene( Camera camera, MyOgre ogre ) {
 		this.camera = camera;
 		this.ogre = ogre;
 	}
@@ -106,16 +93,16 @@ class DesertScene extends Scene {
 		this.desert.setVehicle( this );
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
-		//this.sphere.setVehicle( this );
-		//this.ogre.setVehicle( this );
-//		this.fellowLaborer.setVehicle( this );
+		this.sphere.setVehicle( this );
+		this.ogre.setVehicle( this );
+		this.fellowLaborer.setVehicle( this );
 		
 		this.billboard.setVehicle( this );
 		this.billboard.setPaint( Color.RED );
 		this.billboard.setBackPaint( Color.BLUE );
 
-//		this.ogre.move( MoveDirection.LEFT, 1.0 );
-//		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
+		this.ogre.move( MoveDirection.LEFT, 1.0 );
+		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
 		
 		this.desert.setPaint( Ground.SurfaceAppearance.SAND );
 		this.sphere.setRadius( 0.1 );
@@ -151,9 +138,9 @@ class SnowScene extends Scene {
 	private final Cone greenCone = new Cone(); 
 	private final Cone blueCone = new Cone();
 	private final Camera camera;
-	private final CustomMonster ogre;
-	private final CustomBiped susan;
-	public SnowScene( Camera camera, CustomMonster ogre, CustomBiped susan ) {
+	private final MyOgre ogre;
+	private final MyBiped susan;
+	public SnowScene( Camera camera, MyOgre ogre, MyBiped susan ) {
 		this.camera = camera;
 		this.susan = susan;
 		this.ogre = ogre;
@@ -189,39 +176,6 @@ class SnowScene extends Scene {
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
-		
-
-////keywords
-////chain
-//this.ogre.move( MoveDirection.LEFT, 1.5 );
-//this.ogre.move( MoveDirection.LEFT, 1.5, 1.0 );
-//this.ogre.move( MoveDirection.LEFT, 1.5, 1.0, this.camera );
-//this.ogre.move( MoveDirection.LEFT, 1.5, 1.0, this.camera, AnimationStyle.BEGIN_AND_END_GENTLY );
-//
-////builder
-//this.ogre.move( new MoveArguments.Builder( MoveDirection.LEFT, 1.5 ).asSeenBy( this.camera ).duration( 1.0 ).build() );
-////builder more palatable
-//this.ogre.move( MoveDirection.LEFT, 1.5, MoveArguments.asSeenBy( this.camera ).duration( 1.0 ) );
-//
-////varargs
-//this.ogre.move( MoveDirection.LEFT, 1.5 );
-//this.ogre.move( MoveDirection.LEFT, 1.5, Move.asSeenBy( this.camera ), Move.duration( 1.0 ) );
-//
-//
-//
-////inner classes
-//DoTogether.invokeAndWait(
-//		new Runnable() {
-//			public void run() {
-//				SnowScene.this.ogre.move( MoveDirection.LEFT, 1.5 );
-//			}
-//		},
-//		new Runnable() {
-//			public void run() {
-//				SnowScene.this.ogre.move( MoveDirection.UP, 1.5 );
-//			}
-//		}
-//);
 	}
 	private void performCustomSetup() {
 	}
@@ -273,7 +227,7 @@ class SnowScene extends Scene {
  */
 class RagsToRichesStory extends Program {
 	private final Camera camera = new Camera();
-	private final CustomBiped susan = new CustomBiped( 
+	private final MyBiped susan = new MyBiped( 
 			new AdultPersonResource(
 					Gender.FEMALE,
 					BaseSkinTone.getRandom(),
@@ -282,20 +236,14 @@ class RagsToRichesStory extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final CustomMonster ogre = new CustomMonster( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-//	private final CustomAdult ogre = new CustomAdult( 
-//			new AdultPersonResource(
-//					Gender.MALE,
-//					BaseSkinTone.getRandom(),
-//					BaseEyeColor.getRandom(),
-//					MaleAdultHairBald.BARE,
-//					0.5,
-//					MaleAdultFullBodyOutfitAmbulanceDriver.BLUE
-//	) );
+	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.Ogre.GREEN_OGRE );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	public void playOutStory() {
 		this.setActiveScene( this.desertScene );
+		this.desertScene.turnBigRocksIntoLittleRocks();
+		this.setActiveScene( this.snowScene );
+		this.snowScene.chillInSkiChalet();
 	}
 	public static void main( String[] args ) {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
@@ -303,10 +251,3 @@ class RagsToRichesStory extends Program {
 		ragsToRichesStory.playOutStory();
 	}
 }
-
-////best practice
-//sphere.move( MoveDirection.LEFT, 0.5, new MoveDetails.Builder().asSeenBy( camera ).duration( 0.5 ).build() );
-////serves our purpose
-//sphere.turn( TurnDirection.LEFT, 0.5, new TurnDetails().asSeenBy( camera ).duration( 0.5 ) );
-////less syntax, more magic?
-//sphere.roll( RollDirection.LEFT, 0.5, RollDetailsFactory.asSeenBy( camera ).duration( 0.5 ) );
