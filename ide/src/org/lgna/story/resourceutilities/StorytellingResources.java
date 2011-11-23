@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.alice.ide.IDE;
 import org.alice.ide.ResourcePathManager;
+import org.alice.ide.croquet.models.ui.preferences.NebulousResourceDirectoryState;
 import org.lgna.project.ast.JavaType;
 
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
@@ -18,6 +19,8 @@ public class StorytellingResources {
 	public static StorytellingResources getInstance() {
 		return SingletonHolder.instance;
 	}
+	
+	private static final String NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY = "NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY";
 	
 	private static final String SIMS_RESOURCE_INSTALL_PATH = "assets/sims";
 	private static final String ALICE_RESOURCE_INSTALL_PATH = "assets/alice";
@@ -48,6 +51,20 @@ public class StorytellingResources {
 		return null;
 	}
 	
+	public void setNebulousResourceDir(String dir) {
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		rv.put(NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, dir);
+	}
+	
+	public File getNebulousDirFromPref() {
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		String dir = rv.get(NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "");
+		if (dir != null && dir.length() > 0) {
+			return new File(dir);
+		}
+		return null;
+	}
+	
 	private List<File> findSimsBundles()
 	{
 		File simsPath = findResourcePath(SIMS_RESOURCE_INSTALL_PATH);
@@ -58,7 +75,12 @@ public class StorytellingResources {
 		}
 		else
 		{
-			return new LinkedList<File>();
+			LinkedList<File> directoryFromSavedPreference = new LinkedList<File>();
+			File resourceDir = getNebulousDirFromPref();
+			if (resourceDir != null){
+				directoryFromSavedPreference.add(resourceDir);
+			}
+			return directoryFromSavedPreference;
 		}
 	}
 	
@@ -87,6 +109,12 @@ public class StorytellingResources {
 		if (resourcePaths.size() == 0)
 		{
 			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find the Alice gallery resources." );
+		}
+		if (this.getNebulousDirFromPref() == null) {
+			java.util.List<java.io.File> nebulousPaths = ResourcePathManager.getPaths(ResourcePathManager.SIMS_RESOURCE_KEY);
+			if (nebulousPaths.size() > 0) {
+				this.setNebulousResourceDir(nebulousPaths.get(0).getAbsolutePath());
+			}
 		}
 	}
 	
@@ -118,6 +146,11 @@ public class StorytellingResources {
 		}
 		if (simsPathsLoaded.size() == 0){
 			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find The Sims (TM) 2 Art Assets." );
+		}
+		else {
+			if (getNebulousDirFromPref() == null) {
+				setNebulousResourceDir(simsPathsLoaded.get(0).getParent());
+			}
 		}
 	}
 	

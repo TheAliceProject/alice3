@@ -1,6 +1,7 @@
 package org.alice.ide;
 
 
+
 public class ResourcePathManager {
 	
 	public static String AUDIO_RESOURCE_KEY = "org.alice.ide.audioResourcePath";
@@ -17,6 +18,7 @@ public class ResourcePathManager {
 		ResourcePathManager.initializePath(IMAGE_RESOURCE_KEY);
 		ResourcePathManager.initializePath(MODEL_RESOURCE_KEY);
 		ResourcePathManager.initializePath(SIMS_RESOURCE_KEY);
+		
 	}
 
 	private static java.io.File getValidPath(String path)
