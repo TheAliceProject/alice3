@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.alice.ide.IDE;
 import org.alice.ide.ResourcePathManager;
-import org.alice.ide.croquet.models.ui.preferences.NebulousResourceDirectoryState;
 import org.lgna.project.ast.JavaType;
 
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
