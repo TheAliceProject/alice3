@@ -446,7 +446,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				double forwardTheta = Math.atan2( forwardPos.z, forwardPos.x );
 
 				standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
-				standInB.applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis(), targetTheta - forwardTheta, standInA );
+				standInB.applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3.accessNegativeYAxis(), targetTheta - forwardTheta, standInA );
 				
 				return standInB.getTransformation( asSeenBy ).orientation;
 			} finally {
