@@ -463,23 +463,40 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	}
 
 	private static class OrientToUprightData extends PreSetOrientationData {
-		private final ReferenceFrame asSeenBy;
-		public static OrientToUprightData createInstance( AbstractTransformableImp subject, ReferenceFrame asSeenBy ) {
-			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation0 = subject.getTransformation( asSeenBy ).orientation;
+		private final ReferenceFrame upAsSeenBy;
+		public static OrientToUprightData createInstance( AbstractTransformableImp subject, ReferenceFrame upAsSeenBy ) {
+			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation0 = subject.getTransformation( upAsSeenBy ).orientation;
 			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation1 = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createFromStandUp( orientation0 );
-			return new OrientToUprightData( subject, orientation0, orientation1, asSeenBy );
+			return new OrientToUprightData( subject, orientation0, orientation1, upAsSeenBy );
 		}
-		private OrientToUprightData( AbstractTransformableImp subject, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation0, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation1, ReferenceFrame asSeenBy ) {
+		private OrientToUprightData( AbstractTransformableImp subject, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation0, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation1, ReferenceFrame upAsSeenBy ) {
 			super( subject, orientation0, orientation1 );
-			this.asSeenBy = asSeenBy;
+			this.upAsSeenBy = upAsSeenBy;
 		}
 		@Override
 		protected void setM( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m ) {
-			this.getSubject().getSgComposite().setAxesOnly( m, this.asSeenBy.getSgReferenceFrame() );
+			this.getSubject().getSgComposite().setAxesOnly( m, this.upAsSeenBy.getSgReferenceFrame() );
 		}
 	}
-	
-	
+	private static class OrientToPointAtData extends PreSetOrientationData {
+		private final ReferenceFrame upAsSeenBy;
+		public static OrientToPointAtData createInstance( AbstractTransformableImp subject, EntityImp target, ReferenceFrame upAsSeenBy ) {
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0 = subject.getTransformation( upAsSeenBy );
+			edu.cmu.cs.dennisc.math.Point3 t0 = m0.translation;
+			edu.cmu.cs.dennisc.math.Point3 t1 = target.getTransformation( upAsSeenBy ).translation;
+			edu.cmu.cs.dennisc.math.Vector3 forward = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( t1, t0 );
+			edu.cmu.cs.dennisc.math.ForwardAndUpGuide fowardAndUpGuide = new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( forward, null );
+			return new OrientToPointAtData( subject, m0.orientation, fowardAndUpGuide.createOrthogonalMatrix3x3(), upAsSeenBy );
+		}
+		private OrientToPointAtData( AbstractTransformableImp subject, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation0, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation1, ReferenceFrame upAsSeenBy ) {
+			super( subject, orientation0, orientation1 );
+			this.upAsSeenBy = upAsSeenBy;
+		}
+		@Override
+		protected void setM( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m ) {
+			this.getSubject().getSgComposite().setAxesOnly( m, this.upAsSeenBy.getSgReferenceFrame() );
+		}
+	}
 	
 	private void setOrientationOnly( OrientationData data ) {
 		data.epilogue();
@@ -572,17 +589,45 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		this.animateOrientationOnly( target, edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity() );
 	}
 
-	public void setOrientationToUpright( ReferenceFrame asSeenBy ) {
-		this.setOrientationOnly( OrientToUprightData.createInstance( this, asSeenBy ) );
+	public void setOrientationToUpright( ReferenceFrame upAsSeenBy ) {
+		this.setOrientationOnly( OrientToUprightData.createInstance( this, upAsSeenBy ) );
 	}
 	public void setOrientationToUpright() {
 		this.setOrientationToUpright( AsSeenBy.SCENE );
 	}
-	public void animateOrientationToUpright( ReferenceFrame asSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.animateOrientationOnly( OrientToUprightData.createInstance( this, asSeenBy ), duration, style );
+	public void animateOrientationToUpright( ReferenceFrame upAsSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateOrientationOnly( OrientToUprightData.createInstance( this, upAsSeenBy ), duration, style );
+	}
+	public void animateOrientationToUpright( ReferenceFrame upAsSeenBy, double duration ) {
+		this.animateOrientationToUpright( upAsSeenBy, duration, DEFAULT_STYLE );
+	}
+	public void animateOrientationToUpright( ReferenceFrame upAsSeenBy ) {
+		this.animateOrientationToUpright( upAsSeenBy, DEFAULT_DURATION );
+	}
+	public void animateOrientationToUpright() {
+		this.animateOrientationToUpright( AsSeenBy.SCENE );
 	}
 
-//	public void setOrientationOnlyToUpright() {
+	public void setOrientationToPointAt( EntityImp target, ReferenceFrame upAsSeenBy ) {
+		this.setOrientationOnly( OrientToPointAtData.createInstance( this, target, upAsSeenBy ) );
+	}
+	public void setOrientationToPointAt( EntityImp target ) {
+		this.setOrientationToPointAt( target, AsSeenBy.SCENE );
+	}
+	public void animateOrientationToPointAt( EntityImp target, ReferenceFrame upAsSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateOrientationOnly( OrientToPointAtData.createInstance( this, target, upAsSeenBy ), duration, style );
+	}
+	public void animateOrientationToPointAt( EntityImp target, ReferenceFrame upAsSeenBy, double duration ) {
+		this.animateOrientationToPointAt( target, upAsSeenBy, duration, DEFAULT_STYLE );
+	}
+	public void animateOrientationToPointAt( EntityImp target, ReferenceFrame upAsSeenBy ) {
+		this.animateOrientationToPointAt( target, upAsSeenBy, DEFAULT_DURATION );
+	}
+	public void animateOrientationToPointAt( EntityImp target ) {
+		this.animateOrientationToPointAt( target, AsSeenBy.SCENE );
+	}
+
+	//	public void setOrientationOnlyToUpright() {
 //		this.getSgComposite().setAxesOnlyToStandUp();
 //	}
 	public void setOrientationOnlyToPointAt( ReferenceFrame target ) {

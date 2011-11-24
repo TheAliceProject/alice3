@@ -46,11 +46,21 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class PointAt extends DurationAnimationStyleUpAsSeenByArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=PointAt.class )
-	public static interface Detail {
+public class UpAsSeenBy implements
+		//Turnable
+		OrientToUpright.Detail, PointAt.Detail {
+	private final Entity value;
+
+	public UpAsSeenBy( Entity value ) {
+		this.value = value;
 	}
-	private PointAt() {
-		super();
+	/*package-private*/static Entity getValue( Object[] details, Entity defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof UpAsSeenBy ) {
+				UpAsSeenBy upAsSeenBy = (UpAsSeenBy)detail;
+				return upAsSeenBy.value;
+			}
+		}
+		return defaultValue;
 	}
 }

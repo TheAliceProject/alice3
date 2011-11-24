@@ -49,7 +49,6 @@ package org.lgna.story;
 public class AsSeenBy implements 
 		//Turnable
 		Turn.Detail, Roll.Detail,
-		OrientToUpright.Detail,
 		//MoveableTurnable
 		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail
 {
