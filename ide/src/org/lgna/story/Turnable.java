@@ -77,9 +77,8 @@ public abstract class Turnable extends Entity {
 	}
 	@MethodTemplate()
 	public void orientToUpright( OrientToUpright.Detail... details ) {
-		this.getImplementation().setOrientationOnlyToUpright();
-		//todo
-		//this.getImplementation().animateStandUp( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		Entity asSeenBy = AsSeenBy.getValue( details, null );
+		this.getImplementation().animateOrientationToUpright( asSeenBy != null ? asSeenBy.getImplementation() : org.lgna.story.implementation.AsSeenBy.SCENE, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public void pointAt( Entity target, PointAt.Detail... details ) {

@@ -46,7 +46,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class OrientToUpright extends DurationAnimationStyleArgumentFactory {
+public class OrientToUpright extends DurationAnimationStyleAsSeenByArgumentFactory {
 	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=OrientToUpright.class )
 	public static interface Detail {
 	}

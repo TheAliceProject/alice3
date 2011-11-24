@@ -72,12 +72,18 @@ public abstract class EntityImp implements ReferenceFrame {
 	public EntityImp getActualEntityImplementation( EntityImp ths ) {
 		return this;
 	}
-	public EntityImp getVehicle() {
-		return getInstance( this.getSgComposite().getParent() );
+	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
+		return this.getSgComposite().getParent();
+	}
+	protected void setSgVehicle( edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle ) {
+		this.getSgComposite().setParent( sgVehicle );
+	}
+	public final EntityImp getVehicle() {
+		return getInstance( this.getSgVehicle() );
 	}
 	public void setVehicle( EntityImp vehicle ) {
 		assert vehicle != this;
-		this.getSgComposite().setParent( vehicle != null ? vehicle.getSgComposite() : null );
+		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 	
 	protected SceneImp getScene() {

@@ -432,9 +432,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	protected static edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 calculateTurnToFaceAxes( AbstractTransformableImp subject, EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
 		//todo: handle offset
 		SceneImp asSeenBy = subject.getScene();
-		assert asSeenBy != null : subject;
 		StandInImp standInA = acquireStandIn( asSeenBy );
-		assert standInA.getVehicle() == asSeenBy : subject;
 		try {
 			standInA.setPositionOnly( subject );
 			edu.cmu.cs.dennisc.math.Point3 targetPos = target.getTransformation( standInA ).translation;
@@ -446,7 +444,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	
 				edu.cmu.cs.dennisc.math.Point3 forwardPos = standInB.getTransformation( standInA ).translation;
 				double forwardTheta = Math.atan2( forwardPos.z, forwardPos.x );
-				
+
 				standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
 				standInB.applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis(), targetTheta - forwardTheta, standInA );
 				
@@ -463,6 +461,24 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			super( subject, calculateTurnToFaceAxes( subject, target, offset ) );
 		}
 	}
+
+	private static class OrientToUprightData extends PreSetOrientationData {
+		private final ReferenceFrame asSeenBy;
+		public static OrientToUprightData createInstance( AbstractTransformableImp subject, ReferenceFrame asSeenBy ) {
+			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation0 = subject.getTransformation( asSeenBy ).orientation;
+			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation1 = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createFromStandUp( orientation0 );
+			return new OrientToUprightData( subject, orientation0, orientation1, asSeenBy );
+		}
+		private OrientToUprightData( AbstractTransformableImp subject, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation0, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation1, ReferenceFrame asSeenBy ) {
+			super( subject, orientation0, orientation1 );
+			this.asSeenBy = asSeenBy;
+		}
+		@Override
+		protected void setM( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m ) {
+			this.getSubject().getSgComposite().setAxesOnly( m, this.asSeenBy.getSgReferenceFrame() );
+		}
+	}
+	
 	
 	
 	private void setOrientationOnly( OrientationData data ) {
@@ -556,9 +572,19 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		this.animateOrientationOnly( target, edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity() );
 	}
 
-	public void setOrientationOnlyToUpright() {
-		this.getSgComposite().setAxesOnlyToStandUp();
+	public void setOrientationToUpright( ReferenceFrame asSeenBy ) {
+		this.setOrientationOnly( OrientToUprightData.createInstance( this, asSeenBy ) );
 	}
+	public void setOrientationToUpright() {
+		this.setOrientationToUpright( AsSeenBy.SCENE );
+	}
+	public void animateOrientationToUpright( ReferenceFrame asSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.animateOrientationOnly( OrientToUprightData.createInstance( this, asSeenBy ), duration, style );
+	}
+
+//	public void setOrientationOnlyToUpright() {
+//		this.getSgComposite().setAxesOnlyToStandUp();
+//	}
 	public void setOrientationOnlyToPointAt( ReferenceFrame target ) {
 		this.getSgComposite().setAxesOnlyToPointAt( target.getActualEntityImplementation( this ).getSgComposite() );
 	}
