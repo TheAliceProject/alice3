@@ -46,11 +46,11 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class StandUp extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=StandUp.class )
+public class OrientToUpright extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=OrientToUpright.class )
 	public static interface Detail {
 	}
-	private StandUp() {
+	private OrientToUpright() {
 		super();
 	}
 }

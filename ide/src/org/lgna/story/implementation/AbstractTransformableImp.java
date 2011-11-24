@@ -432,8 +432,9 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	protected static edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 calculateTurnToFaceAxes( AbstractTransformableImp subject, EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
 		//todo: handle offset
 		SceneImp asSeenBy = subject.getScene();
-		assert asSeenBy != null;
+		assert asSeenBy != null : subject;
 		StandInImp standInA = acquireStandIn( asSeenBy );
+		assert standInA.getVehicle() == asSeenBy : subject;
 		try {
 			standInA.setPositionOnly( subject );
 			edu.cmu.cs.dennisc.math.Point3 targetPos = target.getTransformation( standInA ).translation;
@@ -555,7 +556,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		this.animateOrientationOnly( target, edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity() );
 	}
 
-	public void setOrientationOnlyToStandUp() {
+	public void setOrientationOnlyToUpright() {
 		this.getSgComposite().setAxesOnlyToStandUp();
 	}
 	public void setOrientationOnlyToPointAt( ReferenceFrame target ) {
