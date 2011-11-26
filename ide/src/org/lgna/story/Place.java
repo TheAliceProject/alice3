@@ -53,6 +53,9 @@ public class Place extends DurationAnimationStyleArgumentFactory {
 	private Place() {
 		super();
 	}
+	public static PathStyle pathStyle( PathStyle pathStyle ) {
+		return pathStyle;
+	}
 	public static AlongAxisOffset alongAxisOffset( Number value ) {
 		return new AlongAxisOffset( value );
 	}

@@ -85,9 +85,16 @@ public abstract class ModelImp extends TransformableImp {
 	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
-		
-	
-//	public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
+
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+			rv.add( sgVisual, this.getTransformation( asSeenBy ) );
+		}
+		return rv;
+	}
+
+	//	public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
 //		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgAppearances() ) {
 //			if (sgAppearance instanceof edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)
 //			{
@@ -177,18 +184,18 @@ public abstract class ModelImp extends TransformableImp {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox()
-	{
-		edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = getSgVisuals();
-		edu.cmu.cs.dennisc.math.AxisAlignedBox bBox = edu.cmu.cs.dennisc.math.AxisAlignedBox.createNaN();
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : sgVisuals ) {
-			edu.cmu.cs.dennisc.math.AxisAlignedBox bb = sgVisual.getAxisAlignedMinimumBoundingBox();
-			bBox.union( bb );
-		}
-		assert bBox.isNaN() == false;
-		return bBox;
-	}
-	
+//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox()
+//	{
+//		edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = getSgVisuals();
+//		edu.cmu.cs.dennisc.math.AxisAlignedBox bBox = edu.cmu.cs.dennisc.math.AxisAlignedBox.createNaN();
+//		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : sgVisuals ) {
+//			edu.cmu.cs.dennisc.math.AxisAlignedBox bb = sgVisual.getAxisAlignedMinimumBoundingBox();
+//			bBox.union( bb );
+//		}
+//		assert bBox.isNaN() == false;
+//		return bBox;
+//	}
+//	
 	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
 		return getAxisAlignedMinimumBoundingBox().getSize();
 	}

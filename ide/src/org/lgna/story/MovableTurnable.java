@@ -105,15 +105,26 @@ public abstract class MovableTurnable extends Turnable {
 	}
 	@MethodTemplate()
 	public void moveTo( Entity target, MoveTo.Detail... details ) {
-		this.getImplementation().animatePositionOnly( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animatePositionOnly( target.getImplementation(), null, PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public void moveAndOrientTo( Entity target, MoveAndOrientTo.Detail... details ) {
-		this.getImplementation().animateTransformation( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateTransformation( target.getImplementation(), null, PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	
 	@MethodTemplate()
-	public void place( SpatialRelation spatialRelation, Entity target, Place.Detail... details ) {
-		this.getImplementation().animatePlace( spatialRelation.getImp(), target != null ? target.getImplementation() : null, AlongAxisOffset.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void place( Entity target, SpatialRelation spatialRelation, Place.Detail... details ) {
+		org.lgna.story.implementation.EntityImp targetImp = target != null ? target.getImplementation() : null;
+		org.lgna.story.implementation.ReferenceFrame defaultAsSeenByImp = targetImp != null ? targetImp : org.lgna.story.implementation.AsSeenBy.SCENE;
+		
+		this.getImplementation().animatePlace( 
+				targetImp, 
+				spatialRelation.getImp(), 
+				AlongAxisOffset.getValue( details ), 
+				AsSeenBy.getImplementation( details, defaultAsSeenByImp ), 
+				PathStyle.getValue( details ).isSmooth(), 
+				Duration.getValue( details ), 
+				AnimationStyle.getValue( details ).getInternal() 
+		);
 	}
 }

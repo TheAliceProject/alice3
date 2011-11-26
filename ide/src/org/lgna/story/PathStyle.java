@@ -46,14 +46,31 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class MoveTo extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=MoveTo.class )
-	public static interface Detail {
+public enum PathStyle implements 
+		MoveTo.Detail, 
+		MoveAndOrientTo.Detail, 
+		Place.Detail 
+{
+	BEE_LINE( false ),
+	SMOOTH( true );
+	private final boolean isSmooth;
+	PathStyle( boolean isSmooth ) {
+		this.isSmooth = isSmooth;
 	}
-	private MoveTo() {
-		super();
+	/*package-private*/ boolean isSmooth() {
+		return this.isSmooth;
 	}
-	public static PathStyle pathStyle( PathStyle pathStyle ) {
-		return pathStyle;
+	private static final PathStyle DEFAULT_VALUE = PathStyle.SMOOTH;
+	private static PathStyle getValue( Object[] details, PathStyle defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof PathStyle ) {
+				PathStyle pathStyle = (PathStyle)detail;
+				return pathStyle;
+			}
+		}
+		return defaultValue;
+	}
+	/*package-private*/ static PathStyle getValue( Object[] details ) {
+		return getValue( details, DEFAULT_VALUE );
 	}
 }
