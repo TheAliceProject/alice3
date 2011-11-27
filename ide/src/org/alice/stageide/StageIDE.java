@@ -77,38 +77,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected void registerAdapters(org.lgna.project.virtualmachine.VirtualMachine vm) {
 		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 	}
-	private org.lgna.project.ast.JavaType MOUSE_BUTTON_LISTENER_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.MouseButtonListener.class );
-	private org.lgna.project.ast.JavaType KEY_LISTENER_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.KeyListener.class );
-	@Override
-	protected org.lgna.project.ast.Expression createPredeterminedExpressionIfAppropriate( org.lgna.project.ast.AbstractType< ?, ?, ? > desiredValueType ) {
-		if( desiredValueType == MOUSE_BUTTON_LISTENER_TYPE ) {
-			org.lgna.project.ast.UserParameter[] parameters = new org.lgna.project.ast.UserParameter[] {
-					new org.lgna.project.ast.UserParameter( "e", org.lgna.story.event.MouseButtonEvent.class )
-			};
-			org.lgna.project.ast.BlockStatement body = new org.lgna.project.ast.BlockStatement();
-			org.lgna.project.ast.UserMethod method = new org.lgna.project.ast.UserMethod( "mouseButtonClicked", Void.TYPE, parameters, body );
-			method.isSignatureLocked.setValue( true );
-			org.lgna.project.ast.AnonymousUserType type = new org.lgna.project.ast.AnonymousUserType();
-			type.superType.setValue( desiredValueType );
-			type.methods.add( method );
-			org.lgna.project.ast.AnonymousUserConstructor constructor = org.lgna.project.ast.AnonymousUserConstructor.get( type );
-			return new org.lgna.project.ast.InstanceCreation( constructor );
-		} else if( desiredValueType == KEY_LISTENER_TYPE ) {
-			org.lgna.project.ast.UserParameter[] parameters = new org.lgna.project.ast.UserParameter[] {
-					new org.lgna.project.ast.UserParameter( "e", org.lgna.story.event.KeyEvent.class )
-			};
-			org.lgna.project.ast.BlockStatement body = new org.lgna.project.ast.BlockStatement();
-			org.lgna.project.ast.UserMethod method = new org.lgna.project.ast.UserMethod( "keyPressed", Void.TYPE, parameters, body );
-			method.isSignatureLocked.setValue( true );
-			org.lgna.project.ast.AnonymousUserType type = new org.lgna.project.ast.AnonymousUserType();
-			type.superType.setValue( desiredValueType );
-			type.methods.add( method );
-			org.lgna.project.ast.AnonymousUserConstructor constructor = org.lgna.project.ast.AnonymousUserConstructor.get( type );
-			return new org.lgna.project.ast.InstanceCreation( constructor );
-		} else {
-			return super.createPredeterminedExpressionIfAppropriate( desiredValueType );
-		}
-	}
 	@Override
 	public org.alice.ide.cascade.CascadeManager getCascadeManager() {
 		return this.cascadeManager;

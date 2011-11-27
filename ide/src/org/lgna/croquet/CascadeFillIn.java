@@ -91,6 +91,9 @@ public abstract class CascadeFillIn<F,B> extends CascadeBlankOwner< F, B > {
 		}
 		return rv;
 	}
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return true;
+	}
 	protected B[] createFromBlanks( org.lgna.croquet.cascade.ItemNode< ? super F,B> itemNode, Class<B> cls ) {
 		return runBlanks( itemNode, BlankActor.CREATE_VALUES, cls );
 	}

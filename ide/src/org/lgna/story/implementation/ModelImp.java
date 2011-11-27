@@ -383,4 +383,9 @@ public abstract class ModelImp extends TransformableImp {
 //		sgFrontFace.scale.setValue( scale );
 //		sgBackFace.scale.setValue( scale );
 //	}
+	
+//	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+//	}
+//	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+//	}
 }

@@ -45,7 +45,6 @@ package org.lgna.croquet.cascade;
 
 import org.lgna.croquet.*;
 import org.lgna.croquet.components.*;
-import javax.swing.Spring;
 
 /**
  * @author Dennis Cosgrove
@@ -57,7 +56,7 @@ abstract class RtElement<E extends Element> {
 		assert element != null;
 		this.element = element;
 	}
-	public E getModel() {
+	public E getElement() {
 		return this.element;
 	}
 }
@@ -163,24 +162,24 @@ abstract class RtNode<M extends Element, N extends org.lgna.croquet.history.Node
 			if( springLayout != null ) {
 				jParent.setLayout( springLayout );
 
-				CascadeBlank blank = (CascadeBlank)nextNode.getModel();
+				CascadeBlank blank = (CascadeBlank)nextNode.getElement();
 				CascadeBlankChild[] blankChildren = blank.getFilteredChildren( (BlankNode)nextNode.getNode() );
 
-				Spring widthA = Spring.constant( 0 );
-				Spring widthB = Spring.constant( 0 );
+				javax.swing.Spring widthA = javax.swing.Spring.constant( 0 );
+				javax.swing.Spring widthB = javax.swing.Spring.constant( 0 );
 				int index;
 
 				index = 0;
 				for( CascadeBlankChild child : blankChildren ) {
 					java.awt.Component componentA = jParent.getComponent( index + 0 );
 					javax.swing.SpringLayout.Constraints contraintsA = springLayout.getConstraints( componentA );
-					widthA = Spring.max( widthA, contraintsA.getWidth() );
+					widthA = javax.swing.Spring.max( widthA, contraintsA.getWidth() );
 					int itemCount = child.getItemCount();
 					if( itemCount == 2 ) {
 						java.awt.Component componentB = jParent.getComponent( index + 1 );
 						javax.swing.SpringLayout.Constraints contraintsB = springLayout.getConstraints( componentB );
 
-						widthB = Spring.max( widthB, contraintsB.getWidth() );
+						widthB = javax.swing.Spring.max( widthB, contraintsB.getWidth() );
 						//todo: try to find a better way to account for the wasted icon/text space
 						if( componentB instanceof javax.swing.JMenu ) {
 							javax.swing.JMenu jMenu = (javax.swing.JMenu)componentB;
@@ -194,11 +193,11 @@ abstract class RtNode<M extends Element, N extends org.lgna.croquet.history.Node
 					}
 					index += itemCount;
 				}
-				Spring xA = Spring.constant( 0 );
-				Spring xB = Spring.sum( xA, widthA );
-				Spring widthAB = Spring.sum( xB, widthB );
+				javax.swing.Spring xA = javax.swing.Spring.constant( 0 );
+				javax.swing.Spring xB = javax.swing.Spring.sum( xA, widthA );
+				javax.swing.Spring widthAB = javax.swing.Spring.sum( xB, widthB );
 
-				Spring y = Spring.constant( 0 );
+				javax.swing.Spring y = javax.swing.Spring.constant( 0 );
 				index = 0;
 				for( CascadeBlankChild child : blankChildren ) {
 
@@ -208,7 +207,7 @@ abstract class RtNode<M extends Element, N extends org.lgna.croquet.history.Node
 					contraintsA.setX( xA );
 					contraintsA.setY( y );
 
-					Spring height;
+					javax.swing.Spring height;
 					int itemCount = child.getItemCount();
 					if( itemCount == 1 ) {
 						contraintsA.setWidth( widthAB );
@@ -221,11 +220,11 @@ abstract class RtNode<M extends Element, N extends org.lgna.croquet.history.Node
 						contraintsB.setX( xB );
 						contraintsB.setY( y );
 						contraintsB.setWidth( widthB );
-						height = Spring.max( contraintsA.getHeight(), contraintsB.getHeight() );
+						height = javax.swing.Spring.max( contraintsA.getHeight(), contraintsB.getHeight() );
 						contraintsA.setHeight( height );
 						contraintsB.setHeight( height );
 					}
-					y = Spring.sum( y, height );
+					y = javax.swing.Spring.sum( y, height );
 					index += itemCount;
 				}
 				javax.swing.SpringLayout.Constraints pCons = springLayout.getConstraints( jParent );
@@ -258,7 +257,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		super( element, BlankNode.createInstance( element ) );
 		this.getNode().setRtBlank( this );
 	}
-
+	
 	public org.lgna.croquet.cascade.AbstractItemNode getSelectedFillInContext() {
 		if( this.rtSelectedFillIn != null ) {
 			return this.rtSelectedFillIn.getNode();
@@ -273,7 +272,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 			//pass
 		} else {
 			java.util.List< RtItem > baseRtItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( CascadeBlankChild blankChild : this.getModel().getFilteredChildren( this.getNode() ) ) {
+			for( CascadeBlankChild blankChild : this.getElement().getFilteredChildren( this.getNode() ) ) {
 				final int N = blankChild.getItemCount();
 				for( int i = 0; i < N; i++ ) {
 					CascadeItem item = blankChild.getItemAt( i );
@@ -334,7 +333,38 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		}
 	}
 
+	private RtFillIn getOneAndOnlyOneFillInIfAppropriate() {
+		RtFillIn rv = null;
+		RtItem[] children = this.getChildren();
+		for( RtItem child : children ) {
+			if( child instanceof RtFillIn ) {
+				if( rv != null ) {
+					return null;
+				} else {
+					rv = (RtFillIn)child;
+				}
+			} else if( child instanceof RtCancel ) {
+				return null;
+			} else if( child instanceof RtMenu ) {
+				return null;
+			} else if( child instanceof RtRoot ) {
+				//??
+				return null;
+			} else if( child instanceof RtSeparator ) {
+				//pass
+			} else {
+				System.err.println( "warning: getOneAndOnlyOneFillInIfAppropriate" );
+				return null;
+			}
+		}
+		return rv;
+	}
+	
 	public boolean isFillInAlreadyDetermined() {
+		RtFillIn rtFillIn = this.getOneAndOnlyOneFillInIfAppropriate();
+		if( rtFillIn != null && rtFillIn.isAutomaticallySelectedWhenSoleOption() ) {
+			this.rtSelectedFillIn = rtFillIn;
+		}
 		return this.rtSelectedFillIn != null;
 	}
 
@@ -418,7 +448,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 		}
 	}
 	public F createValue() {
-		return this.getModel().createValue( this.getNode() );
+		return this.getElement().createValue( this.getNode() );
 	}
 	protected boolean isLast() {
 		return this.getNextNode() == null;
@@ -475,7 +505,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 		return rv;
 	}
 	public ViewController< ?, ? > getMenuItem() {
-		CascadeItem< F, B > item = this.getModel();
+		CascadeItem< F, B > item = this.getElement();
 		boolean isLast = this.isLast();
 		if( this.menuItem != null ) {
 			if( this.wasLast == isLast ) {
@@ -507,13 +537,16 @@ abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner< F, B >, C extends
 	}
 	@Override
 	protected final CascadeBlank< B >[] getModelBlanks() {
-		return this.getModel().getBlanks();
+		return this.getElement().getBlanks();
 	}
 }
 
 class RtFillIn<F, B> extends RtBlankOwner< F, B, CascadeFillIn< F, B >, org.lgna.croquet.cascade.FillInNode< F, B > > {
 	public RtFillIn( CascadeFillIn< F, B > element, CascadeBlankChild< F > owner, int index ) {
 		super( element, FillInNode.createInstance( element ), owner, index );
+	}
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return this.getElement().isAutomaticallySelectedWhenSoleOption();
 	}
 }
 
@@ -591,11 +624,11 @@ public class RtRoot<T,CS extends org.lgna.croquet.history.CompletionStep<?>> ext
 	}
 
 	public void cancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
-		this.getModel().handleCancel( completionStep, trigger, ce );
+		this.getElement().handleCancel( completionStep, trigger, ce );
 	}
 
 	public CS complete( org.lgna.croquet.triggers.Trigger trigger ) {
-		CascadeRoot< T,CS > root = this.getModel();
+		CascadeRoot< T,CS > root = this.getElement();
 		CS completionStep = root.createCompletionStep( trigger );
 		try {
 			T[] values = this.createValues( root.getComponentType() );

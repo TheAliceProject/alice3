@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.apis.moveandturn.event;
+package org.alice.stageide.apis.story.event;
 
 public class KeyAdapter implements org.lgna.story.event.KeyListener {
 	private org.lgna.project.virtualmachine.Context context;

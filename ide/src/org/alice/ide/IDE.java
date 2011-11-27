@@ -135,25 +135,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.theme;
 	}
 
-	protected org.lgna.project.ast.Expression createPredeterminedExpressionIfAppropriate( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return null;
-	}
-	public org.lgna.project.ast.Expression[] createPredeterminedExpressionsIfAppropriate( org.lgna.project.ast.AbstractType< ?, ?, ? >[] types ) {
-		if( types == null || types.length == 0 ) {
-			return new org.lgna.project.ast.Expression[] {};
-		} else {
-			if( types.length == 1 ) {
-				org.lgna.project.ast.Expression predeterminedExpression = org.alice.ide.IDE.getActiveInstance().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
-				if( predeterminedExpression != null ) {
-					return new org.lgna.project.ast.Expression[] { predeterminedExpression };
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-	}
 	@Override
 	public org.lgna.croquet.Operation< ? > getPreferencesOperation() {
 		return null;
