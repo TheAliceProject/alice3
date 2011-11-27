@@ -110,80 +110,71 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	public java.net.URI getUri() {
 		return this.uri;
 	}
-	@Deprecated
-	public java.io.File getFile() {
-		if( this.uri != null ) {
-			return new java.io.File( this.uri );
-		} else {
-			return null;
-		}
-	}
 	public void setUri( java.net.URI uri ) {
-		if( uri.isAbsolute() ) {
-			java.io.File file = new java.io.File( uri );
-			if( file.exists() ) {
-				String lcFilename = file.getName().toLowerCase();
-				if( lcFilename.endsWith( ".a2w" ) ) {
-					this.showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
-				} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
-					this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
-				} else {
-					boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() );
-					java.util.zip.ZipFile zipFile;
-					try {
-						zipFile = new java.util.zip.ZipFile( file );
-					} catch( java.io.IOException ioe ) {
-						if( isWorthyOfException ) {
-							throw new RuntimeException( file.getAbsolutePath(), ioe );
-						} else {
-							this.showUnableToOpenProjectMessageDialog( file, false );
-							zipFile = null;
-						}
-					}
-					if( zipFile != null ) {
-						org.lgna.project.Project project;
+		org.lgna.project.Project project = null;
+		java.io.File file = null;
+		if( uri != null ) {
+			file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
+			if( file != null ) {
+				if( file.exists() ) {
+					String lcFilename = file.getName().toLowerCase();
+					if( lcFilename.endsWith( ".a2w" ) ) {
+						this.showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
+					} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
+						this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
+					} else {
+						boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() );
+						java.util.zip.ZipFile zipFile;
 						try {
-							project = org.lgna.project.io.IoUtilities.readProject( zipFile );
+							zipFile = new java.util.zip.ZipFile( file );
 						} catch( java.io.IOException ioe ) {
 							if( isWorthyOfException ) {
 								throw new RuntimeException( file.getAbsolutePath(), ioe );
 							} else {
-								this.showUnableToOpenProjectMessageDialog( file, true );
-								project = null;
+								this.showUnableToOpenProjectMessageDialog( file, false );
+								zipFile = null;
 							}
 						}
-						if( project != null ) {
-							this.setProject( project );
-							this.uri = uri;
+						if( zipFile != null ) {
 							try {
-//								long t0 = System.currentTimeMillis();
-								if( file != null && file.canWrite() ) {
-									org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
+								project = org.lgna.project.io.IoUtilities.readProject( zipFile );
+							} catch( java.io.IOException ioe ) {
+								if( isWorthyOfException ) {
+									throw new RuntimeException( file.getAbsolutePath(), ioe );
+								} else {
+									this.showUnableToOpenProjectMessageDialog( file, true );
 								}
-//								long tDelta = System.currentTimeMillis() - t0;
-//								edu.cmu.cs.dennisc.print.PrintUtilities.println( "time to store preference (msec):", tDelta );
-							} catch( Throwable throwable ) {
-								throwable.printStackTrace();
 							}
-							this.updateTitle();
 						} else {
 							//actionContext.cancel();
 						}
-					} else {
-						//actionContext.cancel();
 					}
+				} else {
+					StringBuffer sb = new StringBuffer();
+					sb.append( "Cannot read project from file:\n\t" );
+					sb.append( file.getAbsolutePath() );
+					sb.append( "\nIt does not exist." );
+					this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 				}
 			} else {
-				StringBuffer sb = new StringBuffer();
-				sb.append( "Cannot read project from file:\n\t" );
-				sb.append( file.getAbsolutePath() );
-				sb.append( "\nIt does not exist." );
-				this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
+				org.lgna.story.Ground.SurfaceAppearance surfaceAppearance = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getSurfaceAppearance( uri );
+				org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( surfaceAppearance );
+				project = new org.lgna.project.Project( programType );
 			}
-		} else {
-			org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.SurfaceAppearance.valueOf( uri.toString() ) );
-			org.lgna.project.Project project = new org.lgna.project.Project( programType );
+		}
+		if( project != null ) {
 			this.setProject( project );
+			this.uri = uri;
+			try {
+				if( file != null && file.canWrite() ) {
+					org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
+				}
+			} catch( Throwable throwable ) {
+				throwable.printStackTrace();
+			}
+			this.updateTitle();
+		} else {
+			//actionContext.cancel();
 		}
 	}
 	
@@ -218,8 +209,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	protected StringBuffer updateTitle( StringBuffer rv ) {
 		this.updateTitlePrefix( rv );
 		if( this.uri != null ) {
-			java.io.File file = new java.io.File( this.uri );
-			rv.append( file.getAbsolutePath() );
+			String scheme = this.uri.getScheme();
+			if( "file".equalsIgnoreCase( scheme ) ) {
+				rv.append( new java.io.File( this.uri.getPath() ) );
+			}
 			rv.append( " " );
 		}
 		if( this.isProjectChanged() ) {

@@ -47,6 +47,10 @@ package org.alice.stageide.openprojectpane.models;
  * @author Dennis Cosgrove
  */
 public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.models.UriSelectionState {
+	public static org.lgna.story.Ground.SurfaceAppearance getSurfaceAppearance( java.net.URI uri ) {
+		return org.lgna.story.Ground.SurfaceAppearance.valueOf( uri.getFragment() );
+	}
+	public static final String SCHEME = "gen";
 	private static enum Template {
 		GRASS,
 		DIRT,
@@ -64,7 +68,11 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 //		}
 		public java.net.URI getUri() {
 			try {
-				return new java.net.URI( this.name() );
+				//todo: investigate
+				String schemeSpecificPart = null;//org.lgna.story.Ground.SurfaceAppearance.class.getName();
+				String path = "/" + org.lgna.story.Ground.SurfaceAppearance.class.getName();
+				String fragment = this.name();
+				return new java.net.URI( SCHEME, schemeSpecificPart, path, fragment );
 			} catch( java.net.URISyntaxException urise ) {
 				throw new RuntimeException( urise );
 			}

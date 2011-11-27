@@ -40,51 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+
+package edu.cmu.cs.dennisc.java.net;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSaveOperation extends UriActionOperation {
-	public AbstractSaveOperation( java.util.UUID id ) {
-		super( id );
+public class UriUtilities {
+	private UriUtilities() {
+		throw new AssertionError();
 	}
-
-	protected abstract boolean isPromptNecessary( java.io.File file );
-	protected abstract java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application );
-	protected abstract String getExtension();
-	protected abstract void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException;
-	protected abstract String getInitialFilename();
-	
-	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		org.alice.ide.ProjectApplication application = this.getProjectApplication();
-		java.net.URI uri = application.getUri();
-		java.io.File filePrevious = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
-		boolean isExceptionRaised = false;
-		do {
-			java.io.File fileNext;
-			if( isExceptionRaised || this.isPromptNecessary( filePrevious ) ) {
-				fileNext = application.showSaveFileDialog( this.getDefaultDirectory( application ), this.getInitialFilename(), this.getExtension(), true );
+	public static java.io.File getFile( java.net.URI uri ) {
+		if( uri != null ) {
+			if( uri.getScheme().equalsIgnoreCase( "file" ) ) {
+				return new java.io.File( uri );
 			} else {
-				fileNext = filePrevious;
+				return null;
 			}
-			isExceptionRaised = false;
-			if( fileNext != null ) {
-				try {
-					this.save( application, fileNext );
-				} catch( java.io.IOException ioe ) {
-					isExceptionRaised = true;
-					application.showMessageDialog( ioe.getMessage(), "Unable to save file", org.lgna.croquet.MessageType.ERROR );
-				}
-				if( isExceptionRaised ) {
-					//pass
-				} else {
-					step.finish();
-				}
-			} else {
-				step.cancel();
-			}
-		} while( isExceptionRaised );
+		} else {
+			return null;
+		}
 	}
 }
