@@ -61,7 +61,8 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 				initialValueComponentType, isValueComponentTypeEditable, 
 				initialIsArrayValueType, isIsArrayValueTypeEditable, 
 				initialName, isNameEditable, 
-				initialExpression, isInitializerEditable
+				initialExpression, isInitializerEditable,
+				new org.alice.ide.name.validators.FieldNameValidator( initialDeclaringType )
 		);
 	}
 

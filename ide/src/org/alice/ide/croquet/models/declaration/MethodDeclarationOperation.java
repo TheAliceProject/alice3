@@ -64,7 +64,8 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< o
 				initialValueComponentType, isValueComponentTypeEditable, 
 				initialIsArrayValueType, isIsArrayValueTypeEditable, 
 				initialName, isNameEditable, 
-				null, false
+				null, false,
+				new org.alice.ide.name.validators.MethodNameValidator( initialDeclaringType )
 		);
 	}
 	
