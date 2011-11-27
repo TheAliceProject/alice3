@@ -46,6 +46,10 @@ package org.alice.ide.croquet.models.ui.formatter;
  * @author Dennis Cosgrove
  */
 public class FormatterSelectionState extends org.lgna.croquet.preferences.PreferenceListSelectionState< org.alice.ide.formatter.Formatter > {
+	@Deprecated
+	public static boolean isJava() {
+		return FormatterSelectionState.getInstance().getValue() == org.alice.ide.formatter.JavaFormatter.getInstance();
+	}
 	private static class SingletonHolder {
 		private static FormatterSelectionState instance = new FormatterSelectionState();
 	}

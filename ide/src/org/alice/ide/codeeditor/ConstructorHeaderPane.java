@@ -48,7 +48,7 @@ package org.alice.ide.codeeditor;
 class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 	public ConstructorHeaderPane( org.lgna.project.ast.NamedUserConstructor constructorDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
 		super( constructorDeclaredInAlice, parametersPane, isPreview );
-		if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
+		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.addComponent( new org.lgna.croquet.components.Label( "()" ) );
 		} else {

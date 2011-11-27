@@ -49,7 +49,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 	public MethodHeaderPane( org.lgna.project.ast.UserMethod methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( methodDeclaredInAlice, parametersPane, isPreview );
 //		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
-		if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
+		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
 //			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		} else {

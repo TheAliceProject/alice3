@@ -327,5 +327,5 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	}
 
 	public abstract void ensureProjectCodeUpToDate();
-	public abstract java.io.File getApplicationRootDirectory();
+	//public abstract java.io.File getApplicationRootDirectory();
 }

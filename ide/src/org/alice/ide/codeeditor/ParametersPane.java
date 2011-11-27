@@ -65,7 +65,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	@Override
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
-		if( getIDE().isJava() ) {
+		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 			this.addComponent( new org.lgna.croquet.components.Label( "( " ) );
 		} else {
 			int n = this.getProperty().size();
@@ -106,7 +106,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 				this.addComponent( org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation.getInstance( method ).createButton() );
 			}
 		}
-		if( getIDE().isJava() ) {
+		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 			this.addComponent( new org.lgna.croquet.components.Label( " )" ) );
 		}
 		//this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 16 ) );

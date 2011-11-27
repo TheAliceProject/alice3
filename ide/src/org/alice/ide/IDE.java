@@ -108,15 +108,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );
 		this.getPerspectiveState().addAndInvokeValueObserver( this.perspectiveListener );
 	}
-	
-//	@Override
-//	protected org.lgna.croquet.components.Component< ? > createContentPane() {
-////		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-////		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
-////		rv.addComponent( this.root, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-////		return rv;
-//	}
-	
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
 		if( dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
@@ -132,7 +123,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
 	
 	private Theme theme;
-
 	protected Theme createTheme() {
 		return new DefaultTheme();
 	}
@@ -236,66 +226,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
-	public boolean isJava() {
-		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem() == org.alice.ide.formatter.JavaFormatter.getInstance();
-	}
-
-	private java.io.File applicationDirectory = null;
-	private java.io.File galleryDirectory = null;
-
-	protected java.io.File getDefaultApplicationRootDirectory() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			return new java.io.File( "/Applications/" + this.getApplicationName() + ".app/Contents/Resources/Java/application" );
-		} else {
-			return new java.io.File( "/Program Files/" + this.getApplicationName() + "3Beta/application" );
-		}
-	}
-	protected java.io.File getDefaultGalleryRootDirectory() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			return new java.io.File( "/Applications/" + this.getApplicationName() + ".app/Contents/Resources/Java/gallery" );
-		} else {
-			return new java.io.File( "/Program Files/" + this.getApplicationName() + "3Beta/gallery" );
-		}
-	}
-	public static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
-		for( String propertyKey : propertyKeys ) {
-			for( String subPath : subPaths ) {
-				java.io.File rv = new java.io.File( System.getProperty( propertyKey ), subPath );
-				if( rv.exists() ) {
-					return rv;
-				}
-			}
-		}
-		return null;
-	}
-	@Override
-	public java.io.File getApplicationRootDirectory() {
-		if( this.applicationDirectory != null ) {
-			//pass
-		} else {
-			this.applicationDirectory = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "application", "required/application/" + this.getVersionText() } );
-			if( this.applicationDirectory != null ) {
-				//pass
-			} else {
-				this.applicationDirectory = this.getDefaultApplicationRootDirectory();
-			}
-		}
-		return this.applicationDirectory;
-	}
-	public java.io.File getGalleryRootDirectory() {
-		if( this.galleryDirectory != null ) {
-			//pass
-		} else {
-			this.galleryDirectory = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery", "required/gallery/" + this.getVersionText() } );
-			if( this.galleryDirectory != null ) {
-				//pass
-			} else {
-				this.galleryDirectory = this.getDefaultGalleryRootDirectory();
-			}
-		}
-		return this.galleryDirectory;
-	}
-
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
 		rv.append( "Please Submit Bug Report: " );
 		this.updateTitlePrefix( rv );
@@ -321,7 +251,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private ComponentStencil stencil;
 	private java.util.List< org.lgna.croquet.DropReceptor > holes = null;
-	private org.lgna.croquet.components.DragComponent potentialDragSource;
+	private org.lgna.croquet.components.DragComponent<?,?> potentialDragSource;
 	private org.lgna.croquet.components.Component< ? > currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
@@ -490,11 +420,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	
-//	private org.lgna.project.ast.UserField rootField;
-//
-//	private org.lgna.project.ast.NamedUserType getRootTypeDeclaredInAlice() {
-//		return (org.lgna.project.ast.NamedUserType)this.rootField.valueType.getValue();
-//	}
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
 		return accessible.getValueType().isArray() == false;
 	}
@@ -502,14 +427,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	
 	private void setRootField( org.lgna.project.ast.UserField rootField ) {
-//		if( this.rootField != null ) {
-//			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
-//		}
-//		this.rootField = rootField;
-//		if( this.rootField != null ) {
-//			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
-//		}
-//		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
 		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -521,7 +438,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 						org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
 					}
 				}
-//				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON );
 			}
 		} );
 		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
