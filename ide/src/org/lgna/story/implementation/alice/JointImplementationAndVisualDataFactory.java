@@ -103,7 +103,9 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			if( sgJoint != null  ) {
 				return new org.lgna.story.implementation.alice.JointImplementation( jointedModelImplementation, jointId, sgJoint );
 			} else {
-				System.err.println( "WARNING: joint " + jointId + " not found for " + jointedModelImplementation );
+				org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();
+				System.err.println( "WARNING: joint " + jointId + " not found for " + resource.getClass() + " " + resource );
+				//Thread.dumpStack();
 				return null;
 			}
 		} else {

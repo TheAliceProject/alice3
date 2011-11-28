@@ -601,8 +601,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	@Deprecated
 	protected static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
-		if( programType.fields.size() > 0 ) {
-			return programType.fields.get( 0 );
+		if( programType != null ) {
+			if( programType.fields.size() > 0 ) {
+				return programType.fields.get( 0 );
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
