@@ -47,13 +47,34 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class Decoder {
-	private static edu.cmu.cs.dennisc.map.MapToMap< ClassReflectionProxy, String, String > mapToMapMethodName = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static java.util.Map< String, String > mapClassNameToClassName = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static class ClassReflectionProxyAndMethodName {
+		private final ClassReflectionProxy classReflectionProxy;
+		private final String name;
+		public ClassReflectionProxyAndMethodName( ClassReflectionProxy classReflectionProxy, String name ) {
+			this.classReflectionProxy = classReflectionProxy;
+			this.name = name;
+		}
+		public ClassReflectionProxy getClassReflectionProxy() {
+			return this.classReflectionProxy;
+		}
+		public String getName() {
+			return this.name;
+		}
+	}
+	private static final edu.cmu.cs.dennisc.map.MapToMap< ClassReflectionProxy, String, ClassReflectionProxyAndMethodName > betweenClassesMethodMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final edu.cmu.cs.dennisc.map.MapToMap< ClassReflectionProxy, String, String > intraClassMethodMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final java.util.Map< String, String > mapClassNameToClassName = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static void addMethodFilterWithinClass( ClassReflectionProxy classReflectionProxy, String prevName, String nextName ) {
-		Decoder.mapToMapMethodName.put( classReflectionProxy, prevName, nextName );
+		Decoder.intraClassMethodMap.put( classReflectionProxy, prevName, nextName );
 	}
 	public static void addMethodFilterWithinClass( Class<?> cls, String prevName, String nextName ) {
 		addMethodFilterWithinClass( JavaType.getInstance( cls ).getClassReflectionProxy(), prevName, nextName );
+	}
+	public static void addMethodFilterBetweenClasses( ClassReflectionProxy prevClassReflectionProxy, String prevName, ClassReflectionProxy nextClassReflectionProxy, String nextName ) {
+		Decoder.betweenClassesMethodMap.put( prevClassReflectionProxy, prevName, new ClassReflectionProxyAndMethodName( nextClassReflectionProxy, nextName ) );
+	}
+	public static void addMethodFilterBetweenClasses( Class<?> prevCls, String prevName, Class<?> nextCls, String nextName ) {
+		addMethodFilterBetweenClasses( JavaType.getInstance( prevCls ).getClassReflectionProxy(), prevName, JavaType.getInstance( nextCls ).getClassReflectionProxy(), nextName );
 	}
 
 	public static void addClassFilter( ClassReflectionProxy prevClassReflectionProxy, ClassReflectionProxy nextClassReflectionProxy ) {
@@ -75,15 +96,15 @@ public class Decoder {
 		}
 		return rv;
 	}
-	private static String filterMethodNameIfNecessary( ClassReflectionProxy classReflectionProxy, String name ) {
-		String rv = Decoder.mapToMapMethodName.get( classReflectionProxy, name );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = name;
-		}
-		return rv;
-	}
+//	private static String filterMethodNameIfNecessary( ClassReflectionProxy classReflectionProxy, String name ) {
+//		String rv = Decoder.intraClassMethodMap.get( classReflectionProxy, name );
+//		if( rv != null ) {
+//			//pass
+//		} else {
+//			rv = name;
+//		}
+//		return rv;
+//	}
 
 	private String srcVersion;
 	private String dstVersion;
@@ -221,7 +242,19 @@ public class Decoder {
 		org.w3c.dom.Element xmlMethod = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
 		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlMethod );
 		String name = xmlMethod.getAttribute( "name" );
-		name = filterMethodNameIfNecessary( declaringCls, name );
+		
+		String potentialReplacement = Decoder.intraClassMethodMap.get( declaringCls, name );
+		if( potentialReplacement != null ) {
+			name = potentialReplacement;
+		} else {
+			ClassReflectionProxyAndMethodName classReflectionProxyAndMethodName = Decoder.betweenClassesMethodMap.get( declaringCls, name );
+			if( classReflectionProxyAndMethodName != null ) {
+				declaringCls = classReflectionProxyAndMethodName.getClassReflectionProxy();
+				name = classReflectionProxyAndMethodName.getName();
+			}
+		}
+		
+//		name = filterMethodNameIfNecessary( declaringCls, name );
 		ClassReflectionProxy[] parameterClses = decodeParameters( xmlMethod );
 		boolean isVarArgs = Boolean.parseBoolean( xmlMethod.getAttribute( "isVarArgs" ) );
 		return new MethodReflectionProxy( declaringCls, name, parameterClses, isVarArgs );
