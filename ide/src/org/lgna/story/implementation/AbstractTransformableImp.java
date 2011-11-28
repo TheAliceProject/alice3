@@ -75,11 +75,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	@Override
 	public void setVehicle(EntityImp vehicle) {
 		assert vehicle != this;
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 absTransform = this.getScene() != null ? this.getTransformation(this.getScene()) : this.getLocalTransformation();
+		SceneImp scene = this.getScene();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 absTransform = scene != null ? this.getTransformation(scene) : null;
 		super.setVehicle(vehicle);
-		if (vehicle != null)
-		{
-			this.setTransformation(this.getScene(), absTransform);
+		if (vehicle != null && scene != null ) {
+			this.setTransformation(scene, absTransform);
 		}
 	}
 	
@@ -754,6 +754,8 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	}
 
 	public void setTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset ) {
+		assert target != null : this;
+		assert this.getSgComposite() != null : this;
 		this.getSgComposite().setTransformation( offset, target.getSgReferenceFrame() );
 	}
 	public void setTransformation( ReferenceFrame target ) {
