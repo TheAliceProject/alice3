@@ -47,6 +47,12 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.project.ast.Node > extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< Void > {
+	private final org.lgna.project.ast.UserType<?> initialDeclaringType;
+	private final org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType;
+	private final boolean initialIsArrayValueType;
+	private final String initialName;
+	private final org.lgna.project.ast.Expression initialExpression;
+	
 	private final DeclaringTypeState declaringTypeState;
 	private final ValueComponentTypeState valueComponentTypeState;
 	private final IsArrayValueTypeState isArrayValueTypeState;
@@ -78,6 +84,12 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 			org.alice.ide.name.NameValidator nameValidator
 	) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id );
+		this.initialDeclaringType = initialDeclaringType;
+		this.initialValueComponentType = initialValueComponentType;
+		this.initialIsArrayValueType = initialIsArrayValueType;
+		this.initialName = initialName;
+		this.initialExpression = initialExpression;
+		
 		if( initialDeclaringType != null || isDeclaringTypeEditable ) {
 			this.declaringTypeState = new DeclaringTypeState( this, initialDeclaringType );
 		} else {
@@ -284,6 +296,22 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	protected abstract org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step );
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		if( this.declaringTypeState != null ) {
+			this.declaringTypeState.setValueTransactionlessly( this.initialDeclaringType );
+		}
+		if( this.valueComponentTypeState != null ) {
+			this.valueComponentTypeState.setValueTransactionlessly( this.initialValueComponentType );
+		}
+		if( this.isArrayValueTypeState != null ) {
+			this.isArrayValueTypeState.setValueTransactionlessly( this.initialIsArrayValueType );
+		}
+		if( this.nameState != null ) {
+			this.nameState.setValueTransactionlessly( this.initialName );
+		}
+		if( this.initializerState != null ) {
+			//todo
+			((org.alice.ide.croquet.models.ExpressionState)this.initializerState).setValueTransactionlessly( this.initialExpression );
+		}
 		return this.createMainComponent( step );
 	}
 	@Override
