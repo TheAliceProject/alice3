@@ -335,28 +335,28 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 
 	private RtFillIn getOneAndOnlyOneFillInIfAppropriate() {
 		RtFillIn rv = null;
-//		RtItem[] children = this.getChildren();
-//		for( RtItem child : children ) {
-//			if( child instanceof RtFillIn ) {
-//				if( rv != null ) {
-//					return null;
-//				} else {
-//					rv = (RtFillIn)child;
-//				}
-//			} else if( child instanceof RtCancel ) {
-//				return null;
-//			} else if( child instanceof RtMenu ) {
-//				return null;
-//			} else if( child instanceof RtRoot ) {
-//				//??
-//				return null;
-//			} else if( child instanceof RtSeparator ) {
-//				//pass
-//			} else {
-//				System.err.println( "warning: getOneAndOnlyOneFillInIfAppropriate" );
-//				return null;
-//			}
-//		}
+		RtItem[] children = this.getChildren();
+		for( RtItem child : children ) {
+			if( child instanceof RtFillIn ) {
+				if( rv != null ) {
+					return null;
+				} else {
+					rv = (RtFillIn)child;
+				}
+			} else if( child instanceof RtCancel ) {
+				return null;
+			} else if( child instanceof RtMenu ) {
+				return null;
+			} else if( child instanceof RtRoot ) {
+				//??
+				return null;
+			} else if( child instanceof RtSeparator ) {
+				//pass
+			} else {
+				System.err.println( "warning: getOneAndOnlyOneFillInIfAppropriate" );
+				return null;
+			}
+		}
 		return rv;
 	}
 	

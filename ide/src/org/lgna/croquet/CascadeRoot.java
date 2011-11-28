@@ -89,6 +89,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 		
 		@Override
 		protected org.lgna.croquet.history.Step< ? > perform( org.lgna.croquet.triggers.Trigger trigger ) {
+			this.root.prologue();
 			final org.lgna.croquet.cascade.RtRoot< T,? > rtRoot = new org.lgna.croquet.cascade.RtRoot( this.root );
 			org.lgna.croquet.history.Step< ? > rv;
 			if( rtRoot.isGoodToGo() ) {
@@ -109,7 +110,6 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 					}
 				} );
 				popupMenu.addPopupMenuListener( rtRoot.createPopupMenuListener( popupMenu ) );
-				this.root.prologue();
 				trigger.showPopupMenu( popupMenu );
 				rv = prepStep;
 			}
