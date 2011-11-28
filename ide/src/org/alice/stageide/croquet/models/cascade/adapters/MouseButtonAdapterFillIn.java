@@ -58,6 +58,10 @@ public class MouseButtonAdapterFillIn extends org.alice.ide.croquet.models.casca
 		super( java.util.UUID.fromString( "3c9038a4-bb71-4e03-a33a-d17434b13f89" ) );
 		this.transientValue = this.createValue();
 	}
+	@Override
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return true;
+	}
 	private org.lgna.project.ast.InstanceCreation createValue() { 
 		org.lgna.project.ast.UserParameter[] parameters = new org.lgna.project.ast.UserParameter[] { 
 				new org.lgna.project.ast.UserParameter( "e", org.lgna.story.event.MouseButtonEvent.class ) 

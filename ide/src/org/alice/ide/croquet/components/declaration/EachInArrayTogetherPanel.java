@@ -41,25 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
-	private static class SingletonHolder {
-		private static ArrayBlank instance = new ArrayBlank();
-	}
-
-	public static ArrayBlank getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ArrayBlank() {
-		super( java.util.UUID.fromString( "afafc379-2254-41c1-9ce5-6515d1b04211" ), Object[].class );
+public class EachInArrayTogetherPanel extends DeclarationPanel< org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation > {
+	public EachInArrayTogetherPanel( org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation model ) {
+		super( model );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.EachInArrayTogether.class ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
-		rv.add( ArraySeparator.getInstance() );
-		return super.updateChildren( rv, blankNode );
+	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation model = this.getModel();
+		org.lgna.project.ast.EachInArrayTogether eachInArrayTogether = model.createPreviewDeclaration();
+		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( eachInArrayTogether );
+		return pane;
 	}
 }

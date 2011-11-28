@@ -41,19 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArraySeparator extends org.lgna.croquet.CascadeLabelSeparator {
-	private static class SingletonHolder {
-		private static ArraySeparator instance = new ArraySeparator();
+public class ForEachInArrayPanel extends DeclarationPanel< org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation > {
+	public ForEachInArrayPanel( org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation model ) {
+		super( model );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ForEachInArrayLoop.class ) );
 	}
-	public static ArraySeparator getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ArraySeparator() {
-		super( java.util.UUID.fromString( "36d952bc-18f3-4391-bd61-77ee403c837f" ) );
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation model = this.getModel();
+		org.lgna.project.ast.ForEachInArrayLoop forEachInArrayLoop = model.createPreviewDeclaration();
+		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( forEachInArrayLoop );
+		return pane;
 	}
 }
