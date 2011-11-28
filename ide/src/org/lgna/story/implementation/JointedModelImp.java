@@ -97,7 +97,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	public org.lgna.story.implementation.JointImp getJointImplementation( org.lgna.story.resources.JointId jointId ) {
 		synchronized( this.mapIdToJoint ) {
 			org.lgna.story.implementation.JointImp rv = this.mapIdToJoint.get( jointId );
-			if( rv != null ) {
+			if( rv != null || this.mapIdToJoint.containsKey( jointId ) ) {
 				//pass
 			} else {
 				rv = this.createJointImplementation( jointId );
