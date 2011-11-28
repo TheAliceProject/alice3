@@ -198,12 +198,13 @@ public class SetUpMethodGenerator {
 				try {
 					statements.add(createPositionStatement(isThis, field, ImplementationAccessor.createPosition(initialTransform.translation)));
 
+					org.lgna.project.ast.Expression targetExpression = new org.lgna.project.ast.NullLiteral(); 
 					statements.add(createStatement( 
 							org.lgna.story.MovableTurnable.class, 
 							"place", 
-							new Class[] { org.lgna.story.Entity.class, org.lgna.story.SpatialRelation.class, org.lgna.story.Place.Detail[].class }, 
+							new Class[] { org.lgna.story.SpatialRelation.class, org.lgna.story.Entity.class, org.lgna.story.Place.Detail[].class }, 
 							SetUpMethodGenerator.createInstanceExpression( isThis, field ),
-							new org.lgna.project.ast.NullLiteral(), getExpressionCreator().createExpression( org.lgna.story.SpatialRelation.ABOVE ) 
+							getExpressionCreator().createExpression( org.lgna.story.SpatialRelation.ABOVE ), targetExpression
 					) );
 					statements.add(createPositionStatement(isThis, field, ImplementationAccessor.createPosition(initialTransform.translation)));
 				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {

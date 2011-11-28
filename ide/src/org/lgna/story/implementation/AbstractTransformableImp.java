@@ -622,16 +622,16 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	
 	private static class PlaceData {
 		private final AbstractTransformableImp subject;
-		private final EntityImp target;
-		private final ReferenceFrame asSeenBy;
 		private final SpatialRelationImp spatialRelation;
+		private final EntityImp target;
 		private final double alongAxisOffset;
-		public PlaceData( AbstractTransformableImp subject, EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy ) {
+		private final ReferenceFrame asSeenBy;
+		public PlaceData( AbstractTransformableImp subject, SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy ) {
 			this.subject = subject;
-			this.target = target;
-			this.asSeenBy = asSeenBy;
 			this.spatialRelation = spatialRelation;
+			this.target = target;
 			this.alongAxisOffset = alongAxisOffset;
+			this.asSeenBy = asSeenBy;
 		}
 		public AbstractTransformableImp getSubject() {
 			return this.subject;
@@ -717,18 +717,18 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		this.animatePositionOnly( target, edu.cmu.cs.dennisc.math.Point3.ORIGIN );
 	}
 
-	public void place( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy ) {
-		PlaceData placeData = new PlaceData( this, target, spatialRelation, alongAxisOffset, asSeenBy );
+	public void place( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy ) {
+		PlaceData placeData = new PlaceData( this, spatialRelation, target, alongAxisOffset, asSeenBy );
 		placeData.epilogue();
 	}
-	public void place( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset ) {
-		this.place( target, spatialRelation, alongAxisOffset, target );
+	public void place( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset ) {
+		this.place( spatialRelation, target, alongAxisOffset, target );
 	}
-	public void place( EntityImp target, SpatialRelationImp spatialRelation ) {
-		this.place( target, spatialRelation, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
+	public void place( SpatialRelationImp spatialRelation, EntityImp target ) {
+		this.place( spatialRelation, target, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
 	}
-	public void animatePlace( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		PlaceData placeData = new PlaceData( this, target, spatialRelation, alongAxisOffset, asSeenBy );
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		PlaceData placeData = new PlaceData( this, spatialRelation, target, alongAxisOffset, asSeenBy );
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
 			placeData.epilogue();
@@ -736,21 +736,21 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.perform( new PlaceAnimation( placeData, duration, style ) );
 		}
 	}
-	public void animatePlace( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth, double duration ) {
-		this.animatePlace( target, spatialRelation, alongAxisOffset, asSeenBy, isSmooth, duration, DEFAULT_STYLE );
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth, double duration ) {
+		this.animatePlace( spatialRelation, target, alongAxisOffset, asSeenBy, isSmooth, duration, DEFAULT_STYLE );
 	}
-	public void animatePlace( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth ) {
-		this.animatePlace( target, spatialRelation, alongAxisOffset, asSeenBy, isSmooth, DEFAULT_DURATION );
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth ) {
+		this.animatePlace( spatialRelation, target, alongAxisOffset, asSeenBy, isSmooth, DEFAULT_DURATION );
 	}
-	public void animatePlace( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy ) {
-		this.animatePlace( target, spatialRelation, alongAxisOffset, asSeenBy, DEFAULT_IS_SMOOTH );
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy ) {
+		this.animatePlace( spatialRelation, target, alongAxisOffset, asSeenBy, DEFAULT_IS_SMOOTH );
 	}
-	public void animatePlace( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset ) {
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset ) {
 		final ReferenceFrame DEFAULT_AS_SEEN_BY = target;
-		this.animatePlace( target, spatialRelation, alongAxisOffset, DEFAULT_AS_SEEN_BY );
+		this.animatePlace( spatialRelation, target, alongAxisOffset, DEFAULT_AS_SEEN_BY );
 	}
 	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target ) {
-		this.animatePlace( target, spatialRelation, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
+		this.animatePlace( spatialRelation, target, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
 	}
 
 	public void setTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset ) {

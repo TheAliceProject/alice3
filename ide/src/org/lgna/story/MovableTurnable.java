@@ -113,13 +113,13 @@ public abstract class MovableTurnable extends Turnable {
 	}
 	
 	@MethodTemplate()
-	public void place( Entity target, SpatialRelation spatialRelation, Place.Detail... details ) {
+	public void place( SpatialRelation spatialRelation, Entity target, Place.Detail... details ) {
 		org.lgna.story.implementation.EntityImp targetImp = target != null ? target.getImplementation() : null;
 		org.lgna.story.implementation.ReferenceFrame defaultAsSeenByImp = targetImp != null ? targetImp : org.lgna.story.implementation.AsSeenBy.SCENE;
 		
 		this.getImplementation().animatePlace( 
-				targetImp, 
 				spatialRelation.getImp(), 
+				targetImp, 
 				AlongAxisOffset.getValue( details ), 
 				AsSeenBy.getImplementation( details, defaultAsSeenByImp ), 
 				PathStyle.getValue( details ).isSmooth(), 
