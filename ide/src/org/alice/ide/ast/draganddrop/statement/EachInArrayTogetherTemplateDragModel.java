@@ -58,6 +58,6 @@ public class EachInArrayTogetherTemplateDragModel extends StatementTemplateDragM
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertCascade.getInstance( blockStatementIndexPair );
+		return org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

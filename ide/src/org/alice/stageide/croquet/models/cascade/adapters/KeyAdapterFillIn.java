@@ -59,6 +59,10 @@ public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.Expre
 		super( java.util.UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ) );
 		this.transientValue = this.createValue();
 	}
+	@Override
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return true;
+	}
 	private org.lgna.project.ast.InstanceCreation createValue() { 
 		org.lgna.project.ast.UserParameter[] parameters = new org.lgna.project.ast.UserParameter[] { 
 				new org.lgna.project.ast.UserParameter( "e", org.lgna.story.event.KeyEvent.class ) 

@@ -68,7 +68,8 @@ public class LocalDeclarationStatementOperation extends DeclarationLikeSubstance
 				null, true, 
 				false, true, 
 				"", true,
-				null, true
+				null, true,
+				new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair )
 		);
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}

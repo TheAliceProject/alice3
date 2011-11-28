@@ -57,6 +57,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	private final boolean isIsArrayValueTypeEditable;
 	private final boolean isNameEditable;
 	private final boolean isInitializerEditable;
+	private final org.alice.ide.name.NameValidator nameValidator;
 	private String declaringTypeLabelText; 
 	private String valueTypeLabelText; 
 	private String nameLabelText; 
@@ -73,7 +74,8 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 			String initialName,
 			boolean isNameEditable,
 			org.lgna.project.ast.Expression initialExpression,
-			boolean isInitializerEditable
+			boolean isInitializerEditable,
+			org.alice.ide.name.NameValidator nameValidator
 	) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id );
 		if( initialDeclaringType != null || isDeclaringTypeEditable ) {
@@ -103,6 +105,8 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		this.isInitializerEditable = isInitializerEditable;
 		
 		this.isArrayValueTypeState.setEnabled( this.isIsArrayValueTypeEditable );
+		
+		this.nameValidator = nameValidator;
 	}
 	protected org.alice.ide.croquet.models.ExpressionState< ? extends org.lgna.project.ast.Expression > createInitializerState( org.lgna.project.ast.Expression initialValue ) {
 		return new InitializerState( this, initialValue );
@@ -218,7 +222,16 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	}
 	protected String getNameExplanation( String declarationName ) {
 		if( declarationName.length() > 0 ) {
-			return null;
+			if( this.nameValidator != null ) {
+				//todo
+				if( this.nameValidator instanceof org.alice.ide.name.validators.MemberNameValidator ) {
+					org.alice.ide.name.validators.MemberNameValidator memberNameValidator = (org.alice.ide.name.validators.MemberNameValidator)this.nameValidator;
+					memberNameValidator.setType( this.getDeclaringType() );
+				}
+				return this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( declarationName );
+			} else {
+				return null;
+			}
 		} else {
 			return "\"" + declarationName + "\" is not a valid " + this.declaringTypeLabelText;
 		}

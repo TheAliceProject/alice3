@@ -76,16 +76,14 @@ public abstract class Turnable extends Entity {
 		this.getImplementation().animateOrientationOnlyToFace( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
-	public void standUp( StandUp.Detail... details ) {
-		this.getImplementation().setOrientationOnlyToStandUp();
-		//todo
-		//this.getImplementation().animateStandUp( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void orientToUpright( OrientToUpright.Detail... details ) {
+		Entity upAsSeenBy = UpAsSeenBy.getValue( details, null );
+		this.getImplementation().animateOrientationToUpright( upAsSeenBy != null ? upAsSeenBy.getImplementation() : org.lgna.story.implementation.AsSeenBy.SCENE, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	@MethodTemplate()
 	public void pointAt( Entity target, PointAt.Detail... details ) {
-		this.getImplementation().setOrientationOnlyToPointAt( target.getImplementation() );
-		//todo
-		//this.getImplementation().animatePointAt( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		Entity upAsSeenBy = UpAsSeenBy.getValue( details, null );
+		this.getImplementation().animateOrientationToPointAt( target.getImplementation(), upAsSeenBy != null ? upAsSeenBy.getImplementation() : org.lgna.story.implementation.AsSeenBy.SCENE, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate()

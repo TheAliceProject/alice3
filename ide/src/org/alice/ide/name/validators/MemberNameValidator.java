@@ -52,4 +52,7 @@ public abstract class MemberNameValidator extends NodeNameValidator {
 	public org.lgna.project.ast.UserType<?> getType() {
 		return this.type;
 	}
+	public void setType( org.lgna.project.ast.UserType< ? > type ) {
+		this.type = type;
+	}
 }

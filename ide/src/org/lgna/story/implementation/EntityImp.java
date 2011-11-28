@@ -63,6 +63,49 @@ public abstract class EntityImp implements ReferenceFrame {
 		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField( this.getClass(), propertyName );
 		return (Property<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, this );
 	}
+
+	//todo
+//	protected abstract edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, ReferenceFrame asSeenBy );
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
+		throw new RuntimeException( "todo" );
+	}
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
+		this.updateCumulativeBound( cumulativeBound, asSeenBy );
+		return cumulativeBound.getBoundingBox();
+	}
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
+	}
+	
+//	private edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound createCumulativeBound( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
+//		java.util.List< Transformable > transformables = new java.util.LinkedList< Transformable >();
+//		updateHowMuch( transformables, howMuch.isThisACandidate(), howMuch.isChildACandidate(), howMuch.isGrandchildAndBeyondACandidate() );
+//		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
+//		ReferenceFrame actualAsSeenBy = asSeenBy.getActualReferenceFrame( this );
+//
+//		for( Transformable transformable : transformables ) {
+//			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = transformable.getTransformation( actualAsSeenBy );
+//			assert m.isNaN() == false;
+//			transformable.updateCumulativeBound( rv, m, originPolicy.isOriginIncluded() );
+//		}
+//		return rv;
+//	}
+//	
+//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
+//		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = createCumulativeBound( asSeenBy, howMuch, originPolicy );
+//		return cumulativeBound.getBoundingBox();
+//	}
+//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch ) {
+//		return getAxisAlignedMinimumBoundingBox( asSeenBy, howMuch, DEFAULT_ORIGIN_INCLUSION_POLICY );
+//	}
+//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+//		return getAxisAlignedMinimumBoundingBox( asSeenBy, DEFAULT_HOW_MUCH );
+//	}
+//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+//		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
+//	}
+
 	
 	public abstract org.lgna.story.Entity getAbstraction();
 	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
@@ -72,12 +115,18 @@ public abstract class EntityImp implements ReferenceFrame {
 	public EntityImp getActualEntityImplementation( EntityImp ths ) {
 		return this;
 	}
-	public EntityImp getVehicle() {
-		return getInstance( this.getSgComposite().getParent() );
+	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
+		return this.getSgComposite().getParent();
+	}
+	protected void setSgVehicle( edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle ) {
+		this.getSgComposite().setParent( sgVehicle );
+	}
+	public final EntityImp getVehicle() {
+		return getInstance( this.getSgVehicle() );
 	}
 	public void setVehicle( EntityImp vehicle ) {
 		assert vehicle != this;
-		this.getSgComposite().setParent( vehicle != null ? vehicle.getSgComposite() : null );
+		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 	
 	protected SceneImp getScene() {

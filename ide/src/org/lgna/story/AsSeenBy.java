@@ -50,7 +50,8 @@ public class AsSeenBy implements
 		//Turnable
 		Turn.Detail, Roll.Detail,
 		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail
+		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
+		Place.Detail
 {
 	private final Entity value;
 	public AsSeenBy( Entity value ) {
@@ -65,4 +66,10 @@ public class AsSeenBy implements
 		}
 		return defaultValue;
 	}
+
+	/*package-private*/ static org.lgna.story.implementation.ReferenceFrame getImplementation( Object[] details, org.lgna.story.implementation.ReferenceFrame defaultValue ) {
+		Entity entity = getValue( details, null );
+		return entity != null ? entity.getImplementation() : defaultValue;
+	}
+	
 }

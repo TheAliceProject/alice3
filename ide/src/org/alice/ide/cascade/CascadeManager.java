@@ -111,7 +111,7 @@ public abstract class CascadeManager {
 				this.updateAccessibleLocalsForBlockStatementAndIndex(rv, blockStatementParent, index);
 			} else if( statementParent instanceof org.lgna.project.ast.CountLoop ) {
 				org.lgna.project.ast.CountLoop countLoopParent = (org.lgna.project.ast.CountLoop)statementParent;
-				boolean areCountLoopLocalsViewable = org.alice.ide.IDE.getActiveInstance().isJava();
+				boolean areCountLoopLocalsViewable = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava();
 				if( areCountLoopLocalsViewable ) {
 					rv.add( countLoopParent.variable.getValue() );
 					rv.add( countLoopParent.constant.getValue() );

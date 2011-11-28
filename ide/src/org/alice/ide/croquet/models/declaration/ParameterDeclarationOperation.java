@@ -68,7 +68,8 @@ public class ParameterDeclarationOperation extends DeclarationOperation< org.lgn
 				null, true, 
 				false, true, 
 				"", true,
-				null, false
+				null, false,
+				new org.alice.ide.name.validators.ParameterNameValidator( code )
 		);
 		this.code = code;
 	}

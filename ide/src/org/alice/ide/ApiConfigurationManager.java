@@ -147,6 +147,19 @@ public abstract class ApiConfigurationManager {
 //		return rv;
 //	}
 	
+	private final java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, String > mapTypeToText = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static String createExampleText( String examples ) {
+		return "<html><em>examples:</em> " + examples + "</html>";
+	}
+	public String getMenuTextForType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		if( this.mapTypeToText.size() == 0 ) {
+			this.mapTypeToText.put( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE, createExampleText( "0.25, 1.0, 3.14, 98.6" ) );
+			this.mapTypeToText.put( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, createExampleText( "1, 2, 42, 100" ) );
+			this.mapTypeToText.put( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE, createExampleText( "true, false" ) );
+			this.mapTypeToText.put( org.lgna.project.ast.JavaType.getInstance( String.class ), createExampleText( "\"hello\", \"goodbye\"" ) );
+		}
+		return this.mapTypeToText.get( type );
+	}
 
 	public abstract boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type );
 	public abstract boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );

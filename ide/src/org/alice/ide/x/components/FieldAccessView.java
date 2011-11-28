@@ -70,7 +70,7 @@ public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstanc
 			}
 			if( isExpressionDesired ) {
 				this.addComponent( factory.createExpressionPropertyPane( this.fieldAccess.expression ) );
-				if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 					//pass
 				} else {
 					this.addComponent( new org.lgna.croquet.components.Label( "." ) );
@@ -93,7 +93,7 @@ public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstanc
 			this.addComponent( nodeNameLabel );
 			if( isExpressionDesired ) {
 				if( isGetter ) {
-					if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
+					if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 						this.addComponent( new org.lgna.croquet.components.Label( "()" ) );
 					}
 				}

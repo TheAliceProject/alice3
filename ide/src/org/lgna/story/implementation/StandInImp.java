@@ -52,6 +52,14 @@ public class StandInImp extends AbstractTransformableImp implements edu.cmu.cs.d
 		this.putInstance( this.sgStandIn );
 	}
 	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
+		return this.sgStandIn.getVehicle();
+	}
+	@Override
+	protected void setSgVehicle( edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle ) {
+		this.sgStandIn.setVehicle( sgVehicle );
+	}
+	@Override
 	public org.lgna.story.Entity getAbstraction() {
 		return null;
 	}
