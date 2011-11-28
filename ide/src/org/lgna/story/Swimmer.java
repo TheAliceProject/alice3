@@ -1,5 +1,7 @@
 package org.lgna.story;
 
+import org.lgna.project.annotations.*;
+
 public class Swimmer extends JointedModel {
 	private final org.lgna.story.implementation.SwimmerImp implementation;
 	@Override
@@ -10,6 +12,7 @@ public class Swimmer extends JointedModel {
 		this.implementation = resource.createImplementation( this );
 	}
 	
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public void swimTo( Entity entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: swimTo" );
 	}

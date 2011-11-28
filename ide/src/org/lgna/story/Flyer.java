@@ -42,9 +42,10 @@
  */
 package org.lgna.story;
 
+import org.lgna.project.annotations.*;
+
 /**
  * @author dculyba
- *
  */
 public class Flyer extends JointedModel implements Articulable {
 	private final org.lgna.story.implementation.FlyerImp implementation;
@@ -56,9 +57,11 @@ public class Flyer extends JointedModel implements Articulable {
 		this.implementation = resource.createImplementation( this );
 	}
 	
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public void walkTo( Entity entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: walkTo" );
 	}
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public void touch( Entity entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );
 	}
