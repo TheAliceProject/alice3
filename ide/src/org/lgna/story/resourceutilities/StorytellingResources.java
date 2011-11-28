@@ -105,10 +105,12 @@ public class StorytellingResources {
 		}
 		List<Class<? extends org.lgna.story.resources.ModelResource>> modelResourceClasses = ModelResourceUtilities.getAndLoadModelResourceClasses(resourcePaths);
 		this.galleryTree = new ModelResourceTree(modelResourceClasses);
-		if (resourcePaths.size() == 0)
-		{
-			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find the Alice gallery resources." );
-		}
+	
+		//TODO: make this work better for the plugin
+//		if (resourcePaths.size() == 0)
+//		{
+//			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find the Alice gallery resources." );
+//		}
 		if (this.getNebulousDirFromPref() == null) {
 			java.util.List<java.io.File> nebulousPaths = ResourcePathManager.getPaths(ResourcePathManager.SIMS_RESOURCE_KEY);
 			if (nebulousPaths.size() > 0) {
