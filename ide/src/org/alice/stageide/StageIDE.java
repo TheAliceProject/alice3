@@ -64,7 +64,6 @@ public class StageIDE extends org.alice.ide.IDE {
 			}
 		} );
 	}
-	
 	@Override
 	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
 		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
@@ -131,11 +130,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 		return null;
 	}
-	
-//	@Override
-//	protected boolean isInclusionOfTypeDesired(org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> valueTypeInAlice) {
-//		return super.isInclusionOfTypeDesired(valueTypeInAlice) || valueTypeInAlice.isAssignableTo( org.lgna.project.ast.TypeDeclaredInJava.get( org.lookingglassandalice.storytelling.Camera.class ) );
-//	}
 
 	@Override
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
@@ -197,15 +191,8 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	@Override
 	public org.lgna.croquet.Operation<?> getRunOperation() {
-		return EPIC_HACK_getRunDialogOperation();
-	}
-	
-	public org.lgna.croquet.PlainDialogOperation EPIC_HACK_getRunDialogOperation() {
 		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 	}
-	
-	
-	
 	@Override
 	public org.lgna.croquet.Operation< ? > getRestartOperation() {
 		return org.alice.stageide.croquet.models.run.RestartOperation.getInstance();
@@ -250,16 +237,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	public org.lgna.croquet.Operation< ? > getAboutOperation() {
 		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
 	}
-
-	private java.util.Map< org.lgna.project.ast.AbstractType, String > mapTypeToText;
-
-	private static org.lgna.project.ast.UserMethod getDeclaredMethod( org.lgna.project.ast.NamedUserType type, String name, Class< ? >... paramClses ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( type.getDeclaredMethod( name, paramClses ), org.lgna.project.ast.UserMethod.class );
-	}
-	private static org.lgna.project.ast.NamedUserConstructor getDeclaredConstructor( org.lgna.project.ast.NamedUserType type, Class< ? >... paramClses ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( type.getDeclaredConstructor( paramClses ), org.lgna.project.ast.NamedUserConstructor.class );
-	}
-
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
@@ -271,34 +248,6 @@ public class StageIDE extends org.alice.ide.IDE {
 			}
 		}
 	}
-
-	private static String createExampleText( String examples ) {
-		return "<html><em>examples:</em> " + examples + "</html>";
-	}
-	@Override
-	public String getTextFor( org.lgna.project.ast.AbstractType type ) {
-		if( mapTypeToText != null ) {
-			//pass
-		} else {
-			mapTypeToText = new java.util.HashMap< org.lgna.project.ast.AbstractType, String >();
-			mapTypeToText.put( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE, createExampleText( "0.25, 1.0, 3.14, 98.6" ) );
-			mapTypeToText.put( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, createExampleText( "1, 2, 42, 100" ) );
-			mapTypeToText.put( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE, createExampleText( "true, false" ) );
-			mapTypeToText.put( org.lgna.project.ast.JavaType.getInstance( String.class ), createExampleText( "\"hello\", \"goodbye\"" ) );
-		}
-		return mapTypeToText.get( type );
-	}
-		
-//	@Override
-//	public boolean isDeclareFieldOfPredeterminedTypeSupported( org.lgna.project.ast.TypeDeclaredInAlice valueType ) {
-//		org.lgna.project.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
-//		if( typeInJava == org.lgna.project.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) ) {
-//			this.showMessageDialog( "todo: isDeclareFieldOfPredeterminedTypeSupported" );
-//			return false;
-//		} else {
-//			return super.isDeclareFieldOfPredeterminedTypeSupported( valueType );
-//		}
-//	}
 	@Override
 	public boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType typeInAlice ) {
 		org.lgna.project.ast.JavaType typeInJava = typeInAlice.getFirstTypeEncounteredDeclaredInJava();
@@ -331,19 +280,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected java.awt.image.BufferedImage createThumbnail() throws Throwable {
 		return org.alice.stageide.sceneeditor.ThumbnailGenerator.createThumbnail( THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT );
 	}
-
-	@Override
-	protected org.alice.ide.openprojectpane.TabContentPanel createTemplatesTabContentPane() {
-		return org.alice.ide.croquet.models.openproject.TemplatesTab.getInstance().getView();
-	}
-
-	@Override
-	public java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >>> updateNameClsPairsForRelationalFillIns( java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >>> rv ) {
-		super.updateNameClsPairsForRelationalFillIns( rv );
-		//rv.add( new edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > >( "Key", org.lookingglassandalice.storytelling.Key.class ) );
-		return rv;
-	}
-	
 	@Override
 	public org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod() {
 		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
@@ -356,6 +292,4 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 		return null;
 	}
-
-
 }

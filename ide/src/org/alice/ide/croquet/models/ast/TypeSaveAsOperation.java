@@ -75,7 +75,7 @@ public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi
 
 	@Override
 	protected java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application ) {
-		return org.alice.ide.IDE.getActiveInstance().getMyTypesDirectory();
+		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 	@Override
 	protected String getExtension() {

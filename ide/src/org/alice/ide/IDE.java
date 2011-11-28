@@ -189,10 +189,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return (expression instanceof org.lgna.project.ast.TypeExpression || expression instanceof org.lgna.project.ast.ResourceExpression) == false;
 	}
 	
-	public String getTextFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return null;
-	}
-
 	private java.util.Map< org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory > mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
@@ -595,7 +591,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
 	}
 
-	@Deprecated
 	public org.lgna.project.ast.NamedUserType getProgramType() {
 		org.lgna.project.Project project = this.getProject();
 		if( project != null ) {
@@ -605,42 +600,29 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	@Deprecated
-	public org.lgna.project.ast.UserField getSceneField() {
-		org.lgna.project.ast.NamedUserType programType = getProgramType();
-		return getSceneFieldFromProgramType( programType );
-	}
-
-	@Deprecated
-	protected static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.AbstractType< ?, ?, ? > programType ) {
-		if( programType instanceof org.lgna.project.ast.NamedUserType ) {
-			org.lgna.project.ast.NamedUserType programAliceType = (org.lgna.project.ast.NamedUserType)programType;
-			if( programAliceType.fields.size() > 0 ) {
-				return programAliceType.fields.get( 0 );
-			} else {
-				return null;
-			}
+	protected static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
+		if( programType.fields.size() > 0 ) {
+			return programType.fields.get( 0 );
 		} else {
 			return null;
 		}
 	}
 	@Deprecated
-	protected static org.lgna.project.ast.NamedUserType getSceneTypeFromProgramType( org.lgna.project.ast.AbstractType< ?, ?, ? > programType ) {
-		if( programType instanceof org.lgna.project.ast.NamedUserType ) {
-			org.lgna.project.ast.UserField sceneField = getSceneFieldFromProgramType( programType );
-			return (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
-		} else {
-			return null;
-		}
-	}
-
-	@Deprecated
-	public org.lgna.project.ast.NamedUserType getSceneType() {
-		org.lgna.project.ast.UserField sceneField = getSceneField();
+	protected static org.lgna.project.ast.NamedUserType getSceneTypeFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
+		org.lgna.project.ast.UserField sceneField = getSceneFieldFromProgramType( programType );
 		if( sceneField != null ) {
 			return (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
 		} else {
 			return null;
 		}
+	}
+	@Deprecated
+	public org.lgna.project.ast.UserField getSceneField() {
+		return getSceneFieldFromProgramType( this.getProgramType() );
+	}
+	@Deprecated
+	public org.lgna.project.ast.NamedUserType getSceneType() {
+		return getSceneTypeFromProgramType( this.getProgramType() );
 	}
 
 	public String getInstanceTextForAccessible( org.lgna.project.ast.Accessible accessible ) {
@@ -705,10 +687,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv.replaceAll( " ", "" );
 	}
 
-	public java.io.File getMyTypesDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
-	}
-
 	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType typeInAlice );
 	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.NamedUserType programType, int frameRate );
 
@@ -720,19 +698,4 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			return null;
 		}
 	}
-
-	private java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > nameClsPairsForRelationalFillIns = null;
-
-	public java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > updateNameClsPairsForRelationalFillIns( java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > rv ) {
-		return rv;
-	}
-	public Iterable< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > getNameClsPairsForRelationalFillIns() {
-		if( this.nameClsPairsForRelationalFillIns != null ) {
-			//pass
-		} else {
-			this.nameClsPairsForRelationalFillIns = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >> >();
-			this.updateNameClsPairsForRelationalFillIns( this.nameClsPairsForRelationalFillIns );
-		}
-		return this.nameClsPairsForRelationalFillIns;
-	}	
 }

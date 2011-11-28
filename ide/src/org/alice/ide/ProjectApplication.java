@@ -86,8 +86,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 			this.updateUndoRedoEnabled();
 		}
 	}
-	protected abstract org.alice.ide.openprojectpane.TabContentPanel createTemplatesTabContentPane();
-
 	public abstract String getApplicationName();
 	protected abstract String getVersionText();
 	protected abstract String getVersionAdornment();
