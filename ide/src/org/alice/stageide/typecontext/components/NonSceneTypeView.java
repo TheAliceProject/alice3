@@ -206,4 +206,13 @@ public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPa
 		this.setSouthWestComponent( new ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation.getInstance() ) );
 		this.setNorthEastComponent( new SelectedTypeView() );
 	}
+	@Override
+	protected javax.swing.JPanel createJPanel() {
+		return new DefaultJPanel() {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return new java.awt.Dimension( 320, 240 );
+			}
+		};
+	}
 }

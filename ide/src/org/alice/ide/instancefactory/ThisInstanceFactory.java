@@ -58,7 +58,7 @@ public enum ThisInstanceFactory implements InstanceFactory {
 		return new org.lgna.project.ast.ThisExpression();
 	}
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
-		return org.alice.ide.IDE.getActiveInstance().getTypeInScope();
+		return org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getValue();
 	}
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();

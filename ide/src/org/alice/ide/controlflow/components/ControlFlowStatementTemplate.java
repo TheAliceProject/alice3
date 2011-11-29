@@ -81,6 +81,23 @@ public class ControlFlowStatementTemplate extends org.alice.ide.templates.Statem
 	}
 
 	@Override
+	protected java.awt.Point getToolTipLocation( java.awt.Point location, java.awt.event.MouseEvent event ) {
+		javax.swing.JToolTip toolTip = this.createToolTip( null );
+		if( toolTip != null ) {
+			int offset = toolTip.getPreferredSize().height;
+//			if( offset == 0 ) {
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( toolTip );
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( toolTip );
+//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( toolTip );
+//				offset = toolTip.getPreferredSize().height;
+//			}
+			offset += 4;
+			return new java.awt.Point( 0, -offset );
+		} else {
+			return location;
+		}
+	}
+	@Override
 	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
 		if( this.toolTip != null ) {
 			//pass

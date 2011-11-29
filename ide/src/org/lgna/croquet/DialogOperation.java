@@ -133,7 +133,6 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 		};
 		dialog.addWindowListener( windowListener );
 
-		
 		Container<?> contentPane = this.createContentPane(step, dialog);
 		
 		try {

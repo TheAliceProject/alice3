@@ -46,8 +46,15 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherPanel extends InArrayPanel< org.lgna.project.ast.EachInArrayTogether, org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation > {
-	public EachInArrayTogetherPanel( org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation model ) {
-		super( model,org.lgna.project.ast.EachInArrayTogether.class );
+public abstract class InArrayPanel< S extends org.lgna.project.ast.Statement, M extends org.alice.ide.croquet.models.ast.cascade.statement.InArrayInsertOperation< S > > extends DeclarationPanel< M > {
+	public InArrayPanel( M model, Class<S> statementCls ) {
+		super( model );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( statementCls ) );
+	}
+	@Override
+	protected final org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		M model = this.getModel();
+		S statement = model.createPreviewDeclaration();
+		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement );
 	}
 }

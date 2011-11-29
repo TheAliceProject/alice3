@@ -72,6 +72,10 @@ public class AnonymousUserConstructor extends UserConstructor {
 		this.type = type;
 	}
 	@Override
+	public boolean isSignatureLocked() {
+		return true;
+	}
+	@Override
 	public org.lgna.project.ast.AccessLevel getAccessLevel() {
 		return null;
 	}

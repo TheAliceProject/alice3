@@ -54,6 +54,7 @@ public class MenuTextSeparator extends ViewController< javax.swing.JMenuItem, or
 	protected javax.swing.JMenuItem createAwtComponent() {
 		javax.swing.JMenuItem rv = new javax.swing.JMenuItem();
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		rv.setEnabled( false );
 		return rv;
 	}
 	@Override

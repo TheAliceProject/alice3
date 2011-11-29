@@ -46,8 +46,8 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherPanel extends InArrayPanel< org.lgna.project.ast.EachInArrayTogether, org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation > {
-	public EachInArrayTogetherPanel( org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation model ) {
-		super( model,org.lgna.project.ast.EachInArrayTogether.class );
+public class ForEachInArrayLoopPanel extends InArrayPanel< org.lgna.project.ast.ForEachInArrayLoop, org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation > {
+	public ForEachInArrayLoopPanel( org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation model ) {
+		super( model,org.lgna.project.ast.ForEachInArrayLoop.class );
 	}
 }

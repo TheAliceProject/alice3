@@ -118,6 +118,11 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 	
 	@Override
+	public boolean isSignatureLocked() {
+		return this.isSignatureLocked.getValue();
+	}
+
+	@Override
 	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
 		return requiredParameters.getValue();
 	}

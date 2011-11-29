@@ -134,6 +134,11 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	}
 	
 	@Override
+	public boolean isSignatureLocked() {
+		return this.isSignatureLocked.getValue();
+	}
+
+	@Override
 	public AccessLevel getAccessLevel() {
 		return this.accessLevel.getValue();
 	}

@@ -97,6 +97,10 @@ public class JToolTip extends javax.swing.JToolTip {
 		}
 	}
 	@Override
+	public boolean contains( int x, int y ) {
+		return false;
+	}
+	@Override
 	public void updateUI() {
 		setUI( ToolTipUI.createUI( this ) );
 	}

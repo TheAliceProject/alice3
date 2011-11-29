@@ -41,13 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
-
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherPanel extends InArrayPanel< org.lgna.project.ast.EachInArrayTogether, org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation > {
-	public EachInArrayTogetherPanel( org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation model ) {
-		super( model,org.lgna.project.ast.EachInArrayTogether.class );
+public class GalleryTest {
+	private static void test( org.alice.ide.croquet.models.gallerybrowser.GalleryNode node, Class<? extends org.lgna.story.JointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException {
+		if( node instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
+			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)node;
+			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldGalleryNode.getDeclaration();
+			java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
+			org.lgna.story.JointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( instanceCls, parameterClses, fld.get( null ) );
+			jointedModel.straightenOutJoints();
+		}
+		final int N = node.getChildCount();
+		for( int i=0; i<N; i++ ) {
+			test( node.getChild( i ), instanceCls, parameterClses );
+		}
+	}
+	public static void main( String[] args ) throws Exception {
+		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
+		org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode rootGalleryNode = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance();
+		//todo
+		test( rootGalleryNode.getChild( 0 ), org.lgna.story.Biped.class, org.lgna.story.resources.BipedResource.class );
+		test( rootGalleryNode.getChild( 1 ), org.lgna.story.Flyer.class, org.lgna.story.resources.FlyerResource.class );
+		test( rootGalleryNode.getChild( 2 ), org.lgna.story.Quadruped.class, org.lgna.story.resources.QuadrupedResource.class );
+		test( rootGalleryNode.getChild( 3 ), org.lgna.story.Swimmer.class, org.lgna.story.resources.SwimmerResource.class );
 	}
 }

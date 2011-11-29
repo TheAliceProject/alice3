@@ -62,8 +62,7 @@ public class ThisExpressionDragModel extends AbstractExpressionDragModel {
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		return ide.getTypeInScope();
+		return org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getValue();
 	}
 }
 

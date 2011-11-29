@@ -41,13 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherPanel extends InArrayPanel< org.lgna.project.ast.EachInArrayTogether, org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation > {
-	public EachInArrayTogetherPanel( org.alice.ide.croquet.models.ast.cascade.statement.EachInArrayTogetherInsertOperation model ) {
-		super( model,org.lgna.project.ast.EachInArrayTogether.class );
+public class IsNullAllowedForLocalInitializers extends org.lgna.croquet.preferences.PreferenceBooleanState {
+	private static class SingletonHolder {
+		private static IsNullAllowedForLocalInitializers instance = new IsNullAllowedForLocalInitializers();
+	}
+	public static IsNullAllowedForLocalInitializers getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IsNullAllowedForLocalInitializers() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3e2789c0-202f-4272-a5e0-267ec0a6d33a" ), false );
 	}
 }

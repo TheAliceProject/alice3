@@ -158,7 +158,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		@Override
 		protected javax.swing.JPanel createJPanel() {
 			javax.swing.JPanel rv = StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
-			rv.setLayout(new javax.swing.SpringLayout());
+			rv.setLayout( new javax.swing.SpringLayout() );
 			return rv;
 		}
 	}

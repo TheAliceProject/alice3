@@ -521,15 +521,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //	}
 
 
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getTypeInScope() {
-		org.lgna.project.ast.AbstractCode codeInFocus = this.getFocusedCode();
-		if( codeInFocus != null ) {
-			return codeInFocus.getDeclaringType();
-		} else {
-			return null;
-		}
-	}
-
 	private org.lgna.project.virtualmachine.VirtualMachine vmForSceneEditor;
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
