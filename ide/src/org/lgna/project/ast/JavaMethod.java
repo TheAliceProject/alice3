@@ -196,6 +196,10 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	@Override
+	public boolean isSignatureLocked() {
+		return true;
+	}
+	@Override
 	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null;

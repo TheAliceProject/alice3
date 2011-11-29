@@ -161,6 +161,9 @@ public abstract class ApiConfigurationManager {
 		return this.mapTypeToText.get( type );
 	}
 
+	public boolean isSignatureLocked( org.lgna.project.ast.AbstractCode code ) {
+		return code.isSignatureLocked();
+	}
 	public abstract boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type );
 	public abstract boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public abstract org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type );
