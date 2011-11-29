@@ -627,6 +627,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		private final double alongAxisOffset;
 		private final ReferenceFrame asSeenBy;
 		public PlaceData( AbstractTransformableImp subject, SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy ) {
+			assert subject != null;
+			//assert target != null;
+			assert asSeenBy != null;
+			assert spatialRelation != null;
+			assert Double.isNaN( alongAxisOffset ) == false;
 			this.subject = subject;
 			this.spatialRelation = spatialRelation;
 			this.target = target;
@@ -643,40 +648,50 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			return this.asSeenBy;
 		}
 		
-		public void epilogue() {
-			edu.cmu.cs.dennisc.math.AxisAlignedBox bb = this.subject.getAxisAlignedMinimumBoundingBox();
-			this.subject.applyTranslation( 0.0, -bb.getYMinimum(), 0.0, this.asSeenBy );
+		public edu.cmu.cs.dennisc.math.Point3 calculateTranslation0() {
+			return this.subject.getTransformation( this.asSeenBy ).translation;
 		}
-//		public edu.cmu.cs.dennisc.math.AxisAlignedBox createSubjectBound() {
-//			return this.subject.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
-//		}
-//		public edu.cmu.cs.dennisc.math.AxisAlignedBox createTargetBound() {
-//			return this.target.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
-//		}
-		
-		
+		public edu.cmu.cs.dennisc.math.Point3 calculateTranslation1( edu.cmu.cs.dennisc.math.Point3 t0 ) {
+			edu.cmu.cs.dennisc.math.AxisAlignedBox bbSubject = this.subject.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
+			if( this.target != null ) {
+				edu.cmu.cs.dennisc.math.AxisAlignedBox bbTarget;
+				bbTarget = this.target.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
+				assert bbSubject != null;
+				assert bbTarget != null;
+				assert bbSubject.isNaN() == false;
+				assert bbTarget.isNaN() == false;
+				return this.spatialRelation.getPlaceLocation( this.alongAxisOffset, bbSubject, bbTarget );
+			} else {
+				//double extent = 100;
+				//bbTarget = new edu.cmu.cs.dennisc.math.AxisAlignedBox( -extent, 0, -extent, extent, 0, extent ); 
+				return new edu.cmu.cs.dennisc.math.Point3( t0.x, -bbSubject.getMinimum().y, t0.z );
+			}
+		}
+		public void setTranslation( edu.cmu.cs.dennisc.math.Point3 translation ) {
+			this.subject.getSgComposite().setTranslationOnly( translation, this.asSeenBy.getSgReferenceFrame() );
+		}
 	}
 	private static class PlaceAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
 		private final PlaceData placeData;
-		private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0;
-		private edu.cmu.cs.dennisc.math.AxisAlignedBox subjectBB;
-		private edu.cmu.cs.dennisc.math.AxisAlignedBox targetBB;
+		private edu.cmu.cs.dennisc.math.Point3 t0;
+		private edu.cmu.cs.dennisc.math.Point3 t1;
 		public PlaceAnimation( PlaceData placeData, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 			super( duration, style );
 			this.placeData = placeData;
 		}
 		@Override
 		protected void prologue() {
-			this.m0 = this.placeData.getSubject().getTransformation( this.placeData.getAsSeenBy() );
-			this.placeData.epilogue();
+			this.t0 = this.placeData.calculateTranslation0();
+			this.t1 = this.placeData.calculateTranslation1( this.t0 );
 		}
 		@Override
 		protected void setPortion( double portion ) {
-//			this.placeData.epilogue();
+			edu.cmu.cs.dennisc.math.Point3 t = edu.cmu.cs.dennisc.math.Point3.createInterpolation( this.t0, this.t1, portion );
+			this.placeData.getSubject().getSgComposite().setTranslationOnly( t, this.placeData.getAsSeenBy().getSgReferenceFrame() );
 		}
 		@Override
 		protected void epilogue() {
-//			this.placeData.epilogue();
+			this.placeData.setTranslation( this.t1 );
 		}
 	}
 	
@@ -719,7 +734,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 
 	public void place( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy ) {
 		PlaceData placeData = new PlaceData( this, spatialRelation, target, alongAxisOffset, asSeenBy );
-		placeData.epilogue();
+		placeData.setTranslation( placeData.calculateTranslation1( placeData.calculateTranslation0() ) );
 	}
 	public void place( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset ) {
 		this.place( spatialRelation, target, alongAxisOffset, target );
@@ -731,7 +746,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		PlaceData placeData = new PlaceData( this, spatialRelation, target, alongAxisOffset, asSeenBy );
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			placeData.epilogue();
+			placeData.setTranslation( placeData.calculateTranslation1( placeData.calculateTranslation0() ) );
 		} else {
 			this.perform( new PlaceAnimation( placeData, duration, style ) );
 		}
