@@ -130,7 +130,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		if( type.isAssignableTo( org.lgna.story.JointedModel.class ) ) {
 			if( type2.isAssignableFrom( org.lgna.story.Joint.class ) ) {
 				if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
-					return new org.lgna.croquet.CascadeFillInMenuCombo( fillIn, new JointExpressionMenuModel( expression ) );
+					return new org.lgna.croquet.CascadeFillInMenuCombo( fillIn, new JointExpressionMenuModel( expression, type ) );
 				}
 			}
 		}
