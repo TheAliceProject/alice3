@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class ForEachInArrayLoopInsertOperation extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< org.lgna.project.ast.ForEachInArrayLoop > {
+public class ForEachInArrayLoopInsertOperation extends InArrayInsertOperation< org.lgna.project.ast.ForEachInArrayLoop > {
 	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ForEachInArrayLoopInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ForEachInArrayLoopInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
@@ -59,42 +59,19 @@ public class ForEachInArrayLoopInsertOperation extends org.alice.ide.croquet.mod
 		}
 		return rv;
 	}
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 	private ForEachInArrayLoopInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( 
-				java.util.UUID.fromString( "20ddf125-dd22-494b-8f06-889b9d68fc40" ), 
-				null, false,
-				null, true, 
-				true, false, 
-				"", true,
-				null, true,
-				new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair )
-		);
-		this.blockStatementIndexPair = blockStatementIndexPair;
+		super( java.util.UUID.fromString( "20ddf125-dd22-494b-8f06-889b9d68fc40" ), blockStatementIndexPair );
 	}
-
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
-	}
-
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.ide.croquet.components.declaration.ForEachInArrayPanel( this );
+		return new org.alice.ide.croquet.components.declaration.ForEachInArrayLoopPanel( this );
 	}
-	private org.lgna.project.ast.ForEachInArrayLoop createForEachInArrayLoop() {
-		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationName(), this.getComponentValueTypeState().getValue(), true );
+	@Override
+	protected org.lgna.project.ast.ForEachInArrayLoop createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
 		return new org.lgna.project.ast.ForEachInArrayLoop(
 				item,
-				this.getInitializer(), 
+				initializer, 
 				new org.lgna.project.ast.BlockStatement() 
 		);
-	}
-	@Override
-	public org.lgna.project.ast.ForEachInArrayLoop createPreviewDeclaration() {
-		return this.createForEachInArrayLoop();
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, this.createForEachInArrayLoop() );
 	}
 }

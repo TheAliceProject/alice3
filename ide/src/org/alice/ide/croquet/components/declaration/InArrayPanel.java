@@ -46,16 +46,15 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class ForEachInArrayPanel extends DeclarationPanel< org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation > {
-	public ForEachInArrayPanel( org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation model ) {
+public abstract class InArrayPanel< S extends org.lgna.project.ast.Statement, M extends org.alice.ide.croquet.models.ast.cascade.statement.InArrayInsertOperation< S > > extends DeclarationPanel< M > {
+	public InArrayPanel( M model, Class<S> statementCls ) {
 		super( model );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ForEachInArrayLoop.class ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( statementCls ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation model = this.getModel();
-		org.lgna.project.ast.ForEachInArrayLoop forEachInArrayLoop = model.createPreviewDeclaration();
-		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( forEachInArrayLoop );
-		return pane;
+	protected final org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		M model = this.getModel();
+		S statement = model.createPreviewDeclaration();
+		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement );
 	}
 }
