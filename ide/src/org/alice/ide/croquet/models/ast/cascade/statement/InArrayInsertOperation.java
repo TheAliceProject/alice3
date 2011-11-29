@@ -63,6 +63,14 @@ public abstract class InArrayInsertOperation< S extends org.lgna.project.ast.Sta
 	public final org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
+	@Override
+	protected String getInitializerExplanation( org.lgna.project.ast.Expression initializer ) {
+		if( initializer != null ) {
+			return super.getInitializerExplanation( initializer );
+		} else {
+			return "array must be set";
+		}
+	}
 	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
 	private S createStatement() {
 		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationName(), this.getComponentValueTypeState().getValue(), true );
