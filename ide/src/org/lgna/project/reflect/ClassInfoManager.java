@@ -94,7 +94,13 @@ public final class ClassInfoManager {
 		if( cls != null ) {
 			edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > lazyClassInfo = s_map.get( cls.getName() );
 			if( lazyClassInfo != null ) {
-				return lazyClassInfo.get();
+				try {
+					return lazyClassInfo.get();
+				} catch( Throwable t ) {
+					System.err.println( cls );
+					t.printStackTrace();
+					return null;
+				}
 			} else {
 				return null;
 			}
