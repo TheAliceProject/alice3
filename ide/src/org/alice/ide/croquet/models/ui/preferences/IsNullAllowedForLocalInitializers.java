@@ -41,43 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InArrayInsertOperation< S extends org.lgna.project.ast.Statement > extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< S > {
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
-	public InArrayInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( 
-				id, 
-				null, false,
-				null, true, 
-				true, false, 
-				"", true,
-				null, true,
-				new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair )
-		);
-		this.blockStatementIndexPair = blockStatementIndexPair;
+public class IsNullAllowedForLocalInitializers extends org.lgna.croquet.preferences.PreferenceBooleanState {
+	private static class SingletonHolder {
+		private static IsNullAllowedForLocalInitializers instance = new IsNullAllowedForLocalInitializers();
 	}
-	public final org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
+	public static IsNullAllowedForLocalInitializers getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected boolean isNullAllowedForInitializer() {
-		return false;
-	}
-	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
-	private S createStatement() {
-		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationName(), this.getComponentValueTypeState().getValue(), true );
-		return this.createStatement( item, this.getInitializer() );
-	}
-	@Override
-	public final S createPreviewDeclaration() {
-		return this.createStatement();
-	}
-	@Override
-	protected final org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, this.createStatement() );
+	private IsNullAllowedForLocalInitializers() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3e2789c0-202f-4272-a5e0-267ec0a6d33a" ), false );
 	}
 }

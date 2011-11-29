@@ -245,11 +245,18 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 				return null;
 			}
 		} else {
-			return "\"" + declarationName + "\" is not a valid " + this.declaringTypeLabelText;
+			return "\"" + declarationName + "\" is not a valid " + this.nameLabelText;
 		}
 	}
+	protected boolean isNullAllowedForInitializer() {
+		return false;
+	}
 	protected String getInitializerExplanation( org.lgna.project.ast.Expression initializer ) {
-		return null;
+		if( initializer != null || this.isNullAllowedForInitializer() ) {
+			return null;
+		} else {
+			return this.initializerLabelText + " must be set";
+		}
 	}
 	@Override
 	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
@@ -269,7 +276,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		if( valueTypeText != null || nameText != null || initializerText != null ) {
 			String preText = "";
 			StringBuilder sb = new StringBuilder();
-			sb.append( "You must " );
+			//sb.append( "You must " );
 			if( valueTypeText != null ) {
 				sb.append( valueTypeText );
 				preText = " AND ";
