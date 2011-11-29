@@ -638,15 +638,15 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.alongAxisOffset = alongAxisOffset;
 			this.asSeenBy = asSeenBy;
 		}
-		public AbstractTransformableImp getSubject() {
-			return this.subject;
-		}
-		public EntityImp getTarget() {
-			return this.target;
-		}
-		public ReferenceFrame getAsSeenBy() {
-			return this.asSeenBy;
-		}
+//		public AbstractTransformableImp getSubject() {
+//			return this.subject;
+//		}
+//		public EntityImp getTarget() {
+//			return this.target;
+//		}
+//		public ReferenceFrame getAsSeenBy() {
+//			return this.asSeenBy;
+//		}
 		
 		public edu.cmu.cs.dennisc.math.Point3 calculateTranslation0() {
 			return this.subject.getTransformation( this.asSeenBy ).translation;
@@ -687,7 +687,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		@Override
 		protected void setPortion( double portion ) {
 			edu.cmu.cs.dennisc.math.Point3 t = edu.cmu.cs.dennisc.math.Point3.createInterpolation( this.t0, this.t1, portion );
-			this.placeData.getSubject().getSgComposite().setTranslationOnly( t, this.placeData.getAsSeenBy().getSgReferenceFrame() );
+			this.placeData.setTranslation( t );
 		}
 		@Override
 		protected void epilogue() {
