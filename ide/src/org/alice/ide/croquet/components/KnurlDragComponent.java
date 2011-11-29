@@ -96,6 +96,10 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 				return KnurlDragComponent.this.createToolTip( super.createToolTip() );
 			}
 			@Override
+			public java.awt.Point getToolTipLocation( java.awt.event.MouseEvent event ) {
+				return KnurlDragComponent.this.getToolTipLocation( super.getToolTipLocation( event ), event );
+			}
+			@Override
 			public java.awt.Dimension getMaximumSize() {
 				if( KnurlDragComponent.this.isMaximumSizeClampedToPreferredSize() ) {
 					return this.getPreferredSize();
@@ -164,6 +168,10 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
 		return jToolTip;
 	}
+	protected java.awt.Point getToolTipLocation( java.awt.Point location, java.awt.event.MouseEvent event ) {
+		return location;
+	}
+	
 	private static final java.awt.Stroke ACTIVE_STROKE = new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static final java.awt.Stroke PASSIVE_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 255 );

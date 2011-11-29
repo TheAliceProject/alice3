@@ -293,7 +293,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 			} else {
 				alternateListProperty = null;
 			}
-			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getProperty(), alternateListProperty ) );
+			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getFactory(), this.getProperty(), alternateListProperty ) );
 			bottom = 0;
 		} else {
 			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();

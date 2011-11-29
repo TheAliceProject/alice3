@@ -56,9 +56,11 @@ public class EmptyStatementListAffordance extends org.lgna.croquet.components.JC
 
 	private boolean isDrawingDesired = true;
 	
+	private final org.alice.ide.x.AstI18nFactory factory;
 //	private org.lgna.project.ast.StatementListProperty statementListProperty;
 	private org.lgna.project.ast.StatementListProperty alternateListProperty;
-	public EmptyStatementListAffordance( org.lgna.project.ast.StatementListProperty statementListProperty, org.lgna.project.ast.StatementListProperty alternateListProperty ) {
+	public EmptyStatementListAffordance( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty statementListProperty, org.lgna.project.ast.StatementListProperty alternateListProperty ) {
+		this.factory = factory;
 //		this.statementListProperty = statementListProperty;
 		this.alternateListProperty = alternateListProperty;
 	}
@@ -72,36 +74,43 @@ public class EmptyStatementListAffordance extends org.lgna.croquet.components.JC
 					super.paint(g);
 				}
 			}
-			private boolean isMuted() {
-				return alternateListProperty != null && alternateListProperty.size() > 0;
+			private boolean isDashed() {
+				return ( alternateListProperty != null && alternateListProperty.size() > 0 );
+			}
+			private boolean isEditable() {
+				return EmptyStatementListAffordance.this.factory instanceof org.alice.ide.x.EditableAstI18Factory;
 			}
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
-				if( this.isMuted() ) {
-					//pass
-				} else {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					java.awt.Paint prevPaint = g2.getPaint();
+				if( this.isEditable() ) {
+					if( this.isDashed() ) {
+						//pass
+					} else {
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						java.awt.Paint prevPaint = g2.getPaint();
 
-					java.awt.Dimension size = this.getSize();
-					java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 0, 0, size.width-1, size.height-1, 8, 8 );
-					g2.setPaint( new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, size.height, BOTTOM_COLOR ) );
-					g2.fill( rr );
+						java.awt.Dimension size = this.getSize();
+						java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 0, 0, size.width-1, size.height-1, 8, 8 );
+						g2.setPaint( new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, size.height, BOTTOM_COLOR ) );
+						g2.fill( rr );
 
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle(g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE);
-					g2.setPaint( prevPaint );
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle(g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE);
+						g2.setPaint( prevPaint );
+					}
+					super.paintComponent( g );
 				}
-				super.paintComponent( g );
 			}
 			@Override
 			protected void paintBorder(java.awt.Graphics g) {
-				super.paintBorder(g);
-				if( this.isMuted() ) {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					g2.setColor(java.awt.Color.GRAY);
-					g2.setStroke(DASHED_STROKE);
-					java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 1, 1, this.getWidth()-3, this.getHeight()-3, 8, 8 );
-					g2.draw(rr);
+				if( this.isEditable() ) {
+					super.paintBorder(g);
+					if( this.isDashed() ) {
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						g2.setColor(java.awt.Color.GRAY);
+						g2.setStroke(DASHED_STROKE);
+						java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 1, 1, this.getWidth()-3, this.getHeight()-3, 8, 8 );
+						g2.draw(rr);
+					}
 				}
 			}
 		};
