@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.implementation;
-
-import org.lgna.story.resources.JointId;
+package edu.cmu.cs.dennisc.animation;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public final class BipedImp extends JointedModelImp< org.lgna.story.Biped, org.lgna.story.resources.BipedResource > {
-	public BipedImp( org.lgna.story.Biped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
-		super( abstraction, factory );
+public abstract class OverlayGraphicAnimation extends AbstractAnimation {
+
+	private org.lgna.story.implementation.EntityImp m_entityImp;
+	private edu.cmu.cs.dennisc.scenegraph.Layer m_sgLayer;
+	private edu.cmu.cs.dennisc.scenegraph.Graphic m_sgGraphic;
+	
+	public OverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp ) {
+		assert entityImp != null;
+		m_entityImp = entityImp;
+	}
+	
+	protected abstract edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic();
+	
+	@Override
+	protected void prologue() {
+		org.lgna.story.implementation.SceneImp scene = this.m_entityImp.getScene();
+		org.lgna.story.implementation.CameraImp<?> camera = scene.findFirstCamera();
+		m_sgLayer = camera.getPostRenderLayer();
+		m_sgGraphic = this.getSGGraphic();
+		assert m_sgLayer != null;
+		assert m_sgGraphic != null;
+		m_sgGraphic.setParent( m_sgLayer );
+	}
+	@Override
+	protected void preEpilogue() {
+	}
+	@Override
+	protected void epilogue() {
+		m_sgGraphic.setParent( null );
 	}
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.HEAD));
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.MOUTH));
-	}
 }

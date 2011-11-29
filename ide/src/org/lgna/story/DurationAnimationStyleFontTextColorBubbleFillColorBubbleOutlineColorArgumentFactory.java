@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.implementation;
-
-import org.lgna.story.resources.JointId;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public final class BipedImp extends JointedModelImp< org.lgna.story.Biped, org.lgna.story.resources.BipedResource > {
-	public BipedImp( org.lgna.story.Biped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
-		super( abstraction, factory );
-	}
+public class DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory
+		extends DurationAnimationStyleArgumentFactory {
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
+	protected DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory() {
+		super();
 	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.HEAD));
+	public static TextFont font( Font font ) {
+		return new TextFont(font);
 	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.MOUTH));
+	public static TextColor fontColor( Color color ) {
+		return new TextColor(color);
+	}
+	public static BubbleFillColor bubbleFillColor( Color color) {
+		return new BubbleFillColor(color);
+	}
+	public static BubbleOutlineColor bubbleOutlineColor( Color color) {
+		return new BubbleOutlineColor(color);
 	}
 }

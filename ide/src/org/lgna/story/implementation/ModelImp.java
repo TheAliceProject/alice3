@@ -367,6 +367,114 @@ public abstract class ModelImp extends TransformableImp {
 		this.animateApplyScale( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 	
+	public void displayBubble(edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, Number duration) {
+		if( this.getScene() != null ) {
+			perform( new edu.cmu.cs.dennisc.animation.BubbleAnimation( this, 0.2, duration.doubleValue(), 0.2, bubble ) );
+		} else {
+			//todo
+			javax.swing.JOptionPane.showMessageDialog( null, "unable to display bubble" );
+		}
+	}
+	
+	public void sayText(String textToSay, org.alice.flite.VoiceType voice, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble) {		
+		final boolean showSpeechBubble = bubble != null;
+		final org.alice.virtualmachine.resources.TextToSpeechResource tts = org.alice.virtualmachine.resources.TextToSpeechResource.valueOf(textToSay, voice.getVoiceString());
+		final edu.cmu.cs.dennisc.animation.AudioLimitedBubbleAnimation bubbleAnimation = (showSpeechBubble)? new edu.cmu.cs.dennisc.animation.AudioLimitedBubbleAnimation(this, .3, .3, bubble) : null;
+		
+		Runnable textToSpeech =  new Runnable() { 
+			public void run() {
+				if (!tts.isLoaded())
+				{
+					tts.loadResource();
+				}
+				edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
+				edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( tts, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_STOP_TIME  );
+				if (showSpeechBubble)
+				{
+					bubbleAnimation.setDuration(tts.getDuration()+.2);
+				}
+				perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );	
+			}
+		};
+		if (showSpeechBubble)
+		{
+			Runnable[] runnables = new Runnable[ 2 ];
+			runnables[ 0 ] = new Runnable() { 
+				public void run() {
+					perform(bubbleAnimation);
+				}
+			};
+			runnables[ 1 ] = textToSpeech;
+			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+		}
+		else
+		{
+			textToSpeech.run();
+		}
+		
+		
+	}
+	
+	public edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator getSpeechBubbleOriginator() {
+		return this.m_originator;
+	}
+	
+	private edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator m_originator = createOriginator();
+	
+	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
+		edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bb = ModelImp.this.getAxisAlignedMinimumBoundingBox();
+		offsetAsSeenBySubject.x = ( bb.getXMinimum() + bb.getXMaximum() ) * 0.5;
+		offsetAsSeenBySubject.y = bb.getYMaximum();
+		offsetAsSeenBySubject.z = ( bb.getZMinimum() + bb.getZMaximum() ) * 0.5;
+		offsetAsSeenBySubject.w = 1.0;
+		return offsetAsSeenBySubject;
+	}
+	
+	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
+		edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bb = ModelImp.this.getAxisAlignedMinimumBoundingBox();
+		offsetAsSeenBySubject.x = ( bb.getXMinimum() + bb.getXMaximum() ) * 0.5;
+		offsetAsSeenBySubject.y = ( bb.getYMinimum() + bb.getYMaximum() ) * 0.75;
+		offsetAsSeenBySubject.z = bb.getZMinimum();
+		offsetAsSeenBySubject.w = 1.0;
+		return offsetAsSeenBySubject;
+	}
+	
+	protected edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator createOriginator() {
+		return new edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator() {
+			public void calculate( 
+					java.awt.geom.Point2D.Float out_originOfTail, 
+					java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail, 
+					java.awt.geom.Point2D.Float out_textBoundsOffset, 
+					edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble,
+					edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
+					java.awt.Rectangle actualViewport, 
+					edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, 
+					java.awt.geom.Dimension2D textSize 
+				) {
+				edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject;
+				if( bubble instanceof edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble ) {
+					offsetAsSeenBySubject = getSpeechBubbleOffset();
+				} else if( bubble instanceof edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble ) {
+					offsetAsSeenBySubject = getThoughtBubbleOffset();
+				} else {
+					offsetAsSeenBySubject = getThoughtBubbleOffset();
+				}
+				edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenByCamera = ModelImp.this.getSgComposite().transformTo_New( offsetAsSeenBySubject, sgCamera );
+				//			edu.cmu.cs.dennisc.math.Vector4d offsetAsSeenByViewport = m_camera.transformToViewport( m_lookingGlass, offsetAsSeenByCamera );
+				java.awt.Point p = sgCamera.transformToAWT_New( offsetAsSeenByCamera, lookingGlass );
+				//			float x = (float)( offsetAsSeenByViewport.x / offsetAsSeenByViewport.w );
+				//			float y = (float)( offsetAsSeenByViewport.y / offsetAsSeenByViewport.w );
+				
+				out_originOfTail.setLocation( p );
+				out_bodyConnectionLocationOfTail.setLocation( actualViewport.getWidth()*0.05, textSize.getHeight()+actualViewport.getHeight()*0.05 );
+				out_textBoundsOffset.setLocation( 0f, 0f );
+			}
+		};
+	}
+	
+	
 //	@Override
 //	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean isOriginIncluded ) {
 //		super.updateCumulativeBound( rv, trans, isOriginIncluded );

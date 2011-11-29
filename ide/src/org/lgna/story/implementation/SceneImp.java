@@ -122,7 +122,7 @@ public class SceneImp extends EntityImp {
 	}
 
 	@Override
-	protected SceneImp getScene() {
+	public SceneImp getScene() {
 		return this;
 	}
 	@Override
@@ -160,6 +160,16 @@ public class SceneImp extends EntityImp {
 				program.getOnscreenLookingGlass().removeCamera( cameraImplementation.getSgCamera() );
 			}
 		}
+	}
+	
+	public CameraImp findFirstCamera() {
+		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
+			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
+			if( entityImplementation instanceof CameraImp ) {
+				return (CameraImp)entityImplementation;
+			}
+		}
+		return null;
 	}
 	
 	public float getGlobalBrightness() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.implementation;
-
-import org.lgna.story.resources.JointId;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public final class BipedImp extends JointedModelImp< org.lgna.story.Biped, org.lgna.story.resources.BipedResource > {
-	public BipedImp( org.lgna.story.Biped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
-		super( abstraction, factory );
-	}
-
-	@Override
-	public JointId[] getRootJointIds() {
-		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
-	}
+public class BubbleOutlineColor implements Say.Detail, Think.Detail {	
+	private final Color value;
 	
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.HEAD));
+	public BubbleOutlineColor( Color value ) {
+		this.value = value;
 	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.MOUTH));
+	/*package-private*/static Color getValue( Object[] details, Color defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof BubbleOutlineColor ) {
+				BubbleOutlineColor bubbleOutlineColor = (BubbleOutlineColor)detail;
+				return bubbleOutlineColor.value;
+			}
+		}
+		return defaultValue;
 	}
 }

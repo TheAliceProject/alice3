@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,73 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.animation;
 
-package org.lgna.story.implementation;
-
-import org.lgna.story.resources.JointId;
+import edu.cmu.cs.dennisc.scenegraph.Graphic;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public final class BipedImp extends JointedModelImp< org.lgna.story.Biped, org.lgna.story.resources.BipedResource > {
-	public BipedImp( org.lgna.story.Biped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
-		super( abstraction, factory );
+public abstract class OpenUpdateCloseOverlayGraphicAnimation extends OverlayGraphicAnimation {
+
+	protected double m_openingDuration;
+	protected double m_updatingDuration;
+	protected double m_closingDuration;
+
+	protected enum State {
+		OPENNING,
+		UPDATING,
+		CLOSING,
+	}
+	
+	public OpenUpdateCloseOverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp, double openingDuration, double updatingDuration, double closingDuration ) {
+		super( entityImp );
+		m_openingDuration = openingDuration;
+		m_updatingDuration = updatingDuration;
+		m_closingDuration = closingDuration;
+	}
+	protected double getOpeningDuration() {
+		return m_openingDuration;
+	}
+	protected double getUpdatingDuration() {
+		return m_updatingDuration;
+	}
+	protected double getClosingDuration() {
+		return m_closingDuration;
+	}
+	protected abstract void updateStateAndPortion( State state, double portion );
+	@Override
+	protected void prologue() {
+		this.updateStateAndPortion(State.OPENNING, 0.0);
+		super.prologue();
+	}
+	@Override
+	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+		State state;
+		double portion;
+		if( m_openingDuration > 0.0 && deltaSincePrologue <= m_openingDuration ) {
+			state = State.OPENNING;
+			portion = deltaSincePrologue / m_openingDuration;
+		} else if( m_updatingDuration > 0.0 && deltaSincePrologue <= (m_openingDuration+m_updatingDuration) ) {
+			state = State.UPDATING;
+			portion = ( deltaSincePrologue-m_openingDuration ) / m_updatingDuration;
+		} else {
+			state = State.CLOSING;
+			if( m_closingDuration > 0.0 ) {
+				portion = Math.min( ( deltaSincePrologue-m_openingDuration-m_updatingDuration ) / m_closingDuration, 1.0 );
+			} else {
+				portion = 1.0;
+			}
+		}
+		this.updateStateAndPortion(state, portion);
+		double toReturn = (m_openingDuration + m_updatingDuration + m_closingDuration) - deltaSincePrologue;
+		return toReturn;
+	}
+	@Override
+	protected void epilogue() {
+		this.updateStateAndPortion(State.CLOSING, 1.0);
+		super.epilogue();
 	}
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.HEAD));
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.MOUTH));
-	}
 }

@@ -60,4 +60,14 @@ public abstract class CameraImp<S extends edu.cmu.cs.dennisc.scenegraph.Abstract
 	protected double getBoundingSphereRadius() {
 		return 0.0;
 	}
+	
+	public edu.cmu.cs.dennisc.scenegraph.Layer getPostRenderLayer() {
+		if( sgCamera.postRenderLayers.getLength() == 0 ) {
+			edu.cmu.cs.dennisc.scenegraph.Layer[] layers = {
+				new edu.cmu.cs.dennisc.scenegraph.Layer()
+			};
+			sgCamera.postRenderLayers.setValue( layers );
+		}
+		return sgCamera.postRenderLayers.getValue()[ 0 ];
+	}
 }

@@ -129,7 +129,7 @@ public abstract class EntityImp implements ReferenceFrame {
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 	
-	protected SceneImp getScene() {
+	public SceneImp getScene() {
 		EntityImp vehicle = this.getVehicle();
 		return vehicle != null ? vehicle.getScene() : null;
 	}

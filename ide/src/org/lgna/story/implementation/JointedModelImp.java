@@ -106,6 +106,17 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			return rv;
 		}
 	}
+	
+	protected edu.cmu.cs.dennisc.math.Vector4 getOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {
+		edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 jointTransform = jointImp.getTransformation(this);
+		offsetAsSeenBySubject.x = jointTransform.translation.x;
+		offsetAsSeenBySubject.y = jointTransform.translation.y;
+		offsetAsSeenBySubject.z = jointTransform.translation.z;
+		offsetAsSeenBySubject.w = 1;
+		return offsetAsSeenBySubject;
+	}
+	
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
 		return this.factory.getOriginalJointOrientation( jointId );
 	}

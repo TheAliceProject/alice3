@@ -11,4 +11,14 @@ public final class SwimmerImp extends JointedModelImp< org.lgna.story.Swimmer, o
 	public JointId[] getRootJointIds() {
 		return org.lgna.story.resources.SwimmerResource.JOINT_ID_ROOTS;
 	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
+		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.SwimmerResource.HEAD));
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
+		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.SwimmerResource.MOUTH));
+	}
 }
