@@ -44,12 +44,18 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Turnable extends Entity {
 	@Override
 	/*package-private*/abstract org.lgna.story.implementation.AbstractTransformableImp getImplementation();
+
+	public Boolean isFacing( Entity other ) {
+		return this.getImplementation().isFacing( other.getImplementation() );
+	}
+
 	@MethodTemplate()
 	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, Turn.Detail... details ) {
 		this.getImplementation().animateApplyRotationInRevolutions( 

@@ -50,6 +50,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	@Override
 	public abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSgComposite();
 	
+	public boolean isFacing( EntityImp other ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = other.getTransformation( this );
+		return m.translation.z < 0.0;
+	}
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
 		return this.getSgComposite().getLocalTransformation();
 	}
