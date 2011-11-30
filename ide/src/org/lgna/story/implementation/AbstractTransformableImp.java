@@ -50,6 +50,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	@Override
 	public abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSgComposite();
 	
+	public boolean isFacing( EntityImp other ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = other.getTransformation( this );
+		return m.translation.z < 0.0;
+	}
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
 		return this.getSgComposite().getLocalTransformation();
 	}
@@ -260,9 +265,105 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		this.animateApplyRotationInRevolutions( axis, angleInRevolutions, this );
 	}
 
+	protected static abstract class VantagePointData {
+		private final AbstractTransformableImp subject;
+		public VantagePointData( AbstractTransformableImp subject ) {
+			this.subject = subject;
+		}
+		public AbstractTransformableImp getSubject() {
+			return this.subject;
+		}
+		protected abstract void setM( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m );
+		protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM0();
+		protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM1();
+		protected abstract edu.cmu.cs.dennisc.math.Point3 getT0();
+		protected abstract edu.cmu.cs.dennisc.math.Point3 getT1();
+		protected abstract edu.cmu.cs.dennisc.math.UnitQuaternion getQ0();
+		protected abstract edu.cmu.cs.dennisc.math.UnitQuaternion getQ1();
+
+		public void setPortion( double portion ) {
+			edu.cmu.cs.dennisc.math.Point3 t0 = this.getT0();
+			edu.cmu.cs.dennisc.math.Point3 t1 = this.getT1();
+			edu.cmu.cs.dennisc.math.Point3 t = edu.cmu.cs.dennisc.math.Point3.createInterpolation( t0, t1, portion );
+			edu.cmu.cs.dennisc.math.UnitQuaternion q0 = this.getQ0();
+			edu.cmu.cs.dennisc.math.UnitQuaternion q1 = this.getQ1();
+			edu.cmu.cs.dennisc.math.UnitQuaternion q = edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( q0, q1, portion );
+			this.setM( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( q, t ) );
+		}
+		public void epilogue() {
+			this.setM( this.getM1() );
+		}
+	}
+	protected static class PreSetVantagePointData extends VantagePointData {
+		private final EntityImp other;
+		private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0;
+		private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 m1;
+		private final edu.cmu.cs.dennisc.math.UnitQuaternion q0;
+		private final edu.cmu.cs.dennisc.math.UnitQuaternion q1;
+		public PreSetVantagePointData( SymmetricPerspectiveCameraImp subject, EntityImp other ) {
+			super( subject );
+			this.other = other;
+			this.m0 = subject.getTransformation( other );
+			this.m1 = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+			this.q0 = this.m0.orientation.createUnitQuaternion();
+			this.q1 = this.m1.orientation.createUnitQuaternion();
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM0() {
+			return this.m0;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM1() {
+			return this.m1;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.UnitQuaternion getQ0() {
+			return this.q0;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.UnitQuaternion getQ1() {
+			return this.q1;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.Point3 getT0() {
+			return this.m0.translation;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.Point3 getT1() {
+			return this.m1.translation;
+		}
+		@Override
+		protected void setM( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+			this.getSubject().getSgComposite().setTransformation( m, other.getSgReferenceFrame() );
+		}
+	}
+
+	protected void setVantagePoint( VantagePointData data ) {
+		data.epilogue();
+	}
+	protected void animateVantagePoint( final VantagePointData data, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		duration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			data.epilogue();
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration, style ) {
+				@Override
+				protected void prologue() {
+				}
+				@Override
+				protected void setPortion(double portion) {
+					data.setPortion( portion );
+				}
+				@Override
+				protected void epilogue() {
+					data.epilogue();
+				}
+			} );
+		}
+	}
+	
 	private static abstract class OrientationData {
 		private final AbstractTransformableImp subject;
-
 		public OrientationData( AbstractTransformableImp subject ) {
 			this.subject = subject;
 		}

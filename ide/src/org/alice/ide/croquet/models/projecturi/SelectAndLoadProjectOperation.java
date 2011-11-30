@@ -47,7 +47,6 @@ package org.alice.ide.croquet.models.projecturi;
  * @author Dennis Cosgrove
  */
 public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.InputDialogOperation {
-	private org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel;
 	public SelectAndLoadProjectOperation( java.util.UUID individualUUID ) {
 		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}
@@ -63,14 +62,9 @@ public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.Inp
 	
 	@Override
 	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
-		if( this.selectProjectToOpenPanel != null ) {
-			//pass
-		} else {
-			this.selectProjectToOpenPanel = new org.alice.ide.openprojectpane.SelectProjectToOpenPanel();
-		}
 		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().selectAppropriateTab( this.isNew() );
 		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().refresh();
-		return this.selectProjectToOpenPanel;
+		return org.alice.ide.openprojectpane.SelectProjectToOpenPanel.getInstance();
 	}
 	@Override
 	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {

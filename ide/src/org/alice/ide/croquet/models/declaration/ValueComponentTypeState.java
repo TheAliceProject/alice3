@@ -52,6 +52,20 @@ public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemS
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "7b2413e0-a945-49d1-800b-4fba4f0bc741" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), initialValue );
 		this.owner = owner;
 	}
+	
+	protected static java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.NamedUserType programType, edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > node ) {
+		org.lgna.project.ast.NamedUserType type = node.getValue();
+		if( type != null ) {
+			if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || type != programType ) {
+				rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+			}
+		}
+		for( edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > child : node.getChildren() ) {
+			updateBlankChildren( rv, programType, child );
+		}
+		return rv;
+	}
+	
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
 		for( org.lgna.project.ast.JavaType type : org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableTypesDeclaredInJava() ) {
@@ -59,13 +73,10 @@ public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemS
 		}
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType type : types ) {
-			if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || type != programType ) {
-				rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
-			}
-		}
+		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > root = org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
+		updateBlankChildren( rv, programType, root );
 		return rv;
 	}
 }
