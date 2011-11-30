@@ -63,14 +63,20 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			return m_owner;
 		}
 		private boolean contains( UserLocal local ) {
-			return m_mapLocalToValue.containsKey( local );
+			synchronized( m_mapLocalToValue ) {
+				return m_mapLocalToValue.containsKey( local );
+			}
 		}
 		public void push( UserLocal local, Object value ) {
-			m_mapLocalToValue.put( local, value );
+			synchronized( m_mapLocalToValue ) {
+				m_mapLocalToValue.put( local, value );
+			}
 		}
 		public Object get( UserLocal local ) {
 			if( contains( local ) ) {
-				return m_mapLocalToValue.get( local );
+				synchronized( m_mapLocalToValue ) {
+					return m_mapLocalToValue.get( local );
+				}
 			} else {
 				if( m_owner != null ) {
 					return m_owner.get( local );
@@ -81,14 +87,18 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 		public void set( UserLocal local, Object value ) {
 			if( contains( local ) ) {
-				m_mapLocalToValue.put( local, value );
+				synchronized( m_mapLocalToValue ) {
+					m_mapLocalToValue.put( local, value );
+				}
 			} else {
 				m_owner.set( local, value );
 			}
 		}
 		public void pop( UserLocal local ) {
 			assert contains( local );
-			m_mapLocalToValue.remove( local );
+			synchronized( m_mapLocalToValue ) {
+				m_mapLocalToValue.remove( local );
+			}
 		}
 		public abstract UserInstance getThis();
 		public abstract Object lookup( AbstractParameter parameter );

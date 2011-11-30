@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.animation;
 
-import edu.cmu.cs.dennisc.scenegraph.Graphic;
-
 /**
  * @author dculyba
  *

@@ -658,9 +658,12 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				bbTarget = this.target.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
 				assert bbSubject != null;
 				assert bbTarget != null;
-				assert bbSubject.isNaN() == false;
-				assert bbTarget.isNaN() == false;
-				return this.spatialRelation.getPlaceLocation( this.alongAxisOffset, bbSubject, bbTarget );
+				if( bbSubject.isNaN() || bbTarget.isNaN() ) {
+					System.err.println( "WARNING: bounding box is NaN" );
+					return t0;
+				} else {
+					return this.spatialRelation.getPlaceLocation( this.alongAxisOffset, bbSubject, bbTarget );
+				}
 			} else {
 				//double extent = 100;
 				//bbTarget = new edu.cmu.cs.dennisc.math.AxisAlignedBox( -extent, 0, -extent, extent, 0, extent ); 
