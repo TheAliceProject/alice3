@@ -58,8 +58,9 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 			String initialName,
 			boolean isNameEditable,
 			org.lgna.project.ast.Expression initialExpression,
-			boolean isInitializerEditable
+			boolean isInitializerEditable,
+			org.alice.ide.name.NameValidator nameValidator
 	) {
-		super( id, initialDeclaringType, isDeclaringTypeEditable, initialValueComponentType, isValueComponentTypeEditable, initialIsArrayValueType, isIsArrayValueTypeEditable, initialName, isNameEditable, initialExpression, isInitializerEditable );
+		super( id, initialDeclaringType, isDeclaringTypeEditable, initialValueComponentType, isValueComponentTypeEditable, initialIsArrayValueType, isIsArrayValueTypeEditable, initialName, isNameEditable, initialExpression, isInitializerEditable, nameValidator );
 	}
 }

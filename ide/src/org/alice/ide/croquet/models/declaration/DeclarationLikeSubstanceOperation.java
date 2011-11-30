@@ -47,6 +47,12 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.project.ast.Node > extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< Void > {
+	private final org.lgna.project.ast.UserType<?> initialDeclaringType;
+	private final org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType;
+	private final boolean initialIsArrayValueType;
+	private final String initialName;
+	private final org.lgna.project.ast.Expression initialExpression;
+	
 	private final DeclaringTypeState declaringTypeState;
 	private final ValueComponentTypeState valueComponentTypeState;
 	private final IsArrayValueTypeState isArrayValueTypeState;
@@ -57,6 +63,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	private final boolean isIsArrayValueTypeEditable;
 	private final boolean isNameEditable;
 	private final boolean isInitializerEditable;
+	private final org.alice.ide.name.NameValidator nameValidator;
 	private String declaringTypeLabelText; 
 	private String valueTypeLabelText; 
 	private String nameLabelText; 
@@ -73,9 +80,16 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 			String initialName,
 			boolean isNameEditable,
 			org.lgna.project.ast.Expression initialExpression,
-			boolean isInitializerEditable
+			boolean isInitializerEditable,
+			org.alice.ide.name.NameValidator nameValidator
 	) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id );
+		this.initialDeclaringType = initialDeclaringType;
+		this.initialValueComponentType = initialValueComponentType;
+		this.initialIsArrayValueType = initialIsArrayValueType;
+		this.initialName = initialName;
+		this.initialExpression = initialExpression;
+		
 		if( initialDeclaringType != null || isDeclaringTypeEditable ) {
 			this.declaringTypeState = new DeclaringTypeState( this, initialDeclaringType );
 		} else {
@@ -103,6 +117,8 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		this.isInitializerEditable = isInitializerEditable;
 		
 		this.isArrayValueTypeState.setEnabled( this.isIsArrayValueTypeEditable );
+		
+		this.nameValidator = nameValidator;
 	}
 	protected org.alice.ide.croquet.models.ExpressionState< ? extends org.lgna.project.ast.Expression > createInitializerState( org.lgna.project.ast.Expression initialValue ) {
 		return new InitializerState( this, initialValue );
@@ -218,13 +234,29 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	}
 	protected String getNameExplanation( String declarationName ) {
 		if( declarationName.length() > 0 ) {
-			return null;
+			if( this.nameValidator != null ) {
+				//todo
+				if( this.nameValidator instanceof org.alice.ide.name.validators.MemberNameValidator ) {
+					org.alice.ide.name.validators.MemberNameValidator memberNameValidator = (org.alice.ide.name.validators.MemberNameValidator)this.nameValidator;
+					memberNameValidator.setType( this.getDeclaringType() );
+				}
+				return this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( declarationName );
+			} else {
+				return null;
+			}
 		} else {
-			return "\"" + declarationName + "\" is not a valid " + this.declaringTypeLabelText;
+			return "\"" + declarationName + "\" is not a valid " + this.nameLabelText;
 		}
 	}
+	protected boolean isNullAllowedForInitializer() {
+		return false;
+	}
 	protected String getInitializerExplanation( org.lgna.project.ast.Expression initializer ) {
-		return null;
+		if( initializer != null || this.isNullAllowedForInitializer() ) {
+			return null;
+		} else {
+			return this.initializerLabelText + " must be set";
+		}
 	}
 	@Override
 	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
@@ -244,7 +276,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		if( valueTypeText != null || nameText != null || initializerText != null ) {
 			String preText = "";
 			StringBuilder sb = new StringBuilder();
-			sb.append( "You must " );
+			//sb.append( "You must " );
 			if( valueTypeText != null ) {
 				sb.append( valueTypeText );
 				preText = " AND ";
@@ -271,6 +303,22 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	protected abstract org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step );
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		if( this.declaringTypeState != null ) {
+			this.declaringTypeState.setValueTransactionlessly( this.initialDeclaringType );
+		}
+		if( this.valueComponentTypeState != null ) {
+			this.valueComponentTypeState.setValueTransactionlessly( this.initialValueComponentType );
+		}
+		if( this.isArrayValueTypeState != null ) {
+			this.isArrayValueTypeState.setValueTransactionlessly( this.initialIsArrayValueType );
+		}
+		if( this.nameState != null ) {
+			this.nameState.setValueTransactionlessly( this.initialName );
+		}
+		if( this.initializerState != null ) {
+			//todo
+			((org.alice.ide.croquet.models.ExpressionState)this.initializerState).setValueTransactionlessly( this.initialExpression );
+		}
 		return this.createMainComponent( step );
 	}
 	@Override

@@ -53,10 +53,6 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements Ca
 	public CascadeItem( java.util.UUID id ) {
 		super( id );
 	}
-	public boolean isAutomaticallySelectedWhenSoleOption() {
-		return true;
-	}
-	
 	public int getItemCount() {
 		return 1;
 	}

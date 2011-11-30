@@ -480,7 +480,12 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 					if( propertyOwner instanceof org.lgna.project.ast.BlockStatement ) {
 						BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair( (org.lgna.project.ast.BlockStatement)propertyOwner, index );
-						rv = clipboardDragModel.getDropModel( step, blockStatementIndexPair );
+						boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource );
+						if( isCopy ) {
+							rv = org.alice.ide.clipboard.CopyFromClipboardOperation.getInstance( blockStatementIndexPair );
+						} else {
+							rv = org.alice.ide.clipboard.PasteFromClipboardOperation.getInstance( blockStatementIndexPair );
+						}
 					}
 				}
 			} else if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {

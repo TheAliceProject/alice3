@@ -111,39 +111,6 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 				rv.add( new org.alice.ide.croquet.models.cascade.RelationalObjectCascadeMenu( type ) );
 			}
 		}
-		
-//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (DecimalNumber) { ==, !=, <, <=, >=, > }" ) {
-//			@Override
-//			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-//				for( org.lgna.project.ast.RelationalInfixExpression.Operator operator : org.lgna.project.ast.RelationalInfixExpression.Operator.values() ) {
-//					rv.add( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( Number.class, operator ) );
-//				}
-//			}
-//		} );
-//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (WholeNumber) { ==, !=, <, <=, >=, > }" ) {
-//			@Override
-//			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-//				for( org.lgna.project.ast.RelationalInfixExpression.Operator operator : org.lgna.project.ast.RelationalInfixExpression.Operator.values() ) {
-//					rv.add( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( Integer.class, operator ) );
-//				}
-//			}
-//		} );
-//		
-//		final org.lgna.project.ast.RelationalInfixExpression.Operator[] TRIMMED_RELATIONAL_OPERATORS = {
-//				org.lgna.project.ast.RelationalInfixExpression.Operator.EQUALS,
-//				org.lgna.project.ast.RelationalInfixExpression.Operator.NOT_EQUALS,
-//		};
-//		for( final edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > tuple : org.alice.ide.IDE.getActiveInstance().getNameClsPairsForRelationalFillIns() ) {
-//			rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (" + tuple.getA() + ") { ==, != }" ) {
-//				@Override
-//				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-//					for( org.lgna.project.ast.RelationalInfixExpression.Operator operator : TRIMMED_RELATIONAL_OPERATORS ) {
-//						rv.add( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( tuple.getB(), operator ) );
-//					}
-//				}
-//			} );
-//		}
-//		rv.add( edu.cmu.cs.dennisc.croquet.CascadeLineSeparator.getInstance() );
  		return rv;
 	}
 }

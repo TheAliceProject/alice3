@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,9 +57,12 @@ public class Biped extends JointedModel implements Articulable {
 	/*package-private*/ org.lgna.story.implementation.BipedImp getImplementation() {
 		return this.implementation;
 	}
+	
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public void walkTo( Entity entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: walkTo" );
 	}
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public void touch( Entity entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );
 	}

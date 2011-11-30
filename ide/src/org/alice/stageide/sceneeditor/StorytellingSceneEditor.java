@@ -42,6 +42,7 @@
  */
 package org.alice.stageide.sceneeditor;
 
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.LinkedList;
@@ -157,7 +158,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		@Override
 		protected javax.swing.JPanel createJPanel() {
 			javax.swing.JPanel rv = StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
-			rv.setLayout(new javax.swing.SpringLayout());
+			rv.setLayout( new javax.swing.SpringLayout() );
 			return rv;
 		}
 	}
@@ -256,6 +257,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private ComboBox<View> mainCameraViewSelector;
 	private CameraMarkerTracker mainCameraViewTracker;
+	private View savedSceneEditorViewSelection = null;
 	
 	private org.lgna.croquet.ListSelectionState.ValueObserver<View> mainCameraViewSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver<View>() {
 		public void changing( org.lgna.croquet.State< org.alice.stageide.sceneeditor.View > state, org.alice.stageide.sceneeditor.View prevValue, org.alice.stageide.sceneeditor.View nextValue, boolean isAdjusting ) {
@@ -450,6 +452,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
 
 			this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
+			
+			if (this.savedSceneEditorViewSelection != null) {
+				this.mainCameraMarkerList.setSelectedItem(this.savedSceneEditorViewSelection);
+			}
 		}
 		else
 		{
@@ -457,8 +463,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.lookingGlassPanel.setNorthWestComponent( null );
 			this.lookingGlassPanel.setSouthEastComponent(this.expandButton);
 			this.lookingGlassPanel.setSouthComponent(null);
+			
+			
+			this.savedSceneEditorViewSelection = this.mainCameraMarkerList.getSelectedItem();
+			this.mainCameraMarkerList.setSelectedItem(View.STARTING_CAMERA_VIEW);
 		}
 		this.mainCameraViewSelector.setVisible(isExpanded);
+		
 	}
 	
 	
@@ -842,7 +853,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return org.alice.stageide.sceneeditor.SetUpMethodGenerator.getSetupStatementsForInstance(false, instance, this.getActiveSceneInstance());
 	}
 	
-	
+	@Override
+	protected void handleProjectOpened( org.lgna.project.Project nextProject ) {
+		super.handleProjectOpened( nextProject );
+		if( this.onscreenLookingGlass != null ) {
+			this.onscreenLookingGlass.forgetAllCachedItems();
+		}
+	}	
 //	private boolean HACK_isDisplayableAlreadyHandled = false;
 //	
 	@Override

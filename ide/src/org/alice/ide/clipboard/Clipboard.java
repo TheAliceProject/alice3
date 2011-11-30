@@ -78,6 +78,10 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.
 		this.refresh();
 	}
 	@Override
+	protected boolean isMouseListeningDesired() {
+		return true;
+	}
+	@Override
 	public org.alice.ide.clipboard.ClipboardDragModel getModel() {
 		if( this.stack != null && this.stack.size() > 0 ) {
 			return super.getModel();
@@ -174,7 +178,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.
 
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
-		class JClipboard extends javax.swing.AbstractButton {
+		javax.swing.AbstractButton rv = new javax.swing.AbstractButton() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 40 );
@@ -183,9 +187,32 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.
 			public javax.swing.JToolTip createToolTip() {
 				return new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( Clipboard.this.subject.getAwtComponent() );
 			}
-		}
-		JClipboard rv = new JClipboard();
+			@Override
+			public void paint(java.awt.Graphics g) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				int x = 0;
+				int y = 0;
+				int width = this.getWidth();
+				int height = this.getHeight();
+
+				java.awt.Paint prevPaint;
+				prevPaint = g2.getPaint();
+				try {
+					Clipboard.this.paintPrologue( g2, x, y, width, height );
+				} finally {
+					g2.setPaint( prevPaint );
+				}
+				super.paint(g);
+				prevPaint = g2.getPaint();
+				try {
+					Clipboard.this.paintEpilogue( g2, x, y, width, height );
+				} finally {
+					g2.setPaint( prevPaint );
+				}
+			}
+		};
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,2,2,2 ) );
+		rv.setModel( new javax.swing.DefaultButtonModel() );
 		return rv;
 	}
 	

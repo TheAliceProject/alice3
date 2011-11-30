@@ -125,4 +125,6 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pattern.Releasable {
 	
 	public boolean isRenderingEnabled();
 	public void setRenderingEnabled( boolean isRenderingEnabled );
+	
+	public void forgetAllCachedItems();
 }

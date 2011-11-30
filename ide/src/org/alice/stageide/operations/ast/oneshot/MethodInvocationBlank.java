@@ -48,6 +48,7 @@ package org.alice.stageide.operations.ast.oneshot;
  */
 public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< MethodInvocationEditFactory > {
 	private static java.util.Map< org.lgna.project.ast.UserField, MethodInvocationBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static MethodInvocationBlank getInstance( org.lgna.project.ast.UserField value ) {
 		synchronized( map ) {
 			MethodInvocationBlank rv = map.get( value );
@@ -60,32 +61,51 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 			return rv;
 		}
 	}
+
 	private final org.lgna.project.ast.UserField field;
+
 	private MethodInvocationBlank( org.lgna.project.ast.UserField field ) {
 		super( java.util.UUID.fromString( "3c5f528b-340b-4bcc-8094-3475867d2f6e" ) );
 		this.field = field;
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< MethodInvocationEditFactory > blankNode ) {
-		boolean isTurnable = this.field.getValueType().isAssignableTo( org.lgna.story.Turnable.class );
-		boolean isMovable = this.field.getValueType().isAssignableTo( org.lgna.story.MovableTurnable.class );
-		if( isMovable ) {
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.MovableTurnable.class, "move", org.lgna.story.MoveDirection.class, Number.class, org.lgna.story.Move.Detail[].class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "roll", org.lgna.story.RollDirection.class, Number.class, org.lgna.story.Roll.Detail[].class ) );
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.MovableTurnable.class, "moveTo", org.lgna.story.Entity.class, org.lgna.story.MoveTo.Detail[].class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.MovableTurnable.class, "moveToward", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveToward.Detail[].class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.MovableTurnable.class, "moveAwayFrom", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveAwayFrom.Detail[].class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "turnToFace", org.lgna.story.Entity.class, org.lgna.story.TurnToFace.Detail[].class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "pointAt", org.lgna.story.Entity.class, org.lgna.story.PointAt.Detail[].class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "orientTo", org.lgna.story.Entity.class, org.lgna.story.OrientTo.Detail[].class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.MovableTurnable.class, "moveAndOrientTo", org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientTo.Detail[].class ) );
-			rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Turnable.class, "standUp", org.lgna.story.StandUp.Detail[].class ) );
-			
-			//rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			//rv.add( ColorMethodInvocationFillIn.getInstance( this.field, org.lgna.story.Model.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class ) );
+		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Turnable.class );
+		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MovableTurnable.class );
+//		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
+
+		org.lgna.project.ast.AbstractType< ?, ?, ? > fieldValueType = this.field.getValueType();
+		java.util.List< org.lgna.project.ast.AbstractMethod > methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		if( turnableType.isAssignableFrom( fieldValueType ) ) {
+			methods.add( turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class ) );
+			methods.add( turnableType.getDeclaredMethod( "roll", org.lgna.story.RollDirection.class, Number.class, org.lgna.story.Roll.Detail[].class ) );
+			methods.add( turnableType.getDeclaredMethod( "turnToFace", org.lgna.story.Entity.class, org.lgna.story.TurnToFace.Detail[].class ) );
+			methods.add( turnableType.getDeclaredMethod( "pointAt", org.lgna.story.Entity.class, org.lgna.story.PointAt.Detail[].class ) );
+			methods.add( turnableType.getDeclaredMethod( "orientToUpright", org.lgna.story.OrientToUpright.Detail[].class ) );
 		}
+		if( movableTurnableType.isAssignableFrom( fieldValueType ) ) {
+			methods.add( movableTurnableType.getDeclaredMethod( "move", org.lgna.story.MoveDirection.class, Number.class, org.lgna.story.Move.Detail[].class ) );
+			methods.add( movableTurnableType.getDeclaredMethod( "moveToward", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveToward.Detail[].class ) );
+			methods.add( movableTurnableType.getDeclaredMethod( "moveAwayFrom", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveAwayFrom.Detail[].class ) );
+			methods.add( movableTurnableType.getDeclaredMethod( "moveTo", org.lgna.story.Entity.class, org.lgna.story.MoveTo.Detail[].class ) );
+			methods.add( movableTurnableType.getDeclaredMethod( "moveAndOrientTo", org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientTo.Detail[].class ) );
+		}
+
+//		if( jointedModelType.isAssignableFrom( fieldValueType ) ) {
+//			//todo: joint tree undo
+//			//rv.add( JointTreeLocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.JointedModel.class, "straightenOutJoints", org.lgna.story.StraightenOutJoints.Detail[].class ) );
+//		}
+
+		java.util.List< org.lgna.project.ast.AbstractMethod > sortedMethods = org.alice.stageide.ast.sort.OneShotSorter.SINGLETON.createSortedList( methods );
+		for( org.lgna.project.ast.AbstractMethod method : sortedMethods ) {
+			if( method != null ) {
+				// note: we will need to track the kind of fillIn we need as soon as simple subject local transformation undo won't suffice
+				rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, method ) );
+			} else {
+				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			}
+		}
+
 		return rv;
 	}
 }

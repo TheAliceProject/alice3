@@ -68,13 +68,18 @@ public class LocalDeclarationStatementOperation extends DeclarationLikeSubstance
 				null, true, 
 				false, true, 
 				"", true,
-				null, true
+				null, true,
+				new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair )
 		);
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
+	}
+	@Override
+	protected boolean isNullAllowedForInitializer() {
+		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForLocalInitializers.getInstance().getValue();
 	}
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {

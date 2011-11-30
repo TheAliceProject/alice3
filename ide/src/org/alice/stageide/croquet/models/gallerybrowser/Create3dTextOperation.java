@@ -378,7 +378,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	}
 	
 	private final org.lgna.project.ast.NamedUserType getOwnerType() {
-		return org.alice.ide.IDE.getActiveInstance().getSceneType();
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
 	}
 	private boolean isInstanceValid() {
 		return true;

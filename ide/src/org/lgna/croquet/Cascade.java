@@ -218,7 +218,6 @@ public abstract class Cascade<T> extends CompletionModel {
 				jPopupMenu.addComponentListener( listeners.getComponentListener() );
 				//jPopupMenu.addPopupMenuListener( listeners.getPopupMenuListener() );
 				listeners.getPopupMenuListener().popupMenuWillBecomeVisible( e );
-				this.cascade.prologue();
 			}
 		}
 		@Override

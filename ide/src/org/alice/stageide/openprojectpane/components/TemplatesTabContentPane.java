@@ -56,7 +56,7 @@ public class TemplatesTabContentPane extends org.alice.ide.openprojectpane.ListC
 			@Override
 			protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
 				java.net.URI uri = (java.net.URI)value;
-				String text = uri.toString();
+				String text = uri.getFragment();
 				rv.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TemplatesTabContentPane.class.getResource( "images/" + text + ".png" ) ) );
 				rv.setText( text );
 				return rv;

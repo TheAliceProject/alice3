@@ -57,4 +57,14 @@ public final class BipedImp extends JointedModelImp< org.lgna.story.Biped, org.l
 	public JointId[] getRootJointIds() {
 		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
 	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
+		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.HEAD));
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
+		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.MOUTH));
+	}
 }

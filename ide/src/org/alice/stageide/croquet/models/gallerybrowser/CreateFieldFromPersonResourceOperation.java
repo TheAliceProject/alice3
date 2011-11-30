@@ -75,8 +75,9 @@ public class CreateFieldFromPersonResourceOperation extends org.alice.ide.croque
 //						new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
 						argumentExpression 
 				);
+				org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > rv = super.prologue( step );				
 				this.getInitializerState().setValueTransactionlessly( expression );
-				return super.prologue( step );
+				return rv;
 			} catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee) {
 				throw new RuntimeException( ccee );
 			}

@@ -765,7 +765,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			}
 			else
 			{
-				System.out.println("No implementation for "+pickedObject);
+				//System.out.println("No implementation for "+pickedObject);
 				EntityImp e = EntityImp.getInstance(pickedObject);
 			}
 				

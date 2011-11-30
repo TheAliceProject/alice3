@@ -153,25 +153,27 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 			}
 			
 			if( isActuallyChanged ) {
-				this.removeAllDetails();
-				this.prevItems.clear();
-				this.prevItems.ensureCapacity( N );
-				this.addPrologue( N );
-				for( int i=0; i<N; i++ ) {
-					E item = (E)this.comboBoxModel.getElementAt( i );
-					D itemDetails = this.map.get( item );
-					if( itemDetails != null ) {
-						//pass
-					} else {
-						org.lgna.croquet.BooleanState booleanState = new ImplementationBooleanState();
-						itemDetails = this.createItemDetails( item, booleanState );
-						this.map.put( item, itemDetails );
+				synchronized( this.getTreeLock() ) {
+					this.removeAllDetails();
+					this.prevItems.clear();
+					this.prevItems.ensureCapacity( N );
+					this.addPrologue( N );
+					for( int i=0; i<N; i++ ) {
+						E item = (E)this.comboBoxModel.getElementAt( i );
+						D itemDetails = this.map.get( item );
+						if( itemDetails != null ) {
+							//pass
+						} else {
+							org.lgna.croquet.BooleanState booleanState = new ImplementationBooleanState();
+							itemDetails = this.createItemDetails( item, booleanState );
+							this.map.put( item, itemDetails );
+						}
+						itemDetails.add( this.buttonGroup );
+						this.addItem( itemDetails );
+						this.prevItems.add( item );
 					}
-					itemDetails.add( this.buttonGroup );
-					this.addItem( itemDetails );
-					this.prevItems.add( item );
+					this.addEpilogue();
 				}
-				this.addEpilogue();
 			}
 			
 //			int i = this.listSelectionModel.getLeadSelectionIndex();

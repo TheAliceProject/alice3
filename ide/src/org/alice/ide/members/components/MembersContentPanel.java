@@ -46,11 +46,18 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 public abstract class MembersContentPanel extends org.lgna.croquet.components.PageAxisPanel {
-	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
+	private final org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-			MembersContentPanel.this.handleInstanceFactorySelection( nextValue );
+			MembersContentPanel.this.refreshLater();
+		}
+	};
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+			MembersContentPanel.this.refreshLater();
 		}
 	};
 	public MembersContentPanel( org.lgna.croquet.TabComposite< ? > composite ) {
@@ -59,11 +66,13 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactoryListener );
+		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().addValueObserver( this.typeListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactorySelectionObserver );
+		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().removeValueObserver( this.typeListener );
+		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactoryListener );
 		super.handleUndisplayable();
 	}
 	
@@ -84,9 +93,6 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 			}
 		}
 		this.refresh( types );
-	}
-	private void handleInstanceFactorySelection( org.alice.ide.instancefactory.InstanceFactory accessible ) {
-		this.refreshLater();
 	}
 }
 

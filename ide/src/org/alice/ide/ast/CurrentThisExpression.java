@@ -51,6 +51,6 @@ public class CurrentThisExpression extends IdeExpression {
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
-		return org.alice.ide.IDE.getActiveInstance().getTypeInScope();
+		return org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getValue();
 	}
 }

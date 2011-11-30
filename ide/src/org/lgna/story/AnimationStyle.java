@@ -48,7 +48,7 @@ package org.lgna.story;
 public enum AnimationStyle implements 
 		//Turnable
 		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, StandUp.Detail, PointAt.Detail,
+		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail,
 		//MoveableTurnable
 		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
 		MoveTo.Detail, MoveAndOrientTo.Detail,

@@ -48,17 +48,19 @@ package org.alice.stageide.cascade;
  */
 public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> {
 	private final org.lgna.project.ast.Expression expression;
-	public JointExpressionMenuModel( org.lgna.project.ast.Expression expression ) {
+	private final org.lgna.project.ast.AbstractType type;
+	public JointExpressionMenuModel( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType type ) {
 		super( java.util.UUID.fromString( "c70ca3a5-b1e0-4ed9-8648-14acd52a4091" ) );
 		this.expression = expression;
+		this.type = type;
 	}
 	protected org.lgna.croquet.CascadeItem getFillIn( org.lgna.project.ast.AbstractMethod method ) {
 		return JointExpressionFillIn.getInstance( expression, method );
 	}
 	@Override
 	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
-		org.lgna.project.ast.AbstractType< ?, ?, ? > type = this.expression.getType();
-		java.util.List< org.lgna.project.ast.AbstractMethod > getters = org.alice.stageide.ast.JointedModelUtilities.getJointGetters( type );
+		//org.lgna.project.ast.AbstractType< ?, ?, ? > type = this.expression.getType();
+		java.util.List< org.lgna.project.ast.AbstractMethod > getters = org.alice.stageide.ast.JointedModelUtilities.getJointGetters( this.type );
 		for( org.lgna.project.ast.AbstractMethod method : getters ) {
 			rv.add( this.getFillIn( method ) );
 		}

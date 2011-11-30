@@ -51,10 +51,6 @@ public abstract class CascadeCancel< F > extends CascadeItem< F,Void > {
 		super( id );
 	}
 	@Override
-	public final boolean isAutomaticallySelectedWhenSoleOption() {
-		return false;
-	}
-	@Override
 	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 		throw new CancelException( this.getMenuItemText( step ) );
 	}

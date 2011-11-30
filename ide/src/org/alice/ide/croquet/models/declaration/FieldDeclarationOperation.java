@@ -61,7 +61,8 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 				initialValueComponentType, isValueComponentTypeEditable, 
 				initialIsArrayValueType, isIsArrayValueTypeEditable, 
 				initialName, isNameEditable, 
-				initialExpression, isInitializerEditable
+				initialExpression, isInitializerEditable,
+				new org.alice.ide.name.validators.FieldNameValidator( initialDeclaringType )
 		);
 	}
 
@@ -74,6 +75,10 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 		return rv;
 	}
 
+	@Override
+	protected boolean isNullAllowedForInitializer() {
+		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers.getInstance().getValue();
+	}
 	protected abstract org.lgna.project.ast.ManagementLevel getManagementLevel();
 	protected abstract boolean isFieldFinal();
 	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field );

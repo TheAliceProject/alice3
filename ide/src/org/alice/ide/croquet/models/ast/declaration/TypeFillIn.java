@@ -105,6 +105,6 @@ public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project
 	}
 	@Override
 	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType<?,?,?>, Void > step ) {
-		return org.alice.ide.IDE.getActiveInstance().getTextFor( type );
+		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( type );
 	}
 }

@@ -108,15 +108,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );
 		this.getPerspectiveState().addAndInvokeValueObserver( this.perspectiveListener );
 	}
-	
-//	@Override
-//	protected org.lgna.croquet.components.Component< ? > createContentPane() {
-////		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-////		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
-////		rv.addComponent( this.root, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-////		return rv;
-//	}
-	
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
 		if( dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
@@ -132,7 +123,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
 	
 	private Theme theme;
-
 	protected Theme createTheme() {
 		return new DefaultTheme();
 	}
@@ -145,25 +135,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.theme;
 	}
 
-	protected org.lgna.project.ast.Expression createPredeterminedExpressionIfAppropriate( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return null;
-	}
-	public org.lgna.project.ast.Expression[] createPredeterminedExpressionsIfAppropriate( org.lgna.project.ast.AbstractType< ?, ?, ? >[] types ) {
-		if( types == null || types.length == 0 ) {
-			return new org.lgna.project.ast.Expression[] {};
-		} else {
-			if( types.length == 1 ) {
-				org.lgna.project.ast.Expression predeterminedExpression = org.alice.ide.IDE.getActiveInstance().createPredeterminedExpressionIfAppropriate( types[ 0 ] );
-				if( predeterminedExpression != null ) {
-					return new org.lgna.project.ast.Expression[] { predeterminedExpression };
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-	}
 	@Override
 	public org.lgna.croquet.Operation< ? > getPreferencesOperation() {
 		return null;
@@ -218,10 +189,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return (expression instanceof org.lgna.project.ast.TypeExpression || expression instanceof org.lgna.project.ast.ResourceExpression) == false;
 	}
 	
-	public String getTextFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return null;
-	}
-
 	private java.util.Map< org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory > mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
@@ -236,66 +203,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
-	public boolean isJava() {
-		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem() == org.alice.ide.formatter.JavaFormatter.getInstance();
-	}
-
-	private java.io.File applicationDirectory = null;
-	private java.io.File galleryDirectory = null;
-
-	protected java.io.File getDefaultApplicationRootDirectory() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			return new java.io.File( "/Applications/" + this.getApplicationName() + ".app/Contents/Resources/Java/application" );
-		} else {
-			return new java.io.File( "/Program Files/" + this.getApplicationName() + "3Beta/application" );
-		}
-	}
-	protected java.io.File getDefaultGalleryRootDirectory() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			return new java.io.File( "/Applications/" + this.getApplicationName() + ".app/Contents/Resources/Java/gallery" );
-		} else {
-			return new java.io.File( "/Program Files/" + this.getApplicationName() + "3Beta/gallery" );
-		}
-	}
-	public static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
-		for( String propertyKey : propertyKeys ) {
-			for( String subPath : subPaths ) {
-				java.io.File rv = new java.io.File( System.getProperty( propertyKey ), subPath );
-				if( rv.exists() ) {
-					return rv;
-				}
-			}
-		}
-		return null;
-	}
-	@Override
-	public java.io.File getApplicationRootDirectory() {
-		if( this.applicationDirectory != null ) {
-			//pass
-		} else {
-			this.applicationDirectory = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "application", "required/application/" + this.getVersionText() } );
-			if( this.applicationDirectory != null ) {
-				//pass
-			} else {
-				this.applicationDirectory = this.getDefaultApplicationRootDirectory();
-			}
-		}
-		return this.applicationDirectory;
-	}
-	public java.io.File getGalleryRootDirectory() {
-		if( this.galleryDirectory != null ) {
-			//pass
-		} else {
-			this.galleryDirectory = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery", "required/gallery/" + this.getVersionText() } );
-			if( this.galleryDirectory != null ) {
-				//pass
-			} else {
-				this.galleryDirectory = this.getDefaultGalleryRootDirectory();
-			}
-		}
-		return this.galleryDirectory;
-	}
-
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
 		rv.append( "Please Submit Bug Report: " );
 		this.updateTitlePrefix( rv );
@@ -321,7 +228,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private ComponentStencil stencil;
 	private java.util.List< org.lgna.croquet.DropReceptor > holes = null;
-	private org.lgna.croquet.components.DragComponent potentialDragSource;
+	private org.lgna.croquet.components.DragComponent<?,?> potentialDragSource;
 	private org.lgna.croquet.components.Component< ? > currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
@@ -490,11 +397,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	
-//	private org.lgna.project.ast.UserField rootField;
-//
-//	private org.lgna.project.ast.NamedUserType getRootTypeDeclaredInAlice() {
-//		return (org.lgna.project.ast.NamedUserType)this.rootField.valueType.getValue();
-//	}
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
 		return accessible.getValueType().isArray() == false;
 	}
@@ -502,14 +404,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	
 	private void setRootField( org.lgna.project.ast.UserField rootField ) {
-//		if( this.rootField != null ) {
-//			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
-//		}
-//		this.rootField = rootField;
-//		if( this.rootField != null ) {
-//			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
-//		}
-//		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().refreshAccessibles();
 		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -521,7 +415,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 						org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
 					}
 				}
-//				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON );
 			}
 		} );
 		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
@@ -628,15 +521,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //	}
 
 
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getTypeInScope() {
-		org.lgna.project.ast.AbstractCode codeInFocus = this.getFocusedCode();
-		if( codeInFocus != null ) {
-			return codeInFocus.getDeclaringType();
-		} else {
-			return null;
-		}
-	}
-
 	private org.lgna.project.virtualmachine.VirtualMachine vmForSceneEditor;
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
@@ -698,7 +582,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
 	}
 
-	@Deprecated
 	public org.lgna.project.ast.NamedUserType getProgramType() {
 		org.lgna.project.Project project = this.getProject();
 		if( project != null ) {
@@ -708,17 +591,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	@Deprecated
-	public org.lgna.project.ast.UserField getSceneField() {
-		org.lgna.project.ast.NamedUserType programType = getProgramType();
-		return getSceneFieldFromProgramType( programType );
-	}
-
-	@Deprecated
-	protected static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.AbstractType< ?, ?, ? > programType ) {
-		if( programType instanceof org.lgna.project.ast.NamedUserType ) {
-			org.lgna.project.ast.NamedUserType programAliceType = (org.lgna.project.ast.NamedUserType)programType;
-			if( programAliceType.fields.size() > 0 ) {
-				return programAliceType.fields.get( 0 );
+	protected static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
+		if( programType != null ) {
+			if( programType.fields.size() > 0 ) {
+				return programType.fields.get( 0 );
 			} else {
 				return null;
 			}
@@ -727,23 +603,21 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	@Deprecated
-	protected static org.lgna.project.ast.NamedUserType getSceneTypeFromProgramType( org.lgna.project.ast.AbstractType< ?, ?, ? > programType ) {
-		if( programType instanceof org.lgna.project.ast.NamedUserType ) {
-			org.lgna.project.ast.UserField sceneField = getSceneFieldFromProgramType( programType );
-			return (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
-		} else {
-			return null;
-		}
-	}
-
-	@Deprecated
-	public org.lgna.project.ast.NamedUserType getSceneType() {
-		org.lgna.project.ast.UserField sceneField = getSceneField();
+	protected static org.lgna.project.ast.NamedUserType getSceneTypeFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
+		org.lgna.project.ast.UserField sceneField = getSceneFieldFromProgramType( programType );
 		if( sceneField != null ) {
 			return (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
 		} else {
 			return null;
 		}
+	}
+	@Deprecated
+	public org.lgna.project.ast.UserField getSceneField() {
+		return getSceneFieldFromProgramType( this.getProgramType() );
+	}
+	@Deprecated
+	public org.lgna.project.ast.NamedUserType getSceneType() {
+		return getSceneTypeFromProgramType( this.getProgramType() );
 	}
 
 	public String getInstanceTextForAccessible( org.lgna.project.ast.Accessible accessible ) {
@@ -808,10 +682,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv.replaceAll( " ", "" );
 	}
 
-	public java.io.File getMyTypesDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
-	}
-
 	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType typeInAlice );
 	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.NamedUserType programType, int frameRate );
 
@@ -823,19 +693,4 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			return null;
 		}
 	}
-
-	private java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > nameClsPairsForRelationalFillIns = null;
-
-	public java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > updateNameClsPairsForRelationalFillIns( java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > rv ) {
-		return rv;
-	}
-	public Iterable< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > getNameClsPairsForRelationalFillIns() {
-		if( this.nameClsPairsForRelationalFillIns != null ) {
-			//pass
-		} else {
-			this.nameClsPairsForRelationalFillIns = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >> >();
-			this.updateNameClsPairsForRelationalFillIns( this.nameClsPairsForRelationalFillIns );
-		}
-		return this.nameClsPairsForRelationalFillIns;
-	}	
 }

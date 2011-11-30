@@ -111,7 +111,7 @@ public abstract class CascadeManager {
 				this.updateAccessibleLocalsForBlockStatementAndIndex(rv, blockStatementParent, index);
 			} else if( statementParent instanceof org.lgna.project.ast.CountLoop ) {
 				org.lgna.project.ast.CountLoop countLoopParent = (org.lgna.project.ast.CountLoop)statementParent;
-				boolean areCountLoopLocalsViewable = org.alice.ide.IDE.getActiveInstance().isJava();
+				boolean areCountLoopLocalsViewable = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava();
 				if( areCountLoopLocalsViewable ) {
 					rv.add( countLoopParent.variable.getValue() );
 					rv.add( countLoopParent.constant.getValue() );
@@ -161,7 +161,7 @@ public abstract class CascadeManager {
 			//todo: fix
 			type = this.getActualTypeForDesiredParameterType( type );
 
-			org.lgna.project.ast.AbstractType<?,?,?> selectedType = org.alice.ide.IDE.getActiveInstance().getTypeInScope();
+			org.lgna.project.ast.AbstractType<?,?,?> selectedType = org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getValue();
 			if( type.isAssignableFrom( selectedType ) ) {
 				this.addFillInAndPossiblyPartFillIns( rv, new org.lgna.project.ast.ThisExpression(), selectedType, type );
 			}

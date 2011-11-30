@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,4 +54,42 @@ public abstract class JointedModel extends Model {
 	public void straightenOutJoints( StraightenOutJoints.Detail... details ) {
 		this.getImplementation().animateStraightenOutJoints( Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
+	
+	private void initializeBubble(edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, Object[] details) {
+		bubble.font.setValue(TextFont.getValue(details, new Font(new java.awt.Font( null, java.awt.Font.PLAIN, 16 ))).getAsAWTFont());
+		bubble.textColor.setValue(TextColor.getValue(details, Color.BLACK).getInternal());
+		bubble.fillColor.setValue(BubbleFillColor.getValue(details, Color.WHITE).getInternal());
+		bubble.outlineColor.setValue(BubbleOutlineColor.getValue(details, Color.BLACK).getInternal());
+		bubble.originator.setValue( this.getImplementation().getSpeechBubbleOriginator() );
+	}
+	
+	@MethodTemplate()
+	public void say( String text, Say.Detail... details ) {
+		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
+		bubble.text.setValue(text);
+		initializeBubble(bubble, details);
+		this.getImplementation().displayBubble( bubble, Duration.getValue(details));
+	}
+	
+	@MethodTemplate()
+	public void think( String text, Think.Detail... details ) {
+		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble();
+		bubble.text.setValue(text);
+		initializeBubble(bubble, details);
+		this.getImplementation().displayBubble( bubble, Duration.getValue(details));
+	}
+	
+	
+	//TODO: Get this to work
+//	@MethodTemplate()
+//	public void sayOutLoud( String text, org.alice.flite.VoiceType voice, SayOutLoud.Detail... details ) {
+//		edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble bubble = null;
+//		if (ShowSpeechBubble.getValue(details, true))
+//		{
+//			bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
+//			bubble.text.setValue(text);
+//			initializeBubble(bubble, details);
+//		}
+//		this.getImplementation().sayText(text, voice, bubble);
+//	}
 }

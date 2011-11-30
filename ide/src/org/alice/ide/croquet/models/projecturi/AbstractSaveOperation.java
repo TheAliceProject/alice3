@@ -59,7 +59,8 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 	@Override
 	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
 		org.alice.ide.ProjectApplication application = this.getProjectApplication();
-		java.io.File filePrevious = application.getFile();
+		java.net.URI uri = application.getUri();
+		java.io.File filePrevious = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
 		boolean isExceptionRaised = false;
 		do {
 			java.io.File fileNext;

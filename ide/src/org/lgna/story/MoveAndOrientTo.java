@@ -53,4 +53,7 @@ public class MoveAndOrientTo extends DurationAnimationStyleArgumentFactory {
 	private MoveAndOrientTo() {
 		super();
 	}
+	public static PathStyle pathStyle( PathStyle pathStyle ) {
+		return pathStyle;
+	}
 }

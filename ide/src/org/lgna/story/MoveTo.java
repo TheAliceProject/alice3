@@ -53,4 +53,7 @@ public class MoveTo extends DurationAnimationStyleArgumentFactory {
 	private MoveTo() {
 		super();
 	}
+	public static PathStyle pathStyle( PathStyle pathStyle ) {
+		return pathStyle;
+	}
 }

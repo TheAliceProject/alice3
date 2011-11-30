@@ -60,8 +60,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
 		}
 		public void projectOpened( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
-			AbstractSceneEditor.this.setProgramType( nextProject.getProgramType() );
-			AbstractSceneEditor.this.revalidateAndRepaint();
+			AbstractSceneEditor.this.handleProjectOpened( nextProject );
 		}
 	};
 	
@@ -77,7 +76,9 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
-			AbstractSceneEditor.this.handleExpandContractChange( nextValue == org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
+			if (prevValue != nextValue) {
+				AbstractSceneEditor.this.handleExpandContractChange( nextValue == org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );	
+			}
 		}
 	};
 	
@@ -244,18 +245,22 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	protected void addScene( org.lgna.project.ast.UserField sceneField ) {
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType) sceneField.getValueType();
 		Object userInstance = this.programInstance.getFieldValue(sceneField);
-		org.lgna.project.virtualmachine.UserInstance rv;
-		if (userInstance != null){
-			assert userInstance instanceof org.lgna.project.virtualmachine.UserInstance;
-			rv = (org.lgna.project.virtualmachine.UserInstance)userInstance;
-		}
-		else {
-			rv = getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap(sceneType);
-		}
+		assert userInstance != null;
+		assert userInstance instanceof org.lgna.project.virtualmachine.UserInstance;
+		org.lgna.project.virtualmachine.UserInstance  rv = (org.lgna.project.virtualmachine.UserInstance)userInstance;
 		rv.ensureInverseMapExists();
 		mapSceneFieldToInstance.put(sceneField, rv);
 		mapSceneInstanceToField.put(rv, sceneField);
 		SceneFieldListSelectionState.getInstance().addItem(sceneField);
+		
+//		for (org.lgna.project.ast.AbstractField field : sceneField.valueType.getValue().getDeclaredFields())
+//		{
+//			if (field instanceof org.lgna.project.ast.UserField) {
+//				org.lgna.project.ast.UserField uf = (org.lgna.project.ast.UserField)field;
+//				this.addField(sceneField.valueType.getValue(), uf, statements)
+//			}
+//		}
+		
 	}
 	
 	protected void setActiveScene( org.lgna.project.ast.UserField sceneField ) {
@@ -314,7 +319,12 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 	
-//	@Override
+	protected void handleProjectOpened( org.lgna.project.Project nextProject ) {
+		AbstractSceneEditor.this.setProgramType( nextProject.getProgramType() );
+		AbstractSceneEditor.this.revalidateAndRepaint();
+	}
+
+	//	@Override
 //	protected void handleDisplayable() {
 //		super.handleDisplayable();
 //		initializeIfNecessary();

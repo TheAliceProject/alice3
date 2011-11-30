@@ -75,7 +75,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 			isSetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 			valueType = field.getValueType();
 			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, field.getDeclaringType() ) );
-			if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
+			if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 				parent.addComponent( new org.lgna.croquet.components.Label( " . " ) );
 			} else {
 				parent.addComponent( new org.lgna.croquet.components.Label( " " ) );
@@ -85,7 +85,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 			}
 			parent.addComponent( nameLabel );
 			if( isSetter ) {
-				if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 					parent.addComponent( new org.lgna.croquet.components.Label( "( " ) );
 				}
 			}
@@ -116,7 +116,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 		if( isSetter ) {
 			//pass
 		} else {
-			if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
+			if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 				parent.addComponent( new org.lgna.croquet.components.Label( " = " ) );
 			} else {
 				parent.addComponent( new org.alice.ide.common.GetsPane( true ) );
@@ -124,7 +124,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.components.LineAx
 		}
 		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, valueType ) );
 		if( isSetter ) {
-			if( org.alice.ide.IDE.getActiveInstance().isJava() ) {
+			if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 				parent.addComponent( new org.lgna.croquet.components.Label( " )" ) );
 			}
 		}

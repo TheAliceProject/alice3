@@ -69,13 +69,11 @@ public class OnscreenBubble
 	
 	public void setPosition(double x, double y)
 	{
-		java.awt.geom.Point2D.Double tailOriginOffset = new java.awt.geom.Point2D.Double(originOfTail.x - bubbleRect.x, originOfTail.y - bubbleRect.y);
 		java.awt.geom.Point2D.Double tailEndOffset = new java.awt.geom.Point2D.Double(endOfTail.x - bubbleRect.x, endOfTail.y - bubbleRect.y);
 		java.awt.geom.Point2D.Double textOffset = new java.awt.geom.Point2D.Double(textBounds.x - bubbleRect.x, textBounds.y - bubbleRect.y);
 		
 		this.bubbleRect.x = x;
 		this.bubbleRect.y = y;
-		originOfTail.setLocation(bubbleRect.x + tailOriginOffset.x, bubbleRect.y + tailOriginOffset.y);
 		endOfTail.setLocation(bubbleRect.x + tailEndOffset.x, bubbleRect.y + tailEndOffset.y);
 		textBounds.x = bubbleRect.x + textOffset.x;
 		textBounds.y = bubbleRect.y + textOffset.y;

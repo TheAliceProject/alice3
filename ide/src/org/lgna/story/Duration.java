@@ -49,7 +49,7 @@ package org.lgna.story;
 public class Duration implements
 		//Turnable
 		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, StandUp.Detail, PointAt.Detail,
+		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail,
 		//MoveableTurnable
 		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
 		MoveTo.Detail, MoveAndOrientTo.Detail,
@@ -57,9 +57,9 @@ public class Duration implements
 		//Visual
 		SetPaint.Detail, SetOpacity.Detail,
 		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail, 
+		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
 		//JointedModel
-		StraightenOutJoints.Detail,
+		StraightenOutJoints.Detail, Say.Detail, Think.Detail,
 		//Billboard
 		SetBackPaint.Detail,
 		//Camera,
