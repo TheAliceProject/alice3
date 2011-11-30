@@ -853,7 +853,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return org.alice.stageide.sceneeditor.SetUpMethodGenerator.getSetupStatementsForInstance(false, instance, this.getActiveSceneInstance());
 	}
 	
-	
+	@Override
+	protected void handleProjectOpened( org.lgna.project.Project nextProject ) {
+		super.handleProjectOpened( nextProject );
+		if( this.onscreenLookingGlass != null ) {
+			this.onscreenLookingGlass.forgetAllCachedItems();
+		}
+	}	
 //	private boolean HACK_isDisplayableAlreadyHandled = false;
 //	
 	@Override

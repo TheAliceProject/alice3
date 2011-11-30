@@ -518,4 +518,9 @@ public class RenderContext extends Context {
 		}
 		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
 	}
+
+	public void forgetAllCachedItems() {
+		this.forgetAllGeometryAdapters();
+		this.forgetAllTextureAdapters();
+	}
 }

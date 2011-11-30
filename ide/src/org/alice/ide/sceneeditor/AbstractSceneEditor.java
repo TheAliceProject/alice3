@@ -60,8 +60,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
 		}
 		public void projectOpened( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
-			AbstractSceneEditor.this.setProgramType( nextProject.getProgramType() );
-			AbstractSceneEditor.this.revalidateAndRepaint();
+			AbstractSceneEditor.this.handleProjectOpened( nextProject );
 		}
 	};
 	
@@ -320,7 +319,12 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 	
-//	@Override
+	protected void handleProjectOpened( org.lgna.project.Project nextProject ) {
+		AbstractSceneEditor.this.setProgramType( nextProject.getProgramType() );
+		AbstractSceneEditor.this.revalidateAndRepaint();
+	}
+
+	//	@Override
 //	protected void handleDisplayable() {
 //		super.handleDisplayable();
 //		initializeIfNecessary();

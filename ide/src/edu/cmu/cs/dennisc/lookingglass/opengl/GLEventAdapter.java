@@ -556,4 +556,10 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
 		System.err.println( "todo: dispose " + drawable );
 	}
+
+	public void forgetAllCachedItems() {
+		if( this.renderContext != null ) {
+			this.renderContext.forgetAllCachedItems();
+		}
+	}
 }
