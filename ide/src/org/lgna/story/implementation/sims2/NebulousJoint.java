@@ -62,6 +62,7 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation() {
+		
 		return this.nebModel.getLocalTransformationForJoint( this.jointId );
 	}
 	@Override

@@ -76,6 +76,25 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 			this.context.gl.glMultMatrixd( buffer );
 			this.preJoint( joint );
 			this.context.glu.gluSphere( context.getQuadric(), radius, SLICES, STACKS );
+
+			double axisLength = .1;
+			context.gl.glDisable( GL_LIGHTING );
+			context.gl.glDisable( GL_TEXTURE_2D );
+			context.gl.glBegin( GL_LINES );
+    
+			context.gl.glColor3f( 1.0f, 0.0f, 0.0f );
+			context.gl.glVertex3d( 0, 0, 0 );
+			context.gl.glVertex3d( axisLength, 0, 0 );
+    
+			context.gl.glColor3f( 0.0f, 1.0f, 0.0f );
+			context.gl.glVertex3d( 0, 0, 0 );
+			context.gl.glVertex3d( 0, axisLength, 0 );
+    
+			context.gl.glColor3f( 0.0f, 0.0f, 1.0f );
+            context.gl.glVertex3d( 0, 0, 0 );
+            context.gl.glVertex3d( 0, 0, axisLength );
+            context.gl.glEnd();
+			
 		}
 		public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 			edu.cmu.cs.dennisc.math.Point3 xyz = child.getLocalPosition();
