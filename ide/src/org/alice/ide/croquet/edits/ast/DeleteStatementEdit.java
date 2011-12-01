@@ -68,7 +68,7 @@ public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croqu
 		assert blockStatement.statements.indexOf( statement ) == this.index;
 		blockStatement.statements.remove( index );
 		
-		System.err.println( "todo: preserve deletion " + statement );
+		edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.todo( "preserve deletion", statement );
 		//todo: remove
 		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
