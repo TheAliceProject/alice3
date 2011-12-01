@@ -65,6 +65,7 @@ public abstract class JointedModel extends Model {
 	
 	@MethodTemplate()
 	public void say( String text, Say.Detail... details ) {
+		
 		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
 		bubble.text.setValue(text);
 		initializeBubble(bubble, details);
@@ -79,6 +80,13 @@ public abstract class JointedModel extends Model {
 		this.getImplementation().displayBubble( bubble, Duration.getValue(details));
 	}
 	
+	
+	public void showVisualization() {
+		this.getImplementation().showVisualization();
+	}
+	public void hideVisualization() {
+		this.getImplementation().hideVisualization();
+	}
 	
 	//TODO: Get this to work
 //	@MethodTemplate()
