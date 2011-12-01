@@ -125,6 +125,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 	public void renderOpaque( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
 		rc.gl.glPushMatrix();
 		rc.gl.glTranslated( 1,0,0 );
+		rc.gl.glEnable( GL_LIGHTING );
 		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
 		implementation.treeWalk( new RenderWalkObserver( rc, implementation ) );
 		rc.gl.glPopMatrix();
