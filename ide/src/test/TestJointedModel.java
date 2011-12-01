@@ -75,6 +75,14 @@ class TestScene extends Scene {
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.susan );
 		this.camera.move( MoveDirection.FORWARD, 2.0 );
+		
+		
+		//note: we pull the upper body away from the lower body
+		
+		//this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.5 );
+		//this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.5 );
+		org.lgna.story.implementation.JointedModelImp susanImp = ImplementationAccessor.getImplementation( this.susan );
+		susanImp.getJointImplementation( org.lgna.story.resources.BipedResource.PELVIS_UPPER_BODY ).applyTranslation( 0, 1.0, 0, org.lgna.story.implementation.AsSeenBy.SELF );
 	}
 	private void performCustomSetup() {
 	}
@@ -96,10 +104,12 @@ class TestScene extends Scene {
 	public void test() {
 		org.lgna.story.implementation.JointedModelImp imp = ImplementationAccessor.getImplementation( this.susan );
 		imp.showVisualization();
-		while( true ) {
-			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
-		}
+//		while( true ) {
+////			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
+////			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
+////			this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.25 );
+////			this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.25 );
+//		}
 	}
 }
 
