@@ -40,37 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+
+package edu.cmu.cs.dennisc.java.util.logging;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedMenuModel extends MenuModel {
-	private StandardMenuItemPrepModel[] models;
-	public PredeterminedMenuModel( java.util.UUID individualId, StandardMenuItemPrepModel... models ) {
-		super( individualId );
-		this.models = models;
+public class GlobalLogger {
+//	private static final String NAME = GlobalLogger.class.getName();
+//	private static class InstanceHolder {
+//		private static java.util.logging.Logger instance = java.util.logging.Logger.getLogger( NAME );
+//	}
+//	public static java.util.logging.Logger getInstance() {
+//		return InstanceHolder.instance;
+//	}
+	public static java.util.logging.Logger getInstance() {
+		return java.util.logging.Logger.global;
 	}
-	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< StandardMenuItemPrepModel > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray(models, StandardMenuItemPrepModel.class) );
-	}
-	
-	public Model[] getModels() {
-		return this.models;
-	}
-	
-	//todo:
-	@Override
-	public org.lgna.croquet.components.Menu createMenu() {
-		org.lgna.croquet.components.Menu rv = super.createMenu();
-		edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.getInstance().warning( "todo: createMenu" );
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( rv, this.models );
-		return rv;
-	}
-	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
-		System.err.println( "todo: handlePopupMenuPrologue" );
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
+	private GlobalLogger() {
+		throw new AssertionError();
 	}
 }

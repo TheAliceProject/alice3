@@ -73,7 +73,6 @@ public class MouseFocusEventQueue extends java.awt.EventQueue {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
 	}
 	public java.awt.Component popComponentWithMouseFocus() {
-		//Thread.dumpStack();
 		assert this.componentWithMouseFocus != null;
 		java.awt.Component rv = this.componentWithMouseFocus;
 		this.componentWithMouseFocus = null;

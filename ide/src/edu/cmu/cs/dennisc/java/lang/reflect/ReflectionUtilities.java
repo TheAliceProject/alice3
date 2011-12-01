@@ -117,8 +117,7 @@ public final class ReflectionUtilities {
 		} catch( java.lang.reflect.InvocationTargetException ite ) {
 			throw new RuntimeException( cnstrctr.toString(), ite );
 		} catch( InstantiationException ie ) {
-			System.out.println(cnstrctr);
-			ie.printStackTrace();
+			edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.getInstance().log( java.util.logging.Level.SEVERE, cnstrctr.toString(), ie );
 			throw new RuntimeException( cnstrctr.toString(), ie );
 		} catch( IllegalAccessException iae ) {
 			throw new RuntimeException( cnstrctr.toString(), iae );
