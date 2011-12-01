@@ -72,7 +72,29 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getSgComposite() );
 		}
+		for( org.lgna.story.resources.JointId root : this.getRootJointIds() ) {
+			this.createJointTree( root, this );
+		}
 	}
+	
+	private void createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
+		//System.err.println( "createJointTree " + jointId );
+		JointImp joint = this.createJointImplementation( jointId );
+		if( joint != null ) {
+			if( parent instanceof JointedModelImp ) {
+				joint.setCustomJointSgParent( parent.getSgComposite() );
+			} else {
+				joint.setVehicle( parent );
+			}
+			this.mapIdToJoint.put( jointId, joint );
+			for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
+				this.createJointTree( childId, joint );
+			}
+		} else {
+			System.err.println( "warning: cannot find " + jointId + " " + this );
+		}
+	}
+	
 	@Override
 	public A getAbstraction() {
 		return this.abstraction;
@@ -97,23 +119,24 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	
 	public org.lgna.story.implementation.JointImp getJointImplementation( org.lgna.story.resources.JointId jointId ) {
-		synchronized( this.mapIdToJoint ) {
-			org.lgna.story.implementation.JointImp rv = this.mapIdToJoint.get( jointId );
-			if( rv != null || this.mapIdToJoint.containsKey( jointId ) ) {
-				//pass
-			} else {
-				rv = this.createJointImplementation( jointId );
-				this.mapIdToJoint.put( jointId, rv );
-				if (rv.getVehicle() == null && jointId.getParent() != null ) {
-					org.lgna.story.implementation.JointImp parentJoint = getJointImplementation(jointId.getParent());
-					rv.setVehicle(parentJoint);
-				}
-				else if ( jointId.getParent() == null ) {
-					rv.setCustomJointSgParent(this.getSgComposite());
-				}
-			}
-			return rv;
-		}
+		return this.mapIdToJoint.get( jointId );
+//		synchronized( this.mapIdToJoint ) {
+//			org.lgna.story.implementation.JointImp rv = this.mapIdToJoint.get( jointId );
+//			if( rv != null || this.mapIdToJoint.containsKey( jointId ) ) {
+//				//pass
+//			} else {
+//				rv = this.createJointImplementation( jointId );
+//				this.mapIdToJoint.put( jointId, rv );
+//				if (rv.getVehicle() == null && jointId.getParent() != null ) {
+//					org.lgna.story.implementation.JointImp parentJoint = getJointImplementation(jointId.getParent());
+//					rv.setVehicle(parentJoint);
+//				}
+//				else if ( jointId.getParent() == null ) {
+//					rv.setCustomJointSgParent(this.getSgComposite());
+//				}
+//			}
+//			return rv;
+//		}
 	}
 	
 	protected edu.cmu.cs.dennisc.math.Vector4 getOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {
@@ -173,15 +196,20 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	
 	private void treeWalk( org.lgna.story.resources.JointId parentId, TreeWalkObserver observer ) {
-		org.lgna.story.implementation.JointImp parentImpl = this.getJointImplementation( parentId );
-		observer.pushJoint( parentImpl );
-		R resource = this.getResource();
-		for( org.lgna.story.resources.JointId childId : parentId.getChildren( resource ) ) {
-			observer.handleBone( parentImpl, this.getJointImplementation( childId ) );
-		}
-		observer.popJoint( parentImpl );
-		for( org.lgna.story.resources.JointId childId : parentId.getChildren( resource ) ) {
-			treeWalk( childId, observer );
+		JointImp parentImp = this.getJointImplementation( parentId );
+		if( parentImp != null ) {
+			observer.pushJoint( parentImp );
+			R resource = this.getResource();
+			for( org.lgna.story.resources.JointId childId : parentId.getChildren( resource ) ) {
+				JointImp childImp = this.getJointImplementation( parentId );
+				if( childImp != null ) {
+					observer.handleBone( parentImp, childImp );
+				}
+			}
+			observer.popJoint( parentImp );
+			for( org.lgna.story.resources.JointId childId : parentId.getChildren( resource ) ) {
+				treeWalk( childId, observer );
+			}
 		}
 	}
 	public void treeWalk( TreeWalkObserver observer ) {

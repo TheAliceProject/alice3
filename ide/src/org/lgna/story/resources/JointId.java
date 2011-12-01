@@ -155,20 +155,20 @@ public class JointId {
 					currentIterator = null;
 					while (currentClass != null)
 					{
-						java.util.List<JointId> jointList = JointId.getChildList(currentClass, forJoint);
-						if (jointList != null)
-						{
-							currentIterator = jointList.iterator();
-							break;
-						}
 						Class<?> superClass = currentClass.getSuperclass();
-						if (superClass != null && JointedModelResource.class.isAssignableFrom(superClass))
+						if (JointedModelResource.class.isAssignableFrom(superClass))
 						{
 							currentClass = (Class<? extends JointedModelResource>)superClass;
 						}
 						else
 						{
 							currentClass = null;
+						}
+						java.util.List<JointId> jointList = JointId.getChildList(currentClass, forJoint);
+						if (jointList != null)
+						{
+							currentIterator = jointList.iterator();
+							break;
 						}
 					}
 				}
