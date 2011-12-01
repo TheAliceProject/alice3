@@ -54,10 +54,124 @@ public class GlobalLogger {
 //	public static java.util.logging.Logger getInstance() {
 //		return InstanceHolder.instance;
 //	}
-	public static java.util.logging.Logger getInstance() {
+	private static java.util.logging.Logger getInstance() {
 		return java.util.logging.Logger.global;
+	}
+	static {
+		java.util.logging.LogManager.getLogManager().reset();
+		//java.util.logging.Logger.global.setUseParentHandlers( false );
+		getInstance().setLevel( java.util.logging.Level.INFO );
+		java.util.logging.ConsoleHandler consoleHandler = new java.util.logging.ConsoleHandler();
+		consoleHandler.setFormatter( new ConsoleFormatter() );
+		getInstance().addHandler( consoleHandler );
+		
 	}
 	private GlobalLogger() {
 		throw new AssertionError();
+	}
+	
+	private static String buildMessage( Object object ) {
+		return object != null ? object.toString() : null;
+	}
+	private static String buildMessage( Object[] objects ) {
+		StringBuilder sb = new StringBuilder();
+		String separator = "";
+		for( Object o : objects ) {
+			sb.append( separator );
+			sb.append( o.toString() );
+			separator = " ";
+		}
+		return sb.toString();
+	}
+
+	private static boolean isLoggable( java.util.logging.Level level ) {
+		return getInstance().isLoggable( level );
+	}
+	
+	private static java.util.logging.Level TODO_LEVEL = new java.util.logging.Level( "TODO", java.util.logging.Level.INFO.intValue() + 1 ) {};
+	private static java.util.logging.Level THROWABLE_LEVEL = new java.util.logging.Level( "THROWABLE", java.util.logging.Level.SEVERE.intValue() + 1 ) {};
+	
+	private static void log( java.util.logging.Level level, Object object, Throwable throwable ) {
+		if( isLoggable( level ) ) {
+			String message = buildMessage( object );
+			if( throwable != null ) {
+				getInstance().log( level, message, throwable );
+			} else {
+				getInstance().log( level, message );
+			}
+		}
+	}
+	private static void log( java.util.logging.Level level, Object[] objects, Throwable throwable ) {
+		if( isLoggable( level ) ) {
+			String message = buildMessage( objects );
+			if( throwable != null ) {
+				getInstance().log( level, message, throwable );
+			} else {
+				getInstance().log( level, message );
+			}
+		}
+	}
+	private static void log( java.util.logging.Level level, Object object ) {
+		log( level, object, null );
+	}
+	private static void log( java.util.logging.Level level, Object[] objects ) {
+		log( level, objects, null );
+	}
+	
+	public static void throwable( Throwable t, Object object ) {
+		log( THROWABLE_LEVEL, object );
+	}
+	public static void throwable( Throwable t, Object... objects ) {
+		log( THROWABLE_LEVEL, objects );
+	}
+	
+	public static void todo( Object object ) {
+		log( TODO_LEVEL, object );
+	}
+	public static void todo( Object... objects ) {
+		log( TODO_LEVEL, objects );
+	}
+
+	public static void severe( Object object ) {
+		log( java.util.logging.Level.SEVERE, object );
+	}
+	public static void severe( Object... objects ) {
+		log( java.util.logging.Level.SEVERE, objects );
+	}
+	public static void warning( Object object ) {
+		log( java.util.logging.Level.WARNING, object );
+	}
+	public static void warning( Object... objects ) {
+		log( java.util.logging.Level.WARNING, objects );
+	}
+	public static void info( Object object ) {
+		log( java.util.logging.Level.INFO, object );
+	}
+	public static void info( Object... objects ) {
+		log( java.util.logging.Level.INFO, objects );
+	}
+	public static void config( Object object ) {
+		log( java.util.logging.Level.CONFIG, object );
+	}
+	public static void config( Object... objects ) {
+		log( java.util.logging.Level.CONFIG, objects );
+	}
+	public static void fine( Object object ) {
+		log( java.util.logging.Level.FINE, object );
+	}
+	public static void fine( Object... objects ) {
+		log( java.util.logging.Level.FINE, objects );
+	}
+	public static void finer( Object object ) {
+		log( java.util.logging.Level.FINER, object );
+	}
+	public static void finer( Object... objects ) {
+		log( java.util.logging.Level.FINER, objects );
+	}
+	public static void finest( Object object ) {
+		log( java.util.logging.Level.FINEST, object );
+	}
+	public static void finest( Object... objects ) {
+		log( java.util.logging.Level.FINEST, objects );
 	}
 }

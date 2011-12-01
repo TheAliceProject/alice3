@@ -54,7 +54,7 @@ public abstract class ItemState<T> extends State<T> {
 		if( itemCodec != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.getInstance().warning( "itemCodec is null for " + this );
+			edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.warning( "itemCodec is null for", this );
 		}
 		this.itemCodec = itemCodec;
 	}

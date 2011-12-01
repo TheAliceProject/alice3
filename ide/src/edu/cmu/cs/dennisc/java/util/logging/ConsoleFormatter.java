@@ -40,37 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+
+package edu.cmu.cs.dennisc.java.util.logging;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedMenuModel extends MenuModel {
-	private StandardMenuItemPrepModel[] models;
-	public PredeterminedMenuModel( java.util.UUID individualId, StandardMenuItemPrepModel... models ) {
-		super( individualId );
-		this.models = models;
+public class ConsoleFormatter extends java.util.logging.Formatter {
+	private static String CLASS_NAME = edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.class.getName();
+	private StackTraceElement getStackTraceElement() {
+		StackTraceElement[] stack = new Throwable().getStackTrace();
+		int index = 0;
+		while( index < stack.length ) {
+			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
+				break;
+			}
+			index ++;
+		}
+		while( index < stack.length ) {
+			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
+				//pass
+			} else {
+				return stack[ index ];
+			}
+			index ++;
+		}
+		
+		return null;
 	}
-	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< StandardMenuItemPrepModel > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray(models, StandardMenuItemPrepModel.class) );
-	}
-	
-	public Model[] getModels() {
-		return this.models;
-	}
-	
-	//todo:
 	@Override
-	public org.lgna.croquet.components.Menu createMenu() {
-		org.lgna.croquet.components.Menu rv = super.createMenu();
-		edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.todo( "createMenu" );
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( rv, this.models );
-		return rv;
-	}
-	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
-		System.err.println( "todo: handlePopupMenuPrologue" );
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
+	public String format( java.util.logging.LogRecord record ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( record.getLevel() );
+		sb.append( ": " );
+		sb.append( record.getMessage() );
+		StackTraceElement stackTraceElement = this.getStackTraceElement();
+		if( stackTraceElement != null ) {
+			sb.append( " (" );
+			sb.append( stackTraceElement.getFileName() );
+			sb.append( ":" );
+			sb.append(  stackTraceElement.getLineNumber() );
+			sb.append( ")" );
+			sb.append( " " );
+			sb.append( stackTraceElement.getClassName() );
+			sb.append( " " );
+			sb.append( stackTraceElement.getMethodName() );
+		}
+		sb.append( "\n" );
+		return sb.toString();
 	}
 }
