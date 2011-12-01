@@ -67,19 +67,19 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 			return this.context;
 		}
 		
-		protected abstract void preJoint();
-		protected abstract void preBone();
+		protected abstract void preJoint( org.lgna.story.implementation.JointImp joint );
+		protected abstract void preBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child );
 		public void pushJoint( org.lgna.story.implementation.JointImp joint ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = joint.getTransformation( this.asSeenBy );
 			m.getAsColumnMajorArray16( array );
 			this.context.gl.glPushMatrix();
 			this.context.gl.glMultMatrixd( buffer );
-			this.preJoint();
+			this.preJoint( joint );
 			this.context.glu.gluSphere( context.getQuadric(), radius, SLICES, STACKS );
 		}
 		public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 			edu.cmu.cs.dennisc.math.Point3 xyz = child.getLocalPosition();
-			this.preBone();
+			this.preBone( parent, child );
 			context.gl.glBegin( GL_LINES );
 			context.gl.glVertex3d( 0.0, 0.0, 0.0 );
 			context.gl.glVertex3d( xyz.x, xyz.y, xyz.z );
@@ -94,29 +94,56 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 			super( rc, asSeenBy );
 		}
 		@Override
-		protected void preJoint() {
+		protected void preJoint( org.lgna.story.implementation.JointImp joint ) {
 			this.getContext().gl.glColor3f( 0.0f, 1.0f, 0.0f );
 		}
 		@Override
-		protected void preBone() {
+		protected void preBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 			this.getContext().gl.glColor3f( 1.0f, 0.0f, 0.0f );
 		}
 	}
 	private static class PickWalkObserver extends GlWalkObserver<edu.cmu.cs.dennisc.lookingglass.opengl.PickContext> {
-		public PickWalkObserver( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
+		private final edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters;
+		public PickWalkObserver( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, org.lgna.story.implementation.ReferenceFrame asSeenBy, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters ) {
 			super( pc, asSeenBy );
+			this.pickParameters = pickParameters;
 		}
 		@Override
-		protected void preJoint() {
+		protected void preJoint( org.lgna.story.implementation.JointImp joint ) {
+			if( this.pickParameters.isSubElementRequired() ) {
+				org.lgna.story.resources.JointId jointId = joint.getJointId();
+				int name;
+				if( jointId != null ) {
+					name = jointId.hashCode();
+				} else {
+					name = -1;
+				}
+				this.getContext().gl.glLoadName( name );
+			}
 		}
 		@Override
-		protected void preBone() {
+		protected void preBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 		}
 	}
 	@Override
 	public void pick( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters, edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults conformanceTestResults ) {
 		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
-		implementation.treeWalk( new PickWalkObserver( pc, implementation ) );
+		pc.gl.glPushName( 0 ); // isFrontFacing
+		try {
+			pc.gl.glPushName( -1 ); // geometry
+			try {
+				pc.gl.glPushName( -1 ); // subElement
+				try {
+					implementation.treeWalk( new PickWalkObserver( pc, implementation, pickParameters ) );
+				} finally {
+					pc.gl.glPopName();
+				}
+			} finally {
+				pc.gl.glPopName();
+			}
+		} finally {
+			pc.gl.glPopName();
+		}
 	}
 	@Override
 	public void renderGhost( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.GhostAdapter root ) {
