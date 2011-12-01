@@ -198,19 +198,22 @@ public class SetUpMethodGenerator {
 				try {
 					statements.add(createPositionStatement(isThis, field, ImplementationAccessor.createPosition(initialTransform.translation)));
 
-					//place above ground
-					org.lgna.project.ast.Expression targetExpression = new org.lgna.project.ast.NullLiteral(); 
-					org.lgna.project.ast.ExpressionStatement placeStatement = createStatement( 
-							org.lgna.story.MovableTurnable.class, 
-							"place", 
-							new Class[] { org.lgna.story.SpatialRelation.class, org.lgna.story.Entity.class, org.lgna.story.Place.Detail[].class }, 
-							SetUpMethodGenerator.createInstanceExpression( isThis, field ),
-							getExpressionCreator().createExpression( org.lgna.story.SpatialRelation.ABOVE ), targetExpression
-					);
-					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)placeStatement.expression.getValue();
-					org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
-					methodInvocation.keyedArguments.add( new org.lgna.project.ast.JavaKeyedArgument( methodInvocation.method.getValue().getKeyedParameter(), durationKeyMethod, new org.lgna.project.ast.DoubleLiteral( 0.0 ) ) );
-					statements.add( placeStatement );
+					//todo
+					if( initialTransform.translation.y == 0.0 ) {
+						//place above ground
+						org.lgna.project.ast.Expression targetExpression = new org.lgna.project.ast.NullLiteral(); 
+						org.lgna.project.ast.ExpressionStatement placeStatement = createStatement( 
+								org.lgna.story.MovableTurnable.class, 
+								"place", 
+								new Class[] { org.lgna.story.SpatialRelation.class, org.lgna.story.Entity.class, org.lgna.story.Place.Detail[].class }, 
+								SetUpMethodGenerator.createInstanceExpression( isThis, field ),
+								getExpressionCreator().createExpression( org.lgna.story.SpatialRelation.ABOVE ), targetExpression
+						);
+						org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)placeStatement.expression.getValue();
+						org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
+						methodInvocation.keyedArguments.add( new org.lgna.project.ast.JavaKeyedArgument( methodInvocation.method.getValue().getKeyedParameter(), durationKeyMethod, new org.lgna.project.ast.DoubleLiteral( 0.0 ) ) );
+						statements.add( placeStatement );
+					}
 
 				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 					throw new RuntimeException( ccee );

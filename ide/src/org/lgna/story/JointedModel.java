@@ -80,14 +80,6 @@ public abstract class JointedModel extends Model {
 		this.getImplementation().displayBubble( bubble, Duration.getValue(details));
 	}
 	
-	
-	public void showVisualization() {
-		this.getImplementation().showVisualization();
-	}
-	public void hideVisualization() {
-		this.getImplementation().hideVisualization();
-	}
-	
 	//TODO: Get this to work
 //	@MethodTemplate()
 //	public void sayOutLoud( String text, org.alice.flite.VoiceType voice, SayOutLoud.Detail... details ) {
