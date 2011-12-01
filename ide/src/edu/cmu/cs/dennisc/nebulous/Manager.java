@@ -16,8 +16,11 @@ public class Manager {
 	private static native void addBundlePath( String bundlePath );
 	private static native void removeBundlePath( String bundlePath );
 	private static native void setRawResourceDirectory( String rourcePath );
+	private static native void unloadActiveModelData();
 
-	static {
+	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
+
+	private static void doInitializationIfNecessary() {
 		try {
 			initializeIfNecessary();
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
@@ -28,9 +31,7 @@ public class Manager {
 			t.printStackTrace();
 		}
 	}
-
-	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
-
+	
 	private static java.util.List< java.io.File > getPendingBundles() {
 		if( s_pendingBundles != null ) {
 			//pass
@@ -39,6 +40,13 @@ public class Manager {
 		}
 		return s_pendingBundles;
 	}
+	
+	public static void unloadNebulousModelData() {
+		if (isInitialized()) {
+			unloadActiveModelData();
+		}
+	}
+	
 	public static void initializeIfNecessary() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		if( isInitialized() ) {
 			//pass
@@ -85,7 +93,9 @@ public class Manager {
 					Manager.addBundlePath( directory.getAbsolutePath() );
 				}
 				boolean debugDraw = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY);
-				Manager.setDebugDraw(debugDraw);
+				
+//				Manager.setDebugDraw(debugDraw);
+				
 				s_isInitialized = true;
 			} else {
 				throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
@@ -100,10 +110,12 @@ public class Manager {
 	}
 
 	public static void setRawResourcePath( java.io.File file ) {
+		doInitializationIfNecessary();
 		Manager.setRawResourceDirectory( file.getAbsolutePath() );
 	}
 
 	public static void addBundle( java.io.File file ) {
+		doInitializationIfNecessary();
 		if( isInitialized() ) {
 			Manager.addBundlePath( file.getAbsolutePath() );
 		} else {
@@ -111,6 +123,7 @@ public class Manager {
 		}
 	}
 	public static void removeBundle( java.io.File file ) {
+		doInitializationIfNecessary();
 		if( isInitialized() ) {
 			Manager.removeBundlePath( file.getAbsolutePath() );
 		} else {

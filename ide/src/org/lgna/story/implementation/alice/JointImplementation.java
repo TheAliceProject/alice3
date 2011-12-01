@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation.alice;
 
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -62,5 +64,10 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.Joint getSgComposite() {
 		return this.sgJoint;
+	}
+	
+	@Override
+	public void setCustomJointSgParent(Composite sgParent) {
+		sgJoint.setSgParent(sgParent);
 	}
 }
