@@ -128,6 +128,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 //	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
 //		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 //	}
+	private transient org.lgna.story.implementation.ProgramImp programImp;
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = new java.awt.Dimension( 640, 480 );
 	@Override
@@ -150,18 +151,21 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 			new Thread() {
 				@Override
 				public void run() {
-					org.lgna.project.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
+					final org.lgna.project.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
 					vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 					vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.story.event.MouseButtonAdapter.class );
 					vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
-					org.lgna.project.ast.NamedUserType programType = ide.getProgramType();
+					final org.lgna.project.ast.NamedUserType programType = ide.getProgramType();
 					//String[] args = {};
-					org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
+					final org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
 					org.lgna.story.Program program = programInstance.getInstanceInJava( org.lgna.story.Program.class );
-					org.lgna.story.implementation.ProgramImp programImplementation = org.lgna.story.ImplementationAccessor.getImplementation( program );
-					programImplementation.initializeInAwtContainer( rv.getAwtComponent() );
-					//vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
-					vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
+					RunOperation.this.programImp = org.lgna.story.ImplementationAccessor.getImplementation( program );
+					RunOperation.this.programImp.initializeInAwtContainer( rv.getAwtComponent() );
+					org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
+						public void run() {
+							vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
+						}
+					} );
 				}
 			}.start();
 			
@@ -177,6 +181,8 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: releaseContentPane" );
+		RunOperation.this.programImp.shutDown();
+		RunOperation.this.programImp = null;
 		step.finish();
 	}
 	

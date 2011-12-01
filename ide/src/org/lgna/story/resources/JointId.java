@@ -203,6 +203,10 @@ public class JointId {
 		return new ExternalChildrenIterable( resource.getClass(), this );
 	}
 	
+	public Iterable< JointId > getChildren( Class<? extends JointedModelResource> resourceClass ) {
+		return new ExternalChildrenIterable( resourceClass, this );
+	}
+	
 	@Override
 	public String toString() {
 		for( java.lang.reflect.Field fld : this.containingClass.getFields() ) {

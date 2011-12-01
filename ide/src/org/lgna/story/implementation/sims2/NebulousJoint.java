@@ -43,13 +43,16 @@
 
 package org.lgna.story.implementation.sims2;
 
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+
 /**
  * @author Dennis Cosgrove
  */
 public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable {
 	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
 	private final org.lgna.story.resources.JointId jointId;
-	private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTransformation = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
+	private Composite sgParent = null;
+	
 	public NebulousJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lgna.story.resources.JointId jointId ) {
 		this.nebModel = nebModel;
 		this.jointId = jointId;
@@ -65,10 +68,74 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	protected void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 		this.nebModel.setLocalTransformationForJoint( this.jointId, m );
 	}
+	
+	public void setSgParent( Composite sgParent )
+    {
+        this.sgParent = sgParent;
+    }
+	
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Composite getVehicle() {
-		return null;
+	public void setParent(Composite parent) {
+		super.setParent(parent);
 	}
+    
+    @Override
+    public Composite getParent()
+    {
+        if (super.getParent() == null)
+        {
+        	return this.sgParent;
+        }
+        return super.getParent();
+    }
+    
+    @Override
+    protected Composite getVehicle()
+    {
+        return this.getParent();
+    }
+    
+    
+    @Override
+    public Composite getRoot()
+    {
+        if (super.getParent() == null && this.sgParent != null)
+        {
+            return this.sgParent.getRoot();
+        }
+        return super.getRoot();
+    }
+    
+    @Override
+    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+        if (super.getParent() == null && this.sgParent != null)
+        {
+        	rv = this.sgParent.getAbsoluteTransformation(rv);
+			rv.setToMultiplication( rv, this.accessLocalTransformation() );
+            return rv;
+        }
+        return super.getAbsoluteTransformation(rv);
+    }
+
+
+    @Override
+    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+        if (super.getParent() == null && this.sgParent != null)
+        {
+            return this.sgParent.getInverseAbsoluteTransformation(rv);
+        }
+        return super.getInverseAbsoluteTransformation(rv);
+    }
+
+    @Override
+    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
+        if (super.getParent() == null && this.sgParent != null)
+        {
+            return this.sgParent.getTransformation(rv, asSeenBy);
+        }
+        return super.getTransformation(rv, asSeenBy);
+    }
+	
 //	
 //	@Override
 //	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
