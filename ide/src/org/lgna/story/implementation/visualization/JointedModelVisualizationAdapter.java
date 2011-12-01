@@ -48,7 +48,7 @@ import static javax.media.opengl.GL.*;
 /**
  * @author Dennis Cosgrove
  */
-public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter< JointedModelVisualization > {
+public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.LeafAdapter< JointedModelVisualization > {
 	private static abstract class GlWalkObserver<C extends edu.cmu.cs.dennisc.lookingglass.opengl.Context> implements org.lgna.story.implementation.JointedModelImp.TreeWalkObserver {
 		private final C context;
 		private final org.lgna.story.implementation.ReferenceFrame asSeenBy;
@@ -125,16 +125,29 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		protected void preBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 		}
 	}
+	private void pushOffset( javax.media.opengl.GL gl ) {
+		gl.glPushMatrix();
+		gl.glTranslated( 1,0,0 );		
+	}
+	private void popOffset( javax.media.opengl.GL gl ) {
+		gl.glPopMatrix();
+	}
 	@Override
 	public void pick( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters, edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults conformanceTestResults ) {
+		this.pushOffset( pc.gl );
 		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
-		pc.gl.glPushName( 0 ); // isFrontFacing
+		pc.gl.glPushName( -1 ); // visual
 		try {
-			pc.gl.glPushName( -1 ); // geometry
+			pc.gl.glPushName( 1 ); // isFrontFacing
 			try {
-				pc.gl.glPushName( -1 ); // subElement
+				pc.gl.glPushName( -1 ); // geometry
 				try {
-					implementation.treeWalk( new PickWalkObserver( pc, implementation, pickParameters ) );
+					pc.gl.glPushName( -1 ); // subElement
+					try {
+						implementation.treeWalk( new PickWalkObserver( pc, implementation, pickParameters ) );
+					} finally {
+						pc.gl.glPopName();
+					}
 				} finally {
 					pc.gl.glPopName();
 				}
@@ -144,18 +157,18 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		} finally {
 			pc.gl.glPopName();
 		}
+		this.popOffset( pc.gl );
 	}
 	@Override
 	public void renderGhost( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.GhostAdapter root ) {
 	}
 	@Override
 	public void renderOpaque( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
-		rc.gl.glPushMatrix();
-		rc.gl.glTranslated( 1,0,0 );
 		rc.gl.glEnable( GL_LIGHTING );
+		this.pushOffset( rc.gl );
 		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
 		implementation.treeWalk( new RenderWalkObserver( rc, implementation ) );
-		rc.gl.glPopMatrix();
+		this.popOffset( rc.gl );
 	}
 	@Override
 	public void setup( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {

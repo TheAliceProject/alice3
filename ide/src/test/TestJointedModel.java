@@ -107,6 +107,18 @@ class TestScene extends Scene {
  * @author Dennis Cosgrove
  */
 class TestJointedModel extends Program {
+	private static java.util.Map< Integer, org.lgna.story.resources.JointId > mapHashCodeToJointId = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	static {
+		for( org.lgna.story.resources.JointId rootJointId : org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS ) {
+			fillInMap( rootJointId );
+		}
+	}
+	private static void fillInMap( org.lgna.story.resources.JointId jointId ) {
+		mapHashCodeToJointId.put( jointId.hashCode(), jointId );
+		for( org.lgna.story.resources.JointId childId : jointId.getDeclaredChildren() ) {
+			fillInMap( childId );
+		}
+	}
 	private final Camera camera = new Camera();
 	private final MyBiped susan = new MyBiped( 
 			new AdultPersonResource(
@@ -124,7 +136,11 @@ class TestJointedModel extends Program {
 			public void mouseMoved(java.awt.event.MouseEvent e) {
 				edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.REQUIRED );
 				org.lgna.story.implementation.EntityImp entityImp = org.lgna.story.implementation.EntityImp.getInstance( pickResult.getVisual() );
-				//System.out.println( pickResult.getSubElement() + " " + entityImp );
+				int subElement = pickResult.getSubElement();  
+				if( entityImp == null && subElement != -1 ) {
+					org.lgna.story.resources.JointId jointId = mapHashCodeToJointId.get( subElement );
+					System.out.println( jointId );
+				}
 			}
 			public void mouseDragged(java.awt.event.MouseEvent e) {
 			}
