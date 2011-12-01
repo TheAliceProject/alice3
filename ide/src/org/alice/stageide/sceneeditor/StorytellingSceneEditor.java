@@ -132,6 +132,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		org.lgna.croquet.DropReceptor,
 		edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener {
 
+	private static final String SHOW_JOINTED_MODEL_VISUALIZATIONS_KEY = StorytellingSceneEditor.class.getName() + ".showJointedModelVisualizations";
+	
 	private static class SingletonHolder {
 		private static StorytellingSceneEditor instance = new StorytellingSceneEditor();
 	}
@@ -690,10 +692,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				this.setSelectedObjectMarker(field);
 			}
 		}
-		if (edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY)) {
-			if(field.getValueType().isAssignableTo(org.lgna.story.JointedModel.class)) {
-				org.lgna.story.JointedModel jointedModel = this.getInstanceInJavaVMForField(field, org.lgna.story.JointedModel.class);
-				org.lgna.story.implementation.JointedModelImp jointedModelImp = ImplementationAccessor.getImplementation(jointedModel);
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( SHOW_JOINTED_MODEL_VISUALIZATIONS_KEY ) ) {
+			if( field.getValueType().isAssignableTo( org.lgna.story.JointedModel.class ) ) {
+				org.lgna.story.JointedModel jointedModel = this.getInstanceInJavaVMForField( field, org.lgna.story.JointedModel.class );
+				org.lgna.story.implementation.JointedModelImp jointedModelImp = ImplementationAccessor.getImplementation( jointedModel );
+				jointedModelImp.opacity.setValue( 0.25f );
 				jointedModelImp.showVisualization();
 			}
 		}

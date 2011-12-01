@@ -54,7 +54,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		private final org.lgna.story.implementation.ReferenceFrame asSeenBy;
 		private final double[] array = new double[ 16 ];
 		private final java.nio.DoubleBuffer buffer = java.nio.DoubleBuffer.wrap( array );
-		private static final double radius = 0.05;
+		private static final double radius = 0.025;
 		private static final int SLICES = 20;
 		private static final int STACKS = 20;
 
@@ -123,8 +123,11 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 	}
 	@Override
 	public void renderOpaque( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
+		rc.gl.glPushMatrix();
+		rc.gl.glTranslated( 1,0,0 );
 		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
 		implementation.treeWalk( new RenderWalkObserver( rc, implementation ) );
+		rc.gl.glPopMatrix();
 	}
 	@Override
 	public void setup( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
