@@ -153,11 +153,17 @@ public class ProgramImp {
 		applet.getContentPane().add( this.getOnscreenLookingGlass().getAWTComponent(), java.awt.BorderLayout.CENTER );
 		this.startAnimator();
 	}
+	private boolean isProgramClosedExceptionDesired = false;
 	public void shutDown() {
-		this.stopAnimator();
+		//this.stopAnimator();
+		this.isProgramClosedExceptionDesired = true;
 	}
 	
 	/*package-private*/ void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+		if( this.isProgramClosedExceptionDesired ) {
+			this.stopAnimator();
+			throw new org.lgna.project.ProgramClosedException();
+		}
 		this.getAnimator().invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );
 	}
 }

@@ -452,6 +452,9 @@ public class RenderContext extends Context {
 				com.sun.opengl.util.texture.Texture texture = diffuseColorTextureAdapter.getTexture( this );
 				texture.bind();
 				texture.enable();
+				
+				//System.out.println("Bound texture "+diffuseColorTextureAdapter.hashCode()+", context: "+this.hashCode()+" to texture "+texture.getTextureObject());
+				
 				int value = isDiffuseColorTextureClamped ? GL_CLAMP : GL_REPEAT;
 				gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, value );
 				gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, value );

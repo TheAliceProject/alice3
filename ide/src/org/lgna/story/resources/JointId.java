@@ -120,7 +120,7 @@ public class JointId {
 		return this.containingClass;
 	}
 	
-	protected Iterable< JointId > getDeclaredChildren()
+	public Iterable< JointId > getDeclaredChildren()
 	{
 		return this.children;
 	}
@@ -201,6 +201,10 @@ public class JointId {
 	
 	public Iterable< JointId > getChildren( JointedModelResource resource ) {
 		return new ExternalChildrenIterable( resource.getClass(), this );
+	}
+	
+	public Iterable< JointId > getChildren( Class<? extends JointedModelResource> resourceClass ) {
+		return new ExternalChildrenIterable( resourceClass, this );
 	}
 	
 	@Override
