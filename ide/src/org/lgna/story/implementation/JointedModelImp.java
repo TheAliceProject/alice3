@@ -51,6 +51,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 		public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances();
 		public double getBoundingSphereRadius();
+		public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent);
 	}
 	public static interface JointImplementationAndVisualDataFactory< R extends org.lgna.story.resources.JointedModelResource > {
 		public R getResource();
@@ -67,6 +68,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		this.abstraction = abstraction;
 		this.factory = factory;
 		this.visualData = this.factory.createVisualData( this );
+		this.visualData.setSGParent(this.getSgComposite());
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getSgComposite() );
 		}
@@ -102,6 +104,13 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			} else {
 				rv = this.createJointImplementation( jointId );
 				this.mapIdToJoint.put( jointId, rv );
+				if (rv.getVehicle() == null && jointId.getParent() != null ) {
+					org.lgna.story.implementation.JointImp parentJoint = getJointImplementation(jointId.getParent());
+					rv.setVehicle(parentJoint);
+				}
+				else if ( jointId.getParent() == null ) {
+					rv.setCustomJointSgParent(this.getSgComposite());
+				}
 			}
 			return rv;
 		}

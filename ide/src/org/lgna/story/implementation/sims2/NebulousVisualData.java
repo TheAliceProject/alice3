@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation.sims2;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -66,5 +67,9 @@ public class NebulousVisualData< M extends edu.cmu.cs.dennisc.nebulous.Model> im
 	}
 	public double getBoundingSphereRadius() {
 		return 1.0;
+	}
+	
+	public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent) {
+		nebModel.setSGParent(parent);
 	}
 }

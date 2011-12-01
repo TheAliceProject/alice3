@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation.alice;
 
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+
 
 /**
  * @author Dennis Cosgrove
@@ -70,6 +72,10 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		}
 		public double getBoundingSphereRadius() {
 			return 1.0;
+		}
+		
+		public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent) {
+			sgSkeletonVisual.setParent(parent);
 		}
 	}
 

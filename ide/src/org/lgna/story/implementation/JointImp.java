@@ -71,7 +71,16 @@ public abstract class JointImp extends AbstractTransformableImp {
 		return 0;
 	}
 	
+	@Override
+	public void setVehicle(EntityImp vehicle) {
+		assert vehicle != this;
+		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
+	}
+	
 	protected edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
 		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
 	}
+	
+	//Joints don't actually want to be directly hooked into the sg tree, so we have this method as a way to link them in indirectly
+	public abstract void setCustomJointSgParent(edu.cmu.cs.dennisc.scenegraph.Composite sgParent);
 }

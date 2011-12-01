@@ -862,10 +862,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	@Override
 	protected void handleProjectOpened( org.lgna.project.Project nextProject ) {
-		super.handleProjectOpened( nextProject );
 		if( this.onscreenLookingGlass != null ) {
 			this.onscreenLookingGlass.forgetAllCachedItems();
+			edu.cmu.cs.dennisc.nebulous.Manager.unloadNebulousModelData();
 		}
+		super.handleProjectOpened( nextProject );
 	}	
 //	private boolean HACK_isDisplayableAlreadyHandled = false;
 //	

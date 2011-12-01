@@ -5,6 +5,8 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import org.lgna.story.resourceutilities.StorytellingResources;
 
+import edu.cmu.cs.dennisc.math.AngleInDegrees;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
@@ -15,6 +17,8 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	static {
 		StorytellingResources.getInstance().loadSimsBundles();
 	}
+	
+	protected edu.cmu.cs.dennisc.scenegraph.Composite sgParent;
 	
     public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
         Manager.initializeIfNecessary();
@@ -28,10 +32,19 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	public native void setLocalTransformationForPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
 	public native void getAbsoluteTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
 
+	public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent) {
+		this.sgParent = parent;
+	}
+	
+	public edu.cmu.cs.dennisc.scenegraph.Composite getSGParent() {
+		return this.sgParent;
+	}
+	
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
 		double[] buffer = new double[ 12 ];
 		getLocalTransformationForPartNamed( buffer, joint );
-		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 affineMatrix = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
+		return affineMatrix;
 	}
 
 	public void setLocalTransformationForJoint( org.lgna.story.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTrans ) {

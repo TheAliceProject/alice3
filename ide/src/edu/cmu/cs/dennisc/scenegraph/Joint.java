@@ -178,7 +178,7 @@ public class Joint extends Transformable
         return getJoint(this, jointID);
     }
     
-    public void setSGParent( Composite sgParent )
+    public void setSgParent( Composite sgParent )
     {
         this.sgParent = sgParent;
     }
@@ -218,7 +218,9 @@ public class Joint extends Transformable
     public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
         if (super.getParent() == null && this.sgParent != null)
         {
-            return this.sgParent.getAbsoluteTransformation(rv);
+        	rv = this.sgParent.getAbsoluteTransformation(rv);
+			rv.setToMultiplication( rv, this.accessLocalTransformation() );
+            return rv;
         }
         return super.getAbsoluteTransformation(rv);
     }
