@@ -80,14 +80,18 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	private void createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
 		//System.err.println( "createJointTree " + jointId );
 		JointImp joint = this.createJointImplementation( jointId );
-		if( parent instanceof JointedModelImp ) {
-			joint.setCustomJointSgParent( parent.getSgComposite() );
+		if( joint != null ) {
+			if( parent instanceof JointedModelImp ) {
+				joint.setCustomJointSgParent( parent.getSgComposite() );
+			} else {
+				joint.setVehicle( parent );
+			}
+			this.mapIdToJoint.put( jointId, joint );
+			for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
+				this.createJointTree( childId, joint );
+			}
 		} else {
-			joint.setVehicle( parent );
-		}
-		this.mapIdToJoint.put( jointId, joint );
-		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-			this.createJointTree( childId, joint );
+			System.err.println( "warning: cannot find " + jointId + " " + this );
 		}
 	}
 	
@@ -192,15 +196,20 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	
 	private void treeWalk( org.lgna.story.resources.JointId parentId, TreeWalkObserver observer ) {
-		org.lgna.story.implementation.JointImp parentImpl = this.getJointImplementation( parentId );
-		observer.pushJoint( parentImpl );
-		R resource = this.getResource();
-		for( org.lgna.story.resources.JointId childId : parentId.getChildren( resource ) ) {
-			observer.handleBone( parentImpl, this.getJointImplementation( childId ) );
-		}
-		observer.popJoint( parentImpl );
-		for( org.lgna.story.resources.JointId childId : parentId.getChildren( resource ) ) {
-			treeWalk( childId, observer );
+		JointImp parentImp = this.getJointImplementation( parentId );
+		if( parentImp != null ) {
+			observer.pushJoint( parentImp );
+			R resource = this.getResource();
+			for( org.lgna.story.resources.JointId childId : parentId.getChildren( resource ) ) {
+				JointImp childImp = this.getJointImplementation( parentId );
+				if( childImp != null ) {
+					observer.handleBone( parentImp, childImp );
+				}
+			}
+			observer.popJoint( parentImp );
+			for( org.lgna.story.resources.JointId childId : parentId.getChildren( resource ) ) {
+				treeWalk( childId, observer );
+			}
 		}
 	}
 	public void treeWalk( TreeWalkObserver observer ) {
