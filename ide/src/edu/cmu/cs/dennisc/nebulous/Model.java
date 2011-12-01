@@ -5,8 +5,6 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import org.lgna.story.resourceutilities.StorytellingResources;
 
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
