@@ -69,10 +69,10 @@ public enum SpatialRelationImp {
 		this.placeAxis = placeAxis;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPlaceLocation( double amount, edu.cmu.cs.dennisc.math.AxisAlignedBox subjectBoundingBox, edu.cmu.cs.dennisc.math.AxisAlignedBox objectBoundingBox ) {
-		double x = amount * this.placeAxis.x;
-		double y = amount * this.placeAxis.y;
-		double z = amount * this.placeAxis.z;
+	public edu.cmu.cs.dennisc.math.Point3 getPlaceLocation( double alongAxisOffset, edu.cmu.cs.dennisc.math.AxisAlignedBox subjectBoundingBox, edu.cmu.cs.dennisc.math.AxisAlignedBox objectBoundingBox ) {
+		double x = alongAxisOffset * this.placeAxis.x;
+		double y = alongAxisOffset * this.placeAxis.y;
+		double z = alongAxisOffset * this.placeAxis.z;
 
 		if( this.placeAxis.x > 0 ) {
 			x += this.placeAxis.x * (objectBoundingBox.getMaximum().x - subjectBoundingBox.getMinimum().x);

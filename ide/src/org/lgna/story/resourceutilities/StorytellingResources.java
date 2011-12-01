@@ -167,7 +167,7 @@ public class StorytellingResources {
 	}
 
 	public List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		System.out.println( "Getting children for type: " + type );
+		//System.out.println( "Getting children for type: " + type );
 		java.util.List< org.lgna.project.ast.AbstractDeclaration > toReturn = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		TreeNode< JavaType > typeNode = this.getGalleryResourceTreeNodeForJavaType( type );
 
@@ -179,10 +179,10 @@ public class StorytellingResources {
 			}
 			ModelResourceTreeNode node = (ModelResourceTreeNode)child;
 			if( node.isLeaf() && node.getJavaField() != null ) {
-				System.out.println( "  Returning field: " + node.getJavaField() );
+				//System.out.println( "  Returning field: " + node.getJavaField() );
 				toReturn.add( node.getJavaField() );
 			} else {
-				System.out.println( "  Returning type: " + node.getResourceJavaType() );
+				//System.out.println( "  Returning type: " + node.getResourceJavaType() );
 				toReturn.add( node.getResourceJavaType() );
 			}
 		}

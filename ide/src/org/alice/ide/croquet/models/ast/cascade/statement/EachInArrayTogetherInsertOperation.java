@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayTogetherInsertOperation extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< org.lgna.project.ast.EachInArrayTogether > {
+public class EachInArrayTogetherInsertOperation extends InArrayInsertOperation< org.lgna.project.ast.EachInArrayTogether > {
 	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, EachInArrayTogetherInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized EachInArrayTogetherInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
@@ -59,42 +59,19 @@ public class EachInArrayTogetherInsertOperation extends org.alice.ide.croquet.mo
 		}
 		return rv;
 	}
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 	private EachInArrayTogetherInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( 
-				java.util.UUID.fromString( "a482cdb9-9824-456b-bcc0-7a24618ddde3" ), 
-				null, false,
-				null, true, 
-				true, false, 
-				"", true,
-				null, true,
-				new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair )
-		);
-		this.blockStatementIndexPair = blockStatementIndexPair;
+		super( java.util.UUID.fromString( "32bbd6f7-1e9b-44d8-9bb8-ddad9d265732" ), blockStatementIndexPair );
 	}
-
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
-	}
-
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
 		return new org.alice.ide.croquet.components.declaration.EachInArrayTogetherPanel( this );
 	}
-	private org.lgna.project.ast.EachInArrayTogether createEachInArrayTogether() {
-		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationName(), this.getComponentValueTypeState().getValue(), true );
+	@Override
+	protected org.lgna.project.ast.EachInArrayTogether createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
 		return new org.lgna.project.ast.EachInArrayTogether(
 				item,
-				this.getInitializer(), 
+				initializer, 
 				new org.lgna.project.ast.BlockStatement() 
 		);
-	}
-	@Override
-	public org.lgna.project.ast.EachInArrayTogether createPreviewDeclaration() {
-		return this.createEachInArrayTogether();
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, this.createEachInArrayTogether() );
 	}
 }

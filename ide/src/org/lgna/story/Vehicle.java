@@ -1,5 +1,7 @@
 package org.lgna.story;
 
+import org.lgna.project.annotations.*;
+
 public class Vehicle extends JointedModel {
 	private final org.lgna.story.implementation.VehicleImp implementation;
 	@Override
@@ -10,6 +12,7 @@ public class Vehicle extends JointedModel {
 		this.implementation = resource.createImplementation( this );
 	}
 	
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public void driveTo( Entity entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: driveTo" );
 	}

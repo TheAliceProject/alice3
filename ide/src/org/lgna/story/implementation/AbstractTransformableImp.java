@@ -50,6 +50,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	@Override
 	public abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSgComposite();
 	
+	public boolean isFacing( EntityImp other ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = other.getTransformation( this );
+		return m.translation.z < 0.0;
+	}
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
 		return this.getSgComposite().getLocalTransformation();
 	}
@@ -75,11 +80,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	@Override
 	public void setVehicle(EntityImp vehicle) {
 		assert vehicle != this;
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 absTransform = this.getScene() != null ? this.getTransformation(this.getScene()) : this.getLocalTransformation();
+		SceneImp scene = this.getScene();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 absTransform = scene != null ? this.getTransformation(scene) : null;
 		super.setVehicle(vehicle);
-		if (vehicle != null)
-		{
-			this.setTransformation(this.getScene(), absTransform);
+		if (vehicle != null && scene != null ) {
+			this.setTransformation(scene, absTransform);
 		}
 	}
 	
@@ -260,9 +265,105 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		this.animateApplyRotationInRevolutions( axis, angleInRevolutions, this );
 	}
 
+	protected static abstract class VantagePointData {
+		private final AbstractTransformableImp subject;
+		public VantagePointData( AbstractTransformableImp subject ) {
+			this.subject = subject;
+		}
+		public AbstractTransformableImp getSubject() {
+			return this.subject;
+		}
+		protected abstract void setM( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m );
+		protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM0();
+		protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM1();
+		protected abstract edu.cmu.cs.dennisc.math.Point3 getT0();
+		protected abstract edu.cmu.cs.dennisc.math.Point3 getT1();
+		protected abstract edu.cmu.cs.dennisc.math.UnitQuaternion getQ0();
+		protected abstract edu.cmu.cs.dennisc.math.UnitQuaternion getQ1();
+
+		public void setPortion( double portion ) {
+			edu.cmu.cs.dennisc.math.Point3 t0 = this.getT0();
+			edu.cmu.cs.dennisc.math.Point3 t1 = this.getT1();
+			edu.cmu.cs.dennisc.math.Point3 t = edu.cmu.cs.dennisc.math.Point3.createInterpolation( t0, t1, portion );
+			edu.cmu.cs.dennisc.math.UnitQuaternion q0 = this.getQ0();
+			edu.cmu.cs.dennisc.math.UnitQuaternion q1 = this.getQ1();
+			edu.cmu.cs.dennisc.math.UnitQuaternion q = edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( q0, q1, portion );
+			this.setM( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( q, t ) );
+		}
+		public void epilogue() {
+			this.setM( this.getM1() );
+		}
+	}
+	protected static class PreSetVantagePointData extends VantagePointData {
+		private final EntityImp other;
+		private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0;
+		private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 m1;
+		private final edu.cmu.cs.dennisc.math.UnitQuaternion q0;
+		private final edu.cmu.cs.dennisc.math.UnitQuaternion q1;
+		public PreSetVantagePointData( SymmetricPerspectiveCameraImp subject, EntityImp other ) {
+			super( subject );
+			this.other = other;
+			this.m0 = subject.getTransformation( other );
+			this.m1 = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+			this.q0 = this.m0.orientation.createUnitQuaternion();
+			this.q1 = this.m1.orientation.createUnitQuaternion();
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM0() {
+			return this.m0;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM1() {
+			return this.m1;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.UnitQuaternion getQ0() {
+			return this.q0;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.UnitQuaternion getQ1() {
+			return this.q1;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.Point3 getT0() {
+			return this.m0.translation;
+		}
+		@Override
+		protected edu.cmu.cs.dennisc.math.Point3 getT1() {
+			return this.m1.translation;
+		}
+		@Override
+		protected void setM( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+			this.getSubject().getSgComposite().setTransformation( m, other.getSgReferenceFrame() );
+		}
+	}
+
+	protected void setVantagePoint( VantagePointData data ) {
+		data.epilogue();
+	}
+	protected void animateVantagePoint( final VantagePointData data, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		duration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			data.epilogue();
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration, style ) {
+				@Override
+				protected void prologue() {
+				}
+				@Override
+				protected void setPortion(double portion) {
+					data.setPortion( portion );
+				}
+				@Override
+				protected void epilogue() {
+					data.epilogue();
+				}
+			} );
+		}
+	}
+	
 	private static abstract class OrientationData {
 		private final AbstractTransformableImp subject;
-
 		public OrientationData( AbstractTransformableImp subject ) {
 			this.subject = subject;
 		}
@@ -622,61 +723,79 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	
 	private static class PlaceData {
 		private final AbstractTransformableImp subject;
-		private final EntityImp target;
-		private final ReferenceFrame asSeenBy;
 		private final SpatialRelationImp spatialRelation;
+		private final EntityImp target;
 		private final double alongAxisOffset;
-		public PlaceData( AbstractTransformableImp subject, EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy ) {
+		private final ReferenceFrame asSeenBy;
+		public PlaceData( AbstractTransformableImp subject, SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy ) {
+			assert subject != null;
+			//assert target != null;
+			assert asSeenBy != null;
+			assert spatialRelation != null;
+			assert Double.isNaN( alongAxisOffset ) == false;
 			this.subject = subject;
-			this.target = target;
-			this.asSeenBy = asSeenBy;
 			this.spatialRelation = spatialRelation;
+			this.target = target;
 			this.alongAxisOffset = alongAxisOffset;
+			this.asSeenBy = asSeenBy;
 		}
-		public AbstractTransformableImp getSubject() {
-			return this.subject;
-		}
-		public EntityImp getTarget() {
-			return this.target;
-		}
-		public ReferenceFrame getAsSeenBy() {
-			return this.asSeenBy;
-		}
-		
-		public void epilogue() {
-			edu.cmu.cs.dennisc.math.AxisAlignedBox bb = this.subject.getAxisAlignedMinimumBoundingBox();
-			this.subject.applyTranslation( 0.0, -bb.getYMinimum(), 0.0, this.asSeenBy );
-		}
-//		public edu.cmu.cs.dennisc.math.AxisAlignedBox createSubjectBound() {
-//			return this.subject.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
+//		public AbstractTransformableImp getSubject() {
+//			return this.subject;
 //		}
-//		public edu.cmu.cs.dennisc.math.AxisAlignedBox createTargetBound() {
-//			return this.target.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
+//		public EntityImp getTarget() {
+//			return this.target;
+//		}
+//		public ReferenceFrame getAsSeenBy() {
+//			return this.asSeenBy;
 //		}
 		
-		
+		public edu.cmu.cs.dennisc.math.Point3 calculateTranslation0() {
+			return this.subject.getTransformation( this.asSeenBy ).translation;
+		}
+		public edu.cmu.cs.dennisc.math.Point3 calculateTranslation1( edu.cmu.cs.dennisc.math.Point3 t0 ) {
+			edu.cmu.cs.dennisc.math.AxisAlignedBox bbSubject = this.subject.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
+			if( this.target != null ) {
+				edu.cmu.cs.dennisc.math.AxisAlignedBox bbTarget;
+				bbTarget = this.target.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
+				assert bbSubject != null;
+				assert bbTarget != null;
+				if( bbSubject.isNaN() || bbTarget.isNaN() ) {
+					System.err.println( "WARNING: bounding box is NaN" );
+					return t0;
+				} else {
+					return this.spatialRelation.getPlaceLocation( this.alongAxisOffset, bbSubject, bbTarget );
+				}
+			} else {
+				//double extent = 100;
+				//bbTarget = new edu.cmu.cs.dennisc.math.AxisAlignedBox( -extent, 0, -extent, extent, 0, extent ); 
+				return new edu.cmu.cs.dennisc.math.Point3( t0.x, -bbSubject.getMinimum().y, t0.z );
+			}
+		}
+		public void setTranslation( edu.cmu.cs.dennisc.math.Point3 translation ) {
+			this.subject.getSgComposite().setTranslationOnly( translation, this.asSeenBy.getSgReferenceFrame() );
+		}
 	}
 	private static class PlaceAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
 		private final PlaceData placeData;
-		private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0;
-		private edu.cmu.cs.dennisc.math.AxisAlignedBox subjectBB;
-		private edu.cmu.cs.dennisc.math.AxisAlignedBox targetBB;
+		private edu.cmu.cs.dennisc.math.Point3 t0;
+		private edu.cmu.cs.dennisc.math.Point3 t1;
 		public PlaceAnimation( PlaceData placeData, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 			super( duration, style );
 			this.placeData = placeData;
 		}
 		@Override
 		protected void prologue() {
-			this.m0 = this.placeData.getSubject().getTransformation( this.placeData.getAsSeenBy() );
-			this.placeData.epilogue();
+			this.t0 = this.placeData.calculateTranslation0();
+			this.t1 = this.placeData.calculateTranslation1( this.t0 );
 		}
 		@Override
 		protected void setPortion( double portion ) {
-//			this.placeData.epilogue();
+			edu.cmu.cs.dennisc.math.Point3 t = edu.cmu.cs.dennisc.math.Point3.createInterpolation( this.t0, this.t1, portion );
+			this.placeData.setTranslation( t );
 		}
 		@Override
 		protected void epilogue() {
-//			this.placeData.epilogue();
+			this.placeData.setTranslation( this.t1 );
 		}
 	}
 	
@@ -717,43 +836,45 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		this.animatePositionOnly( target, edu.cmu.cs.dennisc.math.Point3.ORIGIN );
 	}
 
-	public void place( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy ) {
-		PlaceData placeData = new PlaceData( this, target, spatialRelation, alongAxisOffset, asSeenBy );
-		placeData.epilogue();
+	public void place( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy ) {
+		PlaceData placeData = new PlaceData( this, spatialRelation, target, alongAxisOffset, asSeenBy );
+		placeData.setTranslation( placeData.calculateTranslation1( placeData.calculateTranslation0() ) );
 	}
-	public void place( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset ) {
-		this.place( target, spatialRelation, alongAxisOffset, target );
+	public void place( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset ) {
+		this.place( spatialRelation, target, alongAxisOffset, target );
 	}
-	public void place( EntityImp target, SpatialRelationImp spatialRelation ) {
-		this.place( target, spatialRelation, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
+	public void place( SpatialRelationImp spatialRelation, EntityImp target ) {
+		this.place( spatialRelation, target, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
 	}
-	public void animatePlace( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		PlaceData placeData = new PlaceData( this, target, spatialRelation, alongAxisOffset, asSeenBy );
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		PlaceData placeData = new PlaceData( this, spatialRelation, target, alongAxisOffset, asSeenBy );
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			placeData.epilogue();
+			placeData.setTranslation( placeData.calculateTranslation1( placeData.calculateTranslation0() ) );
 		} else {
 			this.perform( new PlaceAnimation( placeData, duration, style ) );
 		}
 	}
-	public void animatePlace( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth, double duration ) {
-		this.animatePlace( target, spatialRelation, alongAxisOffset, asSeenBy, isSmooth, duration, DEFAULT_STYLE );
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth, double duration ) {
+		this.animatePlace( spatialRelation, target, alongAxisOffset, asSeenBy, isSmooth, duration, DEFAULT_STYLE );
 	}
-	public void animatePlace( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth ) {
-		this.animatePlace( target, spatialRelation, alongAxisOffset, asSeenBy, isSmooth, DEFAULT_DURATION );
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth ) {
+		this.animatePlace( spatialRelation, target, alongAxisOffset, asSeenBy, isSmooth, DEFAULT_DURATION );
 	}
-	public void animatePlace( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset, ReferenceFrame asSeenBy ) {
-		this.animatePlace( target, spatialRelation, alongAxisOffset, asSeenBy, DEFAULT_IS_SMOOTH );
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy ) {
+		this.animatePlace( spatialRelation, target, alongAxisOffset, asSeenBy, DEFAULT_IS_SMOOTH );
 	}
-	public void animatePlace( EntityImp target, SpatialRelationImp spatialRelation, double alongAxisOffset ) {
+	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset ) {
 		final ReferenceFrame DEFAULT_AS_SEEN_BY = target;
-		this.animatePlace( target, spatialRelation, alongAxisOffset, DEFAULT_AS_SEEN_BY );
+		this.animatePlace( spatialRelation, target, alongAxisOffset, DEFAULT_AS_SEEN_BY );
 	}
 	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target ) {
-		this.animatePlace( target, spatialRelation, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
+		this.animatePlace( spatialRelation, target, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
 	}
 
 	public void setTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset ) {
+		assert target != null : this;
+		assert this.getSgComposite() != null : this;
 		this.getSgComposite().setTransformation( offset, target.getSgReferenceFrame() );
 	}
 	public void setTransformation( ReferenceFrame target ) {

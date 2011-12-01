@@ -67,7 +67,8 @@ public abstract class EntityImp implements ReferenceFrame {
 	//todo
 //	protected abstract edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, ReferenceFrame asSeenBy );
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
-		throw new RuntimeException( "todo" );
+		System.err.println( "todo: updateCumulativeBound " + this );
+		return rv;
 	}
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
 		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
@@ -129,7 +130,7 @@ public abstract class EntityImp implements ReferenceFrame {
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 	
-	protected SceneImp getScene() {
+	public SceneImp getScene() {
 		EntityImp vehicle = this.getVehicle();
 		return vehicle != null ? vehicle.getScene() : null;
 	}

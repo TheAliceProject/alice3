@@ -100,7 +100,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
-			if( method.isSignatureLocked.getValue() ) {
+			if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isSignatureLocked( method ) ) {
 				//pass
 			} else {
 				this.addComponent( org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation.getInstance( method ).createButton() );

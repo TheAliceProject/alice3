@@ -55,4 +55,14 @@ public final class QuadrupedImp extends JointedModelImp< org.lgna.story.Quadrupe
 	public org.lgna.story.resources.JointId[] getRootJointIds() {
 		return org.lgna.story.resources.QuadrupedResource.JOINT_ID_ROOTS;
 	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
+		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.QuadrupedResource.HEAD));
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
+		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.QuadrupedResource.MOUTH));
+	}
 }

@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation.alice;
 
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+
 
 /**
  * @author Dennis Cosgrove
@@ -70,6 +72,10 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		}
 		public double getBoundingSphereRadius() {
 			return 1.0;
+		}
+		
+		public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent) {
+			sgSkeletonVisual.setParent(parent);
 		}
 	}
 
@@ -103,7 +109,9 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			if( sgJoint != null  ) {
 				return new org.lgna.story.implementation.alice.JointImplementation( jointedModelImplementation, jointId, sgJoint );
 			} else {
-				System.err.println( "WARNING: joint " + jointId + " not found for " + jointedModelImplementation );
+				org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();
+				System.err.println( "WARNING: joint " + jointId + " not found for " + resource.getClass() + " " + resource );
+				//Thread.dumpStack();
 				return null;
 			}
 		} else {

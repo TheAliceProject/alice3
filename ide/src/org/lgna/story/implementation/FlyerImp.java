@@ -56,4 +56,14 @@ public final class FlyerImp extends JointedModelImp< org.lgna.story.Flyer, org.l
 	public org.lgna.story.resources.JointId[] getRootJointIds() {
 		return org.lgna.story.resources.FlyerResource.JOINT_ID_ROOTS;
 	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
+		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.FlyerResource.HEAD));
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
+		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.FlyerResource.MOUTH));
+	}
 }

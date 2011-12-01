@@ -521,15 +521,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 //	}
 
 
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getTypeInScope() {
-		org.lgna.project.ast.AbstractCode codeInFocus = this.getFocusedCode();
-		if( codeInFocus != null ) {
-			return codeInFocus.getDeclaringType();
-		} else {
-			return null;
-		}
-	}
-
 	private org.lgna.project.virtualmachine.VirtualMachine vmForSceneEditor;
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
@@ -601,8 +592,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	@Deprecated
 	protected static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
-		if( programType.fields.size() > 0 ) {
-			return programType.fields.get( 0 );
+		if( programType != null ) {
+			if( programType.fields.size() > 0 ) {
+				return programType.fields.get( 0 );
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}

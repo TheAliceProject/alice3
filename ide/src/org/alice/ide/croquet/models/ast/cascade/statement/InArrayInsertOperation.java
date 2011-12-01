@@ -41,21 +41,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ForEachInArrayPanel extends DeclarationPanel< org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation > {
-	public ForEachInArrayPanel( org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation model ) {
-		super( model );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ForEachInArrayLoop.class ) );
+public abstract class InArrayInsertOperation< S extends org.lgna.project.ast.Statement > extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< S > {
+	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	public InArrayInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( 
+				id, 
+				null, false,
+				null, true, 
+				true, false, 
+				"", true,
+				null, true,
+				new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair )
+		);
+		this.blockStatementIndexPair = blockStatementIndexPair;
+	}
+	public final org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+		return this.blockStatementIndexPair;
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		org.alice.ide.croquet.models.ast.cascade.statement.ForEachInArrayLoopInsertOperation model = this.getModel();
-		org.lgna.project.ast.ForEachInArrayLoop forEachInArrayLoop = model.createPreviewDeclaration();
-		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( forEachInArrayLoop );
-		return pane;
+	protected boolean isNullAllowedForInitializer() {
+		return false;
+	}
+	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
+	private S createStatement() {
+		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationName(), this.getComponentValueTypeState().getValue(), true );
+		return this.createStatement( item, this.getInitializer() );
+	}
+	@Override
+	public final S createPreviewDeclaration() {
+		return this.createStatement();
+	}
+	@Override
+	protected final org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, this.createStatement() );
 	}
 }

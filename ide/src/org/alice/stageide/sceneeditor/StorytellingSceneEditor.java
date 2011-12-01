@@ -158,7 +158,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		@Override
 		protected javax.swing.JPanel createJPanel() {
 			javax.swing.JPanel rv = StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
-			rv.setLayout(new javax.swing.SpringLayout());
+			rv.setLayout( new javax.swing.SpringLayout() );
 			return rv;
 		}
 	}
@@ -853,7 +853,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		return org.alice.stageide.sceneeditor.SetUpMethodGenerator.getSetupStatementsForInstance(false, instance, this.getActiveSceneInstance());
 	}
 	
-	
+	@Override
+	protected void handleProjectOpened( org.lgna.project.Project nextProject ) {
+		if( this.onscreenLookingGlass != null ) {
+			this.onscreenLookingGlass.forgetAllCachedItems();
+			edu.cmu.cs.dennisc.nebulous.Manager.unloadNebulousModelData();
+		}
+		super.handleProjectOpened( nextProject );
+	}	
 //	private boolean HACK_isDisplayableAlreadyHandled = false;
 //	
 	@Override

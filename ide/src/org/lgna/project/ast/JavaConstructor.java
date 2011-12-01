@@ -175,6 +175,11 @@ public class JavaConstructor extends AbstractConstructor {
 	}
 
 	@Override
+	public boolean isSignatureLocked() {
+		return true;
+	}
+
+	@Override
 	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getReification();
 		if( cnstrctr != null ) {

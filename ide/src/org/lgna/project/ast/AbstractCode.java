@@ -68,5 +68,6 @@ public abstract class AbstractCode extends AbstractMember {
 		}
 	}
 	public abstract AbstractCode getNextLongerInChain();
-	public abstract AbstractCode getNextShorterInChain();		
+	public abstract AbstractCode getNextShorterInChain();
+	public abstract boolean isSignatureLocked();
 }

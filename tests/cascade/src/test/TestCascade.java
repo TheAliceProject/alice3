@@ -283,8 +283,8 @@ class EnumState<T extends Enum<T>> extends org.lgna.croquet.CustomItemStateWithI
 		return this.value;
 	}
 	@Override
-	public void handleValueChange(T value) {
-		this.value = value;
+	protected void updateSwingModel(T nextValue) {
+		this.value = nextValue;
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
@@ -317,39 +317,44 @@ class CascadePanel extends org.lgna.croquet.components.BorderPanel {
  */
 public class TestCascade extends org.lgna.croquet.Application {
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createContentPane() {
-		return new CascadePanel();
-	}
-
-	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
 		return null;
 	}
-
 	@Override
-	protected void handleAbout( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+		return null;
 	}
-
 	@Override
-	protected void handlePreferences( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+		return null;
 	}
-
+	@Override
+	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	}
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
 	@Override
 	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 		System.exit( 0 );
 	}
 
-	@Override
-	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-	}
-
-	@Override
-	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
-	}
-
 	public static void main( String[] args ) {
 		TestCascade application = new TestCascade();
 		application.initialize( args );
+		application.setPerspective( new org.lgna.croquet.Perspective( java.util.UUID.randomUUID(), new org.lgna.croquet.Composite(java.util.UUID.randomUUID()) {
+			@Override
+			protected void localize() {
+			}
+			@Override
+			public boolean contains(org.lgna.croquet.Model model) {
+				return false;
+			}
+			@Override
+			protected org.lgna.croquet.components.View createView() {
+				return new CascadePanel();
+			}
+		} ) {} );
 		application.getFrame().pack();
 		application.getFrame().setVisible( true );
 	}

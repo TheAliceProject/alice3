@@ -51,6 +51,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 		public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances();
 		public double getBoundingSphereRadius();
+		public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent);
 	}
 	public static interface JointImplementationAndVisualDataFactory< R extends org.lgna.story.resources.JointedModelResource > {
 		public R getResource();
@@ -67,6 +68,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		this.abstraction = abstraction;
 		this.factory = factory;
 		this.visualData = this.factory.createVisualData( this );
+		this.visualData.setSGParent(this.getSgComposite());
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getSgComposite() );
 		}
@@ -97,15 +99,33 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	public org.lgna.story.implementation.JointImp getJointImplementation( org.lgna.story.resources.JointId jointId ) {
 		synchronized( this.mapIdToJoint ) {
 			org.lgna.story.implementation.JointImp rv = this.mapIdToJoint.get( jointId );
-			if( rv != null ) {
+			if( rv != null || this.mapIdToJoint.containsKey( jointId ) ) {
 				//pass
 			} else {
 				rv = this.createJointImplementation( jointId );
 				this.mapIdToJoint.put( jointId, rv );
+				if (rv.getVehicle() == null && jointId.getParent() != null ) {
+					org.lgna.story.implementation.JointImp parentJoint = getJointImplementation(jointId.getParent());
+					rv.setVehicle(parentJoint);
+				}
+				else if ( jointId.getParent() == null ) {
+					rv.setCustomJointSgParent(this.getSgComposite());
+				}
 			}
 			return rv;
 		}
 	}
+	
+	protected edu.cmu.cs.dennisc.math.Vector4 getOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {
+		edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 jointTransform = jointImp.getTransformation(this);
+		offsetAsSeenBySubject.x = jointTransform.translation.x;
+		offsetAsSeenBySubject.y = jointTransform.translation.y;
+		offsetAsSeenBySubject.z = jointTransform.translation.z;
+		offsetAsSeenBySubject.w = 1;
+		return offsetAsSeenBySubject;
+	}
+	
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
 		return this.factory.getOriginalJointOrientation( jointId );
 	}

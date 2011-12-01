@@ -46,7 +46,6 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-
 public class ProjectTabSelectionState extends org.lgna.croquet.TabSelectionState< ContentTab > {
 	private static class SingletonHolder {
 		private static ProjectTabSelectionState instance = new ProjectTabSelectionState();
@@ -84,5 +83,6 @@ public class ProjectTabSelectionState extends org.lgna.croquet.TabSelectionState
 			tab = MyProjectsTab.getInstance(); //todo: recentPane?
 		}
 		this.setSelectedItem( tab );
+		this.revalidateAndRepaintAllComponents();
 	}
 }
