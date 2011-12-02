@@ -201,7 +201,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			observer.pushJoint( parentImp );
 			R resource = this.getResource();
 			for( org.lgna.story.resources.JointId childId : parentId.getChildren( resource ) ) {
-				JointImp childImp = this.getJointImplementation( parentId );
+				JointImp childImp = this.getJointImplementation( childId );
 				if( childImp != null ) {
 					observer.handleBone( parentImp, childImp );
 				}
