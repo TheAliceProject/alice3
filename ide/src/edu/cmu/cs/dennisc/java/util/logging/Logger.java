@@ -61,7 +61,7 @@ public class Logger {
 		java.util.logging.LogManager.getLogManager().reset();
 		//java.util.logging.Logger.global.setUseParentHandlers( false );
 		getInstance().setLevel( java.util.logging.Level.INFO );
-		java.util.logging.ConsoleHandler consoleHandler = new java.util.logging.ConsoleHandler();
+		SegregatingConsoleHandler consoleHandler = new SegregatingConsoleHandler();
 		consoleHandler.setFormatter( new ConsoleFormatter() );
 		getInstance().addHandler( consoleHandler );
 		

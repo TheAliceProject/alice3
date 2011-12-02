@@ -68,7 +68,7 @@ public abstract class State<T> extends CompletionModel {
 		if( this.valueObservers.contains( valueObserver ) ) {
 			//pass
 		} else {
-			System.err.println( "WARNING: listener not contained " + valueObserver );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained ", valueObserver );
 		}
 		this.valueObservers.remove( valueObserver );
 	}

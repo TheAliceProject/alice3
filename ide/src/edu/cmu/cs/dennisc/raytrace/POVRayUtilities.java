@@ -96,11 +96,11 @@ public class POVRayUtilities {
 				if( sgCylinder.hasBottomCap.getValue() ) {
 					//pass
 				} else {
-					System.err.println( "UNHANDLED CYLINDER CAP STATE: " + sgCylinder );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "UNHANDLED CYLINDER CAP STATE: " + sgCylinder );
 				}
 			} else {
 				if( sgCylinder.hasBottomCap.getValue() ) {
-					System.err.println( "UNHANDLED CYLINDER CAP STATE: " + sgCylinder );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "UNHANDLED CYLINDER CAP STATE: " + sgCylinder );
 				} else {
 					pw.println( "open" );
 				}
@@ -138,7 +138,7 @@ public class POVRayUtilities {
 				}
 			}
 		} else {
-			System.err.println( "UNHANDLED GEOMETRY: " + sgGeometry );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "UNHANDLED GEOMETRY: " + sgGeometry );
 			return;
 		}
 
@@ -185,7 +185,7 @@ public class POVRayUtilities {
 	}
 	private static void exportLight( java.io.PrintWriter pw, Light sgLight ) {
 		if( sgLight instanceof AmbientLight ) {
-			System.err.println( "UNHANDLED AMBIENT LIGHT: " + sgLight );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "UNHANDLED AMBIENT LIGHT: " + sgLight );
 			return;
 		}
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgLight.getAbsoluteTransformation();
@@ -205,7 +205,7 @@ public class POVRayUtilities {
 			pw.print( "point_at " );
 			pw.println( toString( x, y, z ) );
 		} else {
-			System.err.println( "UNHANDLED LIGHT: " + sgLight );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "UNHANDLED LIGHT: " + sgLight );
 		}
 		pw.println( "}" );
 	}

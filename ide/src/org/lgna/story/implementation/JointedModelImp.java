@@ -91,7 +91,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 				this.createJointTree( childId, joint );
 			}
 		} else {
-			System.err.println( "warning: cannot find " + jointId + " " + this );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot find", jointId, this );
 		}
 	}
 	

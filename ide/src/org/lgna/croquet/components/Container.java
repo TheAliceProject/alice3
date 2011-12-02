@@ -132,8 +132,7 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		if( Thread.holdsLock( this.getTreeLock() ) ) {
 			//pass
 		} else {
-			System.err.println( "internalRemoveComponent does not hold lock " + this );
-			//Thread.dumpStack();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "internalRemoveComponent does not hold lock", this );
 		}
 		this.getAwtComponent().remove(component.getAwtComponent());
 //		if( component.getAwtComponent().isDisplayable() ) {

@@ -41,48 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package edu.cmu.cs.dennisc.java.util.logging;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter< edu.cmu.cs.dennisc.scenegraph.TexturedAppearance > {
-	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> m_diffuseColorTextureAdapter;
-	private boolean m_isDiffuseColorTextureAlphaBlended;
-	private boolean m_isDiffuseColorTextureClamped;
-	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> m_bumpTextureAdapter;
-
+public class SegregatingConsoleHandler extends java.util.logging.Handler {
+	private static java.util.logging.Level ERROR_LEVEL = java.util.logging.Level.SEVERE;
 	@Override
-	public boolean isAlphaBlended() {
-		return super.isAlphaBlended() || m_isDiffuseColorTextureAlphaBlended;
-	}
-
-	@Override
-	public void setPipelineState( RenderContext rc, int face ) {
-		super.setPipelineState(rc, face);
-		setTexturePipelineState(rc);
-	}
-
-	public void setTexturePipelineState(RenderContext rc)
-	{
-		rc.setDiffuseColorTextureAdapter( m_diffuseColorTextureAdapter, m_isDiffuseColorTextureClamped );
-		rc.setBumpTextureAdapter( m_bumpTextureAdapter );
-	}
-	
-	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.diffuseColorTexture ) {
-			m_diffuseColorTextureAdapter = AdapterFactory.getAdapterFor( m_element.diffuseColorTexture.getValue() );
-		} else if( property == m_element.isDiffuseColorTextureAlphaBlended ) {
-			m_isDiffuseColorTextureAlphaBlended = m_element.isDiffuseColorTextureAlphaBlended.getValue();
-		} else if( property == m_element.isDiffuseColorTextureClamped ) {
-			m_isDiffuseColorTextureClamped = m_element.isDiffuseColorTextureClamped.getValue();
-		} else if( property == m_element.bumpTexture ) {
-			m_bumpTextureAdapter = AdapterFactory.getAdapterFor( m_element.bumpTexture.getValue() );
-		} else if( property == m_element.textureId ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle textureId?", property.getValue(), this.m_element.hashCode(), this.m_element );
+	public void publish( java.util.logging.LogRecord record ) {
+		java.io.PrintStream os;
+		if( record.getLevel().intValue() >= ERROR_LEVEL.intValue() ) {
+			os = System.err;
 		} else {
-			super.propertyChanged( property );
+			os = System.out;
 		}
+		os.print( this.getFormatter().format( record ) );
+		os.flush();
+	}
+	@Override
+	public void flush() {
+	}
+	@Override
+	public void close() throws java.lang.SecurityException {
 	}
 }
