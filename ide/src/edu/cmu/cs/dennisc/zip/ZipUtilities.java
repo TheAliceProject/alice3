@@ -172,8 +172,6 @@ public class ZipUtilities {
 				assert path.startsWith( rootPath );
 				String subPath = path.substring( rootPath.length()+1 );
 				subPath = subPath.replace( '\\', '/' );
-				
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( subPath );
 				java.io.FileInputStream fis = new java.io.FileInputStream( file );
 				java.util.zip.ZipEntry zipEntry = new java.util.zip.ZipEntry( subPath );
 				zos.putNextEntry( zipEntry );

@@ -76,7 +76,7 @@ public class HistoryManager {
 				HistoryManager.map.put( group, rv );
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "HistoryManager.getInstance group==null" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "group==null" );
 			rv = null;
 		}
 		return rv;

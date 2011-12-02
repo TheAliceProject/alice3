@@ -121,7 +121,7 @@ public abstract class AbstractAnimator implements Animator {
 	}
 	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
 		if( java.awt.EventQueue.isDispatchThread() ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "FYI: Animation called from AWT event dispatch thread.  Launching as separate thread." );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Animation called from AWT event dispatch thread.  Launching as separate thread." );
 			new edu.cmu.cs.dennisc.animation.AnimationThread( this, animation, animationObserver ).start();
 		} else {
 			Thread currentThread = Thread.currentThread();

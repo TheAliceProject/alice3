@@ -156,7 +156,7 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 					Component< ? > component = lookup( awtComponent );
 					this.internalRemoveComponent( component, isReleaseDesired );
 				} else {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: encountered null component." );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "encountered null component", this );
 				}
 			}
 		}

@@ -444,7 +444,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		//		} else {
 		//			throw new RuntimeException( "copy not equivalent to original" );
 		//		}
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: check copy" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 		return (N)dst;
 	}
 	private org.lgna.project.ast.Comment commentThatWantsFocus = null;

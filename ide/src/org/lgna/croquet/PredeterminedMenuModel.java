@@ -63,7 +63,7 @@ public class PredeterminedMenuModel extends MenuModel {
 	@Override
 	public org.lgna.croquet.components.Menu createMenu() {
 		org.lgna.croquet.components.Menu rv = super.createMenu();
-		edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.todo( "createMenu" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "createMenu" );
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( rv, this.models );
 		return rv;
 	}

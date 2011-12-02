@@ -54,7 +54,6 @@ import org.alice.interact.event.ManipulationListener;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -186,7 +185,7 @@ public class HandleManager implements ManipulationListener{
 		{
 			if (handle.getManipulatedObject() != selected && !(handle instanceof ManipulationHandle2D))
 			{
-				PrintUtilities.println("Handle "+handle+" selected ("+handle.getManipulatedObject()+", does not equal "+selected);
+				edu.cmu.cs.dennisc.print.PrintUtilities.println("Handle "+handle+" selected ("+handle.getManipulatedObject()+", does not equal "+selected);
 			}
 		}
 		return selected;

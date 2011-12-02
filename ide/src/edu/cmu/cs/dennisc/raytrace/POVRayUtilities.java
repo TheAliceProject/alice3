@@ -242,7 +242,6 @@ public class POVRayUtilities {
 			pw.println( "}" );
 			
 			for( Visual sgVisual : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( sgScene, Visual.class ) ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( sgVisual );
 				exportVisual( pw, sgVisual );
 			}
 			for( Light sgLight : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( sgScene, Light.class ) ) {

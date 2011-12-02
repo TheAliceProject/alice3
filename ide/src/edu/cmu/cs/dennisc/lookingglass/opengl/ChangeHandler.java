@@ -107,7 +107,7 @@ public abstract class ChangeHandler {
 		} else if( event instanceof edu.cmu.cs.dennisc.texture.event.TextureEvent ) {
 			TextureAdapter.handleTextureChanged( (edu.cmu.cs.dennisc.texture.event.TextureEvent)event );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.warning( "UNHANDLED EVENT:", event );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "UNHANDLED EVENT:", event );
 		}
 	}
 	private static void handleOrBufferEvent( edu.cmu.cs.dennisc.pattern.event.Event< ? > event ) {

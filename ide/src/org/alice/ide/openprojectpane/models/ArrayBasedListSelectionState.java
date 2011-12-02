@@ -62,7 +62,7 @@ public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.L
 	public final void refresh() {
 		this.isRefreshNecessary = true;
 		this.refreshIfNecessary();
-		edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.todo( "this.fireListDataChange();" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
 	}
 	@Override
 	public final E getItemAt( int index ) {

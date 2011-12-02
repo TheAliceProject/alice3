@@ -64,7 +64,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 		if( this.parent != parent ) {
 			if( this.parent != null ) {
 				if( parent != null ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: setOwner previous not null", this );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "previous not null", this );
 				}
 			}
 			this.parent = parent;

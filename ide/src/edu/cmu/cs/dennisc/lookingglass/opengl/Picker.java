@@ -125,11 +125,11 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			if( conformanceTestResults.isPickFunctioningCorrectly() ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl isPickFunctioningCorrectly:", conformanceTestResults.isPickFunctioningCorrectly() );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl version:", conformanceTestResults.getVersion() );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl vendor:", conformanceTestResults.getVendor() );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl renderer:", conformanceTestResults.getRenderer() );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl extensions:", conformanceTestResults.getExtensions() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "opengl isPickFunctioningCorrectly:", conformanceTestResults.isPickFunctioningCorrectly() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "opengl version:", conformanceTestResults.getVersion() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "opengl vendor:", conformanceTestResults.getVendor() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "opengl renderer:", conformanceTestResults.getRenderer() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "opengl extensions:", conformanceTestResults.getExtensions() );
 			}
 		}
 		

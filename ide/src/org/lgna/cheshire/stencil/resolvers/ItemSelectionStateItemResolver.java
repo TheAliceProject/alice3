@@ -58,7 +58,6 @@ public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<org.lg
 		if (model != null) {
 			E item = this.step.getItem();
 			org.lgna.croquet.components.TrackableShape rv = model.getTrackableShapeFor(item);
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ItemSelectionStateItemResolver", rv );
 			return rv;
 		} else {
 			return null;

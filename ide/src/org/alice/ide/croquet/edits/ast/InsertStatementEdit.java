@@ -214,7 +214,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
 
-		edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.todo( "recursive retarget" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "recursive retarget" );
 		if( this.statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
 			retargeter.addKeyValuePair( ((org.lgna.project.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((org.lgna.project.ast.AbstractStatementWithBody)replacementEdit.statement).body.getValue() );
 		}

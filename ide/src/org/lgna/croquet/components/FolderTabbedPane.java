@@ -168,7 +168,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 				@Override
 				public void setComponentOrientation(java.awt.ComponentOrientation o) {
 					super.setComponentOrientation(o);
-					edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.todo( "adjust spring" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "adjust spring" );
 				}
 			};
 			return rv;

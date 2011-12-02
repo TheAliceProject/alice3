@@ -611,7 +611,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			if( isWarningAlreadyPrinted ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getTrackableShapeAtIndexOf isInView" );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "getTrackableShapeAtIndexOf" );
 				isWarningAlreadyPrinted = true;
 			}
 			return true;

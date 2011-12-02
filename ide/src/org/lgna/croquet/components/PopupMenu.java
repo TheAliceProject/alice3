@@ -116,7 +116,7 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, org.lgna.
 	}
 	public void forgetAndRemoveAllMenuItems() {
 		//this.internalForgetAndRemoveAllComponents();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "forgetAndRemoveAllMenuItems" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );
 		this.getAwtComponent().removeAll();
 	}
 	
