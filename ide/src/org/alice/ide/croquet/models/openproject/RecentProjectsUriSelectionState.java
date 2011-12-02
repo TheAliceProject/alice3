@@ -78,7 +78,7 @@ public class RecentProjectsUriSelectionState extends org.alice.ide.openprojectpa
 			this.list.clear();
 		}
 		this.refresh();
-		System.err.println( "todo: addFile " + file );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "addFile", file );
 		this.setListData( 0, this.toArray() );
 //		int desiredRecentProjectCount = org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.getValue();
 //		org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.add( file, desiredRecentProjectCount );

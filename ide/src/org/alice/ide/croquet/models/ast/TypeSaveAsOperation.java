@@ -62,7 +62,7 @@ public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi
 	private org.lgna.project.ast.NamedUserType type;
 	private TypeSaveAsOperation( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "e8da4117-db15-40d6-b486-7f226d827be7" ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SaveAsTypeOperation" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( type );
 		this.type = type;
 		this.setName( "<html>Save <strong>" + this.type.getName() + "</strong> As...</html>" );
 		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );

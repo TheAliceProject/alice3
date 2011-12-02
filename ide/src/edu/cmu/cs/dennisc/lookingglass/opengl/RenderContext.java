@@ -183,7 +183,7 @@ public class RenderContext extends Context {
 				}
 				if( errors != null ) {
 					String description = glu.gluErrorString( errors.get( 0 ) );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "unable to capture back buffer:", description );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to capture back buffer:", description );
 				}
 			}
 			com.sun.opengl.util.ImageUtil.flipImageVertically( rvColor );
@@ -415,9 +415,9 @@ public class RenderContext extends Context {
 				m_textureBindingMap.remove( textureAdapter );
 			}
 			textureAdapter.removeRenderContext( this );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "FYI: texture adapter forgotten:", textureAdapter, value );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "texture adapter forgotten:", textureAdapter, value );
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: no id for texture adapter:", textureAdapter );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "no id for texture adapter:", textureAdapter );
 		}
 	}
 

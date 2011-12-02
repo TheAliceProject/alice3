@@ -60,7 +60,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 			prevPOV = transformableImp.getAbsoluteTransformation();
 			nextPOV = this.calculateNextAbsoluteTransformation( transformableImp );
 			if( nextPOV.isNaN() ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation isNaN" );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "nextPOV.isNaN()" );
 				step.cancel();
 			} else {
 				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
@@ -81,7 +81,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 				} );
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "transformable == null" );
 			step.cancel();
 		}
 	}

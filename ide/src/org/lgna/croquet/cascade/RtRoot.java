@@ -353,7 +353,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 			} else if( child instanceof RtSeparator ) {
 				//pass
 			} else {
-				System.err.println( "warning: getOneAndOnlyOneFillInIfAppropriate" );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unhandled child", child );
 				return null;
 			}
 		}

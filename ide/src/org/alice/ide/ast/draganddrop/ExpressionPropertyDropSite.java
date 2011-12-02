@@ -66,7 +66,7 @@ public class ExpressionPropertyDropSite implements org.lgna.croquet.Retargetable
 	public ExpressionPropertyDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 		org.lgna.project.ast.ExpressionProperty replacementExpressionProperty = retargeter.retarget( this.expressionProperty );
 		
-		System.err.println( "todo: retarget properties" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "retarget properties" );
 		
 		return new ExpressionPropertyDropSite( replacementExpressionProperty );
 	}

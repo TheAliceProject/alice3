@@ -64,7 +64,6 @@ public abstract class PrintUtilities {
 	private static java.lang.reflect.Method getMethod( String name, Class<?> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( PrintUtilities.class, name, new Class[] { StringBuffer.class, cls } );
 	}
-	
 
 	static {
 		s_isDumpStackDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.print.PrintUtilities.isDumpStackDesired" );

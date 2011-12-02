@@ -154,7 +154,7 @@ public abstract class Feature {
 	public void updateTrackableShapeIfNecessary() {
 		org.lgna.croquet.components.TrackableShape nextTrackableShape = this.trackableShapeResolver.getResolved();
 		if( nextTrackableShape != this.trackableShape ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "trackableShape change" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "trackableShape change" );
 			if( this.trackableShape != null ) {
 				this.trackableShape.removeHierarchyBoundsListener( this.hierarchyBoundsListener);
 				this.trackableShape.removeComponentListener( this.componentListener );

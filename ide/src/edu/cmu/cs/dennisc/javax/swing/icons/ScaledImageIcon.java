@@ -87,7 +87,7 @@ public class ScaledImageIcon implements javax.swing.Icon {
 			g2.translate( -x, -y );
 //			g2.setTransform( prevTransform );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.warning( "image size is 0,0", this );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "image size is 0,0", this );
 		}
 		
 	}

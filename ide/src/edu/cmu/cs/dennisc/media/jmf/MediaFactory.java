@@ -110,7 +110,6 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 			this.audioResourceToDataSourceMap.put( audioResource, dataSource );
 		}
 		try {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "MediaFactory.acquirePlayer", audioResource );
 			return javax.media.Manager.createRealizedPlayer( dataSource );
 		} catch( javax.media.CannotRealizeException cre ) {
 			throw new RuntimeException( audioResource.toString(), cre );

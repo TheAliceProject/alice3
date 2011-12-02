@@ -174,7 +174,7 @@ public abstract class Application {
 				}
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: locale==null" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "locale==null" );
 		}
 	}
 

@@ -112,8 +112,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 					}
 //				}
 			} catch( Throwable t ) {
-				System.err.println( "exception thrown in ExceptionHandler" );
-				t.printStackTrace();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
 			}
 		}
 	}

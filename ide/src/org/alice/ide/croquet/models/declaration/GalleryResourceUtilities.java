@@ -72,7 +72,6 @@ public class GalleryResourceUtilities {
 	public static <B> java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< B > blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		Iterable< org.lgna.project.ast.AbstractDeclaration > declarations = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceChildrenFor( type );
 		for( org.lgna.project.ast.AbstractDeclaration declaration : declarations ) {
-			System.err.println( "updateChildren: " + declaration );
 			if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {		
 				org.lgna.project.ast.AbstractType< ?,?,? > childType = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
 				rv.add( GalleryResourceMenu.getInstance( childType ) );

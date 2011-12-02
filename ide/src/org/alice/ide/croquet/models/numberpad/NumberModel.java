@@ -54,7 +54,7 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 		if( ide != null ) {
 			org.lgna.project.ast.Expression previousExpression = ide.getCascadeManager().createCopyOfPreviousExpression();
 			if( previousExpression instanceof org.lgna.project.ast.AbstractValueLiteral ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle previous expression; replace selected text later." );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle previous expression; replace selected text later." );
 //				org.lgna.project.ast.AbstractValueLiteral valueLiteral = (org.lgna.project.ast.AbstractValueLiteral)previousExpression;
 //				return valueLiteral.getValueProperty().getValue().toString();
 			}
@@ -97,7 +97,7 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 				return jTextField;
 			}
 		};
-		System.err.println( "todo: convert numpad text field to StringState" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "convert numpad text field to StringState" );
 		rv.getAwtComponent().getDocument().addDocumentListener( this.documentListener );
 		return rv;
 	}

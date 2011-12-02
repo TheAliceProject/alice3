@@ -91,7 +91,6 @@ public abstract class Renderer {
 	protected final void paint( java.awt.Graphics2D g2, int width, int height ) {
 		paintBackground( g2 );
 		renderIntoBufferedImage( g2.getDeviceConfiguration() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "paint:", height, m_bufferedImage.getHeight() );
 		g2.drawImage( m_bufferedImage, 0, 0, width, height, null );
 	}
 }

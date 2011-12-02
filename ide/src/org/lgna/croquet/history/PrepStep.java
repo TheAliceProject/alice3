@@ -51,7 +51,7 @@ public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Ste
 		if( parent != null ) {
 			parent.addPrepStep( this );
 		} else {
-			System.err.println( "PrepStep transaction is null" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "PrepStep transaction is null" );
 		}
 	}
 	public PrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

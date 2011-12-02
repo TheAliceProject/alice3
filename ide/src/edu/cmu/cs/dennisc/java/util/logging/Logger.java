@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.java.util.logging;
 /**
  * @author Dennis Cosgrove
  */
-public class GlobalLogger {
+public class Logger {
 //	private static final String NAME = GlobalLogger.class.getName();
 //	private static class InstanceHolder {
 //		private static java.util.logging.Logger instance = java.util.logging.Logger.getLogger( NAME );
@@ -61,12 +61,12 @@ public class GlobalLogger {
 		java.util.logging.LogManager.getLogManager().reset();
 		//java.util.logging.Logger.global.setUseParentHandlers( false );
 		getInstance().setLevel( java.util.logging.Level.INFO );
-		java.util.logging.ConsoleHandler consoleHandler = new java.util.logging.ConsoleHandler();
+		SegregatingConsoleHandler consoleHandler = new SegregatingConsoleHandler();
 		consoleHandler.setFormatter( new ConsoleFormatter() );
 		getInstance().addHandler( consoleHandler );
 		
 	}
-	private GlobalLogger() {
+	private Logger() {
 		throw new AssertionError();
 	}
 	

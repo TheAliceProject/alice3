@@ -110,11 +110,11 @@ public abstract class AdapterFactory {
 			try {
 				rv = (AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.throwable( t, cls );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, cls );
 				rv = null;
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.severe( "cannot find adapter for", sgClass );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot find adapter for", sgClass );
 			rv = null;
 		}
 		return rv;

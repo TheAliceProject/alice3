@@ -53,8 +53,6 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
 
 //adding comment for testing tags
 
@@ -263,7 +261,7 @@ public abstract class AbstractManipulator {
 			
 			if (newTransformation.equals( originalTransformation ))
 			{
-				PrintUtilities.println("Adding an undoable action for a manipulation that didn't actually change the transformation.");
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the transformation." );
 			}
 			edu.cmu.cs.dennisc.animation.Animator animator;
 			if( this.dragAdapter != null ) {

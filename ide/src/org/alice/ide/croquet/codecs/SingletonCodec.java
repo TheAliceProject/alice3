@@ -79,7 +79,6 @@ public class SingletonCodec< T > implements org.lgna.croquet.ItemCodec< T > {
 		}
 	}
 	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
-		//Thread.dumpStack();
 		if( value != null ) {
 			System.err.println( "SingletonCodec encode: " + value.getClass().getName() );
 			binaryEncoder.encode( true );

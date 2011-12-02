@@ -242,7 +242,6 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 			boolean isAdjusting = false;
 			TreeSelectionState.this.changeValueFromSwing( nextValue, isAdjusting, new org.lgna.croquet.triggers.TreeSelectionEventTrigger( e ) );
 			T prevValue = getValue();
-			System.err.println( "changing from " + prevValue + " to " + nextValue );
 			fireChanged( prevValue, nextValue, false );
 		}
 	};

@@ -139,7 +139,7 @@ public abstract class Program extends javax.swing.JApplet {
 					} );
 					Program.this.postRun();
 				} else {
-					System.err.println( "WARNING: initialization not successful; run() method will not be invoked." );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "initialization not successful; run() method will not be invoked." );
 				}
 			}
 		};

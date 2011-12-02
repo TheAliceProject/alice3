@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.java.util.logging;
  * @author Dennis Cosgrove
  */
 public class ConsoleFormatter extends java.util.logging.Formatter {
-	private static String CLASS_NAME = edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.class.getName();
+	private static String CLASS_NAME = edu.cmu.cs.dennisc.java.util.logging.Logger.class.getName();
 	private StackTraceElement getStackTraceElement() {
 		StackTraceElement[] stack = new Throwable().getStackTrace();
 		int index = 0;
