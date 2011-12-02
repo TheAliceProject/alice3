@@ -97,7 +97,7 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 				return jTextField;
 			}
 		};
-		System.err.println( "todo: convert numpad text field to StringState" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "convert numpad text field to StringState" );
 		rv.getAwtComponent().getDocument().addDocumentListener( this.documentListener );
 		return rv;
 	}

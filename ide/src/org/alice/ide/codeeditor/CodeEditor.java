@@ -470,9 +470,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					}
 					rv = dragModel.getDropModel( step, blockStatementIndexPair );
 					
-					System.err.println( "todo: investigate pushContext" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "investigate pushContext" );
 					org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( null, blockStatementIndexPair );
-					System.err.println( "todo: handle finally" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle finally" );
 				}
 			} else if( dragModel instanceof org.alice.ide.clipboard.ClipboardDragModel ) {
 				org.alice.ide.clipboard.ClipboardDragModel clipboardDragModel = (org.alice.ide.clipboard.ClipboardDragModel)dragModel;

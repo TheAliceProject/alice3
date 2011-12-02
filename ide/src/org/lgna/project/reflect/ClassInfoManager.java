@@ -97,8 +97,7 @@ public final class ClassInfoManager {
 				try {
 					return lazyClassInfo.get();
 				} catch( Throwable t ) {
-					System.err.println( cls );
-					t.printStackTrace();
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, cls );
 					return null;
 				}
 			} else {

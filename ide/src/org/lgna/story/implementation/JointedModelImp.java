@@ -78,7 +78,6 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	
 	private void createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
-		//System.err.println( "createJointTree " + jointId );
 		JointImp joint = this.createJointImplementation( jointId );
 		if( joint != null ) {
 			if( parent instanceof JointedModelImp ) {

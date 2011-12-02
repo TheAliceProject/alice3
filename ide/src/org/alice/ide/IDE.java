@@ -114,7 +114,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
 			org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
 			org.lgna.project.ast.AbstractCode code = blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
-			System.err.println( "todo: getDropReceptor: " + dropSite );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( dropSite );
 			return getCodeEditorInFocus();
 		}
 		return null;

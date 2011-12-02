@@ -88,7 +88,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 					shareContext = shareDrawable.getContext();
 				} catch( NullPointerException npe ) {
 					shareContext = null;
-					System.err.println( "todo: fix null pointer exception in jogl" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "fix null pointer exception in jogl" );
 				}
 				if (this.drawable != null) {
 					if (lgSize.width != this.drawable.getWidth() || lgSize.height != this.drawable.getHeight()) {
