@@ -71,14 +71,16 @@ public abstract class Application {
 	}
 	public void setPerspective( Perspective perspective ) {
 		if( this.perspective != perspective ) {
-			if( this.perspective != null ) {
-				this.frame.getContentPanel().removeAllComponents();
-				this.perspective.handlePostDeactivation();
-			}
-			this.perspective = perspective;
-			if( this.perspective != null ) {
-				this.perspective.handlePreActivation();
-				this.frame.getContentPanel().addComponent( this.perspective.getComposite().getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+			synchronized( this.frame.getContentPanel().getTreeLock() ) {
+				if( this.perspective != null ) {
+					this.frame.getContentPanel().removeAllComponents();
+					this.perspective.handlePostDeactivation();
+				}
+				this.perspective = perspective;
+				if( this.perspective != null ) {
+					this.perspective.handlePreActivation();
+					this.frame.getContentPanel().addComponent( this.perspective.getComposite().getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+				}
 			}
 			this.frame.getContentPanel().revalidateAndRepaint();
 		}

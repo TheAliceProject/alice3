@@ -124,7 +124,9 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 				this.isInTheMidstOfRefreshing = true;
 				try {
 					//this.forgetAndRemoveAllComponents();
-					this.internalRefresh();
+					synchronized( this.getTreeLock() ) {
+						this.internalRefresh();
+					}
 					this.isRefreshNecessary = false;
 				} finally {
 					this.isInTheMidstOfRefreshing = false;
@@ -133,12 +135,8 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 		}
 	}
 	public final void refreshLater() {
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-				Panel.this.isRefreshNecessary = true;
-				Panel.this.revalidateAndRepaint();
-//			}
-//		} );
+		Panel.this.isRefreshNecessary = true;
+		Panel.this.revalidateAndRepaint();
 	}
 	@Override
 	protected void handleDisplayable() {

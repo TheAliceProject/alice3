@@ -121,7 +121,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		}
 	};
 
-	protected final Object getTreeLock() {
+	public final Object getTreeLock() {
 		return this.getAwtComponent().getTreeLock();
 	}
 

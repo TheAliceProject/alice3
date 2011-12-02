@@ -442,36 +442,38 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	@Override
 	protected void handleExpandContractChange(boolean isExpanded) {
-		this.mainPanel.removeAllComponents();
-		this.mainCameraNavigatorWidget.setExpanded(isExpanded);
-		this.lookingGlassPanel.setNorthEastComponent( this.runButton );
-		if (isExpanded)
-		{
-			this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
-			this.propertiesSplitPane.setLeadingComponent(this.lookingGlassPanel);
-			this.propertiesSplitPane.setTrailingComponent(this.sidePanel);
-			this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
-			this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
+		//todo
+		synchronized( this.getTreeLock() ) {
+			this.mainPanel.removeAllComponents();
+			this.mainCameraNavigatorWidget.setExpanded(isExpanded);
+			this.lookingGlassPanel.setNorthEastComponent( this.runButton );
+			if (isExpanded)
+			{
+				this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
+				this.propertiesSplitPane.setLeadingComponent(this.lookingGlassPanel);
+				this.propertiesSplitPane.setTrailingComponent(this.sidePanel);
+				this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
+				this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
 
-			this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
-			
-			if (this.savedSceneEditorViewSelection != null) {
-				this.mainCameraMarkerList.setSelectedItem(this.savedSceneEditorViewSelection);
+				this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
+				
+				if (this.savedSceneEditorViewSelection != null) {
+					this.mainCameraMarkerList.setSelectedItem(this.savedSceneEditorViewSelection);
+				}
 			}
+			else
+			{
+				this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
+				this.lookingGlassPanel.setNorthWestComponent( null );
+				this.lookingGlassPanel.setSouthEastComponent(this.expandButton);
+				this.lookingGlassPanel.setSouthComponent(null);
+				
+				
+				this.savedSceneEditorViewSelection = this.mainCameraMarkerList.getSelectedItem();
+				this.mainCameraMarkerList.setSelectedItem(View.STARTING_CAMERA_VIEW);
+			}
+			this.mainCameraViewSelector.setVisible(isExpanded);
 		}
-		else
-		{
-			this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
-			this.lookingGlassPanel.setNorthWestComponent( null );
-			this.lookingGlassPanel.setSouthEastComponent(this.expandButton);
-			this.lookingGlassPanel.setSouthComponent(null);
-			
-			
-			this.savedSceneEditorViewSelection = this.mainCameraMarkerList.getSelectedItem();
-			this.mainCameraMarkerList.setSelectedItem(View.STARTING_CAMERA_VIEW);
-		}
-		this.mainCameraViewSelector.setVisible(isExpanded);
-		
 	}
 	
 	
