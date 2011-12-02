@@ -120,7 +120,7 @@ public class JointId {
 		return this.containingClass;
 	}
 	
-	protected Iterable< JointId > getDeclaredChildren()
+	public Iterable< JointId > getDeclaredChildren()
 	{
 		return this.children;
 	}

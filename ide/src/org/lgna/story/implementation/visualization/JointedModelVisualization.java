@@ -46,7 +46,7 @@ package org.lgna.story.implementation.visualization;
 /**
  * @author Dennis Cosgrove
  */
-public class JointedModelVisualization extends edu.cmu.cs.dennisc.scenegraph.Component {
+public class JointedModelVisualization extends edu.cmu.cs.dennisc.scenegraph.Leaf {
 	static {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( JointedModelVisualization.class, JointedModelVisualizationAdapter.class );
 	}
