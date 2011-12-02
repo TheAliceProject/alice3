@@ -79,11 +79,19 @@ class TestScene extends Scene {
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.susan );
-		//this.camera.move( MoveDirection.UP, .8);
-		this.camera.move( MoveDirection.FORWARD, 2 );
+		this.camera.move( MoveDirection.UP, .4);
+		this.camera.move( MoveDirection.FORWARD, 3 );
+		
+		
+		//note: we pull the upper body away from the lower body
+		
+		//this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.5 );
+		//this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.5 );
+		org.lgna.story.implementation.JointedModelImp susanImp = ImplementationAccessor.getImplementation( this.susan );
+		//susanImp.getJointImplementation( org.lgna.story.resources.BipedResource.PELVIS_UPPER_BODY ).applyTranslation( 0, 1.0, 0, org.lgna.story.implementation.AsSeenBy.SELF );
 	}
 	private void performCustomSetup() {
-	}
+	} 
 	
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
@@ -103,8 +111,10 @@ class TestScene extends Scene {
 		org.lgna.story.implementation.JointedModelImp imp = ImplementationAccessor.getImplementation( this.susan );
 		imp.showVisualization();
 		while( true ) {
-			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-//			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
+////			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
+			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
+////			this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.25 );
+////			this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.25 );
 		}
 	}
 }
@@ -113,6 +123,18 @@ class TestScene extends Scene {
  * @author Dennis Cosgrove
  */
 class TestJointedModel extends Program {
+	private static java.util.Map< Integer, org.lgna.story.resources.JointId > mapHashCodeToJointId = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	static {
+		for( org.lgna.story.resources.JointId rootJointId : org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS ) {
+			fillInMap( rootJointId );
+		}
+	}
+	private static void fillInMap( org.lgna.story.resources.JointId jointId ) {
+		mapHashCodeToJointId.put( jointId.hashCode(), jointId );
+		for( org.lgna.story.resources.JointId childId : jointId.getDeclaredChildren() ) {
+			fillInMap( childId );
+		}
+	}
 	private final Camera camera = new Camera();
 	private final MyBiped susan = new MyBiped( 
 			new AdultPersonResource(
@@ -151,7 +173,11 @@ class TestJointedModel extends Program {
 			public void mouseMoved(java.awt.event.MouseEvent e) {
 				edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.REQUIRED );
 				org.lgna.story.implementation.EntityImp entityImp = org.lgna.story.implementation.EntityImp.getInstance( pickResult.getVisual() );
-				//System.out.println( pickResult.getSubElement() + " " + entityImp );
+				int subElement = pickResult.getSubElement();  
+				if( entityImp == null && subElement != -1 ) {
+					org.lgna.story.resources.JointId jointId = mapHashCodeToJointId.get( subElement );
+					System.out.println( jointId );
+				}
 			}
 			
 			

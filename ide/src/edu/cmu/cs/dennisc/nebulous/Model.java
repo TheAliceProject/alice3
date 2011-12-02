@@ -5,6 +5,7 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import org.lgna.story.resourceutilities.StorytellingResources;
 
+import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
@@ -42,25 +43,10 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		double[] buffer = new double[ 12 ];
 		getLocalTransformationForPartNamed( buffer, joint );
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 affineMatrix = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
-			
-//		if (joint.getParent() == null) 
-		{
-			double temp = affineMatrix.translation.y;
-			affineMatrix.translation.y = affineMatrix.translation.z;
-			affineMatrix.translation.z = -temp;
-		}
-		
 		return affineMatrix;
 	}
 
 	public void setLocalTransformationForJoint( org.lgna.story.resources.JointId joint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTrans ) {
-//		if (joint.getParent() == null) 
-		{
-			double temp = localTrans.translation.y;
-			localTrans.translation.y = -localTrans.translation.z;
-			localTrans.translation.z =  temp;
-		}
-		
 		setLocalTransformationForPartNamed( joint, localTrans.getAsColumnMajorArray12() );
 	}
 	

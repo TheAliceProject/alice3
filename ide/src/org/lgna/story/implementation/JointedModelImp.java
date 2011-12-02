@@ -215,7 +215,6 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	public void treeWalk( TreeWalkObserver observer ) {
 		for( org.lgna.story.resources.JointId root : this.getRootJointIds() ) {
 			this.treeWalk( root, observer );
-			break;
 		}
 	}
 	

@@ -123,7 +123,10 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
     public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
         if (super.getParent() == null && this.sgParent != null)
         {
-            return this.sgParent.getInverseAbsoluteTransformation(rv);
+        	rv = this.sgParent.getAbsoluteTransformation(rv);
+			rv.setToMultiplication( rv, this.accessLocalTransformation() );
+			rv.invert();
+			return rv;
         }
         return super.getInverseAbsoluteTransformation(rv);
     }
@@ -132,7 +135,9 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
     public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
         if (super.getParent() == null && this.sgParent != null)
         {
-            return this.sgParent.getTransformation(rv, asSeenBy);
+            rv = this.sgParent.getTransformation(rv, asSeenBy);
+			rv.setToMultiplication( rv, this.accessLocalTransformation() );
+			return rv;
         }
         return super.getTransformation(rv, asSeenBy);
     }
