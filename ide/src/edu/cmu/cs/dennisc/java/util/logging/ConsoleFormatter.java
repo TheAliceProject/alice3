@@ -74,17 +74,18 @@ public class ConsoleFormatter extends java.util.logging.Formatter {
 		sb.append( record.getLevel() );
 		sb.append( ": " );
 		sb.append( record.getMessage() );
+		sb.append( "\n" );
 		StackTraceElement stackTraceElement = this.getStackTraceElement();
 		if( stackTraceElement != null ) {
-			sb.append( " (" );
+			sb.append( "\tat " );
+			sb.append( stackTraceElement.getClassName() );
+			sb.append( "." );
+			sb.append( stackTraceElement.getMethodName() );
+			sb.append( "(" );
 			sb.append( stackTraceElement.getFileName() );
 			sb.append( ":" );
 			sb.append(  stackTraceElement.getLineNumber() );
 			sb.append( ")" );
-			sb.append( " " );
-			sb.append( stackTraceElement.getClassName() );
-			sb.append( " " );
-			sb.append( stackTraceElement.getMethodName() );
 		}
 		sb.append( "\n" );
 		return sb.toString();
