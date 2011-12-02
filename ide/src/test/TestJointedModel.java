@@ -46,6 +46,8 @@ package test;
 /**
  * @author Dennis Cosgrove
  */
+import java.awt.event.MouseEvent;
+
 import org.lgna.story.*;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -59,9 +61,11 @@ class TestScene extends Scene {
 	private final Ground snow = new Ground();
 	private final Camera camera;
 	private final Biped susan;
-	public TestScene( Camera camera, MyBiped susan ) {
+	private final ObjectMarker marker;
+	public TestScene( Camera camera, MyBiped susan, ObjectMarker marker ) {
 		this.camera = camera;
 		this.susan = susan;
+		this.marker = marker;
 	}
 	
 	private void performGeneratedSetup() {
@@ -71,10 +75,12 @@ class TestScene extends Scene {
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
+		this.marker.setVehicle( this );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.susan );
-		this.camera.move( MoveDirection.FORWARD, 2.0 );
+		this.camera.move( MoveDirection.UP, .4);
+		this.camera.move( MoveDirection.FORWARD, 3 );
 		
 		
 		//note: we pull the upper body away from the lower body
@@ -82,10 +88,10 @@ class TestScene extends Scene {
 		//this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.5 );
 		//this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.5 );
 		org.lgna.story.implementation.JointedModelImp susanImp = ImplementationAccessor.getImplementation( this.susan );
-		susanImp.getJointImplementation( org.lgna.story.resources.BipedResource.PELVIS_UPPER_BODY ).applyTranslation( 0, 1.0, 0, org.lgna.story.implementation.AsSeenBy.SELF );
+		//susanImp.getJointImplementation( org.lgna.story.resources.BipedResource.PELVIS_UPPER_BODY ).applyTranslation( 0, 1.0, 0, org.lgna.story.implementation.AsSeenBy.SELF );
 	}
 	private void performCustomSetup() {
-	}
+	} 
 	
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
@@ -104,12 +110,12 @@ class TestScene extends Scene {
 	public void test() {
 		org.lgna.story.implementation.JointedModelImp imp = ImplementationAccessor.getImplementation( this.susan );
 		imp.showVisualization();
-//		while( true ) {
+		while( true ) {
 ////			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-////			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
+			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
 ////			this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.25 );
 ////			this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.25 );
-//		}
+		}
 	}
 }
 
@@ -139,10 +145,31 @@ class TestJointedModel extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final TestScene testScene = new TestScene( camera, susan );
+	private final ObjectMarker marker = new ObjectMarker();
+	private final TestScene testScene = new TestScene( camera, susan, marker );
+	
+	private int previousX = -1;
+	private int previousY = -1;
+	
 	public void test() {
 		final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass();
+		
+		lg.getAWTComponent().addMouseListener(new java.awt.event.MouseListener() {
+			public void mousePressed(MouseEvent e) {
+				previousX = e.getX();
+				previousY = e.getY();
+			}
+			public void mouseClicked(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {
+				previousX = -1;
+				previousY = -1;
+			}
+			public void mouseEntered(MouseEvent e) {}
+			public void mouseExited(MouseEvent e) {}
+			
+		});
 		lg.getAWTComponent().addMouseMotionListener( new java.awt.event.MouseMotionListener() {
+			
 			public void mouseMoved(java.awt.event.MouseEvent e) {
 				edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.REQUIRED );
 				org.lgna.story.implementation.EntityImp entityImp = org.lgna.story.implementation.EntityImp.getInstance( pickResult.getVisual() );
@@ -152,7 +179,22 @@ class TestJointedModel extends Program {
 					System.out.println( jointId );
 				}
 			}
+			
+			
 			public void mouseDragged(java.awt.event.MouseEvent e) {
+				if (previousX != -1 && previousY != -1) {
+					int xDif = e.getX() - previousX;
+					int yDif = e.getY() - previousY;
+					if (xDif != 0) {
+						camera.turn(TurnDirection.RIGHT, xDif*.002, Turn.duration(0), Turn.asSeenBy(testScene));
+					}
+					if (yDif != 0) {
+						marker.turnToFace(camera, TurnToFace.duration(0));;
+						camera.turn(TurnDirection.BACKWARD, yDif*.002, Turn.duration(0), Turn.asSeenBy(marker));
+					}
+				}
+				previousX = e.getX();
+				previousY = e.getY();
 			}
 		} );
 		this.setActiveScene( this.testScene );
