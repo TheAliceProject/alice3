@@ -41,32 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.ide.instancefactory.croquet;
+
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisMethodInvocationFactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InstanceFactoryFillInWithoutBlanks extends org.lgna.croquet.CascadeFillIn< InstanceFactory, Void > {
-	private final InstanceFactory transientValue;
-	public InstanceFactoryFillInWithoutBlanks( java.util.UUID id, InstanceFactory transientValue ) {
-		super( id );
-		this.transientValue = transientValue;
+public class ThisMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
+	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ThisMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.AbstractMethod value ) {
+		synchronized( map ) {
+			ThisMethodInvocationFactoryFillIn rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ThisMethodInvocationFactoryFillIn( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
+	}
+	public static ThisMethodInvocationFactoryFillIn getInstance( Class<?> declaringCls, String name ) {
+		return getInstance( org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
+	}
+	private ThisMethodInvocationFactoryFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "1ab72e54-03d3-4569-b777-cac55c793b6e" ), ThisMethodInvocationFactory.getInstance( method ), null );
 	}
 	@Override
-	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		org.lgna.project.ast.Expression expression = this.transientValue.createTransientExpression();
-		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
-
-		javax.swing.JPanel rv = new javax.swing.JPanel();
-		rv.setLayout( new java.awt.BorderLayout() );
-		
-		rv.add( new javax.swing.JLabel( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( this.transientValue.getValueType() ) ), java.awt.BorderLayout.LINE_START );
-		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
-		rv.setOpaque( false );
-		return rv;
-	}
-	@Override
-	public final InstanceFactory getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.transientValue;
+	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
+		return this.getTransientValue( step );
 	}
 }

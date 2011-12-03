@@ -41,7 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.ide.instancefactory.croquet;
+
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisInstanceFactory;
+import org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec;
 
 /**
  * @author Dennis Cosgrove
@@ -118,7 +122,8 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< InstanceFactory > blankNode ) {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
 		
 		org.lgna.project.ast.AbstractType< ?,?,? > type = getDeclaringType( org.alice.ide.MetaDeclarationState.getInstance().getValue() );
 
@@ -142,6 +147,19 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 					}
 				}
 				//rv.add( ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
+			}
+
+			org.lgna.project.ast.AbstractCode codeInFocus = ide.getFocusedCode();
+			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			for( org.lgna.project.ast.AbstractParameter parameter : codeInFocus.getRequiredParameters() ) {
+				if( parameter instanceof org.lgna.project.ast.UserParameter ) {
+					org.lgna.project.ast.UserParameter userParameter = (org.lgna.project.ast.UserParameter)parameter;
+					org.lgna.project.ast.AbstractType<?,?,?> parameterType = userParameter.getValueType();
+					if( parameterType.isAssignableTo( org.lgna.story.Entity.class ) ) {
+						InstanceFactoryFillInWithoutBlanks parameterFillIn = ParameterAccessFactoryFillIn.getInstance( userParameter );
+						rv.add( parameterFillIn );
+					}
+				}
 			}
 		}
 		return rv;

@@ -62,7 +62,7 @@ public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.com
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
 		org.lgna.project.ast.Expression expression = instanceFactory != null ? instanceFactory.createTransientExpression() : null;
 		this.forgetAndRemoveAllComponents();
 		this.internalAddComponent( this.factory.createExpressionPane( expression ) );
@@ -70,11 +70,11 @@ public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.com
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactorySelectionObserver );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactorySelectionObserver );
 		super.handleUndisplayable();
 	}
 }

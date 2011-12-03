@@ -66,20 +66,20 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactoryListener );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactoryListener );
 		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().addValueObserver( this.typeListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
 		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().removeValueObserver( this.typeListener );
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactoryListener );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactoryListener );
 		super.handleUndisplayable();
 	}
 	
 	protected abstract void refresh( java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types );
 	@Override
 	protected void internalRefresh() {
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
 		java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( instanceFactory != null ) {
 			org.lgna.project.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();

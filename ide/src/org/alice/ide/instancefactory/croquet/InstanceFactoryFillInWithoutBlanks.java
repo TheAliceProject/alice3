@@ -41,23 +41,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.ide.instancefactory.croquet;
+
+import org.alice.ide.instancefactory.InstanceFactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisInstanceFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static class SingletonHolder {
-		private static ThisInstanceFactoryFillIn instance = new ThisInstanceFactoryFillIn();
+public abstract class InstanceFactoryFillInWithoutBlanks extends org.lgna.croquet.CascadeFillIn< InstanceFactory, Void > {
+	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
+		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		}
+		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			InstanceFactoryFillInWithoutBlanks.this.markDirty();
+		}
 	}
-	public static ThisInstanceFactoryFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ThisInstanceFactoryFillIn() {
-		super( java.util.UUID.fromString( "764de80f-6ab4-465b-9915-6f78604f9aa0" ), ThisInstanceFactory.SINGLETON );
+	private final InstanceFactory transientValue;
+	private final edu.cmu.cs.dennisc.property.StringProperty nameProperty;
+	private final NamePropertyAdapter namePropertyAdapter;
+	public InstanceFactoryFillInWithoutBlanks( java.util.UUID id, InstanceFactory transientValue, edu.cmu.cs.dennisc.property.StringProperty nameProperty ) {
+		super( id );
+		this.transientValue = transientValue;
+		this.nameProperty = nameProperty;
+		if( this.nameProperty != null ) {
+			this.namePropertyAdapter = new NamePropertyAdapter();
+		} else {
+			this.namePropertyAdapter = null;
+		}
+		if( this.nameProperty != null && this.namePropertyAdapter != null ) {
+			this.nameProperty.addPropertyListener( this.namePropertyAdapter );
+		}
 	}
 	@Override
-	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.getTransientValue( step );
+	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
+		org.lgna.project.ast.Expression expression = this.transientValue.createTransientExpression();
+		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
+
+		javax.swing.JPanel rv = new javax.swing.JPanel();
+		rv.setLayout( new java.awt.BorderLayout() );
+		
+		rv.add( new javax.swing.JLabel( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( this.transientValue.getValueType() ) ), java.awt.BorderLayout.LINE_START );
+		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
+		rv.setOpaque( false );
+		return rv;
+	}
+	@Override
+	public final InstanceFactory getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
+		return this.transientValue;
 	}
 }

@@ -65,6 +65,6 @@ public class ThisJointedMenuModel extends JointInstanceFactoryMenuModel {
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.ThisMethodInvocationFactoryFillIn.getInstance( method );
+		return org.alice.ide.instancefactory.croquet.ThisMethodInvocationFactoryFillIn.getInstance( method );
 	}
 }

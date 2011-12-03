@@ -46,28 +46,49 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.AbstractMethod value ) {
-		synchronized( map ) {
-			ThisMethodInvocationFactoryFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisMethodInvocationFactoryFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class LocalAccessFactory implements InstanceFactory {
+	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized LocalAccessFactory getInstance( org.lgna.project.ast.UserLocal local ) {
+		assert local != null;
+		LocalAccessFactory rv = map.get( local );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new LocalAccessFactory( local );
+			map.put( local, rv );
 		}
+		return rv;
 	}
-	public static ThisMethodInvocationFactoryFillIn getInstance( Class<?> declaringCls, String name ) {
-		return getInstance( org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
+	private final org.lgna.project.ast.UserLocal local;
+	private LocalAccessFactory( org.lgna.project.ast.UserLocal local ) {
+		this.local = local;
 	}
-	private ThisMethodInvocationFactoryFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "1ab72e54-03d3-4569-b777-cac55c793b6e" ), ThisMethodInvocationFactory.getInstance( method ) );
+	public org.lgna.project.ast.UserLocal getField() {
+		return this.local;
 	}
-	@Override
-	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.getTransientValue( step );
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return this.local.getNamePropertyIfItExists();
+	}
+	private org.lgna.project.ast.LocalAccess createLocalAccess( org.lgna.project.ast.Expression expression ) {
+		return new org.lgna.project.ast.LocalAccess( this.local );
+	}
+	public org.lgna.project.ast.LocalAccess createTransientExpression() {
+		return this.createLocalAccess( new org.alice.ide.ast.CurrentThisExpression() );
+	}
+	public org.lgna.project.ast.LocalAccess createExpression() {
+		return this.createLocalAccess( new org.lgna.project.ast.ThisExpression() );
+	}
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
+		return this.local.getValueType();
+	}
+	public String getRepr() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "this." );
+//		sb.append( "<strong>" );
+		sb.append( this.local.getName() );
+//		sb.append( "</strong>" );
+		sb.append( "</html>" );
+		return sb.toString();
 	}
 }

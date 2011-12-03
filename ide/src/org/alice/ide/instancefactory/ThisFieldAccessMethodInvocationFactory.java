@@ -46,7 +46,7 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessMethodInvocationFactory implements InstanceFactory {
+public class ThisFieldAccessMethodInvocationFactory extends AccessMethodInvocationFactory {
 	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static synchronized ThisFieldAccessMethodInvocationFactory getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
 		assert field != null;
@@ -60,10 +60,9 @@ public class ThisFieldAccessMethodInvocationFactory implements InstanceFactory {
 		return rv;
 	}
 	private final org.lgna.project.ast.AbstractField field;
-	private final org.lgna.project.ast.AbstractMethod method;
 	private ThisFieldAccessMethodInvocationFactory( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
+		super( method );
 		this.field = field;
-		this.method = method;
 	}
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return this.field.getNamePropertyIfItExists();
@@ -71,37 +70,23 @@ public class ThisFieldAccessMethodInvocationFactory implements InstanceFactory {
 	public org.lgna.project.ast.AbstractField getField() {
 		return this.field;
 	}
-	public org.lgna.project.ast.AbstractMethod getMethod() {
-		return this.method;
+	private org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression ) {
+		return new org.lgna.project.ast.FieldAccess( expression, this.field );
 	}
-	private org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression expression ) {
-		return new org.lgna.project.ast.MethodInvocation( 
-				new org.lgna.project.ast.FieldAccess( expression, this.field ),
-				this.method
-		);
+	@Override
+	protected org.lgna.project.ast.Expression createTransientAccess() {
+		return this.createFieldAccess( new org.alice.ide.ast.CurrentThisExpression() );
 	}
-	public org.lgna.project.ast.MethodInvocation createTransientExpression() {
-		return this.createMethodInvocation( new org.alice.ide.ast.CurrentThisExpression() );
+	@Override
+	protected org.lgna.project.ast.Expression createAccess() {
+		return this.createFieldAccess( new org.lgna.project.ast.ThisExpression() );
 	}
-	public org.lgna.project.ast.MethodInvocation createExpression() {
-		return this.createMethodInvocation( new org.lgna.project.ast.ThisExpression() );
-	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
-		return this.method.getReturnType();
-	}
-
-	public String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "this." );
-//		sb.append( "<strong>" );
-		sb.append( this.field.getName() );
-//		sb.append( "</strong>" );
-		sb.append( "'s " );
-//		sb.append( "<strong>" );
-		sb.append( this.method.getName().substring( 3 ) );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
-		return sb.toString();
+	@Override
+	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+		rv.append( "this." );
+//		rv.append( "<strong>" );
+		rv.append( this.field.getName() );
+//		rv.append( "</strong>" );
+		return rv;
 	}
 }

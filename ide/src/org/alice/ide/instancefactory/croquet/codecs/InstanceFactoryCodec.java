@@ -41,7 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.ide.instancefactory.croquet.codecs;
+
+import org.alice.ide.instancefactory.InstanceFactory;
 
 /**
  * @author Dennis Cosgrove

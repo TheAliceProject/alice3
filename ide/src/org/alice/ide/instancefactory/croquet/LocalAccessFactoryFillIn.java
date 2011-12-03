@@ -41,50 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.edits.ast;
+package org.alice.ide.instancefactory.croquet;
+
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.LocalAccessFactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croquet.models.ast.DeleteStatementOperation > {
-	//todo:
-	private static org.alice.ide.croquet.models.ast.DeleteStatementOperation getModel( org.lgna.croquet.history.CompletionStep<org.alice.ide.croquet.models.ast.DeleteStatementOperation> completionStep ) {
-		return completionStep.getModel();
+public class LocalAccessFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
+	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAccessFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static LocalAccessFactoryFillIn getInstance( org.lgna.project.ast.UserLocal value ) {
+		synchronized( map ) {
+			LocalAccessFactoryFillIn rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new LocalAccessFactoryFillIn( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
 	}
-	private final int index;
-	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
-		super( completionStep, (org.lgna.project.ast.BlockStatement) (getModel( completionStep ).getStatement().getParent() ) );
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		this.index = this.getBlockStatement().statements.indexOf( statement );
-	}
-	public DeleteStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.index = binaryDecoder.decodeInt();
-	}
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		assert blockStatement.statements.indexOf( statement ) == this.index;
-		blockStatement.statements.remove( index );
-		
-		System.err.println( "todo: preserve deletion " + statement );
-		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+	private LocalAccessFactoryFillIn( org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "01f7980c-ee24-4a40-94e5-9e0318ecbe1a" ), LocalAccessFactory.getInstance( local ), local.name );
 	}
 	@Override
-	protected final void undoInternal() {
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		blockStatement.statements.add( index, statement );
-		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
-	}
-	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement, locale);
-		return rv;
+	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
+		return this.getTransientValue( step );
 	}
 }

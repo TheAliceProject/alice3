@@ -53,6 +53,6 @@ public abstract class SelectedExpressionBasedStatmentInsertCascade extends State
 	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions );
 	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return this.createStatement( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
+		return this.createStatement( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(), expressions );
 	}
 }

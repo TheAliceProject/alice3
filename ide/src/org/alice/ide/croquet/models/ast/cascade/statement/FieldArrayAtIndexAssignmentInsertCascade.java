@@ -66,7 +66,7 @@ public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssign
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
 		return org.lgna.project.ast.AstUtilities.createFieldAccess( 
-				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue().createExpression(), 
+				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(), 
 				field
 		);
 	}

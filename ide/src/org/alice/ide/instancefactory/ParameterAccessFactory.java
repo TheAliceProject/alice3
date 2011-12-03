@@ -41,50 +41,54 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.edits.ast;
+package org.alice.ide.instancefactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croquet.models.ast.DeleteStatementOperation > {
-	//todo:
-	private static org.alice.ide.croquet.models.ast.DeleteStatementOperation getModel( org.lgna.croquet.history.CompletionStep<org.alice.ide.croquet.models.ast.DeleteStatementOperation> completionStep ) {
-		return completionStep.getModel();
-	}
-	private final int index;
-	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
-		super( completionStep, (org.lgna.project.ast.BlockStatement) (getModel( completionStep ).getStatement().getParent() ) );
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		this.index = this.getBlockStatement().statements.indexOf( statement );
-	}
-	public DeleteStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.index = binaryDecoder.decodeInt();
-	}
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		assert blockStatement.statements.indexOf( statement ) == this.index;
-		blockStatement.statements.remove( index );
-		
-		System.err.println( "todo: preserve deletion " + statement );
-		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
-	}
-	@Override
-	protected final void undoInternal() {
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		blockStatement.statements.add( index, statement );
-		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
-	}
-	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement, locale);
+public class ParameterAccessFactory implements InstanceFactory {
+	private static java.util.Map< org.lgna.project.ast.UserParameter, ParameterAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ParameterAccessFactory getInstance( org.lgna.project.ast.UserParameter parameter ) {
+		assert parameter != null;
+		ParameterAccessFactory rv = map.get( parameter );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ParameterAccessFactory( parameter );
+			map.put( parameter, rv );
+		}
 		return rv;
+	}
+	private final org.lgna.project.ast.UserParameter parameter;
+	private ParameterAccessFactory( org.lgna.project.ast.UserParameter parameter ) {
+		this.parameter = parameter;
+	}
+	public org.lgna.project.ast.UserParameter getField() {
+		return this.parameter;
+	}
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return this.parameter.getNamePropertyIfItExists();
+	}
+	private org.lgna.project.ast.ParameterAccess createParameterAccess( org.lgna.project.ast.Expression expression ) {
+		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	}
+	public org.lgna.project.ast.ParameterAccess createTransientExpression() {
+		return this.createParameterAccess( new org.alice.ide.ast.CurrentThisExpression() );
+	}
+	public org.lgna.project.ast.ParameterAccess createExpression() {
+		return this.createParameterAccess( new org.lgna.project.ast.ThisExpression() );
+	}
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
+		return this.parameter.getValueType();
+	}
+	public String getRepr() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "this." );
+//		sb.append( "<strong>" );
+		sb.append( this.parameter.getName() );
+//		sb.append( "</strong>" );
+		sb.append( "</html>" );
+		return sb.toString();
 	}
 }

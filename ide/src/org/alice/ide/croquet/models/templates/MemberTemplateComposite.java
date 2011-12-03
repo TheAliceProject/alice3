@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.templates;
 public abstract class MemberTemplateComposite<V extends org.lgna.croquet.components.View< ?,? >> extends TemplateComposite< V > {
 	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
-			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
+			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
 //			org.lgna.project.ast.AbstractType< ?, ?, ? > type; 
 //			if( instanceFactory != null ) {
 //				type = instanceFactory.getValueType();

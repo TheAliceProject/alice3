@@ -46,37 +46,44 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		}
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			ThisFieldAccessMethodInvocationFactoryFillIn.this.markDirty();
-		}
+public abstract class AccessMethodInvocationFactory implements InstanceFactory {
+	private final org.lgna.project.ast.AbstractMethod method;
+	public AccessMethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
+		this.method = method;
 	}
-	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactoryFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ThisFieldAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
-		assert field != null;
-		ThisFieldAccessMethodInvocationFactoryFillIn rv = mapToMap.get( field, method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ThisFieldAccessMethodInvocationFactoryFillIn( field, method );
-			mapToMap.put( field, method, rv );
-		}
-		return rv;
+	public org.lgna.project.ast.AbstractMethod getMethod() {
+		return this.method;
 	}
-	public static ThisFieldAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserField field, Class<?> declaringCls, String name ) {
-		return getInstance( field, org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
+
+	protected abstract org.lgna.project.ast.Expression createTransientAccess();
+	protected abstract org.lgna.project.ast.Expression createAccess();
+	private org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression access ) {
+		return new org.lgna.project.ast.MethodInvocation( 
+				access,
+				this.method
+		);
 	}
-	
-	private ThisFieldAccessMethodInvocationFactoryFillIn( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "ccd03251-addf-4f26-b777-3ff8c3151a38" ), ThisFieldAccessMethodInvocationFactory.getInstance( field, method ) );
-		field.name.addPropertyListener( this.namePropertyAdapter );
+	public final org.lgna.project.ast.MethodInvocation createTransientExpression() {
+		return this.createMethodInvocation( this.createTransientAccess() );
 	}
-	@Override
-	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.getTransientValue( step );
+	public final org.lgna.project.ast.MethodInvocation createExpression() {
+		return this.createMethodInvocation( this.createAccess() );
+	}
+	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
+		return this.method.getReturnType();
+	}
+
+	protected abstract StringBuilder addAccessRepr( StringBuilder rv );
+	public final String getRepr() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		this.addAccessRepr( sb );
+//		sb.append( "</strong>" );
+		sb.append( "'s " );
+//		sb.append( "<strong>" );
+		sb.append( this.method.getName().substring( 3 ) );
+//		sb.append( "</strong>" );
+		sb.append( "</html>" );
+		return sb.toString();
 	}
 }

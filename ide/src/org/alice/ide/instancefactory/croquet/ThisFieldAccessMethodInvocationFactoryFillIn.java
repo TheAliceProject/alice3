@@ -41,36 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.ide.instancefactory.croquet;
+
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+public class ThisFieldAccessMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactoryFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ThisFieldAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
+		assert field != null;
+		ThisFieldAccessMethodInvocationFactoryFillIn rv = mapToMap.get( field, method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ThisFieldAccessMethodInvocationFactoryFillIn( field, method );
+			mapToMap.put( field, method, rv );
 		}
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			ThisFieldAccessFactoryFillIn.this.markDirty();
-		}
+		return rv;
 	}
-	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
-	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisFieldAccessFactoryFillIn getInstance( org.lgna.project.ast.UserField value ) {
-		synchronized( map ) {
-			ThisFieldAccessFactoryFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisFieldAccessFactoryFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
+	public static ThisFieldAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserField field, Class<?> declaringCls, String name ) {
+		return getInstance( field, org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
 	}
-	private ThisFieldAccessFactoryFillIn( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "01f7980c-ee24-4a40-94e5-9e0318ecbe1a" ), ThisFieldAccessFactory.getInstance( field ) );
-		field.name.addPropertyListener( this.namePropertyAdapter );
+	
+	private ThisFieldAccessMethodInvocationFactoryFillIn( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "ccd03251-addf-4f26-b777-3ff8c3151a38" ), ThisFieldAccessMethodInvocationFactory.getInstance( field, method ), field.name );
 	}
 	@Override
 	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {

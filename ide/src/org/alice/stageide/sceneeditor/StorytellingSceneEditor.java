@@ -49,7 +49,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.ide.ast.CurrentThisExpression;
-import org.alice.ide.instancefactory.InstanceFactoryState;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.ide.typeeditor.ManagedCameraMarkerFieldState;
 import org.alice.ide.typeeditor.ManagedObjectMarkerFieldState;
