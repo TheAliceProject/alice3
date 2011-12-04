@@ -50,12 +50,11 @@ public class ProgramTypeUtilities {
 	private ProgramTypeUtilities() {
 		throw new AssertionError();
 	}
-//	private static Iterable< org.lgna.project.ast.UserLocal > getLocals( org.lgna.project.ast.AbstractCode codeInFocus ) {
-//		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserLocal > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserLocal.class );
-//		codeInFocus.crawl( crawler, false );
-//		return crawler.getList();
-//	}
-
+	public static java.util.List< org.lgna.project.ast.UserLocal > getLocals( org.lgna.project.ast.UserCode code ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserLocal > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserLocal.class );
+		code.getBodyProperty().getValue().crawl( crawler, false );
+		return crawler.getList();
+	}
 	public static java.util.List< org.lgna.project.ast.FieldAccess > getFieldAccesses( org.lgna.project.ast.NamedUserType programType, final org.lgna.project.ast.AbstractField field ) {
 		assert programType != null;
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess >( org.lgna.project.ast.FieldAccess.class ) {

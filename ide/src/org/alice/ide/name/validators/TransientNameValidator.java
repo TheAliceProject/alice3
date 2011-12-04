@@ -57,7 +57,7 @@ public abstract class TransientNameValidator extends NodeNameValidator {
 	protected boolean isNameAvailable( String name ) {
 		if( this.code != null ) {
 			org.lgna.project.ast.Node node = this.getNode();
-			for( org.lgna.project.ast.UserParameter parameter : this.code.getParamtersProperty() ) {
+			for( org.lgna.project.ast.UserParameter parameter : this.code.getRequiredParamtersProperty() ) {
 				if( parameter == node ) {
 					//pass
 				} else {

@@ -84,7 +84,7 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	public NodeProperty< BlockStatement > getBodyProperty() {
 		return this.body;
 	}
-	public NodeListProperty< UserParameter > getParamtersProperty() {
+	public NodeListProperty< UserParameter > getRequiredParamtersProperty() {
 		return this.requiredParameters;
 	}
 	

@@ -128,10 +128,10 @@ public abstract class CascadeManager {
 		return rv;
 	}
 
-	private Iterable< org.lgna.project.ast.UserLocal > getAccessibleLocals( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
+	private Iterable< org.lgna.project.ast.UserLocal > getAccessibleLocals( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		java.util.LinkedList< org.lgna.project.ast.UserLocal > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		updateAccessibleLocalsForBlockStatementAndIndex( rv, blockStatement, index );
-		updateAccessibleLocals( rv, blockStatement );
+		updateAccessibleLocalsForBlockStatementAndIndex( rv, blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex() );
+		updateAccessibleLocals( rv, blockStatementIndexPair.getBlockStatement() );
 		return rv;
 	}
 
@@ -198,7 +198,7 @@ public abstract class CascadeManager {
 						}
 					}
 				}
-				for( org.lgna.project.ast.UserLocal local : this.getAccessibleLocals( this.contextBlockStatementIndexPair.getBlockStatement(), this.contextBlockStatementIndexPair.getIndex() ) ) {
+				for( org.lgna.project.ast.UserLocal local : this.getAccessibleLocals( this.contextBlockStatementIndexPair ) ) {
 					org.lgna.project.ast.AbstractType<?,?,?> localType = local.getValueType();
 					if( type.isAssignableFrom( localType ) ) {
 						this.addFillInAndPossiblyPartFillIns( rv, new org.lgna.project.ast.LocalAccess( local ), localType, type );

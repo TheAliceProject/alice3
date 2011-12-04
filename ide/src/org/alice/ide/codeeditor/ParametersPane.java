@@ -47,7 +47,7 @@ package org.alice.ide.codeeditor;
  */
 public class ParametersPane extends org.alice.ide.croquet.components.AbstractListPropertyPane< org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter >, org.lgna.project.ast.UserParameter > {
 	public ParametersPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserCode code ) {
-		super( factory, code.getParamtersProperty(), javax.swing.BoxLayout.LINE_AXIS );
+		super( factory, code.getRequiredParamtersProperty(), javax.swing.BoxLayout.LINE_AXIS );
 	}
 	
 	protected org.alice.ide.IDE getIDE() {

@@ -62,7 +62,7 @@ public class LocalAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
 	}
 	private final org.lgna.project.ast.UserLocal local;
 	private LocalAccessJointedMenuModel( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "4abaaf96-15fe-4269-8bee-d4e8404934a6" ), local.getValueType() );
+		super( java.util.UUID.fromString( "68729d94-33e9-4da7-a04c-cb88939b8c93" ), local.getValueType() );
 		this.local = local;
 	}
 	@Override

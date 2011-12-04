@@ -64,7 +64,7 @@ public class LocalAccessFactoryFillIn extends InstanceFactoryFillInWithoutBlanks
 		}
 	}
 	private LocalAccessFactoryFillIn( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "01f7980c-ee24-4a40-94e5-9e0318ecbe1a" ), LocalAccessFactory.getInstance( local ), local.name );
+		super( java.util.UUID.fromString( "26c9d073-10d5-4c44-955a-16fe47d0cbbe" ), LocalAccessFactory.getInstance( local ), local.name );
 	}
 	@Override
 	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {

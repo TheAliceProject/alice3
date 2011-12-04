@@ -153,24 +153,31 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 					);
 				}
 			}
-			org.lgna.project.ast.AbstractCode codeInFocus = ide.getFocusedCode();
-			if( codeInFocus != null ) {
+			org.lgna.project.ast.AbstractCode code = ide.getFocusedCode();
+			if( code instanceof org.lgna.project.ast.UserCode ) {
+				org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)code;
 				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-				for( org.lgna.project.ast.AbstractParameter parameter : codeInFocus.getRequiredParameters() ) {
-					if( parameter instanceof org.lgna.project.ast.UserParameter ) {
-						org.lgna.project.ast.UserParameter userParameter = (org.lgna.project.ast.UserParameter)parameter;
-						if( apiConfigurationManager.isInstanceFactoryDesiredForType( userParameter.getValueType() ) ) {
-							rv.add( 
-									this.createFillInMenuComboIfNecessary( 
-											ParameterAccessFactoryFillIn.getInstance( userParameter ), 
-											apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( userParameter ) 
-									) 
-							);
-						}
+				for( org.lgna.project.ast.UserParameter parameter : userCode.getRequiredParamtersProperty() ) {
+					if( apiConfigurationManager.isInstanceFactoryDesiredForType( parameter.getValueType() ) ) {
+						rv.add( 
+								this.createFillInMenuComboIfNecessary( 
+										ParameterAccessFactoryFillIn.getInstance( parameter ), 
+										apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( parameter ) 
+								) 
+						);
 					}
 				}
-				
-				//todo: add locals
+
+				for( org.lgna.project.ast.UserLocal local : org.lgna.project.ProgramTypeUtilities.getLocals( userCode ) ) {
+					if( apiConfigurationManager.isInstanceFactoryDesiredForType( local.getValueType() ) ) {
+						rv.add( 
+								this.createFillInMenuComboIfNecessary( 
+										LocalAccessFactoryFillIn.getInstance( local ), 
+										apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess( local ) 
+								) 
+						);
+					}
+				}
 			}
 		}
 		return rv;
