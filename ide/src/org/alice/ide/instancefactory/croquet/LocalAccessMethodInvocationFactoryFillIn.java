@@ -67,7 +67,7 @@ public class LocalAccessMethodInvocationFactoryFillIn extends InstanceFactoryFil
 	}
 	
 	private LocalAccessMethodInvocationFactoryFillIn( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "97526965-d116-40bb-866e-877da5d57e70" ), LocalAccessMethodInvocationFactory.getInstance( local, method ), local.name );
+		super( java.util.UUID.fromString( "8ee0cdbf-b395-4e5b-81fc-43ed6b406df4" ), LocalAccessMethodInvocationFactory.getInstance( local, method ), local.name );
 	}
 	@Override
 	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
