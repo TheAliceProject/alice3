@@ -66,9 +66,6 @@ public class ThisFieldAccessFactory implements InstanceFactory {
 	public org.lgna.project.ast.AbstractField getField() {
 		return this.field;
 	}
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return this.field.getNamePropertyIfItExists();
-	}
 	private org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression ) {
 		return new org.lgna.project.ast.FieldAccess( expression, this.field );
 	}

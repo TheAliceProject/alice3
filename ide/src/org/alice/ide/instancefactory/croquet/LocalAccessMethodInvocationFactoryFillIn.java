@@ -41,47 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.ide.instancefactory.croquet;
+
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.LocalAccessMethodInvocationFactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFactory {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ThisFieldAccessMethodInvocationFactory getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
-		assert field != null;
-		ThisFieldAccessMethodInvocationFactory rv = mapToMap.get( field, method );
+public class LocalAccessMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserLocal, org.lgna.project.ast.AbstractMethod, LocalAccessMethodInvocationFactoryFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized LocalAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.AbstractMethod method ) {
+		assert local != null;
+		LocalAccessMethodInvocationFactoryFillIn rv = mapToMap.get( local, method );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ThisFieldAccessMethodInvocationFactory( field, method );
-			mapToMap.put( field, method, rv );
+			rv = new LocalAccessMethodInvocationFactoryFillIn( local, method );
+			mapToMap.put( local, method, rv );
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.AbstractField field;
-	private ThisFieldAccessMethodInvocationFactory( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
-		super( method );
-		this.field = field;
+	public static LocalAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserLocal local, Class<?> declaringCls, String name ) {
+		return getInstance( local, org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
 	}
-	public org.lgna.project.ast.AbstractField getField() {
-		return this.field;
-	}
-	private org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression ) {
-		return new org.lgna.project.ast.FieldAccess( expression, this.field );
+	
+	private LocalAccessMethodInvocationFactoryFillIn( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "97526965-d116-40bb-866e-877da5d57e70" ), LocalAccessMethodInvocationFactory.getInstance( local, method ), local.name );
 	}
 	@Override
-	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
-		return this.createFieldAccess( new org.alice.ide.ast.CurrentThisExpression() );
-	}
-	@Override
-	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
-		return this.createFieldAccess( new org.lgna.project.ast.ThisExpression() );
-	}
-	@Override
-	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
-		rv.append( "this." );
-		rv.append( this.field.getName() );
-		return rv;
+	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
+		return this.getTransientValue( step );
 	}
 }

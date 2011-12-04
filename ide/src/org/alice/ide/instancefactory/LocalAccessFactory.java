@@ -66,9 +66,6 @@ public class LocalAccessFactory implements InstanceFactory {
 	public org.lgna.project.ast.UserLocal getField() {
 		return this.local;
 	}
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return this.local.getNamePropertyIfItExists();
-	}
 	private org.lgna.project.ast.LocalAccess createLocalAccess( org.lgna.project.ast.Expression expression ) {
 		return new org.lgna.project.ast.LocalAccess( this.local );
 	}

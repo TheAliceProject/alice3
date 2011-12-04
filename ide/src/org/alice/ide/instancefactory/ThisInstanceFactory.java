@@ -48,9 +48,6 @@ package org.alice.ide.instancefactory;
  */
 public enum ThisInstanceFactory implements InstanceFactory {
 	SINGLETON;
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
 	public org.lgna.project.ast.Expression createTransientExpression() {
 		return new org.alice.ide.ast.CurrentThisExpression();
 	}

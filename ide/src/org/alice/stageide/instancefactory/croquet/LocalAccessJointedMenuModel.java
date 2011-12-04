@@ -41,49 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.stageide.instancefactory.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AccessMethodInvocationFactory implements InstanceFactory {
-	private final org.lgna.project.ast.AbstractMethod method;
-	public AccessMethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
-		this.method = method;
+public class LocalAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
+	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static LocalAccessJointedMenuModel getInstance( org.lgna.project.ast.UserLocal value ) {
+		synchronized( map ) {
+			LocalAccessJointedMenuModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new LocalAccessJointedMenuModel( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
 	}
-	public org.lgna.project.ast.AbstractMethod getMethod() {
-		return this.method;
+	private final org.lgna.project.ast.UserLocal local;
+	private LocalAccessJointedMenuModel( org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "4abaaf96-15fe-4269-8bee-d4e8404934a6" ), local.getValueType() );
+		this.local = local;
 	}
-
-	protected abstract org.lgna.project.ast.Expression createTransientAccess();
-	protected abstract org.lgna.project.ast.Expression createAccess();
-	private org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression access ) {
-		return new org.lgna.project.ast.MethodInvocation( 
-				access,
-				this.method
-		);
-	}
-	public final org.lgna.project.ast.MethodInvocation createTransientExpression() {
-		return this.createMethodInvocation( this.createTransientAccess() );
-	}
-	public final org.lgna.project.ast.MethodInvocation createExpression() {
-		return this.createMethodInvocation( this.createAccess() );
-	}
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
-		return this.method.getReturnType();
-	}
-
-	protected abstract StringBuilder addAccessRepr( StringBuilder rv );
-	public final String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		this.addAccessRepr( sb );
-//		sb.append( "</strong>" );
-		sb.append( "'s " );
-//		sb.append( "<strong>" );
-		sb.append( this.method.getName().substring( 3 ) );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
-		return sb.toString();
+	@Override
+	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		return org.alice.ide.instancefactory.croquet.LocalAccessMethodInvocationFactoryFillIn.getInstance( this.local, method );
 	}
 }

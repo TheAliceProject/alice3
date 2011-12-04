@@ -154,13 +154,19 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			for( org.lgna.project.ast.AbstractParameter parameter : codeInFocus.getRequiredParameters() ) {
 				if( parameter instanceof org.lgna.project.ast.UserParameter ) {
 					org.lgna.project.ast.UserParameter userParameter = (org.lgna.project.ast.UserParameter)parameter;
-					org.lgna.project.ast.AbstractType<?,?,?> parameterType = userParameter.getValueType();
-					if( parameterType.isAssignableTo( org.lgna.story.Entity.class ) ) {
+					if( apiConfigurationManager.isInstanceFactoryDesiredForType( userParameter.getValueType() ) ) {
 						InstanceFactoryFillInWithoutBlanks parameterFillIn = ParameterAccessFactoryFillIn.getInstance( userParameter );
-						rv.add( parameterFillIn );
+						org.lgna.croquet.CascadeMenuModel< InstanceFactory > fieldSubMenu = apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( userParameter );
+						if( fieldSubMenu != null ) {
+							rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( parameterFillIn, fieldSubMenu ) );
+						} else {
+							rv.add( parameterFillIn );
+						}
 					}
 				}
 			}
+			
+			//todo: add locals
 		}
 		return rv;
 	}

@@ -85,7 +85,14 @@ public abstract class Element {
 		if( map != null ) {
 			Class<? extends Element> cls = map.get( migrationId );
 			if( cls != null ) {
-				assert cls == this.getClass() : migrationId + " " + this.getClass();
+				if( cls == this.getClass() ) {
+					//pass
+				} else {
+					String clipboardContents = "java.util.UUID.fromString( \"" + migrationId + "\" )";
+					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( clipboardContents );
+					String message = "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates.";
+					Application.getActiveInstance().showMessageDialog( message );
+				}
 			} else {
 				map.put( migrationId, this.getClass() );
 			}

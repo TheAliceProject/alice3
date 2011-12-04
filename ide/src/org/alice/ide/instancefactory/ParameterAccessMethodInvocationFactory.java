@@ -41,30 +41,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory;
+package org.alice.ide.instancefactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ThisJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisJointedMenuModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
-		synchronized( map ) {
-			ThisJointedMenuModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisJointedMenuModel( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class ParameterAccessMethodInvocationFactory extends MethodInvocationFactory {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ParameterAccessMethodInvocationFactory getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+		assert parameter != null;
+		ParameterAccessMethodInvocationFactory rv = mapToMap.get( parameter, method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ParameterAccessMethodInvocationFactory( parameter, method );
+			mapToMap.put( parameter, method, rv );
 		}
+		return rv;
 	}
-	private ThisJointedMenuModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), type );
+	private final org.lgna.project.ast.UserParameter parameter;
+	private ParameterAccessMethodInvocationFactory( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+		super( method );
+		this.parameter = parameter;
+	}
+	public org.lgna.project.ast.UserParameter getParameter() {
+		return this.parameter;
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.ThisMethodInvocationFactoryFillIn.getInstance( method );
+	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
+		//todo?
+		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
+		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	}
+	@Override
+	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+		rv.append( "this." );
+		rv.append( this.parameter.getName() );
+		return rv;
 	}
 }

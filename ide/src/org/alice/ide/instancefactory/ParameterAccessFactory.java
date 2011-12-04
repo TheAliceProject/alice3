@@ -66,9 +66,6 @@ public class ParameterAccessFactory implements InstanceFactory {
 	public org.lgna.project.ast.UserParameter getField() {
 		return this.parameter;
 	}
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return this.parameter.getNamePropertyIfItExists();
-	}
 	private org.lgna.project.ast.ParameterAccess createParameterAccess( org.lgna.project.ast.Expression expression ) {
 		return new org.lgna.project.ast.ParameterAccess( this.parameter );
 	}

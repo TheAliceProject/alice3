@@ -51,6 +51,4 @@ public interface InstanceFactory {
 	public org.lgna.project.ast.Expression createTransientExpression();
 	public org.lgna.project.ast.Expression createExpression();
 	public String getRepr();
-	@Deprecated
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
 }

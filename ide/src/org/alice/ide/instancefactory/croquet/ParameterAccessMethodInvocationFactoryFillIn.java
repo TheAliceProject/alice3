@@ -41,32 +41,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory;
+package org.alice.ide.instancefactory.croquet;
+
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisFieldAccessJointedMenuModel getInstance( org.lgna.project.ast.UserField value ) {
-		synchronized( map ) {
-			ThisFieldAccessJointedMenuModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisFieldAccessJointedMenuModel( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class ParameterAccessMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFactoryFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ParameterAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+		assert parameter != null;
+		ParameterAccessMethodInvocationFactoryFillIn rv = mapToMap.get( parameter, method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ParameterAccessMethodInvocationFactoryFillIn( parameter, method );
+			mapToMap.put( parameter, method, rv );
 		}
+		return rv;
 	}
-	private final org.lgna.project.ast.UserField field;
-	private ThisFieldAccessJointedMenuModel( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
-		this.field = field;
+	public static ParameterAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserParameter parameter, Class<?> declaringCls, String name ) {
+		return getInstance( parameter, org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
+	}
+	
+	private ParameterAccessMethodInvocationFactoryFillIn( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "97526965-d116-40bb-866e-877da5d57e70" ), ParameterAccessMethodInvocationFactory.getInstance( parameter, method ), parameter.name );
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( this.field, method );
+	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
+		return this.getTransientValue( step );
 	}
 }

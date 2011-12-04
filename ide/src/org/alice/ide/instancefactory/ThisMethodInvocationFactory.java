@@ -46,7 +46,7 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisMethodInvocationFactory implements InstanceFactory {
+public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ThisMethodInvocationFactory getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		assert method != null;
@@ -60,39 +60,21 @@ public class ThisMethodInvocationFactory implements InstanceFactory {
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.AbstractMethod method;
 	private ThisMethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
-		this.method = method;
+		super( method );
 	}
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
+
+	@Override
+	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
+		return new org.alice.ide.ast.CurrentThisExpression();
 	}
-	public org.lgna.project.ast.AbstractMethod getMethod() {
-		return this.method;
+	@Override
+	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
+		return new org.lgna.project.ast.ThisExpression();
 	}
-	private org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression expression ) {
-		return new org.lgna.project.ast.MethodInvocation( expression, this.method );
-	}
-	public org.lgna.project.ast.MethodInvocation createTransientExpression() {
-		return this.createMethodInvocation( new org.alice.ide.ast.CurrentThisExpression() );
-	}
-	public org.lgna.project.ast.MethodInvocation createExpression() {
-		return this.createMethodInvocation( new org.lgna.project.ast.ThisExpression() );
-	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
-		return this.method.getReturnType();
-	}
-	public String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-//		sb.append( "<strong>" );
-		sb.append( "this" );
-//		sb.append( "</strong>" );
-		sb.append( "'s " );
-//		sb.append( "<strong>" );
-		sb.append( this.method.getName().substring( 3 ) );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
-		return sb.toString();
+	@Override
+	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+		rv.append( "this" );
+		return rv;
 	}
 }
