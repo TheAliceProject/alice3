@@ -180,7 +180,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: releaseContentPane" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "releaseContentPane" );
 		RunOperation.this.programImp.shutDown();
 		RunOperation.this.programImp = null;
 		step.finish();

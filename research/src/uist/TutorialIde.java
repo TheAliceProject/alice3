@@ -218,7 +218,6 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		this.preservePreferences();
 //		super.handleQuit( e );
 		if( IS_ENCODING ) {
-//			System.err.println( "todo: remove filtering" );
 //			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
 //					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
 //			};
@@ -231,7 +230,6 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 				edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory(), ROOT_PATH+TRANSACTION_HISTORY_PATH );
 				
 //				edu.cmu.cs.dennisc.croquet.RootContext rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
-//				System.err.println( "todo: remove filtering" );
 //				edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
 //						edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
 //				};

@@ -41,33 +41,53 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ui.preferences;
+package edu.cmu.cs.dennisc.java.util.logging;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryState extends org.lgna.croquet.preferences.PreferenceStringState {
-	protected static final String URI_SEPARATOR = "/"; // do not use java.io.File.separator
-	public DirectoryState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
-		super( group, id, initialValue );
-	}
-	protected abstract String getPath();
-	private java.io.File getDirectory() {
-		String path = this.getPath();
-		java.io.File rv;
-		try {
-			java.net.URI uri = new java.net.URI( path );
-			rv = new java.io.File( uri );
-		} catch( java.net.URISyntaxException urise ) {
-			//throw new RuntimeException( path, urise );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( urise, "URI failure:", path );
-			rv = new java.io.File( path );
+public class ConsoleFormatter extends java.util.logging.Formatter {
+	private static String CLASS_NAME = edu.cmu.cs.dennisc.java.util.logging.Logger.class.getName();
+	private StackTraceElement getStackTraceElement() {
+		StackTraceElement[] stack = new Throwable().getStackTrace();
+		int index = 0;
+		while( index < stack.length ) {
+			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
+				break;
+			}
+			index ++;
 		}
-		return rv;
+		while( index < stack.length ) {
+			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
+				//pass
+			} else {
+				return stack[ index ];
+			}
+			index ++;
+		}
+		
+		return null;
 	}
-	public java.io.File getDirectoryEnsuringExistance() {
-		java.io.File rv = this.getDirectory();
-		rv.mkdirs();
-		return rv;
+	@Override
+	public String format( java.util.logging.LogRecord record ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( record.getLevel() );
+		sb.append( ": " );
+		sb.append( record.getMessage() );
+		sb.append( "\n" );
+		StackTraceElement stackTraceElement = this.getStackTraceElement();
+		if( stackTraceElement != null ) {
+			sb.append( "\tat " );
+			sb.append( stackTraceElement.getClassName() );
+			sb.append( "." );
+			sb.append( stackTraceElement.getMethodName() );
+			sb.append( "(" );
+			sb.append( stackTraceElement.getFileName() );
+			sb.append( ":" );
+			sb.append(  stackTraceElement.getLineNumber() );
+			sb.append( ")" );
+		}
+		sb.append( "\n" );
+		return sb.toString();
 	}
 }

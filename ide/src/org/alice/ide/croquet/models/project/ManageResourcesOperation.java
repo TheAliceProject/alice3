@@ -54,7 +54,7 @@ public class ManageResourcesOperation extends org.lgna.croquet.InputDialogOperat
 	}
 	private ManageResourcesOperation() {
 		super( ENCLOSING_DIALOG_GROUP, java.util.UUID.fromString( "ec7dc4b0-d1f8-420d-b6f0-7a25bd92639d" ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ManageResourcesOperation handle cancel" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle cancel" );
 	}
 	@Override
 	protected org.alice.ide.resource.manager.ResourceManagerPane prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
@@ -65,7 +65,7 @@ public class ManageResourcesOperation extends org.lgna.croquet.InputDialogOperat
 		if( isOk ) {
 			step.finish();
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle cancel" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle cancel" );
 			step.cancel();
 		}
 	}

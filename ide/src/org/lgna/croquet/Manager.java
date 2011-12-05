@@ -107,7 +107,7 @@ public class Manager {
 					mapIdToModels.remove( id );
 				}
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate unregister" );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "investigate set == null" );
 			}
 		}
 	}

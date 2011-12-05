@@ -57,7 +57,7 @@ public abstract class AbstractMember extends AbstractAccessibleDeclaration {
 		if( declaringType != null ) {
 			return declaringType.isDeclaredInAlice();
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: declaring type is null for:", this );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "declaring type is null for:", this );
 			return false;
 		}
 	}

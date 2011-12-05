@@ -60,7 +60,7 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,org.lgna.
 		if( isWarningAlreadyPrinted ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: Widget", this.getClass() );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove Widget class", this.getClass() );
 			isWarningAlreadyPrinted = true;
 		}
 	}

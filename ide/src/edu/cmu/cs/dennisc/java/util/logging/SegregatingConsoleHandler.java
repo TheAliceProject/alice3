@@ -41,33 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ui.preferences;
+package edu.cmu.cs.dennisc.java.util.logging;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryState extends org.lgna.croquet.preferences.PreferenceStringState {
-	protected static final String URI_SEPARATOR = "/"; // do not use java.io.File.separator
-	public DirectoryState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
-		super( group, id, initialValue );
-	}
-	protected abstract String getPath();
-	private java.io.File getDirectory() {
-		String path = this.getPath();
-		java.io.File rv;
-		try {
-			java.net.URI uri = new java.net.URI( path );
-			rv = new java.io.File( uri );
-		} catch( java.net.URISyntaxException urise ) {
-			//throw new RuntimeException( path, urise );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( urise, "URI failure:", path );
-			rv = new java.io.File( path );
+public class SegregatingConsoleHandler extends java.util.logging.Handler {
+	private static java.util.logging.Level ERROR_LEVEL = java.util.logging.Level.SEVERE;
+	@Override
+	public void publish( java.util.logging.LogRecord record ) {
+		java.io.PrintStream os;
+		if( record.getLevel().intValue() >= ERROR_LEVEL.intValue() ) {
+			os = System.err;
+		} else {
+			os = System.out;
 		}
-		return rv;
+		os.print( this.getFormatter().format( record ) );
+		os.flush();
 	}
-	public java.io.File getDirectoryEnsuringExistance() {
-		java.io.File rv = this.getDirectory();
-		rv.mkdirs();
-		return rv;
+	@Override
+	public void flush() {
+	}
+	@Override
+	public void close() throws java.lang.SecurityException {
 	}
 }

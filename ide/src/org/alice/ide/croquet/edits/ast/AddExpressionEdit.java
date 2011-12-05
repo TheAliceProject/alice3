@@ -56,14 +56,14 @@ public class AddExpressionEdit extends org.lgna.croquet.edits.Edit< org.lgna.cro
 	}
 	public AddExpressionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: decode expressionListProperty" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "decode expressionListProperty" );
 		this.expressionListProperty = null;
 		this.expression = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ).decodeValue( binaryDecoder );
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: encode expressionListProperty" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "encode expressionListProperty" );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ).encodeValue( binaryEncoder, this.expression );
 	}
 	@Override

@@ -110,7 +110,7 @@ public abstract class MemberTemplateComposite<V extends org.lgna.croquet.compone
 	}
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		System.err.println( "todo contains TemplateComposite" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model );
 		return false;
 	}
 }

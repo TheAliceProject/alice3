@@ -130,7 +130,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 				step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeleteParameterEdit( step, this.getParameter() ) );
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DeleteParameterOperation" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "cancel" );
 			step.cancel();
 		}
 	}

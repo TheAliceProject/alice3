@@ -760,7 +760,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				assert bbSubject != null;
 				assert bbTarget != null;
 				if( bbSubject.isNaN() || bbTarget.isNaN() ) {
-					System.err.println( "WARNING: bounding box is NaN" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "bounding box is NaN", bbSubject, bbTarget );
 					return t0;
 				} else {
 					return this.spatialRelation.getPlaceLocation( this.alongAxisOffset, bbSubject, bbTarget );

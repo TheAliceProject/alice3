@@ -82,7 +82,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 	
 	public org.lgna.croquet.resolvers.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
 		//todo:
-		System.err.println( "todo: getCodableResolver" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "" );
 		return null;
 	}
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {

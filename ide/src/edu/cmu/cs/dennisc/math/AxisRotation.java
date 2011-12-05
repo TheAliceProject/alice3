@@ -237,7 +237,7 @@ public class AxisRotation implements Orientation {
 			c = Math.min( c, 1.0 );
 			thetaInRadians = Math.acos( c );
 			if( Double.isNaN( thetaInRadians ) ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING AxisRotationD isNaN" );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "AxisRotationD isNaN" );
 			}
 			assert Double.isNaN( thetaInRadians ) == false;
 

@@ -236,7 +236,7 @@ public class GeometryUtilities {
 					assert triangle.b < vertices.length;
 					assert triangle.c < vertices.length;
 				} else {
-					System.err.println( "removing triangle" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.info( "removing triangle" );
 				}
 			}
 			rv.polygonData.setValue( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createIntArray( trimmedPolygonData ) );

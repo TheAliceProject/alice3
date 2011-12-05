@@ -73,7 +73,7 @@ public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.lgn
 	
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		System.err.println( "todo: DeclarationComposite contains" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model );
 		return false;
 	}
 	@Override

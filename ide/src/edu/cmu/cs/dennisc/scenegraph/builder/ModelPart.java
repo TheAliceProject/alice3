@@ -58,7 +58,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 							assert false;
 						}
 					} else {
-						System.err.println( "warning: no texture for " + rv.name ); 
+						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "no texture for ", rv.name ); 
 					}
 				} else {
 					assert false;
@@ -83,7 +83,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 					}
 					geometries.add( rv.geometry );
 				} else {
-					System.err.println( "warning: no geometry for " + rv.name ); 
+					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "no geometry for ", rv.name ); 
 				}
 			} else if( component instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
 				edu.cmu.cs.dennisc.scenegraph.Transformable transformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)component;

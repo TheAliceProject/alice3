@@ -82,7 +82,7 @@ public class ResourceManager {
 			if( rv != null ) {
 				//pass
 			} else {
-				System.err.println( "failed to getResource: " + resourceName );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "failed to getResource:", resourceName );
 			}
 			return rv;
 			//			}

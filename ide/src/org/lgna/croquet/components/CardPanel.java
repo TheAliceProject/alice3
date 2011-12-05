@@ -96,7 +96,7 @@ public class CardPanel extends Panel {
 	@Deprecated
 	public Key createKey( JComponent< ? > child, java.util.UUID id ) {
 		if( map.containsKey( id ) ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: CardPanel replacing key" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "CardPanel replacing key", id );
 		}
 		Key rv = new Key( child, id );
 		this.map.put( id, rv );

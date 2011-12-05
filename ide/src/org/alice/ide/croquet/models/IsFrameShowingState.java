@@ -93,10 +93,10 @@ public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState 
 				public void componentHidden( java.awt.event.ComponentEvent e ) {
 				}
 				public void componentMoved( java.awt.event.ComponentEvent e ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getComponent().getLocation() );
+					System.out.println( "frame location: " + e.getComponent().getLocation() );
 				}
 				public void componentResized( java.awt.event.ComponentEvent e ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getComponent().getSize() );
+					System.out.println( "frame size: " + e.getComponent().getSize() );
 				}
 			} );
 		}

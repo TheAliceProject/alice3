@@ -122,13 +122,11 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 
 	private PopupMenuListener popupMenuListener;
 	public final void addPopupMenuListener( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "addPopupMenuListener", menuItemContainer );
 		assert this.popupMenuListener == null;
 		this.popupMenuListener = new PopupMenuListener( menuItemContainer );
 		menuItemContainer.addPopupMenuListener( this.popupMenuListener );
 	}
 	public final void removePopupMenuListener( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "removePopupMenuListener", menuItemContainer );
 		assert this.popupMenuListener != null;
 		menuItemContainer.removePopupMenuListener( this.popupMenuListener );
 		this.popupMenuListener = null;

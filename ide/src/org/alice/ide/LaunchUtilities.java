@@ -65,8 +65,8 @@ public class LaunchUtilities {
 			}
 			sb.append( "/Alice3Beta\"" );
 			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( sb.toString() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "The text below has been copied to the clipboard for your convenience." );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( sb );
+			System.out.println( "The text below has been copied to the clipboard for your convenience." );
+			System.out.println( sb );
 		}
 		String userDir = System.getProperty( "user.dir" );
 		if( userDir != null ) {
@@ -169,7 +169,7 @@ public class LaunchUtilities {
 						if( file.exists() ) {
 							ide.loadProjectFrom( file );
 						} else {
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "file does not exist:", file );
+							edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "file does not exist:", file );
 						}
 					}
 					if( args.length > 2 ) {

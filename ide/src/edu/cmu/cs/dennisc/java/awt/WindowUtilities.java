@@ -68,7 +68,6 @@ public class WindowUtilities {
 		assert window != null;
 		if( /*window.isValid() &&*/ window.isVisible() ) {
 			java.awt.Point ptScreen = window.getLocationOnScreen();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( ptScreen );
 			if( ptScreen.x < 0 || ptScreen.y < 0 ) {
 				java.awt.Point ptParent = window.getLocation();
 				ptParent.x -= Math.min( ptScreen.x, 0 );

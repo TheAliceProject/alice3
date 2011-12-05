@@ -313,7 +313,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		}
 		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
 		this.uri = file.toURI();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "project saved to: ", file.getAbsolutePath() );
 		this.updateHistoryLengthAtLastFileOperation();
 	}
 	public void saveProjectTo( String path ) throws java.io.IOException {

@@ -50,7 +50,7 @@ public abstract class Element {
 	static {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.lgna.croquet.Element.isIdCheckDesired" ) ) {
 			map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			System.err.println( "org.lgna.croquet.Element.isIdCheckDesired==true" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "org.lgna.croquet.Element.isIdCheckDesired==true" );
 		}
 	}
 	
