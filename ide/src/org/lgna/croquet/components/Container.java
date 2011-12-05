@@ -109,9 +109,7 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		//todo
 		return this.getAwtComponent().isDisplayable();
 	}
-	protected final void internalAddComponent(Component<?> component) {
-		assert component != null : this;
-		assert component != this : this;
+	private void checkTreeLock() {
 		if( this.isTreeLockRequired() ) {
 			if( Thread.holdsLock( this.getTreeLock() ) ) {
 				//pass
@@ -120,33 +118,24 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 				Thread.dumpStack();
 			}
 		}
+	}
+	protected final void internalAddComponent(Component<?> component) {
+		assert component != null : this;
+		assert component != this : this;
+		this.checkTreeLock();
 		this.getAwtComponent().add(component.getAwtComponent());
 	}
 	protected final void internalAddComponent(Component<?> component, Object constraints) {
 		assert component != null : this;
 		assert component != this : this;
-		if( this.isTreeLockRequired() ) {
-			if( Thread.holdsLock( this.getTreeLock() ) ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "tree lock required", this );
-				Thread.dumpStack();
-			}
-		}
+		this.checkTreeLock();
 		this.getAwtComponent().add(component.getAwtComponent(), constraints);
 	}
 	
 	private void internalRemoveComponent( Component<?> component, boolean isReleaseDesired ) {
 		assert component != null : this;
 		assert component != this : this;
-		if( this.isTreeLockRequired() ) {
-			if( Thread.holdsLock( this.getTreeLock() ) ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "tree lock required", this );
-				Thread.dumpStack();
-			}
-		}
+		this.checkTreeLock();
 		this.getAwtComponent().remove(component.getAwtComponent());
 //		if( component.getAwtComponent().isDisplayable() ) {
 //			component.handleUndisplayable();

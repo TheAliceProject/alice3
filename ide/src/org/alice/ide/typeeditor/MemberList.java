@@ -43,8 +43,8 @@
 
 package org.alice.ide.typeeditor;
 
-/*package-private*/ class MemberItemDetails<E,D extends MemberItemDetails<E,D,J>, J extends MemberList<E,D> > extends org.lgna.croquet.components.ItemDetails<E,D,J> {
-	public MemberItemDetails( J panel, E item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
+/*package-private*/ class MemberItemDetails<E> extends org.lgna.croquet.components.ItemDetails<E,MemberItemDetails<E>,MemberList<E>> {
+	public MemberItemDetails( MemberList<E> panel, E item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
 		super( panel, item, button );
 	}
 	public org.lgna.croquet.components.Component< ? > getComponent() {
@@ -55,10 +55,21 @@ package org.alice.ide.typeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends org.lgna.croquet.components.ItemSelectablePanel< E, D > {
+public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSelectablePanel< E, MemberItemDetails<E> > {
+	protected final float NAME_FONT_SCALE = 1.5f;
 	protected class MemberButton extends org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > {
-		public MemberButton( org.lgna.croquet.BooleanState booleanState ) {
+		public MemberButton( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.JComponent< ? > lineStart, org.lgna.croquet.components.JComponent< ? > center, org.lgna.croquet.components.JComponent< ? > lineEnd ) {
 			super( booleanState );
+			if( lineStart != null ) {
+				this.addComponent( lineStart, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+			}
+			if( center != null ) {
+				this.addComponent( center, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+			}
+			if( lineEnd != null ) {
+				this.addComponent( lineEnd, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+			}
+			
 		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
@@ -120,10 +131,19 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
-	protected abstract D createItemDetails( E item, org.lgna.croquet.BooleanState booleanState, MemberButton button );
+
+	protected abstract org.lgna.croquet.components.JComponent< ? > createButtonLineStart( E item );
+	protected abstract org.lgna.croquet.components.JComponent< ? > createButtonCenter( E item );
+	protected abstract org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( E item );
+	
 	@Override
-	protected final D createItemDetails(E item, org.lgna.croquet.BooleanState booleanState) {
-		D rv = this.createItemDetails( item, booleanState, new MemberButton( booleanState ) );
+	protected final MemberItemDetails<E> createItemDetails(E item, org.lgna.croquet.BooleanState booleanState) {
+		MemberButton memberButton = new MemberButton( booleanState,
+				this.createButtonLineStart( item ),
+				this.createButtonCenter( item ),
+				this.createButtonLineEnd( item )
+		);
+		MemberItemDetails<E> rv = new MemberItemDetails< E >( this, item, memberButton );
 		rv.getComponent().setVisible( false );
 		this.pageAxisPanel.addComponent( rv.getComponent() );
 		return rv;
@@ -131,7 +151,7 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 
 	@Override
 	protected void removeAllDetails() {
-		for( D details : this.getAllItemDetails() ) {
+		for( MemberItemDetails<E> details : this.getAllItemDetails() ) {
 			details.getComponent().setVisible( false );
 		}
 	}
@@ -142,12 +162,12 @@ public abstract class MemberList<E, D extends MemberItemDetails<E,D,?>> extends 
 	protected void addPrologue( int count ) {
 		//this.pageAxisPanel.internalRemoveAllComponents();
 		this.index = 0;
-		for( D details : this.getAllItemDetails() ) {
+		for( MemberItemDetails<E> details : this.getAllItemDetails() ) {
 			details.getComponent().setVisible( false );
 		}
 	}
 	@Override
-	protected void addItem( D itemDetails ) {
+	protected void addItem( MemberItemDetails<E> itemDetails ) {
 		this.index++;
 		itemDetails.getComponent().setVisible( true );
 	}

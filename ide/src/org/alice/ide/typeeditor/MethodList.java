@@ -43,32 +43,44 @@
 
 package org.alice.ide.typeeditor;
 
-/*package-private*/ class MethodItemDetails extends MemberItemDetails< org.lgna.project.ast.UserMethod, MethodItemDetails, MethodList > {
-	public MethodItemDetails( MethodList panel, org.lgna.project.ast.UserMethod item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
-		super( panel, item, button );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMethod, MethodItemDetails > {
+public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMethod > {
 	public MethodList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserMethod > model, org.lgna.croquet.Operation< ? > operation ) {
 		super( model, operation );
 	}
 	@Override
-	protected org.alice.ide.typeeditor.MethodItemDetails createItemDetails( org.lgna.project.ast.UserMethod item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
+	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserMethod item ) {
 		org.lgna.croquet.components.LineAxisPanel lineStart = new org.lgna.croquet.components.LineAxisPanel(
 				org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton(),
 				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton()
 		);
-		button.addComponent( lineStart, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		button.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( item, null, true, item.getDeclaringType() ), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		if( item.isSignatureLocked.getValue() ) { //todo: isOverride
+		return lineStart;
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserMethod item ) {
+		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( item, NAME_FONT_SCALE );
+		
+		org.lgna.croquet.components.JComponent< ? > component;
+		if( item.isProcedure() ) {
+			component = nameLabel;
 			//pass
 		} else {
-			button.addComponent( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+			component = new org.lgna.croquet.components.LineAxisPanel( 
+					org.alice.ide.common.TypeComponent.createInstance( item.getReturnType() ),
+					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+					nameLabel
+			);
 		}
-		return new MethodItemDetails( this, item, button );
+		return component;
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserMethod item ) {
+		if( item.isSignatureLocked.getValue() ) { //todo: isOverride
+			return null;
+		} else {
+			return org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton();
+		}
 	}
 }
