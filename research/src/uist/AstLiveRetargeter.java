@@ -51,7 +51,7 @@ package uist;
 	public void addKeyValuePair( Object key, Object value ) {
 		this.map.put( key, value );
 		if( key instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
-			edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.todo( "addKeyValuePair recursive retarget" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "addKeyValuePair recursive retarget" );
 			this.addKeyValuePair( ((org.lgna.project.ast.AbstractStatementWithBody)key).body.getValue(), ((org.lgna.project.ast.AbstractStatementWithBody)value).body.getValue() );
 		}
 	}

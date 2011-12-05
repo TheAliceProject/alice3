@@ -30,7 +30,7 @@ public class ECardApplication extends org.lgna.croquet.Application {
 				javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
 			}
 		} catch (Exception e) {
-			edu.cmu.cs.dennisc.java.util.logging.GlobalLogger.throwable( e, "setLookAndFeel" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( e, "setLookAndFeel" );
 		}
 
 		java.awt.Image icon = java.awt.Toolkit.getDefaultToolkit().getImage( ECardApplication.class.getResource( "resources/e-card-icon.png" ));
