@@ -78,7 +78,7 @@ public class Logger {
 		String separator = "";
 		for( Object o : objects ) {
 			sb.append( separator );
-			sb.append( o.toString() );
+			sb.append( o != null ? o.toString() : null );
 			separator = " ";
 		}
 		return sb.toString();
