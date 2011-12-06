@@ -94,10 +94,6 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 		return new InstanceCreationInitializerState( this, initialValue );
 	}
 	@Override
-	public InstanceCreationInitializerState getInitializerState() {
-		return (InstanceCreationInitializerState)super.getInitializerState();
-	}
-	@Override
 	protected boolean isFieldFinal() {
 		return true;
 	}

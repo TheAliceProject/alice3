@@ -55,7 +55,7 @@ public class InstanceCreationInitializerState extends org.alice.ide.croquet.mode
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
 		org.lgna.project.ast.Expression prevExpression = this.getValue();
-		if( prevExpression instanceof org.lgna.project.ast.InstanceCreation ) {
+		if( prevExpression instanceof org.lgna.project.ast.InstanceCreation || prevExpression == null) {
 			org.lgna.project.ast.InstanceCreation prevInstanceCreation = (org.lgna.project.ast.InstanceCreation)prevExpression;
 			org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( prevInstanceCreation );
 			if( argumentField != null ) {
