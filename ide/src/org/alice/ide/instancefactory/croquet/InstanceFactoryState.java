@@ -112,7 +112,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				if( nextValue != null ) {
 					//pass
 				} else {
-					nextValue = ThisInstanceFactory.SINGLETON;
+					nextValue = ThisInstanceFactory.getInstance();
 				}
 			} else {
 				nextValue = null;

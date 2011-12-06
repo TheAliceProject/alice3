@@ -46,7 +46,7 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessFactory implements InstanceFactory {
+public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 	private static java.util.Map< org.lgna.project.ast.AbstractField, ThisFieldAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ThisFieldAccessFactory getInstance( org.lgna.project.ast.AbstractField field ) {
 		assert field != null;
@@ -62,6 +62,10 @@ public class ThisFieldAccessFactory implements InstanceFactory {
 	private final org.lgna.project.ast.AbstractField field;
 	private ThisFieldAccessFactory( org.lgna.project.ast.AbstractField field ) {
 		this.field = field;
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< ThisFieldAccessFactory > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisFieldAccessFactory >( this, this.field, org.lgna.project.ast.AbstractField.class );
 	}
 	public org.lgna.project.ast.AbstractField getField() {
 		return this.field;

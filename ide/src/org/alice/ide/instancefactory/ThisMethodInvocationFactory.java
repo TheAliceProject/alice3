@@ -63,7 +63,10 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 	private ThisMethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
 		super( method );
 	}
-
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< ThisMethodInvocationFactory > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisMethodInvocationFactory >( this, this.getMethod(), org.lgna.project.ast.AbstractMethod.class );
+	}
 	@Override
 	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
 		return new org.alice.ide.ast.CurrentThisExpression();

@@ -323,7 +323,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			{
 				if (field == this.getActiveSceneField() )
 				{
-					InstanceFactoryState.getInstance().setValueTransactionlessly(org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON);
+					InstanceFactoryState.getInstance().setValueTransactionlessly(org.alice.ide.instancefactory.ThisInstanceFactory.getInstance());
 				}
 				else if (field != null)
 				{

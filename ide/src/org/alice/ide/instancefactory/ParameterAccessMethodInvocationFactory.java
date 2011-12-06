@@ -64,6 +64,14 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
 		super( method );
 		this.parameter = parameter;
 	}
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< ParameterAccessMethodInvocationFactory > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterAccessMethodInvocationFactory >( 
+				this,
+				new org.lgna.project.ast.Node[] { this.parameter, this.getMethod() }, 
+				new Class[] { org.lgna.project.ast.UserParameter.class, org.lgna.project.ast.AbstractMethod.class } 
+		);
+	}
 	public org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}

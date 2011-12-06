@@ -46,44 +46,16 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodInvocationFactory extends AbstractInstanceFactory {
-	private final org.lgna.project.ast.AbstractMethod method;
-	public MethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
-		this.method = method;
-	}
-	public org.lgna.project.ast.AbstractMethod getMethod() {
-		return this.method;
-	}
-
-	protected abstract org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation();
-	protected abstract org.lgna.project.ast.Expression createExpressionForMethodInvocation();
-	private org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression access ) {
-		return new org.lgna.project.ast.MethodInvocation( 
-				access,
-				this.method
-		);
-	}
-	public final org.lgna.project.ast.MethodInvocation createTransientExpression() {
-		return this.createMethodInvocation( this.createTransientExpressionForMethodInvocation() );
-	}
-	public final org.lgna.project.ast.MethodInvocation createExpression() {
-		return this.createMethodInvocation( this.createExpressionForMethodInvocation() );
-	}
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
-		return this.method.getReturnType();
+public abstract class AbstractInstanceFactory implements InstanceFactory {
+	private org.lgna.croquet.resolvers.CodableResolver< ? extends org.alice.ide.instancefactory.InstanceFactory > resolver;
+	protected abstract < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > createResolver();
+	public < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > getCodableResolver() {
+		if( this.resolver != null ) {
+			//pass
+		} else {
+			this.resolver = this.createResolver();
+		}
+		return null;
 	}
 
-	protected abstract StringBuilder addAccessRepr( StringBuilder rv );
-	public final String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-//		sb.append( "</strong>" );
-		this.addAccessRepr( sb );
-		sb.append( "'s " );
-//		sb.append( "<strong>" );
-		sb.append( this.method.getName().substring( 3 ) );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
-		return sb.toString();
-	}
 }

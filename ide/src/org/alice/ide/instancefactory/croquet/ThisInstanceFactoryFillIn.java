@@ -57,7 +57,7 @@ public class ThisInstanceFactoryFillIn extends InstanceFactoryFillInWithoutBlank
 		return SingletonHolder.instance;
 	}
 	private ThisInstanceFactoryFillIn() {
-		super( java.util.UUID.fromString( "764de80f-6ab4-465b-9915-6f78604f9aa0" ), ThisInstanceFactory.SINGLETON, null );
+		super( java.util.UUID.fromString( "764de80f-6ab4-465b-9915-6f78604f9aa0" ), ThisInstanceFactory.getInstance(), null );
 	}
 	@Override
 	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {

@@ -46,7 +46,7 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class LocalAccessFactory implements InstanceFactory {
+public class LocalAccessFactory extends AbstractInstanceFactory {
 	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized LocalAccessFactory getInstance( org.lgna.project.ast.UserLocal local ) {
 		assert local != null;
@@ -63,7 +63,11 @@ public class LocalAccessFactory implements InstanceFactory {
 	private LocalAccessFactory( org.lgna.project.ast.UserLocal local ) {
 		this.local = local;
 	}
-	public org.lgna.project.ast.UserLocal getField() {
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< LocalAccessFactory > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAccessFactory >( this, this.local, org.lgna.project.ast.UserLocal.class );
+	}
+	public org.lgna.project.ast.UserLocal getLocal() {
 		return this.local;
 	}
 	private org.lgna.project.ast.LocalAccess createLocalAccess( org.lgna.project.ast.Expression expression ) {

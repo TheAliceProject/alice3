@@ -46,7 +46,7 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccessFactory implements InstanceFactory {
+public class ParameterAccessFactory extends AbstractInstanceFactory {
 	private static java.util.Map< org.lgna.project.ast.UserParameter, ParameterAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ParameterAccessFactory getInstance( org.lgna.project.ast.UserParameter parameter ) {
 		assert parameter != null;
@@ -63,7 +63,11 @@ public class ParameterAccessFactory implements InstanceFactory {
 	private ParameterAccessFactory( org.lgna.project.ast.UserParameter parameter ) {
 		this.parameter = parameter;
 	}
-	public org.lgna.project.ast.UserParameter getField() {
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< ParameterAccessFactory > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterAccessFactory >( this, this.parameter, org.lgna.project.ast.UserParameter.class );
+	}
+	public org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}
 	private org.lgna.project.ast.ParameterAccess createParameterAccess( org.lgna.project.ast.Expression expression ) {

@@ -43,23 +43,22 @@
 
 package org.alice.ide.instancefactory.croquet.codecs;
 
-import org.alice.ide.instancefactory.InstanceFactory;
-
 /**
  * @author Dennis Cosgrove
  */
-public enum InstanceFactoryCodec implements org.lgna.croquet.ItemCodec< InstanceFactory > {
+public enum InstanceFactoryCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.instancefactory.InstanceFactory > {
 	SINGLETON;
-	public Class< InstanceFactory > getValueClass() {
-		return InstanceFactory.class;
+	public Class< org.alice.ide.instancefactory.InstanceFactory > getValueClass() {
+		return org.alice.ide.instancefactory.InstanceFactory.class;
 	}
-	public InstanceFactory decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+	public org.alice.ide.instancefactory.InstanceFactory decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		org.lgna.croquet.resolvers.CodableResolver< org.alice.ide.instancefactory.InstanceFactory > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		return resolver.getResolved();
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, InstanceFactory value ) {
-		throw new RuntimeException( "todo" );
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.instancefactory.InstanceFactory value ) {
+		binaryEncoder.encode( value.getCodableResolver() );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, InstanceFactory value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.instancefactory.InstanceFactory value, java.util.Locale locale) {
 		rv.append( value );
 		return rv;
 	}
