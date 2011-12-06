@@ -70,7 +70,7 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 		}
 	}
 
-	private static javax.swing.JDialog createJDialog( Component<?> owner ) {
+	private static javax.swing.JDialog createJDialog( ScreenElement owner ) {
 		javax.swing.JDialog rv;
 		if( owner != null ) {
 			AbstractWindow<?> root = owner.getRoot();
@@ -99,10 +99,10 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 	public Dialog() {
 		this( null );
 	}
-	public Dialog( Component<?> owner ) {
+	public Dialog( ScreenElement owner ) {
 		this( owner, true );
 	}
-	public Dialog( Component<?> owner, boolean isModal ) {
+	public Dialog( ScreenElement owner, boolean isModal ) {
 		super( Dialog.createJDialog( owner ) );
 		this.getAwtComponent().setModal( isModal );
 	}

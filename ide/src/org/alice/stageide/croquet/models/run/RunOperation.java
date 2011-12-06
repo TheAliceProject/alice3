@@ -132,7 +132,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = new java.awt.Dimension( 640, 480 );
 	@Override
-	protected java.awt.Point getDesiredDialogLocation( org.lgna.croquet.components.Dialog dialog ) {
+	protected java.awt.Point getDesiredDialogLocation() {
 		return this.location;
 	}
 	@Override
