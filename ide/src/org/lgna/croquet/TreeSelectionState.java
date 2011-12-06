@@ -273,7 +273,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		this.swingModel.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
 	}
 	@Override
-	public T getValue() {
+	protected T getActualValue() {
 		return this.getSelectedNode();
 	}
 

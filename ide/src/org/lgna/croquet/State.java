@@ -51,18 +51,19 @@ public abstract class State<T> extends CompletionModel {
 		public void changed( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 	};
 	private final java.util.List< ValueObserver<T> > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private T prevValueForComparison;
+	private T prevValueForSkipCheck;
 	public State( Group group, java.util.UUID id, T initialValue ) {
 		super(group, id);
-		this.prevValueForComparison = initialValue;
+		this.prevValueForSkipCheck = initialValue;
 	}
 	public void addValueObserver( ValueObserver<T> valueObserver ) {
 		assert this.valueObservers.contains( valueObserver ) == false : valueObserver;
 		this.valueObservers.add( valueObserver );
 	}
+	@Deprecated
 	public void addAndInvokeValueObserver( ValueObserver<T> valueObserver ) {
 		this.addValueObserver( valueObserver );
-		valueObserver.changed( this, null, this.getValue(), false );
+		valueObserver.changed( this, this.getValue(), this.getValue(), false );
 	}
 	public void removeValueObserver( ValueObserver<T> valueObserver ) {
 		if( this.valueObservers.contains( valueObserver ) ) {
@@ -73,8 +74,15 @@ public abstract class State<T> extends CompletionModel {
 		this.valueObservers.remove( valueObserver );
 	}
 	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
-		for( ValueObserver<T> valueObserver : this.valueObservers ) {
-			valueObserver.changing( this, prevValue, nextValue, isAdjusting );
+		this.isInTheMidstOfChanging = true;
+		this.prevValueForChanging = prevValue;
+		try {
+			for( ValueObserver<T> valueObserver : this.valueObservers ) {
+				valueObserver.changing( this, prevValue, nextValue, isAdjusting );
+			}
+		} finally {
+			this.prevValueForChanging = null;
+			this.isInTheMidstOfChanging = false;
 		}
 	}
 	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
@@ -91,11 +99,11 @@ public abstract class State<T> extends CompletionModel {
 	protected abstract void commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger );
 	protected abstract void updateSwingModel( T nextValue );
 	private void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger, boolean isFromSwing ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValueForComparison, nextValue ) ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValueForSkipCheck, nextValue ) ) {
 			//pass
 		} else {
-			this.prevValueForComparison = nextValue;
-			T prevValue = this.prevValueForComparison;
+			T prevValue = this.prevValueForSkipCheck;
+			this.prevValueForSkipCheck = nextValue;
 			this.fireChanging( prevValue, nextValue, isAdjusting );
 			if( isFromSwing ) {
 				//pass
@@ -120,7 +128,16 @@ public abstract class State<T> extends CompletionModel {
 		this.changeValue( nextValue, isAdjusting, trigger, true );
 	}
 	
-	public abstract T getValue();
+	private T prevValueForChanging;
+	private boolean isInTheMidstOfChanging = false;
+	protected abstract T getActualValue();
+	public final T getValue() {
+		if( this.isInTheMidstOfChanging ) {
+			return this.prevValueForChanging;
+		} else {
+			return this.getActualValue();
+		}
+	}
 	public final void setValue( T value ) {
 		this.changeValue( value, false, null );
 	}

@@ -236,7 +236,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	}
 
 	@Override
-	public T getValue() {
+	protected T getActualValue() {
 		return this.getSelectedItem();
 	}
 
