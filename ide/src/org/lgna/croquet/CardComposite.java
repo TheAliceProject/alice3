@@ -82,13 +82,15 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 	}
 	
 	public void showCard( Composite< ? > card ) {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDectivation();
-		}
-		this.showingCard = card;
-		this.getView().showComposite( this.showingCard );
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
+		synchronized( this.getView().getTreeLock() ) {
+			if( this.showingCard != null ) {
+				this.showingCard.handlePostDectivation();
+			}
+			this.showingCard = card;
+			if( this.showingCard != null ) {
+				this.showingCard.handlePreActivation();
+			}
+			this.getView().showComposite( this.showingCard );
 		}
 	}
 	@Override
