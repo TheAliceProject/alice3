@@ -63,7 +63,9 @@ public abstract class State<T> extends CompletionModel {
 	@Deprecated
 	public void addAndInvokeValueObserver( ValueObserver<T> valueObserver ) {
 		this.addValueObserver( valueObserver );
-		valueObserver.changed( this, this.getValue(), this.getValue(), false );
+		//todo
+		T prevValue = null;
+		valueObserver.changed( this, prevValue, this.getValue(), false );
 	}
 	public void removeValueObserver( ValueObserver<T> valueObserver ) {
 		if( this.valueObservers.contains( valueObserver ) ) {
