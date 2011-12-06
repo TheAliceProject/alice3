@@ -46,32 +46,35 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceCreationInitializerState extends org.alice.ide.croquet.models.ExpressionState< org.lgna.project.ast.InstanceCreation > {
+public class InstanceCreationInitializerState extends org.alice.ide.croquet.models.ExpressionState {
 	private final DeclarationOperation<?> owner;
-	public InstanceCreationInitializerState( DeclarationOperation<?> owner, org.lgna.project.ast.InstanceCreation initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "1e753e61-b420-4315-b654-c7f030537923" ), org.lgna.project.ast.InstanceCreation.class, initialValue );
+	public InstanceCreationInitializerState( DeclarationOperation<?> owner, org.lgna.project.ast.Expression initialValue ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "1e753e61-b420-4315-b654-c7f030537923" ), initialValue );
 		this.owner = owner;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.InstanceCreation > blankNode ) {
-		org.lgna.project.ast.InstanceCreation prevInstanceCreation = this.getValue();
-		org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( prevInstanceCreation );
-		if( argumentField != null ) {
-			org.lgna.project.ast.JavaType javaType = prevInstanceCreation.constructor.getValue().getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
-			org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType, argumentField );
-			org.lgna.project.ast.AbstractType< ?,?,? > type = userType;
-			while( type instanceof org.lgna.project.ast.NamedUserType ) {
-				org.lgna.project.ast.AbstractConstructor typeConstructor = type.getDeclaredConstructors().get( 0 );
-				if( typeConstructor.getRequiredParameters().size() == 1 ) {
-					rv.add( InstanceCreationFillInWithPredeterminedFieldAccessArgument.getInstance( typeConstructor, argumentField ) );
-				} else {
-					rv.add( InstanceCreationFillIn.getInstance( typeConstructor ) );
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+		org.lgna.project.ast.Expression prevExpression = this.getValue();
+		if( prevExpression instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation prevInstanceCreation = (org.lgna.project.ast.InstanceCreation)prevExpression;
+			org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( prevInstanceCreation );
+			if( argumentField != null ) {
+				org.lgna.project.ast.JavaType javaType = prevInstanceCreation.constructor.getValue().getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
+				org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType, argumentField );
+				org.lgna.project.ast.AbstractType< ?,?,? > type = userType;
+				while( type instanceof org.lgna.project.ast.NamedUserType ) {
+					org.lgna.project.ast.AbstractConstructor typeConstructor = type.getDeclaredConstructors().get( 0 );
+					if( typeConstructor.getRequiredParameters().size() == 1 ) {
+						rv.add( InstanceCreationFillInWithPredeterminedFieldAccessArgument.getInstance( typeConstructor, argumentField ) );
+					} else {
+						rv.add( InstanceCreationFillIn.getInstance( typeConstructor ) );
+					}
+					type = type.getSuperType();
 				}
-				type = type.getSuperType();
+				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			rv.add( ChangeResourceMenuModel.getInstance() );
 		}
-		rv.add( ChangeResourceMenuModel.getInstance() );
 		return rv;
 	}
 }

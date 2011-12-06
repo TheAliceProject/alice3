@@ -57,7 +57,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	private final ValueComponentTypeState valueComponentTypeState;
 	private final IsArrayValueTypeState isArrayValueTypeState;
 	private final NameState nameState;
-	private final org.alice.ide.croquet.models.ExpressionState< ? extends org.lgna.project.ast.Expression > initializerState;
+	private final org.alice.ide.croquet.models.ExpressionState initializerState;
 	private final boolean isDeclaringTypeEditable;
 	private final boolean isValueComponentTypeEditable;
 	private final boolean isIsArrayValueTypeEditable;
@@ -121,7 +121,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		
 		this.nameValidator = nameValidator;
 	}
-	protected org.alice.ide.croquet.models.ExpressionState< ? extends org.lgna.project.ast.Expression > createInitializerState( org.lgna.project.ast.Expression initialValue ) {
+	protected org.alice.ide.croquet.models.ExpressionState createInitializerState( org.lgna.project.ast.Expression initialValue ) {
 		return new InitializerState( this, initialValue );
 	}
 	@Override
@@ -172,7 +172,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	public NameState getNameState() {
 		return this.nameState;
 	}
-	public org.alice.ide.croquet.models.ExpressionState< ? extends org.lgna.project.ast.Expression > getInitializerState() {
+	public org.alice.ide.croquet.models.ExpressionState getInitializerState() {
 		return this.initializerState;
 	}
 	
@@ -304,9 +304,13 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	private final java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, org.lgna.project.ast.Expression > mapTypeToInitializer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final org.lgna.croquet.State.ValueObserver< Boolean > isArrayValueTypeListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
 		public void changing( org.lgna.croquet.State< java.lang.Boolean > state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
+//			assert state.getValue() == prevValue;
+//			assert prevValue != nextValue;
 			DeclarationLikeSubstanceOperation.this.handleValueTypeChanging();
 		}
 		public void changed( org.lgna.croquet.State< java.lang.Boolean > state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
+//			assert state.getValue() == nextValue;
+//			assert prevValue != nextValue;
 			DeclarationLikeSubstanceOperation.this.handleValueTypeChanged();
 		}
 	};
@@ -321,14 +325,19 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	
 	private void handleValueTypeChanging() {
 		org.lgna.project.ast.AbstractType< ?,?,? > prevType = this.getValueType();
-		org.lgna.project.ast.Expression prevInitializer = this.getInitializer();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "preserve:", prevType, prevInitializer );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "preserve:", prevType );
+		if( prevType != null ) {
+			org.lgna.project.ast.Expression prevInitializer = this.getInitializer();
+			this.mapTypeToInitializer.put( prevType, prevInitializer );
+		}
 	}
 	private void handleValueTypeChanged() {
 		org.lgna.project.ast.AbstractType< ?,?,? > nextType = this.getValueType();
-		//org.lgna.project.ast.Expression nextInitializer = null;
-		this.initializerState.setValue( null );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "restore:", nextType );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "restore:", nextType );
+		org.lgna.project.ast.Expression nextInitializer = this.mapTypeToInitializer.get( nextType );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove setting nextInitializer to null" );
+		nextInitializer = null;
+		this.initializerState.setValue( nextInitializer );
 	}
 	
 	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType, String declarationName, org.lgna.project.ast.Expression initializer );
