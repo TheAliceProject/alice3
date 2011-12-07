@@ -106,8 +106,12 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		return v;
 	}
 
-	private com.sun.opengl.util.texture.Texture m_glTexture;
-	private RenderContext m_renderContextForCurrentTexture;
+	private final TextureBinding textureBinding = new TextureBinding() {
+		@Override
+		protected com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.sun.opengl.util.texture.Texture currentTexture ) {
+			return TextureAdapter.this.newTexture( gl, currentTexture );
+		}
+	};
 
 	protected static com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
 		//com.jogamp.opengl.util.texture.TextureData textureData = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
@@ -115,38 +119,10 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		return com.sun.opengl.util.texture.TextureIO.newTexture( textureData );
 	}
 	protected abstract com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.sun.opengl.util.texture.Texture currentTexture );
-	public com.sun.opengl.util.texture.Texture getTexture( RenderContext rc ) {
-		boolean isNewTextureRequired;
-		if( m_glTexture != null ) {
-			if( isDirty() ) {
-				isNewTextureRequired = true;
-			} else {
-				int textureObject = m_glTexture.getTextureObject();
-				if (m_renderContextForCurrentTexture != rc) {
-					isNewTextureRequired = true;
-				}
-				else {
-					isNewTextureRequired = rc.gl.glIsTexture( textureObject ) == false;
-				}
-			}
-		} else {
-			isNewTextureRequired = true;
-		}
-		if( isNewTextureRequired ) {
-			com.sun.opengl.util.texture.Texture glTexture = newTexture( rc.gl, m_glTexture );
-			if( m_glTexture != glTexture ) {
-				if( m_glTexture != null ) {
-					m_glTexture.dispose();
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println( "DISPOSED: ", m_glTexture.getTextureObject() );
-				}
-				m_glTexture = glTexture;
-				m_renderContextForCurrentTexture = rc;
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "GENERATED: ", m_glTexture.getTextureObject() );
-				rc.put( this, m_glTexture );
-			}
-			m_isDirty = false;
-		}
-		return m_glTexture;
+	public TextureBinding bindTexture( RenderContext rc ) {
+		this.textureBinding.ensureUpToDate( rc, m_isDirty );
+		this.m_isDirty = false;
+		return this.textureBinding;
 	}
 
 	public abstract java.awt.Graphics2D createGraphics();

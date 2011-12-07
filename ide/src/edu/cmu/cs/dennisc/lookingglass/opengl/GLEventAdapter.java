@@ -49,10 +49,11 @@ import static javax.media.opengl.GL.*;
  * @author Dennis Cosgrove
  */
 class GLEventAdapter implements javax.media.opengl.GLEventListener {
-	private AbstractLookingGlass lookingGlass;
+	private final AbstractLookingGlass lookingGlass;
+	private final RenderContext renderContext = new RenderContext();
+	private final PickContext pickContext = new PickContext();
+
 	private javax.media.opengl.GLAutoDrawable drawable;
-	private RenderContext renderContext = new RenderContext();
-	private PickContext pickContext = new PickContext();
 	private int width;
 	private int height;
 
@@ -61,11 +62,11 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	private java.nio.FloatBuffer rvDepthBuffer = null;
 
 	private static final int SELECTION_CAPACITY = 256;
-	private java.nio.IntBuffer selectionAsIntBuffer = null;
+	private final java.nio.IntBuffer selectionAsIntBuffer;
 
 	private boolean isDisplayIgnoredDueToPreviousException = false;
 
-	private class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent {
+	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent {
 		public ReusableLookingGlassRenderEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, Graphics2D g ) {
 			super( lookingGlass, g );
 		}
@@ -73,7 +74,6 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		public boolean isReservedForReuse() {
 			return true;
 		}
-		
 		private void prologue() {
 			((Graphics2D)getGraphics2D()).initialize( getTypedSource().getWidth(), getTypedSource().getHeight() );
 		}
@@ -81,7 +81,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			getGraphics2D().dispose();
 		}
 	}
-	private ReusableLookingGlassRenderEvent reusableLookingGlassRenderEvent;
+	private final ReusableLookingGlassRenderEvent reusableLookingGlassRenderEvent;
 
 	public GLEventAdapter( AbstractLookingGlass lookingGlass ) {
 		this.lookingGlass = lookingGlass;
@@ -156,11 +156,9 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			this.renderContext.actuallyForgetDisplayListsIfNecessary();
 			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
-			} else if (this.width == 0 || this.height == 0)
-			{
-				//pass
-			}
-			else {
+			} else if( this.width == 0 || this.height == 0 ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "width", this.width, "height", this.height );
+			} else {
 				try {
 					//todo: separate clearing and rendering
 					this.reusableLookingGlassRenderEvent.prologue();
@@ -355,36 +353,6 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 
 	}
-
-//	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
-//		assert sgCamera != null;
-//		assert this.drawable != null;
-//		this.drawable.setAutoSwapBufferMode( false );
-//		try {
-//			this.pickParameters = new PickParameters( this.drawable, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
-//			if( this.drawable.isRealized() ) {
-//				this.drawable.display();
-//			} else {
-//				Thread.dumpStack();
-//			}
-//			return this.pickParameters.accessFrontMostPickResult();
-//		} finally {
-//			this.drawable.setAutoSwapBufferMode( true );
-//			this.pickParameters = null;
-//		}
-//	}
-//	public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickAll( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
-//		assert sgCamera != null;
-//		this.drawable.setAutoSwapBufferMode( false );
-//		try {
-//			this.pickParameters = new PickParameters( this.drawable, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
-//			this.drawable.display();
-//			return this.pickParameters.accessAllPickResults();
-//		} finally {
-//			this.drawable.setAutoSwapBufferMode( true );
-//			this.pickParameters = null;
-//		}
-//	}
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
