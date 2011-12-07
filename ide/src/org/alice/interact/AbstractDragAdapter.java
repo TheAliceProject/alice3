@@ -170,7 +170,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	private Map<CameraView, CameraPair> cameraMap = new HashMap<CameraView, CameraPair>();
 	
-	public static final String BOUNDING_BOX_KEY = "BOUNDING_BOX_KEY";
+	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key< edu.cmu.cs.dennisc.math.AxisAlignedBox > BOUNDING_BOX_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "BOUNDING_BOX_KEY" );
 	
 	protected java.util.Vector< ManipulatorConditionSet > manipulators = new java.util.Vector< ManipulatorConditionSet >();
 

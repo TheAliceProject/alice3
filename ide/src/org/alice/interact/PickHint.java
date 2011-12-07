@@ -78,7 +78,7 @@ public class PickHint extends BitSet{
 	}
 	
 	
-	public static final String PICK_HINT_KEY = "PICK_HINT_KEY"; 
+	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key< PickHint > PICK_HINT_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "PICK_HINT_KEY" ); 
 	
 	protected static final int NUM_TYPES = PickType.values().length;
 	

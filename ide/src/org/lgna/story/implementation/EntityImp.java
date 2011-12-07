@@ -47,12 +47,12 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class EntityImp implements ReferenceFrame {
-	protected static final String KEY = EntityImp.class.getName() + ".KEY";
+	protected static final edu.cmu.cs.dennisc.scenegraph.Element.Key< EntityImp > ENTITY_IMP_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "ENTITY_IMP_KEY" );
 	public static EntityImp getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
-		return sgElement != null ? (EntityImp)sgElement.getBonusDataFor( KEY ) : null;
+		return sgElement != null ? sgElement.getBonusDataFor( ENTITY_IMP_KEY ) : null;
 	}
 	protected void putInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
-		sgElement.putBonusDataFor( KEY, this );
+		sgElement.putBonusDataFor( ENTITY_IMP_KEY, this );
 	}
 	public static <T extends EntityImp> T getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstance( sgElement ), cls );

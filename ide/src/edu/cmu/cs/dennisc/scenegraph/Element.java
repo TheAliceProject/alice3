@@ -47,15 +47,28 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner {
-	public static final String CREATION_STACK_TRACE_KEY = "CREATION_STACK_TRACE_KEY";
+	public static class Key<T> {
+		public static <T> Key<T> createInstance( String repr ) {
+			return new Key<T>( repr );
+		}
+		private final String repr;
+		private Key( String repr ) {
+			this.repr = repr;
+		}
+		@Override
+		public java.lang.String toString() {
+			return this.repr;
+		}
+	}
+	public static final Key< StackTraceElement[] > DEBUG_CONSTRUCTION_STACK_TRACE_KEY = Key.createInstance( "DEBUG_CONSTRUCTION_STACK_TRACE_KEY" );
 	private static boolean isCreationStackTraceDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.scenegraph.Element.isCreationStackTraceDesired" );
 
-	private java.util.HashMap< Object, Object > runtimeDataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map/*< Key<T>, T >*/ dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Element() {
 		if( isCreationStackTraceDesired ) {
 			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			this.putBonusDataFor( CREATION_STACK_TRACE_KEY, stackTrace );
+			this.putBonusDataFor( DEBUG_CONSTRUCTION_STACK_TRACE_KEY, stackTrace );
 		}
 	}
 
@@ -63,17 +76,18 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 	public boolean isComposedOfGetterAndSetterProperties() {
 		return false;
 	}
-	public boolean containsBonusDataFor( Object key ) {
-		return this.runtimeDataMap.containsKey( key );
+
+	public <T> boolean containsBonusDataFor( Key<T> key ) {
+		return this.dataMap.containsKey( key );
 	}
-	public Object getBonusDataFor( Object key ) {
-		return this.runtimeDataMap.get( key );
+	public <T> T getBonusDataFor( Key<T> key ) {
+		return (T)this.dataMap.get( key );
 	}
-	public void putBonusDataFor( Object key, Object value ) {
-		this.runtimeDataMap.put( key, value );
+	public <T> void putBonusDataFor( Key<T> key, T value ) {
+		this.dataMap.put( key, value );
 	}
-	public void removeBonusDataFor( Object key ) {
-		this.runtimeDataMap.remove( key );
+	public <T> void removeBonusDataFor( Key<T> key ) {
+		this.dataMap.remove( key );
 	}
 
 	//todo: investigate typing return value with generics
@@ -95,7 +109,7 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return getClass().getName() + "[name=\"" + getName() + "\"]";
 	}
 }
