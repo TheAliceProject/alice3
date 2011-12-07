@@ -47,25 +47,23 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Component extends Element implements edu.cmu.cs.dennisc.pattern.Visitable, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame {
-	private Composite m_vehicle = null;
-	private java.util.List< edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener > m_absoluteTransformationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private java.util.List< edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener > m_hierarchyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
+	private final java.util.List< edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener > absoluteTransformationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener > hierarchyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private Composite vehicle = null;
+	
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
 		visitor.visit( this );
 	}
-
 	public Composite getRoot() {
-		if( m_vehicle != null ) {
-			return m_vehicle.getRoot();
+		if( this.vehicle != null ) {
+			return this.vehicle.getRoot();
 		} else {
 			return null;
 		}
 	}
-
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-		if( m_vehicle != null ) {
-			rv = m_vehicle.getAbsoluteTransformation( rv );
+		if( this.vehicle != null ) {
+			rv = this.vehicle.getAbsoluteTransformation( rv );
 		} else {
 			rv.setIdentity();
 		}
@@ -78,8 +76,8 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 s_bufferMatrixForReuse = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
 
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-		if( m_vehicle != null ) {
-			rv = m_vehicle.getInverseAbsoluteTransformation( rv );
+		if( this.vehicle != null ) {
+			rv = this.vehicle.getInverseAbsoluteTransformation( rv );
 		} else {
 			rv.setIdentity();
 		}
@@ -90,8 +88,8 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	}
 
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-		if( m_vehicle != null ) {
-			return m_vehicle.getTransformation( rv, asSeenBy );
+		if( this.vehicle != null ) {
+			return this.vehicle.getTransformation( rv, asSeenBy );
 		} else {
 			return asSeenBy.getInverseAbsoluteTransformation( rv );
 		}
@@ -131,16 +129,16 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	}
 
 	public Composite getParent() {
-		return m_vehicle;
+		return this.vehicle;
 	}
 	public void setParent( Composite parent ) {
-		if( m_vehicle != parent ) {
-			if( m_vehicle != null ) {
-				m_vehicle.fireChildRemoved( this );
+		if( this.vehicle != parent ) {
+			if( this.vehicle != null ) {
+				this.vehicle.fireChildRemoved( this );
 			}
-			m_vehicle = parent;
-			if( m_vehicle != null ) {
-				m_vehicle.fireChildAdded( this );
+			this.vehicle = parent;
+			if( this.vehicle != null ) {
+				this.vehicle.fireChildAdded( this );
 			}
 			//firePropertyChange( VEHICLE_PROPERTY_NAME );
 			fireAbsoluteTransformationChange();
@@ -161,25 +159,25 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 		if( possibleAncestor == null ) {
 			return false;
 		}
-		if( m_vehicle == possibleAncestor ) {
+		if( this.vehicle == possibleAncestor ) {
 			return true;
 		} else {
-			if( m_vehicle == null ) {
+			if( this.vehicle == null ) {
 				return false;
 			} else {
-				return m_vehicle.isDescendantOf( possibleAncestor );
+				return this.vehicle.isDescendantOf( possibleAncestor );
 			}
 		}
 	}
 
 	public void addAbsoluteTransformationListener( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener absoluteTransformationListener ) {
-		m_absoluteTransformationListeners.add( absoluteTransformationListener );
+		this.absoluteTransformationListeners.add( absoluteTransformationListener );
 	}
 	public void removeAbsoluteTransformationListener( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener absoluteTransformationListener ) {
-		m_absoluteTransformationListeners.remove( absoluteTransformationListener );
+		this.absoluteTransformationListeners.remove( absoluteTransformationListener );
 	}
 	private void fireAbsoluteTransformationChange( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent ) {
-		for( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener atl : m_absoluteTransformationListeners ) {
+		for( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener atl : this.absoluteTransformationListeners ) {
 			atl.absoluteTransformationChanged( absoluteTransformationEvent );
 		}
 	}
@@ -188,13 +186,13 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	}
 
 	public void addHierarchyListener( edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener hierarchyListener ) {
-		m_hierarchyListeners.add( hierarchyListener );
+		this.hierarchyListeners.add( hierarchyListener );
 	}
 	public void removeHierarchyListener( edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener hierarchyListener ) {
-		m_hierarchyListeners.remove( hierarchyListener );
+		this.hierarchyListeners.remove( hierarchyListener );
 	}
 	private void fireHierarchyChanged( edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent hierarchyEvent ) {
-		for( edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener hl : m_hierarchyListeners ) {
+		for( edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener hl : this.hierarchyListeners ) {
 			hl.hierarchyChanged( hierarchyEvent );
 		}
 	}

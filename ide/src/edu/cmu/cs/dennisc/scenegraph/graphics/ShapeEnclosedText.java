@@ -47,8 +47,11 @@ package edu.cmu.cs.dennisc.scenegraph.graphics;
  * @author Dennis Cosgrove
  */
 public abstract class ShapeEnclosedText extends Text {
-	protected abstract edu.cmu.cs.dennisc.color.Color4f getDefaultFillColor();
-	protected abstract edu.cmu.cs.dennisc.color.Color4f getDefaultOutlineColor();
-	public edu.cmu.cs.dennisc.color.property.Color4fProperty fillColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, this.getDefaultFillColor(), true );
-	public edu.cmu.cs.dennisc.color.property.Color4fProperty outlineColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, this.getDefaultOutlineColor(), true );
+	public final edu.cmu.cs.dennisc.color.property.Color4fProperty fillColor;
+	public final edu.cmu.cs.dennisc.color.property.Color4fProperty outlineColor;
+	public ShapeEnclosedText( edu.cmu.cs.dennisc.color.Color4f textColor, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+		super( textColor, font );
+		this.fillColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, fillColor, true );
+		this.outlineColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, outlineColor, true );
+	}
 }

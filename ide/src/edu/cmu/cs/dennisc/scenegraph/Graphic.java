@@ -60,8 +60,6 @@ public abstract class Graphic extends edu.cmu.cs.dennisc.scenegraph.Element {
 			if( this.layer != null ) {
 				this.layer.addGraphicAndFireListeners( this );
 			}
-//			fireAbsoluteTransformationChange();
-//			fireHierarchyChanged();
 		}
 	}
 }

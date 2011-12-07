@@ -44,7 +44,6 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.MethodTemplate;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -60,13 +59,10 @@ public abstract class JointedModel extends Model {
 		bubble.textColor.setValue(TextColor.getValue(details, Color.BLACK).getInternal());
 		bubble.fillColor.setValue(BubbleFillColor.getValue(details, Color.WHITE).getInternal());
 		bubble.outlineColor.setValue(BubbleOutlineColor.getValue(details, Color.BLACK).getInternal());
-		bubble.originator.setValue( this.getImplementation().getSpeechBubbleOriginator() );
 	}
-	
 	@MethodTemplate()
 	public void say( String text, Say.Detail... details ) {
-		
-		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
+		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble( this.getImplementation().getSpeechBubbleOriginator() );
 		bubble.text.setValue(text);
 		initializeBubble(bubble, details);
 		this.getImplementation().displayBubble( bubble, Duration.getValue(details));
@@ -74,7 +70,7 @@ public abstract class JointedModel extends Model {
 	
 	@MethodTemplate()
 	public void think( String text, Think.Detail... details ) {
-		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble();
+		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble( this.getImplementation().getSpeechBubbleOriginator() );
 		bubble.text.setValue(text);
 		initializeBubble(bubble, details);
 		this.getImplementation().displayBubble( bubble, Duration.getValue(details));
