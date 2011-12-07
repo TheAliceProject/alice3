@@ -153,7 +153,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	};
 	
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory
-			.getSingleton().createLightweightOnscreenLookingGlass();
+			.getInstance().createLightweightOnscreenLookingGlass();
 
 	private class LookingGlassPanel extends
 			org.lgna.croquet.components.CompassPointSpringPanel {
@@ -883,16 +883,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			super.handleDisplayable();
 //			HACK_isDisplayableAlreadyHandled = true;
 //		}
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().incrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.showLookingGlassPanel();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
 		this.hideLookingGlassPanel();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().decrementAutomaticDisplayCount();
 		super.handleUndisplayable();
 	}
 	

@@ -50,7 +50,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.program.Program {
 
 	public edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory getLookingGlassFactory() {
 		if( s_lookingGlassFactory == null ) {
-			s_lookingGlassFactory = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton();
+			s_lookingGlassFactory = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance();
 		}
 		return s_lookingGlassFactory;
 	}

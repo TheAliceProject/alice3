@@ -47,7 +47,7 @@ package org.alice.stageide.modelviewer;
  * @author Dennis Cosgrove
  */
 abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
+	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.story.implementation.SceneImp scene = new org.lgna.story.implementation.SceneImp( null );
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp camera = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( null );
@@ -98,13 +98,13 @@ abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 			this.isInitialized = true;
 		}
 		this.addComponent( this.adapter, Constraint.CENTER );
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().incrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().decrementAutomaticDisplayCount();
 		this.removeComponent( this.adapter );
 		super.handleUndisplayable();
 	}

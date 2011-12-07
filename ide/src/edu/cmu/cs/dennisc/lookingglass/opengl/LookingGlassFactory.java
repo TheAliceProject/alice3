@@ -77,8 +77,6 @@ class WaitingRunnable implements Runnable {
  * @author Dennis Cosgrove
  */
 public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
-	private static LookingGlassFactory s_singleton;
-
 	static {
 		try {
 			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
@@ -107,26 +105,27 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			System.exit( 0 );
 		}
 	}
-	public static LookingGlassFactory getSingleton() {
-		if( s_singleton != null ) {
-			//pass
-		} else {
-			s_singleton = new LookingGlassFactory();
-		}
-		return s_singleton;
+
+	private static class SingletonHolder {
+		private static LookingGlassFactory instance = new LookingGlassFactory();
 	}
-
-
+	public static LookingGlassFactory getInstance() {
+		return SingletonHolder.instance;
+	}
 	
+	private final java.util.List<LightweightOnscreenLookingGlass> lightweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<HeavyweightOnscreenLookingGlass> heavyweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<OffscreenLookingGlass> offscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	private final java.util.List<edu.cmu.cs.dennisc.pattern.Releasable> toBeReleased = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();;
+	private final java.util.Queue< Runnable > runnables = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentLinkedQueue();
+
+	private final java.util.concurrent.Semaphore renderingLock = new java.util.concurrent.Semaphore( 1 );
+
 	private Animator animator = null;
 
-	private java.util.Queue< Runnable > runnables = new java.util.LinkedList< Runnable >();
-	private java.util.concurrent.Semaphore renderingLock = new java.util.concurrent.Semaphore( 1 );
-
-	private java.util.List<edu.cmu.cs.dennisc.pattern.Releasable> toBeReleased = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.Releasable>();
-	private java.util.List<LightweightOnscreenLookingGlass> lightweightOnscreenLookingGlasses = new java.util.LinkedList<LightweightOnscreenLookingGlass>();
-	private java.util.List<HeavyweightOnscreenLookingGlass> heavyweightOnscreenLookingGlasses = new java.util.LinkedList<HeavyweightOnscreenLookingGlass>();
-	private java.util.List<OffscreenLookingGlass> offscreenLookingGlasses = new java.util.LinkedList<OffscreenLookingGlass>();
+	private LookingGlassFactory() {
+	}
 	
 	//todo: just force start and stop? or rename methods
 	private int automaticDisplayCount = 0;
@@ -154,29 +153,8 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		if( glCapabilitiesChooser != null ) {
 			//pass
 		} else {
-			boolean isSlowAndSteadyDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired" );
-//			} else {
-//				if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
-//					try {
-//						ConformanceTestResults conformanceTestResults = ConformanceTestResults.getSingleton();
-//						if( conformanceTestResults.isValid() ) {
-//							if( conformanceTestResults.isPickFunctioningCorrectly() ) {
-//								//pass
-//							} else {
-//								isSlowAndSteadyDesired = true;
-//							}
-//						}
-//					} catch( Throwable t ) {
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle ConformanceTestResults failure" );
-//						t.printStackTrace();
-//					}
-//				}
-//			if( isSlowAndSteadyDesired ) {
-//				glCapabilitiesChooser = new edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser();
-//			} else {
-				glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
-//			}
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "glCapabilitiesChooser", glCapabilitiesChooser );
+			//todo?
+			glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
 		}
 		return glCapabilitiesChooser;
 	}
@@ -222,10 +200,6 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			}
 		}
 		return false;
-	}
-
-	private LookingGlassFactory() {
-		s_singleton = this;
 	}
 
 	public Animator.ThreadDeferenceAction step() {
@@ -330,13 +304,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 					return LookingGlassFactory.this.step();
 				}
 			};
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "lightweight count:", this.lightweightOnscreenLookingGlasses.size() );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "heavyweight count:", this.heavyweightOnscreenLookingGlasses.size() );
-//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//				public void run() {
-					LookingGlassFactory.this.animator.start();
-//				}
-//			} );
+			this.animator.start();
 		}
 	}
 	public synchronized void decrementAutomaticDisplayCount() {
@@ -351,15 +319,12 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		}
 	}
 	
-	//todo: remove this hack
-	//private boolean isJustCreatedOnscreenLookingGlassAccountedFor = false;
 	public edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass createLightweightOnscreenLookingGlass() {
 		LightweightOnscreenLookingGlass lolg = new LightweightOnscreenLookingGlass( this );
 		lolg.addReleaseListener( this );
 		synchronized( this.lightweightOnscreenLookingGlasses ) {
 			this.lightweightOnscreenLookingGlasses.add( lolg );
 		}
-		//this.isJustCreatedOnscreenLookingGlassAccountedFor = false;
 		return lolg;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass() {
@@ -368,7 +333,6 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		synchronized( this.heavyweightOnscreenLookingGlasses ) {
 			this.heavyweightOnscreenLookingGlasses.add( holg );
 		}
-		//this.isJustCreatedOnscreenLookingGlassAccountedFor = false;
 		return holg;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass createOffscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlassToShareContextWith ) {
@@ -438,13 +402,13 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		}
 	}
 
-	public Iterable< ? extends edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass > accessLightweightOnscreenLookingGlasses() {
+	public Iterable< ? extends edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass > getLightweightOnscreenLookingGlasses() {
 		return this.lightweightOnscreenLookingGlasses;
 	}
-	public Iterable< ? extends edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass > accessHeavyweightOnscreenLookingGlasses() {
+	public Iterable< ? extends edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass > getHeavyweightOnscreenLookingGlasses() {
 		return this.heavyweightOnscreenLookingGlasses;
 	}
-	public Iterable< ? extends edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass > accessOffscreenLookingGlasses() {
+	public Iterable< ? extends edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass > getOffscreenLookingGlasses() {
 		return this.offscreenLookingGlasses;
 	}
 }

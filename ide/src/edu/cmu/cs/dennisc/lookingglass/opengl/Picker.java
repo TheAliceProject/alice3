@@ -99,7 +99,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 					if( this.drawable != null ) {
 						//pass
 					} else {
-						this.drawable = LookingGlassFactory.getSingleton().createGLPbuffer( lgSize.width, lgSize.height, shareContext );
+						this.drawable = LookingGlassFactory.getInstance().createGLPbuffer( lgSize.width, lgSize.height, shareContext );
 						this.drawable.addGLEventListener( this.glEventListener );
 					}
 				}
