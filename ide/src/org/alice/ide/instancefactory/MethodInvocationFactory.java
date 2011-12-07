@@ -48,7 +48,8 @@ package org.alice.ide.instancefactory;
  */
 public abstract class MethodInvocationFactory extends AbstractInstanceFactory {
 	private final org.lgna.project.ast.AbstractMethod method;
-	public MethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
+	public MethodInvocationFactory( org.lgna.project.ast.AbstractMethod method, edu.cmu.cs.dennisc.property.InstanceProperty< ? >... mutablePropertiesOfInterest ) { 
+		super( mutablePropertiesOfInterest );
 		this.method = method;
 	}
 	public org.lgna.project.ast.AbstractMethod getMethod() {

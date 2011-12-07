@@ -67,6 +67,6 @@ public class LocalAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.LocalAccessMethodInvocationFactoryFillIn.getInstance( this.local, method );
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessMethodInvocationFactory.getInstance( this.local, method ) );
 	}
 }

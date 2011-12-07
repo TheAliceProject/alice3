@@ -41,36 +41,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory.croquet;
-
-import org.alice.ide.instancefactory.InstanceFactory;
-import org.alice.ide.instancefactory.ThisMethodInvocationFactory;
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.AbstractMethod value ) {
-		synchronized( map ) {
-			ThisMethodInvocationFactoryFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisMethodInvocationFactoryFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class InstanceFactoryStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > implements org.lgna.croquet.resolvers.RetargetableResolver< T > {
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	public InstanceFactoryStaticGetInstanceKeyedResolver( T instance, org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		super( instance );
+		this.instanceFactory = instanceFactory;
+	}
+	public InstanceFactoryStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		this.instanceFactory = null;
+	}
+
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		Object[] arguments = this.getArguments();
+		for( int i=0; i<arguments.length; i++ ) {
+			arguments[ i ] = retargeter.retarget( arguments[ i ] );
 		}
 	}
-	public static ThisMethodInvocationFactoryFillIn getInstance( Class<?> declaringCls, String name ) {
-		return getInstance( org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
-	}
-	private ThisMethodInvocationFactoryFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "1ab72e54-03d3-4569-b777-cac55c793b6e" ), ThisMethodInvocationFactory.getInstance( method ), null );
+	@Override
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return new Class<?>[] { org.alice.ide.instancefactory.InstanceFactory.class };
 	}
 	@Override
-	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.getTransientValue( step );
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		org.lgna.croquet.resolvers.CodableResolver< org.alice.ide.instancefactory.InstanceFactory > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		return new Object[] { resolver.getResolved() };
+	}
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.instanceFactory.getCodableResolver() );
 	}
 }

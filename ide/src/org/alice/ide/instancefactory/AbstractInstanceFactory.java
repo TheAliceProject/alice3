@@ -47,15 +47,22 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractInstanceFactory implements InstanceFactory {
-	private org.lgna.croquet.resolvers.CodableResolver< ? extends org.alice.ide.instancefactory.InstanceFactory > resolver;
+	private final edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] mutablePropertiesOfInterest;
+	private org.lgna.croquet.resolvers.CodableResolver resolver;
+	public AbstractInstanceFactory( edu.cmu.cs.dennisc.property.InstanceProperty< ? >... mutablePropertiesOfInterest ) { 
+		this.mutablePropertiesOfInterest = mutablePropertiesOfInterest;
+	}
 	protected abstract < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > createResolver();
-	public < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > getCodableResolver() {
+	public final < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > getCodableResolver() {
 		if( this.resolver != null ) {
 			//pass
 		} else {
 			this.resolver = this.createResolver();
 		}
-		return null;
+		return this.resolver;
+	}
+	public final edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] getMutablePropertiesOfInterest() {
+		return this.mutablePropertiesOfInterest;
 	}
 
 }
