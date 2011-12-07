@@ -61,6 +61,7 @@ public class LocalAccessFactory extends AbstractInstanceFactory {
 	}
 	private final org.lgna.project.ast.UserLocal local;
 	private LocalAccessFactory( org.lgna.project.ast.UserLocal local ) {
+		super( local.name );
 		this.local = local;
 	}
 	@Override

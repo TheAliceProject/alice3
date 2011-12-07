@@ -61,6 +61,7 @@ public class ParameterAccessFactory extends AbstractInstanceFactory {
 	}
 	private final org.lgna.project.ast.UserParameter parameter;
 	private ParameterAccessFactory( org.lgna.project.ast.UserParameter parameter ) {
+		super( parameter.name );
 		this.parameter = parameter;
 	}
 	@Override

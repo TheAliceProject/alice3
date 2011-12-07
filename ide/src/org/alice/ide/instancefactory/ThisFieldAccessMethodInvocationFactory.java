@@ -47,8 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFactory {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ThisFieldAccessMethodInvocationFactory getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized ThisFieldAccessMethodInvocationFactory getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
 		assert field != null;
 		ThisFieldAccessMethodInvocationFactory rv = mapToMap.get( field, method );
 		if( rv != null ) {
@@ -59,9 +59,9 @@ public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFact
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.AbstractField field;
-	private ThisFieldAccessMethodInvocationFactory( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
-		super( method );
+	private final org.lgna.project.ast.UserField field;
+	private ThisFieldAccessMethodInvocationFactory( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
+		super( method, field.name );
 		this.field = field;
 	}
 	@Override
@@ -69,10 +69,10 @@ public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFact
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisFieldAccessMethodInvocationFactory >( 
 				this,
 				new org.lgna.project.ast.Node[] { this.field, this.getMethod() }, 
-				new Class[] { org.lgna.project.ast.AbstractField.class, org.lgna.project.ast.AbstractMethod.class } 
+				new Class[] { org.lgna.project.ast.UserField.class, org.lgna.project.ast.AbstractMethod.class } 
 		);
 	}
-	public org.lgna.project.ast.AbstractField getField() {
+	public org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}
 	private org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression ) {

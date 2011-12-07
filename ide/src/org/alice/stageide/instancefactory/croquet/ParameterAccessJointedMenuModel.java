@@ -67,6 +67,6 @@ public class ParameterAccessJointedMenuModel extends JointInstanceFactoryMenuMod
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.ParameterAccessMethodInvocationFactoryFillIn.getInstance( this.parameter, method );
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( this.parameter, method ) );
 	}
 }

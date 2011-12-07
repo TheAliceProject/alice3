@@ -41,36 +41,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory.croquet;
-
-import org.alice.ide.instancefactory.InstanceFactory;
-import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
+package org.alice.ide.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactoryFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ThisFieldAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
-		assert field != null;
-		ThisFieldAccessMethodInvocationFactoryFillIn rv = mapToMap.get( field, method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ThisFieldAccessMethodInvocationFactoryFillIn( field, method );
-			mapToMap.put( field, method, rv );
+public class InstanceFactoryStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > implements org.lgna.croquet.resolvers.RetargetableResolver< T > {
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	public InstanceFactoryStaticGetInstanceKeyedResolver( T instance, org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		super( instance );
+		this.instanceFactory = instanceFactory;
+	}
+	public InstanceFactoryStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		this.instanceFactory = null;
+	}
+
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		Object[] arguments = this.getArguments();
+		for( int i=0; i<arguments.length; i++ ) {
+			arguments[ i ] = retargeter.retarget( arguments[ i ] );
 		}
-		return rv;
-	}
-	public static ThisFieldAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserField field, Class<?> declaringCls, String name ) {
-		return getInstance( field, org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
-	}
-	
-	private ThisFieldAccessMethodInvocationFactoryFillIn( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "ccd03251-addf-4f26-b777-3ff8c3151a38" ), ThisFieldAccessMethodInvocationFactory.getInstance( field, method ), field.name );
 	}
 	@Override
-	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.getTransientValue( step );
+	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return new Class<?>[] { org.alice.ide.instancefactory.InstanceFactory.class };
+	}
+	@Override
+	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		org.lgna.croquet.resolvers.CodableResolver< org.alice.ide.instancefactory.InstanceFactory > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		return new Object[] { resolver.getResolved() };
+	}
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.instanceFactory.getCodableResolver() );
 	}
 }

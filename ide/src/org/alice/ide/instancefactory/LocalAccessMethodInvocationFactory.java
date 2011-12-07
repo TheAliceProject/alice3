@@ -61,7 +61,7 @@ public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory 
 	}
 	private final org.lgna.project.ast.UserLocal local;
 	private LocalAccessMethodInvocationFactory( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.AbstractMethod method ) {
-		super( method );
+		super( method, local.name );
 		this.local = local;
 	}
 	@Override

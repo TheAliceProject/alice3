@@ -125,6 +125,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				}
 			}
 
+			this.cardPanel.setBackgroundColor( null );
 			this.internalAddComponent( controlsPanel, java.awt.BorderLayout.PAGE_START );
 			this.internalAddComponent( this.cardPanel, java.awt.BorderLayout.CENTER );
 		}

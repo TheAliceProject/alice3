@@ -41,36 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory.croquet;
-
-import org.alice.ide.instancefactory.InstanceFactory;
-import org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory;
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccessMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFactoryFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static synchronized ParameterAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		assert parameter != null;
-		ParameterAccessMethodInvocationFactoryFillIn rv = mapToMap.get( parameter, method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterAccessMethodInvocationFactoryFillIn( parameter, method );
-			mapToMap.put( parameter, method, rv );
-		}
-		return rv;
-	}
-	public static ParameterAccessMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.UserParameter parameter, Class<?> declaringCls, String name ) {
-		return getInstance( parameter, org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
-	}
-	
-	private ParameterAccessMethodInvocationFactoryFillIn( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "97526965-d116-40bb-866e-877da5d57e70" ), ParameterAccessMethodInvocationFactory.getInstance( parameter, method ), parameter.name );
+public class CustomItemStateChangeNote extends StateChangeNote< org.lgna.croquet.history.CustomItemStateChangeStep< ? > > {
+	public CustomItemStateChangeNote( org.lgna.croquet.history.CustomItemStateChangeStep< ? > step ) {
+		super( step );
 	}
 	@Override
-	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.getTransientValue( step );
+	protected void addFeatures( org.lgna.croquet.history.CustomItemStateChangeStep< ? > step ) {
+		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 	}
 }

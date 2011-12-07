@@ -61,7 +61,7 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
 	}
 	private final org.lgna.project.ast.UserParameter parameter;
 	private ParameterAccessMethodInvocationFactory( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		super( method );
+		super( method, parameter.name );
 		this.parameter = parameter;
 	}
 	@Override

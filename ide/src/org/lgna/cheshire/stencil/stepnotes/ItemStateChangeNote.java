@@ -41,36 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory.croquet;
-
-import org.alice.ide.instancefactory.InstanceFactory;
-import org.alice.ide.instancefactory.ThisMethodInvocationFactory;
+package org.lgna.cheshire.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.AbstractMethod value ) {
-		synchronized( map ) {
-			ThisMethodInvocationFactoryFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisMethodInvocationFactoryFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
-	public static ThisMethodInvocationFactoryFillIn getInstance( Class<?> declaringCls, String name ) {
-		return getInstance( org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
-	}
-	private ThisMethodInvocationFactoryFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "1ab72e54-03d3-4569-b777-cac55c793b6e" ), ThisMethodInvocationFactory.getInstance( method ), null );
-	}
-	@Override
-	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.getTransientValue( step );
+public abstract class ItemStateChangeNote< S extends org.lgna.croquet.history.ItemStateChangeStep<?,?> > extends StateChangeNote< S > {
+	public ItemStateChangeNote( S step ) {
+		super( step );
 	}
 }
