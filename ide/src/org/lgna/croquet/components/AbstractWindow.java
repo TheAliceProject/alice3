@@ -71,6 +71,10 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		return this.window;
 	}
 	
+	@Override
+	public org.lgna.croquet.components.AbstractWindow< ? > getRoot() {
+		return this;
+	}
 	protected abstract javax.swing.JRootPane getRootPane();
 
 	private BorderPanel contentPanel = new BorderPanel(); 

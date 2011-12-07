@@ -51,7 +51,7 @@ public class Button extends OperationButton< javax.swing.JButton, org.lgna.croqu
 		super( model );
 	}
 	@Override
-	protected javax.swing.JButton createAwtComponent() {
+	protected final javax.swing.JButton createAwtComponent() {
 		return new javax.swing.JButton() {
 			@Override
 			public javax.swing.Icon getIcon() {

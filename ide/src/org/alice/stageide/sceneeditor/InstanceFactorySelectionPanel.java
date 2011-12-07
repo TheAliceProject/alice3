@@ -167,7 +167,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 			super.internalRefresh();
 			this.removeAllComponents();
 			java.util.List< InternalButton > buttons = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON ) );
+			buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) );
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			org.lgna.project.ast.NamedUserType sceneType = ide.getSceneType();
 			if( sceneType != null ) {

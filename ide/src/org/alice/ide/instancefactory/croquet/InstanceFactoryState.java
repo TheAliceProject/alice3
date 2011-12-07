@@ -112,7 +112,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				if( nextValue != null ) {
 					//pass
 				} else {
-					nextValue = ThisInstanceFactory.SINGLETON;
+					nextValue = ThisInstanceFactory.getInstance();
 				}
 			} else {
 				nextValue = null;
@@ -183,7 +183,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		return rv;
 	}
 	@Override
-	public org.alice.ide.instancefactory.InstanceFactory getValue() {
+	protected org.alice.ide.instancefactory.InstanceFactory getActualValue() {
 		return this.value;
 	}
 	@Override

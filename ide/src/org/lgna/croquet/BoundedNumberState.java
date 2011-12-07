@@ -99,7 +99,7 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 		return this.fromInt( this.swingModel.boundedRangeModel.getExtent() );
 	}
 	@Override
-	public N getValue() {
+	protected N getActualValue() {
 		return this.fromInt( this.swingModel.boundedRangeModel.getValue() );
 	}
 	

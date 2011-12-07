@@ -46,7 +46,7 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodInvocationFactory implements InstanceFactory {
+public abstract class MethodInvocationFactory extends AbstractInstanceFactory {
 	private final org.lgna.project.ast.AbstractMethod method;
 	public MethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
 		this.method = method;

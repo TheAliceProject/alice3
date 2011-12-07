@@ -232,18 +232,18 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();
 					if( expressionType.isAssignableFrom( type ) ) {
 						return true;
-					} else {
-						if( type.isArray() ) {
-							if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
-								return true;
-							} else {
-								for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
-									if( expressionType == integerType ) {
-										return true;
-									}
-								}
-							}
-						}
+//					} else {
+//						if( type.isArray() ) {
+//							if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
+//								return true;
+//							} else {
+//								for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
+//									if( expressionType == integerType ) {
+//										return true;
+//									}
+//								}
+//							}
+//						}
 					}
 					return false;
 				}

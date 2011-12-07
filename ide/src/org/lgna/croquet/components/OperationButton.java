@@ -51,29 +51,4 @@ public abstract class OperationButton< J extends javax.swing.AbstractButton, M e
 		super( model );
 		this.setAction( model.getSwingModel().getAction() );
 	}
-	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		M model = this.getModel();
-		this.setAction( model.getSwingModel().getAction() );
-		super.handleAddedTo( parent );
-	}
-	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
-		super.handleRemovedFrom( parent );
-		this.setAction( null );
-	}
-//	@Override
-//	protected void handleDisplayable() {
-//		super.handleDisplayable();
-//		M model = this.getModel();
-//		this.setAction( model.getAction() );
-////		this.getAwtComponent().addActionListener( model.getActionListener() );
-//	}
-//	@Override
-//	protected void handleUndisplayable() {
-//		M model = this.getModel();
-////		this.getAwtComponent().removeActionListener( model.getActionListener() );
-//		this.setAction( null );
-//		super.handleUndisplayable();
-//	}
 }

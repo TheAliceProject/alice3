@@ -46,8 +46,19 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public enum ThisInstanceFactory implements InstanceFactory {
-	SINGLETON;
+public class ThisInstanceFactory extends AbstractInstanceFactory {
+	private static class SingletonHolder {
+		private static ThisInstanceFactory instance = new ThisInstanceFactory();
+	}
+	public static ThisInstanceFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ThisInstanceFactory() {
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< ThisInstanceFactory > createResolver() {
+		return new org.lgna.croquet.resolvers.SingletonResolver< ThisInstanceFactory >( this );
+	}
 	public org.lgna.project.ast.Expression createTransientExpression() {
 		return new org.alice.ide.ast.CurrentThisExpression();
 	}

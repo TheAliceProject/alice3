@@ -180,16 +180,16 @@ public class RecursionDialogOperation extends org.lgna.croquet.PlainDialogOperat
 		}
 	}
 	
-	@Override
-	protected void tweakDialog(org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.history.PlainDialogOperationStep step ) {
-		super.tweakDialog(dialog, step);
-		int depth = getDepth( step.getParent(), 1 );
-		int offset = (depth-5)*24;
-		java.awt.Point p = dialog.getLocation();
-		p.x += offset;
-		p.y += offset;
-		dialog.setLocation( p );
-	}
+//	@Override
+//	protected void tweakDialog(org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.history.PlainDialogOperationStep step ) {
+//		super.tweakDialog(dialog, step);
+//		int depth = getDepth( step.getParent(), 1 );
+//		int offset = (depth-5)*24;
+//		java.awt.Point p = dialog.getLocation();
+//		p.x += offset;
+//		p.y += offset;
+//		dialog.setLocation( p );
+//	}
 	@Override
 	protected void releaseContentPane(org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
 	}

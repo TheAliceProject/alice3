@@ -40,21 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.initializer;
+
+package org.alice.ide.instancefactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ItemInitializerPane extends org.lgna.croquet.components.FlowPanel {
-	private final org.lgna.project.ast.ExpressionProperty initializerProperty;
-	public ItemInitializerPane( org.lgna.project.ast.ExpressionProperty initializerProperty ) {
-		super( Alignment.LEADING );
-		this.initializerProperty = initializerProperty;
-		this.refresh();
+public abstract class AbstractInstanceFactory implements InstanceFactory {
+	private org.lgna.croquet.resolvers.CodableResolver< ? extends org.alice.ide.instancefactory.InstanceFactory > resolver;
+	protected abstract < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > createResolver();
+	public < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > getCodableResolver() {
+		if( this.resolver != null ) {
+			//pass
+		} else {
+			this.resolver = this.createResolver();
+		}
+		return null;
 	}
-	public void refresh() {
-		this.forgetAndRemoveAllComponents();
-		this.addComponent( org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance().createExpressionPropertyPane( initializerProperty, initializerProperty.getExpressionType() ) );
-		this.revalidateAndRepaint();
-	}
+
 }
