@@ -61,7 +61,7 @@ public interface LookingGlassFactory {
 
 	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener );
 	public void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener );
-	public Iterable< edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener > accessAutomaticDisplayListeners();
+	public Iterable< edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener > getAutomaticDisplayListeners();
 
 
 	public int getAutomaticDisplayCount();

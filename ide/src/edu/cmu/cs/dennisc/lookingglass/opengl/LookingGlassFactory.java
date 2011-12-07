@@ -122,6 +122,18 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 
 	private final java.util.concurrent.Semaphore renderingLock = new java.util.concurrent.Semaphore( 1 );
 
+	private static class ReusableAutomaticDisplayEvent extends edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent {
+		public ReusableAutomaticDisplayEvent( LookingGlassFactory lookingGlassFactory ) {
+			super( lookingGlassFactory );
+		}
+		@Override
+		public boolean isReservedForReuse() {
+			return true;
+		}
+	};
+	private final ReusableAutomaticDisplayEvent reusableAutomaticDisplayEvent = new ReusableAutomaticDisplayEvent( this );
+	private final java.util.List< edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener > automaticDisplayListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	private Animator animator = null;
 
 	private LookingGlassFactory() {
@@ -181,15 +193,6 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 //			throw new RuntimeException("cannot create pbuffer");
 //		}
 	}
-
-	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent automaticDisplayEvent = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent( this ) {
-		@Override
-		public boolean isReservedForReuse() {
-			return true;
-		}
-	};
-	private java.util.List< edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener > automaticDisplayListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener >();
-
 	private static boolean isDisplayDesired( OnscreenLookingGlass lg ) {
 		if( lg.isRenderingEnabled() ) {
 			java.awt.Component component = lg.getAWTComponent();
@@ -355,14 +358,14 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			this.automaticDisplayListeners.remove( automaticDisplayListener );
 		}
 	}
-	public Iterable< edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener > accessAutomaticDisplayListeners() {
+	public Iterable< edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener > getAutomaticDisplayListeners() {
 		return this.automaticDisplayListeners;
 	}
 
 	private void handleDisplayed() {
 		synchronized( this.automaticDisplayListeners ) {
 			for( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener : this.automaticDisplayListeners ) {
-				automaticDisplayListener.automaticDisplayCompleted( this.automaticDisplayEvent );
+				automaticDisplayListener.automaticDisplayCompleted( reusableAutomaticDisplayEvent );
 			}
 		}
 		synchronized( this.runnables ) {
