@@ -66,7 +66,7 @@ public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.G
 		org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( this.type.constructors.get( 0 ) );
 		if( argumentField != null ) {
 			java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
-			java.awt.Image thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(fld.getDeclaringClass(), fld.getName());
+			java.awt.Image thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(fld.getDeclaringClass(), fld.getName());
 			if( thumbnail != null ) {
 				//thumbnail = thumbnail.getScaledInstance( 64, 64, java.awt.Image.SCALE_SMOOTH );
 				this.largeIcon = new javax.swing.ImageIcon(thumbnail);

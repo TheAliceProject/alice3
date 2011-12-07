@@ -71,7 +71,7 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 			
 			if( snapshotType != null ) {
 				if( snapshotType instanceof org.lgna.project.ast.JavaType ) {
-					java.awt.image.BufferedImage thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(((org.lgna.project.ast.JavaType)snapshotType).getClassReflectionProxy().getReification());
+					java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(((org.lgna.project.ast.JavaType)snapshotType).getClassReflectionProxy().getReification());
 					if( thumbnail != null ) {
 						snapshotIcon = new javax.swing.ImageIcon(thumbnail);
 					}
@@ -81,7 +81,7 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 			} else {
 				org.lgna.project.ast.JavaField field = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( nextValue.getDeclaredConstructors().get( 0 ) );
 				if( field != null ) {
-					java.awt.image.BufferedImage thumbnail = org.lgna.story.resourceutilities.ModelResourceUtilities.getThumbnail(field.getValueType().getClassReflectionProxy().getReification());
+					java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(field.getValueType().getClassReflectionProxy().getReification());
 					snapshotIcon = new javax.swing.ImageIcon(thumbnail);
 					//snapshotText = field.toString();
 				}
