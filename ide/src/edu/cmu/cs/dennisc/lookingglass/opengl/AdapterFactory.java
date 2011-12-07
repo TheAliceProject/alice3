@@ -244,7 +244,7 @@ public abstract class AdapterFactory {
 		getAdapterForElement( sgElement );
 		if( sgElement instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgElement;
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.accessComponents() ) {
+			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.getComponents() ) {
 				createNecessaryProxies( sgComponent );
 			}
 		}

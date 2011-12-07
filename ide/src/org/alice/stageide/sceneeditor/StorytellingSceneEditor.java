@@ -747,7 +747,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			//Add the orthographic camera to this scene
 			sceneImp.getSgComposite().addComponent( this.orthographicCameraImp.getSgCamera().getParent() );
 			//Add the orthographic markers			
-			Component[] existingComponents = sceneImp.getSgComposite().getComponents();
+			Component[] existingComponents = sceneImp.getSgComposite().getComponentsAsArray();
 			for (View view : this.mainCameraMarkerList)
 			{
 				CameraMarkerImp marker = this.mainCameraViewTracker.getCameraMarker( view );

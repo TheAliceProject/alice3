@@ -89,7 +89,7 @@ public abstract class CompositeAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 	@Override
 	public void initialize( E sgE ) {
 		super.initialize( sgE );
-		Iterable< edu.cmu.cs.dennisc.scenegraph.Component > sgComponents = m_element.accessComponents();
+		Iterable< edu.cmu.cs.dennisc.scenegraph.Component > sgComponents = m_element.getComponents();
 		synchronized( sgComponents ) {
 			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComponents ) {
 				handleComponentAdded( AdapterFactory.getAdapterFor( sgComponent ) );

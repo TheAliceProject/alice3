@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Composite extends Component {
-	private java.util.List< Component > children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private java.util.List< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > childrenListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< Component > children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > childrenListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	@Override
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
@@ -76,34 +76,18 @@ public abstract class Composite extends Component {
 
 	protected void fireChildAdded( Component child ) {
 		assert child != this;
-		synchronized( this.children ) {
-			this.children.add( child );
-		}
+		this.children.add( child );
 		edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent( this, child );
-		synchronized( this.childrenListeners ) {
-			for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : this.childrenListeners ) {
-				childrenListener.componentAdded( e );
-			}
+		for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : this.childrenListeners ) {
+			childrenListener.componentAdded( e );
 		}
-		//todo: investigate
-		//for( edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener childrenListener : this.childrenListeners ) {
-		//	childrenListener.childAdded( e );
-		//}
 	}
 	protected void fireChildRemoved( Component child ) {
-		synchronized( this.children ) {
-			this.children.remove( child );
-		}
+		this.children.remove( child );
 		edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent( this, child );
-		synchronized( this.childrenListeners ) {
-			for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : this.childrenListeners ) {
-				childrenListener.componentRemoved( e );
-			}
+		for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : this.childrenListeners ) {
+			childrenListener.componentRemoved( e );
 		}
-		//todo: investigate
-		//for( edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener childrenListener : this.childrenListeners ) {
-		//	childrenListener.childRemoved( e );
-		//}
 	}
 
 	public void addComponent( Component component ) {
@@ -118,6 +102,9 @@ public abstract class Composite extends Component {
 		}
 	}
 
+	public Iterable< Component > getComponents() {
+		return this.children;
+	}
 	public int getComponentCount() {
 		return this.children.size();
 	}
@@ -127,48 +114,32 @@ public abstract class Composite extends Component {
 	public Component getComponentAt( int i ) {
 		return this.children.get( i );
 	}
-	public Component[] getComponents( Component[] rv ) {
-		synchronized( this.children ) {
-			return this.children.toArray( rv );
-		}
-	}
-	public Component[] getComponents() {
-		return getComponents( new Component[ getComponentCount() ] );
-	}
-	public Iterable< Component > accessComponents() {
-		return this.children;
+	public Component[] getComponentsAsArray() {
+		return this.children.toArray( new Component[ this.children.size() ] );
 	}
 
 	public void addChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
-		synchronized( this.childrenListeners ) {
-			this.childrenListeners.add( childrenListener );
-		}
+		this.childrenListeners.add( childrenListener );
 	}
 	public void removeChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
-		synchronized( this.childrenListeners ) {
-			this.childrenListeners.remove( childrenListener );
-		}
+		this.childrenListeners.remove( childrenListener );
 	}
-	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > getChildrenListenerIterable() {
+	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > getChildrenListeners() {
 		return this.childrenListeners;
 	}
 
 	@Override
 	protected void fireAbsoluteTransformationChange() {
 		super.fireAbsoluteTransformationChange();
-		synchronized( this.children ) {
-			for( Component child : this.children ) {
-				child.fireAbsoluteTransformationChange();
-			}
+		for( Component child : this.children ) {
+			child.fireAbsoluteTransformationChange();
 		}
 	}
 	@Override
 	protected void fireHierarchyChanged() {
 		super.fireHierarchyChanged();
-		synchronized( this.children ) {
-			for( Component child : this.children ) {
-				child.fireHierarchyChanged();
-			}
+		for( Component child : this.children ) {
+			child.fireHierarchyChanged();
 		}
 	}
 	
@@ -192,11 +163,9 @@ public abstract class Composite extends Component {
 	@Override
 	public Element newCopy() {
 		Composite rv = (Composite)super.newCopy();
-		synchronized( this.children ) {
-			for( Component component : this.children ) {
-				Component rvComponent = (Component)component.newCopy();
-				rvComponent.setParent( rv );
-			}
+		for( Component component : this.children ) {
+			Component rvComponent = (Component)component.newCopy();
+			rvComponent.setParent( rv );
 		}
 		return rv;
 	}
