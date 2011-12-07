@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -40,23 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.resourceutilities;
+package org.lgna.story.implementation.alice;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
-import javax.imageio.ImageIO;
-
-import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ConstructorBlockStatement;
 import org.lgna.project.ast.ConstructorInvocationStatement;
@@ -69,193 +58,21 @@ import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.ParameterAccess;
 import org.lgna.project.ast.ReturnStatement;
+import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.SuperConstructorInvocationStatement;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserPackage;
 import org.lgna.project.ast.UserParameter;
 import org.lgna.story.resources.ModelResource;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.lgna.story.resourceutilities.ConstructorParameterPair;
 
 /**
  * @author dculyba
  *
  */
-public class ModelResourceUtilities {
+public class AliceResourceClassUtilities {
 	
 	public static String DEFAULT_PACKAGE = "";
-	
-	
-	public static String getName(Class<?> modelResource)
-	{
-		return modelResource.getSimpleName();
-	}
-	
-	private static java.net.URL getThumbnailURLInternal(Class<?> modelResource, String name) {
-		return modelResource.getResource("resources/"+ name+".png");
-	}
-	
-	private static BufferedImage getThumbnailInternal(Class<?> modelResource, String name)
-	{
-		URL resourceURL = getThumbnailURLInternal(modelResource, name);
-		if (resourceURL != null)
-		{
-			try
-			{
-				BufferedImage image = ImageIO.read(resourceURL);
-				return image;
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			return null;
-		}
-		return null;
-	}
-	
-	public static BufferedImage getThumbnail(Class<?> modelResource, String instanceName)
-	{
-		return getThumbnailInternal(modelResource, getName(modelResource)+"_"+instanceName);
-	}
-	
-	public static BufferedImage getThumbnail(Class<?> modelResource)
-	{
-		return getThumbnailInternal(modelResource, getName(modelResource));
-	}
-	
-	public static java.net.URL getThumbnailURL(Class<?> modelResource)
-	{
-		return getThumbnailURLInternal(modelResource, getName(modelResource));
-	}
-	
-	public static java.net.URL getThumbnailURL(Class<?> modelResource, String instanceName)
-	{
-		return getThumbnailURLInternal(modelResource, getName(modelResource)+"_"+instanceName);
-	}
-	
-	private static AxisAlignedBox getBoundingBoxFromXML(Document doc)
-	{
-		Element bboxElement = XMLUtilities.getSingleChildElementByTagName(doc.getDocumentElement(), "BoundingBox");
-		if (bboxElement != null)
-		{
-			Element min = (Element)bboxElement.getElementsByTagName("Min").item(0);
-			Element max = (Element)bboxElement.getElementsByTagName("Max").item(0);
-			
-			double minX = Double.parseDouble(min.getAttribute("x"));
-			double minY = Double.parseDouble(min.getAttribute("y"));
-			double minZ = Double.parseDouble(min.getAttribute("z"));
-			
-			double maxX = Double.parseDouble(max.getAttribute("x"));
-			double maxY = Double.parseDouble(max.getAttribute("y"));
-			double maxZ = Double.parseDouble(max.getAttribute("z"));
-			
-			AxisAlignedBox bbox = new AxisAlignedBox(minX, minY, minZ, maxX, maxY, maxZ);
-			
-			return bbox;
-		}
-		
-		return null;
-	}
-	
-	public static AxisAlignedBox getBoundingBox(Class<?> modelResource)
-	{
-		if (modelResource == null)
-		{
-			return null;
-		}
-		String name = getName(modelResource);
-		try {
-			InputStream is = modelResource.getResourceAsStream("resources/"+name+".xml");
-			if (is != null) {
-				Document doc = XMLUtilities.read(is);
-				return getBoundingBoxFromXML(doc);
-			}
-			else {
-				return null;
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static List<Class<? extends org.lgna.story.resources.ModelResource>> loadResourceJarFile(File resourceJar)
-	{
-		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
-		List<String> classNames = new LinkedList<String>();
-		try
-		{
-			ZipFile zip = new ZipFile(resourceJar);
-			Enumeration<? extends ZipEntry> entries = zip.entries();
-			while (entries.hasMoreElements())
-			{
-				ZipEntry entry = entries.nextElement();
-				if (entry.getName().endsWith(".class") && !entry.getName().contains("$"))
-				{
-					String className = entry.getName().replace('/', '.');
-					int lastDot = className.lastIndexOf(".");
-					String baseName = className.substring(0, lastDot);
-					classNames.add(baseName);
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		try
-		{
-			URL url = resourceJar.toURI().toURL();  
-			URL[] urls = new URL[]{url};
-			ClassLoader cl = new URLClassLoader(urls);
-			
-			for (String className : classNames)
-			{
-				Class<?> cls = cl.loadClass(className);
-				if (org.lgna.story.resources.ModelResource.class.isAssignableFrom(cls))
-				{
-					classes.add((Class<? extends org.lgna.story.resources.ModelResource>)cls);
-				}
-			}
-			
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return classes;
-	}
-	
-	public static List<Class<? extends org.lgna.story.resources.ModelResource>> getAndLoadModelResourceClasses(List<File> resourcePaths)
-	{
-		List<Class<? extends org.lgna.story.resources.ModelResource>> galleryClasses = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
-		for (File modelPath : resourcePaths)
-		{
-			try {
-				File[] jarFiles = FileUtilities.listDescendants(modelPath, "jar");
-				for (File f : jarFiles)
-				{
-					galleryClasses.addAll( ModelResourceUtilities.loadResourceJarFile(f) );
-				}
-			}
-			catch (Exception e)
-			{
-				System.err.println("Failed to load resources on path: '"+modelPath+"'");
-			}
-		}
-		return galleryClasses;
-	}
 	
 	public static Class<? extends org.lgna.story.Model> getModelClassForResourceClass(Class<? extends org.lgna.story.resources.ModelResource> resourceClass)
 	{
@@ -277,65 +94,6 @@ public class ModelResourceUtilities {
 		}
 	}
 	
-	public static String getAliceEnumNameForModelJoint( String modelJointName )
-	{
-		List<String> nameParts = new LinkedList<String>();
-		String[] parts = fullStringSplit(modelJointName);
-		boolean hasRight = false;
-		boolean hasLeft = false;
-		boolean hasBack = false;
-		boolean hasFront = false;
-		for (String part : parts)
-		{
-			if (part.equalsIgnoreCase("l"))
-			{
-				hasLeft = true;
-			}
-			else if (part.equalsIgnoreCase("r"))
-			{
-				hasRight = true;
-			}
-			else if (part.equalsIgnoreCase("f"))
-			{
-				hasFront = true;
-			}
-			else if (part.equalsIgnoreCase("b"))
-			{
-				hasBack = true;
-			}
-			else if (part.length() > 0)
-			{
-				nameParts.add(part);
-			}
-		}
-		if (hasRight)
-		{
-			nameParts.add(0, "RIGHT");
-		}
-		else if (hasLeft)
-		{
-			nameParts.add(0, "LEFT");
-		}
-		if (hasFront)
-		{
-			nameParts.add(0, "FRONT");
-		}
-		else if (hasBack)
-		{
-			nameParts.add(0, "BACK");
-		}
-		StringBuilder sb = new StringBuilder();
-		for (int i=0; i<nameParts.size(); i++)
-		{
-			if (i != 0)
-			{
-				sb.append("_");
-			}
-			sb.append(nameParts.get(i).toUpperCase());
-		}
-		return sb.toString();
-	}
-	
 	public static String getAliceMethodNameForEnum(String enumName)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -346,6 +104,7 @@ public class ModelResourceUtilities {
 		}
 		return sb.toString();
 	}
+	
 	
 	public static String getAliceClassName(Class<?> resourceClass)
 	{
@@ -427,7 +186,7 @@ public class ModelResourceUtilities {
         }
         return strings.toArray(new String[strings.size()]);
     }
-    
+	
 	public static String getClassNameFromName(String name)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -454,6 +213,7 @@ public class ModelResourceUtilities {
 		}
 		return fieldsOfType.toArray(new Field[fieldsOfType.size()]);
 	}
+	
 	
 	public static UserPackage getAlicePackage(Class<?> resourceClass, Class<?> rootClass)
 	{
@@ -562,7 +322,7 @@ public class ModelResourceUtilities {
 	
 	public static UserMethod[] getPartAccessorMethods( Class<? extends org.lgna.story.resources.ModelResource> forClass )
 	{
-		Field[] jointFields = ModelResourceUtilities.getFieldsOfType(forClass, org.lgna.story.resources.JointId.class);
+		Field[] jointFields = AliceResourceClassUtilities.getFieldsOfType(forClass, org.lgna.story.resources.JointId.class);
 		List<UserMethod> methods = new LinkedList<UserMethod>();
 		for (Field f : jointFields)
 		{
@@ -570,5 +330,4 @@ public class ModelResourceUtilities {
 		}
 		return methods.toArray(new UserMethod[methods.size()]);
 	}
-	
 }

@@ -19,8 +19,8 @@
 	<classpathentry kind="lib" path="share/gallery/resources/mtwtGalleryBoxes.jar"/>
 	<classpathentry kind="lib" path="share/gallery/resources/mtwtGalleryLargeIcons.jar"/>
 	<classpathentry kind="lib" path="share/gallery/resources/stagePersonEditorLargeIcons.jar"/>
-	<classpathentry kind="lib" path="share/gallery/assets/alice/AliceModels.jar"/>
 	<classpathentry kind="lib" path="lib/jogl/lib/gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="lib/jogl/lib/jogl.jar" sourcepath="dev/jogl/src"/>
+	<classpathentry kind="lib" path="lib/alice/aliceModelSource.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
