@@ -41,32 +41,53 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory;
+package org.alice.ide.instancefactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisFieldAccessJointedMenuModel getInstance( org.lgna.project.ast.UserField value ) {
-		synchronized( map ) {
-			ThisFieldAccessJointedMenuModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisFieldAccessJointedMenuModel( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserLocal, org.lgna.project.ast.AbstractMethod, LocalAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized LocalAccessMethodInvocationFactory getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.AbstractMethod method ) {
+		assert local != null;
+		LocalAccessMethodInvocationFactory rv = mapToMap.get( local, method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new LocalAccessMethodInvocationFactory( local, method );
+			mapToMap.put( local, method, rv );
 		}
+		return rv;
 	}
-	private final org.lgna.project.ast.UserField field;
-	private ThisFieldAccessJointedMenuModel( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
-		this.field = field;
+	private final org.lgna.project.ast.UserLocal local;
+	private LocalAccessMethodInvocationFactory( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.AbstractMethod method ) {
+		super( method, local.name );
+		this.local = local;
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( this.field, method );
+	protected org.lgna.croquet.resolvers.CodableResolver< LocalAccessMethodInvocationFactory > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAccessMethodInvocationFactory >( 
+				this,
+				new org.lgna.project.ast.Node[] { this.local, this.getMethod() }, 
+				new Class[] { org.lgna.project.ast.UserParameter.class, org.lgna.project.ast.AbstractMethod.class } 
+		);
+	}
+	public org.lgna.project.ast.UserLocal getLocal() {
+		return this.local;
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
+		//todo?
+		return new org.lgna.project.ast.LocalAccess( this.local );
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
+		return new org.lgna.project.ast.LocalAccess( this.local );
+	}
+	@Override
+	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+		rv.append( "this." );
+		rv.append( this.local.getName() );
+		return rv;
 	}
 }

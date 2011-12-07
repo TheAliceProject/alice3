@@ -59,7 +59,6 @@ import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
@@ -439,7 +438,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 			
 			if (newZoom  == this.originalOrthographicZoomValue)
 			{
-				PrintUtilities.println("Adding an undoable action for a manipulation that didn't actually change the zoom.");
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the zoom." );
 			}
 			edu.cmu.cs.dennisc.animation.Animator animator;
 			if( this.dragAdapter != null ) {

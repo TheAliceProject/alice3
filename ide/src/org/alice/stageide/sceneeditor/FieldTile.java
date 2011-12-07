@@ -194,7 +194,7 @@ package org.alice.stageide.sceneeditor;
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.awt.Color color = ide.getTheme().getColorFor( org.lgna.project.ast.FieldAccess.class );
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
 		if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
 			org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
 			if( thisFieldAccessFactory.getField() == this.accessible ) {

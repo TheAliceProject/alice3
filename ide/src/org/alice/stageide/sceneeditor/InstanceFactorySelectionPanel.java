@@ -46,12 +46,12 @@ package org.alice.stageide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.ViewController< javax.swing.JPanel, org.alice.ide.instancefactory.InstanceFactoryState > {
+public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.ViewController< javax.swing.JPanel, org.alice.ide.instancefactory.croquet.InstanceFactoryState > {
 	private static final class InternalButton extends org.lgna.croquet.components.JComponent< javax.swing.AbstractButton > {
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( InternalButton.this.instanceFactory );
+				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( InternalButton.this.instanceFactory );
 			}
 			
 		};
@@ -167,7 +167,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 			super.internalRefresh();
 			this.removeAllComponents();
 			java.util.List< InternalButton > buttons = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON ) );
+			buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) );
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			org.lgna.project.ast.NamedUserType sceneType = ide.getSceneType();
 			if( sceneType != null ) {
@@ -179,7 +179,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 				this.internalAddComponent( button );
 				this.buttonGroup.add( button.getAwtComponent() );
 			}
-			this.setSelected( org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue() );
+			this.setSelected( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue() );
 			this.revalidateAndRepaint();
 		}
 		
@@ -210,7 +210,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 	};
 	private final InternalPanel internalPanel = new InternalPanel();
 	public InstanceFactorySelectionPanel() {
-		super( org.alice.ide.instancefactory.InstanceFactoryState.getInstance() );
+		super( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
 	}
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {

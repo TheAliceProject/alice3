@@ -63,7 +63,6 @@ public class Skeleton {
 		for( Bone rootBone : this.rootBones ) {
 			rootBone.treeWalk( new Bone.TreeWalkObserver() {
 				public void handleBone( org.lgna.ik.Bone bone ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( bone );
 				}
 			} );
 		}

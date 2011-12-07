@@ -56,7 +56,7 @@ public abstract class DefaultCustomItemState<T> extends org.lgna.croquet.CustomI
 	protected void localize() {
 	}
 	@Override
-	public T getValue() {
+	protected T getActualValue() {
 		return this.value;
 	}
 	@Override

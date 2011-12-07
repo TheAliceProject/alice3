@@ -43,23 +43,11 @@
 
 package org.lgna.croquet.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class CardPanel extends Panel {
 	private final java.awt.CardLayout cardLayout;
-	@Deprecated
-	public CardPanel() {
-		this( null );
-	}
-	@Deprecated
-	public CardPanel( int hgap, int vgap ) {
-		this( null, hgap, vgap );
-	}
-	public CardPanel( org.lgna.croquet.CardComposite composite ) {
-		this( composite, 0, 0 );
-	}
 	public CardPanel( org.lgna.croquet.CardComposite composite, int hgap, int vgap ) {
 		super( composite );
 		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
@@ -70,8 +58,20 @@ public class CardPanel extends Panel {
 		}
 		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		//this.setBackgroundColor( null );
-		this.showComposite( null );
+		//this.showComposite( null );
 	}
+	public CardPanel( org.lgna.croquet.CardComposite composite ) {
+		this( composite, 0, 0 );
+	}
+	@Deprecated
+	public CardPanel() {
+		this( null );
+	}
+	@Deprecated
+	public CardPanel( int hgap, int vgap ) {
+		this( null, hgap, vgap );
+	}
+
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return this.cardLayout;
@@ -96,7 +96,7 @@ public class CardPanel extends Panel {
 	@Deprecated
 	public Key createKey( JComponent< ? > child, java.util.UUID id ) {
 		if( map.containsKey( id ) ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: CardPanel replacing key" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "CardPanel replacing key", id );
 		}
 		Key rv = new Key( child, id );
 		this.map.put( id, rv );

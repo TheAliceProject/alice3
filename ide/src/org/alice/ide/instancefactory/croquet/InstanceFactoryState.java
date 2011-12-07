@@ -41,7 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.ide.instancefactory.croquet;
+
+import org.alice.ide.instancefactory.InstanceFactory;
 
 /**
  * @author Dennis Cosgrove
@@ -88,7 +90,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	private java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private InstanceFactory value;
 	private InstanceFactoryState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), InstanceFactoryCodec.SINGLETON );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
 		//org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addValueObserver( declarationObserver );
 		org.alice.ide.MetaDeclarationState.getInstance().addValueListener( declarationListener );
 	}
@@ -108,7 +110,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				if( nextValue != null ) {
 					//pass
 				} else {
-					nextValue = ThisInstanceFactory.SINGLETON;
+					nextValue = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
 				}
 			} else {
 				nextValue = null;
@@ -116,38 +118,70 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			this.setValueTransactionlessly( nextValue );
 		}
 	}
+	
+	private org.lgna.croquet.CascadeBlankChild< InstanceFactory > createFillInMenuComboIfNecessary( org.lgna.croquet.CascadeFillIn< InstanceFactory, Void > item, org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu ) {
+		if( subMenu != null ) {
+			return new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( item, subMenu );
+		} else {
+			return item;
+		}
+	}
+	
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< InstanceFactory > blankNode ) {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager();
-		
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
 		org.lgna.project.ast.AbstractType< ?,?,? > type = getDeclaringType( org.alice.ide.MetaDeclarationState.getInstance().getValue() );
 
-		ThisInstanceFactoryFillIn thisFillIn = ThisInstanceFactoryFillIn.getInstance();
-		org.lgna.croquet.CascadeMenuModel< InstanceFactory > thisSubMenu = apiConfigurationManager.getInstanceFactorySubMenuForThis( type );
-		if( thisSubMenu != null ) {
-			rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( thisFillIn, thisSubMenu ) );
-		} else {
-			rv.add( thisFillIn );
-		}
+		rv.add( 
+				this.createFillInMenuComboIfNecessary( 
+						InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ), 
+						apiConfigurationManager.getInstanceFactorySubMenuForThis( type ) 
+				) 
+		);
 		if( type instanceof org.lgna.project.ast.NamedUserType ) {
 			org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
 			for( org.lgna.project.ast.UserField field : namedUserType.getDeclaredFields() ) {
 				if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-					InstanceFactoryFillInWithoutBlanks fieldFillIn = ThisFieldAccessFactoryFillIn.getInstance( field );
-					org.lgna.croquet.CascadeMenuModel< InstanceFactory > fieldSubMenu = apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field );
-					if( fieldSubMenu != null ) {
-						rv.add( new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( fieldFillIn, fieldSubMenu ) );
-					} else {
-						rv.add( fieldFillIn );
+					rv.add( 
+							this.createFillInMenuComboIfNecessary( 
+									InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) ), 
+									apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field ) 
+							) 
+					);
+				}
+			}
+			org.lgna.project.ast.AbstractCode code = ide.getFocusedCode();
+			if( code instanceof org.lgna.project.ast.UserCode ) {
+				org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)code;
+				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				for( org.lgna.project.ast.UserParameter parameter : userCode.getRequiredParamtersProperty() ) {
+					if( apiConfigurationManager.isInstanceFactoryDesiredForType( parameter.getValueType() ) ) {
+						rv.add( 
+								this.createFillInMenuComboIfNecessary( 
+										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessFactory.getInstance( parameter ) ), 
+										apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( parameter ) 
+								) 
+						);
 					}
 				}
-				//rv.add( ThisFieldAccessMethodInvocationFactoryFillIn.getInstance( field, org.lookingglassandalice.storytelling.Entity.class, "getName" ) );
+
+				for( org.lgna.project.ast.UserLocal local : org.lgna.project.ProgramTypeUtilities.getLocals( userCode ) ) {
+					if( apiConfigurationManager.isInstanceFactoryDesiredForType( local.getValueType() ) ) {
+						rv.add( 
+								this.createFillInMenuComboIfNecessary( 
+										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessFactory.getInstance( local ) ), 
+										apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess( local ) 
+								) 
+						);
+					}
+				}
 			}
 		}
 		return rv;
 	}
 	@Override
-	public org.alice.ide.instancefactory.InstanceFactory getValue() {
+	protected org.alice.ide.instancefactory.InstanceFactory getActualValue() {
 		return this.value;
 	}
 	@Override

@@ -75,6 +75,7 @@ public class DropDownListItemExpressionPane extends AbstractDropDownPane {
 	}
 	//protected abstract org.lgna.project.ast.AbstractType<?,?,?> getFillInType();
 	public void refresh() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "refreshLater" );
 		this.forgetAndRemoveAllComponents();
 		if( this.index < this.expressionListProperty.size() ) {
 			this.addComponent( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance().createExpressionPane( this.expressionListProperty.get( this.index ) ) );

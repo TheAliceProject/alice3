@@ -242,7 +242,6 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 			boolean isAdjusting = false;
 			TreeSelectionState.this.changeValueFromSwing( nextValue, isAdjusting, new org.lgna.croquet.triggers.TreeSelectionEventTrigger( e ) );
 			T prevValue = getValue();
-			System.err.println( "changing from " + prevValue + " to " + nextValue );
 			fireChanged( prevValue, nextValue, false );
 		}
 	};
@@ -274,7 +273,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		this.swingModel.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
 	}
 	@Override
-	public T getValue() {
+	protected T getActualValue() {
 		return this.getSelectedNode();
 	}
 

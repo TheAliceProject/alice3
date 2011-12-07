@@ -88,7 +88,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	}
 	
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
-		System.err.println( "todo: getOriginalJointOrientation " + jointId );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( jointId );
 		return null;
 	}
 }

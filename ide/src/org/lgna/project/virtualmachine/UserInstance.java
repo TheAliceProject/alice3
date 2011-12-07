@@ -130,7 +130,6 @@ public class UserInstance {
 		assert expression != null;
 		Object rv = vm.evaluate( expression );
 		this.setFieldValue( field, rv );
-		//System.err.println( field + " " + rv );
 		return rv;
 	}
 	public UserType<?> getType() {

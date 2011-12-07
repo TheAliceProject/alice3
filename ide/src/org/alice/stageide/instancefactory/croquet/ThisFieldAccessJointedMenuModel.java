@@ -41,23 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.stageide.instancefactory.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisInstanceFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static class SingletonHolder {
-		private static ThisInstanceFactoryFillIn instance = new ThisInstanceFactoryFillIn();
+public class ThisFieldAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
+	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ThisFieldAccessJointedMenuModel getInstance( org.lgna.project.ast.UserField value ) {
+		synchronized( map ) {
+			ThisFieldAccessJointedMenuModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ThisFieldAccessJointedMenuModel( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
 	}
-	public static ThisInstanceFactoryFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ThisInstanceFactoryFillIn() {
-		super( java.util.UUID.fromString( "764de80f-6ab4-465b-9915-6f78604f9aa0" ), ThisInstanceFactory.SINGLETON );
+	private final org.lgna.project.ast.UserField field;
+	private ThisFieldAccessJointedMenuModel( org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
+		this.field = field;
 	}
 	@Override
-	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.getTransientValue( step );
+	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory.getInstance( this.field, method ) );
 	}
 }

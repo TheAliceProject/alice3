@@ -47,70 +47,44 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class BoxUtilities {
+	private static class Filler extends JComponent< javax.swing.Box.Filler > {
+		private final java.awt.Dimension min;
+		private final java.awt.Dimension pref;
+		private final java.awt.Dimension max;
+		public Filler( java.awt.Dimension min, java.awt.Dimension pref, java.awt.Dimension max ) {
+			this.min = min;
+			this.pref = pref;
+			this.max = max;
+		}
+		@Override
+		protected javax.swing.Box.Filler createAwtComponent() {
+			return new javax.swing.Box.Filler( this.min, this.pref, this.max );
+		}
+	}
 	public static JComponent< javax.swing.Box.Filler > createGlue() {
-		return new JComponent< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createAwtComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
-			}
-		};
+		return new Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
 	}
 	public static JComponent< javax.swing.Box.Filler > createHorizontalGlue() {
-		return new JComponent< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createAwtComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, 0 ) );
-			}
-		};
+		return new Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, 0 ) );
 	}
 	public static JComponent< javax.swing.Box.Filler > createVerticalGlue() {
-		return new JComponent< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createAwtComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, Short.MAX_VALUE ) );
-			}
-		};
+		return new Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, Short.MAX_VALUE ) );
 	}
-	public static JComponent< javax.swing.Box.Filler > createHorizontalSliver( final int width ) {
-		return new JComponent< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createAwtComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ) );
-			}
-		};
+	public static JComponent< javax.swing.Box.Filler > createHorizontalSliver( int width ) {
+		return new Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ) );
 	}
-	public static JComponent< javax.swing.Box.Filler > createVerticalSliver( final int height ) {
-		return new JComponent< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createAwtComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ) );
-			}
-		};
+	public static JComponent< javax.swing.Box.Filler > createVerticalSliver( int height ) {
+		return new Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ) );
 	}
-	public static JComponent< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
-		return new JComponent< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createAwtComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, Short.MAX_VALUE ) );
-			}
-		};
+	public static JComponent< javax.swing.Box.Filler > createHorizontalStrut( int width ) {
+		return new Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, Short.MAX_VALUE ) );
 	}
-	public static JComponent< javax.swing.Box.Filler > createVerticalStrut( final int height ) {
-		return new JComponent< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createAwtComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( Short.MAX_VALUE, height ) );
-			}
-		};
+	public static JComponent< javax.swing.Box.Filler > createVerticalStrut( int height ) {
+		return new Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( Short.MAX_VALUE, height ) );
 	}
 
-	public static JComponent< javax.swing.Box.Filler > createRigidArea( final java.awt.Dimension size ) {
-		return new JComponent< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createAwtComponent() {
-				return new javax.swing.Box.Filler( size, size, size );
-			}
-		};
+	public static JComponent< javax.swing.Box.Filler > createRigidArea( java.awt.Dimension size ) {
+		return new Filler( size, size, size );
 	}
 	public static JComponent< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
 		return createRigidArea( new java.awt.Dimension( width, height ) );
@@ -118,13 +92,12 @@ public class BoxUtilities {
 	
 	//todo: use Short.MAX_VALUE instead of null?
 	private static class ClampedComponent extends JComponent< javax.swing.JComponent > {
-		private Component<?> component;
 		private Integer minimumPreferredWidth;
 		private Integer minimumPreferredHeight;
 		public ClampedComponent( Component<?> component, Integer minimumPreferredWidth, Integer minimumPreferredHeight ) {
-			this.component = component;
 			this.minimumPreferredWidth = minimumPreferredWidth;
 			this.minimumPreferredHeight = minimumPreferredHeight;
+			this.internalAddComponent( component, java.awt.BorderLayout.CENTER );
 		}
 		@Override
 		protected javax.swing.JComponent createAwtComponent() {
@@ -132,23 +105,16 @@ public class BoxUtilities {
 				@Override
 				public java.awt.Dimension getPreferredSize() {
 					java.awt.Dimension rv = super.getPreferredSize();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
 					if( ClampedComponent.this.minimumPreferredWidth != null ) {
 						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( rv, ClampedComponent.this.minimumPreferredWidth );
 					}
 					if( ClampedComponent.this.minimumPreferredHeight != null ) {
 						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, ClampedComponent.this.minimumPreferredHeight );
 					}
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( rv );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
 					return rv;
 				}
 			};
 			rv.setLayout( new java.awt.BorderLayout() );
-			rv.add( this.component.getAwtComponent(), java.awt.BorderLayout.CENTER );
 			return rv;
 		}
 	}

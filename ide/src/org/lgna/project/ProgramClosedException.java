@@ -77,7 +77,7 @@ public class ProgramClosedException extends RuntimeException {
 			runnable.run();
 		} catch( RuntimeException re ) {
 			if( isProgramClosedException( re ) ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "note: ProgramClosedException caught." );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "ProgramClosedException caught." );
 			} else {
 				throw re;
 			}

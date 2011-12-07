@@ -405,7 +405,7 @@ public class AstUtilities {
 			if( argument != null ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addParameter" );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "argument == null" );
 				argument = new org.lgna.project.ast.SimpleArgument( parameterDeclaredInAlice, new org.lgna.project.ast.NullLiteral() );
 			}
 			argumentListProperty.add( index, argument );

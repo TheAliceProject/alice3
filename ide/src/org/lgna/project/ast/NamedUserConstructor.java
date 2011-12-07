@@ -90,7 +90,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	public NodeProperty< ConstructorBlockStatement > getBodyProperty() {
 		return this.body;
 	}
-	public NodeListProperty< UserParameter > getParamtersProperty() {
+	public NodeListProperty< UserParameter > getRequiredParamtersProperty() {
 		return this.requiredParameters;
 	}
 	@Override

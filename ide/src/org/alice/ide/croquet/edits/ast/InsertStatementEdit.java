@@ -103,7 +103,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		int actualIndex = this.getActualIndex();
 		this.blockStatement.statements.add( actualIndex, this.statement );
 		//todo: remove
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		if( this.blockStatement.statements.get( actualIndex ) == this.statement ) {
 			this.blockStatement.statements.remove( actualIndex );
 			//todo: remove
-			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}
@@ -189,7 +189,6 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 //		retargeter.addKeyValuePair( this.statement, replacementStatement );
 //		final int N = this.initialExpressions.length;
 //
-//		System.err.println( "todo: replacementExpressions" );
 //		org.lgna.project.ast.Expression[] replacementExpressions = this.initialExpressions;
 //		
 //		return new InsertStatementEdit( replacementBlockStatement, this.specifiedIndex, replacementStatement, replacementExpressions );
@@ -214,7 +213,8 @@ public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
 		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
 		retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
-		System.err.println( "TODO: recursive retarget" );
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "recursive retarget" );
 		if( this.statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
 			retargeter.addKeyValuePair( ((org.lgna.project.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((org.lgna.project.ast.AbstractStatementWithBody)replacementEdit.statement).body.getValue() );
 		}

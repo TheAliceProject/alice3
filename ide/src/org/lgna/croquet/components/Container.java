@@ -105,36 +105,37 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		return this.getAwtComponent().isAncestorOf(other.getAwtComponent());
 	}
 
+	private boolean isTreeLockRequired() {
+		//todo
+		return this.getAwtComponent().isDisplayable();
+	}
+	private void checkTreeLock() {
+		if( this.isTreeLockRequired() ) {
+			if( Thread.holdsLock( this.getTreeLock() ) ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "tree lock required", this );
+				Thread.dumpStack();
+			}
+		}
+	}
 	protected final void internalAddComponent(Component<?> component) {
 		assert component != null : this;
 		assert component != this : this;
-//		if( Thread.holdsLock( this.getTreeLock() ) ) {
-//			//pass
-//		} else {
-//			System.err.println( "internalAddComponent does not hold lock " + this );
-//		}
+		this.checkTreeLock();
 		this.getAwtComponent().add(component.getAwtComponent());
 	}
 	protected final void internalAddComponent(Component<?> component, Object constraints) {
 		assert component != null : this;
 		assert component != this : this;
-//		if( Thread.holdsLock( this.getTreeLock() ) ) {
-//			//pass
-//		} else {
-//			System.err.println( "internalAddComponent does not hold lock " + this );
-//		}
+		this.checkTreeLock();
 		this.getAwtComponent().add(component.getAwtComponent(), constraints);
 	}
 	
 	private void internalRemoveComponent( Component<?> component, boolean isReleaseDesired ) {
 		assert component != null : this;
 		assert component != this : this;
-		if( Thread.holdsLock( this.getTreeLock() ) ) {
-			//pass
-		} else {
-			System.err.println( "internalRemoveComponent does not hold lock " + this );
-			//Thread.dumpStack();
-		}
+		this.checkTreeLock();
 		this.getAwtComponent().remove(component.getAwtComponent());
 //		if( component.getAwtComponent().isDisplayable() ) {
 //			component.handleUndisplayable();
@@ -149,15 +150,13 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 	}
 
 	private final void internalRemoveAllComponents( boolean isReleaseDesired ) {
-		synchronized( this.getTreeLock() ) {
-			java.awt.Component[] awtComponents = this.getAwtComponent().getComponents();
-			for( java.awt.Component awtComponent : awtComponents ) {
-				if( awtComponent != null ) {
-					Component< ? > component = lookup( awtComponent );
-					this.internalRemoveComponent( component, isReleaseDesired );
-				} else {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: encountered null component." );
-				}
+		java.awt.Component[] awtComponents = this.getAwtComponent().getComponents();
+		for( java.awt.Component awtComponent : awtComponents ) {
+			if( awtComponent != null ) {
+				Component< ? > component = lookup( awtComponent );
+				this.internalRemoveComponent( component, isReleaseDesired );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "encountered null component", this );
 			}
 		}
 	}

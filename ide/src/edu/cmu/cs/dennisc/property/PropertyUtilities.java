@@ -118,7 +118,6 @@ public final class PropertyUtilities {
 		try {
 			return getGetter( cls, propertyName ) != null;
 		} catch( RuntimeException re ) {
-			//System.err.println( "does not have getter: " + cls + " " + propertyName );
 			return false;
 		}
 	}
@@ -126,7 +125,6 @@ public final class PropertyUtilities {
 		try {
 			return getSetter( cls, propertyName ) != null;
 		} catch( RuntimeException re ) {
-			//System.err.println( "does not have setter: " + cls + " " + propertyName );
 			return false;
 		}
 	}

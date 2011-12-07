@@ -120,7 +120,6 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 			
 			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory(), ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH );
 			
-//			System.err.println( "todo: remove filtering" );
 //			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
 //					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
 //			};

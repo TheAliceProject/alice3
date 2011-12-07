@@ -254,7 +254,6 @@ public class ASG {
 		if( className.endsWith( "TextureMap" ) ) {
 			className = className.substring( 0, className.length() - 3 );
 		}
-		// System.err.println( className );
 		return className;
 	}
 	public static void encodeVertexArrayInBinary( edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices, java.io.OutputStream os ) {

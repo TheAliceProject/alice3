@@ -48,11 +48,9 @@ package edu.cmu.cs.dennisc.javax.swing;
 public class UIManagerUtilities {
 	public static void setDefaultFontResource( javax.swing.plaf.FontUIResource fontUIResource ) {
 		for( Object key : javax.swing.UIManager.getDefaults().keySet() ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( key );
 			Object value = javax.swing.UIManager.get( key );
 			if( value instanceof javax.swing.plaf.FontUIResource ) {
 				javax.swing.UIManager.put( key, fontUIResource );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( key, fontUIResource );
 			}
 		}
 	}

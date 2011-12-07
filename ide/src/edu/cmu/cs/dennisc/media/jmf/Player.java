@@ -134,7 +134,6 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	@Override
 	public void realize() {
 		if( this.player.getState() < javax.media.Controller.Realized ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "realize: ", this.player.getState() );
 			RealizeControllerListener controllerListener = new RealizeControllerListener();
 			this.player.addControllerListener( controllerListener );
 			this.player.realize();

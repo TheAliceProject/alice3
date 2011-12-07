@@ -43,19 +43,14 @@
 
 package org.alice.ide.croquet.components;
 
-class PreviewPanel extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
+class PreviewPanel extends org.lgna.croquet.components.BorderPanel {
 	private final PanelWithPreview<?> panelWithPreview;
 	public PreviewPanel( PanelWithPreview<?> panelWithPreview ) {
 		this.panelWithPreview = panelWithPreview;
 	}
-	public void refresh() {
-		this.internalForgetAndRemoveAllComponents();
-		this.internalAddComponent( this.panelWithPreview.createPreviewSubComponent(), java.awt.BorderLayout.CENTER );
-		this.revalidateAndRepaint();
-	}
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel() {
+	protected javax.swing.JPanel createJPanel() {
+		class PreviewJPanel extends DefaultJPanel {
 			@Override
 			public boolean contains(int x, int y) {
 				return false;
@@ -64,20 +59,16 @@ class PreviewPanel extends org.lgna.croquet.components.JComponent<javax.swing.JP
 			public java.awt.Dimension getPreferredSize() {
 				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 			}
-		};
+		}
+		PreviewJPanel rv = new PreviewJPanel();
 		rv.setOpaque( false );
-		rv.setLayout(new java.awt.BorderLayout());
 		return rv;
 	}
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.refresh();
-	}
-	@Override
-	protected void handleUndisplayable() {
+	protected void internalRefresh() {
+		super.internalRefresh();
 		this.internalForgetAndRemoveAllComponents();
-		super.handleUndisplayable();
+		this.addComponent( this.panelWithPreview.createPreviewSubComponent(), Constraint.CENTER );
 	}
 }
 
@@ -105,7 +96,7 @@ public abstract class PanelWithPreview< M extends org.lgna.croquet.InputDialogOp
 	public void updatePreview() {
 		PreviewPanel previewPanel = this.getPreviewPanel();
 		if( previewPanel != null ) {
-			previewPanel.refresh();
+			previewPanel.refreshLater();
 		}
 	}
 }

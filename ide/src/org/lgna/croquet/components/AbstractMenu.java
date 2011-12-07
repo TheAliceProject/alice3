@@ -130,7 +130,7 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 	}
 	public void forgetAndRemoveAllMenuItems() {
 		//this.internalForgetAndRemoveAllComponents();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "forgetAndRemoveAllMenuItems" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );
 		this.getAwtComponent().removeAll();
 	}
 }

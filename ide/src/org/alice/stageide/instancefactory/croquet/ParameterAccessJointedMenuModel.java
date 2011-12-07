@@ -41,23 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory;
+package org.alice.stageide.instancefactory.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointInstanceFactoryMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
-	private final java.util.List< org.lgna.project.ast.AbstractMethod > getters;
-	public JointInstanceFactoryMenuModel( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( id );
-		this.getters = org.alice.stageide.ast.JointedModelUtilities.getJointGetters( type );
-	}
-	protected abstract org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method );
-	@Override
-	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
-		for( org.lgna.project.ast.AbstractMethod method : this.getters ) {
-			rv.add( this.getFillIn( method ) );
+public class ParameterAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
+	private static java.util.Map< org.lgna.project.ast.UserParameter, ParameterAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ParameterAccessJointedMenuModel getInstance( org.lgna.project.ast.UserParameter value ) {
+		synchronized( map ) {
+			ParameterAccessJointedMenuModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ParameterAccessJointedMenuModel( value );
+				map.put( value, rv );
+			}
+			return rv;
 		}
-		return rv;
+	}
+	private final org.lgna.project.ast.UserParameter parameter;
+	private ParameterAccessJointedMenuModel( org.lgna.project.ast.UserParameter parameter ) {
+		super( java.util.UUID.fromString( "4abaaf96-15fe-4269-8bee-d4e8404934a6" ), parameter.getValueType() );
+		this.parameter = parameter;
+	}
+	@Override
+	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( this.parameter, method ) );
 	}
 }

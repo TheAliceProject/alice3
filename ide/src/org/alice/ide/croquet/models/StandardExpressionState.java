@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StandardExpressionState extends ExpressionState< org.lgna.project.ast.Expression > {
+public abstract class StandardExpressionState extends ExpressionState {
 	public StandardExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue ) {
-		super( group, id, org.lgna.project.ast.Expression.class, initialValue );
+		super( group, id, initialValue );
 	}
 	protected abstract org.lgna.project.ast.AbstractType< ?, ?, ? > getType();
 	protected abstract org.lgna.project.annotations.ValueDetails< ? > getValueDetails();

@@ -48,6 +48,5 @@ package org.lgna.project.ast;
  */
 public interface UserCode extends UserMember {
 	public NodeProperty< ? extends BlockStatement > getBodyProperty();
-	public NodeListProperty< UserParameter > getParamtersProperty();
-	//public boolean isSignatureLocked();
+	public NodeListProperty< UserParameter > getRequiredParamtersProperty();
 }

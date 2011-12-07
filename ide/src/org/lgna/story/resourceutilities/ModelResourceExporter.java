@@ -69,6 +69,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.lgna.project.License;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
@@ -81,7 +82,18 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
 public class ModelResourceExporter {
 
 	private static String COPYRIGHT_COMMENT = null;
-	private static String ROOT_IDS_FIELD_NAME = "JOINT_ID_ROOTS";
+	private static final String ROOT_IDS_FIELD_NAME = "JOINT_ID_ROOTS";
+	
+	public static final String RESOURCE_SUB_DIR = "";
+	
+	public static String getResourceSubDirWithSeparator() {
+		if (RESOURCE_SUB_DIR == null || RESOURCE_SUB_DIR.length() == 0) {
+			return "";
+		}
+		else {
+			return RESOURCE_SUB_DIR + "/";
+		}
+	}
 	
 	private static String getCopyrightComment()
 	{
@@ -107,6 +119,7 @@ public class ModelResourceExporter {
 	private String resourceName;
 	private String name;
 	private List<String> textures = new LinkedList<String>();
+	private List<String> tags = new LinkedList<String>();
 	private AxisAlignedBox boundingBox;
 	private File xmlFile;
 	private Map<String, Image> thumbnails = new HashMap<String, Image>();
@@ -188,6 +201,12 @@ public class ModelResourceExporter {
 		this.attributionYear = year;
 	}
 	
+	public void addTags(String... tags) {
+		for (String s : tags){
+			this.tags.add(s);
+		}
+	}
+	
 	public String getName()
 	{
 		return this.name;
@@ -236,6 +255,17 @@ public class ModelResourceExporter {
 		return bboxElement;
 	}
 	
+	private org.w3c.dom.Element createTagsElement(Document doc)
+	{
+		org.w3c.dom.Element tagsElement = doc.createElement("Tags");
+		for (String tag : this.tags) {
+			org.w3c.dom.Element tagElement = doc.createElement("Tag");
+			tagElement.setTextContent(tag);
+			tagsElement.appendChild(tagElement);
+		}
+		return tagsElement;
+	}
+	
 	private Document createXMLDocument()
 	{
         try
@@ -252,7 +282,8 @@ public class ModelResourceExporter {
             	modelRoot.setAttribute("creationYear", this.attributionYear);
             }
             doc.appendChild(modelRoot);
-            modelRoot.appendChild(this.createBoundingBoxElement(doc));         
+            modelRoot.appendChild(this.createBoundingBoxElement(doc));
+            modelRoot.appendChild(this.createTagsElement(doc));
             return doc;
         }
         catch (Exception e)
@@ -269,7 +300,7 @@ public class ModelResourceExporter {
 		if (POTENTIAL_MODEL_CLASS_DATA_OPTIONS == null)
 		{
 			POTENTIAL_MODEL_CLASS_DATA_OPTIONS = new LinkedList<ModelClassData>();
-			Field[] dataFields = ModelResourceUtilities.getFieldsOfType(ModelClassData.class, ModelClassData.class);
+			Field[] dataFields = AliceResourceClassUtilities.getFieldsOfType(ModelClassData.class, ModelClassData.class);
 			for (Field f : dataFields)
 			{
 				ModelClassData data = null;
@@ -386,7 +417,7 @@ public class ModelResourceExporter {
 		{
 			return null;
 		}
-		java.lang.reflect.Field[] rootFields = ModelResourceUtilities.getFieldsOfType(cls, org.lgna.story.resources.JointId[].class);
+		java.lang.reflect.Field[] rootFields = AliceResourceClassUtilities.getFieldsOfType(cls, org.lgna.story.resources.JointId[].class);
 		if (rootFields.length == 1)
 		{
 			return rootFields[0];
@@ -437,7 +468,7 @@ public class ModelResourceExporter {
 		List<String> jointIds = getExistingJointIds(resourceClass);
 		for (String id : jointIds)
 		{
-			sb.append( "public Joint get"+ModelResourceUtilities.getAliceMethodNameForEnum(id)+"() {\n");
+			sb.append( "public Joint get"+AliceResourceClassUtilities.getAliceMethodNameForEnum(id)+"() {\n");
 			sb.append( "\t return org.lgna.story.Joint.getJoint( this, "+resourceClass.getCanonicalName()+"."+id+");\n");
 			sb.append( "}\n");
 		}
@@ -559,6 +590,7 @@ public class ModelResourceExporter {
 		        entry.setTime(source.lastModified());
 		        try
 		        {
+		        	System.out.println("   Adding: "+name);
 			        target.putNextEntry(entry);
 			        target.closeEntry();
 		        }
@@ -647,7 +679,7 @@ public class ModelResourceExporter {
 	
 	private File createXMLFile(String root)
 	{
-		String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+"resources/";
+		String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
         File outputFile = new File(resourceDirectory, this.name+".xml");
         try
         {
@@ -687,6 +719,16 @@ public class ModelResourceExporter {
 	
 	private File saveImageToFile(String fileName, Image image)
 	{
+		try {
+			int width = image.getWidth(null);
+			int height = image.getHeight(null);
+			if (width == 0 || height == 0) {
+				return null;
+			}
+		}
+		catch (Exception e) {
+			return null;
+		}
 		File outputFile = new File(fileName);
         try{
             if (!outputFile.exists()){
@@ -708,7 +750,7 @@ public class ModelResourceExporter {
 		boolean isFirst = true;
 		for (Entry<String, Image> entry : this.thumbnails.entrySet())
 		{
-			String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+"resources/";
+			String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
 			if (isFirst)
 			{
 				File f = saveImageToFile(resourceDirectory+this.name+".png", entry.getValue());
@@ -724,7 +766,7 @@ public class ModelResourceExporter {
         return thumbnailFiles;
 	}
 	
-	public boolean addToJar(String sourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream)
+	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream)
 	{
 		if (!sourceDirectory.endsWith("/") && !sourceDirectory.endsWith("\\")) {
 			sourceDirectory += File.separator;
@@ -741,15 +783,15 @@ public class ModelResourceExporter {
 			System.out.println("BOOM!");
 		}
 		
-		File xmlFile = createXMLFile(sourceDirectory);
+		File xmlFile = createXMLFile(resourceDirectory);
 		File resourceDir = xmlFile.getParentFile();
-		List<File> thumbnailFiles = createThumbnails(sourceDirectory);
+		List<File> thumbnailFiles = createThumbnails(resourceDirectory);
 		try
 		{
 			System.out.println("Adding "+sourceDir);
 			add(sourceDir, sourceJarStream, sourceDirectory, false);
 			System.out.println("Adding "+resourceDir);
-			add(resourceDir, resourceJarStream, sourceDirectory, true);
+			add(resourceDir, resourceJarStream, resourceDirectory, true);
 			return true;
 		}
 		catch (Exception e)
@@ -759,12 +801,12 @@ public class ModelResourceExporter {
 		return false;
 	}
 	
-	public boolean addToJar(String sourceDirectory, JarOutputStream jos)
+	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream jos)
 	{
-		return addToJar(sourceDirectory, jos, jos);
+		return addToJar(sourceDirectory, resourceDirectory, jos, jos);
 	}
 	
-	public File export(String sourceDirectory, String outputDir)
+	public File export(String sourceDirectory, String resourceDirectory, String outputDir)
 	{
 		
 		File outputFile = new File(outputDir+this.name+".jar");
@@ -773,7 +815,7 @@ public class ModelResourceExporter {
 			FileUtilities.createParentDirectoriesIfNecessary(outputFile);
 			FileOutputStream fos = new FileOutputStream(outputFile);
 			JarOutputStream jos = new JarOutputStream(fos);
-			addToJar(sourceDirectory, jos);
+			addToJar(sourceDirectory, resourceDirectory, jos);
 			jos.close();
 		}
 		catch (Exception e)

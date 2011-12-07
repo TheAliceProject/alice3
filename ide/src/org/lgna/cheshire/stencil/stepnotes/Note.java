@@ -74,7 +74,7 @@ public abstract class Note<S extends org.lgna.croquet.history.Step<?>> extends o
 				if( stepAddedEvent.getStep().getModel() != null ) {
 					try {
 						if( this.getStep().getModel().getClass() == stepAddedEvent.getStep().getModel().getClass() ) {;
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWhatWeveBeenWaitingFor", this.getStep().getModel() == stepAddedEvent.getStep().getModel(), this.getStep().getModel(), stepAddedEvent.getStep().getModel() );
+							edu.cmu.cs.dennisc.java.util.logging.Logger.info( this.getStep().getModel() == stepAddedEvent.getStep().getModel(), this.getStep().getModel(), stepAddedEvent.getStep().getModel() );
 							return true;
 						} else {
 							return false;

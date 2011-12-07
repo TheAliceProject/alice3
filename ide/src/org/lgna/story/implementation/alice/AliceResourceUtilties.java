@@ -43,15 +43,55 @@
 
 package org.lgna.story.implementation.alice;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import javax.imageio.ImageIO;
+
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.ConstructorBlockStatement;
+import org.lgna.project.ast.ConstructorInvocationStatement;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.JavaConstructor;
+import org.lgna.project.ast.JavaConstructorParameter;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.ReturnStatement;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.SuperConstructorInvocationStatement;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserPackage;
+import org.lgna.project.ast.UserParameter;
+import org.lgna.story.resources.ModelResource;
+import org.lgna.story.resourceutilities.ConstructorParameterPair;
+import org.lgna.story.resourceutilities.ModelResourceBuilderUtilities;
+import org.lgna.story.resourceutilities.ModelResourceExporter;
+import org.lgna.story.resourceutilities.ModelResourceInfo;
+import org.lgna.story.resourceutilities.StorytellingResources;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
 
 /**
@@ -65,6 +105,7 @@ public class AliceResourceUtilties {
 	
 	private static Map<URL, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual> urlToVisualMap = new HashMap<URL, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual>();
 	private static Map<URL, TexturedAppearance[]> urlToTextureMap = new HashMap<URL, TexturedAppearance[]>();
+	private static Map<Class<?>, org.lgna.story.resourceutilities.ModelResourceInfo> classToInfoMap = new HashMap<Class<?>, org.lgna.story.resourceutilities.ModelResourceInfo>();
 	
 	private AliceResourceUtilties() {
 	}
@@ -127,6 +168,14 @@ public class AliceResourceUtilties {
         
 	}
 
+	public static InputStream getAliceResourceAsStream(Class<?> cls, String resourceString) {
+		return StorytellingResources.getInstance().getAliceResourceAsStream(cls.getPackage().getName().replace(".", "/")+"/"+resourceString);
+	}
+	
+	public static URL getAliceResource(Class<?> cls, String resourceString) {
+		return StorytellingResources.getInstance().getAliceResource(cls.getPackage().getName().replace(".", "/")+"/"+resourceString);
+	}
+	
 	public static String getTextureResourceName(Object resource)
 	{
 		return getTextureResourceName(resource.getClass().getSimpleName(), resource.toString());
@@ -148,18 +197,23 @@ public class AliceResourceUtilties {
 		return modelName.toLowerCase()+"."+MODEL_RESOURCE_EXTENSION;
 	}
 	
+	private static java.net.URL getThumbnailURLInternal(Class<?> modelResource, String name) {
+		return getAliceResource(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator()+ name+".png");
+	}
+	
 	public static URL getTextureURL(Object resource)
 	{
-		Class textureClass = resource.getClass();
-		String resourceString = "resources/"+getTextureResourceName(resource);
-		return textureClass.getResource(resourceString);
+		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator()+getTextureResourceName(resource));
 	}
 	
 	public static URL getVisualURL(Object resource)
 	{
-		Class visualClass = resource.getClass();
-		String resourceString = "resources/"+getVisualResourceName(resource);
-		return visualClass.getResource(resourceString);
+		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator()+getVisualResourceName(resource));
+	}
+	
+	public static URL getModelResourceURL(Object resource)
+	{
+		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator()+getTextureResourceName(resource));
 	}
 	
 	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getVisual(Object resource)
@@ -248,4 +302,133 @@ public class AliceResourceUtilties {
 		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( jointId.toString() );
 		return sgJoint.getLocalTransformation().orientation.createUnitQuaternion();
 	}
+	
+	public static String getName(Class<?> modelResource)
+	{
+		return modelResource.getSimpleName();
+	}
+	
+	private static BufferedImage getThumbnailInternal(Class<?> modelResource, String name)
+	{
+		URL resourceURL = getThumbnailURLInternal(modelResource, name);
+		if (resourceURL != null)
+		{
+			try
+			{
+				BufferedImage image = ImageIO.read(resourceURL);
+				return image;
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			return null;
+		}
+		return null;
+	}
+	
+	public static BufferedImage getThumbnail(Class<?> modelResource, String instanceName)
+	{
+		return getThumbnailInternal(modelResource, getName(modelResource)+"_"+instanceName);
+	}
+	
+	public static BufferedImage getThumbnail(Class<?> modelResource)
+	{
+		return getThumbnailInternal(modelResource, getName(modelResource));
+	}
+	
+	public static java.net.URL getThumbnailURL(Class<?> modelResource)
+	{
+		return getThumbnailURLInternal(modelResource, getName(modelResource));
+	}
+	
+	public static java.net.URL getThumbnailURL(Class<?> modelResource, String instanceName)
+	{
+		return getThumbnailURLInternal(modelResource, getName(modelResource)+"_"+instanceName);
+	}
+	
+	public static org.lgna.story.resourceutilities.ModelResourceInfo getModelResourceInfo(Class<?> modelResource) {
+		if (modelResource == null)
+		{
+			return null;
+		}
+		if( classToInfoMap.containsKey(modelResource) ) {
+			return classToInfoMap.get(modelResource);
+		}
+		else {
+			String name = getName(modelResource);
+			try {
+				InputStream is = getAliceResourceAsStream(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator()+name+".xml");
+				if (is != null) {
+					Document doc = XMLUtilities.read(is);
+					ModelResourceInfo info = new ModelResourceInfo(doc);
+					classToInfoMap.put(modelResource, info);
+					return info;
+				}
+				else {
+					return null;
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+	}
+	
+	public static AxisAlignedBox getBoundingBox(Class<?> modelResource)
+	{
+		ModelResourceInfo info = getModelResourceInfo(modelResource);
+		if (info != null) {
+			return info.getBoundingBox();
+		}
+		return null;
+	}
+	
+	public static String getModelName(Class<?> modelResource)
+	{
+		ModelResourceInfo info = getModelResourceInfo(modelResource);
+		if (info != null) {
+			return info.getName();
+		}
+		return null;
+	}
+	
+	public static String getCreator(Class<?> modelResource)
+	{
+		ModelResourceInfo info = getModelResourceInfo(modelResource);
+		if (info != null) {
+			return info.getCreator();
+		}
+		return null;
+	}
+	
+	public static int getCreationYear(Class<?> modelResource)
+	{
+		ModelResourceInfo info = getModelResourceInfo(modelResource);
+		if (info != null) {
+			return info.getCreationYear();
+		}
+		return -1;
+	}
+	
+	public static String[] getTags(Class<?> modelResource)
+	{
+		ModelResourceInfo info = getModelResourceInfo(modelResource);
+		if (info != null) {
+			return info.getTags();
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
+	
 }

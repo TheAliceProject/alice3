@@ -168,6 +168,8 @@ public abstract class ApiConfigurationManager {
 	public abstract boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public abstract org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public abstract org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field );
+	public abstract org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForParameterAccess( org.lgna.project.ast.UserParameter parameter );
+	public abstract org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForLocalAccess( org.lgna.project.ast.UserLocal local );
 	public abstract java.util.List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes();
 	public abstract org.lgna.project.ast.AbstractType< ?,?,? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?,?,? > type );
 	public abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type );

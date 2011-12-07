@@ -56,7 +56,6 @@ import org.alice.interact.operations.PredeterminedSetOrthographicPicturePlaneAct
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
@@ -162,7 +161,7 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 			
 			if (newZoom  == this.originalZoomValue)
 			{
-				PrintUtilities.println("Adding an undoable action for a manipulation that didn't actually change the zoom.");
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the zoom." );
 			}
 			edu.cmu.cs.dennisc.animation.Animator animator;
 			if( this.dragAdapter != null ) {

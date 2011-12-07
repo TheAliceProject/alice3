@@ -168,7 +168,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 				@Override
 				public void setComponentOrientation(java.awt.ComponentOrientation o) {
 					super.setComponentOrientation(o);
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: adjust spring" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "adjust spring" );
 				}
 			};
 			return rv;
@@ -344,12 +344,12 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		}
 	}
 	
-	private class PopupButton extends Button {
+	private class PopupButton extends OperationButton<javax.swing.JButton, Operation<?>> {
 		public PopupButton( Operation<?> operation ) {
 			super( operation );
 		}
 		@Override
-		protected javax.swing.JButton createAwtComponent() {
+		protected final javax.swing.JButton createAwtComponent() {
 			javax.swing.JButton rv = new javax.swing.JButton() {
 				private boolean isNecessary() {
 					java.awt.Container parent = this.getParent();

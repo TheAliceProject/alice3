@@ -132,7 +132,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = new java.awt.Dimension( 640, 480 );
 	@Override
-	protected java.awt.Point getDesiredDialogLocation( org.lgna.croquet.components.Dialog dialog ) {
+	protected java.awt.Point getDesiredDialogLocation() {
 		return this.location;
 	}
 	@Override
@@ -180,7 +180,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: releaseContentPane" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "releaseContentPane" );
 		RunOperation.this.programImp.shutDown();
 		RunOperation.this.programImp = null;
 		step.finish();

@@ -55,7 +55,7 @@ public class AddParameterEdit extends ParameterEdit< org.alice.ide.croquet.model
 
 	@Override
 	protected org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > getParametersProperty() {
-		return this.getModel().getCode().getParamtersProperty();
+		return this.getModel().getCode().getRequiredParamtersProperty();
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {

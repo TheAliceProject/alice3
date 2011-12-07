@@ -41,33 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package org.alice.stageide.instancefactory.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisMethodInvocationFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisMethodInvocationFactoryFillIn getInstance( org.lgna.project.ast.AbstractMethod value ) {
+public class ThisJointedMenuModel extends JointInstanceFactoryMenuModel {
+	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ThisJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ThisJointedMenuModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
 		synchronized( map ) {
-			ThisMethodInvocationFactoryFillIn rv = map.get( value );
+			ThisJointedMenuModel rv = map.get( value );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ThisMethodInvocationFactoryFillIn( value );
+				rv = new ThisJointedMenuModel( value );
 				map.put( value, rv );
 			}
 			return rv;
 		}
 	}
-	public static ThisMethodInvocationFactoryFillIn getInstance( Class<?> declaringCls, String name ) {
-		return getInstance( org.lgna.project.ast.JavaMethod.getInstance( declaringCls, name ) );
-	}
-	private ThisMethodInvocationFactoryFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "1ab72e54-03d3-4569-b777-cac55c793b6e" ), ThisMethodInvocationFactory.getInstance( method ) );
+	private ThisJointedMenuModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), type );
 	}
 	@Override
-	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.getTransientValue( step );
+	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( method ) );
 	}
 }

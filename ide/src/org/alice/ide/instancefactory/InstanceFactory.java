@@ -47,10 +47,10 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public interface InstanceFactory {
+	public < F extends InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > getCodableResolver();
 	public org.lgna.project.ast.AbstractType< ?,?,? > getValueType(); 
 	public org.lgna.project.ast.Expression createTransientExpression();
 	public org.lgna.project.ast.Expression createExpression();
 	public String getRepr();
-	@Deprecated
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
+	public edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] getMutablePropertiesOfInterest();
 }

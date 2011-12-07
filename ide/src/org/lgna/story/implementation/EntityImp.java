@@ -67,7 +67,7 @@ public abstract class EntityImp implements ReferenceFrame {
 	//todo
 //	protected abstract edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, ReferenceFrame asSeenBy );
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
-		System.err.println( "todo: updateCumulativeBound " + this );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "override", this );
 		return rv;
 	}
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {

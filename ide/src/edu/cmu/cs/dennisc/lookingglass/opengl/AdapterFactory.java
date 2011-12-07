@@ -105,14 +105,17 @@ public abstract class AdapterFactory {
 				register( sgClass, cls );
 			}
 		}
-		AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement > rv = null;
-		try
-		{
-			rv = (AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
+		AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement > rv;
+		if( cls != null ) {
+			try {
+				rv = (AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
+			} catch( Throwable t ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, cls );
+				rv = null;
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot find adapter for", sgClass );
+			rv = null;
 		}
 		return rv;
 	}

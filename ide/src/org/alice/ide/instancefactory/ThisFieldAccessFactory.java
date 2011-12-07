@@ -46,9 +46,9 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessFactory implements InstanceFactory {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, ThisFieldAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ThisFieldAccessFactory getInstance( org.lgna.project.ast.AbstractField field ) {
+public class ThisFieldAccessFactory extends AbstractInstanceFactory {
+	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ThisFieldAccessFactory getInstance( org.lgna.project.ast.UserField field ) {
 		assert field != null;
 		ThisFieldAccessFactory rv = map.get( field );
 		if( rv != null ) {
@@ -59,15 +59,17 @@ public class ThisFieldAccessFactory implements InstanceFactory {
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.AbstractField field;
-	private ThisFieldAccessFactory( org.lgna.project.ast.AbstractField field ) {
+	private final org.lgna.project.ast.UserField field;
+	private ThisFieldAccessFactory( org.lgna.project.ast.UserField field ) {
+		super( field.name );
 		this.field = field;
 	}
-	public org.lgna.project.ast.AbstractField getField() {
-		return this.field;
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< ThisFieldAccessFactory > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisFieldAccessFactory >( this, this.field, org.lgna.project.ast.UserField.class );
 	}
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return this.field.getNamePropertyIfItExists();
+	public org.lgna.project.ast.UserField getField() {
+		return this.field;
 	}
 	private org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression ) {
 		return new org.lgna.project.ast.FieldAccess( expression, this.field );

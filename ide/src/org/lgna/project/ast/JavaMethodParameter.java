@@ -62,8 +62,7 @@ public class JavaMethodParameter extends JavaParameter {
 				}
 			}
 		} catch( Throwable t ) {
-			//t.printStackTrace();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ParameterDeclaredInJavaMethod getParameterNameFor: ", methodReflectionProxy, index );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, methodReflectionProxy, index );
 		}
 		return rv;
 	}

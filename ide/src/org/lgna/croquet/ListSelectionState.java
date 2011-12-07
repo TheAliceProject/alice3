@@ -134,22 +134,22 @@ package org.lgna.croquet;
 	}
 
 	public void addSelectionInterval( int index0, int index1 ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addSelectionInterval" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index0, index1 );
 	}
 	public void insertIndexInterval( int index, int length, boolean before ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: insertIndexInterval" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index, length, before );
 	}
 	public void removeIndexInterval( int index0, int index1 ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: removeIndexInterval" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index0, index1 );
 	}
 	public void removeSelectionInterval( int index0, int index1 ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: removeSelectionInterval" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index0, index1 );
 	}
 	public void setAnchorSelectionIndex( int index ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setAnchorSelectionIndex" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index );
 	}
 	public void setLeadSelectionIndex( int index ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setLeadSelectionIndex" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index );
 	}
 	public void setSelectionInterval( int index0, int index1 ) {
 		assert index0 == index1;
@@ -236,7 +236,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	}
 
 	@Override
-	public T getValue() {
+	protected T getActualValue() {
 		return this.getSelectedItem();
 	}
 
@@ -253,7 +253,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 				return this.getItemAt( index );
 			} else {
 				//				throw new IndexOutOfBoundsException( this.index + " " + this.getItemCount() + " " + this );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: item selection out of bounds" );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "item selection out of bounds", this.index, this.getItemCount(), this );
 				return null;
 			}
 		} else {
@@ -546,7 +546,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		}
 		@Override
 		protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ListSelectionMenuModel handleShowing" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuItemContainer, e );
 			super.handleShowing( menuItemContainer, e );
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for( final Object item : this.listSelectionState ) {

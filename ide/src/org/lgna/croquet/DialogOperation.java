@@ -42,7 +42,6 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.Container;
 import org.lgna.croquet.components.Dialog;
 import org.lgna.croquet.components.ViewController;
@@ -59,15 +58,13 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 
 	protected void modifyPackedDialogSizeIfDesired( Dialog dialog ) {
 	}
-	protected java.awt.Point getDesiredDialogLocation( Dialog dialog ) {
+	protected java.awt.Point getDesiredDialogLocation() {
 		return null;
 	}
-	protected void tweakDialog( Dialog dialog, S context ) {
-	}
-	
-	private Dialog activeDialog;
-	public Dialog getActiveDialog() {
-		return this.activeDialog;
+	private Dialog EPIC_HACK_activeDialog;
+	@Deprecated
+	public Dialog EPIC_HACK_getActiveDialog() {
+		return this.EPIC_HACK_activeDialog;
 	}
 	
 	protected abstract Container<?> createContentPane(S context, Dialog dialog);
@@ -96,15 +93,27 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 	
 	@Override
 	protected final void perform( final S step ) {
-		org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-		ViewController<?,?> viewController = trigger.getViewController();
-		Component<?> owner;
-		if( viewController != null ) {
-			owner = viewController;
+		org.lgna.croquet.history.DialogOperationStep<?> ancestor = step.getFirstAncestorAssignableTo( org.lgna.croquet.history.DialogOperationStep.class );
+		Dialog ownerDialog;
+		if( ancestor != null ) {
+			ownerDialog = ancestor.getDialog();
 		} else {
-			owner = Application.getActiveInstance().getFrame().getContentPanel();
+			ownerDialog = null;
+		}
+		org.lgna.croquet.components.ScreenElement owner;
+		if( ownerDialog != null ) {
+			owner = ownerDialog;
+		} else {
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			ViewController<?,?> viewController = trigger.getViewController();
+			if( viewController != null ) {
+				owner = viewController;
+			} else {
+				owner = Application.getActiveInstance().getFrame().getContentPanel();
+			}
 		}
 		final Dialog dialog = new Dialog( owner );
+		step.setDialog( dialog );
 //		dialog.getAwtComponent().setUndecorated( true );
 //		dialog.getRootPane().setWindowDecorationStyle(javax.swing.JRootPane.PLAIN_DIALOG);
 
@@ -140,16 +149,22 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 				dialog.getAwtComponent().setContentPane( contentPane.getAwtComponent() );
 				dialog.pack();
 				this.modifyPackedDialogSizeIfDesired( dialog );
-				java.awt.Point location = this.getDesiredDialogLocation( dialog );
-				if( location != null ) {
-					dialog.setLocation( location );
+				if( ownerDialog != null ) {
+					final int OFFSET = 32;
+					java.awt.Point p = ownerDialog.getLocation();
+					dialog.setLocation( p.x+OFFSET, p.y+OFFSET );
+					//dialog.getAwtComponent().setLocationRelativeTo( ownerDialog.getAwtComponent() );
 				} else {
-					edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getActiveInstance().getFrame().getAwtComponent() ); 
+					java.awt.Point location = this.getDesiredDialogLocation();
+					if( location != null ) {
+						dialog.setLocation( location );
+					} else {
+						edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getActiveInstance().getFrame().getAwtComponent() ); 
+					}
 				}
-				this.tweakDialog( dialog, step );
 				
 				dialog.setTitle( this.getDialogTitle(step) );
-				this.activeDialog = dialog;
+				this.EPIC_HACK_activeDialog = dialog;
 				try {
 					dialog.setVisible( true );
 					this.handleClosing();
@@ -157,7 +172,7 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 					dialog.removeWindowListener( windowListener );
 					dialog.getAwtComponent().dispose();
 				} finally {
-					this.activeDialog = null;
+					this.EPIC_HACK_activeDialog = null;
 				}
 			} else {
 				this.releaseContentPane( step, dialog, contentPane );

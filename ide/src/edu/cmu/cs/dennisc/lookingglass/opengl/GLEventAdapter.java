@@ -101,7 +101,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	public void startListening( javax.media.opengl.GLAutoDrawable drawable ) {
 		if( this.isListening ) {
 			assert drawable == this.drawable;
-			System.err.println( "request GLEventAdapter.startListening( drawable ) ignored; already listening." );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "request GLEventAdapter.startListening( drawable ) ignored; already listening." );
 		} else {
 			this.isListening = true;
 			this.drawable = drawable;
@@ -114,7 +114,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			this.isListening = false;
 			drawable.removeGLEventListener( this );
 		} else {
-			System.err.println( "request GLEventAdapter.stopListening( drawable ) ignored; already not listening." );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "request GLEventAdapter.stopListening( drawable ) ignored; already not listening." );
 		}
 		this.drawable = null;
 	}
@@ -201,12 +201,12 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 					
 					
 				} catch( RuntimeException re ) {
-					System.err.println( "rendering will be disabled due to exception" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "rendering will be disabled due to exception" );
 					this.isDisplayIgnoredDueToPreviousException = true;
 					throw re;
 				}
 				catch( Error er ) {
-                    System.err.println( "rendering will be disabled due to exception" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "rendering will be disabled due to exception" );
                     this.isDisplayIgnoredDueToPreviousException = true;
                     throw er;
                 }
@@ -554,7 +554,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		this.lookingGlass.fireDisplayChanged( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent( this.lookingGlass, modeChanged, deviceChanged ) );
 	}
 	public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
-		System.err.println( "todo: dispose " + drawable );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( drawable );
 	}
 
 	public void forgetAllCachedItems() {

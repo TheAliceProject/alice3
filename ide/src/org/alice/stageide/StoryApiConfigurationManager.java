@@ -225,7 +225,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
-			return org.alice.stageide.instancefactory.ThisJointedMenuModel.getInstance( type );
+			return org.alice.stageide.instancefactory.croquet.ThisJointedMenuModel.getInstance( type );
 		} else {
 			return null;
 		}
@@ -235,7 +235,25 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
 		if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
-			return org.alice.stageide.instancefactory.ThisFieldAccessJointedMenuModel.getInstance( field );
+			return org.alice.stageide.instancefactory.croquet.ThisFieldAccessJointedMenuModel.getInstance( field );
+		} else {
+			return null;
+		}
+	}
+	@Override
+	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForParameterAccess( org.lgna.project.ast.UserParameter parameter ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > type = parameter.getValueType();
+		if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
+			return org.alice.stageide.instancefactory.croquet.ParameterAccessJointedMenuModel.getInstance( parameter );
+		} else {
+			return null;
+		}
+	}
+	@Override
+	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForLocalAccess( org.lgna.project.ast.UserLocal local ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > type = local.getValueType();
+		if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
+			return org.alice.stageide.instancefactory.croquet.LocalAccessJointedMenuModel.getInstance( local );
 		} else {
 			return null;
 		}

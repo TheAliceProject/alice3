@@ -43,24 +43,18 @@
 
 package org.alice.ide.typeeditor;
 
-/*package-private*/ class FieldItemDetails extends MemberItemDetails< org.lgna.project.ast.UserField, FieldItemDetails, FieldList > {
-	public FieldItemDetails( FieldList panel, org.lgna.project.ast.UserField item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
-		super( panel, item, button );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldList extends MemberList< org.lgna.project.ast.UserField, FieldItemDetails > {
+public abstract class FieldList extends MemberList< org.lgna.project.ast.UserField > {
 	public FieldList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserField > model, org.lgna.croquet.Operation< ? > operation ) {
 		super( model, operation );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 	@Override
-	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
-		org.lgna.croquet.components.LineAxisPanel lineStartPanel = new org.lgna.croquet.components.LineAxisPanel();
+	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserField item ) {
 		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
+		org.lgna.croquet.components.LineAxisPanel lineStartPanel = new org.lgna.croquet.components.LineAxisPanel();
 		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
 			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
 			label.setToolTipText( "managed by the scene editor" );
@@ -70,14 +64,19 @@ public abstract class FieldList extends MemberList< org.lgna.project.ast.UserFie
 			lineStartPanel.addComponent( label );
 		}
 		lineStartPanel.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton() );
-		button.addComponent( lineStartPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		button.addComponent( 
-				new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), item, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED ),
-				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
-		);
+		return lineStartPanel;
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserField item ) {
+		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), item, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED );
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserField item ) {
 		if( item.isDeletionAllowed.getValue() ) {
-			button.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+			return org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton();
+		} else {
+			return null;
 		}
-		return new FieldItemDetails( this, item, button );
 	}
 }

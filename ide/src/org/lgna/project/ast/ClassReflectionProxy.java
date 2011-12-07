@@ -172,7 +172,7 @@ public final class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 		try {
 			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( this.name );
 		} catch( ClassNotFoundException cnfe ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: could not find class", this.name );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "could not find class", this.name );
 			return null;
 		}
 	}

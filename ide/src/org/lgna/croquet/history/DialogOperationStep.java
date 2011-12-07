@@ -47,12 +47,21 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public abstract class DialogOperationStep< M extends org.lgna.croquet.DialogOperation< ? > > extends SingleThreadOperationStep< M > {
+	private org.lgna.croquet.components.Dialog dialog;
 	public DialogOperationStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger, new TransactionHistory() );
 	}
 	public DialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+	
+	public org.lgna.croquet.components.Dialog getDialog() {
+		return this.dialog;
+	}
+	public void setDialog( org.lgna.croquet.components.Dialog dialog ) {
+		this.dialog = dialog;
+	}
+
 	public void handleWindowOpened( java.awt.event.WindowEvent e ) {
 	}
 	public void handleWindowClosing( java.awt.event.WindowEvent e ) {

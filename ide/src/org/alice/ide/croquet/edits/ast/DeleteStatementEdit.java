@@ -68,9 +68,9 @@ public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croqu
 		assert blockStatement.statements.indexOf( statement ) == this.index;
 		blockStatement.statements.remove( index );
 		
-		System.err.println( "todo: preserve deletion " + statement );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "preserve deletion", statement );
 		//todo: remove
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
 	@Override
 	protected final void undoInternal() {
@@ -78,7 +78,7 @@ public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croqu
 		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
 		blockStatement.statements.add( index, statement );
 		//todo: remove
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

@@ -46,27 +46,23 @@ package org.alice.ide.instancefactory;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InstanceFactoryFillInWithoutBlanks extends org.lgna.croquet.CascadeFillIn< InstanceFactory, Void > {
-	private final InstanceFactory transientValue;
-	public InstanceFactoryFillInWithoutBlanks( java.util.UUID id, InstanceFactory transientValue ) {
-		super( id );
-		this.transientValue = transientValue;
+public abstract class AbstractInstanceFactory implements InstanceFactory {
+	private final edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] mutablePropertiesOfInterest;
+	private org.lgna.croquet.resolvers.CodableResolver resolver;
+	public AbstractInstanceFactory( edu.cmu.cs.dennisc.property.InstanceProperty< ? >... mutablePropertiesOfInterest ) { 
+		this.mutablePropertiesOfInterest = mutablePropertiesOfInterest;
 	}
-	@Override
-	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		org.lgna.project.ast.Expression expression = this.transientValue.createTransientExpression();
-		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
+	protected abstract < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > createResolver();
+	public final < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > getCodableResolver() {
+		if( this.resolver != null ) {
+			//pass
+		} else {
+			this.resolver = this.createResolver();
+		}
+		return this.resolver;
+	}
+	public final edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] getMutablePropertiesOfInterest() {
+		return this.mutablePropertiesOfInterest;
+	}
 
-		javax.swing.JPanel rv = new javax.swing.JPanel();
-		rv.setLayout( new java.awt.BorderLayout() );
-		
-		rv.add( new javax.swing.JLabel( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( this.transientValue.getValueType() ) ), java.awt.BorderLayout.LINE_START );
-		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
-		rv.setOpaque( false );
-		return rv;
-	}
-	@Override
-	public final InstanceFactory getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.transientValue;
-	}
 }

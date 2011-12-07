@@ -48,7 +48,15 @@ package org.alice.ide.croquet.components;
  */	
 public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState< org.alice.ide.instancefactory.InstanceFactory > > extends org.lgna.croquet.components.ItemDropDown< org.alice.ide.instancefactory.InstanceFactory, M > {
 	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
-		private void refresh( org.alice.ide.instancefactory.InstanceFactory nextValue ) {
+		private org.alice.ide.instancefactory.InstanceFactory nextValue;
+		private void handleChanged( org.alice.ide.instancefactory.InstanceFactory nextValue ) {
+			this.nextValue = nextValue;
+			this.refreshLater();
+		}
+
+		@Override
+		protected void internalRefresh() {
+			super.internalRefresh();
 			this.forgetAndRemoveAllComponents();
 			this.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null ), Constraint.CENTER );
 			if( nextValue != null ) {
@@ -57,7 +65,6 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 					this.addComponent( new org.lgna.croquet.components.Label( icon ), Constraint.LINE_START );
 				}
 			}
-			this.revalidateAndRepaint();
 		}
 	};
 	private final MainComponent mainComponent = new MainComponent();
@@ -68,6 +75,6 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 	}
 	@Override
 	protected void handleChanged( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		this.mainComponent.refresh( nextValue );
+		this.mainComponent.handleChanged( nextValue );
 	}
 };

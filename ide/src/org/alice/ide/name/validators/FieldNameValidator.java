@@ -66,7 +66,7 @@ public class FieldNameValidator extends MemberNameValidator {
 				}
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isNameAvailable type == null" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "type == null" );
 		}
 		return true;
 	}

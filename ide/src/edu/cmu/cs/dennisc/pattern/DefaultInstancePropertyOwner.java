@@ -497,8 +497,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 						}
 						propertyCount ++;
 					} catch( Exception e ) {
-						System.err.println( "WARNING: exception in equivalence check:" + e );
-						e.printStackTrace();
+						edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( e, this, other );
 						return false;
 					}
 				}

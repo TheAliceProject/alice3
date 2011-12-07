@@ -46,9 +46,9 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionState< M extends org.lgna.project.ast.Expression > extends org.lgna.croquet.DefaultCustomItemState< M > {
-	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, Class< M > cls, M initialValue ) {
-		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( cls ), initialValue );
+public abstract class ExpressionState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.Expression > {
+	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue ) {
+		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue );
 	}
 	public org.lgna.croquet.components.JComponent< ? > createEditor( org.alice.ide.x.AstI18nFactory factory ) {
 		return new org.alice.ide.croquet.components.ExpressionDropDown( this, factory );

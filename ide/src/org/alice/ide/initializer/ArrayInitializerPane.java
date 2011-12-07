@@ -372,7 +372,7 @@ class MutableList extends org.lgna.croquet.components.PageAxisPanel {
 				if( index != -1 ) {
 					MutableList.this.expressionListProperty.remove( index );
 				} else {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "investigate index == -1" );
 				}
 			}
 		} );

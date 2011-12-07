@@ -50,7 +50,7 @@ public abstract class Element {
 	static {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.lgna.croquet.Element.isIdCheckDesired" ) ) {
 			map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			System.err.println( "org.lgna.croquet.Element.isIdCheckDesired==true" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "org.lgna.croquet.Element.isIdCheckDesired==true" );
 		}
 	}
 	
@@ -85,7 +85,14 @@ public abstract class Element {
 		if( map != null ) {
 			Class<? extends Element> cls = map.get( migrationId );
 			if( cls != null ) {
-				assert cls == this.getClass() : migrationId + " " + this.getClass();
+				if( cls == this.getClass() ) {
+					//pass
+				} else {
+					String clipboardContents = "java.util.UUID.fromString( \"" + migrationId + "\" )";
+					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( clipboardContents );
+					String message = "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates.";
+					Application.getActiveInstance().showMessageDialog( message );
+				}
 			} else {
 				map.put( migrationId, this.getClass() );
 			}

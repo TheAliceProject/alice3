@@ -41,39 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.instancefactory;
+package edu.cmu.cs.dennisc.java.util.logging;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessFactoryFillIn extends InstanceFactoryFillInWithoutBlanks {
-	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+public class SegregatingConsoleHandler extends java.util.logging.Handler {
+	private static java.util.logging.Level ERROR_LEVEL = java.util.logging.Level.SEVERE;
+	@Override
+	public void publish( java.util.logging.LogRecord record ) {
+		java.io.PrintStream os;
+		if( record.getLevel().intValue() >= ERROR_LEVEL.intValue() ) {
+			os = System.err;
+		} else {
+			os = System.out;
 		}
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			ThisFieldAccessFactoryFillIn.this.markDirty();
-		}
-	}
-	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
-	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisFieldAccessFactoryFillIn getInstance( org.lgna.project.ast.UserField value ) {
-		synchronized( map ) {
-			ThisFieldAccessFactoryFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisFieldAccessFactoryFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
-	private ThisFieldAccessFactoryFillIn( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "01f7980c-ee24-4a40-94e5-9e0318ecbe1a" ), ThisFieldAccessFactory.getInstance( field ) );
-		field.name.addPropertyListener( this.namePropertyAdapter );
+		os.print( this.getFormatter().format( record ) );
+		os.flush();
 	}
 	@Override
-	public InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super InstanceFactory, Void > step ) {
-		return this.getTransientValue( step );
+	public void flush() {
+	}
+	@Override
+	public void close() throws java.lang.SecurityException {
 	}
 }

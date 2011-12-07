@@ -1,12 +1,20 @@
 package org.lgna.story.resourceutilities;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.alice.ide.ResourcePathManager;
 import org.lgna.project.ast.JavaType;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
 
 public class StorytellingResources {
@@ -19,12 +27,16 @@ public class StorytellingResources {
 	}
 
 	private static final String NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY = "NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY";
+	private static final String ALICE_RESOURCE_DIRECTORY_PREF_KEY = "ALICE_RESOURCE_DIRECTORY_PREF_KEY";
 
 	private static final String SIMS_RESOURCE_INSTALL_PATH = "assets/sims";
 	private static final String ALICE_RESOURCE_INSTALL_PATH = "assets/alice";
 
-	private final ModelResourceTree galleryTree;
+	private ModelResourceTree galleryTree;
 	private final List< File > simsPathsLoaded = new LinkedList< File >();
+	
+	private URLClassLoader classLoader;
+	
 
 	private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
 		for( String propertyKey : propertyKeys ) {
@@ -36,7 +48,7 @@ public class StorytellingResources {
 			}
 		}
 		return null;
-	}
+	} 
 
 	private File findResourcePath( String relativePath ) {
 		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery", "required/gallery/" + org.lgna.project.Version.getCurrentVersionText() } );
@@ -48,7 +60,7 @@ public class StorytellingResources {
 		}
 		return null;
 	}
-
+	
 	public void setNebulousResourceDir( String dir ) {
 		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
 		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, dir );
@@ -57,6 +69,20 @@ public class StorytellingResources {
 	public File getNebulousDirFromPref() {
 		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
 		String dir = rv.get( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
+		if( dir != null && dir.length() > 0 ) {
+			return new File( dir );
+		}
+		return null;
+	}
+	
+	public void setAliceResourceDir( String dir ) {
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, dir );
+	}
+
+	public File getAliceDirFromPref() {
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		String dir = rv.get( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
 		if( dir != null && dir.length() > 0 ) {
 			return new File( dir );
 		}
@@ -84,31 +110,105 @@ public class StorytellingResources {
 			ResourcePathManager.addPath( ResourcePathManager.MODEL_RESOURCE_KEY, alicePath );
 			return ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
 		} else {
-			return new LinkedList< File >();
+			LinkedList< File > directoryFromSavedPreference = new LinkedList< File >();
+			File resourceDir = getAliceDirFromPref();
+			if( resourceDir != null ) {
+				directoryFromSavedPreference.add( resourceDir );
+			}
+			return directoryFromSavedPreference;
 		}
 	}
 
 	private StorytellingResources() {
+	}
+
+	
+	public List<Class<? extends org.lgna.story.resources.ModelResource>> loadResourceJarFile(File... resourceJars)
+	{
+		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
+		List<String> classNames = new LinkedList<String>();
+		LinkedList<URL> urls = new LinkedList<URL>();
+		for (File resourceJar : resourceJars) {
+				try
+				{
+					ZipFile zip = new ZipFile(resourceJar);
+					Enumeration<? extends ZipEntry> entries = zip.entries();
+					while (entries.hasMoreElements())
+					{
+						ZipEntry entry = entries.nextElement();
+						if (entry.getName().endsWith(".xml") && !entry.getName().contains("$"))
+						{
+							String className = entry.getName().replace('/', '.');
+							int lastDot = className.lastIndexOf(".");
+							String baseName = className.substring(0, lastDot);
+							classNames.add(baseName);
+						}
+					}
+					urls.add(resourceJar.toURI().toURL());
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+				
+		}
+		try
+		{
+			URL[] urlArray = urls.toArray(new URL[urls.size()]);
+			URLClassLoader cl = new URLClassLoader(urlArray);
+			
+			for (String className : classNames)
+			{
+				Class<?> cls = cl.loadClass(className);
+				if (org.lgna.story.resources.ModelResource.class.isAssignableFrom(cls))
+				{
+					classes.add((Class<? extends org.lgna.story.resources.ModelResource>)cls);
+				}
+			}
+			
+			this.classLoader = cl;
+			
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return classes;
+	}
+	
+	
+	public List<Class<? extends org.lgna.story.resources.ModelResource>> getAndLoadModelResourceClasses(List<File> resourcePaths)
+	{
+		List<Class<? extends org.lgna.story.resources.ModelResource>> galleryClasses = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
+		for (File modelPath : resourcePaths)
+		{
+			try {
+				File[] jarFiles = FileUtilities.listDescendants(modelPath, "jar");
+				galleryClasses.addAll( this.loadResourceJarFile(jarFiles) );
+			}
+			catch (Exception e)
+			{
+				System.err.println("Failed to load resources on path: '"+modelPath+"'");
+			}
+		}
+		return galleryClasses;
+	}
+	
+	private void buildGalleryTree() {
 		List< File > resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
 		if( resourcePaths.size() == 0 ) {
 			resourcePaths = findAliceResources();
 		}
-		List<Class<? extends org.lgna.story.resources.ModelResource>> modelResourceClasses = ModelResourceUtilities.getAndLoadModelResourceClasses(resourcePaths);
-		this.galleryTree = new ModelResourceTree(modelResourceClasses);
-	
-		//TODO: make this work better for the plugin
-//		if (resourcePaths.size() == 0)
-//		{
-//			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find the Alice gallery resources." );
-//		}
-		if( this.getNebulousDirFromPref() == null ) {
-			java.util.List< java.io.File > nebulousPaths = ResourcePathManager.getPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
-			if( nebulousPaths.size() > 0 ) {
-				this.setNebulousResourceDir( nebulousPaths.get( 0 ).getAbsolutePath() );
-			}
+		List< Class< ? extends org.lgna.story.resources.ModelResource >> modelResourceClasses = this.getAndLoadModelResourceClasses( resourcePaths );
+		this.galleryTree = new ModelResourceTree( modelResourceClasses );
+		if( resourcePaths.size() == 0 ) {
+			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find the Alice gallery resources." );
+		}
+		else if( getAliceDirFromPref() == null ) {
+			setNebulousResourceDir( resourcePaths.get( 0 ).getParent() );
 		}
 	}
-
+	
 	public void loadSimsBundles() {
 		List< File > resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
 		if( resourcePaths.size() == 0 ) {
@@ -140,7 +240,7 @@ public class StorytellingResources {
 	}
 
 	public List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes() {
-		List< ModelResourceTreeNode > rootNodes = this.galleryTree.getRootNodes();
+		List< ModelResourceTreeNode > rootNodes = this.getGalleryTreeInternal().getRootNodes();
 		List< org.lgna.project.ast.JavaType > rootTypes = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		for( ModelResourceTreeNode node : rootNodes ) {
 			rootTypes.add( node.getUserType().getFirstTypeEncounteredDeclaredInJava() );
@@ -164,6 +264,18 @@ public class StorytellingResources {
 
 	private boolean hasSingleLeafChild( TreeNode< ? > node ) {
 		return (node.getChildCount() == 1 && node.getChildAt( 0 ).getChildCount() == 0);
+	}
+	
+	public URL getAliceResource(String resourceString) {
+		this.initializeAliceResourcesIfNecessary();
+		assert this.classLoader != null;
+		return this.classLoader.findResource(resourceString);
+	}
+	
+	public InputStream getAliceResourceAsStream(String resourceString) {
+		this.initializeAliceResourcesIfNecessary();
+		assert this.classLoader != null;
+		return this.classLoader.getResourceAsStream(resourceString);
 	}
 
 	public List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
@@ -189,17 +301,30 @@ public class StorytellingResources {
 		return toReturn;
 
 	}
+	
+	public void initializeAliceResourcesIfNecessary() {
+		if (this.galleryTree == null) {
+			this.buildGalleryTree();
+		}
+	}
+	
+	private ModelResourceTree getGalleryTreeInternal() {
+		if (this.galleryTree == null) {
+			this.buildGalleryTree();
+		}
+		return this.galleryTree;
+	}
 
 	private ModelResourceTreeNode getGalleryResourceTreeNodeForJavaType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return this.galleryTree.getGalleryResourceTreeNodeForJavaType( type );
+		return this.getGalleryTreeInternal().getGalleryResourceTreeNodeForJavaType( type );
 	}
 
 	public ModelResourceTreeNode getGalleryResourceTreeNodeForUserType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return this.galleryTree.getGalleryResourceTreeNodeForUserType( type );
+		return getGalleryTreeInternal().getGalleryResourceTreeNodeForUserType( type );
 	}
 
 	public ModelResourceTreeNode getGalleryTree() {
-		return galleryTree.getTree();
+		return getGalleryTreeInternal().getTree();
 	}
 
 }

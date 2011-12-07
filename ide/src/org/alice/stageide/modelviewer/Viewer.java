@@ -65,15 +65,16 @@ abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 		this.sunLight.applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3.accessNegativeXAxis(), 0.25 );
 	}
 	private boolean isInitialized = false;
+	
+	private class LookingGlassAdapter extends org.lgna.croquet.components.Component<java.awt.Component> {
+		@Override
+		protected java.awt.Component createAwtComponent() {
+			return Viewer.this.onscreenLookingGlass.getAWTComponent();
+		}
+	}
 	protected void initialize() {
 		this.onscreenLookingGlass.addCamera( this.camera.getSgCamera() );
-		
-		this.adapter = new org.lgna.croquet.components.Component<java.awt.Component>() {
-			@Override
-			protected java.awt.Component createAwtComponent() {
-				return Viewer.this.onscreenLookingGlass.getAWTComponent();
-			}
-		};
+		this.adapter = new LookingGlassAdapter();
 	}
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;

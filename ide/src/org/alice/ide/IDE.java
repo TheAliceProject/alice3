@@ -87,7 +87,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		this.promptForLicenseAgreements();
 
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
 
 		this.getRunOperation().setEnabled( false );
 		this.addProjectObserver( new ProjectObserver() {
@@ -114,7 +114,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
 			org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
 			org.lgna.project.ast.AbstractCode code = blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
-			System.err.println( "todo: getDropReceptor: " + dropSite );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( dropSite );
 			return getCodeEditorInFocus();
 		}
 		return null;
@@ -412,7 +412,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					final int N = sceneType.fields.size();
 					if( N > 0 ) {
 						org.lgna.project.ast.UserField field = sceneType.fields.get( N-1 );
-						org.alice.ide.instancefactory.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
 					}
 				}
 			}
@@ -423,11 +423,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
 		try {
 			this.setRootField( this.getSceneField() );
 		} finally {
-			org.alice.ide.instancefactory.InstanceFactoryState.getInstance().popIgnoreAstChanges();
+			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popIgnoreAstChanges();
 		}
 	}
 
@@ -444,7 +444,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		//		} else {
 		//			throw new RuntimeException( "copy not equivalent to original" );
 		//		}
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: check copy" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 		return (N)dst;
 	}
 	private org.lgna.project.ast.Comment commentThatWantsFocus = null;

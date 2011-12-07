@@ -41,30 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory;
+package org.alice.stageide.instancefactory.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ThisJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisJointedMenuModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
+public class LocalAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
+	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static LocalAccessJointedMenuModel getInstance( org.lgna.project.ast.UserLocal value ) {
 		synchronized( map ) {
-			ThisJointedMenuModel rv = map.get( value );
+			LocalAccessJointedMenuModel rv = map.get( value );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ThisJointedMenuModel( value );
+				rv = new LocalAccessJointedMenuModel( value );
 				map.put( value, rv );
 			}
 			return rv;
 		}
 	}
-	private ThisJointedMenuModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), type );
+	private final org.lgna.project.ast.UserLocal local;
+	private LocalAccessJointedMenuModel( org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "68729d94-33e9-4da7-a04c-cb88939b8c93" ), local.getValueType() );
+		this.local = local;
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.ThisMethodInvocationFactoryFillIn.getInstance( method );
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessMethodInvocationFactory.getInstance( this.local, method ) );
 	}
 }

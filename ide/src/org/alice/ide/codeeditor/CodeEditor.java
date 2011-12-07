@@ -232,18 +232,18 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();
 					if( expressionType.isAssignableFrom( type ) ) {
 						return true;
-					} else {
-						if( type.isArray() ) {
-							if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
-								return true;
-							} else {
-								for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
-									if( expressionType == integerType ) {
-										return true;
-									}
-								}
-							}
-						}
+//					} else {
+//						if( type.isArray() ) {
+//							if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
+//								return true;
+//							} else {
+//								for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
+//									if( expressionType == integerType ) {
+//										return true;
+//									}
+//								}
+//							}
+//						}
 					}
 					return false;
 				}
@@ -470,9 +470,9 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 					}
 					rv = dragModel.getDropModel( step, blockStatementIndexPair );
 					
-					System.err.println( "todo: investigate pushContext" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "investigate pushContext" );
 					org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( null, blockStatementIndexPair );
-					System.err.println( "todo: handle finally" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle finally" );
 				}
 			} else if( dragModel instanceof org.alice.ide.clipboard.ClipboardDragModel ) {
 				org.alice.ide.clipboard.ClipboardDragModel clipboardDragModel = (org.alice.ide.clipboard.ClipboardDragModel)dragModel;
@@ -611,7 +611,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 			if( isWarningAlreadyPrinted ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getTrackableShapeAtIndexOf isInView" );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "getTrackableShapeAtIndexOf" );
 				isWarningAlreadyPrinted = true;
 			}
 			return true;

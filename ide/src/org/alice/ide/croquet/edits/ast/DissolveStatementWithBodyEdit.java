@@ -87,7 +87,7 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit< org.alice
 
 		
 		//todo: remove
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
 	@Override
 	protected final void undoInternal() {
@@ -100,7 +100,7 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit< org.alice
 		
 		
 		//todo: remove
-		org.alice.ide.instancefactory.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

@@ -40,21 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.initializer;
+
+package org.alice.stageide.instancefactory.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ItemInitializerPane extends org.lgna.croquet.components.FlowPanel {
-	private final org.lgna.project.ast.ExpressionProperty initializerProperty;
-	public ItemInitializerPane( org.lgna.project.ast.ExpressionProperty initializerProperty ) {
-		super( Alignment.LEADING );
-		this.initializerProperty = initializerProperty;
-		this.refresh();
+public abstract class JointInstanceFactoryMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
+	private final java.util.List< org.lgna.project.ast.AbstractMethod > getters;
+	public JointInstanceFactoryMenuModel( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( id );
+		this.getters = org.alice.stageide.ast.JointedModelUtilities.getJointGetters( type );
 	}
-	public void refresh() {
-		this.forgetAndRemoveAllComponents();
-		this.addComponent( org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance().createExpressionPropertyPane( initializerProperty, initializerProperty.getExpressionType() ) );
-		this.revalidateAndRepaint();
+	protected abstract org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method );
+	@Override
+	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
+		for( org.lgna.project.ast.AbstractMethod method : this.getters ) {
+			rv.add( this.getFillIn( method ) );
+		}
+		return rv;
 	}
 }

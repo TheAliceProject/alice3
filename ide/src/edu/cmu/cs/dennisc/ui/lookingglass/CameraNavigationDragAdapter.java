@@ -96,7 +96,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		if( onscreenLookingGlass != null ) {
 			int cameraCount = onscreenLookingGlass.getCameraCount();
 			if( cameraCount > 1 && this.isMultipleCameraWarningAlreadyDelivered == false ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: onscreenLookingGlass.getCameraCount()", onscreenLookingGlass.getCameraCount() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "onscreenLookingGlass camera count:", onscreenLookingGlass.getCameraCount() );
 				this.isMultipleCameraWarningAlreadyDelivered = true;
 			}
 			if( m_sgCameraIndex < cameraCount ) {

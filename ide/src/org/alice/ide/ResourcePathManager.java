@@ -55,7 +55,7 @@ public class ResourcePathManager {
 					}
 					else
 					{
-						System.err.println("Failed to add path to "+pathKey+": "+path);
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Failed to add path to", pathKey + ": ", path);
 					}
 				}
 			}
@@ -68,7 +68,7 @@ public class ResourcePathManager {
 				}
 				else
 				{
-					System.err.println("Failed to add path to "+pathKey+": "+pathValue);
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Failed to add path to", pathKey + ": ", pathValue);
 				}
 			}
 		}

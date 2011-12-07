@@ -49,7 +49,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.ide.ast.CurrentThisExpression;
-import org.alice.ide.instancefactory.InstanceFactoryState;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.ide.typeeditor.ManagedCameraMarkerFieldState;
 import org.alice.ide.typeeditor.ManagedObjectMarkerFieldState;
@@ -104,7 +104,7 @@ import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.TransformableImp;
-import org.lgna.story.resourceutilities.ModelResourceUtilities;
+import org.lgna.story.resourceutilities.ModelResourceBuilderUtilities;
 
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
@@ -323,7 +323,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			{
 				if (field == this.getActiveSceneField() )
 				{
-					InstanceFactoryState.getInstance().setValueTransactionlessly(org.alice.ide.instancefactory.ThisInstanceFactory.SINGLETON);
+					InstanceFactoryState.getInstance().setValueTransactionlessly(org.alice.ide.instancefactory.ThisInstanceFactory.getInstance());
 				}
 				else if (field != null)
 				{
@@ -442,36 +442,38 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	@Override
 	protected void handleExpandContractChange(boolean isExpanded) {
-		this.mainPanel.removeAllComponents();
-		this.mainCameraNavigatorWidget.setExpanded(isExpanded);
-		this.lookingGlassPanel.setNorthEastComponent( this.runButton );
-		if (isExpanded)
-		{
-			this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
-			this.propertiesSplitPane.setLeadingComponent(this.lookingGlassPanel);
-			this.propertiesSplitPane.setTrailingComponent(this.sidePanel);
-			this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
-			this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
+		//todo
+		synchronized( this.getTreeLock() ) {
+			this.mainPanel.removeAllComponents();
+			this.mainCameraNavigatorWidget.setExpanded(isExpanded);
+			this.lookingGlassPanel.setNorthEastComponent( this.runButton );
+			if (isExpanded)
+			{
+				this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
+				this.propertiesSplitPane.setLeadingComponent(this.lookingGlassPanel);
+				this.propertiesSplitPane.setTrailingComponent(this.sidePanel);
+				this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
+				this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
 
-			this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
-			
-			if (this.savedSceneEditorViewSelection != null) {
-				this.mainCameraMarkerList.setSelectedItem(this.savedSceneEditorViewSelection);
+				this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
+				
+				if (this.savedSceneEditorViewSelection != null) {
+					this.mainCameraMarkerList.setSelectedItem(this.savedSceneEditorViewSelection);
+				}
 			}
+			else
+			{
+				this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
+				this.lookingGlassPanel.setNorthWestComponent( null );
+				this.lookingGlassPanel.setSouthEastComponent(this.expandButton);
+				this.lookingGlassPanel.setSouthComponent(null);
+				
+				
+				this.savedSceneEditorViewSelection = this.mainCameraMarkerList.getSelectedItem();
+				this.mainCameraMarkerList.setSelectedItem(View.STARTING_CAMERA_VIEW);
+			}
+			this.mainCameraViewSelector.setVisible(isExpanded);
 		}
-		else
-		{
-			this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
-			this.lookingGlassPanel.setNorthWestComponent( null );
-			this.lookingGlassPanel.setSouthEastComponent(this.expandButton);
-			this.lookingGlassPanel.setSouthComponent(null);
-			
-			
-			this.savedSceneEditorViewSelection = this.mainCameraMarkerList.getSelectedItem();
-			this.mainCameraMarkerList.setSelectedItem(View.STARTING_CAMERA_VIEW);
-		}
-		this.mainCameraViewSelector.setVisible(isExpanded);
-		
 	}
 	
 	
@@ -832,7 +834,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
 			JavaType javaType = type.getFirstTypeEncounteredDeclaredInJava();
 			Class<?> cls = javaType.getClassReflectionProxy().getReification();
-			AxisAlignedBox box = ModelResourceUtilities.getBoundingBox(cls);
+			AxisAlignedBox box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(cls);
 			double y = box != null ? -box.getXMinimum() : 0;
 			Point3 location = new Point3(0, y, 0);
 			initialTransform = new AffineMatrix4x4(OrthogonalMatrix3x3.createIdentity(), location);

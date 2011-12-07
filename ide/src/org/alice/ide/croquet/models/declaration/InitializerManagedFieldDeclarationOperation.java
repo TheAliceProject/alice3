@@ -47,13 +47,13 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class InitializerManagedFieldDeclarationOperation  extends ManagedFieldDeclarationOperation {
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.InstanceCreation > initializerObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.InstanceCreation >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.InstanceCreation > state, org.lgna.project.ast.InstanceCreation prevValue, org.lgna.project.ast.InstanceCreation nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > initializerObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.InstanceCreation > state, org.lgna.project.ast.InstanceCreation prevValue, org.lgna.project.ast.InstanceCreation nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 			org.lgna.project.ast.AbstractType< ?,?,? > type;
-			if( nextValue != null ) {
-				type = nextValue.constructor.getValue().getDeclaringType();
+			if( nextValue instanceof org.lgna.project.ast.InstanceCreation ) {
+				type = ((org.lgna.project.ast.InstanceCreation)nextValue).constructor.getValue().getDeclaringType();
 			} else {
 				type = null;
 			}

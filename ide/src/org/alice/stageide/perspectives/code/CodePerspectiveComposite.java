@@ -63,6 +63,8 @@ public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
 	protected org.lgna.croquet.components.SplitPane createView() {
 		org.lgna.croquet.components.SplitPane rv = this.createHorizontalSplitPane();
 		rv.setResizeWeight( 0.0 );
+		//todo
+		rv.setDividerLocation( 300 );
 		return rv;
 	}
 }

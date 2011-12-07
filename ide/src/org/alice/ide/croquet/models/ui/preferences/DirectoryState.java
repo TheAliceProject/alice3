@@ -60,7 +60,7 @@ public abstract class DirectoryState extends org.lgna.croquet.preferences.Prefer
 			rv = new java.io.File( uri );
 		} catch( java.net.URISyntaxException urise ) {
 			//throw new RuntimeException( path, urise );
-			System.err.println( "warning: URI failure: " + path );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( urise, "URI failure:", path );
 			rv = new java.io.File( path );
 		}
 		return rv;

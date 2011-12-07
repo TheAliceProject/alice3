@@ -53,7 +53,7 @@ public class SuperExpression extends Expression {
 		if( type != null ) {
 			return type.getSuperType();
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "SuperExpression cannot find type" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "SuperExpression cannot find type" );
 			return null;
 		}
 	}

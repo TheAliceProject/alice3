@@ -76,7 +76,6 @@ public abstract class Composite extends Component {
 
 	protected void fireChildAdded( Component child ) {
 		assert child != this;
-		//System.err.println( "fireChildAdded: " + Thread.currentThread() );
 		synchronized( this.children ) {
 			this.children.add( child );
 		}
@@ -92,7 +91,6 @@ public abstract class Composite extends Component {
 		//}
 	}
 	protected void fireChildRemoved( Component child ) {
-		//System.err.println( "fireChildRemoved: " + Thread.currentThread() );
 		synchronized( this.children ) {
 			this.children.remove( child );
 		}
@@ -142,13 +140,11 @@ public abstract class Composite extends Component {
 	}
 
 	public void addChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
-		//System.err.println( "addChildrenListener: " + Thread.currentThread() );
 		synchronized( this.childrenListeners ) {
 			this.childrenListeners.add( childrenListener );
 		}
 	}
 	public void removeChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
-		//System.err.println( "removeChildrenListener: " + Thread.currentThread() );
 		synchronized( this.childrenListeners ) {
 			this.childrenListeners.remove( childrenListener );
 		}

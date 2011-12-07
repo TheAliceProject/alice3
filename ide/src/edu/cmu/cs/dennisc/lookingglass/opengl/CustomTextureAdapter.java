@@ -112,9 +112,9 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 					try {
 						return newTexture( gl, bufferedImage, true );
 					} catch( AssertionError ae ) {
-						System.err.println( "WARNING: unable to directly generate mipmapped texture." );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "unable to directly generate mipmapped texture." );
 					} catch( RuntimeException re ) {
-						System.err.println( "WARNING: unable to directly generate mipmapped texture." );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "unable to directly generate mipmapped texture." );
 					}
 				}
 				java.awt.image.BufferedImage hackBI = new java.awt.image.BufferedImage( bufferedImage.getWidth(), bufferedImage.getHeight(), java.awt.image.BufferedImage.TYPE_4BYTE_ABGR_PRE );

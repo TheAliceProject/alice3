@@ -87,7 +87,6 @@ import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
@@ -145,7 +144,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		public void changing( org.lgna.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
-			PrintUtilities.println( nextValue );
 			AbstractDragAdapter.this.setInteractionState( nextValue );
 		}
 	};

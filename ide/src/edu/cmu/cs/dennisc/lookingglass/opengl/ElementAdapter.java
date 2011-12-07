@@ -47,12 +47,6 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public abstract class ElementAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Element > extends AbstractElementAdapter< E > {
-	// @Override
-	// protected void finalize() throws Throwable {
-	// super.finalize();
-	// System.err.println( "finalize: " + this );
-	// }
-
 	@Override
 	public void initialize( E element ) {
 		super.initialize( element );
@@ -63,8 +57,7 @@ public abstract class ElementAdapter< E extends edu.cmu.cs.dennisc.scenegraph.El
 	}
 
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		// todo:
-		System.err.println( "unhandled property: " + property );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "unhandled property:", property );
 	}
 
 	public static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {

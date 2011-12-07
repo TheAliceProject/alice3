@@ -42,7 +42,7 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-import org.lgna.story.resourceutilities.ModelResourceUtilities;
+import org.lgna.story.resourceutilities.ModelResourceBuilderUtilities;
 
 /**
  * @author Dennis Cosgrove
@@ -82,7 +82,7 @@ public class ResourceManager {
 			if( rv != null ) {
 				//pass
 			} else {
-				System.err.println( "failed to getResource: " + resourceName );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "failed to getResource:", resourceName );
 			}
 			return rv;
 			//			}
@@ -204,7 +204,7 @@ public class ResourceManager {
 							if( o != null ) {
 								if( o.getClass().isEnum() ) {
 									Enum< ? > e = (Enum< ? >)o;
-									return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( ModelResourceUtilities.getThumbnailURL( e.getClass(), e.name() ) );
+									return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( e.getClass(), e.name() ) );
 								}
 							}
 						} catch( IllegalAccessException iae ) {

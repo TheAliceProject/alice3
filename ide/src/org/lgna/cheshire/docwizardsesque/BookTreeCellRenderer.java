@@ -87,7 +87,6 @@ public class BookTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rendere
 			}
 			org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability = transactionChapter.getReplacementAcceptability();
 			if( replacementAcceptability != null ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( replacementAcceptability );
 				if( replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
 					icon = PERFECT_MATCH_ICON;
 				} else {

@@ -43,12 +43,10 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.resolvers.RuntimeResolver;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ScreenElement implements TrackableShape, RuntimeResolver< ScreenElement > {
+public abstract class ScreenElement implements TrackableShape, org.lgna.croquet.resolvers.RuntimeResolver< ScreenElement > {
 	public abstract java.awt.Component getAwtComponent();
 	public final java.awt.Point convertPoint( java.awt.Point pt, ScreenElement destination ) {
 		return javax.swing.SwingUtilities.convertPoint( this.getAwtComponent(), pt, destination.getAwtComponent() );
@@ -75,4 +73,7 @@ public abstract class ScreenElement implements TrackableShape, RuntimeResolver< 
 	public java.awt.Rectangle getBounds() {
 		return this.getAwtComponent().getBounds();
 	}
+	
+	@Deprecated
+	public abstract AbstractWindow< ? > getRoot();
 }
