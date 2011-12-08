@@ -74,7 +74,12 @@ public class GalleryResourceUtilities {
 		for( org.lgna.project.ast.AbstractDeclaration declaration : declarations ) {
 			if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {		
 				org.lgna.project.ast.AbstractType< ?,?,? > childType = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
-				rv.add( GalleryResourceMenu.getInstance( childType ) );
+				if( childType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( childType );
+					//rv.add( org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance() );
+				} else {
+					rv.add( GalleryResourceMenu.getInstance( childType ) );
+				}
 			} else if( declaration instanceof org.lgna.project.ast.AbstractField ) {
 				org.lgna.project.ast.AbstractField childField = (org.lgna.project.ast.AbstractField)declaration;
 				rv.add( GalleryResourceFillIn.getInstance( childField ) );

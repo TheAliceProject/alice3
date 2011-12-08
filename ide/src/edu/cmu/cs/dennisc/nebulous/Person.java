@@ -21,5 +21,5 @@ public class Person extends Model {
 	public native void setObesityLevel( Object o );
 	public native void setEyeColor( Object o );
 	public native void setHair( Object o );
-	public native void setAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair);
+	public native void setAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair );
 }

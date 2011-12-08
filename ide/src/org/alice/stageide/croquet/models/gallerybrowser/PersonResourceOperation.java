@@ -57,6 +57,7 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.InputDial
 //		org.lgna.story.resources.sims2.PersonResource personResource = this.createInitialPersonResource();
 //		org.alice.stageide.person.components.PersonViewer personViewer = org.alice.stageide.person.PersonResourceManager.SINGLETON.allocatePersonViewer( personResource );
 //		org.alice.stageide.person.components.MainPanel rv = new org.alice.stageide.person.components.MainPanel( personViewer );
+		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ); //todo
 		return this.getPersonComposite().getView();
 	}
 	@Override
@@ -70,6 +71,7 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.InputDial
 //		org.alice.stageide.person.components.PersonViewer personViewer = mainPanel.getPersonViewer();
 //		org.alice.stageide.person.PersonResourceManager.SINGLETON.releasePersonViewer( personViewer );
 		this.getPersonComposite().releaseView();
+		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().enableRendering();
 		if( isCommit ) {
 			org.lgna.story.resources.sims2.PersonResource personResource = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
 			if( personResource != null ) {

@@ -48,7 +48,7 @@ package org.alice.stageide.gallerybrowser;
  */
 public class ResourceTab extends GalleryTab {
 	public static final javax.swing.Icon CREATE_PERSON_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person.png") );
-	public static final javax.swing.Icon CREATE_PERSON_SMALL_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( CREATE_PERSON_LARGE_ICON, 24, 24 );
+	public static final javax.swing.Icon CREATE_PERSON_SMALL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person_24.png") );
 	
 	static class HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane extends javax.swing.JScrollPane {
 		private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {

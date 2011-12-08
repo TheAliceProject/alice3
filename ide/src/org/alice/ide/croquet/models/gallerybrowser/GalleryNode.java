@@ -70,4 +70,7 @@ public abstract class GalleryNode extends GalleryDragModel implements Iterable< 
 			}
 		};
 	}
+	public boolean isLeaf() {
+		return this.getChildCount() == 0;
+	}
 }
