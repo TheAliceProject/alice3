@@ -281,20 +281,21 @@ public class StorytellingResources {
 		//System.out.println( "Getting children for type: " + type );
 		java.util.List< org.lgna.project.ast.AbstractDeclaration > toReturn = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		TreeNode< JavaType > typeNode = this.getGalleryResourceTreeNodeForJavaType( type );
-
-		for( int i = 0; i < typeNode.getChildCount(); i++ ) {
-			TreeNode< JavaType > child = typeNode.getChildAt( i );
-			//If the child has a single leaf child, go down a level and return that
-			if( hasSingleLeafChild( child ) ) {
-				child = child.getChildAt( 0 );
-			}
-			ModelResourceTreeNode node = (ModelResourceTreeNode)child;
-			if( node.isLeaf() && node.getJavaField() != null ) {
-				//System.out.println( "  Returning field: " + node.getJavaField() );
-				toReturn.add( node.getJavaField() );
-			} else {
-				//System.out.println( "  Returning type: " + node.getResourceJavaType() );
-				toReturn.add( node.getResourceJavaType() );
+		if( typeNode != null ) {
+			for( int i = 0; i < typeNode.getChildCount(); i++ ) {
+				TreeNode< JavaType > child = typeNode.getChildAt( i );
+				//If the child has a single leaf child, go down a level and return that
+				if( hasSingleLeafChild( child ) ) {
+					child = child.getChildAt( 0 );
+				}
+				ModelResourceTreeNode node = (ModelResourceTreeNode)child;
+				if( node.isLeaf() && node.getJavaField() != null ) {
+					//System.out.println( "  Returning field: " + node.getJavaField() );
+					toReturn.add( node.getJavaField() );
+				} else {
+					//System.out.println( "  Returning type: " + node.getResourceJavaType() );
+					toReturn.add( node.getResourceJavaType() );
+				}
 			}
 		}
 		return toReturn;

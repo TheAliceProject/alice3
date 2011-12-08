@@ -47,6 +47,9 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class ResourceTab extends GalleryTab {
+	public static final javax.swing.Icon CREATE_PERSON_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person.png") );
+	public static final javax.swing.Icon CREATE_PERSON_SMALL_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( CREATE_PERSON_LARGE_ICON, 24, 24 );
+	
 	static class HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane extends javax.swing.JScrollPane {
 		private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.info( jScrollBar.getMinimum(), jScrollBar.getValue(), jScrollBar.getMaximum(), jScrollBar.getVisibleAmount() );
@@ -102,14 +105,14 @@ public class ResourceTab extends GalleryTab {
 				this.addComponent( topPanel, Constraint.PAGE_START );
 				this.addComponent( scrollPane, Constraint.CENTER );
 
-				org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
-				org.lgna.croquet.components.Button createPersonButton = createTypeFromPersonResourceOperation.createButton();
-				createPersonButton.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-				createPersonButton.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
-
-				createTypeFromPersonResourceOperation.setSmallIcon(edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person.png")));
-				
-				this.addComponent( createPersonButton, Constraint.LINE_START );
+//				org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
+//				org.lgna.croquet.components.Button createPersonButton = createTypeFromPersonResourceOperation.createButton();
+//				createPersonButton.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+//				createPersonButton.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
+//
+//				createTypeFromPersonResourceOperation.setSmallIcon( CREATE_PERSON_LARGE_ICON );
+//				
+//				this.addComponent( createPersonButton, Constraint.LINE_START );
 				
 				org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
 				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton(), Constraint.PAGE_START );
