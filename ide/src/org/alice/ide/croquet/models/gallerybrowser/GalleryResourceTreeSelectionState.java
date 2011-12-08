@@ -108,6 +108,6 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 	}
 	@Override
 	public boolean isLeaf( GalleryNode node ) {
-		return node instanceof FieldGalleryNode;
+		return node.isLeaf();
 	}
 }

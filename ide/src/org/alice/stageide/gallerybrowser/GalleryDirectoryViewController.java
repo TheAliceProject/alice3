@@ -137,7 +137,7 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 			} else {
 				//todo: does not handle case where user clicks on button hooked up to currently selected path node
 				FilterStringState.getInstance().setValueTransactionlessly( "" );
-				if( nextValue instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
+				if( nextValue.isLeaf() ) {
 					nextValue.getDropModel( null, null ).fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 					javax.swing.SwingUtilities.invokeLater( new Runnable() {
 						public void run() {
