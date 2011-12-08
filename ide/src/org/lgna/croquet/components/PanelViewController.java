@@ -46,103 +46,20 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-//todo: share code w/ Panel
 public abstract class PanelViewController< M extends org.lgna.croquet.Model > extends ViewController< javax.swing.JPanel, M > {
-	protected class DefaultJPanel extends javax.swing.JPanel {
-		public DefaultJPanel() {
-			this.setOpaque( false );
-			this.setBackground( null );
-			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-			this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-		}
-//		@Override
-//		public void doLayout() {
-//			Panel.this.refreshIfNecessary();
-//			super.doLayout();
-//		}
-		@Override
-		public void invalidate() {
-			super.invalidate();
-			PanelViewController.this.refreshIfNecessary();
-		}
-		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-		}
-		@Override
-		public java.awt.Dimension getMaximumSize() {
-			java.awt.Dimension rv = super.getMaximumSize();
-			if( PanelViewController.this.isMaximumSizeClampedToPreferredSize() ) {
-				rv.setSize( this.getPreferredSize() );
-			}
-			return rv;
-		}
-	}
-	
-	public PanelViewController( M model ) {
+	private final Panel internalPanel;
+	public PanelViewController( M model, Panel internalPanel ) {
 		super( model );
+		this.internalPanel = internalPanel;
 	}
-	protected javax.swing.JPanel createJPanel() {
-		return new DefaultJPanel();
-	}
-	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = this.createJPanel();
-		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
-		rv.setLayout( layoutManager );
+		javax.swing.JPanel rv = new javax.swing.JPanel();
+		rv.setLayout( new java.awt.BorderLayout() );
+		rv.add( this.internalPanel.getAwtComponent() );
 		return rv;
 	}
-	@Override
-	public void setBackgroundColor( java.awt.Color color ) {
-		super.setBackgroundColor( color );
-		this.getAwtComponent().setOpaque( color != null );
-	}
-	public void removeComponent( Component< ? > component ) {
-		this.internalRemoveComponent( component );
-	}
-	public void forgetAndRemoveComponent( Component< ? > component ) {
-		this.internalForgetAndRemoveComponent( component );
-	}
-	public void removeAllComponents() {
-		this.internalRemoveAllComponents();
-	}
-	public void forgetAndRemoveAllComponents() {
-		this.internalForgetAndRemoveAllComponents();
-	}
-	private boolean isInTheMidstOfRefreshing = false;
-	private boolean isRefreshNecessary = true;
-	protected void internalRefresh() {
-	}
-	private void refreshIfNecessary() {
-		if( this.isRefreshNecessary ) {
-			if( this.isInTheMidstOfRefreshing ) {
-				//pass
-			} else {
-				this.isInTheMidstOfRefreshing = true;
-				try {
-					//this.forgetAndRemoveAllComponents();
-					synchronized( this.getTreeLock() ) {
-						this.internalRefresh();
-					}
-					this.isRefreshNecessary = false;
-				} finally {
-					this.isInTheMidstOfRefreshing = false;
-				}
-			}
-		}
-	}
-	public final void refreshLater() {
-		this.isRefreshNecessary = true;
-		this.revalidateAndRepaint();
-	}
-	@Override
-	protected void handleDisplayable() {
-		this.refreshIfNecessary();
-		super.handleDisplayable();
-	}
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
+	public Panel getInternalPanel() {
+		return this.internalPanel;
 	}
 }

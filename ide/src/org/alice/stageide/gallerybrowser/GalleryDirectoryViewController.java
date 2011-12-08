@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryView< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > {
+public class GalleryDirectoryViewController extends org.lgna.croquet.components.TreeDirectoryViewController< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > {
 	private static enum Criterion {
 		STARTS_WITH {
 			@Override
@@ -68,11 +68,11 @@ public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryV
 		public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
-			GalleryDirectoryView.this.handleFilterChanged( nextValue );
+			GalleryDirectoryViewController.this.handleFilterChanged( nextValue );
 		}
 	};
 
-	public GalleryDirectoryView() {
+	public GalleryDirectoryViewController() {
 		super( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() );
 		//todo
 		this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
@@ -124,7 +124,7 @@ public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryV
 		super.handleUndisplayable();
 	}
 	private void handleFilterChanged( String filter ) {
-		this.refreshLater();
+		this.getInternalPanel().refreshLater();
 	}
 	@Override
 	protected void handleSelectionChange( org.lgna.croquet.State< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > state, org.alice.ide.croquet.models.gallerybrowser.GalleryNode prevValue, final org.alice.ide.croquet.models.gallerybrowser.GalleryNode nextValue, boolean isAdjusting ) {
@@ -141,7 +141,7 @@ public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryV
 					nextValue.getDropModel( null, null ).fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 					javax.swing.SwingUtilities.invokeLater( new Runnable() {
 						public void run() {
-							GalleryDirectoryView.this.getModel().setValueTransactionlessly( nextValue.getParent() );
+							GalleryDirectoryViewController.this.getModel().setValueTransactionlessly( nextValue.getParent() );
 						}
 					} );
 //				} else {

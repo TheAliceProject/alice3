@@ -66,7 +66,7 @@ public class ResourceTab extends org.lgna.croquet.TabComposite< org.lgna.croquet
 		class ResourceView extends org.lgna.croquet.components.BorderPanel {
 			public ResourceView() {
 				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel();
-				topPanel.addComponent( new org.lgna.croquet.components.PathControl( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.LINE_START );
+				topPanel.addComponent( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.LINE_START );
 				org.lgna.croquet.components.TextField filterTextField = FilterStringState.getInstance().createTextField();
 				filterTextField.setMinimumPreferredWidth( 320 );
 				filterTextField.setMaximumSizeClampedToPreferredSize( true );
@@ -76,7 +76,7 @@ public class ResourceTab extends org.lgna.croquet.TabComposite< org.lgna.croquet
 				topPanel.addComponent( filterTextField, Constraint.LINE_END );
 
 				this.addComponent( topPanel, Constraint.PAGE_START );
-				this.addComponent( new GalleryDirectoryView(), Constraint.CENTER );
+				this.addComponent( new GalleryDirectoryViewController(), Constraint.CENTER );
 
 				org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
 				org.lgna.croquet.components.Button createPersonButton = createTypeFromPersonResourceOperation.createButton();

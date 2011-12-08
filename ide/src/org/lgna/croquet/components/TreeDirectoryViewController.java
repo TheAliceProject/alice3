@@ -46,20 +46,38 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryView< T > extends PanelViewController< org.lgna.croquet.TreeSelectionState< T > > {
+public abstract class TreeDirectoryViewController< T > extends PanelViewController< org.lgna.croquet.TreeSelectionState< T > > {
+	private static class InternalPanel<T> extends LineAxisPanel {
+		@Override
+		protected void internalRefresh() {
+			this.internalRemoveAllComponents();
+
+			//todo
+			TreeDirectoryViewController< T > owner = (TreeDirectoryViewController<T>)this.getParent();
+			if( owner != null ) {
+				java.util.List< T > children = owner.getChildren();
+				if( children != null ) {
+					for( T child : children ) {
+						JComponent< ? > component = owner.getComponentFor( child );
+						if( component != null ) {
+							this.internalAddComponent( component );
+						}
+					}
+				}
+			}
+		}
+	}
+
 	private final org.lgna.croquet.State.ValueObserver< T > valueObserver = new org.lgna.croquet.State.ValueObserver< T >() {
 		public void changing(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
 		}
 		public void changed(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
-			DirectoryView.this.handleSelectionChange( state, prevValue, nextValue, isAdjusting );
+			TreeDirectoryViewController.this.handleSelectionChange( state, prevValue, nextValue, isAdjusting );
 		}
 	};
-	public DirectoryView( org.lgna.croquet.TreeSelectionState< T > model ) {
-		super( model );
-	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
+	public TreeDirectoryViewController( org.lgna.croquet.TreeSelectionState< T > model ) {
+		super( model, new InternalPanel<T>() );
+		
 	}
 	@Override
 	protected void handleDisplayable() {
@@ -73,23 +91,9 @@ public abstract class DirectoryView< T > extends PanelViewController< org.lgna.c
 	}
 	protected abstract JComponent< ? > getComponentFor( T value );
 	protected java.util.List< T > getChildren() {
-		org.lgna.croquet.TreeSelectionState< T > model = this.getModel();
-		return model.getChildrenOfSelectedValue();
-	}
-	@Override
-	protected void internalRefresh() {
-		this.internalRemoveAllComponents();
-		java.util.List< T > children = this.getChildren();
-		if( children != null ) {
-			for( T child : children ) {
-				JComponent< ? > component = this.getComponentFor( child );
-				if( component != null ) {
-					this.internalAddComponent( component );
-				}
-			}
-		}
+		return this.getModel().getChildrenOfSelectedValue();
 	}
 	protected void handleSelectionChange( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
-		this.refreshLater();
+		this.getInternalPanel().refreshLater();
 	}
 }
