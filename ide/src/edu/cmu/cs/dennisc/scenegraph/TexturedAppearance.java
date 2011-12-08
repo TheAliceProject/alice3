@@ -65,7 +65,6 @@ public class TexturedAppearance extends SimpleAppearance {
 			bumpTexture.getValue().release();
 		}
 	}
-
 	public void setDiffuseColorTextureAlphaBlended( boolean isDiffuseColorTextureAlphaBlended ) {
 		this.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
 	}
@@ -78,5 +77,4 @@ public class TexturedAppearance extends SimpleAppearance {
 	public void setBumpTexture( edu.cmu.cs.dennisc.texture.Texture bumpTexture ) {
 		this.bumpTexture.setValue( bumpTexture );
 	}
-	
 }

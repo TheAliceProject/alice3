@@ -34,15 +34,9 @@ public class SimpleAppearance extends Appearance {
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isEthereal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 
 	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-	}
-
-	@Override
 	public void setAmbientColor( edu.cmu.cs.dennisc.color.Color4f ambientColor ) {
 		this.ambientColor.setValue( ambientColor );
 	}
-
 	@Override
 	public void setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f diffuseColor ) {
 		this.diffuseColor.setValue( diffuseColor );
@@ -67,15 +61,12 @@ public class SimpleAppearance extends Appearance {
 	public void setShadingStyle( ShadingStyle shadingStyle ) {
 		this.shadingStyle.setValue( shadingStyle );
 	}
-
 	@Override
 	public void setFillingStyle( FillingStyle fillingStyle ) {
 		this.fillingStyle.setValue( fillingStyle );
 	}
-
 	@Override
 	public void setEthereal( boolean isEthereal ) {
 		this.isEthereal.setValue( isEthereal );
 	}
-
 }

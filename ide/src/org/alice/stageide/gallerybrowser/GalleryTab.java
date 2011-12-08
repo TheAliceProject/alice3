@@ -41,17 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.scenegraph.graphics;
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Text extends edu.cmu.cs.dennisc.scenegraph.Graphic {
-	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
-	public final edu.cmu.cs.dennisc.color.property.Color4fProperty textColor;
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< java.awt.Font > font;
-	public Text( edu.cmu.cs.dennisc.color.Color4f textColor, java.awt.Font font ) {
-		this.textColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, textColor, false );
-		this.font = new edu.cmu.cs.dennisc.property.InstanceProperty< java.awt.Font >( this, font );
+public abstract class GalleryTab extends org.lgna.croquet.TabComposite< org.lgna.croquet.components.View< ?,? > > {
+	public GalleryTab( java.util.UUID id ) {
+		super( id );
+	}
+	@Override
+	public final boolean isCloseable() {
+		return false;
+	}
+	@Override
+	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
+		return null;
 	}
 }

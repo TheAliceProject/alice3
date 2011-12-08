@@ -47,7 +47,6 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.Composite<?> > {
-	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	protected class DefaultJPanel extends javax.swing.JPanel {
 		public DefaultJPanel() {
 			this.setOpaque( false );
@@ -88,17 +87,13 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 	protected javax.swing.JPanel createJPanel() {
 		return new DefaultJPanel();
 	}
+	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = this.createJPanel();
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 		return rv;
-	}
-	@Override
-	public void setBackgroundColor( java.awt.Color color ) {
-		super.setBackgroundColor( color );
-		this.getAwtComponent().setOpaque( color != null );
 	}
 	public void removeComponent( Component< ? > component ) {
 		this.internalRemoveComponent( component );

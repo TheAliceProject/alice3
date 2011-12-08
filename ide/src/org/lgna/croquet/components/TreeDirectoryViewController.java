@@ -41,17 +41,59 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.scenegraph.graphics;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Text extends edu.cmu.cs.dennisc.scenegraph.Graphic {
-	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
-	public final edu.cmu.cs.dennisc.color.property.Color4fProperty textColor;
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< java.awt.Font > font;
-	public Text( edu.cmu.cs.dennisc.color.Color4f textColor, java.awt.Font font ) {
-		this.textColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, textColor, false );
-		this.font = new edu.cmu.cs.dennisc.property.InstanceProperty< java.awt.Font >( this, font );
+public abstract class TreeDirectoryViewController< T > extends PanelViewController< org.lgna.croquet.TreeSelectionState< T > > {
+	private static class InternalPanel<T> extends LineAxisPanel {
+		@Override
+		protected void internalRefresh() {
+			this.internalRemoveAllComponents();
+
+			//todo
+			TreeDirectoryViewController< T > owner = (TreeDirectoryViewController<T>)this.getParent();
+			if( owner != null ) {
+				java.util.List< T > children = owner.getChildren();
+				if( children != null ) {
+					for( T child : children ) {
+						JComponent< ? > component = owner.getComponentFor( child );
+						if( component != null ) {
+							this.internalAddComponent( component );
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private final org.lgna.croquet.State.ValueObserver< T > valueObserver = new org.lgna.croquet.State.ValueObserver< T >() {
+		public void changing(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
+		}
+		public void changed(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
+			TreeDirectoryViewController.this.handleSelectionChange( state, prevValue, nextValue, isAdjusting );
+		}
+	};
+	public TreeDirectoryViewController( org.lgna.croquet.TreeSelectionState< T > model ) {
+		super( model, new InternalPanel<T>() );
+		
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().addValueObserver( this.valueObserver );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.getModel().removeValueObserver( this.valueObserver );
+		super.handleUndisplayable();
+	}
+	protected abstract JComponent< ? > getComponentFor( T value );
+	protected java.util.List< T > getChildren() {
+		return this.getModel().getChildrenOfSelectedValue();
+	}
+	protected void handleSelectionChange( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		this.getInternalPanel().refreshLater();
 	}
 }

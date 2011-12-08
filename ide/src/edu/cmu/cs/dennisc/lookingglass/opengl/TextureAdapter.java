@@ -106,47 +106,23 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		return v;
 	}
 
-	private com.sun.opengl.util.texture.Texture m_glTexture;
-	private RenderContext m_renderContextForCurrentTexture;
-
-	protected static com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
+	private final TextureBinding textureBinding = new TextureBinding();
+	private com.sun.opengl.util.texture.TextureData textureData;
+	protected static com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
 		//com.jogamp.opengl.util.texture.TextureData textureData = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
-		com.sun.opengl.util.texture.TextureData textureData = com.sun.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
-		return com.sun.opengl.util.texture.TextureIO.newTexture( textureData );
+		return com.sun.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
 	}
-	protected abstract com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.sun.opengl.util.texture.Texture currentTexture );
-	public com.sun.opengl.util.texture.Texture getTexture( RenderContext rc ) {
-		boolean isNewTextureRequired;
-		if( m_glTexture != null ) {
-			if( isDirty() ) {
-				isNewTextureRequired = true;
-			} else {
-				int textureObject = m_glTexture.getTextureObject();
-				if (m_renderContextForCurrentTexture != rc) {
-					isNewTextureRequired = true;
-				}
-				else {
-					isNewTextureRequired = rc.gl.glIsTexture( textureObject ) == false;
-				}
+	protected abstract com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTexture );
+	public TextureBinding bindTexture( RenderContext rc ) {
+		if( m_isDirty ) {
+			if( this.textureData != null ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "new texture data", this );
 			}
-		} else {
-			isNewTextureRequired = true;
+			this.textureData = this.newTextureData( rc.gl, this.textureData ); 
+			this.m_isDirty = false;
 		}
-		if( isNewTextureRequired ) {
-			com.sun.opengl.util.texture.Texture glTexture = newTexture( rc.gl, m_glTexture );
-			if( m_glTexture != glTexture ) {
-				if( m_glTexture != null ) {
-					m_glTexture.dispose();
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println( "DISPOSED: ", m_glTexture.getTextureObject() );
-				}
-				m_glTexture = glTexture;
-				m_renderContextForCurrentTexture = rc;
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "GENERATED: ", m_glTexture.getTextureObject() );
-				rc.put( this, m_glTexture );
-			}
-			m_isDirty = false;
-		}
-		return m_glTexture;
+		this.textureBinding.ensureUpToDate( rc, this.textureData );
+		return this.textureBinding;
 	}
 
 	public abstract java.awt.Graphics2D createGraphics();

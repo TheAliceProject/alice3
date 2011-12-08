@@ -86,12 +86,12 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		this.standUpReference.setName("Linear StandUp Reference");
 		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 		{
-			this.standUpReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+			this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
 		}
 		this.snapReference.setName("Linear Snap Reference");
 		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 		{
-			this.snapReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+			this.snapReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
 		}
 		this.dragDescription = dragDescription;
 		this.dragAxis = new Vector3(this.dragDescription.direction.getVector());

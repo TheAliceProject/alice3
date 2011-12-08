@@ -490,40 +490,6 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return getColorBufferWithTransparencyBasedOnDepthBuffer( createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer(), createFloatBufferForUseAsDepthBuffer() );
 	}
 	
-
-
-//	/*package-private*/ edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
-//		//javax.media.opengl.GLCapabilitiesImmutable glCapabilities = this.getGLAutoDrawable().getChosenGLCapabilities();
-//		//PrintUtilities.println( "glCapabilities", glCapabilities );
-//		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getCameraAtPixel( xPixel, yPixel );
-//		edu.cmu.cs.dennisc.lookingglass.PickResult rv;
-//		if( sgCamera != null ) {
-//			this.m_lookingGlassFactory.acquireRenderingLock();
-//			try {
-//				rv = m_glEventAdapter.pickFrontMost( sgCamera, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.REQUIRED, pickObserver );
-//			} finally {
-//				this.m_lookingGlassFactory.releaseRenderingLock();
-//			}
-//		} else {
-//			rv = new edu.cmu.cs.dennisc.lookingglass.PickResult();
-//			rv.setNaN();
-//		}
-//		return rv;
-//	}
-//	/*package-private*/ java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
-//		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getCameraAtPixel( xPixel, yPixel );
-//		if( sgCamera != null ) {
-//			this.m_lookingGlassFactory.acquireRenderingLock();
-//			try {
-//				return m_glEventAdapter.pickAll( sgCamera, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.REQUIRED, pickObserver );
-//			} finally {
-//				this.m_lookingGlassFactory.releaseRenderingLock();
-//			}
-//		} else {
-//			return new java.util.LinkedList< edu.cmu.cs.dennisc.lookingglass.PickResult >();
-//		}
-//	}
-
 	public double[] getActualPlane( double[] rv, java.awt.Dimension size, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera ) {
 		throw new RuntimeException( "todo" );
 		//		OrthographicCameraAdapter orthographicCameraAdapter = ElementAdapter.getAdapterFor( orthographicCamera );

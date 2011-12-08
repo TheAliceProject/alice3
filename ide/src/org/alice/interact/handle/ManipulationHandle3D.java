@@ -80,7 +80,7 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
  */
 public abstract class ManipulationHandle3D extends Transformable implements ManipulationHandle, ManipulationListener {
 
-	public static final String VIRTUAL_PARENT_KEY = "VIRTUAL_PARENT_KEY";
+	public static final Key< Object > DEBUG_PARENT_TRACKER_KEY = Key.createInstance( "DEBUG_PARENT_TRACKER_KEY" );
 	
 	public static final double ANIMATION_DURATION = .25;
 	
@@ -771,11 +771,4 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	{
 		return PickHint.PickType.THREE_D_HANDLE.pickHint();
 	}
-	
-	@Override
-	public String toString() 
-	{
-		return this.getClass().getSimpleName()+":"+this.hashCode();
-	}
-	
 }

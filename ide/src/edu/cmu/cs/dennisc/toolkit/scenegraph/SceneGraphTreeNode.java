@@ -62,9 +62,9 @@ public class SceneGraphTreeNode extends BasicTreeNode
 	private void setElementBasedData(Element element)
 	{
 		this.virtualParentHashCode = -1;
-		if (element.containsBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY))
+		if (element.containsBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY))
 		{
-			Object obj = element.getBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY);
+			Object obj = element.getBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY);
 			if (obj != null && obj instanceof Element)
 			{
 				Element virtualParent = (Element)obj;
@@ -81,7 +81,7 @@ public class SceneGraphTreeNode extends BasicTreeNode
 				}
 			}
 		}
-		this.stackTrace = (StackTraceElement[])element.getBonusDataFor(Element.CREATION_STACK_TRACE_KEY);
+		this.stackTrace = element.getBonusDataFor(Element.DEBUG_CONSTRUCTION_STACK_TRACE_KEY);
 //		if (element.containsBonusDataFor(Element.CREATION_STACK_TRACK_KEY))
 //		{
 //			this.stackTrace = (StackTraceElement[])element.getBonusDataFor(Element.CREATION_STACK_TRACK_KEY);

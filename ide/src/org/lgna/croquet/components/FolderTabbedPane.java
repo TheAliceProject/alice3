@@ -117,9 +117,12 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		};
 		public JFolderTabTitle() {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
-			this.setOpaque( false );
 			this.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.setLayout( new javax.swing.SpringLayout() );
+		}
+		@Override
+		public boolean isOpaque() {
+			return false;
 		}
 		@Override
 		public void updateUI() {
@@ -164,13 +167,14 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		}
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
-			final JFolderTabTitle rv = new JFolderTabTitle() {
-				@Override
-				public void setComponentOrientation(java.awt.ComponentOrientation o) {
-					super.setComponentOrientation(o);
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "adjust spring" );
-				}
-			};
+			JFolderTabTitle rv = new JFolderTabTitle();
+//			{
+//				@Override
+//				public void setComponentOrientation(java.awt.ComponentOrientation componentOrientation) {
+//					super.setComponentOrientation(componentOrientation);
+//					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "adjust spring based on ", componentOrientation );
+//				}
+//			};
 			return rv;
 		}
 	}
@@ -388,7 +392,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		super( model );
 		this.cardPanel.setBackgroundColor( null );
 		this.innerHeaderPanel.setBackgroundColor( null );
-		this.innerHeaderPanel.getAwtComponent().setOpaque( false );
 		this.titlesPanel.setBackgroundColor( null );
 		this.innerHeaderPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
 		this.cardPanel.setBorder( new javax.swing.border.Border() {
@@ -423,8 +426,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 			}
 		} );
 		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
-		this.getAwtComponent().setOpaque( true );
-
 		PopupOperation popupOperation = new PopupOperation();
 		this.setInnerHeaderTrailingComponent( new PopupButton( popupOperation ) );
 	}

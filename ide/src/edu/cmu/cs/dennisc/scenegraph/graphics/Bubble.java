@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.scenegraph.graphics;
  * @author Dennis Cosgrove
  */
 public abstract class Bubble extends ShapeEnclosedText {
-	public interface Originator {
+	public static interface Originator {
 		public void calculate(
 				java.awt.geom.Point2D.Float out_originOfTail,
 				java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail,
@@ -59,24 +59,22 @@ public abstract class Bubble extends ShapeEnclosedText {
 				java.awt.geom.Dimension2D textSize
 		);
 	}
-	public edu.cmu.cs.dennisc.property.InstanceProperty<Originator> originator = new edu.cmu.cs.dennisc.property.InstanceProperty<Originator>( this, null );
+
 	//todo: better name
-	public edu.cmu.cs.dennisc.property.DoubleProperty portion = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 );
-	
-	@Override
-	protected edu.cmu.cs.dennisc.color.Color4f getDefaultTextColor() {
-		return edu.cmu.cs.dennisc.color.Color4f.BLACK;
+	public final edu.cmu.cs.dennisc.property.DoubleProperty portion = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 );
+
+	private final Originator originator; 
+
+	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_TEXT_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
+	private static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
+	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_FILL_COLOR = edu.cmu.cs.dennisc.color.Color4f.WHITE;
+	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_OUTLINE_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
+
+	public Bubble( Originator originator ) {
+		super( DEFAULT_TEXT_COLOR, DEFAULT_FONT, DEFAULT_FILL_COLOR, DEFAULT_OUTLINE_COLOR );
+		this.originator = originator;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.color.Color4f getDefaultFillColor() {
-		return edu.cmu.cs.dennisc.color.Color4f.WHITE;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.color.Color4f getDefaultOutlineColor() {
-		return edu.cmu.cs.dennisc.color.Color4f.BLACK;
-	}
-	@Override
-	protected java.awt.Font getDefaultFont() {
-		return new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
+	public Originator getOriginator() {
+		return this.originator;
 	}
 }

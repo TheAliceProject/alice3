@@ -59,7 +59,7 @@ public class ThumbnailGenerator {
 			if( offscreenLookingGlass != null ) {
 				//pass
 			} else {
-				offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
+				offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( null );
 			}
 			offscreenLookingGlass.setSize( width, height );
 			boolean isClearingAndAddingRequired;

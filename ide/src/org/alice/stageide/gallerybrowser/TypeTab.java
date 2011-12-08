@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeTab extends org.lgna.croquet.TabComposite< org.lgna.croquet.components.View<?,?> > {
+public class TypeTab extends GalleryTab {
 	private static class SingletonHolder {
 		private static TypeTab instance = new TypeTab();
 	}
@@ -55,14 +55,6 @@ public class TypeTab extends org.lgna.croquet.TabComposite< org.lgna.croquet.com
 	}
 	private TypeTab() {
 		super( java.util.UUID.fromString( "86ebb5e5-8cae-4f3b-ae46-35f3a7f4a00c" ) );
-	}
-	@Override
-	public org.lgna.croquet.components.ScrollPane createScrollPane() {
-		return null;
-	}
-	@Override
-	public boolean isCloseable() {
-		return false;
 	}
 	@Override
 	protected org.lgna.croquet.components.View<?,?> createView() {

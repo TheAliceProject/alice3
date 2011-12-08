@@ -65,7 +65,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 		this.standUpReference.setName("Rotation StandUp Reference");
 		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 		{
-			this.standUpReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+			this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
 		}
 	}
 	
@@ -82,7 +82,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 		this.standUpReference.setName("Rotation StandUp Reference");
 		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 		{
-			this.standUpReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+			this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
 		}
 	}
 	
@@ -92,7 +92,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 		this.standUpReference.setName("Rotation StandUp Reference");
 		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
 		{
-			this.standUpReference.putBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY, this);
+			this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
 		}
 	}
 	

@@ -214,13 +214,24 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	public java.util.List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes() {
 		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getTopLevelGalleryTypes();
 	}
+	private static final org.lgna.project.ast.JavaType BIPED_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.BipedResource.class );
+	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
 	@Override
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getGalleryResourceParentFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceParentFor( type );
+		if( type == PERSON_RESOURCE_TYPE ) {
+			return BIPED_RESOURCE_TYPE;
+		} else {
+			return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceParentFor( type );
+		}
 	}
+	
 	@Override
 	public java.util.List< org.lgna.project.ast.AbstractDeclaration > getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceChildrenFor(type);
+		java.util.List< org.lgna.project.ast.AbstractDeclaration > rv = org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceChildrenFor(type);
+		if( type == BIPED_RESOURCE_TYPE ) {
+			rv.add( 0, PERSON_RESOURCE_TYPE );
+		}
+		return rv;
 	}
 	@Override
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type ) {

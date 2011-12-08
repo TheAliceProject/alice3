@@ -46,56 +46,20 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryView< T > extends ViewController< javax.swing.JPanel, org.lgna.croquet.TreeSelectionState< T > > {
-	private final org.lgna.croquet.State.ValueObserver< T > valueObserver = new org.lgna.croquet.State.ValueObserver< T >() {
-		public void changing(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
-		}
-		public void changed(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
-			DirectoryView.this.handleSelectionChange( nextValue );
-		}
-	};
-	public DirectoryView( org.lgna.croquet.TreeSelectionState< T > model ) {
+public abstract class PanelViewController< M extends org.lgna.croquet.Model > extends ViewController< javax.swing.JPanel, M > {
+	private final Panel internalPanel;
+	public PanelViewController( M model, Panel internalPanel ) {
 		super( model );
+		this.internalPanel = internalPanel;
 	}
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		class DirectoryViewPanel extends javax.swing.JPanel {
-			public DirectoryViewPanel() {
-				this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-			}
-		}
-		return new DirectoryViewPanel();
+	protected final javax.swing.JPanel createAwtComponent() {
+		javax.swing.JPanel rv = new javax.swing.JPanel();
+		rv.setLayout( new java.awt.BorderLayout() );
+		rv.add( this.internalPanel.getAwtComponent() );
+		return rv;
 	}
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getModel().addValueObserver( this.valueObserver );
-		this.refresh();
-	}
-	@Override
-	protected void handleUndisplayable() {
-		this.getModel().removeValueObserver( this.valueObserver );
-		super.handleUndisplayable();
-	}
-	protected abstract JComponent< ? > getComponentFor( T value );
-	protected java.util.List< T > getChildren() {
-		org.lgna.croquet.TreeSelectionState< T > model = this.getModel();
-		return model.getChildrenOfSelectedValue();
-	}
-	protected void refresh() {
-		this.internalRemoveAllComponents();
-		java.util.List< T > children = this.getChildren();
-		if( children != null ) {
-			for( T child : children ) {
-				JComponent< ? > component = this.getComponentFor( child );
-				if( component != null ) {
-					this.internalAddComponent( component );
-				}
-			}
-		}
-		this.revalidateAndRepaint();
-	}
-	protected void handleSelectionChange( T nextValue ) {
-		this.refresh();
+	public Panel getInternalPanel() {
+		return this.internalPanel;
 	}
 }

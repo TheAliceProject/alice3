@@ -47,20 +47,11 @@ package edu.cmu.cs.dennisc.scenegraph.graphics;
  * @author Dennis Cosgrove
  */
 public abstract class Title extends ShapeEnclosedText {
-	@Override
-	protected edu.cmu.cs.dennisc.color.Color4f getDefaultTextColor() {
-		return edu.cmu.cs.dennisc.color.Color4f.WHITE;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.color.Color4f getDefaultFillColor() {
-		return edu.cmu.cs.dennisc.color.Color4f.BLACK;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.color.Color4f getDefaultOutlineColor() {
-		return edu.cmu.cs.dennisc.color.Color4f.createNaN();
-	}
-	@Override
-	protected java.awt.Font getDefaultFont() {
-		return new java.awt.Font( null, java.awt.Font.PLAIN, 24 );
+	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_TEXT_COLOR = edu.cmu.cs.dennisc.color.Color4f.WHITE;
+	private static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 24 );
+	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_FILL_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
+	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_OUTLINE_COLOR = edu.cmu.cs.dennisc.color.Color4f.createNaN();
+	public Title() {
+		super( DEFAULT_TEXT_COLOR, DEFAULT_FONT, DEFAULT_FILL_COLOR, DEFAULT_OUTLINE_COLOR );
 	}
 }

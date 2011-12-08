@@ -54,14 +54,15 @@ public interface LookingGlassFactory {
 	public HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass();
 	public OffscreenLookingGlass createOffscreenLookingGlass( LookingGlass lookingGlassToShareContextWith );
 	
+	//todo:
+	public Iterable< ? extends LightweightOnscreenLookingGlass > getLightweightOnscreenLookingGlasses();
+	public Iterable< ? extends HeavyweightOnscreenLookingGlass > getHeavyweightOnscreenLookingGlasses();
+	public Iterable< ? extends OffscreenLookingGlass > getOffscreenLookingGlasses();
+
 	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener );
 	public void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener );
-	public Iterable< edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener > accessAutomaticDisplayListeners();
+	public Iterable< edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener > getAutomaticDisplayListeners();
 
-	//todo:
-	public Iterable< ? extends LightweightOnscreenLookingGlass > accessLightweightOnscreenLookingGlasses();
-	public Iterable< ? extends HeavyweightOnscreenLookingGlass > accessHeavyweightOnscreenLookingGlasses();
-	public Iterable< ? extends OffscreenLookingGlass > accessOffscreenLookingGlasses();
 
 	public int getAutomaticDisplayCount();
 	public void incrementAutomaticDisplayCount();

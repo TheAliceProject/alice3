@@ -43,7 +43,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		rv.localTransformation = parent.localTransformation.getValue();
 		rv.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
-		for( edu.cmu.cs.dennisc.scenegraph.Component component : parent.accessComponents() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Component component : parent.getComponents() ) {
 			if( component instanceof edu.cmu.cs.dennisc.scenegraph.Visual ) {
 				edu.cmu.cs.dennisc.scenegraph.Visual visual = (edu.cmu.cs.dennisc.scenegraph.Visual)component;
 				edu.cmu.cs.dennisc.scenegraph.Appearance front = visual.frontFacingAppearance.getValue();

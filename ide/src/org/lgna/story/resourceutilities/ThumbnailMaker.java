@@ -106,7 +106,7 @@ public class ThumbnailMaker {
 		this.width = width;
 		this.height = height;
 		if( offscreenLookingGlass == null || forceNew) {
-			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
+			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( null );
 			offscreenLookingGlass.setSize( this.width, this.height );
 		}
 		setUpCamera(offscreenLookingGlass);
@@ -118,12 +118,12 @@ public class ThumbnailMaker {
 		this.width = width;
 		this.height = height;
 		if( offscreenLookingGlass == null || forceNew) {
-			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
+			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( null );
 			offscreenLookingGlass.setSize( this.width*ANTI_ALIAS_FACTOR, this.height*ANTI_ALIAS_FACTOR );
 		}
 		if ( testImageOffscreenLookingGlass == null || forceNew)
 		{
-			testImageOffscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
+			testImageOffscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( null );
 			testImageOffscreenLookingGlass.setSize( (int)(this.width*SEARCH_FACTOR), (int)(this.height*SEARCH_FACTOR) );
 		}
 		setUpCamera(offscreenLookingGlass);

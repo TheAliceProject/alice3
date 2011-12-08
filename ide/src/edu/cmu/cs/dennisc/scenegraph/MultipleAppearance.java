@@ -47,13 +47,13 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class MultipleAppearance extends Appearance {
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< TexturedAppearance > singleAppearances = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< TexturedAppearance >( this ) {
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< SimpleAppearance > singleAppearances = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< SimpleAppearance >( this ) {
 		@Override
-		protected TexturedAppearance[] createArray( int length ) {
-			return new TexturedAppearance[ length ];
+		protected SimpleAppearance[] createArray( int length ) {
+			return new SimpleAppearance[ length ];
 		}
 		@Override
-		protected TexturedAppearance createCopy( TexturedAppearance src ) {
+		protected SimpleAppearance createCopy( SimpleAppearance src ) {
 			//todo?
 			return src;
 		}
@@ -62,7 +62,7 @@ public class MultipleAppearance extends Appearance {
 	@Override
 	protected void actuallyRelease() {
 		super.actuallyRelease();
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
+		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.release();
 		}
 	}
@@ -70,80 +70,57 @@ public class MultipleAppearance extends Appearance {
 
 	@Override
 	public void setAmbientColor( edu.cmu.cs.dennisc.color.Color4f ambientColor ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
+		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setAmbientColor( ambientColor );
 		}
 	}
 
 	@Override
 	public void setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f diffuseColor ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
+		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setDiffuseColor( diffuseColor );
 		}
 	}
 	@Override
 	public void setOpacity( float opacity ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
+		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setOpacity( opacity );
 		}
 	}
 	@Override
 	public void setSpecularHighlightExponent( float specularHighlightExponent ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
+		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setSpecularHighlightExponent( specularHighlightExponent );
 		}
 	}
 	@Override
 	public void setSpecularHighlightColor( edu.cmu.cs.dennisc.color.Color4f specularHighlightColor ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
+		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setSpecularHighlightColor( specularHighlightColor );
 		}
 	}
 	@Override
 	public void setEmissiveColor( edu.cmu.cs.dennisc.color.Color4f emissiveColor ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
+		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setEmissiveColor( emissiveColor );
 		}
 	}
 	@Override
 	public void setShadingStyle( ShadingStyle shadingStyle ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
+		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setShadingStyle( shadingStyle );
 		}
 	}
 
 	@Override
 	public void setFillingStyle( FillingStyle fillingStyle ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
+		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setFillingStyle( fillingStyle );
 		}
 	}
-	public void setDiffuseColorTextureAlphaBlended( boolean isDiffuseColorTextureAlphaBlended ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setDiffuseColorTextureAlphaBlended( isDiffuseColorTextureAlphaBlended );
-		}
-	}
-	public void setDiffuseColorTextureClamped( boolean isDiffuseColorTextureClamped ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setDiffuseColorTextureClamped( isDiffuseColorTextureClamped );
-		}
-	}
-
-	public void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setDiffuseColorTexture( diffuseColorTexture );
-		}
-	}
-
-	public void setBumpTexture( edu.cmu.cs.dennisc.texture.Texture bumpTexture ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setBumpTexture( bumpTexture );
-		}
-	}
-
 	@Override
 	public void setEthereal( boolean isEthereal ) {
-		for( TexturedAppearance singleAppearance : singleAppearances.getValue() ) {
+		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setEthereal( isEthereal );
 		}
 	}

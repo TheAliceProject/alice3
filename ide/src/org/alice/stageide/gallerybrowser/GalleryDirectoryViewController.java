@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryView< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > {
+public class GalleryDirectoryViewController extends org.lgna.croquet.components.TreeDirectoryViewController< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > {
 	private static enum Criterion {
 		STARTS_WITH {
 			@Override
@@ -64,22 +64,15 @@ public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryV
 	}
 
 	
-	private final org.lgna.croquet.TreeSelectionState.ValueObserver< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > selectionObserver = new org.lgna.croquet.TreeSelectionState.ValueObserver< org.alice.ide.croquet.models.gallerybrowser.GalleryNode >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > state, org.alice.ide.croquet.models.gallerybrowser.GalleryNode prevValue, org.alice.ide.croquet.models.gallerybrowser.GalleryNode nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > state, org.alice.ide.croquet.models.gallerybrowser.GalleryNode prevValue, org.alice.ide.croquet.models.gallerybrowser.GalleryNode nextValue, boolean isAdjusting ) {
-			GalleryDirectoryView.this.handleSelectionChanged( prevValue, nextValue, isAdjusting );
-		}
-	};
 	private final org.lgna.croquet.StringState.ValueObserver< String > filterObserver = new org.lgna.croquet.StringState.ValueObserver< String >() {
 		public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
-			GalleryDirectoryView.this.handleFilterChanged( nextValue );
+			GalleryDirectoryViewController.this.handleFilterChanged( nextValue );
 		}
 	};
 
-	public GalleryDirectoryView() {
+	public GalleryDirectoryViewController() {
 		super( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() );
 		//todo
 		this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
@@ -123,19 +116,19 @@ public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryV
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().addValueObserver( this.selectionObserver );
 		FilterStringState.getInstance().addAndInvokeValueObserver( this.filterObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
 		FilterStringState.getInstance().removeValueObserver( this.filterObserver );
-		org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().removeValueObserver( this.selectionObserver );
 		super.handleUndisplayable();
 	}
 	private void handleFilterChanged( String filter ) {
-		this.refresh();
+		this.getInternalPanel().refreshLater();
 	}
-	private void handleSelectionChanged( final org.alice.ide.croquet.models.gallerybrowser.GalleryNode prevValue, final org.alice.ide.croquet.models.gallerybrowser.GalleryNode nextValue, boolean isAdjusting ) {
+	@Override
+	protected void handleSelectionChange( org.lgna.croquet.State< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > state, org.alice.ide.croquet.models.gallerybrowser.GalleryNode prevValue, final org.alice.ide.croquet.models.gallerybrowser.GalleryNode nextValue, boolean isAdjusting ) {
+		super.handleSelectionChange( state, prevValue, nextValue, isAdjusting );
 		if( isAdjusting ) {
 			//pass
 		} else {
@@ -144,15 +137,15 @@ public class GalleryDirectoryView extends org.lgna.croquet.components.DirectoryV
 			} else {
 				//todo: does not handle case where user clicks on button hooked up to currently selected path node
 				FilterStringState.getInstance().setValueTransactionlessly( "" );
-				if( nextValue instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
+				if( nextValue.isLeaf() ) {
 					nextValue.getDropModel( null, null ).fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 					javax.swing.SwingUtilities.invokeLater( new Runnable() {
 						public void run() {
-							GalleryDirectoryView.this.getModel().setValueTransactionlessly( nextValue.getParent() );
+							GalleryDirectoryViewController.this.getModel().setValueTransactionlessly( nextValue.getParent() );
 						}
 					} );
-				} else {
-					this.refresh();
+//				} else {
+//					this.refreshLater();
 				}
 			}
 		}

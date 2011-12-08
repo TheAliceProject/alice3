@@ -871,7 +871,7 @@ public class ASG {
 		org.w3c.dom.Element xmlComponent = encodeElement( component, document, s, filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired );
 		if( component instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite) component;
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.accessComponents() ) {
+			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.getComponents() ) {
 				xmlComponent.appendChild( encodeComponent( sgComponent, document, "child", filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired ) );
 			}
 		}

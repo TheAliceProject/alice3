@@ -73,21 +73,50 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 			return RootGalleryNode.getInstance();
 		}
 	}
+	
+	private final boolean isPerson() {
+		return this.getDeclaration().isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class );
+	}
 	@Override
 	protected java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {
-		return api.getGalleryResourceChildrenFor( this.getDeclaration() );
+		if( this.isPerson() ) {
+			return java.util.Collections.emptyList();
+		} else {
+			return api.getGalleryResourceChildrenFor( this.getDeclaration() );
+		}
 	}
 	@Override
 	public javax.swing.Icon getSmallIcon() {
-		return FolderIconUtilities.SMALL_ICON;
+		if( this.isPerson() ) {
+			return org.alice.stageide.gallerybrowser.ResourceTab.CREATE_PERSON_SMALL_ICON;
+		} else {
+			return FolderIconUtilities.SMALL_ICON;
+		}
 	}
 	@Override
 	public javax.swing.Icon getLargeIcon() {
-		return FolderIconUtilities.LARGE_ICON;
+		if( this.isPerson() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+			return org.alice.stageide.gallerybrowser.ResourceTab.CREATE_PERSON_LARGE_ICON;
+		} else {
+			return FolderIconUtilities.LARGE_ICON;
+		}
+	}
+	@Override
+	public String getText() {
+		if( this.isPerson() ) {
+			return "Create Person...";
+		} else {
+			return super.getText();
+		}
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		return ResourceCascade.getInstance( this.getDeclaration(), dropSite );
+		if( this.getDeclaration().isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
+			return org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
+		} else {
+			return ResourceCascade.getInstance( this.getDeclaration(), dropSite );
+		}
 	}
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {

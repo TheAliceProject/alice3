@@ -71,7 +71,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 			if (width != this.glPbuffer.getWidth() || height != this.glPbuffer.getHeight()) {
 				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
 				this.glPbuffer.destroy();
-				this.glPbuffer = LookingGlassFactory.getSingleton().createGLPbuffer( width, height, share );
+				this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, share );
 			}
 		} else {
 			javax.media.opengl.GLContext share;
@@ -80,7 +80,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 			} else {
 				share = null;
 			}
-			this.glPbuffer = LookingGlassFactory.getSingleton().createGLPbuffer( width, height, share );
+			this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, share );
 		}
 	}
 

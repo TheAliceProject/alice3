@@ -46,7 +46,7 @@ package org.alice.stageide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.ViewController< javax.swing.JPanel, org.alice.ide.instancefactory.croquet.InstanceFactoryState > {
+public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.PanelViewController< org.alice.ide.instancefactory.croquet.InstanceFactoryState > {
 	private static final class InternalButton extends org.lgna.croquet.components.JComponent< javax.swing.AbstractButton > {
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
@@ -151,6 +151,9 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 	private static final class InternalPanel extends org.lgna.croquet.components.PageAxisPanel {
 		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 		private final java.util.Map< org.alice.ide.instancefactory.InstanceFactory, InternalButton > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		public InternalPanel() {
+			this.setBackgroundColor( null );
+		}
 		private InternalButton getButtonFor( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 			InternalButton rv = map.get( instanceFactory );
 			if( rv != null ) {
@@ -180,7 +183,6 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 				this.buttonGroup.add( button.getAwtComponent() );
 			}
 			this.setSelected( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue() );
-			this.revalidateAndRepaint();
 		}
 		
 		private void setSelected( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
@@ -205,28 +207,41 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.V
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-			InstanceFactorySelectionPanel.this.handleInstanceFactoryChanged();
+			InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
 		}
 	};
-	private final InternalPanel internalPanel = new InternalPanel();
+	private org.lgna.project.ast.UserType type;
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField > fieldsListener = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.UserField >() {
+		@Override
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+		}
+		@Override
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+			InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
+		}
+	};
 	public InstanceFactorySelectionPanel() {
-		super( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+		super( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance(), new InternalPanel() );
+		this.setBackgroundColor( null );
+		this.getAwtComponent().setOpaque( false );
 	}
-	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel();
-		rv.setLayout( new java.awt.BorderLayout() );
-		rv.setOpaque( false );
-		rv.add( this.internalPanel.getAwtComponent(), java.awt.BorderLayout.CENTER );
-		return rv;
+	
+	public org.lgna.project.ast.UserType getType() {
+		return this.type;
 	}
-	private void handleInstanceFactoryChanged() {
-		this.internalPanel.refreshLater();
+	public void setType( org.lgna.project.ast.UserType type ) {
+		if( this.type != null ) {
+			this.type.fields.removeListPropertyListener( this.fieldsListener );
+		}
+		this.type = type;
+		if( this.type != null ) {
+			this.type.fields.addListPropertyListener( this.fieldsListener );
+		}
 	}
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.getModel().addAndInvokeValueObserver( this.instanceFactoryListener );
+		this.getModel().addValueObserver( this.instanceFactoryListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
