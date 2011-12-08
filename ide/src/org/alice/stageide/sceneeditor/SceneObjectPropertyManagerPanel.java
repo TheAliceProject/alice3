@@ -282,6 +282,120 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		return null;
 	}
 	
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		
+		this.removeAllComponents();
+		this.morePropertiesPanel.removeAllComponents();
+		if( this.selectedField != null ) {
+			List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>>();
+			
+			Iterable< org.lgna.project.ast.JavaMethod > getterMethods = org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters(this.selectedField.getValueType());
+			JavaType declaringType = this.selectedField.getValueType().getFirstTypeEncounteredDeclaredInJava();
+			boolean isScene = this.selectedImp instanceof SceneImp;
+			propertyAdapters.add(new FieldNameAdapter(this.selectedField, (StandardExpressionState)null, !isScene));
+			
+			for (org.lgna.project.ast.JavaMethod getter : getterMethods )
+			{
+				org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter(getter, declaringType, this.selectedImp);
+				if (adapter != null)
+				{
+					propertyAdapters.add(adapter);
+				}
+			}
+			
+			if (this.selectedEntity instanceof MovableTurnable)
+			{
+				propertyAdapters.add( new MoveableTurnableTranslationAdapter((MovableTurnable)this.selectedEntity, null));
+			}
+			if (this.selectedEntity instanceof Model && this.selectedImp instanceof ModelImp)
+			{
+				propertyAdapters.add( new ModelSizeAdapter((ModelImp)this.selectedImp, null));
+			}
+			
+			LabelValueControllerPair fieldNamePair = null;
+			
+			
+			if (propertyAdapters.size() != 0)
+			{
+				int mainPropertyCount = 0;
+				int extraPropertyCount = 0;
+				//Add all the extra properties to the extra panel and find the name property adapter
+				for (org.alice.ide.properties.adapter.AbstractPropertyAdapter propertyAdapter : propertyAdapters)
+				{
+
+					PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter(propertyAdapter);
+					assert propertyController != null;
+					LabelValueControllerPair matchingLabelController = new LabelValueControllerPair(createLabel(propertyAdapter.getRepr()+ " = "), propertyController);
+					assert matchingLabelController != null;
+					if (propertyAdapter instanceof FieldNameAdapter)
+					{
+					    //Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
+					    fieldNamePair = matchingLabelController;
+					    //TODO: Localize this
+					    fieldNamePair.label.setText("Selected: ");
+					}
+					else
+					{
+					   this.addPropertyToPanel(matchingLabelController, this.morePropertiesPanel, extraPropertyCount);
+					   extraPropertyCount++;
+					}
+	                this.activeControllers.add(matchingLabelController);
+				}
+				
+				org.lgna.project.ast.AbstractType< ?,?,? > valueType;
+				//Setup the primary properties
+				if (this.selectedField != null)
+	            {
+					valueType = this.selectedField.getValueType();
+	            }
+	            else
+	            {
+					valueType = null;
+	            }
+				
+				//Add the object's name
+				if (fieldNamePair != null)
+				{
+				    this.addPropertyToPanel(fieldNamePair, this, mainPropertyCount++);
+				}
+				//Add the object's class
+				this.addNameAndControllerToPanel(this.classNameLabel, org.alice.ide.common.TypeComponent.createInstance( valueType ), this, mainPropertyCount++);
+				//Lastly, add the extra palette if there are any extra properties
+	            if (extraPropertyCount > 0)
+	            {
+	                this.addComponent( this.extraPropertiesPalette , new GridBagConstraints( 
+	                        0, //gridX
+	                        mainPropertyCount++, //gridY
+	                        2, //gridWidth
+	                        1, //gridHeight
+	                        1.0, //weightX
+	                        0.0, //weightY
+	                        GridBagConstraints.WEST, //anchor 
+	                        GridBagConstraints.HORIZONTAL, //fill
+	                        new Insets(4,0,0,0), // insets (top, left, bottom, right)
+	                        0, //ipadX
+	                        0 ) //ipadY
+	                );
+	            }
+	            this.addComponent( BoxUtilities.createVerticalGlue() , new GridBagConstraints( 
+	                    0, //gridX
+	                    mainPropertyCount++, //gridY
+	                    2, //gridWidth
+	                    1, //gridHeight
+	                    1.0, //weightX
+	                    1.0, //weightY
+	                    GridBagConstraints.CENTER, //anchor 
+	                    GridBagConstraints.VERTICAL, //fill
+	                    new Insets(0,0,0,0), // insets (top, left, bottom, right)
+	                    0, //ipadX
+	                    0 ) //ipadY
+	            );
+			}
+		}
+	}
+	
 	public void setField( UserField field )
 	{
 		this.selectedField = field;
@@ -297,7 +411,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			this.selectedEntity = this.selectedImp.getAbstraction();
 		}
 		this.selectedObject = instance;
-		boolean isScene = this.selectedImp instanceof SceneImp;
 		for (LabelValueControllerPair activeController : this.activeControllers)
 		{
 			if (activeController.controller != null)
@@ -308,115 +421,8 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			}
 		}
 		this.activeControllers.clear();
-		
-		this.removeAllComponents();
-		this.morePropertiesPanel.removeAllComponents();
-		
-		
-		List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>>();
-		
-		Iterable< org.lgna.project.ast.JavaMethod > getterMethods = org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters(this.selectedField.getValueType());
-		JavaType declaringType = field.getValueType().getFirstTypeEncounteredDeclaredInJava();
-		propertyAdapters.add(new FieldNameAdapter(this.selectedField, (StandardExpressionState)null, !isScene));
-		
-		for (org.lgna.project.ast.JavaMethod getter : getterMethods )
-		{
-			org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter(getter, declaringType, this.selectedImp);
-			if (adapter != null)
-			{
-				propertyAdapters.add(adapter);
-			}
-		}
-		
-		if (this.selectedEntity instanceof MovableTurnable)
-		{
-			propertyAdapters.add( new MoveableTurnableTranslationAdapter((MovableTurnable)this.selectedEntity, null));
-		}
-		if (this.selectedEntity instanceof Model && this.selectedImp instanceof ModelImp)
-		{
-			propertyAdapters.add( new ModelSizeAdapter((ModelImp)this.selectedImp, null));
-		}
-		
-		LabelValueControllerPair fieldNamePair = null;
-		
-		
-		if (propertyAdapters.size() != 0)
-		{
-			int mainPropertyCount = 0;
-			int extraPropertyCount = 0;
-			//Add all the extra properties to the extra panel and find the name property adapter
-			for (org.alice.ide.properties.adapter.AbstractPropertyAdapter propertyAdapter : propertyAdapters)
-			{
 
-				PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter(propertyAdapter);
-				assert propertyController != null;
-				LabelValueControllerPair matchingLabelController = new LabelValueControllerPair(createLabel(propertyAdapter.getRepr()+ " = "), propertyController);
-				assert matchingLabelController != null;
-				if (propertyAdapter instanceof FieldNameAdapter)
-				{
-				    //Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
-				    fieldNamePair = matchingLabelController;
-				    //TODO: Localize this
-				    fieldNamePair.label.setText("Selected: ");
-				}
-				else
-				{
-				   this.addPropertyToPanel(matchingLabelController, this.morePropertiesPanel, extraPropertyCount);
-				   extraPropertyCount++;
-				}
-                this.activeControllers.add(matchingLabelController);
-			}
-			
-			org.lgna.project.ast.AbstractType< ?,?,? > valueType;
-			//Setup the primary properties
-			if (this.selectedField != null)
-            {
-				valueType = this.selectedField.getValueType();
-            }
-            else
-            {
-				valueType = null;
-            }
-			
-			//Add the object's name
-			if (fieldNamePair != null)
-			{
-			    this.addPropertyToPanel(fieldNamePair, this, mainPropertyCount++);
-			}
-			//Add the object's class
-			this.addNameAndControllerToPanel(this.classNameLabel, org.alice.ide.common.TypeComponent.createInstance( valueType ), this, mainPropertyCount++);
-			//Lastly, add the extra palette if there are any extra properties
-            if (extraPropertyCount > 0)
-            {
-                this.addComponent( this.extraPropertiesPalette , new GridBagConstraints( 
-                        0, //gridX
-                        mainPropertyCount++, //gridY
-                        2, //gridWidth
-                        1, //gridHeight
-                        1.0, //weightX
-                        0.0, //weightY
-                        GridBagConstraints.WEST, //anchor 
-                        GridBagConstraints.HORIZONTAL, //fill
-                        new Insets(4,0,0,0), // insets (top, left, bottom, right)
-                        0, //ipadX
-                        0 ) //ipadY
-                );
-            }
-            this.addComponent( BoxUtilities.createVerticalGlue() , new GridBagConstraints( 
-                    0, //gridX
-                    mainPropertyCount++, //gridY
-                    2, //gridWidth
-                    1, //gridHeight
-                    1.0, //weightX
-                    1.0, //weightY
-                    GridBagConstraints.CENTER, //anchor 
-                    GridBagConstraints.VERTICAL, //fill
-                    new Insets(0,0,0,0), // insets (top, left, bottom, right)
-                    0, //ipadX
-                    0 ) //ipadY
-            );
-		}
-		this.revalidateAndRepaint();
+		this.refreshLater();
 	}
 
 }

@@ -46,10 +46,18 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 class TypeBorder implements javax.swing.border.Border {
+	private static java.awt.Color getFillColor() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			return ide.getTheme().getColorFor( org.lgna.project.ast.TypeExpression.class );
+		} else {
+			return new java.awt.Color( 0xe2ba84 );
+		}
+	}
 	private static final int X_INSET = 8;
 	private static final int Y_INSET = 2;
 	private static java.awt.Insets insets = new java.awt.Insets( Y_INSET, X_INSET, Y_INSET, X_INSET );
-	private static java.awt.Color FILL_COLOR = org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.TypeExpression.class );
+	private static java.awt.Color FILL_COLOR = getFillColor();
 	private static java.awt.Color FILL_BRIGHTER_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 0.5, 1.4 );
 	private static java.awt.Color FILL_DARKER_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 1.0, 0.8 );
 

@@ -41,64 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.java.util.logging;
+package org.alice.ide.choosers.array.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConsoleFormatter extends java.util.logging.Formatter {
-	private static String CLASS_NAME = edu.cmu.cs.dennisc.java.util.logging.Logger.class.getName();
-	private int getStackTraceIndex( StackTraceElement[] stack ) {
-		int index = 0;
-		while( index < stack.length ) {
-			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
-				break;
-			}
-			index ++;
-		}
-		while( index < stack.length ) {
-			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
-				//pass
-			} else {
-				return index;
-			}
-			index ++;
-		}
-		
-		return -1;
+public class ExpressionList extends org.lgna.croquet.components.MutableList< org.lgna.project.ast.Expression, org.lgna.croquet.components.Label, org.lgna.croquet.components.Label, org.lgna.croquet.components.Label > {
+	public ExpressionList() {
+		super( org.alice.ide.choosers.array.ExpressionListSelectionState.getInstance(), org.alice.ide.choosers.array.AddExpressionCascade.getInstance().getRoot().getPopupPrepModel() );
 	}
 	@Override
-	public String format( java.util.logging.LogRecord record ) {
-		java.util.logging.Level level = record.getLevel();
-		StringBuilder sb = new StringBuilder();
-		sb.append( level );
-		sb.append( ": " );
-		sb.append( record.getMessage() );
-		sb.append( "\n" );
-		StackTraceElement[] stack = new Throwable().getStackTrace();
-		int index = this.getStackTraceIndex( stack );
-		if( index >= 0 ) {
-			int N;
-			if( java.util.logging.Level.SEVERE.intValue() <= level.intValue() ) {
-				N = index + 8;
-			} else {
-				N = index + 1;
-			}
-			N = Math.min( N, stack.length );
-			for( int i=index; i<N; i++ ) {
-				StackTraceElement stackTraceElement = stack[ i ];
-				sb.append( "\tat " );
-				sb.append( stackTraceElement.getClassName() );
-				sb.append( "." );
-				sb.append( stackTraceElement.getMethodName() );
-				sb.append( "(" );
-				sb.append( stackTraceElement.getFileName() );
-				sb.append( ":" );
-				sb.append(  stackTraceElement.getLineNumber() );
-				sb.append( ")" );
-				sb.append( "\n" );
-			}
-		}
-		return sb.toString();
+	protected org.lgna.croquet.components.Label createLeadingComponent() {
+		return new org.lgna.croquet.components.Label( "leading" );
+	}
+	@Override
+	protected org.lgna.croquet.components.Label createMainComponent() {
+		return new org.lgna.croquet.components.Label( "main" );
+	}
+	@Override
+	protected org.lgna.croquet.components.Label createTrailingComponent() {
+		return new org.lgna.croquet.components.Label( "trailing" );
+	}
+	@Override
+	protected void update( org.lgna.croquet.components.Label leadingComponent, org.lgna.croquet.components.Label mainComponent, org.lgna.croquet.components.Label trailingComponent, int index, org.lgna.project.ast.Expression item ) {
+		leadingComponent.setText( "[" + index + "]" );
+		mainComponent.setText( "main: " + item.hashCode() );
+		trailingComponent.setText( ";" );
+	}
+	@Override
+	protected void updateSelection( org.lgna.croquet.components.Label leadingComponent, org.lgna.croquet.components.Label mainComponent, org.lgna.croquet.components.Label trailingComponent, boolean isSelected ) {
 	}
 }
