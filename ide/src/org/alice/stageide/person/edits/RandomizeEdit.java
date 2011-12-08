@@ -47,20 +47,26 @@ package org.alice.stageide.person.edits;
  * @author Dennis Cosgrove
  */
 public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
-	private final org.lgna.story.resources.sims2.PersonResource prevState;
-	private final org.lgna.story.resources.sims2.PersonResource nextState;
+	private final org.lgna.story.resources.sims2.PersonResource prevResource;
+	private final org.lgna.story.resources.sims2.PersonResource nextResource;
+
 	public RandomizeEdit( org.lgna.croquet.history.CompletionStep step ) {
 		super( step );
-		this.prevState = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
-		this.nextState = org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
+		this.prevResource = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
+		this.nextResource = org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
+	}
+	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.pushAtomic();
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.setStates( resource );
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.popAtomic();
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		 org.alice.stageide.person.PersonResourceManager.SINGLETON.setStates( this.nextState );
+		this.setResource( this.nextResource );
 	}
 	@Override
 	protected final void undoInternal() {
-		org.alice.stageide.person.PersonResourceManager.SINGLETON.setStates( this.prevState );
+		this.setResource( this.prevResource );
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
