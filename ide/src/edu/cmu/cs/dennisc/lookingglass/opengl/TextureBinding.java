@@ -46,37 +46,47 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TextureBinding {
-	private class RenderContextData {
+public final class TextureBinding {
+	//todo: investigate shared drawables
+	private static class Data {
 		private com.sun.opengl.util.texture.Texture texture;
+		private com.sun.opengl.util.texture.TextureData textureData;
 		private javax.media.opengl.GL gl;
-		public boolean isNewTextureRequired( javax.media.opengl.GL gl ) {
+		private boolean isUpdateNecessary( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData textureData ) {
 			if( this.texture != null ) {
-				int textureObject = this.texture.getTextureObject();
-				if( this.gl != gl ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.info( "gl changed", this.gl, gl );
+				if( this.textureData != textureData ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.info( "textureData changed", this.textureData, textureData );
 					return true;
 				} else {
-					if( gl.glIsTexture( textureObject ) ) {
-						return false;
-					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.info( "glIsTexture is false" );
+					if( this.gl != gl ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.info( "gl changed", this.gl, gl );
 						return true;
+					} else {
+						int textureObject = this.texture.getTextureObject();
+						if( gl.glIsTexture( textureObject ) ) {
+							return false;
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.info( "glIsTexture is false" );
+							return true;
+						}
 					}
 				}
 			} else {
 				return true;
 			}
 		}
-		public void update( javax.media.opengl.GL gl ) {
-			com.sun.opengl.util.texture.Texture nextTexture = newTexture( gl, this.texture );
-			if( this.texture != nextTexture ) {
+		public void updateIfNecessary( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData textureData ) {
+			if( this.isUpdateNecessary( gl, textureData ) ) {
 				if( this.texture != null ) {
 					this.texture.dispose();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.info( "dispose", this.texture );
 				}
-				this.texture = nextTexture;
+				this.textureData = textureData;
 				this.gl = gl;
+				this.texture = com.sun.opengl.util.texture.TextureIO.newTexture( this.textureData );
+//				for( RenderContextData value : map.values() ) {
+//					System.err.print( value.gl.hashCode() + " " );
+//				}
+//				System.err.println();
 			}
 		}
 		public void bind() {
@@ -88,36 +98,34 @@ public abstract class TextureBinding {
 		public void forget() {
 			if( this.texture != null ) {
 				this.texture.dispose();
+				this.texture = null;
+				this.textureData = null;
+				this.gl = null;
 				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "dispose", this.texture );
 			}
 		}
 	}
 
-	private final java.util.Map< RenderContext, RenderContextData > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	protected abstract com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.sun.opengl.util.texture.Texture currentTexture );
-
-	private RenderContextData getData( RenderContext rc ) {
-		RenderContextData rv = this.map.get( rc );
+	private final java.util.Map< RenderContext, Data > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private Data getData( RenderContext rc ) {
+		Data rv = this.map.get( rc );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new RenderContextData();
+			rv = new Data();
 			this.map.put( rc, rv );
 		}
 		return rv;
 	}
-	public void ensureUpToDate( RenderContext rc, boolean isDirty ) {
-		RenderContextData data = this.getData( rc );
-		if( isDirty || data.isNewTextureRequired( rc.gl ) ) {
-			data.update( rc.gl );
-		}
+	public void ensureUpToDate( RenderContext rc, com.sun.opengl.util.texture.TextureData textureData ) {
+		Data data = this.getData( rc );
+		data.updateIfNecessary( rc.gl, textureData );
 		data.bind();
 		data.enable();
 	}
 	public void forget( RenderContext rc ) {
 		synchronized( this.map ) {
-			RenderContextData data = this.map.get( rc );
+			Data data = this.map.get( rc );
 			if( data != null ) {
 				data.forget();
 				this.map.remove( rc );

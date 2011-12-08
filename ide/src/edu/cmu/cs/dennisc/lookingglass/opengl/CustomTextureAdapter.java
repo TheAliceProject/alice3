@@ -79,12 +79,12 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 	}
 		
 	@Override
-	protected com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.sun.opengl.util.texture.Texture currentTexture ) {
+	protected com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTextureData ) {
 		boolean isNewTextureRendererRequired;
-		if( currentTexture != null ) {
+		if( currentTextureData != null ) {
 			if( m_textureRenderer != null ) {
 				//todo: check mip mapping
-				isNewTextureRendererRequired = currentTexture.getWidth() != m_textureRenderer.getWidth() || currentTexture.getHeight() != m_textureRenderer.getHeight();
+				isNewTextureRendererRequired = currentTextureData.getWidth() != m_textureRenderer.getWidth() || currentTextureData.getHeight() != m_textureRenderer.getHeight();
 			} else {
 				isNewTextureRendererRequired = true;
 			}
@@ -110,7 +110,7 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 					//pass
 				} else {
 					try {
-						return newTexture( gl, bufferedImage, true );
+						return newTextureData( gl, bufferedImage, true );
 					} catch( AssertionError ae ) {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "unable to directly generate mipmapped texture." );
 					} catch( RuntimeException re ) {
@@ -122,12 +122,15 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 				hackG.drawImage( bufferedImage, 0, 0, edu.cmu.cs.dennisc.image.ImageUtilities.accessImageObserver() );
 				hackG.dispose();
 				bufferedImage = hackBI;
-				return newTexture( gl, bufferedImage, true );
+				return newTextureData( gl, bufferedImage, true );
 			} else {
-				return m_textureRenderer.getTexture();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "m_textureRenderer.getTextureData()" );
+				return null;
+				//return m_textureRenderer.getTextureData();
 			}
 		} else {
-			return m_textureRenderer.getTexture();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "m_textureRenderer.getTextureData()" );
+			return null;
 		}
 	}
 }

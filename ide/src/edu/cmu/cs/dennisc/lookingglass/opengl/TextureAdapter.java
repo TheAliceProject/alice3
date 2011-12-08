@@ -106,22 +106,22 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		return v;
 	}
 
-	private final TextureBinding textureBinding = new TextureBinding() {
-		@Override
-		protected com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.sun.opengl.util.texture.Texture currentTexture ) {
-			return TextureAdapter.this.newTexture( gl, currentTexture );
-		}
-	};
-
-	protected static com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
+	private final TextureBinding textureBinding = new TextureBinding();
+	private com.sun.opengl.util.texture.TextureData textureData;
+	protected static com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
 		//com.jogamp.opengl.util.texture.TextureData textureData = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
-		com.sun.opengl.util.texture.TextureData textureData = com.sun.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
-		return com.sun.opengl.util.texture.TextureIO.newTexture( textureData );
+		return com.sun.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
 	}
-	protected abstract com.sun.opengl.util.texture.Texture newTexture( javax.media.opengl.GL gl, com.sun.opengl.util.texture.Texture currentTexture );
+	protected abstract com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTexture );
 	public TextureBinding bindTexture( RenderContext rc ) {
-		this.textureBinding.ensureUpToDate( rc, m_isDirty );
-		this.m_isDirty = false;
+		if( m_isDirty ) {
+			if( this.textureData != null ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "new texture data", this );
+			}
+			this.textureData = this.newTextureData( rc.gl, this.textureData ); 
+			this.m_isDirty = false;
+		}
+		this.textureBinding.ensureUpToDate( rc, this.textureData );
 		return this.textureBinding;
 	}
 

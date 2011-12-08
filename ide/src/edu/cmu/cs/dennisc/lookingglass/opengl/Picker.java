@@ -260,18 +260,23 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	
 	private edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
 		javax.media.opengl.GLPbuffer pBuffer = getUpToDateBuffer();
-		this.pickParameters = new PickParameters( pBuffer, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
-		try {
-			if( sgCamera != null ) {
-//				if( pBuffer.isRealized() ) {
-					pBuffer.display();
-//				} else {
-//					Thread.dumpStack();
-//				}
+		if( pBuffer != null ) {
+			this.pickParameters = new PickParameters( pBuffer, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
+			try {
+				if( sgCamera != null ) {
+//					if( pBuffer.isRealized() ) {
+						pBuffer.display();
+//					} else {
+//						Thread.dumpStack();
+//					}
+				}
+				return this.pickParameters.accessFrontMostPickResult();
+			} finally {
+				this.pickParameters = null;
 			}
-			return this.pickParameters.accessFrontMostPickResult();
-		} finally {
-			this.pickParameters = null;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "pBuffer is null" );
+			return null;
 		}
 	}
 	public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickAll( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
