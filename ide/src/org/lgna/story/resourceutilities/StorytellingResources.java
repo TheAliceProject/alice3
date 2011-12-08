@@ -109,7 +109,8 @@ public class StorytellingResources {
 		if( alicePath != null ) {
 			ResourcePathManager.addPath( ResourcePathManager.MODEL_RESOURCE_KEY, alicePath );
 			return ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
-		} else {
+		} 
+		else {
 			LinkedList< File > directoryFromSavedPreference = new LinkedList< File >();
 			File resourceDir = getAliceDirFromPref();
 			if( resourceDir != null ) {
@@ -204,8 +205,8 @@ public class StorytellingResources {
 		if( resourcePaths.size() == 0 ) {
 			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find the Alice gallery resources." );
 		}
-		else if( getAliceDirFromPref() == null ) {
-			setNebulousResourceDir( resourcePaths.get( 0 ).getParent() );
+		else {
+			setAliceResourceDir( resourcePaths.get( 0 ).getParent() );
 		}
 	}
 	
@@ -233,9 +234,7 @@ public class StorytellingResources {
 		if( simsPathsLoaded.size() == 0 ) {
 			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find The Sims (TM) 2 Art Assets." );
 		} else {
-			if( getNebulousDirFromPref() == null ) {
-				setNebulousResourceDir( simsPathsLoaded.get( 0 ).getParent() );
-			}
+			setNebulousResourceDir( simsPathsLoaded.get( 0 ).getParent() );
 		}
 	}
 
