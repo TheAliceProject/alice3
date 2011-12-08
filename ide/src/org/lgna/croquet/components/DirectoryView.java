@@ -46,31 +46,25 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryView< T > extends ViewController< javax.swing.JPanel, org.lgna.croquet.TreeSelectionState< T > > {
+public abstract class DirectoryView< T > extends PanelViewController< org.lgna.croquet.TreeSelectionState< T > > {
 	private final org.lgna.croquet.State.ValueObserver< T > valueObserver = new org.lgna.croquet.State.ValueObserver< T >() {
 		public void changing(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
 		}
 		public void changed(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
-			DirectoryView.this.handleSelectionChange( nextValue );
+			DirectoryView.this.handleSelectionChange( state, prevValue, nextValue, isAdjusting );
 		}
 	};
 	public DirectoryView( org.lgna.croquet.TreeSelectionState< T > model ) {
 		super( model );
 	}
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		class DirectoryViewPanel extends javax.swing.JPanel {
-			public DirectoryViewPanel() {
-				this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-			}
-		}
-		return new DirectoryViewPanel();
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 	}
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getModel().addValueObserver( this.valueObserver );
-		this.refresh();
 	}
 	@Override
 	protected void handleUndisplayable() {
@@ -82,7 +76,8 @@ public abstract class DirectoryView< T > extends ViewController< javax.swing.JPa
 		org.lgna.croquet.TreeSelectionState< T > model = this.getModel();
 		return model.getChildrenOfSelectedValue();
 	}
-	protected void refresh() {
+	@Override
+	protected void internalRefresh() {
 		this.internalRemoveAllComponents();
 		java.util.List< T > children = this.getChildren();
 		if( children != null ) {
@@ -93,9 +88,8 @@ public abstract class DirectoryView< T > extends ViewController< javax.swing.JPa
 				}
 			}
 		}
-		this.revalidateAndRepaint();
 	}
-	protected void handleSelectionChange( T nextValue ) {
-		this.refresh();
+	protected void handleSelectionChange( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		this.refreshLater();
 	}
 }

@@ -115,7 +115,7 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 				//pass
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "tree lock required", this );
-				Thread.dumpStack();
+				//Thread.dumpStack();
 			}
 		}
 	}

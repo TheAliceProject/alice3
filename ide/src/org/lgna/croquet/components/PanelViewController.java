@@ -46,7 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.Composite<?> > {
+//todo: share code w/ Panel
+public abstract class PanelViewController< M extends org.lgna.croquet.Model > extends ViewController< javax.swing.JPanel, M > {
 	protected class DefaultJPanel extends javax.swing.JPanel {
 		public DefaultJPanel() {
 			this.setOpaque( false );
@@ -62,7 +63,7 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 		@Override
 		public void invalidate() {
 			super.invalidate();
-			Panel.this.refreshIfNecessary();
+			PanelViewController.this.refreshIfNecessary();
 		}
 		@Override
 		public java.awt.Dimension getPreferredSize() {
@@ -71,18 +72,15 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 		@Override
 		public java.awt.Dimension getMaximumSize() {
 			java.awt.Dimension rv = super.getMaximumSize();
-			if( Panel.this.isMaximumSizeClampedToPreferredSize() ) {
+			if( PanelViewController.this.isMaximumSizeClampedToPreferredSize() ) {
 				rv.setSize( this.getPreferredSize() );
 			}
 			return rv;
 		}
 	}
 	
-	public Panel() {
-		this( null );
-	}
-	public Panel( org.lgna.croquet.Composite<?> composite ) {
-		super( composite );
+	public PanelViewController( M model ) {
+		super( model );
 	}
 	protected javax.swing.JPanel createJPanel() {
 		return new DefaultJPanel();
@@ -135,8 +133,8 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 		}
 	}
 	public final void refreshLater() {
-		Panel.this.isRefreshNecessary = true;
-		Panel.this.revalidateAndRepaint();
+		this.isRefreshNecessary = true;
+		this.revalidateAndRepaint();
 	}
 	@Override
 	protected void handleDisplayable() {
