@@ -82,6 +82,9 @@ public class TreePathViewController<T> extends PanelViewController< TreeSelectio
 		}
 	}
 	private static class InternalPanel<T> extends LineAxisPanel {
+		public InternalPanel() {
+			this.setBackgroundColor( null );
+		}
 		@Override
 		protected void internalRefresh() {
 			this.internalRemoveAllComponents();
@@ -118,6 +121,7 @@ public class TreePathViewController<T> extends PanelViewController< TreeSelectio
 	};
 	public TreePathViewController( TreeSelectionState<T> model ) {
 		super( model, new InternalPanel< T >() );
+		this.setBackgroundColor( null );
 		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
 	}
 

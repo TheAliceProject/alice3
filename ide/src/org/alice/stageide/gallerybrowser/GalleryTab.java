@@ -46,37 +46,16 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeTab extends GalleryTab {
-	private static class SingletonHolder {
-		private static TypeTab instance = new TypeTab();
-	}
-	public static TypeTab getInstance() {
-		return SingletonHolder.instance;
-	}
-	private TypeTab() {
-		super( java.util.UUID.fromString( "86ebb5e5-8cae-4f3b-ae46-35f3a7f4a00c" ) );
+public abstract class GalleryTab extends org.lgna.croquet.TabComposite< org.lgna.croquet.components.View< ?,? > > {
+	public GalleryTab( java.util.UUID id ) {
+		super( id );
 	}
 	@Override
-	protected org.lgna.croquet.components.View<?,?> createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-
-		MyTypesView myTypesView = new MyTypesView();
-		
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( myTypesView );
-		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-
-		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
-		rv.addComponent( lineEndPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-
-		myTypesView.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		return rv;
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
+	public final boolean isCloseable() {
 		return false;
+	}
+	@Override
+	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
+		return null;
 	}
 }

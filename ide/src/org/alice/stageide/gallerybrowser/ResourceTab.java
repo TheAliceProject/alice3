@@ -46,7 +46,26 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceTab extends org.lgna.croquet.TabComposite< org.lgna.croquet.components.View< ?,? > > {
+public class ResourceTab extends GalleryTab {
+	static class HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane extends javax.swing.JScrollPane {
+		private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.info( jScrollBar.getMinimum(), jScrollBar.getValue(), jScrollBar.getMaximum(), jScrollBar.getVisibleAmount() );
+			return jScrollBar.getMinimum() != jScrollBar.getValue() || jScrollBar.getMaximum() != jScrollBar.getVisibleAmount();
+		}
+		@Override
+		public javax.swing.JScrollBar createHorizontalScrollBar() {
+			return new javax.swing.JScrollBar( javax.swing.JScrollBar.HORIZONTAL ) {
+				@Override
+				public void paint( java.awt.Graphics g ) {
+					javax.swing.JScrollBar verticalScrollBar = HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getVerticalScrollBar();
+					if( isPaintRequiredFor( this ) || isPaintRequiredFor( verticalScrollBar ) ) {
+						super.paint( g );
+					}
+				}
+			};
+		}
+	}
+
 	private static class SingletonHolder {
 		private static ResourceTab instance = new ResourceTab();
 	}
@@ -55,11 +74,6 @@ public class ResourceTab extends org.lgna.croquet.TabComposite< org.lgna.croquet
 	}
 	private ResourceTab() {
 		super( java.util.UUID.fromString( "811380db-5339-4a2e-84e3-695b502188af" ) );
-	}
-	
-	@Override
-	public boolean isCloseable() {
-		return false;
 	}
 	@Override
 	protected org.lgna.croquet.components.View< ?, ? > createView() {
@@ -75,8 +89,18 @@ public class ResourceTab extends org.lgna.croquet.TabComposite< org.lgna.croquet
 
 				topPanel.addComponent( filterTextField, Constraint.LINE_END );
 
+				org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new GalleryDirectoryViewController() ) {
+					@Override
+					protected javax.swing.JScrollPane createAwtComponent() {
+						return new HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+					}
+				};
+				scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
+				scrollPane.setBorder( null );
+				scrollPane.getAwtComponent().getHorizontalScrollBar().setUnitIncrement( 24 );
+
 				this.addComponent( topPanel, Constraint.PAGE_START );
-				this.addComponent( new GalleryDirectoryViewController(), Constraint.CENTER );
+				this.addComponent( scrollPane, Constraint.CENTER );
 
 				org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
 				org.lgna.croquet.components.Button createPersonButton = createTypeFromPersonResourceOperation.createButton();
