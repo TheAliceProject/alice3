@@ -718,6 +718,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		getPropertyPanel().setSceneInstance(sceneAliceInstance);
 		getObjectMarkerPanel().setType(sceneAliceInstance.getType());
 		getCameraMarkerPanel().setType(sceneAliceInstance.getType());
+		this.instanceFactorySelectionPanel.setType( sceneAliceInstance.getType() );
 		for (org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields())
 		{
 			if( field.getValueType().isAssignableTo(org.lgna.story.Camera.class)) 

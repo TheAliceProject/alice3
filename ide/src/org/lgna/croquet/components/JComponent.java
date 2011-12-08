@@ -51,12 +51,18 @@ public abstract class JComponent<J extends javax.swing.JComponent> extends Conta
 //	public void setOpaque(boolean isOpaque) {
 //		this.getAwtComponent().setOpaque(isOpaque);
 //	}
-//	@Override
-//	public void setBackgroundColor( java.awt.Color color ) {
-//		super.setBackgroundColor( color );
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: opaque" );
-//		this.getAwtComponent().setOpaque(color!=null);
-//	}
+	@Override
+	public void setBackgroundColor( java.awt.Color color ) {
+		super.setBackgroundColor( color );
+		this.getAwtComponent().setOpaque( color != null );
+//		//todo?
+//		if( color != null ) {
+//			//pass
+//		} else {
+//			this.getAwtComponent().setOpaque( false );
+//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+//		}
+	}
 	public void setAlignmentX(float alignmentX) {
 		this.getAwtComponent().setAlignmentX(alignmentX);
 	}

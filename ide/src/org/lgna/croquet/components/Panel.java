@@ -95,11 +95,6 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 		rv.setLayout( layoutManager );
 		return rv;
 	}
-	@Override
-	public void setBackgroundColor( java.awt.Color color ) {
-		super.setBackgroundColor( color );
-		this.getAwtComponent().setOpaque( color != null );
-	}
 	public void removeComponent( Component< ? > component ) {
 		this.internalRemoveComponent( component );
 	}
