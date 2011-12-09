@@ -155,19 +155,32 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
             0, //ipadX
             0 ) //ipadY
        );
-	    panel.addComponent( controllerPanel, new GridBagConstraints( 
+	   panel.addComponent( controllerPanel, new GridBagConstraints( 
             1, //gridX
             index, //gridY 
             1, //gridWidth
             1, //gridHeight
-            1.0, //weightX
+            0.0, //weightX
             0.0, //weightY
             GridBagConstraints.WEST, //anchor 
-            GridBagConstraints.HORIZONTAL, //fill
+            GridBagConstraints.NONE, //fill
             new Insets(2,2,2,2), // insets (top, left, bottom, right)
             0, //ipadX
             0 ) //ipadY
        );
+	   panel.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 
+	            2, //gridX
+	            index, //gridY 
+	            1, //gridWidth
+	            1, //gridHeight
+	            1.0, //weightX
+	            0.0, //weightY
+	            GridBagConstraints.WEST, //anchor 
+	            GridBagConstraints.HORIZONTAL, //fill
+	            new Insets(0,0,0,0), // insets (top, left, bottom, right)
+	            0, //ipadX
+	            0 ) //ipadY
+	       );
 	}
 	
 	private void addPropertyToPanel(LabelValueControllerPair propertyPair, GridBagPanel panel, int index )
@@ -421,8 +434,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			}
 		}
 		this.activeControllers.clear();
-
 		this.refreshLater();
 	}
-
 }
