@@ -57,10 +57,32 @@ public class Logger {
 	private static java.util.logging.Logger getInstance() {
 		return java.util.logging.Logger.global;
 	}
+	private static final String LEVEL_KEY = Logger.class.getName() + ".Level";
+
+	private static final java.util.logging.Level THROWABLE_LEVEL = new java.util.logging.Level( "THROWABLE", java.util.logging.Level.SEVERE.intValue() + 1 ) {};
+	private static final java.util.logging.Level TODO_LEVEL = new java.util.logging.Level( "TODO", java.util.logging.Level.WARNING.intValue() - 1 ) {};
+	
 	static {
 		java.util.logging.LogManager.getLogManager().reset();
 		//java.util.logging.Logger.global.setUseParentHandlers( false );
-		getInstance().setLevel( java.util.logging.Level.INFO );
+		
+		
+		String levelText = System.getProperty( LEVEL_KEY, "SEVERE" );
+		
+		java.util.logging.Level level;
+		if( levelText.equalsIgnoreCase( THROWABLE_LEVEL.getName() ) ) {
+			level = THROWABLE_LEVEL;
+		} else if( levelText.equalsIgnoreCase( TODO_LEVEL.getName() ) ) {
+			level = TODO_LEVEL;
+		} else {
+			level = java.util.logging.Level.parse( levelText );
+			if( level != null ) {
+				//pass
+			} else {
+				level = java.util.logging.Level.SEVERE;
+			}
+		}
+		getInstance().setLevel( level );
 		SegregatingConsoleHandler consoleHandler = new SegregatingConsoleHandler();
 		consoleHandler.setFormatter( new ConsoleFormatter() );
 		getInstance().addHandler( consoleHandler );
@@ -87,9 +109,6 @@ public class Logger {
 	private static boolean isLoggable( java.util.logging.Level level ) {
 		return getInstance().isLoggable( level );
 	}
-	
-	private static java.util.logging.Level TODO_LEVEL = new java.util.logging.Level( "TODO", java.util.logging.Level.INFO.intValue() + 1 ) {};
-	private static java.util.logging.Level THROWABLE_LEVEL = new java.util.logging.Level( "THROWABLE", java.util.logging.Level.SEVERE.intValue() + 1 ) {};
 	
 	private static void log( java.util.logging.Level level, Object object, Throwable throwable ) {
 		if( isLoggable( level ) ) {
