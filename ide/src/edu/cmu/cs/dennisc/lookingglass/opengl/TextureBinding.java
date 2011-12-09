@@ -52,6 +52,17 @@ public final class TextureBinding {
 		private com.sun.opengl.util.texture.Texture texture;
 		private com.sun.opengl.util.texture.TextureData textureData;
 		private javax.media.opengl.GL gl;
+		
+		private void disposeTextureIdIfAppropriate( javax.media.opengl.GL gl ) {
+			if( this.texture != null ) {
+				if( this.gl != gl ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.info( "disposing texture id", this.texture.getTextureObject() );
+					this.texture.dispose();
+				}
+			}
+		}
 		private boolean isUpdateNecessary( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData textureData ) {
 			if( this.texture != null ) {
 				if( this.textureData != textureData ) {
@@ -77,15 +88,11 @@ public final class TextureBinding {
 		}
 		public void updateIfNecessary( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData textureData ) {
 			if( this.isUpdateNecessary( gl, textureData ) ) {
-				if( this.texture != null ) {
-					this.texture.dispose();
-				}
+				this.disposeTextureIdIfAppropriate( gl );
 				this.textureData = textureData;
 				this.gl = gl;
 				this.texture = com.sun.opengl.util.texture.TextureIO.newTexture( this.textureData );
-				
-				edu.cmu.cs.dennisc.java.util.logging.Logger.testing( "net texture id", this.texture.getTextureObject(), "gl", gl.hashCode() );
-				
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "allocated texture id", this.texture.getTextureObject(), "gl", gl.hashCode() );
 //				for( RenderContextData value : map.values() ) {
 //					System.err.print( value.gl.hashCode() + " " );
 //				}
@@ -98,9 +105,9 @@ public final class TextureBinding {
 		public void enable() {
 			this.texture.enable();
 		}
-		public void forget() {
+		public void forget( javax.media.opengl.GL gl ) {
 			if( this.texture != null ) {
-				this.texture.dispose();
+				this.disposeTextureIdIfAppropriate( gl );
 				this.texture = null;
 				this.textureData = null;
 				this.gl = null;
@@ -130,7 +137,7 @@ public final class TextureBinding {
 		synchronized( this.map ) {
 			Data data = this.map.get( rc );
 			if( data != null ) {
-				data.forget();
+				data.forget( rc.gl );
 				this.map.remove( rc );
 			}
 		}
