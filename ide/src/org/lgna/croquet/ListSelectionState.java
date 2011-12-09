@@ -504,9 +504,6 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	public org.lgna.croquet.components.DefaultRadioButtons< T > createHorizontalDefaultRadioButtons() {
 		return new org.lgna.croquet.components.DefaultRadioButtons< T >( this, false );
 	}
-	public org.lgna.croquet.components.MutableList< T > createMutableList( org.lgna.croquet.components.MutableList.Factory< T > factory ) {
-		return new org.lgna.croquet.components.MutableList< T >( this, factory );
-	}
 
 	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( T item ) {
 		org.lgna.croquet.components.ItemSelectable< ?, T > itemSelectable = this.getFirstComponent( org.lgna.croquet.components.ItemSelectable.class );

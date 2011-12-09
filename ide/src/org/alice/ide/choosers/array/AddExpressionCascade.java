@@ -41,64 +41,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.java.util.logging;
+package org.alice.ide.choosers.array;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConsoleFormatter extends java.util.logging.Formatter {
-	private static String CLASS_NAME = edu.cmu.cs.dennisc.java.util.logging.Logger.class.getName();
-	private int getStackTraceIndex( StackTraceElement[] stack ) {
-		int index = 0;
-		while( index < stack.length ) {
-			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
-				break;
-			}
-			index ++;
+public class AddExpressionCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
+	private static class InternalBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+		private static class SingletonHolder {
+			private static InternalBlank instance = new InternalBlank();
 		}
-		while( index < stack.length ) {
-			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
-				//pass
-			} else {
-				return index;
-			}
-			index ++;
+		public static InternalBlank getInstance() {
+			return SingletonHolder.instance;
 		}
-		
-		return -1;
+		private InternalBlank() {
+			super( java.util.UUID.fromString( "309a7961-22d1-4c64-b9bc-23c5aba8f0ff" ), Double.class );
+		}
+	}
+	private static class SingletonHolder {
+		private static AddExpressionCascade instance = new AddExpressionCascade();
+	}
+	public static AddExpressionCascade getInstance() {
+		return SingletonHolder.instance;
+	}
+	private AddExpressionCascade() {
+		super( 
+				org.lgna.croquet.Application.INHERIT_GROUP, 
+				java.util.UUID.fromString( "031117ba-2e27-4323-beff-e3c1e6d83a6c" ), 
+				org.lgna.project.ast.Expression.class, 
+				InternalBlank.getInstance()
+		);
 	}
 	@Override
-	public String format( java.util.logging.LogRecord record ) {
-		java.util.logging.Level level = record.getLevel();
-		StringBuilder sb = new StringBuilder();
-		sb.append( level );
-		sb.append( ": " );
-		sb.append( record.getMessage() );
-		sb.append( "\n" );
-		StackTraceElement[] stack = new Throwable().getStackTrace();
-		int index = this.getStackTraceIndex( stack );
-		if( index >= 0 ) {
-			int N;
-			if( java.util.logging.Level.SEVERE.intValue() <= level.intValue() ) {
-				N = index + 8;
-			} else {
-				N = index + 1;
-			}
-			N = Math.min( N, stack.length );
-			for( int i=index; i<N; i++ ) {
-				StackTraceElement stackTraceElement = stack[ i ];
-				sb.append( "\tat " );
-				sb.append( stackTraceElement.getClassName() );
-				sb.append( "." );
-				sb.append( stackTraceElement.getMethodName() );
-				sb.append( "(" );
-				sb.append( stackTraceElement.getFileName() );
-				sb.append( ":" );
-				sb.append(  stackTraceElement.getLineNumber() );
-				sb.append( ")" );
-				sb.append( "\n" );
-			}
-		}
-		return sb.toString();
+	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > completionStep, org.lgna.project.ast.Expression[] values ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( values[ 0 ] );
+		ExpressionListSelectionState.getInstance().addItem( values[ 0 ] );
+		return null;
 	}
 }

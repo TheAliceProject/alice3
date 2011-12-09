@@ -63,14 +63,14 @@ public class PredeterminedMenuModel extends MenuModel {
 	@Override
 	public org.lgna.croquet.components.Menu createMenu() {
 		org.lgna.croquet.components.Menu rv = super.createMenu();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "createMenu" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "unite w/ handlePopupMenuPrologue" );
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( rv, this.models );
 		return rv;
 	}
 	@Override
 	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		System.err.println( "todo: handlePopupMenuPrologue" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "unite w/ createMenu" );
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, this.models );
 	}
 }

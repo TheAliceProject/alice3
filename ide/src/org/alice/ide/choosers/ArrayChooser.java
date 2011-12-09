@@ -80,22 +80,8 @@ public class ArrayChooser extends AbstractRowsPaneChooser< org.lgna.project.ast.
 			
 			this.components = new org.lgna.croquet.components.Component< ? >[] { typeLabel, this.arrayInitializerPane };
 		}
-		
-//		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-//			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//			}
-//			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-//				ArrayChooser.this.arrayInitializerPane.handleTypeChange( bogusNode.getType() );
-//			}
-//		} );
-//		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.Expression >() {
-//			@Override
-//			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.Expression > e ) {
-//			}
-//			@Override
-//			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.Expression > e ) {
-//			}
-//		} );
+
+		//this.components[ 1 ] = new org.alice.ide.choosers.array.components.ExpressionList();
 	}
 	
 	//todo
@@ -142,5 +128,14 @@ public class ArrayChooser extends AbstractRowsPaneChooser< org.lgna.project.ast.
 	public org.lgna.project.ast.ArrayInstanceCreation getValue() {
 		java.util.List< org.lgna.project.ast.Expression > expressions = this.bogusNode.arrayExpressions.getValue();
 		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );
+	}
+	public static void main( String[] args ) {
+		new org.alice.stageide.StageIDE();
+		
+		javax.swing.JFrame frame = new javax.swing.JFrame();
+		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
+		frame.getContentPane().add( new ArrayChooser( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE ).getAwtComponent() );
+		frame.pack();
+		frame.setVisible( true );
 	}
 }

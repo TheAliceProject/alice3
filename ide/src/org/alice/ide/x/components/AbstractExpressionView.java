@@ -50,7 +50,10 @@ public class AbstractExpressionView extends org.alice.ide.common.ExpressionLikeS
 	public AbstractExpressionView( org.lgna.project.ast.Expression expression ) {
 		super( null, expression != null ? expression.getType() == org.lgna.project.ast.JavaType.VOID_TYPE : false );
 		this.expression = expression;
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( expression ) );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			this.setBackgroundColor( ide.getTheme().getColorFor( expression ) );
+		}
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
