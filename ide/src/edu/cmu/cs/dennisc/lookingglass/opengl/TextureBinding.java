@@ -83,6 +83,9 @@ public final class TextureBinding {
 				this.textureData = textureData;
 				this.gl = gl;
 				this.texture = com.sun.opengl.util.texture.TextureIO.newTexture( this.textureData );
+				
+				edu.cmu.cs.dennisc.java.util.logging.Logger.testing( "net texture id", this.texture.getTextureObject(), "gl", gl.hashCode() );
+				
 //				for( RenderContextData value : map.values() ) {
 //					System.err.print( value.gl.hashCode() + " " );
 //				}

@@ -59,8 +59,9 @@ public class Logger {
 	}
 	private static final String LEVEL_KEY = Logger.class.getName() + ".Level";
 
-	private static final java.util.logging.Level THROWABLE_LEVEL = new java.util.logging.Level( "THROWABLE", java.util.logging.Level.SEVERE.intValue() + 1 ) {};
-	private static final java.util.logging.Level TODO_LEVEL = new java.util.logging.Level( "TODO", java.util.logging.Level.WARNING.intValue() - 1 ) {};
+	private static final java.util.logging.Level THROWABLE = new java.util.logging.Level( "THROWABLE", java.util.logging.Level.SEVERE.intValue() + 1 ) {};
+	private static final java.util.logging.Level TESTING = new java.util.logging.Level( "TESTING", java.util.logging.Level.SEVERE.intValue() - 1 ) {};
+	private static final java.util.logging.Level TODO = new java.util.logging.Level( "TODO", java.util.logging.Level.WARNING.intValue() - 1 ) {};
 	
 	static {
 		java.util.logging.LogManager.getLogManager().reset();
@@ -69,11 +70,15 @@ public class Logger {
 		
 		String levelText = System.getProperty( LEVEL_KEY, "SEVERE" );
 		
-		java.util.logging.Level level;
-		if( levelText.equalsIgnoreCase( THROWABLE_LEVEL.getName() ) ) {
-			level = THROWABLE_LEVEL;
-		} else if( levelText.equalsIgnoreCase( TODO_LEVEL.getName() ) ) {
-			level = TODO_LEVEL;
+		java.util.logging.Level level = null;
+		for( java.util.logging.Level customLevel : new java.util.logging.Level[] { THROWABLE, TODO, TESTING } ) {
+			if( levelText.equalsIgnoreCase( customLevel.getName() ) ) {
+				level = customLevel;
+				break;
+			}
+		}
+		if( level != null ) {
+			//pass
 		} else {
 			level = java.util.logging.Level.parse( levelText );
 			if( level != null ) {
@@ -138,17 +143,24 @@ public class Logger {
 	}
 	
 	public static void throwable( Throwable t, Object object ) {
-		log( THROWABLE_LEVEL, object );
+		log( THROWABLE, object );
 	}
 	public static void throwable( Throwable t, Object... objects ) {
-		log( THROWABLE_LEVEL, objects );
+		log( THROWABLE, objects );
 	}
 	
 	public static void todo( Object object ) {
-		log( TODO_LEVEL, object );
+		log( TODO, object );
 	}
 	public static void todo( Object... objects ) {
-		log( TODO_LEVEL, objects );
+		log( TODO, objects );
+	}
+
+	public static void testing( Object object ) {
+		log( TESTING, object );
+	}
+	public static void testing( Object... objects ) {
+		log( TESTING, objects );
 	}
 
 	public static void severe( Object object ) {
