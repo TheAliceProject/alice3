@@ -713,7 +713,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setOnscreenLookingGlass(this.onscreenLookingGlass);
 
 		org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
-		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getInstanceInJava();
+		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getJavaInstance();
 		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 		getPropertyPanel().setSceneInstance(sceneAliceInstance);
 		getObjectMarkerPanel().setType(sceneAliceInstance.getType());
@@ -833,7 +833,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		if (initialTransform == null && field.getValueType().isAssignableTo(org.lgna.story.Model.class))
 		{
 			org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
-			JavaType javaType = type.getFirstTypeEncounteredDeclaredInJava();
+			JavaType javaType = type.getFirstEncounteredJavaType();
 			Class<?> cls = javaType.getClassReflectionProxy().getReification();
 			AxisAlignedBox box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(cls);
 			double y = box != null ? -box.getXMinimum() : 0;

@@ -71,7 +71,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		return rv;
 	}
 	
-	public JavaType getFirstTypeEncounteredDeclaredInJava() {
+	public JavaType getFirstEncounteredJavaType() {
 		AbstractType<?,?,?> type = this; 
 		while( type instanceof JavaType == false ) {
 			type = type.getSuperType();
@@ -83,8 +83,8 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 //	}
 	public boolean isAssignableFrom( AbstractType<?,?,?> other ) {
 		if( other != null ) {
-			JavaType thisTypeDeclaredInJava = this.getFirstTypeEncounteredDeclaredInJava();
-			JavaType otherTypeDeclaredInJava = other.getFirstTypeEncounteredDeclaredInJava();
+			JavaType thisTypeDeclaredInJava = this.getFirstEncounteredJavaType();
+			JavaType otherTypeDeclaredInJava = other.getFirstEncounteredJavaType();
 			return getClsWrapperIfNecessary( thisTypeDeclaredInJava ).isAssignableFrom( getClsWrapperIfNecessary( otherTypeDeclaredInJava ) );
 		} else {
 			//todo?

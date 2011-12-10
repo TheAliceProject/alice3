@@ -384,8 +384,8 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 		rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, m_uuid.toString() );
 		rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, getClass().getName() );
 		if( this instanceof JavaType ) {
-			JavaType typeDeclaredInJava = (JavaType)this;
-			rv.appendChild( encodeType( xmlDocument, "type", typeDeclaredInJava.getClassReflectionProxy() ) );
+			JavaType javaType = (JavaType)this;
+			rv.appendChild( encodeType( xmlDocument, "type", javaType.getClassReflectionProxy() ) );
 		} else if( this instanceof UserArrayType ) {
 			UserArrayType userArrayType = (UserArrayType)this;
 

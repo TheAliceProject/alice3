@@ -242,7 +242,7 @@ public class StorytellingResources {
 		List< ModelResourceTreeNode > rootNodes = this.getGalleryTreeInternal().getRootNodes();
 		List< org.lgna.project.ast.JavaType > rootTypes = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		for( ModelResourceTreeNode node : rootNodes ) {
-			rootTypes.add( node.getUserType().getFirstTypeEncounteredDeclaredInJava() );
+			rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
 		}
 		return rootTypes;
 	}

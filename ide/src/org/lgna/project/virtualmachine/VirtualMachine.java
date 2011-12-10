@@ -223,7 +223,7 @@ public abstract class VirtualMachine {
 		for( int i=0; i<values.length; i++ ) {
 			if( values[ i ] instanceof UserInstance ) {
 				UserInstance userValue = (UserInstance)values[ i ];
-				values[ i ] = userValue.getInstanceInJava();
+				values[ i ] = userValue.getJavaInstance();
 			}
 			java.lang.reflect.Array.set( rv, i, values[ i ] );
 		}
@@ -270,7 +270,7 @@ public abstract class VirtualMachine {
 		}
 		if( variableParameter != null ) {
 			final int VARIABLE_N = variableArguments.size();
-			org.lgna.project.ast.JavaType variableArrayType = variableParameter.getValueType().getFirstTypeEncounteredDeclaredInJava();
+			org.lgna.project.ast.JavaType variableArrayType = variableParameter.getValueType().getFirstEncounteredJavaType();
 			assert variableArrayType.isArray();
 			Class<?> componentCls = variableArrayType.getComponentType().getClassReflectionProxy().getReification();
 			Object array = java.lang.reflect.Array.newInstance( componentCls, VARIABLE_N );
@@ -282,7 +282,7 @@ public abstract class VirtualMachine {
 		}
 		if( keyedParameter != null ) {
 			final int KEYED_N = keyedArguments.size();
-			org.lgna.project.ast.JavaType keyedArrayType = keyedParameter.getValueType().getFirstTypeEncounteredDeclaredInJava();
+			org.lgna.project.ast.JavaType keyedArrayType = keyedParameter.getValueType().getFirstEncounteredJavaType();
 			assert keyedArrayType.isArray();
 			Class<?> componentCls = keyedArrayType.getComponentType().getClassReflectionProxy().getReification();
 			Object array = java.lang.reflect.Array.newInstance( componentCls, KEYED_N );
@@ -338,13 +338,13 @@ public abstract class VirtualMachine {
 		userInstance.setFieldValue( field, value );
 	}
 	protected Object getFieldDeclaredInJavaWithField( org.lgna.project.ast.JavaField field, Object instance ) {
-		instance = UserInstance.getInstanceInJavaIfNecessary( instance );
+		instance = UserInstance.getJavaInstanceIfNecessary( instance );
 		java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
 		assert fld != null : field;
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, instance );
 	}
 	protected void setFieldDeclaredInJavaWithField( org.lgna.project.ast.JavaField field, Object instance, Object value ) {
-		instance = UserInstance.getInstanceInJavaIfNecessary( instance );
+		instance = UserInstance.getJavaInstanceIfNecessary( instance );
 		java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
 		assert fld != null : field;
 		edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.set( fld, instance, value );
@@ -383,7 +383,7 @@ public abstract class VirtualMachine {
 		}
 	}
 	protected void setItemAtIndex( org.lgna.project.ast.AbstractType<?,?,?> arrayType, Object array, Integer index, Object value ) {
-		value = UserInstance.getInstanceInJavaIfNecessary( value );
+		value = UserInstance.getJavaInstanceIfNecessary( value );
 		assert arrayType != null;
 		assert arrayType.isArray();
 		if( array instanceof UserArrayInstance ) {
@@ -419,7 +419,7 @@ public abstract class VirtualMachine {
 		}
 	}
 	protected Object invokeMethodDeclaredInJava( Object instance, org.lgna.project.ast.JavaMethod method, Object... arguments ) {
-		instance = UserInstance.getInstanceInJavaIfNecessary( instance );
+		instance = UserInstance.getJavaInstanceIfNecessary( instance );
 		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
 		java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
 		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isProtected( mthd ) ) {

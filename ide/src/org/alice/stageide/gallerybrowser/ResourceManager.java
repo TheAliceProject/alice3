@@ -54,8 +54,8 @@ public class ResourceManager {
 
 	private ResourceManager() {
 	}
-	public static void registerSmallIcon( org.lgna.project.ast.JavaType typeInJava, javax.swing.Icon icon ) {
-		typeToIconMap.put( typeInJava, icon );
+	public static void registerSmallIcon( org.lgna.project.ast.JavaType javaType, javax.swing.Icon icon ) {
+		typeToIconMap.put( javaType, icon );
 	}
 	public static void registerSmallIcon( Class< ? > cls, javax.swing.Icon icon ) {
 		registerSmallIcon( org.lgna.project.ast.JavaType.getInstance( cls ), icon );
@@ -158,8 +158,8 @@ public class ResourceManager {
 	private static java.net.URL getLargeIconResourceForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		String className;
 		if( type != null ) {
-			org.lgna.project.ast.JavaType typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-			className = typeInJava.getClassReflectionProxy().getName();
+			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
+			className = javaType.getClassReflectionProxy().getName();
 		} else {
 			className = null;
 		}
@@ -178,9 +178,9 @@ public class ResourceManager {
 
 	public static javax.swing.Icon getSmallIconForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		if( type != null ) {
-			org.lgna.project.ast.JavaType typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-			if( typeToIconMap.containsKey( typeInJava ) ) {
-				return typeToIconMap.get( typeInJava );
+			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
+			if( typeToIconMap.containsKey( javaType ) ) {
+				return typeToIconMap.get( javaType );
 			} else {
 				return getSmallIconFor( getLargeIconForType( type ) );
 			}

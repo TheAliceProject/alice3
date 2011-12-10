@@ -111,8 +111,8 @@ public class StageIDE extends org.alice.ide.IDE {
 					//pass
 				} else {
 					try {
-						org.lgna.project.ast.JavaField fieldInJava = (org.lgna.project.ast.JavaField)field;
-						org.lgna.story.Color color = (org.lgna.story.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fieldInJava.getFieldReflectionProxy().getReification(), null );
+						org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+						org.lgna.story.Color color = (org.lgna.story.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( javaField.getFieldReflectionProxy().getReification(), null );
 						rv = new org.alice.ide.swing.icons.ColorIcon( org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor() );
 						this.mapFieldToIcon.put( field, rv );
 					} catch( RuntimeException re ) {
@@ -250,7 +250,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	@Override
 	public boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType ) {
-		org.lgna.project.ast.JavaType javaType = userType.getFirstTypeEncounteredDeclaredInJava();
+		org.lgna.project.ast.JavaType javaType = userType.getFirstEncounteredJavaType();
 		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( javaType.getClassReflectionProxy().getReification(), org.lgna.story.Scene.class, org.lgna.story.Camera.class );
 	}
 	@Override

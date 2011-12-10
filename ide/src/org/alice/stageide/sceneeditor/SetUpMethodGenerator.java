@@ -179,7 +179,7 @@ public class SetUpMethodGenerator {
 		java.util.List< org.lgna.project.ast.Statement > statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
 		org.lgna.project.ast.AbstractType<?,?,?> abstractType = field.getValueType();
-		org.lgna.project.ast.JavaType javaType = abstractType.getFirstTypeEncounteredDeclaredInJava();
+		org.lgna.project.ast.JavaType javaType = abstractType.getFirstEncounteredJavaType();
 		if (javaType.isAssignableTo(org.lgna.story.MutableRider.class))
 		{
 			statements.add(createSetVehicleStatement(field, initialVehicle, (initialVehicle == null) ));

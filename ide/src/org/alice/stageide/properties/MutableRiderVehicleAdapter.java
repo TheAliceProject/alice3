@@ -112,7 +112,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 	{
 		if (value instanceof UserInstance)
 		{
-			Object instanceInJava = ((UserInstance)value).getInstanceInJava();
+			Object instanceInJava = ((UserInstance)value).getJavaInstance();
 			if (instanceInJava instanceof Entity)
 			{
 				value = instanceInJava;

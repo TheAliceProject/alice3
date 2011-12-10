@@ -128,7 +128,7 @@ public class AstUtilities {
 	}
 	public static Iterable< org.lgna.project.ast.JavaMethod > getPersistentPropertyGetters( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		java.util.List< org.lgna.project.ast.JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		org.lgna.project.ast.JavaType javaType = type.getFirstTypeEncounteredDeclaredInJava();
+		org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
 		while( true ) {
 			updatePersistentPropertyGetters( rv, javaType );
 			if( javaType.isFollowToSuperClassDesired() ) {

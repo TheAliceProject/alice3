@@ -65,16 +65,16 @@ class TypeBorder implements javax.swing.border.Border {
 	//private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
 	
 	private static java.awt.Color OUTLINE_COLOR = java.awt.Color.GRAY;
-	private static TypeBorder singletonForDeclaredByUser = new TypeBorder( true );
-	private static TypeBorder singletonForDeclaredInJava = new TypeBorder( false );
+	private static TypeBorder singletonForUser = new TypeBorder( true );
+	private static TypeBorder singletonForJava = new TypeBorder( false );
 	private static TypeBorder singletonForNull = new TypeBorder( null );
 
 	public static TypeBorder getSingletonFor( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
 			if( type instanceof org.lgna.project.ast.NamedUserType ) {
-				return TypeBorder.singletonForDeclaredByUser;
+				return TypeBorder.singletonForUser;
 			} else {
-				return TypeBorder.singletonForDeclaredInJava;
+				return TypeBorder.singletonForJava;
 			}
 		} else {
 			return TypeBorder.singletonForNull;

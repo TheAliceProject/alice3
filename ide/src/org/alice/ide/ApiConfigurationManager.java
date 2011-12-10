@@ -96,12 +96,12 @@ public abstract class ApiConfigurationManager {
 		return rv;
 	}
 	
-	public final java.util.List< org.lgna.project.ast.JavaType > getPrimeTimeSelectableTypesDeclaredInJava() {
+	public final java.util.List< org.lgna.project.ast.JavaType > getPrimeTimeSelectableJavaTypes() {
 		java.util.List< org.lgna.project.ast.JavaType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addPrimeTimeJavaTypes( rv );
 		return rv;
 	}
-	public final java.util.List< org.lgna.project.ast.JavaType > getSecondarySelectableTypesDeclaredInJava() {
+	public final java.util.List< org.lgna.project.ast.JavaType > getSecondarySelectableJavaTypes() {
 		java.util.List< org.lgna.project.ast.JavaType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addSecondaryJavaTypes( rv );
 		return rv;
