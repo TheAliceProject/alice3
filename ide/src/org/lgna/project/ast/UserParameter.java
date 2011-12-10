@@ -59,7 +59,7 @@ public class UserParameter extends AbstractParameter {
 		this( name, JavaType.getInstance( valueCls ) );
 	}
 	@Override
-	public boolean isDeclaredInAlice() {
+	public boolean isUserAuthored() {
 		return true;
 	}
 	@Override

@@ -86,7 +86,7 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 	}
 
 	private void handleFieldsChanged() {
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 
 	@Override

@@ -158,19 +158,6 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.revalidateAndRepaint();
 	}
-//	private org.lgna.project.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {
-//		org.lgna.project.ast.ExpressionStatement expressionStatement = this.getExpressionStatement();
-//		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-//		if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-//			org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-//			org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-//			if( method instanceof org.lgna.project.ast.MethodDeclaredInAlice ) {
-//				return (org.lgna.project.ast.MethodDeclaredInAlice)method;
-//			}
-//		}
-//		return null;
-//	}
-	
 //	@Override
 //	protected void handleControlClick( java.awt.event.MouseEvent e) {
 //		//super.handleControlClick();
@@ -183,14 +170,4 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	protected org.lgna.project.ast.ExpressionStatement getExpressionStatement() {
 		return (org.lgna.project.ast.ExpressionStatement)this.getStatement();
 	}
-	
-//	@Override
-//	protected java.util.List< org.alice.ide.operations.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.operations.AbstractActionOperation > rv ) {
-//		rv = super.updateOperationsListForAltMenu( rv );
-//		org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
-//		if( methodDeclaredInAlice != null ) {
-//			rv.add( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ) );
-//		}
-//		return rv;
-//	}
 }

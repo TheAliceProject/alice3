@@ -75,14 +75,14 @@ public abstract class ParameterEdit< M extends org.lgna.croquet.CompletionModel 
 		org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)parametersProperty.getOwner();
 		this.index = parametersProperty.size();
 		org.lgna.project.ast.AstUtilities.addParameter( this.map, parametersProperty, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	protected void removeParameter() {
 		org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty = this.getParametersProperty();
 		//todo
 		org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)parametersProperty.getOwner();
 		org.lgna.project.ast.AstUtilities.removeParameter( this.map, parametersProperty, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
 	public boolean canUndo() {

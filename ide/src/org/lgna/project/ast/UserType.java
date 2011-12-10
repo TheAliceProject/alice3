@@ -53,14 +53,14 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 			if (member.getDeclaringType() != null) {
 				System.err.println("NOTE: Declaring type of "+member+" is non-null before being added to "+this+". This was probably done to initialize the member before triggering member-added listeners.");
 			}
-			UserMember memberDeclaredInAlice = (UserMember)member;
-			memberDeclaredInAlice.setDeclaringType( UserType.this );
+			UserMember userMember = (UserMember)member;
+			userMember.setDeclaringType( UserType.this );
 		}
 		private void handleRemove( E member ) {
 			assert member instanceof UserMember;
 			assert member.getDeclaringType() != null;
-			UserMember memberDeclaredInAlice = (UserMember)member;
-			memberDeclaredInAlice.setDeclaringType( null );
+			UserMember userMember = (UserMember)member;
+			userMember.setDeclaringType( null );
 		}
 
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
@@ -158,7 +158,7 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 		return false;
 	}
 	@Override
-	public final boolean isDeclaredInAlice() {
+	public final boolean isUserAuthored() {
 		return true;
 	}
 

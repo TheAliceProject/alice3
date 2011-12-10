@@ -122,7 +122,7 @@ public abstract class ApiConfigurationManager {
 		return rv;
 	}
 
-	protected boolean isInclusionOfTypeDesired( org.lgna.project.ast.UserType< ? > valueTypeInAlice ) {
+	protected boolean isInclusionOfTypeDesired( org.lgna.project.ast.UserType< ? > userType ) {
 		return true;
 		//return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
 	}

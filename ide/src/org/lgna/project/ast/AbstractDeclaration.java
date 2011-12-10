@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclaration extends AbstractNode {
-	public abstract boolean isDeclaredInAlice();
+	public abstract boolean isUserAuthored();
 	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
 	@Override
 	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< AbstractNode > nodes ) {

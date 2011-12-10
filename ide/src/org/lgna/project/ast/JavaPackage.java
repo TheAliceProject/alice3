@@ -77,7 +77,7 @@ public class JavaPackage extends AbstractPackage {
 	}
 
 	@Override
-	public boolean isDeclaredInAlice() {
+	public boolean isUserAuthored() {
 		return false;
 	}
 	@Override

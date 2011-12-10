@@ -385,9 +385,9 @@ public class AstUtilities {
 //		return parameters.get( parameters.size()-1 );
 //	}
 	
-	public static java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > removeParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > rv,  NodeListProperty< UserParameter > parametersProperty, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
+	public static java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > removeParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > rv,  NodeListProperty< UserParameter > parametersProperty, org.lgna.project.ast.UserParameter userParameter, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
 		assert rv != null;
-		assert parametersProperty.get( index ) == parameterDeclaredInAlice;
+		assert parametersProperty.get( index ) == userParameter;
 		rv.clear();
 		parametersProperty.remove( index );
 		for( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
@@ -398,15 +398,15 @@ public class AstUtilities {
 		}
 		return rv;
 	}
-	public static void addParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > map, NodeListProperty< UserParameter > parametersProperty, org.lgna.project.ast.UserParameter parameterDeclaredInAlice, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
-		parametersProperty.add( index, parameterDeclaredInAlice );
+	public static void addParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > map, NodeListProperty< UserParameter > parametersProperty, org.lgna.project.ast.UserParameter userParameter, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
+		parametersProperty.add( index, userParameter );
 		for( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
 			org.lgna.project.ast.SimpleArgument argument = map.get( argumentListProperty );
 			if( argument != null ) {
 				//pass
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "argument == null" );
-				argument = new org.lgna.project.ast.SimpleArgument( parameterDeclaredInAlice, new org.lgna.project.ast.NullLiteral() );
+				argument = new org.lgna.project.ast.SimpleArgument( userParameter, new org.lgna.project.ast.NullLiteral() );
 			}
 			argumentListProperty.add( index, argument );
 		}

@@ -46,19 +46,19 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
-	public MethodHeaderPane( org.lgna.project.ast.UserMethod methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview, org.lgna.project.ast.UserType<?> declaringType ) {
-		super( methodDeclaredInAlice, parametersPane, isPreview );
+	public MethodHeaderPane( org.lgna.project.ast.UserMethod userMethod, ParametersPane parametersPane, boolean isPreview, org.lgna.project.ast.UserType<?> declaringType ) {
+		super( userMethod, parametersPane, isPreview );
 //		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
-			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
+			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userMethod.getReturnType() ) );
 //			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		} else {
 			this.addComponent( new org.lgna.croquet.components.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
-			if( methodDeclaredInAlice.isProcedure() ) {
+			if( userMethod.isProcedure() ) {
 				sb.append( "procedure " );
 			} else {
-				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( methodDeclaredInAlice.getReturnType() ) );
+				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userMethod.getReturnType() ) );
 				sb.append( " function " );
 			}
 			this.addComponent( new org.lgna.croquet.components.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
@@ -66,11 +66,11 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		
 		
 //		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
-		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( methodDeclaredInAlice );
+		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( userMethod );
 		nameLabel.scaleFont( NAME_SCALE );
 		nameLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,4,0,4 ) );
 
-		if( methodDeclaredInAlice.isSignatureLocked.getValue() ) {
+		if( userMethod.isSignatureLocked.getValue() ) {
 			this.addComponent( nameLabel );
 		} else {
 			class PopupPanel extends org.lgna.croquet.components.ViewController<javax.swing.JPanel, org.lgna.croquet.Model> {
@@ -98,7 +98,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( 
 					new PopupPanel( 
 							nameLabel, 
-							org.alice.ide.croquet.models.ast.MethodHeaderMenuModel.getInstance( methodDeclaredInAlice ).getPopupPrepModel()
+							org.alice.ide.croquet.models.ast.MethodHeaderMenuModel.getInstance( userMethod ).getPopupPrepModel()
 					) 
 			);
 		}
@@ -106,7 +106,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		if( declaringType != null ) {
 			//pass
 		} else {
-			declaringType = methodDeclaredInAlice.getDeclaringType();
+			declaringType = userMethod.getDeclaringType();
 		}
 		if( declaringType != null ) {
 			if( declaringType instanceof org.lgna.project.ast.AnonymousUserType ) {
@@ -117,7 +117,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			}
 		}
 	}
-	public MethodHeaderPane( org.lgna.project.ast.UserMethod methodDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
-		this( methodDeclaredInAlice, parametersPane, isPreview, null );
+	public MethodHeaderPane( org.lgna.project.ast.UserMethod userMethod, ParametersPane parametersPane, boolean isPreview ) {
+		this( userMethod, parametersPane, isPreview, null );
 	}
 }

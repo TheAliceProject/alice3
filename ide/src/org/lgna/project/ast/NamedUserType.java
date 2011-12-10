@@ -71,30 +71,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 	private void addListenerForConstructors() {
 		this.constructors.addListPropertyListener( new Adapter< NamedUserConstructor >() );
 	}
-	
 
-//	private void postDecode( MemberDeclaredInAlice member ) {
-//		if( member.getDeclaringType() == this ) {
-//			//pass
-//		} else {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: fixing declaring type for:", member );
-//			member.setDeclaringType( this );
-//		}
-//	}
-//	@Override
-//	protected void postDecode() {
-//		super.postDecode();
-//		for( ConstructorDeclaredInAlice constructor : this.constructors ) {
-//			postDecode( constructor );
-//		}
-//		for( MethodDeclaredInAlice method : this.methods ) {
-//			postDecode( method );
-//		}
-//		for( FieldDeclaredInAlice field : this.fields ) {
-//			postDecode( field );
-//		}
-//	}
-	
 	@Override
 	public String getName() {
 		return name.getValue();

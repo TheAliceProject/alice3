@@ -51,11 +51,11 @@ public abstract class AbstractMember extends AbstractAccessibleDeclaration {
 	public abstract org.lgna.project.annotations.Visibility getVisibility();
 	public abstract AbstractType<?,?,?> getDeclaringType();
 	@Override
-	public boolean isDeclaredInAlice() {
+	public boolean isUserAuthored() {
 		AbstractType<?,?,?> declaringType = getDeclaringType();
 		//assert declaringType != null;
 		if( declaringType != null ) {
-			return declaringType.isDeclaredInAlice();
+			return declaringType.isUserAuthored();
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "declaring type is null for:", this );
 			return false;

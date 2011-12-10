@@ -47,11 +47,11 @@ package org.alice.ide.codeeditor;
  */
 class AbstractCodeHeaderPane extends org.lgna.croquet.components.Panel {
 	protected static final float NAME_SCALE = 1.8f;
-	private org.lgna.project.ast.UserCode codeDeclarationInAlice;
+	private org.lgna.project.ast.UserCode userCode;
 	private ParametersPane parametersPane;
 	private boolean isPreview;
-	public AbstractCodeHeaderPane( org.lgna.project.ast.UserCode codeDeclarationInAlice, ParametersPane parametersPane, boolean isPreview ) {
-		this.codeDeclarationInAlice = codeDeclarationInAlice;
+	public AbstractCodeHeaderPane( org.lgna.project.ast.UserCode userCode, ParametersPane parametersPane, boolean isPreview ) {
+		this.userCode = userCode;
 		this.parametersPane = parametersPane;
 		this.isPreview = isPreview;
 	}
@@ -70,7 +70,7 @@ class AbstractCodeHeaderPane extends org.lgna.croquet.components.Panel {
 //		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 //		boolean isInstanceLineDesired = ide.isEmphasizingClasses() && ide.isInstanceLineDesired();
 //		if( isInstanceLineDesired ) {
-//			this.addComponent( new InstanceLine( this.codeDeclarationInAlice ) );
+//			this.addComponent( new InstanceLine( this.userCode ) );
 //		}
 	}
 	protected void addComponent( org.lgna.croquet.components.Component< ? > component ) {

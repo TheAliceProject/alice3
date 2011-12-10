@@ -46,16 +46,16 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 class ConstructorHeaderPane extends AbstractCodeHeaderPane {
-	public ConstructorHeaderPane( org.lgna.project.ast.NamedUserConstructor constructorDeclaredInAlice, ParametersPane parametersPane, boolean isPreview ) {
-		super( constructorDeclaredInAlice, parametersPane, isPreview );
+	public ConstructorHeaderPane( org.lgna.project.ast.NamedUserConstructor userConstructor, ParametersPane parametersPane, boolean isPreview ) {
+		super( userConstructor, parametersPane, isPreview );
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
-			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
+			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userConstructor.getDeclaringType() ) );
 			this.addComponent( new org.lgna.croquet.components.Label( "()" ) );
 		} else {
 			this.addComponent( new org.lgna.croquet.components.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			this.addComponent( new org.lgna.croquet.components.Label( "constructor", NAME_SCALE ) );
 			this.addComponent( new org.lgna.croquet.components.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
-			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( constructorDeclaredInAlice.getDeclaringType() ) );
+			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userConstructor.getDeclaringType() ) );
 			this.addParametersPaneAndInstanceLineIfDesired();
 		}
 	}

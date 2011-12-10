@@ -340,7 +340,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	}
 
 	@Override
-	public boolean isDeclaredInAlice() {
+	public boolean isUserAuthored() {
 		return false;
 	}
 

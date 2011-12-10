@@ -113,7 +113,7 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 				return false;
 			}
 		}
-		if( member.isPublicAccess() || member.isDeclaredInAlice() ) {
+		if( member.isPublicAccess() || member.isUserAuthored() ) {
 			org.lgna.project.annotations.Visibility visibility = member.getVisibility();
 			return visibility == null || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
 		} else {
@@ -167,9 +167,9 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 			}
 		}
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() == false && this.type instanceof org.lgna.project.ast.NamedUserType ) {
-			org.lgna.project.ast.NamedUserType typeInAlice = (org.lgna.project.ast.NamedUserType)type;
-			org.lgna.croquet.components.Button createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
-			org.lgna.croquet.components.Button editConstructorButton = this.createEditConstructorButton( typeInAlice );
+			org.lgna.project.ast.NamedUserType userType = (org.lgna.project.ast.NamedUserType)type;
+			org.lgna.croquet.components.Button createAndAddMemberButton = this.createDeclareMemberButton( userType );
+			org.lgna.croquet.components.Button editConstructorButton = this.createEditConstructorButton( userType );
 			if( createAndAddMemberButton != null ) {
 				page.addComponent( createAndAddMemberButton );
 			}

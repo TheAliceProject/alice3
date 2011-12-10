@@ -57,7 +57,7 @@ public interface Theme {
 	public java.awt.Color getColorFor( Class< ? extends org.lgna.project.ast.Node > cls );
 	public java.awt.Color getColorFor( org.lgna.project.ast.Node node );
 	public java.awt.Color getCommentForegroundColor();
-	public java.awt.Color getCodeDeclaredInAliceColor( org.lgna.project.ast.AbstractCode code );
+	public java.awt.Color getCodeColor( org.lgna.project.ast.AbstractCode code );
 	public java.awt.Color getSelectedColor();
 	public java.awt.Color getUnselectedColor();
 	public java.awt.Color getPrimaryBackgroundColor();

@@ -52,8 +52,8 @@ public class GetterTemplate extends org.alice.ide.templates.ExpressionTemplate {
 		super( org.alice.ide.ast.draganddrop.expression.FieldAccessDragModel.getInstance( field ) );
 		this.field = field;
 		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( fieldInAlice ).getPopupPrepModel() );
+			org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)this.field;
+			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
 		}
 	}
 	@Override

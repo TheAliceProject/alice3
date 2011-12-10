@@ -70,7 +70,7 @@ public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croqu
 		
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "preserve deletion", statement );
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
 	protected final void undoInternal() {
@@ -78,7 +78,7 @@ public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croqu
 		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
 		blockStatement.statements.add( index, statement );
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeTheCouldBeOfInterest();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

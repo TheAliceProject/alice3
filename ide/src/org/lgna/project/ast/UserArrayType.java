@@ -102,7 +102,7 @@ public class UserArrayType extends AbstractType {
 		}
 	}
 	@Override
-	public boolean isDeclaredInAlice() {
+	public boolean isUserAuthored() {
 		return true;
 	}
 	@Override

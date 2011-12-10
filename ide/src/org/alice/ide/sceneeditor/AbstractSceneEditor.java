@@ -277,7 +277,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 //		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 	}
 	
-	protected org.lgna.project.virtualmachine.UserInstance getProgramInstanceInAlice()
+	protected org.lgna.project.virtualmachine.UserInstance getUserProgramInstance()
 	{
 		return this.programInstance;
 	}

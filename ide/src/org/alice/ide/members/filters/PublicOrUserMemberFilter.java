@@ -48,6 +48,6 @@ package org.alice.ide.members.filters;
  */
 public abstract class PublicOrUserMemberFilter implements MemberFilter {
 	public boolean isAcceptable( org.lgna.project.ast.AbstractMember member ) {
-		return member.isPublicAccess() || member.isDeclaredInAlice();
+		return member.isPublicAccess() || member.isUserAuthored();
 	}
 }

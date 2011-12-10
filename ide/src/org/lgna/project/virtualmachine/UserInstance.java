@@ -89,7 +89,7 @@ public class UserInstance {
 		vm.pushConstructorFrame( type, stackMap );
 		try {
 			Object[] nextArguments = vm.evaluateArguments( nextConstructor, constructorInvocationStatement.requiredArguments, constructorInvocationStatement.variableArguments, constructorInvocationStatement.keyedArguments );
-			if( nextConstructor.isDeclaredInAlice() ) {
+			if( nextConstructor.isUserAuthored() ) {
 				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
 			} else {
 				JavaConstructor nextConstructorDeclaredInJava = (JavaConstructor)nextConstructor;
@@ -98,11 +98,11 @@ public class UserInstance {
 				assert cnstrctr != null : constructorReflectionProxy.getDeclaringClassReflectionProxy().getName();
 				this.nextInstance = vm.createInstance( this.type, this, cnstrctr, nextArguments );
 			}
-			vm.setConstructorFrameInstanceInAlice( this );
+			vm.setConstructorFrameUserInstance( this );
 			for( AbstractField field : this.type.getDeclaredFields() ) {
 				assert field instanceof UserField;
-				UserField fieldDeclaredInAlice = (UserField)field;
-				this.createAndSetFieldInstance( vm, fieldDeclaredInAlice );
+				UserField userField = (UserField)field;
+				this.createAndSetFieldInstance( vm, userField );
 			}
 			try {
 				vm.executeBlockStatement( constructorBlockStatement );
