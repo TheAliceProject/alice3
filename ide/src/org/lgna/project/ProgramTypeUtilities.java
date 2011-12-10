@@ -158,7 +158,7 @@ public class ProgramTypeUtilities {
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( type );
+			rv = edu.cmu.cs.dennisc.tree.DefaultNode.createSafeInstance( type, org.lgna.project.ast.NamedUserType.class );
 			org.lgna.project.ast.AbstractType< ?,?,? > superType = type.getSuperType();
 			if( superType instanceof org.lgna.project.ast.NamedUserType ) {
 				edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > superNode = getNode( (org.lgna.project.ast.NamedUserType)superType, root );
@@ -171,7 +171,7 @@ public class ProgramTypeUtilities {
 	}
 
 	public static edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > getNamedUserTypesAsTree( org.lgna.project.Project project ) {
-		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > root = edu.cmu.cs.dennisc.tree.DefaultNode.createSafeInstance( null );
+		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > root = edu.cmu.cs.dennisc.tree.DefaultNode.createSafeInstance( null, org.lgna.project.ast.NamedUserType.class );
 		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
 		for( org.lgna.project.ast.NamedUserType type : types ) {
 			getNode( type, root );

@@ -41,80 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.tree;
+package org.alice.ide.members.filters;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNode< T > implements Node< T > {
-	private final T value;
-	private final java.util.List< DefaultNode<T> > children;
-	public static <T> DefaultNode< T > createUnsafeInstance( T value, Class<T> cls ) {
-		return new DefaultNode< T >( value, false );
-	}
-	public static <T> DefaultNode< T > createSafeInstance( T value, Class<T> cls ) {
-		return new DefaultNode< T >( value, true );
-	}
-	private DefaultNode( T value, boolean isCopyOnWrite ) {
-		this.value = value;
-		if( isCopyOnWrite ) {
-			this.children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-		} else {
-			this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		}
-	}
-	public void addChild( DefaultNode<T> node ) {
-		this.children.add( node );
-	}
-	public DefaultNode< T > addChild( T child ) {
-		DefaultNode< T > rv = new DefaultNode< T >( child, this.children instanceof java.util.concurrent.CopyOnWriteArrayList );
-		this.addChild( rv );
-		return rv;
-	}
-	public void removeChild( DefaultNode<T> node ) {
-		this.children.remove( node );
-	}
-	public DefaultNode< T > removeChild( T child ) {
-		java.util.ListIterator< DefaultNode< T > > listIterator = this.children.listIterator();
-		while( listIterator.hasNext() ) {
-			DefaultNode< T > node = listIterator.next();
-			if( node.getValue().equals( child ) ) {
-				listIterator.remove();
-				return node;
-			}
-		}
-		return null;
-	}
-	public T getValue() {
-		return this.value;
-	}
-	public java.util.List< DefaultNode< T > > getChildren() {
-		return this.children;
-	}
-	
-	public boolean contains(T value) {
-		return get( value ) != null;
-	}
-	public edu.cmu.cs.dennisc.tree.DefaultNode<T> get(T value) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, value ) ) {
-			return this;
-		} else {
-			for( DefaultNode<T> child : this.children ) {
-				DefaultNode<T> rv = child.get( value );
-				if( rv != null ) {
-					return rv;
-				}
-			}
-			return null;
-		}
-	}
-	
+public abstract class MethodFilter extends PublicOrUserMemberFilter {
+	protected abstract boolean isAcceptableMethod( org.lgna.project.ast.AbstractMethod method );
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "DefaultNode[" );
-		sb.append( this.value != null ? this.value.toString() : null );
-		sb.append( "]" );
-		return sb.toString();
+	public final boolean isAcceptable( org.lgna.project.ast.AbstractMember member ) {
+		if( super.isAcceptable( member ) )  {
+			if( member instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
+				return this.isAcceptableMethod( method );
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 }

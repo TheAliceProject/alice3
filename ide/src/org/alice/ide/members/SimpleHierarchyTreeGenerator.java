@@ -41,80 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.tree;
+package org.alice.ide.members;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNode< T > implements Node< T > {
-	private final T value;
-	private final java.util.List< DefaultNode<T> > children;
-	public static <T> DefaultNode< T > createUnsafeInstance( T value, Class<T> cls ) {
-		return new DefaultNode< T >( value, false );
-	}
-	public static <T> DefaultNode< T > createSafeInstance( T value, Class<T> cls ) {
-		return new DefaultNode< T >( value, true );
-	}
-	private DefaultNode( T value, boolean isCopyOnWrite ) {
-		this.value = value;
-		if( isCopyOnWrite ) {
-			this.children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-		} else {
-			this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+public class SimpleHierarchyTreeGenerator implements TreeGenerator {
+	private static java.util.List< org.lgna.project.ast.AbstractType< ?,?,? > > getTypes( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		java.util.List< org.lgna.project.ast.AbstractType< ?,?,? > > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		if( type != null ) {
+			org.lgna.project.ast.AbstractType< ?,?,? > t = type;
+			while( t instanceof org.lgna.project.ast.UserType< ? > ) {
+				rv.add( t );
+				t = t.getSuperType();
+			}
+			rv.add( t );
 		}
-	}
-	public void addChild( DefaultNode<T> node ) {
-		this.children.add( node );
-	}
-	public DefaultNode< T > addChild( T child ) {
-		DefaultNode< T > rv = new DefaultNode< T >( child, this.children instanceof java.util.concurrent.CopyOnWriteArrayList );
-		this.addChild( rv );
 		return rv;
 	}
-	public void removeChild( DefaultNode<T> node ) {
-		this.children.remove( node );
+	private void update( edu.cmu.cs.dennisc.tree.Node< org.alice.ide.members.nodedata.Data > parent, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		
 	}
-	public DefaultNode< T > removeChild( T child ) {
-		java.util.ListIterator< DefaultNode< T > > listIterator = this.children.listIterator();
-		while( listIterator.hasNext() ) {
-			DefaultNode< T > node = listIterator.next();
-			if( node.getValue().equals( child ) ) {
-				listIterator.remove();
-				return node;
-			}
+	public edu.cmu.cs.dennisc.tree.Node< org.alice.ide.members.nodedata.Data > createTree( org.alice.ide.instancefactory.InstanceFactory factory, org.alice.ide.members.filters.MemberFilter memberFilter ) {
+		edu.cmu.cs.dennisc.tree.DefaultNode< org.alice.ide.members.nodedata.Data > rv = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( new org.alice.ide.members.nodedata.RootData(), org.alice.ide.members.nodedata.Data.class );
+		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : getTypes( factory.getValueType() ) ) {
+			edu.cmu.cs.dennisc.tree.DefaultNode< org.alice.ide.members.nodedata.Data > typeNode = rv.addChild( new org.alice.ide.members.nodedata.TypeData( type ) );
 		}
-		return null;
-	}
-	public T getValue() {
-		return this.value;
-	}
-	public java.util.List< DefaultNode< T > > getChildren() {
-		return this.children;
-	}
-	
-	public boolean contains(T value) {
-		return get( value ) != null;
-	}
-	public edu.cmu.cs.dennisc.tree.DefaultNode<T> get(T value) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, value ) ) {
-			return this;
-		} else {
-			for( DefaultNode<T> child : this.children ) {
-				DefaultNode<T> rv = child.get( value );
-				if( rv != null ) {
-					return rv;
-				}
-			}
-			return null;
-		}
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "DefaultNode[" );
-		sb.append( this.value != null ? this.value.toString() : null );
-		sb.append( "]" );
-		return sb.toString();
+		return rv;
 	}
 }
