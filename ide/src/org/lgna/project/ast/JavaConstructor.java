@@ -150,10 +150,10 @@ public class JavaConstructor extends AbstractConstructor {
 
 	private JavaConstructor nextLongerInChain = null;
 
-	public boolean isParameterInShortestChainedConstructor( JavaConstructorParameter parameterDeclaredInJavaConstructor ) {
-		int index = parameterDeclaredInJavaConstructor.getIndex();
-		JavaConstructor constructorDeclaredInJava = (JavaConstructor)getShortestInChain();
-		return index < constructorDeclaredInJava.getRequiredParameters().size();
+	public boolean isParameterInShortestChainedConstructor( JavaConstructorParameter javaConstructorParameter ) {
+		int index = javaConstructorParameter.getIndex();
+		JavaConstructor javaConstructor = (JavaConstructor)getShortestInChain();
+		return index < javaConstructor.getRequiredParameters().size();
 	}
 	
 	@Override

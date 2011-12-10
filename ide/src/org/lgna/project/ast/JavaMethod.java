@@ -171,10 +171,10 @@ public class JavaMethod extends AbstractMethod {
 		}
 	}
 
-	public boolean isParameterInShortestChainedMethod( JavaMethodParameter parameterDeclaredInJavaMethod ) {
-		int index = parameterDeclaredInJavaMethod.getIndex();
-		JavaMethod methodDeclaredInJava = (JavaMethod)getShortestInChain();
-		return index < methodDeclaredInJava.getRequiredParameters().size();
+	public boolean isParameterInShortestChainedMethod( JavaMethodParameter javaMethodParameter ) {
+		int index = javaMethodParameter.getIndex();
+		JavaMethod javaMethod = (JavaMethod)getShortestInChain();
+		return index < javaMethod.getRequiredParameters().size();
 	}
 
 	private JavaMethod nextLongerInChain = null;
