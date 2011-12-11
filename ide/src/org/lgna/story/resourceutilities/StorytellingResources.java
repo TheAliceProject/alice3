@@ -12,7 +12,6 @@ import java.util.zip.ZipFile;
 
 import org.alice.ide.ResourcePathManager;
 import org.lgna.project.ast.JavaType;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;

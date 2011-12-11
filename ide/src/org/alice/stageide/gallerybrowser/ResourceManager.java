@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-import org.lgna.story.resourceutilities.ModelResourceBuilderUtilities;
-
 /**
  * @author Dennis Cosgrove
  */

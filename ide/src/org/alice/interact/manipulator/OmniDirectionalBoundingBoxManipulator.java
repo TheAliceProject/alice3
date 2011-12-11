@@ -54,7 +54,6 @@ import org.alice.interact.handle.HandleSet;
 import org.lgna.croquet.components.DragComponent;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.JavaType;
-import org.lgna.story.resourceutilities.ModelResourceBuilderUtilities;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
