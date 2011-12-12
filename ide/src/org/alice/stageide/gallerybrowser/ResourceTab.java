@@ -63,6 +63,11 @@ public class ResourceTab extends GalleryTab {
 					javax.swing.JScrollBar verticalScrollBar = HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getVerticalScrollBar();
 					if( isPaintRequiredFor( this ) || isPaintRequiredFor( verticalScrollBar ) ) {
 						super.paint( g );
+					} else {
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						java.awt.Shape clip = g.getClip();
+						g2.setPaint( HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getBackground() );
+						g2.fill( clip );
 					}
 				}
 			};
@@ -120,6 +125,7 @@ public class ResourceTab extends GalleryTab {
 				this.addComponent( lineEndPanel, Constraint.LINE_END );
 				//todo
 				this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+				scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 			}
 		}
 		return new ResourceView();
