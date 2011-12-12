@@ -41,29 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.members;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite<V extends org.lgna.croquet.components.View< ?,? >> extends org.lgna.croquet.TabComposite< V > {
-	public TemplateComposite( java.util.UUID id ) {
-		super( id );
+public class ProcedureFunctionPropertyTabState extends TemplatesTabSelectionState {
+	private static class SingletonHolder {
+		private static ProcedureFunctionPropertyTabState instance = new ProcedureFunctionPropertyTabState();
 	}
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-//		button.getAwtComponent().setIcon( ICON );
-//		button.getAwtComponent().setText( this.getClass().getName() );
-//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
-
-		button.scaleFont( 1.5f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		booleanState.setTextForBothTrueAndFalse( this.getDefaultLocalizedText() );
+	public static ProcedureFunctionPropertyTabState getInstance() {
+		return SingletonHolder.instance;
 	}
-	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
+	public ProcedureFunctionPropertyTabState() {
+		super( java.util.UUID.fromString( "96e32c76-8786-4b34-a022-34b5820a73ff" ), ProcedureTemplateComposite.getInstance(), FunctionTemplateComposite.getInstance(), FieldTemplateComposite.getInstance() );
 	}
-	
 	@Override
-	public boolean isCloseable() {
-		return false;
+	public org.lgna.croquet.components.AbstractTabbedPane< ?, ?, ? > createTabbedPane() {
+		return this.createFolderTabbedPane();
 	}
 }

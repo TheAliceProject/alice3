@@ -88,6 +88,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.promptForLicenseAgreements();
 
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueObserver( this.isAlwaysShowingBlocksListener );
 
 		this.getRunOperation().setEnabled( false );
 		this.addProjectObserver( new ProjectObserver() {
@@ -190,7 +191,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	
 	private java.util.Map< org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory > mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
+	private final org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
@@ -202,6 +203,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		}
 	};
+	private final org.lgna.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "reboot required" );
+		}
+	};
+
 	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
 		rv.append( "Please Submit Bug Report: " );

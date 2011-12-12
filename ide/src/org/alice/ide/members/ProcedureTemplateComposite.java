@@ -41,23 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.members;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldTemplateComposite extends MemberTemplateComposite< org.alice.ide.members.components.FieldsContentPanel >  {
+public class ProcedureTemplateComposite extends MemberTemplateComposite<org.alice.ide.members.components.ProceduresContentPanel> {
 	private static class SingletonHolder {
-		private static FieldTemplateComposite instance = new FieldTemplateComposite();
+		private static ProcedureTemplateComposite instance = new ProcedureTemplateComposite();
 	}
-	public static FieldTemplateComposite getInstance() {
+
+	public static ProcedureTemplateComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private FieldTemplateComposite() {
-		super( java.util.UUID.fromString( "be6a1945-fb77-4d07-9c11-351f4119099c" ) );
+	private ProcedureTemplateComposite() {
+		super( java.util.UUID.fromString( "724e651f-6b2a-4520-9cac-fe10ee8a4dbf" ) );
 	}
 	@Override
-	protected org.alice.ide.members.components.FieldsContentPanel createView() {
-		return new org.alice.ide.members.components.FieldsContentPanel( this );
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade;
+	}
+	@Override
+	protected org.alice.ide.members.components.ProceduresContentPanel createView() {
+		return new org.alice.ide.members.components.ProceduresContentPanel( this );
 	}
 }

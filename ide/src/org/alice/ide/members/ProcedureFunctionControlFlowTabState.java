@@ -41,23 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.members;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionTemplateComposite extends MemberTemplateComposite< org.alice.ide.members.components.FunctionsContentPanel > {
+public class ProcedureFunctionControlFlowTabState extends TemplatesTabSelectionState {
 	private static class SingletonHolder {
-		private static FunctionTemplateComposite instance = new FunctionTemplateComposite();
+		private static ProcedureFunctionControlFlowTabState instance = new ProcedureFunctionControlFlowTabState();
 	}
-	public static FunctionTemplateComposite getInstance() {
+	public static ProcedureFunctionControlFlowTabState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private FunctionTemplateComposite() {
-		super( java.util.UUID.fromString( "75657f8d-aeb5-4031-9b33-7e95568bc8fb" ) );
+	public ProcedureFunctionControlFlowTabState() {
+		super( java.util.UUID.fromString( "a1887919-53b6-43eb-b092-b84c120f816e" ), ProcedureTemplateComposite.getInstance(), FunctionTemplateComposite.getInstance(), org.alice.ide.controlflow.ControlFlowComposite.getInstance( /*todo*/null ) );
 	}
 	@Override
-	protected org.alice.ide.members.components.FunctionsContentPanel createView() {
-		return new org.alice.ide.members.components.FunctionsContentPanel( this );
+	public org.lgna.croquet.components.AbstractTabbedPane< ?, ?, ? > createTabbedPane() {
+		return this.createToolPaletteTabbedPane();
 	}
 }

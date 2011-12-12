@@ -59,13 +59,29 @@ public class SimpleHierarchyTreeGenerator implements TreeGenerator {
 		}
 		return rv;
 	}
-	private void update( edu.cmu.cs.dennisc.tree.Node< org.alice.ide.members.nodedata.Data > parent, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		
+	private static void update( edu.cmu.cs.dennisc.tree.DefaultNode< org.alice.ide.members.nodedata.Data > parent, org.lgna.project.ast.AbstractType< ?,?,? > type, org.alice.ide.members.filters.MemberFilter memberFilter ) {
+		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
+			if( memberFilter.isAcceptable( field ) ) {
+				parent.addChild( new org.alice.ide.members.nodedata.MemberData( field ) );
+			}
+		}
+		for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+			if( memberFilter.isAcceptable( method ) ) {
+				parent.addChild( new org.alice.ide.members.nodedata.MemberData( method ) );
+			}
+		}
+		if( type instanceof org.lgna.project.ast.JavaType ) {
+			if( type.isFollowToSuperClassDesired() ) {
+				org.lgna.project.ast.AbstractType< ?,?,? > superType = type.getSuperType();
+				update( parent, superType, memberFilter );
+			}
+		}
 	}
-	public edu.cmu.cs.dennisc.tree.Node< org.alice.ide.members.nodedata.Data > createTree( org.alice.ide.instancefactory.InstanceFactory factory, org.alice.ide.members.filters.MemberFilter memberFilter ) {
+	public edu.cmu.cs.dennisc.tree.DefaultNode< org.alice.ide.members.nodedata.Data > createTree( org.alice.ide.instancefactory.InstanceFactory factory, org.alice.ide.members.filters.MemberFilter memberFilter ) {
 		edu.cmu.cs.dennisc.tree.DefaultNode< org.alice.ide.members.nodedata.Data > rv = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( new org.alice.ide.members.nodedata.RootData(), org.alice.ide.members.nodedata.Data.class );
 		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : getTypes( factory.getValueType() ) ) {
 			edu.cmu.cs.dennisc.tree.DefaultNode< org.alice.ide.members.nodedata.Data > typeNode = rv.addChild( new org.alice.ide.members.nodedata.TypeData( type ) );
+			update( typeNode, type, memberFilter );
 		}
 		return rv;
 	}

@@ -41,23 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.members;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureFunctionPropertyTabState extends TemplatesTabSelectionState {
+public class FieldTemplateComposite extends MemberTemplateComposite< org.alice.ide.members.components.FieldsContentPanel >  {
 	private static class SingletonHolder {
-		private static ProcedureFunctionPropertyTabState instance = new ProcedureFunctionPropertyTabState();
+		private static FieldTemplateComposite instance = new FieldTemplateComposite();
 	}
-	public static ProcedureFunctionPropertyTabState getInstance() {
+	public static FieldTemplateComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	public ProcedureFunctionPropertyTabState() {
-		super( java.util.UUID.fromString( "96e32c76-8786-4b34-a022-34b5820a73ff" ), ProcedureTemplateComposite.getInstance(), FunctionTemplateComposite.getInstance(), FieldTemplateComposite.getInstance() );
+	private FieldTemplateComposite() {
+		super( java.util.UUID.fromString( "be6a1945-fb77-4d07-9c11-351f4119099c" ) );
 	}
 	@Override
-	public org.lgna.croquet.components.AbstractTabbedPane< ?, ?, ? > createTabbedPane() {
-		return this.createFolderTabbedPane();
+	protected org.alice.ide.members.components.FieldsContentPanel createView() {
+		return new org.alice.ide.members.components.FieldsContentPanel( this );
 	}
 }
