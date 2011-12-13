@@ -652,8 +652,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.objectMarkerFieldSelectionObserver);
 			
 			this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
-			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewTracker);
-			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewSelectionObserver);
+			
 			this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
 			this.mainCameraViewSelector.setFontSize(15);
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.STARTING_CAMERA_VIEW, this.openingSceneMarkerImp );
@@ -663,6 +662,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.FRONT, this.frontOrthoMarkerImp );
 			this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer(this.mainCameraViewTracker));
 
+			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewTracker);
+			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewSelectionObserver);
+			
 			this.lookingGlassPanel.addComponent(this.mainCameraViewSelector, Horizontal.CENTER, 0, Vertical.NORTH, 20);
 			
 			this.isInitialized = true;
