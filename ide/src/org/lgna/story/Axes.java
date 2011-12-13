@@ -41,13 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.components.declaration;
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConeFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation > {
-	public ConeFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation model ) {
-		super( model );
+public class Axes extends MovableTurnable implements MutableRider {
+	private final org.lgna.story.implementation.AxesImp implementation = new org.lgna.story.implementation.AxesImp( this );
+	@Override
+	/*package-private*/ org.lgna.story.implementation.AxesImp getImplementation() {
+		return this.implementation;
+	}
+	public void setVehicle( Entity vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 }

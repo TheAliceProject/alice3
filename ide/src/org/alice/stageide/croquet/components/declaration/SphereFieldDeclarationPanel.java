@@ -46,8 +46,8 @@ package org.alice.stageide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class ConeFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation > {
-	public ConeFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation model ) {
+public class SphereFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.SphereFieldDeclarationOperation > {
+	public SphereFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.SphereFieldDeclarationOperation model ) {
 		super( model );
 	}
 }

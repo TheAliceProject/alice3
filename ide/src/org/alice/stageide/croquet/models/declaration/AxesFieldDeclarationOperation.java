@@ -41,13 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.components.declaration;
+package org.alice.stageide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConeFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation > {
-	public ConeFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation model ) {
-		super( model );
+public class AxesFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+	private static class SingletonHolder {
+		private static AxesFieldDeclarationOperation instance = new AxesFieldDeclarationOperation();
+	}
+	public static AxesFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private AxesFieldDeclarationOperation() {
+		super( 
+				java.util.UUID.fromString( "7bcdb463-b53a-4f16-b053-96e89f779afa" ), 
+				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Axes.class ), false, 
+				false, false, 
+				"", true, 
+				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.Axes.class ), false 
+		);
+	}
+	@Override
+	protected org.alice.stageide.croquet.components.declaration.AxesFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.stageide.croquet.components.declaration.AxesFieldDeclarationPanel( this );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		return rv;
 	}
 }

@@ -119,9 +119,11 @@ public class ResourceTab extends GalleryTab {
 //				
 //				this.addComponent( createPersonButton, Constraint.LINE_START );
 				
-				org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton(), Constraint.PAGE_START );
-				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation.getInstance().createButton(), Constraint.PAGE_END );
+				org.lgna.croquet.components.PageAxisPanel lineEndPanel = new org.lgna.croquet.components.PageAxisPanel();
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton() );
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation.getInstance().createButton() );
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation.getInstance().createButton() );
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.SphereFieldDeclarationOperation.getInstance().createButton() );
 				this.addComponent( lineEndPanel, Constraint.LINE_END );
 				//todo
 				this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );

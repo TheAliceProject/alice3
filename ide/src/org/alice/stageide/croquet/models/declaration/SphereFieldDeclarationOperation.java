@@ -41,13 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.components.declaration;
+package org.alice.stageide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConeFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation > {
-	public ConeFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation model ) {
-		super( model );
+public class SphereFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+	private static class SingletonHolder {
+		private static SphereFieldDeclarationOperation instance = new SphereFieldDeclarationOperation();
+	}
+	public static SphereFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SphereFieldDeclarationOperation() {
+		super( 
+				java.util.UUID.fromString( "8d370af0-74a6-41f2-9298-8f04865acac7" ), 
+				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Sphere.class ), false, 
+				false, false, 
+				"", true, 
+				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.Sphere.class ), false 
+		);
+	}
+	@Override
+	protected org.alice.stageide.croquet.components.declaration.SphereFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.stageide.croquet.components.declaration.SphereFieldDeclarationPanel( this );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		return rv;
 	}
 }

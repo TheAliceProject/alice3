@@ -41,13 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.components.declaration;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConeFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation > {
-	public ConeFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation model ) {
-		super( model );
+public class AxesImp extends AbstractTransformableImp {
+	private final org.lgna.story.Axes abstraction;
+	private final edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );
+	public AxesImp( org.lgna.story.Axes abstraction ) {
+		this.abstraction = abstraction;
+		this.putInstance( this.sgAxes );
+	}
+	@Override
+	public org.lgna.story.Axes getAbstraction() {
+		return this.abstraction;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgComposite() {
+		return this.sgAxes;
+	}
+	@Override
+	protected double getBoundingSphereRadius() {
+		//todo
+		return 2.0;
 	}
 }
