@@ -70,7 +70,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
@@ -82,12 +82,12 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
  */
 public abstract class ManipulationHandle3D extends Transformable implements ManipulationHandle, ManipulationListener {
 
-	public static final String VIRTUAL_PARENT_KEY = "VIRTUAL_PARENT_KEY";
+	public static final Key< Object > DEBUG_PARENT_TRACKER_KEY = Key.createInstance( "DEBUG_PARENT_TRACKER_KEY" );
 	
 	public static final double ANIMATION_DURATION = .25;
 	
 	protected Visual sgVisual = new Visual();
-	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
+	protected SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 	protected Transformable manipulatedObject;
 	protected Animator animator;
 	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
@@ -414,7 +414,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	public Visual getSGVisual() {
 		return sgVisual;
 	}
-	public SingleAppearance getSGFrontFacingAppearance() {
+	public SimpleAppearance getSGFrontFacingAppearance() {
 		return sgFrontFacingAppearance;
 	}
 	
@@ -773,11 +773,4 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	{
 		return PickCondition.getPickType( this );
 	}
-	
-	@Override
-	public String toString() 
-	{
-		return this.getClass().getSimpleName()+":"+this.hashCode();
-	}
-	
 }

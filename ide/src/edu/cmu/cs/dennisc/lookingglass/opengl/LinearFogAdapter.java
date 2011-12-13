@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GL;
+import static javax.media.opengl.GL.*;
 
 /**
  * @author Dennis Cosgrove
@@ -55,9 +55,9 @@ public class LinearFogAdapter extends FogAdapter< edu.cmu.cs.dennisc.scenegraph.
 	@Override
 	public void setup( RenderContext rc ) {
 		super.setup( rc );
-		rc.gl.glFogi( GL.GL_FOG_MODE, GL.GL_LINEAR );
-		rc.gl.glFogf( GL.GL_FOG_START, m_near );
-		rc.gl.glFogf( GL.GL_FOG_END, m_far );
+		rc.gl.glFogi( GL_FOG_MODE, GL_LINEAR );
+		rc.gl.glFogf( GL_FOG_START, m_near );
+		rc.gl.glFogf( GL_FOG_END, m_far );
 	}
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {

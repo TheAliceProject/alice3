@@ -43,197 +43,178 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-/**
- * @author Dennis Cosgrove
- */
-public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.Mesh > {
-	private double[] xyzs;
-	private float[] ijks;
-	private float[] uvs;
-	private short[] xyzTriangleIndices;
-	private short[] ijkTriangleIndices;
-	private short[] uvTriangleIndices;
-	private short[] xyzQuadrangleIndices;
-	private short[] ijkQuadrangleIndices;
-	private short[] uvQuadrangleIndices;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
-	private java.nio.DoubleBuffer xyzBuffer;
-	private java.nio.FloatBuffer ijkBuffer;
-	private java.nio.FloatBuffer uvBuffer;
-	private java.nio.ShortBuffer triangleIndexBuffer;
-	private java.nio.ShortBuffer quadrangleIndexBuffer;
+import static javax.media.opengl.GL.*;
 
-	@Override
-	public boolean isAlphaBlended() {
-		return false;
-	}
-	private void glDraw( javax.media.opengl.GL gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
-		final int N = xyzIndices != null ? xyzIndices.length : 0;
-		if( N > 0 ) {
-			gl.glBegin( mode );
-			try {
-				for( int i = 0; i < N; i++ ) {
-					int xyzIndex = xyzIndices[ i ];
-					int ijkIndex = ijkIndices != null ? ijkIndices[ i ] : xyzIndex;
-					int uvIndex = uvIndices != null ? uvIndices[ i ] : xyzIndex;
-					gl.glTexCoord2f( this.uvs[ uvIndex * 2 + 0 ], this.uvs[ uvIndex * 2 + 1 ] );
-					gl.glNormal3f( this.ijks[ ijkIndex * 3 + 0 ], this.ijks[ ijkIndex * 3 + 1 ], this.ijks[ ijkIndex * 3 + 2 ] );
-					gl.glVertex3d( this.xyzs[ xyzIndex * 3 + 0 ], this.xyzs[ xyzIndex * 3 + 1 ], this.xyzs[ xyzIndex * 3 + 2 ] );
-				}
-			} finally {
-				gl.glEnd();
-			}
-		}
-	}
-	private void glDrawElements( javax.media.opengl.GL gl, int mode, boolean b ) {
-		if( b ) {
-			short[] xyzIndices;
-			if( mode == javax.media.opengl.GL.GL_TRIANGLES ) {
-				xyzIndices = this.xyzTriangleIndices;
-			} else if( mode == javax.media.opengl.GL.GL_QUADS ) {
-				xyzIndices = this.xyzQuadrangleIndices;
-			} else {
-				throw new AssertionError();
-			}
-			final int N = xyzIndices != null ? xyzIndices.length : 0;
-			if( N > 0 ) {
-				gl.glBegin( mode );
-				try {
-					for( int i = 0; i < xyzIndices.length; i++ ) {
-						gl.glArrayElement( i );
-					}
-				} finally {
-					gl.glEnd();
-				}
-			}
-		} else {
-			if( mode == javax.media.opengl.GL.GL_TRIANGLES ) {
-				if( this.triangleIndexBuffer != null ) {
-					//pass
-				} else {
-					this.triangleIndexBuffer = com.sun.opengl.util.BufferUtil.newShortBuffer( this.xyzTriangleIndices.length );
-					this.triangleIndexBuffer.put( this.xyzTriangleIndices );
-				}
-				this.triangleIndexBuffer.rewind();
-				
-				gl.glDrawElements( mode, this.xyzTriangleIndices.length/3, javax.media.opengl.GL.GL_SHORT, this.triangleIndexBuffer );
-			} else if( mode == javax.media.opengl.GL.GL_QUADS ) {
-				if( this.quadrangleIndexBuffer != null ) {
-					//pass
-				} else {
-					this.quadrangleIndexBuffer = com.sun.opengl.util.BufferUtil.newShortBuffer( this.xyzQuadrangleIndices.length );
-					this.quadrangleIndexBuffer.put( this.xyzQuadrangleIndices );
-					this.quadrangleIndexBuffer.rewind();
-				}
-				gl.glDrawElements( mode, this.xyzQuadrangleIndices.length/4, javax.media.opengl.GL.GL_SHORT, this.quadrangleIndexBuffer );
-			} else {
-				throw new AssertionError();
-			}
-		}
-	}
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.scenegraph.Indices;
+import edu.cmu.cs.dennisc.scenegraph.Mesh;
 
-	private void glGeometry( javax.media.opengl.GL gl, boolean isArrayRenderingDesired ) {
-		if( isArrayRenderingDesired == false || this.ijkTriangleIndices != null || this.uvTriangleIndices != null || this.ijkQuadrangleIndices != null || this.uvQuadrangleIndices != null ) {
-			glDraw( gl, javax.media.opengl.GL.GL_TRIANGLES, this.xyzTriangleIndices, this.ijkTriangleIndices, this.uvTriangleIndices );
-			glDraw( gl, javax.media.opengl.GL.GL_QUADS, this.xyzQuadrangleIndices, this.ijkQuadrangleIndices, this.uvQuadrangleIndices );
-		} else {
-			if( this.xyzBuffer != null ) {
-				//pass
-			} else {
-				this.xyzBuffer = com.sun.opengl.util.BufferUtil.newDoubleBuffer( xyzs.length );
-				this.xyzBuffer.put( this.xyzs );
-			}
-			this.xyzBuffer.rewind();
-			if( this.ijkBuffer != null ) {
-				//pass
-			} else {
-				this.ijkBuffer = com.sun.opengl.util.BufferUtil.newFloatBuffer( ijks.length );
-				this.ijkBuffer.put( this.ijks );
-			}
-			this.ijkBuffer.rewind();
-			if( this.uvBuffer != null ) {
-				//pass
-			} else {
-				this.uvBuffer = com.sun.opengl.util.BufferUtil.newFloatBuffer( uvs.length );
-				this.uvBuffer.put( this.uvs );
-			}
-			this.uvBuffer.rewind();
-			gl.glEnableClientState( javax.media.opengl.GL.GL_VERTEX_ARRAY );
-			gl.glEnableClientState( javax.media.opengl.GL.GL_NORMAL_ARRAY );
-			gl.glEnableClientState( javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY );
-			try {
-				gl.glVertexPointer( 3, javax.media.opengl.GL.GL_DOUBLE, 0, this.xyzBuffer );
-				gl.glNormalPointer( javax.media.opengl.GL.GL_FLOAT, 0, this.ijkBuffer );
-				gl.glTexCoordPointer( 2, javax.media.opengl.GL.GL_FLOAT, 0, this.uvBuffer );
-				
-				boolean b = true;
-				glDrawElements( gl, javax.media.opengl.GL.GL_TRIANGLES, b );
-				glDrawElements( gl, javax.media.opengl.GL.GL_QUADS, b );
-			} finally {
-				gl.glDisableClientState( javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY );
-				gl.glDisableClientState( javax.media.opengl.GL.GL_NORMAL_ARRAY );
-				gl.glDisableClientState( javax.media.opengl.GL.GL_VERTEX_ARRAY );
-			}
-		}
-	}
-	@Override
-	protected void renderGeometry( RenderContext rc ) {
-//		if( xyzs != null && xyzs.length > Short.MAX_VALUE / 3 ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning" );
-//		}
-		glGeometry( rc.gl, false );
-	}
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		pc.gl.glPushName( -1 );
-		if( isSubElementRequired ) {
-			throw new RuntimeException( "todo" );
-		} else {
-			glGeometry( pc.gl, false );
-		}
-		pc.gl.glPopName();
-	}
-	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
-		if( property == m_element.xyzs ) {
-			this.xyzs = m_element.xyzs.getValue();
-			this.xyzBuffer = null;
-			setIsGeometryChanged( true );
-		} else if( property == m_element.ijks ) {
-			this.ijks = m_element.ijks.getValue();
-			this.ijkBuffer = null;
-			setIsGeometryChanged( true );
-		} else if( property == m_element.uvs ) {
-			this.uvs = m_element.uvs.getValue();
-			this.uvBuffer = null;
-			setIsGeometryChanged( true );
-		} else if( property == m_element.xyzTriangleIndices ) {
-			this.xyzTriangleIndices = m_element.xyzTriangleIndices.getValue();
-			this.triangleIndexBuffer = null;
-			setIsGeometryChanged( true );
-		} else if( property == m_element.ijkTriangleIndices ) {
-			this.ijkTriangleIndices = m_element.ijkTriangleIndices.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == m_element.uvTriangleIndices ) {
-			this.uvTriangleIndices = m_element.uvTriangleIndices.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == m_element.xyzQuadrangleIndices ) {
-			this.xyzQuadrangleIndices = m_element.xyzQuadrangleIndices.getValue();
-			this.quadrangleIndexBuffer = null;
-			setIsGeometryChanged( true );
-		} else if( property == m_element.ijkQuadrangleIndices ) {
-			this.ijkQuadrangleIndices = m_element.ijkQuadrangleIndices.getValue();
-			setIsGeometryChanged( true );
-		} else if( property == m_element.uvQuadrangleIndices ) {
-			this.uvQuadrangleIndices = m_element.uvQuadrangleIndices.getValue();
-			setIsGeometryChanged( true );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
-	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
-		rv.setNaN();
-		return rv;
-	}
+public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
+{
+    
+    protected DoubleBuffer vertexBuffer;
+    protected FloatBuffer normalBuffer;
+    protected FloatBuffer textCoordBuffer;
+    protected IntBuffer indexBuffer;
+    
+    protected double[] vertices;
+    protected float[] normals;
+    protected float[] textureCoordinates;
+    protected Indices[] indices;
+    
+    @Override
+    public void initialize(E element)
+    {
+        super.initialize(element);
+    }
+
+    @Override
+    public boolean isAlphaBlended()
+    {
+        return false;
+    }
+    
+    @Override
+    protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
+        if ( property == m_element.vertexBuffer ) {
+            this.vertexBuffer = m_element.vertexBuffer.getValue();
+            setIsGeometryChanged( true );
+        } else if ( property == m_element.normalBuffer ) {
+            this.normalBuffer = m_element.normalBuffer.getValue();
+            setIsGeometryChanged( true );
+        } else if ( property == m_element.textCoordBuffer ) {
+            this.textCoordBuffer = m_element.textCoordBuffer.getValue();
+            setIsGeometryChanged( true );
+        } else if ( property == m_element.indexBuffer ) {
+            this.indexBuffer = m_element.indexBuffer.getValue();
+            setIsGeometryChanged( true );
+        } else {
+            super.propertyChanged( property );
+        }
+    }
+    
+    public static void renderMesh(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
+    {
+        int maxIndices = GetUtilities.getInteger(rc.gl, GL_MAX_ELEMENTS_INDICES);
+        int maxVertices = GetUtilities.getInteger(rc.gl, GL_MAX_ELEMENTS_VERTICES);
+        if (vertexBuffer.capacity() / 3 >= maxVertices || indexBuffer.capacity() >= maxIndices)
+        {
+            renderMeshAsArrays(rc, vertexBuffer, normalBuffer, textCoordBuffer, indexBuffer);
+        }
+        else
+        {
+            renderMeshWithBuffers(rc, vertexBuffer, normalBuffer, textCoordBuffer, indexBuffer);
+        }
+    }
+    
+    public static void renderMeshWithBuffers( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
+    {
+        rc.gl.glEnableClientState(GL_VERTEX_ARRAY);
+        vertexBuffer.rewind();
+        rc.gl.glVertexPointer(3, GL_DOUBLE, 0, vertexBuffer);
+        rc.gl.glEnableClientState(GL_NORMAL_ARRAY);
+        normalBuffer.rewind();
+        rc.gl.glNormalPointer(GL_FLOAT, 0, normalBuffer);
+        rc.gl.glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        textCoordBuffer.rewind();
+        rc.gl.glTexCoordPointer(2, GL_FLOAT, 0, textCoordBuffer);
+        
+        indexBuffer.rewind();
+
+        rc.gl.glDrawElements(GL_TRIANGLES, indexBuffer.remaining(), GL_UNSIGNED_INT, indexBuffer);
+        
+        rc.gl.glDisableClientState(GL_VERTEX_ARRAY);
+        rc.gl.glDisableClientState(GL_NORMAL_ARRAY);
+        rc.gl.glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    }
+    
+    //This is really slow in debug mode
+    public static void renderMeshAsArrays( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
+    {
+        indexBuffer.rewind();
+        rc.gl.glBegin( GL_TRIANGLES );
+        while (indexBuffer.hasRemaining())
+        {
+            int index = indexBuffer.get();
+            int index2x = index*2;
+            int index3x = index*3;
+            textCoordBuffer.position( index2x );
+            rc.gl.glTexCoord2f(textCoordBuffer.get(), textCoordBuffer.get());
+            normalBuffer.position( index3x );
+            rc.gl.glNormal3f(normalBuffer.get(), normalBuffer.get(), normalBuffer.get());
+            vertexBuffer.position( index3x );
+            rc.gl.glVertex3d(vertexBuffer.get(), vertexBuffer.get(), vertexBuffer.get());            
+        }
+        rc.gl.glEnd();
+    }
+    
+    public static void pickMesh( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer )
+    {
+        int maxIndices = GetUtilities.getInteger(pc.gl, GL_MAX_ELEMENTS_INDICES);
+        int maxVertices = GetUtilities.getInteger(pc.gl, GL_MAX_ELEMENTS_VERTICES);
+        if (vertexBuffer.capacity() / 3 >= maxVertices || indexBuffer.capacity() >= maxIndices)
+        {
+            pickMeshAsArrays(pc, vertexBuffer, indexBuffer);
+        }
+        else
+        {
+            pickMeshWithBuffers(pc, vertexBuffer, indexBuffer);
+        }
+    }
+    
+    public static void pickMeshWithBuffers( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer)
+    {
+        pc.gl.glPushName( -1 );
+        pc.gl.glEnableClientState(GL_VERTEX_ARRAY);
+        vertexBuffer.rewind();
+        pc.gl.glVertexPointer(3, GL_DOUBLE, 0, vertexBuffer);
+        indexBuffer.rewind();
+        pc.gl.glDrawElements(GL_TRIANGLES, indexBuffer.remaining(), GL_UNSIGNED_INT, indexBuffer);
+        pc.gl.glDisableClientState(GL_VERTEX_ARRAY);
+        pc.gl.glPopName();
+    }
+    
+    public static void pickMeshAsArrays(edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer)
+    {
+        pc.gl.glPushName( -1 );
+        
+        indexBuffer.rewind();
+        pc.gl.glBegin( GL_TRIANGLES );
+        while (indexBuffer.hasRemaining()) 
+        {
+            int index = indexBuffer.get();
+            int index3x = index*3;
+            pc.gl.glVertex3d(vertexBuffer.get(index3x), vertexBuffer.get(index3x+1), vertexBuffer.get(index3x+2));            
+        }
+        pc.gl.glEnd();
+        pc.gl.glPopName();
+    }
+    
+    
+
+    @Override
+    protected void renderGeometry(RenderContext rc)
+    {
+        renderMesh(rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer);
+    }
+
+    @Override
+    protected void pickGeometry(PickContext pc, boolean isSubElementRequired)
+    {
+        pickMesh(pc, vertexBuffer, indexBuffer);
+    }
+
+    @Override
+    public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement)
+    {
+        rv.setNaN();
+        return rv;
+    }
+
 }

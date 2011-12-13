@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.adorn.opengl;
 
+import static javax.media.opengl.GL.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,7 +61,7 @@ public class PivotFigureAdapter extends AdornmentAdapter {
 					if( componentAdapter instanceof edu.cmu.cs.dennisc.lookingglass.opengl.TransformableAdapter ) {
 						edu.cmu.cs.dennisc.lookingglass.opengl.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> child = (edu.cmu.cs.dennisc.lookingglass.opengl.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)componentAdapter;
 						java.nio.DoubleBuffer ltChild = child.accessLocalTransformationAsBuffer();
-						gl.glBegin( javax.media.opengl.GL.GL_LINES );
+						gl.glBegin( GL_LINES );
 						try {
 							
 							//todo: account for global brightness
@@ -89,7 +91,7 @@ public class PivotFigureAdapter extends AdornmentAdapter {
 	}
 	@Override
 	protected void actuallyRender( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter adornmentRootAdapter ) {
-		rc.gl.glDisable( javax.media.opengl.GL.GL_LIGHTING );
+		rc.gl.glDisable( GL_LIGHTING );
 		glPivotFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );
 	}
 }

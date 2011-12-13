@@ -55,11 +55,17 @@ public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
 			throw new RuntimeException( ioe );
 		}
 	}
-
-	@Override
-	protected void encodeBuffer( byte[] buffer ) {
+	
+	public void write( byte[] data ) {
 		try {
-			m_oos.write( buffer );
+			m_oos.write( data );
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( ioe );
+		}
+	}
+	public void write( byte[] data, int offset, int length ) {
+		try {
+			m_oos.write( data, offset, length );
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}

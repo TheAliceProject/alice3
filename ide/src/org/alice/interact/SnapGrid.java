@@ -58,7 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
@@ -69,7 +69,7 @@ public class SnapGrid extends Transformable implements PropertyListener{
 	private static final int SEGMENTS_PER_LINE = 3;
 	private static final int VERTICES_PER_LINE = SEGMENTS_PER_LINE*2;
 	
-	private SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
+	private SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 	private LineArray sgXLines;
 	private LineArray sgZLines;
 	private Visual sgGridVisual;

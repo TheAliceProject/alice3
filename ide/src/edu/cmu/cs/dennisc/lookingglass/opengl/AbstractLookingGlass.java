@@ -43,9 +43,6 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCapabilities;
-
 //class TextureGraphicsCommit {
 //	private TextureAdapter m_textureAdapter;
 //	private java.awt.Graphics2D m_g;
@@ -86,12 +83,18 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 
 	private boolean m_isRenderingEnabled = true;
 
+	private final Picker picker = new Picker( this );
+	
 	protected AbstractLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		m_lookingGlassFactory = lookingGlassFactory;
 	}
 
 	public edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory getLookingGlassFactory() {
 		return m_lookingGlassFactory;
+	}
+	
+	public edu.cmu.cs.dennisc.lookingglass.Picker getPicker() {
+		return this.picker;
 	}
 	
 	//private java.util.List< TextureGraphicsCommit > m_pendingTextureGraphicsCommits = new java.util.LinkedList< TextureGraphicsCommit >();
@@ -209,17 +212,19 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		m_description = description;
 	}
 	public void addCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+		assert camera != null;
 		synchronized( m_cameras ) {
 			m_cameras.add( camera );
 		}
 		if( m_glEventAdapter.isListening() ) {
 			//pass
 		} else {
-			GLAutoDrawable glAutoDrawable = this.getGLAutoDrawable();
+			javax.media.opengl.GLAutoDrawable glAutoDrawable = this.getGLAutoDrawable();
 			m_glEventAdapter.startListening( glAutoDrawable );
 		}
 	}
 	public void removeCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+		assert camera != null;
 		synchronized( m_cameras ) {
 			m_cameras.remove( camera );
 		}
@@ -230,8 +235,10 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		}
 	}
 	public void clearCameras() {
-		synchronized( m_cameras ) {
-			m_cameras.clear();
+		if( m_cameras.size() > 0 ) {
+			synchronized( m_cameras ) {
+				m_cameras.clear();
+			}
 		}
 		if( m_glEventAdapter.isListening() ) {
 			m_glEventAdapter.stopListening( getGLAutoDrawable() );
@@ -483,47 +490,6 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return getColorBufferWithTransparencyBasedOnDepthBuffer( createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer(), createFloatBufferForUseAsDepthBuffer() );
 	}
 	
-
-
-	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
-		GLCapabilities glCapabilities = this.getGLAutoDrawable().getChosenGLCapabilities();
-		//PrintUtilities.println( "glCapabilities", glCapabilities );
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getCameraAtPixel( xPixel, yPixel );
-		edu.cmu.cs.dennisc.lookingglass.PickResult rv;
-		if( sgCamera != null ) {
-			this.m_lookingGlassFactory.acquireRenderingLock();
-			try {
-				rv = m_glEventAdapter.pickFrontMost( sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
-			} finally {
-				this.m_lookingGlassFactory.releaseRenderingLock();
-			}
-		} else {
-			rv = new edu.cmu.cs.dennisc.lookingglass.PickResult();
-			rv.setNaN();
-		}
-		return rv;
-	}
-	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( int xPixel, int yPixel, boolean isSubElementRequired ) {
-		return pickFrontMost( xPixel, yPixel, isSubElementRequired, null );
-	}
-
-	public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickAll( int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getCameraAtPixel( xPixel, yPixel );
-		if( sgCamera != null ) {
-			this.m_lookingGlassFactory.acquireRenderingLock();
-			try {
-				return m_glEventAdapter.pickAll( sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
-			} finally {
-				this.m_lookingGlassFactory.releaseRenderingLock();
-			}
-		} else {
-			return new java.util.LinkedList< edu.cmu.cs.dennisc.lookingglass.PickResult >();
-		}
-	}
-	public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickAll( int xPixel, int yPixel, boolean isSubElementRequired ) {
-		return pickAll( xPixel, yPixel, isSubElementRequired, null );
-	}
-
 	public double[] getActualPlane( double[] rv, java.awt.Dimension size, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera ) {
 		throw new RuntimeException( "todo" );
 		//		OrthographicCameraAdapter orthographicCameraAdapter = ElementAdapter.getAdapterFor( orthographicCamera );
@@ -558,6 +524,12 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 			//					//pass
 			//				}
 			//			}
+		}
+	}
+	
+	public void forgetAllCachedItems() {
+		if( m_glEventAdapter != null ) {
+			m_glEventAdapter.forgetAllCachedItems();
 		}
 	}
 }

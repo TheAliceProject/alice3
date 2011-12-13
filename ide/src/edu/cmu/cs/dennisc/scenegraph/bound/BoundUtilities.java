@@ -46,7 +46,10 @@ package edu.cmu.cs.dennisc.scenegraph.bound;
  * @author Dennis Cosgrove
  */
 public class BoundUtilities {
-
+	private BoundUtilities() {
+		throw new AssertionError();
+	}
+	
 	//TODO: remove duplicate code, if possible
 
 	public static edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv, edu.cmu.cs.dennisc.scenegraph.Vertex[] va ) {
@@ -114,6 +117,30 @@ public class BoundUtilities {
 			double x = xyzs[ i+0 ];
 			double y = xyzs[ i+1 ];
 			double z = xyzs[ i+2 ];
+			min.x = Math.min( min.x, x );
+			min.y = Math.min( min.y, y );
+			min.z = Math.min( min.z, z );
+			max.x = Math.max( max.x, x );
+			max.y = Math.max( max.y, y );
+			max.z = Math.max( max.z, z );
+		}
+		if( min.x == +Double.MAX_VALUE ) {
+			rv.setNaN();
+		} else {
+			rv.setMinimum( min );
+			rv.setMaximum( max );
+		}
+		return rv;
+	}
+	
+	public static edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv, java.nio.DoubleBuffer xyzs ) {
+		edu.cmu.cs.dennisc.math.Point3 min = new edu.cmu.cs.dennisc.math.Point3( +Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE );
+		edu.cmu.cs.dennisc.math.Point3 max = new edu.cmu.cs.dennisc.math.Point3( -Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE );
+		final int N = xyzs.limit();
+		for( int i=0; i<N; i+=3 ) {
+			double x = xyzs.get( i+0 );
+			double y = xyzs.get( i+1 );
+			double z = xyzs.get( i+2 );
 			min.x = Math.min( min.x, x );
 			min.y = Math.min( min.y, y );
 			min.z = Math.min( min.z, z );

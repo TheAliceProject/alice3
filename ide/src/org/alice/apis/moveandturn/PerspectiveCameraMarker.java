@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.QuadArray;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
@@ -91,7 +91,7 @@ public class PerspectiveCameraMarker extends CameraMarker
 	
 	private Vertex[] sgLaserLineVertices;
 	private LineArray sgLaserLine;
-	private SingleAppearance sgLaserLinesFrontFacingAppearance;
+	private SimpleAppearance sgLaserLinesFrontFacingAppearance;
 	
 	private List<Visual> sgDetailedComponents;
 	
@@ -262,7 +262,7 @@ public class PerspectiveCameraMarker extends CameraMarker
 //		sgViewLinesVisual.setParent( this.getSGTransformable() );
 //		sgDetailedComponents.add(sgViewLinesVisual);
 		
-		this.sgLaserLinesFrontFacingAppearance = new SingleAppearance();
+		this.sgLaserLinesFrontFacingAppearance = new SimpleAppearance();
 		this.sgLaserLinesFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
 		this.sgLaserLinesFrontFacingAppearance.shadingStyle.setValue(ShadingStyle.NONE);
 		this.sgLaserLineVertices = new Vertex[2];

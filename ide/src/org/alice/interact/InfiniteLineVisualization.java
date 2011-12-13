@@ -48,14 +48,14 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 public class InfiniteLineVisualization extends Visual {
 	
 	private static final double LINE_DISTANCE = 1000.0d;
-	private static SingleAppearance s_sgFrontFacingAppearance = new SingleAppearance();
+	private static SimpleAppearance s_sgFrontFacingAppearance = new SimpleAppearance();
 	static {
 		s_sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
 	}

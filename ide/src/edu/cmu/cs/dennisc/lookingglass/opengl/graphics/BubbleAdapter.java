@@ -78,7 +78,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 			float wrapWidth,
 			java.awt.Color fillColor, 
 			java.awt.Color outlineColor ) {		
-		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator originator = this.m_element.originator.getValue();
+		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator originator = this.m_element.getOriginator();
 		if( originator != null ) {
 			g2.setFont( font );
 			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, wrapWidth );
@@ -107,9 +107,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 	}
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
-		if( property == m_element.originator ) {
-			//pass
-		} else if( property == m_element.portion ) {
+		if( property == m_element.portion ) {
 			//pass
 		} else {
 			super.propertyChanged( property );

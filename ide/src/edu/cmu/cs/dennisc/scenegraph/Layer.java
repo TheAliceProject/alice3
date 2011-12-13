@@ -44,8 +44,9 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 public class Layer extends Element {
-	private java.util.List< Graphic > graphics = java.util.Collections.synchronizedList( new java.util.LinkedList< Graphic >() );
-	private java.util.List< edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener > graphicsListeners = java.util.Collections.synchronizedList( new java.util.LinkedList< edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener >() );
+	private final java.util.List< edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener > graphicsListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();;
+	private final java.util.List< Graphic > graphics = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	public void addGraphic( Graphic graphic ) {
 		graphic.setParent( this );
 	}

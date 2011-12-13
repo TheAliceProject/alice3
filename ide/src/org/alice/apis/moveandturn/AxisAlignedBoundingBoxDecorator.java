@@ -50,8 +50,8 @@ public class AxisAlignedBoundingBoxDecorator {
 	private Transformable m_subject;
 	private Composite m_asSeenBy;
 	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
-	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgFrontAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
-	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgBackAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance m_sgFrontAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance m_sgBackAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
 	private edu.cmu.cs.dennisc.scenegraph.Box m_sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
 
 	public AxisAlignedBoundingBoxDecorator( Transformable subject, Composite asSeenBy ) {

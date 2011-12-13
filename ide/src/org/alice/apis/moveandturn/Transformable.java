@@ -285,13 +285,12 @@ public abstract class Transformable extends AbstractTransformable {
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void say( String text, Number duration, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {
-		edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
+		edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble( m_originator );
 		bubble.text.setValue(text);
 		bubble.font.setValue(font.getAsAWTFont());
 		bubble.textColor.setValue(textColor.getInternal());
 		bubble.fillColor.setValue(bubbleFillColor.getInternal());
 		bubble.outlineColor.setValue(bubbleOutlineColor.getInternal());
-		bubble.originator.setValue( m_originator );
 		displayBubble( bubble, duration );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
@@ -319,13 +318,12 @@ public abstract class Transformable extends AbstractTransformable {
 
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void think( String text, Number duration, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {
-		edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble();
+		edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble( m_originator );
 		bubble.text.setValue(text);
 		bubble.font.setValue(font.getAsAWTFont());
 		bubble.textColor.setValue(textColor.getInternal());
 		bubble.fillColor.setValue(bubbleFillColor.getInternal());
 		bubble.outlineColor.setValue(bubbleOutlineColor.getInternal());
-		bubble.originator.setValue( m_originator );
 		displayBubble( bubble, duration );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )

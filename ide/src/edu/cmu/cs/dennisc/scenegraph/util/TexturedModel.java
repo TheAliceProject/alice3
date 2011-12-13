@@ -49,13 +49,13 @@ public class TexturedModel extends ModelTransformable {
 	private edu.cmu.cs.dennisc.texture.BufferedImageTexture m_bufferedImageTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
 	
 	public TexturedModel() {
-		getSGVisual().frontFacingAppearance.getValue().setDiffuseColorTexture( m_bufferedImageTexture );
+		getSGVisual().getSGFrontFacingAppearance().setDiffuseColorTexture( m_bufferedImageTexture );
 	}
 	public edu.cmu.cs.dennisc.texture.BufferedImageTexture getBufferedImageTexture() {
 		return m_bufferedImageTexture;
 	}
 	public void setIsAlphaBlended( boolean isAlphaBlended ) {
-		getSGVisual().frontFacingAppearance.getValue().setDiffuseColorTextureAlphaBlended( isAlphaBlended );
+		getSGVisual().getSGFrontFacingAppearance().setDiffuseColorTextureAlphaBlended( isAlphaBlended );
 		m_bufferedImageTexture.setPotentiallyAlphaBlended( isAlphaBlended );
 	}
 	public void loadImage( String path ) { 

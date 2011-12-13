@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.adorn.opengl;
 
+import static javax.media.opengl.GL.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,7 +62,7 @@ public class StickFigureAdapter extends AdornmentAdapter {
 					if( componentAdapter instanceof edu.cmu.cs.dennisc.lookingglass.opengl.TransformableAdapter ) {
 						edu.cmu.cs.dennisc.lookingglass.opengl.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> child = (edu.cmu.cs.dennisc.lookingglass.opengl.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)componentAdapter;
 						java.nio.DoubleBuffer ltChild = child.accessLocalTransformationAsBuffer();
-						gl.glBegin( javax.media.opengl.GL.GL_LINES );
+						gl.glBegin( GL_LINES );
 						try {
 							gl.glVertex3d( 0, 0, 0 );
 							gl.glVertex3d( ltChild.get( TRANSLATION_X_INDEX ), ltChild.get( TRANSLATION_Y_INDEX ), ltChild.get( TRANSLATION_Z_INDEX ) );
@@ -77,7 +79,7 @@ public class StickFigureAdapter extends AdornmentAdapter {
 	}
 	@Override
 	protected void actuallyRender( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter adornmentRootAdapter ) {
-		rc.gl.glDisable( javax.media.opengl.GL.GL_LIGHTING );
+		rc.gl.glDisable( GL_LIGHTING );
 		rc.setColor( COLOR, 1.0f );
 		glStickFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );
 	}

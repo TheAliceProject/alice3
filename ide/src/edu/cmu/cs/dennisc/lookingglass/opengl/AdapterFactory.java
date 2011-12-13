@@ -105,7 +105,19 @@ public abstract class AdapterFactory {
 				register( sgClass, cls );
 			}
 		}
-		return (AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
+		AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement > rv;
+		if( cls != null ) {
+			try {
+				rv = (AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
+			} catch( Throwable t ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, cls );
+				rv = null;
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot find adapter for", sgClass );
+			rv = null;
+		}
+		return rv;
 	}
 
 	public static void forget( edu.cmu.cs.dennisc.pattern.AbstractElement sgElement ) {
@@ -182,8 +194,8 @@ public abstract class AdapterFactory {
 		return (AppearanceAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Appearance >)getAdapterForElement( sgAppearance );
 	}
 
-	public static SingleAppearanceAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgSingleAppearance ) {
-		return (SingleAppearanceAdapter)getAdapterForElement( sgSingleAppearance );
+	public static TexturedAppearanceAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgSingleAppearance ) {
+		return (TexturedAppearanceAdapter)getAdapterForElement( sgSingleAppearance );
 	}
 
 	public static MultipleAppearanceAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.MultipleAppearance sgMultipleAppearance ) {
@@ -232,7 +244,7 @@ public abstract class AdapterFactory {
 		getAdapterForElement( sgElement );
 		if( sgElement instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgElement;
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.accessComponents() ) {
+			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.getComponents() ) {
 				createNecessaryProxies( sgComponent );
 			}
 		}

@@ -46,13 +46,13 @@ package org.alice.apis.moveandturn;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 
 public class ObjectMarker extends MarkerWithIcon 
 {
-	private java.util.Map< Cylinder.BottomToTopAxis, SingleAppearance > axisToSGAppearanceMap;
+	private java.util.Map< Cylinder.BottomToTopAxis, SimpleAppearance > axisToSGAppearanceMap;
 	private double scale = 1.0;
 
 	private Arrow createArrow( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis ) {
@@ -64,11 +64,11 @@ public class ObjectMarker extends MarkerWithIcon
 	}
 	
 	private void createAxes( double unitLength, double forwardFactor ) {
-		axisToSGAppearanceMap = new java.util.HashMap< Cylinder.BottomToTopAxis, SingleAppearance >();
-		SingleAppearance sgRedAppearance = new SingleAppearance();
-		SingleAppearance sgGreenAppearance = new SingleAppearance();
-		SingleAppearance sgBlueAppearance = new SingleAppearance();
-		SingleAppearance sgWhiteAppearance = new SingleAppearance();
+		axisToSGAppearanceMap = new java.util.HashMap< Cylinder.BottomToTopAxis, SimpleAppearance >();
+		SimpleAppearance sgRedAppearance = new SimpleAppearance();
+		SimpleAppearance sgGreenAppearance = new SimpleAppearance();
+		SimpleAppearance sgBlueAppearance = new SimpleAppearance();
+		SimpleAppearance sgWhiteAppearance = new SimpleAppearance();
 
 		sgRedAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.RED );
 		sgGreenAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.GREEN );
@@ -136,7 +136,7 @@ public class ObjectMarker extends MarkerWithIcon
 	{
 		float scaledValue = opacity * this.getDefaultMarkerOpacity();
 		sgFrontFacingAppearance.opacity.setValue(scaledValue);
-		for (SingleAppearance appearance : axisToSGAppearanceMap.values() )
+		for (SimpleAppearance appearance : axisToSGAppearanceMap.values() )
 		{
 			appearance.opacity.setValue(scaledValue);
 		}

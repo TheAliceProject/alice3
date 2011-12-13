@@ -46,6 +46,9 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public interface BinaryEncoder {
+	public void write( byte[] data );
+	public void write( byte[] data, int offset, int length );
+
 	public void encode( boolean value );
 	public void encode( byte value );
 	public void encode( char value );
@@ -60,7 +63,6 @@ public interface BinaryEncoder {
 	public void encode( BinaryEncodableAndDecodable value );
 	public void encode( ReferenceableBinaryEncodableAndDecodable value, java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map );
 
-	public void encode( java.nio.Buffer value );
 	public void encode( boolean[] array );
 	public void encode( byte[] array );
 	public void encode( char[] array );

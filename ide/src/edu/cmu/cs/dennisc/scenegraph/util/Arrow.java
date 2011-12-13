@@ -58,7 +58,7 @@ public class Arrow extends Transformable {
 	private Transformable sgTransformableCone;
 	private BottomToTopAxis bottomToTopAxis;
 	
-	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SingleAppearance cylinderFrontFacingAppearance, SingleAppearance coneFrontFacingAppearance, boolean isBottomCapDesired ) {
+	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SimpleAppearance cylinderFrontFacingAppearance, SimpleAppearance coneFrontFacingAppearance, boolean isBottomCapDesired ) {
 		this.bottomToTopAxis = bottomToTopAxis;
 		
 		this.sgVisualCylinder = new Visual();
@@ -96,7 +96,7 @@ public class Arrow extends Transformable {
 	    sgVisualCone.setParent( sgTransformableCone );
 	}
 	
-	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SingleAppearance frontFacingAppearance, boolean isBottomCapDesired ) 
+	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SimpleAppearance frontFacingAppearance, boolean isBottomCapDesired ) 
 	{
 		this(lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, frontFacingAppearance, frontFacingAppearance, isBottomCapDesired);
 	}
@@ -129,7 +129,7 @@ public class Arrow extends Transformable {
 		return new Visual[]{this.sgVisualCone, this.sgVisualCylinder};
 	}
 	
-	public void setFrontFacingAppearance( SingleAppearance frontFacingAppearance )
+	public void setFrontFacingAppearance( TexturedAppearance frontFacingAppearance )
 	{
 		this.sgVisualCone.frontFacingAppearance.setValue(frontFacingAppearance);
 		this.sgVisualCylinder.frontFacingAppearance.setValue(frontFacingAppearance);

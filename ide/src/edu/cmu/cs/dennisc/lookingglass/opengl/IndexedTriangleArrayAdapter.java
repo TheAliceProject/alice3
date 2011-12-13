@@ -43,13 +43,15 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import static javax.media.opengl.GL.*;
+
 /**
  * @author Dennis Cosgrove
  */
 public class IndexedTriangleArrayAdapter extends IndexedPolygonArrayAdapter< edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray > {
 	@Override
 	protected int getMode() {
-		return javax.media.opengl.GL.GL_TRIANGLES;
+		return GL_TRIANGLES;
 	}
 	@Override
 	protected int getIndicesPerPolygon() {

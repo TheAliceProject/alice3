@@ -94,14 +94,8 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pattern.Releasable {
 	public edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] getLookingGlassListeners();
 	public Iterable< edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener > accessLookingGlassListeners();
 	
-	public static final boolean SUB_ELEMENT_IS_REQUIRED = true;
-	public static final boolean SUB_ELEMENT_IS_NOT_REQUIRED = false;
-	public PickResult pickFrontMost( int xPixel, int yPixel, boolean isSubElementRequired, PickObserver pickObserver );
-	public PickResult pickFrontMost( int xPixel, int yPixel, boolean isSubElementRequired );
-
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, boolean isSubElementRequired, PickObserver pickObserver );
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, boolean isSubElementRequired );
-
+	public Picker getPicker();
+	
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
@@ -131,4 +125,6 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pattern.Releasable {
 	
 	public boolean isRenderingEnabled();
 	public void setRenderingEnabled( boolean isRenderingEnabled );
+	
+	public void forgetAllCachedItems();
 }
