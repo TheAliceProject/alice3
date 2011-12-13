@@ -54,7 +54,6 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  * 
  */
 public class ObjectMarkerImp extends MarkerImp{
-
 	private java.util.Map< Cylinder.BottomToTopAxis, edu.cmu.cs.dennisc.scenegraph.SimpleAppearance > axisToSGAppearanceMap;
 	private double scale = 1.0;
 
@@ -97,8 +96,7 @@ public class ObjectMarkerImp extends MarkerImp{
 		this.sgBlueAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
 		this.sgWhiteAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
 		this.opacityAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[]{sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
-		
-		
+
 		sgRedAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.RED );
 		sgGreenAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.GREEN );
 		sgBlueAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.BLUE );
