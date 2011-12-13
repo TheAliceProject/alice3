@@ -42,6 +42,8 @@
  */
 package org.alice.ide;
 
+import org.lgna.croquet.preferences.PreferenceManager;
+
 /**
  * @author Dennis Cosgrove
  */

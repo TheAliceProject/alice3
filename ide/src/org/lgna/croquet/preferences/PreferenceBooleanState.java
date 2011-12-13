@@ -40,19 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.preferences;
+
+package org.lgna.croquet.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsIncludingThisForFieldAccessesState extends org.lgna.croquet.preferences.PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsIncludingThisForFieldAccessesState instance = new IsIncludingThisForFieldAccessesState();
+public abstract class PreferenceBooleanState extends org.lgna.croquet.BooleanState {
+	private static boolean getInitialValue( java.util.UUID id, boolean defaultInitialValue ) {
+		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+		if( userPreferences != null ) {
+			return userPreferences.getBoolean( id.toString(), defaultInitialValue );
+		} else {
+			return defaultInitialValue;
+		}
 	}
-	public static IsIncludingThisForFieldAccessesState getInstance() {
-		return SingletonHolder.instance;
+	private static java.util.List< PreferenceBooleanState > instances = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
+		for( PreferenceBooleanState state : instances ) {
+			userPreferences.putBoolean( state.getId().toString(), state.getValue() );
+		}
 	}
-	private IsIncludingThisForFieldAccessesState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), true );
+	public PreferenceBooleanState( org.lgna.croquet.Group group, java.util.UUID id, boolean initialValue ) {
+		super( group, id, getInitialValue( id, initialValue ) );
+		assert instances.contains( this ) == false;
+		instances.add( this );
 	}
 }

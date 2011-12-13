@@ -28,7 +28,6 @@ public class UserApplicationDirectoryState extends DirectoryState {
 				java.util.UUID.fromString( "5f80de2f-5119-4131-96d0-c0b80919a589" ), 
 				getInitialValue() 
 		);
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 	@Override
 	protected String getPath() {

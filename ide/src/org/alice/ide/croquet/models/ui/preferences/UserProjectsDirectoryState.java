@@ -14,9 +14,8 @@ public class UserProjectsDirectoryState extends DirectoryState {
 		super( 
 				org.lgna.croquet.Application.UI_STATE_GROUP, 
 				java.util.UUID.fromString( "b6cf8508-35ce-46b5-a208-b53784ebeca6" ), 
-				UserApplicationDirectoryState.KEY + java.io.File.separator + "MyProjects"
+				UserApplicationDirectoryState.KEY + URI_SEPARATOR + "MyProjects"
 		);
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 	@Override
 	protected String getPath() {

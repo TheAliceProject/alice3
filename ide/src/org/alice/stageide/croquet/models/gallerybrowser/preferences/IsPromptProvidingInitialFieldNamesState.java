@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsPromptProvidingInitialFieldNamesState extends org.lgna.croquet.BooleanState {
+public class IsPromptProvidingInitialFieldNamesState extends org.lgna.croquet.preferences.PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsPromptProvidingInitialFieldNamesState instance = new IsPromptProvidingInitialFieldNamesState();
 	}
@@ -54,6 +54,5 @@ public class IsPromptProvidingInitialFieldNamesState extends org.lgna.croquet.Bo
 	}
 	private IsPromptProvidingInitialFieldNamesState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), true );
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

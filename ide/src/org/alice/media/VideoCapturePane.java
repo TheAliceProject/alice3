@@ -882,7 +882,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	}
 	
 	private void stop() {
-		this.rtProgram.setClosed( true );
+		this.rtProgram.shutDownCleanly();
 	}
 
 	private void uploadToYouTube()
