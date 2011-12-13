@@ -442,6 +442,10 @@ public class RenderContext extends Context {
 //	public void put( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, com.sun.opengl.util.texture.Texture glTexture ) {
 //		this.textureBindingMap.put( textureAdapter, glTexture );
 //	}
+	
+	public boolean isTextureEnabled() {
+		return this.currDiffuseColorTextureAdapter != null;
+	}
 
 	public void setDiffuseColorTextureAdapter( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > diffuseColorTextureAdapter, boolean isDiffuseColorTextureClamped ) {
 		if( diffuseColorTextureAdapter != null && diffuseColorTextureAdapter.isValid() ) {
@@ -457,6 +461,7 @@ public class RenderContext extends Context {
 			}
 		} else {
 			gl.glDisable( GL_TEXTURE_2D );
+			this.currDiffuseColorTextureAdapter = null;
 		}
 	}
 	public void setBumpTextureAdapter( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > bumpTextureAdapter ) {
