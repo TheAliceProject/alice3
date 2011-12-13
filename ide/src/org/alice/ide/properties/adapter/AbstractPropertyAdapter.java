@@ -99,7 +99,9 @@ public abstract class AbstractPropertyAdapter<P, O>
 	
 	public void setInstance(O instance)
 	{
-		this.stopListening();
+		if (this.instance != null) {
+			this.stopListening();
+		}
 		this.instance = instance;
 		this.startListening();
 	}

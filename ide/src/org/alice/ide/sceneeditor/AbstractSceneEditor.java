@@ -293,9 +293,11 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	
 	protected void setProgramType( org.lgna.project.ast.NamedUserType programType ) {
 		if (this.programType != programType) {
+			if (this.programType != null) {
+				SceneFieldListSelectionState.getInstance().removeValueObserver(this.selectedSceneObserver);
+				SceneFieldListSelectionState.getInstance().clear();
+			}
 			this.programType = programType;
-			SceneFieldListSelectionState.getInstance().removeValueObserver(this.selectedSceneObserver);
-			SceneFieldListSelectionState.getInstance().clear();
 			mapSceneFieldToInstance.clear();
 			mapSceneInstanceToField.clear();
 			if( this.programType != null ) {

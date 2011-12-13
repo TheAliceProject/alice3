@@ -211,7 +211,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
                 0) // ipadY
                 );
 		
-		this.mainPanel.addComponent(uiPanel, new GridBagConstraints(
+		this.addComponent(uiPanel, new GridBagConstraints(
                 0, // gridX
                 0, // gridY
                 1, // gridWidth
@@ -224,7 +224,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
                 0, // ipadX
                 0) // ipadY
                 );
-		this.mainPanel.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints(
+		this.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints(
                 0, // gridX
                 0, // gridY
                 1, // gridWidth
@@ -299,12 +299,6 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 				}
 			}
 		}
-	}
-	
-	@Override
-	public Panel getPanel() 
-	{
-		return this.mainPanel;
 	}
 	
 }
