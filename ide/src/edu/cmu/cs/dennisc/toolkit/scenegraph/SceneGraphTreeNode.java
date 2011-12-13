@@ -82,14 +82,6 @@ public class SceneGraphTreeNode extends BasicTreeNode
 			}
 		}
 		this.stackTrace = element.getBonusDataFor(Element.DEBUG_CONSTRUCTION_STACK_TRACE_KEY);
-//		if (element.containsBonusDataFor(Element.CREATION_STACK_TRACK_KEY))
-//		{
-//			this.stackTrace = (StackTraceElement[])element.getBonusDataFor(Element.CREATION_STACK_TRACK_KEY);
-//		}
-//		else
-//		{
-//			this.stackTrace = null;
-//		}
 		if (element.getName() != null)
 		{
 			this.name = element.getName()+":"+this.hashCode;
