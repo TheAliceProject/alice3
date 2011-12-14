@@ -131,7 +131,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 	
 		this.linkButton = new LinkScaleButton(IsScaleLinkedState.getInstance());
 		
-		this.mainPanel.addComponent( this.widthLabel, new GridBagConstraints( 
+		this.addComponent( this.widthLabel, new GridBagConstraints( 
 			0, //gridX
 			0, //gridY
 			1, //gridWidth
@@ -144,7 +144,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			0, //ipadX
 			0 ) //ipadY
 		);
-		this.mainPanel.addComponent( new SwingAdapter(this.widthField), new GridBagConstraints( 
+		this.addComponent( new SwingAdapter(this.widthField), new GridBagConstraints( 
 			1, //gridX
 			0, //gridY
 			1, //gridWidth
@@ -157,7 +157,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			0, //ipadX
 			0 ) //ipadY
 		);
-		this.mainPanel.addComponent( this.heightLabel, new GridBagConstraints( 
+		this.addComponent( this.heightLabel, new GridBagConstraints( 
 			0, //gridX
 			1, //gridY
 			1, //gridWidth
@@ -170,7 +170,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			0, //ipadX
 			0 ) //ipadY
 		);
-		this.mainPanel.addComponent( new SwingAdapter(this.heightField), new GridBagConstraints( 
+		this.addComponent( new SwingAdapter(this.heightField), new GridBagConstraints( 
 			1, //gridX
 			1, //gridY
 			1, //gridWidth
@@ -183,7 +183,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			0, //ipadX
 			0 ) //ipadY
 		);
-		this.mainPanel.addComponent( this.depthLabel, new GridBagConstraints( 
+		this.addComponent( this.depthLabel, new GridBagConstraints( 
 			0, //gridX
 			2, //gridY
 			1, //gridWidth
@@ -196,7 +196,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			0, //ipadX
 			0 ) //ipadY
 		);
-		this.mainPanel.addComponent( new SwingAdapter(this.depthField), new GridBagConstraints( 
+		this.addComponent( new SwingAdapter(this.depthField), new GridBagConstraints( 
 			1, //gridX
 			2, //gridY
 			1, //gridWidth
@@ -209,7 +209,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			0, //ipadX
 			0 ) //ipadY
 		);
-		this.mainPanel.addComponent( this.linkButton, new GridBagConstraints( 
+		this.addComponent( this.linkButton, new GridBagConstraints( 
 			2, //gridX
 			0, //gridY
 			1, //gridWidth
@@ -222,7 +222,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			0, //ipadX
 			0 ) //ipadY
 		);
-		this.mainPanel.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 
+		this.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 
             4, //gridX
             0, //gridY
             1, //gridWidth
@@ -250,7 +250,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 	{
 		if (this.resetButton != null && this.resetButton.getAwtComponent().getParent() != null)
 		{
-			this.mainPanel.removeComponent(this.resetButton);
+			this.removeComponent(this.resetButton);
 		}
 		if (this.propertyAdapter != null)
 		{
@@ -260,7 +260,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			this.resetButton = setSize.createButton();
 			
 		}
-		this.mainPanel.addComponent( this.resetButton, new GridBagConstraints( 
+		this.addComponent( this.resetButton, new GridBagConstraints( 
 				3, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -363,12 +363,5 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 				}
 			}
 		}
-	}
-
-
-	@Override
-	public Panel getPanel() 
-	{
-		return this.mainPanel;
 	}
 }

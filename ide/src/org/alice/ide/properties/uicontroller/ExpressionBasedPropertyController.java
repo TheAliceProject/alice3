@@ -51,9 +51,8 @@ import org.lgna.croquet.components.Panel;
  * @author dculyba
  *
  */
-public class ExpressionBasedPropertyController<P> implements PropertyAdapterController<P>
+public class ExpressionBasedPropertyController<P> extends BorderPanel implements PropertyAdapterController<P>
 {
-    protected BorderPanel mainPanel;
 	protected AbstractPropertyAdapter<P, ?> propertyAdapter;
 	
 	public ExpressionBasedPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter)
@@ -81,12 +80,11 @@ public class ExpressionBasedPropertyController<P> implements PropertyAdapterCont
 	
     protected void initializeComponents()
     {
-        this.mainPanel = new BorderPanel();
     }
     
     public Panel getPanel()
     {
-        return this.mainPanel;
+        return this;
     }
     
     
@@ -95,14 +93,20 @@ public class ExpressionBasedPropertyController<P> implements PropertyAdapterCont
 		return this.propertyAdapter;
 	}
 
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		this.removeAllComponents();
+		if (propertyAdapter != null)
+		{
+			this.addComponent(this.propertyAdapter.getExpressionState().createEditor(org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance()), Constraint.CENTER);
+		}
+	}
+	
 	public void setPropertyAdapter(AbstractPropertyAdapter<P, ?> propertyAdapter)
 	{
-			this.propertyAdapter = propertyAdapter;
-			this.mainPanel.removeAllComponents();
-			if (propertyAdapter != null)
-			{
-				this.mainPanel.addComponent(this.propertyAdapter.getExpressionState().createEditor(org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance()), Constraint.CENTER);
-			}
+		this.propertyAdapter = propertyAdapter;
+		this.refreshLater();
 	}
 
 }

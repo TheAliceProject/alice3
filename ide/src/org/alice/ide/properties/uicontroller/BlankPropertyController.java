@@ -61,7 +61,7 @@ public class BlankPropertyController<P> extends LabelBasedPropertyController<P>
 	{
 		super.initializeComponents();
 		this.label.setText(BLANK_STRING);
-		this.mainPanel.addComponent(this.propertyComponent, new GridBagConstraints(
+		this.addComponent(this.propertyComponent, new GridBagConstraints(
                 0, // gridX
                 0, // gridY
                 1, // gridWidth

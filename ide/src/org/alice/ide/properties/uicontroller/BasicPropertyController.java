@@ -69,15 +69,15 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
     {
         super.initializeComponents();
         this.propertyComponent = createPropertyComponent();
-        this.mainPanel.setMinimumPreferredHeight(PropertyAdapterController.MIN_ADAPTER_HEIGHT);
+        this.setMinimumPreferredHeight(PropertyAdapterController.MIN_ADAPTER_HEIGHT);
     }
     
     @Override
     protected void updateUIFromNewAdapter() 
     {
-        this.mainPanel.removeAllComponents();
+        this.removeAllComponents();
         int xIndex = 0;
-        this.mainPanel.addComponent(this.propertyComponent, new GridBagConstraints(
+        this.addComponent(this.propertyComponent, new GridBagConstraints(
                 xIndex++, // gridX
                 0, // gridY
                 1, // gridWidth
@@ -90,7 +90,7 @@ public abstract class BasicPropertyController<P> extends AbstractAdapterControll
                 0, // ipadX
                 0) // ipadY
                 );
-        this.mainPanel.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 
+        this.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 
                 xIndex++, //gridX
                 0, //gridY
                 1, //gridWidth
