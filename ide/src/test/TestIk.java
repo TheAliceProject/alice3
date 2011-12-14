@@ -119,7 +119,20 @@ class TestIk extends Program {
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
 
 
+	private static final void printChainOfJoints( org.lgna.story.implementation.JointedModelImp<?,?> imp, org.lgna.story.resources.JointId aId, org.lgna.story.resources.JointId bId ) {
+		java.util.List< org.lgna.story.implementation.JointImp > chain = imp.getInclusiveListOfJointsBetween( aId, bId );
+		System.out.println( aId + " " + bId );
+		for( org.lgna.story.implementation.JointImp jointImp : chain ) {
+			System.out.println( "\t" + jointImp );
+		}
+	}
 	public void runTest() {
+		
+		org.lgna.story.implementation.JointedModelImp<?,?> imp = ImplementationAccessor.getImplementation( ogre );
+		printChainOfJoints( imp, org.lgna.story.resources.BipedResource.LEFT_ANKLE, org.lgna.story.resources.BipedResource.RIGHT_ELBOW );
+		printChainOfJoints( imp, org.lgna.story.resources.BipedResource.SPINE_MIDDLE, org.lgna.story.resources.BipedResource.RIGHT_ELBOW );
+		printChainOfJoints( imp, org.lgna.story.resources.BipedResource.RIGHT_ELBOW, org.lgna.story.resources.BipedResource.SPINE_MIDDLE );
+		
 		this.setActiveScene( this.scene );
 		this.modelManipulationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
 		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );

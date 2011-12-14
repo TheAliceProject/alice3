@@ -116,6 +116,7 @@ public abstract class EntityImp implements ReferenceFrame {
 	public EntityImp getActualEntityImplementation( EntityImp ths ) {
 		return this;
 	}
+	
 	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
 		return this.getSgComposite().getParent();
 	}
@@ -123,13 +124,38 @@ public abstract class EntityImp implements ReferenceFrame {
 		this.getSgComposite().setParent( sgVehicle );
 	}
 	public final EntityImp getVehicle() {
-		return getInstance( this.getSgVehicle() );
+		edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle = this.getSgVehicle();
+		if( sgVehicle != null ) {
+			EntityImp rv = getInstance( sgVehicle );
+			if( rv != null ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, sgVehicle );
+			}
+			return rv;
+		} else {
+			return null;
+		}
 	}
 	public void setVehicle( EntityImp vehicle ) {
 		assert vehicle != this;
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
-	
+
+	public boolean isDescendantOf( EntityImp candidateAncestor ) {
+		assert candidateAncestor != null : this;
+		EntityImp vehicle = this.getVehicle();
+		if( vehicle != null ) {
+			if( vehicle == candidateAncestor ) {
+				return true;
+			} else {
+				return vehicle.isDescendantOf( candidateAncestor );
+			}
+		} else {
+			return false;
+		}
+	}
+
 	public SceneImp getScene() {
 		EntityImp vehicle = this.getVehicle();
 		return vehicle != null ? vehicle.getScene() : null;
@@ -219,5 +245,17 @@ public abstract class EntityImp implements ReferenceFrame {
 	}
 	protected final void perform( edu.cmu.cs.dennisc.animation.Animation animation ) {
 		this.perform( animation, null );
+	}
+	
+	protected void appendRepr( StringBuilder sb ) {
+	}
+	@Override
+	public final String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		this.appendRepr( sb );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

@@ -41,34 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ui.preferences;
+package test;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryState extends org.lgna.croquet.preferences.PreferenceStringState {
-	protected static final String URI_SEPARATOR = "/"; // do not use java.io.File.separator
-	public DirectoryState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
-		super( group, id, initialValue );
-	}
-	protected abstract String getPath();
-	private java.io.File getDirectory() {
-		String path = this.getPath();
-		java.io.File rv;
-		try {
-			//todo: account for spaces and other special characters
-			java.net.URI uri = new java.net.URI( path );
-			rv = new java.io.File( uri );
-		} catch( java.net.URISyntaxException urise ) {
-			//throw new RuntimeException( path, urise );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( urise, "URI failure:", path );
-			rv = new java.io.File( path );
-		}
-		return rv;
-	}
-	public java.io.File getDirectoryEnsuringExistance() {
-		java.io.File rv = this.getDirectory();
-		rv.mkdirs();
-		return rv;
+public class TestUri {
+	public static void main( String[] args ) throws Exception {
+		java.io.File file = new java.io.File( "C:\\Program Files (x86)\\Git\\Git Bash" );
+		System.out.println( file );
+		java.net.URI uri = file.toURI();
+		System.out.println( uri );
+		System.out.println( uri.toString() );
+		System.out.println( uri.toASCIIString() );
+		System.out.println( new java.io.File( uri ) );
+		System.out.println( new java.io.File( new java.net.URI( uri.toString() ) ) );
+		System.out.println( new java.io.File( new java.net.URI( uri.toASCIIString() ) ) );
+
+		//java.net.URLEncoder.encode converts everything which is not what we want
+//		System.out.println( "encoded: " + java.net.URLEncoder.encode( uri.toString(), "utf-8" ) );
+//		System.out.println( "encoded: " + java.net.URLEncoder.encode( uri.toASCIIString(), "utf-8" ) );
+//		
+//		java.net.URI uri2 = edu.cmu.cs.dennisc.java.net.UriUtilities.getUri( uri.toString() );
+//		System.out.println( "uri2: " + uri2 );
+//		System.out.flush();
+//		//java.net.URI uri = edu.cmu.cs.dennisc.java.net.UriUtilities.getUri( "file:///C:\\Program Files (x86)\\Git\\Git Bash" );
+//		System.out.println( new java.io.File( uri2 ) );
 	}
 }

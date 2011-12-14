@@ -70,7 +70,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 	protected double getBoundingSphereRadius() {
 		return 0;
 	}
-	
+
 	@Override
 	public void setVehicle(EntityImp vehicle) {
 		assert vehicle != this;
@@ -81,6 +81,12 @@ public abstract class JointImp extends AbstractTransformableImp {
 		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
 	}
 	
+	
 	//Joints don't actually want to be directly hooked into the sg tree, so we have this method as a way to link them in indirectly
 	public abstract void setCustomJointSgParent(edu.cmu.cs.dennisc.scenegraph.Composite sgParent);
+	@Override
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( this.getJointId() );
+	}
 }
