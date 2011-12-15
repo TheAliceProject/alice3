@@ -66,7 +66,7 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 		java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(resourceClass, this.getDeclaration().getName());
 		if( thumbnail != null ) {
 			this.largeIcon = new javax.swing.ImageIcon(thumbnail);
-			this.smallIcon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 24, 24 );
+			this.smallIcon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( this.largeIcon, 24, 24 );
 		} else {
 			this.largeIcon = null;
 			this.smallIcon = null;
