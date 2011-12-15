@@ -260,19 +260,21 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			this.resetButton = setSize.createButton();
 			
 		}
-		this.addComponent( this.resetButton, new GridBagConstraints( 
-				3, //gridX
-				0, //gridY
-				1, //gridWidth
-				3, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
+		if( this.resetButton != null ) {
+			this.addComponent( this.resetButton, new GridBagConstraints( 
+					3, //gridX
+					0, //gridY
+					1, //gridWidth
+					3, //gridHeight
+					0.0, //weightX
+					0.0, //weightY
+					GridBagConstraints.WEST, //anchor 
+					GridBagConstraints.NONE, //fill
+					new Insets(2,2,2,2), //insets
+					0, //ipadX
+					0 ) //ipadY
+			);
+		}
 	}
 	
 	private Dimension3 getOriginalSize()
