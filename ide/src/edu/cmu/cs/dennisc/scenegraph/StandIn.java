@@ -47,9 +47,22 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class StandIn extends AbstractTransformable {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< Composite > vehicle = new edu.cmu.cs.dennisc.property.InstanceProperty< Composite >( this, null );
+	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTransformation = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+	private Composite vehicle = null;
+//	public final edu.cmu.cs.dennisc.property.InstanceProperty< Composite > vehicle = new edu.cmu.cs.dennisc.property.InstanceProperty< Composite >( this, null );
 	@Override
-	protected Composite getVehicle() {
-		return this.vehicle.getValue();
+	public Composite getVehicle() {
+		return this.vehicle;
+	}
+	public void setVehicle( Composite vehicle ) {
+		this.vehicle = vehicle;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation() {
+		return this.localTransformation;
+	}
+	@Override
+	protected void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+		this.localTransformation = m;
 	}
 }

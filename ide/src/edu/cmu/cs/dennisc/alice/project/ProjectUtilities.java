@@ -88,34 +88,6 @@ public abstract class ProjectUtilities {
 	private static String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
 	private static String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
 
-	public static java.io.File getMyAliceDirectory( String applicationName ) {
-		java.io.File rv = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), applicationName );
-		rv.mkdirs();
-		return rv;
-	}
-	public static java.io.File getMyProjectsDirectory( String applicationName ) {
-		java.io.File rv = new java.io.File( getMyAliceDirectory( applicationName ), "MyProjects" );
-		rv.mkdirs();
-		return rv;
-	}
-	public static java.io.File getMyTypesDirectory( String applicationName ) {
-		java.io.File rv = new java.io.File( getMyAliceDirectory( applicationName ), "MyClasses" );
-		rv.mkdirs();
-		return rv;
-	}
-	@Deprecated
-	public static java.io.File getMyAliceDirectory() {
-		return getMyAliceDirectory( "Alice3" );
-	}
-	@Deprecated
-	public static java.io.File getMyProjectsDirectory() {
-		return getMyProjectsDirectory( "Alice3" );
-	}
-	@Deprecated
-	public static java.io.File getMyTypesDirectory() {
-		return getMyTypesDirectory( "Alice3" );
-	}
-
 	public static java.io.File[] listProjectFiles( java.io.File directory ) {
 		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, PROJECT_EXTENSION );
 	}
@@ -123,11 +95,48 @@ public abstract class ProjectUtilities {
 		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, TYPE_EXTENSION );
 	}
 
-	private static String readVersion( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
-		assert zipFile != null;
-		java.util.zip.ZipEntry entry = zipFile.getEntry( VERSION_ENTRY_NAME );
-		if( entry != null ) {
-			java.io.InputStream is = zipFile.getInputStream( entry );
+	private static interface ZipEntryContainer {
+		public java.io.InputStream getInputStream( String name ) throws java.io.IOException;
+	}
+	
+	private static class ZipFileEntryContainer implements ZipEntryContainer {
+		private final java.util.zip.ZipFile zipFile;
+		public ZipFileEntryContainer( java.util.zip.ZipFile zipFile ) {
+			this.zipFile = zipFile;
+		}
+		public java.io.InputStream getInputStream( String name ) throws java.io.IOException {
+			java.util.zip.ZipEntry zipEntry = this.zipFile.getEntry( name );
+			if( zipEntry != null ) {
+				return this.zipFile.getInputStream( zipEntry );
+			} else {
+				return null;
+			}
+		}
+	}
+	private static class ZipInputStreamEntryContainer implements ZipEntryContainer {
+		private final java.util.Map< String, byte[] > mapZipEntryToBuffer;
+		public ZipInputStreamEntryContainer( java.util.zip.ZipInputStream zipInputStream ) {
+			try {
+				this.mapZipEntryToBuffer = edu.cmu.cs.dennisc.zip.ZipUtilities.extract( zipInputStream );
+			} catch( java.io.IOException ioe ) {
+				throw new RuntimeException( ioe );
+			}
+		}
+		public java.io.InputStream getInputStream( String name ) throws java.io.IOException {
+			byte[] buffer = this.mapZipEntryToBuffer.get( name );
+			if( buffer != null ) {
+				return new java.io.ByteArrayInputStream( buffer );
+			} else {
+				return null;
+			}
+		}
+	}
+	
+	private static String readVersion( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
+		assert zipEntryContainer != null;
+		java.io.InputStream is = zipEntryContainer.getInputStream( VERSION_ENTRY_NAME );
+		if( is != null ) {
+			//todo?
 			java.util.ArrayList< Byte > buffer = new java.util.ArrayList< Byte >( 32 );
 			while( true ) {
 				int b = is.read();
@@ -144,43 +153,41 @@ public abstract class ProjectUtilities {
 			}
 			return new String( array );
 		} else {
-			throw new java.io.IOException( zipFile.getName() + " does not contain entry " + VERSION_ENTRY_NAME );
+			throw new java.io.IOException( zipEntryContainer.toString() + " does not contain entry " + VERSION_ENTRY_NAME );
 		}
 	}
-	private static edu.cmu.cs.dennisc.alice.Project readProperties( edu.cmu.cs.dennisc.alice.Project rv, java.util.zip.ZipFile zipFile ) throws java.io.IOException {
-		assert zipFile != null;
-		java.util.zip.ZipEntry entry = zipFile.getEntry( PROPERTIES_ENTRY_NAME );
-		if( entry != null ) {
-			java.io.BufferedInputStream bis = new java.io.BufferedInputStream( zipFile.getInputStream( entry ) );
+	private static edu.cmu.cs.dennisc.alice.Project readProperties( edu.cmu.cs.dennisc.alice.Project rv, ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
+		assert zipEntryContainer != null;
+		java.io.InputStream is = zipEntryContainer.getInputStream( PROPERTIES_ENTRY_NAME );
+		if( is != null ) {
+			java.io.BufferedInputStream bis = new java.io.BufferedInputStream( is );
 			rv.readProperties( bis );
 		}
 		return rv;
 	}
-	private static org.w3c.dom.Document readXML( java.util.zip.ZipFile zipFile, String entryName ) throws java.io.IOException {
-		assert zipFile != null;
-		java.util.zip.ZipEntry entry = zipFile.getEntry( entryName );
-		assert entry != null;
-		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( zipFile.getInputStream( entry ) );
+	private static org.w3c.dom.Document readXML( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException {
+		assert zipEntryContainer != null;
+		java.io.InputStream is = zipEntryContainer.getInputStream( entryName );
+		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( is );
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice readType( java.util.zip.ZipFile zipFile, String entryName ) throws java.io.IOException {
-		String version = readVersion( zipFile );
-		org.w3c.dom.Document xmlDocument = readXML( zipFile, entryName );
+	private static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice readType( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException {
+		String version = readVersion( zipEntryContainer );
+		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName );
 		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)edu.cmu.cs.dennisc.alice.ast.AbstractNode.decode( xmlDocument, version );
 	}
-	private static java.util.Set< org.alice.virtualmachine.Resource > readResources( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
+	private static java.util.Set< org.alice.virtualmachine.Resource > readResources( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
 		java.util.Set< org.alice.virtualmachine.Resource > rv = new java.util.HashSet< org.alice.virtualmachine.Resource >();
-		java.util.zip.ZipEntry zeResources = zipFile.getEntry( RESOURCES_ENTRY_NAME );
-		if( zeResources != null ) {
-			org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( zipFile.getInputStream( zeResources ) );
+		java.io.InputStream isResources = zipEntryContainer.getInputStream( RESOURCES_ENTRY_NAME );
+		if( isResources != null ) {
+			org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( isResources );
 			java.util.List< org.w3c.dom.Element > xmlElements = edu.cmu.cs.dennisc.xml.XMLUtilities.getChildElementsByTagName( xmlDocument.getDocumentElement(), XML_RESOURCE_TAG_NAME );
 			for( org.w3c.dom.Element xmlElement : xmlElements ) {
 				String className = xmlElement.getAttribute( XML_RESOURCE_CLASSNAME_ATTRIBUTE );
 				String uuidText = xmlElement.getAttribute( XML_RESOURCE_UUID_ATTRIBUTE );
 				String entryName = xmlElement.getAttribute( XML_RESOURCE_ENTRY_NAME_ATTRIBUTE );
 				if( className != null && uuidText != null && entryName != null ) {
-					java.util.zip.ZipEntry zipEntry = zipFile.getEntry( entryName );
-					byte[] data = edu.cmu.cs.dennisc.java.io.InputStreamUtilities.getBytes( zipFile.getInputStream( zipEntry ) );
+					byte[] data = edu.cmu.cs.dennisc.java.io.InputStreamUtilities.getBytes( zipEntryContainer.getInputStream( entryName ) );
 					if( data != null ) {
 						try {
 							Class< ? extends org.alice.virtualmachine.Resource > resourceCls = (Class< ? extends org.alice.virtualmachine.Resource >)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
@@ -199,13 +206,22 @@ public abstract class ProjectUtilities {
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.alice.Project readProject( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
-		assert zipFile != null;
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = readType( zipFile, PROGRAM_TYPE_ENTRY_NAME );
-		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipFile );
+	private static edu.cmu.cs.dennisc.alice.Project readProject( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
+		assert zipEntryContainer != null;
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = readType( zipEntryContainer, PROGRAM_TYPE_ENTRY_NAME );
+		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipEntryContainer );
 		edu.cmu.cs.dennisc.alice.Project rv = new edu.cmu.cs.dennisc.alice.Project( type, resources );
-		readProperties( rv, zipFile );
+		readProperties( rv, zipEntryContainer );
 		return rv;
+	}
+	public static edu.cmu.cs.dennisc.alice.Project readProject( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
+		return readProject( new ZipInputStreamEntryContainer( zis ) );
+	}
+	public static edu.cmu.cs.dennisc.alice.Project readProject( java.io.InputStream is ) throws java.io.IOException {
+		return readProject( new java.util.zip.ZipInputStream( is ) );
+	}
+	public static edu.cmu.cs.dennisc.alice.Project readProject( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
+		return readProject( new ZipFileEntryContainer( zipFile ) );
 	}
 	public static edu.cmu.cs.dennisc.alice.Project readProject( java.io.File file ) {
 		assert file != null;
@@ -220,10 +236,22 @@ public abstract class ProjectUtilities {
 		assert path != null;
 		return readProject( new java.io.File( path ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = readType( zipFile, TYPE_ENTRY_NAME );
-		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipFile );
+
+	private static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?> type = readType( zipEntryContainer, TYPE_ENTRY_NAME );
+		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipEntryContainer );
 		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( type, resources );
+	}
+
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
+		return readType( new ZipInputStreamEntryContainer( zis ) );
+	}
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.io.InputStream is ) throws java.io.IOException {
+		return readType( new java.util.zip.ZipInputStream( is ) );
+	}
+
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
+		return readType( new ZipFileEntryContainer( zipFile ) );
 	}
 	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.io.File file ) {
 		assert file != null;

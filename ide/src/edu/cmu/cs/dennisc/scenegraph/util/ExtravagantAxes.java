@@ -48,13 +48,13 @@ import edu.cmu.cs.dennisc.scenegraph.*;
  * @author Dennis Cosgrove
  */
 public class ExtravagantAxes extends Transformable {
-	private static java.util.Map< Cylinder.BottomToTopAxis, SingleAppearance > s_axisToSGAppearanceMap = new java.util.HashMap< Cylinder.BottomToTopAxis, SingleAppearance >();
+	private static java.util.Map< Cylinder.BottomToTopAxis, SimpleAppearance > s_axisToSGAppearanceMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	static {
-		SingleAppearance sgRedAppearance = new SingleAppearance();
-		SingleAppearance sgGreenAppearance = new SingleAppearance();
-		SingleAppearance sgBlueAppearance = new SingleAppearance();
-		SingleAppearance sgWhiteAppearance = new SingleAppearance();
+		SimpleAppearance sgRedAppearance = new SimpleAppearance();
+		SimpleAppearance sgGreenAppearance = new SimpleAppearance();
+		SimpleAppearance sgBlueAppearance = new SimpleAppearance();
+		SimpleAppearance sgWhiteAppearance = new SimpleAppearance();
 
 		sgRedAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.RED );
 		sgGreenAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.GREEN );
@@ -67,18 +67,21 @@ public class ExtravagantAxes extends Transformable {
 		s_axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.NEGATIVE_Z, sgWhiteAppearance );
 	}
 	
+	private static final double CYLINDER_PORTION = 0.8;
+	private static final double CONE_PORTION = 1.0-CYLINDER_PORTION;
+	
 	private Arrow createArrow( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis ) {
-		double lengthCylinder = unit * lengthFactor * 0.8;
-		double radiusCylinder = unit * 0.05;
-		double lengthCone = unit * lengthFactor * 0.2;
-		double radiusCone = radiusCylinder * 1.2;
+		double lengthCylinder = unit * lengthFactor * CYLINDER_PORTION;
+		double radiusCylinder = unit * 0.025;
+		double lengthCone = unit * lengthFactor * CONE_PORTION;
+		double radiusCone = radiusCylinder * 2.0;
 		return new Arrow( lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, s_axisToSGAppearanceMap.get( bottomToTopAxis ), false );
 	}
 	public ExtravagantAxes( double unitLength, double forwardFactor ) {
 		Arrow sgXAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_X );
 		Arrow sgYAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Y );
 		Arrow sgZAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Z );
-		Arrow sgFAxis = createArrow( unitLength, 2.0, Cylinder.BottomToTopAxis.NEGATIVE_Z );
+		Arrow sgFAxis = createArrow( unitLength, forwardFactor, Cylinder.BottomToTopAxis.NEGATIVE_Z );
 
 		sgXAxis.setParent( this );
 	    sgYAxis.setParent( this );

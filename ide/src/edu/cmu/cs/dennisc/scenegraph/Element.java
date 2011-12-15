@@ -43,48 +43,51 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import org.alice.ide.IDE;
-
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner {
-	//	@Override
-	//	protected void finalize() throws Throwable {
-	//		super.finalize();
-	//		System.out.println( "finalize: " + this );
-	//	}
-
-	private java.util.HashMap< Object, Object > m_runtimeDataMap = new java.util.HashMap< Object, Object >();
-
-	public static final String DEBUG_STACK_TRACK_PROPERTY_NAME = "DEBUG_STACK_TRACK_PROPERTY";
-	
-	public Element()
-	{
-		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
-		{
-			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			this.putBonusDataFor(DEBUG_STACK_TRACK_PROPERTY_NAME, stackTrace);
+	public static class Key<T> {
+		public static <T> Key<T> createInstance( String repr ) {
+			return new Key<T>( repr );
+		}
+		private final String repr;
+		private Key( String repr ) {
+			this.repr = repr;
+		}
+		@Override
+		public java.lang.String toString() {
+			return this.repr;
 		}
 	}
-	
+	public static final Key< StackTraceElement[] > DEBUG_CONSTRUCTION_STACK_TRACE_KEY = Key.createInstance( "DEBUG_CONSTRUCTION_STACK_TRACE_KEY" );
+	private static boolean isCreationStackTraceDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.scenegraph.Element.isCreationStackTraceDesired" );
+
+	private final java.util.Map/*< Key<T>, T >*/ dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public Element() {
+		if( isCreationStackTraceDesired ) {
+			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+			this.putBonusDataFor( DEBUG_CONSTRUCTION_STACK_TRACE_KEY, stackTrace );
+		}
+	}
+
 	@Override
 	public boolean isComposedOfGetterAndSetterProperties() {
 		return false;
 	}
-	public boolean containsBonusDataFor( Object key ) {
-		return m_runtimeDataMap.containsKey( key );
+
+	public <T> boolean containsBonusDataFor( Key<T> key ) {
+		return this.dataMap.containsKey( key );
 	}
-	public Object getBonusDataFor( Object key ) {
-		return m_runtimeDataMap.get( key );
+	public <T> T getBonusDataFor( Key<T> key ) {
+		return (T)this.dataMap.get( key );
 	}
-	public void putBonusDataFor( Object key, Object value ) {
-		m_runtimeDataMap.put( key, value );
+	public <T> void putBonusDataFor( Key<T> key, T value ) {
+		this.dataMap.put( key, value );
 	}
-	public void removeBonusDataFor( Object key ) {
-		m_runtimeDataMap.remove( key );
+	public <T> void removeBonusDataFor( Key<T> key ) {
+		this.dataMap.remove( key );
 	}
 
 	//todo: investigate typing return value with generics
@@ -106,7 +109,7 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return getClass().getName() + "[name=\"" + getName() + "\"]";
 	}
 }

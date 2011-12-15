@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsPromptIncludingPreviewState extends org.lgna.croquet.BooleanState {
+public class IsPromptIncludingPreviewState extends org.lgna.croquet.preferences.PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsPromptIncludingPreviewState instance = new IsPromptIncludingPreviewState();
 	}
@@ -54,6 +54,5 @@ public class IsPromptIncludingPreviewState extends org.lgna.croquet.BooleanState
 	}
 	private IsPromptIncludingPreviewState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "292ccba4-7de7-4385-9b93-2723c2ddb745" ), true );
-		org.alice.ide.PreferenceManager.registerAndInitializePreference( this );
 	}
 }

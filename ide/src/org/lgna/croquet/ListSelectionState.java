@@ -514,10 +514,11 @@ public abstract class ListSelectionState<E> extends ItemState< E > implements It
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		if( edit instanceof org.lgna.croquet.edits.ListSelectionStateEdit ) {
 			org.lgna.croquet.edits.ListSelectionStateEdit< E > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< E >)edit;
-			rv.append( "Select " );
-			rv.append( "<strong>" );
+			rv.append( " <strong>" );
 			this.getItemCodec().appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
 			rv.append( "</strong>." );
+		} else {
+			rv.append( "UNKNOWN EDIT" );
 		}
 		return rv;
 	}

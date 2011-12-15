@@ -89,4 +89,8 @@ public abstract class Cascade<T> extends CompletionModel {
 		}
 		return this.menuItemPrepModel;
 	}
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		return rv;
+	}
 }

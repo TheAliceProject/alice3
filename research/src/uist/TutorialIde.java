@@ -145,7 +145,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	}
 	private void createAndShowTutorial() {
 		//final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
-		this.originalProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( ROOT_PATH+POST_PROJECT_PATH );
+		this.originalProject = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( new java.io.File( ROOT_PATH+POST_PROJECT_PATH ) );
 
 		if( IS_BASED_ON_INTERACTION_AST ) {
 			uist.ast.TransactionHistoryGenerator transactionHistoryGenerator = new uist.ast.TransactionHistoryGenerator( getRunBody( this.getOriginalProject() ), getRunBody( this.getReplacementProject() ), 0 );
@@ -184,7 +184,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					filterer,
 					recoverer,
 					
-					new org.lgna.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
+					new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
 					
 					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 
@@ -193,7 +193,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //					org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 			);
 		} else {
-			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, this.originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
 		}
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );

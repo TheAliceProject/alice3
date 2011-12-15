@@ -58,10 +58,10 @@ public class StandIn extends AbstractTransformable implements edu.cmu.cs.dennisc
 	}
 	@Override
 	public Composite getVehicle() {
-		return (Composite)getElement( m_sgStandIn.vehicle.getValue() );
+		return (Composite)getElement( m_sgStandIn.getVehicle() );
 	}
 	public void setVehicle( Composite vehicle ) {
-		m_sgStandIn.vehicle.setValue( vehicle.getSGComposite() );
+		m_sgStandIn.setVehicle( vehicle.getSGComposite() );
 	}
 	protected void handleVehicleChange( Composite vehicle ) {
 		throw new RuntimeException( "not intended" );

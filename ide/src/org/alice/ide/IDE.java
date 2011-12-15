@@ -42,6 +42,8 @@
  */
 package org.alice.ide;
 
+import org.lgna.croquet.preferences.PreferenceManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,6 +52,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final org.lgna.croquet.Group PROGRAMMING_LANGUAGE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "1fc6d8ce-3ce8-4b8d-91be-bc74d0d02c3e" ), "PROGRAMMING_LANGUAGE_GROUP" );
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
+	public static final String DEBUG_DRAW_PROPERTY_KEY = "org.alice.ide.DebugDrawMode";
 
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
@@ -1293,16 +1296,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return getComponentForNode( uuid, false );
 	}
 
-	//todo: remove
-	private String getSubPath() {
+	public String getApplicationSubPath() {
 		String rv = getApplicationName();
 		if( "Alice".equals( rv ) ) {
 			rv = "Alice3";
 		}
 		return rv.replaceAll( " ", "" );
 	}
+
 	public java.io.File getMyTypesDirectory() {
-		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyTypesDirectory( this.getSubPath() );
+		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 
 	public boolean isInstanceLineDesired() {

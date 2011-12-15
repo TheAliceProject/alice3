@@ -113,6 +113,10 @@ public class SystemUtilities {
 		return SystemUtilities.platform == Platform.WINDOWS;
 	}
 	
+	public static boolean areIconsDisplayedInMenus() {
+		return isWindows();
+	}
+	
 	public static <E> E[] returnArray( Class<E> componentType, E... rv ) {
 		return rv;
 	}

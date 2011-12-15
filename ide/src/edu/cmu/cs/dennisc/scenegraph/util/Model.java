@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.*;
 @Deprecated
 public class Model extends Transformable {
 	private Visual m_sgVisual = new Visual();
-	private SingleAppearance m_sgFrontFacingAppearance = new SingleAppearance();
+	private TexturedAppearance m_sgFrontFacingAppearance = new TexturedAppearance();
 	public Model() {
 		m_sgVisual.frontFacingAppearance.setValue( m_sgFrontFacingAppearance );
 		m_sgVisual.setParent( this );
@@ -59,7 +59,7 @@ public class Model extends Transformable {
 	public Visual getSGVisual() {
 		return m_sgVisual;
 	}
-	public SingleAppearance getSGFrontFacingAppearance() {
+	public TexturedAppearance getSGFrontFacingAppearance() {
 		return m_sgFrontFacingAppearance;
 	}
 	

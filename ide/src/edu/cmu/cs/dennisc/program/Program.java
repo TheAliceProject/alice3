@@ -46,22 +46,16 @@ package edu.cmu.cs.dennisc.program;
  * @author Dennis Cosgrove
  */
 public abstract class Program extends javax.swing.JApplet {
-//	static {
-//		Thread.setDefaultUncaughtExceptionHandler( new UncaughtExceptionHandler() );
-//	}
-	
-	//	private javax.swing.JLayeredPane this.topLevelLayeredPane = new javax.swing.JLayeredPane();
 	private java.util.Map< String, String > argNameToValueMap = null;
 
 	private boolean isClosed = false;
 	protected boolean isClosed() {
 		return this.isClosed;
 	}
-	public void setClosed( boolean isClosed ) {
-		this.isClosed = isClosed;
-	}
+//	public void setClosed( boolean isClosed ) {
+//		this.isClosed = isClosed;
+//	}
 	//todo: override getParameterInfo()
-
 	@Override
 	public String getParameter( String name ) {
 		if( this.argNameToValueMap != null ) {
@@ -88,14 +82,7 @@ public abstract class Program extends javax.swing.JApplet {
 			}
 		}
 	}
-
-	//	public javax.swing.JLayeredPane getTopLevelLayeredPane() {
-	//		return this.topLevelLayeredPane;
-	//		//return getLayeredPane();
-	//	}
-
 	private javax.swing.JLayeredPane layeredPane;
-
 	@Override
 	public javax.swing.JLayeredPane getLayeredPane() {
 		if( this.layeredPane != null ) {
@@ -161,10 +148,18 @@ public abstract class Program extends javax.swing.JApplet {
 	protected abstract void run();
 	protected abstract void postRun();
 
-//	protected abstract void handleShownForTheFirstTime();
-	protected abstract boolean handleWindowClosing( java.awt.event.WindowEvent e );
-	protected abstract void handleWindowClosed( java.awt.event.WindowEvent e );
-
+	protected abstract boolean isAcceptableToClose( java.awt.event.WindowEvent e );
+	protected abstract void handleShutDown();
+	
+	public void shutDownCleanly() {
+		if( this.isClosed ) {
+			//pass
+		} else {
+			this.handleShutDown();
+			this.isClosed = true;
+		}
+	}
+	
 	private static int toInt( String s, int valueIfNull ) {
 		if( s != null ) {
 			return Integer.parseInt( s );
@@ -173,14 +168,7 @@ public abstract class Program extends javax.swing.JApplet {
 		}
 	}
 
-	//	private java.awt.Dimension this.preferredSize = new java.awt.Dimension( 640, 480 );
-	//
-	//	@Override
-	//	public java.awt.Dimension getPreferredSize() {
-	//		return this.preferredSize;
-	//	}
-
-	public class StartProgramComponentAdapter implements java.awt.event.ComponentListener {
+	private class StartProgramComponentAdapter implements java.awt.event.ComponentListener {
 		private boolean isAlreadyStarted = false;
 		public void componentShown( java.awt.event.ComponentEvent e ) {
 			if( this.isAlreadyStarted ) {
@@ -212,16 +200,15 @@ public abstract class Program extends javax.swing.JApplet {
 			public void windowIconified(java.awt.event.WindowEvent e) {
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				if( Program.this.handleWindowClosing( e ) ) {
+				if( Program.this.isAcceptableToClose( e ) ) {
 					window.dispose();
 				}
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
-				Program.this.handleWindowClosed( e );
+				Program.this.shutDownCleanly();
 				if( isExitDesiredOnClose ) {
 					System.exit( 0 );
 				}
-				Program.this.setClosed( true );
 			}
 		} );
 	}
@@ -333,29 +320,10 @@ public abstract class Program extends javax.swing.JApplet {
 	}
 
 	public void showInAWTContainer( java.awt.Container awtContainer, java.awt.Window awtWindow, String[] args ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "showInAWTContainer", awtContainer, args );
 		setArgs( args );
 		init();
 		awtContainer.setLayout( new java.awt.GridLayout( 1, 1 ) );
-		//this.addComponentListener( new StartProgramComponentAdapter() );
-		
-//		class ComponentAdapter implements java.awt.event.ComponentListener {
-//			private boolean isFirstTime = true;
-//			public void componentShown( java.awt.event.ComponentEvent e ) {
-//				if( this.isFirstTime ) {
-//					Program.this.handleShownForTheFirstTime();
-//					this.isFirstTime = false;
-//				}
-//			}
-//			public void componentHidden( java.awt.event.ComponentEvent e ) {
-//			}
-//			public void componentResized( java.awt.event.ComponentEvent e ) {
-//			}
-//			public void componentMoved( java.awt.event.ComponentEvent e ) {
-//			}
-//		}
-//		this.addComponentListener( new ComponentAdapter() );
-		
+
 		awtContainer.add( this );
 		if( awtContainer instanceof javax.swing.JComponent ) {
 			((javax.swing.JComponent)awtContainer).revalidate();
@@ -375,45 +343,6 @@ public abstract class Program extends javax.swing.JApplet {
 				Program.this.start();
 			}
 		} );
-
 		//todo: handle container "dispose"?
-	}
-
-	public static void main( final String[] args ) {
-		String programClassname = System.getProperty( "java.main" );
-		if( programClassname != null ) {
-			programClassname.replace( '.', '/' );
-			try {
-				Class< ? extends Program > programClass = (Class< ? extends Program >)Class.forName( programClassname );
-				//				Object o = programClass.newInstance();
-				//				final Program program = (Program)o;
-				final Program program = programClass.newInstance();
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-					public void run() {
-						program.showInJFrame( args, true );
-					}
-				} );
-			} catch( IllegalAccessException iae ) {
-				throw new RuntimeException( iae );
-			} catch( InstantiationException ie ) {
-				throw new RuntimeException( ie );
-			} catch( ClassNotFoundException cnfe ) {
-				throw new RuntimeException( cnfe );
-			}
-		} else {
-			String javaMainText = "-Djava.main=package.Class";
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( javaMainText );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "UNABLE TO START PROGRAM" );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "------ -- ----- -------" );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "In order to run this program as an application, you need to set the system property java.main.  Please update your VM arguments." );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "The text below (NOTE: requires editing) has been copied to the clipboard for your convenience." );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( javaMainText );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
-		}
 	}
 }

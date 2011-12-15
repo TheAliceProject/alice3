@@ -50,7 +50,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.program.Program {
 
 	public edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory getLookingGlassFactory() {
 		if( s_lookingGlassFactory == null ) {
-			s_lookingGlassFactory = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton();
+			s_lookingGlassFactory = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance();
 		}
 		return s_lookingGlassFactory;
 	}
@@ -119,11 +119,11 @@ public abstract class Program extends edu.cmu.cs.dennisc.program.Program {
 //	protected void handleShownForTheFirstTime() {
 //	}
 	@Override
-	protected boolean handleWindowClosing( java.awt.event.WindowEvent e ) {
-		s_lookingGlassFactory.decrementAutomaticDisplayCount();
+	protected boolean isAcceptableToClose( java.awt.event.WindowEvent e ) {
 		return true;
 	}
 	@Override
-	protected void handleWindowClosed( java.awt.event.WindowEvent e ) {
+	protected void handleShutDown() {
+		s_lookingGlassFactory.decrementAutomaticDisplayCount();
 	}
 }

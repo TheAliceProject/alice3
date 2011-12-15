@@ -67,7 +67,7 @@ public class MouseButtonEvent extends edu.cmu.cs.dennisc.pattern.event.Event< ja
 				if( owner != null ) {
 					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = owner.getOnscreenLookingGlass();
 					if( lg != null ) {
-						edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.pickFrontMost( e.getX(), e.getY(), false );
+						edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.NOT_REQUIRED );
 						if( pickResult != null ) {
 							edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 							if( sgVisual != null ) {

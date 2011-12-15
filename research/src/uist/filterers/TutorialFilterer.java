@@ -47,6 +47,25 @@ package uist.filterers;
  * @author Dennis Cosgrove
  */
 public class TutorialFilterer implements org.lgna.cheshire.Filterer {
+	private void removeBogusSteps( org.lgna.croquet.history.Transaction transaction ) {
+		//remove bogus steps
+		java.util.ListIterator< org.lgna.croquet.history.PrepStep< ? > > prepStepListIterator = transaction.prepStepListIterator();
+		while( prepStepListIterator.hasNext() ) {
+			org.lgna.croquet.history.PrepStep< ? > prepStep = prepStepListIterator.next();
+			if( prepStep instanceof org.lgna.croquet.history.TODO_REMOVE_BogusStep ) {
+				prepStepListIterator.remove();
+			}
+		}
+		org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+		if( completionStep != null ) {
+			org.lgna.croquet.history.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
+			if( transactionHistory != null ) {
+				for( org.lgna.croquet.history.Transaction transaction2 : transactionHistory ) {
+					removeBogusSteps( transaction2 );
+				}
+			}
+		}
+	}
 	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, org.lgna.croquet.UserInformation userInformation ) {
 		java.util.Set< Class<? extends edu.cmu.cs.dennisc.alice.ast.Statement> > introducedStatementClses = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		while( chapterIterator.hasNext() ) {
@@ -55,14 +74,9 @@ public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 				org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
 				org.lgna.croquet.history.Transaction transaction = transactionChapter.getTransaction();
 				if( transaction.isSuccessfullyCompleted() ) {
-//					java.util.ListIterator< org.lgna.croquet.steps.PrepStep< ? > > prepStepListIterator = transaction.prepStepListIterator();
-//					while( prepStepListIterator.hasNext() ) {
-//						org.lgna.croquet.steps.PrepStep< ? > prepStep = prepStepListIterator.next();
-//						edu.cmu.cs.dennisc.croquet.PrepModel prepModel = prepStep.getModel();
-//						if( prepModel instanceof edu.cmu.cs.dennisc.croquet.CascadeInputDialogOperationFillIn ) {
-//							prepStepListIterator.remove();
-//						}
-//					}
+
+					this.removeBogusSteps( transaction );
+					
 					org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
 					if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
 						org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;

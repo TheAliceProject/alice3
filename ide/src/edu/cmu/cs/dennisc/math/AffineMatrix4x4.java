@@ -50,6 +50,45 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	public final OrthogonalMatrix3x3 orientation = OrthogonalMatrix3x3.createIdentity();
 	public final Point3 translation = new Point3();
 
+	
+	public static AffineMatrix4x4 createFromColumnMajorArray12( double[] columnMajorArray ) {
+		assert columnMajorArray.length == 12;
+		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
+		rv.orientation.right.x = columnMajorArray[0];
+		rv.orientation.right.y = columnMajorArray[1];
+		rv.orientation.right.z = columnMajorArray[2];
+		rv.orientation.up.x = columnMajorArray[3];
+		rv.orientation.up.y = columnMajorArray[4];
+		rv.orientation.up.z = columnMajorArray[5];
+		rv.orientation.backward.x = columnMajorArray[6];
+		rv.orientation.backward.y = columnMajorArray[7];
+		rv.orientation.backward.z = columnMajorArray[8];
+		rv.translation.x = columnMajorArray[9];
+		rv.translation.y = columnMajorArray[10];
+		rv.translation.z = columnMajorArray[11];
+		return rv;
+	}
+	public static AffineMatrix4x4 createFromColumnMajorArray16( double[] columnMajorArray ) {
+		assert columnMajorArray.length == 16;
+		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
+		rv.orientation.right.x = columnMajorArray[0];
+		rv.orientation.right.y = columnMajorArray[1];
+		rv.orientation.right.z = columnMajorArray[2];
+		assert columnMajorArray[3] == 0.0;
+		rv.orientation.up.x = columnMajorArray[4];
+		rv.orientation.up.y = columnMajorArray[5];
+		rv.orientation.up.z = columnMajorArray[6];
+		assert columnMajorArray[7] == 0.0;
+		rv.orientation.backward.x = columnMajorArray[8];
+		rv.orientation.backward.y = columnMajorArray[9];
+		rv.orientation.backward.z = columnMajorArray[10];
+		assert columnMajorArray[11] == 0.0;
+		rv.translation.x = columnMajorArray[12];
+		rv.translation.y = columnMajorArray[13];
+		rv.translation.z = columnMajorArray[14];
+		assert columnMajorArray[15] == 1.0;
+		return rv;
+	}
 	//todo: reduce visibility to private
 	public AffineMatrix4x4() {
 	}
@@ -100,6 +139,26 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return rv;
 	}
 
+	public double[] getAsColumnMajorArray12( double[] rv ) {
+		assert rv.length == 12;
+		rv[ 0 ] = orientation.right.x;
+		rv[ 1 ] = orientation.right.y;
+		rv[ 2 ] = orientation.right.z;
+		rv[ 3 ] = orientation.up.x;
+		rv[ 4 ] = orientation.up.y;
+		rv[ 5 ] = orientation.up.z;
+		rv[ 6 ] = orientation.backward.x;
+		rv[ 7 ] = orientation.backward.y;
+		rv[ 8 ] = orientation.backward.z;
+		rv[ 9 ] = translation.x;
+		rv[ 10 ] = translation.y;
+		rv[ 11 ] = translation.z;
+		return rv;
+	}
+	public final double[] getAsColumnMajorArray12() {
+		return getAsColumnMajorArray12( new double[ 12 ] );
+	}
+	
 	@Override
 	public boolean isAffine() {
 		return true;
@@ -417,7 +476,75 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	public void multiply( AffineMatrix4x4 b ) {
 		setToMultiplication( this, b );
 	}
+	
+	//Multiply
+    public static AffineMatrix4x4 setReturnValueToMultiplication( AffineMatrix4x4 rv, AffineMatrix4x4 a, double scale ) {
+        rv.orientation.right.x = a.orientation.right.x * scale;
+        rv.orientation.right.y = a.orientation.right.y * scale;
+        rv.orientation.right.z = a.orientation.right.z * scale;
 
+        rv.orientation.up.x = a.orientation.up.x * scale;
+        rv.orientation.up.y = a.orientation.up.y * scale;
+        rv.orientation.up.z = a.orientation.up.z * scale;
+        
+        rv.orientation.backward.x = a.orientation.backward.x * scale;
+        rv.orientation.backward.y = a.orientation.backward.y * scale;
+        rv.orientation.backward.z = a.orientation.backward.z * scale;
+
+        rv.translation.x = a.translation.x * scale;
+        rv.translation.y = a.translation.y * scale;
+        rv.translation.z = a.translation.z * scale;
+        
+        return rv;
+    }
+	public static AffineMatrix4x4 createMultiplication( AffineMatrix4x4 a, double scale ) {
+        return setReturnValueToMultiplication( new AffineMatrix4x4(), a, scale );
+    }
+    public void setToMultiplication( AffineMatrix4x4 a, double scale ) {
+        setReturnValueToMultiplication( this, a, scale );
+    }
+    public void multiply( double scale ) {
+        setToMultiplication( this, scale );
+    }
+
+    //Addition
+    public static AffineMatrix4x4 setReturnValueToAddition( AffineMatrix4x4 rv, AffineMatrix4x4 a, AffineMatrix4x4 b ) {
+        rv.orientation.right.x = a.orientation.right.x + b.orientation.right.x;
+        rv.orientation.right.y = a.orientation.right.y + b.orientation.right.y;
+        rv.orientation.right.z = a.orientation.right.z + b.orientation.right.z;
+
+        rv.orientation.up.x = a.orientation.up.x + b.orientation.up.x;
+        rv.orientation.up.y = a.orientation.up.y + b.orientation.up.y;
+        rv.orientation.up.z = a.orientation.up.z + b.orientation.up.z;
+        
+        rv.orientation.backward.x = a.orientation.backward.x + b.orientation.backward.x;
+        rv.orientation.backward.y = a.orientation.backward.y + b.orientation.backward.y;
+        rv.orientation.backward.z = a.orientation.backward.z + b.orientation.backward.z;
+
+        rv.translation.x = a.translation.x + b.translation.x;
+        rv.translation.y = a.translation.y + b.translation.y;
+        rv.translation.z = a.translation.z + b.translation.z;
+        
+        return rv;
+    }
+    public static AffineMatrix4x4 createAddition( AffineMatrix4x4 a, AffineMatrix4x4 b ) {
+        return setReturnValueToAddition( new AffineMatrix4x4(), a, b );
+    }
+    public void setToAddition( AffineMatrix4x4 a, AffineMatrix4x4 b ) {
+        setReturnValueToAddition( this, a, b );
+    }
+    public void add( AffineMatrix4x4 b ) {
+        setToAddition( this, b );
+    }
+    
+    public void setZero()
+    {
+        this.orientation.right.set(0, 0, 0);
+        this.orientation.up.set(0, 0, 0);
+        this.orientation.backward.set(0, 0, 0);
+        this.translation.set(0, 0, 0);
+    }
+    
 	//Determinate
 	public double calculateDeterminate() {
 		double m00 = orientation.right.x;
@@ -485,6 +612,11 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	public void invert() {
 		setToInverse( this );
 	}
+	
+	public boolean isZero()
+	{
+	    return this.orientation.right.isZero() && this.orientation.up.isZero() && this.orientation.backward.isZero() && this.translation.isZero();
+	}
 
 
 	@Override
@@ -517,6 +649,72 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		//todo
 		return new Matrix4x4( this ).setReturnValueToTransformed( rv, b );
 	}
+	
+	public double[] transformVertex( double[] afRV, int offsetDest, double[] afSrc, int offsetSrc )
+    {
+        if (afRV == null)
+        {
+            afRV = new double[3]; 
+            offsetDest = 0;
+        }
+        transformVector( afRV, offsetDest, afSrc, offsetSrc );
+        afRV[ offsetDest ] += this.translation.x;
+        afRV[ offsetDest + 1 ] += this.translation.y;
+        afRV[ offsetDest + 2 ] += this.translation.z;
+        return afRV;
+    }
+	
+	public float[] transformVertex( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
+    {
+        if (afRV == null)
+        {
+            afRV = new float[3]; 
+            offsetDest = 0;
+        }
+        transformVector( afRV, offsetDest, afSrc, offsetSrc );
+        afRV[ offsetDest ] += this.translation.x;
+        afRV[ offsetDest + 1 ] += this.translation.y;
+        afRV[ offsetDest + 2 ] += this.translation.z;
+        return afRV;
+    }
+    
+    public float[] transformNormal( float[] afRV, float[] afSrc )
+    {
+        return transformNormal( afRV, 0, afSrc, 0 );
+    }
+    
+    public float[] transformNormal( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
+    {
+        return transformVector( afRV, offsetDest, afSrc, offsetSrc );
+    }
+    
+    private double[] transformVector( double[] afRV, int offsetDest, double[] afSrc, int offsetSrc )
+    {
+        if (afRV == null)
+        {
+            afRV = new double[3];
+            offsetDest = 0;
+        }
+        
+        afRV[ offsetDest ] = this.orientation.right.x*afSrc[offsetSrc] + this.orientation.up.x*afSrc[offsetSrc+1] + this.orientation.backward.x*afSrc[offsetSrc+2];
+        afRV[ offsetDest + 1 ] = this.orientation.right.y*afSrc[offsetSrc] + this.orientation.up.y*afSrc[offsetSrc+1] + this.orientation.backward.y*afSrc[offsetSrc+2];
+        afRV[ offsetDest + 2 ] = this.orientation.right.z*afSrc[offsetSrc] + this.orientation.up.z*afSrc[offsetSrc+1] + this.orientation.backward.z*afSrc[offsetSrc+2];
+        return afRV;
+    }
+    
+    private float[] transformVector( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
+    {
+        if (afRV == null)
+        {
+            afRV = new float[3];
+            offsetDest = 0;
+        }
+        
+        afRV[ offsetDest ] = (float)(this.orientation.right.x*afSrc[offsetSrc] + this.orientation.up.x*afSrc[offsetSrc+1] + this.orientation.backward.x*afSrc[offsetSrc+2]);
+        afRV[ offsetDest + 1 ] = (float)(this.orientation.right.y*afSrc[offsetSrc] + this.orientation.up.y*afSrc[offsetSrc+1] + this.orientation.backward.y*afSrc[offsetSrc+2]);
+        afRV[ offsetDest + 2 ] = (float)(this.orientation.right.z*afSrc[offsetSrc] + this.orientation.up.z*afSrc[offsetSrc+1] + this.orientation.backward.z*afSrc[offsetSrc+2]);
+        return afRV;
+    }
 	
 	@Override
 	public boolean equals( Object o ) {

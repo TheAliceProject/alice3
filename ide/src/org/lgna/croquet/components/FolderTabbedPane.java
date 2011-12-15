@@ -345,13 +345,13 @@ public final class FolderTabbedPane<E> extends AbstractTabbedPane< E, FolderTabb
 		}
 	}
 	
-	private class PopupButton extends Button {
+	private class PopupButton extends OperationButton<javax.swing.JButton, Operation<?>> {
 		public PopupButton( Operation<?> operation ) {
 			super( operation );
 		}
 		@Override
-		protected javax.swing.JButton createAwtComponent() {
-			javax.swing.JButton rv = new javax.swing.JButton() {
+		protected final javax.swing.JButton createAwtComponent() {
+			javax.swing.JButton rv = new javax.swing.JButton( this.getModel().getAction() ) {
 				private boolean isNecessary() {
 					java.awt.Container parent = this.getParent();
 					if( parent != null ) {

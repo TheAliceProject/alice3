@@ -43,18 +43,16 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.Operation;
-
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends OperationButton< javax.swing.JButton, Operation<?> > {
-	public Hyperlink( Operation<?> model ) {
+public class Hyperlink extends OperationButton< javax.swing.JButton, org.lgna.croquet.Operation<?> > {
+	public Hyperlink( org.lgna.croquet.Operation<?> model ) {
 		super( model );
 	}
 	@Override
-	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
+	protected final javax.swing.JButton createAwtComponent() {
+		javax.swing.JButton rv = new javax.swing.JButton( this.getModel().getAction() ) {
 			@Override
 			public void updateUI() {
 				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );

@@ -50,11 +50,15 @@ public class DropNoteUtilities {
 	private DropNoteUtilities() {
 		throw new AssertionError();
 	}
+	private static boolean EPIC_HACK_isCloseEnough( org.lgna.croquet.Model desiredModel, org.lgna.croquet.Model candidateModel ) {
+		return desiredModel.getClass() == candidateModel.getClass();
+	}
 	private static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event< ? > event, org.lgna.croquet.Model desiredModel, org.lgna.croquet.DropSite desiredDropSite ) {
 		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
 			org.lgna.croquet.history.event.AddStepEvent addStepEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
 			org.lgna.croquet.history.Step< ? > candidateStep = addStepEvent.getStep();
-			if( candidateStep.getModel() == desiredModel ) {
+			org.lgna.croquet.Model candidateModel = candidateStep.getModel();
+			if( desiredModel == candidateModel || EPIC_HACK_isCloseEnough( desiredModel, candidateModel ) ) {
 				org.lgna.croquet.triggers.Trigger trigger = candidateStep.getTrigger();
 				if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
 					org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;

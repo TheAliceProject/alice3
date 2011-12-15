@@ -140,7 +140,6 @@ public class OBJ {
 				uv = uvDefault;
 			}
 			vertices[v] = edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xyz[0], xyz[1], xyz[2], (float)ijk[0], (float)ijk[1], (float)ijk[2], (float)uv[0], (float)uv[1] );
-			//System.err.println( v + " " + vertices[v] );
 		}
 		//todo
 		int[] indices = new int[fs.size()*3];

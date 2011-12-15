@@ -41,25 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.scenegraph;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractOffsetReferenceFrame implements ReferenceFrame {
-	public boolean isSceneOf( Component other ) {
-		return false;
+public abstract class DirectoryState extends org.lgna.croquet.preferences.PreferenceStringState {
+	protected static final String URI_SEPARATOR = "/"; // do not use java.io.File.separator
+	public DirectoryState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
+		super( group, id, initialValue );
 	}
-	public boolean isVehicleOf( Component other ) {
-		return false;
+	protected abstract String getPath();
+	private java.io.File getDirectory() {
+		String path = this.getPath();
+		java.io.File rv;
+		try {
+			java.net.URI uri = new java.net.URI( path );
+			rv = new java.io.File( uri );
+		} catch( java.net.URISyntaxException urise ) {
+			//throw new RuntimeException( path, urise );
+			System.err.println( "warning: URI failure: " + path );
+			rv = new java.io.File( path );
+		}
+		return rv;
 	}
-	public boolean isLocalOf( Component other ) {
-		return false;
-	}
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
-		return getAbsoluteTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4() );
-	}
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation() {
-		return getInverseAbsoluteTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4() );
+	public java.io.File getDirectoryEnsuringExistance() {
+		java.io.File rv = this.getDirectory();
+		rv.mkdirs();
+		return rv;
 	}
 }

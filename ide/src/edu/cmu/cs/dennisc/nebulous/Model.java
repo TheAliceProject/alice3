@@ -10,7 +10,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		Manager.initializeIfNecessary();
 	}
-	public native void render();
+	public native void render(Object glRenderContext, float globalBrightness);
 	public native void pick();
 	
 //	public void forget() {

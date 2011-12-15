@@ -43,12 +43,12 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		rv.localTransformation = parent.localTransformation.getValue();
 		rv.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
-		for( edu.cmu.cs.dennisc.scenegraph.Component component : parent.accessComponents() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Component component : parent.getComponents() ) {
 			if( component instanceof edu.cmu.cs.dennisc.scenegraph.Visual ) {
 				edu.cmu.cs.dennisc.scenegraph.Visual visual = (edu.cmu.cs.dennisc.scenegraph.Visual)component;
 				edu.cmu.cs.dennisc.scenegraph.Appearance front = visual.frontFacingAppearance.getValue();
-				if( front instanceof edu.cmu.cs.dennisc.scenegraph.SingleAppearance ) {
-					edu.cmu.cs.dennisc.scenegraph.SingleAppearance singleAppearance = (edu.cmu.cs.dennisc.scenegraph.SingleAppearance)front;
+				if( front instanceof edu.cmu.cs.dennisc.scenegraph.TexturedAppearance ) {
+					edu.cmu.cs.dennisc.scenegraph.TexturedAppearance singleAppearance = (edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)front;
 					edu.cmu.cs.dennisc.texture.Texture texture = singleAppearance.diffuseColorTexture.getValue();
 					if( texture != null ) {
 						if( texture instanceof edu.cmu.cs.dennisc.texture.BufferedImageTexture ) {
@@ -58,7 +58,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 							assert false;
 						}
 					} else {
-						System.err.println( "warning: no texture for " + rv.name ); 
+						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "no texture for ", rv.name ); 
 					}
 				} else {
 					assert false;
@@ -83,7 +83,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 					}
 					geometries.add( rv.geometry );
 				} else {
-					System.err.println( "warning: no geometry for " + rv.name ); 
+					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "no geometry for ", rv.name ); 
 				}
 			} else if( component instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
 				edu.cmu.cs.dennisc.scenegraph.Transformable transformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)component;
@@ -96,7 +96,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 	public edu.cmu.cs.dennisc.scenegraph.Transformable build() {
 		edu.cmu.cs.dennisc.scenegraph.Transformable rv = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 		edu.cmu.cs.dennisc.scenegraph.Visual visual = new edu.cmu.cs.dennisc.scenegraph.Visual();
-		edu.cmu.cs.dennisc.scenegraph.SingleAppearance appearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
+		edu.cmu.cs.dennisc.scenegraph.TexturedAppearance appearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
 		appearance.setDiffuseColorTexture( this.texture );
 		visual.frontFacingAppearance.setValue( appearance );
 		assert this.geometry != null;

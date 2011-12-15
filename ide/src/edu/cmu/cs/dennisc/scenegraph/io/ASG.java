@@ -254,7 +254,6 @@ public class ASG {
 		if( className.endsWith( "TextureMap" ) ) {
 			className = className.substring( 0, className.length() - 3 );
 		}
-		// System.err.println( className );
 		return className;
 	}
 	public static void encodeVertexArrayInBinary( edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices, java.io.OutputStream os ) {
@@ -307,86 +306,102 @@ public class ASG {
 			if( version == 1 ) {
 				int vertexCount = dis.readInt();
 				vertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[vertexCount];
-				for (int i = 0; i < vertices.length; i++) {
-					vertices[i] = new edu.cmu.cs.dennisc.scenegraph.Vertex();
-					vertices[i].position.x = dis.readDouble();
-					vertices[i].position.y = dis.readDouble();
-					vertices[i].position.z = dis.readDouble();
-					vertices[i].normal.x = (float)dis.readDouble();
-					vertices[i].normal.y = (float)dis.readDouble();
-					vertices[i].normal.z = (float)dis.readDouble();
-					vertices[i].textureCoordinate0.u = (float) dis.readDouble();
-					vertices[i].textureCoordinate0.v = (float) dis.readDouble();
+				for (int index = 0; index < vertices.length; index++) {
+					double x = dis.readDouble();
+					double y = dis.readDouble();
+					double z = dis.readDouble();
+					float i = (float)dis.readDouble();
+					float j = (float)dis.readDouble();
+					float k = (float)dis.readDouble();
+					float u = (float) dis.readDouble();
+					float v = (float) dis.readDouble();
+					vertices[index] = edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( x, y, z, i, j, k, u, v );
 				}
 			} else if( version == 2 ) {
 				int vertexCount = dis.readInt();
 				vertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[vertexCount];
-				for (int i = 0; i < vertices.length; i++) {
+				for (int index = 0; index < vertices.length; index++) {
 					int format = dis.readInt();
-					vertices[i] = new edu.cmu.cs.dennisc.scenegraph.Vertex();
+					final edu.cmu.cs.dennisc.math.Point3 position = edu.cmu.cs.dennisc.math.Point3.createNaN();
 					if( (format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_POSITION) != 0 ) {
-						vertices[i].position.x = dis.readDouble();
-						vertices[i].position.y = dis.readDouble();
-						vertices[i].position.z = dis.readDouble();
+						position.x = dis.readDouble();
+						position.y = dis.readDouble();
+						position.z = dis.readDouble();
 					}
+					final edu.cmu.cs.dennisc.math.Vector3f normal = edu.cmu.cs.dennisc.math.Vector3f.createNaN();
 					if( (format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_NORMAL) != 0 ) {
-						vertices[i].normal.x = (float)dis.readDouble();
-						vertices[i].normal.y = (float)dis.readDouble();
-						vertices[i].normal.z = (float)dis.readDouble();
+						normal.x = (float)dis.readDouble();
+						normal.y = (float)dis.readDouble();
+						normal.z = (float)dis.readDouble();
 					}
+					final edu.cmu.cs.dennisc.color.Color4f diffuseColor;
 					if( (format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_DIFFUSE_COLOR) != 0 ) {
-						vertices[i].diffuseColor.red = (float) dis.readDouble();
-						vertices[i].diffuseColor.green = (float) dis.readDouble();
-						vertices[i].diffuseColor.blue = (float) dis.readDouble();
-						vertices[i].diffuseColor.alpha = (float) dis.readDouble();
+						float red = (float) dis.readDouble();
+						float green = (float) dis.readDouble();
+						float blue = (float) dis.readDouble();
+						float alpha = (float) dis.readDouble();
+						diffuseColor = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+					} else {
+						diffuseColor = null;
 					}
 					if( (format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR) != 0 ) {
-						// vertices[i].specularHighlightColor.x =
-						// (float)dis.readDouble();
-						// vertices[i].specularHighlightColor.y =
-						// (float)dis.readDouble();
-						// vertices[i].specularHighlightColor.z =
-						// (float)dis.readDouble();
-						// vertices[i].specularHighlightColor.w =
-						// (float)dis.readDouble();
 					}
+					final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
 					if( (format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_TEXTURE_COORDINATE_0) != 0 ) {
-						vertices[i].textureCoordinate0.u = (float) dis.readDouble();
-						vertices[i].textureCoordinate0.v = (float) dis.readDouble();
+						float u = (float) dis.readDouble();
+						float v = (float) dis.readDouble();
+						textureCoordinate0 = new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v );
+					} else {
+						textureCoordinate0 = null;
 					}
+					vertices[index] = new edu.cmu.cs.dennisc.scenegraph.Vertex( position, normal, diffuseColor, null, textureCoordinate0 );
 				}
 			} else if( version == 3 ) {
 				int vertexCount = dis.readInt();
 				vertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[vertexCount];
-				for (int i = 0; i < vertices.length; i++) {
+				for (int index = 0; index < vertices.length; index++) {
 					int format = dis.readInt();
-					vertices[i] = new edu.cmu.cs.dennisc.scenegraph.Vertex();
+					final edu.cmu.cs.dennisc.math.Point3 position = edu.cmu.cs.dennisc.math.Point3.createNaN();
 					if( (format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_POSITION) != 0 ) {
-						vertices[i].position.x = dis.readDouble();
-						vertices[i].position.y = dis.readDouble();
-						vertices[i].position.z = dis.readDouble();
+						position.x = dis.readDouble();
+						position.y = dis.readDouble();
+						position.z = dis.readDouble();
 					}
+					final edu.cmu.cs.dennisc.math.Vector3f normal = edu.cmu.cs.dennisc.math.Vector3f.createNaN();
 					if( (format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_NORMAL) != 0 ) {
-						vertices[i].normal.x = (float)dis.readDouble();
-						vertices[i].normal.y = (float)dis.readDouble();
-						vertices[i].normal.z = (float)dis.readDouble();
+						normal.x = (float)dis.readDouble();
+						normal.y = (float)dis.readDouble();
+						normal.z = (float)dis.readDouble();
 					}
+					final edu.cmu.cs.dennisc.color.Color4f diffuseColor;
 					if( (format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_DIFFUSE_COLOR) != 0 ) {
-						vertices[i].diffuseColor.red = dis.readFloat();
-						vertices[i].diffuseColor.green = dis.readFloat();
-						vertices[i].diffuseColor.blue = dis.readFloat();
-						vertices[i].diffuseColor.alpha = dis.readFloat();
+						float red = dis.readFloat();
+						float green = dis.readFloat();
+						float blue = dis.readFloat();
+						float alpha = dis.readFloat();
+						diffuseColor = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+					} else {
+						diffuseColor = null;
 					}
+					final edu.cmu.cs.dennisc.color.Color4f specularHighlightColor;
 					if( (format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_SPECULAR_HIGHLIGHT_COLOR) != 0 ) {
-						vertices[i].specularHighlightColor.red = dis.readFloat();
-						vertices[i].specularHighlightColor.green = dis.readFloat();
-						vertices[i].specularHighlightColor.blue = dis.readFloat();
-						vertices[i].specularHighlightColor.alpha = dis.readFloat();
+						float red = dis.readFloat();
+						float green = dis.readFloat();
+						float blue = dis.readFloat();
+						float alpha = dis.readFloat();
+						specularHighlightColor = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
+					} else {
+						specularHighlightColor = null;
 					}
+					final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
 					if( (format & edu.cmu.cs.dennisc.scenegraph.Vertex.FORMAT_TEXTURE_COORDINATE_0) != 0 ) {
-						vertices[i].textureCoordinate0.u = dis.readFloat();
-						vertices[i].textureCoordinate0.v = dis.readFloat();
+						float u = dis.readFloat();
+						float v = dis.readFloat();
+						textureCoordinate0 = new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v );
+					} else {
+						textureCoordinate0 = null;
 					}
+					vertices[index] = new edu.cmu.cs.dennisc.scenegraph.Vertex( position, normal, diffuseColor, specularHighlightColor, textureCoordinate0 );
 				}
 			} else {
 				throw new RuntimeException( "invalid file version: " + version );
@@ -638,13 +653,14 @@ public class ASG {
 		buffer.append( Float.toString( tc2f.v ) );
 		return buffer.toString();
 	}
-	private static void decodeTexCoord2f( String s, edu.cmu.cs.dennisc.texture.TextureCoordinate2f tc2f ) {
+	private static edu.cmu.cs.dennisc.texture.TextureCoordinate2f decodeTexCoord2f( String s ) {
 		int begin = 0;
 		int end = s.indexOf( ' ', begin );
-		tc2f.u = Float.parseFloat( s.substring( begin, end ) );
+		float u = Float.parseFloat( s.substring( begin, end ) );
 		begin = end + 1;
 		end = s.length();
-		tc2f.v = Float.parseFloat( s.substring( begin, end ) );
+		float v = Float.parseFloat( s.substring( begin, end ) );
+		return new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v );
 	}
 	private static String encodeColor4f( edu.cmu.cs.dennisc.color.Color4f color4f ) {
 		StringBuffer buffer = new StringBuffer();
@@ -657,19 +673,20 @@ public class ASG {
 		buffer.append( Float.toString( color4f.alpha ) );
 		return buffer.toString();
 	}
-	private static void decodeColor4f( String s, edu.cmu.cs.dennisc.color.Color4f color4f ) {
+	private static edu.cmu.cs.dennisc.color.Color4f decodeColor4f( String s ) {
 		int begin = 0;
 		int end = s.indexOf( ' ', begin );
-		color4f.red = Float.parseFloat( s.substring( begin, end ) );
+		float red = Float.parseFloat( s.substring( begin, end ) );
 		begin = end + 1;
 		end = s.indexOf( ' ', begin );
-		color4f.green = Float.parseFloat( s.substring( begin, end ) );
+		float green = Float.parseFloat( s.substring( begin, end ) );
 		begin = end + 1;
 		end = s.indexOf( ' ', begin );
-		color4f.blue = Float.parseFloat( s.substring( begin, end ) );
+		float blue = Float.parseFloat( s.substring( begin, end ) );
 		begin = end + 1;
 		end = s.length();
-		color4f.alpha = Float.parseFloat( s.substring( begin, end ) );
+		float alpha = Float.parseFloat( s.substring( begin, end ) );
+		return new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
 	}
 	public static final double VERSION = 1.0;
 	private static String getKey( edu.cmu.cs.dennisc.scenegraph.Element element ) {
@@ -854,7 +871,7 @@ public class ASG {
 		org.w3c.dom.Element xmlComponent = encodeElement( component, document, s, filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired );
 		if( component instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite) component;
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.accessComponents() ) {
+			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.getComponents() ) {
 				xmlComponent.appendChild( encodeComponent( sgComponent, document, "child", filenameToStreamMap, keyToElementToBeEncodedMap, isTextAlwaysDesired ) );
 			}
 		}
@@ -1079,12 +1096,11 @@ public class ASG {
 						}
 						value = java.awt.Toolkit.getDefaultToolkit().createImage( new java.awt.image.MemoryImageSource( width, height, pixels, 0, width ) );
 					} else if( edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom( propertyValueClass ) ) {
-						edu.cmu.cs.dennisc.color.Color4f sgColor = new edu.cmu.cs.dennisc.color.Color4f();
-						sgColor.red = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "red" ) ) );
-						sgColor.green = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "green" ) ) );
-						sgColor.blue = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "blue" ) ) );
-						sgColor.alpha = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "alpha" ) ) );
-						value = sgColor;
+						float red = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "red" ) ) );
+						float green = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "green" ) ) );
+						float blue = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "blue" ) ) );
+						float alpha = Float.parseFloat( getNodeText( getFirstChild( xmlProperty, "alpha" ) ) );
+						value = new edu.cmu.cs.dennisc.color.Color4f( red, green, blue, alpha );
 					} else if( int[].class.isAssignableFrom( propertyValueClass ) ) {
 						int length = Integer.parseInt( xmlProperty.getAttribute( "length" ) );
 						int[] array = new int[length];
@@ -1126,28 +1142,38 @@ public class ASG {
 						org.w3c.dom.Element[] xmlVertices = getChildren( xmlProperty, "vertex" );
 						edu.cmu.cs.dennisc.scenegraph.Vertex[] array = new edu.cmu.cs.dennisc.scenegraph.Vertex[xmlVertices.length];
 						for (int vertexIndex = 0; vertexIndex < xmlVertices.length; vertexIndex++) {
-							edu.cmu.cs.dennisc.scenegraph.Vertex vertex = new edu.cmu.cs.dennisc.scenegraph.Vertex();
 							org.w3c.dom.Element xmlVertex = xmlVertices[vertexIndex];
 							org.w3c.dom.Element xmlPosition = getFirstChild( xmlVertex, "position" );
+							edu.cmu.cs.dennisc.math.Point3 position = edu.cmu.cs.dennisc.math.Point3.createNaN();
 							if( xmlPosition != null ) {
-								vertex.position.setNaN();
-								decodeTuple3d( getNodeText( xmlPosition ), vertex.position );
+								decodeTuple3d( getNodeText( xmlPosition ), position );
 							}
 							org.w3c.dom.Element xmlNormal = getFirstChild( xmlVertex, "normal" );
+							edu.cmu.cs.dennisc.math.Vector3f normal = edu.cmu.cs.dennisc.math.Vector3f.createNaN();
 							if( xmlNormal != null ) {
-								vertex.normal.setNaN();
-								decodeTuple3f( getNodeText( xmlNormal ), vertex.normal );
+								decodeTuple3f( getNodeText( xmlNormal ), normal );
 							}
 							org.w3c.dom.Element xmlDiffuseColor = getFirstChild( xmlVertex, "diffuseColor" );
+							final edu.cmu.cs.dennisc.color.Color4f diffuseColor;
 							if( xmlDiffuseColor != null ) {
-								vertex.diffuseColor.setNaN();
-								decodeColor4f( getNodeText( xmlDiffuseColor ), vertex.diffuseColor );
+								diffuseColor = decodeColor4f( getNodeText( xmlDiffuseColor ) );
+							} else {
+								diffuseColor = null;
 							}
 							org.w3c.dom.Element xmlTextureCoordinate0 = getFirstChild( xmlVertex, "textureCoordinate0" );
+							final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
 							if( xmlTextureCoordinate0 != null ) {
-								vertex.textureCoordinate0.setNaN();
-								decodeTexCoord2f( getNodeText( xmlTextureCoordinate0 ), vertex.textureCoordinate0 );
+								textureCoordinate0 = decodeTexCoord2f( getNodeText( xmlTextureCoordinate0 ) );
+							} else {
+								textureCoordinate0 = null;
 							}
+							edu.cmu.cs.dennisc.scenegraph.Vertex vertex = new edu.cmu.cs.dennisc.scenegraph.Vertex(
+									position,
+									normal,
+									diffuseColor,
+									null,
+									textureCoordinate0
+							);
 							array[vertexIndex] = vertex;
 						}
 						value = array;

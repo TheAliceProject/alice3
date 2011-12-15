@@ -75,13 +75,9 @@ public abstract class DefaultProgram extends Program {
 	}
 	
 	@Override
-	protected boolean handleWindowClosing( java.awt.event.WindowEvent e ) {
-		if( super.handleWindowClosing( e ) ) {
-			exitAWT( getContentPane(), m_onscreenLookingGlass );
-			m_onscreenLookingGlass.release();
-			return true;
-		} else {
-			return false;
-		}
+	protected void handleShutDown() {
+		super.handleShutDown();
+		exitAWT( getContentPane(), m_onscreenLookingGlass );
+		m_onscreenLookingGlass.release();
 	}
 }
