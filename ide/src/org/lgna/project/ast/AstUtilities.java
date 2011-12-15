@@ -159,6 +159,9 @@ public class AstUtilities {
 	public static org.lgna.project.ast.UserMethod createFunction( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
 		return createMethod( name, returnType );
 	}
+	public static org.lgna.project.ast.UserMethod createFunction( String name, Class<?> returnCls ) {
+		return createMethod( name, JavaType.getInstance( returnCls ) );
+	}
 	public static org.lgna.project.ast.UserMethod createProcedure( String name ) {
 		return createMethod( name, org.lgna.project.ast.JavaType.VOID_TYPE );
 	}
@@ -348,6 +351,9 @@ public class AstUtilities {
 	
 	public static org.lgna.project.ast.ReturnStatement createReturnStatement( org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.Expression expression ) {
 		return new org.lgna.project.ast.ReturnStatement( type, expression );
+	}
+	public static org.lgna.project.ast.ReturnStatement createReturnStatement( Class<?> cls, org.lgna.project.ast.Expression expression ) {
+		return createReturnStatement( JavaType.getInstance( cls ), expression );
 	}
 	
 	public static org.lgna.project.ast.Expression createLocalAssignment( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.Expression valueExpression ) {

@@ -98,6 +98,8 @@ public class TypeManager {
 			
 			rv.constructors.add( userConstructor );
 		}
+
+		org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().augmentTypeIfNecessary( rv );
 		return rv;
 	}
 

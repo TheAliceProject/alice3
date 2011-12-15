@@ -103,7 +103,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
-		org.lgna.project.ast.AbstractType< ?,?,? > valueType = field.getDeclaringType();
+		org.lgna.project.ast.AbstractType< ?,?,? > valueType = field.getValueType();
 		if( declaringType != null && valueType != null ) {
 			if( declaringType == COLOR_TYPE && valueType == COLOR_TYPE ) {
 				org.alice.ide.swing.icons.ColorIcon rv = this.mapFieldToIcon.get( field );
@@ -123,7 +123,12 @@ public class StageIDE extends org.alice.ide.IDE {
 			} else if( declaringType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) && valueType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) ) {
 				Class<?> resourceClass = ((org.lgna.project.ast.JavaType)field.getValueType()).getClassReflectionProxy().getReification();
 				java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(resourceClass, field.getName());
-				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 20, 20 );
+				if( thumbnail != null ) {
+					return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 20, 20 );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( resourceClass, field.getName() );
+					return null;
+				}
 			} else {
 				return null;
 			}

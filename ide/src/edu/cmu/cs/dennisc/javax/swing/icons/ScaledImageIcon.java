@@ -50,6 +50,11 @@ public class ScaledImageIcon implements javax.swing.Icon {
 	private int width;
 	private int height;
 	public ScaledImageIcon( java.awt.Image image, int width, int height ) {
+		if( image != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null", this );
+		}
 		this.image = image;
 		this.width = width;
 		this.height = height;
@@ -60,35 +65,31 @@ public class ScaledImageIcon implements javax.swing.Icon {
 	public int getIconHeight() {
 		return this.height;
 	}
-	public java.awt.Image getImage()
-	{
+	public java.awt.Image getImage() {
 		return this.image;
+	}
+	private void paintErrorCondition( java.awt.Graphics2D g2, int x, int y ) {
+		java.awt.Paint prevPaint = g2.getPaint();
+		g2.setColor( java.awt.Color.RED );
+		g2.fillRect(x, y, this.width, this.height);
+		g2.setPaint( prevPaint );
 	}
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//
-////		java.awt.Paint prevPaint = g2.getPaint();
-////		g2.setColor( java.awt.Color.RED );
-////		g2.fillRect(x, y, this.width, this.height);
-////		g2.setPaint( prevPaint );
-//
-		int imageWidth = this.image.getWidth( c );
-		int imageHeight = this.image.getHeight( c );
-		if( imageWidth > 0 && imageHeight > 0 ) {
-//			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
-//			java.awt.geom.AffineTransform transform = new java.awt.geom.AffineTransform();
-//			transform.translate( x, y );
-//			transform.scale( this.width/(double)imageWidth, this.height/(double)imageHeight );
-//			g2.setTransform( transform );
-			
-			//g2.drawImage( this.image, 0, 0, c );
-			g2.translate( x, y );
-			g2.drawImage( this.image, 0, 0, this.width, this.height, 0, 0, imageWidth, imageHeight, c );
-			g2.translate( -x, -y );
-//			g2.setTransform( prevTransform );
+		if( this.image != null ) {
+			int imageWidth = this.image.getWidth( c );
+			int imageHeight = this.image.getHeight( c );
+			if( imageWidth > 0 && imageHeight > 0 ) {
+				g2.translate( x, y );
+				g2.drawImage( this.image, 0, 0, this.width, this.height, 0, 0, imageWidth, imageHeight, c );
+				g2.translate( -x, -y );
+			} else {
+				this.paintErrorCondition( g2, x, y );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "image size is 0,0", this );
+			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "image size is 0,0", this );
+			this.paintErrorCondition( g2, x, y );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "image is null", this );
 		}
-		
 	}
 }

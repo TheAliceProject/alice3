@@ -42,19 +42,7 @@
  */
 package test;
 
-import org.lgna.story.Biped;
-import org.lgna.story.Camera;
-import org.lgna.story.Color;
-import org.lgna.story.Cone;
-import org.lgna.story.Ground;
-import org.lgna.story.Move;
-import org.lgna.story.MoveDirection;
-import org.lgna.story.Program;
-import org.lgna.story.RollDirection;
-import org.lgna.story.Scene;
-import org.lgna.story.Sphere;
-import org.lgna.story.Sun;
-import org.lgna.story.TurnDirection;
+import org.lgna.story.*;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -72,6 +60,18 @@ class MyBiped extends Biped {
 class MyOgre extends MyBiped {
 	public MyOgre( org.lgna.story.resources.biped.Ogre resource ) {
 		super( resource );
+	}
+}
+
+class MyArmoire extends Prop {
+	public MyArmoire() {
+		super( org.lgna.story.resources.armoire.ArmoireCentralAsian.ARMOIRE_CENTRAL_ASIAN_DRAGONDOOR );
+	}
+	public Joint getLeftDoor() {
+		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
+	}
+	public Joint getRightDoor() {
+		return this.getJoint( org.lgna.story.resources.ArmoireResource.RIGHT_DOOR );
 	}
 }
 
@@ -137,6 +137,7 @@ class SnowScene extends Scene {
 	private final Cone redCone = new Cone(); 
 	private final Cone greenCone = new Cone(); 
 	private final Cone blueCone = new Cone();
+	private final MyArmoire armoire = new MyArmoire();
 	private final Camera camera;
 	private final MyOgre ogre;
 	private final MyBiped susan;
@@ -154,10 +155,12 @@ class SnowScene extends Scene {
 		this.redCone.setVehicle( this );
 		this.greenCone.setVehicle( this );
 		this.blueCone.setVehicle( this );
+		this.armoire.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
 		
+	
 		this.redCone.setPaint( Color.RED );
 		this.greenCone.setPaint( Color.GREEN );
 		this.blueCone.setPaint( Color.BLUE );
@@ -172,6 +175,8 @@ class SnowScene extends Scene {
 		this.greenCone.move( MoveDirection.LEFT, 1.0 );
 		this.blueCone.move( MoveDirection.LEFT, 1.5 );
 		
+		this.armoire.move( MoveDirection.BACKWARD, 2.0 );
+
 		this.ogre.move( MoveDirection.LEFT, 1.5 );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
@@ -195,6 +200,8 @@ class SnowScene extends Scene {
 	}
 
 	public void chillInSkiChalet() {
+		this.armoire.getLeftDoor().turn( TurnDirection.RIGHT, 0.375 );
+		this.armoire.getRightDoor().turn( TurnDirection.LEFT, 0.375 );
 		while( true ) {
 			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
@@ -240,8 +247,8 @@ class RagsToRichesStory extends Program {
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	public void playOutStory() {
-		this.setActiveScene( this.desertScene );
-		this.desertScene.turnBigRocksIntoLittleRocks();
+//		this.setActiveScene( this.desertScene );
+//		this.desertScene.turnBigRocksIntoLittleRocks();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}
