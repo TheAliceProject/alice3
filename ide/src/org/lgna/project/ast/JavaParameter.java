@@ -60,7 +60,7 @@ public abstract class JavaParameter extends AbstractParameter {
 		}
 	}
 	@Override
-	public boolean isDeclaredInAlice() {
+	public boolean isUserAuthored() {
 		return false;
 	}
 	@Override

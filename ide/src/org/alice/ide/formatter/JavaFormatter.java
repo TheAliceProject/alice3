@@ -68,8 +68,8 @@ public class JavaFormatter extends Formatter {
 		return "this";
 	}
 	@Override
-	protected String getTextForParameterDeclaredInJava( org.lgna.project.ast.JavaParameter parameterInJava ) {
-		return parameterInJava.getName();
+	protected String getTextForJavaParameter( org.lgna.project.ast.JavaParameter javaParameter ) {
+		return javaParameter.getName();
 	}
 	@Override
 	protected String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy ) {

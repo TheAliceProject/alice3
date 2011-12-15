@@ -47,10 +47,8 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Panel;
 
-public abstract class AbstractAdapterController<P> implements PropertyAdapterController<P>
-{
-    protected GridBagPanel mainPanel;
-    
+public abstract class AbstractAdapterController<P> extends GridBagPanel implements PropertyAdapterController<P>
+{   
 	protected AbstractPropertyAdapter.ValueChangeObserver<P> valueChangeObserver = new AbstractPropertyAdapter.ValueChangeObserver<P>()
 	{
 		public void valueChanged(P newValue) 
@@ -80,6 +78,12 @@ public abstract class AbstractAdapterController<P> implements PropertyAdapterCon
         this.propertyAdapter.setValue(value);
     }
     
+    @Override
+    protected void internalRefresh() {
+    	super.internalRefresh();
+    	this.updateUIFromNewAdapter();
+    }
+    
     protected void updateUIFromNewAdapter() 
     {
         if (this.propertyAdapter != null)
@@ -94,12 +98,11 @@ public abstract class AbstractAdapterController<P> implements PropertyAdapterCon
 	
     protected void initializeComponents()
     {
-        this.mainPanel = new GridBagPanel();
     }
     
     public Panel getPanel()
     {
-        return this.mainPanel;
+        return this;
     }
     
     
@@ -115,7 +118,7 @@ public abstract class AbstractAdapterController<P> implements PropertyAdapterCon
 			this.propertyAdapter.removeValueChangeObserver(this.valueChangeObserver);
 		}
 		this.propertyAdapter = propertyAdapter;
-		this.updateUIFromNewAdapter();
+		this.refreshLater();
 		if (this.propertyAdapter != null)
 		{
 			this.propertyAdapter.addAndInvokeValueChangeObserver(this.valueChangeObserver);

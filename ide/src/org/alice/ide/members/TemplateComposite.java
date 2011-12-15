@@ -41,76 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.members;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberTemplateComposite<V extends org.lgna.croquet.components.View< ?,? >> extends TemplateComposite< V > {
-	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
-		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
-			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-//			org.lgna.project.ast.AbstractType< ?, ?, ? > type; 
-//			if( instanceFactory != null ) {
-//				type = instanceFactory.getValueType();
-//			} else {
-//				type = null;
-//			}
-//			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( type );
-
-			if( instanceFactory != null ) {
-				javax.swing.Icon rv = null;
-				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-					rv = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( thisFieldAccessFactory.getField() );
-				} 
-				if( rv != null ) {
-					//pass
-				} else {
-					rv = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( instanceFactory.getValueType() );
-				}
-				return rv;
-			} else {
-				return null;
-			}
-		}
-		public int getIconHeight() {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				return icon.getIconHeight();
-			} else {
-				return 0;
-			}
-		}
-		public int getIconWidth() {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				return icon.getIconWidth();
-			} else {
-				return 0;
-			}
-		}
-		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				icon.paintIcon(c, g, x, y);
-			}
-		}
-	}
-	
-	private static javax.swing.Icon ICON = new IndirectCurrentAccessibleTypeIcon();
-	public MemberTemplateComposite( java.util.UUID id ) {
+public abstract class TemplateComposite<V extends org.lgna.croquet.components.View< ?,? >> extends org.lgna.croquet.TabComposite< V > {
+	public TemplateComposite( java.util.UUID id ) {
 		super( id );
 	}
-	@Override
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-		super.customizeTitleComponent( booleanState, button );
-		//booleanState.setIconForBothTrueAndFalse( ICON );
-		button.getAwtComponent().setIcon( ICON );
+//		button.getAwtComponent().setIcon( ICON );
+//		button.getAwtComponent().setText( this.getClass().getName() );
+//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
+
+		button.scaleFont( 1.5f );
+		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		booleanState.setTextForBothTrueAndFalse( this.getDefaultLocalizedText() );
 	}
+	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
+	}
+	
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model );
+	public boolean isCloseable() {
 		return false;
 	}
 }

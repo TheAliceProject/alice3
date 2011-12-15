@@ -197,11 +197,11 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	public void popIgnoreAstChanges() {
 		ignoreCount--;
 		if( ignoreCount == 0 ) {
-			this.handleAstChangeTheCouldBeOfInterest();
+			this.handleAstChangeThatCouldBeOfInterest();
 		}
 	}
-	public void handleAstChangeTheCouldBeOfInterest() {
-		
+	public void handleAstChangeThatCouldBeOfInterest() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 	}
 ////	//todo remove
 //	public boolean isRespondingToRefreshAccessibles = true;

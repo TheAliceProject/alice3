@@ -151,10 +151,10 @@ public class DefaultTheme implements Theme {
 		return new java.awt.Color( 0, 100, 0 );
 	}
 
-	public java.awt.Color getCodeDeclaredInAliceColor( org.lgna.project.ast.AbstractCode code ) {
+	public java.awt.Color getCodeColor( org.lgna.project.ast.AbstractCode code ) {
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod methodDeclaredInAlice = (org.lgna.project.ast.UserMethod)code;
-			if( methodDeclaredInAlice.isProcedure() ) {
+			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
+			if( userMethod.isProcedure() ) {
 				return getProcedureColor();
 			} else {
 				return getFunctionColor();

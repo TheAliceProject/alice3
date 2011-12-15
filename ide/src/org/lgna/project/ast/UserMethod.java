@@ -180,7 +180,7 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	
 //	@Override
 //	public boolean isOverride() {
-//		//todo: this will need to be udpated when you can inherit from other TypesDeclaredInAlice
+//		//todo: this will need to be updated when you can inherit from other TypesDeclaredInAlice
 //		TypeDeclaredInJava typeDeclaredInJava = this.getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
 //		Class<?> clsDeclaredInJava = typeDeclaredInJava.getCls();
 //		Class<?>[] parameterClses = new Class< ? >[ this.parameters.size() ];

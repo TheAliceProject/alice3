@@ -60,10 +60,10 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 		return new org.lgna.croquet.resolvers.SingletonResolver< ThisInstanceFactory >( this );
 	}
 	public org.lgna.project.ast.Expression createTransientExpression() {
-		return new org.alice.ide.ast.CurrentThisExpression();
+		return createTransientThisExpression();
 	}
 	public org.lgna.project.ast.Expression createExpression() {
-		return new org.lgna.project.ast.ThisExpression();
+		return createThisExpression();
 	}
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getValue();

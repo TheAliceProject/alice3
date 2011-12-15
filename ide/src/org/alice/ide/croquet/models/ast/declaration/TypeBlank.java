@@ -57,7 +57,7 @@ public class TypeBlank extends org.lgna.croquet.CascadeBlank< org.lgna.project.a
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
-		java.util.List< org.lgna.project.ast.JavaType > javaTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableTypesDeclaredInJava();
+		java.util.List< org.lgna.project.ast.JavaType > javaTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableJavaTypes();
 		for( org.lgna.project.ast.JavaType javaType : javaTypes ) {
 			rv.add( TypeFillIn.getInstance( javaType ) );
 		}

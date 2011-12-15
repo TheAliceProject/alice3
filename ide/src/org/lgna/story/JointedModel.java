@@ -50,6 +50,13 @@ import org.lgna.project.annotations.MethodTemplate;
 public abstract class JointedModel extends Model {
 	@Override
 	/*package-private*/abstract org.lgna.story.implementation.JointedModelImp getImplementation();
+	
+	
+	//todo: make protected
+	public Joint getJoint( org.lgna.story.resources.JointId jointId ) {
+		return Joint.getJoint( this, jointId );
+	}
+	
 	public void straightenOutJoints( StraightenOutJoints.Detail... details ) {
 		this.getImplementation().animateStraightenOutJoints( Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}

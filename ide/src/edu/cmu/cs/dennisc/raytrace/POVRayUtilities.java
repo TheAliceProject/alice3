@@ -146,10 +146,10 @@ public class POVRayUtilities {
 		float opacity = Float.NaN;
 		float specular = Float.NaN;
 		if( sgAppearance instanceof TexturedAppearance ) {
-			TexturedAppearance sgSingleAppearance = (TexturedAppearance)sgAppearance;
-			color = sgSingleAppearance.diffuseColor.getValue();
-			opacity = sgSingleAppearance.opacity.getValue();
-			specular = sgSingleAppearance.specularHighlightExponent.getValue();
+			TexturedAppearance sgTexturedAppearance = (TexturedAppearance)sgAppearance;
+			color = sgTexturedAppearance.diffuseColor.getValue();
+			opacity = sgTexturedAppearance.opacity.getValue();
+			specular = sgTexturedAppearance.specularHighlightExponent.getValue();
 		}
 		pw.println( "texture {" );
 		if( color != null ) {

@@ -259,7 +259,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		this.pushFrame( new ConstructorInvocationFrame( owner, type, map ) );
 	}
 	@Override
-	protected void setConstructorFrameInstanceInAlice( org.lgna.project.virtualmachine.UserInstance instance ) {
+	protected void setConstructorFrameUserInstance( org.lgna.project.virtualmachine.UserInstance instance ) {
 		Frame currentFrame = getCurrentFrame();
 		assert currentFrame instanceof ConstructorInvocationFrame;
 		ConstructorInvocationFrame constructorInvocationFrame = (ConstructorInvocationFrame)currentFrame;

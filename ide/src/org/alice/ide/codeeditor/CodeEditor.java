@@ -108,11 +108,11 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), userCode );
 		AbstractCodeHeaderPane header;
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod methodDeclaredInAlice = (org.lgna.project.ast.UserMethod)code;
-			header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane, false );
+			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
+			header = new MethodHeaderPane( userMethod, parametersPane, false );
 		} else if( code instanceof org.lgna.project.ast.NamedUserConstructor ) {
-			org.lgna.project.ast.NamedUserConstructor constructorDeclaredInAlice = (org.lgna.project.ast.NamedUserConstructor)code;
-			header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane, false );
+			org.lgna.project.ast.NamedUserConstructor userConstructor = (org.lgna.project.ast.NamedUserConstructor)code;
+			header = new ConstructorHeaderPane( userConstructor, parametersPane, false );
 		} else {
 			throw new RuntimeException();
 		}
@@ -123,7 +123,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		java.awt.Color color = ide.getTheme().getCodeDeclaredInAliceColor( this.code );
+		java.awt.Color color = ide.getTheme().getCodeColor( this.code );
 		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
 		this.setBackgroundColor( color );
 	}

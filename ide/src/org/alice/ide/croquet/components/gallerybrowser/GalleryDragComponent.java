@@ -57,6 +57,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.internalAddComponent( label );
 		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
+		this.setMaximumSizeClampedToPreferredSize( true );
 	}
 	@Override
 	protected int getInsetTop() {

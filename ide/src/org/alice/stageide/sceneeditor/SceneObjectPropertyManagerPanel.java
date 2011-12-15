@@ -305,7 +305,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>>();
 			
 			Iterable< org.lgna.project.ast.JavaMethod > getterMethods = org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters(this.selectedField.getValueType());
-			JavaType declaringType = this.selectedField.getValueType().getFirstTypeEncounteredDeclaredInJava();
+			JavaType declaringType = this.selectedField.getValueType().getFirstEncounteredJavaType();
 			boolean isScene = this.selectedImp instanceof SceneImp;
 			propertyAdapters.add(new FieldNameAdapter(this.selectedField, (StandardExpressionState)null, !isScene));
 			

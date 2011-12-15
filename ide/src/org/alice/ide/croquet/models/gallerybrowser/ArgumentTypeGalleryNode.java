@@ -103,11 +103,11 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 		}
 	}
 	@Override
-	public String getText() {
+	protected void appendClassName( java.lang.StringBuilder sb ) {
 		if( this.isPerson() ) {
-			return "Create Person...";
+			sb.append( "MyPerson" );
 		} else {
-			return super.getText();
+			super.appendClassName( sb );
 		}
 	}
 	@Override

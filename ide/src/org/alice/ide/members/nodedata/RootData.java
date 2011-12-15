@@ -41,23 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.members.nodedata;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureFunctionControlFlowTabState extends TemplatesTabSelectionState {
-	private static class SingletonHolder {
-		private static ProcedureFunctionControlFlowTabState instance = new ProcedureFunctionControlFlowTabState();
-	}
-	public static ProcedureFunctionControlFlowTabState getInstance() {
-		return SingletonHolder.instance;
-	}
-	public ProcedureFunctionControlFlowTabState() {
-		super( java.util.UUID.fromString( "a1887919-53b6-43eb-b092-b84c120f816e" ), ProcedureTemplateComposite.getInstance(), FunctionTemplateComposite.getInstance(), org.alice.ide.controlflow.ControlFlowComposite.getInstance( /*todo*/null ) );
-	}
-	@Override
-	public org.lgna.croquet.components.AbstractTabbedPane< ?, ?, ? > createTabbedPane() {
-		return this.createToolPaletteTabbedPane();
-	}
+public class RootData extends Data {
+
 }

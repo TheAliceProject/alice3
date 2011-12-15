@@ -41,29 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.stageide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TemplateComposite<V extends org.lgna.croquet.components.View< ?,? >> extends org.lgna.croquet.TabComposite< V > {
-	public TemplateComposite( java.util.UUID id ) {
-		super( id );
-	}
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-//		button.getAwtComponent().setIcon( ICON );
-//		button.getAwtComponent().setText( this.getClass().getName() );
-//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
-
-		button.scaleFont( 1.5f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		booleanState.setTextForBothTrueAndFalse( this.getDefaultLocalizedText() );
-	}
-	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-	}
-	
-	@Override
-	public boolean isCloseable() {
-		return false;
+public class AxesFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation > {
+	public AxesFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation model ) {
+		super( model );
 	}
 }

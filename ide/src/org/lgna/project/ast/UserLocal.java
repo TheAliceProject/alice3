@@ -80,7 +80,7 @@ public class UserLocal extends AbstractTransient {
 		return this.name;
 	}
 	@Override
-	public boolean isDeclaredInAlice() {
+	public boolean isUserAuthored() {
 		return true;
 	}
 	protected String generateName( Node context ) {

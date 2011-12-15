@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-import org.lgna.story.resourceutilities.ModelResourceBuilderUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,8 +52,8 @@ public class ResourceManager {
 
 	private ResourceManager() {
 	}
-	public static void registerSmallIcon( org.lgna.project.ast.JavaType typeInJava, javax.swing.Icon icon ) {
-		typeToIconMap.put( typeInJava, icon );
+	public static void registerSmallIcon( org.lgna.project.ast.JavaType javaType, javax.swing.Icon icon ) {
+		typeToIconMap.put( javaType, icon );
 	}
 	public static void registerSmallIcon( Class< ? > cls, javax.swing.Icon icon ) {
 		registerSmallIcon( org.lgna.project.ast.JavaType.getInstance( cls ), icon );
@@ -63,8 +61,8 @@ public class ResourceManager {
 
 	private static javax.swing.Icon getSmallIconFor( javax.swing.Icon largeIcon ) {
 		if( largeIcon != null ) {
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( ((javax.swing.ImageIcon)largeIcon).getImage(), SMALL_ICON_SIZE, SMALL_ICON_SIZE );
-			//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( largeIcon, SMALL_ICON_SIZE, SMALL_ICON_SIZE );
+			//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( ((javax.swing.ImageIcon)largeIcon).getImage(), SMALL_ICON_SIZE, SMALL_ICON_SIZE );
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( largeIcon, SMALL_ICON_SIZE, SMALL_ICON_SIZE );
 		} else {
 			//todo
 			return new edu.cmu.cs.dennisc.javax.swing.icons.ShapeIcon( new java.awt.geom.Ellipse2D.Float( 0, 0, SMALL_ICON_SIZE - 8, SMALL_ICON_SIZE - 8 ), java.awt.Color.LIGHT_GRAY, java.awt.Color.DARK_GRAY, 4, 4, 4, 4 );
@@ -158,8 +156,8 @@ public class ResourceManager {
 	private static java.net.URL getLargeIconResourceForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		String className;
 		if( type != null ) {
-			org.lgna.project.ast.JavaType typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-			className = typeInJava.getClassReflectionProxy().getName();
+			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
+			className = javaType.getClassReflectionProxy().getName();
 		} else {
 			className = null;
 		}
@@ -178,9 +176,9 @@ public class ResourceManager {
 
 	public static javax.swing.Icon getSmallIconForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		if( type != null ) {
-			org.lgna.project.ast.JavaType typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-			if( typeToIconMap.containsKey( typeInJava ) ) {
-				return typeToIconMap.get( typeInJava );
+			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
+			if( typeToIconMap.containsKey( javaType ) ) {
+				return typeToIconMap.get( javaType );
 			} else {
 				return getSmallIconFor( getLargeIconForType( type ) );
 			}

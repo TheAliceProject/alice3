@@ -41,23 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.members.nodedata;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionTemplateComposite extends MemberTemplateComposite< org.alice.ide.members.components.FunctionsContentPanel > {
-	private static class SingletonHolder {
-		private static FunctionTemplateComposite instance = new FunctionTemplateComposite();
-	}
-	public static FunctionTemplateComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private FunctionTemplateComposite() {
-		super( java.util.UUID.fromString( "75657f8d-aeb5-4031-9b33-7e95568bc8fb" ) );
-	}
-	@Override
-	protected org.alice.ide.members.components.FunctionsContentPanel createView() {
-		return new org.alice.ide.members.components.FunctionsContentPanel( this );
-	}
+public class GroupData extends Data {
+
 }

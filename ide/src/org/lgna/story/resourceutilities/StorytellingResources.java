@@ -12,7 +12,6 @@ import java.util.zip.ZipFile;
 
 import org.alice.ide.ResourcePathManager;
 import org.lgna.project.ast.JavaType;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
@@ -242,7 +241,7 @@ public class StorytellingResources {
 		List< ModelResourceTreeNode > rootNodes = this.getGalleryTreeInternal().getRootNodes();
 		List< org.lgna.project.ast.JavaType > rootTypes = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		for( ModelResourceTreeNode node : rootNodes ) {
-			rootTypes.add( node.getUserType().getFirstTypeEncounteredDeclaredInJava() );
+			rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
 		}
 		return rootTypes;
 	}

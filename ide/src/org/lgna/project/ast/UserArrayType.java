@@ -102,7 +102,7 @@ public class UserArrayType extends AbstractType {
 		}
 	}
 	@Override
-	public boolean isDeclaredInAlice() {
+	public boolean isUserAuthored() {
 		return true;
 	}
 	@Override
@@ -110,8 +110,10 @@ public class UserArrayType extends AbstractType {
 		//todo?
 		return m_leafType.getPackage();
 	}
+	
 	@Override
 	public AbstractType<?,?,?> getSuperType() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "the super type of a java array is Object" );
 		AbstractType<?,?,?> leafSuperType = m_leafType.getSuperType();
 		if( leafSuperType instanceof UserType<?> ) {
 			return UserArrayType.getInstance( ((UserType<?>)leafSuperType), m_dimensionCount );
@@ -122,6 +124,11 @@ public class UserArrayType extends AbstractType {
 			return JavaType.getInstance( superCls );
 		}
 	}
+	@Override
+	public AbstractType<?,?,?>[] getInterfaces() {
+		return new AbstractType< ?,?,? >[] {};
+	}
+	
 	@Override
 	public AbstractType< ?, ?, ? > getKeywordFactoryType() {
 		return null;

@@ -44,5 +44,10 @@
 package org.lgna.story.resources;
 
 public interface ArmoireResource extends PropResource {
+	public static final org.lgna.story.resources.JointId RIGHT_DOOR = new org.lgna.story.resources.JointId( null, ArmoireResource.class );
+	public static final org.lgna.story.resources.JointId LEFT_DOOR = new org.lgna.story.resources.JointId( null, ArmoireResource.class );
 
+	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { RIGHT_DOOR, LEFT_DOOR };
+	
+	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.JointedModel abstraction );
 }

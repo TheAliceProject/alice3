@@ -88,6 +88,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.promptForLicenseAgreements();
 
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueObserver( this.isAlwaysShowingBlocksListener );
 
 		this.getRunOperation().setEnabled( false );
 		this.addProjectObserver( new ProjectObserver() {
@@ -151,7 +152,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle( org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.AbstractType< ?, ?, ? > declaringType = field.getDeclaringType();
-		if( declaringType != null && declaringType.isDeclaredInAlice() ) {
+		if( declaringType != null && declaringType.isUserAuthored() ) {
 			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
 		} else {
 			//return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
@@ -190,7 +191,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	
 	private java.util.Map< org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory > mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
+	private final org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
@@ -202,6 +203,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		}
 	};
+	private final org.lgna.croquet.State.ValueObserver< Boolean > isAlwaysShowingBlocksListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "reboot required" );
+		}
+	};
+
 	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
 		rv.append( "Please Submit Bug Report: " );
@@ -575,8 +584,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	private static final String GENERATED_CODE_WARNING = "DO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT\n\nThis code is automatically generated.  Any work you perform in this method will be overwritten.\n\nDO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT";
 	private void generateCodeForSceneSetUp() {
-		org.lgna.project.ast.UserMethod methodDeclaredInAlice = this.getPerformEditorGeneratedSetUpMethod();
-		org.lgna.project.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
+		org.lgna.project.ast.UserMethod userMethod = this.getPerformEditorGeneratedSetUpMethod();
+		org.lgna.project.ast.StatementListProperty bodyStatementsProperty = userMethod.body.getValue().statements;
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new org.lgna.project.ast.Comment( GENERATED_CODE_WARNING ) );
 		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
@@ -682,7 +691,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return rv.replaceAll( " ", "" );
 	}
 
-	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType typeInAlice );
+	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType );
 	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.NamedUserType programType, int frameRate );
 
 	public java.util.Set< org.alice.virtualmachine.Resource > getResources() {

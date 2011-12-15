@@ -96,12 +96,12 @@ public abstract class ApiConfigurationManager {
 		return rv;
 	}
 	
-	public final java.util.List< org.lgna.project.ast.JavaType > getPrimeTimeSelectableTypesDeclaredInJava() {
+	public final java.util.List< org.lgna.project.ast.JavaType > getPrimeTimeSelectableJavaTypes() {
 		java.util.List< org.lgna.project.ast.JavaType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addPrimeTimeJavaTypes( rv );
 		return rv;
 	}
-	public final java.util.List< org.lgna.project.ast.JavaType > getSecondarySelectableTypesDeclaredInJava() {
+	public final java.util.List< org.lgna.project.ast.JavaType > getSecondarySelectableJavaTypes() {
 		java.util.List< org.lgna.project.ast.JavaType > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addSecondaryJavaTypes( rv );
 		return rv;
@@ -122,7 +122,7 @@ public abstract class ApiConfigurationManager {
 		return rv;
 	}
 
-	protected boolean isInclusionOfTypeDesired( org.lgna.project.ast.UserType< ? > valueTypeInAlice ) {
+	protected boolean isInclusionOfTypeDesired( org.lgna.project.ast.UserType< ? > userType ) {
 		return true;
 		//return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
 	}
@@ -177,4 +177,5 @@ public abstract class ApiConfigurationManager {
 	public abstract org.lgna.croquet.components.JComponent< ? > createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess );
 	public abstract org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails );
 	public abstract org.alice.ide.ast.ExpressionCreator getExpressionCreator();
+	public abstract void augmentTypeIfNecessary( org.lgna.project.ast.UserType<?> rv );
 }

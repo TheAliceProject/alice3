@@ -63,6 +63,11 @@ public class ResourceTab extends GalleryTab {
 					javax.swing.JScrollBar verticalScrollBar = HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getVerticalScrollBar();
 					if( isPaintRequiredFor( this ) || isPaintRequiredFor( verticalScrollBar ) ) {
 						super.paint( g );
+					} else {
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						java.awt.Shape clip = g.getClip();
+						g2.setPaint( HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getBackground() );
+						g2.fill( clip );
 					}
 				}
 			};
@@ -114,12 +119,15 @@ public class ResourceTab extends GalleryTab {
 //				
 //				this.addComponent( createPersonButton, Constraint.LINE_START );
 				
-				org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton(), Constraint.PAGE_START );
-				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation.getInstance().createButton(), Constraint.PAGE_END );
+				org.lgna.croquet.components.PageAxisPanel lineEndPanel = new org.lgna.croquet.components.PageAxisPanel();
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton() );
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation.getInstance().createButton() );
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation.getInstance().createButton() );
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.SphereFieldDeclarationOperation.getInstance().createButton() );
 				this.addComponent( lineEndPanel, Constraint.LINE_END );
 				//todo
 				this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+				scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 			}
 		}
 		return new ResourceView();

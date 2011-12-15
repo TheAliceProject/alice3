@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.members;
 
 //import org.alice.ide.croquet.models.members.FieldsTab;
 //import org.alice.ide.croquet.models.members.BlocksTab;
@@ -139,7 +139,7 @@ public abstract class TemplatesTabSelectionState extends org.lgna.croquet.TabSel
 		super( 
 				org.alice.ide.IDE.UI_STATE_GROUP, 
 				id, 
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.croquet.models.templates.TemplateComposite.class ), 
+				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.members.TemplateComposite.class ), 
 				0,
 				composites
 		);

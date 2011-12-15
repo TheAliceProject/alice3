@@ -59,14 +59,14 @@ public abstract class Formatter {
 	
 	
 	protected abstract String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy );
-	protected abstract String getTextForParameterDeclaredInJava( org.lgna.project.ast.JavaParameter parameterInJava );
+	protected abstract String getTextForJavaParameter( org.lgna.project.ast.JavaParameter javaParameter );
 	public String getNameForDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		if (declaration instanceof org.lgna.project.ast.JavaMethod) {
-			org.lgna.project.ast.JavaMethod methodInJava = (org.lgna.project.ast.JavaMethod) declaration;
-			return this.getTextForMethodReflectionProxy( methodInJava.getMethodReflectionProxy() );
+			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod) declaration;
+			return this.getTextForMethodReflectionProxy( javaMethod.getMethodReflectionProxy() );
 		} else if( declaration instanceof org.lgna.project.ast.JavaParameter ) {
-			org.lgna.project.ast.JavaParameter parameterInJava = (org.lgna.project.ast.JavaParameter)declaration;
-			return this.getTextForParameterDeclaredInJava( parameterInJava );
+			org.lgna.project.ast.JavaParameter javaParameter = (org.lgna.project.ast.JavaParameter)declaration;
+			return this.getTextForJavaParameter( javaParameter );
 		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
 			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
 			return this.getTextForType( type );
@@ -89,8 +89,8 @@ public abstract class Formatter {
 				return this.getTextForType( type.getComponentType() ) + "[]";
 			} else {
 				if (type instanceof org.lgna.project.ast.JavaType) {
-					org.lgna.project.ast.JavaType typeInJava = (org.lgna.project.ast.JavaType) type;
-					Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
+					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType) type;
+					Class<?> cls = javaType.getClassReflectionProxy().getReification();
 					return this.getTextForCls( cls );
 				} else {
 					return type.getName();

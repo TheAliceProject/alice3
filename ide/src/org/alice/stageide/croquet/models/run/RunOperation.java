@@ -158,7 +158,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 					final org.lgna.project.ast.NamedUserType programType = ide.getProgramType();
 					//String[] args = {};
 					final org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
-					org.lgna.story.Program program = programInstance.getInstanceInJava( org.lgna.story.Program.class );
+					org.lgna.story.Program program = programInstance.getJavaInstance( org.lgna.story.Program.class );
 					RunOperation.this.programImp = org.lgna.story.ImplementationAccessor.getImplementation( program );
 					RunOperation.this.programImp.initializeInAwtContainer( rv.getAwtComponent() );
 					org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {

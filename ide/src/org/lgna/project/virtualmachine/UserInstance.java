@@ -49,16 +49,16 @@ import org.lgna.project.ast.*;
  * @author Dennis Cosgrove
  */
 public class UserInstance {
-	public static Object getInstanceInJavaIfNecessary( Object instance ) {
+	public static Object getJavaInstanceIfNecessary( Object instance ) {
 		if( instance instanceof UserInstance ) {
-			return ((UserInstance)instance).getInstanceInJava();
+			return ((UserInstance)instance).getJavaInstance();
 		} else {
 			return instance;
 		}
 	}
 	public static Object[] updateArrayWithInstancesInJavaIfNecessary( Object[] rv ) {
 		for( int i=0; i<rv.length; i++ ) {
-			rv[ i ] = getInstanceInJavaIfNecessary( rv[ i ] );
+			rv[ i ] = getJavaInstanceIfNecessary( rv[ i ] );
 		}
 		return rv;
 	}
@@ -89,7 +89,7 @@ public class UserInstance {
 		vm.pushConstructorFrame( type, stackMap );
 		try {
 			Object[] nextArguments = vm.evaluateArguments( nextConstructor, constructorInvocationStatement.requiredArguments, constructorInvocationStatement.variableArguments, constructorInvocationStatement.keyedArguments );
-			if( nextConstructor.isDeclaredInAlice() ) {
+			if( nextConstructor.isUserAuthored() ) {
 				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
 			} else {
 				JavaConstructor nextConstructorDeclaredInJava = (JavaConstructor)nextConstructor;
@@ -98,11 +98,11 @@ public class UserInstance {
 				assert cnstrctr != null : constructorReflectionProxy.getDeclaringClassReflectionProxy().getName();
 				this.nextInstance = vm.createInstance( this.type, this, cnstrctr, nextArguments );
 			}
-			vm.setConstructorFrameInstanceInAlice( this );
+			vm.setConstructorFrameUserInstance( this );
 			for( AbstractField field : this.type.getDeclaredFields() ) {
 				assert field instanceof UserField;
-				UserField fieldDeclaredInAlice = (UserField)field;
-				this.createAndSetFieldInstance( vm, fieldDeclaredInAlice );
+				UserField userField = (UserField)field;
+				this.createAndSetFieldInstance( vm, userField );
 			}
 			try {
 				vm.executeBlockStatement( constructorBlockStatement );
@@ -121,7 +121,7 @@ public class UserInstance {
 			this.inverseFieldMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			for( UserField field : this.fieldMap.keySet() ) {
 				Object value = this.fieldMap.get( field );
-				this.inverseFieldMap.put( getInstanceInJavaIfNecessary( value ), field );
+				this.inverseFieldMap.put( getJavaInstanceIfNecessary( value ), field );
 			}
 		}
 	}
@@ -135,18 +135,18 @@ public class UserInstance {
 	public UserType<?> getType() {
 		return this.type;
 	}
-	public Object getInstanceInJava() {
-		return getInstanceInJavaIfNecessary( this.nextInstance );
+	public Object getJavaInstance() {
+		return getJavaInstanceIfNecessary( this.nextInstance );
 	}
-	public <E> E getInstanceInJava( Class<E> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getInstanceInJava(), cls );
+	public <E> E getJavaInstance( Class<E> cls ) {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getJavaInstance(), cls );
 	}
 	
 	public Object getFieldValue( UserField field ) {
 		return this.fieldMap.get( field );
 	}
 	public Object getFieldValueInstanceInJava( UserField field ) {
-		return getInstanceInJavaIfNecessary( this.getFieldValue( field ) );
+		return getJavaInstanceIfNecessary( this.getFieldValue( field ) );
 	}
 	public <E> E getFieldValueInstanceInJava( UserField field, Class<E> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getFieldValueInstanceInJava( field ), cls );
@@ -154,7 +154,7 @@ public class UserInstance {
 	public void setFieldValue( UserField field, Object value ) {
 		this.fieldMap.put( field, value );
 		if( this.inverseFieldMap != null ) {
-			this.inverseFieldMap.put( getInstanceInJavaIfNecessary( value ), field );
+			this.inverseFieldMap.put( getJavaInstanceIfNecessary( value ), field );
 		}
 	}
 	

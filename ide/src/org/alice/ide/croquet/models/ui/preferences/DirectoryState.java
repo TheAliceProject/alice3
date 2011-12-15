@@ -56,6 +56,7 @@ public abstract class DirectoryState extends org.lgna.croquet.preferences.Prefer
 		String path = this.getPath();
 		java.io.File rv;
 		try {
+			//todo: account for spaces and other special characters
 			java.net.URI uri = new java.net.URI( path );
 			rv = new java.io.File( uri );
 		} catch( java.net.URISyntaxException urise ) {

@@ -83,8 +83,8 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 				//pass
 			} else {
 				if( field instanceof org.lgna.project.ast.UserField ) {
-					org.lgna.project.ast.UserField fieldInAlice = (org.lgna.project.ast.UserField)field;
-					org.lgna.croquet.components.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.TemplateAstI18nFactory.getInstance(), fieldInAlice);
+					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
+					org.lgna.croquet.components.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.TemplateAstI18nFactory.getInstance(), userField);
 					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "add popup menu to field declaration pane" );
 ////					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 
 ////						public EditFieldDeclarationOperation() {

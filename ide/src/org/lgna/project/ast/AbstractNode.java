@@ -384,17 +384,17 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 		rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, m_uuid.toString() );
 		rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, getClass().getName() );
 		if( this instanceof JavaType ) {
-			JavaType typeDeclaredInJava = (JavaType)this;
-			rv.appendChild( encodeType( xmlDocument, "type", typeDeclaredInJava.getClassReflectionProxy() ) );
+			JavaType javaType = (JavaType)this;
+			rv.appendChild( encodeType( xmlDocument, "type", javaType.getClassReflectionProxy() ) );
 		} else if( this instanceof UserArrayType ) {
-			UserArrayType arrayTypeDeclaredInAlice = (UserArrayType)this;
+			UserArrayType userArrayType = (UserArrayType)this;
 
 			org.w3c.dom.Element xmlLeafType = xmlDocument.createElement( "leafType" );
-			xmlLeafType.appendChild( encodeValue( arrayTypeDeclaredInAlice.getLeafType(), xmlDocument, set ) );
+			xmlLeafType.appendChild( encodeValue( userArrayType.getLeafType(), xmlDocument, set ) );
 			rv.appendChild( xmlLeafType );
 			
 			org.w3c.dom.Element xmlDimensionCount = xmlDocument.createElement( "dimensionCount" );
-			xmlDimensionCount.appendChild( xmlDocument.createTextNode( Integer.toString( arrayTypeDeclaredInAlice.getDimensionCount() ) ) );
+			xmlDimensionCount.appendChild( xmlDocument.createTextNode( Integer.toString( userArrayType.getDimensionCount() ) ) );
 			rv.appendChild( xmlDimensionCount );
 		
 		} else if( this instanceof JavaConstructor ) {

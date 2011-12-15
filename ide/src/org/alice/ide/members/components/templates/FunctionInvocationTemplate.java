@@ -60,8 +60,8 @@ package org.alice.ide.members.components.templates;
 		super( org.alice.ide.ast.draganddrop.expression.FunctionInvocationDragModel.getInstance( method ) );
 		this.method = method;
 		if( method instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod methodInAlice = (org.lgna.project.ast.UserMethod)method;
-			this.setPopupPrepModel( new MethodPopupMenuModel( methodInAlice ).getPopupPrepModel() );
+			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+			this.setPopupPrepModel( new MethodPopupMenuModel( userMethod ).getPopupPrepModel() );
 		}
 	}
 	@Override

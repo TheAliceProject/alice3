@@ -53,13 +53,13 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
 	}
-	protected abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSGTransformable();
+	protected abstract edu.cmu.cs.dennisc.scenegraph.Transformable getSGTransformable();
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation();
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation();
 	protected abstract String getEditPresentationName( java.util.Locale locale );
 	
 	private void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
-		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getSGTransformable();
+		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = this.getSGTransformable();
 		if( this.animator != null ) {
 			edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( sgTransformable, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, lt );
 			povAnimation.setDuration( 0.5 );

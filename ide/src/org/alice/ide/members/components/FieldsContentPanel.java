@@ -46,7 +46,7 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 public class FieldsContentPanel extends OrganizedByTypeMembersContentPanel {
-	public FieldsContentPanel( org.alice.ide.croquet.models.templates.FieldTemplateComposite composite ) {
+	public FieldsContentPanel( org.alice.ide.members.FieldTemplateComposite composite ) {
 		super( composite );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}

@@ -119,9 +119,8 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	public org.lgna.project.ast.UserField getActiveSceneField() {
 		return SceneFieldListSelectionState.getInstance().getSelectedItem();
 	}
-	public org.lgna.project.ast.UserField getFieldForInstanceInJavaVM(
-			Object instanceInJava) {
-		return getActiveSceneInstance().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(instanceInJava);
+	public org.lgna.project.ast.UserField getFieldForInstanceInJavaVM(Object javaInstance) {
+		return getActiveSceneInstance().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(javaInstance);
 	}
 
 	public Object getInstanceInJavaVMForField( org.lgna.project.ast.AbstractField field) {
@@ -131,7 +130,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		assert field instanceof org.lgna.project.ast.UserField;
 		if (field == this.getActiveSceneField())
 		{
-			return getActiveSceneInstance().getInstanceInJava();
+			return getActiveSceneInstance().getJavaInstance();
 		}
 		else
 		{
@@ -277,14 +276,14 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 //		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 	}
 	
-	protected org.lgna.project.virtualmachine.UserInstance getProgramInstanceInAlice()
+	protected org.lgna.project.virtualmachine.UserInstance getUserProgramInstance()
 	{
 		return this.programInstance;
 	}
 	
 	protected org.lgna.story.Program getProgramInstanceInJava()
 	{
-		return  (org.lgna.story.Program)this.programInstance.getInstanceInJava();
+		return  (org.lgna.story.Program)this.programInstance.getJavaInstance();
 	}
 	
 	protected void setProgramInstance(org.lgna.project.virtualmachine.UserInstance programInstance)
@@ -294,9 +293,11 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	
 	protected void setProgramType( org.lgna.project.ast.NamedUserType programType ) {
 		if (this.programType != programType) {
+			if (this.programType != null) {
+				SceneFieldListSelectionState.getInstance().removeValueObserver(this.selectedSceneObserver);
+				SceneFieldListSelectionState.getInstance().clear();
+			}
 			this.programType = programType;
-			SceneFieldListSelectionState.getInstance().removeValueObserver(this.selectedSceneObserver);
-			SceneFieldListSelectionState.getInstance().clear();
 			mapSceneFieldToInstance.clear();
 			mapSceneInstanceToField.clear();
 			if( this.programType != null ) {

@@ -41,23 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.templates;
+package org.alice.ide.members;
+
+import org.alice.ide.members.nodedata.Data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldTemplateComposite extends MemberTemplateComposite< org.alice.ide.members.components.FieldsContentPanel >  {
-	private static class SingletonHolder {
-		private static FieldTemplateComposite instance = new FieldTemplateComposite();
-	}
-	public static FieldTemplateComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private FieldTemplateComposite() {
-		super( java.util.UUID.fromString( "be6a1945-fb77-4d07-9c11-351f4119099c" ) );
-	}
-	@Override
-	protected org.alice.ide.members.components.FieldsContentPanel createView() {
-		return new org.alice.ide.members.components.FieldsContentPanel( this );
-	}
+public interface TreeGenerator {
+	public edu.cmu.cs.dennisc.tree.Node< Data > createTree( org.alice.ide.instancefactory.InstanceFactory factory, org.alice.ide.members.filters.MemberFilter memberFilter );
 }

@@ -78,19 +78,21 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	
 	private void createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
+		//System.err.println( "createJointTree " + jointId );
 		JointImp joint = this.createJointImplementation( jointId );
-		if( joint != null ) {
-			if( parent instanceof JointedModelImp ) {
-				joint.setCustomJointSgParent( parent.getSgComposite() );
-			} else {
+		if (joint == null) {
+			joint = this.createJointImplementation(jointId);
+		}
+		if( joint != null && parent instanceof JointedModelImp ) {
+			joint.setCustomJointSgParent( parent.getSgComposite() );
+		} else {
+			if (joint != null && joint.getSgVehicle() == null && parent != null) {
 				joint.setVehicle( parent );
 			}
-			this.mapIdToJoint.put( jointId, joint );
-			for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-				this.createJointTree( childId, joint );
-			}
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot find", jointId, this );
+		}
+		this.mapIdToJoint.put( jointId, joint );
+		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
+			this.createJointTree( childId, joint );
 		}
 	}
 	
@@ -217,6 +219,58 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		}
 	}
 	
+	private static enum AddOp {
+		PREPEND {
+			@Override
+			public java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint ) {
+				rv.add( 0, joint );
+				return rv;
+			}
+		},
+		APPEND {
+			@Override
+			public java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint ) {
+				rv.add( joint );
+				return rv;
+			}
+		};
+		public abstract java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint );
+	}
+	private java.util.List< JointImp > updateChain( java.util.List< JointImp > rv, JointImp joint, EntityImp ancestor, AddOp addOp ) {
+		if( joint == ancestor ) {
+			//pass
+		} else {
+			org.lgna.story.resources.JointId parentId = joint.getJointId().getParent();
+			if( parentId != null ) {
+				JointImp parent = this.getJointImplementation( parentId );
+				this.updateChain( rv, parent, ancestor, addOp );
+			}
+		}
+		addOp.add( rv, joint );
+		return rv;
+	}
+	public java.util.List< JointImp > getChainBetween( JointImp jointA, JointImp jointB ) {
+		assert jointA != null : this;
+		assert jointB != null : this;
+		java.util.List< JointImp > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		if( jointA == jointB ) {
+			//?
+			rv.add( jointA );
+		} else {
+			if( jointA.isDescendantOf( jointB ) ) {
+				this.updateChain( rv, jointA, jointB, AddOp.PREPEND );
+			} else if( jointB.isDescendantOf( jointA ) ) {
+				this.updateChain( rv, jointB, jointA, AddOp.APPEND );
+			} else {
+				this.updateChain( rv, jointB, this, AddOp.APPEND );
+				this.updateChain( rv, jointA, this, AddOp.PREPEND );
+			}
+		}
+		return rv;
+	}
+	public java.util.List< JointImp > getInclusiveListOfJointsBetween( org.lgna.story.resources.JointId idA, org.lgna.story.resources.JointId idB ) {
+		return this.getChainBetween( this.getJointImplementation( idA ), this.getJointImplementation( idB ) );
+	}
 	
 	private static class JointData {
 		private final JointImp jointImp;

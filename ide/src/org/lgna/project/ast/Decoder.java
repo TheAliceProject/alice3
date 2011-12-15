@@ -198,7 +198,7 @@ public class Decoder {
 		return createClassReflectionProxy( clsName );
 	}
 
-	private UserArrayType decodeArrayTypeDeclaredInAlice( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
+	private UserArrayType decodeUserArrayType( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "leafType" );
 		org.w3c.dom.Element xmlDimensionCount = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "dimensionCount" );
 		org.w3c.dom.Element xmlLeafTypeNode = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlLeafType, "node" );
@@ -266,7 +266,7 @@ public class Decoder {
 			if( clsName.equals( JavaType.class.getName() ) ) {
 				rv = JavaType.getInstance( decodeType( xmlElement, "type" ) );
 			} else if( clsName.equals( UserArrayType.class.getName() ) ) {
-				rv = decodeArrayTypeDeclaredInAlice( xmlElement, map );
+				rv = decodeUserArrayType( xmlElement, map );
 			} else if( clsName.equals( JavaConstructor.class.getName() ) ) {
 				rv = JavaConstructor.getInstance( decodeConstructor( xmlElement, "constructor" ) );
 			} else if( clsName.equals( JavaMethod.class.getName() ) ) {

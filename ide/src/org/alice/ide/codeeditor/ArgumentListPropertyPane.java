@@ -54,9 +54,9 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		boolean rv;
 		if( parameter.getName() != null ) {
 			if( parameter instanceof org.lgna.project.ast.JavaMethodParameter ) {
-				org.lgna.project.ast.JavaMethodParameter parameterDeclaredInJavaMethod = (org.lgna.project.ast.JavaMethodParameter)parameter;
-				org.lgna.project.ast.JavaMethod methodDeclaredInJava = parameterDeclaredInJavaMethod.getMethod();
-				rv = methodDeclaredInJava.isParameterInShortestChainedMethod( parameterDeclaredInJavaMethod ) == false;
+				org.lgna.project.ast.JavaMethodParameter javaMethodParameter = (org.lgna.project.ast.JavaMethodParameter)parameter;
+				org.lgna.project.ast.JavaMethod javaMethod = javaMethodParameter.getMethod();
+				rv = javaMethod.isParameterInShortestChainedMethod( javaMethodParameter ) == false;
 			} else if( parameter instanceof org.lgna.project.ast.JavaConstructorParameter ) {
 				//todo
 

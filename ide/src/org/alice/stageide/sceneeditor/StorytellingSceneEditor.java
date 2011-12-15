@@ -104,7 +104,6 @@ import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.TransformableImp;
-import org.lgna.story.resourceutilities.ModelResourceBuilderUtilities;
 
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
@@ -653,8 +652,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.objectMarkerFieldSelectionObserver);
 			
 			this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
-			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewTracker);
-			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewSelectionObserver);
+			
 			this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
 			this.mainCameraViewSelector.setFontSize(15);
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.STARTING_CAMERA_VIEW, this.openingSceneMarkerImp );
@@ -664,6 +662,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.FRONT, this.frontOrthoMarkerImp );
 			this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer(this.mainCameraViewTracker));
 
+			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewTracker);
+			this.mainCameraMarkerList.addAndInvokeValueObserver(this.mainCameraViewSelectionObserver);
+			
 			this.lookingGlassPanel.addComponent(this.mainCameraViewSelector, Horizontal.CENTER, 0, Vertical.NORTH, 20);
 			
 			this.isInitialized = true;
@@ -713,7 +714,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setOnscreenLookingGlass(this.onscreenLookingGlass);
 
 		org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
-		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getInstanceInJava();
+		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getJavaInstance();
 		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 		getPropertyPanel().setSceneInstance(sceneAliceInstance);
 		getObjectMarkerPanel().setType(sceneAliceInstance.getType());
@@ -833,7 +834,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		if (initialTransform == null && field.getValueType().isAssignableTo(org.lgna.story.Model.class))
 		{
 			org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
-			JavaType javaType = type.getFirstTypeEncounteredDeclaredInJava();
+			JavaType javaType = type.getFirstEncounteredJavaType();
 			Class<?> cls = javaType.getClassReflectionProxy().getReification();
 			AxisAlignedBox box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(cls);
 			double y = box != null ? -box.getXMinimum() : 0;

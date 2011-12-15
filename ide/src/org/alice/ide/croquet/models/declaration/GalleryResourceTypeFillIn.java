@@ -86,7 +86,7 @@ public class GalleryResourceTypeFillIn extends org.alice.ide.croquet.models.casc
 				if( field.isStatic() ) {
 					if( field instanceof org.lgna.project.ast.JavaField ) {
 						org.lgna.project.ast.JavaField argumentField = (org.lgna.project.ast.JavaField)field;
-						org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( this.ancestorType, argumentField );
+						org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( this.ancestorType, argumentField );
 						org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
 						org.lgna.project.ast.Expression[] argumentExpressions;
 						if( constructor.getRequiredParameters().size() == 1 ) {

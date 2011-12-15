@@ -71,7 +71,7 @@ public class CreateFieldFromPersonResourceOperation extends org.alice.ide.croque
 			try {
 				org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
 				org.lgna.project.ast.InstanceCreation expression = org.lgna.project.ast.AstUtilities.createInstanceCreation( 
-						TypeManager.getNamedUserTypeFor( JavaType.getInstance( org.lgna.story.Biped.class ) ).getDeclaredConstructors().get(0), 
+						TypeManager.getNamedUserTypeFromSuperType( JavaType.getInstance( org.lgna.story.Biped.class ) ).getDeclaredConstructors().get(0), 
 //						new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
 						argumentExpression 
 				);

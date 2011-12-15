@@ -69,11 +69,11 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
-		return new org.alice.ide.ast.CurrentThisExpression();
+		return createTransientThisExpression();
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
-		return new org.lgna.project.ast.ThisExpression();
+		return createThisExpression();
 	}
 	@Override
 	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {

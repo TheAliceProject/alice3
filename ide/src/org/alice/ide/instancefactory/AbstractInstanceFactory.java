@@ -47,6 +47,12 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractInstanceFactory implements InstanceFactory {
+	protected static org.lgna.project.ast.Expression createTransientThisExpression() {
+		return new org.alice.ide.ast.CurrentThisExpression();
+	}
+	protected static org.lgna.project.ast.Expression createThisExpression() {
+		return new org.lgna.project.ast.ThisExpression();
+	}
 	private final edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] mutablePropertiesOfInterest;
 	private org.lgna.croquet.resolvers.CodableResolver resolver;
 	public AbstractInstanceFactory( edu.cmu.cs.dennisc.property.InstanceProperty< ? >... mutablePropertiesOfInterest ) { 

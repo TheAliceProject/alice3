@@ -84,7 +84,7 @@ public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 			} else {
 				if( member instanceof org.lgna.project.ast.AbstractCode ) {
 					org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)member;
-					if( code.isDeclaredInAlice() ) {
+					if( code.isUserAuthored() ) {
 						org.lgna.croquet.components.LineAxisPanel line = new org.lgna.croquet.components.LineAxisPanel();
 						line.addComponent( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( code ).createButton() );
 						line.addComponent( component );

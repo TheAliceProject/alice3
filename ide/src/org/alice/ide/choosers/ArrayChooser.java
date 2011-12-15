@@ -130,7 +130,7 @@ public class ArrayChooser extends AbstractRowsPaneChooser< org.lgna.project.ast.
 		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );
 	}
 	public static void main( String[] args ) {
-		new org.alice.stageide.StageIDE();
+		Object unused = new org.alice.stageide.StageIDE();
 		
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );

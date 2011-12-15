@@ -56,6 +56,7 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 		assert sgJoint != null;
 		this.jointId = jointId;
 		this.sgJoint = sgJoint;
+		putInstance( this.sgJoint );
 	}
 	@Override
 	public org.lgna.story.resources.JointId getJointId() {

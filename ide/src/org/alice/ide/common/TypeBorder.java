@@ -65,24 +65,24 @@ class TypeBorder implements javax.swing.border.Border {
 	//private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
 	
 	private static java.awt.Color OUTLINE_COLOR = java.awt.Color.GRAY;
-	private static TypeBorder singletonForDeclaredInAlice = new TypeBorder( true );
-	private static TypeBorder singletonForDeclaredInJava = new TypeBorder( false );
+	private static TypeBorder singletonForUser = new TypeBorder( true );
+	private static TypeBorder singletonForJava = new TypeBorder( false );
 	private static TypeBorder singletonForNull = new TypeBorder( null );
 
 	public static TypeBorder getSingletonFor( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
 			if( type instanceof org.lgna.project.ast.NamedUserType ) {
-				return TypeBorder.singletonForDeclaredInAlice;
+				return TypeBorder.singletonForUser;
 			} else {
-				return TypeBorder.singletonForDeclaredInJava;
+				return TypeBorder.singletonForJava;
 			}
 		} else {
 			return TypeBorder.singletonForNull;
 		}
 	}
-	private Boolean isDeclaredInAlice;
-	private TypeBorder( Boolean isDeclaredInAlice ) {
-		this.isDeclaredInAlice = isDeclaredInAlice;
+	private Boolean isDeclaredByUser;
+	private TypeBorder( Boolean isDeclaredByUser ) {
+		this.isDeclaredByUser = isDeclaredByUser;
 	}
 
 	private int yPrevious = -1;
@@ -95,8 +95,8 @@ class TypeBorder implements javax.swing.border.Border {
 			} else {
 				this.yPrevious = y;
 				this.heightPrevious = height;
-				if( isDeclaredInAlice != null ) {
-					if( isDeclaredInAlice ) {
+				if( isDeclaredByUser != null ) {
+					if( isDeclaredByUser ) {
 						this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR );
 					} else {
 						this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR );

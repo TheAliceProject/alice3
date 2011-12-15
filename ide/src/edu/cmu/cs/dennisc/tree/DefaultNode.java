@@ -49,10 +49,10 @@ package edu.cmu.cs.dennisc.tree;
 public class DefaultNode< T > implements Node< T > {
 	private final T value;
 	private final java.util.List< DefaultNode<T> > children;
-	public static <T> DefaultNode< T > createUnsafeInstance( T value ) {
+	public static <T> DefaultNode< T > createUnsafeInstance( T value, Class<T> cls ) {
 		return new DefaultNode< T >( value, false );
 	}
-	public static <T> DefaultNode< T > createSafeInstance( T value ) {
+	public static <T> DefaultNode< T > createSafeInstance( T value, Class<T> cls ) {
 		return new DefaultNode< T >( value, true );
 	}
 	private DefaultNode( T value, boolean isCopyOnWrite ) {

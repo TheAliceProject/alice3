@@ -59,8 +59,8 @@ public class InstanceCreationInitializerState extends org.alice.ide.croquet.mode
 			org.lgna.project.ast.InstanceCreation prevInstanceCreation = (org.lgna.project.ast.InstanceCreation)prevExpression;
 			org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( prevInstanceCreation );
 			if( argumentField != null ) {
-				org.lgna.project.ast.JavaType javaType = prevInstanceCreation.constructor.getValue().getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
-				org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType, argumentField );
+				org.lgna.project.ast.JavaType javaType = prevInstanceCreation.constructor.getValue().getDeclaringType().getFirstEncounteredJavaType();
+				org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( javaType, argumentField );
 				org.lgna.project.ast.AbstractType< ?,?,? > type = userType;
 				while( type instanceof org.lgna.project.ast.NamedUserType ) {
 					org.lgna.project.ast.AbstractConstructor typeConstructor = type.getDeclaredConstructors().get( 0 );

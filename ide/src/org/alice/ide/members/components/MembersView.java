@@ -58,8 +58,6 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		}
 		return rv;
 	}
-	private final org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
-	private final java.util.Map< Boolean, org.lgna.croquet.components.CardPanel.Key > keys = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public MembersView( org.alice.ide.members.MembersComposite composite ) {
 		super( composite );
 		final float FONT_SCALAR = 1.4f;
@@ -72,48 +70,14 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,0,4 ) );
 
 		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-		this.addComponent( cardPanel, Constraint.CENTER );
-	}
-	private org.lgna.croquet.State.ValueObserver< Boolean > isAlwaysAvailableObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			MembersView.this.cardPanel.showKey( MembersView.this.getKey( nextValue ) );
-		}
-	};
-	
-	private org.lgna.croquet.components.CardPanel.Key getKey( boolean isAlwaysShowingBlocks ) {
-		org.lgna.croquet.components.CardPanel.Key rv = this.keys.get( isAlwaysShowingBlocks );
-		if( rv != null ) {
-			//pass
+		org.alice.ide.members.TemplatesTabSelectionState tabState;
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			tabState = org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance();
 		} else {
-			org.alice.ide.croquet.models.templates.TemplatesTabSelectionState tabState;
-			if( isAlwaysShowingBlocks ) {
-				tabState = org.alice.ide.croquet.models.templates.ProcedureFunctionPropertyTabState.getInstance();
-			} else {
-				tabState = org.alice.ide.croquet.models.templates.ProcedureFunctionControlFlowTabState.getInstance();
-			}
-			org.lgna.croquet.components.AbstractTabbedPane<?,?,?> tabbedPane = tabState.createTabbedPane();
-//			if( isAlwaysShowingBlocks ) {
-//				tabbedPane = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance().createDefaultFolderTabbedPane();
-//			} else {
-//				tabbedPane = org.alice.ide.croquet.models.templates.TemplatesTabSelectionState.getInstance().createToolPaletteTabbedPane();
-//				tabbedPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-//			}
-			rv = this.cardPanel.createKey( tabbedPane, tabbedPane.getModel().getMigrationId() );
-			this.cardPanel.addComponent( rv );
-			this.keys.put( isAlwaysShowingBlocks, rv );
+			tabState = org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance();
 		}
-		return rv;
-	}
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addAndInvokeValueObserver( this.isAlwaysAvailableObserver );
-	}
-	@Override
-	protected void handleUndisplayable() {
-		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().removeValueObserver( this.isAlwaysAvailableObserver );
-		super.handleUndisplayable();
+		org.lgna.croquet.components.AbstractTabbedPane<?,?,?> tabbedPane = tabState.createTabbedPane();
+
+		this.addComponent( tabbedPane, Constraint.CENTER );
 	}
 }

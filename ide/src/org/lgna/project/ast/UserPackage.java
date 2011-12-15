@@ -55,7 +55,7 @@ public class UserPackage extends AbstractPackage {
 		this.name.setValue( name );
 	}
 	@Override
-	public boolean isDeclaredInAlice() {
+	public boolean isUserAuthored() {
 		return true;
 	}
 	@Override

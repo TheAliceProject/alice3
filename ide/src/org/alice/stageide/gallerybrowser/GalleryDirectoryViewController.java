@@ -138,10 +138,17 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 				//todo: does not handle case where user clicks on button hooked up to currently selected path node
 				FilterStringState.getInstance().setValueTransactionlessly( "" );
 				if( nextValue.isLeaf() ) {
-					nextValue.getDropModel( null, null ).fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
+					//note: we need to invoke later or transaction history is ignored due to being in the midst of redo
 					javax.swing.SwingUtilities.invokeLater( new Runnable() {
 						public void run() {
-							GalleryDirectoryViewController.this.getModel().setValueTransactionlessly( nextValue.getParent() );
+							nextValue.getDropModel( null, null ).fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
+							org.alice.ide.croquet.models.gallerybrowser.GalleryNode followUpValue = nextValue.getParent();
+							if( followUpValue != null ) {
+								if( followUpValue.getChildCount() == 1 ) {
+									followUpValue = followUpValue.getParent();
+								}
+								GalleryDirectoryViewController.this.getModel().setValueTransactionlessly( followUpValue );
+							}
 						}
 					} );
 //				} else {

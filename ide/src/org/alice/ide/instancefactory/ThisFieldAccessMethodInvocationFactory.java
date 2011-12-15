@@ -80,11 +80,11 @@ public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFact
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
-		return this.createFieldAccess( new org.alice.ide.ast.CurrentThisExpression() );
+		return this.createFieldAccess( createTransientThisExpression() );
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
-		return this.createFieldAccess( new org.lgna.project.ast.ThisExpression() );
+		return this.createFieldAccess( createThisExpression() );
 	}
 	@Override
 	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
