@@ -43,15 +43,15 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.glu.GLU;
+import static javax.media.opengl.GL.*;
+import static javax.media.opengl.glu.GLU.*;
 
 /**
  * @author Dennis Cosgrove
  */
 class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter {
-	private GL m_gl;
-	private GLU m_glu;
+	private javax.media.opengl.GL m_gl;
+	private javax.media.opengl.glu.GLU m_glu;
 	private double m_xOffset;
 	private double m_yOffset;
 	private double m_z;
@@ -60,26 +60,26 @@ class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter
 	private String getErrorString( int error ) {
 		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( m_glu.gluErrorString( error ) );
 		switch( error ) {
-		case GLU.GLU_TESS_MISSING_BEGIN_POLYGON:
+		case GLU_TESS_MISSING_BEGIN_POLYGON:
 			return "GLU_TESS_MISSING_BEGIN_POLYGON";
-		case GLU.GLU_TESS_MISSING_END_POLYGON:
+		case GLU_TESS_MISSING_END_POLYGON:
 			return "GLU_TESS_MISSING_END_POLYGON";
-		case GLU.GLU_TESS_MISSING_BEGIN_CONTOUR:
+		case GLU_TESS_MISSING_BEGIN_CONTOUR:
 			return "GLU_TESS_MISSING_BEGIN_CONTOUR";
-		case GLU.GLU_TESS_MISSING_END_CONTOUR:
+		case GLU_TESS_MISSING_END_CONTOUR:
 			return "GLU_TESS_MISSING_END_CONTOUR";
-		case GLU.GLU_TESS_COORD_TOO_LARGE:
+		case GLU_TESS_COORD_TOO_LARGE:
 			return "GLU_TESS_COORD_TOO_LARGE";
-		case GLU.GLU_TESS_NEED_COMBINE_CALLBACK:
+		case GLU_TESS_NEED_COMBINE_CALLBACK:
 			return "GLU_TESS_NEED_COMBINE_CALLBACK";
-		case GLU.GLU_OUT_OF_MEMORY:
+		case GLU_OUT_OF_MEMORY:
 			return "GLU_OUT_OF_MEMORY";
 		default:
 			return "UNKNOWN";
 		}
 	}
 
-	public void set( GL gl, GLU glu, double xOffset, double yOffset, double z, boolean isFront ) {
+	public void set( javax.media.opengl.GL gl, javax.media.opengl.glu.GLU glu, double xOffset, double yOffset, double z, boolean isFront ) {
 		m_gl = gl;
 		m_glu = glu;
 		m_xOffset = xOffset;
@@ -138,13 +138,13 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 			s_tessAdapter.set( context.gl, context.glu, xOffset, yOffset, z, isFront );
 
 			javax.media.opengl.glu.GLUtessellator tesselator = context.glu.gluNewTess();
-			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_END, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, s_tessAdapter );
-			//			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE_DATA, s_tessAdapter );
-			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, s_tessAdapter );
-			//			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR_DATA, s_tessAdapter );
+			context.glu.gluTessCallback( tesselator, GLU_TESS_BEGIN, s_tessAdapter );
+			context.glu.gluTessCallback( tesselator, GLU_TESS_VERTEX, s_tessAdapter );
+			context.glu.gluTessCallback( tesselator, GLU_TESS_END, s_tessAdapter );
+			context.glu.gluTessCallback( tesselator, GLU_TESS_COMBINE, s_tessAdapter );
+			//			context.glu.gluTessCallback( tesselator, GLU_TESS_COMBINE_DATA, s_tessAdapter );
+			context.glu.gluTessCallback( tesselator, GLU_TESS_ERROR, s_tessAdapter );
+			//			context.glu.gluTessCallback( tesselator, GLU_TESS_ERROR_DATA, s_tessAdapter );
 			try {
 				context.glu.gluBeginPolygon( tesselator );
 				try {
@@ -187,7 +187,7 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 			java.util.Vector< java.util.Vector< edu.cmu.cs.dennisc.math.Point2f >> outlineLines = m_element.getGlyphVector().acquireOutlineLines();
 			try {
 				for( java.util.Vector< edu.cmu.cs.dennisc.math.Point2f > outlineLine : outlineLines ) {
-					context.gl.glBegin( GL.GL_QUAD_STRIP );
+					context.gl.glBegin( GL_QUAD_STRIP );
 					edu.cmu.cs.dennisc.math.Point2f prev = null;
 					for( edu.cmu.cs.dennisc.math.Point2f curr : outlineLine ) {
 						if( prev == null ) {
@@ -230,10 +230,10 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 		ambientColor[ 0 ] += globalBrightness * AMBIENT_BOOST;
 		ambientColor[ 1 ] += globalBrightness * AMBIENT_BOOST;
 		ambientColor[ 2 ] += globalBrightness * AMBIENT_BOOST;
-		rc.gl.glLightModelfv( GL.GL_LIGHT_MODEL_AMBIENT, ambientBuffer );
+		rc.gl.glLightModelfv( GL_LIGHT_MODEL_AMBIENT, ambientBuffer );
 		glText( rc, true );
 		rc.getAmbient( ambientColor );
-		rc.gl.glLightModelfv( GL.GL_LIGHT_MODEL_AMBIENT, ambientBuffer );
+		rc.gl.glLightModelfv( GL_LIGHT_MODEL_AMBIENT, ambientBuffer );
 	}
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {

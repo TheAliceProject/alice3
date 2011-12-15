@@ -73,9 +73,9 @@ class SelectionBufferInfo {
 		zBackAsLong &= PickContext.MAX_UNSIGNED_INTEGER;
 		
 //		int[] atDepth = { -1 };
-//		pc.gl.glGetIntegerv( GL.GL_DEPTH_BITS, atDepth, 0 );
+//		pc.gl.glGetIntegerv( GL_DEPTH_BITS, atDepth, 0 );
 //		int[] atClearValue = { -1 };
-//		pc.gl.glGetIntegerv( GL.GL_DEPTH_CLEAR_VALUE, atClearValue, 0 );
+//		pc.gl.glGetIntegerv( GL_DEPTH_CLEAR_VALUE, atClearValue, 0 );
 //		edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectionBufferInfo:", atDepth[ 0 ], Long.toHexString( atClearValue[ 0 ] ), Long.toHexString( RenderContext.MAX_UNSIGNED_INTEGER ), Integer.toHexString( zFrontAsInt ), Long.toHexString( zFrontAsLong ), Integer.toHexString( zBackAsInt ), Long.toHexString( zBackAsLong )  );
 
 		this.zBack = (float)zBackAsLong;
@@ -117,9 +117,8 @@ class SelectionBufferInfo {
 	public edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSGVisual();
 		if( sgVisual != null ) {
-			edu.cmu.cs.dennisc.scenegraph.Geometry[] gs = sgVisual.geometries.getValue();
-			if( 0 <= this.geometryIndex && this.geometryIndex < gs.length ) {
-				return gs[ this.geometryIndex ];
+			if( 0 <= this.geometryIndex && this.geometryIndex < sgVisual.getGeometryCount() ) {
+				return sgVisual.getGeometryAt( this.geometryIndex );
 			} else {
 				return null;
 			}

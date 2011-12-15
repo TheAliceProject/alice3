@@ -48,7 +48,7 @@ package org.alice.apis.moveandturn;
  */
 public class Billboard extends AbstractModel {
 	class Face extends edu.cmu.cs.dennisc.scenegraph.Visual {
-		private edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
+		private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
 		private edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
 		private edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
 				new edu.cmu.cs.dennisc.scenegraph.Vertex(),

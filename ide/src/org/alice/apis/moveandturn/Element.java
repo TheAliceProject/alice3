@@ -52,11 +52,11 @@ import edu.cmu.cs.dennisc.alice.annotations.*;
 public class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner {
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< Composite > NAME_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< Composite >( Element.class, "Name" );
 
-	private static final String ELEMENT_KEY = "ELEMENT_KEY";
+	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key< Element > ELEMENT_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "ELEMENT_KEY" );
 
 	public static Element getElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		if( sgElement != null ) {
-			return (Element)sgElement.getBonusDataFor( ELEMENT_KEY );
+			return sgElement.getBonusDataFor( ELEMENT_KEY );
 		} else {
 			return null;
 		}

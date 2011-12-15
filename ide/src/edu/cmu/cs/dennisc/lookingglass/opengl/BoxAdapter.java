@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import static javax.media.opengl.GL.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,7 +62,7 @@ public class BoxAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Box 
 		//c.gl.glColor3d( 1,1,1 );
 		int id = 0;
 
-		c.gl.glBegin( javax.media.opengl.GL.GL_QUADS );
+		c.gl.glBegin( GL_QUADS );
 		if( isSubElementRequired ) {
 			c.gl.glLoadName( id++ );
 		}

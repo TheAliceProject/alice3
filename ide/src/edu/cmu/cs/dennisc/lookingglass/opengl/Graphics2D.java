@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GL;
+import static javax.media.opengl.GL.*;
 import javax.media.opengl.glu.GLU;
 
 /**
@@ -99,7 +99,6 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	public void initialize( int width, int height ) {
 		assert this.renderContext.gl != null;
-		assert this.renderContext.glu != null;
 		this.width = width;
 		this.height = height;
 
@@ -107,25 +106,25 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		setBackground( DEFAULT_BACKGROUND );
 		setFont( DEFAULT_FONT );
 
-		this.renderContext.gl.glMatrixMode( GL.GL_PROJECTION );
+		this.renderContext.gl.glMatrixMode( GL_PROJECTION );
 		this.renderContext.gl.glPushMatrix();
 		this.renderContext.gl.glLoadIdentity();
 		this.renderContext.gl.glOrtho( 0, this.width - 1, this.height - 1, 0, -1, 1 );
 		//this.renderContext.gl.glViewport( 0, 0, width, height );
-		this.renderContext.gl.glMatrixMode( GL.GL_MODELVIEW );
+		this.renderContext.gl.glMatrixMode( GL_MODELVIEW );
 		this.renderContext.gl.glPushMatrix();
 		this.renderContext.gl.glLoadIdentity();
 
 		this.affineTransform.setToIdentity();
 
-		this.renderContext.gl.glDisable( GL.GL_DEPTH_TEST );
-		this.renderContext.gl.glDisable( GL.GL_LIGHTING );
-		this.renderContext.gl.glDisable( GL.GL_CULL_FACE );
+		this.renderContext.gl.glDisable( GL_DEPTH_TEST );
+		this.renderContext.gl.glDisable( GL_LIGHTING );
+		this.renderContext.gl.glDisable( GL_CULL_FACE );
 
 		this.renderContext.setDiffuseColorTextureAdapter( null, false );
 		this.renderContext.setBumpTextureAdapter( null );
 
-		this.renderContext.gl.glPolygonMode( GL.GL_FRONT_AND_BACK, GL.GL_FILL );
+		this.renderContext.gl.glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 	}
 
 	// java.awt.Graphics
@@ -134,9 +133,9 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	public void dispose() {
 		this.renderContext.gl.glFlush();
 		if( isValid() ) {
-			this.renderContext.gl.glMatrixMode( GL.GL_MODELVIEW );
+			this.renderContext.gl.glMatrixMode( GL_MODELVIEW );
 			this.renderContext.gl.glPopMatrix();
-			this.renderContext.gl.glMatrixMode( GL.GL_PROJECTION );
+			this.renderContext.gl.glMatrixMode( GL_PROJECTION );
 			this.renderContext.gl.glPopMatrix();
 			this.width = -1;
 			this.height = -1;
@@ -211,14 +210,14 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	}
 	@Override
 	public void drawLine( int x1, int y1, int x2, int y2 ) {
-		this.renderContext.gl.glBegin( GL.GL_LINES );
+		this.renderContext.gl.glBegin( GL_LINES );
 		this.renderContext.gl.glVertex2i( x1, y1 );
 		this.renderContext.gl.glVertex2i( x2, y2 );
 		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void fillRect( int x, int y, int width, int height ) {
-		this.renderContext.gl.glBegin( GL.GL_POLYGON );
+		this.renderContext.gl.glBegin( GL_POLYGON );
 		this.renderContext.gl.glVertex2i( x, y );
 		this.renderContext.gl.glVertex2i( x + width, y );
 		this.renderContext.gl.glVertex2i( x + width, y + height );
@@ -228,7 +227,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	@Override
 	public void clearRect( int x, int y, int width, int height ) {
 		glSetColor( this.background );
-		this.renderContext.gl.glBegin( GL.GL_POLYGON );
+		this.renderContext.gl.glBegin( GL_POLYGON );
 		this.renderContext.gl.glVertex2i( x, y );
 		this.renderContext.gl.glVertex2i( x + width, y );
 		this.renderContext.gl.glVertex2i( x + width, y + height );
@@ -266,13 +265,13 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	}
 	@Override
 	public void drawRoundRect( int x, int y, int width, int height, int arcWidth, int arcHeight ) {
-		this.renderContext.gl.glBegin( GL.GL_LINE_LOOP );
+		this.renderContext.gl.glBegin( GL_LINE_LOOP );
 		glRoundRect( x, y, width, height, arcWidth, arcHeight );
 		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void fillRoundRect( int x, int y, int width, int height, int arcWidth, int arcHeight ) {
-		this.renderContext.gl.glBegin( GL.GL_TRIANGLE_FAN );
+		this.renderContext.gl.glBegin( GL_TRIANGLE_FAN );
 		glRoundRect( x, y, width, height, arcWidth, arcHeight );
 		this.renderContext.gl.glEnd();
 	}
@@ -290,13 +289,13 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void drawOval( int x, int y, int width, int height ) {
-		this.renderContext.gl.glBegin( GL.GL_LINE_LOOP );
+		this.renderContext.gl.glBegin( GL_LINE_LOOP );
 		glOval( x, y, width, height );
 		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void fillOval( int x, int y, int width, int height ) {
-		this.renderContext.gl.glBegin( GL.GL_TRIANGLE_FAN );
+		this.renderContext.gl.glBegin( GL_TRIANGLE_FAN );
 		glOval( x, y, width, height );
 		this.renderContext.gl.glEnd();
 	}
@@ -315,19 +314,19 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	}
 	@Override
 	public void drawPolyline( int xPoints[], int yPoints[], int nPoints ) {
-		this.renderContext.gl.glBegin( GL.GL_LINE_STRIP );
+		this.renderContext.gl.glBegin( GL_LINE_STRIP );
 		glPoly( xPoints, yPoints, nPoints );
 		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void drawPolygon( int xPoints[], int yPoints[], int nPoints ) {
-		this.renderContext.gl.glBegin( GL.GL_LINE_LOOP );
+		this.renderContext.gl.glBegin( GL_LINE_LOOP );
 		glPoly( xPoints, yPoints, nPoints );
 		this.renderContext.gl.glEnd();
 	}
 	@Override
 	public void fillPolygon( int xPoints[], int yPoints[], int nPoints ) {
-		this.renderContext.gl.glBegin( GL.GL_POLYGON );
+		this.renderContext.gl.glBegin( GL_POLYGON );
 		glPoly( xPoints, yPoints, nPoints );
 		this.renderContext.gl.glEnd();
 	}
@@ -474,9 +473,9 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	private void fill( java.awt.geom.PathIterator pi ) {
 		
 		class MyTessAdapter implements javax.media.opengl.glu.GLUtessellatorCallback {
-			private GL gl;
+			private javax.media.opengl.GL gl;
 
-			public MyTessAdapter( GL gl ) {
+			public MyTessAdapter( javax.media.opengl.GL gl ) {
 				this.gl = gl;
 			}
 			public void begin( int primitiveType ) {
@@ -545,9 +544,9 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 			double[] segment = new double[ 6 ];
 
-//			this.renderContext.gl.glDisable( GL.GL_CULL_FACE );
+//			this.renderContext.gl.glDisable( GL_CULL_FACE );
 //			try {
-				this.renderContext.glu.gluBeginPolygon( tesselator );
+			this.renderContext.glu.gluBeginPolygon( tesselator );
 				try {
 					while( !pi.isDone() ) {
 						double[] xyz = new double[ 3 ];
@@ -577,7 +576,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 					this.renderContext.glu.gluTessEndPolygon( tesselator );
 				}
 //			} finally {
-//				this.renderContext.gl.glEnable( GL.GL_CULL_FACE );
+//				this.renderContext.gl.glEnable( GL_CULL_FACE );
 //			}
 		} finally {
 			this.renderContext.glu.gluDeleteTess( tesselator );
@@ -595,7 +594,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 			if( basicStroke.getDashArray() != null ) {
 				//todo
 				this.renderContext.gl.glLineStipple( 1, (short)0x00FF );
-				this.renderContext.gl.glEnable( GL.GL_LINE_STIPPLE );
+				this.renderContext.gl.glEnable( GL_LINE_STIPPLE );
 			}
 			isLine = true;
 		} else {
@@ -614,7 +613,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 				while( !pi.isDone() ) {
 					switch( pi.currentSegment( segment ) ) {
 					case java.awt.geom.PathIterator.SEG_MOVETO:
-						this.renderContext.gl.glBegin( GL.GL_LINE_STRIP );
+						this.renderContext.gl.glBegin( GL_LINE_STRIP );
 						//note: no break
 					case java.awt.geom.PathIterator.SEG_LINETO:
 						this.renderContext.gl.glVertex2f( segment[ 0 ], segment[ 1 ] );
@@ -633,7 +632,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 					pi.next();
 				}
 			} finally {
-				this.renderContext.gl.glDisable( GL.GL_LINE_STIPPLE );
+				this.renderContext.gl.glDisable( GL_LINE_STIPPLE );
 				this.renderContext.gl.glLineWidth( 1 );
 			}
 		} else {
@@ -682,12 +681,12 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		//this.renderContext.gl.glColor3ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue() );
 		this.renderContext.gl.glColor4ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue(), (byte)color.getAlpha() );
 		if( color.getAlpha() != 255 ) {
-			this.renderContext.gl.glEnable( javax.media.opengl.GL.GL_BLEND );
-			this.renderContext.gl.glBlendFunc( javax.media.opengl.GL.GL_SRC_ALPHA, javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
-			this.renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, color.getAlpha() / 255.0f );
+			this.renderContext.gl.glEnable( GL_BLEND );
+			this.renderContext.gl.glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+			this.renderContext.gl.glPixelTransferf( GL_ALPHA_SCALE, color.getAlpha() / 255.0f );
 		} else {
-			this.renderContext.gl.glDisable( javax.media.opengl.GL.GL_BLEND );
-			this.renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, 1.0f );
+			this.renderContext.gl.glDisable( GL_BLEND );
+			this.renderContext.gl.glPixelTransferf( GL_ALPHA_SCALE, 1.0f );
 		}
 	}
 	private void glSetPaint( java.awt.Paint paint ) {
@@ -971,17 +970,17 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		if( imageGenerator.isAnimated() ) {
 			pixels.textureChanged( null );
 		}
-		this.renderContext.gl.glEnable( javax.media.opengl.GL.GL_BLEND );
-		this.renderContext.gl.glBlendFunc( javax.media.opengl.GL.GL_SRC_ALPHA, javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
-		this.renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, alpha );
+		this.renderContext.gl.glEnable( GL_BLEND );
+		this.renderContext.gl.glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+		this.renderContext.gl.glPixelTransferf( GL_ALPHA_SCALE, alpha );
 
 		int xPixel = (int)x;
 		int yPixel = (int)y + pixels.getHeight();
 		this.renderContext.gl.glRasterPos2i( 0, 0 );
 		this.renderContext.gl.glBitmap( 0, 0, 0, 0, xPixel, -yPixel, null );
-		this.renderContext.gl.glDrawPixels( pixels.getWidth(), pixels.getHeight(), javax.media.opengl.GL.GL_RGBA, javax.media.opengl.GL.GL_UNSIGNED_BYTE, pixels.getRGBA() );
-		this.renderContext.gl.glDisable( javax.media.opengl.GL.GL_BLEND );
-		this.renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, 1.0f );
+		this.renderContext.gl.glDrawPixels( pixels.getWidth(), pixels.getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, pixels.getRGBA() );
+		this.renderContext.gl.glDisable( GL_BLEND );
+		this.renderContext.gl.glPixelTransferf( GL_ALPHA_SCALE, 1.0f );
 	}
 	@Override
 	public void forget( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator ) {

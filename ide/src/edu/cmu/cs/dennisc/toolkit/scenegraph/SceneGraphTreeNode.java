@@ -9,7 +9,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Element;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 public class SceneGraphTreeNode extends BasicTreeNode
@@ -62,9 +62,9 @@ public class SceneGraphTreeNode extends BasicTreeNode
 	private void setElementBasedData(Element element)
 	{
 		this.virtualParentHashCode = -1;
-		if (element.containsBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY))
+		if (element.containsBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY))
 		{
-			Object obj = element.getBonusDataFor(ManipulationHandle3D.VIRTUAL_PARENT_KEY);
+			Object obj = element.getBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY);
 			if (obj != null && obj instanceof Element)
 			{
 				Element virtualParent = (Element)obj;
@@ -81,9 +81,9 @@ public class SceneGraphTreeNode extends BasicTreeNode
 				}
 			}
 		}
-		if (element.containsBonusDataFor(Element.DEBUG_STACK_TRACK_PROPERTY_NAME))
+		if (element.containsBonusDataFor(Element.DEBUG_CONSTRUCTION_STACK_TRACE_KEY))
 		{
-			this.stackTrace = (StackTraceElement[])element.getBonusDataFor(Element.DEBUG_STACK_TRACK_PROPERTY_NAME);
+			this.stackTrace = (StackTraceElement[])element.getBonusDataFor(Element.DEBUG_CONSTRUCTION_STACK_TRACE_KEY);
 		}
 		else
 		{
@@ -128,9 +128,9 @@ public class SceneGraphTreeNode extends BasicTreeNode
 			if (sgComponent instanceof Visual)
 			{
 				Visual visual = (Visual)sgComponent;
-				if (visual.frontFacingAppearance.getValue() instanceof SingleAppearance)
+				if (visual.frontFacingAppearance.getValue() instanceof SimpleAppearance)
 				{	
-					SingleAppearance appearance = (SingleAppearance)visual.frontFacingAppearance.getValue();
+					SimpleAppearance appearance = (SimpleAppearance)visual.frontFacingAppearance.getValue();
 					this.color = new Color4f(appearance.diffuseColor.getValue());
 					this.opacity = appearance.opacity.getValue();
 				}

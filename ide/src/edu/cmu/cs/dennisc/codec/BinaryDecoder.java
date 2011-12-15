@@ -46,6 +46,9 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public interface BinaryDecoder {
+	public byte[] readFully( byte[] rv );
+	public byte[] readFully( byte[] rv, int offset, int length );
+		
 	public boolean decodeBoolean();
 	public byte decodeByte();
 	public char decodeChar();
@@ -66,14 +69,6 @@ public interface BinaryDecoder {
 	public ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinaryEncodableAndDecodable( ReferenceableBinaryEncodableAndDecodable rv, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map );
 	public <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map );
 //	public <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinaryEncodableAndDecodable( java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map, Object context );
-
-	public java.nio.ByteBuffer decodeByteBuffer();
-	public java.nio.CharBuffer decodeCharBuffer();
-	public java.nio.ShortBuffer decodeShortBuffer();
-	public java.nio.IntBuffer decodeIntBuffer();
-	public java.nio.LongBuffer decodeLongBuffer();
-	public java.nio.FloatBuffer decodeFloatBuffer();
-	public java.nio.DoubleBuffer decodeDoubleBuffer();
 	
 	public boolean[] decodeBooleanArray();
 	public byte[] decodeByteArray();

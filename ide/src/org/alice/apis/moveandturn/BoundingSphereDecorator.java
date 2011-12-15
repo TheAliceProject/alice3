@@ -50,8 +50,8 @@ public class BoundingSphereDecorator {
 	private Transformable m_subject;
 	private edu.cmu.cs.dennisc.scenegraph.Transformable m_sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
-	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgFrontAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
-	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgBackAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance m_sgFrontAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance m_sgBackAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
 	private edu.cmu.cs.dennisc.scenegraph.Sphere m_sgSphere = new edu.cmu.cs.dennisc.scenegraph.Sphere();
 
 	public BoundingSphereDecorator( Transformable subject ) {

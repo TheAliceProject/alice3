@@ -98,7 +98,7 @@ public class ScaleUtilities {
 			
 			assert m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		}
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgTransformable.accessComponents() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgTransformable.getComponents() ) {
 			if( sgChild instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
 				edu.cmu.cs.dennisc.scenegraph.Transformable sgChildTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)sgChild;
 				exorciseTheDemonsOfScaledSpace( sgChildTransformable );

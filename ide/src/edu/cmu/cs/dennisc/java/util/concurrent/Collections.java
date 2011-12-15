@@ -54,7 +54,7 @@ public class Collections {
 	}
 	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( E... array ) {
 		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList< E >();
-		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( rv, array );
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
 	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( java.util.Collection< E > other ) {
@@ -67,7 +67,7 @@ public class Collections {
 	}
 	public static <E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet( E... array ) {
 		java.util.concurrent.CopyOnWriteArraySet<E> rv = new java.util.concurrent.CopyOnWriteArraySet< E >();
-		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( rv, array );
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
 	public static <E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet( java.util.Collection< E > other ) {
@@ -75,4 +75,19 @@ public class Collections {
 		rv.addAll( other );
 		return rv;
 	}
+	
+	public static <E> java.util.concurrent.ConcurrentLinkedQueue<E> newConcurrentLinkedQueue() {
+		return new java.util.concurrent.ConcurrentLinkedQueue< E >();
+	}
+	public static <E> java.util.concurrent.ConcurrentLinkedQueue<E> newConcurrentLinkedQueue( E... array ) {
+		java.util.concurrent.ConcurrentLinkedQueue<E> rv = new java.util.concurrent.ConcurrentLinkedQueue< E >();
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
+		return rv;
+	}
+	public static <E> java.util.concurrent.ConcurrentLinkedQueue<E> newConcurrentLinkedQueue( java.util.Collection< E > other ) {
+		java.util.concurrent.ConcurrentLinkedQueue<E> rv = new java.util.concurrent.ConcurrentLinkedQueue< E >();
+		rv.addAll( other );
+		return rv;
+	}
+	
 }

@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  */
 public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Texture> extends AbstractElementAdapter< E > {
 	public static void handleTextureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent e ) {
-		TextureAdapter textureAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
+		TextureAdapter<?> textureAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		textureAdapter.handleTextureChanged();
 	}
 	public boolean isPotentiallyAlphaBlended() {
@@ -62,26 +62,26 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		}
 	}
 
-	private java.util.List< RenderContext > m_renderContexts = new java.util.LinkedList< RenderContext >();
-	private boolean m_isDirty = true;
+	private final TextureBinding textureBinding = new TextureBinding();
+	private final java.util.List< RenderContext > renderContexts = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private com.sun.opengl.util.texture.TextureData textureData;
+	private boolean isTextureDataDirty = true;
 
 	public void addRenderContext( RenderContext rc ) {
-		m_renderContexts.add( rc );
+		this.renderContexts.add( rc );
 	}
 	public void removeRenderContext( RenderContext rc ) {
-		m_renderContexts.remove( rc );
-		setDirty( true );
+		this.renderContexts.remove( rc );
 	}
 
 	@Override
 	public void handleReleased() {
 		super.handleReleased();
-		if( m_renderContexts.size() > 0 ) {
-			RenderContext[] renderContexts = new RenderContext[ m_renderContexts.size() ];
-			m_renderContexts.toArray( renderContexts );
-			for( RenderContext rc : renderContexts ) {
+		if( this.renderContexts.size() > 0 ) {
+			for( RenderContext rc : this.renderContexts ) {
 				rc.forgetTextureAdapter( this, true );
 			}
+			this.renderContexts.clear();
 		}
 	}
 
@@ -90,12 +90,10 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 	}
 
 	protected boolean isDirty() {
-		return m_isDirty;
+		return this.isTextureDataDirty;
 	}
 	protected void setDirty( boolean isDirty ) {
-		m_isDirty = isDirty;
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "marking texture dirty", this );
-//		m_isDirty = true;
+		this.isTextureDataDirty = isDirty;
 	}
 
 	//todo: map u and v for non power of 2 textures?
@@ -106,49 +104,24 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		return v;
 	}
 
-	private com.sun.opengl.util.texture.Texture m_glTexture;
-
-	protected abstract com.sun.opengl.util.texture.Texture newTexture( com.sun.opengl.util.texture.Texture currentTexture );
-	public com.sun.opengl.util.texture.Texture getTexture( RenderContext rc ) {
-		boolean isNewTextureRequired;
-		if( m_glTexture != null ) {
-			if( isDirty() ) {
-				isNewTextureRequired = true;
-			} else {
-				int textureObject = m_glTexture.getTextureObject();
-				isNewTextureRequired = rc.gl.glIsTexture( textureObject ) == false;
+	protected static com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
+		//com.jogamp.opengl.util.texture.TextureData textureData = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
+		return com.sun.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
+	}
+	protected abstract com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTexture );
+	public TextureBinding bindTexture( RenderContext rc ) {
+		if( this.isDirty() ) {
+			if( this.textureData != null ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "new texture data", this );
 			}
-		} else {
-			isNewTextureRequired = true;
+			this.textureData = this.newTextureData( rc.gl, this.textureData ); 
+			this.setDirty( false );
 		}
-		if( isNewTextureRequired ) {
-			com.sun.opengl.util.texture.Texture glTexture = newTexture( m_glTexture );
-			if( m_glTexture != glTexture ) {
-				if( m_glTexture != null ) {
-					m_glTexture.dispose();
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println( "DISPOSED: ", m_glTexture.getTextureObject() );
-				}
-				m_glTexture = glTexture;
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "GENERATED: ", m_glTexture.getTextureObject() );
-				rc.put( this, m_glTexture );
-			}
-			m_isDirty = false;
-		}
-		return m_glTexture;
+		this.textureBinding.ensureUpToDate( rc, this.textureData );
+		return this.textureBinding;
 	}
 
 	public abstract java.awt.Graphics2D createGraphics();
 	public abstract void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height );
 	public abstract java.awt.Image getImage();
-
-//	@Override
-//	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-//		if( property == m_texture.isPotentiallyAlphaBlended ) {
-//			setDirty( true );
-//		} else if( property == m_texture.isMipMappingDesired ) {
-//			setDirty( true );
-//		} else {
-//			super.propertyChanged( property );
-//		}
-//	}
 }

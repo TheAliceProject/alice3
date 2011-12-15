@@ -49,12 +49,6 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 public abstract class AbstractElementAdapter< E extends edu.cmu.cs.dennisc.pattern.AbstractElement > {
 	protected E m_element;
 
-	// @Override
-	// protected void finalize() throws Throwable {
-	// super.finalize();
-	// System.err.println( "finalize: " + this );
-	// }
-
 	public void handleReleased() {
 		AdapterFactory.forget( m_element );
 		ChangeHandler.removeListenersAndObservers( m_element );

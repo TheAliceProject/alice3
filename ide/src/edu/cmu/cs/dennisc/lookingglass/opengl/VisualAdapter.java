@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GL;
+import static javax.media.opengl.GL.*;
 
 /**
  * @author Dennis Cosgrove
@@ -52,18 +52,18 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 
 	//todo: make private?
 	protected AppearanceAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Appearance > m_frontFacingAppearanceAdapter = null;
-	private AppearanceAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Appearance > m_backFacingAppearanceAdapter = null;
-	private boolean m_isShowing = false;
+	protected AppearanceAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Appearance > m_backFacingAppearanceAdapter = null;
+	protected boolean m_isShowing = false;
 	private double[] m_scale = new double[ 16 ];
 
 	protected java.nio.DoubleBuffer m_scaleBuffer = java.nio.DoubleBuffer.wrap( m_scale );
 	protected boolean m_isScaleIdentity = true;
-	//protected GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > m_geometryAdapter = null;
 	protected GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry >[] m_geometryAdapters = null;
 	
-//	public GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > getGeometryAdapter() {
-//		return m_geometryAdapter;
-//	}
+	//for tree node
+    /*package-private*/ AppearanceAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Appearance > getFrontFacingAppearanceAdapter() {
+        return m_frontFacingAppearanceAdapter;
+    }
 	
 	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseAbsoluteTransformationOfSource, int geometryIndex, int subElement) {
 		if( 0 <= geometryIndex && geometryIndex < m_geometryAdapters.length ) {
@@ -141,63 +141,61 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 		//pass
 	}
 
+	protected void renderGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
+        synchronized( m_geometryAdapters ) {
+            for( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter : m_geometryAdapters ) {
+                geometryAdapter.render( rc );
+            }
+        }
+    }
+	
 	protected void actuallyRender( RenderContext rc ) {
-		assert m_frontFacingAppearanceAdapter != null || m_backFacingAppearanceAdapter != null;
+        assert m_frontFacingAppearanceAdapter != null || m_backFacingAppearanceAdapter != null;
 
-		if( m_isScaleIdentity ) {
-			rc.gl.glDisable( GL.GL_NORMALIZE );
-		} else {
-			rc.gl.glPushMatrix();
-			rc.gl.glMultMatrixd( m_scaleBuffer );
+        
+        if( m_isScaleIdentity ) {
+            rc.gl.glDisable( GL_NORMALIZE );
+        } else {
+            rc.gl.glPushMatrix();
+            rc.gl.glMultMatrixd( m_scaleBuffer );
 
-			//todo: what if scale is supposed to affect lighting?
-			rc.gl.glEnable( GL.GL_NORMALIZE );
-		}
+            //todo: what if scale is supposed to affect lighting?
+            rc.gl.glEnable( GL_NORMALIZE );
+        }
 
-		
-//		//todo: remove
-//		rc.gl.glEnable( GL.GL_NORMALIZE );
-		
-		if( m_frontFacingAppearanceAdapter == m_backFacingAppearanceAdapter ) {
-			if( m_frontFacingAppearanceAdapter != null ) {
-				m_frontFacingAppearanceAdapter.setPipelineState( rc, GL.GL_FRONT_AND_BACK );
-				rc.gl.glDisable( GL.GL_CULL_FACE );
-				synchronized( m_geometryAdapters ) {
-					for( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter : m_geometryAdapters ) {
-						geometryAdapter.render( rc );
-					}
-				}
-				rc.gl.glEnable( GL.GL_CULL_FACE );
-			} else {
-				//should never reach here
-			}
-		} else {
-			if( m_frontFacingAppearanceAdapter != null ) {
-				rc.gl.glCullFace( GL.GL_BACK );
-				m_frontFacingAppearanceAdapter.setPipelineState( rc, GL.GL_FRONT );
-				synchronized( m_geometryAdapters ) {
-					for( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter : m_geometryAdapters ) {
-						geometryAdapter.render( rc );
-					}
-				}
-			}
-			if( m_backFacingAppearanceAdapter != null ) {
-				rc.gl.glCullFace( GL.GL_FRONT );
-				m_backFacingAppearanceAdapter.setPipelineState( rc, GL.GL_BACK );
-				synchronized( m_geometryAdapters ) {
-					for( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter : m_geometryAdapters ) {
-						geometryAdapter.render( rc );
-					}
-				}
-			}
-		}
+        
+//      //todo: remove
+//      rc.gl.glEnable( GL_NORMALIZE );
+        
+        if( m_frontFacingAppearanceAdapter == m_backFacingAppearanceAdapter ) {
+            if( m_frontFacingAppearanceAdapter != null ) {
+                m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT_AND_BACK );
+                rc.gl.glDisable( GL_CULL_FACE );
+                this.renderGeometry( rc );
+                rc.gl.glEnable( GL_CULL_FACE );
+            } else {
+                //should never reach here
+            }
+        } else {
+            if( m_frontFacingAppearanceAdapter != null ) {
+                rc.gl.glCullFace( GL_BACK );
+                m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT );
+                this.renderGeometry( rc );
+            }
+            if( m_backFacingAppearanceAdapter != null ) {
+                rc.gl.glCullFace( GL_FRONT );
+                m_backFacingAppearanceAdapter.setPipelineState( rc, GL_BACK );
+                this.renderGeometry( rc );
+            }
+        }
 
-		if( m_isScaleIdentity ) {
-			//pass
-		} else {
-			rc.gl.glPopMatrix();
-		}
-	}
+        if( m_isScaleIdentity ) {
+            //pass
+        } else {
+            rc.gl.glPopMatrix();
+        }
+    }
+	
 	public void renderAlphaBlended( RenderContext rc ) {
 		//System.out.println( "renderAlphaBlended: " + this );
 		if( isActuallyShowing() ) {
@@ -222,54 +220,52 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 	public void renderGhost( RenderContext rc, GhostAdapter root ) {
 		actuallyRender( rc );
 	}
+	
+	protected void pickGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, boolean isSubElementActuallyRequired ) {
+        synchronized( m_geometryAdapters ) {
+            for( int i=0; i<m_geometryAdapters.length; i++ ) {
+                pc.gl.glPushName( i );
+                m_geometryAdapters[ i ].pick( pc, isSubElementActuallyRequired );
+                pc.gl.glPopName();
+            }
+        }
+    }
 
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		if( isActuallyShowing() && isEthereal() == false) {
-			
-			boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired() || conformanceTestResults.isPickFunctioningCorrectly()==false;
-			
-			if( m_isScaleIdentity ) {
-				//pass
-			} else {
-				pc.gl.glPushMatrix();
-				pc.gl.glMultMatrixd( m_scaleBuffer );
-			}
+    public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+        if( isActuallyShowing() && isEthereal() == false) {
+            
+            boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired() || conformanceTestResults.isPickFunctioningCorrectly()==false;
+            
+            if( m_isScaleIdentity ) {
+                //pass
+            } else {
+                pc.gl.glPushMatrix();
+                pc.gl.glMultMatrixd( m_scaleBuffer );
+            }
 
-			pc.gl.glPushName( pc.getPickNameForVisualAdapter( this ) );
-			pc.gl.glEnable( GL.GL_CULL_FACE );
-			if( m_backFacingAppearanceAdapter != null ) {
-				pc.gl.glCullFace( GL.GL_FRONT );
-				pc.gl.glPushName( 0 );
-				synchronized( m_geometryAdapters ) {
-					for( int i=0; i<m_geometryAdapters.length; i++ ) {
-						pc.gl.glPushName( i );
-						m_geometryAdapters[ i ].pick( pc, isSubElementActuallyRequired );
-						pc.gl.glPopName();
-					}
-				}
-				pc.gl.glPopName();
-			}
-			if( m_frontFacingAppearanceAdapter != null ) {
-				pc.gl.glCullFace( GL.GL_BACK );
-				pc.gl.glPushName( 1 );
-				synchronized( m_geometryAdapters ) {
-					for( int i=0; i<m_geometryAdapters.length; i++ ) {
-						pc.gl.glPushName( i );
-						m_geometryAdapters[ i ].pick( pc, isSubElementActuallyRequired );
-						pc.gl.glPopName();
-					}
-				}
-				pc.gl.glPopName();
-			}
-			pc.gl.glPopName();
-			if( m_isScaleIdentity ) {
-				//pass
-			} else {
-				pc.gl.glPopMatrix();
-			}
-		}
-	}
+            pc.gl.glPushName( pc.getPickNameForVisualAdapter( this ) );
+            pc.gl.glEnable( GL_CULL_FACE );
+            if( m_backFacingAppearanceAdapter != null ) {
+                pc.gl.glCullFace( GL_FRONT );
+                pc.gl.glPushName( 0 );
+                this.pickGeometry( pc, isSubElementActuallyRequired );
+                pc.gl.glPopName();
+            }
+            if( m_frontFacingAppearanceAdapter != null ) {
+                pc.gl.glCullFace( GL_BACK );
+                pc.gl.glPushName( 1 );
+                this.pickGeometry( pc, isSubElementActuallyRequired );
+                pc.gl.glPopName();
+            }
+            pc.gl.glPopName();
+            if( m_isScaleIdentity ) {
+                //pass
+            } else {
+                pc.gl.glPopMatrix();
+            }
+        }
+    }
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.geometries ) {

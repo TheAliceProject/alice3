@@ -145,8 +145,8 @@ public class POVRayUtilities {
 		edu.cmu.cs.dennisc.color.Color4f color = null;
 		float opacity = Float.NaN;
 		float specular = Float.NaN;
-		if( sgAppearance instanceof SingleAppearance ) {
-			SingleAppearance sgSingleAppearance = (SingleAppearance)sgAppearance;
+		if( sgAppearance instanceof SimpleAppearance ) {
+			SimpleAppearance sgSingleAppearance = (SimpleAppearance)sgAppearance;
 			color = sgSingleAppearance.diffuseColor.getValue();
 			opacity = sgSingleAppearance.opacity.getValue();
 			specular = sgSingleAppearance.specularHighlightExponent.getValue();

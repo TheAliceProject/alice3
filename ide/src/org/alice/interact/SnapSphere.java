@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
@@ -65,7 +65,7 @@ public class SnapSphere extends Transformable {
 	private Sphere sgSphere = new Sphere();
 	private Visual sgSphereVisual = new Visual();
 	private LineArray sgLineArray = new LineArray();
-	private SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
+	private SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 
 	public SnapSphere()
 	{

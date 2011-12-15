@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.codec;
  */
 public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	//todo: handle null arrays
-	private Object createArray( Class<?> componentType ) {
+	private Object createArray( Class< ? > componentType ) {
 		int length = this.decodeInt();
 		if( length != -1 ) {
 			return java.lang.reflect.Array.newInstance( componentType, length );
@@ -57,90 +57,93 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	}
 	public final boolean[] decodeBooleanArray() {
 		boolean[] rv = (boolean[])createArray( Boolean.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeBoolean();
 		}
 		return rv;
 	}
-
-	protected abstract byte[] decodeByteArray( byte[] rv );
 	public final byte[] decodeByteArray() {
 		byte[] rv = (byte[])createArray( Byte.TYPE );
-		return decodeByteArray( rv );
+		for( int i = 0; i < rv.length; i++ ) {
+			rv[ i ] = decodeByte();
+		}
+		return rv;
 	}
+
 	public final char[] decodeCharArray() {
 		char[] rv = (char[])createArray( Character.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeChar();
 		}
 		return rv;
 	}
 	public final double[] decodeDoubleArray() {
 		double[] rv = (double[])createArray( Double.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeDouble();
 		}
 		return rv;
 	}
 	public final float[] decodeFloatArray() {
 		float[] rv = (float[])createArray( Float.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeFloat();
 		}
 		return rv;
 	}
 	public final int[] decodeIntArray() {
 		int[] rv = (int[])createArray( Integer.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeInt();
 		}
 		return rv;
 	}
 	public final long[] decodeLongArray() {
 		long[] rv = (long[])createArray( Long.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeLong();
 		}
 		return rv;
 	}
 	public final short[] decodeShortArray() {
 		short[] rv = (short[])createArray( Short.TYPE );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeShort();
 		}
 		return rv;
 	}
 	public final String[] decodeStringArray() {
 		String[] rv = (String[])createArray( String.class );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeString();
 		}
 		return rv;
 	}
-	public final < E extends Enum< E > > E[] decodeEnumArray( Class< E > cls ) {
+
+	public final <E extends Enum< E >> E[] decodeEnumArray( Class< E > cls ) {
 		E[] rv = (E[])createArray( cls );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeEnum( cls );
 		}
 		return rv;
 	}
 	public final java.util.UUID[] decodeIdArray() {
 		java.util.UUID[] rv = (java.util.UUID[])createArray( java.util.UUID.class );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeId();
 		}
 		return rv;
 	}
 	public final <E extends BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class< E > componentCls ) {
 		E[] rv = (E[])createArray( componentCls );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = (E)decodeBinaryEncodableAndDecodable();
 		}
 		return rv;
 	}
 	public final <E extends ReferenceableBinaryEncodableAndDecodable> E[] decodeReferenceableBinaryEncodableAndDecodableArray( Class< E > componentCls, java.util.Map< Integer, ReferenceableBinaryEncodableAndDecodable > map ) {
 		E[] rv = (E[])createArray( componentCls );
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = decodeReferenceableBinaryEncodableAndDecodable( componentCls, map );
 		}
 		return rv;
@@ -150,7 +153,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		if( isNotNull ) {
 			String clsName = decodeString();
 			String name = decodeString();
-			Class< E > clsActual = (Class<E>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+			Class< E > clsActual = (Class< E >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
 			return Enum.valueOf( clsActual, name );
 		} else {
 			return null;
@@ -181,16 +184,18 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 				java.lang.reflect.Constructor< E > cnstrctr = CodecUtilities.getPublicDecodeConstructor( clsName, parameterTypes );
 				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, args );
 			} catch( NoSuchMethodException nsme ) {
-//				try {
-//					Class<E> cls = (Class<E>)Class.forName( clsName );
-//					java.lang.reflect.Constructor< E > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls );
-//					E rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+				try {
+					Class<E> cls = (Class<E>)Class.forName( clsName );
+					java.lang.reflect.Constructor< E > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls );
+					java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, "decode", BinaryDecoder.class );
+					E rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+					edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( rv, mthd, this );
 //					rv.decode( this );
-//					return rv;
-//				} catch( ClassNotFoundException cnfe ) {
-//					throw new RuntimeException( cnfe );
-//				}
-				throw new RuntimeException( nsme );
+					return rv;
+				} catch( ClassNotFoundException cnfe ) {
+					throw new RuntimeException( cnfe );
+				}
+//				throw new RuntimeException( nsme );
 			} catch( ClassNotFoundException cnfe ) {
 				throw new RuntimeException( cnfe );
 			}
@@ -257,7 +262,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 //			return null;
 //		}
 //	}
-	public <E extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( java.lang.Class< E > componentCls, Object context ) {
+	public <E extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> E[] decodeBinaryEncodableAndDecodableArray( Class< E > componentCls, Object context ) {
 		throw new RuntimeException( "todo" );
 	}
 	
@@ -288,22 +293,22 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 				rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( clsName );
 				map.put( reference, rv );
 				rv.decode( this, map );
-				
+
 				//
 				//
 				//todo?
 				//
 				//
-//				Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-//				java.lang.reflect.Constructor< E > cnstrctr;
-//				try {
-//					cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class, java.util.Map.class } );
-//					rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this, map );
-//				} catch( NoSuchMethodException nsme ) {
-//					cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-//					rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
-//					rv.decode( this, map );
-//				}
+				//				Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+				//				java.lang.reflect.Constructor< E > cnstrctr;
+				//				try {
+				//					cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class, java.util.Map.class } );
+				//					rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this, map );
+				//				} catch( NoSuchMethodException nsme ) {
+				//					cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
+				//					rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+				//					rv.decode( this, map );
+				//				}
 			}
 			return rv;
 		} else {

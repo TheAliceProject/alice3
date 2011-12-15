@@ -74,7 +74,7 @@ public class ModelBuilder {
 						String s = entryPath.substring( MESH_PREFIX.length(), entryPath.length() - GEOMETRY_POSTFIX.length() );
 						int id = Integer.parseInt( s );
 						edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
-						edu.cmu.cs.dennisc.scenegraph.Mesh mesh = new edu.cmu.cs.dennisc.scenegraph.Mesh();
+						edu.cmu.cs.dennisc.scenegraph.OldMesh mesh = new edu.cmu.cs.dennisc.scenegraph.OldMesh();
 						mesh.xyzs.setValue( decoder.decodeDoubleArray() );
 						mesh.ijks.setValue( decoder.decodeFloatArray() );
 						mesh.uvs.setValue( decoder.decodeFloatArray() );
@@ -130,9 +130,9 @@ public class ModelBuilder {
 					if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
 						edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ita = (edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray)geometry;
 						encoder.encode( ita.vertices.getValue() );
-						encoder.encode( ita.polygonData.getValue() );
-					} else if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.Mesh ) {
-						edu.cmu.cs.dennisc.scenegraph.Mesh mesh = (edu.cmu.cs.dennisc.scenegraph.Mesh)geometry;
+						edu.cmu.cs.dennisc.codec.BufferUtilities.encode( encoder, ita.polygonData.getValue(), false );
+					} else if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.OldMesh ) {
+						edu.cmu.cs.dennisc.scenegraph.OldMesh mesh = (edu.cmu.cs.dennisc.scenegraph.OldMesh)geometry;
 						encoder.encode( mesh.xyzs.getValue() );
 						encoder.encode( mesh.ijks.getValue() );
 						encoder.encode( mesh.uvs.getValue() );
@@ -188,7 +188,7 @@ public class ModelBuilder {
 	private static String getEntryPath( edu.cmu.cs.dennisc.scenegraph.Geometry geometry ) {
 		if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
 			return INDEXED_TRIANGLE_ARRAY_PREFIX + geometry.hashCode() + GEOMETRY_POSTFIX;
-		} else if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.Mesh ) {
+		} else if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.OldMesh ) {
 			return MESH_PREFIX + geometry.hashCode() + GEOMETRY_POSTFIX;
 		} else {
 			return null;

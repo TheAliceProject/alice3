@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GL;
+import static javax.media.opengl.GL.*;
 
 /**
  * @author Dennis Cosgrove
@@ -51,7 +51,7 @@ import javax.media.opengl.GL;
 public class PickContext extends Context {
 	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
 
-	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = new java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> >();
+	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private PickParameters m_pickParameters;
 
 	public void pick( PickParameters pickParameters ) {
@@ -79,7 +79,7 @@ public class PickContext extends Context {
 		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
 	}
 	public void pickScene( AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		gl.glMatrixMode( GL.GL_MODELVIEW );
+		gl.glMatrixMode( GL_MODELVIEW );
 		synchronized( cameraAdapter ) {
 			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
 		}

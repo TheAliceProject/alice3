@@ -66,7 +66,7 @@ public abstract class PickMouseAdapter implements java.awt.event.MouseListener {
 
 	public void mousePressed( java.awt.event.MouseEvent e ) {
 		assert m_onscreenLookingGlass != null;
-		handlePickResult( m_onscreenLookingGlass.pickFrontMost( e.getX(), e.getY(), /*isSubElementRequired=*/false ) );
+		handlePickResult( m_onscreenLookingGlass.getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.NOT_REQUIRED ) );
 	}
 	public void mouseReleased( java.awt.event.MouseEvent e ) {
 	}

@@ -81,7 +81,7 @@ public enum MovementType {
 			case STOOD_UP:
 			{
 				StandIn standIn = new StandIn();
-				standIn.vehicle.setValue( transformable );
+				standIn.setVehicle( transformable );
 				standIn.setAxesOnlyToStandUp();
 				transformable.applyTranslation( translateAmount, standIn );
 				break;
@@ -106,7 +106,7 @@ public enum MovementType {
 			case STOOD_UP:
 			{
 				StandIn standIn = new StandIn();
-				standIn.vehicle.setValue( transformable );
+				standIn.setVehicle( transformable );
 				standIn.setAxesOnlyToStandUp();
 				transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, standIn );
 				break;

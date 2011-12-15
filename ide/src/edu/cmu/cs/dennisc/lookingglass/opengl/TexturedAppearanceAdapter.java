@@ -41,25 +41,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.scenegraph;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractOffsetReferenceFrame implements ReferenceFrame {
-	public boolean isSceneOf( Component other ) {
-		return false;
+public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter< edu.cmu.cs.dennisc.scenegraph.TexturedAppearance > {
+	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> m_diffuseColorTextureAdapter;
+	private boolean m_isDiffuseColorTextureAlphaBlended;
+	private boolean m_isDiffuseColorTextureClamped;
+	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> m_bumpTextureAdapter;
+
+	@Override
+	public boolean isAlphaBlended() {
+		return super.isAlphaBlended() || m_isDiffuseColorTextureAlphaBlended;
 	}
-	public boolean isVehicleOf( Component other ) {
-		return false;
+
+	@Override
+	public void setPipelineState( RenderContext rc, int face ) {
+		super.setPipelineState(rc, face);
+		setTexturePipelineState(rc);
 	}
-	public boolean isLocalOf( Component other ) {
-		return false;
+
+	public void setTexturePipelineState(RenderContext rc)
+	{
+		rc.setDiffuseColorTextureAdapter( m_diffuseColorTextureAdapter, m_isDiffuseColorTextureClamped );
+		rc.setBumpTextureAdapter( m_bumpTextureAdapter );
 	}
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
-		return getAbsoluteTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4() );
-	}
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation() {
-		return getInverseAbsoluteTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4() );
+	
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.diffuseColorTexture ) {
+			m_diffuseColorTextureAdapter = AdapterFactory.getAdapterFor( m_element.diffuseColorTexture.getValue() );
+		} else if( property == m_element.isDiffuseColorTextureAlphaBlended ) {
+			m_isDiffuseColorTextureAlphaBlended = m_element.isDiffuseColorTextureAlphaBlended.getValue();
+		} else if( property == m_element.isDiffuseColorTextureClamped ) {
+			m_isDiffuseColorTextureClamped = m_element.isDiffuseColorTextureClamped.getValue();
+		} else if( property == m_element.bumpTexture ) {
+			m_bumpTextureAdapter = AdapterFactory.getAdapterFor( m_element.bumpTexture.getValue() );
+		} else if( property == m_element.textureId ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle textureId?", property.getValue(), this.m_element.hashCode(), this.m_element );
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }

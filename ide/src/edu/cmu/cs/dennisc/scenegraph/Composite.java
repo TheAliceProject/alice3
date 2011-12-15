@@ -47,13 +47,13 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Composite extends Component {
-	private java.util.List< Component > m_children = new java.util.LinkedList< Component >();
-	private java.util.List< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > m_childrenListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener >();
+	private final java.util.List< Component > children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > childrenListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	@Override
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
 		super.accept( visitor );
-		for( Component child : m_children ) {
+		for( Component child : this.children ) {
 			child.accept( visitor );
 		}
 	}
@@ -61,7 +61,7 @@ public abstract class Composite extends Component {
 	@Override
 	protected void actuallyRelease() {
 		super.actuallyRelease();
-		for( Component child : m_children ) {
+		for( Component child : this.children ) {
 			child.release();
 		}
 	}
@@ -74,48 +74,20 @@ public abstract class Composite extends Component {
 		}
 	}
 
-	public boolean isSceneOf( Composite other ) {
-		return false;
-	}
-	public boolean isParentOf( Composite other ) {
-		return this == other.getParent();
-	}
-	public boolean isLocalOf( Composite other ) {
-		return this == other;
-	}
-
 	protected void fireChildAdded( Component child ) {
 		assert child != this;
-		//System.err.println( "fireChildAdded: " + Thread.currentThread() );
-		synchronized( m_children ) {
-			m_children.add( child );
-		}
+		this.children.add( child );
 		edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent( this, child );
-		synchronized( m_childrenListeners ) {
-			for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : m_childrenListeners ) {
-				childrenListener.componentAdded( e );
-			}
+		for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : this.childrenListeners ) {
+			childrenListener.componentAdded( e );
 		}
-		//todo: investigate
-		//for( edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener childrenListener : m_childrenListeners ) {
-		//	childrenListener.childAdded( e );
-		//}
 	}
 	protected void fireChildRemoved( Component child ) {
-		//System.err.println( "fireChildRemoved: " + Thread.currentThread() );
-		synchronized( m_children ) {
-			m_children.remove( child );
-		}
+		this.children.remove( child );
 		edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent( this, child );
-		synchronized( m_childrenListeners ) {
-			for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : m_childrenListeners ) {
-				childrenListener.componentRemoved( e );
-			}
+		for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : this.childrenListeners ) {
+			childrenListener.componentRemoved( e );
 		}
-		//todo: investigate
-		//for( edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener childrenListener : m_childrenListeners ) {
-		//	childrenListener.childRemoved( e );
-		//}
 	}
 
 	public void addComponent( Component component ) {
@@ -130,70 +102,70 @@ public abstract class Composite extends Component {
 		}
 	}
 
+	public Iterable< Component > getComponents() {
+		return this.children;
+	}
 	public int getComponentCount() {
-		return m_children.size();
+		return this.children.size();
 	}
 	public int getIndexOfComponent( Component component ) {
-		return m_children.indexOf( component );
+		return this.children.indexOf( component );
 	}
 	public Component getComponentAt( int i ) {
-		return m_children.get( i );
+		return this.children.get( i );
 	}
-	public Component[] getComponents( Component[] rv ) {
-		synchronized( m_children ) {
-			return m_children.toArray( rv );
-		}
-	}
-	public Component[] getComponents() {
-		return getComponents( new Component[ getComponentCount() ] );
-	}
-	public Iterable< Component > accessComponents() {
-		return m_children;
+	public Component[] getComponentsAsArray() {
+		return this.children.toArray( new Component[ this.children.size() ] );
 	}
 
 	public void addChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
-		//System.err.println( "addChildrenListener: " + Thread.currentThread() );
-		synchronized( m_childrenListeners ) {
-			m_childrenListeners.add( childrenListener );
-		}
+		this.childrenListeners.add( childrenListener );
 	}
 	public void removeChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
-		//System.err.println( "removeChildrenListener: " + Thread.currentThread() );
-		synchronized( m_childrenListeners ) {
-			m_childrenListeners.remove( childrenListener );
-		}
+		this.childrenListeners.remove( childrenListener );
 	}
-	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > getChildrenListenerIterable() {
-		return m_childrenListeners;
+	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > getChildrenListeners() {
+		return this.childrenListeners;
 	}
 
 	@Override
 	protected void fireAbsoluteTransformationChange() {
 		super.fireAbsoluteTransformationChange();
-		synchronized( m_children ) {
-			for( Component child : m_children ) {
-				child.fireAbsoluteTransformationChange();
-			}
+		for( Component child : this.children ) {
+			child.fireAbsoluteTransformationChange();
 		}
 	}
 	@Override
 	protected void fireHierarchyChanged() {
 		super.fireHierarchyChanged();
-		synchronized( m_children ) {
-			for( Component child : m_children ) {
-				child.fireHierarchyChanged();
-			}
+		for( Component child : this.children ) {
+			child.fireHierarchyChanged();
 		}
+	}
+	
+	@Override
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Map<edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable, Integer> map) {
+	    super.encode(binaryEncoder, map);
+	    binaryEncoder.encode( this.children.size() );
+	    for( Component component : this.children ) {
+	        binaryEncoder.encode( component, map );
+	    }
+	}
+	@Override
+	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, java.util.Map<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable> map) {
+	    super.decode(binaryDecoder, map);
+	    final int N = binaryDecoder.decodeInt();
+	    for( int i=0; i<N; i++ ) {
+	        this.addComponent( (Component)binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( map ) );
+	    }
 	}
 
 	@Override
 	public Element newCopy() {
 		Composite rv = (Composite)super.newCopy();
-		synchronized( m_children ) {
-			for( Component component : m_children ) {
-				Component rvComponent = (Component)component.newCopy();
-				rvComponent.setParent( rv );
-			}
+		for( Component component : this.children ) {
+			Component rvComponent = (Component)component.newCopy();
+			rvComponent.setParent( rv );
 		}
 		return rv;
 	}

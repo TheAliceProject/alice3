@@ -59,7 +59,7 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 //		if( m_textureRenderer != null ) {
 //			m_textureRenderer.dispose();
 //		}
-//		m_textureRenderer = new com.sun.opengl.util.j2d.TextureRenderer( sgCustomTexture.getWidth(), sgCustomTexture.getHeight(), sgCustomTexture.isPotentiallyAlphaBlended() );
+//		m_textureRenderer = new com.sun.opengl.util.awt.TextureRenderer( sgCustomTexture.getWidth(), sgCustomTexture.getHeight(), sgCustomTexture.isPotentiallyAlphaBlended() );
 		java.awt.Graphics2D g = m_textureRenderer.createGraphics();
 //		sgCustomTexture.paint( g );
 		//m_textureRenderer.beginOrthoRendering( m_textureRenderer.getWidth(), m_textureRenderer.getHeight() );
@@ -79,12 +79,12 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 	}
 		
 	@Override
-	protected com.sun.opengl.util.texture.Texture newTexture( com.sun.opengl.util.texture.Texture currentTexture ) {
+	protected com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTextureData ) {
 		boolean isNewTextureRendererRequired;
-		if( currentTexture != null ) {
+		if( currentTextureData != null ) {
 			if( m_textureRenderer != null ) {
 				//todo: check mip mapping
-				isNewTextureRendererRequired = currentTexture.getWidth() != m_textureRenderer.getWidth() || currentTexture.getHeight() != m_textureRenderer.getHeight();
+				isNewTextureRendererRequired = currentTextureData.getWidth() != m_textureRenderer.getWidth() || currentTextureData.getHeight() != m_textureRenderer.getHeight();
 			} else {
 				isNewTextureRendererRequired = true;
 			}
@@ -110,11 +110,11 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 					//pass
 				} else {
 					try {
-						return com.sun.opengl.util.texture.TextureIO.newTexture( bufferedImage, true );
+						return newTextureData( gl, bufferedImage, true );
 					} catch( AssertionError ae ) {
-						System.err.println( "WARNING: unable to directly generate mipmapped texture." );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "unable to directly generate mipmapped texture." );
 					} catch( RuntimeException re ) {
-						System.err.println( "WARNING: unable to directly generate mipmapped texture." );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "unable to directly generate mipmapped texture." );
 					}
 				}
 				java.awt.image.BufferedImage hackBI = new java.awt.image.BufferedImage( bufferedImage.getWidth(), bufferedImage.getHeight(), java.awt.image.BufferedImage.TYPE_4BYTE_ABGR_PRE );
@@ -122,12 +122,15 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 				hackG.drawImage( bufferedImage, 0, 0, edu.cmu.cs.dennisc.image.ImageUtilities.accessImageObserver() );
 				hackG.dispose();
 				bufferedImage = hackBI;
-				return com.sun.opengl.util.texture.TextureIO.newTexture( bufferedImage, true );
+				return newTextureData( gl, bufferedImage, true );
 			} else {
-				return m_textureRenderer.getTexture();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "m_textureRenderer.getTextureData()" );
+				return null;
+				//return m_textureRenderer.getTextureData();
 			}
 		} else {
-			return m_textureRenderer.getTexture();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "m_textureRenderer.getTextureData()" );
+			return null;
 		}
 	}
 }

@@ -61,11 +61,8 @@ public class BufferedImageTextureAdapter extends TextureAdapter< edu.cmu.cs.denn
 	}
 	
 	@Override
-	protected com.sun.opengl.util.texture.Texture newTexture( com.sun.opengl.util.texture.Texture currentTexture ) {
-		if( currentTexture != null ) {
-			currentTexture.dispose();
-		}
-		return com.sun.opengl.util.texture.TextureIO.newTexture( m_element.getBufferedImage(), m_element.isMipMappingDesired() );
+	protected com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTextureData ) {
+		return newTextureData( gl,m_element.getBufferedImage(), m_element.isMipMappingDesired() );
 	}
 //	
 //	@Override

@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GL;
+import static javax.media.opengl.GL.*;
 
 /**
  * @author Dennis Cosgrove
@@ -108,7 +108,7 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 
 	public void renderAlphaBlended( RenderContext rc ) {
 		// todo depth sort
-		//rc.gl.glDisable( GL.GL_DEPTH_TEST );
+		//rc.gl.glDisable( GL_DEPTH_TEST );
 		//		rc.gl.glDepthMask( false );
 		//		try {
 		synchronized( m_ghostAdapters ) {
@@ -129,7 +129,7 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 		//		} finally {
 		//			rc.gl.glDepthMask( true );
 		//		}
-		//rc.gl.glEnable( GL.GL_DEPTH_TEST );
+		//rc.gl.glEnable( GL_DEPTH_TEST );
 	}
 
 	@Override
@@ -141,16 +141,16 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 	}
 
 	private void renderScene( RenderContext rc ) {
-		rc.gl.glDisable( GL.GL_BLEND );
+		rc.gl.glDisable( GL_BLEND );
 		renderOpaque( rc );
-		rc.gl.glEnable( GL.GL_BLEND );
-		rc.gl.glBlendFunc( GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA );
+		rc.gl.glEnable( GL_BLEND );
+		rc.gl.glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 		renderAlphaBlended( rc );
-		rc.gl.glDisable( GL.GL_BLEND );
+		rc.gl.glDisable( GL_BLEND );
 	}
 
 	public void renderScene( RenderContext rc, AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, BackgroundAdapter backgroundAdapter ) {
-		rc.gl.glMatrixMode( GL.GL_MODELVIEW );
+		rc.gl.glMatrixMode( GL_MODELVIEW );
 		synchronized( cameraAdapter ) {
 			rc.gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
 		}
@@ -167,38 +167,38 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 		if( m_planarReflectorAdapters.size() > 0 ) {
 			PlanarReflectorAdapter planarReflectorAdapter = m_planarReflectorAdapters.get( 0 );
 			if( planarReflectorAdapter.isFacing( cameraAdapter ) ) {
-				rc.gl.glClear( GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT );
+				rc.gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
 				rc.gl.glColorMask( false, false, false, false );
-				rc.gl.glEnable( GL.GL_STENCIL_TEST );
-				rc.gl.glStencilFunc( GL.GL_ALWAYS, 1, 1 );
-				rc.gl.glStencilOp( GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE );
-				rc.gl.glDisable( GL.GL_DEPTH_TEST );
+				rc.gl.glEnable( GL_STENCIL_TEST );
+				rc.gl.glStencilFunc( GL_ALWAYS, 1, 1 );
+				rc.gl.glStencilOp( GL_KEEP, GL_KEEP, GL_REPLACE );
+				rc.gl.glDisable( GL_DEPTH_TEST );
 				planarReflectorAdapter.renderStencil( rc );
-				rc.gl.glEnable( GL.GL_DEPTH_TEST );
+				rc.gl.glEnable( GL_DEPTH_TEST );
 				rc.gl.glColorMask( true, true, true, true );
-				rc.gl.glStencilFunc( GL.GL_EQUAL, 1, 1 );
-				rc.gl.glStencilOp( GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP );
-				rc.gl.glEnable( GL.GL_CLIP_PLANE0 );
+				rc.gl.glStencilFunc( GL_EQUAL, 1, 1 );
+				rc.gl.glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
+				rc.gl.glEnable( GL_CLIP_PLANE0 );
 				rc.gl.glPushMatrix();
 				planarReflectorAdapter.applyReflection( rc );
-				rc.gl.glFrontFace( GL.GL_CW );
+				rc.gl.glFrontFace( GL_CW );
 				setup( rc );
 				renderScene( rc );
-				rc.gl.glFrontFace( GL.GL_CCW );
+				rc.gl.glFrontFace( GL_CCW );
 				rc.gl.glPopMatrix();
-				rc.gl.glDisable( GL.GL_CLIP_PLANE0 );
-				rc.gl.glDisable( GL.GL_STENCIL_TEST );
+				rc.gl.glDisable( GL_CLIP_PLANE0 );
+				rc.gl.glDisable( GL_STENCIL_TEST );
 				setup( rc );
-				rc.gl.glEnable( GL.GL_BLEND );
-				rc.gl.glBlendFunc( GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA );
+				rc.gl.glEnable( GL_BLEND );
+				rc.gl.glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 				planarReflectorAdapter.renderStencil( rc );
-				rc.gl.glDisable( GL.GL_BLEND );
+				rc.gl.glDisable( GL_BLEND );
 			} else {
-				rc.gl.glClear( GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT );
+				rc.gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 				setup( rc );
 			}
 		} else {
-			rc.gl.glClear( GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT );
+			rc.gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 			setup( rc );
 		}
 		renderScene( rc );

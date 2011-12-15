@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
@@ -61,7 +61,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  */
 public abstract class Marker extends Transformable 
 {
-	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
+	protected SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 	
 	protected List<Visual> sgVisuals = new LinkedList<Visual>();
 	protected boolean isShowing = true;
@@ -151,7 +151,7 @@ public abstract class Marker extends Transformable
 	}
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
-	public edu.cmu.cs.dennisc.scenegraph.SingleAppearance getSGSingleAppearance() {
+	public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance getSGSingleAppearance() {
 		return sgFrontFacingAppearance;
 	}
 	

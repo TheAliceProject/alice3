@@ -61,7 +61,7 @@ public abstract class Model extends AbstractModel {
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< SurfaceTexture[] > POTENTIAL_SURFACE_TEXTURES_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< SurfaceTexture[] >( Model.class, "PotentialSurfaceTextures" );
 	
 	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
-	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
+	private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance m_sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
 
 	private java.util.List< SurfaceTexture > m_potentialSurfaceTextures = new java.util.LinkedList< SurfaceTexture >();
 	
@@ -84,7 +84,7 @@ public abstract class Model extends AbstractModel {
 		return m_sgVisual;
 	}
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
-	public edu.cmu.cs.dennisc.scenegraph.SingleAppearance getSGSingleAppearance() {
+	public edu.cmu.cs.dennisc.scenegraph.TexturedAppearance getSGSingleAppearance() {
 		return m_sgAppearance;
 	}
 
