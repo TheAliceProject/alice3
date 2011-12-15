@@ -159,6 +159,11 @@ public class BootstrapUtilties {
 		
 		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
+		
+		if( appearance == org.lgna.story.Ground.SurfaceAppearance.MOON ) {
+			org.lgna.project.ast.JavaMethod setAtmosphereColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, org.lgna.story.SetAtmosphereColor.Detail[].class );
+			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAtmosphereColorMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( org.lgna.story.Color.class, "BLACK" ) ) );
+		}
 
 		org.lgna.project.ast.UserMethod performCustomSetupMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, "performCustomSetup" );
 
