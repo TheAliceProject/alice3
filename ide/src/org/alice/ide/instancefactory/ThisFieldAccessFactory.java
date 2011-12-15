@@ -75,10 +75,10 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		return new org.lgna.project.ast.FieldAccess( expression, this.field );
 	}
 	public org.lgna.project.ast.FieldAccess createTransientExpression() {
-		return this.createFieldAccess( new org.alice.ide.ast.CurrentThisExpression() );
+		return this.createFieldAccess( createTransientThisExpression() );
 	}
 	public org.lgna.project.ast.FieldAccess createExpression() {
-		return this.createFieldAccess( new org.lgna.project.ast.ThisExpression() );
+		return this.createFieldAccess( createThisExpression() );
 	}
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return this.field.getValueType();
