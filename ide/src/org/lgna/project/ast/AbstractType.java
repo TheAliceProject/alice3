@@ -106,6 +106,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 	public abstract AbstractType<?,?,?> getKeywordFactoryType();
 	public abstract AbstractPackage getPackage();
 	public abstract AbstractType<?,?,?> getSuperType();
+	public abstract AbstractType<?,?,?>[] getInterfaces();
 	public abstract java.util.ArrayList< C > getDeclaredConstructors();
 	public abstract java.util.ArrayList< M > getDeclaredMethods();
 	public abstract java.util.ArrayList< F > getDeclaredFields();
@@ -119,7 +120,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 	
 	public abstract boolean isArray();
 	public abstract AbstractType<?,?,?> getComponentType();
-	
+
 	public C getDeclaredConstructor( AbstractType<?,?,?>... parameterTypes ) {
 		C rv = null;
 		for( C constructor : getDeclaredConstructors() ) {

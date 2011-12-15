@@ -145,6 +145,10 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 		return superType.getValue();
 	}
 	@Override
+	public AbstractType<?,?,?>[] getInterfaces() {
+		return new AbstractType< ?,?,? >[] {};
+	}
+	@Override
 	public final java.util.ArrayList< UserMethod > getDeclaredMethods() {
 		return methods.getValue();
 	}

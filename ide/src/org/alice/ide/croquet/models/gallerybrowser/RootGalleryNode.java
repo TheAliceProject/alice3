@@ -69,7 +69,7 @@ public class RootGalleryNode extends GalleryNode {
 	}
 
 	private java.util.List< org.lgna.project.ast.NamedUserType > getDeclarationChildren() {
-		return org.alice.ide.typemanager.TypeManager.getNamedUserTypesFor( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes() );
+		return org.alice.ide.typemanager.TypeManager.getNamedUserTypesFromSuperTypes( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes() );
 	}
 	@Override
 	public GalleryNode getParent() {

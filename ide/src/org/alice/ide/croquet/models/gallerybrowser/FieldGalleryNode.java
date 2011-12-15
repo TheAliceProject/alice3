@@ -101,7 +101,7 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		org.lgna.project.ast.AbstractConstructor bogusConstructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( this.getDeclaration().getValueType() );
-		sb.append( org.alice.ide.typemanager.TypeManager.getNameOfNamedUserTypeFor( bogusConstructor.getDeclaringType().getFirstEncounteredJavaType(), this.getDeclaration() ) );
+		sb.append( org.alice.ide.typemanager.TypeManager.createClassNameFromArgumentField( bogusConstructor.getDeclaringType().getFirstEncounteredJavaType(), this.getDeclaration() ) );
 	}
 
 	@Override

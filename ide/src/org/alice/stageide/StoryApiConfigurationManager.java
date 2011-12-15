@@ -272,7 +272,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	@Override
 	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType< ?, ?, ? > argumentType ) {
-		java.util.List< org.lgna.project.ast.NamedUserType > types = org.alice.ide.typemanager.TypeManager.getNamedUserTypesFor( getTopLevelGalleryTypes() );
+		java.util.List< org.lgna.project.ast.NamedUserType > types = org.alice.ide.typemanager.TypeManager.getNamedUserTypesFromSuperTypes( getTopLevelGalleryTypes() );
 		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : types ) {
 			org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
 			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = constructor.getRequiredParameters();
