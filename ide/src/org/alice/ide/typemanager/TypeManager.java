@@ -234,7 +234,6 @@ public class TypeManager {
 		org.lgna.project.ast.JavaType[] argumentTypes = getArgumentTypes( ancestorType, argumentField );
 		return getNamedUserTypeFor( ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly( argumentTypes[ 0 ] ) );
 	}
-
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.JavaType javaType ) {
 		ExtendsTypeCriterion criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( javaType, ConstructorArgumentUtilities.getContructorParameter0Type( javaType ) );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
@@ -248,6 +247,18 @@ public class TypeManager {
 		}
 		return createTypeFor( javaType, "My" + javaType.getName(), null, null );
 	}
+
+	public static String getNameOfNamedUserTypeFor( org.lgna.project.ast.AbstractType< ?,?,? > ancestorType, org.lgna.project.ast.AbstractField argumentField ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "generate name without generating type" );
+		org.lgna.project.ast.NamedUserType namedUserType = getNamedUserTypeFor( (org.lgna.project.ast.JavaType)ancestorType, (org.lgna.project.ast.JavaField)argumentField );
+		return namedUserType.getName();
+	}
+	public static String getNameOfNamedUserTypeFor( org.lgna.project.ast.AbstractType< ?,?,? > ancestorType ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "generate name without generating type" );
+		org.lgna.project.ast.NamedUserType namedUserType = getNamedUserTypeFor( (org.lgna.project.ast.JavaType)ancestorType );
+		return namedUserType.getName();
+	}
+	
 	public static java.util.List< org.lgna.project.ast.NamedUserType > getNamedUserTypesFor( java.util.List< org.lgna.project.ast.JavaType > javaTypes ) {
 		java.util.ArrayList< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( javaTypes.size() );
 		for( org.lgna.project.ast.JavaType javaType : javaTypes ) {

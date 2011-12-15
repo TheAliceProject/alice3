@@ -59,14 +59,17 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 		return rv;
 	}
 	private final javax.swing.Icon largeIcon;
+	private final javax.swing.Icon smallIcon;
 	private FieldGalleryNode( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "4c21c31c-49a5-46dd-82d6-28f0055c30b4" ), field );
 		Class<?> resourceClass = ((org.lgna.project.ast.JavaType)this.getDeclaration().getValueType()).getClassReflectionProxy().getReification();
 		java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(resourceClass, this.getDeclaration().getName());
 		if( thumbnail != null ) {
 			this.largeIcon = new javax.swing.ImageIcon(thumbnail);
+			this.smallIcon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 24, 24 );
 		} else {
 			this.largeIcon = null;
+			this.smallIcon = null;
 		}
 	}
 	@Override
@@ -88,11 +91,17 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 	
 	@Override
 	public javax.swing.Icon getSmallIcon() {
-		return null;
+		return this.smallIcon;
 	}
 	@Override
 	public javax.swing.Icon getLargeIcon() {
 		return this.largeIcon;
+	}
+	
+	@Override
+	protected void appendClassName( java.lang.StringBuilder sb ) {
+		org.lgna.project.ast.AbstractConstructor bogusConstructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( this.getDeclaration().getValueType() );
+		sb.append( org.alice.ide.typemanager.TypeManager.getNameOfNamedUserTypeFor( bogusConstructor.getDeclaringType().getFirstEncounteredJavaType(), this.getDeclaration() ) );
 	}
 
 	@Override

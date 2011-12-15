@@ -73,8 +73,13 @@ public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.Abs
 	public D getDeclaration() {
 		return this.declaration;
 	}
+	protected abstract void appendClassName( StringBuilder sb );
 	@Override
-	public String getText() {
-		return this.declaration.getName();
+	public final String getText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>class <strong>" );
+		this.appendClassName( sb );
+		sb.append( "</strong></html>" );
+		return sb.toString();
 	}
 }

@@ -67,4 +67,10 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 	public int getIndexOfChild( GalleryNode child ) {
 		return this.getDeclarationChildren().indexOf( ((DeclarationGalleryNode<?>)child).getDeclaration() );
 	}
+	@Override
+	protected void appendClassName( java.lang.StringBuilder sb ) {
+		String name = this.getDeclaration().getName();
+		sb.append( "My" );
+		sb.append( name.replace( "Resource", "" ) );
+	}
 }

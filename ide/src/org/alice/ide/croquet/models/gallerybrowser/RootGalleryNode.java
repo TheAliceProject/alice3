@@ -92,7 +92,7 @@ public class RootGalleryNode extends GalleryNode {
 	}
 	@Override
 	public String getText() {
-		return "root";
+		return "all models";
 	}
 	@Override
 	public javax.swing.Icon getSmallIcon() {
