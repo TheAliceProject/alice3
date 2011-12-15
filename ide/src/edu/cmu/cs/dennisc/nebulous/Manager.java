@@ -8,10 +8,12 @@ package edu.cmu.cs.dennisc.nebulous;
  * @author Dennis Cosgrove
  */
 public class Manager {
+	private static final double NEBULOUS_VERSION = 1.0;
 	static boolean s_isInitialized = false;
 	static boolean s_isLicensePromptDesired = true;
 	static java.util.List< java.io.File > s_pendingBundles;
 
+	private static native void setVersion(double version);
 	private static native void addBundlePath( String bundlePath );
 	private static native void removeBundlePath( String bundlePath );
 	private static native void setRawResourceDirectory( String rourcePath );
@@ -80,6 +82,7 @@ public class Manager {
 				for( java.io.File directory : Manager.getPendingBundles() ) {
 					Manager.addBundlePath( directory.getAbsolutePath() );
 				}
+				Manager.setVersion(NEBULOUS_VERSION);
 				s_isInitialized = true;
 			} else {
 				throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
