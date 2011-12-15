@@ -50,5 +50,6 @@ public class ModelClassData extends BaseModelClassData
 	public static final ModelClassData PINBALL_CLASS_DATA = new ModelClassData(org.lgna.story.resources.PinballMachineResource.class, "org.lgna.story.resources.pinball", PROP_BASE_CLASS_DATA);
 	public static final ModelClassData SOFA_CLASS_DATA = new ModelClassData(org.lgna.story.resources.SofaResource.class, "org.lgna.story.resources.sofa", PROP_BASE_CLASS_DATA);
 	public static final ModelClassData UFO_CLASS_DATA = new ModelClassData(org.lgna.story.resources.UFOResource.class, "org.lgna.story.resources.ufo", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData HELICOPTER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.PropResource.class, "org.lgna.story.resources.prop", PROP_BASE_CLASS_DATA);
 	
 }
