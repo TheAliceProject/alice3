@@ -46,8 +46,18 @@ package test.ik.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlsPanel extends org.lgna.croquet.components.LineAxisPanel {
+public class ControlsPanel extends org.lgna.croquet.components.PageAxisPanel {
 	public ControlsPanel( test.ik.croquet.ControlsComposite composite ) {
 		super( composite );
+		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+				new org.lgna.croquet.components.Label( "anchor:" ),
+				new JointIdDropDown( test.ik.croquet.AnchorJointIdState.getInstance() )
+		) );
+		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+				new org.lgna.croquet.components.Label( "end:" ),
+				new JointIdDropDown( test.ik.croquet.EndJointIdState.getInstance() )
+		) );
+		
+		this.setMinimumPreferredWidth( 160 );
 	}
 }

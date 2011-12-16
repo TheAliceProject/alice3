@@ -44,7 +44,6 @@
 package test.ik;
 
 import org.lgna.story.*;
-import org.lgna.story.implementation.alice.JointImplementation;
 
 /**
  * @author Dennis Cosgrove
@@ -56,44 +55,54 @@ class IkProgram extends Program {
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
 
-	private static final void printChainOfJoints( org.lgna.story.implementation.JointedModelImp<?,?> imp, org.lgna.story.resources.JointId aId, org.lgna.story.resources.JointId bId ) {
-		java.util.List< org.lgna.story.implementation.JointImp > chain = imp.getInclusiveListOfJointsBetween( aId, bId );
-		System.out.println( aId + " " + bId );
-		for( org.lgna.story.implementation.JointImp jointImp : chain ) {
-			System.out.println( "\t" + jointImp + " " );
-			if (jointImp instanceof JointImplementation) {
-				JointImplementation ji = (JointImplementation) jointImp;
-				System.out.println(ji.getSgComposite().isFreeInX.getValue() + " " + ji.getSgComposite().isFreeInY.getValue() + " " + ji.getSgComposite().isFreeInZ.getValue());
-			}
-			//not there for nebulous joint
-//			if (jointImp instanceof org.lgna.story.implementation.sims2.JointImplementation) {
-//				org.lgna.story.implementation.sims2.JointImplementation ji = (org.lgna.story.implementation.sims2.JointImplementation) jointImp;
-//				System.out.println(ji.getSgComposite().isFreeInX.getValue() + " " + ji.getSgComposite().isFreeInY.getValue() + " " + ji.getSgComposite().isFreeInZ.getValue());
-//			}
+	private org.lgna.croquet.State.ValueObserver< org.lgna.story.resources.JointId > jointIdListener = new org.lgna.croquet.State.ValueObserver< org.lgna.story.resources.JointId >() {
+		public void changing( org.lgna.croquet.State< org.lgna.story.resources.JointId > state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
 		}
+		public void changed( org.lgna.croquet.State< org.lgna.story.resources.JointId > state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
+			IkProgram.this.handleJointIdChanged();
+		}
+	};
+	private java.util.List< org.lgna.story.implementation.JointImp > getJointImpListBetweenAnchorAndEnd() {
+		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
+		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
+		org.lgna.story.implementation.JointedModelImp<?,?> imp = ImplementationAccessor.getImplementation( this.ogre );
+		return imp.getInclusiveListOfJointsBetween( anchorId, endId );
 	}
-	public void runTest() {
-		org.lgna.story.implementation.JointedModelImp<?,?> imp = ImplementationAccessor.getImplementation( ogre );
-		printChainOfJoints( imp, org.lgna.story.resources.BipedResource.LEFT_ANKLE, org.lgna.story.resources.BipedResource.RIGHT_ELBOW );
-		printChainOfJoints( imp, org.lgna.story.resources.BipedResource.SPINE_MIDDLE, org.lgna.story.resources.BipedResource.RIGHT_ELBOW );
-		printChainOfJoints( imp, org.lgna.story.resources.BipedResource.RIGHT_ELBOW, org.lgna.story.resources.BipedResource.SPINE_MIDDLE );
-		
+	private final void handleJointIdChanged() {
+		java.util.List< org.lgna.story.implementation.JointImp > chain = this.getJointImpListBetweenAnchorAndEnd();
+		for( org.lgna.story.implementation.JointImp jointImp : chain ) {
+			System.out.println( "\t" + jointImp + " x: " + jointImp.isFreeInX() + " y: " + jointImp.isFreeInY() + " z: " + jointImp.isFreeInZ() );
+		}
+		System.out.flush();
+	}
+	private void initializeTest() {
 		this.setActiveScene( this.scene );
 		this.modelManipulationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
 		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
-	}
 
+		test.ik.croquet.AnchorJointIdState.getInstance().addValueObserver( this.jointIdListener );
+		test.ik.croquet.EndJointIdState.getInstance().addValueObserver( this.jointIdListener );
+
+		this.handleJointIdChanged();
+	}
+	
 	public static void main( String[] args ) {
 		IkTestApplication app = new IkTestApplication();
 		app.initialize( args );
 		app.setPerspective( new test.ik.croquet.IkPerspective() );
 
-		IkProgram program = new IkProgram();
+		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.RIGHT_CLAVICLE; 
+		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.RIGHT_WRIST; 
+
+		test.ik.croquet.AnchorJointIdState.getInstance().setValue( initialAnchor );
+		test.ik.croquet.EndJointIdState.getInstance().setValue( initialEnd );
 		
+		IkProgram program = new IkProgram();
+
 		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
-		program.runTest();
+		program.initializeTest();
 
 		app.getFrame().setSize( 1200, 800 );
 		app.getFrame().setVisible( true );

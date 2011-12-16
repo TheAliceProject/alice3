@@ -69,19 +69,28 @@ public abstract class DropDown< M extends org.lgna.croquet.Model >  extends org.
 		return this.prefixComponent;
 	}
 	public void setPrefixComponent( org.lgna.croquet.components.Component< ? > prefixComponent ) {
-		this.prefixComponent = prefixComponent;
+		if( this.prefixComponent != prefixComponent ) {
+			this.prefixComponent = prefixComponent;
+			this.revalidateAndRepaint();
+		}
 	}
 	public org.lgna.croquet.components.Component<?> getMainComponent() {
 		return this.mainComponent;
 	}
 	public void setMainComponent( org.lgna.croquet.components.Component< ? > mainComponent ) {
-		this.mainComponent = mainComponent;
+		if( this.mainComponent != mainComponent ) {
+			this.mainComponent = mainComponent;
+			this.revalidateAndRepaint();
+		}
 	}
 	public org.lgna.croquet.components.Component< ? > getPostfixComponent() {
 		return this.postfixComponent;
 	}
 	public void setPostfixComponent( org.lgna.croquet.components.Component< ? > postfixComponent ) {
-		this.postfixComponent = postfixComponent;
+		if( this.postfixComponent != postfixComponent ) {
+			this.postfixComponent = postfixComponent;
+			this.revalidateAndRepaint();
+		}
 	}
 
 	protected abstract javax.swing.Action getAction();

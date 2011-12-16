@@ -71,6 +71,10 @@ public abstract class JointImp extends AbstractTransformableImp {
 		return 0;
 	}
 
+	public abstract boolean isFreeInX();
+	public abstract boolean isFreeInY();
+	public abstract boolean isFreeInZ();
+	
 	@Override
 	public void setVehicle(EntityImp vehicle) {
 		assert vehicle != this;

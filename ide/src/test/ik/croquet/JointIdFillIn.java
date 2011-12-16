@@ -41,24 +41,51 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package test.ik.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
+public class JointIdFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.story.resources.JointId, Void > {
+	private static final java.util.Map< org.lgna.story.resources.JointId, JointIdFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized JointIdFillIn getInstance( org.lgna.story.resources.JointId field ) {
+		JointIdFillIn rv = map.get( field );
+		if( rv != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
+			rv = new JointIdFillIn( field );
+			map.put( field, rv );
 		}
-		this.itemCodec = itemCodec;
+		return rv;
 	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+	private final org.lgna.story.resources.JointId jointId;
+	public JointIdFillIn( org.lgna.story.resources.JointId jointId ) {
+		super( java.util.UUID.fromString( "1250c3c2-3545-442c-9f5a-d4191d5642ee" ) );
+		this.jointId = jointId;
+	}
+	private static int getDepth( org.lgna.story.resources.JointId jointId ) {
+		if( jointId != null ) {
+			return getDepth( jointId.getParent() ) + 1;
+		} else {
+			return -1;
+		}
+	}
+	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > step ) {
+		StringBuilder sb = new StringBuilder();
+		final int N = getDepth( jointId );
+		for( int i=0; i<N; i++ ) {
+			sb.append( "- " );
+		}
+		sb.append( jointId );
+		return new javax.swing.JLabel( sb.toString() );
+	}
+	@Override
+	public org.lgna.story.resources.JointId createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > step ) {
+		return this.jointId;
+	}
+	@Override
+	public org.lgna.story.resources.JointId getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > step ) {
+		return this.jointId;
 	}
 }

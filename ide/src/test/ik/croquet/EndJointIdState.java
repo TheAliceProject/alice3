@@ -41,24 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package test.ik.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
-		}
-		this.itemCodec = itemCodec;
+public class EndJointIdState extends JointIdState {
+	private static class SingletonHolder {
+		private static EndJointIdState instance = new EndJointIdState();
 	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+	public static EndJointIdState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private EndJointIdState() {
+		super( java.util.UUID.fromString( "84b41b87-d780-4366-8d59-74ba93d8b3f6" ) );
 	}
 }
