@@ -44,6 +44,7 @@
 package test;
 
 import org.lgna.story.*;
+import org.lgna.story.implementation.alice.JointImplementation;
 
 class IkScene extends Scene {
 	private final Sun sun = new Sun();
@@ -123,7 +124,16 @@ class TestIk extends Program {
 		java.util.List< org.lgna.story.implementation.JointImp > chain = imp.getInclusiveListOfJointsBetween( aId, bId );
 		System.out.println( aId + " " + bId );
 		for( org.lgna.story.implementation.JointImp jointImp : chain ) {
-			System.out.println( "\t" + jointImp );
+			System.out.println( "\t" + jointImp + " " );
+			if (jointImp instanceof JointImplementation) {
+				JointImplementation ji = (JointImplementation) jointImp;
+				System.out.println(ji.getSgComposite().isFreeInX.getValue() + " " + ji.getSgComposite().isFreeInY.getValue() + " " + ji.getSgComposite().isFreeInZ.getValue());
+			}
+			//not there for nebulous joint
+//			if (jointImp instanceof org.lgna.story.implementation.sims2.JointImplementation) {
+//				org.lgna.story.implementation.sims2.JointImplementation ji = (org.lgna.story.implementation.sims2.JointImplementation) jointImp;
+//				System.out.println(ji.getSgComposite().isFreeInX.getValue() + " " + ji.getSgComposite().isFreeInY.getValue() + " " + ji.getSgComposite().isFreeInZ.getValue());
+//			}
 		}
 	}
 	public void runTest() {
