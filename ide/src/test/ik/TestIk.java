@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package test;
+package test.ik;
 
 import org.lgna.story.*;
 import org.lgna.story.implementation.alice.JointImplementation;
