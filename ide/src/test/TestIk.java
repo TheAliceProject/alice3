@@ -49,9 +49,6 @@ import org.lgna.story.implementation.alice.JointImplementation;
 class IkScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground snow = new Ground();
-	private final Cone redCone = new Cone(); 
-	private final Cone greenCone = new Cone(); 
-	private final Cone blueCone = new Cone();
 	private final Camera camera;
 	private final Biped ogre;
 	public IkScene( Camera camera, Biped ogre ) {
@@ -60,36 +57,21 @@ class IkScene extends Scene {
 	}
 	
 	private void performGeneratedSetup() {
-		// this code is automatically generated
-		// edit performCustomSetup instead
 		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
-		this.redCone.setVehicle( this );
-		this.greenCone.setVehicle( this );
-		this.blueCone.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.ogre.setVehicle( this );
 		
-		this.redCone.setPaint( Color.RED );
-		this.greenCone.setPaint( Color.GREEN );
-		this.blueCone.setPaint( Color.BLUE );
-		this.redCone.setBaseRadius( 0.1 );
-		this.greenCone.setBaseRadius( 0.1 );
-		this.blueCone.setBaseRadius( 0.1 );
-		this.redCone.setLength( 0.25 );
-		this.greenCone.setLength( 0.25 );
-		this.blueCone.setLength( 0.25 );
-
-		this.redCone.move( MoveDirection.LEFT, 0.5 );
-		this.greenCone.move( MoveDirection.LEFT, 1.0 );
-		this.blueCone.move( MoveDirection.LEFT, 1.5 );
-		
-		this.ogre.move( MoveDirection.LEFT, 1.5 );
+		this.ogre.place( SpatialRelation.ABOVE, this.snow );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
-		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
+
+		//camera vantage point taken care of by camera navigator
+		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
 	private void performCustomSetup() {
-		this.ogre.setOpacity( 0.25 );
+		//if you want the skeleton visualization to be co-located
+		//this.ogre.setOpacity( 0.25 );
+		
 		org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.ogre );
 		impl.showVisualization();
 	}
@@ -119,7 +101,6 @@ class TestIk extends Program {
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
 
-
 	private static final void printChainOfJoints( org.lgna.story.implementation.JointedModelImp<?,?> imp, org.lgna.story.resources.JointId aId, org.lgna.story.resources.JointId bId ) {
 		java.util.List< org.lgna.story.implementation.JointImp > chain = imp.getInclusiveListOfJointsBetween( aId, bId );
 		System.out.println( aId + " " + bId );
@@ -137,7 +118,6 @@ class TestIk extends Program {
 		}
 	}
 	public void runTest() {
-		
 		org.lgna.story.implementation.JointedModelImp<?,?> imp = ImplementationAccessor.getImplementation( ogre );
 		printChainOfJoints( imp, org.lgna.story.resources.BipedResource.LEFT_ANKLE, org.lgna.story.resources.BipedResource.RIGHT_ELBOW );
 		printChainOfJoints( imp, org.lgna.story.resources.BipedResource.SPINE_MIDDLE, org.lgna.story.resources.BipedResource.RIGHT_ELBOW );
@@ -146,13 +126,8 @@ class TestIk extends Program {
 		this.setActiveScene( this.scene );
 		this.modelManipulationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
 		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
-		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 0.5, 0.0 ) );
-		this.cameraNavigationDragAdapter.requestDistance( 10.0 );
-		
-		while( true ) {
-			this.ogre.getRightElbow().roll( RollDirection.LEFT, 0.25 );
-			this.ogre.getRightElbow().roll( RollDirection.RIGHT, 0.25 );
-		}
+		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
+		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
 	}
 	public static void main( String[] args ) {
 		TestIk test = new TestIk();
