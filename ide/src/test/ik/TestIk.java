@@ -46,51 +46,6 @@ package test.ik;
 import org.lgna.story.*;
 import org.lgna.story.implementation.alice.JointImplementation;
 
-class IkScene extends Scene {
-	private final Sun sun = new Sun();
-	private final Ground snow = new Ground();
-	private final Camera camera;
-	private final Biped ogre;
-	public IkScene( Camera camera, Biped ogre ) {
-		this.camera = camera;
-		this.ogre = ogre;
-	}
-	
-	private void performGeneratedSetup() {
-		this.snow.setVehicle( this );
-		this.sun.setVehicle( this );
-		this.camera.setVehicle( this );
-		this.ogre.setVehicle( this );
-		
-		this.ogre.place( SpatialRelation.ABOVE, this.snow );
-		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
-
-		//camera vantage point taken care of by camera navigator
-		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
-	}
-	private void performCustomSetup() {
-		//if you want the skeleton visualization to be co-located
-		//this.ogre.setOpacity( 0.25 );
-		
-		org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.ogre );
-		impl.showVisualization();
-	}
-	
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetup();
-				this.performCustomSetup();
-			} else {
-				this.restoreVehiclesAndVantagePoints();
-			}
-		} else {
-			this.preserveVehiclesAndVantagePoints();
-		}
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -129,9 +84,18 @@ class TestIk extends Program {
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
 	}
+
 	public static void main( String[] args ) {
-		TestIk test = new TestIk();
-		test.initializeInFrame( args );
-		test.runTest();
+		IkTestApplication app = new IkTestApplication();
+		app.initialize( args );
+		app.setPerspective( new test.ik.croquet.IkPerspective() );
+
+		TestIk program = new TestIk();
+		
+		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
+		program.runTest();
+
+		app.getFrame().setSize( 1200, 800 );
+		app.getFrame().setVisible( true );
 	}
 }
