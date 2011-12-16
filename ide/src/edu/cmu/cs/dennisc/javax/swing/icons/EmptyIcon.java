@@ -41,15 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package edu.cmu.cs.dennisc.javax.swing.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FolderIconUtilities {
-	private FolderIconUtilities() {
-		throw new AssertionError();
+public class EmptyIcon implements javax.swing.Icon {
+	private final int width;
+	private final int height;
+	public EmptyIcon( int width, int height ) {
+		this.width = width;
+		this.height = height;
 	}
-	/*package-private*/ static final javax.swing.Icon SMALL_ICON = new javax.swing.ImageIcon( FolderIconUtilities.class.getResource( "images/folder24.png" ) );
-	/*package-private*/ static final javax.swing.Icon LARGE_ICON = new javax.swing.ImageIcon( FolderIconUtilities.class.getResource( "images/folder.png" ) );
+	public int getIconWidth() {
+		return this.width;
+	}
+	public int getIconHeight() {
+		return this.height;
+	}
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+	}
 }

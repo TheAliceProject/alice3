@@ -109,7 +109,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		}
 	}
 	
-	private static class JFolderTabTitle extends javax.swing.JRadioButton {
+	private static class JFolderTabTitle extends javax.swing.JButton {
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent e) {
 				JFolderTabTitle.this.revalidate();

@@ -41,62 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.ide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractType< ?,?,? > > {
-	private static class CompositeIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DefaultCompositeIcon {
-		public CompositeIcon( javax.swing.ImageIcon imageIcon ) {
-			super( 
-					org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE,
-					imageIcon,
-					org.alice.ide.icons.Icons.FOLDER_FRONT_ICON_LARGE 
-			);
-		}
+public class Icons {
+	private Icons() {
+		throw new AssertionError();
 	}
-	private final javax.swing.Icon largeIcon;
-	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( id, type );
-		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-		String path = "images/" + cls.getName().replace( ".", "/" ) + ".png";
-		javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( path ) );
-		if( imageIcon != null ) {
-			this.largeIcon = new CompositeIcon(imageIcon);
-		} else {
-			this.largeIcon = org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
-		}
-	}
-	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
-	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
-		return this.getDeclarationChildren( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
-	}
-	@Override
-	public int getChildCount() {
-		return this.getDeclarationChildren().size();
-	}
-	@Override
-	public GalleryNode getChild( int index ) {
-		return getDeclarationNodeInstance( this.getDeclarationChildren().get( index ) );
-	}
-	@Override
-	public int getIndexOfChild( GalleryNode child ) {
-		return this.getDeclarationChildren().indexOf( ((DeclarationGalleryNode<?>)child).getDeclaration() );
-	}
-	@Override
-	public javax.swing.Icon getSmallIcon() {
-		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
-	}
-	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return this.largeIcon;
-	}
+	public static final int SMALL_WIDTH = 24;
+	public static final int SMALL_HEIGHT = 24;
+	
+	public static final javax.swing.Icon EMPTY_HEIGHT_ICON_SMALL = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, SMALL_HEIGHT );
+	public static final javax.swing.Icon BOOKMARK_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/256x256/bookmark.png" ) ); 
+	public static final javax.swing.Icon BOOKMARK_ICON_SMALL = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( BOOKMARK_ICON_LARGE, SMALL_WIDTH, SMALL_HEIGHT ); 
 
-	@Override
-	protected void appendClassName( java.lang.StringBuilder sb ) {
-		String name = this.getDeclaration().getName();
-		sb.append( "My" );
-		sb.append( name.replace( "Resource", "" ) );
-	}
+	public static final javax.swing.Icon FOLDER_ICON_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/folder.png" ) ); 
+	public static final javax.swing.Icon FOLDER_BACK_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderBack.png" ) ); 
+	public static final javax.swing.Icon FOLDER_FRONT_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderFront.png" ) ); 
 }

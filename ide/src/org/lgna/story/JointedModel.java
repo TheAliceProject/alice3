@@ -53,6 +53,7 @@ public abstract class JointedModel extends Model {
 	
 	
 	//todo: make protected
+	@MethodTemplate(visibility=org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN)
 	public Joint getJoint( org.lgna.story.resources.JointId jointId ) {
 		return Joint.getJoint( this, jointId );
 	}

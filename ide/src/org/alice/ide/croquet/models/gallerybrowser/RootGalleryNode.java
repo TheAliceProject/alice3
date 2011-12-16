@@ -96,11 +96,11 @@ public class RootGalleryNode extends GalleryNode {
 	}
 	@Override
 	public javax.swing.Icon getSmallIcon() {
-		return FolderIconUtilities.SMALL_ICON;
+		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
 	}
 	@Override
 	public javax.swing.Icon getLargeIcon() {
-		return FolderIconUtilities.LARGE_ICON;
+		return org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {

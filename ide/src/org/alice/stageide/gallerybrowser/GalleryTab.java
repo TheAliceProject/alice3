@@ -58,4 +58,9 @@ public abstract class GalleryTab extends org.lgna.croquet.TabComposite< org.lgna
 	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
 		return null;
 	}
+	@Override
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+		super.customizeTitleComponent( booleanState, button );
+		button.scaleFont( 1.5f );
+	}
 }

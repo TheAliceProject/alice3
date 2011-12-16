@@ -45,27 +45,24 @@ package edu.cmu.cs.dennisc.javax.swing.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class CompositeIcon implements javax.swing.Icon {
-	private javax.swing.Icon[] components;
-	public CompositeIcon( javax.swing.Icon... components ) {
-		this.components = components;
-	}
+public abstract class AbstractCompositeIcon implements javax.swing.Icon {
+	protected abstract javax.swing.Icon[] getComponentIcons();
 	public int getIconWidth() {
 		int rv = 0;
-		for( javax.swing.Icon icon : this.components ) {
+		for( javax.swing.Icon icon : this.getComponentIcons() ) {
 			rv = Math.max( rv, icon.getIconWidth() );
 		}
 		return rv;
 	}
 	public int getIconHeight() {
 		int rv = 0;
-		for( javax.swing.Icon icon : this.components ) {
+		for( javax.swing.Icon icon : this.getComponentIcons() ) {
 			rv = Math.max( rv, icon.getIconHeight() );
 		}
 		return rv;
 	}
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		for( javax.swing.Icon icon : this.components ) {
+		for( javax.swing.Icon icon : this.getComponentIcons() ) {
 			icon.paintIcon( c, g, x, y );
 		}
 	}
