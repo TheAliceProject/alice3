@@ -89,7 +89,7 @@ public class JointedModelUtilities {
 			return false;
 		}
 	}
-	public static java.util.List< org.lgna.project.ast.AbstractMethod > updateJointGetters( java.util.List< org.lgna.project.ast.AbstractMethod > getters, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	private static java.util.List< org.lgna.project.ast.AbstractMethod > updateJointGetters( java.util.List< org.lgna.project.ast.AbstractMethod > getters, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		if( type != null ) {
 			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 				if( isJointGetter( method ) ) {
@@ -103,7 +103,13 @@ public class JointedModelUtilities {
 		return getters;
 	}
 	
-	public static java.util.List< org.lgna.project.ast.AbstractMethod > getJointGetters( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	public static java.util.List< org.lgna.project.ast.AbstractMethod > getAllJointGetters( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		java.util.List< org.lgna.project.ast.AbstractMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		updateJointGetters( rv, type );
+		return rv;
+	}
+
+	public static java.util.List< org.lgna.project.ast.AbstractMethod > getDeclaredJointGetters( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		java.util.List< org.lgna.project.ast.AbstractMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		updateJointGetters( rv, type );
 		return rv;

@@ -50,7 +50,7 @@ public abstract class JointInstanceFactoryMenuModel extends org.lgna.croquet.Cas
 	private final java.util.List< org.lgna.project.ast.AbstractMethod > getters;
 	public JointInstanceFactoryMenuModel( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		super( id );
-		this.getters = org.alice.stageide.ast.JointedModelUtilities.getJointGetters( type );
+		this.getters = org.alice.stageide.ast.JointedModelUtilities.getAllJointGetters( type );
 	}
 	protected abstract org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method );
 	@Override
