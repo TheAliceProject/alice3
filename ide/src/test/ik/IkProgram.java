@@ -49,7 +49,7 @@ import org.lgna.story.implementation.alice.JointImplementation;
 /**
  * @author Dennis Cosgrove
  */
-class TestIk extends Program {
+class IkProgram extends Program {
 	private final Camera camera = new Camera();
 	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
 	private final IkScene scene = new IkScene( camera, ogre );
@@ -90,7 +90,7 @@ class TestIk extends Program {
 		app.initialize( args );
 		app.setPerspective( new test.ik.croquet.IkPerspective() );
 
-		TestIk program = new TestIk();
+		IkProgram program = new IkProgram();
 		
 		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
 		program.runTest();
