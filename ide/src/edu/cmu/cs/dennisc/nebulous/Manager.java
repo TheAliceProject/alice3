@@ -15,7 +15,7 @@ public class Manager {
 	static java.util.List< java.io.File > s_pendingBundles;
 
 	private static native void setVersion(double version);
-	private static native void setDebugDraw(boolean debugDraw);
+//	private static native void setDebugDraw(boolean debugDraw);
 	private static native void addBundlePath( String bundlePath );
 	private static native void removeBundlePath( String bundlePath );
 	private static native void setRawResourceDirectory( String rourcePath );
