@@ -53,9 +53,11 @@ public class IkScene extends Scene {
 	private final Ground snow = new Ground();
 	private final Camera camera;
 	private final Biped ogre;
-	public IkScene( Camera camera, Biped ogre ) {
+	private final Sphere target;
+	public IkScene( Camera camera, Biped ogre, Sphere target ) {
 		this.camera = camera;
 		this.ogre = ogre;
+		this.target = target;
 	}
 	
 	private void performGeneratedSetup() {
@@ -63,10 +65,15 @@ public class IkScene extends Scene {
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.ogre.setVehicle( this );
+		this.target.setVehicle( this );
 		
 		this.ogre.place( SpatialRelation.ABOVE, this.snow );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 
+		this.target.setRadius( 0.2 );
+		this.target.setPaint( Color.RED );
+		this.target.setOpacity( 0.5 );
+		
 		//camera vantage point taken care of by camera navigator
 		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}

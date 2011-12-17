@@ -51,24 +51,50 @@ import org.lgna.story.*;
 class IkProgram extends Program {
 	private final Camera camera = new Camera();
 	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-	private final IkScene scene = new IkScene( camera, ogre );
+	private final Sphere target = new Sphere();
+	private final IkScene scene = new IkScene( camera, ogre, target );
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
 
-	private org.lgna.croquet.State.ValueObserver< org.lgna.story.resources.JointId > jointIdListener = new org.lgna.croquet.State.ValueObserver< org.lgna.story.resources.JointId >() {
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.story.resources.JointId > jointIdListener = new org.lgna.croquet.State.ValueObserver< org.lgna.story.resources.JointId >() {
 		public void changing( org.lgna.croquet.State< org.lgna.story.resources.JointId > state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.story.resources.JointId > state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
 			IkProgram.this.handleJointIdChanged();
 		}
 	};
+	
+	private final edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener targetTransformListener = new edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener() {
+		public void absoluteTransformationChanged(edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
+			IkProgram.this.handleTargetTransformChanged();
+		}
+	};
+	
+	private org.lgna.story.implementation.SphereImp getTargetImp() {
+		return ImplementationAccessor.getImplementation( this.target );
+	}
+	private org.lgna.story.implementation.JointedModelImp< ?,? > getSubjectImp() {
+		return ImplementationAccessor.getImplementation( this.ogre );
+	}
+	private org.lgna.story.implementation.JointImp getAnchorImp() {
+		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
+		return this.getSubjectImp().getJointImplementation( anchorId );
+	}
+	private org.lgna.story.implementation.JointImp getEndImp() {
+		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
+		return this.getSubjectImp().getJointImplementation( endId );
+	}
+	
+	private void handleTargetTransformChanged() {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getTargetImp().getTransformation( this.getAnchorImp() );
+		edu.cmu.cs.dennisc.print.PrintUtilities.printlns( m );
+	}
 	private java.util.List< org.lgna.story.implementation.JointImp > getJointImpListBetweenAnchorAndEnd() {
 		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
 		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
-		org.lgna.story.implementation.JointedModelImp<?,?> imp = ImplementationAccessor.getImplementation( this.ogre );
-		return imp.getInclusiveListOfJointsBetween( anchorId, endId );
+		return this.getSubjectImp().getInclusiveListOfJointsBetween( anchorId, endId );
 	}
-	private final void handleJointIdChanged() {
+	private void handleJointIdChanged() {
 		java.util.List< org.lgna.story.implementation.JointImp > chain = this.getJointImpListBetweenAnchorAndEnd();
 		for( org.lgna.story.implementation.JointImp jointImp : chain ) {
 			System.out.println( "\t" + jointImp + " x: " + jointImp.isFreeInX() + " y: " + jointImp.isFreeInY() + " z: " + jointImp.isFreeInZ() );
@@ -85,6 +111,8 @@ class IkProgram extends Program {
 		test.ik.croquet.AnchorJointIdState.getInstance().addValueObserver( this.jointIdListener );
 		test.ik.croquet.EndJointIdState.getInstance().addValueObserver( this.jointIdListener );
 
+		this.getTargetImp().setTransformation( this.getEndImp() );
+		this.getTargetImp().getSgComposite().addAbsoluteTransformationListener( this.targetTransformListener );
 		this.handleJointIdChanged();
 	}
 	
@@ -93,8 +121,8 @@ class IkProgram extends Program {
 		app.initialize( args );
 		app.setPerspective( new test.ik.croquet.IkPerspective() );
 
-		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.RIGHT_CLAVICLE; 
-		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.RIGHT_WRIST; 
+		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.LEFT_CLAVICLE; 
+		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.LEFT_WRIST; 
 
 		test.ik.croquet.AnchorJointIdState.getInstance().setValue( initialAnchor );
 		test.ik.croquet.EndJointIdState.getInstance().setValue( initialEnd );
