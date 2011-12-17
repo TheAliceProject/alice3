@@ -41,24 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package test.ik.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
-		}
-		this.itemCodec = itemCodec;
-	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+public class IkPerspective extends org.lgna.croquet.Perspective {
+	public IkPerspective() {
+		super( java.util.UUID.fromString( "858b7466-45e3-4b85-8154-9c3bf570a485" ), new IkSplitComposite() );
 	}
 }

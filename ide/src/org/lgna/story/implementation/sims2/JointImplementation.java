@@ -21,4 +21,19 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	public void setCustomJointSgParent(Composite sgParent) {
 		sgJoint.setSgParent(sgParent);
 	}
+	@Override
+	public boolean isFreeInX() {
+		//todo
+		return true;
+	}
+	@Override
+	public boolean isFreeInY() {
+		//todo
+		return true;
+	}
+	@Override
+	public boolean isFreeInZ() {
+		//todo
+		return true;
+	}
 }

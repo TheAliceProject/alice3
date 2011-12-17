@@ -90,7 +90,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 		if( this.isPerson() ) {
 			return org.alice.stageide.gallerybrowser.ResourceTab.CREATE_PERSON_SMALL_ICON;
 		} else {
-			return FolderIconUtilities.SMALL_ICON;
+			return super.getSmallIcon();
 		}
 	}
 	@Override
@@ -99,7 +99,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 			return org.alice.stageide.gallerybrowser.ResourceTab.CREATE_PERSON_LARGE_ICON;
 		} else {
-			return FolderIconUtilities.LARGE_ICON;
+			return super.getLargeIcon();
 		}
 	}
 	@Override

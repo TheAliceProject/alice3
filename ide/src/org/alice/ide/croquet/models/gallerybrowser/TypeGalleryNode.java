@@ -47,10 +47,27 @@ package org.alice.ide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractType< ?,?,? > > {
+	private static class CompositeIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DefaultCompositeIcon {
+		public CompositeIcon( javax.swing.ImageIcon imageIcon ) {
+			super( 
+					org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE,
+					imageIcon,
+					org.alice.ide.icons.Icons.FOLDER_FRONT_ICON_LARGE 
+			);
+		}
+	}
+	private final javax.swing.Icon largeIcon;
 	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		super( id, type );
+		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+		String path = "images/" + cls.getName().replace( ".", "/" ) + ".png";
+		javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( path ) );
+		if( imageIcon != null ) {
+			this.largeIcon = new CompositeIcon(imageIcon);
+		} else {
+			this.largeIcon = org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
+		}
 	}
-	
 	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
 	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
 		return this.getDeclarationChildren( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
@@ -67,6 +84,15 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 	public int getIndexOfChild( GalleryNode child ) {
 		return this.getDeclarationChildren().indexOf( ((DeclarationGalleryNode<?>)child).getDeclaration() );
 	}
+	@Override
+	public javax.swing.Icon getSmallIcon() {
+		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
+	}
+	@Override
+	public javax.swing.Icon getLargeIcon() {
+		return this.largeIcon;
+	}
+
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		String name = this.getDeclaration().getName();

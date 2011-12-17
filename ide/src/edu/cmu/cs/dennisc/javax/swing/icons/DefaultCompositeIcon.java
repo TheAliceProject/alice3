@@ -41,24 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package edu.cmu.cs.dennisc.javax.swing.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
-		}
-		this.itemCodec = itemCodec;
+public class DefaultCompositeIcon extends AbstractCompositeIcon {
+	private final javax.swing.Icon[] componentIcons;
+	public DefaultCompositeIcon( javax.swing.Icon... componentIcons ) {
+		this.componentIcons = componentIcons;
 	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+	@Override
+	protected javax.swing.Icon[] getComponentIcons() {
+		return this.componentIcons;
 	}
 }

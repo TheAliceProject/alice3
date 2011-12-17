@@ -41,24 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package test.ik.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
-		}
-		this.itemCodec = itemCodec;
+public class JointIdDropDown extends org.lgna.croquet.components.ItemDropDown< org.lgna.story.resources.JointId, test.ik.croquet.JointIdState >{
+	private final org.lgna.croquet.components.Label mainComponent = new org.lgna.croquet.components.Label();
+	public JointIdDropDown( test.ik.croquet.JointIdState model ) {
+		super( model );
+		this.setMainComponent( this.mainComponent );
 	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+	@Override
+	protected void handleChanged( org.lgna.croquet.State< org.lgna.story.resources.JointId > state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
+		this.mainComponent.setText( nextValue != null ? nextValue.toString() : "null" );
+		this.revalidateAndRepaint();
 	}
 }

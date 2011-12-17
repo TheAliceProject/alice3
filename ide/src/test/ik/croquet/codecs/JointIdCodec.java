@@ -41,24 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package test.ik.croquet.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
-		}
-		this.itemCodec = itemCodec;
+public enum JointIdCodec implements org.lgna.croquet.ItemCodec< org.lgna.story.resources.JointId > {
+	SINGLETON;
+	public java.lang.StringBuilder appendRepresentation( java.lang.StringBuilder rv, org.lgna.story.resources.JointId value, java.util.Locale locale ) {
+		return rv;
 	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+	public org.lgna.story.resources.JointId decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException();
+	}
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.JointId value ) {
+		throw new RuntimeException();
+	}
+	public java.lang.Class< org.lgna.story.resources.JointId > getValueClass() {
+		return org.lgna.story.resources.JointId.class;
 	}
 }

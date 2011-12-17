@@ -59,15 +59,6 @@ public class TypeView<T extends org.lgna.project.ast.AbstractType<?,?,?>> extend
 		super( model );
 		this.isArray = isArray;
 	}
-	private void handleTypeChange( T nextValue ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > type;
-		if( this.isArray ) {
-			type = nextValue.getArrayType();
-		} else {
-			type = nextValue;
-		}
-		this.getAwtComponent().setIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
-	}
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
 		javax.swing.JLabel rv = new javax.swing.JLabel();

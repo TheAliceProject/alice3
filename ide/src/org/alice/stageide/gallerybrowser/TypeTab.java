@@ -75,6 +75,12 @@ public class TypeTab extends GalleryTab {
 		return rv;
 	}
 	@Override
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+		super.customizeTitleComponent( booleanState, button );
+		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.BOOKMARK_ICON_SMALL );
+		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+	}
+	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
 		//todo
 		return false;

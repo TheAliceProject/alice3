@@ -41,24 +41,61 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package test.ik;
+
+import org.lgna.story.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
-		}
-		this.itemCodec = itemCodec;
+public class IkScene extends Scene {
+	private final Sun sun = new Sun();
+	private final Ground snow = new Ground();
+	private final Camera camera;
+	private final Biped ogre;
+	private final Sphere target;
+	public IkScene( Camera camera, Biped ogre, Sphere target ) {
+		this.camera = camera;
+		this.ogre = ogre;
+		this.target = target;
 	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+	
+	private void performGeneratedSetup() {
+		this.snow.setVehicle( this );
+		this.sun.setVehicle( this );
+		this.camera.setVehicle( this );
+		this.ogre.setVehicle( this );
+		this.target.setVehicle( this );
+		
+		this.ogre.place( SpatialRelation.ABOVE, this.snow );
+		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
+
+		this.target.setRadius( 0.2 );
+		this.target.setPaint( Color.RED );
+		this.target.setOpacity( 0.5 );
+		
+		//camera vantage point taken care of by camera navigator
+		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
+	}
+	private void performCustomSetup() {
+		//if you want the skeleton visualization to be co-located
+		//this.ogre.setOpacity( 0.25 );
+		
+		org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.ogre );
+		impl.showVisualization();
+	}
+	
+	@Override
+	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
+		if( isActive ) {
+			if( activeCount == 1 ) {
+				this.performGeneratedSetup();
+				this.performCustomSetup();
+			} else {
+				this.restoreVehiclesAndVantagePoints();
+			}
+		} else {
+			this.preserveVehiclesAndVantagePoints();
+		}
 	}
 }

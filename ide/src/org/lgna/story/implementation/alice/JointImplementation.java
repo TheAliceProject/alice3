@@ -68,6 +68,19 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	}
 	
 	@Override
+	public boolean isFreeInX() {
+		return this.sgJoint.isFreeInX.getValue();
+	}
+	@Override
+	public boolean isFreeInY() {
+		return this.sgJoint.isFreeInY.getValue();
+	}
+	@Override
+	public boolean isFreeInZ() {
+		return this.sgJoint.isFreeInZ.getValue();
+	}
+	
+	@Override
 	public void setCustomJointSgParent(Composite sgParent) {
 		sgJoint.setSgParent(sgParent);
 	}

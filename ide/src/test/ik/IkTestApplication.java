@@ -41,24 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package test.ik;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
-		}
-		this.itemCodec = itemCodec;
+public class IkTestApplication extends org.lgna.croquet.Application {
+	@Override
+	protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+		return null;
 	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+	@Override
+	protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+		return null;
+	}
+	@Override
+	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	}
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+	@Override
+	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
+		return null;
+	}
+	@Override
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+		System.exit( 0 );
 	}
 }

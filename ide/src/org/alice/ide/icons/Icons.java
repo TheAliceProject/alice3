@@ -41,24 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
-		}
-		this.itemCodec = itemCodec;
+public class Icons {
+	private Icons() {
+		throw new AssertionError();
 	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
-	}
+	public static final int SMALL_WIDTH = 24;
+	public static final int SMALL_HEIGHT = 24;
+	
+	public static final javax.swing.Icon EMPTY_HEIGHT_ICON_SMALL = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, SMALL_HEIGHT );
+	public static final javax.swing.Icon BOOKMARK_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/256x256/bookmark.png" ) ); 
+	public static final javax.swing.Icon BOOKMARK_ICON_SMALL = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( BOOKMARK_ICON_LARGE, SMALL_WIDTH, SMALL_HEIGHT ); 
+
+	public static final javax.swing.Icon FOLDER_ICON_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/folder.png" ) ); 
+	public static final javax.swing.Icon FOLDER_BACK_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderBack.png" ) ); 
+	public static final javax.swing.Icon FOLDER_FRONT_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderFront.png" ) ); 
 }

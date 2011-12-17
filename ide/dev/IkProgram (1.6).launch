@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/ide/src/test/TestIk.java"/>
+<listEntry value="/ide/src/test/ik/IkProgram.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="test.TestIk"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="test.ik.IkProgram"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ide"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/flite/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/gallery/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/gallery/assets/alice&quot;"/>
 </launchConfiguration>

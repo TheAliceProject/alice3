@@ -41,24 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package edu.cmu.cs.dennisc.javax.swing.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
-		}
-		this.itemCodec = itemCodec;
+public class EmptyIcon implements javax.swing.Icon {
+	private final int width;
+	private final int height;
+	public EmptyIcon( int width, int height ) {
+		this.width = width;
+		this.height = height;
 	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+	public int getIconWidth() {
+		return this.width;
+	}
+	public int getIconHeight() {
+		return this.height;
+	}
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 	}
 }

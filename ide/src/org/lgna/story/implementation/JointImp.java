@@ -72,6 +72,21 @@ public abstract class JointImp extends AbstractTransformableImp {
 	}
 
 	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
+		edu.cmu.cs.dennisc.scenegraph.Composite rv = super.getSgVehicle();
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = this.jointedModelImplementation.getSgComposite();
+		}
+		assert rv != null;
+		return rv;
+	}
+	public abstract boolean isFreeInX();
+	public abstract boolean isFreeInY();
+	public abstract boolean isFreeInZ();
+	
+	@Override
 	public void setVehicle(EntityImp vehicle) {
 		assert vehicle != this;
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );

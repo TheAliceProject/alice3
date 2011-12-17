@@ -40,25 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package edu.cmu.cs.dennisc.javax.swing.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
+public abstract class AbstractCompositeIcon implements javax.swing.Icon {
+	protected abstract javax.swing.Icon[] getComponentIcons();
+	public int getIconWidth() {
+		int rv = 0;
+		for( javax.swing.Icon icon : this.getComponentIcons() ) {
+			rv = Math.max( rv, icon.getIconWidth() );
 		}
-		this.itemCodec = itemCodec;
+		return rv;
 	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+	public int getIconHeight() {
+		int rv = 0;
+		for( javax.swing.Icon icon : this.getComponentIcons() ) {
+			rv = Math.max( rv, icon.getIconHeight() );
+		}
+		return rv;
+	}
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		for( javax.swing.Icon icon : this.getComponentIcons() ) {
+			icon.paintIcon( c, g, x, y );
+		}
 	}
 }

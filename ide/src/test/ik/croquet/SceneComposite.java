@@ -41,15 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package test.ik.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FolderIconUtilities {
-	private FolderIconUtilities() {
-		throw new AssertionError();
+public class SceneComposite extends org.lgna.croquet.Composite< test.ik.croquet.views.ScenePanel > {
+	private static class SingletonHolder {
+		private static SceneComposite instance = new SceneComposite();
 	}
-	/*package-private*/ static final javax.swing.Icon SMALL_ICON = new javax.swing.ImageIcon( FolderIconUtilities.class.getResource( "images/folder24.png" ) );
-	/*package-private*/ static final javax.swing.Icon LARGE_ICON = new javax.swing.ImageIcon( FolderIconUtilities.class.getResource( "images/folder.png" ) );
+	public static SceneComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SceneComposite() {
+		super( java.util.UUID.fromString( "d34e5678-1cf9-41bd-9031-10e16cde2dd6" ) );
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
+	}
+	@Override
+	protected test.ik.croquet.views.ScenePanel createView() {
+		return new test.ik.croquet.views.ScenePanel( this );
+	}
+	@Override
+	protected void localize() {
+	}
 }

@@ -8,11 +8,14 @@ package edu.cmu.cs.dennisc.nebulous;
  * @author Dennis Cosgrove
  */
 public class Manager {
+	public static final double NEBULOUS_VERSION = 1.7;
+	
 	static boolean s_isInitialized = false;
 	static boolean s_isLicensePromptDesired = true;
 	static java.util.List< java.io.File > s_pendingBundles;
 
-	private static native void setDebugDraw(boolean debugDraw);
+	private static native void setVersion(double version);
+//	private static native void setDebugDraw(boolean debugDraw);
 	private static native void addBundlePath( String bundlePath );
 	private static native void removeBundlePath( String bundlePath );
 	private static native void setRawResourceDirectory( String rourcePath );
@@ -92,6 +95,8 @@ public class Manager {
 				for( java.io.File directory : Manager.getPendingBundles() ) {
 					Manager.addBundlePath( directory.getAbsolutePath() );
 				}
+				Manager.setVersion(NEBULOUS_VERSION);
+				
 				boolean debugDraw = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY);
 				
 //				Manager.setDebugDraw(debugDraw);

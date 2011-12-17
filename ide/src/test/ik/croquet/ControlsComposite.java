@@ -40,33 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing.icons;
+
+package test.ik.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CompositeIcon implements javax.swing.Icon {
-	private javax.swing.Icon[] components;
-	public CompositeIcon( javax.swing.Icon... components ) {
-		this.components = components;
+public class ControlsComposite extends org.lgna.croquet.Composite< test.ik.croquet.views.ControlsPanel > {
+	public ControlsComposite() {
+		super( java.util.UUID.fromString( "88035214-3a37-4aa7-a083-ce093a24bb88" ) );
 	}
-	public int getIconWidth() {
-		int rv = 0;
-		for( javax.swing.Icon icon : this.components ) {
-			rv = Math.max( rv, icon.getIconWidth() );
-		}
-		return rv;
+	@Override
+	protected void localize() {
 	}
-	public int getIconHeight() {
-		int rv = 0;
-		for( javax.swing.Icon icon : this.components ) {
-			rv = Math.max( rv, icon.getIconHeight() );
-		}
-		return rv;
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
 	}
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		for( javax.swing.Icon icon : this.components ) {
-			icon.paintIcon( c, g, x, y );
-		}
+	@Override
+	protected test.ik.croquet.views.ControlsPanel createView() {
+		return new test.ik.croquet.views.ControlsPanel( this );
 	}
 }

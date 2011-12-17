@@ -41,24 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package test.ik.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
-		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "itemCodec is null for", this );
-		}
-		this.itemCodec = itemCodec;
-	}
-	public ItemCodec< T > getItemCodec() {
-		return this.itemCodec;
+public class ControlsPanel extends org.lgna.croquet.components.PageAxisPanel {
+	public ControlsPanel( test.ik.croquet.ControlsComposite composite ) {
+		super( composite );
+		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+				new org.lgna.croquet.components.Label( "anchor:" ),
+				new JointIdDropDown( test.ik.croquet.AnchorJointIdState.getInstance() )
+		) );
+		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+				new org.lgna.croquet.components.Label( "end:" ),
+				new JointIdDropDown( test.ik.croquet.EndJointIdState.getInstance() )
+		) );
+		
+		this.setMinimumPreferredWidth( 160 );
 	}
 }
