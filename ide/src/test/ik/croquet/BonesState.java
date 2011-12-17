@@ -41,21 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.ik;
+package test.ik.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Solver {
-	private final java.util.List< Chain > chains = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public void addChain( Chain chain ) {
-		this.chains.add( chain );
+public class BonesState extends org.lgna.croquet.DefaultListSelectionState< org.lgna.ik.Bone > {
+	private static class SingletonHolder {
+		private static BonesState instance = new BonesState();
 	}
-	public void removeChain( Chain chain ) {
-		this.chains.remove( chain );
+	public static BonesState getInstance() {
+		return SingletonHolder.instance;
 	}
-	
-	public void solve() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+	private BonesState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "32660ce0-bf86-4472-8f12-6aa2bc0a39b5" ), test.ik.croquet.codecs.BoneCodec.SINGLETON, -1 );
+	}
+	public void setChain( org.lgna.ik.Chain chain ) {
+		org.lgna.ik.Bone prevBone = this.getSelectedItem();
+		org.lgna.ik.Bone[] bones = chain.getBones();
+		int selectionIndex = -1;
+		if( prevBone != null ) {
+			int index = 0;
+			for( org.lgna.ik.Bone bone : bones ) {
+				if( prevBone.getA() == bone.getA() ) {
+					selectionIndex = index;
+					break;
+				}
+				index ++;
+			}
+		}
+		this.setListData( selectionIndex, bones );
 	}
 }

@@ -236,20 +236,20 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		};
 		public abstract java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint );
 	}
-	private java.util.List< JointImp > updateChain( java.util.List< JointImp > rv, JointImp joint, EntityImp ancestor, AddOp addOp ) {
+	private java.util.List< JointImp > updateJointsBetween( java.util.List< JointImp > rv, JointImp joint, EntityImp ancestor, AddOp addOp ) {
 		if( joint == ancestor ) {
 			//pass
 		} else {
 			org.lgna.story.resources.JointId parentId = joint.getJointId().getParent();
 			if( parentId != null ) {
 				JointImp parent = this.getJointImplementation( parentId );
-				this.updateChain( rv, parent, ancestor, addOp );
+				this.updateJointsBetween( rv, parent, ancestor, addOp );
 			}
 		}
 		addOp.add( rv, joint );
 		return rv;
 	}
-	public java.util.List< JointImp > getChainBetween( JointImp jointA, JointImp jointB ) {
+	public java.util.List< JointImp > getInclusiveListOfJointsBetween( JointImp jointA, JointImp jointB ) {
 		assert jointA != null : this;
 		assert jointB != null : this;
 		java.util.List< JointImp > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -258,18 +258,18 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			rv.add( jointA );
 		} else {
 			if( jointA.isDescendantOf( jointB ) ) {
-				this.updateChain( rv, jointA, jointB, AddOp.PREPEND );
+				this.updateJointsBetween( rv, jointA, jointB, AddOp.PREPEND );
 			} else if( jointB.isDescendantOf( jointA ) ) {
-				this.updateChain( rv, jointB, jointA, AddOp.APPEND );
+				this.updateJointsBetween( rv, jointB, jointA, AddOp.APPEND );
 			} else {
-				this.updateChain( rv, jointB, this, AddOp.APPEND );
-				this.updateChain( rv, jointA, this, AddOp.PREPEND );
+				this.updateJointsBetween( rv, jointB, this, AddOp.APPEND );
+				this.updateJointsBetween( rv, jointA, this, AddOp.PREPEND );
 			}
 		}
 		return rv;
 	}
 	public java.util.List< JointImp > getInclusiveListOfJointsBetween( org.lgna.story.resources.JointId idA, org.lgna.story.resources.JointId idB ) {
-		return this.getChainBetween( this.getJointImplementation( idA ), this.getJointImplementation( idB ) );
+		return this.getInclusiveListOfJointsBetween( this.getJointImplementation( idA ), this.getJointImplementation( idB ) );
 	}
 	
 	private static class JointData {

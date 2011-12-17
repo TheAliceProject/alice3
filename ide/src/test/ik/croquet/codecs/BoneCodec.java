@@ -41,38 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.ik;
+package test.ik.croquet.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Skeleton {
-	public static Skeleton createInstance( org.lgna.story.implementation.JointedModelImp jointedModelImp ) {
-		java.util.List< Bone > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		for( org.lgna.story.resources.JointId rootJointId : jointedModelImp.getRootJointIds() ) {
-			Bone rootBone = Bone.createTree( jointedModelImp, rootJointId ); 
-			list.add( rootBone );
-		}
-		Bone[] array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, Bone.class );
-		return new Skeleton( array );
+public enum BoneCodec implements org.lgna.croquet.ItemCodec< org.lgna.ik.Bone > {
+	SINGLETON;
+	public java.lang.StringBuilder appendRepresentation( java.lang.StringBuilder rv, org.lgna.ik.Bone value, java.util.Locale locale ) {
+		return rv;
 	}
-	private final Bone[] rootBones;
-	private final java.util.Map< org.lgna.story.resources.JointId, Bone > mapJointIdToBone = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private Skeleton( Bone[] rootBones ) {
-		this.rootBones = rootBones;
-		for( Bone rootBone : this.rootBones ) {
-			rootBone.treeWalk( new Bone.TreeWalkObserver() {
-				public void handleBone( org.lgna.ik.Bone bone ) {
-				}
-			} );
-		}
+	public org.lgna.ik.Bone decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException();
 	}
-	public Bone[] getRootBones() {
-		return this.rootBones;
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.ik.Bone value ) {
+		throw new RuntimeException();
 	}
-	public Chain getChain( org.lgna.story.resources.JointId baseId, org.lgna.story.resources.JointId endEffectorId ) {
-		Bone base = mapJointIdToBone.get( baseId );
-		Bone endEffector = mapJointIdToBone.get( endEffectorId );
-		return Chain.createInstance( base, endEffector );
+	public java.lang.Class< org.lgna.ik.Bone > getValueClass() {
+		return org.lgna.ik.Bone.class;
 	}
 }

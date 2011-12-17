@@ -50,14 +50,31 @@ public class ControlsPanel extends org.lgna.croquet.components.PageAxisPanel {
 	public ControlsPanel( test.ik.croquet.ControlsComposite composite ) {
 		super( composite );
 		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
-				new org.lgna.croquet.components.Label( "anchor:" ),
+				new org.lgna.croquet.components.Label( "anchor:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
 				new JointIdDropDown( test.ik.croquet.AnchorJointIdState.getInstance() )
 		) );
 		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
-				new org.lgna.croquet.components.Label( "end:" ),
+				new org.lgna.croquet.components.Label( "end:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
 				new JointIdDropDown( test.ik.croquet.EndJointIdState.getInstance() )
 		) );
+
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
+		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
+
+		this.addComponent( new org.lgna.croquet.components.Label( "chain:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+
+		org.lgna.croquet.components.List< org.lgna.ik.Bone > list = test.ik.croquet.BonesState.getInstance().createList();
+		list.setAlignmentX( 0.0f );
+		list.setBackgroundColor( null );
+		this.addComponent( list );
+
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
+		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
 		
+		this.addComponent( new org.lgna.croquet.components.Label( "bone:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+
 		this.setMinimumPreferredWidth( 160 );
 	}
 }

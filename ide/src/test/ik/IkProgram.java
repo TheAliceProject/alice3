@@ -94,12 +94,23 @@ class IkProgram extends Program {
 		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
 		return this.getSubjectImp().getInclusiveListOfJointsBetween( anchorId, endId );
 	}
+	private org.lgna.ik.Chain createChain() {
+		boolean isLinearEnabled = true;
+		boolean isAngularEnabled = true;
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "isLinearEnabled isAngularEnabled" );
+		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
+		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
+		return org.lgna.ik.Chain.createInstance( this.getSubjectImp(), anchorId, endId, isLinearEnabled, isAngularEnabled );
+	}
 	private void handleJointIdChanged() {
-		java.util.List< org.lgna.story.implementation.JointImp > chain = this.getJointImpListBetweenAnchorAndEnd();
-		for( org.lgna.story.implementation.JointImp jointImp : chain ) {
-			System.out.println( "\t" + jointImp + " x: " + jointImp.isFreeInX() + " y: " + jointImp.isFreeInY() + " z: " + jointImp.isFreeInZ() );
-		}
-		System.out.flush();
+		org.lgna.ik.Chain chain = createChain();
+		test.ik.croquet.BonesState.getInstance().setChain( chain );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( chain );
+//		java.util.List< org.lgna.story.implementation.JointImp > chain = this.getJointImpListBetweenAnchorAndEnd();
+//		for( org.lgna.story.implementation.JointImp jointImp : chain ) {
+//			System.out.println( "\t" + jointImp + " x: " + jointImp.isFreeInX() + " y: " + jointImp.isFreeInY() + " z: " + jointImp.isFreeInZ() );
+//		}
+//		System.out.flush();
 	}
 	private void initializeTest() {
 		this.setActiveScene( this.scene );

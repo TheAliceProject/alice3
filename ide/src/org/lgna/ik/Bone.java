@@ -47,75 +47,117 @@ package org.lgna.ik;
  * @author Dennis Cosgrove
  */
 public class Bone {
-	private static double[] createVelocities( boolean b, final int N ) {
+	/*package-private*/ static edu.cmu.cs.dennisc.math.Vector3[] createAxes( boolean b, final int N ) {
 		if( b ) {
+			edu.cmu.cs.dennisc.math.Vector3[] rv = new edu.cmu.cs.dennisc.math.Vector3[ N ];
+			for( int i=0; i<N; i++ ) {
+				rv[ i ] = edu.cmu.cs.dennisc.math.Vector3.createZero();
+			}
+			return rv;
+		} else {
+			return null;
+		}
+	}
+	/*package-private*/ static double[] createVelocities( boolean isNotToBeNull, final int N ) {
+		if( isNotToBeNull ) {
 			return new double[ N ];
 		} else {
 			return null;
 		}
 	}
-	public static Bone createTree( org.lgna.story.implementation.JointedModelImp jointedModelImp, org.lgna.story.resources.JointId jointId ) {
-		return new Bone( jointedModelImp, jointId, null );
-	}
 	
-	private final org.lgna.story.implementation.JointedModelImp jointedModelImp;
-	private final org.lgna.story.resources.JointId jointId;
-
-	private final Bone parent;
-	private final java.util.List< Bone > children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
-	private final edu.cmu.cs.dennisc.math.Vector3[] axes;
-	private final double[] angularVelocities;
-	private Bone( org.lgna.story.implementation.JointedModelImp jointedModelImp, org.lgna.story.resources.JointId jointId, Bone parent ) {
-		this.jointedModelImp = jointedModelImp;
-		this.jointId = jointId;
-		this.parent = parent;
-		for( org.lgna.story.resources.JointId childJointId : this.jointId.getChildren( this.jointedModelImp.getResource() ) ) {
-			this.children.add( new Bone( jointedModelImp, childJointId, this ) );
-		}
-		org.lgna.story.implementation.JointImp jointImp = this.jointedModelImp.getJointImplementation( this.jointId );
-		int degreesOfFreedom = 3; //jointImp.getDegreesOfFreedom();
-		this.axes = Solver.createAxes( true, degreesOfFreedom );
-		this.angularVelocities = createVelocities( true, degreesOfFreedom );
-	}
-	public org.lgna.story.resources.JointId getJointId() {
-		return this.jointId;
-	}
-	public edu.cmu.cs.dennisc.math.Vector3[] getAxes() {
-		return this.axes;
-	}
-	private boolean isDescendantOf( Bone other ) {
-		if( this.parent != null ) {
-			if( other == this.parent ) {
-				return true;
+	private static class Axis {
+		private final edu.cmu.cs.dennisc.math.Vector3 axis;
+		private double angularVelocity;
+		private final edu.cmu.cs.dennisc.math.Vector3 linearContribution; 
+		private final edu.cmu.cs.dennisc.math.Vector3 angularContribution; 
+		public Axis( boolean isLinearEnabled, boolean isAngularEnabled ) {
+			this.axis = edu.cmu.cs.dennisc.math.Vector3.createZero();
+			if( isLinearEnabled ) {
+				this.linearContribution = edu.cmu.cs.dennisc.math.Vector3.createZero();
 			} else {
-				return this.parent.isDescendantOf( other );
+				this.linearContribution = null;
 			}
-		} else {
-			return false;
-		}
-	}
-	public Bone getNextBoneTowards( Bone other ) {
-		for( Bone child : this.children ) { 
-			if( child == other || other.isDescendantOf( child ) ) {
-				return child;
+			if( isAngularEnabled ) {
+				this.angularContribution = edu.cmu.cs.dennisc.math.Vector3.createZero();
+				this.angularVelocity = 0.0;
+			} else {
+				this.angularContribution = null;
+				this.angularVelocity = Double.NaN;
 			}
 		}
-		return this.parent;
-	}
-	public Bone getParent() {
-		return this.parent;
-	}
-	public Iterable< Bone > getChildren() {
-		return this.children;
-	}
-	public static interface TreeWalkObserver {
-		public void handleBone( Bone bone );
-	}
-	public void treeWalk( TreeWalkObserver observer ) {
-		observer.handleBone( this );
-		for( Bone child : this.children ) {
-			child.treeWalk( observer );
+		public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 v ) {
+			if( this.linearContribution != null ) {
+				edu.cmu.cs.dennisc.math.Vector3.setReturnValueToCrossProduct( this.linearContribution, this.axis, v );
+			}
+		}
+		public void updateAngularContributions() {
+			if( this.angularContribution != null ) {
+				this.angularContribution.set( this.axis );
+			}
 		}
 	}
+	
+	private final Chain chain;
+	private final int index;
+	private final Axis[] axes = new Axis[ 3 ];
+	public Bone( Chain chain, int index, boolean isLinearEnabled, boolean isAngularEnabled ) {
+		this.chain = chain;
+		this.index = index;
+
+		org.lgna.story.implementation.JointImp a = this.getA();
+		if( a.isFreeInX() ) {
+			this.axes[ 0 ] = new Axis( isLinearEnabled, isAngularEnabled );
+		}
+		if( a.isFreeInY() ) {
+			this.axes[ 1 ] = new Axis( isLinearEnabled, isAngularEnabled );
+		}
+		if( a.isFreeInZ() ) {
+			this.axes[ 2 ] = new Axis( isLinearEnabled, isAngularEnabled );
+		}
+	}
+	public org.lgna.story.implementation.JointImp getA() {
+		return this.chain.getJointImpAt( this.index );
+	}
+	public org.lgna.story.implementation.JointImp getB() {
+		return this.chain.getJointImpAt( this.index+1 );
+	}
+
+	public int getDegreesOfFreedom() {
+		int rv = 0;
+		for( Axis axis : axes ) {
+			if( axis != null ) {
+				rv ++;
+			}
+		}
+		return rv;
+	}
+	public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 v ) {
+		for( Axis axis : axes ) {
+			if( axis != null ) {
+				axis.updateLinearContributions( v );
+			}
+		}
+	}
+	public void updateAngularContributions() {
+		for( Axis axis : axes ) {
+			if( axis != null ) {
+				axis.updateAngularContributions();
+			}
+		}
+	}
+	
+	@Override
+	public String toString() {
+		org.lgna.story.implementation.JointImp a = this.getA();
+		org.lgna.story.implementation.JointImp b = this.getB();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Bone[" );
+		sb.append( a.getJointId() );
+		sb.append( "->" );
+		sb.append( b.getJointId() );
+		sb.append( "]" );
+		return sb.toString();
+	}
+	
 }
