@@ -52,11 +52,16 @@ public abstract class JointInstanceFactoryMenuModel extends org.lgna.croquet.Cas
 		super( id );
 		this.getters = org.alice.stageide.ast.JointedModelUtilities.getAllJointGetters( type );
 	}
-	protected abstract org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method );
+	protected abstract org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method );
 	@Override
 	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
 		for( org.lgna.project.ast.AbstractMethod method : this.getters ) {
-			rv.add( this.getFillIn( method ) );
+			org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > fillIn = this.getFillIn( method );
+			if( fillIn != null ) {
+				rv.add( fillIn );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
+			}
 		}
 		return rv;
 	}

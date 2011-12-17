@@ -50,15 +50,18 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ThisMethodInvocationFactory getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		assert method != null;
-		assert method.getRequiredParameters().size() == 0;
-		ThisMethodInvocationFactory rv = map.get( method );
-		if( rv != null ) {
-			//pass
+		if( method.getRequiredParameters().size() == 0 ) {
+			ThisMethodInvocationFactory rv = map.get( method );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ThisMethodInvocationFactory( method );
+				map.put( method, rv );
+			}
+			return rv;
 		} else {
-			rv = new ThisMethodInvocationFactory( method );
-			map.put( method, rv );
+			return null;
 		}
-		return rv;
 	}
 	private ThisMethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
 		super( method );

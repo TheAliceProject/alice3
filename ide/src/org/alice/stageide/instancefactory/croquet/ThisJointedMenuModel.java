@@ -64,7 +64,13 @@ public class ThisJointedMenuModel extends JointInstanceFactoryMenuModel {
 		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), type );
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( method ) );
+	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( method );
+		if( instanceFactory != null ) {
+			return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( instanceFactory );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no instance factory for", method );
+			return null;
+		}
 	}
 }
