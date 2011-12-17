@@ -88,6 +88,21 @@ public abstract class ProjectUtilities {
 	private static String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
 	private static String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
 
+	public static java.io.File getMyAliceDirectory( String applicationName ) {
+		java.io.File rv = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), applicationName );
+		rv.mkdirs();
+		return rv;
+	}
+	public static java.io.File getMyProjectsDirectory( String applicationName ) {
+		java.io.File rv = new java.io.File( getMyAliceDirectory( applicationName ), "MyProjects" );
+		rv.mkdirs();
+		return rv;
+	}
+	@Deprecated
+	public static java.io.File getMyProjectsDirectory() {
+		return getMyProjectsDirectory( "Alice3" );
+	}
+	
 	public static java.io.File[] listProjectFiles( java.io.File directory ) {
 		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, PROJECT_EXTENSION );
 	}
