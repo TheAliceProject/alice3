@@ -62,7 +62,7 @@ public abstract class PrintUtilities {
 	private static java.util.Map< Class<?>, java.lang.reflect.Method > s_classToAppendLinesMethod;
 
 	private static java.lang.reflect.Method getMethod( String name, Class<?> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( PrintUtilities.class, name, new Class[] { StringBuffer.class, cls } );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( PrintUtilities.class, name, new Class[] { StringBuilder.class, cls } );
 	}
 
 	static {
@@ -165,7 +165,7 @@ public abstract class PrintUtilities {
 	}
 
 	//Object...
-	private static StringBuffer append( StringBuffer rv, Object[] values, boolean isSingleLine ) {
+	private static StringBuilder append( StringBuilder rv, Object[] values, boolean isSingleLine ) {
 		if( s_isDumpStackDesired ) {
 			Thread.dumpStack();
 		}
@@ -173,7 +173,11 @@ public abstract class PrintUtilities {
 			if( value != null ) {
 				if( value instanceof Printable ) {
 					Printable printable = (Printable)value;
-					printable.append( rv, s_decimalFormat, isSingleLine==false );
+					try {
+						printable.append( rv, s_decimalFormat, isSingleLine==false );
+					} catch( java.io.IOException ioe ) {
+						throw new RuntimeException( ioe );
+					}
 				} else {
 					java.util.Map< Class< ? >, java.lang.reflect.Method > map;
 					if( isSingleLine ) {
@@ -217,17 +221,17 @@ public abstract class PrintUtilities {
 		return rv;
 	}
 
-	public static StringBuffer append( StringBuffer rv, Object... values ) {
+	public static StringBuilder append( StringBuilder rv, Object... values ) {
 		return append( rv, values, true );
 	}
-	public static StringBuffer appendLines( StringBuffer rv, Object... values ) {
+	public static StringBuilder appendLines( StringBuilder rv, Object... values ) {
 		return append( rv, values, false );
 	}
 	public static String toString( Object... value ) {
-		return append( new StringBuffer(), value ).toString();
+		return append( new StringBuilder(), value ).toString();
 	}
 	public static String toStringLines( Object... value ) {
-		return appendLines( new StringBuffer(), value ).toString();
+		return appendLines( new StringBuilder(), value ).toString();
 	}
 	public static void print( java.io.PrintStream ps, Object... value ) {
 		ps.print( toString( value ) );
@@ -252,19 +256,19 @@ public abstract class PrintUtilities {
 
 	//Float
 
-	public static StringBuffer append( StringBuffer rv, Float value ) {
+	public static StringBuilder append( StringBuilder rv, Float value ) {
 		return rv.append( s_decimalFormat.format( value ) );
 	}
 
 	//Double
 
-	public static StringBuffer append( StringBuffer rv, Double value ) {
+	public static StringBuilder append( StringBuilder rv, Double value ) {
 		return rv.append( s_decimalFormat.format( value ) );
 	}
 
 	//java.nio.IntBuffer
 
-	public static StringBuffer append( StringBuffer rv, java.nio.IntBuffer value ) {
+	public static StringBuilder append( StringBuilder rv, java.nio.IntBuffer value ) {
 		rv.append( value );
 		rv.append( ' ' );
 		while( value.position() < value.limit() ) {
@@ -275,14 +279,14 @@ public abstract class PrintUtilities {
 		return rv;
 	}
 
-	public static StringBuffer appendLines( StringBuffer rv, java.nio.IntBuffer value ) {
+	public static StringBuilder appendLines( StringBuilder rv, java.nio.IntBuffer value ) {
 		//todo:
 		return append( rv, value );
 	}
 
 	//java.nio.FloatBuffer
 
-	public static StringBuffer append( StringBuffer rv, java.nio.FloatBuffer value ) {
+	public static StringBuilder append( StringBuilder rv, java.nio.FloatBuffer value ) {
 		rv.append( value );
 		rv.append( ' ' );
 		while( value.position() < value.limit() ) {
@@ -293,14 +297,14 @@ public abstract class PrintUtilities {
 		return rv;
 	}
 
-	public static StringBuffer appendLines( StringBuffer rv, java.nio.FloatBuffer value ) {
+	public static StringBuilder appendLines( StringBuilder rv, java.nio.FloatBuffer value ) {
 		//todo:
 		return append( rv, value );
 	}
 
 	//java.nio.DoubleBuffer
 
-	public static StringBuffer append( StringBuffer rv, java.nio.DoubleBuffer value ) {
+	public static StringBuilder append( StringBuilder rv, java.nio.DoubleBuffer value ) {
 		rv.append( value );
 		rv.append( ' ' );
 		while( value.position() < value.limit() ) {
@@ -311,14 +315,14 @@ public abstract class PrintUtilities {
 		return rv;
 	}
 
-	public static StringBuffer appendLines( StringBuffer rv, java.nio.DoubleBuffer value ) {
+	public static StringBuilder appendLines( StringBuilder rv, java.nio.DoubleBuffer value ) {
 		//todo:
 		return append( rv, value );
 	}
 
 	//int[]
 
-	public static StringBuffer append( StringBuffer rv, int[] value ) {
+	public static StringBuilder append( StringBuilder rv, int[] value ) {
 		rv.append( "int[]: " );
 		if( value != null ) {
 			rv.append( "length=" );
@@ -335,14 +339,14 @@ public abstract class PrintUtilities {
 		return rv;
 	}
 
-	public static StringBuffer appendLines( StringBuffer rv, int[] value ) {
+	public static StringBuilder appendLines( StringBuilder rv, int[] value ) {
 		//todo:
 		return append( rv, value );
 	}
 
 	//float[]
 
-	public static StringBuffer append( StringBuffer rv, float[] value ) {
+	public static StringBuilder append( StringBuilder rv, float[] value ) {
 		rv.append( "float[]: " );
 		if( value != null ) {
 			rv.append( "length=" );
@@ -359,14 +363,14 @@ public abstract class PrintUtilities {
 		return rv;
 	}
 
-	public static StringBuffer appendLines( StringBuffer rv, float[] value ) {
+	public static StringBuilder appendLines( StringBuilder rv, float[] value ) {
 		//todo:
 		return append( rv, value );
 	}
 
 	//double[]
 
-	public static StringBuffer append( StringBuffer rv, double[] value ) {
+	public static StringBuilder append( StringBuilder rv, double[] value ) {
 		rv.append( "double[]: " );
 		if( value != null ) {
 			rv.append( "length=" );
@@ -383,16 +387,24 @@ public abstract class PrintUtilities {
 		return rv;
 	}
 
-	public static StringBuffer appendLines( StringBuffer rv, double[] value ) {
+	public static StringBuilder appendLines( StringBuilder rv, double[] value ) {
 		//todo:
 		return append( rv, value );
 	}
 
-	public static StringBuffer append( StringBuffer rv, Printable value ) {
-		return value.append( rv, s_decimalFormat, false );
+	public static Appendable append( Appendable rv, Printable value ) {
+		try {
+			return value.append( rv, s_decimalFormat, false );
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( ioe );
+		}
 	}
 
-	public static StringBuffer appendLines( StringBuffer rv, Printable value ) {
-		return value.append( rv, s_decimalFormat, true );
+	public static Appendable appendLines( Appendable rv, Printable value ) {
+		try {
+			return value.append( rv, s_decimalFormat, true );
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( ioe );
+		}
 	}
 }

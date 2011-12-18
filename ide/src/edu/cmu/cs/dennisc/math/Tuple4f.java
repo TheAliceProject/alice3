@@ -73,7 +73,7 @@ public abstract class Tuple4f implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 		binaryEncoder.encode( w );
 	}
 
-	public StringBuffer append( StringBuffer rv, java.text.DecimalFormat decimalFormat, boolean isLines ) {
+	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
 		if( isLines ) {
 			rv.append( "+-       -+\n" );
 			rv.append( "| " );

@@ -49,6 +49,10 @@ package test.ik.croquet.views;
 public class ControlsPanel extends org.lgna.croquet.components.PageAxisPanel {
 	public ControlsPanel( test.ik.croquet.ControlsComposite composite ) {
 		super( composite );
+		
+		this.addComponent( test.ik.croquet.IsLinearEnabledState.getInstance().createCheckBox() );
+		this.addComponent( test.ik.croquet.IsAngularEnabledState.getInstance().createCheckBox() );
+		
 		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
 				new org.lgna.croquet.components.Label( "anchor:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
 				new JointIdDropDown( test.ik.croquet.AnchorJointIdState.getInstance() )
@@ -73,8 +77,16 @@ public class ControlsPanel extends org.lgna.croquet.components.PageAxisPanel {
 		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
 		
-		this.addComponent( new org.lgna.croquet.components.Label( "bone:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
-
-		this.setMinimumPreferredWidth( 160 );
+		this.addComponent( new org.lgna.croquet.components.Label( "info:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+		
+		org.lgna.croquet.components.TextArea textArea = test.ik.croquet.InfoState.getInstance().createTextArea();
+		textArea.getAwtComponent().setEditable( false );
+		textArea.setBorder( null );
+		textArea.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( textArea );
+		scrollPane.setAlignmentX( 0.0f );
+		scrollPane.setBorder( null );
+		this.addComponent( scrollPane );
+		this.setMinimumPreferredWidth( 200 );
 	}
 }

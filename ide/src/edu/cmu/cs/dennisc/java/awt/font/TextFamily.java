@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.java.awt.font;
  * @author Dennis Cosgrove
  */
 public enum TextFamily implements TextAttribute< String > {
-	SERIF("Serif"), SANS_SERIF("SansSerif");
+	SERIF("Serif"), SANS_SERIF("SansSerif"), MONOSPACED("Monospaced");
 	private String m_value;
 
 	private TextFamily( String value ) {

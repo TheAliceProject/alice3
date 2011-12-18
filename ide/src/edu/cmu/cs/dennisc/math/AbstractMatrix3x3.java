@@ -62,7 +62,7 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		backward.encode( binaryEncoder );
 	}
 
-	public StringBuffer append( StringBuffer rv, java.text.DecimalFormat decimalFormat, boolean isLines ) {
+	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
 		if( isLines ) {
 			int n = decimalFormat.format( 0.0 ).length() + 1;
 			rv.append( "+-" );

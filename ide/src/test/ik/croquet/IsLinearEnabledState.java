@@ -41,11 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.print;
+package test.ik.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Printable {
-	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException;
+public class IsLinearEnabledState extends org.lgna.croquet.BooleanState {
+	private static class SingletonHolder {
+		private static IsLinearEnabledState instance = new IsLinearEnabledState();
+	}
+	public static IsLinearEnabledState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IsLinearEnabledState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "71f69cd4-e3aa-49e6-9501-3dedbcddc8a6" ), true );
+	}
 }

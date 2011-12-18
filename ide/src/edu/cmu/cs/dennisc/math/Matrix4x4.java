@@ -173,7 +173,7 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return right.isNaN() || up.isNaN() || backward.isNaN() || translation.isNaN();
 	}
 
-	public StringBuffer append( StringBuffer rv, java.text.DecimalFormat decimalFormat, boolean isLines ) {
+	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
 		if( isLines ) {
 			int n = decimalFormat.format( 0.0 ).length() + 1;
 			rv.append( "+-" );
