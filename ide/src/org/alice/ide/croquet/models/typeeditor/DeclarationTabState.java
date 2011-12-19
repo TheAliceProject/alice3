@@ -84,42 +84,73 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		}
 	};
 	
+	private org.lgna.croquet.State.ValueObserver<Boolean> isEmphasizingClassesListener = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			DeclarationTabState.this.refresh();
+		}
+	};
 	private java.util.Map< org.lgna.project.ast.NamedUserType, DeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private org.lgna.project.ast.NamedUserType type;
 	private DeclarationTabState() {
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
 		TypeState.getInstance().addAndInvokeValueObserver( this.typeObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueObserver( this.isEmphasizingClassesListener );
 	}
 	private void refresh() {
-		this.pushAtomic();
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			//pass
-		} else {
-			this.clear();
-			if( this.type != null ) {
-				this.addItem( DeclarationComposite.getInstance( this.type ) );
-				for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
-					if( method.isPublicAccess() ) {
-						if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
-							this.addItem( DeclarationComposite.getInstance( method ) );
+			this.pushAtomic();
+			try {
+				this.clear();
+				if( this.type != null ) {
+					this.addItem( DeclarationComposite.getInstance( this.type ) );
+					for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
+						if( method.isPublicAccess() ) {
+							if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
+								this.addItem( DeclarationComposite.getInstance( method ) );
+							}
 						}
 					}
-				}
-				DeclarationComposite selection = this.map.get( this.type );
-				int index;
-				if( selection != null ) {
-					index = this.indexOf( selection );
-					index = Math.max( index, 0 );
+					DeclarationComposite selection = this.map.get( this.type );
+					int index;
+					if( selection != null ) {
+						index = this.indexOf( selection );
+						index = Math.max( index, 0 );
+					} else {
+						index = this.getItemCount()-1;
+						//index = -1;
+					}
+					this.setSelectedIndex( index );
 				} else {
-					index = this.getItemCount()-1;
-					//index = -1;
+					this.setSelectedIndex( -1 );
 				}
-				this.setSelectedIndex( index );
-			} else {
-				this.setSelectedIndex( -1 );
+			} finally {
+				this.popAtomic();
+			}
+		} else {
+			boolean isTypeRemovalNecessary = false;
+			DeclarationComposite[] items = this.toArray();
+			for( DeclarationComposite item : items ) {
+				if( item.getDeclaration() instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
+					isTypeRemovalNecessary = true;
+				}
+			}
+			if( isTypeRemovalNecessary ) {
+				DeclarationComposite selectedItem = this.getSelectedItem();
+				int selectionIndex = -1;
+				java.util.List< DeclarationComposite > nextItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				for( DeclarationComposite item : items ) {
+					if( item.getDeclaration() instanceof org.lgna.project.ast.AbstractCode ) {
+						if( item == selectedItem ) {
+							selectionIndex = nextItems.size();
+						}
+						nextItems.add( item );
+					}
+				}
+				this.setListData( selectionIndex, nextItems );
 			}
 		}
-		this.popAtomic();
 	}
 	private void handleTypeChanged( org.lgna.project.ast.NamedUserType prevType, org.lgna.project.ast.NamedUserType nextType ) {
 		if( this.type != nextType ) {

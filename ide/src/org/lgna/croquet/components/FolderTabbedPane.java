@@ -98,18 +98,28 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 	        bounds.width += insets.left + insets.right;
 	        bounds.height += insets.top + insets.bottom;
 
-	        for( java.awt.Component component : button.getComponents() ) {
-	        	//if( component.isVisible() ) {
-	        		bounds.width += 2;
-			        bounds.width += component.getPreferredSize().width;
-	        	//}
-	        }
 	        
+	        if( button.getComponentCount() > 0 ) {
+		        for( java.awt.Component component : button.getComponents() ) {
+		        	//if( component.isVisible() ) {
+		        		bounds.width += 2;
+				        bounds.width += component.getPreferredSize().width;
+		        	//}
+		        }
+	        }
+
 	        return bounds.getSize();
 		}
+//		@Override
+//		protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, java.lang.String text ) {
+//			int EPIC_HACK_offsetLeft = 6; 
+//			g.translate( -EPIC_HACK_offsetLeft, 0 );
+//			super.paintText( g, b, textRect, text );
+//			g.translate( EPIC_HACK_offsetLeft, 0 );
+//		}
 	}
 	
-	private static class JFolderTabTitle extends javax.swing.JButton {
+	private static class JFolderTabTitle extends javax.swing.JRadioButton {
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent e) {
 				JFolderTabTitle.this.revalidate();
@@ -117,7 +127,9 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		};
 		public JFolderTabTitle() {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
+			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			this.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
+			this.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 			this.setLayout( new javax.swing.SpringLayout() );
 		}
 		@Override
