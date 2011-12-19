@@ -54,7 +54,6 @@ import org.alice.ide.properties.adapter.SetValueOperation;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.Panel;
 import org.lgna.croquet.components.SwingAdapter;
 
 import edu.cmu.cs.dennisc.math.Point3;

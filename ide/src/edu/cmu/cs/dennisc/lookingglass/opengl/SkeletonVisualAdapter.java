@@ -127,7 +127,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 	            	if (adapter instanceof MeshAdapter<?>)
 	            	{
 	            		MeshAdapter<Mesh> ma = (MeshAdapter<Mesh>)adapter;
-		            	if (((Mesh)ma.m_element).textureId.getValue() == ta.textureId.getValue())
+		            	if (ma.m_element.textureId.getValue() == ta.textureId.getValue())
 		            	{
 		            		meshAdapters.add(ma);
 		            	}

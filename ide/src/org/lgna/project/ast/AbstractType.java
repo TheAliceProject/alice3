@@ -174,8 +174,6 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 				if( rv != null ) {
 					break;
 				}
-			} else {
-				rv = null;
 			}
 		}
 		return rv;
@@ -193,8 +191,6 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 			if( field.getName().equals( name ) && ( valueType == null || field.getValueType().equals( valueType ) ) ) {
 				rv = field;
 				break;
-			} else {
-				rv = null;
 			}
 		}
 		return rv;

@@ -59,7 +59,6 @@ import org.lgna.croquet.components.BooleanStateButton;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.Panel;
 import org.lgna.croquet.components.SwingAdapter;
 import org.lgna.story.implementation.ModelImp;
 

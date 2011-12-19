@@ -892,7 +892,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public AbstractCamera getCameraForManipulator(CameraInformedManipulator cameraManipulator)
 	{
 		CameraView cameraView = cameraManipulator.getDesiredCameraView();
-		AbstractCamera cameraToReturn = null;
+		AbstractCamera cameraToReturn;
 		if (cameraView == CameraView.ACTIVE_VIEW || cameraView == CameraView.PICK_CAMERA)
 		{
 			cameraToReturn = getActiveCamera();
@@ -940,13 +940,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				hasSetCameraTransformables = true;
 			}
 			double timeCurr = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
-			if( sgCamera != null ) {
-				if( Double.isNaN( this.timePrev ) ) {
-					this.timePrev = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
-				}
-				double timeDelta = timeCurr - this.timePrev;
-				update( timeDelta );
+			if( Double.isNaN( this.timePrev ) ) {
+				this.timePrev = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
 			}
+			double timeDelta = timeCurr - this.timePrev;
+			update( timeDelta );
 			this.timePrev = timeCurr;
 		}
 	}

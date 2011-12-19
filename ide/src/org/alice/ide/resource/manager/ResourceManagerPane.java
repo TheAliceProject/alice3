@@ -194,7 +194,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( ide != null ) {
 				org.lgna.project.Project project = ide.getProject();
-				if( ide != null ) {
+				if( project != null ) {
 					project.addResource( resource );
 					ResourceManagerPane.this.resetModel();
 				}
@@ -204,7 +204,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( ide != null ) {
 				org.lgna.project.Project project = ide.getProject();
-				if( ide != null ) {
+				if( project != null ) {
 					project.removeResource( resource );
 					ResourceManagerPane.this.resetModel();
 				}

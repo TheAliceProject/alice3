@@ -53,7 +53,7 @@ public abstract class AbstractListModel<E> extends javax.swing.AbstractListModel
 		final int N = this.getSize();
 		for( int i=0; i<N; i++ ) {
 			E item = this.get( i );
-			if( element != null ? element.equals( item ) : element == null ) {
+			if( element != null ? element.equals( item ) : item == null ) {
 				return i;
 			}
 		}
@@ -64,7 +64,7 @@ public abstract class AbstractListModel<E> extends javax.swing.AbstractListModel
 		for( int i=0; i<N; i++ ) {
 			int index = N-1-i;
 			E item = this.get( index );
-			if( element != null ? element.equals( item ) : element == null ) {
+			if( element != null ? element.equals( item ) : item == null ) {
 				return index;
 			}
 		}

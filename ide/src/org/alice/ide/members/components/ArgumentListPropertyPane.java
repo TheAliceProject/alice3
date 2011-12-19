@@ -60,10 +60,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		if( parameterName != null && parameterName.length() > 0 ) {
 			rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 		}
-		if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
-			org.lgna.project.ast.SimpleArgument simpleArgument = (org.lgna.project.ast.SimpleArgument)argument;
-			rv.addComponent( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)simpleArgument.expression.getValue() ) );
-		}
+		rv.addComponent( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
 		return rv;
 	}
 }

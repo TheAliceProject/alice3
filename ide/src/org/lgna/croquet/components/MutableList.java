@@ -188,7 +188,7 @@ public abstract class MutableList<E, LC extends JComponent< ? >,MC extends JComp
 	}
 	@Override
 	protected void addItem( MutableListItemDetails<E,LC,MC,TC> itemDetails ) {
-		this.update( itemDetails.getLeadingComponent(), itemDetails.getMainComponent(), itemDetails.getTrailingComponent(), this.index, (E)itemDetails.getItem() );
+		this.update( itemDetails.getLeadingComponent(), itemDetails.getMainComponent(), itemDetails.getTrailingComponent(), this.index, itemDetails.getItem() );
 		this.index++;
 		//this.pageAxisPanel.internalAddComponent( itemDetails.getButton() );
 		itemDetails.getButton().setVisible( true );

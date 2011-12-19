@@ -269,7 +269,7 @@ public abstract class AbstractManipulator {
 			} else {
 				animator = null;
 			}
-			if (originalTransformation == null || newTransformation == null)
+			if (originalTransformation == null )
 			{
 				System.out.println("boom");
 			}

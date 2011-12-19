@@ -340,7 +340,7 @@ public class ThumbnailMaker {
 		
 		world.getSGCameraVehicle().setTranslationOnly(lastGoodPosition, world);
 		
-		this.setSize((int)(inputWidth*ANTI_ALIAS_FACTOR), (int)(inputHeight*ANTI_ALIAS_FACTOR));
+		this.setSize( inputWidth*ANTI_ALIAS_FACTOR, inputHeight*ANTI_ALIAS_FACTOR );
 		
 		offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();

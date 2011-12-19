@@ -94,7 +94,7 @@ public class BoundingBoxUtilities {
 
 	public static AxisAlignedBox getTransformableScaledBBox(org.lgna.story.implementation.ModelImp modelImp)
 	{
-		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)modelImp.getSgComposite();
+		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = modelImp.getSgComposite();
 		return getSGTransformableBBox(sgTransformable, true);
 	}
 	

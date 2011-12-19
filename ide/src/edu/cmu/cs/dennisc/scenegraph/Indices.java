@@ -97,11 +97,11 @@ public class Indices implements BinaryEncodableAndDecodable
         {
             //Adjust the indices to account for the fact that vertices are 3 floats, normals are 3 floats and UVs are 2 floats
             for( int i=0; i<this.indices.length; ) {
-                this.indices[i] = (int)(this.indices[i]*2);
+                this.indices[i] = this.indices[i]*2;
                 i++;
-                this.indices[i] = (int)(this.indices[i]*3);
+                this.indices[i] = this.indices[i]*3;
                 i++;
-                this.indices[i] = (int)(this.indices[i]*3);
+                this.indices[i] = this.indices[i]*3;
                 i++;
             }
             this.isInNeedOfIndexAdjustment = false;

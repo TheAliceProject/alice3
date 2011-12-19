@@ -89,7 +89,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 			org.lgna.project.ast.Expression expressionValue;
 			if (value != null)
 			{
-				org.lgna.story.Entity entity = (org.lgna.story.Entity)value;
+				org.lgna.story.Entity entity = value;
 				org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
 				org.lgna.project.ast.Expression thisExpression = new org.lgna.project.ast.ThisExpression();
 				if (value instanceof org.lgna.story.Scene) {

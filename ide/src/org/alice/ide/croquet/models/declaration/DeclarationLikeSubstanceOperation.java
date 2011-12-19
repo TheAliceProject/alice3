@@ -356,7 +356,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		}
 		if( this.initializerState != null ) {
 			//todo
-			((org.alice.ide.croquet.models.ExpressionState)this.initializerState).setValueTransactionlessly( this.initialExpression );
+			this.initializerState.setValueTransactionlessly( this.initialExpression );
 		}
 		
 		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {

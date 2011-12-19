@@ -139,7 +139,7 @@ public class LaunchUtilities {
 		java.io.File installDir = getInstallDirectory();
 		if( installDir != null ) {
 			java.io.File applicationRootDirectory = new java.io.File( installDir, "application" );
-			if( applicationRootDirectory != null && applicationRootDirectory.exists() ) {
+			if( applicationRootDirectory.exists() ) {
 				for( String path : new String[] { "classinfos.zip", "classinfos" } ) {
 					java.io.File file = new java.io.File( applicationRootDirectory, path );
 					if( file.exists() ) {

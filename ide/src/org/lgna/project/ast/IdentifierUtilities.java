@@ -48,8 +48,8 @@ package org.lgna.project.ast;
  */
 public class IdentifierUtilities {
 	public static boolean isValidIdentifier( String name ) {
-		final int N = name.length();
-		if( name != null && N > 0 ) {
+		final int N = name != null ? name.length() : 0;
+		if( N > 0 ) {
 			char name0 = name.charAt( 0 );
 			if( Character.isLetter( name0 ) || name0 == '_' ) {
 				for( int i=1; i<N; i++ ) {

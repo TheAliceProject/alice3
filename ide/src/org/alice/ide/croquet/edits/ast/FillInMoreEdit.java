@@ -66,7 +66,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 	}
 
 	private org.lgna.project.ast.SimpleArgument getArgumentAt( org.lgna.project.ast.MethodInvocation methodInvocation, int index ) {
-		return (org.lgna.project.ast.SimpleArgument)methodInvocation.requiredArguments.get( index );
+		return methodInvocation.requiredArguments.get( index );
 	}
 	
 	@Override

@@ -253,7 +253,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 				skewedPickPoint.y = originalPosition.y;
 			}
 		}
-		Point3 pointToUse = null;
+		Point3 pointToUse;
 		if (levelPickPoint == null && skewedPickPoint == null)
 		{
 			pointToUse = null;

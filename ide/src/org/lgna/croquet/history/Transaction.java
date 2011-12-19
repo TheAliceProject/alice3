@@ -110,7 +110,7 @@ public class Transaction extends Node< TransactionHistory > {
 		this.completionStep.setParent( this );
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( (PrepStep[])edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
+		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
 		binaryEncoder.encode( this.completionStep );
 	}
 	

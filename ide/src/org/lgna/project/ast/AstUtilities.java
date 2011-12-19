@@ -136,7 +136,7 @@ public class AstUtilities {
 			} else {
 				break;
 			}
-			javaType = (org.lgna.project.ast.JavaType)javaType.getSuperType();
+			javaType = javaType.getSuperType();
 		}
 		return rv;
 	}

@@ -43,8 +43,6 @@
 
 package org.alice.ide;
 
-import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
-
 /**
  * @author Dennis Cosgrove
  */

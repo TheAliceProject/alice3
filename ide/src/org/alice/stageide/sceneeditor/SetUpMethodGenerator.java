@@ -116,11 +116,10 @@ public class SetUpMethodGenerator {
 		{
 			return createStatement( org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) );
 		}
-		else if (vehicleField == null)
+		else
 		{
 			return createStatement( org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.Entity.class, SetUpMethodGenerator.createInstanceExpression( false, field ), new org.lgna.project.ast.NullLiteral());
 		}
-		return null;
 	}
 	
 	public static org.lgna.project.ast.ExpressionStatement createSetPaintStatement(org.lgna.project.ast.AbstractField field, org.lgna.story.Paint paint)

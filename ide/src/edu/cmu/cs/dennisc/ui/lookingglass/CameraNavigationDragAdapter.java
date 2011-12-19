@@ -78,13 +78,11 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
 			double tCurr = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
-			if( sgCamera != null ) {
-				if( Double.isNaN( m_tPrev ) ) {
-					m_tPrev = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
-				}
-				double tDelta = tCurr - m_tPrev;
-				update( tDelta );
+			if( Double.isNaN( m_tPrev ) ) {
+				m_tPrev = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
 			}
+			double tDelta = tCurr - m_tPrev;
+			update( tDelta );
 			m_tPrev = tCurr;
 		}
 	}

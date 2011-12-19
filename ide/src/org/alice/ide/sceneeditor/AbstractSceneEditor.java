@@ -301,7 +301,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 			mapSceneFieldToInstance.clear();
 			mapSceneInstanceToField.clear();
 			if( this.programType != null ) {
-				setProgramInstance((org.lgna.project.virtualmachine.UserInstance)getVM().ENTRY_POINT_createInstance(this.programType));
+				setProgramInstance(getVM().ENTRY_POINT_createInstance(this.programType));
 				for (org.lgna.project.ast.AbstractField programField : this.programType.getDeclaredFields())
 				{
 					if( programField.getValueType().isAssignableTo(org.lgna.story.Scene.class)) 

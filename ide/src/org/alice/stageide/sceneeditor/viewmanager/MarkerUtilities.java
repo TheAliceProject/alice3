@@ -307,13 +307,13 @@ public class MarkerUtilities {
 	
 	public static Icon getIconForCameraImp(CameraMarkerImp camera) {
 		if (camera != null) {
-			return getIconForCamera((CameraMarker)camera.getAbstraction());
+			return getIconForCamera(camera.getAbstraction());
 		}
 		return null;
 	}
 	
 	public static Icon getHighlightedIconForCameraImp(CameraMarkerImp camera) {
-		return getHighlightedIconForCamera((CameraMarker)camera.getAbstraction());
+		return getHighlightedIconForCamera(camera.getAbstraction());
 	}
 	
 	private static org.lgna.story.Color getNewMarkerColor(Class<? extends org.lgna.story.Marker> markerCls) {
