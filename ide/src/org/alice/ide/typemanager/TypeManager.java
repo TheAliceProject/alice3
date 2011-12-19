@@ -169,18 +169,25 @@ public class TypeManager {
 			//pass
 		} else {
 			org.lgna.project.ast.AbstractType< ?,?,? >[] interfaces = argumentType.getInterfaces();
+			org.lgna.project.ast.AbstractType< ?,?,? > nextType;
 			if( interfaces.length == 1 ) {
-				updateArgumentTypes( rv, rootArgumentType, interfaces[ 0 ] );
+				nextType = interfaces[ 0 ];
+			} else {
+				nextType = argumentType.getSuperType();
 			}
+			updateArgumentTypes( rv, rootArgumentType, nextType );
 		}
 		return rv;
 	}
-	private static org.lgna.project.ast.AbstractType< ?,?,? >[] getArgumentTypes( org.lgna.project.ast.AbstractType< ?,?,? > ancestorType, org.lgna.project.ast.AbstractField field ) {
+	private static org.lgna.project.ast.AbstractType< ?,?,? >[] getArgumentTypes( org.lgna.project.ast.AbstractType< ?,?,? > ancestorType, org.lgna.project.ast.AbstractType<?,?,?> resourceType ) {
 		java.util.List< org.lgna.project.ast.AbstractType< ?,?,? > > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		updateArgumentTypes( types, ConstructorArgumentUtilities.getContructorParameter0Type( ancestorType ), field.getDeclaringType() );
+		updateArgumentTypes( types, ConstructorArgumentUtilities.getContructorParameter0Type( ancestorType ), resourceType );
 		org.lgna.project.ast.AbstractType< ?,?,? >[] rv = new org.lgna.project.ast.AbstractType< ?,?,? >[ types.size() ];
 		types.toArray( rv );
 		return rv;
+	}
+	private static org.lgna.project.ast.AbstractType< ?,?,? >[] getArgumentTypes( org.lgna.project.ast.AbstractType< ?,?,? > ancestorType, org.lgna.project.ast.AbstractField field ) {
+		return getArgumentTypes(ancestorType, field.getDeclaringType());
 	}
 
 	private static void appendTypeName( StringBuilder sb, String name ) {
@@ -257,6 +264,14 @@ public class TypeManager {
 		org.lgna.project.ast.AbstractType< ?,?,? >[] argumentTypes = getArgumentTypes( ancestorType, argumentField );
 		return getNamedUserTypeFor( ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly( argumentTypes[ 0 ] ) );
 	}
+	
+	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFromPersonResource( org.lgna.story.resources.sims2.PersonResource personResource ) {
+		org.lgna.project.ast.JavaType bipedType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class );
+		//org.lgna.project.ast.JavaType bipedResourceType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.BipedResource.class );
+		org.lgna.project.ast.AbstractType< ?,?,? >[] argumentTypes = getArgumentTypes( bipedType, org.lgna.project.ast.JavaType.getInstance( personResource.getClass() ) );
+		return getNamedUserTypeFor( bipedType, argumentTypes, 0, null );
+	}
+	
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFromSuperType( org.lgna.project.ast.JavaType superType ) {
 		ExtendsTypeCriterion criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, ConstructorArgumentUtilities.getContructorParameter0Type( superType ) );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
