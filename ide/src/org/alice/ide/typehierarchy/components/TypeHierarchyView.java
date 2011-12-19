@@ -79,10 +79,13 @@ class NamedUserTypeTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstr
 }
 
 class NamedUserTypeTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > > {
+	
 	@Override
 	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,0,2,0 ) );
+		rv.setOpaque( false );
 		rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( node != null ? node.getValue() : null ) );
-		rv.setText( null );
+		rv.setText( "" );
 		return rv;
 	}
 }
