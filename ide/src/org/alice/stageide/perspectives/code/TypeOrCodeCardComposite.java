@@ -58,14 +58,7 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			TypeOrCodeCardComposite.this.handleDeclarationStateChanged();
-		}
-	};
-	private final org.lgna.croquet.State.ValueObserver< Boolean > isEmphasizingClassesListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			TypeOrCodeCardComposite.this.handleIsEmphasizingClassesChanged();
+			TypeOrCodeCardComposite.this.handleDeclarationStateChanged( nextValue );
 		}
 	};
 	private TypeOrCodeCardComposite() {
@@ -74,41 +67,26 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 				org.alice.ide.members.MembersComposite.getInstance() 
 		);
 	}
-	private void handleChange() {
-		org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getValue();
-		boolean isEmphasizingClasses = org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue();
+	private void handleDeclarationStateChanged( org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue ) {
 		org.lgna.croquet.Composite< ? > composite;
-		if( isEmphasizingClasses ) {
-			if( nextValue != null ) {
-				if( nextValue.getDeclaration() instanceof org.lgna.project.ast.AbstractType ) {
-					composite = org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance();
-				} else {
-					composite = org.alice.ide.members.MembersComposite.getInstance();
-				}
+		if( nextValue != null ) {
+			if( nextValue.getDeclaration() instanceof org.lgna.project.ast.AbstractType ) {
+				composite = org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance();
 			} else {
-				composite = null;
+				composite = org.alice.ide.members.MembersComposite.getInstance();
 			}
 		} else {
-			composite = org.alice.ide.members.MembersComposite.getInstance();
+			composite = null;
 		}
 		this.getView().showComposite( composite );
-	}
-	private void handleIsEmphasizingClassesChanged() {
-		this.handleChange();
-	}
-	private void handleDeclarationStateChanged() {
-		this.handleChange();
 	}
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addValueObserver( this.declarationListener );
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueObserver( this.isEmphasizingClassesListener );
-		this.handleChange();
+		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( this.declarationListener );
 	}
 	@Override
 	public void handlePostDectivation() {
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesListener );
 		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().removeValueObserver( this.declarationListener );
 		super.handlePostDectivation();
 	}

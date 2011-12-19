@@ -43,6 +43,8 @@
 
 package org.alice.ide;
 
+import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -82,8 +84,8 @@ public class MetaDeclarationState {
 	}
 	
 	public org.lgna.project.ast.AbstractDeclaration getValue() {
+		IDE ide = IDE.getActiveInstance();
 		if( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() == org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ) {
-			IDE ide = IDE.getActiveInstance();
 			return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
 		} else {
 			org.alice.ide.croquet.models.typeeditor.DeclarationComposite declarationComposite = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getValue();

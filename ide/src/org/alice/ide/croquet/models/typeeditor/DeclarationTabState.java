@@ -43,6 +43,10 @@
 
 package org.alice.ide.croquet.models.typeeditor;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectApplication.ProjectObserver;
+import org.lgna.project.Project;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,13 +58,6 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		return SingletonHolder.instance;
 	}
 	
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-			DeclarationTabState.this.handleTypeChanged( prevValue, nextValue );
-		}
-	};
 	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserMethod > methodsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserMethod >() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< org.lgna.project.ast.UserMethod > e ) {
 		}
@@ -83,20 +80,36 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 			DeclarationTabState.this.refresh();
 		}
 	};
-	
-	private org.lgna.croquet.State.ValueObserver<Boolean> isEmphasizingClassesListener = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+			DeclarationTabState.this.handleTypeChanged( prevValue, nextValue );
+		}
+	};
+	private final org.lgna.croquet.State.ValueObserver<Boolean> isEmphasizingClassesListener = new org.lgna.croquet.State.ValueObserver<Boolean>() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			DeclarationTabState.this.refresh();
 		}
 	};
+	
+	private final ProjectObserver projectListener = new ProjectObserver() {
+		public void projectOpening(Project previousProject, Project nextProject) {
+		}
+		public void projectOpened(Project previousProject, Project nextProject) {
+			DeclarationTabState.this.clear();
+		}
+	};
+	
 	private java.util.Map< org.lgna.project.ast.NamedUserType, DeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private org.lgna.project.ast.NamedUserType type;
 	private DeclarationTabState() {
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
 		TypeState.getInstance().addAndInvokeValueObserver( this.typeObserver );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueObserver( this.isEmphasizingClassesListener );
+		IDE.getActiveInstance().addProjectObserver( this.projectListener );
 	}
 	private void refresh() {
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
