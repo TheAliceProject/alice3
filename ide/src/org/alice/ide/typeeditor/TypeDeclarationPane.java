@@ -102,7 +102,7 @@ public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel
 		
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( borderPanel );
 		scrollPane.setBorder( null );
-		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+        scrollPane.setBothScrollBarIncrements( 12, 24 );
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 		
 		org.alice.ide.ast.declaration.components.TypeHeader typeHeader = new org.alice.ide.ast.declaration.components.TypeHeader( type );

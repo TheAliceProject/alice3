@@ -64,8 +64,7 @@ public abstract class TabComposite< V extends org.lgna.croquet.components.View<?
 	public org.lgna.croquet.components.ScrollPane createScrollPane() {
 		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-		rv.getAwtComponent().getHorizontalScrollBar().setUnitIncrement( 12 );
+        rv.setBothScrollBarIncrements( 12, 24 );
 		return rv;
 	}
 	@Override

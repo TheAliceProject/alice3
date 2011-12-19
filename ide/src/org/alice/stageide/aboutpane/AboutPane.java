@@ -62,6 +62,7 @@ class ViewEULAAction extends javax.swing.AbstractAction {
 		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
 		scrollPane.setPreferredSize( new java.awt.Dimension( 480, 320 ) );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
+		scrollPane.getVerticalScrollBar().setBlockIncrement( 24 );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				scrollPane.getVerticalScrollBar().setValue( 0 );

@@ -97,7 +97,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 		org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( this.rootStatementListPropertyPane );
 
 		this.scrollPane = new org.lgna.croquet.components.ScrollPane( bodyPane );
-		this.scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+		this.scrollPane.setBothScrollBarIncrements( 12, 24 );
 		this.scrollPane.setBorder( null );
 		this.scrollPane.setBackgroundColor( null );
 		this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
