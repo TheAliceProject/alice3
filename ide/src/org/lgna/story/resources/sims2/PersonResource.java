@@ -43,13 +43,10 @@
 
 package org.lgna.story.resources.sims2;
 
-import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.JointId;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonResource implements org.lgna.story.resources.PersonResource {
+public abstract class PersonResource implements org.lgna.story.resources.BipedResource {
 	private final Gender gender;
 	private final SkinTone skinTone;
 	private final EyeColor eyeColor;
@@ -84,8 +81,8 @@ public abstract class PersonResource implements org.lgna.story.resources.PersonR
 	public Outfit getOutfit() {
 		return this.outfit;
 	}
-	public JointId[] getRootJointIds() {
-		return BipedResource.JOINT_ID_ROOTS;
+	public org.lgna.story.resources.JointId[] getRootJointIds() {
+		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
 	}
 
 	public final org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.Biped abstraction ) {

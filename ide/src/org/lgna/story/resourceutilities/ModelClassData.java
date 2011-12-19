@@ -26,7 +26,7 @@ public class ModelClassData extends BaseModelClassData
 	public static final ModelClassData FLYER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.FlyerResource.class, "org.lgna.story.resources.flyer", FLYER_BASE_CLASS_DATA);
 	public static final ModelClassData QUADRUPED_CLASS_DATA = new ModelClassData(org.lgna.story.resources.QuadrupedResource.class, "org.lgna.story.resources.quadruped", QUADRUPED_BASE_CLASS_DATA);
 	public static final ModelClassData SWIMMER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.SwimmerResource.class, "org.lgna.story.resources.swimmer", SWIMMER_BASE_CLASS_DATA);
-	public static final ModelClassData PERSON_CLASS_DATA = new ModelClassData(org.lgna.story.resources.PersonResource.class, "org.lgna.story.resources.people", BIPED_BASE_CLASS_DATA);
+	//public static final ModelClassData PERSON_CLASS_DATA = new ModelClassData(org.lgna.story.resources.PersonResource.class, "org.lgna.story.resources.people", BIPED_BASE_CLASS_DATA);
 	public static final ModelClassData CHARACTER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.CharacterResource.class, "org.lgna.story.resources.character", BIPED_BASE_CLASS_DATA);
 	public static final ModelClassData MONSTER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.MonsterResource.class, "org.lgna.story.resources.monster", BIPED_BASE_CLASS_DATA);
 	public static final ModelClassData BIRD_CLASS_DATA = new ModelClassData(org.lgna.story.resources.BirdResource.class, "org.lgna.story.resources.bird", FLYER_BASE_CLASS_DATA);
