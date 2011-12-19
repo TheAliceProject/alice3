@@ -110,7 +110,7 @@ public class ResourceTab extends GalleryTab {
 				};
 				scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
 				scrollPane.setBorder( null );
-		        scrollPane.setBothScrollBarIncrements( 12, 24 );
+		        scrollPane.setBothScrollBarIncrements( 16, 160 );
 
 				this.addComponent( topPanel, Constraint.PAGE_START );
 				this.addComponent( scrollPane, Constraint.CENTER );

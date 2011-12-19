@@ -94,4 +94,15 @@ public class BorderPanel extends Panel {
 	public void addComponent( Component<?> child, Constraint constraint ) {
 		this.internalAddComponent( child, constraint.internal );
 	}
+	public Component< ? > getComponent( Constraint constraint ) {
+		javax.swing.JPanel jPanel = this.getAwtComponent();
+		java.awt.BorderLayout borderLayout = (java.awt.BorderLayout)jPanel.getLayout();
+		for( Component< ? > component : this.getComponents() ) {
+			java.awt.Component awtComponent = component.getAwtComponent();
+			if( constraint.internal.equals( borderLayout.getConstraints( awtComponent ) ) ) {
+				return component;
+			}
+		}
+		return null;
+	}
 }

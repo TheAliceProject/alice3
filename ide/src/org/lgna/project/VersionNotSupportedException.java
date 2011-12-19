@@ -40,33 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+
+package org.lgna.project;
 
 /**
  * @author Dennis Cosgrove
  */
-public class WindowMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static WindowMenuModel instance = new WindowMenuModel();
+public class VersionNotSupportedException extends Exception {
+	private final double minimumSupportedVersion;
+	private final double version;
+	public VersionNotSupportedException( double minimumSupportedVersion, double version ) {
+		this.minimumSupportedVersion = minimumSupportedVersion;
+		this.version = version;
 	}
-	public static WindowMenuModel getInstance() {
-		return SingletonHolder.instance;
+	public double getMinimumSupportedVersion() {
+		return this.minimumSupportedVersion;
 	}
-	private static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		rv.add( org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getMenuModel() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( org.alice.ide.croquet.models.history.IsProjectHistoryShowingState.getInstance().getMenuItemPrepModel() );
-		rv.add( org.alice.ide.croquet.models.ui.IsMemoryUsageShowingState.getInstance().getMenuItemPrepModel() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( PreferencesMenuModel.getInstance() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
-			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			rv.add( InternalTestingMenuModel.getInstance() );
-		}
-		return rv;
-	}
-	private WindowMenuModel() {
-		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), createModels() );
+	public double getVersion() {
+		return this.version;
 	}
 }

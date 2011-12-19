@@ -91,7 +91,6 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	private InstanceFactory value;
 	private InstanceFactoryState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
-		//org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addValueObserver( declarationObserver );
 		org.alice.ide.MetaDeclarationState.getInstance().addValueListener( declarationListener );
 	}
 	private void handleDeclaringTypeChange( org.lgna.project.ast.AbstractType< ?,?,? > prevType, org.lgna.project.ast.AbstractType< ?,?,? > nextType ) {

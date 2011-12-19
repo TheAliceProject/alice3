@@ -53,11 +53,19 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	public static TypeEditor getInstance() {
 		return SingletonHolder.instance;
 	}
+	
+	private final org.lgna.croquet.State.ValueObserver< Boolean > isEmphasizingClassesListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			TypeEditor.this.handleIsEmphasizingClassesChanged();
+		}
+	};
+
 	private final org.lgna.croquet.components.FolderTabbedPane< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > tabbedPane;
 	private TypeEditor() {
 		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
 		this.tabbedPane = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().createFolderTabbedPane();
-		this.tabbedPane.setHeaderLeadingComponent( org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton() );
 		this.tabbedPane.setHeaderTrailingComponent( clipboard );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 	}
@@ -70,5 +78,26 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 			}
 		}
 		return null;
+	}
+	
+	private void handleIsEmphasizingClassesChanged() {
+		org.lgna.croquet.components.JComponent< ? > component;
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			component = org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
+		} else {
+			component = null;
+		}
+		this.tabbedPane.setHeaderLeadingComponent( component );
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueObserver( this.isEmphasizingClassesListener );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesListener );
+		super.handleUndisplayable();
 	}
 }

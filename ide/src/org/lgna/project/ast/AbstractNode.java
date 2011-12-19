@@ -46,6 +46,9 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner implements Node, edu.cmu.cs.dennisc.pattern.Crawlable {
+	private static final double CURRENT_VERSION = 3.1;
+	private static final double MINIMUM_ACCEPTABLE_VERSION = CURRENT_VERSION;
+
 	private java.util.UUID m_uuid = java.util.UUID.randomUUID();
 	private AbstractNode parent;
 	
@@ -277,9 +280,6 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 	//		crawl( types, visitor );
 	//	}
 
-
-	private static final double VERSION = 3.1;
-
 	private static org.w3c.dom.Element encodeValue( Object value, org.w3c.dom.Document xmlDocument, java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Element rv;
 		if( value instanceof AbstractNode ) {
@@ -437,7 +437,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 	public final org.w3c.dom.Document encode( java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Document rv = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
 		org.w3c.dom.Element xmlElement = encode( rv, set );
-		xmlElement.setAttribute( "version", Double.toString( VERSION ) );
+		xmlElement.setAttribute( "version", Double.toString( CURRENT_VERSION ) );
 		rv.appendChild( xmlElement );
 		return rv;
 	}
@@ -550,18 +550,20 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 	protected void postDecode() {
 	}
 
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map, boolean isUUIDDecodingDesired ) {
+	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map, boolean isUUIDDecodingDesired ) throws org.lgna.project.VersionNotSupportedException {
 		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
-		double xmlVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
-		assert xmlVersion == VERSION : xmlVersion;
-		
-		Decoder decoder = new Decoder( projectVersion, org.lgna.project.Version.getCurrentVersionText(), isUUIDDecodingDesired );
-		return decoder.decode( xmlElement, map );
+		double astVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
+		if( astVersion >= MINIMUM_ACCEPTABLE_VERSION ) {
+			Decoder decoder = new Decoder( projectVersion, org.lgna.project.Version.getCurrentVersionText(), isUUIDDecodingDesired );
+			return decoder.decode( xmlElement, map );
+		} else {
+			throw new org.lgna.project.VersionNotSupportedException( MINIMUM_ACCEPTABLE_VERSION, astVersion );
+		}
 	}
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map ) {
+	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map ) throws org.lgna.project.VersionNotSupportedException {
 		return decode( xmlDocument, projectVersion, map, true );
 	}
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion ) {
+	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion ) throws org.lgna.project.VersionNotSupportedException {
 		return decode( xmlDocument, projectVersion, new java.util.HashMap< Integer, AbstractDeclaration >() );
 	}
 

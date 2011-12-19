@@ -150,10 +150,10 @@ public abstract class IoUtilities {
 		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( is );
 	}
 
-	private static org.lgna.project.ast.NamedUserType readType( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException {
-		String version = readVersion( zipEntryContainer );
+	private static org.lgna.project.ast.NamedUserType readType( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+		String projectVersion = readVersion( zipEntryContainer );
 		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName );
-		return (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, version );
+		return (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, projectVersion );
 	}
 	private static java.util.Set< org.alice.virtualmachine.Resource > readResources( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
 		java.util.Set< org.alice.virtualmachine.Resource > rv = new java.util.HashSet< org.alice.virtualmachine.Resource >();
@@ -185,7 +185,7 @@ public abstract class IoUtilities {
 		return rv;
 	}
 
-	private static org.lgna.project.Project readProject( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
+	private static org.lgna.project.Project readProject( ZipEntryContainer zipEntryContainer ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert zipEntryContainer != null;
 		org.lgna.project.ast.NamedUserType type = readType( zipEntryContainer, PROGRAM_TYPE_ENTRY_NAME );
 		//todo
@@ -195,55 +195,47 @@ public abstract class IoUtilities {
 		readProperties( rv, zipEntryContainer );
 		return rv;
 	}
-	public static org.lgna.project.Project readProject( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
+	public static org.lgna.project.Project readProject( java.util.zip.ZipInputStream zis ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readProject( new ZipInputStreamEntryContainer( zis ) );
 	}
-	public static org.lgna.project.Project readProject( java.io.InputStream is ) throws java.io.IOException {
+	public static org.lgna.project.Project readProject( java.io.InputStream is ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readProject( new java.util.zip.ZipInputStream( is ) );
 	}
-	public static org.lgna.project.Project readProject( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
+	public static org.lgna.project.Project readProject( java.util.zip.ZipFile zipFile ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readProject( new ZipFileEntryContainer( zipFile ) );
 	}
-	public static org.lgna.project.Project readProject( java.io.File file ) {
+	public static org.lgna.project.Project readProject( java.io.File file ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert file != null;
 		assert file.exists();
-		try {
-			return readProject( new java.util.zip.ZipFile( file ) );
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( file.getAbsolutePath(), ioe );
-		}
+		return readProject( new java.util.zip.ZipFile( file ) );
 	}
-	public static org.lgna.project.Project readProject( String path ) {
+	public static org.lgna.project.Project readProject( String path ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert path != null;
 		return readProject( new java.io.File( path ) );
 	}
 
-	private static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
+	private static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( ZipEntryContainer zipEntryContainer ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		org.lgna.project.ast.AbstractType<?,?,?> type = readType( zipEntryContainer, TYPE_ENTRY_NAME );
 		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipEntryContainer );
 		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( type, resources );
 	}
 
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.util.zip.ZipInputStream zis ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new ZipInputStreamEntryContainer( zis ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.io.InputStream is ) throws java.io.IOException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.io.InputStream is ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new java.util.zip.ZipInputStream( is ) );
 	}
 
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new ZipFileEntryContainer( zipFile ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.io.File file ) {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.io.File file ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert file != null;
 		assert file.exists();
-		try {
-			return readType( new java.util.zip.ZipFile( file ) );
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( file.getAbsolutePath(), ioe );
-		}
+		return readType( new java.util.zip.ZipFile( file ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( String path ) {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( String path ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new java.io.File( path ) );
 	}
 

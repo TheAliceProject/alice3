@@ -67,21 +67,18 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 				org.alice.ide.members.MembersComposite.getInstance() 
 		);
 	}
-	@Override
-	public org.lgna.croquet.components.CardPanel createView() {
-		org.lgna.croquet.components.CardPanel rv = super.createView();
-		return rv;
-	}
 	private void handleDeclarationStateChanged( org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue ) {
+		org.lgna.croquet.Composite< ? > composite;
 		if( nextValue != null ) {
 			if( nextValue.getDeclaration() instanceof org.lgna.project.ast.AbstractType ) {
-				this.getView().showComposite( org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance() );
+				composite = org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance();
 			} else {
-				this.getView().showComposite( org.alice.ide.members.MembersComposite.getInstance() );
+				composite = org.alice.ide.members.MembersComposite.getInstance();
 			}
 		} else {
-			this.getView().showComposite( null );
+			composite = null;
 		}
+		this.getView().showComposite( composite );
 	}
 	@Override
 	public void handlePreActivation() {
