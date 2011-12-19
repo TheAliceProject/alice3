@@ -259,6 +259,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		tree.setRootVisible( false );
 		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
+		scrollPane.getVerticalScrollBar().setBlockIncrement( 24 );
 		org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( new org.lgna.croquet.history.event.Listener() {
 			private void reload() {
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {

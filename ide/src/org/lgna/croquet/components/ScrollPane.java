@@ -106,4 +106,19 @@ public class ScrollPane extends JComponent< javax.swing.JScrollPane > {
 		assert horizontalScrollbarPolicy != null;
 		this.getAwtComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
 	}
+	
+	private void setScrollBarIncrements( javax.swing.JScrollBar scrollBar, int unitIncrement, int blockIncrement ) {
+		scrollBar.setUnitIncrement( unitIncrement );
+		scrollBar.setBlockIncrement( blockIncrement );
+	}
+	public void setVerticalScrollBarIncrements( int unitIncrement, int blockIncrement ) {
+		this.setScrollBarIncrements( this.getAwtComponent().getVerticalScrollBar(), unitIncrement, blockIncrement );
+	}
+	public void setHorizontalScrollBarIncrements( int unitIncrement, int blockIncrement ) {
+		this.setScrollBarIncrements( this.getAwtComponent().getHorizontalScrollBar(), unitIncrement, blockIncrement );
+	}
+	public void setBothScrollBarIncrements( int unitIncrement, int blockIncrement ) {
+		this.setHorizontalScrollBarIncrements( unitIncrement, blockIncrement );
+		this.setVerticalScrollBarIncrements( unitIncrement, blockIncrement );
+	}
 }

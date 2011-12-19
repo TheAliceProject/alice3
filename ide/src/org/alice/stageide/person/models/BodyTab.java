@@ -65,7 +65,7 @@ public class BodyTab extends ContentTab<org.lgna.croquet.components.BorderPanel>
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.List< ? > list = new org.alice.stageide.person.components.FullBodyOutfitList();
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
-		scrollPane.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 66 );
+        scrollPane.setBothScrollBarIncrements( 66, 66 );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
 		org.lgna.croquet.components.Slider slider = ObesityLevelState.getInstance().createSlider();
