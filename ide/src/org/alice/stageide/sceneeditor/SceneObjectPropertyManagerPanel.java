@@ -76,6 +76,7 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.JointedModel;
 import org.lgna.story.Model;
 import org.lgna.story.MovableTurnable;
 import org.lgna.story.MutableRider;
@@ -83,10 +84,12 @@ import org.lgna.story.implementation.BillboardImp;
 import org.lgna.story.implementation.ConeImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.GroundImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.ModelImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.SphereImp;
 import org.lgna.story.implementation.TextImp;
+import org.lgna.story.resources.JointedModelResource;
 
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel
@@ -97,6 +100,17 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	private EntityImp selectedImp;
 	
 	private org.lgna.project.virtualmachine.UserInstance sceneInstance;
+	
+	private ShowJointedModelJointAxesState showJointsState;
+	
+	private org.lgna.croquet.State.ValueObserver<Boolean> showJointsStateObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			assert (state instanceof ShowJointedModelJointAxesState);
+			SceneObjectPropertyManagerPanel.this.setShowJointsOfField(((ShowJointedModelJointAxesState)state).getField(), nextValue );
+		}
+	};
 	
 	private class LabelValueControllerPair
 	{
@@ -122,6 +136,14 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		this.morePropertiesPanel = new GridBagPanel();
 		this.extraPropertiesPalette = AreExtraPropertiesShownState.getInstance().createToolPalette(this.morePropertiesPanel);
 	}
+	
+	private void setShowJointsOfField(org.lgna.project.ast.AbstractField field, boolean showJoints) {
+		JointedModelImp<? extends JointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation( field );
+		if (imp != null) {
+			imp.setJointAxisVisibility(showJoints);
+		}
+	}
+	
 	
 	@Override
     public void setBackgroundColor( java.awt.Color color )
@@ -375,6 +397,16 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 				}
 				//Add the object's class
 				this.addNameAndControllerToPanel(this.classNameLabel, org.alice.ide.common.TypeComponent.createInstance( valueType ), this, mainPropertyCount++);
+				
+				if (this.selectedImp instanceof JointedModelImp) {
+					if (this.showJointsState != null) {
+						this.showJointsState.removeValueObserver(this.showJointsStateObserver);
+					}
+					this.showJointsState = ShowJointedModelJointAxesState.getInstance(this.selectedField);
+					this.showJointsState.addValueObserver(this.showJointsStateObserver);
+					this.addNameAndControllerToPanel(createLabel("Show Joints: "), this.showJointsState.createCheckBox(), this, mainPropertyCount++);
+				}
+				
 				//Lastly, add the extra palette if there are any extra properties
 	            if (extraPropertyCount > 0)
 	            {

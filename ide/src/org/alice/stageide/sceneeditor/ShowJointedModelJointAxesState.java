@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,71 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.implementation;
+package org.alice.stageide.sceneeditor;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public abstract class JointImp extends AbstractTransformableImp {
-	private org.lgna.story.Joint abstraction;
-	private final JointedModelImp<?,?> jointedModelImplementation;
-	public JointImp( JointedModelImp<?,?> jointedModelImplementation ) {
-		this.jointedModelImplementation = jointedModelImplementation;
-	}
-	@Override
-	public org.lgna.story.implementation.SceneImp getScene() {
-		return this.jointedModelImplementation.getScene();
-	}
-	public abstract org.lgna.story.resources.JointId getJointId();
-	@Override
-	public final org.lgna.story.Joint getAbstraction() {
-		return this.abstraction;
-	}
-	public final void setAbstraction( org.lgna.story.Joint abstraction ) {
-		assert abstraction != null;
-		assert this.abstraction == null : this.abstraction;
-		this.abstraction = abstraction;
-	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return 0;
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
-		edu.cmu.cs.dennisc.scenegraph.Composite rv = super.getSgVehicle();
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.jointedModelImplementation.getSgComposite();
+public class ShowJointedModelJointAxesState extends org.lgna.croquet.BooleanState {
+	
+	private static java.util.Map< org.lgna.project.ast.AbstractField, ShowJointedModelJointAxesState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ShowJointedModelJointAxesState getInstance( org.lgna.project.ast.AbstractField value ) {
+		synchronized( map ) {
+			ShowJointedModelJointAxesState rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ShowJointedModelJointAxesState(value);
+				map.put( value, rv );
+			}
+			return rv;
 		}
-		assert rv != null;
-		return rv;
-	}
-	public abstract boolean isFreeInX();
-	public abstract boolean isFreeInY();
-	public abstract boolean isFreeInZ();
-	
-	public void setJointAxisVisible(boolean jointAxisVisible) {	
 	}
 	
-	@Override
-	public void setVehicle(EntityImp vehicle) {
-		assert vehicle != this;
-		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
-	}
-	
-	protected edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
-		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
-	}
+	private org.lgna.project.ast.AbstractField field;
 	
 	
-	//Joints don't actually want to be directly hooked into the sg tree, so we have this method as a way to link them in indirectly
-	public abstract void setCustomJointSgParent(edu.cmu.cs.dennisc.scenegraph.Composite sgParent);
-	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( this.getJointId() );
+	private ShowJointedModelJointAxesState(org.lgna.project.ast.AbstractField field) {
+        super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "3b3bdd30-4f04-4160-ae58-e466732a4c6c" ), false );
+        this.field = field;
+    }
+	
+	public org.lgna.project.ast.AbstractField getField() { 
+		return this.field;
 	}
+	
 }
