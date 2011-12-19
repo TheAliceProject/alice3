@@ -90,18 +90,33 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	protected abstract String getVersionText();
 	protected abstract String getVersionAdornment();
 
-	private void showUnableToOpenProjectMessageDialog( java.io.File file, boolean isValidZip ) {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "Unable to open project from file " );
+	
+	private void showUnableToOpenFileDialog( java.io.File file, String message ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Unable to open file " );
 		sb.append( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 		sb.append( ".\n\n" );
+		sb.append( message );
+		this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
+	}
+	public void handleVersionNotSupported( java.io.File file, org.lgna.project.VersionNotSupportedException vnse ) {
+		StringBuilder sb = new StringBuilder();
 		sb.append( this.getApplicationName() );
-		sb.append( " is able to open projects from files saved by " );
-		sb.append( this.getApplicationName() );
-		sb.append( ".\n\nLook for files with an " );
+		sb.append( " is not backwards compatible with:" );
+		sb.append( "\n    File Version: " );
+		sb.append( vnse.getVersion() );
+		sb.append( "\n    (Minimum Supported Version: " );
+		sb.append( vnse.getMinimumSupportedVersion() );
+		sb.append( ")" );
+		this.showUnableToOpenFileDialog( file, sb.toString() );
+	}
+	
+	private void showUnableToOpenProjectMessageDialog( java.io.File file, boolean isValidZip ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Look for files with an " );
 		sb.append( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION );
 		sb.append( " extension." );
-		this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
+		this.showUnableToOpenFileDialog( file, sb.toString() );
 	}
 
 	private java.net.URI uri = null;
@@ -136,6 +151,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 						if( zipFile != null ) {
 							try {
 								project = org.lgna.project.io.IoUtilities.readProject( zipFile );
+							} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+								this.handleVersionNotSupported( file, vnse );
 							} catch( java.io.IOException ioe ) {
 								if( isWorthyOfException ) {
 									throw new RuntimeException( file.getAbsolutePath(), ioe );
@@ -148,11 +165,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 						}
 					}
 				} else {
-					StringBuffer sb = new StringBuffer();
-					sb.append( "Cannot read project from file:\n\t" );
-					sb.append( file.getAbsolutePath() );
-					sb.append( "\nIt does not exist." );
-					this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
+					this.showUnableToOpenFileDialog( file, "It does not exist." );
 				}
 			} else {
 				org.lgna.story.Ground.SurfaceAppearance surfaceAppearance = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getSurfaceAppearance( uri );

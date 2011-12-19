@@ -66,7 +66,6 @@ public class MetaDeclarationState {
 			MetaDeclarationState.this.handleIsSceneEditorExpandedChanged();
 		}
 	};
-	
 	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > declarationTabListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
 		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
@@ -74,6 +73,7 @@ public class MetaDeclarationState {
 			MetaDeclarationState.this.handleDeclarationTabChanged();
 		}
 	};
+
 	private org.lgna.project.ast.AbstractDeclaration prevDeclaration;
 	private MetaDeclarationState() {
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().addValueObserver( this.perspectiveListener );

@@ -100,6 +100,9 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 						edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > tuple = org.lgna.project.io.IoUtilities.readType( zipFile );
 						type = tuple.getA();
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
+					} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+						type = null;
+						org.alice.ide.IDE.getActiveInstance().handleVersionNotSupported( file, vnse );
 					} catch( java.io.IOException ioe ) {
 						if( isWorthyOfException ) {
 							throw new RuntimeException( file.getAbsolutePath(), ioe );

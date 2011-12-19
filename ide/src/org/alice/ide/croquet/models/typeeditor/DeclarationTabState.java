@@ -92,32 +92,37 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 	}
 	private void refresh() {
 		this.pushAtomic();
-		this.clear();
-		if( this.type != null ) {
-			this.addItem( DeclarationComposite.getInstance( this.type ) );
-			for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
-				if( method.isPublicAccess() ) {
-					this.addItem( DeclarationComposite.getInstance( method ) );
-				}
-			}
-			DeclarationComposite selection = map.get( this.type );
-			int index;
-			if( selection != null ) {
-				index = this.indexOf( selection );
-				index = Math.max( index, 0 );
-			} else {
-				index = this.getItemCount()-1;
-				//index = -1;
-			}
-			this.setSelectedIndex( index );
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			//pass
 		} else {
-			this.setSelectedIndex( -1 );
+			this.clear();
+			if( this.type != null ) {
+				this.addItem( DeclarationComposite.getInstance( this.type ) );
+				for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
+					if( method.isPublicAccess() ) {
+						if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
+							this.addItem( DeclarationComposite.getInstance( method ) );
+						}
+					}
+				}
+				DeclarationComposite selection = this.map.get( this.type );
+				int index;
+				if( selection != null ) {
+					index = this.indexOf( selection );
+					index = Math.max( index, 0 );
+				} else {
+					index = this.getItemCount()-1;
+					//index = -1;
+				}
+				this.setSelectedIndex( index );
+			} else {
+				this.setSelectedIndex( -1 );
+			}
 		}
 		this.popAtomic();
 	}
 	private void handleTypeChanged( org.lgna.project.ast.NamedUserType prevType, org.lgna.project.ast.NamedUserType nextType ) {
 		if( this.type != nextType ) {
-			
 			if( prevType != null ) {
 				DeclarationComposite prevDeclarationComposite = this.getSelectedItem();
 				if( prevDeclarationComposite != null ) {

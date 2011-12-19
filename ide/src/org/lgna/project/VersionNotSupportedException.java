@@ -41,68 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.components;
+package org.lgna.project;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BorderPanel extends Panel {
-	public enum Constraint {
-		CENTER( java.awt.BorderLayout.CENTER ),
-		
-		NORTH( java.awt.BorderLayout.NORTH ),
-		PAGE_START( java.awt.BorderLayout.PAGE_START ),
-		
-		SOUTH( java.awt.BorderLayout.SOUTH ),
-		PAGE_END( java.awt.BorderLayout.PAGE_END ),
-		
-		WEST( java.awt.BorderLayout.WEST ),
-		LINE_START( java.awt.BorderLayout.LINE_START ),
-
-		EAST( java.awt.BorderLayout.EAST ),
-		LINE_END( java.awt.BorderLayout.LINE_END );
-		
-		private String internal;
-		private Constraint( String internal ) {
-			this.internal = internal;
-		}
-		//todo: reduce visibility? /*package-private*/
-		public String getInternal() {
-			return this.internal;
-		}
+public class VersionNotSupportedException extends Exception {
+	private final double minimumSupportedVersion;
+	private final double version;
+	public VersionNotSupportedException( double minimumSupportedVersion, double version ) {
+		this.minimumSupportedVersion = minimumSupportedVersion;
+		this.version = version;
 	}
-	private final int hgap;
-	private final int vgap;
-	public BorderPanel() {
-		this( null );
+	public double getMinimumSupportedVersion() {
+		return this.minimumSupportedVersion;
 	}
-	public BorderPanel( int hgap, int vgap ) {
-		this( null, hgap, vgap );
-	}
-	public BorderPanel( org.lgna.croquet.Composite composite ) {
-		this( composite, 0, 0 );
-	}
-	public BorderPanel( org.lgna.croquet.Composite composite, int hgap, int vgap ) {
-		super( composite );
-		this.hgap = hgap;
-		this.vgap = vgap;
-	}
-	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.BorderLayout( this.hgap, this.vgap );
-	}
-	public void addComponent( Component<?> child, Constraint constraint ) {
-		this.internalAddComponent( child, constraint.internal );
-	}
-	public Component< ? > getComponent( Constraint constraint ) {
-		javax.swing.JPanel jPanel = this.getAwtComponent();
-		java.awt.BorderLayout borderLayout = (java.awt.BorderLayout)jPanel.getLayout();
-		for( Component< ? > component : this.getComponents() ) {
-			java.awt.Component awtComponent = component.getAwtComponent();
-			if( constraint.internal.equals( borderLayout.getConstraints( awtComponent ) ) ) {
-				return component;
-			}
-		}
-		return null;
+	public double getVersion() {
+		return this.version;
 	}
 }
