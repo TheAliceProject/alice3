@@ -46,20 +46,20 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.Expression > {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, GalleryResourceFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized GalleryResourceFillIn getInstance( org.lgna.project.ast.AbstractField field ) {
-		GalleryResourceFillIn rv = map.get( field );
+public class GalleryResourceFieldFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.Expression > {
+	private static java.util.Map< org.lgna.project.ast.AbstractField, GalleryResourceFieldFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized GalleryResourceFieldFillIn getInstance( org.lgna.project.ast.AbstractField field ) {
+		GalleryResourceFieldFillIn rv = map.get( field );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new GalleryResourceFillIn( field );
+			rv = new GalleryResourceFieldFillIn( field );
 			map.put( field, rv );
 		}
 		return rv;
 	}
 	private final org.lgna.project.ast.FieldAccess transientValue;
-	private GalleryResourceFillIn( org.lgna.project.ast.AbstractField field ) {
+	private GalleryResourceFieldFillIn( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "a45b7262-4553-4b3f-ad1f-7be7871a1d86" ) );
 		this.transientValue = createValue( field );
 	}
