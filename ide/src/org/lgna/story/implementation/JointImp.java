@@ -49,6 +49,7 @@ package org.lgna.story.implementation;
 public abstract class JointImp extends AbstractTransformableImp {
 	private org.lgna.story.Joint abstraction;
 	private final JointedModelImp<?,?> jointedModelImplementation;
+	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes axes;
 	public JointImp( JointedModelImp<?,?> jointedModelImplementation ) {
 		this.jointedModelImplementation = jointedModelImplementation;
 	}
@@ -99,6 +100,25 @@ public abstract class JointImp extends AbstractTransformableImp {
 		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
 	}
 	
+	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes getPivot() {
+		if( this.axes != null ) {
+			//pass
+		} else {
+			this.axes = new edu.cmu.cs.dennisc.scenegraph.util.ModestAxes( 1.0 );
+			putInstance( this.axes );
+		}
+		return this.axes;
+	}
+	public boolean isPivotVisible() {
+		if( this.axes != null ) {
+			return this.axes.getParent() == this.getSgComposite();
+		} else {
+			return false;
+		}
+	}
+	public void setPivotVisible( boolean isPivotVisible ) {
+		this.getPivot().setParent( this.getSgComposite() );
+	}
 	
 	//Joints don't actually want to be directly hooked into the sg tree, so we have this method as a way to link them in indirectly
 	public abstract void setCustomJointSgParent(edu.cmu.cs.dennisc.scenegraph.Composite sgParent);

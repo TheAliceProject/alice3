@@ -84,4 +84,11 @@ public class Joint extends Turnable {
 	/*package-private*/org.lgna.story.implementation.JointImp getImplementation() {
 		return this.implementation;
 	}
+	
+	public Boolean isPivotVisible() {
+		return this.implementation.isPivotVisible();
+	}
+	public void setPivotVisible( Boolean isPivotVisible ) {
+		this.implementation.setPivotVisible( isPivotVisible );
+	}
 }
