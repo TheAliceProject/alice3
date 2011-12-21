@@ -54,15 +54,17 @@ public class JointedModelUtilities {
 	private static boolean isJointGetter( org.lgna.project.ast.AbstractMethod method ) {
 		if( method.isPublicAccess() ) {
 			if( method.getReturnType() == JOINT_TYPE ) {
-				if( method.getName().startsWith( "get" ) ) {
-					if( method instanceof org.lgna.project.ast.JavaMethod ) {
-						return true; //isNotAnnotatedOtherwise
-					} else if( method instanceof org.lgna.project.ast.UserMethod ) {
-						org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
-						return userMethod.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.GENERATED;
-					} else {
-						//throw new AssertionError();
-						return false;
+				if( method.getVisibility() == org.lgna.project.annotations.Visibility.PRIME_TIME || method.getVisibility() == null ) {
+					if( method.getName().startsWith( "get" ) ) {
+						if( method instanceof org.lgna.project.ast.JavaMethod ) {
+							return true; //isNotAnnotatedOtherwise
+						} else if( method instanceof org.lgna.project.ast.UserMethod ) {
+							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+							return userMethod.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.GENERATED;
+						} else {
+							//throw new AssertionError();
+							return false;
+						}
 					}
 				}
 			}
