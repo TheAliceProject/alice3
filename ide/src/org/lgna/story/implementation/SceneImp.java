@@ -67,11 +67,13 @@ public class SceneImp extends EntityImp {
 	private final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = new edu.cmu.cs.dennisc.scenegraph.Scene();
 	private final edu.cmu.cs.dennisc.scenegraph.Background sgBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 	private final edu.cmu.cs.dennisc.scenegraph.AmbientLight sgAmbientLight = new edu.cmu.cs.dennisc.scenegraph.AmbientLight(); 
+	private final edu.cmu.cs.dennisc.scenegraph.ExponentialFog sgFog = new edu.cmu.cs.dennisc.scenegraph.ExponentialFog();
 
 	private final java.util.List< Capsule > capsules = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private ProgramImp program;
 	private final org.lgna.story.Scene abstraction;
+	private float fogDensityValue = 0;
 	
 	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this ) {
 		@Override
@@ -81,6 +83,7 @@ public class SceneImp extends EntityImp {
 		@Override
 		protected void handleSetValue(org.lgna.story.Color value) {
 			SceneImp.this.sgBackground.color.setValue( org.lgna.story.ImplementationAccessor.getColor4f( value ) );
+			SceneImp.this.sgFog.color.setValue(SceneImp.this.sgBackground.color.getValue());
 		}
 	};
 	public final ColorProperty ambientLightColor = new ColorProperty( SceneImp.this ) {
@@ -103,15 +106,40 @@ public class SceneImp extends EntityImp {
 			SceneImp.this.sgScene.globalBrightness.setValue( value );
 		}
 	};
+	
+	public final FloatProperty fogDensity = new FloatProperty( SceneImp.this) {
+		@Override
+		public Float getValue() {
+			return SceneImp.this.fogDensityValue;
+		}
+		@Override
+		protected void handleSetValue( Float value ) {
+			SceneImp.this.setFogDensity(value);
+		}
+	};
 
 	public SceneImp( org.lgna.story.Scene abstraction ) {
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
+		this.sgFog.color.setValue(this.sgBackground.color.getValue());
 		this.sgScene.background.setValue( this.sgBackground );
 		this.sgAmbientLight.brightness.setValue( 0.3f );
 		this.sgScene.addComponent( this.sgAmbientLight );
+		this.setFogDensity(0);
 		this.putInstance( this.sgScene );
 	}
+	
+	private void setFogDensity(float densityValue) {
+		this.fogDensityValue = densityValue;
+		if (densityValue == 0 && this.sgFog.getParent() == this.sgScene) {
+			this.sgScene.removeComponent(this.sgFog);
+		}
+		else if (densityValue > 0 && this.sgFog.getParent() != this.sgScene) {
+			this.sgScene.addComponent(this.sgFog);
+		}
+		this.sgFog.density.setValue((double)(densityValue*densityValue*densityValue));
+	}
+	
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.Scene getSgComposite() {
 		return this.sgScene;

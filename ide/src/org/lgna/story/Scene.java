@@ -113,4 +113,16 @@ public abstract class Scene extends Entity {
 	public void setAmbientLightColor( Color color, SetAmbientLightColor.Detail... details ) {
 		this.implementation.ambientLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
+	
+	@MethodTemplate()
+	@GetterTemplate(isPersistent = true)
+	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
+	public Double getFogDensity() {
+		return (double)this.getImplementation().fogDensity.getValue();
+	}
+	@MethodTemplate()
+	public void setFogDensity( Number density, SetFogDensity.Detail... details ) {
+		this.getImplementation().fogDensity.animateValue( density.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+	
 }

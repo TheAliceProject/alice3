@@ -64,7 +64,7 @@ public enum AnimationStyle implements
 		//Camera,
 		MoveAndOrientToAGoodVantagePointOf.Detail,
 		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail,
+		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
 		//Sphere
 		SetRadius.Detail,
 		//Cone
