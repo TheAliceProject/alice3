@@ -67,7 +67,7 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 		javax.swing.Icon snapshotIcon = null;
 		String snapshotText = null;
 		if( nextValue != null ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > snapshotType = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructorParameter0Type( nextValue );
+			org.lgna.project.ast.AbstractType< ?,?,? > snapshotType = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( nextValue );
 			
 			if( snapshotType != null ) {
 				if( snapshotType instanceof org.lgna.project.ast.JavaType ) {

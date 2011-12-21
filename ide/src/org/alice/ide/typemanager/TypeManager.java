@@ -181,7 +181,7 @@ public class TypeManager {
 	}
 	private static org.lgna.project.ast.AbstractType< ?,?,? >[] getArgumentTypes( org.lgna.project.ast.AbstractType< ?,?,? > ancestorType, org.lgna.project.ast.AbstractType<?,?,?> resourceType ) {
 		java.util.List< org.lgna.project.ast.AbstractType< ?,?,? > > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		updateArgumentTypes( types, ConstructorArgumentUtilities.getContructorParameter0Type( ancestorType ), resourceType );
+		updateArgumentTypes( types, ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ), resourceType );
 		org.lgna.project.ast.AbstractType< ?,?,? >[] rv = new org.lgna.project.ast.AbstractType< ?,?,? >[ types.size() ];
 		types.toArray( rv );
 		return rv;
@@ -273,7 +273,7 @@ public class TypeManager {
 	}
 	
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFromSuperType( org.lgna.project.ast.JavaType superType ) {
-		ExtendsTypeCriterion criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, ConstructorArgumentUtilities.getContructorParameter0Type( superType ) );
+		ExtendsTypeCriterion criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, ConstructorArgumentUtilities.getContructor0Parameter0Type( superType ) );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 		if( project != null ) {
 			java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
