@@ -60,9 +60,12 @@ public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<
 	@Override
 	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
 		//org.lgna.project.ast.AbstractType< ?, ?, ? > type = this.expression.getType();
-		java.util.List< org.lgna.project.ast.AbstractMethod > getters = org.alice.stageide.ast.JointedModelUtilities.getAllJointGetters( this.type );
-		for( org.lgna.project.ast.AbstractMethod method : getters ) {
-			rv.add( this.getFillIn( method ) );
+		java.util.List<org.alice.stageide.ast.JointedModelUtilities.JointedTypeInfo> jointedTypes = org.alice.stageide.ast.JointedModelUtilities.getJointedTypes( this.type );
+//		java.util.List< org.lgna.project.ast.AbstractMethod > getters = org.alice.stageide.ast.JointedModelUtilities.getAllJointGetters( this.type );
+		if( jointedTypes.size() > 0 ) {
+			for( org.lgna.project.ast.AbstractMethod method : jointedTypes.get( 0 ).getJointGetters() ) {
+				rv.add( this.getFillIn( method ) );
+			}
 		}
 		return rv;
 	}

@@ -46,29 +46,34 @@ package org.alice.stageide.instancefactory.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointInstanceFactoryMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
-	private final java.util.List<org.alice.stageide.ast.JointedModelUtilities.JointedTypeInfo> jointedTypes;
-	public JointInstanceFactoryMenuModel( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( id );
-		this.jointedTypes = org.alice.stageide.ast.JointedModelUtilities.getJointedTypes( type );
-	}
-	protected abstract org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method );
-	@Override
-	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
-		if( jointedTypes.size() > 0 ) {
-			//org.alice.stageide.ast.JointedModelUtilities.JointedTypeInfo info = jointedTypes.get( 0 );
-			for( org.alice.stageide.ast.JointedModelUtilities.JointedTypeInfo info : jointedTypes ) {
-				rv.add( JointedModelTypeSeparator.getInstance( info.getType() ) );
-				for( org.lgna.project.ast.AbstractMethod method : info.getJointGetters() ) {
-					org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > fillIn = this.getFillIn( method );
-					if( fillIn != null ) {
-						rv.add( fillIn );
-					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
-					}
-				}
-			}
+public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSeparator {
+	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, JointedModelTypeSeparator > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized JointedModelTypeSeparator getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		assert type != null;
+		JointedModelTypeSeparator rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new JointedModelTypeSeparator( type );
+			map.put( type, rv );
 		}
 		return rv;
+	}
+	private final org.lgna.project.ast.AbstractType<?,?,?> type;
+	private JointedModelTypeSeparator( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		super( java.util.UUID.fromString( "39d27239-d4c8-4c98-9194-fdafc189da72" ) );
+		this.type = type;
+	}
+	
+	@Override
+	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.type.getRepr( locale ) );
+		sb.append( " Joints" );
+		return sb.toString();
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator >( this, this.type, org.lgna.project.ast.AbstractType.class );
 	}
 }
