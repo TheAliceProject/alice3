@@ -95,6 +95,9 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		}
 		this.dragDescription = dragDescription;
 		this.dragAxis = new Vector3(this.dragDescription.direction.getVector());
+		if (this.dragAxis.isNaN()) {
+			this.dragAxis = new Vector3(this.dragDescription.direction.getVector());
+		}
 		this.localTransformation.setValue( this.getTransformationForAxis( this.dragAxis ) );
 		this.distanceFromOrigin = 0.0d;
 		createShape();
