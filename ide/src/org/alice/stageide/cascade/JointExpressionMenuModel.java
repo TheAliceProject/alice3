@@ -54,15 +54,22 @@ public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<
 		this.expression = expression;
 		this.type = type;
 	}
-	protected org.lgna.croquet.CascadeItem getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return JointExpressionFillIn.getInstance( expression, method );
-	}
 	@Override
 	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
-		//org.lgna.project.ast.AbstractType< ?, ?, ? > type = this.expression.getType();
-		java.util.List< org.lgna.project.ast.AbstractMethod > getters = org.alice.stageide.ast.JointedModelUtilities.getAllJointGetters( this.type );
-		for( org.lgna.project.ast.AbstractMethod method : getters ) {
-			rv.add( this.getFillIn( method ) );
+		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( this.type );
+		if( jointedTypeInfos != null && jointedTypeInfos.size() > 0 ) {
+			//org.alice.stageide.ast.JointedModelUtilities.JointedTypeInfo info = jointedTypes.get( 0 );
+			for( org.alice.stageide.ast.JointedTypeInfo info : jointedTypeInfos ) {
+				rv.add( org.alice.stageide.ast.JointedModelTypeSeparator.getInstance( info.getType() ) );
+				for( org.lgna.project.ast.AbstractMethod method : info.getJointGetters() ) {
+					JointExpressionFillIn fillIn = JointExpressionFillIn.getInstance( expression, method );
+					if( fillIn != null ) {
+						rv.add( fillIn );
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
+					}
+				}
+			}
 		}
 		return rv;
 	}

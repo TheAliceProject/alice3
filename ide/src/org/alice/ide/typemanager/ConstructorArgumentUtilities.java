@@ -50,20 +50,31 @@ public class ConstructorArgumentUtilities {
 	private ConstructorArgumentUtilities() {
 		throw new AssertionError();
 	}
-	public static org.lgna.project.ast.AbstractType<?,?,?> getContructorParameter0Type( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public static org.lgna.project.ast.AbstractConstructor getContructor0( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
 			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractConstructor > constructors = type.getDeclaredConstructors();
 			if( constructors.size() > 0 ) {
 				org.lgna.project.ast.AbstractConstructor constructor0 = constructors.get( 0 );
-				java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = constructor0.getRequiredParameters();
-				if( requiredParameters.size() > 0 ) {
-					org.lgna.project.ast.AbstractParameter parameter0 = requiredParameters.get( 0 );
-					return parameter0.getValueType();
-				}
+				return constructor0;
 			}
 		}
 		return null;
 	}
+
+	public static org.lgna.project.ast.AbstractType<?,?,?> getParameter0Type( org.lgna.project.ast.AbstractConstructor constructor ) {
+		if( constructor != null ) {
+			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = constructor.getRequiredParameters();
+			if( requiredParameters.size() > 0 ) {
+				org.lgna.project.ast.AbstractParameter parameter0 = requiredParameters.get( 0 );
+				return parameter0.getValueType();
+			}
+		}
+		return null;
+	}
+	public static org.lgna.project.ast.AbstractType<?,?,?> getContructor0Parameter0Type( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		return getParameter0Type( getContructor0( type ) );
+	}
+
 	private static org.lgna.project.ast.JavaField getField( org.lgna.project.ast.SimpleArgumentListProperty arguments ) {
 		if( arguments.size() > 0 ) {
 			org.lgna.project.ast.Expression expression = arguments.get( 0 ).expression.getValue();

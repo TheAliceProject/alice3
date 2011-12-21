@@ -235,7 +235,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 	@Override
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
+		if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.croquet.ThisJointedMenuModel.getInstance( type );
 		} else {
 			return null;
@@ -245,7 +245,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = field.getValueType();
-		if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
+		if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.croquet.ThisFieldAccessJointedMenuModel.getInstance( field );
 		} else {
 			return null;
@@ -254,7 +254,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForParameterAccess( org.lgna.project.ast.UserParameter parameter ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = parameter.getValueType();
-		if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
+		if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.croquet.ParameterAccessJointedMenuModel.getInstance( parameter );
 		} else {
 			return null;
@@ -263,7 +263,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getInstanceFactorySubMenuForLocalAccess( org.lgna.project.ast.UserLocal local ) {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = local.getValueType();
-		if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
+		if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.croquet.LocalAccessJointedMenuModel.getInstance( local );
 		} else {
 			return null;
@@ -378,16 +378,23 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
 	@Override
-	public void augmentTypeIfNecessary( org.lgna.project.ast.UserType< ? > rv ) {
+	public org.lgna.project.ast.UserType< ? > augmentTypeIfNecessary( org.lgna.project.ast.UserType< ? > rv ) {
 		if( JOINTED_MODEL_TYPE.isAssignableFrom( rv ) ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > resourceType = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructorParameter0Type( rv );
+			org.lgna.project.ast.AbstractConstructor constructor0 = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0( rv );
+			org.lgna.project.ast.AbstractType< ?,?,? > resourceType = org.alice.ide.typemanager.ConstructorArgumentUtilities.getParameter0Type( constructor0 );
 			if( resourceType != null ) {
-				
+				//pass
+			} else {
+				org.lgna.project.ast.JavaField field = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( constructor0 );
+				if( field != null ) {
+					resourceType = field.getValueType();
+				}
+			}
+			if( resourceType != null ) {
 				org.lgna.project.ast.JavaType ancestorType = rv.getFirstEncounteredJavaType();
-				if( resourceType == org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructorParameter0Type( ancestorType ) ) {
+				if( resourceType == org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ) ) {
 					//skip
 				} else {
-					
 					org.lgna.project.ast.JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", org.lgna.story.resources.JointId.class );
 					for( org.lgna.project.ast.AbstractField field : resourceType.getDeclaredFields() ) {
 						if( field.isStatic() ) {
@@ -408,5 +415,6 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 				}
 			}
 		}
+		return rv;
 	}
 }
