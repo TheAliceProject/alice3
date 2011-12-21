@@ -115,11 +115,16 @@ public class LinearScaleHandle extends LinearDragHandle{
 		Vector3 handleOffset;
 		if (bbox != null)
 		{
-			handleOffset = new Vector3(bbox.getMaximum());
+			Vector3.createSubtraction(bbox.getMaximum(), bbox.getCenter());
+			handleOffset = new Vector3();
 			handleOffset.z = 0;
 			handleOffset.x *= -1;
 		}
 		else
+		{
+			handleOffset = new Vector3(1, 1, 0);
+		}
+		if (handleOffset.isZero())
 		{
 			handleOffset = new Vector3(1, 1, 0);
 		}
@@ -142,6 +147,7 @@ public class LinearScaleHandle extends LinearDragHandle{
 		AffineMatrix4x4 objectTransformation = this.getTransformationForAxis( this.dragAxis );
 		if (objectTransformation.isNaN())
 		{
+			objectTransformation = this.getTransformationForAxis( this.dragAxis );
 			assert !objectTransformation.isNaN() : "Created NaN transformation from "+this.dragAxis;
 			objectTransformation = new AffineMatrix4x4();
 		}

@@ -132,7 +132,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	public SceneObjectPropertyManagerPanel()
 	{
 		super();
-		this.classNameLabel = createLabel("Class = ");
+		this.classNameLabel = createLabel("Class: ");
 		this.morePropertiesPanel = new GridBagPanel();
 		this.extraPropertiesPalette = AreExtraPropertiesShownState.getInstance().createToolPalette(this.morePropertiesPanel);
 	}
