@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory.croquet;
+package org.alice.stageide.ast;
 
 /**
  * @author Dennis Cosgrove
@@ -61,7 +61,7 @@ public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSepa
 	}
 	private final org.lgna.project.ast.AbstractType<?,?,?> type;
 	private JointedModelTypeSeparator( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		super( java.util.UUID.fromString( "39d27239-d4c8-4c98-9194-fdafc189da72" ) );
+		super( java.util.UUID.fromString( "200467b6-6cd7-45c1-850f-b853fa695187" ) );
 		this.type = type;
 	}
 	

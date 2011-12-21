@@ -129,7 +129,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		org.lgna.croquet.CascadeFillIn fillIn = (org.lgna.croquet.CascadeFillIn)super.createBlankChildForFillInAndPossiblyPartFillIns( expression, type, type2 );
 		if( type.isAssignableTo( org.lgna.story.JointedModel.class ) ) {
 			if( type2.isAssignableFrom( org.lgna.story.Joint.class ) ) {
-				if( org.alice.stageide.ast.JointedModelUtilities.isJointed( type ) ) {
+				if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
 					return new org.lgna.croquet.CascadeFillInMenuCombo( fillIn, new JointExpressionMenuModel( expression, type ) );
 				}
 			}
