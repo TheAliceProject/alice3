@@ -41,32 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory.croquet;
+package org.alice.stageide.instancefactory.croquet.joint.all;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserParameter, ParameterAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ParameterAccessJointedMenuModel getInstance( org.lgna.project.ast.UserParameter value ) {
+public class LocalAccessJointedTypeMenuModel extends JointedTypeMenuModel {
+	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static LocalAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserLocal value ) {
 		synchronized( map ) {
-			ParameterAccessJointedMenuModel rv = map.get( value );
+			LocalAccessJointedTypeMenuModel rv = map.get( value );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ParameterAccessJointedMenuModel( value );
+				rv = new LocalAccessJointedTypeMenuModel( value );
 				map.put( value, rv );
 			}
 			return rv;
 		}
 	}
-	private final org.lgna.project.ast.UserParameter parameter;
-	private ParameterAccessJointedMenuModel( org.lgna.project.ast.UserParameter parameter ) {
-		super( java.util.UUID.fromString( "4abaaf96-15fe-4269-8bee-d4e8404934a6" ), parameter.getValueType() );
-		this.parameter = parameter;
+	private final org.lgna.project.ast.UserLocal local;
+	private LocalAccessJointedTypeMenuModel( org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "68729d94-33e9-4da7-a04c-cb88939b8c93" ), local.getValueType() );
+		this.local = local;
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( this.parameter, method ) );
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessMethodInvocationFactory.getInstance( this.local, method ) );
 	}
 }

@@ -41,36 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory.croquet;
+package org.alice.stageide.instancefactory.croquet.joint.all;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ThisJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisJointedMenuModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
+public class ParameterAccessJointedTypeMenuModel extends JointedTypeMenuModel {
+	private static java.util.Map< org.lgna.project.ast.UserParameter, ParameterAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ParameterAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserParameter value ) {
 		synchronized( map ) {
-			ThisJointedMenuModel rv = map.get( value );
+			ParameterAccessJointedTypeMenuModel rv = map.get( value );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ThisJointedMenuModel( value );
+				rv = new ParameterAccessJointedTypeMenuModel( value );
 				map.put( value, rv );
 			}
 			return rv;
 		}
 	}
-	private ThisJointedMenuModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), type );
+	private final org.lgna.project.ast.UserParameter parameter;
+	private ParameterAccessJointedTypeMenuModel( org.lgna.project.ast.UserParameter parameter ) {
+		super( java.util.UUID.fromString( "4abaaf96-15fe-4269-8bee-d4e8404934a6" ), parameter.getValueType() );
+		this.parameter = parameter;
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( method );
-		if( instanceFactory != null ) {
-			return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( instanceFactory );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no instance factory for", method );
-			return null;
-		}
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( this.parameter, method ) );
 	}
 }

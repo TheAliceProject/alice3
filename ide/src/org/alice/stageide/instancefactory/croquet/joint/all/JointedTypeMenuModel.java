@@ -41,32 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory.croquet;
+package org.alice.stageide.instancefactory.croquet.joint.all;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalAccessJointedMenuModel extends JointInstanceFactoryMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAccessJointedMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static LocalAccessJointedMenuModel getInstance( org.lgna.project.ast.UserLocal value ) {
-		synchronized( map ) {
-			LocalAccessJointedMenuModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new LocalAccessJointedMenuModel( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
+public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
+	private final java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos;
+	public JointedTypeMenuModel( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( id );
+		this.jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( type );
 	}
-	private final org.lgna.project.ast.UserLocal local;
-	private LocalAccessJointedMenuModel( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "68729d94-33e9-4da7-a04c-cb88939b8c93" ), local.getValueType() );
-		this.local = local;
-	}
+	protected abstract org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method );
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessMethodInvocationFactory.getInstance( this.local, method ) );
+	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
+		if( jointedTypeInfos != null && jointedTypeInfos.size() > 0 ) {
+			//org.alice.stageide.ast.JointedModelUtilities.JointedTypeInfo info = jointedTypes.get( 0 );
+			for( org.alice.stageide.ast.JointedTypeInfo info : jointedTypeInfos ) {
+				rv.add( org.alice.stageide.ast.JointedModelTypeSeparator.getInstance( info.getType() ) );
+				for( org.lgna.project.ast.AbstractMethod method : info.getJointGetters() ) {
+					org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > fillIn = this.getFillIn( method );
+					if( fillIn != null ) {
+						rv.add( fillIn );
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
+					}
+				}
+			}
+		}
+		return rv;
 	}
 }
