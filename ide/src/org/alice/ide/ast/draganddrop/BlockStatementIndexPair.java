@@ -50,6 +50,8 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.Retargeta
 	private final org.lgna.project.ast.BlockStatement blockStatement;
 	private final int index;
 	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
+		assert index >= 0 : index + " " + blockStatement;
+		assert index < (blockStatement.statements.size()+1) : index + " " + blockStatement.statements.size();
 		this.blockStatement = blockStatement;
 		this.index = index;
 	}
