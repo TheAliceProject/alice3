@@ -99,29 +99,29 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 		return this.fromInt( this.swingModel.boundedRangeModel.getExtent() );
 	}
 	
-	public class AtomicChangeBuilder {
+	public class AtomicChange {
 		private N minimum;
 		private N maximum;
 		private N extent;
 		private N value;
 		private boolean isAdjusting;
-		AtomicChangeBuilder minimum( N minimum ) {
+		AtomicChange minimum( N minimum ) {
 			this.minimum = minimum;
 			return this;
 		}
-		AtomicChangeBuilder maximum( N maximum ) {
+		AtomicChange maximum( N maximum ) {
 			this.maximum = maximum;
 			return this;
 		}
-		AtomicChangeBuilder extent( N extent ) {
+		AtomicChange extent( N extent ) {
 			this.extent = extent;
 			return this;
 		}
-		AtomicChangeBuilder value( N value ) {
+		AtomicChange value( N value ) {
 			this.value = value;
 			return this;
 		}
-		AtomicChangeBuilder isAdjusting( boolean isAdjusting ) {
+		AtomicChange isAdjusting( boolean isAdjusting ) {
 			this.isAdjusting = isAdjusting;
 			return this;
 		}
@@ -165,8 +165,8 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 		this.swingModel.boundedRangeModel.setExtent( this.toInt( value ) );
 	}
 	
-	public void setAll( AtomicChangeBuilder atomicChangeBuilder ) {	
-		atomicChangeBuilder.updateBoundedRangeModel( this.swingModel.boundedRangeModel );
+	public void setAll( AtomicChange atomicChange ) {	
+		atomicChange.updateBoundedRangeModel( this.swingModel.boundedRangeModel );
 	}
 	@Override
 	protected N getActualValue() {
