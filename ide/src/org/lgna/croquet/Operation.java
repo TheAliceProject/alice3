@@ -110,9 +110,11 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 		return replacementEdit;
 	}
 	
+	@Override
 	public boolean isEnabled() {
 		return this.swingModel.action.isEnabled();
 	}
+	@Override
 	public void setEnabled( boolean isEnabled ) {
 		this.swingModel.action.setEnabled( isEnabled );
 	}
@@ -223,6 +225,14 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 		}
 		public Operation<?> getOperation() {
 			return this.operation;
+		}
+		@Override
+		public boolean isEnabled() {
+			return this.operation.isEnabled();
+		}
+		@Override
+		public void setEnabled( boolean isEnabled ) {
+			this.operation.setEnabled( isEnabled );
 		}
 		@Override
 		protected InternalMenuPrepModelResolver createCodableResolver() {

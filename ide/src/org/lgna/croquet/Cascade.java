@@ -155,6 +155,14 @@ public abstract class Cascade<T> extends CompletionModel {
 			return this.cascade;
 		}
 		@Override
+		public boolean isEnabled() {
+			return this.cascade.isEnabled();
+		}
+		@Override
+		public void setEnabled( boolean isEnabled ) {
+			this.cascade.setEnabled( isEnabled );
+		}
+		@Override
 		protected InternalMenuModelResolver<T> createCodableResolver() {
 			return new InternalMenuModelResolver<T>( this.cascade );
 		}

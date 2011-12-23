@@ -75,6 +75,7 @@ public abstract class PopupPrepModel extends PrepModel {
 	private void setName( String name ) {
 		this.action.putValue( javax.swing.Action.NAME, name );
 	}
+	
 //	public void setShortDescription( String shortDescription ) {
 //		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 //	}
@@ -91,6 +92,14 @@ public abstract class PopupPrepModel extends PrepModel {
 //		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 //	}
 	
+	@Override
+	public boolean isEnabled() {
+		return this.action.isEnabled();
+	}
+	@Override
+	public void setEnabled( boolean isEnabled ) {
+		this.action.setEnabled( isEnabled );
+	}
 	
 	@Override
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
