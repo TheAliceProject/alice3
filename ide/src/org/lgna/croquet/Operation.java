@@ -63,6 +63,7 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 		super( group, id );
 	}
 	public SwingModel getSwingModel() {
+		this.initializeIfNecessary();
 		return this.swingModel;
 	}
 	

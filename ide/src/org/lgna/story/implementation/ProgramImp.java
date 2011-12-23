@@ -43,8 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import javax.swing.JComponent;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -56,6 +54,122 @@ public class ProgramImp {
 	private double simulationSpeedFactor = 1.0; 
 	public ProgramImp( org.lgna.story.Program abstraction ) {
 		this.abstraction = abstraction;
+	}
+	
+	private final class ControlPanel extends javax.swing.JPanel {
+		private final javax.swing.JLabel label = new javax.swing.JLabel();
+		private final javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
+		public ControlPanel() {
+			this.setLayout( new java.awt.BorderLayout() );
+			javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton();
+			final javax.swing.ButtonModel buttonModel = toggleButton.getModel();
+			buttonModel.setSelected( true );
+			buttonModel.addChangeListener( new javax.swing.event.ChangeListener() {
+				public void stateChanged( javax.swing.event.ChangeEvent e ) {
+					ProgramImp.this.handlePlayOrPause( buttonModel.isSelected() );
+				}
+			} );
+
+			toggleButton.setIcon( new javax.swing.Icon() {
+				public int getIconWidth() {
+					return 16;
+				}
+				public int getIconHeight() {
+					return 16;
+				}
+				public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+					javax.swing.JToggleButton toggleButton = (javax.swing.JToggleButton)c;
+					javax.swing.ButtonModel buttonModel = toggleButton.getModel();
+					if( buttonModel.isSelected() ) {
+						g.fillRect( x+1, y+1, 4, 14 );
+						g.fillRect( x+9, y+1, 4, 14 );
+					} else {
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, x, y, 16, 16 );
+					}
+				}
+			} );
+			
+			final int PAD_X = 12;
+			final int PAD_Y = 8;
+			toggleButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD_Y, PAD_X, PAD_Y, PAD_X ) );
+			
+			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
+			
+			boundedRangeModel.setMinimum( 1 );
+			boundedRangeModel.setMaximum( 8 );
+			boundedRangeModel.addChangeListener( new javax.swing.event.ChangeListener() {
+				public void stateChanged( javax.swing.event.ChangeEvent e ) {
+					ControlPanel.this.updateLabel();
+					ProgramImp.this.handleSpeedChange( boundedRangeModel.getValue() );
+				}
+			} );
+			ControlPanel.this.updateLabel();
+			
+			javax.swing.JSlider slider = new javax.swing.JSlider( boundedRangeModel );
+			slider.addMouseListener( new java.awt.event.MouseListener() {
+				public void mousePressed( java.awt.event.MouseEvent e ) {
+				}
+				public void mouseReleased( java.awt.event.MouseEvent e ) {
+					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
+						//pass
+					} else {
+						ControlPanel.this.boundedRangeModel.setValue( 1 );
+					}
+				}
+				public void mouseClicked( java.awt.event.MouseEvent e ) {
+				}
+				public void mouseEntered( java.awt.event.MouseEvent e ) {
+				}
+				public void mouseExited( java.awt.event.MouseEvent e ) {
+				}
+			} );
+
+			javax.swing.JPanel leadingPanel = new javax.swing.JPanel();
+			leadingPanel.setLayout( new javax.swing.BoxLayout( leadingPanel, javax.swing.BoxLayout.LINE_AXIS ) );
+			leadingPanel.add( toggleButton );
+			leadingPanel.add( javax.swing.Box.createHorizontalStrut( 12 ) );
+			leadingPanel.add( this.label );
+			leadingPanel.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+			this.add( leadingPanel, java.awt.BorderLayout.LINE_START );
+			this.add( slider, java.awt.BorderLayout.CENTER );
+			javax.swing.Action restartAction = ProgramImp.this.getRestartAction();
+			if( restartAction != null ) {
+				this.add( new javax.swing.JButton( restartAction ), java.awt.BorderLayout.LINE_END );
+			}
+		}
+		
+		private final void updateLabel() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "speed: " );
+			sb.append( this.boundedRangeModel.getValue() );
+			sb.append( "x" );
+			this.label.setText( sb.toString() );
+		}
+	}
+	
+	private void handlePlayOrPause( boolean isPlay ) {
+		double speedFactor = 0.0;
+		if( isPlay ) {
+			speedFactor = 1.0;
+		} else {
+			speedFactor = 0.0;
+		}
+		this.animator.setSpeedFactor( speedFactor );
+	}
+	private void handleSpeedChange( double speedFactor ) {
+		this.animator.setSpeedFactor( speedFactor );
+	}
+	
+	private javax.swing.Action restartAction;
+	public javax.swing.Action getRestartAction() {
+		return this.restartAction;
+	}
+	public void setRestartAction( javax.swing.Action restartAction ) {
+		this.restartAction = restartAction;
+	}
+	
+	protected javax.swing.JComponent createControlPanelIfDesired() {
+		return new ControlPanel();
 	}
 
 	public org.lgna.story.Program getAbstraction() {
@@ -108,10 +222,23 @@ public class ProgramImp {
 		lookingGlassFactory.decrementAutomaticDisplayCount();
 		lookingGlassFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
 	}
+	
+	private void addComponents( java.awt.Container container ) {
+		java.awt.Component awtComponent = this.getOnscreenLookingGlass().getAWTComponent();
+		container.add( awtComponent );
+		javax.swing.JComponent controlPanel = this.createControlPanelIfDesired();
+		if( controlPanel != null ) {
+			container.add( controlPanel, java.awt.BorderLayout.PAGE_START );
+		}
+		if (container instanceof javax.swing.JComponent	) {
+			((javax.swing.JComponent)container).revalidate();
+		}
+	}
+	
 	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				frame.getContentPane().add( ProgramImp.this.getOnscreenLookingGlass().getAWTComponent() );
+				ProgramImp.this.addComponents( frame.getContentPane() );
 				frame.setVisible( true );
 				runnable.run();
 			}
@@ -119,12 +246,7 @@ public class ProgramImp {
 	}
 	public void initializeInAwtContainer( java.awt.Container container ) {
 		assert container.getLayout() instanceof java.awt.BorderLayout;
-		java.awt.Component awtComponent = ProgramImp.this.getOnscreenLookingGlass().getAWTComponent();
-		assert awtComponent != null;
-		container.add( awtComponent, java.awt.BorderLayout.CENTER );
-		if (container instanceof JComponent	) {
-			((JComponent) container).revalidate();
-		}
+		this.addComponents( container );
 		this.startAnimator();
 	}
 	public void initializeInFrame( javax.swing.JFrame frame ) {
@@ -150,7 +272,7 @@ public class ProgramImp {
 		this.startAnimator();
 	}
 	public void initializeInApplet( javax.swing.JApplet applet ) {
-		applet.getContentPane().add( this.getOnscreenLookingGlass().getAWTComponent(), java.awt.BorderLayout.CENTER );
+		this.addComponents( applet.getContentPane() );
 		this.startAnimator();
 	}
 	private boolean isProgramClosedExceptionDesired = false;
