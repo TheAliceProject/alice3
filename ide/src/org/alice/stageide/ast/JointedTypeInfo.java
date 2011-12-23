@@ -48,7 +48,6 @@ package org.alice.stageide.ast;
  */
 public class JointedTypeInfo {
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
-	private static final org.lgna.project.ast.JavaType JOINT_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class );
 
 	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, JointedTypeInfo > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static JointedTypeInfo getDeclarationInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
@@ -97,34 +96,13 @@ public class JointedTypeInfo {
 		}
 		return false;
 	}
-	
-	private static boolean isJointGetter( org.lgna.project.ast.AbstractMethod method ) {
-		if( method.isPublicAccess() ) {
-			if( method.getReturnType() == JOINT_TYPE ) {
-				if( method.getVisibility() == org.lgna.project.annotations.Visibility.PRIME_TIME || method.getVisibility() == null ) {
-					if( method.getName().startsWith( "get" ) ) {
-						if( method instanceof org.lgna.project.ast.JavaMethod ) {
-							return true; //isNotAnnotatedOtherwise
-						} else if( method instanceof org.lgna.project.ast.UserMethod ) {
-							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
-							return userMethod.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.GENERATED;
-						} else {
-							//throw new AssertionError();
-							return false;
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
 
 	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
 	private final java.util.List< org.lgna.project.ast.AbstractMethod > jointGetters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(); 
 	private JointedTypeInfo( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		this.type = type;
 		for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-			if( isJointGetter( method ) ) {
+			if( JointMethodUtilities.isJointGetter( method ) ) {
 				this.jointGetters.add( method );
 			}
 		}

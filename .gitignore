@@ -1,4 +1,10 @@
+Thumbs.db
+LOCAL.*
+REMOTE.*
+BASE.*
+*~*
 .metadata
-bin
-*.class
 *.DS_Store
+.*.swp
+hs_*.log
+
