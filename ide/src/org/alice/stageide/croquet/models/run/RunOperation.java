@@ -139,6 +139,19 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
 		dialog.setSize( this.size );
 	}
+	
+	private class RestartAction extends javax.swing.AbstractAction {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo" );
+		}
+	};
+	private final RestartAction restartAction = new RestartAction();
+	@Override
+	protected void localize() {
+		super.localize();
+		this.restartAction.putValue( javax.swing.Action.NAME, "restart" );
+	}
+	
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
@@ -163,6 +176,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 					
 					//edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "set restart operation" );
 					//RunOperation.this.programImp.setRestartAction( RestartOperation.getInstance().getSwingModel().getAction() );
+					RunOperation.this.programImp.setRestartAction( RunOperation.this.restartAction );
 					
 					RunOperation.this.programImp.initializeInAwtContainer( rv.getAwtComponent() );
 					org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {

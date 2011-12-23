@@ -60,7 +60,6 @@ public class ProgramImp {
 		private final javax.swing.JLabel label = new javax.swing.JLabel();
 		private final javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
 		public ControlPanel() {
-			this.setLayout( new java.awt.BorderLayout() );
 			javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton();
 			final javax.swing.ButtonModel buttonModel = toggleButton.getModel();
 			buttonModel.setSelected( true );
@@ -129,7 +128,8 @@ public class ProgramImp {
 			leadingPanel.add( toggleButton );
 			leadingPanel.add( javax.swing.Box.createHorizontalStrut( 12 ) );
 			leadingPanel.add( this.label );
-			leadingPanel.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+
+			this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 			this.add( leadingPanel, java.awt.BorderLayout.LINE_START );
 			this.add( slider, java.awt.BorderLayout.CENTER );
 			javax.swing.Action restartAction = ProgramImp.this.getRestartAction();
