@@ -42,6 +42,9 @@
  */
 package test;
 
+import java.awt.List;
+import java.util.LinkedList;
+
 import org.lgna.story.*;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
@@ -50,6 +53,9 @@ import org.lgna.story.resources.sims2.BaseSkinTone;
 import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
+
+import edu.cmu.cs.dennisc.matt.AbstractEvent;
+import edu.cmu.cs.dennisc.matt.MouseClickedEvent;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -141,6 +147,7 @@ class SnowScene extends Scene {
 	private final Camera camera;
 	private final MyOgre ogre;
 	private final MyBiped susan;
+	private LinkedList<AbstractEvent> events = new LinkedList<AbstractEvent>();
 	public SnowScene( Camera camera, MyOgre ogre, MyBiped susan ) {
 		this.camera = camera;
 		this.susan = susan;
@@ -194,9 +201,21 @@ class SnowScene extends Scene {
 			} else {
 				this.restoreVehiclesAndVantagePoints();
 			}
+			this.performInitializeEvents();
 		} else {
 			this.preserveVehiclesAndVantagePoints();
+			this.removeAllEventsEvents();
 		}
+	}
+
+	private void removeAllEventsEvents() {
+		for(AbstractEvent e: events){
+			e.cleanUp();
+		}
+	}
+
+	private void performInitializeEvents() {
+		events.add(new MouseClickedEvent(this, ogre));
 	}
 
 	public void chillInSkiChalet() {
@@ -247,8 +266,8 @@ class RagsToRichesStory extends Program {
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	public void playOutStory() {
-//		this.setActiveScene( this.desertScene );
-//		this.desertScene.turnBigRocksIntoLittleRocks();
+		this.setActiveScene( this.desertScene );
+		this.desertScene.turnBigRocksIntoLittleRocks();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}

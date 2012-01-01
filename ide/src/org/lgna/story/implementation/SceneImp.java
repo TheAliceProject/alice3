@@ -154,7 +154,7 @@ public class SceneImp extends EntityImp {
 		return this;
 	}
 	@Override
-	protected org.lgna.story.implementation.ProgramImp getProgram() {
+	public org.lgna.story.implementation.ProgramImp getProgram() {
 		return this.program;
 	}
 	public void setProgram( ProgramImp program ) {
