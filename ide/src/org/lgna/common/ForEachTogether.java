@@ -40,16 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.virtualmachine;
+package org.lgna.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ThreadGroupUtilities {
-	private static ThreadGroup threadGroup = new ThreadGroup( "alice virtual machine thread group" );
-	private ThreadGroupUtilities() {
+class ForEachRunnableAdapter<E> implements Runnable {
+	private ForEachRunnable< E > forEachRunnable;
+	private E value;
+
+	public ForEachRunnableAdapter( ForEachRunnable< E > forEachRunnable, E value ) {
+		this.forEachRunnable = forEachRunnable;
+		this.value = value;
 	}
-	public static ThreadGroup getThreadGroup() {
-		return ThreadGroupUtilities.threadGroup;
+	public void run() {
+		this.forEachRunnable.run( this.value );
+	}
+}
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class ForEachTogether {
+	public static < E extends Object> void invokeAndWait( E[] array, ForEachRunnable< E > forEachRunnable ) {
+		switch( array.length ) {
+		case 0:
+			break;
+		case 1:
+			forEachRunnable.run( array[ 0 ] );
+			break;
+		default:
+			Runnable[] runnables = new Runnable[ array.length ];
+			for( int i = 0; i < runnables.length; i++ ) {
+				runnables[ i ] = new ForEachRunnableAdapter( forEachRunnable, array[ i ] );
+			}
+			org.lgna.common.DoTogether.invokeAndWait( runnables );
+		}
+	}
+	public static <E extends Object> void invokeAndWait( Iterable<E> iterable, final ForEachRunnable< E > forEachRunnable ) {
+		java.util.Collection< E > collection;
+		if( iterable instanceof java.util.Collection< ? > ) {
+			collection = (java.util.Collection< E >)iterable;
+		} else {
+			collection = new java.util.Vector< E >();
+			for( E item : iterable ) {
+				collection.add( item );
+			}
+		}
+		Runnable[] runnables = new Runnable[ collection.size() ];
+		int i = 0;
+		for( E value : collection ) {
+			runnables[ i ] = new ForEachRunnableAdapter( forEachRunnable, value );
+			i++;
+		}
+		org.lgna.common.DoTogether.invokeAndWait( runnables );
 	}
 }

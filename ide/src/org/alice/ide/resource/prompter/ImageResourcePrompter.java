@@ -47,7 +47,7 @@ package org.alice.ide.resource.prompter;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualmachine.resources.ImageResource> {
+public class ImageResourcePrompter extends ResourcePrompter< org.lgna.common.resources.ImageResource> {
 	private static final java.util.Set< String > extensionSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "png", "jpg", "gif", "bmp" );
 	private static ImageResourcePrompter singleton = new ImageResourcePrompter();
 	public static ImageResourcePrompter getSingleton() {
@@ -57,7 +57,7 @@ public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualma
 	}
 	@Override
 	protected java.io.FilenameFilter createFilenameFilter() {
-		return org.alice.virtualmachine.resources.ImageResource.createFilenameFilter( true );
+		return org.lgna.common.resources.ImageResource.createFilenameFilter( true );
 	}
 	@Override
 	protected String getInitialFileText() {
@@ -77,7 +77,7 @@ public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualma
 	}
 	
 	@Override
-	protected org.alice.virtualmachine.resources.ImageResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
+	protected org.lgna.common.resources.ImageResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
 		return edu.cmu.cs.dennisc.image.ImageFactory.createImageResource( file );
 	}
 }

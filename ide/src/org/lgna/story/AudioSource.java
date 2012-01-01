@@ -58,14 +58,14 @@ public final class AudioSource {
 		return Double.isNaN( stopTime );
 	}
 
-	private final org.alice.virtualmachine.resources.AudioResource audioResource;
+	private final org.lgna.common.resources.AudioResource audioResource;
 	private final Double volume;
 	private final Double startTime;
 	private final Double stopTime;
 
 	@ConstructorTemplate()
 	public AudioSource( 
-			org.alice.virtualmachine.resources.AudioResource audioResource, 
+			org.lgna.common.resources.AudioResource audioResource, 
 			@org.lgna.project.annotations.ValueTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) 
 			Number volume, 
 			Number startTime, 
@@ -86,7 +86,7 @@ public final class AudioSource {
 	}
 	@ConstructorTemplate()
 	public AudioSource( 
-			org.alice.virtualmachine.resources.AudioResource audioResource, 
+			org.lgna.common.resources.AudioResource audioResource, 
 			@org.lgna.project.annotations.ValueTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) 
 			Number volume, 
 			Number startTime 
@@ -95,19 +95,19 @@ public final class AudioSource {
 	}
 	@ConstructorTemplate()
 	public AudioSource( 
-			org.alice.virtualmachine.resources.AudioResource audioResource, 
+			org.lgna.common.resources.AudioResource audioResource, 
 			@org.lgna.project.annotations.ValueTemplate(detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class) 
 			Number volume 
 	) {
 		this( audioResource, volume, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME );
 	}
 	@ConstructorTemplate( isFollowedByLongerConstructor=true )
-	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+	public AudioSource( org.lgna.common.resources.AudioResource audioResource ) {
 		this( audioResource, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME );
 	}
 
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public org.alice.virtualmachine.resources.AudioResource getAudioResource() {
+	public org.lgna.common.resources.AudioResource getAudioResource() {
 		return this.audioResource;
 	}
 

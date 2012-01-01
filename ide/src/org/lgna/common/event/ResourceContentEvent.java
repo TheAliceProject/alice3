@@ -41,61 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.random;
+package org.lgna.common.event;
 
 /**
  * @author Dennis Cosgrove
  */
-
-public class RandomUtilities {
-	private static java.util.Random s_random = new java.util.Random();
-
-	private static int getRandomIndex( int n ) {
-		return s_random.nextInt( n );
+public class ResourceContentEvent extends edu.cmu.cs.dennisc.pattern.event.Event< org.lgna.common.Resource > {
+	private String contentType;
+	private byte[] data;
+	public ResourceContentEvent( org.lgna.common.Resource source, String contentType, byte[] data ) {
+		super( source );
+		this.contentType = contentType;
+		this.data = data;
 	}
-	public static void setSeed( long seed ) {
-		s_random.setSeed( seed );
+	public String getContentType() {
+		return this.contentType;
 	}
-	public static Integer nextIntegerFrom0ToNExclusive( Integer n ) {
-		return s_random.nextInt( n );
-	}
-	public static Integer nextIntegerFromAToBExclusive( Integer a, Integer b ) {
-		assert a < b;
-		int n = b-a;
-		return a + nextIntegerFrom0ToNExclusive( n );
-	}
-	public static Integer nextIntegerFromAToBInclusive( Integer a, Integer b ) {
-		return nextIntegerFromAToBExclusive( a, b+1 );
-	}
-	public static boolean nextBoolean() {
-		return s_random.nextBoolean();
-	}
-
-	public static Double nextDouble() {
-		return s_random.nextDouble();
-	}
-	public static Double nextDoubleInRange( Number min, Number max ) {
-		return min.doubleValue() + (nextDouble() * (max.doubleValue() - min.doubleValue()));
-	}
-
-	public static <E extends Object> E getRandomValueFrom( E[] array ) {
-		assert array != null;
-		assert array.length > 0;
-		return array[ getRandomIndex( array.length ) ];
-	}
-	public static <E extends Object> E getRandomValueFrom( java.util.List< E > list ) {
-		assert list != null;
-		if( list.size() > 0 ) {
-			return list.get( getRandomIndex( list.size() ) );
-		} else {
-			return null;
-		}
-	}
-
-	public static <E extends Enum< ? >> E getRandomEnumConstant( Class< E > cls ) {
-		E[] enumConstants = cls.getEnumConstants();
-		assert enumConstants.length > 0 : cls;
-		int index = s_random.nextInt( enumConstants.length );
-		return enumConstants[ index ];
+	public byte[] getData() {
+		return this.data;
 	}
 }

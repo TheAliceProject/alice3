@@ -50,7 +50,7 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 	protected static class EditCustomization {
 		private final java.util.List< org.lgna.project.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private final java.util.List< org.lgna.project.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private final java.util.List< org.alice.virtualmachine.Resource > resources = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private final java.util.List< org.lgna.common.Resource > resources = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
 		public void addDoStatement( org.lgna.project.ast.Statement statement ) {
 			this.doStatements.add( statement );
@@ -64,11 +64,11 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 		public org.lgna.project.ast.Statement[] getUndoStatements() {
 			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.undoStatements, org.lgna.project.ast.Statement.class );
 		}
-		public void addResource( org.alice.virtualmachine.Resource resource ) {
+		public void addResource( org.lgna.common.Resource resource ) {
 			this.resources.add( resource );
 		}
-		public org.alice.virtualmachine.Resource[] getResources() {
-			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.resources, org.alice.virtualmachine.Resource.class );
+		public org.lgna.common.Resource[] getResources() {
+			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.resources, org.lgna.common.Resource.class );
 		}
 	}
 

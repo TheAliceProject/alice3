@@ -71,4 +71,9 @@ public final class PackageReflectionProxy extends ReflectionProxy< Package > {
 	protected Package reify() {
 		return Package.getPackage( this.name );
 	}
+	@Override
+	protected void appendRepr( StringBuilder sb ) {
+		sb.append( "name=" );
+		sb.append( this.name );
+	}
 }

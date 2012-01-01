@@ -46,9 +46,9 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceCodec< R extends org.alice.virtualmachine.Resource > implements org.lgna.croquet.ItemCodec< R > {
-	private static java.util.Map< Class< org.alice.virtualmachine.Resource >, ResourceCodec< org.alice.virtualmachine.Resource > > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < R extends org.alice.virtualmachine.Resource > ResourceCodec< R > getInstance( Class< R > cls ) {
+public class ResourceCodec< R extends org.lgna.common.Resource > implements org.lgna.croquet.ItemCodec< R > {
+	private static java.util.Map< Class< org.lgna.common.Resource >, ResourceCodec< org.lgna.common.Resource > > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized < R extends org.lgna.common.Resource > ResourceCodec< R > getInstance( Class< R > cls ) {
 		ResourceCodec< ? > rv = map.get( cls );
 		if( rv != null ) {
 			//pass

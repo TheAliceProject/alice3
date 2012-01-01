@@ -46,11 +46,11 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public final class ImageSource implements Paint {
-	private final org.alice.virtualmachine.resources.ImageResource imageResource;
-	public ImageSource( org.alice.virtualmachine.resources.ImageResource imageResource ) {
+	private final org.lgna.common.resources.ImageResource imageResource;
+	public ImageSource( org.lgna.common.resources.ImageResource imageResource ) {
 		this.imageResource = imageResource;
 	}
-	public org.alice.virtualmachine.resources.ImageResource getImageResource() {
+	public org.lgna.common.resources.ImageResource getImageResource() {
 		return this.imageResource;
 	}
 }

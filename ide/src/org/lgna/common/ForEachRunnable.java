@@ -40,24 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.virtualmachine.event;
+package org.lgna.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceContentEvent extends edu.cmu.cs.dennisc.pattern.event.Event< org.alice.virtualmachine.Resource > {
-	private String contentType;
-	private byte[] data;
-	public ResourceContentEvent( org.alice.virtualmachine.Resource source, String contentType, byte[] data ) {
-		super( source );
-		this.contentType = contentType;
-		this.data = data;
-	}
-	public String getContentType() {
-		return this.contentType;
-	}
-	public byte[] getData() {
-		return this.data;
-	}
+public interface ForEachRunnable< E > {
+	public void run( E value );
 }

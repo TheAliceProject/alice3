@@ -40,82 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.common;
 
-package org.alice.virtualmachine.resources;
 
-import org.alice.flite.TextToSpeech;
-import org.alice.flite.TextVoicePair;
-
-public class TextToSpeechResource extends AudioResource 
-{
-	public static interface ResourceLoadedObserver
-	{
-		public void ResourceLoaded(TextToSpeechResource resource);
+/**
+ * @author Dennis Cosgrove
+ */
+public final class ComponentThread extends Thread {
+	private static final ThreadGroup threadGroup = new ThreadGroup( ComponentThread.class.getPackage().getName() + " component thread group" );
+	private Thread parentThread;
+	public ComponentThread( Runnable runnable, String description ) {
+		super( threadGroup, runnable, description );
 	}
-	
-	
-	
-	private java.util.List< ResourceLoadedObserver > resourceLoadedObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
-	private static java.util.Map< TextVoicePair, TextToSpeechResource > textToResourceMap = new java.util.HashMap< TextVoicePair, TextToSpeechResource >();
-
-	protected String text;
-	protected String voice;
-	private boolean isLoaded;
-	
-	private static TextToSpeechResource get( String text, String voice ) {
-		TextVoicePair tvp = new TextVoicePair(text, voice);
-		TextToSpeechResource rv = textToResourceMap.get( tvp );
-		if( rv != null ) 
-		{
-			//pass
-		} else {
-			rv = new TextToSpeechResource( text, voice );
-			textToResourceMap.put( tvp, rv );
-		}
-		return rv;
+	public Thread getParentThread() {
+		return this.parentThread;
 	}
-	
-	public static TextToSpeechResource valueOf( String text, String voice ) {
-		return get( text, voice );
+	@Override
+	public synchronized void start() {
+		this.parentThread = Thread.currentThread();
+		super.start();
 	}
-	
-	public TextToSpeechResource(String text, String voice)
-	{
-		super(java.util.UUID.randomUUID());
-		this.isLoaded = false;
-		this.text = text;
-		this.voice = voice;
-		this.setOriginalFileName( this.text );
-		this.setName( this.text );
-	}
-	
-	public void addLoadObserver(ResourceLoadedObserver observer)
-	{
-		this.resourceLoadedObservers.add(observer);
-	}
-	
-	public boolean isLoaded()
-	{
-		return this.isLoaded;
-	}
-	
-	public void loadResource()
-	{
-		if (!this.isLoaded)
-		{
-			TextToSpeech tts = new TextToSpeech();
-			tts.processText(this.text, this.voice);
-			byte[] data = tts.saveToByteArray();
-			this.setContent( AudioResource.getContentType(".wav"), data );
-			this.setDuration(tts.getDuration());
-			this.isLoaded = true;
-			for (ResourceLoadedObserver observer : this.resourceLoadedObservers)
-			{
-				observer.ResourceLoaded(this);
-			}
-			this.resourceLoadedObservers.clear();
-		}
-	}
-	
 }

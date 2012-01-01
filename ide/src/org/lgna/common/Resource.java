@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.virtualmachine;
+package org.lgna.common;
 
 public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, edu.cmu.cs.dennisc.pattern.NameChangeListenable {
 	private java.util.UUID uuid;
@@ -49,7 +49,7 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 	private String contentType;
 	private byte[] data;
 	private java.util.List< edu.cmu.cs.dennisc.pattern.event.NameListener > nameListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.event.NameListener >();
-	private java.util.List< org.alice.virtualmachine.event.ResourceContentListener > contentListeners = new java.util.LinkedList< org.alice.virtualmachine.event.ResourceContentListener >();
+	private java.util.List< org.lgna.common.event.ResourceContentListener > contentListeners = new java.util.LinkedList< org.lgna.common.event.ResourceContentListener >();
 
 	protected Resource( java.util.UUID uuid ) {
 		this.uuid = uuid;
@@ -107,19 +107,19 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 		return this.nameListeners;
 	}
 	
-	public void addContentListener( org.alice.virtualmachine.event.ResourceContentListener contentListener ) {
+	public void addContentListener( org.lgna.common.event.ResourceContentListener contentListener ) {
 		assert contentListener != null;
 		synchronized( this.contentListeners ) {
 			this.contentListeners.add( contentListener );
 		}
 	}
-	public void removeContentListener( org.alice.virtualmachine.event.ResourceContentListener contentListener ) {
+	public void removeContentListener( org.lgna.common.event.ResourceContentListener contentListener ) {
 		assert contentListener != null;
 		synchronized( this.contentListeners ) {
 			this.contentListeners.remove( contentListener );
 		}
 	}
-	public Iterable< org.alice.virtualmachine.event.ResourceContentListener > getContentListeners() {
+	public Iterable< org.lgna.common.event.ResourceContentListener > getContentListeners() {
 		return this.contentListeners;
 	}
 	
@@ -137,16 +137,16 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 		synchronized( this.contentListeners ) {
 			
 			//todo
-			org.alice.virtualmachine.event.ResourceContentListener[] array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.contentListeners, org.alice.virtualmachine.event.ResourceContentListener.class );
+			org.lgna.common.event.ResourceContentListener[] array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.contentListeners, org.lgna.common.event.ResourceContentListener.class );
 			
 			
-			org.alice.virtualmachine.event.ResourceContentEvent e = new org.alice.virtualmachine.event.ResourceContentEvent( this, contentType, data );
-			for( org.alice.virtualmachine.event.ResourceContentListener contentListener : array ) {
+			org.lgna.common.event.ResourceContentEvent e = new org.lgna.common.event.ResourceContentEvent( this, contentType, data );
+			for( org.lgna.common.event.ResourceContentListener contentListener : array ) {
 				contentListener.contentChanging( e );
 			}
 			this.contentType = contentType;
 			this.data = data;
-			for( org.alice.virtualmachine.event.ResourceContentListener contentListener : array ) {
+			for( org.lgna.common.event.ResourceContentListener contentListener : array ) {
 				contentListener.contentChanged( e );
 			}
 		}

@@ -45,16 +45,16 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceFillerInner extends SourceFillerInner< org.alice.virtualmachine.resources.AudioResource > {
+public class AudioSourceFillerInner extends SourceFillerInner< org.lgna.common.resources.AudioResource > {
 	public AudioSourceFillerInner() {
-		super( org.lgna.story.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class );
+		super( org.lgna.story.AudioSource.class, org.lgna.common.resources.AudioResource.class );
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getImportFillIn() {
 		return new org.alice.stageide.croquet.models.cascade.source.ImportNewAudioSourceFillIn();
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getResourceFillIn( org.alice.virtualmachine.resources.AudioResource resource ) {
+	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getResourceFillIn( org.lgna.common.resources.AudioResource resource ) {
 		return new org.alice.stageide.croquet.models.cascade.source.AudioSourceFillIn( resource );
 	}
 	@Override

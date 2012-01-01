@@ -40,11 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.virtualmachine;
+
+package org.lgna.common.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ForEachRunnable< E > {
-	public void run( E value );
+public interface ResourceContentListener {
+	public void contentChanging( ResourceContentEvent e );
+	public void contentChanged( ResourceContentEvent e );
 }

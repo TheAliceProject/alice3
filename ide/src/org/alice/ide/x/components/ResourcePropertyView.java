@@ -45,10 +45,10 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourcePropertyView extends org.alice.ide.croquet.components.AbstractPropertyPane<org.lgna.project.ast.ResourceProperty, org.alice.virtualmachine.Resource> {
+public class ResourcePropertyView extends org.alice.ide.croquet.components.AbstractPropertyPane<org.lgna.project.ast.ResourceProperty, org.lgna.common.Resource> {
 	private static final java.text.NumberFormat DURATION_FORMAT = new java.text.DecimalFormat( "0.00" );
 	private org.lgna.croquet.components.Label label;
-	private org.alice.virtualmachine.Resource prevResource;
+	private org.lgna.common.Resource prevResource;
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
 	public ResourcePropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ResourceProperty property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
@@ -94,7 +94,7 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 		if( this.prevResource != null ) {
 			this.prevResource.removeNameListener( this.getNameListener() );
 		}
-		org.alice.virtualmachine.Resource nextResource = getProperty().getValue();
+		org.lgna.common.Resource nextResource = getProperty().getValue();
 		StringBuffer sb = new StringBuffer();
 		if( nextResource != null ) {
 			sb.append( "<html>" );
@@ -103,8 +103,8 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 //			sb.append( ";" );
 //			sb.append( nextResource.getUUID() );
 			//sb.append( "</b>" );
-			if( nextResource instanceof org.alice.virtualmachine.resources.AudioResource ) {
-				org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)nextResource;
+			if( nextResource instanceof org.lgna.common.resources.AudioResource ) {
+				org.lgna.common.resources.AudioResource audioResource = (org.lgna.common.resources.AudioResource)nextResource;
 				double duration = audioResource.getDuration();
 				if( Double.isNaN( duration ) ) {
 					//pass
@@ -115,8 +115,8 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 					sb.append( "</i>" );
 					sb.append( "</font>" );
 				}
-			} else if( nextResource instanceof org.alice.virtualmachine.resources.ImageResource ) {
-				org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)nextResource;
+			} else if( nextResource instanceof org.lgna.common.resources.ImageResource ) {
+				org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)nextResource;
 				int width = imageResource.getWidth();
 				int height = imageResource.getHeight();
 				if( width >= 0 && height >= 0 ) {

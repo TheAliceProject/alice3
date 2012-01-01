@@ -176,4 +176,9 @@ public final class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 			return null;
 		}
 	}
+	@Override
+	protected void appendRepr( StringBuilder sb ) {
+		sb.append( "name=" );
+		sb.append( this.name );
+	}
 }

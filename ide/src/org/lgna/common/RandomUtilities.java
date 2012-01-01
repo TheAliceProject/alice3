@@ -40,59 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.virtualmachine;
+
+package org.lgna.common;
 
 /**
  * @author Dennis Cosgrove
  */
-class ForEachRunnableAdapter<E> implements Runnable {
-	private ForEachRunnable< E > forEachRunnable;
-	private E value;
 
-	public ForEachRunnableAdapter( ForEachRunnable< E > forEachRunnable, E value ) {
-		this.forEachRunnable = forEachRunnable;
-		this.value = value;
-	}
-	public void run() {
-		this.forEachRunnable.run( this.value );
-	}
-}
+public class RandomUtilities {
+	private static java.util.Random s_random = new java.util.Random();
 
-/**
- * @author Dennis Cosgrove
- */
-public class ForEachTogether {
-	public static < E extends Object> void invokeAndWait( E[] array, ForEachRunnable< E > forEachRunnable ) {
-		switch( array.length ) {
-		case 0:
-			break;
-		case 1:
-			forEachRunnable.run( array[ 0 ] );
-			break;
-		default:
-			Runnable[] runnables = new Runnable[ array.length ];
-			for( int i = 0; i < runnables.length; i++ ) {
-				runnables[ i ] = new ForEachRunnableAdapter( forEachRunnable, array[ i ] );
-			}
-			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
-		}
+	private static int getRandomIndex( int n ) {
+		return s_random.nextInt( n );
 	}
-	public static <E extends Object> void invokeAndWait( Iterable<E> iterable, final ForEachRunnable< E > forEachRunnable ) {
-		java.util.Collection< E > collection;
-		if( iterable instanceof java.util.Collection< ? > ) {
-			collection = (java.util.Collection< E >)iterable;
+	public static void setSeed( long seed ) {
+		s_random.setSeed( seed );
+	}
+	public static Integer nextIntegerFrom0ToNExclusive( Integer n ) {
+		return s_random.nextInt( n );
+	}
+	public static Integer nextIntegerFromAToBExclusive( Integer a, Integer b ) {
+		assert a < b;
+		int n = b-a;
+		return a + nextIntegerFrom0ToNExclusive( n );
+	}
+	public static Integer nextIntegerFromAToBInclusive( Integer a, Integer b ) {
+		return nextIntegerFromAToBExclusive( a, b+1 );
+	}
+	public static boolean nextBoolean() {
+		return s_random.nextBoolean();
+	}
+
+	public static Double nextDouble() {
+		return s_random.nextDouble();
+	}
+	public static Double nextDoubleInRange( Number min, Number max ) {
+		return min.doubleValue() + (nextDouble() * (max.doubleValue() - min.doubleValue()));
+	}
+
+	public static <E extends Object> E getRandomValueFrom( E[] array ) {
+		assert array != null;
+		assert array.length > 0;
+		return array[ getRandomIndex( array.length ) ];
+	}
+	public static <E extends Object> E getRandomValueFrom( java.util.List< E > list ) {
+		assert list != null;
+		if( list.size() > 0 ) {
+			return list.get( getRandomIndex( list.size() ) );
 		} else {
-			collection = new java.util.Vector< E >();
-			for( E item : iterable ) {
-				collection.add( item );
-			}
+			return null;
 		}
-		Runnable[] runnables = new Runnable[ collection.size() ];
-		int i = 0;
-		for( E value : collection ) {
-			runnables[ i ] = new ForEachRunnableAdapter( forEachRunnable, value );
-			i++;
-		}
-		org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+	}
+
+	public static <E extends Enum< ? >> E getRandomEnumConstant( Class< E > cls ) {
+		E[] enumConstants = cls.getEnumConstants();
+		assert enumConstants.length > 0 : cls;
+		int index = s_random.nextInt( enumConstants.length );
+		return enumConstants[ index ];
 	}
 }

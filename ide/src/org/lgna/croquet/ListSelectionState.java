@@ -457,7 +457,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		final int N = this.getItemCount();
 		int i;
 		if( N > 0 ) {
-			i = org.alice.random.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
+			i = org.lgna.common.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
 		} else {
 			i = -1;
 		}

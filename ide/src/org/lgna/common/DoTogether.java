@@ -40,13 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.virtualmachine;
+package org.lgna.common;
+
 
 /**
  * @author Dennis Cosgrove
  */
 public class DoTogether {
-	private static int threadCount = 0;
+	private static int threadCountForDescription = 0;
 	//todo 
 	public static void invokeAndWait( 
 			@edu.cmu.cs.dennisc.java.lang.ParameterAnnotation( isVariable=true )
@@ -62,8 +63,7 @@ public class DoTogether {
 			final java.util.List< RuntimeException > runtimeExceptions = new java.util.LinkedList< RuntimeException >();
 			final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( runnables.length + 1 );
 	    	for( final Runnable runnable : runnables ) {
-	            new edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString( ThreadGroupUtilities.getThreadGroup(), "DoTogether-"+(DoTogether.threadCount++) ) {
-	            	@Override
+	    		new ComponentThread( new Runnable() {
 	                public void run() {
 	            		try {
 		            		runnable.run();
@@ -81,15 +81,7 @@ public class DoTogether {
 	            			}
 	            		}
 	    	        }
-	            	@Override
-	            	protected StringBuffer updateRepr(StringBuffer rv) {
-	            		rv = super.updateRepr(rv);
-	            		rv.append( ";runnable=" );
-	            		rv.append( runnable );
-	            		return rv;
-	            	}
-	            	
-	    	    }.start();
+	    		}, "DoTogether-"+(DoTogether.threadCountForDescription++ ) ).start();
 	    	}
 			try {
     			barrier.await();

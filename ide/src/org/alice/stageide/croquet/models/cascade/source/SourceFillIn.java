@@ -1,6 +1,6 @@
 package org.alice.stageide.croquet.models.cascade.source;
 
-public abstract class SourceFillIn<T extends org.alice.virtualmachine.Resource> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.InstanceCreation > {
+public abstract class SourceFillIn<T extends org.lgna.common.Resource> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.InstanceCreation > {
 	private final Class<?> sourceCls;
 	private final T resource;
 	private final Class<T> resourceCls;

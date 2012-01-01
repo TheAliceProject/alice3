@@ -104,9 +104,9 @@ public class ProgramTypeUtilities {
 		return crawler.getList();
 	}
 
-	public static java.util.Set< org.alice.virtualmachine.Resource > getReferencedResources( org.lgna.project.Project project ) {
+	public static java.util.Set< org.lgna.common.Resource > getReferencedResources( org.lgna.project.Project project ) {
 		org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
-		java.util.Set< org.alice.virtualmachine.Resource > resources = project.getResources();
+		java.util.Set< org.lgna.common.Resource > resources = project.getResources();
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ResourceExpression > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ResourceExpression >( org.lgna.project.ast.ResourceExpression.class ) {
 			@Override
 			protected boolean isAcceptable( org.lgna.project.ast.ResourceExpression resourceExpression ) {
@@ -115,9 +115,9 @@ public class ProgramTypeUtilities {
 		};
 		programType.crawl( crawler, true );
 		
-		java.util.Set< org.alice.virtualmachine.Resource > rv = new java.util.HashSet< org.alice.virtualmachine.Resource >();
+		java.util.Set< org.lgna.common.Resource > rv = new java.util.HashSet< org.lgna.common.Resource >();
 		for( org.lgna.project.ast.ResourceExpression resourceExpression : crawler.getList() ) {
-			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
+			org.lgna.common.Resource resource = resourceExpression.resource.getValue();
 			if( resources.contains( resource ) ) {
 				//pass
 			} else {
@@ -144,8 +144,8 @@ public class ProgramTypeUtilities {
 		programType.crawl( crawler, true );
 		return (N)buffer[ 0 ];
 	}
-	public static <R extends org.alice.virtualmachine.Resource > R lookupResource( org.lgna.project.Project project, java.util.UUID id ) {
-		for( org.alice.virtualmachine.Resource resource : project.getResources() ) {
+	public static <R extends org.lgna.common.Resource > R lookupResource( org.lgna.project.Project project, java.util.UUID id ) {
+		for( org.lgna.common.Resource resource : project.getResources() ) {
 			if( resource.getId() == id ) {
 				return (R)resource;
 			}

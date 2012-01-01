@@ -40,27 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.virtualmachine.resources;
+package org.lgna.common.resources;
 
-public class AudioResource extends org.alice.virtualmachine.Resource {
+public class ImageResource extends org.lgna.common.Resource {
 	private static java.util.Map< String, String > extensionToContentTypeMap;
+	
+	private static final String PNG_MIME_TYPE = "image/png";
+	private static final String JPEG_MIME_TYPE = "image/jpeg";
+	private static final String BMP_MIME_TYPE = "image/bmp";
+	private static final String GIF_MIME_TYPE = "image/gif";
+
 	static {
-		AudioResource.extensionToContentTypeMap = new java.util.HashMap< String, String >();
-		AudioResource.extensionToContentTypeMap.put( "au", "audio.basic" );
-		AudioResource.extensionToContentTypeMap.put( "wav", "audio.x_wav" );
-		AudioResource.extensionToContentTypeMap.put( "mp3", "audio.mpeg" );
+		ImageResource.extensionToContentTypeMap = new java.util.HashMap< String, String >();
+		ImageResource.extensionToContentTypeMap.put( "png", PNG_MIME_TYPE );
+		ImageResource.extensionToContentTypeMap.put( "jpg", JPEG_MIME_TYPE );
+		ImageResource.extensionToContentTypeMap.put( "jpeg", JPEG_MIME_TYPE );
+		ImageResource.extensionToContentTypeMap.put( "bmp", BMP_MIME_TYPE );
+		ImageResource.extensionToContentTypeMap.put( "gif", GIF_MIME_TYPE );
 	}
 
 	public static String getContentType( String path ) {
 		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( path );
-		String contentType = AudioResource.extensionToContentTypeMap.get( extension.toLowerCase() );
-		return contentType;
+		return ImageResource.extensionToContentTypeMap.get( extension.toLowerCase() );
 	}
 	public static String getContentType( java.io.File file ) {
 		return getContentType( file.getName() );
 	}
+	
 	public static boolean isAcceptableContentType( String contentType ) {
-		return AudioResource.extensionToContentTypeMap.containsValue( contentType );
+		return ImageResource.extensionToContentTypeMap.containsValue( contentType );
 	}
 	
 	public static java.io.FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
@@ -76,53 +84,64 @@ public class AudioResource extends org.alice.virtualmachine.Resource {
 		};
 	}
 
-	private static java.util.Map< java.util.UUID, AudioResource > uuidToResourceMap = new java.util.HashMap< java.util.UUID, AudioResource >(); 
-	private static AudioResource get( java.util.UUID uuid ) {
-		AudioResource rv = uuidToResourceMap.get( uuid );
+	private static java.util.Map< java.util.UUID, ImageResource > uuidToResourceMap = new java.util.HashMap< java.util.UUID, ImageResource >(); 
+	private static ImageResource get( java.util.UUID uuid ) {
+		ImageResource rv = uuidToResourceMap.get( uuid );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new AudioResource( uuid );
+			rv = new ImageResource( uuid );
 			uuidToResourceMap.put( uuid, rv );
 		}
 		return rv;
 	}
-	public static AudioResource valueOf( String s ) {
+	public static ImageResource valueOf( String s ) {
 		return get( java.util.UUID.fromString( s ) );
 	}
-	private double duration = Double.NaN;
-	protected AudioResource( java.util.UUID uuid ) {
+	private int width = -1;
+	private int height = -1;
+	public ImageResource( java.util.UUID uuid ) {
 		super( uuid );
 	}
-	public AudioResource( Class<?> cls, String resourceName, String contentType ) {
+	public ImageResource( Class<?> cls, String resourceName, String contentType ) {
 		super( cls, resourceName, contentType );
 		uuidToResourceMap.put( this.getId(), this );
 	}
-	public AudioResource( Class<?> cls, String resourceName ) {
+	public ImageResource( Class<?> cls, String resourceName ) {
 		this( cls, resourceName, getContentType( resourceName ) );
 	}
-	public AudioResource( java.io.File file, String contentType ) throws java.io.IOException {
+	public ImageResource( java.io.File file, String contentType ) throws java.io.IOException {
 		super( file, contentType );
 		uuidToResourceMap.put( this.getId(), this );
 	}
-	public AudioResource( java.io.File file ) throws java.io.IOException {
+	public ImageResource( java.io.File file ) throws java.io.IOException {
 		this( file, getContentType( file ) );
 	}
-	public double getDuration() {
-		return this.duration;
+	
+	public int getWidth() {
+		return this.width;
 	}
-	public void setDuration( double duration ) {
-		this.duration = duration;
+	public void setWidth( int width ) {
+		this.width = width;
 	}
-	private static String XML_DURATION_ATTRIBUTE = "duration";
+	public int getHeight() {
+		return this.height;
+	}
+	public void setHeight( int height ) {
+		this.height = height;
+	}
+	private static String XML_WIDTH_ATTRIBUTE = "width";
+	private static String XML_HEIGHT_ATTRIBUTE = "height";
 	@Override
 	public void encodeAttributes( org.w3c.dom.Element xmlElement ) {
 		super.encodeAttributes( xmlElement );
-		xmlElement.setAttribute( XML_DURATION_ATTRIBUTE, Double.toString( this.duration ) );
+		xmlElement.setAttribute( XML_WIDTH_ATTRIBUTE, Integer.toString( this.width ) );
+		xmlElement.setAttribute( XML_HEIGHT_ATTRIBUTE, Integer.toString( this.height ) );
 	}
 	@Override
 	public void decodeAttributes( org.w3c.dom.Element xmlElement, byte[] data ) {
 		super.decodeAttributes( xmlElement, data );
-		this.duration = Double.parseDouble( xmlElement.getAttribute( XML_DURATION_ATTRIBUTE ) );
+		this.width = Integer.parseInt( xmlElement.getAttribute( XML_WIDTH_ATTRIBUTE ) );
+		this.height = Integer.parseInt( xmlElement.getAttribute( XML_HEIGHT_ATTRIBUTE ) );
 	}
 }

@@ -100,7 +100,7 @@ public class ImplementationAccessor {
 	public static edu.cmu.cs.dennisc.texture.Texture getTexture( Paint paint, edu.cmu.cs.dennisc.texture.Texture defaultValue ) {
 		if( paint instanceof org.lgna.story.ImageSource ) {
 			org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
-			org.alice.virtualmachine.resources.ImageResource imageResource = imageSource.getImageResource();
+			org.lgna.common.resources.ImageResource imageResource = imageSource.getImageResource();
 			if( imageResource != null ) {
 				return edu.cmu.cs.dennisc.texture.TextureFactory.getTexture( imageResource, true );
 			} else {

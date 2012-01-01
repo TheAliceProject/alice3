@@ -46,10 +46,10 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 	public static final int IS_REFERENCED_COLUMN_INDEX = 2;
 	public static final int NAME_COLUMN_INDEX = 0;
 	public static final int TYPE_COLUMN_INDEX = 1;
-	private org.alice.virtualmachine.Resource[] resources;
-	private java.util.Set< org.alice.virtualmachine.Resource > referencedResources;
+	private org.lgna.common.Resource[] resources;
+	private java.util.Set< org.lgna.common.Resource > referencedResources;
 
-	public ResourceTableModel( org.alice.virtualmachine.Resource[] resources, java.util.Set< org.alice.virtualmachine.Resource > referencedResources ) {
+	public ResourceTableModel( org.lgna.common.Resource[] resources, java.util.Set< org.lgna.common.Resource > referencedResources ) {
 		this.resources = resources;
 		this.referencedResources = referencedResources;
 	}
@@ -118,9 +118,9 @@ class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer< B
 	}
 }
 
-class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< Class< ? extends org.alice.virtualmachine.Resource >> {
+class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< Class< ? extends org.lgna.common.Resource >> {
 	@Override
-	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Class< ? extends org.alice.virtualmachine.Resource > value, boolean isSelected, boolean hasFocus, int row, int column ) {
+	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Class< ? extends org.lgna.common.Resource > value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
 		String text;
 		java.awt.Color foreground;
@@ -144,9 +144,9 @@ class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< Class< ? 
 	}
 }
 
-class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice.virtualmachine.Resource > {
+class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.lgna.common.Resource > {
 	@Override
-	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, org.alice.virtualmachine.Resource value, boolean isSelected, boolean hasFocus, int row, int column ) {
+	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, org.lgna.common.Resource value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
 		String text;
 		java.awt.Color foreground;
@@ -171,13 +171,13 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		public ResourceOperation( java.util.UUID individualId ) {
 			super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		}
-		protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.OperationStep< ? > step, org.alice.virtualmachine.Resource resource );
+		protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.OperationStep< ? > step, org.lgna.common.Resource resource );
 
 		//todo: better name
-		protected abstract org.alice.virtualmachine.Resource selectResource();
+		protected abstract org.lgna.common.Resource selectResource();
 		@Override
 		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-			org.alice.virtualmachine.Resource resource = this.selectResource();
+			org.lgna.common.Resource resource = this.selectResource();
 			if( resource != null ) {
 				step.commitAndInvokeDo( this.createEdit( step, resource ) );
 			} else {
@@ -190,7 +190,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		public AddOrRemoveResourceEdit( org.lgna.croquet.history.OperationStep<?> step ) {
 			super( step );
 		}
-		protected void addResource( org.alice.virtualmachine.Resource resource ) {
+		protected void addResource( org.lgna.common.Resource resource ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( ide != null ) {
 				org.lgna.project.Project project = ide.getProject();
@@ -200,7 +200,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 				}
 			}
 		}
-		protected void removeResource( org.alice.virtualmachine.Resource resource ) {
+		protected void removeResource( org.lgna.common.Resource resource ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( ide != null ) {
 				org.lgna.project.Project project = ide.getProject();
@@ -218,7 +218,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			this.setName( "Import..." );
 		}
 		@Override
-		public org.alice.virtualmachine.Resource selectResource() {
+		public org.lgna.common.Resource selectResource() {
 			org.lgna.croquet.components.Frame frame = org.lgna.croquet.Application.getActiveInstance().getFrame();
 			int result = javax.swing.JOptionPane.showOptionDialog( frame.getAwtComponent(), "What type of resource would you like to import?", "Select Type", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, new String[] {
 					"Import Audio...", "Import Image..." }, null );
@@ -240,7 +240,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			}
 		}
 		@Override
-		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.OperationStep< ? > step, final org.alice.virtualmachine.Resource resource ) {
+		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.OperationStep< ? > step, final org.lgna.common.Resource resource ) {
 			return new AddOrRemoveResourceEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
@@ -266,11 +266,11 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			this.setName( "Remove" );
 		}
 		@Override
-		public org.alice.virtualmachine.Resource selectResource() {
+		public org.lgna.common.Resource selectResource() {
 			return ResourceManagerPane.this.getSelectedResource();
 		}
 		@Override
-		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.OperationStep< ? > step, final org.alice.virtualmachine.Resource resource ) {
+		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.OperationStep< ? > step, final org.lgna.common.Resource resource ) {
 			return new AddOrRemoveResourceEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
@@ -290,7 +290,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		}
 	}
 
-	abstract class RenameWithPreviewPane<E extends org.alice.virtualmachine.Resource> extends org.alice.ide.name.RenamePane {
+	abstract class RenameWithPreviewPane<E extends org.lgna.common.Resource> extends org.alice.ide.name.RenamePane {
 		private E resource;
 
 		public RenameWithPreviewPane( E resource ) {
@@ -318,8 +318,8 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		//		}
 	}
 
-	class RenameWithImagePreviewPane extends RenameWithPreviewPane< org.alice.virtualmachine.resources.ImageResource > {
-		public RenameWithImagePreviewPane( org.alice.virtualmachine.resources.ImageResource imageResource ) {
+	class RenameWithImagePreviewPane extends RenameWithPreviewPane< org.lgna.common.resources.ImageResource > {
+		public RenameWithImagePreviewPane( org.lgna.common.resources.ImageResource imageResource ) {
 			super( imageResource );
 		}
 		@Override
@@ -331,8 +331,8 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		}
 	}
 
-	class RenameWithAudioPreviewPane extends RenameWithPreviewPane< org.alice.virtualmachine.resources.AudioResource > {
-		public RenameWithAudioPreviewPane( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+	class RenameWithAudioPreviewPane extends RenameWithPreviewPane< org.lgna.common.resources.AudioResource > {
+		public RenameWithAudioPreviewPane( org.lgna.common.resources.AudioResource audioResource ) {
 			super( audioResource );
 		}
 		@Override
@@ -359,7 +359,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 	}
 
 	class RenameResourceOperation extends org.lgna.croquet.InputDialogOperation<Void> {
-		private org.alice.virtualmachine.Resource resource;
+		private org.lgna.common.Resource resource;
 		public RenameResourceOperation() {
 			super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "da920b16-65fc-48a4-9203-b3c2979b0a59" ) );
 			this.setName( "Rename..." );
@@ -369,11 +369,11 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			this.resource = ResourceManagerPane.this.getSelectedResource();
 			if( this.resource != null ) {
 				org.alice.ide.name.RenamePane rv;
-				if( this.resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
-					org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
+				if( this.resource instanceof org.lgna.common.resources.ImageResource ) {
+					org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)resource;
 					rv = new RenameWithImagePreviewPane( imageResource );
-				} else if( this.resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
-					org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
+				} else if( this.resource instanceof org.lgna.common.resources.AudioResource ) {
+					org.lgna.common.resources.AudioResource audioResource = (org.lgna.common.resources.AudioResource)resource;
 					rv = new RenameWithAudioPreviewPane( audioResource );
 				} else {
 					rv = new org.alice.ide.name.RenamePane();
@@ -422,7 +422,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 	}
 
 	class ReloadResourceOperation extends org.lgna.croquet.ActionOperation {
-		class Capsule<E extends org.alice.virtualmachine.Resource> {
+		class Capsule<E extends org.lgna.common.Resource> {
 			private String originalFileName;
 			//private String name;
 			private String contentType;
@@ -443,17 +443,17 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			}
 		}
 
-		class ImageCapsule extends Capsule< org.alice.virtualmachine.resources.ImageResource > {
+		class ImageCapsule extends Capsule< org.lgna.common.resources.ImageResource > {
 			private int width;
 			private int height;
 
-			public ImageCapsule( org.alice.virtualmachine.resources.ImageResource imageResource ) {
+			public ImageCapsule( org.lgna.common.resources.ImageResource imageResource ) {
 				super( imageResource );
 				this.width = imageResource.getWidth();
 				this.height = imageResource.getHeight();
 			}
 			@Override
-			public org.alice.virtualmachine.resources.ImageResource update( org.alice.virtualmachine.resources.ImageResource rv ) {
+			public org.lgna.common.resources.ImageResource update( org.lgna.common.resources.ImageResource rv ) {
 				rv = super.update( rv );
 				rv.setWidth( this.width );
 				rv.setHeight( this.height );
@@ -461,15 +461,15 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			}
 		}
 
-		class AudioCapsule extends Capsule< org.alice.virtualmachine.resources.AudioResource > {
+		class AudioCapsule extends Capsule< org.lgna.common.resources.AudioResource > {
 			private double duration;
 
-			public AudioCapsule( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+			public AudioCapsule( org.lgna.common.resources.AudioResource audioResource ) {
 				super( audioResource );
 				this.duration = audioResource.getDuration();
 			}
 			@Override
-			public org.alice.virtualmachine.resources.AudioResource update( org.alice.virtualmachine.resources.AudioResource rv ) {
+			public org.lgna.common.resources.AudioResource update( org.lgna.common.resources.AudioResource rv ) {
 				rv = super.update( rv );
 				rv.setDuration( this.duration );
 				return rv;
@@ -482,15 +482,15 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		}
 		@Override
 		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
+			final org.lgna.common.Resource resource = ResourceManagerPane.this.getSelectedResource();
 			if( resource != null ) {
 				final Capsule prevCapsule;
 				final Capsule nextCapsule;
 				org.lgna.croquet.components.Frame frame = org.lgna.croquet.Application.getActiveInstance().getFrame();
-				if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
-					org.alice.virtualmachine.resources.ImageResource prevImageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
+				if( resource instanceof org.lgna.common.resources.ImageResource ) {
+					org.lgna.common.resources.ImageResource prevImageResource = (org.lgna.common.resources.ImageResource)resource;
 					try {
-						org.alice.virtualmachine.resources.ImageResource nextImageResource = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( frame );
+						org.lgna.common.resources.ImageResource nextImageResource = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( frame );
 						if( nextImageResource != null ) {
 							prevCapsule = new ImageCapsule( prevImageResource );
 							nextCapsule = new ImageCapsule( nextImageResource );
@@ -501,10 +501,10 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 					} catch( java.io.IOException ioe ) {
 						throw new RuntimeException( ioe );
 					}
-				} else if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
-					org.alice.virtualmachine.resources.AudioResource prevAudioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
+				} else if( resource instanceof org.lgna.common.resources.AudioResource ) {
+					org.lgna.common.resources.AudioResource prevAudioResource = (org.lgna.common.resources.AudioResource)resource;
 					try {
-						org.alice.virtualmachine.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( frame );
+						org.lgna.common.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( frame );
 						if( nextAudioResource != null ) {
 							prevCapsule = new AudioCapsule( prevAudioResource );
 							nextCapsule = new AudioCapsule( nextAudioResource );
@@ -594,10 +594,10 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		this.handleSelection();
 	}
 
-	private org.alice.virtualmachine.Resource getSelectedResource() {
+	private org.lgna.common.Resource getSelectedResource() {
 		int rowIndex = this.table.getSelectedRow();
 		if( rowIndex >= 0 ) {
-			return (org.alice.virtualmachine.Resource)this.table.getValueAt( rowIndex, ResourceTableModel.NAME_COLUMN_INDEX );
+			return (org.lgna.common.Resource)this.table.getValueAt( rowIndex, ResourceTableModel.NAME_COLUMN_INDEX );
 		} else {
 			return null;
 		}
@@ -610,8 +610,8 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 
 				ide.ensureProjectCodeUpToDate();
 
-				org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( project.getResources(), org.alice.virtualmachine.Resource.class, true );
-				java.util.Set< org.alice.virtualmachine.Resource > referencedResources = org.lgna.project.ProgramTypeUtilities.getReferencedResources( project );
+				org.lgna.common.Resource[] resources = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( project.getResources(), org.lgna.common.Resource.class, true );
+				java.util.Set< org.lgna.common.Resource > referencedResources = org.lgna.project.ProgramTypeUtilities.getReferencedResources( project );
 				javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );
 				this.table.setModel( tableModel );
 				this.table.getColumn( this.table.getColumnName( ResourceTableModel.IS_REFERENCED_COLUMN_INDEX ) ).setCellRenderer( new ResourceIsReferencedTableCellRenderer() );

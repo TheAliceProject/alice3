@@ -196,9 +196,9 @@ public class Project {
 	
 	private org.lgna.project.ast.NamedUserType programType = null;
 	private java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
-	private java.util.Set< org.alice.virtualmachine.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
+	private java.util.Set< org.lgna.common.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 	private Properties properties = new Properties();
-	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes, java.util.Set< org.alice.virtualmachine.Resource > resources ) {
+	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes, java.util.Set< org.lgna.common.Resource > resources ) {
 		this( programType );
 		this.namedUserTypes.addAll( namedUserTypes );
 		this.resources.addAll( resources );
@@ -272,7 +272,7 @@ public class Project {
 		this.properties.write( bos );
 	}
 	
-	public void addResource( org.alice.virtualmachine.Resource resource ) {
+	public void addResource( org.lgna.common.Resource resource ) {
 		if( this.resources.contains( resource ) ) {
 			//todo
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
@@ -280,10 +280,10 @@ public class Project {
 			this.resources.add( resource );
 		}
 	}
-	public void removeResource( org.alice.virtualmachine.Resource resource ) {
+	public void removeResource( org.lgna.common.Resource resource ) {
 		this.resources.remove( resource );
 	}
-	public java.util.Set< org.alice.virtualmachine.Resource > getResources() {
+	public java.util.Set< org.lgna.common.Resource > getResources() {
 		return this.resources;
 	}
 

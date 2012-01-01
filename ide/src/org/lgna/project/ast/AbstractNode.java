@@ -303,8 +303,8 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 			if( value != null ) {
 				rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName() );
 				String text;
-				if( value instanceof org.alice.virtualmachine.Resource ) {
-					org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
+				if( value instanceof org.lgna.common.Resource ) {
+					org.lgna.common.Resource resource = (org.lgna.common.Resource)value;
 					text = resource.getId().toString();
 				} else {
 					text = value.toString();

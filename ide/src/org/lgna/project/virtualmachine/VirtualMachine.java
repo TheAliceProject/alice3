@@ -786,7 +786,7 @@ public abstract class VirtualMachine {
 					}
 				};
 			}
-			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+			org.lgna.common.DoTogether.invokeAndWait( runnables );
 		}
 	}
 	protected void executeExpressionStatement( org.lgna.project.ast.ExpressionStatement expressionStatement ) {
@@ -834,7 +834,7 @@ public abstract class VirtualMachine {
 			break;
 		default:
 			final Frame owner = this.getFrameForThread( Thread.currentThread() );
-			org.alice.virtualmachine.ForEachTogether.invokeAndWait( array, new org.alice.virtualmachine.ForEachRunnable< Object >() {
+			org.lgna.common.ForEachTogether.invokeAndWait( array, new org.lgna.common.ForEachRunnable< Object >() {
 				public void run( Object value ) {
 					pushCurrentThread( owner );
 					try {

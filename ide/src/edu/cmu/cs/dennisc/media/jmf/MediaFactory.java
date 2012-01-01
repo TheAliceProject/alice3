@@ -46,12 +46,12 @@ package edu.cmu.cs.dennisc.media.jmf;
  * @author Dennis Cosgrove
  */
 public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
-	private java.util.Map< org.alice.virtualmachine.resources.AudioResource, javax.media.protocol.DataSource > audioResourceToDataSourceMap = new java.util.HashMap< org.alice.virtualmachine.resources.AudioResource, javax.media.protocol.DataSource >();
-	private org.alice.virtualmachine.event.ResourceContentListener resourceContentListener = new org.alice.virtualmachine.event.ResourceContentListener() {
-		public void contentChanging( org.alice.virtualmachine.event.ResourceContentEvent e ) {
+	private java.util.Map< org.lgna.common.resources.AudioResource, javax.media.protocol.DataSource > audioResourceToDataSourceMap = new java.util.HashMap< org.lgna.common.resources.AudioResource, javax.media.protocol.DataSource >();
+	private org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
+		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}
-		public void contentChanged( org.alice.virtualmachine.event.ResourceContentEvent e ) {
-			MediaFactory.this.forget( (org.alice.virtualmachine.resources.AudioResource)e.getTypedSource() );
+		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
+			MediaFactory.this.forget( (org.lgna.common.resources.AudioResource)e.getTypedSource() );
 		}
 	};
 	static {
@@ -71,15 +71,15 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 	private MediaFactory() {
 	}
 
-	private void forget( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+	private void forget( org.lgna.common.resources.AudioResource audioResource ) {
 		this.audioResourceToDataSourceMap.remove( audioResource );
 		audioResource.removeContentListener( this.resourceContentListener );
 	}
 	
-	public org.alice.virtualmachine.resources.AudioResource createAudioResource( java.io.File file ) throws java.io.IOException {
-		String contentType = org.alice.virtualmachine.resources.AudioResource.getContentType( file );
+	public org.lgna.common.resources.AudioResource createAudioResource( java.io.File file ) throws java.io.IOException {
+		String contentType = org.lgna.common.resources.AudioResource.getContentType( file );
 		if( contentType != null ) {
-			final org.alice.virtualmachine.resources.AudioResource rv = new org.alice.virtualmachine.resources.AudioResource( file, contentType );
+			final org.lgna.common.resources.AudioResource rv = new org.lgna.common.resources.AudioResource( file, contentType );
 			Runnable runnable = new Runnable() {
 				public void run() {
 					Player player = new Player( createJMFPlayer( rv ), 1.0, 0.0, Double.NaN );
@@ -99,7 +99,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 		}
 	}
 	
-	private javax.media.Player createJMFPlayer( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+	private javax.media.Player createJMFPlayer( org.lgna.common.resources.AudioResource audioResource ) {
 		assert audioResource != null;
 		javax.media.protocol.DataSource dataSource = this.audioResourceToDataSourceMap.get( audioResource );
 		if( dataSource != null ) {
@@ -120,7 +120,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 		}
 	}
 	@Override
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime, double stopTime ) {
+	public Player createPlayer( org.lgna.common.resources.AudioResource audioResource, double volume, double startTime, double stopTime ) {
 		Player player = new Player( createJMFPlayer( audioResource ), volume, startTime, stopTime );
 		if( Double.isNaN( audioResource.getDuration() ) ) {
 			player.realize();

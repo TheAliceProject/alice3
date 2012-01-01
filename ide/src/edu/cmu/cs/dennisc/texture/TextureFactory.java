@@ -46,14 +46,14 @@ package edu.cmu.cs.dennisc.texture;
  * @author Dennis Cosgrove
  */
 public final class TextureFactory {
-	private static java.util.Map< org.alice.virtualmachine.resources.ImageResource, BufferedImageTexture > resourceToTextureMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static org.alice.virtualmachine.event.ResourceContentListener resourceContentListener = new org.alice.virtualmachine.event.ResourceContentListener() {
-		public void contentChanging( org.alice.virtualmachine.event.ResourceContentEvent e ) {
+	private static java.util.Map< org.lgna.common.resources.ImageResource, BufferedImageTexture > resourceToTextureMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
+		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}
-		public void contentChanged( org.alice.virtualmachine.event.ResourceContentEvent e ) {
-			org.alice.virtualmachine.Resource resource = e.getTypedSource();
-			if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
-				org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
+		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
+			org.lgna.common.Resource resource = e.getTypedSource();
+			if( resource instanceof org.lgna.common.resources.ImageResource ) {
+				org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)resource;
 				java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
 				if( bufferedImage != null ) {
 					Texture texture = TextureFactory.resourceToTextureMap.get( e.getTypedSource() );
@@ -82,7 +82,7 @@ public final class TextureFactory {
 		bufferedImageTexture.setPotentiallyAlphaBlended( isPotenentiallyAlphaBlended );
 	}
 	
-	public static BufferedImageTexture getTexture( org.alice.virtualmachine.resources.ImageResource imageResource, boolean isMipMappingDesired ) {
+	public static BufferedImageTexture getTexture( org.lgna.common.resources.ImageResource imageResource, boolean isMipMappingDesired ) {
 		assert imageResource != null;
 		BufferedImageTexture rv = TextureFactory.resourceToTextureMap.get( imageResource );
 		if( rv != null ) {

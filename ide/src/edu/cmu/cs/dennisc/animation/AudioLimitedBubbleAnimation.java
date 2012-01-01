@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.animation;
  * @author dculyba
  *
  */
-public class AudioLimitedBubbleAnimation extends BubbleAnimation implements org.alice.virtualmachine.resources.TextToSpeechResource.ResourceLoadedObserver{
+public class AudioLimitedBubbleAnimation extends BubbleAnimation implements org.lgna.common.resources.TextToSpeechResource.ResourceLoadedObserver{
 
 	private long startTime;
 	
@@ -95,7 +95,7 @@ public class AudioLimitedBubbleAnimation extends BubbleAnimation implements org.
 		}
 	}
 	
-	public void ResourceLoaded(org.alice.virtualmachine.resources.TextToSpeechResource resource) 
+	public void ResourceLoaded(org.lgna.common.resources.TextToSpeechResource resource) 
 	{
 		this.m_updatingDuration = resource.getDuration();
 	}
