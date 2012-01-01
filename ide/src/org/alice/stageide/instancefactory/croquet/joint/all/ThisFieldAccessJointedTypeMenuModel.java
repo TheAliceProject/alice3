@@ -41,68 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package org.alice.stageide.instancefactory.croquet.joint.all;
 
 /**
  * @author Dennis Cosgrove
  */
-class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass {
-	private javax.media.opengl.GLPbuffer glPbuffer;
-	private AbstractLookingGlass lookingGlassToShareContextWith;
-
-	/* package-private */OffscreenLookingGlass(LookingGlassFactory lookingGlassFactory, AbstractLookingGlass lookingGlassToShareContextWith) {
-		super(lookingGlassFactory);
-		this.lookingGlassToShareContextWith = lookingGlassToShareContextWith;
-	}
-
-	public java.awt.Dimension getSize(java.awt.Dimension rv) {
-		if (this.glPbuffer != null) {
-			rv.setSize(this.glPbuffer.getWidth(), this.glPbuffer.getHeight());
-		} else {
-			rv.setSize(0, 0);
-		}
-		return rv;
-	}
-
-	public void setSize(int width, int height) {
-		assert width > 0;
-		assert height > 0;
-		if (this.glPbuffer != null) {
-			if (width != this.glPbuffer.getWidth() || height != this.glPbuffer.getHeight()) {
-				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
-				this.glPbuffer.destroy();
-				this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
-			}
-		} else {
-			javax.media.opengl.GLContext share;
-			if (this.lookingGlassToShareContextWith != null) {
-				share = this.lookingGlassToShareContextWith.getGLAutoDrawable().getContext();
+public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
+	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ThisFieldAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserField value ) {
+		synchronized( map ) {
+			ThisFieldAccessJointedTypeMenuModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
 			} else {
-				share = null;
+				rv = new ThisFieldAccessJointedTypeMenuModel( value );
+				map.put( value, rv );
 			}
-			this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
+			return rv;
 		}
 	}
-
-	public void clearAndRenderOffscreen() {
-		getGLAutoDrawable().display();
+	private final org.lgna.project.ast.UserField field;
+	private ThisFieldAccessJointedTypeMenuModel( org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
+		this.field = field;
 	}
-
 	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		if (this.glPbuffer != null) {
-			this.glPbuffer.destroy();
-		}
-	}
-
-	@Override
-	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
-		assert this.glPbuffer != null;
-		return this.glPbuffer;
-	}
-	
-	@Override
-	protected void repaintIfAppropriate() {
+	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory.getInstance( this.field, method ) );
 	}
 }

@@ -70,7 +70,18 @@ public abstract class Model extends Element implements org.lgna.croquet.resolver
 //			}
 //		}
 //	}
-
+	
+	
+//	public abstract boolean isEnabled();
+//	public abstract void setEnabled( boolean isEnabled );
+	public boolean isEnabled() {
+		throw new RuntimeException( "todo" );
+	}
+	public void setEnabled( boolean isEnabled ) {
+		throw new RuntimeException( "todo" );
+	}
+	
+	
 	private String toolTipText = null;
 	public String getToolTipText() {
 		return this.toolTipText;

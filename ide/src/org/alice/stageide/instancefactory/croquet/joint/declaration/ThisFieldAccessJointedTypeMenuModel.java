@@ -41,68 +41,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package org.alice.stageide.instancefactory.croquet.joint.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass {
-	private javax.media.opengl.GLPbuffer glPbuffer;
-	private AbstractLookingGlass lookingGlassToShareContextWith;
-
-	/* package-private */OffscreenLookingGlass(LookingGlassFactory lookingGlassFactory, AbstractLookingGlass lookingGlassToShareContextWith) {
-		super(lookingGlassFactory);
-		this.lookingGlassToShareContextWith = lookingGlassToShareContextWith;
-	}
-
-	public java.awt.Dimension getSize(java.awt.Dimension rv) {
-		if (this.glPbuffer != null) {
-			rv.setSize(this.glPbuffer.getWidth(), this.glPbuffer.getHeight());
-		} else {
-			rv.setSize(0, 0);
-		}
-		return rv;
-	}
-
-	public void setSize(int width, int height) {
-		assert width > 0;
-		assert height > 0;
-		if (this.glPbuffer != null) {
-			if (width != this.glPbuffer.getWidth() || height != this.glPbuffer.getHeight()) {
-				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
-				this.glPbuffer.destroy();
-				this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
-			}
-		} else {
-			javax.media.opengl.GLContext share;
-			if (this.lookingGlassToShareContextWith != null) {
-				share = this.lookingGlassToShareContextWith.getGLAutoDrawable().getContext();
+public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.stageide.ast.JointedTypeInfo, org.lgna.project.ast.UserField, ThisFieldAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static ThisFieldAccessJointedTypeMenuModel getInstance( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo, org.lgna.project.ast.UserField field ) {
+		synchronized( map ) {
+			ThisFieldAccessJointedTypeMenuModel rv = map.get( jointedTypeInfo, field );
+			if( rv != null ) {
+				//pass
 			} else {
-				share = null;
+				rv = new ThisFieldAccessJointedTypeMenuModel( jointedTypeInfo, field );
+				map.put( jointedTypeInfo, field, rv );
 			}
-			this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
+			return rv;
 		}
 	}
-
-	public void clearAndRenderOffscreen() {
-		getGLAutoDrawable().display();
-	}
-
-	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		if (this.glPbuffer != null) {
-			this.glPbuffer.destroy();
+	public static org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getMenuModel( org.lgna.project.ast.UserField field ) {
+		java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( field.getValueType() );
+		switch( jointedTypeInfos.size() ) {
+		case 0:
+			return null;
+		case 1:
+			return getInstance( jointedTypeInfos.get( 0 ), field );
+		default:
+			CollectionCascadeMenuModel rv = new CollectionCascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory >();
+			for( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo : jointedTypeInfos ) {
+				rv.addItem( getInstance( jointedTypeInfo, field ) );
+			}
+			return rv;
 		}
 	}
-
-	@Override
-	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
-		assert this.glPbuffer != null;
-		return this.glPbuffer;
+	private final org.lgna.project.ast.UserField field;
+	private ThisFieldAccessJointedTypeMenuModel( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo, org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), jointedTypeInfo );
+		this.field = field;
 	}
-	
 	@Override
-	protected void repaintIfAppropriate() {
+	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory.getInstance( this.field, method ) );
 	}
 }

@@ -41,68 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package org.alice.stageide.instancefactory.croquet.joint.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass {
-	private javax.media.opengl.GLPbuffer glPbuffer;
-	private AbstractLookingGlass lookingGlassToShareContextWith;
-
-	/* package-private */OffscreenLookingGlass(LookingGlassFactory lookingGlassFactory, AbstractLookingGlass lookingGlassToShareContextWith) {
-		super(lookingGlassFactory);
-		this.lookingGlassToShareContextWith = lookingGlassToShareContextWith;
+public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
+	private final org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo;
+	public JointedTypeMenuModel( java.util.UUID id, org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo ) {
+		super( id );
+		this.jointedTypeInfo = jointedTypeInfo;
 	}
-
-	public java.awt.Dimension getSize(java.awt.Dimension rv) {
-		if (this.glPbuffer != null) {
-			rv.setSize(this.glPbuffer.getWidth(), this.glPbuffer.getHeight());
-		} else {
-			rv.setSize(0, 0);
+//	@Override
+//	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.instancefactory.InstanceFactory, org.alice.ide.instancefactory.InstanceFactory > node ) {
+//		return org.alice.ide.common.TypeIcon.getInstance( this.jointedTypeInfo.getType() );
+//	}
+	protected abstract org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method );
+	@Override
+	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
+		rv.add( org.alice.stageide.ast.JointedModelTypeSeparator.getInstance( this.jointedTypeInfo.getType() ) );
+		for( org.lgna.project.ast.AbstractMethod method : this.jointedTypeInfo.getJointGetters() ) {
+			org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > fillIn = this.getFillIn( method );
+			if( fillIn != null ) {
+				rv.add( fillIn );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
+			}
 		}
 		return rv;
-	}
-
-	public void setSize(int width, int height) {
-		assert width > 0;
-		assert height > 0;
-		if (this.glPbuffer != null) {
-			if (width != this.glPbuffer.getWidth() || height != this.glPbuffer.getHeight()) {
-				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
-				this.glPbuffer.destroy();
-				this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
-			}
-		} else {
-			javax.media.opengl.GLContext share;
-			if (this.lookingGlassToShareContextWith != null) {
-				share = this.lookingGlassToShareContextWith.getGLAutoDrawable().getContext();
-			} else {
-				share = null;
-			}
-			this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
-		}
-	}
-
-	public void clearAndRenderOffscreen() {
-		getGLAutoDrawable().display();
-	}
-
-	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		if (this.glPbuffer != null) {
-			this.glPbuffer.destroy();
-		}
-	}
-
-	@Override
-	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
-		assert this.glPbuffer != null;
-		return this.glPbuffer;
-	}
-	
-	@Override
-	protected void repaintIfAppropriate() {
 	}
 }

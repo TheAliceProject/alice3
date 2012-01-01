@@ -41,68 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package org.alice.stageide.instancefactory.croquet.joint.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass {
-	private javax.media.opengl.GLPbuffer glPbuffer;
-	private AbstractLookingGlass lookingGlassToShareContextWith;
-
-	/* package-private */OffscreenLookingGlass(LookingGlassFactory lookingGlassFactory, AbstractLookingGlass lookingGlassToShareContextWith) {
-		super(lookingGlassFactory);
-		this.lookingGlassToShareContextWith = lookingGlassToShareContextWith;
+public class CollectionCascadeMenuModel< FB > extends org.lgna.croquet.CascadeMenuModel< FB > {
+	private final java.util.List< org.lgna.croquet.CascadeItem< FB, ? > > items = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public CollectionCascadeMenuModel() {
+		super( java.util.UUID.fromString( "94632c3a-e5b6-4007-ab73-4552532cce9a" ) );
 	}
-
-	public java.awt.Dimension getSize(java.awt.Dimension rv) {
-		if (this.glPbuffer != null) {
-			rv.setSize(this.glPbuffer.getWidth(), this.glPbuffer.getHeight());
-		} else {
-			rv.setSize(0, 0);
-		}
+	public void addItem( org.lgna.croquet.CascadeItem< FB, ? > item ) {
+		this.items.add( item );
+	}
+	public void removeItem( org.lgna.croquet.CascadeItem< FB, ? > item ) {
+		this.items.remove( item );
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode ) {
+		rv.addAll( this.items );
 		return rv;
-	}
-
-	public void setSize(int width, int height) {
-		assert width > 0;
-		assert height > 0;
-		if (this.glPbuffer != null) {
-			if (width != this.glPbuffer.getWidth() || height != this.glPbuffer.getHeight()) {
-				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
-				this.glPbuffer.destroy();
-				this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
-			}
-		} else {
-			javax.media.opengl.GLContext share;
-			if (this.lookingGlassToShareContextWith != null) {
-				share = this.lookingGlassToShareContextWith.getGLAutoDrawable().getContext();
-			} else {
-				share = null;
-			}
-			this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
-		}
-	}
-
-	public void clearAndRenderOffscreen() {
-		getGLAutoDrawable().display();
-	}
-
-	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		if (this.glPbuffer != null) {
-			this.glPbuffer.destroy();
-		}
-	}
-
-	@Override
-	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
-		assert this.glPbuffer != null;
-		return this.glPbuffer;
-	}
-	
-	@Override
-	protected void repaintIfAppropriate() {
 	}
 }

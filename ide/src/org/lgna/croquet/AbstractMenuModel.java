@@ -91,6 +91,14 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	public void setSmallIcon( javax.swing.Icon icon ) {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
+	@Override
+	public boolean isEnabled() {
+		return this.action.isEnabled();
+	}
+	@Override
+	public void setEnabled( boolean isEnabled ) {
+		this.action.setEnabled( isEnabled );
+	}
 	
 	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
 	}

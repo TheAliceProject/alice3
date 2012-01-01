@@ -41,68 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package org.alice.stageide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass {
-	private javax.media.opengl.GLPbuffer glPbuffer;
-	private AbstractLookingGlass lookingGlassToShareContextWith;
-
-	/* package-private */OffscreenLookingGlass(LookingGlassFactory lookingGlassFactory, AbstractLookingGlass lookingGlassToShareContextWith) {
-		super(lookingGlassFactory);
-		this.lookingGlassToShareContextWith = lookingGlassToShareContextWith;
-	}
-
-	public java.awt.Dimension getSize(java.awt.Dimension rv) {
-		if (this.glPbuffer != null) {
-			rv.setSize(this.glPbuffer.getWidth(), this.glPbuffer.getHeight());
-		} else {
-			rv.setSize(0, 0);
-		}
-		return rv;
-	}
-
-	public void setSize(int width, int height) {
-		assert width > 0;
-		assert height > 0;
-		if (this.glPbuffer != null) {
-			if (width != this.glPbuffer.getWidth() || height != this.glPbuffer.getHeight()) {
-				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
-				this.glPbuffer.destroy();
-				this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
+public class JointMethodUtilities {
+	private static final org.lgna.project.ast.JavaType JOINT_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class );
+	private static final String GETTER_PREFIX = "get";
+	public static boolean isJointGetter( org.lgna.project.ast.AbstractMethod method ) {
+		if( method.isPublicAccess() ) {
+			if( method.getReturnType() == JOINT_TYPE ) {
+				if( method.getVisibility() == org.lgna.project.annotations.Visibility.PRIME_TIME || method.getVisibility() == null ) {
+					if( method.getName().startsWith( GETTER_PREFIX ) ) {
+						if( method instanceof org.lgna.project.ast.JavaMethod ) {
+							return true; //isNotAnnotatedOtherwise
+						} else if( method instanceof org.lgna.project.ast.UserMethod ) {
+							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+							return userMethod.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.GENERATED;
+						} else {
+							//throw new AssertionError();
+							return false;
+						}
+					}
+				}
 			}
+		}
+		return false;
+	}
+	public static String getJointName( org.lgna.project.ast.AbstractMethod method, java.util.Locale locale ) {
+		String name = method.getName();
+		if( name.startsWith( GETTER_PREFIX ) ) {
+			return name.substring( GETTER_PREFIX.length() );
 		} else {
-			javax.media.opengl.GLContext share;
-			if (this.lookingGlassToShareContextWith != null) {
-				share = this.lookingGlassToShareContextWith.getGLAutoDrawable().getContext();
-			} else {
-				share = null;
-			}
-			this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
+			return name;
 		}
-	}
-
-	public void clearAndRenderOffscreen() {
-		getGLAutoDrawable().display();
-	}
-
-	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		if (this.glPbuffer != null) {
-			this.glPbuffer.destroy();
-		}
-	}
-
-	@Override
-	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
-		assert this.glPbuffer != null;
-		return this.glPbuffer;
-	}
-	
-	@Override
-	protected void repaintIfAppropriate() {
 	}
 }

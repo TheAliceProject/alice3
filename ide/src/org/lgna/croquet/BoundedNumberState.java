@@ -98,6 +98,76 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 	public N getExtent() {
 		return this.fromInt( this.swingModel.boundedRangeModel.getExtent() );
 	}
+	
+	public class AtomicChange {
+		private N minimum;
+		private N maximum;
+		private N extent;
+		private N value;
+		private boolean isAdjusting;
+		AtomicChange minimum( N minimum ) {
+			this.minimum = minimum;
+			return this;
+		}
+		AtomicChange maximum( N maximum ) {
+			this.maximum = maximum;
+			return this;
+		}
+		AtomicChange extent( N extent ) {
+			this.extent = extent;
+			return this;
+		}
+		AtomicChange value( N value ) {
+			this.value = value;
+			return this;
+		}
+		AtomicChange isAdjusting( boolean isAdjusting ) {
+			this.isAdjusting = isAdjusting;
+			return this;
+		}
+		
+		private void updateBoundedRangeModel( javax.swing.BoundedRangeModel boundedRangeModel ) {
+			int minimum; 
+			if( this.minimum != null ) {
+				minimum = toInt( this.minimum );
+			} else {
+				minimum = boundedRangeModel.getMinimum();
+			}
+			int maximum; 
+			if( this.maximum != null ) {
+				maximum = toInt( this.maximum );
+			} else {
+				maximum = boundedRangeModel.getMaximum();
+			}
+			int extent; 
+			if( this.extent != null ) {
+				extent = toInt( this.extent );
+			} else {
+				extent = boundedRangeModel.getExtent();
+			}
+			int value; 
+			if( this.value != null ) {
+				value = toInt( this.value );
+			} else {
+				value = boundedRangeModel.getValue();
+			}
+			boundedRangeModel.setRangeProperties( value, extent, minimum, maximum, this.isAdjusting );
+		}
+	}
+	
+	public void setMinimum( N value ) {
+		this.swingModel.boundedRangeModel.setMinimum( this.toInt( value ) );
+	}
+	public void setMaximum( N value ) {
+		this.swingModel.boundedRangeModel.setMaximum( this.toInt( value ) );
+	}
+	public void setExtent( N value ) {
+		this.swingModel.boundedRangeModel.setExtent( this.toInt( value ) );
+	}
+	
+	public void setAll( AtomicChange atomicChange ) {	
+		atomicChange.updateBoundedRangeModel( this.swingModel.boundedRangeModel );
+	}
 	@Override
 	protected N getActualValue() {
 		return this.fromInt( this.swingModel.boundedRangeModel.getValue() );
