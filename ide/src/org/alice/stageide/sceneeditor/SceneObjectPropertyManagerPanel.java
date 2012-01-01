@@ -52,6 +52,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.ColorPropertyAdapter;
 import org.alice.ide.properties.adapter.DoublePropertyAdapter;
+import org.alice.ide.properties.adapter.SceneFogDensityAdapter;
 import org.alice.ide.properties.uicontroller.AdapterControllerUtilities;
 import org.alice.ide.properties.uicontroller.PropertyAdapterController;
 import org.alice.stageide.croquet.models.sceneditor.AreExtraPropertiesShownState;
@@ -132,7 +133,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	public SceneObjectPropertyManagerPanel()
 	{
 		super();
-		this.classNameLabel = createLabel("Class = ");
+		this.classNameLabel = createLabel("Class: ");
 		this.morePropertiesPanel = new GridBagPanel();
 		this.extraPropertiesPalette = AreExtraPropertiesShownState.getInstance().createToolPalette(this.morePropertiesPanel);
 	}
@@ -226,6 +227,13 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 				else if (entityImp instanceof GroundImp)
 				{
 					return new GroundOpacityAdapter((GroundImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setFogDensity"))
+			{
+				if (entityImp instanceof SceneImp)
+				{
+					return new SceneFogDensityAdapter((SceneImp)entityImp, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setPaint"))

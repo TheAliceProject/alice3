@@ -55,6 +55,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	private final java.nio.IntBuffer selectionAsIntBuffer;
 	private PickParameters pickParameters = null;
 	private javax.media.opengl.GLPbuffer drawable;
+	private javax.media.opengl.GLContext prevShareContext;
 	
 	private javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
 		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
@@ -90,16 +91,15 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 					shareContext = null;
 					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "fix null pointer exception in jogl" );
 				}
-				if (this.drawable != null) {
-					if (lgSize.width != this.drawable.getWidth() || lgSize.height != this.drawable.getHeight()) {
+				if( shareContext != null ) {
+					if( shareContext != this.prevShareContext ) {
 						this.release();
 					}
-				}
-				if( shareContext != null ) {
 					if( this.drawable != null ) {
 						//pass
 					} else {
-						this.drawable = LookingGlassFactory.getInstance().createGLPbuffer( lgSize.width, lgSize.height, shareContext );
+						this.drawable = LookingGlassFactory.getInstance().createGLPbuffer( 1, 1, LookingGlassFactory.getSampleCountForDisabledMultisampling(), shareContext );
+						this.prevShareContext = shareContext;
 						this.drawable.addGLEventListener( this.glEventListener );
 					}
 				}
@@ -109,6 +109,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	}
 	/*package-protected*/ void release() {
 		if (this.drawable != null) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( "releasing", this );
 			this.drawable.removeGLEventListener( this.glEventListener );
 			this.drawable.destroy();
 			this.drawable = null;

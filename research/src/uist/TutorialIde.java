@@ -145,7 +145,13 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	}
 	private void createAndShowTutorial() {
 		//final org.alice.ide.tutorial.IdeTutorial tutorial = new org.alice.ide.tutorial.IdeTutorial( this, 0 );
-		this.originalProject = org.lgna.project.io.IoUtilities.readProject( new java.io.File( ROOT_PATH+POST_PROJECT_PATH ) );
+		try {
+			this.originalProject = org.lgna.project.io.IoUtilities.readProject( new java.io.File( ROOT_PATH+POST_PROJECT_PATH ) );
+		} catch( java.io.IOException ioe ) {			
+			throw new AssertionError();
+		} catch( org.lgna.project.VersionNotSupportedException vnse )  {
+			throw new AssertionError();
+		}
 
 		if( IS_BASED_ON_INTERACTION_AST ) {
 			uist.ast.TransactionHistoryGenerator transactionHistoryGenerator = new uist.ast.TransactionHistoryGenerator( getRunBody( this.getOriginalProject() ), getRunBody( this.getReplacementProject() ), 0 );

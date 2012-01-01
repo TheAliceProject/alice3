@@ -41,51 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package org.alice.stageide.instancefactory.croquet.joint.all;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
-		//JointedModel
-		StraightenOutJoints.Detail, Say.Detail, Think.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere
-		SetRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
-	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
+public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
+	private final java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos;
+	public JointedTypeMenuModel( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		super( id );
+		this.jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( type );
 	}
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
-				return duration.value;
+	protected abstract org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method );
+	@Override
+	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
+		if( jointedTypeInfos != null && jointedTypeInfos.size() > 0 ) {
+			//org.alice.stageide.ast.JointedModelUtilities.JointedTypeInfo info = jointedTypes.get( 0 );
+			for( org.alice.stageide.ast.JointedTypeInfo info : jointedTypeInfos ) {
+				rv.add( org.alice.stageide.ast.JointedModelTypeSeparator.getInstance( info.getType() ) );
+				for( org.lgna.project.ast.AbstractMethod method : info.getJointGetters() ) {
+					org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > fillIn = this.getFillIn( method );
+					if( fillIn != null ) {
+						rv.add( fillIn );
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
+					}
+				}
 			}
 		}
-		return defaultValue;
-	}
-	/*package-private*/ static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+		return rv;
 	}
 }

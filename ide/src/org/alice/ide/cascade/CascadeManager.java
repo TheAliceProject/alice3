@@ -90,10 +90,20 @@ public abstract class CascadeManager {
 	private java.util.LinkedList< org.lgna.project.ast.UserLocal > updateAccessibleLocalsForBlockStatementAndIndex( java.util.LinkedList< org.lgna.project.ast.UserLocal > rv, org.lgna.project.ast.BlockStatement blockStatement, int index ) {
 		while( index >= 1 ) {
 			index--;
-			org.lgna.project.ast.Statement statementI = blockStatement.statements.get( index );
-			if( statementI instanceof org.lgna.project.ast.LocalDeclarationStatement ) {
-				org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = (org.lgna.project.ast.LocalDeclarationStatement)statementI;
-				rv.add( localDeclarationStatement.local.getValue() );
+			//todo: investigate
+			if( index >= blockStatement.statements.size() ) {
+				try {
+					throw new IndexOutOfBoundsException( index + " " + blockStatement.statements.size() );
+				} catch( IndexOutOfBoundsException ioobe ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ioobe );
+				}
+				index = blockStatement.statements.size();
+			} else {
+				org.lgna.project.ast.Statement statementI = blockStatement.statements.get( index );
+				if( statementI instanceof org.lgna.project.ast.LocalDeclarationStatement ) {
+					org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = (org.lgna.project.ast.LocalDeclarationStatement)statementI;
+					rv.add( localDeclarationStatement.local.getValue() );
+				}
 			}
 		}
 		return rv;

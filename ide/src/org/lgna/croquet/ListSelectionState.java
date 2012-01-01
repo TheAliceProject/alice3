@@ -538,6 +538,14 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			return this.listSelectionState;
 		}
 		@Override
+		public boolean isEnabled() {
+			return this.listSelectionState.isEnabled();
+		}
+		@Override
+		public void setEnabled( boolean isEnabled ) {
+			this.listSelectionState.setEnabled( isEnabled );
+		}
+		@Override
 		protected InternalMenuModelResolver< T > createCodableResolver() {
 			return new InternalMenuModelResolver< T >( this.listSelectionState );
 		}
@@ -603,6 +611,14 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		}
 		public ListSelectionState< T > getListSelectionState() {
 			return this.listSelectionState;
+		}
+		@Override
+		public boolean isEnabled() {
+			return this.listSelectionState.isEnabled();
+		}
+		@Override
+		public void setEnabled( boolean isEnabled ) {
+			this.listSelectionState.setEnabled( isEnabled );
 		}
 		@Override
 		protected InternalPrepModelResolver<T> createCodableResolver() {

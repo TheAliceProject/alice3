@@ -63,6 +63,7 @@ public final class Color implements Paint {
 	public static final Color WHITE = new Color( edu.cmu.cs.dennisc.color.Color4f.WHITE );
 	public static final Color YELLOW = new Color( edu.cmu.cs.dennisc.color.Color4f.YELLOW );
 	public static final Color LIGHT_BLUE = new Color( 149.0/255.0, 166.0/255.0, 216.0/255.0 );
+	public static final Color DARK_BLUE = new Color( 0/255.0, 0/255.0, 150.0/255.0 );
 	
 	public static final Color PURPLE = new Color( edu.cmu.cs.dennisc.color.Color4f.PURPLE );
 	public static final Color BROWN = new Color( edu.cmu.cs.dennisc.color.Color4f.BROWN );

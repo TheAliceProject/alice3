@@ -41,51 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package org.alice.stageide.instancefactory.croquet.joint.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
-		//JointedModel
-		StraightenOutJoints.Detail, Say.Detail, Think.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere
-		SetRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
-	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
+public class CollectionCascadeMenuModel< FB > extends org.lgna.croquet.CascadeMenuModel< FB > {
+	private final java.util.List< org.lgna.croquet.CascadeItem< FB, ? > > items = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public CollectionCascadeMenuModel() {
+		super( java.util.UUID.fromString( "94632c3a-e5b6-4007-ab73-4552532cce9a" ) );
 	}
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
-				return duration.value;
-			}
-		}
-		return defaultValue;
+	public void addItem( org.lgna.croquet.CascadeItem< FB, ? > item ) {
+		this.items.add( item );
 	}
-	/*package-private*/ static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+	public void removeItem( org.lgna.croquet.CascadeItem< FB, ? > item ) {
+		this.items.remove( item );
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode ) {
+		rv.addAll( this.items );
+		return rv;
 	}
 }

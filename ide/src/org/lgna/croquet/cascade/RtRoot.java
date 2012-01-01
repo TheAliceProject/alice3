@@ -102,7 +102,7 @@ abstract class RtNode<M extends Element, N extends org.lgna.croquet.history.Node
 		}
 	}
 
-	public RtRoot< ?,? > getRtRoot() {
+	public RtRoot< ?, ? > getRtRoot() {
 		return this.parent.getRtRoot();
 	}
 
@@ -257,7 +257,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		super( element, BlankNode.createInstance( element ) );
 		this.getNode().setRtBlank( this );
 	}
-	
+
 	public org.lgna.croquet.cascade.AbstractItemNode getSelectedFillInContext() {
 		if( this.rtSelectedFillIn != null ) {
 			return this.rtSelectedFillIn.getNode();
@@ -359,7 +359,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		}
 		return rv;
 	}
-	
+
 	public boolean isFillInAlreadyDetermined() {
 		RtFillIn rtFillIn = this.getOneAndOnlyOneFillInIfAppropriate();
 		if( rtFillIn != null && rtFillIn.isAutomaticallySelectedWhenSoleOption() ) {
@@ -598,12 +598,12 @@ class RtCancel<F> extends RtItem< F, Void, CascadeCancel< F >, org.lgna.croquet.
 /**
  * @author Dennis Cosgrove
  */
-public class RtRoot<T,CS extends org.lgna.croquet.history.CompletionStep<?>> extends RtBlankOwner< T[], T, CascadeRoot< T, CS >, RootNode< T,CS > > {
-	public RtRoot( CascadeRoot< T,CS > element ) {
+public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> extends RtBlankOwner< T[], T, CascadeRoot< T, CS >, RootNode< T, CS > > {
+	public RtRoot( CascadeRoot< T, CS > element ) {
 		super( element, RootNode.createInstance( element ), null, -1 );
 	}
 	@Override
-	public RtRoot< T,CS > getRtRoot() {
+	public RtRoot< T, CS > getRtRoot() {
 		return this;
 	}
 	@Override
@@ -628,7 +628,7 @@ public class RtRoot<T,CS extends org.lgna.croquet.history.CompletionStep<?>> ext
 	}
 
 	public CS complete( org.lgna.croquet.triggers.Trigger trigger ) {
-		CascadeRoot< T,CS > root = this.getElement();
+		CascadeRoot< T, CS > root = this.getElement();
 		CS completionStep = root.createCompletionStep( trigger );
 		try {
 			T[] values = this.createValues( root.getComponentType() );

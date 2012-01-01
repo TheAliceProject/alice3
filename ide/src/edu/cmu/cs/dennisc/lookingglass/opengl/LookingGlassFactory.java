@@ -142,8 +142,13 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	//todo: just force start and stop? or rename methods
 	private int automaticDisplayCount = 0;
 	//private GLCapabilities glCapabilities;
-	/*package-private*/ static javax.media.opengl.GLCapabilities createDesiredGLCapabilities() {
-		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities(  );
+	/*package-private*/ static javax.media.opengl.GLCapabilities createDesiredGLCapabilities( int desiredSampleCount ) {
+		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
+		boolean isMultisamplingDesired = desiredSampleCount >= 2;
+		rv.setSampleBuffers( isMultisamplingDesired );
+		if( isMultisamplingDesired ) {
+			rv.setNumSamples( desiredSampleCount );
+		}
 		//todo: jogl2
 //		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
 //		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities( profile );
@@ -171,16 +176,24 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return glCapabilitiesChooser;
 	}
 	
+	/*package-private*/ static int getSampleCountForDisabledMultisampling() {
+		return 1;
+	}
+	/*package-private*/ static int getDesiredOnscreenSampleCount() {
+		return 1;
+	}
+	
+	
 	/*package-private*/ javax.media.opengl.GLCanvas createGLCanvas() {
-		return new javax.media.opengl.GLCanvas( createDesiredGLCapabilities(), getGLCapabilitiesChooser(), null, null );
+		return new javax.media.opengl.GLCanvas( createDesiredGLCapabilities(getDesiredOnscreenSampleCount()), getGLCapabilitiesChooser(), null, null );
 	}
 	/*package-private*/ javax.media.opengl.GLJPanel createGLJPanel() {
-		return new javax.media.opengl.GLJPanel( createDesiredGLCapabilities(), getGLCapabilitiesChooser(), null );
+		return new javax.media.opengl.GLJPanel( createDesiredGLCapabilities(getDesiredOnscreenSampleCount()), getGLCapabilitiesChooser(), null );
 	}
-	/*package-private*/ javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, javax.media.opengl.GLContext share ) {
+	/*package-private*/ javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
 		if (glDrawableFactory.canCreateGLPbuffer()) {
-			return glDrawableFactory.createGLPbuffer(createDesiredGLCapabilities(), getGLCapabilitiesChooser(), width, height, share);
+			return glDrawableFactory.createGLPbuffer(createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share);
 		} else {
 			throw new RuntimeException("cannot create pbuffer");
 		}

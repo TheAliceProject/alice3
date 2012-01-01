@@ -41,51 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package org.alice.stageide.instancefactory.croquet.joint.all;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
-		//JointedModel
-		StraightenOutJoints.Detail, Say.Detail, Think.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere
-		SetRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
-	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
-	}
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
-				return duration.value;
+public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
+	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ThisFieldAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserField value ) {
+		synchronized( map ) {
+			ThisFieldAccessJointedTypeMenuModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ThisFieldAccessJointedTypeMenuModel( value );
+				map.put( value, rv );
 			}
+			return rv;
 		}
-		return defaultValue;
 	}
-	/*package-private*/ static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+	private final org.lgna.project.ast.UserField field;
+	private ThisFieldAccessJointedTypeMenuModel( org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
+		this.field = field;
+	}
+	@Override
+	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory.getInstance( this.field, method ) );
 	}
 }

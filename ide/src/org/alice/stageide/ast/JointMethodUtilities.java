@@ -41,51 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package org.alice.stageide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
-		//JointedModel
-		StraightenOutJoints.Detail, Say.Detail, Think.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere
-		SetRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
-	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
-	}
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
-				return duration.value;
+public class JointMethodUtilities {
+	private static final org.lgna.project.ast.JavaType JOINT_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class );
+	private static final String GETTER_PREFIX = "get";
+	public static boolean isJointGetter( org.lgna.project.ast.AbstractMethod method ) {
+		if( method.isPublicAccess() ) {
+			if( method.getReturnType() == JOINT_TYPE ) {
+				if( method.getVisibility() == org.lgna.project.annotations.Visibility.PRIME_TIME || method.getVisibility() == null ) {
+					if( method.getName().startsWith( GETTER_PREFIX ) ) {
+						if( method instanceof org.lgna.project.ast.JavaMethod ) {
+							return true; //isNotAnnotatedOtherwise
+						} else if( method instanceof org.lgna.project.ast.UserMethod ) {
+							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+							return userMethod.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.GENERATED;
+						} else {
+							//throw new AssertionError();
+							return false;
+						}
+					}
+				}
 			}
 		}
-		return defaultValue;
+		return false;
 	}
-	/*package-private*/ static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+	public static String getJointName( org.lgna.project.ast.AbstractMethod method, java.util.Locale locale ) {
+		String name = method.getName();
+		if( name.startsWith( GETTER_PREFIX ) ) {
+			return name.substring( GETTER_PREFIX.length() );
+		} else {
+			return name;
+		}
 	}
 }

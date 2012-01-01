@@ -76,6 +76,14 @@ public abstract class BooleanState extends State< Boolean > {
 			return this.booleanState;
 		}
 		@Override
+		public boolean isEnabled() {
+			return this.booleanState.isEnabled();
+		}
+		@Override
+		public void setEnabled( boolean isEnabled ) {
+			this.booleanState.setEnabled( isEnabled );
+		}
+		@Override
 		protected InternalMenuItemPrepModelResolver createCodableResolver() {
 			return new InternalMenuItemPrepModelResolver( this.booleanState );
 		}
@@ -155,9 +163,11 @@ public abstract class BooleanState extends State< Boolean > {
 		this.swingModel.buttonModel.addItemListener( this.itemListener );
 	}
 
+	@Override
 	public boolean isEnabled() {
 		return this.swingModel.action.isEnabled();
 	}
+	@Override
 	public void setEnabled( boolean isEnabled ) {
 		this.swingModel.action.setEnabled( isEnabled );
 	}
