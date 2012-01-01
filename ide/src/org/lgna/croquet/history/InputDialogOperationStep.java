@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class InputDialogOperationStep<T> extends GatedCommitDialogOperationStep< org.lgna.croquet.InputDialogOperation<T> > {
-	/*package-private*/ static <T> InputDialogOperationStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.InputDialogOperation<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static <T> InputDialogOperationStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.InputDialogOperation<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new InputDialogOperationStep<T>( parent, model, trigger );
 	}
 	private InputDialogOperationStep( Transaction parent, org.lgna.croquet.InputDialogOperation<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
