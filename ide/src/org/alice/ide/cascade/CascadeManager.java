@@ -171,7 +171,7 @@ public abstract class CascadeManager {
 			//todo: fix
 			type = this.getActualTypeForDesiredParameterType( type );
 
-			org.lgna.project.ast.AbstractType<?,?,?> selectedType = org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getValue();
+			org.lgna.project.ast.AbstractType<?,?,?> selectedType = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 			if( type.isAssignableFrom( selectedType ) ) {
 				this.addFillInAndPossiblyPartFillIns( rv, new org.lgna.project.ast.ThisExpression(), selectedType, type );
 			}

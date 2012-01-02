@@ -121,8 +121,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					} else {
 						return value;
 					}
-				} else if( value instanceof org.alice.ide.croquet.models.typeeditor.DeclarationComposite ) {
-					return (N)org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.croquet.models.typeeditor.DeclarationComposite)value).getDeclaration() ) );
+				} else if( value instanceof org.alice.ide.declarationseditor.DeclarationComposite ) {
+					return (N)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.declarationseditor.DeclarationComposite)value).getDeclaration() ) );
 				} else {
 					return value;
 				}

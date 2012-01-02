@@ -41,24 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.typeeditor;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldsTabState extends org.lgna.croquet.BooleanState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, FieldsTabState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FieldsTabState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		FieldsTabState rv = map.get( type );
+public class ProceduresOpenState extends org.lgna.croquet.BooleanState {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, ProceduresOpenState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ProceduresOpenState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		ProceduresOpenState rv = map.get( type );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new FieldsTabState( type );
+			rv = new ProceduresOpenState( type );
 			map.put( type, rv );
 		}
 		return rv;
 	}
-	private FieldsTabState( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "7305f3de-0651-4050-9a7d-710708174832" ), true );
+	private ProceduresOpenState( org.lgna.project.ast.NamedUserType type ) {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "006d5fac-8369-4f32-b090-faaceb00475f" ), true );
 	}
 }

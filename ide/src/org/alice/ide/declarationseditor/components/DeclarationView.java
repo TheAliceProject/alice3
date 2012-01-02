@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor.components;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationView extends org.lgna.croquet.components.BorderPanel {
-	public DeclarationView( org.alice.ide.croquet.models.typeeditor.DeclarationComposite composite ) {
+	public DeclarationView( org.alice.ide.declarationseditor.DeclarationComposite composite ) {
 		super( composite );
 	}
 }

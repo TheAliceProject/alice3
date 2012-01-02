@@ -58,7 +58,7 @@ public class SelectSceneTypeOperation extends org.lgna.croquet.ActionOperation {
 	}
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValue( org.alice.stageide.StageIDE.getActiveInstance().getSceneType() );
+		org.alice.ide.declarationseditor.TypeState.getInstance().setValue( org.alice.stageide.StageIDE.getActiveInstance().getSceneType() );
 		step.finish();
 	}
 }

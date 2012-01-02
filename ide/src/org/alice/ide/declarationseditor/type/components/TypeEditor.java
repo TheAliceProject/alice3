@@ -62,15 +62,15 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		}
 	};
 
-	private final org.lgna.croquet.components.FolderTabbedPane< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > tabbedPane;
+	private final org.lgna.croquet.components.FolderTabbedPane< org.alice.ide.declarationseditor.DeclarationComposite > tabbedPane;
 	private TypeEditor() {
 		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
-		this.tabbedPane = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().createFolderTabbedPane();
+		this.tabbedPane = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().createFolderTabbedPane();
 		this.tabbedPane.setHeaderTrailingComponent( clipboard );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 	}
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		org.alice.ide.croquet.models.typeeditor.DeclarationComposite item = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getSelectedItem();
+		org.alice.ide.declarationseditor.DeclarationComposite item = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getSelectedItem();
 		if( item != null ) {
 			org.lgna.croquet.components.Component< ? > component = this.tabbedPane.getMainComponentFor( item );
 			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
@@ -83,7 +83,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	private void handleIsEmphasizingClassesChanged() {
 		org.lgna.croquet.components.JComponent< ? > component;
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			component = org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
+			component = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
 		} else {
 			component = null;
 		}

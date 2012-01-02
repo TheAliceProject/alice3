@@ -66,10 +66,10 @@ public class MetaDeclarationState {
 			MetaDeclarationState.this.handleIsSceneEditorExpandedChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > declarationTabListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
-		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.declarationseditor.DeclarationComposite > declarationTabListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.declarationseditor.DeclarationComposite >() {
+		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 			MetaDeclarationState.this.handleDeclarationTabChanged();
 		}
 	};
@@ -77,7 +77,7 @@ public class MetaDeclarationState {
 	private org.lgna.project.ast.AbstractDeclaration prevDeclaration;
 	private MetaDeclarationState() {
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().addValueObserver( this.perspectiveListener );
-		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addValueObserver( this.declarationTabListener );
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addValueObserver( this.declarationTabListener );
 		this.prevDeclaration = this.getValue();
 	}
 	
@@ -86,7 +86,7 @@ public class MetaDeclarationState {
 		if( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() == org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ) {
 			return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
 		} else {
-			org.alice.ide.croquet.models.typeeditor.DeclarationComposite declarationComposite = org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().getValue();
+			org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
 			return declarationComposite != null ? declarationComposite.getDeclaration() : null;
 		}
 	}

@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.typeeditor;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove

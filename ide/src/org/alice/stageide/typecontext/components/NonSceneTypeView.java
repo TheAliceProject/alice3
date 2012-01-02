@@ -95,11 +95,11 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleAddedTo( parent );
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
 	}
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().removeValueObserver( this.typeListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueObserver( this.typeListener );
 		super.handleRemovedFrom( parent );
 	}
 }

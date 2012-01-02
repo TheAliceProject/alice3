@@ -53,13 +53,13 @@ public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		this.setBackgroundColor( ide.getTheme().getTypeColor() );
 
-		org.lgna.croquet.components.ToolPalette constructorsToolPalette = org.alice.ide.croquet.models.typeeditor.ConstructorTabState.getInstance( type ).createToolPalette( new ConstructorList( type ) );
+		org.lgna.croquet.components.ToolPalette constructorsToolPalette = org.alice.ide.declarationseditor.type.ConstructorsOpenState.getInstance( type ).createToolPalette( new ConstructorList( type ) );
 		constructorsToolPalette.setBackgroundColor( ide.getTheme().getConstructorColor() );
 
-		org.lgna.croquet.components.ToolPalette proceduresToolPalette = org.alice.ide.croquet.models.typeeditor.ProceduresTabState.getInstance( type ).createToolPalette( new ProcedureList( type ) );
+		org.lgna.croquet.components.ToolPalette proceduresToolPalette = org.alice.ide.declarationseditor.type.ProceduresOpenState.getInstance( type ).createToolPalette( new ProcedureList( type ) );
 		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
 
-		org.lgna.croquet.components.ToolPalette functionsToolPalette = org.alice.ide.croquet.models.typeeditor.FunctionsTabState.getInstance( type ).createToolPalette( new FunctionList( type ) );
+		org.lgna.croquet.components.ToolPalette functionsToolPalette = org.alice.ide.declarationseditor.type.FunctionsOpenState.getInstance( type ).createToolPalette( new FunctionList( type ) );
 		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
 
 		org.lgna.croquet.components.JComponent< ? > fieldPanel;
@@ -76,7 +76,7 @@ public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel
 		} else {
 			fieldPanel = new UnmanagedFieldList( type );
 		}
-		org.lgna.croquet.components.ToolPalette fieldsToolPalette = org.alice.ide.croquet.models.typeeditor.FieldsTabState.getInstance( type ).createToolPalette( fieldPanel );
+		org.lgna.croquet.components.ToolPalette fieldsToolPalette = org.alice.ide.declarationseditor.type.FieldsOpenState.getInstance( type ).createToolPalette( fieldPanel );
 		fieldsToolPalette.setBackgroundColor( ide.getTheme().getFieldColor() );
 
 		for( org.lgna.croquet.components.ToolPalette toolPalette : new org.lgna.croquet.components.ToolPalette[] { constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette } ) {

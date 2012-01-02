@@ -56,8 +56,8 @@ package uist;
 		}
 	}
 	public <N> N retarget(N original) {
-		if( original instanceof org.alice.ide.croquet.models.typeeditor.DeclarationComposite ) {
-			original = (N)org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.croquet.models.typeeditor.DeclarationComposite)original).getDeclaration() ) );
+		if( original instanceof org.alice.ide.declarationseditor.DeclarationComposite ) {
+			original = (N)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.declarationseditor.DeclarationComposite)original).getDeclaration() ) );
 		}
 		N rv = (N)map.get( original );
 		if( rv != null ) {

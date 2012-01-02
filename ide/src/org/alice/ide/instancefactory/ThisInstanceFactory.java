@@ -66,7 +66,7 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 		return createThisExpression();
 	}
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
-		return org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getValue();
+		return org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 	}
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();

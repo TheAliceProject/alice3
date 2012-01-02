@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.typeeditor;
+package org.alice.ide.declarationseditor;
 
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectApplication.ProjectObserver;

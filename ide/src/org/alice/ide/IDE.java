@@ -413,7 +413,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	
 	private void setRootField( org.lgna.project.ast.UserField rootField ) {
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
+		org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();
@@ -557,14 +557,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
 		if( nextFocusedCode != null ) {
-			org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)nextFocusedCode.getDeclaringType() );
-			org.alice.ide.croquet.models.typeeditor.DeclarationComposite composite = org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( nextFocusedCode );
-			if( org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().containsItem( composite ) ) {
+			org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)nextFocusedCode.getDeclaringType() );
+			org.alice.ide.declarationseditor.DeclarationComposite composite = org.alice.ide.declarationseditor.DeclarationComposite.getInstance( nextFocusedCode );
+			if( org.alice.ide.declarationseditor.DeclarationTabState.getInstance().containsItem( composite ) ) {
 				//pass
 			} else {
-				org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addItem( composite );
+				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addItem( composite );
 			}
-			org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().setSelectedItem( composite );
+			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setSelectedItem( composite );
 		}
 	}
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
