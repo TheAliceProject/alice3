@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.lgna.croquet.components.View<?,?> > {
+public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.alice.ide.declarationseditor.components.DeclarationView > {
 	private static java.util.Map< org.lgna.project.ast.AbstractDeclaration, DeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized DeclarationComposite getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		DeclarationComposite rv = map.get( declaration );
@@ -99,14 +99,16 @@ public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.lgn
 		return null;
 	}
 	@Override
-	protected org.lgna.croquet.components.View< ?, ? > createView() {
+	protected org.alice.ide.declarationseditor.components.DeclarationView createView() {
 		if( this.declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			return org.alice.ide.codeeditor.CodeEditor.getInstance( (org.lgna.project.ast.AbstractCode)this.declaration );
+			return new org.alice.ide.declarationseditor.code.components.CodeDeclarationView( this );
 		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ){
-			//return new org.alice.ide.editorstabbedpane.EditTypePanel( (org.lgna.project.ast.NamedUserType)declaration, -1 );
-			return new org.alice.ide.declarationseditor.type.components.TypeDeclarationPane( (org.lgna.project.ast.NamedUserType)this.declaration );
+			return new org.alice.ide.declarationseditor.type.components.TypeDeclarationView( this );
 		} else {
-			return new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "todo" ) );
+			throw new RuntimeException( "todo" );
 		}
 	}
+//	public java.util.List< org.lgna.croquet.DropReceptor > getPotentialDropReceptors() {
+//		return null;
+//	}
 }

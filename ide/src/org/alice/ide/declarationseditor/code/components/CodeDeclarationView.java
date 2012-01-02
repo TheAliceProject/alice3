@@ -41,23 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives;
+package org.alice.ide.declarationseditor.code.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspective extends org.alice.ide.perspectives.IdePerspective {
-	private static class SingletonHolder {
-		private static CodePerspective instance = new CodePerspective();
+public class CodeDeclarationView extends org.alice.ide.declarationseditor.components.DeclarationView {
+	private final org.alice.ide.codeeditor.CodeEditor codeEditor;
+	public CodeDeclarationView( org.alice.ide.declarationseditor.DeclarationComposite composite ) {
+		super( composite );
+		this.codeEditor = new org.alice.ide.codeeditor.CodeEditor( (org.lgna.project.ast.AbstractCode)composite.getDeclaration() );
+		this.setBackgroundColor( this.codeEditor.getBackgroundColor() );
+		this.addComponent( this.codeEditor, Constraint.CENTER );
 	}
-	public static CodePerspective getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CodePerspective() {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), org.alice.stageide.perspectives.code.CodePerspectiveComposite.getInstance() );
-	}
-	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return org.alice.ide.declarationseditor.components.TypeEditor.getInstance().getCodeEditorInFocus();
+	@Deprecated
+	public org.alice.ide.codeeditor.CodeEditor getCodeEditor() {
+		return this.codeEditor;
 	}
 }

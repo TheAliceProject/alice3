@@ -79,18 +79,7 @@ public class CodeEditor extends org.lgna.croquet.components.BorderPanel implemen
 	private final RootStatementListPropertyPane rootStatementListPropertyPane;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 
-	private static java.util.Map< org.lgna.project.ast.AbstractCode, CodeEditor > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CodeEditor getInstance( org.lgna.project.ast.AbstractCode code ) {
-		CodeEditor rv = map.get( code );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CodeEditor( code );
-			map.put( code, rv );
-		}
-		return rv;
-	}
-	private CodeEditor( org.lgna.project.ast.AbstractCode code ) {
+	public CodeEditor( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
 		assert this.code instanceof org.lgna.project.ast.UserCode;
 		this.rootStatementListPropertyPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)this.code );

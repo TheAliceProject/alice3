@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.declarationseditor.type.components;
+package org.alice.ide.declarationseditor.components;
 
 /**
  * @author Dennis Cosgrove
@@ -72,9 +72,9 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		org.alice.ide.declarationseditor.DeclarationComposite item = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getSelectedItem();
 		if( item != null ) {
-			org.lgna.croquet.components.Component< ? > component = this.tabbedPane.getMainComponentFor( item );
-			if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
-				return (org.alice.ide.codeeditor.CodeEditor)component;
+			org.lgna.croquet.components.JComponent< ? > component = this.tabbedPane.getMainComponentFor( item );
+			if( component instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {
+				return ((org.alice.ide.declarationseditor.code.components.CodeDeclarationView)component).getCodeEditor();
 			}
 		}
 		return null;

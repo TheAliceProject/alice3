@@ -46,10 +46,10 @@ package org.alice.ide.declarationseditor.type.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclarationPane extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.project.ast.NamedUserType type;
-	public TypeDeclarationPane( org.lgna.project.ast.NamedUserType type ) {
-		this.type = type;
+public class TypeDeclarationView extends org.alice.ide.declarationseditor.components.DeclarationView {
+	public TypeDeclarationView( org.alice.ide.declarationseditor.DeclarationComposite composite ) {
+		super( composite );
+		org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)composite.getDeclaration();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		this.setBackgroundColor( ide.getTheme().getTypeColor() );
 
