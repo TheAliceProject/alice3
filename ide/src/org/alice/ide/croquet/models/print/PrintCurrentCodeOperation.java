@@ -62,6 +62,7 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 		if( view.isPrintSupported() ) {
 			return view;
 		} else {
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Print not supported for " + composite, "Print not supported", org.lgna.croquet.MessageType.INFORMATION );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "print not supported for:", composite );
 			return null;
 		}
