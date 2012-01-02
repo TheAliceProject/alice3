@@ -43,37 +43,81 @@
 
 package org.lgna.ik;
 
+import java.util.List;
+
+import org.lgna.story.implementation.JointImp;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Chain {
+	
+	// Chain includes all the joints that will turn
+	
 	public static Chain createInstance( org.lgna.story.implementation.JointedModelImp< ?,? > jointedModelImp, org.lgna.story.resources.JointId anchorId, org.lgna.story.resources.JointId endId, boolean isLinearEnabled, boolean isAngularEnabled ) {
-		java.util.List< org.lgna.story.implementation.JointImp > jointImps = jointedModelImp.getInclusiveListOfJointsBetween( anchorId, endId );
-		return new Chain( jointImps, isLinearEnabled, isAngularEnabled );
+		java.util.List< org.lgna.ik.Bone.Direction > directions = new java.util.ArrayList< org.lgna.ik.Bone.Direction >();
+		java.util.List< org.lgna.story.implementation.JointImp > jointImps = jointedModelImp.getInclusiveListOfJointsBetween( anchorId, endId, directions );
+		return new Chain( jointImps, directions, isLinearEnabled, isAngularEnabled );
 	}
 
 	private final java.util.List< org.lgna.story.implementation.JointImp > jointImps;
 	private final Bone[] bones;
 	private final edu.cmu.cs.dennisc.math.Vector3 desiredEndEffectorLinearVelocity;
 	private final edu.cmu.cs.dennisc.math.Vector3 desiredEndEffectorAngularVelocity;
+	private final edu.cmu.cs.dennisc.math.Point3 endEffectorLocalPosition;
+	private final List< org.lgna.ik.Bone.Direction > directions;
 	
-	private Chain( java.util.List< org.lgna.story.implementation.JointImp > jointImps, boolean isLinearEnabled, boolean isAngularEnabled ) {
+	private final java.util.Map< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > linearVelocityContributions;
+	private final java.util.Map< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > angularVelocityContributions;
+	
+	private Chain( java.util.List< org.lgna.story.implementation.JointImp > jointImps, List< org.lgna.ik.Bone.Direction > directions, boolean isLinearEnabled, boolean isAngularEnabled ) {
 		this.jointImps = jointImps;
-		final int N = this.jointImps.size();
-		this.bones = new Bone[ N-1 ];
-		for( int i=0; i<N-1; i++ ) {
-			this.bones[ i ] = new Bone( this, i, isLinearEnabled, isAngularEnabled );
-		}
+		this.directions = directions;
+		
 		if( isLinearEnabled ) {
 			this.desiredEndEffectorLinearVelocity = edu.cmu.cs.dennisc.math.Vector3.createZero();
+			this.endEffectorLocalPosition = edu.cmu.cs.dennisc.math.Point3.createZero();
+			this.linearVelocityContributions = new java.util.HashMap< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
 		} else {
 			this.desiredEndEffectorLinearVelocity = null;
+			this.endEffectorLocalPosition = null;
+			this.linearVelocityContributions = null;
 		}
 		if( isAngularEnabled ) {
 			this.desiredEndEffectorAngularVelocity = edu.cmu.cs.dennisc.math.Vector3.createZero();
+			this.angularVelocityContributions = new java.util.HashMap< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
 		} else {
 			this.desiredEndEffectorAngularVelocity = null;
+			this.angularVelocityContributions = null;
 		}
+		
+		final int N = this.jointImps.size();
+		this.bones = new Bone[ N ];
+		for( int i=0; i < N; i++ ) {
+			Bone newBone = new Bone( this, i, isLinearEnabled, isAngularEnabled );
+			this.bones[ i ] = newBone;
+			if( isLinearEnabled ) {
+				for( org.lgna.ik.Bone.Axis axis: newBone.getAxes() ) {
+					linearVelocityContributions.put(axis, edu.cmu.cs.dennisc.math.Vector3.createZero());
+				}
+			}
+			if( isAngularEnabled ) {
+				for( org.lgna.ik.Bone.Axis axis: newBone.getAxes() ) {
+					angularVelocityContributions.put(axis, edu.cmu.cs.dennisc.math.Vector3.createZero());
+				}
+			}
+		}
+	}
+	
+	//if this is not called, in linear motions, you will be moving the anchor of the last joint
+	//this helps you move the tip of the finger
+	public void setEndEffectorPosition(edu.cmu.cs.dennisc.math.Point3 eePosition) {
+		org.lgna.story.implementation.JointImp eeJointImp = jointImps.get(jointImps.size() - 1);
+		
+		//get the world eePosition local to eeJointImp
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 eeJointInverse = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createInverse(eeJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE));
+		
+		eeJointInverse.setReturnValueToTransformed(endEffectorLocalPosition, eePosition);
 	}
 	
 	public Bone[] getBones() {
@@ -84,10 +128,14 @@ public class Chain {
 		return this.jointImps.get( index );
 	}
 
-	private boolean isLinearVelocityEnabled() {
+	public org.lgna.ik.Bone.Direction getDirectionAt( int index ) {
+		return this.directions.get( index );
+	}
+
+	public boolean isLinearVelocityEnabled() {
 		return this.desiredEndEffectorLinearVelocity != null;
 	}
-	private boolean isAngularVelocityEnabled() {
+	public boolean isAngularVelocityEnabled() {
 		return this.desiredEndEffectorAngularVelocity != null;
 	}
 	public void setDesiredEndEffectorLinearVelocity( edu.cmu.cs.dennisc.math.Vector3 desiredEndEffectorLinearVelocity ) {
@@ -96,26 +144,71 @@ public class Chain {
 	public void setDesiredEndEffectorAngularVelocity( edu.cmu.cs.dennisc.math.Vector3 desiredEndEffectorAngularVelocity ) {
 		this.desiredEndEffectorAngularVelocity.set( desiredEndEffectorAngularVelocity );
 	}
-	private edu.cmu.cs.dennisc.math.Point3 getAnchorPosition() {
-		throw new RuntimeException( "todo" );
+	public edu.cmu.cs.dennisc.math.Vector3 getDesiredEndEffectorLinearVelocity() {
+		return desiredEndEffectorLinearVelocity;
 	}
-	private edu.cmu.cs.dennisc.math.Point3 getEndEffectorPosition() {
-		throw new RuntimeException( "todo" );
+	public edu.cmu.cs.dennisc.math.Vector3 getDesiredEndEffectorAngularVelocity() {
+		return desiredEndEffectorAngularVelocity;
 	}
 	
-	private void computeVelocityContributions() {
+	// these could be local or world. does it matter? it could only matter if you don't move the end effector target with the character.
+	// so, these are world
+	public edu.cmu.cs.dennisc.math.Point3 getEndEffectorPosition() {
+		org.lgna.story.implementation.JointImp eeJointImp = jointImps.get(jointImps.size() - 1);
+		return eeJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).setReturnValueToTransformed(new edu.cmu.cs.dennisc.math.Point3(), endEffectorLocalPosition);
+	}
+	
+	public void computeVelocityContributions() {
 		edu.cmu.cs.dennisc.math.Point3 endEffectorPos = this.getEndEffectorPosition();
 		for( Bone bone : this.bones ) {
+			bone.updateStateFromJoint();
+			
 			if( this.isLinearVelocityEnabled() ) {
 				edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( 
-						endEffectorPos,
-						this.getAnchorPosition()
-				);
+						endEffectorPos, 
+						bone.getAnchorPosition()
+				); 
 				bone.updateLinearContributions( v );
+				
+				
+				//axis has inverse value. then contrib should also be inversed when merging here?
+				// no. it's good like this. 
+				
+				for( org.lgna.ik.Bone.Axis axis: bone.getAxes() ) {
+					linearVelocityContributions.put( axis, axis.getLinearContribution() );
+				}
 			}
+			
 			if( this.isAngularVelocityEnabled() ) {
 				bone.updateAngularContributions();
+				
+				for( org.lgna.ik.Bone.Axis axis: bone.getAxes() ) {
+					angularVelocityContributions.put( axis, axis.getAngularContribution() );
+				}
 			}
 		}
+
+		//TODO(gazi) updated the unit contributions of each. now need to use them. 
+		//all the axes on the bones know their own contributions
+		//if there was another chain, they would also know their own contributions
+		//therefore, contributions from multiple chains should be taken as a (concrete joint, axis index (axis class has these two))->(contribution) map
+		//then, they should be aligned by axes (ordering in bone is good, contribs are independent of that), empty places should be filled with zeros and a matrix should be formed.  
+//		throw new RuntimeException("todo first resolve the joint direction issue");
+		
+		//should be fine now
+	}
+	
+	//these are axis->vel
+	//however axis reference is not the unique thing. it's the (joint,axis index) pair
+	public java.util.Map< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > getLinearVelocityContributions() {
+		return linearVelocityContributions;
+	}
+	
+	public java.util.Map< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > getAngularVelocityContributions() {
+		return angularVelocityContributions;
+	}
+
+	public JointImp getLastJointImp() {
+		return jointImps.get(jointImps.size() - 1);
 	}
 }

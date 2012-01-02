@@ -47,7 +47,23 @@ package org.lgna.ik;
  * @author Dennis Cosgrove
  */
 public class Solver {
+	
+	private class Constraint {
+		private final java.util.Map<org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3> contributions;
+		private final edu.cmu.cs.dennisc.math.Vector3 desiredValue;
+
+		public Constraint(java.util.Map<org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3> contributions, edu.cmu.cs.dennisc.math.Vector3 desiredValue) {
+			this.contributions = contributions;
+			this.desiredValue = desiredValue;
+		}
+		
+	}
+	
 	private final java.util.List< Chain > chains = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< Constraint > constraints = new java.util.ArrayList<Solver.Constraint>();
+	private java.util.Map<org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> jacobianColumns;
+	private edu.cmu.cs.dennisc.math.Vector3[] desiredVelocities;
+	
 	public void addChain( Chain chain ) {
 		this.chains.add( chain );
 	}
@@ -55,7 +71,190 @@ public class Solver {
 		this.chains.remove( chain );
 	}
 	
-	public void solve() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+	public java.util.Map<org.lgna.ik.Bone.Axis, Double> solve() {
+		prepareConstraints();
+		if(constraints.size() == 0) {
+			System.out.println("no constraints!");
+			return null;
+		}
+		constructJacobianEntries();
+		
+		return calculateAngleSpeeds(invertJacobian(0.1));
+		//TODO apply them? maybe someone else should do it. 
 	}
+	
+	private java.util.Map<org.lgna.ik.Bone.Axis, Double> calculateAngleSpeeds(Jama.Matrix ji) {
+		// TODO Auto-generated method stub
+		Jama.Matrix pDot = createDesiredVelocitiesColumn(desiredVelocities);
+		Jama.Matrix mThetadot = ji.times(pDot);
+
+		java.util.Map<org.lgna.ik.Bone.Axis, Double> axisSpeeds = new java.util.HashMap<Bone.Axis, Double>();
+		
+		int row = 0;
+		//trusting that this will give me the same order of axes as in createJacobianMatrix(). No reason to doubt this.  
+		for(java.util.Map.Entry<org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> e: jacobianColumns.entrySet()) {
+			org.lgna.ik.Bone.Axis axis = e.getKey();
+			axisSpeeds.put(axis, mThetadot.get(row, 0));
+			
+			++row;
+		}
+		
+		return axisSpeeds;
+	}
+	private void prepareConstraints() {
+		constraints.clear();
+		for(Chain chain: chains) {
+			//calculate contributions on the last joint location
+			if(chain.isLinearVelocityEnabled() || chain.isAngularVelocityEnabled()) {
+				chain.computeVelocityContributions();
+			}
+			
+			if(chain.isLinearVelocityEnabled()) {
+				//give this to a constraint set, together with the desired velocity (chain has it). 
+				constraints.add(new Constraint(chain.getLinearVelocityContributions(), chain.getDesiredEndEffectorLinearVelocity()));
+				System.out.println("lin");
+			} else {
+				System.out.println("nolin");
+			}
+			if(chain.isAngularVelocityEnabled()) {
+				//give this to a constraint set, together with the desired velocity.
+				constraints.add(new Constraint(chain.getAngularVelocityContributions(), chain.getDesiredEndEffectorAngularVelocity()));
+				System.out.println("ang");
+			} else {
+				System.out.println("noang");
+			}
+		}
+	}
+	private void constructJacobianEntries() {
+		//need to align axes in different constraints 
+		//need to make it into a matrix
+		//does making a map with lists make sense?
+		//or all lists?
+		//I think it's time to get orderly. all lists. 
+		
+		//pass one, create arrays
+		jacobianColumns = new java.util.HashMap<org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]>();
+		desiredVelocities = new edu.cmu.cs.dennisc.math.Vector3[constraints.size()];
+		for(Constraint constraint: constraints) {
+			for(java.util.Map.Entry<org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3> e: constraint.contributions.entrySet()) {
+				org.lgna.ik.Bone.Axis axis = e.getKey();
+				
+				if(!jacobianColumns.containsKey(axis)) {
+					jacobianColumns.put(axis, new edu.cmu.cs.dennisc.math.Vector3[constraints.size()]);
+				}
+			}
+		}
+		
+		//pass two, fill arrays
+		for(java.util.Map.Entry<org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> e: jacobianColumns.entrySet()) {
+			org.lgna.ik.Bone.Axis axis = e.getKey();
+			edu.cmu.cs.dennisc.math.Vector3[] contributions = e.getValue();
+			
+			int row = 0;
+			for(Constraint constraint: constraints) {
+				if(constraint.contributions.containsKey(axis)) {
+					edu.cmu.cs.dennisc.math.Vector3 contribution = constraint.contributions.get(axis);
+					contributions[row] = contribution;
+				} else {
+					contributions[row] = edu.cmu.cs.dennisc.math.Vector3.accessOrigin();
+				}
+				desiredVelocities[row] = constraint.desiredValue;
+				++row;
+			}
+		}
+	}
+	private Jama.Matrix invertJacobian(double sThreshold) {
+		Jama.Matrix j = createJacobianMatrix(this.jacobianColumns);
+		System.out.println("jacobian " + j.getRowDimension() + "x" + j.getColumnDimension());
+		Jama.Matrix ji = svdInvert(j, sThreshold);
+
+		// TODO also do any optimizations (don't move too fast, etc)
+		
+		return ji;
+	}
+	
+	
+	
+	
+	private Jama.Matrix createDesiredVelocitiesColumn(edu.cmu.cs.dennisc.math.Vector3[] desiredVelocities) {
+		Jama.Matrix rv = new Jama.Matrix(desiredVelocities.length * 3, 1);
+
+		int row = 0;
+		for(edu.cmu.cs.dennisc.math.Vector3 desiredVelocity: desiredVelocities) {
+			rv.set(row, 0, desiredVelocity.x);
+			rv.set(row + 1, 0, desiredVelocity.y);
+			rv.set(row + 2, 0, desiredVelocity.z);
+			row += 3;
+		}
+		
+		return rv;
+	}
+	private Jama.Matrix createJacobianMatrix(java.util.Map<org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> jacobianColumns) {
+		if(jacobianColumns.size() == 0) {
+			throw new RuntimeException("Jacobian matrix should have columns.");
+		}
+		int numConstraints = jacobianColumns.values().iterator().next().length;
+		
+		Jama.Matrix j = new Jama.Matrix(numConstraints * 3, jacobianColumns.size());
+		
+		int column = 0;
+		for(java.util.Map.Entry<org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> e: jacobianColumns.entrySet()) {
+			edu.cmu.cs.dennisc.math.Vector3[] contributions = e.getValue();
+			
+			int row = 0;
+			for(edu.cmu.cs.dennisc.math.Vector3 contribution: contributions) {
+				j.set(row, column, contribution.x);
+				j.set(row + 1, column, contribution.y);
+				j.set(row + 2, column, contribution.z);
+				
+				row += 3;
+			}
+			
+			++column;
+		}
+		return j;
+	}
+	
+	private Jama.Matrix svdInvert(Jama.Matrix mj, double threshold) {
+		
+		boolean transposed = false;
+		int m = mj.getRowDimension();
+		int n = mj.getColumnDimension();
+		if(m < n) {
+			transposed = true;
+		} 
+
+		if(transposed) {
+			mj = mj.transpose();
+		}
+		
+		Jama.SingularValueDecomposition svd = new Jama.SingularValueDecomposition(mj);
+		
+		Jama.Matrix u = svd.getU();
+		
+		Jama.Matrix s = svd.getS();
+		
+		Jama.Matrix v = svd.getV();
+		
+		//reduce s
+		assert(s.getRowDimension() == s.getColumnDimension());
+		for(int i = 0; i < s.getRowDimension(); ++i) {
+			if(s.get(i, i) < threshold) {
+				System.out.printf("A value in S was lower than threshold %f < %f. Correcting.\n", s.get(i, i), threshold);
+				s.set(i, i, 0.0);
+				assert threshold > 0.0;
+			} else {
+				s.set(i, i, 1.0 / s.get(i, i));
+			}
+		}
+		
+		Jama.Matrix result = v.times(s).times(u.transpose());
+		
+		if(transposed) {
+			result = result.transpose();
+		}
+		
+		return result;
+	}
+
 }

@@ -14,6 +14,11 @@
 	<classpathentry kind="lib" path="lib/youtube/google-collect-1.0-rc1.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/youtube.jar"/>
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
+	<classpathentry kind="lib" path="lib/jama/Jama-1.0.2.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://math.nist.gov/javanumerics/jama/doc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="lib" path="lib/tools/tools.jar"/>
 	<classpathentry kind="lib" path="share/gallery/resources/mtwtGalleryBoxes.jar"/>

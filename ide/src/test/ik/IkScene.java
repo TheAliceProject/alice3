@@ -52,8 +52,12 @@ public class IkScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground snow = new Ground();
 	private final Camera camera;
-	private final Biped ogre;
+	public final Biped ogre;
 	private final Sphere target;
+	
+	public Sphere anchor = new Sphere();
+	public Sphere ee = new Sphere();
+	
 	public IkScene( Camera camera, Biped ogre, Sphere target ) {
 		this.camera = camera;
 		this.ogre = ogre;
@@ -66,6 +70,15 @@ public class IkScene extends Scene {
 		this.camera.setVehicle( this );
 		this.ogre.setVehicle( this );
 		this.target.setVehicle( this );
+		anchor.setVehicle(this);
+		ee.setVehicle(this);
+		
+		anchor.setRadius(.15);
+		anchor.setPaint(Color.GREEN);
+		anchor.setOpacity(0.5);
+		
+		ee.setRadius(.1);
+		ee.setPaint(Color.BLUE);
 		
 		this.ogre.place( SpatialRelation.ABOVE, this.snow );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
@@ -73,6 +86,8 @@ public class IkScene extends Scene {
 		this.target.setRadius( 0.2 );
 		this.target.setPaint( Color.RED );
 		this.target.setOpacity( 0.5 );
+//		target.setPositionRelativeToVehicle(new Position(1, 0, 0));
+		
 		
 		//camera vantage point taken care of by camera navigator
 		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );

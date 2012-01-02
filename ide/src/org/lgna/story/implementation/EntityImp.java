@@ -141,6 +141,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			if( rv != null ) {
 				//pass
 			} else {
+				//TODO this does happen when calling jointA.isDescendantOf( jointB ) in org.lgna.story.implementation.JointedModelImp.getInclusiveListOfJointsBetween(JointImp, JointImp, List<Direction>)
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, sgVehicle );
 			}
 			return rv;

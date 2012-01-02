@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -228,54 +230,71 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	private static enum AddOp {
 		PREPEND {
 			@Override
-			public java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint ) {
+			public java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint, List< org.lgna.ik.Bone.Direction > directions, org.lgna.ik.Bone.Direction direction ) {
 				rv.add( 0, joint );
+				if( directions != null ) {
+					directions.add( 0, direction );
+				}
 				return rv;
 			}
 		},
 		APPEND {
 			@Override
-			public java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint ) {
+			public java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint, List< org.lgna.ik.Bone.Direction > directions, org.lgna.ik.Bone.Direction direction ) {
 				rv.add( joint );
+				if( directions != null ) {
+					directions.add( direction );
+				}
 				return rv;
 			}
 		};
-		public abstract java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint );
+		public abstract java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint, List< org.lgna.ik.Bone.Direction > directions, org.lgna.ik.Bone.Direction direction );
 	}
-	private java.util.List< JointImp > updateJointsBetween( java.util.List< JointImp > rv, JointImp joint, EntityImp ancestor, AddOp addOp ) {
-		if( joint == ancestor ) {
+	private java.util.List< JointImp > updateJointsBetween( java.util.List< JointImp > rv, List< org.lgna.ik.Bone.Direction > directions, JointImp joint, EntityImp ancestorToReach, AddOp addOp ) {
+		if( joint == ancestorToReach ) {
 			//pass
 		} else {
 			org.lgna.story.resources.JointId parentId = joint.getJointId().getParent();
 			if( parentId != null ) {
 				JointImp parent = this.getJointImplementation( parentId );
-				this.updateJointsBetween( rv, parent, ancestor, addOp );
+				this.updateJointsBetween( rv, directions, parent, ancestorToReach, addOp );
 			}
 		}
-		addOp.add( rv, joint );
+		org.lgna.ik.Bone.Direction direction;
+		if( addOp == AddOp.APPEND ) { //TODO this was a wild guess
+			direction = org.lgna.ik.Bone.Direction.DOWNSTREAM; 
+		} else {
+			direction = org.lgna.ik.Bone.Direction.UPSTREAM;
+		}
+		addOp.add( rv, joint, directions, direction);
 		return rv;
 	}
-	public java.util.List< JointImp > getInclusiveListOfJointsBetween( JointImp jointA, JointImp jointB ) {
+	public java.util.List< JointImp > getInclusiveListOfJointsBetween( JointImp jointA, JointImp jointB, java.util.List< org.lgna.ik.Bone.Direction > directions ) {
 		assert jointA != null : this;
 		assert jointB != null : this;
 		java.util.List< JointImp > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( jointA == jointB ) {
 			//?
 			rv.add( jointA );
+			directions.add( org.lgna.ik.Bone.Direction.DOWNSTREAM );
+//			throw new RuntimeException( "To Gazi: Please ensure that direction is correct in this case." );
 		} else {
 			if( jointA.isDescendantOf( jointB ) ) {
-				this.updateJointsBetween( rv, jointA, jointB, AddOp.PREPEND );
+				this.updateJointsBetween( rv, directions, jointA, jointB, AddOp.PREPEND );
 			} else if( jointB.isDescendantOf( jointA ) ) {
-				this.updateJointsBetween( rv, jointB, jointA, AddOp.APPEND );
+				this.updateJointsBetween( rv, directions, jointB, jointA, AddOp.APPEND );
 			} else {
-				this.updateJointsBetween( rv, jointB, this, AddOp.APPEND );
-				this.updateJointsBetween( rv, jointA, this, AddOp.PREPEND );
+				// TODO This is not good since it duplicates joints from one wrist to another 
+				// Ideally it shouldn't even use the joint on which direction is changed (the common ancestor) 
+				this.updateJointsBetween( rv, directions, jointB, this, AddOp.APPEND );
+				this.updateJointsBetween( rv, directions, jointA, this, AddOp.PREPEND );
 			}
 		}
 		return rv;
 	}
-	public java.util.List< JointImp > getInclusiveListOfJointsBetween( org.lgna.story.resources.JointId idA, org.lgna.story.resources.JointId idB ) {
-		return this.getInclusiveListOfJointsBetween( this.getJointImplementation( idA ), this.getJointImplementation( idB ) );
+
+	public java.util.List< JointImp > getInclusiveListOfJointsBetween( org.lgna.story.resources.JointId idA, org.lgna.story.resources.JointId idB, java.util.List< org.lgna.ik.Bone.Direction > directions ) {
+		return this.getInclusiveListOfJointsBetween( this.getJointImplementation( idA ), this.getJointImplementation( idB ), directions );
 	}
 	
 	private static class JointData {

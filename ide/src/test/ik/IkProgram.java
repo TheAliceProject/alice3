@@ -43,12 +43,22 @@
 
 package test.ik;
 
+import java.util.Map;
+
+import org.lgna.ik.Bone;
+import org.lgna.ik.Bone.Axis;
 import org.lgna.story.*;
+import org.lgna.story.implementation.JointImp;
+
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
  * @author Dennis Cosgrove
  */
 class IkProgram extends Program {
+	
 	private final Camera camera = new Camera();
 	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
 	private final Sphere target = new Sphere();
@@ -82,6 +92,9 @@ class IkProgram extends Program {
 			IkProgram.this.handleTargetTransformChanged();
 		}
 	};
+	private org.lgna.ik.Chain chain;
+	private org.lgna.ik.Solver solver;
+	protected Map<Axis, Double> currentSpeeds;
 	
 	private org.lgna.story.implementation.SphereImp getTargetImp() {
 		return ImplementationAccessor.getImplementation( this.target );
@@ -109,14 +122,14 @@ class IkProgram extends Program {
 		StringBuilder sb = new StringBuilder();
 		if( bone != null ) {
 			org.lgna.story.implementation.JointImp a = bone.getA();
-			org.lgna.story.implementation.JointImp b = bone.getB();
+//			org.lgna.story.implementation.JointImp b = bone.getB();
 			sb.append( a.getJointId() );
 			sb.append( ":\n" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.appendLines( sb, a.getLocalTransformation() );
-			sb.append( "\n" );
-			sb.append( b.getJointId() );
-			sb.append( ":\n" );
-			edu.cmu.cs.dennisc.print.PrintUtilities.appendLines( sb, b.getLocalTransformation() );
+//			sb.append( "\n" );
+//			sb.append( b.getJointId() );
+//			sb.append( ":\n" );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.appendLines( sb, b.getLocalTransformation() );
 		}
 		sb.append( "\n" );
 		sb.append( "target:\n" );
@@ -132,13 +145,29 @@ class IkProgram extends Program {
 		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
 		return org.lgna.ik.Chain.createInstance( this.getSubjectImp(), anchorId, endId, isLinearEnabled, isAngularEnabled );
 	}
-	private void handleChainChanged() {
-		org.lgna.ik.Chain chain = createChain();
+	private void handleChainChanged() {//FIXME make this not race with the thread
+		if(chain != null) {
+			solver.removeChain(chain);
+		}
+		chain = createChain();
+		
+		JointImp lastJointImp = chain.getLastJointImp();
+		
+		AffineMatrix4x4 ltrans = lastJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+		edu.cmu.cs.dennisc.math.Point3 eePos = new edu.cmu.cs.dennisc.math.Point3(ltrans.translation);
+		eePos.add(Point3.createMultiplication(ltrans.orientation.backward, -.2));
+		chain.setEndEffectorPosition(eePos);
+		
+//		chain.setDesiredEndEffectorLinearVelocity(customLinVel); //TODO temporary of course
+		
+		solver.addChain(chain);
+		
 		test.ik.croquet.BonesState.getInstance().setChain( chain );
 		this.updateInfo();
 	}
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
+		
 		this.modelManipulationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
 		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
@@ -149,11 +178,146 @@ class IkProgram extends Program {
 		test.ik.croquet.BonesState.getInstance().addValueObserver( this.boneListener );
 		test.ik.croquet.IsLinearEnabledState.getInstance().addValueObserver( this.linearAngularEnabledListener );
 		test.ik.croquet.IsAngularEnabledState.getInstance().addValueObserver( this.linearAngularEnabledListener );
+		
 
 		this.getTargetImp().setTransformation( this.getEndImp() );
 		this.getTargetImp().getSgComposite().addAbsoluteTransformationListener( this.targetTransformListener );
+		
+		solver = new org.lgna.ik.Solver();
+		
+		//did not find a way to perform a custom animation
+//		Thread moveThread = new Thread() {
+//			@Override
+//			public void run() {
+//				while(!interrupted()) {
+//					//move all the joints
+//					
+//					movePls();
+//					
+//					try {
+//						sleep(100);
+//					} catch (InterruptedException e) {
+//						break;
+//					}
+//				}
+//			}
+//
+//		};
+//		moveThread.start();
+		
+		Thread calculateThread = new Thread() {
+			@Override
+			public void run() {
+				while(!interrupted()) {
+					//making sure I only do it when UI says it's activated. 
+					//FIXME these following two are not good because they are used when creating the chain.
+					boolean linearActivated = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
+					boolean angularActivated = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
+					if(chain != null && (linearActivated || angularActivated)) { //not good concurrent programming practice but temporary solution
+						//make chain setter not race with this
+
+						Point3 direction = Point3.createSubtraction(getTargetImp().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).translation, chain.getEndEffectorPosition());
+						
+						direction.normalize();
+						
+						customLinVel.setToMultiplication(direction, 0.1);
+						
+						chain.setDesiredEndEffectorLinearVelocity(customLinVel); 
+						
+						java.util.Map<org.lgna.ik.Bone.Axis, Double> speeds = solver.solve();
+						
+						if(speeds == null) continue;
+						
+						currentSpeeds = speeds;
+						
+						//TODO now apply these
+						//at least display first. see how it can be.
+						
+						for(java.util.Map.Entry<org.lgna.ik.Bone.Axis, Double> e: currentSpeeds.entrySet()) {
+							Axis axis = e.getKey();
+							Double speed = e.getValue();
+							
+							axis.setDesiredAngleSpeedForPrinting(speed);
+						}
+						
+						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								test.ik.croquet.BonesState.getInstance().setChain( chain );
+							}
+						});
+						
+						//force bone reprint
+						
+						//apply rotational velocities?
+						//would this be better as an animation instead?
+						
+//						System.out.println("displayed");
+					}
+					
+					movePls();
+//					moveStraight();
+					
+					try {
+						sleep(10);
+					} catch (InterruptedException e) {
+						break;
+					}
+				}
+			}
+		};
+		calculateThread.start();
+		
 		this.handleChainChanged();
 	}
+//	private void moveStraight() {
+//		if(chain != null) {
+//			Bone[] bones = chain.getBones();
+//			bones[0].getA().applyRotationInRadians(new Vector3(1, 1, 0), Math.PI / 100.0); //this is local. that's the issue... FIXME
+//		}
+//	}
+	Vector3 customLinVel = new Vector3(0, 1, 1);
+	private void movePls() {
+		if(chain != null) {
+
+			if(chain.getBones().length > 0) {
+				Bone[] bones = chain.getBones();
+				Point3 ap = bones[0].getAnchorPosition();
+				scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));
+				Entity av = scene.anchor.getVehicle();
+				
+				Point3 ep = chain.getEndEffectorPosition();
+				scene.ee.setPositionRelativeToVehicle(new Position(ep.x, ep.y, ep.z));
+				Entity ev = scene.ee.getVehicle();
+				
+				System.out.println(scene);
+//				System.out.println(av);
+				System.out.println(ev);
+				System.out.println("");
+			}
+			
+			
+//			chain.getBones()[0].getA().applyRotationInDegrees(Vector3.accessPositiveXAxis(), .1);
+//				System.out.println("turn");
+//				Joint abstraction = chain.getBones()[0].getA().getAbstraction();
+//				
+//				if(abstraction != null) {
+//					abstraction.turn(TurnDirection.BACKWARD, .1);
+//				} else {
+//					System.out.println("abs was null");
+//				}
+			
+			Bone[] bones = chain.getBones();
+			for(Bone bone: bones) {
+				for(Axis axis: bone.getAxes()) {
+					double dt = .1; //FIXME
+					axis.applyRotationInOriginal(axis.getDesiredAngleSpeedForPrinting() * dt);
+				}
+			
+//					bone.getAxes().get(0).applyRotationInOriginal(.1);
+			}
+		}
+	}
+
 	private void handleBoneChanged() {
 		this.updateInfo();
 	}
@@ -162,11 +326,14 @@ class IkProgram extends Program {
 		app.initialize( args );
 		app.setPerspective( new test.ik.croquet.IkPerspective() );
 
-		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.LEFT_CLAVICLE; 
-		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.LEFT_WRIST; 
+		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.RIGHT_SHOULDER; 
+		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.RIGHT_SHOULDER; 
 
 		test.ik.croquet.AnchorJointIdState.getInstance().setValue( initialAnchor );
 		test.ik.croquet.EndJointIdState.getInstance().setValue( initialEnd );
+		
+		test.ik.croquet.IsLinearEnabledState.getInstance().setValue(true);
+		test.ik.croquet.IsAngularEnabledState.getInstance().setValue(false);
 		
 		IkProgram program = new IkProgram();
 
