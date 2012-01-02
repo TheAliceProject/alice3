@@ -50,7 +50,7 @@ public abstract class IdePerspective extends org.lgna.croquet.Perspective {
 	public IdePerspective( java.util.UUID id, org.lgna.croquet.Composite< ? > composite ) {
 		super( id, composite );
 	}
-	public abstract org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus();
+	public abstract org.alice.ide.codedrop.CodeDropReceptor getCodeEditorInFocus();
 	private java.util.Stack< org.alice.ide.ReasonToDisableSomeAmountOfRendering > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 		this.stack.push( reasonToDisableSomeAmountOfRendering );

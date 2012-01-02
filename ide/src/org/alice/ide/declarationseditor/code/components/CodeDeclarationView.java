@@ -55,7 +55,14 @@ public class CodeDeclarationView extends org.alice.ide.declarationseditor.compon
 		this.addComponent( this.codeEditor, Constraint.CENTER );
 	}
 	@Deprecated
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditor() {
+	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor() {
 		return this.codeEditor;
+	}
+	@Override
+	public boolean isPrintSupported() {
+		return true;
+	}
+	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
+		return this.codeEditor.print( g, pageFormat, pageIndex );
 	}
 }

@@ -345,7 +345,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	//public abstract void handleDelete( org.lgna.project.ast.Node node );
 
 	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
+		org.alice.ide.codedrop.CodeDropReceptor codeEditor = getCodeEditorInFocus();
 		if( codeEditor != null ) {
 			this.holes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			codeEditor.addPotentialDropReceptors( this.holes, type );
@@ -567,7 +567,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setSelectedItem( composite );
 		}
 	}
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
+	public org.alice.ide.codedrop.CodeDropReceptor getCodeEditorInFocus() {
 		org.alice.ide.perspectives.IdePerspective perspective = this.getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getCodeEditorInFocus();

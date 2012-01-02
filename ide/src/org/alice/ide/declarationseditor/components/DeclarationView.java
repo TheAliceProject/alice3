@@ -46,8 +46,9 @@ package org.alice.ide.declarationseditor.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationView extends org.lgna.croquet.components.BorderPanel {
+public abstract class DeclarationView extends org.lgna.croquet.components.BorderPanel implements java.awt.print.Printable {
 	public DeclarationView( org.alice.ide.declarationseditor.DeclarationComposite composite ) {
 		super( composite );
 	}
+	public abstract boolean isPrintSupported();
 }

@@ -114,4 +114,11 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( component, 1.2f );
 		}
 	}
+	@Override
+	public boolean isPrintSupported() {
+		return false;
+	}
+	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
+		throw new RuntimeException( "todo" );
+	}
 }

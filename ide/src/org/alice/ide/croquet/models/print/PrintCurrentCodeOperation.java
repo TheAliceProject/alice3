@@ -57,8 +57,13 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 	}
 	@Override
 	protected java.awt.print.Printable getPrintable() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
-		return codeEditor;
+		org.alice.ide.declarationseditor.DeclarationComposite composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+		org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+		if( view.isPrintSupported() ) {
+			return view;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "print not supported for:", composite );
+			return null;
+		}
 	}
 }

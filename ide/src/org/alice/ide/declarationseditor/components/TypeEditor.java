@@ -69,12 +69,12 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		this.tabbedPane.setHeaderTrailingComponent( clipboard );
 		this.addComponent( tabbedPane, Constraint.CENTER );
 	}
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
+	public org.alice.ide.codedrop.CodeDropReceptor getCodeEditorInFocus() {
 		org.alice.ide.declarationseditor.DeclarationComposite item = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getSelectedItem();
 		if( item != null ) {
 			org.lgna.croquet.components.JComponent< ? > component = this.tabbedPane.getMainComponentFor( item );
 			if( component instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {
-				return ((org.alice.ide.declarationseditor.code.components.CodeDeclarationView)component).getCodeEditor();
+				return ((org.alice.ide.declarationseditor.code.components.CodeDeclarationView)component).getCodeDropReceptor();
 			}
 		}
 		return null;

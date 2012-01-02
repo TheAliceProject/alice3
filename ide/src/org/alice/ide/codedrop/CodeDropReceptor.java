@@ -40,22 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.codeeditor;
+
+package org.alice.ide.codedrop;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class CodeTitlePane extends org.lgna.croquet.components.LineAxisPanel {
-	private org.lgna.project.ast.AbstractCode code;
-	public CodeTitlePane( org.lgna.project.ast.AbstractCode code ) {
-		this.code = code;
-		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.code.getDeclaringType() ) );
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-		this.addComponent( new org.alice.ide.ast.components.DeclarationNameLabel( this.code ) );
-	}
-	public org.lgna.project.ast.AbstractCode getCode() {
-		return this.code;
-	}
+public abstract class CodeDropReceptor extends org.lgna.croquet.components.BorderPanel implements org.lgna.croquet.DropReceptor {
+	public abstract java.util.List< org.lgna.croquet.DropReceptor > addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > rv, final org.lgna.project.ast.AbstractType<?,?,?> type );
 }
-
