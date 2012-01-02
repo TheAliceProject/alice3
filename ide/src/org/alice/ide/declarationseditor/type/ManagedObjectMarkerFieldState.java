@@ -40,32 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type;
 
-import org.alice.stageide.croquet.models.declaration.CameraMarkerFieldDeclarationOperation;
+import org.lgna.story.ObjectMarker;
 
 /**
  * @author dculyba
  *
  */
-public class ManagedCameraMarkerFieldList extends MarkerFieldList {
-	public ManagedCameraMarkerFieldList( org.lgna.project.ast.NamedUserType type ) {
-		super( ManagedCameraMarkerFieldState.getInstance( type ), CameraMarkerFieldDeclarationOperation.getInstance() );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedObjectMarkerFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ManagedObjectMarkerFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		ManagedObjectMarkerFieldState rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ManagedObjectMarkerFieldState( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+	private ManagedObjectMarkerFieldState( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "84bf0218-ded7-472d-9b4c-0dbac1c0d9d8" ), type );
 	}
 	
-//	@Override
-//	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
-//		org.lgna.croquet.components.LineAxisPanel buttonPanel = new org.lgna.croquet.components.LineAxisPanel();
-//		button.addComponent( 
-//				new MarkerFieldTile(item),
-//				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
-//		);
-//		buttonPanel.addComponent(org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton());
-//		if( item.isDeletionAllowed.getValue() ) {
-//			buttonPanel.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() );
-//		}
-//		button.addComponent( buttonPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-//		return new FieldItemDetails( this, item, button );
-//	}
+	@Override
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
+		return value.valueType.getValue().isAssignableTo(ObjectMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
+	}
 }

@@ -58,6 +58,6 @@ public class CodePerspective extends org.alice.ide.perspectives.IdePerspective {
 	}
 	@Override
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return org.alice.ide.typeeditor.TypeEditor.getInstance().getCodeEditorInFocus();
+		return org.alice.ide.declarationseditor.type.components.TypeEditor.getInstance().getCodeEditorInFocus();
 	}
 }

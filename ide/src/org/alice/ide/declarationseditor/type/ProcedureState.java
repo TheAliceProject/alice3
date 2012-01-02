@@ -41,26 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodState extends FilteredMemberState< org.lgna.project.ast.UserMethod > {
-	public MethodState( java.util.UUID id, org.lgna.project.ast.NamedUserType type ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id, org.lgna.project.ast.UserMethod.class, type.methods );
+public class ProcedureState extends MethodState {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, ProcedureState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ProcedureState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		ProcedureState rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ProcedureState( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+	private ProcedureState( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "ce34123a-1e8a-4f95-8e90-77a1477609d7" ), type );
 	}
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
-		org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();
-		if( accessLevel == org.lgna.project.ast.AccessLevel.PRIVATE ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getValue();
-		} else if( accessLevel == org.lgna.project.ast.AccessLevel.PROTECTED ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getValue();
-		} else if( accessLevel == org.lgna.project.ast.AccessLevel.PACKAGE ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getValue();
-		} else {
-			return true;
-		}
+		return super.isAcceptableItem( value ) && value.isProcedure();
 	}
 }

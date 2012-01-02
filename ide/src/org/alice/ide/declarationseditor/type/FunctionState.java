@@ -41,28 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureState extends MethodState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ProcedureState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ProcedureState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		ProcedureState rv = map.get( type );
+public class FunctionState extends MethodState {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, FunctionState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FunctionState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		FunctionState rv = map.get( type );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ProcedureState( type );
+			rv = new FunctionState( type );
 			map.put( type, rv );
 		}
 		return rv;
 	}
-	private ProcedureState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "ce34123a-1e8a-4f95-8e90-77a1477609d7" ), type );
+	private FunctionState( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "042cf23a-65e6-4df8-b9cd-2964e44c7a34" ), type );
 	}
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
-		return super.isAcceptableItem( value ) && value.isProcedure();
+		return super.isAcceptableItem( value ) && value.isFunction();
 	}
 }

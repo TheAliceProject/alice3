@@ -41,14 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type.components;
+
+import org.alice.ide.declarationseditor.type.ManagedFieldState;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnmanagedFieldList extends FieldList {
-	public UnmanagedFieldList( org.lgna.project.ast.NamedUserType type ) {
-		super( UnmanagedFieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation.getInstance( type ) );
+public class ManagedFieldList extends FieldList {
+	public ManagedFieldList( org.lgna.project.ast.NamedUserType type ) {
+		super( ManagedFieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance() );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 }

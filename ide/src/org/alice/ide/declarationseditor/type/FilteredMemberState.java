@@ -41,13 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldState extends FilteredMemberState< org.lgna.project.ast.UserField > {
-	public FieldState( java.util.UUID id, org.lgna.project.ast.NamedUserType type ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id, org.lgna.project.ast.UserField.class, type.fields );
+public abstract class FilteredMemberState< T extends org.lgna.project.ast.AbstractMember > extends org.alice.ide.croquet.models.FilteredListPropertySelectionState< T > {
+	public FilteredMemberState( org.lgna.croquet.Group group, java.util.UUID id, Class<T> cls, edu.cmu.cs.dennisc.property.ListProperty< T > listProperty ) {
+		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( cls ), -1, listProperty );
 	}
 }

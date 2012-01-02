@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.declarationseditor.type;
 
-package org.alice.ide.declarationseditor;
+import org.lgna.story.CameraMarker;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class DeclarationsEditorComposite extends org.lgna.croquet.Composite< org.alice.ide.declarationseditor.type.components.TypeEditor > {
-	private static class SingletonHolder {
-		private static DeclarationsEditorComposite instance = new DeclarationsEditorComposite();
+public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedCameraMarkerFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ManagedCameraMarkerFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		ManagedCameraMarkerFieldState rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ManagedCameraMarkerFieldState( type );
+			map.put( type, rv );
+		}
+		return rv;
 	}
-	public static DeclarationsEditorComposite getInstance() {
-		return SingletonHolder.instance;
+	private ManagedCameraMarkerFieldState( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "47af4b71-b8db-458f-a698-e3550c921c14" ), type );
 	}
-	private DeclarationsEditorComposite() {
-		super( java.util.UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
-	}
+	
 	@Override
-	protected org.alice.ide.declarationseditor.type.components.TypeEditor createView() {
-		return org.alice.ide.declarationseditor.type.components.TypeEditor.getInstance();
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return true;
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
+		return value.valueType.getValue().isAssignableTo(CameraMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
 	}
 }

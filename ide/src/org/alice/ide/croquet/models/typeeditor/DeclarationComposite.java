@@ -104,7 +104,7 @@ public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.lgn
 			return org.alice.ide.codeeditor.CodeEditor.getInstance( (org.lgna.project.ast.AbstractCode)this.declaration );
 		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ){
 			//return new org.alice.ide.editorstabbedpane.EditTypePanel( (org.lgna.project.ast.NamedUserType)declaration, -1 );
-			return new org.alice.ide.typeeditor.TypeDeclarationPane( (org.lgna.project.ast.NamedUserType)this.declaration );
+			return new org.alice.ide.declarationseditor.type.components.TypeDeclarationPane( (org.lgna.project.ast.NamedUserType)this.declaration );
 		} else {
 			return new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "todo" ) );
 		}

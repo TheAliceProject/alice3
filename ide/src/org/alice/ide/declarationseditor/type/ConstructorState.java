@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.typeeditor;
 
-import org.lgna.story.ObjectMarker;
+package org.alice.ide.declarationseditor.type;
 
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedObjectMarkerFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ManagedObjectMarkerFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		ManagedObjectMarkerFieldState rv = map.get( type );
+public class ConstructorState extends FilteredMemberState< org.lgna.project.ast.NamedUserConstructor > {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, ConstructorState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ConstructorState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		ConstructorState rv = map.get( type );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ManagedObjectMarkerFieldState( type );
+			rv = new ConstructorState( type );
 			map.put( type, rv );
 		}
 		return rv;
 	}
-	private ManagedObjectMarkerFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "84bf0218-ded7-472d-9b4c-0dbac1c0d9d8" ), type );
+	private ConstructorState( org.lgna.project.ast.NamedUserType type ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "53fca6d4-e24f-4662-844e-1e2be690dd45" ), org.lgna.project.ast.NamedUserConstructor.class, type.constructors );
 	}
-	
 	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableTo(ObjectMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
+	protected boolean isAcceptableItem( org.lgna.project.ast.NamedUserConstructor item ) {
+		return true;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.typeeditor;
 
-import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
+package org.alice.ide.declarationseditor.type;
 
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class ManagedObjectMarkerFieldList extends MarkerFieldList {
-	public ManagedObjectMarkerFieldList( org.lgna.project.ast.NamedUserType type ) {
-		super( ManagedObjectMarkerFieldState.getInstance( type ), ObjectMarkerFieldDeclarationOperation.getInstance() );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+public abstract class AbstractManagedFieldState extends FieldState {
+	public AbstractManagedFieldState( java.util.UUID id, org.lgna.project.ast.NamedUserType type ) {
+		super( id, type );
 	}
-	
-//	@Override
-//	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
-//		org.lgna.croquet.components.LineAxisPanel buttonPanel = new org.lgna.croquet.components.LineAxisPanel();
-//		button.addComponent( 
-//				new MarkerFieldTile(item),
-//				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
-//		);
-//		buttonPanel.addComponent(org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton());
-//		if( item.isDeletionAllowed.getValue() ) {
-//			buttonPanel.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() );
-//		}
-//		button.addComponent( buttonPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-//		return new FieldItemDetails( this, item, button );
-//	}
+	@Override
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
+		return value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
+	}
 }

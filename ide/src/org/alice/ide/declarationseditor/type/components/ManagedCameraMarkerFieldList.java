@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,43 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.declarationseditor.type.components;
 
-package org.alice.ide.typeeditor;
+import org.alice.ide.declarationseditor.type.ManagedCameraMarkerFieldState;
+import org.alice.stageide.croquet.models.declaration.CameraMarkerFieldDeclarationOperation;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public abstract class FieldList extends MemberList< org.lgna.project.ast.UserField > {
-	public FieldList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserField > model, org.lgna.croquet.Operation< ? > operation ) {
-		super( model, operation );
+public class ManagedCameraMarkerFieldList extends MarkerFieldList {
+	public ManagedCameraMarkerFieldList( org.lgna.project.ast.NamedUserType type ) {
+		super( ManagedCameraMarkerFieldState.getInstance( type ), CameraMarkerFieldDeclarationOperation.getInstance() );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserField item ) {
-		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
-		org.lgna.croquet.components.LineAxisPanel lineStartPanel = new org.lgna.croquet.components.LineAxisPanel();
-		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
-			label.setToolTipText( "managed by the scene editor" );
-			label.setForegroundColor( java.awt.Color.GRAY );
-			label.scaleFont( 2.0f );
-			label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-			lineStartPanel.addComponent( label );
-		}
-		lineStartPanel.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton() );
-		return lineStartPanel;
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserField item ) {
-		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
-		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), item, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED );
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserField item ) {
-		if( item.isDeletionAllowed.getValue() ) {
-			return org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton();
-		} else {
-			return null;
-		}
-	}
+	
+//	@Override
+//	protected org.alice.ide.typeeditor.FieldItemDetails createItemDetails( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState booleanState, MemberButton button ) {
+//		org.lgna.croquet.components.LineAxisPanel buttonPanel = new org.lgna.croquet.components.LineAxisPanel();
+//		button.addComponent( 
+//				new MarkerFieldTile(item),
+//				org.lgna.croquet.components.BorderPanel.Constraint.CENTER 
+//		);
+//		buttonPanel.addComponent(org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton());
+//		if( item.isDeletionAllowed.getValue() ) {
+//			buttonPanel.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() );
+//		}
+//		button.addComponent( buttonPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+//		return new FieldItemDetails( this, item, button );
+//	}
 }

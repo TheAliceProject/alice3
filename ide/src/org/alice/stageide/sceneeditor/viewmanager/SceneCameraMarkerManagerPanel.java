@@ -42,8 +42,8 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.ide.typeeditor.FieldList;
-import org.alice.ide.typeeditor.ManagedCameraMarkerFieldList;
+import org.alice.ide.declarationseditor.type.components.FieldList;
+import org.alice.ide.declarationseditor.type.components.ManagedCameraMarkerFieldList;
 import org.lgna.croquet.components.Button;
 import org.lgna.project.ast.NamedUserType;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.typeeditor;
 
-import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.Operation;
-import org.lgna.project.ast.UserField;
+package org.alice.ide.declarationseditor.type.components;
+
+import org.alice.ide.declarationseditor.type.UnmanagedFieldState;
 
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public abstract class MarkerFieldList extends FieldList {
-
-	public MarkerFieldList(ListSelectionState<UserField> model, Operation<?> operation) {
-		super(model, operation);
+public class UnmanagedFieldList extends FieldList {
+	public UnmanagedFieldList( org.lgna.project.ast.NamedUserType type ) {
+		super( UnmanagedFieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation.getInstance( type ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserField item ) {
-		return null;
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserField item ) {
-		return new org.alice.stageide.sceneeditor.viewmanager.MarkerFieldTile(item);
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserField item ) {
-		org.lgna.croquet.components.Button renameButton = org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton();
-		if( item.isDeletionAllowed.getValue() ) {
-			return new org.lgna.croquet.components.LineAxisPanel(
-					renameButton,
-					org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() 
-			);
-		} else {
-			return renameButton;
-		}
-	}
-	
 }

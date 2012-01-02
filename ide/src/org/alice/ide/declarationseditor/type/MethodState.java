@@ -41,14 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ManagedFieldList extends FieldList {
-	public ManagedFieldList( org.lgna.project.ast.NamedUserType type ) {
-		super( ManagedFieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance() );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+public abstract class MethodState extends FilteredMemberState< org.lgna.project.ast.UserMethod > {
+	public MethodState( java.util.UUID id, org.lgna.project.ast.NamedUserType type ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, id, org.lgna.project.ast.UserMethod.class, type.methods );
+	}
+	@Override
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
+		org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();
+		if( accessLevel == org.lgna.project.ast.AccessLevel.PRIVATE ) {
+			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getValue();
+		} else if( accessLevel == org.lgna.project.ast.AccessLevel.PROTECTED ) {
+			return org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getValue();
+		} else if( accessLevel == org.lgna.project.ast.AccessLevel.PACKAGE ) {
+			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getValue();
+		} else {
+			return true;
+		}
 	}
 }

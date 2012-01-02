@@ -41,14 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureList extends MethodList {
-	public ProcedureList( org.lgna.project.ast.NamedUserType type ) {
-		super( ProcedureState.getInstance( type ), org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( type ) );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
+public class ManagedFieldState extends AbstractManagedFieldState {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ManagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		ManagedFieldState rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ManagedFieldState( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+	private ManagedFieldState( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe" ), type );
 	}
 }

@@ -41,13 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type.components;
+
+import org.alice.ide.declarationseditor.type.ProcedureState;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredMemberState< T extends org.lgna.project.ast.AbstractMember > extends org.alice.ide.croquet.models.FilteredListPropertySelectionState< T > {
-	public FilteredMemberState( org.lgna.croquet.Group group, java.util.UUID id, Class<T> cls, edu.cmu.cs.dennisc.property.ListProperty< T > listProperty ) {
-		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( cls ), -1, listProperty );
+public class ProcedureList extends MethodList {
+	public ProcedureList( org.lgna.project.ast.NamedUserType type ) {
+		super( ProcedureState.getInstance( type ), org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( type ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
 	}
 }

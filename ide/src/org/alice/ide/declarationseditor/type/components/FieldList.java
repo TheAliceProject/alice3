@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.typeeditor;
 
-import org.lgna.story.CameraMarker;
+package org.alice.ide.declarationseditor.type.components;
 
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedCameraMarkerFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ManagedCameraMarkerFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		ManagedCameraMarkerFieldState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ManagedCameraMarkerFieldState( type );
-			map.put( type, rv );
-		}
-		return rv;
+public abstract class FieldList extends MemberList< org.lgna.project.ast.UserField > {
+	public FieldList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserField > model, org.lgna.croquet.Operation< ? > operation ) {
+		super( model, operation );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
-	private ManagedCameraMarkerFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "47af4b71-b8db-458f-a698-e3550c921c14" ), type );
-	}
-	
 	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableTo(CameraMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
+	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserField item ) {
+		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
+		org.lgna.croquet.components.LineAxisPanel lineStartPanel = new org.lgna.croquet.components.LineAxisPanel();
+		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
+			label.setToolTipText( "managed by the scene editor" );
+			label.setForegroundColor( java.awt.Color.GRAY );
+			label.scaleFont( 2.0f );
+			label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
+			lineStartPanel.addComponent( label );
+		}
+		lineStartPanel.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton() );
+		return lineStartPanel;
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserField item ) {
+		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), item, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED );
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserField item ) {
+		if( item.isDeletionAllowed.getValue() ) {
+			return org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton();
+		} else {
+			return null;
+		}
 	}
 }

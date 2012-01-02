@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type.components;
 
 /*package-private*/ class MemberItemDetails<E> extends org.lgna.croquet.components.ItemDetails<E,MemberItemDetails<E>,MemberList<E>> {
 	public MemberItemDetails( MemberList<E> panel, E item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {

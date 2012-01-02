@@ -41,24 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type.components;
+
+import org.alice.ide.declarationseditor.type.ConstructorState;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ManagedFieldState extends AbstractManagedFieldState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ManagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		ManagedFieldState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ManagedFieldState( type );
-			map.put( type, rv );
-		}
-		return rv;
+public class ConstructorList extends MemberList< org.lgna.project.ast.NamedUserConstructor > {
+	public ConstructorList( org.lgna.project.ast.NamedUserType type ) {
+		super( ConstructorState.getInstance( type ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getConstructorColor() );
 	}
-	private ManagedFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe" ), type );
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.NamedUserConstructor item ) {
+		return org.alice.ide.croquet.models.ast.EditConstructorOperation.getInstance( item ).createButton();
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.NamedUserConstructor item ) {
+		return new org.alice.ide.ast.components.DeclarationNameLabel( item, NAME_FONT_SCALE );
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.NamedUserConstructor item ) {
+		return null;
 	}
 }

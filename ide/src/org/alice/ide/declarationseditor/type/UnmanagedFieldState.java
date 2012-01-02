@@ -41,46 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.typeeditor;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMethod > {
-	public MethodList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserMethod > model, org.lgna.croquet.Operation< ? > operation ) {
-		super( model, operation );
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserMethod item ) {
-		org.lgna.croquet.components.LineAxisPanel lineStart = new org.lgna.croquet.components.LineAxisPanel(
-				org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton(),
-				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton()
-		);
-		return lineStart;
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserMethod item ) {
-		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( item, NAME_FONT_SCALE );
-		
-		org.lgna.croquet.components.JComponent< ? > component;
-		if( item.isProcedure() ) {
-			component = nameLabel;
+public class UnmanagedFieldState extends FieldState {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, UnmanagedFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized UnmanagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
+		UnmanagedFieldState rv = map.get( type );
+		if( rv != null ) {
 			//pass
 		} else {
-			component = new org.lgna.croquet.components.LineAxisPanel( 
-					org.alice.ide.common.TypeComponent.createInstance( item.getReturnType() ),
-					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-					nameLabel
-			);
+			rv = new UnmanagedFieldState( type );
+			map.put( type, rv );
 		}
-		return component;
+		return rv;
+	}
+	private UnmanagedFieldState( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "97e016de-d944-4305-8fd5-acf5507778e3" ), type );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserMethod item ) {
-		if( item.isSignatureLocked.getValue() ) { //todo: isOverride
-			return null;
-		} else {
-			return org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton();
-		}
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
+		return value.managementLevel.getValue() != org.lgna.project.ast.ManagementLevel.MANAGED;
 	}
 }

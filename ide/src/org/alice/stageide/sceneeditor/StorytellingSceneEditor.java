@@ -49,10 +49,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.ide.ast.CurrentThisExpression;
+import org.alice.ide.declarationseditor.type.ManagedCameraMarkerFieldState;
+import org.alice.ide.declarationseditor.type.ManagedObjectMarkerFieldState;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.ide.typeeditor.ManagedCameraMarkerFieldState;
-import org.alice.ide.typeeditor.ManagedObjectMarkerFieldState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
