@@ -77,19 +77,19 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 		org.lgna.project.ast.AbstractType< ?, ?, ? > fieldValueType = this.field.getValueType();
 		java.util.List< org.lgna.project.ast.AbstractMethod > methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( turnableType.isAssignableFrom( fieldValueType ) ) {
-			methods.add( turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class ) );
-			methods.add( turnableType.getDeclaredMethod( "roll", org.lgna.story.RollDirection.class, Number.class, org.lgna.story.Roll.Detail[].class ) );
-			methods.add( turnableType.getDeclaredMethod( "turnToFace", org.lgna.story.Entity.class, org.lgna.story.TurnToFace.Detail[].class ) );
-			methods.add( turnableType.getDeclaredMethod( "pointAt", org.lgna.story.Entity.class, org.lgna.story.PointAt.Detail[].class ) );
-			methods.add( turnableType.getDeclaredMethod( "orientToUpright", org.lgna.story.OrientToUpright.Detail[].class ) );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.TURN_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROLL_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.TURN_TO_FACE_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.POINT_AT_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ORIENT_TO_UPRIGHT_METHOD );
 		}
 		if( movableTurnableType.isAssignableFrom( fieldValueType ) ) {
-			methods.add( movableTurnableType.getDeclaredMethod( "move", org.lgna.story.MoveDirection.class, Number.class, org.lgna.story.Move.Detail[].class ) );
-			methods.add( movableTurnableType.getDeclaredMethod( "moveToward", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveToward.Detail[].class ) );
-			methods.add( movableTurnableType.getDeclaredMethod( "moveAwayFrom", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveAwayFrom.Detail[].class ) );
-			methods.add( movableTurnableType.getDeclaredMethod( "moveTo", org.lgna.story.Entity.class, org.lgna.story.MoveTo.Detail[].class ) );
-			methods.add( movableTurnableType.getDeclaredMethod( "moveAndOrientTo", org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientTo.Detail[].class ) );
-			methods.add( movableTurnableType.getDeclaredMethod( "place", org.lgna.story.SpatialRelation.class, org.lgna.story.Entity.class, org.lgna.story.Place.Detail[].class ) );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_TOWARD_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_AWAY_FROM_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_TO_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_AND_ORIENT_TO_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.PLACE_METHOD );
 		}
 
 //		if( jointedModelType.isAssignableFrom( fieldValueType ) ) {
