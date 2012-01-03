@@ -235,174 +235,60 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return " 3 BETA ";
 	}
 
-	private ComponentStencil stencil;
-	private java.util.List< org.lgna.croquet.DropReceptor > holes = null;
-	private org.lgna.croquet.components.DragComponent<?,?> potentialDragSource;
-	private org.lgna.croquet.components.Component< ? > currentDropReceptorComponent;
-
-	protected boolean isFauxStencilDesired() {
-		return this.isDragInProgress();
-	}
-
-	private static java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
-	private static java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );//, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_MITER );
-
-	class ComponentStencil extends javax.swing.JPanel {
-		public ComponentStencil() {
-			this.setOpaque( false );
-			this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
-		}
-		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "paint stencil" );
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			if( IDE.this.holes != null ) {
-				//java.awt.geom.Area area = new java.awt.geom.Area( g2.getClipBounds() );
-				java.awt.geom.Area area = new java.awt.geom.Area( new java.awt.Rectangle( 0, 0, getWidth(), getHeight() ) );
-				synchronized( IDE.this.holes ) {
-					if( IDE.this.currentDropReceptorComponent != null ) {
-						this.setForeground( new java.awt.Color( 0, 0, 127, 95 ) );
-					} else {
-						this.setForeground( new java.awt.Color( 0, 0, 127, 127 ) );
-					}
-
-					java.awt.Rectangle potentialDragSourceBounds;
-					if( IDE.this.potentialDragSource != null ) {
-						potentialDragSourceBounds = javax.swing.SwingUtilities.convertRectangle( IDE.this.potentialDragSource.getParent().getAwtComponent(), IDE.this.potentialDragSource.getBounds(), this );
-					} else {
-						potentialDragSourceBounds = null;
-					}
-
-					if( isFauxStencilDesired() ) {
-						for( org.lgna.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
-							org.lgna.croquet.components.Component< ? > component = (org.lgna.croquet.components.Component< ? >)dropReceptor;
-							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
-							area.subtract( new java.awt.geom.Area( holeBounds ) );
-						}
-
-						if( potentialDragSourceBounds != null ) {
-							area.subtract( new java.awt.geom.Area( potentialDragSourceBounds ) );
-						}
-						g2.fill( area );
-					}
-
-					g2.setStroke( THICK_STROKE );
-					final int BUFFER = 6;
-					for( org.lgna.croquet.DropReceptor dropReceptor : IDE.this.holes ) {
-						org.lgna.croquet.components.Component< ? > component = (org.lgna.croquet.components.Component< ? >)dropReceptor;
-						java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this );
-						holeBounds.x -= BUFFER;
-						holeBounds.y -= BUFFER;
-						holeBounds.width += 2 * BUFFER;
-						holeBounds.height += 2 * BUFFER;
-
-						g2.setColor( new java.awt.Color( 0, 0, 0 ) );
-						g2.draw( holeBounds );
-						if( IDE.this.currentDropReceptorComponent == component ) {
-							g2.setColor( new java.awt.Color( 0, 255, 0 ) );
-							g2.setStroke( THIN_STROKE );
-							g2.draw( holeBounds );
-							if( IDE.this.currentDropReceptorComponent == component ) {
-								g2.setColor( new java.awt.Color( 0, 255, 0 ) );
-								g2.setStroke( THIN_STROKE );
-								g2.draw( holeBounds );
-								g2.setStroke( THICK_STROKE );
-								g2.setColor( new java.awt.Color( 191, 255, 191, 63 ) );
-								g2.fill( holeBounds );
-							}
-							//
-							////						g2.translate( 1, 1 );
-							////						g2.draw( holeBounds );
-							////						g2.translate( -1, -1 );
-							//						if( IDE.this.currentDropReceptorComponent == component ) {
-							//							g2.setColor( new java.awt.Color( 0, 0, 0 ) );
-							//							g2.draw( holeBounds );
-							//						} else {
-							////							g2.setColor( java.awt.Color.YELLOW );
-							////							g2.draw3DRect( holeBounds.x, holeBounds.y, holeBounds.width, holeBounds.height, false );
-							//							int x0 = holeBounds.x;
-							//							int x1 = holeBounds.x+holeBounds.width;
-							//							int y0 = holeBounds.y;
-							//							int y1 = holeBounds.y+holeBounds.height;
-							//							g2.setColor( new java.awt.Color( 63, 91, 63 ) );
-							//							g2.drawLine( x0, y1, x0, y0 );
-							//							g2.drawLine( x0, y0, x1, y0 );
-							//							g2.setColor( new java.awt.Color( 160, 191, 160 ) );
-							//							g2.drawLine( x0, y1, x1, y1 );
-							//							g2.drawLine( x1, y1, x1, y0 );
-							//						}
-						}
-					}
-					//					if( potentialDragSourceBounds != null ) {
-					//						g2.setColor( java.awt.Color.BLUE );
-					//						g2.draw( potentialDragSourceBounds );
-					//					}
-				}
-			}
-		}
-	}
 
 	//public abstract void handleDelete( org.lgna.project.ast.Node node );
 
+	private org.alice.ide.stencils.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
+	
 	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		org.alice.ide.codedrop.CodeDropReceptor codeEditor = getCodeEditorInFocus();
-		if( codeEditor != null ) {
-			this.holes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			codeEditor.addPotentialDropReceptors( this.holes, type );
-			this.potentialDragSource = potentialDragSource;
-			//java.awt.Rectangle bounds = codeEditor.getBounds();
-			//bounds = javax.swing.SwingUtilities.convertRectangle( codeEditor, bounds, layeredPane );
-			//this.stencil.setBounds( bounds );
+		if( this.potentialDropReceptorsStencil != null ) {
+			//pass
+		} else {
 			javax.swing.JLayeredPane layeredPane = this.getFrame().getAwtComponent().getLayeredPane();
-			if( this.stencil != null ) {
-				//pass
-			} else {
-				this.stencil = new ComponentStencil();
-			}
-			this.stencil.setBounds( layeredPane.getBounds() );
-			layeredPane.add( this.stencil, null );
-			layeredPane.setLayer( this.stencil, javax.swing.JLayeredPane.POPUP_LAYER - 1 );
-
-			this.stencil.repaint();
+			this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( layeredPane );
 		}
+		this.potentialDropReceptorsStencil.showStencilOver( potentialDragSource, type );
 	}
 	public void hideStencil() {
-		javax.swing.JLayeredPane layeredPane = this.getFrame().getAwtComponent().getLayeredPane();
-		if( this.stencil != null && this.stencil.getParent() == layeredPane ) {
-			layeredPane.remove( this.stencil );
-			layeredPane.repaint();
-			this.holes = null;
-			this.potentialDragSource = null;
+		if( this.potentialDropReceptorsStencil != null ) {
+			this.potentialDropReceptorsStencil.hideStencil();
 		}
 	}
 
-	public void handleDragStarted( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		this.potentialDragSource = null;
-		if( this.stencil != null && this.holes != null ) {
-			this.stencil.repaint();
+	@Deprecated
+	@Override
+	public void setDragInProgress( boolean isDragInProgress ) {
+		super.setDragInProgress( isDragInProgress );
+		if( this.potentialDropReceptorsStencil != null ) {
+			this.potentialDropReceptorsStencil.setDragInProgress( isDragInProgress );
+		}
+	}
+	public void handleDragStarted( org.lgna.croquet.history.DragStep dragStep ) {
+		if( this.potentialDropReceptorsStencil != null ) {
+			this.potentialDropReceptorsStencil.handleDragStarted( dragStep );
 		}
 		ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
-		if( (dragAndDropContext.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0 ) {
+		if( (dragStep.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0 ) {
 			reasonToDisableSomeAmountOfRendering = ReasonToDisableSomeAmountOfRendering.DRAG_AND_DROP;
 		} else {
 			reasonToDisableSomeAmountOfRendering = ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
 		}
 		getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		//		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
-		//		if( this.stencil != null && this.holes != null ) {
-		//			this.stencil.repaint();
-		//		}
-	}
-	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		this.currentDropReceptorComponent = null;
-		if( this.stencil != null && this.holes != null ) {
-			this.stencil.repaint();
+	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragStep ) {
+		if( this.potentialDropReceptorsStencil != null ) {
+			this.potentialDropReceptorsStencil.handleDragEnteredDropReceptor( dragStep );
 		}
 	}
-	public void handleDragStopped( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		getPerspectiveState().getValue().enableRendering();
+	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep dragStep ) {
+		if( this.potentialDropReceptorsStencil != null ) {
+			this.potentialDropReceptorsStencil.handleDragExitedDropReceptor( dragStep );
+		}
+	}
+	public void handleDragStopped( org.lgna.croquet.history.DragStep dragStep ) {
+		if( this.potentialDropReceptorsStencil != null ) {
+			this.potentialDropReceptorsStencil.handleDragStopped( dragStep );
+		}
 	}
 
 	
@@ -651,12 +537,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			text = null;
 		}
 		return text;
-	}
-
-	@Override
-	public void setDragInProgress( boolean isDragInProgress ) {
-		super.setDragInProgress( isDragInProgress );
-		this.currentDropReceptorComponent = null;
 	}
 
 	private static <E extends org.lgna.project.ast.Node> E getAncestor( org.lgna.project.ast.Node node, Class< E > cls ) {
