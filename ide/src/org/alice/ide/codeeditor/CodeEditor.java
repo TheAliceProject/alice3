@@ -49,7 +49,7 @@ import org.alice.ide.x.components.StatementListPropertyView;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implements java.awt.print.Printable {
+public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implements org.lgna.croquet.DropReceptor, java.awt.print.Printable {
 	private static class RootStatementListPropertyPane extends StatementListPropertyView {
 		private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
 		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
@@ -78,6 +78,26 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 	private final org.lgna.croquet.components.ScrollPane scrollPane;
 	private final RootStatementListPropertyPane rootStatementListPropertyPane;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
+
+	@Deprecated
+	public static class Resolver implements org.lgna.croquet.resolvers.CodableResolver< CodeEditor > {
+		private final org.lgna.project.ast.AbstractCode code;
+		public Resolver( org.lgna.project.ast.AbstractCode code ) {
+			this.code = code;
+		}
+		public Resolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			java.util.UUID id = binaryDecoder.decodeId();
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+			this.code = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			// TODO Auto-generated method stub
+			binaryEncoder.encode( this.code.getId() );
+		}
+		public org.alice.ide.codeeditor.CodeEditor getResolved() {
+			return (org.alice.ide.codeeditor.CodeEditor)((org.alice.ide.declarationseditor.code.components.CodeDeclarationView)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( this.code ).getView()).getCodeDropReceptor();
+		}
+	}
 
 	public CodeEditor( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
@@ -120,8 +140,9 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		return "Drop...";
 	}
+	
 	public org.lgna.croquet.resolvers.CodableResolver< CodeEditor > getCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<CodeEditor>( this, this.code, org.lgna.project.ast.AbstractCode.class );
+		return new Resolver( this.code );
 	}
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		if( potentialDropSite instanceof BlockStatementIndexPair ) {

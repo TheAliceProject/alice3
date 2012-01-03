@@ -567,7 +567,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setSelectedItem( composite );
 		}
 	}
-	public org.alice.ide.codedrop.CodeDropReceptor getCodeEditorInFocus() {
+	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		org.alice.ide.perspectives.IdePerspective perspective = this.getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getCodeEditorInFocus();
