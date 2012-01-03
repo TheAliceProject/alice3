@@ -263,6 +263,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			this.potentialDropReceptorsStencil.setDragInProgress( isDragInProgress );
 		}
 	}
+	@Deprecated
 	public void handleDragStarted( org.lgna.croquet.history.DragStep dragStep ) {
 		if( this.potentialDropReceptorsStencil != null ) {
 			this.potentialDropReceptorsStencil.handleDragStarted( dragStep );
@@ -275,16 +276,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
+	@Deprecated
 	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragStep ) {
 		if( this.potentialDropReceptorsStencil != null ) {
 			this.potentialDropReceptorsStencil.handleDragEnteredDropReceptor( dragStep );
 		}
 	}
+	@Deprecated
 	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep dragStep ) {
 		if( this.potentialDropReceptorsStencil != null ) {
 			this.potentialDropReceptorsStencil.handleDragExitedDropReceptor( dragStep );
 		}
 	}
+	@Deprecated
 	public void handleDragStopped( org.lgna.croquet.history.DragStep dragStep ) {
 		if( this.potentialDropReceptorsStencil != null ) {
 			this.potentialDropReceptorsStencil.handleDragStopped( dragStep );
