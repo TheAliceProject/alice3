@@ -77,6 +77,7 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		map.put( turnableType.getDeclaredMethod( "orientTo", org.lgna.story.OrientTo.Detail[].class ), value += 0.01 );
 		map.put( movableTurnableType.getDeclaredMethod( "moveTo", org.lgna.story.Entity.class, org.lgna.story.MoveTo.Detail[].class ), value += 0.01 );
 		map.put( movableTurnableType.getDeclaredMethod( "moveAndOrientTo", org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientTo.Detail[].class ), value += 0.01 );
+		map.put( movableTurnableType.getDeclaredMethod( "place", org.lgna.story.SpatialRelation.class, org.lgna.story.Entity.class, org.lgna.story.Place.Detail[].class ), value += 0.01 );
 	}
 	private static double getValue( org.lgna.project.ast.AbstractMember method ) {
 		Double rv = map.get( method );

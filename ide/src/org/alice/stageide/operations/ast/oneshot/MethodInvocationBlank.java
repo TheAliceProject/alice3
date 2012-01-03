@@ -89,6 +89,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 			methods.add( movableTurnableType.getDeclaredMethod( "moveAwayFrom", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveAwayFrom.Detail[].class ) );
 			methods.add( movableTurnableType.getDeclaredMethod( "moveTo", org.lgna.story.Entity.class, org.lgna.story.MoveTo.Detail[].class ) );
 			methods.add( movableTurnableType.getDeclaredMethod( "moveAndOrientTo", org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientTo.Detail[].class ) );
+			methods.add( movableTurnableType.getDeclaredMethod( "place", org.lgna.story.SpatialRelation.class, org.lgna.story.Entity.class, org.lgna.story.Place.Detail[].class ) );
 		}
 
 //		if( jointedModelType.isAssignableFrom( fieldValueType ) ) {
