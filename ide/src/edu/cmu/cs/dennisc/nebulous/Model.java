@@ -40,7 +40,12 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
 		double[] buffer = new double[ 12 ];
-		getLocalTransformationForPartNamed( buffer, joint );
+		try {
+			getLocalTransformationForPartNamed( buffer, joint );
+		} catch( RuntimeException re ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( joint );
+			throw re;
+		}
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 affineMatrix = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
 		return affineMatrix;
 	}
