@@ -137,4 +137,19 @@ public class SystemUtilities {
 		}
 		return rv;
 	}
+	
+	
+	private static final String PATH_SEPARATOR = System.getProperty( "path.separator" );;
+	private static String[] parsePath( String propertyName ) {
+		String value = System.getProperty( propertyName );
+		assert value != null;
+		return value.split( PATH_SEPARATOR );
+	}
+	
+	public static String[] getClassPath() {
+		return parsePath( "java.class.path" );
+	}
+	public static String[] getLibraryPath() {
+		return parsePath( "java.library.path" );
+	}
 }
