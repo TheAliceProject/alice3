@@ -92,49 +92,19 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
-		final org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		if( ide.getProject() != null ) {
+			final org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 			org.alice.stageide.program.ProgramLaunchUtilties.launchProgramInContainerForNormalPlay( rv.getAwtComponent(), this.restartAction, new org.alice.stageide.program.ProgramLaunchUtilties.LaunchObserver() {
 				public void programCreated( org.lgna.story.Program program ) {
 					RunOperation.this.programImp = org.lgna.story.ImplementationAccessor.getImplementation( program );
 				}
 			} );
-//			ide.ensureProjectCodeUpToDate();
-//
-//			ide.getPerspectiveState().getValue().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
-//
-//			new Thread() {
-//				@Override
-//				public void run() {
-//					final org.lgna.project.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
-//					vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
-//					vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.story.event.MouseButtonAdapter.class );
-//					vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
-//					final org.lgna.project.ast.NamedUserType programType = ide.getProgramType();
-//					//String[] args = {};
-//					final org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
-//					org.lgna.story.Program program = programInstance.getJavaInstance( org.lgna.story.Program.class );
-//					RunOperation.this.programImp = org.lgna.story.ImplementationAccessor.getImplementation( program );
-//					
-//					//edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "set restart operation" );
-//					//RunOperation.this.programImp.setRestartAction( RestartOperation.getInstance().getSwingModel().getAction() );
-//					RunOperation.this.programImp.setRestartAction( RunOperation.this.restartAction );
-//					
-//					RunOperation.this.programImp.initializeInAwtContainer( rv.getAwtComponent() );
-//					org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
-//						public void run() {
-//							vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
-//						}
-//					} );
-//				}
-//			}.start();
-//			
-//			
+			return rv;
 		} else {
 			ide.showMessageDialog( "Please open a project first." );
+			return null;
 		}
-		return rv;
 	}
 	@Override
 	protected void releaseContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {

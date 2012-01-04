@@ -105,7 +105,7 @@ public class ProgramLaunchUtilties {
 		launchProgramInContainer( getUpToDateProgramType(), new org.lgna.project.virtualmachine.ReleaseVirtualMachine(), container, restartAction, launchObserver );
 	}
 	public static void launchProgramInContainerForVideoEncoding( java.awt.Container container, LaunchObserver launchObserver ) {
-		enableRendering();
+		disableRendering();
 		launchProgramInContainer( getUpToDateProgramType(), new org.lgna.project.virtualmachine.ReleaseVirtualMachine(), container, null, launchObserver );
 	}
 	public static void cleanUpProgram( org.lgna.story.Program program ) {
