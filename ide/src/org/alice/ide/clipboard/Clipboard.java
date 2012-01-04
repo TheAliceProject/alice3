@@ -137,7 +137,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.
 		return this.dropSite;
 	}
 	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-		return dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel;
+		return dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 	}
 	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep step ) {
 		org.alice.ide.common.AbstractStatementPane pane = (org.alice.ide.common.AbstractStatementPane)step.getDragSource();

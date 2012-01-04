@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryDragModel extends org.alice.ide.croquet.models.IdeDragModel {
+public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 	public GalleryDragModel( java.util.UUID id ) {
 		super( id );
 	}
@@ -62,5 +62,17 @@ public abstract class GalleryDragModel extends org.alice.ide.croquet.models.IdeD
 		} else {
 			return null;
 		}
+	}
+	@Override
+	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
+	}
+	@Override
+	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
+	}
+	@Override
+	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
+	}
+	@Override
+	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
 	}
 }

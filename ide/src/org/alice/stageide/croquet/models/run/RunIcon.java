@@ -40,39 +40,69 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
+package org.alice.stageide.croquet.models.run;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
-	public IdeDragModel( java.util.UUID id ) {
-		super( id );
+public class RunIcon  implements javax.swing.Icon {
+	//private static final java.awt.Color ENABLED_CIRCLE_COLOR = java.awt.Color.GREEN.darker();
+	//private static final java.awt.Color DISABLED_CIRCLE_COLOR = java.awt.Color.GRAY;
+	
+	private static final java.awt.Color ROLLOVER_COLOR = new java.awt.Color( 191, 255, 191 );
+	private static final java.awt.Color PRESSED_COLOR = new java.awt.Color( 63, 127, 63 );
+	private static final java.awt.Color ENABLED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( ROLLOVER_COLOR, PRESSED_COLOR, 0.5f );
+	private static final java.awt.Color DISABLED_COLOR = java.awt.Color.GRAY;
+	
+	public int getIconHeight() {
+		return 24;
 	}
-	private org.alice.ide.stencils.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
-		return org.alice.ide.IDE.getActiveInstance().getPotentialDropReceptorsStencil();
+	public int getIconWidth() {
+		return 24;
 	}
-	@Override
-	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStarted( step );
-//		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
-//		if( (step.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0 ) {
-//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.DRAG_AND_DROP;
-//		} else {
-//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
-//		}
-//		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
-	}
-	@Override
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor( step );
-	}
-	@Override
-	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor( step );
-	}
-	@Override
-	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStopped( step );
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		if( c instanceof javax.swing.AbstractButton ) {
+			javax.swing.ButtonModel buttonModel = ((javax.swing.AbstractButton)c).getModel();
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.Color prevColor = g2.getColor();
+			Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+			try {
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				int w = this.getIconWidth();
+				int h = this.getIconHeight();
+				int offset = w / 5;
+				int x0 = x + offset * 2;
+				int x1 = x + w - offset;
+	
+				int y0 = y + offset;
+				int y1 = y + h - offset;
+				int yC = (y0 + y1) / 2;
+	
+				int[] xs = { x0, x1, x0 };
+				int[] ys = { y0, yC, y1 };
+	
+				if( buttonModel.isEnabled() ) {
+					if( buttonModel.isPressed() ) {
+						g2.setColor( PRESSED_COLOR );
+					} else {
+						if( buttonModel.isRollover() || buttonModel.isArmed() ) {
+							g2.setColor( ROLLOVER_COLOR );
+						} else {
+							g2.setColor( ENABLED_COLOR );
+						}
+					}
+				} else {
+					g2.setColor( DISABLED_COLOR );
+				}
+				        
+				g2.fillPolygon( xs, ys, 3 );
+				
+				g2.setColor( java.awt.Color.DARK_GRAY );
+				g2.drawPolygon( xs, ys, 3 );
+			} finally {
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+				g2.setColor( prevColor );
+			}
+		}
 	}
 }

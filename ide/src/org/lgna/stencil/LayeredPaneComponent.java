@@ -71,9 +71,16 @@ public abstract class LayeredPaneComponent extends org.lgna.croquet.components.J
 	public void addToLayeredPane() {
 		this.layeredPane.add( this.getAwtComponent(), null );
 		this.layeredPane.setLayer( this.getAwtComponent(), this.menuPolicy.getStencilLayer() );
+		this.layeredPane.repaint();
 	}
 	public void removeFromLayeredPane() {
-		this.layeredPane.remove( this.getAwtComponent() );
+		java.awt.Container awtParent = this.getAwtComponent().getParent();
+		if( awtParent == this.layeredPane ) {
+			this.layeredPane.remove( this.getAwtComponent() );
+			this.layeredPane.repaint();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( awtParent );
+		}
 	}
 	@Override
 	protected void handleDisplayable() {
