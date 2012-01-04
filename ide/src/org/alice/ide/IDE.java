@@ -73,6 +73,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			IDE.this.setPerspective( nextValue );
 		}
 	};
+
+	private final org.alice.ide.stencils.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -98,6 +100,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				getRunOperation().setEnabled( nextProject != null );
 			}
 		} );
+		
+		this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
 	}
 
 	public abstract ApiConfigurationManager getApiConfigurationManager();
@@ -236,65 +240,23 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 
-	//public abstract void handleDelete( org.lgna.project.ast.Node node );
-
-	private org.alice.ide.stencils.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
+	public org.alice.ide.stencils.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
+		return this.potentialDropReceptorsStencil;
+	}
 	
 	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		if( this.potentialDropReceptorsStencil != null ) {
-			//pass
-		} else {
-			javax.swing.JLayeredPane layeredPane = this.getFrame().getAwtComponent().getLayeredPane();
-			this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( layeredPane );
-		}
 		this.potentialDropReceptorsStencil.showStencilOver( potentialDragSource, type );
 	}
 	public void hideStencil() {
-		if( this.potentialDropReceptorsStencil != null ) {
-			this.potentialDropReceptorsStencil.hideStencil();
-		}
+		this.potentialDropReceptorsStencil.hideStencil();
 	}
 
 	@Deprecated
 	@Override
 	public void setDragInProgress( boolean isDragInProgress ) {
 		super.setDragInProgress( isDragInProgress );
-		if( this.potentialDropReceptorsStencil != null ) {
-			this.potentialDropReceptorsStencil.setDragInProgress( isDragInProgress );
-		}
+		this.potentialDropReceptorsStencil.setDragInProgress( isDragInProgress );
 	}
-	@Deprecated
-	public void handleDragStarted( org.lgna.croquet.history.DragStep dragStep ) {
-		if( this.potentialDropReceptorsStencil != null ) {
-			this.potentialDropReceptorsStencil.handleDragStarted( dragStep );
-		}
-		ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
-		if( (dragStep.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0 ) {
-			reasonToDisableSomeAmountOfRendering = ReasonToDisableSomeAmountOfRendering.DRAG_AND_DROP;
-		} else {
-			reasonToDisableSomeAmountOfRendering = ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
-		}
-		getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
-	}
-	@Deprecated
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragStep ) {
-		if( this.potentialDropReceptorsStencil != null ) {
-			this.potentialDropReceptorsStencil.handleDragEnteredDropReceptor( dragStep );
-		}
-	}
-	@Deprecated
-	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep dragStep ) {
-		if( this.potentialDropReceptorsStencil != null ) {
-			this.potentialDropReceptorsStencil.handleDragExitedDropReceptor( dragStep );
-		}
-	}
-	@Deprecated
-	public void handleDragStopped( org.lgna.croquet.history.DragStep dragStep ) {
-		if( this.potentialDropReceptorsStencil != null ) {
-			this.potentialDropReceptorsStencil.handleDragStopped( dragStep );
-		}
-	}
-
 	
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
 		return accessible.getValueType().isArray() == false;
@@ -389,34 +351,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.preservePreferences();
 		org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().fire( trigger );
 	}
-
-//	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.DragComponent source ) {
-//		if( source instanceof org.alice.stageide.gallerybrowser.GalleryDragComponent ) {
-//			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.getSceneEditor() );
-//		} else {
-//			assert source != null;
-//			org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
-//			if( codeEditor != null ) {
-//				if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
-//					org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
-//					return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
-//				} else {
-//					java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//					rv.add( codeEditor );
-//					//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
-//					//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
-//					//					rv.add( dropReceptor );
-//					//				}
-//					//			}
-//					return rv;
-//				}
-//			} else {
-//				//todo: investigate
-//				return java.util.Collections.emptyList();
-//			}
-//		}
-//	}
-
 
 	private org.lgna.project.virtualmachine.VirtualMachine vmForSceneEditor;
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {
