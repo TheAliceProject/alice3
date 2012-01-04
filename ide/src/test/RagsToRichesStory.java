@@ -48,7 +48,6 @@ import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
 import org.lgna.story.Cone;
-import org.lgna.story.Entity;
 import org.lgna.story.Ground;
 import org.lgna.story.Joint;
 import org.lgna.story.Model;
@@ -69,7 +68,6 @@ import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
-import edu.cmu.cs.dennisc.matt.AbstractListener;
 import edu.cmu.cs.dennisc.matt.CollisionListener;
 import edu.cmu.cs.dennisc.matt.MouseClickedListener;
 

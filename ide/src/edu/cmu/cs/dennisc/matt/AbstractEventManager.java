@@ -6,11 +6,10 @@ public abstract class AbstractEventManager {
 	
 	protected boolean shouldFire = true;
 
-	public void silenceListeners() {
-		shouldFire  = false;
+	public void silenceListeners(){
+		shouldFire = false;
 	}
-
-	public void restoreListeners() {
+	public void restoreListeners(){
 		shouldFire = true;
 	}
 	

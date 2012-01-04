@@ -14,7 +14,7 @@ public class EventManager implements MouseButtonListener {
 			mouse.addListener((MouseClickedListener) event);
 		}
 		if(event instanceof TransformationListener){
-			
+			trans.addListener(event);
 		}
 	}
 
@@ -22,10 +22,6 @@ public class EventManager implements MouseButtonListener {
 		mouse.fireAllTargeted(e.getModelAtMouseLocation());
 	}
 	
-	public void transformationObserved(){
-		
-	}
-
 	public void silenceAllListeners() {
 		mouse.silenceListeners();
 	}

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import org.lgna.story.Model;
 
 
-abstract class TransformationListener extends AbstractListener{
+abstract class TransformationListener extends AbstractListener {
 	
 	private LinkedList<Model> observing;
 
@@ -16,7 +16,4 @@ abstract class TransformationListener extends AbstractListener{
 	public LinkedList<Model> getObserving() {
 		return observing;
 	}
-	
-	public abstract boolean check(Model check);
-
 }

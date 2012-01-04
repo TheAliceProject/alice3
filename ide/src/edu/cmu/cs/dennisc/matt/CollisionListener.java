@@ -1,6 +1,7 @@
 package edu.cmu.cs.dennisc.matt;
 
 import java.util.LinkedList;
+
 import org.lgna.story.Model;
 
 public abstract class CollisionListener extends TransformationListener {
@@ -33,16 +34,6 @@ public abstract class CollisionListener extends TransformationListener {
 		group1.add(withThis);
 		this.groupOne = group1;
 		this.groupTwo = group2;
-	}
-	
-	@Override
-	public boolean check(Model check){//check for collisions
-		if(groupOne.contains(check)){
-			for(Model e: groupTwo){
-				
-			}
-		}
-		return false;
 	}
 	
 	@Override

@@ -41,4 +41,12 @@ public class MouseClickedManager extends AbstractEventManager {
 			}
 		}
 	}
+
+	public void silenceListeners() {
+		shouldFire  = false;
+	}
+
+	public void restoreListeners() {
+		shouldFire = true;
+	}
 }
