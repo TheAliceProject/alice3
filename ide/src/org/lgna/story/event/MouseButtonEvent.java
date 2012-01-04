@@ -43,6 +43,7 @@
 package org.lgna.story.event;
 
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Visual;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
@@ -79,7 +80,7 @@ public class MouseButtonEvent extends edu.cmu.cs.dennisc.pattern.event.Event< ja
 						if( pickResult != null ) {
 							edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 							if( sgVisual != null ) {
-								org.lgna.story.Entity element = EntityImp.getInstance( sgVisual );
+								org.lgna.story.Entity element = EntityImp.getAbstractionFromSgElement( sgVisual );
 								if( element instanceof org.lgna.story.Model ) {
 									this.partAtMouseLocation = (org.lgna.story.Model)element;
 								}
@@ -90,7 +91,7 @@ public class MouseButtonEvent extends edu.cmu.cs.dennisc.pattern.event.Event< ja
 										break;
 									}
 									if( sgParent == sceneImp.getSgComposite() ) {
-										org.lgna.story.Entity e = EntityImp.getInstance( sgComponent );
+										org.lgna.story.Entity e = EntityImp.getAbstractionFromSgElement( sgComponent );
 										if( e instanceof org.lgna.story.Model ) {
 											this.modelAtMouseLocation = (org.lgna.story.Model)e;
 										}
@@ -114,6 +115,8 @@ public class MouseButtonEvent extends edu.cmu.cs.dennisc.pattern.event.Event< ja
 		this.pickIfNecessary();
 		return this.modelAtMouseLocation;
 	}
+	
+	
 
 //	private synchronized void pickIfNecessary() {
 //		if( this.isPickPerformed ) {

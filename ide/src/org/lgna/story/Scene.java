@@ -43,11 +43,16 @@
 
 package org.lgna.story;
 
+import java.awt.event.MouseListener;
+
 import org.lgna.project.annotations.*;
+import org.lgna.story.event.MouseButtonListener;
+
+import edu.cmu.cs.dennisc.matt.AbstractListener;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Scene extends Entity {
+public abstract class Scene extends Entity{
 	private final org.lgna.story.implementation.SceneImp implementation = new org.lgna.story.implementation.SceneImp( this );
 
 	@Override
@@ -60,6 +65,7 @@ public abstract class Scene extends Entity {
 		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 		this.handleActiveChanged( isActive, activeCount );
 		if( isActive ) {
+			
 			this.implementation.addCamerasTo( program.getImplementation() );
 		} else {
 			this.implementation.removeCamerasFrom( program.getImplementation() );
@@ -125,4 +131,24 @@ public abstract class Scene extends Entity {
 		this.getImplementation().fogDensity.animateValue( density.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+		this.getImplementation().addMouseButtonListener( mouseButtonListener );
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+		this.getImplementation().removeMouseButtonListener( mouseButtonListener );
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	protected void addListener(AbstractListener event){
+		this.getImplementation().addListener(event);
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	protected void silenceAllListeners(){
+		this.getImplementation().silenceAllListeners();
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	protected void restoreAllListeners(){
+		this.getImplementation().restoreAllListeners();
+	}
 }

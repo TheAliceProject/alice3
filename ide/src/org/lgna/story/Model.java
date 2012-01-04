@@ -138,12 +138,12 @@ public abstract class Model extends MovableTurnable implements MutableRider, Res
 	}
 	
 
-	@MethodTemplate(visibility=Visibility.PRIME_TIME)
-	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
-		this.getImplementation().addMouseButtonListener( mouseButtonListener );
-	}
-	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
-		this.getImplementation().removeMouseButtonListener( mouseButtonListener );
-	}
+//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+//	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+//		this.getImplementation().addMouseButtonListener( mouseButtonListener );
+//	}
+//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+//	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+//		this.getImplementation().removeMouseButtonListener( mouseButtonListener );
+//	}
 }

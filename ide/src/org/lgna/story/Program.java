@@ -47,7 +47,7 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public /*abstract*/ class Program {
-	private final org.lgna.story.implementation.ProgramImp implementation = new org.lgna.story.implementation.ProgramImp( this );
+	protected final org.lgna.story.implementation.ProgramImp implementation = new org.lgna.story.implementation.ProgramImp( this );
 	private Scene activeScene;
 	/*package-private*/ org.lgna.story.implementation.ProgramImp getImplementation() {
 		return this.implementation;
