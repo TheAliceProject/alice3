@@ -174,6 +174,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return rv;
 	}
+	@Override
+	public void ensureProjectCodeUpToDate() {
+		this.generateCodeForSceneSetUp();
+	}
+	public org.lgna.project.ast.NamedUserType getUpToDateProgramType() {
+		org.lgna.project.Project project = this.getUpToDateProject();
+		if( project != null ) {
+			return project.getProgramType();
+		} else {
+			return null;
+		}
+	}
+	
 	public java.util.List< org.lgna.project.ast.FieldAccess > getFieldAccesses( final org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
 		return org.lgna.project.ProgramTypeUtilities.getFieldAccesses( programType, field );
@@ -398,10 +411,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			return null;
 		}
-	}
-	@Override
-	public void ensureProjectCodeUpToDate() {
-		this.generateCodeForSceneSetUp();
 	}
 
 	private static final String GENERATED_CODE_WARNING = "DO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT\n\nThis code is automatically generated.  Any work you perform in this method will be overwritten.\n\nDO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT";

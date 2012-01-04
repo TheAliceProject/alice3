@@ -605,11 +605,8 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 	private void resetModel() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			org.lgna.project.Project project = ide.getProject();
+			org.lgna.project.Project project = ide.getUpToDateProject();
 			if( project != null ) {
-
-				ide.ensureProjectCodeUpToDate();
-
 				org.lgna.common.Resource[] resources = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( project.getResources(), org.lgna.common.Resource.class, true );
 				java.util.Set< org.lgna.common.Resource > referencedResources = org.lgna.project.ProgramTypeUtilities.getReferencedResources( project );
 				javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );

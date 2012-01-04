@@ -40,41 +40,69 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.file;
+package org.alice.stageide.croquet.models.run;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public ExportVideoUploadToYouTubeOperation() {
-		super( java.util.UUID.fromString( "fd6ec0d7-add3-4061-a895-f085f45c0667" ) );
-		this.setName( "Export Video / Upload To YouTube\u2122..." );
+public class RunIcon  implements javax.swing.Icon {
+	//private static final java.awt.Color ENABLED_CIRCLE_COLOR = java.awt.Color.GREEN.darker();
+	//private static final java.awt.Color DISABLED_CIRCLE_COLOR = java.awt.Color.GRAY;
+	
+	private static final java.awt.Color ROLLOVER_COLOR = new java.awt.Color( 191, 255, 191 );
+	private static final java.awt.Color PRESSED_COLOR = new java.awt.Color( 63, 127, 63 );
+	private static final java.awt.Color ENABLED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( ROLLOVER_COLOR, PRESSED_COLOR, 0.5f );
+	private static final java.awt.Color DISABLED_COLOR = java.awt.Color.GRAY;
+	
+	public int getIconHeight() {
+		return 24;
 	}
-	@Override
-	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
-		final org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getUpToDateProject();
-		if( project != null ) {
-			final int frameRate = 24;
-			//this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
-			org.alice.media.VideoCapturePane videoCapturePane = new org.alice.media.VideoCapturePane(project, frameRate){
-
-				@Override
-				protected edu.cmu.cs.dennisc.animation.Program createProgram( org.lgna.project.Project project )
-				{
-					org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-					return ide.createRuntimeProgramForMovieEncoding( vm, project.getProgramType(), frameRate );
+	public int getIconWidth() {
+		return 24;
+	}
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		if( c instanceof javax.swing.AbstractButton ) {
+			javax.swing.ButtonModel buttonModel = ((javax.swing.AbstractButton)c).getModel();
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.Color prevColor = g2.getColor();
+			Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+			try {
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				int w = this.getIconWidth();
+				int h = this.getIconHeight();
+				int offset = w / 5;
+				int x0 = x + offset * 2;
+				int x1 = x + w - offset;
+	
+				int y0 = y + offset;
+				int y1 = y + h - offset;
+				int yC = (y0 + y1) / 2;
+	
+				int[] xs = { x0, x1, x0 };
+				int[] ys = { y0, yC, y1 };
+	
+				if( buttonModel.isEnabled() ) {
+					if( buttonModel.isPressed() ) {
+						g2.setColor( PRESSED_COLOR );
+					} else {
+						if( buttonModel.isRollover() || buttonModel.isArmed() ) {
+							g2.setColor( ROLLOVER_COLOR );
+						} else {
+							g2.setColor( ENABLED_COLOR );
+						}
+					}
+				} else {
+					g2.setColor( DISABLED_COLOR );
 				}
+				        
+				g2.fillPolygon( xs, ys, 3 );
 				
-				@Override
-				protected void onClose()
-				{
-					javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
-				}
-			};
-
-			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-			dialog.setVisible( true );
+				g2.setColor( java.awt.Color.DARK_GRAY );
+				g2.drawPolygon( xs, ys, 3 );
+			} finally {
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+				g2.setColor( prevColor );
+			}
 		}
 	}
 }
