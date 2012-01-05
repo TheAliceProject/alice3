@@ -3,12 +3,12 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Model;
 
-public class CollisionEventManager extends TransformationChangedManager {
+public class CollisionEventManager {
 
 	HashMap<Model, LinkedList<Model>> modelMap = new HashMap<Model, LinkedList<Model>>();
+	LinkedList<Model> modelList = new LinkedList<Model>();
 	
 	HashMap<Model, HashMap<Model, LinkedList<CollisionListener>>> eventMap = 
 			new HashMap<Model, HashMap<Model,LinkedList<CollisionListener>>>();
@@ -18,7 +18,7 @@ public class CollisionEventManager extends TransformationChangedManager {
 		for(Model m: ((TransformationListener) cListener).getObserving()){
 			if(!modelList.contains(m)){
 				modelList.add(m);
-				ImplementationAccessor.getImplementation(m).getSgComposite().addAbsoluteTransformationListener(this);
+//				ImplementationAccessor.getImplementation(m).getSgComposite().addAbsoluteTransformationListener(this);
 			}
 		}
 		for(Model m: cListener.groupOne){
@@ -47,15 +47,15 @@ public class CollisionEventManager extends TransformationChangedManager {
 	}
 
 	public void fireRelevantEvents(Model changed){
-//		for(Model m: modelMap.get(changed)){
-//			if(false){//m collidesWith changed
-//				for(CollisionListener event: eventMap.get(changed).get(m)){
-//					LinkedList<Model> list = new LinkedList<Model>();
-//					list.add(m);
-//					list.add(changed);
-//					event.fireEvent(list);
-//				}
-//			}
-//		}
+		for(Model m: modelMap.get(changed)){
+			if(false){//m collidesWith changed
+				for(CollisionListener event: eventMap.get(changed).get(m)){
+					LinkedList<Model> list = new LinkedList<Model>();
+					list.add(m);
+					list.add(changed);
+					event.fireEvent(list);
+				}
+			}
+		}
 	}
 }

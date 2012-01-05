@@ -23,7 +23,7 @@ public class TransformationChangedManager extends AbstractEventManager implement
 	public void addListener(AbstractListener listener) {
 		if(listener instanceof TransformationListener){
 			if(listener instanceof CollisionListener){
-				collision.addListener(listener);
+				collision.addListener((CollisionListener) listener);
 			}
 			for(Model m: ((TransformationListener) listener).getObserving()){
 				if(!modelList.contains(m)){
@@ -37,7 +37,7 @@ public class TransformationChangedManager extends AbstractEventManager implement
 	@Override
 	public void fireAllTargeted(Model changedEntity) {
 		if(shouldFire){
-			collision.fireAllTargeted(changedEntity);
+			collision.fireRelevantEvents(changedEntity);
 		}
 	}
 
