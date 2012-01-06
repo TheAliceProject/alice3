@@ -66,7 +66,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 //	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
 //		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 //	}
-	private transient org.lgna.story.implementation.ProgramImp programImp;
+	private transient org.alice.stageide.program.ProgramContext programContext;
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = new java.awt.Dimension( 640, 480 );
 	@Override
@@ -95,11 +95,10 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		if( ide.getProject() != null ) {
 			final org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-			org.alice.stageide.program.ProgramLaunchUtilties.launchProgramInContainerForNormalPlay( rv.getAwtComponent(), this.restartAction, new org.alice.stageide.program.ProgramLaunchUtilties.LaunchObserver() {
-				public void programCreated( org.lgna.story.Program program ) {
-					RunOperation.this.programImp = org.lgna.story.ImplementationAccessor.getImplementation( program );
-				}
-			} );
+			this.programContext = new org.alice.stageide.program.RunProgramContext();
+			this.programContext.getProgramImp().setRestartAction( this.restartAction );
+			this.programContext.initializeInContainer( rv.getAwtComponent() );
+			this.programContext.invokeMethod0();
 			return rv;
 		} else {
 			ide.showMessageDialog( "Please open a project first." );
@@ -112,16 +111,13 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "releaseContentPane" );
-		RunOperation.this.programImp.shutDown();
-		RunOperation.this.programImp = null;
 		step.finish();
 	}
 	
 	@Override
 	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		super.handleFinally( step, dialog, contentPane );
-		org.lgna.story.Program program = null;
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "track program" );
-		org.alice.stageide.program.ProgramLaunchUtilties.cleanUpProgram( program );
+		this.programContext.cleanUpProgram();
+		this.programContext = null;
 	}
 }

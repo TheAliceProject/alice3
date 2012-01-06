@@ -45,6 +45,7 @@ package org.alice.stageide.program;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class ProgramLaunchUtilties {
 	private ProgramLaunchUtilties() {
 		throw new AssertionError();
