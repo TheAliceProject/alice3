@@ -89,8 +89,11 @@ public abstract class ProgramContext {
 		return this.vm;
 	}
 
+	private org.alice.ide.ReasonToDisableSomeAmountOfRendering rendering;
+	
 	public void initializeInContainer( java.awt.Container container ) {
-		disableRendering();
+		this.rendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM;
+		org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( rendering );
 		this.getProgramImp().initializeInAwtContainer( container );
 	}
 
@@ -104,13 +107,9 @@ public abstract class ProgramContext {
 	}
 	public void cleanUpProgram() {
 		this.getProgramImp().shutDown();
-		enableRendering();
-	}
-
-	private static void disableRendering() {
-		org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
-	}
-	private static void enableRendering() {
-		org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().enableRendering();
+		if( this.rendering != null ) {
+			org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().enableRendering();
+			this.rendering = null;
+		}
 	}
 }
