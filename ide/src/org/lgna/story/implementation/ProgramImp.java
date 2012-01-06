@@ -48,8 +48,12 @@ package org.lgna.story.implementation;
  */
 public class ProgramImp {
 	private final org.lgna.story.Program abstraction;
-	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+
+	public static final Double CLOCK_BASED_FRAME_RATE = null;
+	private Double frameRate = CLOCK_BASED_FRAME_RATE;
+	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator clockBasedAnimator;
+	private edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator;
 	
 	private double simulationSpeedFactor = 1.0; 
 	public ProgramImp( org.lgna.story.Program abstraction ) {
@@ -155,10 +159,10 @@ public class ProgramImp {
 		} else {
 			speedFactor = 0.0;
 		}
-		this.animator.setSpeedFactor( speedFactor );
+		this.getAnimator().setSpeedFactor( speedFactor );
 	}
 	private void handleSpeedChange( double speedFactor ) {
-		this.animator.setSpeedFactor( speedFactor );
+		this.getAnimator().setSpeedFactor( speedFactor );
 	}
 	
 	private javax.swing.Action restartAction;
@@ -189,16 +193,44 @@ public class ProgramImp {
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 	
-	public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
-		if( this.animator != null ) {
+	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator getClockBasedAnimator() {
+		if( this.clockBasedAnimator != null ) {
 			//pass
 		} else {
-			this.animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+			this.clockBasedAnimator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 		}
-		return this.animator;
+		return this.clockBasedAnimator;
 	}
-	public void setAnimator( edu.cmu.cs.dennisc.animation.Animator animator ) {
-		this.animator = animator;
+	private edu.cmu.cs.dennisc.animation.FrameBasedAnimator getFrameBasedAnimator() {
+		if( this.frameBasedAnimator != null ) {
+			//pass
+		} else {
+			this.frameBasedAnimator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
+		}
+		return this.frameBasedAnimator;
+	}
+	public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+		if( this.frameRate == CLOCK_BASED_FRAME_RATE ) {
+			return this.getClockBasedAnimator();
+		} else {
+			return this.getFrameBasedAnimator();
+		}
+	}
+	
+	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_setClockBasedAnimator( edu.cmu.cs.dennisc.animation.ClockBasedAnimator clockBasedAnimator ) {
+		this.clockBasedAnimator = clockBasedAnimator;
+	}
+	
+	public Double getFrameRate() {
+		return this.frameRate;
+	}
+	public void setFrameRate( Double frameRate ) {
+		if( frameRate == CLOCK_BASED_FRAME_RATE ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator = this.getFrameBasedAnimator();
+			frameBasedAnimator.setFramesPerSecond( frameRate );
+		}
 	}
 	
 	public double getSimulationSpeedFactor() {

@@ -54,7 +54,7 @@ public class ProgramLaunchUtilties {
 		public void programCreated( org.lgna.story.Program program );
 	}
 	
-	private static void launchProgramInContainer( final org.lgna.project.ast.NamedUserType programType, final org.lgna.project.virtualmachine.VirtualMachine vm, final java.awt.Container container, final javax.swing.Action restartAction, final LaunchObserver launchObserver ) {
+	private static void launchProgramInContainer( final org.lgna.project.ast.NamedUserType programType, final org.lgna.project.virtualmachine.VirtualMachine vm, final java.awt.Container container, final javax.swing.Action restartAction, final Double frameRate, final LaunchObserver launchObserver ) {
 		new Thread() {
 			@Override
 			public void run() {
@@ -102,11 +102,11 @@ public class ProgramLaunchUtilties {
 	
 	public static void launchProgramInContainerForNormalPlay( java.awt.Container container, javax.swing.Action restartAction, LaunchObserver launchObserver ) {
 		disableRendering();
-		launchProgramInContainer( getUpToDateProgramType(), new org.lgna.project.virtualmachine.ReleaseVirtualMachine(), container, restartAction, launchObserver );
+		launchProgramInContainer( getUpToDateProgramType(), new org.lgna.project.virtualmachine.ReleaseVirtualMachine(), container, restartAction, org.lgna.story.implementation.ProgramImp.CLOCK_BASED_FRAME_RATE, launchObserver );
 	}
-	public static void launchProgramInContainerForVideoEncoding( java.awt.Container container, LaunchObserver launchObserver ) {
+	public static void launchProgramInContainerForVideoEncoding( java.awt.Container container, double frameRate, LaunchObserver launchObserver ) {
 		disableRendering();
-		launchProgramInContainer( getUpToDateProgramType(), new org.lgna.project.virtualmachine.ReleaseVirtualMachine(), container, null, launchObserver );
+		launchProgramInContainer( getUpToDateProgramType(), new org.lgna.project.virtualmachine.ReleaseVirtualMachine(), container, null, frameRate, launchObserver );
 	}
 	public static void cleanUpProgram( org.lgna.story.Program program ) {
 		enableRendering();
