@@ -46,6 +46,6 @@ package org.alice.ide.video.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RecordVideoPanel extends org.lgna.croquet.components.BorderPanel {
+public abstract class RecordVideoPanel extends org.lgna.croquet.components.Panel {
 	public abstract java.awt.Container getLookingGlassContainer();
 }
