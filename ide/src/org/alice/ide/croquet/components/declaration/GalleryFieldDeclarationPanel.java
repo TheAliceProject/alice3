@@ -65,7 +65,8 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.ali
 		javax.swing.Icon prevIcon = this.iconLabel.getIcon();
 		javax.swing.Icon nextIcon;
 		
-		java.lang.reflect.Field fld = this.getFldFromInitializer();
+		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
+		java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
 		if( fld != null ) {
 			java.awt.Image thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( fld.getDeclaringClass(), fld.getName() );
 			if( thumbnail != null ) {
