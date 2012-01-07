@@ -51,7 +51,7 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.ali
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-			GalleryFieldDeclarationPanel.this.updateLabel();
+			GalleryFieldDeclarationPanel.this.update();
 		}
 	};
 	private final org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label();
@@ -61,7 +61,8 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.ali
 		this.iconLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
 		this.addComponent( this.iconLabel, Constraint.LINE_END );
 	}
-	private void updateLabel() {
+	private void update() {
+		this.updateNameTextField();
 		javax.swing.Icon prevIcon = this.iconLabel.getIcon();
 		javax.swing.Icon nextIcon;
 		
@@ -88,7 +89,7 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.ali
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getModel().getInitializerState().addValueObserver( this.initializerListener );
-		this.updateLabel();
+		this.update();
 	}
 	@Override
 	protected void handleUndisplayable() {

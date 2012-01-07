@@ -103,26 +103,35 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 	
 	private String generateNameFromInitializer() {
 		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
-		java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
-		if( fld != null ) {
-			return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
-		} else {
-			org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-			org.lgna.project.ast.AbstractType< ?,?,? > abstractType = constructor.getDeclaringType();
-			String typeName = abstractType.getName();
-			if( typeName != null ) {
-				return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
+		if( instanceCreation != null ) {
+			java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
+			if( fld != null ) {
+				return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
 			} else {
-				return "";
+				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+				org.lgna.project.ast.AbstractType< ?,?,? > abstractType = constructor.getDeclaringType();
+				String typeName = abstractType.getName();
+				if( typeName != null ) {
+					return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
+				} else {
+					return "";
+				}
 			}
+		} else {
+			return "";
 		}
 	}
-	private void updateNameTextField() {
+	protected void updateNameTextField() {
 		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
-			M model = this.getModel();
-			String name = generateNameFromInitializer();
-			model.getNameState().setValue( name );
-			this.nameTextField.selectAll();
+			javax.swing.JTextField jTextField = this.nameTextField.getAwtComponent();
+			if( jTextField.getSelectionStart() == 0 && jTextField.getSelectionEnd() == jTextField.getDocument().getLength() ) {
+				M model = this.getModel();
+				String name = generateNameFromInitializer();
+				model.getNameState().setValue( name );
+				this.nameTextField.requestFocus();
+				this.nameTextField.selectAll();
+				this.nameTextField.repaint();
+			}
 		}
 	}
 	
