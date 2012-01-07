@@ -54,7 +54,18 @@ public class DiscAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Dis
 	private int m_loops = 1;
 
 	private void glDisc( Context c ) {
-		c.glu.gluDisk( c.getQuadric(), m_innerRadius, m_outerRadius, m_slices, m_loops );
+		if( m_element.isFrontFaceVisible.getValue() ) {
+			c.glu.gluDisk( c.getQuadric(), m_innerRadius, m_outerRadius, m_slices, m_loops );
+		}
+		if( m_element.isBackFaceVisible.getValue() ) {
+			c.gl.glPushMatrix();
+			try {
+				c.gl.glRotated( 180.0, 0.0, 1.0, 0.0 );
+				c.glu.gluDisk( c.getQuadric(), m_innerRadius, m_outerRadius, m_slices, m_loops );
+			} finally {
+				c.gl.glPopMatrix();
+			}
+		}
 	}
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
@@ -85,6 +96,10 @@ public class DiscAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Dis
 			setIsGeometryChanged( true );
 		} else if( property == m_element.outerRadius ) {
 			m_outerRadius = m_element.outerRadius.getValue();
+			setIsGeometryChanged( true );
+		} else if( property == m_element.isFrontFaceVisible ) {
+			setIsGeometryChanged( true );
+		} else if( property == m_element.isBackFaceVisible ) {
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

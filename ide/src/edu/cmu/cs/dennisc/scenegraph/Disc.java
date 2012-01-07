@@ -50,17 +50,19 @@ public class Disc extends Shape {
 	public final edu.cmu.cs.dennisc.property.DoubleProperty innerRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
-			assert value >= 0.0;
+			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty outerRadius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
-			assert value >= 0.0;
+			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isFrontFaceVisible = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isBackFaceVisible = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
 
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
