@@ -72,12 +72,14 @@ public class ShapeIcon implements javax.swing.Icon {
 		int rv = this.shape.getBounds().width;
 		rv += this.left;
 		rv += this.right;
+		rv += 1;
 		return rv;
 	}
 	public int getIconHeight() {
 		int rv = this.shape.getBounds().height;
 		rv += this.top;
 		rv += this.bottom;
+		rv += 1;
 		return rv;
 	}
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
