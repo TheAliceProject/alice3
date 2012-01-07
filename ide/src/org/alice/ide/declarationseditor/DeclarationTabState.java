@@ -43,10 +43,6 @@
 
 package org.alice.ide.declarationseditor;
 
-import org.alice.ide.IDE;
-import org.alice.ide.ProjectApplication.ProjectObserver;
-import org.lgna.project.Project;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -95,10 +91,10 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		}
 	};
 	
-	private final ProjectObserver projectListener = new ProjectObserver() {
-		public void projectOpening(Project previousProject, Project nextProject) {
+	private final org.alice.ide.ProjectApplication.ProjectObserver projectListener = new org.alice.ide.ProjectApplication.ProjectObserver() {
+		public void projectOpening(org.lgna.project.Project previousProject, org.lgna.project.Project nextProject) {
 		}
-		public void projectOpened(Project previousProject, Project nextProject) {
+		public void projectOpened(org.lgna.project.Project previousProject, org.lgna.project.Project nextProject) {
 			DeclarationTabState.this.clear();
 		}
 	};
@@ -108,7 +104,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
 		TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueObserver( this.isEmphasizingClassesListener );
-		IDE.getActiveInstance().addProjectObserver( this.projectListener );
+		org.alice.ide.ProjectApplication.getActiveInstance().addProjectObserver( this.projectListener );
 	}
 	private void refresh() {
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
