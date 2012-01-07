@@ -58,23 +58,21 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.ali
 
 	public GalleryFieldDeclarationPanel( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation model ) {
 		super( model );
+		this.iconLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
 		this.addComponent( this.iconLabel, Constraint.LINE_END );
 	}
 	private void updateLabel() {
 		javax.swing.Icon prevIcon = this.iconLabel.getIcon();
-		//javax.swing.Icon nextIcon = new edu.cmu.cs.dennisc.javax.swing.icons.ShapeIcon( new java.awt.geom.Ellipse2D.Float( 0, 0, 100, 100 ), java.awt.Color.RED, java.awt.Color.BLACK ); 
 		javax.swing.Icon nextIcon;
-		
 		org.lgna.project.ast.Expression expression = this.getModel().getInitializerState().getValue();
 		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
 			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
 			org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( instanceCreation );
 			if( argumentField != null ) {
 				java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
-				java.awt.Image thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(fld.getDeclaringClass(), fld.getName());
+				java.awt.Image thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( fld.getDeclaringClass(), fld.getName() );
 				if( thumbnail != null ) {
-					//thumbnail = thumbnail.getScaledInstance( 64, 64, java.awt.Image.SCALE_SMOOTH );
-					nextIcon = new javax.swing.ImageIcon(thumbnail);
+					nextIcon = new javax.swing.ImageIcon( thumbnail );
 				} else {
 					nextIcon = null;
 				}
@@ -84,7 +82,6 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.ali
 		} else {
 			nextIcon = null;
 		}
-
 		this.iconLabel.setIcon( nextIcon );
 		if( edu.cmu.cs.dennisc.javax.swing.IconUtilities.areSizesEqual( prevIcon, nextIcon ) ) {
 			//pass
