@@ -49,6 +49,8 @@ package org.alice.ide.croquet.components.declaration;
 public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
 //	private java.awt.Dimension isNotArraySize = null;
 //	private java.awt.Dimension isArraySize = null;
+	
+	private org.lgna.croquet.components.TextField nameTextField;
 	public DeclarationPanel( M model ) {
 		super( model );
 		final int INSET = 16;
@@ -80,6 +82,32 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		super.handleUndisplayable();
 	}
 
+	protected java.lang.reflect.Field getFldFromInitializer() {
+		org.lgna.project.ast.Expression expression = this.getModel().getInitializerState().getValue();
+		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+			org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( instanceCreation );
+			if( argumentField != null ) {
+				java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
+				return fld;
+			}
+		}
+		return null;
+	}
+	
+	private String generateNameFromInitializer() {
+		java.lang.reflect.Field fld = this.getFldFromInitializer();
+		return fld != null ? fld.getName() : "";
+	}
+	private void updateNameTextField() {
+		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
+			M model = this.getModel();
+			String name = org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( generateNameFromInitializer() );
+			model.getNameState().setValue( name );
+			this.nameTextField.selectAll();
+		}
+	}
+	
 	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, M model ) {
 		if( this.isValueTypeRowDesired() ) {
 			if( model.getComponentValueTypeState() != null ) {
@@ -101,7 +129,9 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 			}
 		}
 		if( model.getNameState() != null ) {
-			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
+			this.nameTextField = model.getNameState().createTextField();
+			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", this.nameTextField ) );
+			this.updateNameTextField();
 		}
 		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue() ) {
 			if( model.getInitializerState() != null ) {

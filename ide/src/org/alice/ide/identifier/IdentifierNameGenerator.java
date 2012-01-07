@@ -41,57 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.identifier;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation > {
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > initializerListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+public enum IdentifierNameGenerator {
+	SINGLETON();
+	public String convertConstantNameToMethodName( String constantName, String prefix ) {
+		StringBuilder sb = new StringBuilder();
+		if( prefix != null ) {
+			sb.append( prefix );
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-			GalleryFieldDeclarationPanel.this.updateLabel();
-		}
-	};
-	private final org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label();
-
-	public GalleryFieldDeclarationPanel( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation model ) {
-		super( model );
-		this.iconLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
-		this.addComponent( this.iconLabel, Constraint.LINE_END );
-	}
-	private void updateLabel() {
-		javax.swing.Icon prevIcon = this.iconLabel.getIcon();
-		javax.swing.Icon nextIcon;
-		
-		java.lang.reflect.Field fld = this.getFldFromInitializer();
-		if( fld != null ) {
-			java.awt.Image thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( fld.getDeclaringClass(), fld.getName() );
-			if( thumbnail != null ) {
-				nextIcon = new javax.swing.ImageIcon( thumbnail );
+		boolean isUpperNext = sb.length() > 0;
+		for( char c : constantName.toCharArray() ) {
+			if( c == '_' ) {
+				isUpperNext = true;
 			} else {
-				nextIcon = null;
+				if( isUpperNext ) {
+					sb.append( c );
+				} else {
+					sb.append( Character.toLowerCase( c ) );
+				}
+				isUpperNext = false;
 			}
-		} else {
-			nextIcon = null;
 		}
-		this.iconLabel.setIcon( nextIcon );
-		if( edu.cmu.cs.dennisc.javax.swing.IconUtilities.areSizesEqual( prevIcon, nextIcon ) ) {
-			//pass
-		} else {
-			this.revalidateAndRepaint();
-		}
+		return sb.toString();
 	}
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getModel().getInitializerState().addValueObserver( this.initializerListener );
-		this.updateLabel();
-	}
-	@Override
-	protected void handleUndisplayable() {
-		this.getModel().getInitializerState().removeValueObserver( this.initializerListener );
-		super.handleUndisplayable();
+	public String convertConstantNameToMethodName( String constantName ) {
+		return convertConstantNameToMethodName( constantName, null );
 	}
 }
