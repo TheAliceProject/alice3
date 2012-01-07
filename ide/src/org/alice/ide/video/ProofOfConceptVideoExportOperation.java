@@ -60,4 +60,11 @@ public class ProofOfConceptVideoExportOperation extends VideoExportOperation {
 	protected org.alice.ide.video.components.VideoExportPanel createVideoExportPanel() {
 		return new org.alice.ide.video.components.ProofOfConceptVideoExportPanel();
 	}
+	@Override
+	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
+		java.io.File directory = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "ProofOfConceptVideoExport" );
+		java.io.File file = new java.io.File( directory, "image" + new java.text.DecimalFormat( "#0000" ).format( i ) + ".png" );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		edu.cmu.cs.dennisc.image.ImageUtilities.write( file, image );
+	}
 }

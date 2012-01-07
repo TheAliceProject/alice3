@@ -91,11 +91,11 @@ public abstract class ProgramContext {
 
 	private org.alice.ide.ReasonToDisableSomeAmountOfRendering rendering;
 	
-	public void initializeInContainer( java.awt.Container container ) {
+	protected void disableRendering() {
 		this.rendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM;
 		org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( rendering );
-		this.getProgramImp().initializeInAwtContainer( container );
 	}
+	
 
 	public void invokeMethod0() {
 		org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {

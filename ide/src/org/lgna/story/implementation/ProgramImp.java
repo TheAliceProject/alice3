@@ -185,7 +185,7 @@ public class ProgramImp {
 			//pass
 		} else {
 			this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass();
-			//this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
+			//this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createLightweightOnscreenLookingGlass();
 		}
 		return this.onscreenLookingGlass;
 	}
@@ -245,12 +245,12 @@ public class ProgramImp {
 			ProgramImp.this.getAnimator().update();
 		}
 	};
-	private void startAnimator() {
+	public void startAnimator() {
 		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
 		lookingGlassFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
 		lookingGlassFactory.incrementAutomaticDisplayCount();
 	}
-	private void stopAnimator() {
+	public void stopAnimator() {
 		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
 		lookingGlassFactory.decrementAutomaticDisplayCount();
 		lookingGlassFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );

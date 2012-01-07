@@ -53,17 +53,55 @@ public abstract class VideoExportOperation extends org.lgna.croquet.PlainDialogO
 	
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	protected abstract org.alice.ide.video.components.VideoExportPanel createVideoExportPanel();
+	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
+		public void update( double tCurrent ) {
+			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
+			if( lookingGlass.getWidth() > 0 && lookingGlass.getHeight() > 0 ) {
+				if( image != null ) {
+					//pass
+				} else {
+					image = lookingGlass.createBufferedImageForUseAsColorBuffer();
+				}
+				if( image != null ) {
+					image = lookingGlass.getColorBuffer( image );
+					handleImage( image, imageCount );
+					imageCount++;
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
+				}
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", lookingGlass.getWidth(), "height:", lookingGlass.getHeight() );
+			}
+		}
+		public void complete() {
+		}
+	};
 	
+	private java.awt.image.BufferedImage image;
+	private int imageCount;
+	protected abstract void handleImage( java.awt.image.BufferedImage image, int i );
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep context, org.lgna.croquet.components.Dialog dialog ) {
-		org.alice.ide.video.components.VideoExportPanel videoExportPanel = this.createVideoExportPanel();
-		programContext = new org.alice.stageide.program.VideoEncodingProgramContext( 30.0 );
-		programContext.initializeInContainer( videoExportPanel.getLookingGlassContainer() );
-		programContext.invokeMethod0();
+		final org.alice.ide.video.components.VideoExportPanel videoExportPanel = this.createVideoExportPanel();
+		new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				image = null;
+				imageCount = 0;
+				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( 30.0 );
+				programContext.initialize( videoExportPanel.getLookingGlassContainer() );
+				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
+				programContext.getProgramImp().startAnimator();
+				programContext.invokeMethod0();
+			}
+		}.start();
 		return videoExportPanel;
 	}
 	@Override
 	protected void releaseContentPane( org.lgna.croquet.history.PlainDialogOperationStep context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+		programContext.getProgramImp().stopAnimator();
+		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
 		programContext.cleanUpProgram();
 	}
 }

@@ -66,7 +66,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 //	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
 //		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 //	}
-	private transient org.alice.stageide.program.ProgramContext programContext;
+	private transient org.alice.stageide.program.RunProgramContext programContext;
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = new java.awt.Dimension( 640, 480 );
 	@Override
@@ -95,10 +95,16 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		if( ide.getProject() != null ) {
 			final org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-			this.programContext = new org.alice.stageide.program.RunProgramContext();
-			this.programContext.getProgramImp().setRestartAction( this.restartAction );
-			this.programContext.initializeInContainer( rv.getAwtComponent() );
-			this.programContext.invokeMethod0();
+			new Thread() {
+				@Override
+				public void run() {
+					super.run();
+					RunOperation.this.programContext = new org.alice.stageide.program.RunProgramContext();
+					RunOperation.this.programContext.getProgramImp().setRestartAction( RunOperation.this.restartAction );
+					RunOperation.this.programContext.initializeInContainer( rv.getAwtComponent() );
+					RunOperation.this.programContext.invokeMethod0();
+				}
+			}.start();
 			return rv;
 		} else {
 			ide.showMessageDialog( "Please open a project first." );

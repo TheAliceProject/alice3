@@ -50,4 +50,7 @@ public class VideoEncodingProgramContext extends ProgramContext {
 	public VideoEncodingProgramContext( double frameRate ) {
 		this.getProgramImp().setFrameRate( frameRate );
 	}
+	public void initialize( java.awt.Container container ) {
+		container.add( this.getProgramImp().getOnscreenLookingGlass().getAWTComponent() );
+	}
 }
