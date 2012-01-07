@@ -64,7 +64,7 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		return null;
 	}
 	protected boolean isValueTypeRowDesired() {
-		return true;
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
 	}
 	
 	@Override
@@ -103,17 +103,19 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		if( model.getNameState() != null ) {
 			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
 		}
-		if( model.getInitializerState() != null ) {
-			org.lgna.croquet.components.Component< ? > component;
-			if( model.isInitializerEditable() ) {
-				component = new org.lgna.croquet.components.LineAxisPanel( 
-						model.getInitializerState().createEditor( this.getFactory() ),
-						org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
-				);
-			} else {
-				component = model.getInitializerState().createView(  this.getFactory() );
+		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue() ) {
+			if( model.getInitializerState() != null ) {
+				org.lgna.croquet.components.Component< ? > component;
+				if( model.isInitializerEditable() ) {
+					component = new org.lgna.croquet.components.LineAxisPanel( 
+							model.getInitializerState().createEditor( this.getFactory() ),
+							org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
+					);
+				} else {
+					component = model.getInitializerState().createView(  this.getFactory() );
+				}
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerLabelText() + ":", component ) );
 			}
-			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerLabelText() + ":", component ) );
 		}
 		org.lgna.croquet.components.Component< ? >[] warningRow = this.createWarningRow();
 		if( warningRow != null ) {

@@ -43,35 +43,6 @@
 
 package org.alice.ide.croquet.components;
 
-class PreviewPanel extends org.lgna.croquet.components.BorderPanel {
-	private final PanelWithPreview<?> panelWithPreview;
-	public PreviewPanel( PanelWithPreview<?> panelWithPreview ) {
-		this.panelWithPreview = panelWithPreview;
-	}
-	@Override
-	protected javax.swing.JPanel createJPanel() {
-		class PreviewJPanel extends DefaultJPanel {
-			@Override
-			public boolean contains(int x, int y) {
-				return false;
-			}
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
-			}
-		}
-		PreviewJPanel rv = new PreviewJPanel();
-		rv.setOpaque( false );
-		return rv;
-	}
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		this.internalForgetAndRemoveAllComponents();
-		this.addComponent( this.panelWithPreview.createPreviewSubComponent(), Constraint.CENTER );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -90,7 +61,7 @@ public abstract class PanelWithPreview< M extends org.lgna.croquet.InputDialogOp
 	protected abstract org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent();
 	
 	@Override
-	protected org.alice.ide.croquet.components.PreviewPanel createPreviewPanel() {
+	protected final org.alice.ide.croquet.components.PreviewPanel createPreviewPanel() {
 		return new PreviewPanel( this );
 	}
 	public void updatePreview() {

@@ -41,22 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldDeclarationPanel< M extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation > extends DeclarationPanel< M > {
-	public FieldDeclarationPanel( M model ) {
-		super( model );
+/*package-private*/ class PreviewPanel extends org.lgna.croquet.components.BorderPanel {
+	private final PanelWithPreview<?> panelWithPreview;
+	public PreviewPanel( PanelWithPreview<?> panelWithPreview ) {
+		this.panelWithPreview = panelWithPreview;
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		M model = this.getModel();
-		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), model.createPreviewDeclaration() );
+	protected javax.swing.JPanel createJPanel() {
+		class PreviewJPanel extends DefaultJPanel {
+			@Override
+			public boolean contains(int x, int y) {
+				return false;
+			}
+		}
+		PreviewJPanel rv = new PreviewJPanel();
+		rv.setOpaque( false );
+		return rv;
 	}
 	@Override
-	protected boolean isPreviewDesired() {
-		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
+	protected void internalRefresh() {
+		super.internalRefresh();
+		this.internalForgetAndRemoveAllComponents();
+		this.addComponent( this.panelWithPreview.createPreviewSubComponent(), Constraint.CENTER );
 	}
 }
