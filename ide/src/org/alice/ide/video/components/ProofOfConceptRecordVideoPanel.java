@@ -46,6 +46,15 @@ package org.alice.ide.video.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class VideoExportPanel extends org.lgna.croquet.components.BorderPanel {
-	public abstract java.awt.Container getLookingGlassContainer();
+public class ProofOfConceptRecordVideoPanel extends RecordVideoPanel {
+	private final org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.BorderPanel();
+	public ProofOfConceptRecordVideoPanel() {
+		this.panel.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
+		this.addComponent( this.panel, Constraint.CENTER );
+		this.addComponent( org.alice.ide.video.IsRecordingState.getInstance().createPushButton(), Constraint.PAGE_END );
+	}
+	@Override
+	public java.awt.Container getLookingGlassContainer() {
+		return this.panel.getAwtComponent();
+	}
 }

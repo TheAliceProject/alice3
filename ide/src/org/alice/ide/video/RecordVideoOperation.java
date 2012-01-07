@@ -46,13 +46,13 @@ package org.alice.ide.video;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class VideoExportOperation extends org.lgna.croquet.PlainDialogOperation {
-	public VideoExportOperation( java.util.UUID id ) {
+public abstract class RecordVideoOperation extends org.lgna.croquet.PlainDialogOperation {
+	public RecordVideoOperation( java.util.UUID id ) {
 		super( org.alice.ide.IDE.EXPORT_GROUP, id );
 	}
 	
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
-	protected abstract org.alice.ide.video.components.VideoExportPanel createVideoExportPanel();
+	protected abstract org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel();
 	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
 		public void update( double tCurrent ) {
 			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
@@ -98,7 +98,7 @@ public abstract class VideoExportOperation extends org.lgna.croquet.PlainDialogO
 	}
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep context, org.lgna.croquet.components.Dialog dialog ) {
-		final org.alice.ide.video.components.VideoExportPanel videoExportPanel = this.createVideoExportPanel();
+		final org.alice.ide.video.components.RecordVideoPanel videoExportPanel = this.createVideoExportPanel();
 		new Thread() {
 			@Override
 			public void run() {

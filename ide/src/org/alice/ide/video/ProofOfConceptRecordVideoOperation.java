@@ -41,20 +41,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.video.components;
+package org.alice.ide.video;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProofOfConceptVideoExportPanel extends VideoExportPanel {
-	private final org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.BorderPanel();
-	public ProofOfConceptVideoExportPanel() {
-		this.panel.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
-		this.addComponent( this.panel, Constraint.CENTER );
-		this.addComponent( org.alice.ide.video.IsRecordingState.getInstance().createPushButton(), Constraint.PAGE_END );
+public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
+	private static class SingletonHolder {
+		private static ProofOfConceptRecordVideoOperation instance = new ProofOfConceptRecordVideoOperation();
+	}
+	public static ProofOfConceptRecordVideoOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	
+	private final org.lgna.croquet.State.ValueObserver< Boolean > isRecordingListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			ProofOfConceptRecordVideoOperation.this.setRecording( nextValue );
+		}
+	};
+	private ProofOfConceptRecordVideoOperation() {
+		super( java.util.UUID.fromString( "63876374-ce69-44f0-a454-2bedda151818" ) );
 	}
 	@Override
-	public java.awt.Container getLookingGlassContainer() {
-		return this.panel.getAwtComponent();
+	protected org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel() {
+		return new org.alice.ide.video.components.ProofOfConceptRecordVideoPanel();
+	}
+	@Override
+	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep context, org.lgna.croquet.components.Dialog dialog ) {
+		IsRecordingState.getInstance().setValue( false );
+		IsRecordingState.getInstance().addValueObserver( this.isRecordingListener );
+		return super.createContentPane( context, dialog );
+	}
+	@Override
+	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+		IsRecordingState.getInstance().removeValueObserver( this.isRecordingListener );
+		super.handleFinally( context, dialog, contentPane );
+	}
+	@Override
+	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
+		java.io.File directory = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "ProofOfConceptVideoExport" );
+		java.io.File file = new java.io.File( directory, "image" + new java.text.DecimalFormat( "#0000" ).format( i ) + ".png" );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		edu.cmu.cs.dennisc.image.ImageUtilities.write( file, image );
 	}
 }
