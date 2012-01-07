@@ -80,7 +80,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 			DeclarationTabState.this.refresh();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
@@ -103,11 +103,10 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		}
 	};
 	
-	private java.util.Map< org.lgna.project.ast.NamedUserType, DeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private org.lgna.project.ast.NamedUserType type;
 	private DeclarationTabState() {
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
-		TypeState.getInstance().addAndInvokeValueObserver( this.typeObserver );
+		TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueObserver( this.isEmphasizingClassesListener );
 		IDE.getActiveInstance().addProjectObserver( this.projectListener );
 	}
@@ -125,7 +124,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 							}
 						}
 					}
-					DeclarationComposite selection = this.map.get( this.type );
+					DeclarationComposite selection = DeclarationComposite.getInstance( this.type );
 					int index;
 					if( selection != null ) {
 						index = this.indexOf( selection );
@@ -167,15 +166,6 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 	}
 	private void handleTypeChanged( org.lgna.project.ast.NamedUserType prevType, org.lgna.project.ast.NamedUserType nextType ) {
 		if( this.type != nextType ) {
-			if( prevType != null ) {
-				DeclarationComposite prevDeclarationComposite = this.getSelectedItem();
-				if( prevDeclarationComposite != null ) {
-					this.map.put( prevType, prevDeclarationComposite );
-				} else {
-					this.map.remove( prevType );
-				}
-			}
-
 			if( this.type != null ) {
 				this.type.methods.removeListPropertyListener( this.methodsListener );
 			}
