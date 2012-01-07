@@ -80,6 +80,22 @@ public abstract class VideoExportOperation extends org.lgna.croquet.PlainDialogO
 	private java.awt.image.BufferedImage image;
 	private int imageCount;
 	protected abstract void handleImage( java.awt.image.BufferedImage image, int i );
+	
+	private boolean isRecording;
+	protected boolean isRecording() {
+		return this.isRecording;
+	}
+	protected void setRecording( boolean isRecording ) {
+		if( this.isRecording != isRecording ) {
+			if( this.isRecording ) {
+				programContext.getProgramImp().stopAnimator();
+			}
+			this.isRecording = isRecording;
+			if( this.isRecording ) {
+				programContext.getProgramImp().startAnimator();
+			}
+		}
+	}
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep context, org.lgna.croquet.components.Dialog dialog ) {
 		final org.alice.ide.video.components.VideoExportPanel videoExportPanel = this.createVideoExportPanel();
@@ -92,7 +108,6 @@ public abstract class VideoExportOperation extends org.lgna.croquet.PlainDialogO
 				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( 30.0 );
 				programContext.initialize( videoExportPanel.getLookingGlassContainer() );
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
-				programContext.getProgramImp().startAnimator();
 				programContext.invokeMethod0();
 			}
 		}.start();
@@ -100,7 +115,7 @@ public abstract class VideoExportOperation extends org.lgna.croquet.PlainDialogO
 	}
 	@Override
 	protected void releaseContentPane( org.lgna.croquet.history.PlainDialogOperationStep context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
-		programContext.getProgramImp().stopAnimator();
+		this.setRecording( false );
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
 		programContext.cleanUpProgram();
 	}

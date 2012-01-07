@@ -53,12 +53,31 @@ public class ProofOfConceptVideoExportOperation extends VideoExportOperation {
 	public static ProofOfConceptVideoExportOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+	
+	private final org.lgna.croquet.State.ValueObserver< Boolean > isRecordingListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			ProofOfConceptVideoExportOperation.this.setRecording( nextValue );
+		}
+	};
 	private ProofOfConceptVideoExportOperation() {
 		super( java.util.UUID.fromString( "63876374-ce69-44f0-a454-2bedda151818" ) );
 	}
 	@Override
 	protected org.alice.ide.video.components.VideoExportPanel createVideoExportPanel() {
 		return new org.alice.ide.video.components.ProofOfConceptVideoExportPanel();
+	}
+	@Override
+	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep context, org.lgna.croquet.components.Dialog dialog ) {
+		IsRecordingState.getInstance().setValue( false );
+		IsRecordingState.getInstance().addValueObserver( this.isRecordingListener );
+		return super.createContentPane( context, dialog );
+	}
+	@Override
+	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+		IsRecordingState.getInstance().removeValueObserver( this.isRecordingListener );
+		super.handleFinally( context, dialog, contentPane );
 	}
 	@Override
 	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
