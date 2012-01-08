@@ -40,31 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton extends AbstractButton< javax.swing.JButton, org.lgna.croquet.PopupPrepModel > {
- 	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
- 		super( model );
-	}
-	private static final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 10 );
-	@Override
-	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
-			@Override
-			public javax.swing.Icon getIcon() {
-				if( PopupButton.this.isIconSet() ) {
-					return PopupButton.this.getSetIcon();
-				} else {
-					return super.getIcon();
-				}
-			}
-		};
-		rv.setAction( this.getModel().getAction() );
-		rv.setIcon( ARROW_ICON );
-		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+public class DeclarationCompositeFillIn extends org.lgna.croquet.CascadeFillIn< DeclarationComposite, Void > {
+	private static final java.util.Map< DeclarationComposite, DeclarationCompositeFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DeclarationCompositeFillIn getInstance( DeclarationComposite declarationComposite ) {
+		DeclarationCompositeFillIn rv = map.get( declarationComposite );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeclarationCompositeFillIn( declarationComposite );
+			map.put( declarationComposite, rv );
+		}
 		return rv;
+	}
+	private final DeclarationComposite declarationComposite;
+	public DeclarationCompositeFillIn( DeclarationComposite declarationComposite ) {
+		super( java.util.UUID.fromString( "7d731332-2dd6-4861-b08e-386c50c7a580" ) );
+		this.declarationComposite = declarationComposite;
+	}
+	@Override
+	public org.alice.ide.declarationseditor.DeclarationComposite createValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void > node ) {
+		return this.declarationComposite;
+	}
+	@Override
+	public org.alice.ide.declarationseditor.DeclarationComposite getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void > node ) {
+		return this.declarationComposite;
+	}
+	@Override
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void > node ) {
+		return null;
 	}
 }

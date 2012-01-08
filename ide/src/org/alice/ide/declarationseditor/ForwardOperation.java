@@ -40,31 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton extends AbstractButton< javax.swing.JButton, org.lgna.croquet.PopupPrepModel > {
- 	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
- 		super( model );
+public class ForwardOperation extends org.lgna.croquet.ActionOperation {
+	private static class SingletonHolder {
+		private static ForwardOperation instance = new ForwardOperation();
 	}
-	private static final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 10 );
+	public static ForwardOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ForwardOperation() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "c5885579-bd96-496e-ba79-00a6ed263dc8" ) );
+	}
 	@Override
-	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
-			@Override
-			public javax.swing.Icon getIcon() {
-				if( PopupButton.this.isIconSet() ) {
-					return PopupButton.this.getSetIcon();
-				} else {
-					return super.getIcon();
-				}
-			}
-		};
-		rv.setAction( this.getModel().getAction() );
-		rv.setIcon( ARROW_ICON );
-		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
-		return rv;
+	protected void localize() {
+		super.localize();
+		this.setSmallIcon( org.alice.ide.icons.Icons.NEXT_SMALL );
+	}
+	@Override
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		//org.lgna.croquet.edits.Edit< ForwardOperation > edit = DeclarationCompositeHistory.getInstance().createForwardEdit( step );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 	}
 }

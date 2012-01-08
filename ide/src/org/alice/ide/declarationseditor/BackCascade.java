@@ -40,31 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
+ *
  */
-public class PopupButton extends AbstractButton< javax.swing.JButton, org.lgna.croquet.PopupPrepModel > {
- 	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
- 		super( model );
+public class BackCascade extends org.lgna.croquet.CascadeWithInternalBlank< DeclarationComposite > {
+	private static class SingletonHolder {
+		private static BackCascade instance = new BackCascade();
 	}
-	private static final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 10 );
+	public static BackCascade getInstance() {
+		return SingletonHolder.instance;
+	}
+	private BackCascade() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "1608ba60-4237-4998-a482-a9f4866e81f7" ), DeclarationComposite.class );
+	}
 	@Override
-	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
-			@Override
-			public javax.swing.Icon getIcon() {
-				if( PopupButton.this.isIconSet() ) {
-					return PopupButton.this.getSetIcon();
-				} else {
-					return super.getIcon();
-				}
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.declarationseditor.DeclarationComposite > blankNode ) {
+		boolean isFirst = true;
+		for( DeclarationComposite declarationComposite : DeclarationCompositeHistory.getInstance().getBackList() ) {
+			if( isFirst ) {
+				//pass
+			} else {
+				rv.add( DeclarationCompositeFillIn.getInstance( declarationComposite ) );
 			}
-		};
-		rv.setAction( this.getModel().getAction() );
-		rv.setIcon( ARROW_ICON );
-		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+			isFirst = false;
+		}
 		return rv;
+	}
+	@Override
+	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.alice.ide.declarationseditor.DeclarationComposite >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.alice.ide.declarationseditor.DeclarationComposite > completionStep, org.alice.ide.declarationseditor.DeclarationComposite[] values ) {
+		return null;
 	}
 }

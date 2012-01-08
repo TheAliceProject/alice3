@@ -44,30 +44,25 @@ package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
- *
  */
-public class DeclarationHistoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank< DeclarationComposite > {
+public class BackOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
-		private static DeclarationHistoryState instance = new DeclarationHistoryState();
+		private static BackOperation instance = new BackOperation();
 	}
-	public static DeclarationHistoryState getInstance() {
+	public static BackOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final java.util.Stack< DeclarationComposite > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	private DeclarationComposite value;
-	private DeclarationHistoryState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "1608ba60-4237-4998-a482-a9f4866e81f7" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
+	private BackOperation() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
 	}
 	@Override
-	protected org.alice.ide.declarationseditor.DeclarationComposite getActualValue() {
-		return this.value;
+	protected void localize() {
+		super.localize();
+		this.setSmallIcon( org.alice.ide.icons.Icons.PREVIOUS_SMALL );
 	}
 	@Override
-	protected void updateSwingModel( org.alice.ide.declarationseditor.DeclarationComposite nextValue ) {
-		this.value = nextValue;
-	}
-	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.declarationseditor.DeclarationComposite > blankNode ) {
-		return rv;
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		//org.lgna.croquet.edits.Edit< BackOperation > edit = DeclarationCompositeHistory.getInstance().createBackEdit( step );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 	}
 }

@@ -40,31 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton extends AbstractButton< javax.swing.JButton, org.lgna.croquet.PopupPrepModel > {
- 	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
- 		super( model );
+public abstract class CascadeWithInternalBlank< T > extends Cascade< T > {
+	public static class InternalBlankResolver<T> extends IndirectResolver< InternalBlank<T>, CascadeWithInternalBlank<T> > {
+		private InternalBlankResolver( CascadeWithInternalBlank<T> indirect ) {
+			super( indirect );
+		}
+		public InternalBlankResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected InternalBlank<T> getDirect( CascadeWithInternalBlank<T> indirect ) {
+			return indirect.getInternalBlank();
+		}
 	}
-	private static final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 10 );
-	@Override
-	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
-			@Override
-			public javax.swing.Icon getIcon() {
-				if( PopupButton.this.isIconSet() ) {
-					return PopupButton.this.getSetIcon();
-				} else {
-					return super.getIcon();
-				}
-			}
-		};
-		rv.setAction( this.getModel().getAction() );
-		rv.setIcon( ARROW_ICON );
-		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
-		return rv;
+
+	private static final class InternalBlank<T> extends CascadeBlank< T > {
+		private final CascadeWithInternalBlank< T > cascade;
+		private InternalBlank( CascadeWithInternalBlank< T > cascade ) {
+			super( java.util.UUID.fromString( "b3dfbbd6-6932-4208-b9de-98fda5ef7145" ) );
+			this.cascade = cascade;
+		}
+		@Override
+		protected InternalBlankResolver<T> createCodableResolver() {
+			return new InternalBlankResolver<T>( this.cascade );
+		}
+		@Override
+		protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
+			return this.cascade.updateBlankChildren( rv, blankNode );
+		}
+	}
+	private final InternalBlank< T > internalBlank = new InternalBlank< T >( this );
+	public CascadeWithInternalBlank( Group group, java.util.UUID id, Class< T > componentType ) {
+		super( group, id, componentType, (CascadeBlank<T>[])null );
+		this.getRoot().addBlank( this.internalBlank );
+	}
+	protected abstract java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode );
+	private InternalBlank< T > getInternalBlank() {
+		return this.internalBlank;
 	}
 }
