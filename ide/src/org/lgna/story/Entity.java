@@ -71,7 +71,13 @@ public abstract class Entity implements Rider {
 		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) ); 
 	}
 	
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void delay( Number duration ) {
 		this.getImplementation().delay( duration.doubleValue() );
+	}
+
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void playAudio( AudioSource audioSource ) {
+		this.getImplementation().playAudio( audioSource );
 	}
 }
