@@ -40,34 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
+ *
  */
-public class TextField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField > {
-	public TextField( org.lgna.croquet.StringState model ) {
-		super( model );
+public class DeclarationHistoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank< DeclarationComposite > {
+	private static class SingletonHolder {
+		private static DeclarationHistoryState instance = new DeclarationHistoryState();
 	}
-	
+	public static DeclarationHistoryState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private final java.util.Stack< DeclarationComposite > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private DeclarationComposite value;
+	private DeclarationHistoryState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "1608ba60-4237-4998-a482-a9f4866e81f7" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
+	}
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				if( TextField.this.isMaximumSizeClampedToPreferredSize() ) {
-					return this.getPreferredSize();
-				} else {
-					return super.getMaximumSize();
-				}
-			}
-		};
-		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
+	protected org.alice.ide.declarationseditor.DeclarationComposite getActualValue() {
+		return this.value;
+	}
+	@Override
+	protected void updateSwingModel( org.alice.ide.declarationseditor.DeclarationComposite nextValue ) {
+		this.value = nextValue;
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.declarationseditor.DeclarationComposite > blankNode ) {
 		return rv;
 	}
 }

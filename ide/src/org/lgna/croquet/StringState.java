@@ -79,6 +79,7 @@ public abstract class StringState extends State< String > {
 		}
 	};
 
+	private String textForBlankCondition;
 	public StringState( Group group, java.util.UUID id, String initialValue ) {
 		super( group, id, initialValue );
 		try {
@@ -108,6 +109,11 @@ public abstract class StringState extends State< String > {
 
 	@Override
 	protected void localize() {
+		this.textForBlankCondition = this.getLocalizedText( "textForBlankCondition" );
+	}
+	
+	public String getTextForBlankCondition() {
+		return this.textForBlankCondition;
 	}
 
 	@Override

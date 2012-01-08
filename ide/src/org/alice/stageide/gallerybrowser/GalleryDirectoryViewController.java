@@ -79,7 +79,7 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 	}
 	@Override
 	protected java.util.List< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > getChildren() {
-		String filter = FilterStringState.getInstance().getValue();
+		String filter = FilterState.getInstance().getValue();
 		if( filter != null && filter.length() > 0 ) {
 			org.alice.ide.croquet.models.gallerybrowser.GalleryNode root = org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().getTreeModel().getRoot();
 			java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -116,11 +116,11 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		FilterStringState.getInstance().addAndInvokeValueObserver( this.filterObserver );
+		FilterState.getInstance().addAndInvokeValueObserver( this.filterObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		FilterStringState.getInstance().removeValueObserver( this.filterObserver );
+		FilterState.getInstance().removeValueObserver( this.filterObserver );
 		super.handleUndisplayable();
 	}
 	private void handleFilterChanged( String filter ) {
@@ -136,7 +136,7 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 				//pass
 			} else {
 				//todo: does not handle case where user clicks on button hooked up to currently selected path node
-				FilterStringState.getInstance().setValueTransactionlessly( "" );
+				FilterState.getInstance().setValueTransactionlessly( "" );
 				if( nextValue.isLeaf() ) {
 					//note: we need to invoke later or transaction history is ignored due to being in the midst of redo
 					javax.swing.SwingUtilities.invokeLater( new Runnable() {

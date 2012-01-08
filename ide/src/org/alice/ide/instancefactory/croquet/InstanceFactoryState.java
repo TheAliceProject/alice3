@@ -49,13 +49,6 @@ import org.alice.ide.instancefactory.InstanceFactory;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank< InstanceFactory > {
-	private static class SingletonHolder {
-		private static InstanceFactoryState instance = new InstanceFactoryState();
-	}
-	public static InstanceFactoryState getInstance() {
-		return SingletonHolder.instance;
-	}
-	
 	private static org.lgna.project.ast.AbstractType< ?,?,? > getDeclaringType( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
 			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
@@ -67,21 +60,13 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			return null;
 		}
 	}
-//	private static org.lgna.project.ast.AbstractType< ?,?,? > getDeclaringType( org.alice.ide.croquet.models.typeeditor.DeclarationComposite declarationComposite ) { 
-//		if( declarationComposite != null ) {
-//			return getDeclaringType( declarationComposite.getDeclaration() );
-//		} else {
-//			return null;
-//		}
-//	}
-//	private ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > declarationObserver = new ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
-//		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-//		}
-//		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-//			InstanceFactoryState.this.handleDeclaringTypeChange( getDeclaringType( prevValue ), getDeclaringType( nextValue ) );
-//		}
-//	};
 
+	private static class SingletonHolder {
+		private static InstanceFactoryState instance = new InstanceFactoryState();
+	}
+	public static InstanceFactoryState getInstance() {
+		return SingletonHolder.instance;
+	}
 	private final org.alice.ide.MetaDeclarationState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationState.ValueListener() {
 		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
 			InstanceFactoryState.this.handleDeclaringTypeChange( getDeclaringType( prevValue ), getDeclaringType( nextValue ) );

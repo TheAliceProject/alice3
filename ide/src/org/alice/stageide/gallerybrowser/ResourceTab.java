@@ -94,10 +94,9 @@ public class ResourceTab extends GalleryTab {
 			public ResourceView() {
 				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel();
 				topPanel.addComponent( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.LINE_START );
-				org.lgna.croquet.components.TextField filterTextField = FilterStringState.getInstance().createTextField();
+				org.lgna.croquet.components.TextField filterTextField = FilterState.getInstance().createTextField();
 				filterTextField.setMinimumPreferredWidth( 320 );
 				filterTextField.setMaximumSizeClampedToPreferredSize( true );
-				filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
 				filterTextField.scaleFont( 1.5f );
 
 				topPanel.addComponent( filterTextField, Constraint.LINE_END );

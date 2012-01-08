@@ -46,14 +46,14 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class FilterStringState extends org.lgna.croquet.StringState {
+public class FilterState extends org.lgna.croquet.StringState {
 	private static class SingletonHolder {
-		private static FilterStringState instance = new FilterStringState();
+		private static FilterState instance = new FilterState();
 	}
-	public static FilterStringState getInstance() {
+	public static FilterState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private FilterStringState() {
+	private FilterState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "ecfb472a-c73f-4dda-9db7-757dfcab8a46" ), "" );
 	}
 }
