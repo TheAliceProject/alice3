@@ -52,7 +52,7 @@ public class DeclarationCompositeHistory {
 	public static DeclarationCompositeHistory getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final java.util.Stack< DeclarationComposite > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.List< DeclarationComposite > history = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int index = -1;
 	private final org.lgna.croquet.State.ValueObserver< DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueObserver< DeclarationComposite >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
@@ -76,13 +76,22 @@ public class DeclarationCompositeHistory {
 	}
 	private void pushIfNotNull( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
 		if( declarationComposite != null ) {
-			this.stack.push( declarationComposite );
+			
+			java.util.ListIterator< DeclarationComposite > listIterator = this.history.listIterator();
+			
+			while( listIterator.hasNext() ) {
+				DeclarationComposite current = listIterator.next();
+				if( current == declarationComposite ) {
+					listIterator.remove();
+				}
+			}
+			this.history.add( 0, declarationComposite );
 			this.updateBack();
 			this.updateFront();
 		}
 	}
 	private void updateBack() {
-		boolean isEnabled = (this.index+1) < this.stack.size();
+		boolean isEnabled = (this.index+1) < this.history.size();
 		BackOperation.getInstance().setEnabled( isEnabled );
 		BackCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
 	}
@@ -92,7 +101,7 @@ public class DeclarationCompositeHistory {
 		ForwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
 	}
 	private void resetStack() {
-		this.stack.clear();
+		this.history.clear();
 		this.index = -1;
 		this.pushIfNotNull( DeclarationTabState.getInstance().getValue() );
 		this.updateBack();
@@ -107,9 +116,9 @@ public class DeclarationCompositeHistory {
 	
 	public java.util.List< DeclarationComposite > getBackList() {
 		int minInclusive = this.index+1;
-		int maxExclusive = this.stack.size();
+		int maxExclusive = this.history.size();
 		if( minInclusive < maxExclusive ) {
-			return this.stack.subList( minInclusive, maxExclusive );
+			return this.history.subList( minInclusive, maxExclusive );
 		} else {
 			return java.util.Collections.emptyList();
 		}
@@ -118,7 +127,7 @@ public class DeclarationCompositeHistory {
 		int minInclusive = 0;
 		int maxExclusive = this.index-1;
 		if( minInclusive < maxExclusive ) {
-			return this.stack.subList( minInclusive, maxExclusive );
+			return this.history.subList( minInclusive, maxExclusive );
 		} else {
 			return java.util.Collections.emptyList();
 		}
