@@ -134,10 +134,10 @@ public class DeclarationCompositeHistory {
 	}
 	
 	public void goBackward() {
-		this.setIndex( index++ );
+		this.setIndex( this.index + 1 );
 	}
 	public void goForward() {
-		this.setIndex( index-- );
+		this.setIndex( this.index - 1 );
 	}
 	public void setDeclarationComposite( DeclarationComposite declarationComposite ) {
 		this.setIndex( this.history.indexOf( declarationComposite ) );
@@ -147,9 +147,6 @@ public class DeclarationCompositeHistory {
 		int minInclusive = this.index+1;
 		int maxExclusive = this.history.size();
 		if( minInclusive < maxExclusive ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( this.index, minInclusive, maxExclusive );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( this.history );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( this.history.subList( minInclusive, maxExclusive ) );
 			return this.history.subList( minInclusive, maxExclusive );
 		} else {
 			return java.util.Collections.emptyList();
