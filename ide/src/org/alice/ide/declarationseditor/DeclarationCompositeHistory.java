@@ -127,7 +127,8 @@ public class DeclarationCompositeHistory {
 			this.index = index;
 			this.updateBackEnabled();
 			this.updateFrontEnabled();
-			DeclarationTabState.getInstance().setValue( this.history.get( this.index ) );
+			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( this.history.get( this.index ) );
+//			DeclarationTabState.getInstance().setValue( this.history.get( this.index ) );
 		} finally {
 			this.popIgnore();
 		}

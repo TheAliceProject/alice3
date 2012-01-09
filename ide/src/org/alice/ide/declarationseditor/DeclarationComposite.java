@@ -49,14 +49,18 @@ package org.alice.ide.declarationseditor;
 public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.alice.ide.declarationseditor.components.DeclarationView > {
 	private static java.util.Map< org.lgna.project.ast.AbstractDeclaration, DeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized DeclarationComposite getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		DeclarationComposite rv = map.get( declaration );
-		if( rv != null ) {
-			//pass
+		if( declaration != null ) {
+			DeclarationComposite rv = map.get( declaration );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new DeclarationComposite( declaration );
+				map.put( declaration, rv );
+			}
+			return rv;
 		} else {
-			rv = new DeclarationComposite( declaration );
-			map.put( declaration, rv );
+			return null;
 		}
-		return rv;
 	}
 	private final org.lgna.project.ast.AbstractDeclaration declaration;
 	public DeclarationComposite( org.lgna.project.ast.AbstractDeclaration declaration ) {

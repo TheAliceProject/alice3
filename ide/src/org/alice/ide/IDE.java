@@ -394,17 +394,47 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
-		if( nextFocusedCode != null ) {
-			org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)nextFocusedCode.getDeclaringType() );
-			org.alice.ide.declarationseditor.DeclarationComposite composite = org.alice.ide.declarationseditor.DeclarationComposite.getInstance( nextFocusedCode );
-			if( org.alice.ide.declarationseditor.DeclarationTabState.getInstance().containsItem( composite ) ) {
+		this.selectDeclaration( nextFocusedCode );
+//		if( nextFocusedCode != null ) {
+//			org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)nextFocusedCode.getDeclaringType() );
+//			org.alice.ide.declarationseditor.DeclarationComposite composite = org.alice.ide.declarationseditor.DeclarationComposite.getInstance( nextFocusedCode );
+//			if( org.alice.ide.declarationseditor.DeclarationTabState.getInstance().containsItem( composite ) ) {
+//				//pass
+//			} else {
+//				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addItem( composite );
+//			}
+//			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setSelectedItem( composite );
+//		}
+	}
+	
+	public void selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
+		if( declarationComposite != null ) {
+			org.lgna.project.ast.AbstractDeclaration declaration = declarationComposite.getDeclaration();
+			org.lgna.project.ast.AbstractType< ?,?,? > type;
+			if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
+				type = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
+			} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+				org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
+				type = code.getDeclaringType();
+			} else {
+				type = null;
+			}
+			if( type instanceof org.lgna.project.ast.NamedUserType ) {
+				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
+			}
+			if( org.alice.ide.declarationseditor.DeclarationTabState.getInstance().containsItem( declarationComposite ) ) {
 				//pass
 			} else {
-				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addItem( composite );
+				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addItem( declarationComposite );
 			}
-			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setSelectedItem( composite );
+			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setSelectedItem( declarationComposite );
 		}
 	}
+	private void selectDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		this.selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( declaration ) );
+	}
+	
+	
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		org.alice.ide.perspectives.IdePerspective perspective = this.getPerspectiveState().getValue();
 		if( perspective != null ) {
