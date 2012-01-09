@@ -395,16 +395,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
 		this.selectDeclaration( nextFocusedCode );
-//		if( nextFocusedCode != null ) {
-//			org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)nextFocusedCode.getDeclaringType() );
-//			org.alice.ide.declarationseditor.DeclarationComposite composite = org.alice.ide.declarationseditor.DeclarationComposite.getInstance( nextFocusedCode );
-//			if( org.alice.ide.declarationseditor.DeclarationTabState.getInstance().containsItem( composite ) ) {
-//				//pass
-//			} else {
-//				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addItem( composite );
-//			}
-//			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setSelectedItem( composite );
-//		}
 	}
 	
 	public void selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
