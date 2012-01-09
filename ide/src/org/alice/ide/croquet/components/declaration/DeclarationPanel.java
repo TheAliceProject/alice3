@@ -84,9 +84,12 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 
 	
 	protected org.lgna.project.ast.InstanceCreation getInstanceCreationFromInitializer() {
-		org.lgna.project.ast.Expression expression = this.getModel().getInitializerState().getValue();
-		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-			return (org.lgna.project.ast.InstanceCreation)expression;
+		org.alice.ide.croquet.models.ExpressionState initializerState = this.getModel().getInitializerState();
+		if( initializerState != null ) {
+			org.lgna.project.ast.Expression expression = initializerState.getValue();
+			if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
+				return (org.lgna.project.ast.InstanceCreation)expression;
+			}
 		}
 		return null;
 	}

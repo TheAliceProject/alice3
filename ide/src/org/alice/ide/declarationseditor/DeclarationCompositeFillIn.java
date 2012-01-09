@@ -72,6 +72,32 @@ public class DeclarationCompositeFillIn extends org.lgna.croquet.CascadeFillIn< 
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void > node ) {
-		return null;
+		throw new AssertionError();
+	}
+	@Override
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super DeclarationComposite, Void > node ) {
+		org.lgna.project.ast.AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
+		if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
+			org.lgna.project.ast.AbstractType< ?,?,? > type = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
+			return null;
+		} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
+			return code.getName();
+		} else {
+			return null;
+		}
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super DeclarationComposite, Void > node ) {
+		org.lgna.project.ast.AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
+		if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
+			org.lgna.project.ast.AbstractType< ?,?,? > type = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
+			return org.alice.ide.common.TypeIcon.getInstance( type );
+		} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
+			return org.alice.ide.common.TypeIcon.getInstance( code.getDeclaringType() );
+		} else {
+			return null;
+		}
 	}
 }

@@ -58,7 +58,7 @@ public class DeclarationCompositeHistory {
 		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			DeclarationCompositeHistory.this.pushIfAppropriate( nextValue );
+			DeclarationCompositeHistory.this.pushIfNotNull( nextValue );
 		}
 	};
 	
@@ -74,20 +74,37 @@ public class DeclarationCompositeHistory {
 		DeclarationTabState.getInstance().addValueObserver( this.declarationListener );
 		this.resetStack();
 	}
-	private void pushIfAppropriate( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
+	private void pushIfNotNull( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
 		if( declarationComposite != null ) {
 			this.stack.push( declarationComposite );
+			this.updateBack();
+			this.updateFront();
 		}
+	}
+	private void updateBack() {
+		boolean isEnabled = (this.index+1) < this.stack.size();
+		BackOperation.getInstance().setEnabled( isEnabled );
+		BackCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
+	}
+	private void updateFront() {
+		boolean isEnabled = 0 < this.index;
+		ForwardOperation.getInstance().setEnabled( isEnabled );
+		ForwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
 	}
 	private void resetStack() {
 		this.stack.clear();
 		this.index = -1;
-		this.pushIfAppropriate( DeclarationTabState.getInstance().getValue() );
-		BackOperation.getInstance().setEnabled( false );
-		BackCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( false );
-		ForwardOperation.getInstance().setEnabled( false );
-		ForwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( false );
+		this.pushIfNotNull( DeclarationTabState.getInstance().getValue() );
+		this.updateBack();
+		this.updateFront();
 	}
+	
+	public void setIndex( int index ) {
+		this.index = index;
+		this.updateBack();
+		this.updateFront();
+	}
+	
 	public java.util.List< DeclarationComposite > getBackList() {
 		int minInclusive = this.index+1;
 		int maxExclusive = this.stack.size();
