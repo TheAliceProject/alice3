@@ -45,24 +45,21 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class BackOperation extends org.lgna.croquet.ActionOperation {
-	private static class SingletonHolder {
-		private static BackOperation instance = new BackOperation();
+public abstract class HistoryCascade extends org.lgna.croquet.CascadeWithInternalBlank< DeclarationComposite > {
+	public HistoryCascade( java.util.UUID id ) {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, id, DeclarationComposite.class );
 	}
-	public static BackOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private BackOperation() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
+	protected abstract java.util.List< DeclarationComposite > getList( DeclarationCompositeHistory declarationCompositeHistory );
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.declarationseditor.DeclarationComposite > blankNode ) {
+		for( DeclarationComposite declarationComposite : this.getList( DeclarationCompositeHistory.getInstance() ) ) {
+			rv.add( DeclarationCompositeFillIn.getInstance( declarationComposite ) );
+		}
+		return rv;
 	}
 	@Override
-	protected void localize() {
-		super.localize();
-		this.setSmallIcon( org.alice.ide.icons.Icons.PREVIOUS_SMALL );
-	}
-	@Override
-	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		//org.lgna.croquet.edits.Edit< BackOperation > edit = DeclarationCompositeHistory.getInstance().createBackEdit( step );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+	protected final org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.alice.ide.declarationseditor.DeclarationComposite >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.alice.ide.declarationseditor.DeclarationComposite > completionStep, org.alice.ide.declarationseditor.DeclarationComposite[] values ) {
+		DeclarationCompositeHistory.getInstance().setDeclarationComposite( values[ 0 ] );
+		return null;
 	}
 }

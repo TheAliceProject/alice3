@@ -45,7 +45,7 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ForwardCascade extends org.lgna.croquet.CascadeWithInternalBlank< DeclarationComposite > {
+public class ForwardCascade extends HistoryCascade {
 	private static class SingletonHolder {
 		private static ForwardCascade instance = new ForwardCascade();
 	}
@@ -53,23 +53,10 @@ public class ForwardCascade extends org.lgna.croquet.CascadeWithInternalBlank< D
 		return SingletonHolder.instance;
 	}
 	private ForwardCascade() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "fee210a0-bb0e-4c8c-8e93-fb2fdac683d7" ), DeclarationComposite.class );
+		super( java.util.UUID.fromString( "fee210a0-bb0e-4c8c-8e93-fb2fdac683d7" ) );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.declarationseditor.DeclarationComposite > blankNode ) {
-		boolean isFirst = true;
-		for( DeclarationComposite declarationComposite : DeclarationCompositeHistory.getInstance().getForwardList() ) {
-			if( isFirst ) {
-				//pass
-			} else {
-				rv.add( 0, DeclarationCompositeFillIn.getInstance( declarationComposite ) );
-			}
-			isFirst = false;
-		}
-		return rv;
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.alice.ide.declarationseditor.DeclarationComposite >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.alice.ide.declarationseditor.DeclarationComposite > completionStep, org.alice.ide.declarationseditor.DeclarationComposite[] values ) {
-		return null;
+	protected java.util.List< DeclarationComposite > getList( DeclarationCompositeHistory declarationCompositeHistory ) {
+		return declarationCompositeHistory.getForwardList();
 	}
 }

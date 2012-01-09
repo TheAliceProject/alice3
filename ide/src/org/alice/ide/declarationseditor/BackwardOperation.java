@@ -45,24 +45,24 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ForwardOperation extends org.lgna.croquet.ActionOperation {
+public class BackwardOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
-		private static ForwardOperation instance = new ForwardOperation();
+		private static BackwardOperation instance = new BackwardOperation();
 	}
-	public static ForwardOperation getInstance() {
+	public static BackwardOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ForwardOperation() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "c5885579-bd96-496e-ba79-00a6ed263dc8" ) );
+	private BackwardOperation() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
 	}
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setSmallIcon( org.alice.ide.icons.Icons.NEXT_SMALL );
+		this.setSmallIcon( org.alice.ide.icons.Icons.PREVIOUS_SMALL );
 	}
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
-		DeclarationCompositeHistory.getInstance().goForward();
+		DeclarationCompositeHistory.getInstance().goBackward();
 		step.finish();
 	}
 }

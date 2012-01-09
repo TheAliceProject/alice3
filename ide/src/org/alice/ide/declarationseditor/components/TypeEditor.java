@@ -75,8 +75,8 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		//trigger side effect to initialize isEnabled
 		org.alice.ide.declarationseditor.DeclarationCompositeHistory.getInstance();
 
-		org.lgna.croquet.components.Button backButton = org.alice.ide.declarationseditor.BackOperation.getInstance().createButton();
-		org.lgna.croquet.components.PopupButton backPopupButton = org.alice.ide.declarationseditor.BackCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+		org.lgna.croquet.components.Button backButton = org.alice.ide.declarationseditor.BackwardOperation.getInstance().createButton();
+		org.lgna.croquet.components.PopupButton backPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 		org.lgna.croquet.components.Button forwardButton = org.alice.ide.declarationseditor.ForwardOperation.getInstance().createButton();
 		org.lgna.croquet.components.PopupButton forwardPopupButton = org.alice.ide.declarationseditor.ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 

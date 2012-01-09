@@ -52,16 +52,15 @@ public class DeclarationCompositeHistory {
 	public static DeclarationCompositeHistory getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final java.util.List< DeclarationComposite > history = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List< DeclarationComposite > history = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int index = -1;
 	private final org.lgna.croquet.State.ValueObserver< DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueObserver< DeclarationComposite >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			DeclarationCompositeHistory.this.pushIfNotNull( nextValue );
+			DeclarationCompositeHistory.this.appendIfAppropriate( nextValue );
 		}
 	};
-	
 	private final org.alice.ide.ProjectApplication.ProjectObserver projectListener = new org.alice.ide.ProjectApplication.ProjectObserver() {
 		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
 		}
@@ -69,33 +68,47 @@ public class DeclarationCompositeHistory {
 			DeclarationCompositeHistory.this.resetStack();
 		}
 	};
+
+	private int ignoreCount = 0;
 	private DeclarationCompositeHistory() {
 		org.alice.ide.IDE.getActiveInstance().addProjectObserver( this.projectListener );
 		DeclarationTabState.getInstance().addValueObserver( this.declarationListener );
 		this.resetStack();
 	}
-	private void pushIfNotNull( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
-		if( declarationComposite != null ) {
-			
-			java.util.ListIterator< DeclarationComposite > listIterator = this.history.listIterator();
-			
-			while( listIterator.hasNext() ) {
-				DeclarationComposite current = listIterator.next();
-				if( current == declarationComposite ) {
-					listIterator.remove();
+	
+	private void pushIgnore() {
+		this.ignoreCount ++;
+	}
+	private void popIgnore() {
+		this.ignoreCount --;
+	}
+	
+	private void appendIfAppropriate( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
+		if( this.ignoreCount == 0 ) {
+			if( declarationComposite != null ) {
+				if( this.index > 0 ) {
+					this.history = this.history.subList( this.index, this.history.size() );
 				}
+				java.util.ListIterator< DeclarationComposite > listIterator = this.history.listIterator();
+				while( listIterator.hasNext() ) {
+					DeclarationComposite current = listIterator.next();
+					if( current == declarationComposite ) {
+						listIterator.remove();
+					}
+				}
+				this.index = 0;
+				this.history.add( 0, declarationComposite );
+				this.updateBackEnabled();
+				this.updateFrontEnabled();
 			}
-			this.history.add( 0, declarationComposite );
-			this.updateBack();
-			this.updateFront();
 		}
 	}
-	private void updateBack() {
+	private void updateBackEnabled() {
 		boolean isEnabled = (this.index+1) < this.history.size();
-		BackOperation.getInstance().setEnabled( isEnabled );
-		BackCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
+		BackwardOperation.getInstance().setEnabled( isEnabled );
+		BackwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
 	}
-	private void updateFront() {
+	private void updateFrontEnabled() {
 		boolean isEnabled = 0 < this.index;
 		ForwardOperation.getInstance().setEnabled( isEnabled );
 		ForwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
@@ -103,21 +116,40 @@ public class DeclarationCompositeHistory {
 	private void resetStack() {
 		this.history.clear();
 		this.index = -1;
-		this.pushIfNotNull( DeclarationTabState.getInstance().getValue() );
-		this.updateBack();
-		this.updateFront();
+		this.appendIfAppropriate( DeclarationTabState.getInstance().getValue() );
+		this.updateBackEnabled();
+		this.updateFrontEnabled();
 	}
 	
-	public void setIndex( int index ) {
-		this.index = index;
-		this.updateBack();
-		this.updateFront();
+	private void setIndex( int index ) {
+		this.pushIgnore();
+		try {
+			this.index = index;
+			this.updateBackEnabled();
+			this.updateFrontEnabled();
+			DeclarationTabState.getInstance().setValue( this.history.get( this.index ) );
+		} finally {
+			this.popIgnore();
+		}
 	}
 	
-	public java.util.List< DeclarationComposite > getBackList() {
+	public void goBackward() {
+		this.setIndex( index++ );
+	}
+	public void goForward() {
+		this.setIndex( index-- );
+	}
+	public void setDeclarationComposite( DeclarationComposite declarationComposite ) {
+		this.setIndex( this.history.indexOf( declarationComposite ) );
+	}
+	
+	public java.util.List< DeclarationComposite > getBackwardList() {
 		int minInclusive = this.index+1;
 		int maxExclusive = this.history.size();
 		if( minInclusive < maxExclusive ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( this.index, minInclusive, maxExclusive );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( this.history );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( this.history.subList( minInclusive, maxExclusive ) );
 			return this.history.subList( minInclusive, maxExclusive );
 		} else {
 			return java.util.Collections.emptyList();
@@ -125,9 +157,11 @@ public class DeclarationCompositeHistory {
 	}
 	public java.util.List< DeclarationComposite > getForwardList() {
 		int minInclusive = 0;
-		int maxExclusive = this.index-1;
+		int maxExclusive = this.index;
 		if( minInclusive < maxExclusive ) {
-			return this.history.subList( minInclusive, maxExclusive );
+			java.util.List< DeclarationComposite > rv = this.history.subList( minInclusive, maxExclusive );
+			java.util.Collections.reverse( rv );
+			return rv;
 		} else {
 			return java.util.Collections.emptyList();
 		}
