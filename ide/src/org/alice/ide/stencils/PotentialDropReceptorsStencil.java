@@ -109,7 +109,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.stencil.LayeredPaneC
 	}
 	
 	@Override
-	protected java.awt.LayoutManager createLayout( org.lgna.stencil.LayeredPaneComponent.JStencil jStencil ) {
+	protected java.awt.LayoutManager createLayout( JStencil jStencil ) {
 		return null;
 	}
 	
