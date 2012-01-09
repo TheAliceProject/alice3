@@ -70,6 +70,11 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 	}
 	
 	@Override
+	protected java.awt.LayoutManager createLayout( JStencil jStencil ) {
+		return new java.awt.BorderLayout();
+	}
+	
+	@Override
 	protected void redispatchMouseEvent(java.awt.event.MouseEvent eSrc) {
 		Page page = this.getCurrentPage();
 		

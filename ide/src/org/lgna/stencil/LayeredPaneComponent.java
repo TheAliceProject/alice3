@@ -99,42 +99,45 @@ public abstract class LayeredPaneComponent extends org.lgna.croquet.components.J
 	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
 	protected abstract boolean contains( int x, int y, boolean superContains );
+	
+	protected class JStencil extends javax.swing.JPanel {
+		@Override
+		protected void paintComponent(java.awt.Graphics g) {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+			java.awt.Paint prevPaint = g2.getPaint();
+			Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			try {
+				LayeredPaneComponent.this.paintComponentPrologue( g2 );
+				super.paintComponent( g2 );
+				LayeredPaneComponent.this.paintComponentEpilogue( g2 );
+			} finally {
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+				g2.setPaint( prevPaint );
+			}
+		}
+		
+		@Override
+		public void paint(java.awt.Graphics g) {
+			super.paint(g);
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+			LayeredPaneComponent.this.paintEpilogue( g2 );
+		}
+
+		@Override
+		public boolean contains(int x, int y) {
+			return LayeredPaneComponent.this.contains( x, y, super.contains( x, y ) );
+		}
+	}
+	
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {
-		class JStencil extends javax.swing.JPanel {
-			@Override
-			protected void paintComponent(java.awt.Graphics g) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-				java.awt.Paint prevPaint = g2.getPaint();
-				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-				try {
-					LayeredPaneComponent.this.paintComponentPrologue( g2 );
-					super.paintComponent( g2 );
-					LayeredPaneComponent.this.paintComponentEpilogue( g2 );
-				} finally {
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-					g2.setPaint( prevPaint );
-				}
-			}
-			
-			@Override
-			public void paint(java.awt.Graphics g) {
-				super.paint(g);
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-				LayeredPaneComponent.this.paintEpilogue( g2 );
-			}
-
-			@Override
-			public boolean contains(int x, int y) {
-				return LayeredPaneComponent.this.contains( x, y, super.contains( x, y ) );
-			}
-
-		}
-		final JStencil rv = new JStencil();
-		rv.setLayout(new java.awt.BorderLayout());
-		rv.setOpaque(false);
+		JStencil rv = new JStencil();
+		rv.setLayout( this.createLayout( rv ) );
+		rv.setOpaque( false );
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		return rv;
 	}
+	
+	protected abstract java.awt.LayoutManager createLayout( JStencil jStencil );
 }

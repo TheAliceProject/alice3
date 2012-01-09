@@ -108,6 +108,10 @@ public class PotentialDropReceptorsStencil extends org.lgna.stencil.LayeredPaneC
 		return superContains;
 	}
 	
+	@Override
+	protected java.awt.LayoutManager createLayout( org.lgna.stencil.LayeredPaneComponent.JStencil jStencil ) {
+		return null;
+	}
 	
 	@Override
 	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
