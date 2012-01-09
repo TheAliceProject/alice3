@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -197,7 +197,7 @@ class SnowScene extends Scene{
 
 		this.armoire.move( MoveDirection.BACKWARD, 2.0 );
 
-		this.ogre.move( MoveDirection.LEFT, 1.5 );
+		this.ogre.move( MoveDirection.LEFT, 1.0 );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
@@ -229,8 +229,8 @@ class SnowScene extends Scene{
 		this.addListener( new MouseClickedListener(list) {
 			@Override
 			public void mouseButtonClicked(Model target) {
-					target.move(MoveDirection.UP, 1);
-					target.move(MoveDirection.DOWN, 1);
+					target.move(MoveDirection.RIGHT, 1);
+					target.move(MoveDirection.LEFT, 1);
 			}
 		});
 		
@@ -238,8 +238,8 @@ class SnowScene extends Scene{
 			
 			@Override
 			public void whenTheseCollide(LinkedList<Model> targets) {
-				// TODO Auto-generated method stub
-				
+				susan.move(MoveDirection.UP, 1);
+				susan.move(MoveDirection.DOWN, 1);
 			}
 		});
 	}
@@ -292,8 +292,8 @@ class RagsToRichesStory extends Program {
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	public void playOutStory() {
-		this.setActiveScene( this.desertScene );
-		this.desertScene.turnBigRocksIntoLittleRocks();
+//		this.setActiveScene( this.desertScene );
+//		this.desertScene.turnBigRocksIntoLittleRocks();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}

@@ -1,4 +1,4 @@
-package edu.cmu.cs.dennisc.matt;
+﻿package edu.cmu.cs.dennisc.matt;
 
 import java.util.LinkedList;
 
@@ -31,7 +31,7 @@ public abstract class CollisionListener extends TransformationListener {
 		LinkedList<Model> group1 = new LinkedList<Model>();
 		group1.add(observeForCollision);
 		LinkedList<Model> group2 = new LinkedList<Model>();
-		group1.add(withThis);
+		group2.add(withThis);
 		this.groupOne = group1;
 		this.groupTwo = group2;
 	}
@@ -62,5 +62,4 @@ public abstract class CollisionListener extends TransformationListener {
 		rv.addAll(groupTwo);
 		return rv;
 	}
-
 }

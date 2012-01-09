@@ -1,18 +1,18 @@
-//These need wustl header
-package edu.wustl.cse.galankus.collision;
+﻿//These need wustl header
+package edu.cmu.cs.dennisc.matt;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.lgna.story.Entity;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.implementation.AsSeenBy;
+import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
 
 public class AabbCollisionDetector {
 	
-	public static boolean doTheseCollide(Transformable object1, Transformable object2) {
+	public static boolean doTheseCollide(Entity object1, Entity object2) {
 		Point3 center1 = new Point3();
 		Point3 center2 = new Point3();
 		Vector3 corner1 = new Vector3();
@@ -24,16 +24,17 @@ public class AabbCollisionDetector {
 	}
 	
 	public static boolean doTheseCollide(edu.cmu.cs.dennisc.scenegraph.Transformable object1, edu.cmu.cs.dennisc.scenegraph.Transformable object2, double dist){
-		return doTheseCollide((Transformable)Element.getElement(object1), (Transformable)Element.getElement(object2), dist);
+		
+		return doTheseCollide(EntityImp.getAbstractionFromSgElement(object1), EntityImp.getAbstractionFromSgElement(object2), dist);
 	}
 	
 	public static boolean doTheseCollide(edu.cmu.cs.dennisc.scenegraph.Transformable object1, edu.cmu.cs.dennisc.scenegraph.Transformable object2){
-		return doTheseCollide((Transformable)Element.getElement(object1), (Transformable)Element.getElement(object2));
+		return doTheseCollide(EntityImp.getAbstractionFromSgElement(object1), EntityImp.getAbstractionFromSgElement(object2));
 	}
 
 
 
-	public static boolean doTheseCollide(Transformable object1, Transformable object2, double extraProximity) {
+	public static boolean doTheseCollide(Entity object1, Entity object2, double extraProximity) {
 		Point3 center1 = new Point3();
 		Point3 center2 = new Point3();
 		Vector3 corner1 = new Vector3();
@@ -44,22 +45,21 @@ public class AabbCollisionDetector {
 		return doAabbsCollide(center1, corner1, center2, corner2, extraProximity);
 	}
 	
-	private static void findCenterAndCorner(Transformable object, Point3 center, Vector3 corner) {
-		// there are some issues with all these puttings in and
-		// takings out of objects in the scene.
-		if (object.getVehicle() != null) {
-			AxisAlignedBox aabb1 = object.getAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE);
-			Point3 min = aabb1.getMinimum();
-			Point3 max = aabb1.getMaximum();
-			center.setToInterpolation(min, max, .5);
-			corner.setToSubtraction(max, min);
-			corner.multiply(.5);
-		}
-	}
+//	private static void findCenterAndCorner(Entity object, Point3 center, Vector3 corner) {
+//		// there are some issues with all these puttings in and
+//		// takings out of objects in the scene.
+//		if (object.getVehicle() != null) {
+//			AxisAlignedBox aabb1 = ImplementationAccessor.getImplementation(object).getAxisAlignedMinimumBoundingBox();
+//			Point3 min = aabb1.getMinimum();
+//			Point3 max = aabb1.getMaximum();
+//			center.setToInterpolation(min, max, .5);
+//			corner.setToSubtraction(max, min);
+//			corner.multiply(.5);
+//		}
+//	}
 	
-	private static void findCenterAndCorner( edu.cmu.cs.dennisc.scenegraph.Transformable object, Point3 center, Vector3 corner) {
-		Transformable t = (org.alice.apis.moveandturn.Transformable)Element.getElement(object);
-		AxisAlignedBox aabb1 = t.getAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE);
+	private static void findCenterAndCorner( Entity object, Point3 center, Vector3 corner) {
+		AxisAlignedBox aabb1 = ImplementationAccessor.getImplementation(object).getAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE);
 		Point3 min = aabb1.getMinimum();
 		Point3 max = aabb1.getMaximum();
 		center.setToInterpolation(min, max, .5);
@@ -83,5 +83,4 @@ public class AabbCollisionDetector {
 			&& distVector.y - extraProximity < boxACorner.y + boxBCorner.y
 			&& distVector.z - extraProximity < boxACorner.z + boxBCorner.z;
 	}
-	
 }

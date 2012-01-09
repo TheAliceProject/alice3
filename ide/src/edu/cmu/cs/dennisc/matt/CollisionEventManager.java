@@ -1,4 +1,4 @@
-package edu.cmu.cs.dennisc.matt;
+﻿package edu.cmu.cs.dennisc.matt;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,7 +18,6 @@ public class CollisionEventManager {
 		for(Model m: ((TransformationListener) cListener).getObserving()){
 			if(!modelList.contains(m)){
 				modelList.add(m);
-//				ImplementationAccessor.getImplementation(m).getSgComposite().addAbsoluteTransformationListener(this);
 			}
 		}
 		for(Model m: cListener.groupOne){
@@ -26,7 +25,9 @@ public class CollisionEventManager {
 				modelMap.put(m, new LinkedList<Model>());
 			}
 			for(Model t: cListener.groupTwo){
-				modelMap.get(m).add(t);
+				if(!modelMap.get(m).contains(t)){
+					modelMap.get(m).add(t);
+				}
 				if(eventMap.get(m) == null){
 					eventMap.put(m, new HashMap<Model, LinkedList<CollisionListener>>());
 				}
@@ -41,14 +42,23 @@ public class CollisionEventManager {
 				modelMap.put(m, new LinkedList<Model>());
 			}
 			for(Model t: cListener.groupOne){
-				modelMap.get(m).add(t);
+				if(modelMap.get(m).contains(t)){
+					modelMap.get(m).add(t);
+				}
+				if(eventMap.get(m) == null){
+					eventMap.put(m, new HashMap<Model, LinkedList<CollisionListener>>());
+				}
+				if(eventMap.get(m).get(t) == null){
+					eventMap.get(m).put(t, new LinkedList<CollisionListener>());
+				}
+				eventMap.get(m).get(t).add(cListener);
 			}
 		}
 	}
 
 	public void fireRelevantEvents(Model changed){
 		for(Model m: modelMap.get(changed)){
-			if(false){//m collidesWith changed
+			if(AabbCollisionDetector.doTheseCollide(m, changed)){
 				for(CollisionListener event: eventMap.get(changed).get(m)){
 					LinkedList<Model> list = new LinkedList<Model>();
 					list.add(m);

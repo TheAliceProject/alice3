@@ -1,4 +1,4 @@
-package edu.cmu.cs.dennisc.matt;
+﻿package edu.cmu.cs.dennisc.matt;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -44,7 +44,7 @@ public class TransformationChangedManager extends AbstractEventManager implement
 	public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent){
 		Entity source = EntityImp.getAbstractionFromSgElement(absoluteTransformationEvent.getTypedSource());
 		if(source instanceof Model)
-		fireAllTargeted((Model) source);
+			fireAllTargeted((Model) source);
 	}
 
 }
