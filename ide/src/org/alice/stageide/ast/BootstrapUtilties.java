@@ -242,16 +242,9 @@ public class BootstrapUtilties {
 		sceneType.methods.add( myFirstMethod );
 
 		org.lgna.project.ast.UserField sceneField = createPrivateFinalField( sceneType, "myScene" );
-		org.lgna.project.ast.UserMethod playOutStoryMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "playOutStory" );
-		org.lgna.project.ast.BlockStatement playOutStoryBody = playOutStoryMethod.body.getValue();
-		playOutStoryBody.statements.add( 
-				createMethodInvocationStatement( 
-						new org.lgna.project.ast.ThisExpression(), 
-						org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
-						createThisFieldAccess( sceneField )
-				)
-		);
-		playOutStoryBody.statements.add( 
+//		org.lgna.project.ast.UserMethod playOutStoryMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "playOutStory" );
+//		org.lgna.project.ast.BlockStatement playOutStoryBody = playOutStoryMethod.body.getValue();
+		sceneActivationListener.body.getValue().statements.add( 
 				createMethodInvocationStatement( 
 						createThisFieldAccess( sceneField ),
 						myFirstMethod
@@ -260,7 +253,7 @@ public class BootstrapUtilties {
 		
 		org.lgna.project.ast.NamedUserType rv = createType( "MyProgram", org.lgna.story.Program.class );
 		rv.fields.add( sceneField );
-		rv.methods.add( playOutStoryMethod );
+		//rv.methods.add( playOutStoryMethod );
 
 		
 		
@@ -276,7 +269,18 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.UserLocal storyLocal = localDeclarationStatement.local.getValue();
 		mainBody.statements.add( localDeclarationStatement );
 		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), rv.findMethod( "initializeInFrame", String[].class ), new org.lgna.project.ast.ParameterAccess( argsParameter ) ) );
-		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), playOutStoryMethod ) );
+//		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), playOutStoryMethod ) );
+		mainBody.statements.add( 
+				createMethodInvocationStatement( 
+						new org.lgna.project.ast.LocalAccess( storyLocal ), 
+						org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
+						new org.lgna.project.ast.FieldAccess(
+								new org.lgna.project.ast.LocalAccess( storyLocal ),
+								sceneField
+						)
+				)
+		);
+		
 		rv.methods.add( mainMethod );
 		
 		return rv;

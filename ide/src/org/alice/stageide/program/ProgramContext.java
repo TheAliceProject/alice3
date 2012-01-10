@@ -102,7 +102,12 @@ public abstract class ProgramContext {
 		org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
 			public void run() {
 				org.lgna.project.virtualmachine.UserInstance programInstance = ProgramContext.this.getProgramInstance();
-				ProgramContext.this.getVirtualMachine().ENTRY_POINT_invoke( programInstance, programInstance.getType().methods.get( 0 ) );
+				org.lgna.project.ast.JavaMethod setActiveSceneMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class );
+				ProgramContext.this.getVirtualMachine().ENTRY_POINT_invoke( 
+						programInstance, 
+						setActiveSceneMethod,
+						programInstance.getFieldValue( programInstance.getType().getDeclaredField( "myScene" ) )
+				);
 			}
 		} );
 	}
