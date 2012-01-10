@@ -54,6 +54,6 @@ public class ObesityLevelState extends org.lgna.croquet.BoundedDoubleState {
 		return SingletonHolder.instance;
 	}
 	private ObesityLevelState() {
-		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ) ).minimum( 0.0 ).maximum( 1.0 ).initialValue( 0.5 ).extent( 0.01 ) );
+		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8e172c61-c2b6-43e4-9777-e9d8fd2b0d65" ) ).minimum( 0.0 ).maximum( 1.0 ).initialValue( 0.5 ).delta( 0.01 ) );
 	}
 }

@@ -40,50 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.video;
+package test;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
-	private static class SingletonHolder {
-		private static ProofOfConceptRecordVideoOperation instance = new ProofOfConceptRecordVideoOperation();
+public class TestCroquet extends org.lgna.croquet.Application {
+	@Override
+	protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+		return null;
 	}
-	public static ProofOfConceptRecordVideoOperation getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
+		return null;
+	}@Override
+	protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+		return null;
 	}
-	
-	private final org.lgna.croquet.State.ValueObserver< Boolean > isRecordingListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+	@Override
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+	@Override
+	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	}
+	public static void main( String[] args ) {
+		TestCroquet testCroquet = new TestCroquet();
+		testCroquet.initialize( args );
+		
+		class State extends org.lgna.croquet.BoundedIntegerState {
+			public State() {
+				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 3 ).initialValue( 50 ) );
+			}
 		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			ProofOfConceptRecordVideoOperation.this.setRecording( nextValue );
-		}
-	};
-	private ProofOfConceptRecordVideoOperation() {
-		super( java.util.UUID.fromString( "63876374-ce69-44f0-a454-2bedda151818" ) );
-	}
-	@Override
-	protected org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel() {
-		return new org.alice.ide.video.components.ProofOfConceptRecordVideoPanel();
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step, org.lgna.croquet.components.Dialog dialog ) {
-		IsRecordingState.getInstance().setValue( false );
-		IsRecordingState.getInstance().addValueObserver( this.isRecordingListener );
-		return super.createControlsPanel( step, dialog );
-	}
-	@Override
-	protected void handleFinally( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
-		IsRecordingState.getInstance().removeValueObserver( this.isRecordingListener );
-		super.handleFinally( context, dialog, contentPane );
-	}
-	@Override
-	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
-		java.io.File directory = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "ProofOfConceptVideoExport" );
-		java.io.File file = new java.io.File( directory, "image" + new java.text.DecimalFormat( "#0000" ).format( i ) + ".png" );
-		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		edu.cmu.cs.dennisc.image.ImageUtilities.write( file, image );
+		
+		State state = new State();
+		testCroquet.getFrame().getContentPanel().addComponent( state.createSlider(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		testCroquet.getFrame().pack();
+		testCroquet.getFrame().setVisible( true );
 	}
 }
