@@ -43,8 +43,12 @@
 
 package org.lgna.story.implementation;
 
+import java.awt.event.KeyEvent;
+
+import org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit;
 import org.lgna.project.ProgramClosedException;
 import org.lgna.story.Model;
+import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonListener;
 
 import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
@@ -72,8 +76,9 @@ public class SceneImp extends EntityImp {
 			this.transformable.getSgComposite().setLocalTransformation( this.localTransformation );
 		}
 	}
-		
+
 	private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
+	private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
 	private EventManager eventManager = new EventManager();
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
@@ -141,15 +146,16 @@ public class SceneImp extends EntityImp {
 			}
 		}
 	}
-//	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
-//		public void keyPressed(java.awt.event.KeyEvent e) {
-//			SceneImp.this.handleKeyPressed( e );
-//		}
-//		public void keyReleased(java.awt.event.KeyEvent e) {
-//		}
-//		public void keyTyped(java.awt.event.KeyEvent e) {
-//		}
-//	};
+	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
+		public void keyPressed(java.awt.event.KeyEvent e) {
+			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent(e);
+			SceneImp.this.handleKeyPressed( event );
+		}
+		public void keyReleased(java.awt.event.KeyEvent e) {
+		}
+		public void keyTyped(java.awt.event.KeyEvent e) {
+		}
+	};
 
 	private final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = new edu.cmu.cs.dennisc.scenegraph.Scene();
 	private final edu.cmu.cs.dennisc.scenegraph.Background sgBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
@@ -214,8 +220,19 @@ public class SceneImp extends EntityImp {
 		this.setFogDensity(0);
 		this.putInstance( this.sgScene );
 		addMouseButtonListener(eventManager);
+		addKeyPressedListener(eventManager);
 	}
 	
+	private void addKeyPressedListener(KeyListener listener) {
+		this.keyListeners.add(listener);
+	}
+
+	protected void handleKeyPressed(org.lgna.story.event.KeyEvent event) {
+		for(KeyListener listener: keyListeners){
+			listener.keyPressed(event);
+		}
+	}
+
 	private void setFogDensity(float densityValue) {
 		this.fogDensityValue = densityValue;
 		if (densityValue == 0 && this.sgFog.getParent() == this.sgScene) {
@@ -261,7 +278,7 @@ public class SceneImp extends EntityImp {
 				java.awt.Component component = lg.getAWTComponent();
 				component.addMouseListener( this.mouseAdapter );
 				component.addMouseMotionListener( this.mouseAdapter );
-//				component.addKeyListener( this.keyAdapter );
+				component.addKeyListener( this.keyAdapter );
 			}
 		}
 		this.program = program;

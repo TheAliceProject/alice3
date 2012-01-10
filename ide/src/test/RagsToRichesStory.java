@@ -50,6 +50,7 @@ import org.lgna.story.Color;
 import org.lgna.story.Cone;
 import org.lgna.story.Ground;
 import org.lgna.story.Joint;
+import org.lgna.story.Key;
 import org.lgna.story.Model;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
@@ -69,6 +70,8 @@ import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
 import edu.cmu.cs.dennisc.matt.CollisionListener;
+import edu.cmu.cs.dennisc.matt.EventPolicy;
+import edu.cmu.cs.dennisc.matt.KeyPressedListener;
 import edu.cmu.cs.dennisc.matt.MouseClickedListener;
 
 class MyBiped extends Biped {
@@ -226,7 +229,7 @@ class SnowScene extends Scene{
 		LinkedList<Model> list = new LinkedList<Model>();
 		list.add(ogre);
 		list.add(susan);
-		this.addListener( new MouseClickedListener(list) {
+		this.addListener( new MouseClickedListener(list, EventPolicy.ENQUEUE) {
 			@Override
 			public void mouseButtonClicked(Model target) {
 					target.move(MoveDirection.RIGHT, 1);
@@ -235,11 +238,19 @@ class SnowScene extends Scene{
 		});
 		
 		this.addListener(new CollisionListener(ogre, susan) {
-			
 			@Override
 			public void whenTheseCollide(LinkedList<Model> targets) {
 				susan.move(MoveDirection.UP, 1);
 				susan.move(MoveDirection.DOWN, 1);
+			}
+		});
+		this.addListener(new KeyPressedListener(EventPolicy.COMBINE) {
+			@Override
+			public void keyPressed(Key key) { 
+				if(key.equals(Key.A)){
+					armoire.move(MoveDirection.UP, 1.0);
+					armoire.move(MoveDirection.DOWN, 1.0);
+				}
 			}
 		});
 	}

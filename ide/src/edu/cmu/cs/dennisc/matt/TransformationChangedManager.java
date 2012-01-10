@@ -12,14 +12,21 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 
-public class TransformationChangedManager extends AbstractEventManager implements AbsoluteTransformationListener{
+public class TransformationChangedManager implements AbsoluteTransformationListener{
 
 	HashMap<Model, LinkedList<TransformationListener>> map = new HashMap<Model, LinkedList<TransformationListener>>();
 	LinkedList<TransformationListener> listenerList = new LinkedList<TransformationListener>();
 	LinkedList<Model> modelList = new LinkedList<Model>();
 	CollisionEventManager collision = new CollisionEventManager();
+	protected boolean shouldFire = true;
 
-	@Override
+	public void silenceListeners(){
+		shouldFire = false;
+	}
+	public void restoreListeners(){
+		shouldFire = true;
+	}
+
 	public void addListener(AbstractListener listener) {
 		if(listener instanceof TransformationListener){
 			if(listener instanceof CollisionListener){
@@ -34,7 +41,6 @@ public class TransformationChangedManager extends AbstractEventManager implement
 		}
 	}
 
-	@Override
 	public void fireAllTargeted(Model changedEntity) {
 		if(shouldFire){
 			collision.fireRelevantEvents(changedEntity);

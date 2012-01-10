@@ -6,11 +6,18 @@ import java.util.LinkedList;
 import org.lgna.story.Model;
 
 
-public class MouseClickedManager extends AbstractEventManager {
+public class MouseClickedManager {
 
 	HashMap<Model, LinkedList<MouseClickedListener>> map = new HashMap<Model, LinkedList<MouseClickedListener>>();
+	protected boolean shouldFire = true;
 
-	@Override
+	public void silenceListeners(){
+		shouldFire = false;
+	}
+	public void restoreListeners(){
+		shouldFire = true;
+	}
+	
 	public void addListener(AbstractListener listener) {
 		if(listener instanceof MouseClickedListener){
 			MouseClickedListener mouseListener = (MouseClickedListener) listener; 
@@ -40,13 +47,5 @@ public class MouseClickedManager extends AbstractEventManager {
 				}
 			}
 		}
-	}
-
-	public void silenceListeners() {
-		shouldFire  = false;
-	}
-
-	public void restoreListeners() {
-		shouldFire = true;
 	}
 }
