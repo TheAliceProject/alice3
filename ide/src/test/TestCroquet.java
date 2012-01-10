@@ -40,20 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.croquet.models.custom;
+package test;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PortionState extends org.lgna.croquet.BoundedDoubleState {
-	private static class SingletonHolder {
-		private static PortionState instance = new PortionState();
+public class TestCroquet extends org.lgna.croquet.Application {
+	@Override
+	protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+		return null;
 	}
-	public static PortionState getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
+		return null;
+	}@Override
+	protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+		return null;
 	}
-	private PortionState() {
-		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4c5552d0-d5c3-4f01-94b5-4920bd4be6fc" ) ).minimum( 0.0 ).maximum( 1.0 ).initialValue( 0.5 ).delta( 0.01 ) );
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+	@Override
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+	@Override
+	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	}
+	public static void main( String[] args ) {
+		TestCroquet testCroquet = new TestCroquet();
+		testCroquet.initialize( args );
+		
+		class State extends org.lgna.croquet.BoundedIntegerState {
+			public State() {
+				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 3 ).initialValue( 50 ) );
+			}
+		}
+		
+		State state = new State();
+		testCroquet.getFrame().getContentPanel().addComponent( state.createSlider(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		testCroquet.getFrame().pack();
+		testCroquet.getFrame().setVisible( true );
 	}
 }

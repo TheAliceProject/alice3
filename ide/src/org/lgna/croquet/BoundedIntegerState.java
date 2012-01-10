@@ -51,7 +51,7 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 		private final java.util.UUID id;
 		private int minimum = 0;
 		private int maximum = 100;
-		private int extent = 1;
+		private int extent = 0;
 		private int initialValue = 50;
 		public Details( Group group, java.util.UUID id ) {
 			this.group = group;
@@ -79,8 +79,8 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 			if( this.boundedRangeModel != null ) {
 				//pass
 			} else {
-				this.boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
-				this.boundedRangeModel.setRangeProperties( this.initialValue, this.extent, this.minimum, this.maximum, false );
+				int cappedInitialValue = Math.min( Math.max( this.initialValue, this.minimum ), this.maximum-this.extent );
+				this.boundedRangeModel = new javax.swing.DefaultBoundedRangeModel( cappedInitialValue, this.extent, this.minimum, this.maximum );
 			}
 			return this.boundedRangeModel;
 		}
