@@ -98,7 +98,7 @@ public abstract class ProgramContext {
 	}
 	
 
-	public void invokeMethod0() {
+	public void setActiveScene() {
 		org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
 			public void run() {
 				org.lgna.project.virtualmachine.UserInstance programInstance = ProgramContext.this.getProgramInstance();
