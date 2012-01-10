@@ -44,6 +44,7 @@ package org.alice.stageide;
 
 public class StageIDE extends org.alice.ide.IDE {
 	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
+	public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
 
 	public static StageIDE getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(  org.alice.ide.IDE.getActiveInstance(), StageIDE.class );

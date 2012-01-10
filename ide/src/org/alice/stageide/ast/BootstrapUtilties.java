@@ -122,6 +122,8 @@ public class BootstrapUtilties {
 		performGeneratedSetupMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		org.lgna.project.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 		
+		org.lgna.project.ast.UserMethod initializeEventListenersMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
+
 		for( org.lgna.project.ast.UserField field : new org.lgna.project.ast.UserField[] { cameraField, sunField, groundField } ) {
 //			java.lang.reflect.Method mthd;
 //			try {
@@ -205,11 +207,12 @@ public class BootstrapUtilties {
 
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performGeneratedSetupMethod ) );
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performCustomSetupMethod ) );
+		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), initializeEventListenersMethod ) );
 
 		Class< ? > sceneCls = org.lgna.story.Scene.class;
 		
-		org.lgna.project.ast.JavaMethod preserveVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "preserveVehiclesAndVantagePoints" );
-		org.lgna.project.ast.JavaMethod restoreVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "restoreVehiclesAndVantagePoints" );
+		org.lgna.project.ast.JavaMethod preserveVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "preserveStateAndEventListeners" );
+		org.lgna.project.ast.JavaMethod restoreVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "restoreStateAndEventListeners" );
 		ifInnerFalseBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), restoreVehiclesAndVantagePointsMethod ) );
 		ifOuterFalseBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), preserveVehiclesAndVantagePointsMethod ) );
 
@@ -221,6 +224,7 @@ public class BootstrapUtilties {
 		sceneType.fields.add( cameraField );
 		sceneType.methods.add( performCustomSetupMethod );
 		sceneType.methods.add( performGeneratedSetupMethod );
+		sceneType.methods.add( initializeEventListenersMethod );
 		sceneType.methods.add( handleActiveChangedMethod );
 		sceneType.methods.add( myFirstMethod );
 

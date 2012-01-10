@@ -60,11 +60,11 @@ public class SceneAdapter extends org.lgna.story.Scene {
 		this.context.invokeEntryPoint( method, isActive, activeCount );
 	}
 	@Override
-	public void preserveVehiclesAndVantagePoints() {
-		super.preserveVehiclesAndVantagePoints();
+	public void preserveStateAndEventListeners() {
+		super.preserveStateAndEventListeners();
 	}
 	@Override
-	public void restoreVehiclesAndVantagePoints() {
-		super.restoreVehiclesAndVantagePoints();
+	public void restoreStateAndEventListeners() {
+		super.restoreStateAndEventListeners();
 	}
 }

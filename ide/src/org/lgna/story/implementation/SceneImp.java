@@ -161,12 +161,12 @@ public class SceneImp extends EntityImp {
 		this.program = program;
 	}
 
-	public void preserveVehiclesAndVantagePoints() {
+	public void preserveStateAndEventListeners() {
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}
 	}
-	public void restoreVehiclesAndVantagePoints() {
+	public void restoreStateAndEventListeners() {
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}

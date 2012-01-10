@@ -41,59 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package test;
-
-import org.lgna.story.Camera;
-import org.lgna.story.Ground;
-import org.lgna.story.Program;
-import org.lgna.story.Scene;
-import org.lgna.story.Sun;
-import org.lgna.story.TurnDirection;
-
-class MyScene extends Scene {
-	private final Camera camera = new Camera();
-	private final Sun sun = new Sun();
-	private final Ground snow = new Ground();
-	private void performGeneratedSetup() {
-		// this code is automatically generated
-		// edit performCustomSetup instead
-		this.snow.setVehicle( this );
-		this.sun.setVehicle( this );
-		this.camera.setVehicle( this );
-		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
-	}
-	private void performCustomSetup() {
-	}
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		if( isActive ) {
-			if( activeCount == 1 ) {
-				this.performGeneratedSetup();
-				this.performCustomSetup();
-			} else {
-				this.restoreStateAndEventListeners();
-			}
-		} else {
-			this.preserveStateAndEventListeners();
-		}
-	}
-	public void act1() {
-		this.camera.turn( TurnDirection.LEFT, 0.25 );
-	}
-}
+package org.lgna.story.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BootStrapStory extends Program {
-	private final MyScene myScene = new MyScene();
-	public void playOutStory() {
-		this.setActiveScene( this.myScene );
-		this.myScene.act1();
-	}
-	public static void main( String[] args ) {
-		BootStrapStory story = new BootStrapStory();
-		story.initializeInFrame( args );
-		story.playOutStory();
-	}
+public interface SceneActivationListener {
+	public void sceneActivated( SceneActivationEvent e );
 }
