@@ -40,16 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationProperty< E extends Declaration > extends NodeProperty< E > {
-	public DeclarationProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		super( owner );
-	}
-	public boolean isReference() {
-		return true;
-	}
+public interface Member extends Declaration {
+
 }

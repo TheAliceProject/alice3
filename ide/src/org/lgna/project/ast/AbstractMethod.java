@@ -47,7 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMethod extends AbstractCode {
-	//public ObjectProperty< Boolean > isEntryPoint = new ObjectProperty< Boolean >( this );
 	public abstract boolean isValid();
 	
 	public abstract boolean isStatic();

@@ -43,7 +43,6 @@
 
 package org.lgna.project.ast;
 
-//todo: < E extends AbstractMember> for getPreviousInChain and getNextInChain
 /**
  * @author Dennis Cosgrove
  */

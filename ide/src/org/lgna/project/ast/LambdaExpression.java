@@ -40,16 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationProperty< E extends Declaration > extends NodeProperty< E > {
-	public DeclarationProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		super( owner );
+public class LambdaExpression extends Expression {
+	public DeclarationProperty<Lambda> value = new DeclarationProperty<Lambda>( this );
+	public LambdaExpression() {
 	}
-	public boolean isReference() {
-		return true;
+	public LambdaExpression( Lambda value ) {
+		this.value.setValue( value );
+	}
+	@Override
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+		Lambda lambda = this.value.getValue();
+		if( lambda != null ) {
+			return lambda.getReturnType();
+		} else {
+			return null;
+		}
 	}
 }

@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends AbstractNode {
+public abstract class AbstractDeclaration extends AbstractNode implements Declaration {
 	public abstract boolean isUserAuthored();
 	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
 	@Override

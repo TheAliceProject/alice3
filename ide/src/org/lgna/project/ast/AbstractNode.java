@@ -109,7 +109,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 			if( isReference ) {
 				//pass
 			} else {
-				AbstractNode node = nodeProperty.getValue();
+				AbstractNode node = (AbstractNode)nodeProperty.getValue();
 				if( node != null ) {
 					node.setParent( null );
 				}
@@ -130,7 +130,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 			if( isReference ) {
 				//pass
 			} else {
-				AbstractNode node = nodeProperty.getValue();
+				AbstractNode node = (AbstractNode)nodeProperty.getValue();
 				if( node != null ) {
 					node.setParent( this );
 				}
