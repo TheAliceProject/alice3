@@ -85,15 +85,19 @@ public abstract class AbstractUserMethod extends AbstractMethod {
 		return true;
 	}
 	
-	@Override
 	public final AbstractType<?,?,?> getReturnType() {
 		return returnType.getValue();
 	}
-	@Override
 	public final java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
 		return requiredParameters.getValue();
 	}
-	
+	public final org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+		return null;
+	}
+	public final org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+		return null;
+	}
+
 	@Override
 	public final AbstractCode getNextLongerInChain() {
 		return null;
@@ -112,16 +116,6 @@ public abstract class AbstractUserMethod extends AbstractMethod {
 	public final AccessLevel getAccessLevel() {
 		return this.accessLevel.getValue();
 	}
-
-	@Override
-	public final org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
-		return null;
-	}
-	@Override
-	public final org.lgna.project.ast.AbstractParameter getKeyedParameter() {
-		return null;
-	}
-
 	@Override
 	public final boolean isNative() {
 		return false;

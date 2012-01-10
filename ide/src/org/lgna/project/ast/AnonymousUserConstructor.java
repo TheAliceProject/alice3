@@ -91,7 +91,6 @@ public class AnonymousUserConstructor extends UserConstructor {
 	public org.lgna.project.ast.AbstractCode getNextShorterInChain() {
 		return null;
 	}
-	@Override
 	public java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > getRequiredParameters() {
 		return this.parameters;
 	}

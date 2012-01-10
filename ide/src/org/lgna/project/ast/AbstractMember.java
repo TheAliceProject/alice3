@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMember extends AbstractAccessibleDeclaration {
+public abstract class AbstractMember extends AbstractAccessibleDeclaration implements Member {
 	public abstract org.lgna.project.annotations.Visibility getVisibility();
 	public abstract AbstractType<?,?,?> getDeclaringType();
 	@Override
