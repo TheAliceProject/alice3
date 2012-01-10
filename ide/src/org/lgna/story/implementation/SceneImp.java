@@ -138,9 +138,13 @@ public class SceneImp extends EntityImp {
 	}
 	
 	public void fireSceneActivationListeners() {
-		org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
-		for( org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
-			sceneActivationListener.sceneActivated( e );
+		final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
+		for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
+			new org.lgna.common.ComponentThread( new Runnable() {
+				public void run() {
+					sceneActivationListener.sceneActivated( e );
+				}
+			}, "SceneActivation" ).start();
 		}
 	}
 	
