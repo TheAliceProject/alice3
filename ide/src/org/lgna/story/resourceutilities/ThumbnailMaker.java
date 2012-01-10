@@ -114,15 +114,23 @@ public class ThumbnailMaker {
 	
 	private void initializeIfNecessary(int width, int height)
 	{
-		boolean forceNew = this.width != width || this.height != height;
+		boolean forceNew = this.width != width || this.height != height || true;
 		this.width = width;
 		this.height = height;
 		if( offscreenLookingGlass == null || forceNew) {
+			if (this.offscreenLookingGlass != null) {
+				this.offscreenLookingGlass.release();
+				this.offscreenLookingGlass = null;
+			}
 			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( null );
 			offscreenLookingGlass.setSize( this.width*ANTI_ALIAS_FACTOR, this.height*ANTI_ALIAS_FACTOR );
 		}
 		if ( testImageOffscreenLookingGlass == null || forceNew)
 		{
+			if (this.testImageOffscreenLookingGlass != null) {
+				this.testImageOffscreenLookingGlass.release();
+				this.testImageOffscreenLookingGlass = null;
+			}
 			testImageOffscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( null );
 			testImageOffscreenLookingGlass.setSize( (int)(this.width*SEARCH_FACTOR), (int)(this.height*SEARCH_FACTOR) );
 		}
@@ -294,7 +302,7 @@ public class ThumbnailMaker {
 	}
 	
 	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int inputWidth, int inputHeight) throws Exception {
-//		initializeIfNecessary(width, height);
+		initializeIfNecessary(inputWidth, inputHeight);
 		this.setSize((int)(inputWidth*SEARCH_FACTOR), (int)(inputHeight*SEARCH_FACTOR));
 		
 		v.setParent(this.sgModelTransformable);
