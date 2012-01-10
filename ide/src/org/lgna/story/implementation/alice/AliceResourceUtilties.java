@@ -282,6 +282,10 @@ public class AliceResourceUtilties {
 	private static BufferedImage getThumbnailInternal(Class<?> modelResource, String name)
 	{
 		URL resourceURL = getThumbnailURLInternal(modelResource, name);
+		if (resourceURL == null) {
+			System.err.println("Can't load thumbnail for "+name);
+		}
+		assert resourceURL != null;
 		if (resourceURL != null)
 		{
 			try
