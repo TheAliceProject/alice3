@@ -47,9 +47,9 @@ package org.alice.stageide.ast;
  * @author Dennis Cosgrove
  */
 public class SceneAdapter extends org.lgna.story.Scene {
-	private final org.lgna.project.virtualmachine.Context context;
+	private final org.lgna.project.virtualmachine.MethodContext context;
 	private final org.lgna.project.ast.UserType<?> type; 
-	public SceneAdapter( org.lgna.project.virtualmachine.Context context, org.lgna.project.ast.UserType<?> type, Object[] arguments ) {
+	public SceneAdapter( org.lgna.project.virtualmachine.MethodContext context, org.lgna.project.ast.UserType<?> type, Object[] arguments ) {
 		this.context = context;
 		this.type = type;
 		assert arguments.length == 0;

@@ -40,19 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.apis.story.event;
+package org.lgna.project.virtualmachine;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MouseButtonAdapter implements org.lgna.story.event.MouseButtonListener {
-	private org.lgna.project.virtualmachine.MethodContext context;
-	private org.lgna.project.ast.UserMethod method;
-	public MouseButtonAdapter( org.lgna.project.virtualmachine.MethodContext context, org.lgna.project.ast.UserType< ? > type, Object[] arguments ) {
-		this.context = context;
-		this.method = type.getDeclaredMethod( "mouseButtonClicked", org.lgna.story.event.MouseButtonEvent.class );
-	}
-	public void mouseButtonClicked( org.lgna.story.event.MouseButtonEvent e ) {
-		this.context.invokeEntryPoint( this.method, e );
-	}
+public interface MethodContext {
+	public void invokeEntryPoint( org.lgna.project.ast.AbstractMethod method, Object... arguments );
 }

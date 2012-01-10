@@ -151,12 +151,12 @@ public abstract class VirtualMachine {
 		Class<?> cls = cnstrctr.getDeclaringClass();
 		Class<?> adapterCls = this.mapAnonymousClsToAdapterCls.get( cls );
 		if( adapterCls != null ) {
-			Context context = new Context() {
+			MethodContext context = new MethodContext() {
 				public void invokeEntryPoint( org.lgna.project.ast.AbstractMethod method, final Object... arguments ) {
 					VirtualMachine.this.ENTRY_POINT_invoke( userInstance, method, arguments );
 				}
 			};
-			Class< ? >[] parameterTypes = { Context.class, org.lgna.project.ast.UserType.class, Object[].class };
+			Class< ? >[] parameterTypes = { MethodContext.class, org.lgna.project.ast.UserType.class, Object[].class };
 			Object[] args = { context, type, arguments };
 			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
 		} else {
@@ -244,7 +244,11 @@ public abstract class VirtualMachine {
 		assert argument != null;
 		org.lgna.project.ast.Expression expression = argument.expression.getValue();
 		assert expression != null;
-		return this.evaluate( expression );
+		if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
+			return this.EPIC_HACK_evaluateLambdaExpression( (org.lgna.project.ast.LambdaExpression)expression, argument );
+		} else {
+			return this.evaluate( expression );
+		}
 	}
 	
 	protected Object[] evaluateArguments( org.lgna.project.ast.AbstractCode code, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.SimpleArgument > arguments, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.SimpleArgument > variableArguments, org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.JavaKeyedArgument > keyedArguments ) {
@@ -607,6 +611,38 @@ public abstract class VirtualMachine {
 		return resourceExpression.resource.getValue();
 	}
 	
+	protected Object EPIC_HACK_evaluateLambdaExpression( org.lgna.project.ast.LambdaExpression lambdaExpression, org.lgna.project.ast.AbstractArgument argument ) {
+		org.lgna.project.ast.Lambda lambda = lambdaExpression.value.getValue();
+		
+		org.lgna.project.ast.AbstractType< ?, ?, ? > type = argument.parameter.getValue().getValueType();
+		if( type instanceof org.lgna.project.ast.JavaType ) {
+			org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+			Class< ? > interfaceCls = javaType.getClassReflectionProxy().getReification();
+			Class< ? > adapterCls = this.mapAnonymousClsToAdapterCls.get( interfaceCls );
+			assert adapterCls != null : interfaceCls;
+			Class< ? >[] parameterTypes = { org.lgna.project.virtualmachine.LambdaContext.class, org.lgna.project.ast.Lambda.class };
+			Object[] arguments = {
+					new LambdaContext() {
+						public void invokeEntryPoint( org.lgna.project.ast.Lambda lambda, Object... arguments ) {
+							System.out.println( lambda );
+						}
+					},
+					lambda
+			};
+			try {
+				java.lang.reflect.Constructor< ? > cnstrctr = adapterCls.getDeclaredConstructor( parameterTypes );
+				return cnstrctr.newInstance( arguments );
+			} catch( Exception e ) {
+				throw new RuntimeException( e );
+			}
+		}
+		throw new RuntimeException( "todo" );
+	}
+	
+	protected Object evaluateLambdaExpression( org.lgna.project.ast.LambdaExpression lambdaExpression ) {
+		throw new RuntimeException( "todo" );
+	}
+	
 
 	protected Object evaluate( org.lgna.project.ast.Expression expression ) {
 		if( expression != null ) {
@@ -664,6 +700,8 @@ public abstract class VirtualMachine {
 				return this.evaluateTypeLiteral( (org.lgna.project.ast.TypeLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.ResourceExpression ) {
 				return this.evaluateResourceExpression( (org.lgna.project.ast.ResourceExpression)expression );
+			} else if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
+				return this.evaluateLambdaExpression( (org.lgna.project.ast.LambdaExpression)expression );
 			} else {
 				throw new RuntimeException( expression.getClass().getName() );
 			}

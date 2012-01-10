@@ -47,6 +47,14 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class UserLambda extends AbstractUserMethod implements Lambda {
+	public UserLambda() {
+	}
+	public UserLambda( AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
+		super( returnType, requiredParameters, body );
+	}
+	public UserLambda( Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
+		this( JavaType.getInstance( returnCls ), requiredParameters, body );
+	}
 	@Override
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getDeclaringType() {
 		UserCode code = this.getFirstAncestorAssignableTo( UserCode.class );

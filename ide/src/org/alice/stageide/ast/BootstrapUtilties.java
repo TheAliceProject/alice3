@@ -124,6 +124,19 @@ public class BootstrapUtilties {
 		
 		org.lgna.project.ast.UserMethod initializeEventListenersMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 
+		org.lgna.project.ast.UserLambda sceneActivationListener = org.lgna.project.ast.AstUtilities.createUserLambda( org.lgna.story.event.SceneActivationListener.class );
+		org.lgna.project.ast.LambdaExpression sceneActivationListenerExpression = new org.lgna.project.ast.LambdaExpression( sceneActivationListener );
+
+		org.lgna.project.ast.JavaMethod addSceneActivationListenerMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "addSceneActivationListener", org.lgna.story.event.SceneActivationListener.class );
+		
+		initializeEventListenersMethod.body.getValue().statements.add(
+				org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(  
+						new org.lgna.project.ast.ThisExpression(), 
+						addSceneActivationListenerMethod, 
+						sceneActivationListenerExpression 
+				)
+		);
+		
 		for( org.lgna.project.ast.UserField field : new org.lgna.project.ast.UserField[] { cameraField, sunField, groundField } ) {
 //			java.lang.reflect.Method mthd;
 //			try {

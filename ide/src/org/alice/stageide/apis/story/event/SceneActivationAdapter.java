@@ -40,11 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.virtualmachine;
+
+package org.alice.stageide.apis.story.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Context {
-	public void invokeEntryPoint( org.lgna.project.ast.AbstractMethod method, Object... arguments );
+public class SceneActivationAdapter implements org.lgna.story.event.SceneActivationListener {
+	private final org.lgna.project.virtualmachine.LambdaContext context;
+	private final org.lgna.project.ast.Lambda lambda;
+	public SceneActivationAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda ) {
+		this.context = context;
+		this.lambda = lambda;
+	}
+	public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
+		this.context.invokeEntryPoint( this.lambda, e );
+	}
 }

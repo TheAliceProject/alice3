@@ -69,6 +69,7 @@ public class SceneImp extends EntityImp {
 	private final edu.cmu.cs.dennisc.scenegraph.AmbientLight sgAmbientLight = new edu.cmu.cs.dennisc.scenegraph.AmbientLight(); 
 	private final edu.cmu.cs.dennisc.scenegraph.ExponentialFog sgFog = new edu.cmu.cs.dennisc.scenegraph.ExponentialFog();
 
+	private final java.util.List< org.lgna.story.event.SceneActivationListener > sceneActivationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List< Capsule > capsules = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private ProgramImp program;
@@ -127,6 +128,20 @@ public class SceneImp extends EntityImp {
 		this.sgScene.addComponent( this.sgAmbientLight );
 		this.setFogDensity(0);
 		this.putInstance( this.sgScene );
+	}
+	
+	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.sceneActivationListeners.add( sceneActivationListener );
+	}
+	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.sceneActivationListeners.remove( sceneActivationListener );
+	}
+	
+	public void fireSceneActivationListeners() {
+		org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
+		for( org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
+			sceneActivationListener.sceneActivated( e );
+		}
 	}
 	
 	private void setFogDensity(float densityValue) {
