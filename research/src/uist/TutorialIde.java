@@ -121,8 +121,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					} else {
 						return value;
 					}
-				} else if( value instanceof org.alice.ide.croquet.models.typeeditor.DeclarationComposite ) {
-					return (N)org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.croquet.models.typeeditor.DeclarationComposite)value).getDeclaration() ) );
+				} else if( value instanceof org.alice.ide.declarationseditor.DeclarationComposite ) {
+					return (N)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.declarationseditor.DeclarationComposite)value).getDeclaration() ) );
 				} else {
 					return value;
 				}
@@ -155,7 +155,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 
 		if( IS_BASED_ON_INTERACTION_AST ) {
 			uist.ast.TransactionHistoryGenerator transactionHistoryGenerator = new uist.ast.TransactionHistoryGenerator( getRunBody( this.getOriginalProject() ), getRunBody( this.getReplacementProject() ), 0 );
-			this.originalTransactionHistory = transactionHistoryGenerator.generate();
+			org.lgna.croquet.UserInformation userInformation = null;
+			this.originalTransactionHistory = transactionHistoryGenerator.generate( userInformation );
 			//encode and decode
 			this.isOriginalProjectLive = true;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( this.originalTransactionHistory, ROOT_PATH+AST_MIMIC_PATH );

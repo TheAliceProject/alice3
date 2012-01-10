@@ -89,4 +89,10 @@ public final class FieldReflectionProxy extends MemberReflectionProxy< java.lang
 			return null;
 		}
 	}
+	@Override
+	protected void appendRepr( StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( ";name=" );
+		sb.append( this.name );
+	}
 }

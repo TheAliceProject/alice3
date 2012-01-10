@@ -46,30 +46,30 @@ package org.alice.ide.croquet.codecs.typeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > {
+public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.declarationseditor.DeclarationComposite > {
 	SINGLETON;
-	public Class< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > getValueClass() {
-		return org.alice.ide.croquet.models.typeeditor.DeclarationComposite.class;
+	public Class< org.alice.ide.declarationseditor.DeclarationComposite > getValueClass() {
+		return org.alice.ide.declarationseditor.DeclarationComposite.class;
 	}
-	public org.alice.ide.croquet.models.typeeditor.DeclarationComposite decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public org.alice.ide.declarationseditor.DeclarationComposite decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
 			java.util.UUID id = binaryDecoder.decodeId();
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			org.lgna.project.ast.AbstractDeclaration code = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
-			return org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( code );
+			return org.alice.ide.declarationseditor.DeclarationComposite.getInstance( code );
 		} else {
 			return null;
 		}
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.croquet.models.typeeditor.DeclarationComposite value ) {
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.declarationseditor.DeclarationComposite value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
 			binaryEncoder.encode( value.getDeclaration().getId() );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.croquet.models.typeeditor.DeclarationComposite value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.declarationseditor.DeclarationComposite value, java.util.Locale locale) {
 		rv.append( value != null ? value.getDeclaration().getName() : value );
 		return rv;
 	}

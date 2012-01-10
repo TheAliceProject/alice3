@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -44,6 +44,7 @@ package org.alice.stageide;
 
 public class StageIDE extends org.alice.ide.IDE {
 	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
+	public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
 
 	public static StageIDE getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(  org.alice.ide.IDE.getActiveInstance(), StageIDE.class );
@@ -75,6 +76,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected void registerAdapters(org.lgna.project.virtualmachine.VirtualMachine vm) {
 		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
+		vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
 	}
 	@Override
 	public org.alice.ide.cascade.CascadeManager getCascadeManager() {
@@ -174,6 +176,8 @@ public class StageIDE extends org.alice.ide.IDE {
 							return false;
 						}
 					}
+				} else if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
+					return false;
 				} else {
 					org.lgna.project.ast.Node parent = expression.getParent();
 					if( parent instanceof org.lgna.project.ast.FieldAccess ) {

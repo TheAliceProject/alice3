@@ -45,7 +45,7 @@ package org.lgna.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Stencil extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
+public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 	public static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	public static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
@@ -63,55 +63,19 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 		g2.dispose();
 		stencilPaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
 	}
-	private java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
-		public void componentResized( java.awt.event.ComponentEvent e ) {
-			Stencil.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
-			Stencil.this.revalidateAndRepaint();
-		}
-		public void componentMoved( java.awt.event.ComponentEvent e ) {
-		}
-		public void componentShown( java.awt.event.ComponentEvent e ) {
-		}
-		public void componentHidden( java.awt.event.ComponentEvent e ) {
-		}
-	};
-
-	private final javax.swing.JLayeredPane layeredPane;
-	private final MenuPolicy menuPolicy;
 	private final ScrollingRequiredRenderer scrollingRequiredRenderer;
-	public Stencil( javax.swing.JLayeredPane layeredPane, ScrollingRequiredRenderer scrollingRequiredRenderer, MenuPolicy menuPolicy ) {
-		this.layeredPane = layeredPane;
+	public Stencil( javax.swing.JLayeredPane layeredPane, MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer ) {
+		super( layeredPane, menuPolicy );
 		this.scrollingRequiredRenderer = scrollingRequiredRenderer;
-		this.menuPolicy = menuPolicy;
 	}
 	
-	public MenuPolicy getMenuPolicy() {
-		return this.menuPolicy;
+	@Override
+	protected java.awt.LayoutManager createLayout( JStencil jStencil ) {
+		return new java.awt.BorderLayout();
 	}
 	
-	public void addToLayeredPane() {
-		this.layeredPane.add( this.getAwtComponent(), null );
-		this.layeredPane.setLayer( this.getAwtComponent(), this.menuPolicy.getStencilLayer() );
-	}
-	public void removeFromLayeredPane() {
-		this.layeredPane.remove( this.getAwtComponent() );
-	}
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
-		this.getAwtComponent().setBounds( this.layeredPane.getBounds() );
-		this.layeredPane.addComponentListener( this.componentListener );
-		edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
-	}
-	@Override
-	protected void handleUndisplayable() {
-		assert edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities.popStencil() == this.getAwtComponent();
-		this.layeredPane.removeComponentListener( this.componentListener );
-		java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
-		super.handleUndisplayable();
-	}
-	private void redispatchMouseEvent(java.awt.event.MouseEvent eSrc) {
+	protected void redispatchMouseEvent(java.awt.event.MouseEvent eSrc) {
 		Page page = this.getCurrentPage();
 		
 		boolean isInterceptable = page == null || page.isEventInterceptable( eSrc );
@@ -142,81 +106,7 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 			}
 		}
 	}
-	private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
-		public void mouseClicked(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
-		}
-		public void mouseEntered(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
-		}
-		public void mouseExited(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
-		}
-		public void mousePressed(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
-		}
-		public void mouseReleased(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
-		}
-	};
-	private java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
-		public void mouseMoved(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
-		}
-		public void mouseDragged(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
-		}
-	};
-	private java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
-		public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) {
-			java.awt.Point p = e.getPoint();
-			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
-			if (component != null) {
-				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(e.getComponent(), p, component);
-				component.dispatchEvent(new java.awt.event.MouseWheelEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()));
-			}
-		}
-	};
-	private boolean isEventInterceptEnabled = false;
-	public boolean isEventInterceptEnabled() {
-		return this.isEventInterceptEnabled;
-	}
-	public void setEventInterceptEnabled( boolean isEventInterceptEnabled ) {
-		if( this.isEventInterceptEnabled != isEventInterceptEnabled ) {
-			if( this.isEventInterceptEnabled ) {
-				this.getAwtComponent().removeMouseListener( this.mouseListener );
-				this.getAwtComponent().removeMouseMotionListener( this.mouseMotionListener );
-				this.getAwtComponent().removeMouseWheelListener( this.mouseWheelListener );
-			}
-			this.isEventInterceptEnabled = isEventInterceptEnabled;
-			if( this.isEventInterceptEnabled ) {
-				this.getAwtComponent().addMouseListener( this.mouseListener );
-				this.getAwtComponent().addMouseMotionListener( this.mouseMotionListener );
-				this.getAwtComponent().addMouseWheelListener( this.mouseWheelListener );
-			}
-		}
-	}
-//	private java.util.Stack< Boolean > isEventInterceptEnabledStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-//	public void pushEventInterceptEnabled( boolean isEventInterceptEnabled ) {
-//		this.isEventInterceptEnabledStack.push( this.isEventInterceptEnabled );
-//		this.setEventInterceptEnabled( isEventInterceptEnabled );
-//	}
-//	public boolean popEventInterceptEnabled() {
-//		boolean rv = this.isEventInterceptEnabled;
-//		boolean nextValue = this.isEventInterceptEnabledStack.pop();
-//		this.setEventInterceptEnabled( nextValue );
-//		return rv;
-//	}
-	
 	protected abstract boolean isPaintingStencilEnabled();
-	
-	private java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
-		public void eventDispatched(java.awt.AWTEvent event) {
-			java.awt.event.MouseEvent e = (java.awt.event.MouseEvent)event;
-			e = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(e.getComponent(), e, Stencil.this.getAwtComponent());
-			Stencil.this.handleMouseMoved( e );
-		}
-	};
 	protected abstract Page getCurrentPage();
 	private Feature enteredFeature;
 	public void setEnteredFeature(Feature enteredFeature) {
@@ -239,7 +129,8 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 			//this.getAwtComponent().repaint();
 		}
 	}
-	private void handleMouseMoved(java.awt.event.MouseEvent e) {
+	@Override
+	protected void handleMouseMoved(java.awt.event.MouseEvent e) {
 		Page page = this.getCurrentPage();
 		if( page != null ) {
 			for( Note note : page.getNotes() ) {
@@ -258,115 +149,21 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 		}
 		this.setEnteredFeature( null );
 	}
-	
+
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		class JStencil extends javax.swing.JPanel {
-			@Override
-			protected void paintComponent(java.awt.Graphics g) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-				java.awt.Paint prevPaint = g2.getPaint();
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-
-				Page page = Stencil.this.getCurrentPage();
-				if( Stencil.this.isPaintingStencilEnabled() ) {
-					if( page != null ) {
-						if( page.isStencilRenderingDesired() ) {
-							java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
-							for( Note note : page.getNotes() ) {
-								if( note.isActive() ) {
-									for( Feature feature : note.getFeatures() ) {
-										org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
-										if( trackableShape != null ) {
-											if( trackableShape.isInView() ) {
-												java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
-												if( featureArea != null ) {
-													area.subtract( featureArea );
-												}
-											} else {
-												if( feature.isPotentiallyScrollable() ) {
-													org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
-													if( scrollPane != null ) {
-														javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-														java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
-														area.subtract( new java.awt.geom.Area( rect ) );
-													} else {
-														System.err.println( "cannot find scroll pane for: " + feature );
-													}
-												}
-											}
-										} else {
-											//System.err.println( "cannot find trackable shape for: " + feature );
-											feature.unbind();
-											feature.bind();
-										}
-									}
-								}
-							}
-							g2.setPaint( stencilPaint );
-							g2.fill(area);
-						}
-					}
-				}
-				super.paintComponent(g);
-				if( Stencil.this.isPaintingStencilEnabled() ) {
-					if( page != null ) {
-						for( Note note : page.getNotes() ) {
-							if( note.isActive() ) {
-								for( Feature feature : note.getFeatures() ) {
-									feature.paint( g2, Stencil.this, note );
-								}
-							}
-						}
-					}
-				}
-				g2.setPaint( prevPaint );
-			}
-			
-			@Override
-			public void paint(java.awt.Graphics g) {
-				super.paint(g);
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-				Page page = Stencil.this.getCurrentPage();
-				if( Stencil.this.isPaintingStencilEnabled() ) {
-					if( page != null ) {
-						for( Note note : page.getNotes() ) {
-							if( note.isActive() ) {
-								for( Feature feature : note.getFeatures() ) {
-									org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
-									if( trackableShape != null ) {
-										if( trackableShape.isInView() ) {
-											//pass
-										} else {
-											if( scrollingRequiredRenderer != null ) {
-												java.awt.Shape repaintShape = scrollingRequiredRenderer.renderScrollIndicators( g2, Stencil.this, trackableShape );
-												if( repaintShape != null ) {
-													//todo: repaint?
-//													g2.setColor( java.awt.Color.RED );
-//													g2.fill( repaintShape );
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-
-			@Override
-			public boolean contains(int x, int y) {
-				Page page = Stencil.this.getCurrentPage();
-				if( page != null ) {
-					java.awt.geom.Area area = new java.awt.geom.Area(new java.awt.Rectangle(0, 0, this.getWidth(), this.getHeight()));
+	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
+		Page page = Stencil.this.getCurrentPage();
+		if( Stencil.this.isPaintingStencilEnabled() ) {
+			if( page != null ) {
+				if( page.isStencilRenderingDesired() ) {
+					java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
 					for( Note note : page.getNotes() ) {
 						if( note.isActive() ) {
 							for( Feature feature : note.getFeatures() ) {
 								org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 								if( trackableShape != null ) {
 									if( trackableShape.isInView() ) {
-										java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
+										java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
 										if( featureArea != null ) {
 											area.subtract( featureArea );
 										}
@@ -384,22 +181,101 @@ public abstract class Stencil extends org.lgna.croquet.components.JComponent<jav
 									}
 								} else {
 									//System.err.println( "cannot find trackable shape for: " + feature );
+									feature.unbind();
+									feature.bind();
 								}
 							}
 						}
 					}
-					return area.contains(x, y);
-				} else {
-					return super.contains( x, y );
+					g2.setPaint( stencilPaint );
+					g2.fill(area);
 				}
 			}
-
 		}
-		final JStencil rv = new JStencil();
-		rv.setLayout(new java.awt.BorderLayout());
-		rv.setOpaque(false);
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		return rv;
+	}
+	@Override
+	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {
+		Page page = Stencil.this.getCurrentPage();
+		if( Stencil.this.isPaintingStencilEnabled() ) {
+			if( page != null ) {
+				for( Note note : page.getNotes() ) {
+					if( note.isActive() ) {
+						for( Feature feature : note.getFeatures() ) {
+							feature.paint( g2, Stencil.this, note );
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
+		Page page = Stencil.this.getCurrentPage();
+		if( Stencil.this.isPaintingStencilEnabled() ) {
+			if( page != null ) {
+				for( Note note : page.getNotes() ) {
+					if( note.isActive() ) {
+						for( Feature feature : note.getFeatures() ) {
+							org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
+							if( trackableShape != null ) {
+								if( trackableShape.isInView() ) {
+									//pass
+								} else {
+									if( scrollingRequiredRenderer != null ) {
+										java.awt.Shape repaintShape = scrollingRequiredRenderer.renderScrollIndicators( g2, Stencil.this, trackableShape );
+										if( repaintShape != null ) {
+											//todo: repaint?
+//											g2.setColor( java.awt.Color.RED );
+//											g2.fill( repaintShape );
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	protected boolean contains( int x, int y, boolean superContains ) {
+		Page page = Stencil.this.getCurrentPage();
+		if( page != null ) {
+			java.awt.geom.Area area = new java.awt.geom.Area(new java.awt.Rectangle(0, 0, this.getWidth(), this.getHeight()));
+			for( Note note : page.getNotes() ) {
+				if( note.isActive() ) {
+					for( Feature feature : note.getFeatures() ) {
+						org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
+						if( trackableShape != null ) {
+							if( trackableShape.isInView() ) {
+								java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
+								if( featureArea != null ) {
+									area.subtract( featureArea );
+								}
+							} else {
+								if( feature.isPotentiallyScrollable() ) {
+									org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+									if( scrollPane != null ) {
+										javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
+										java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+										area.subtract( new java.awt.geom.Area( rect ) );
+									} else {
+										System.err.println( "cannot find scroll pane for: " + feature );
+									}
+								}
+							}
+						} else {
+							//System.err.println( "cannot find trackable shape for: " + feature );
+						}
+					}
+				}
+			}
+			return area.contains(x, y);
+		} else {
+			return superContains;
+		}
 	}
 	public abstract org.lgna.croquet.Operation< ? > getNextOperation();
 }

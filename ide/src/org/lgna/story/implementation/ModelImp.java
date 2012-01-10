@@ -383,7 +383,7 @@ public abstract class ModelImp extends TransformableImp {
 	
 	public void sayText(String textToSay, org.alice.flite.VoiceType voice, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble) {		
 		final boolean showSpeechBubble = bubble != null;
-		final org.alice.virtualmachine.resources.TextToSpeechResource tts = org.alice.virtualmachine.resources.TextToSpeechResource.valueOf(textToSay, voice.getVoiceString());
+		final org.lgna.common.resources.TextToSpeechResource tts = org.lgna.common.resources.TextToSpeechResource.valueOf(textToSay, voice.getVoiceString());
 		final edu.cmu.cs.dennisc.animation.AudioLimitedBubbleAnimation bubbleAnimation = (showSpeechBubble)? new edu.cmu.cs.dennisc.animation.AudioLimitedBubbleAnimation(this, .3, .3, bubble) : null;
 		
 		Runnable textToSpeech =  new Runnable() { 
@@ -410,7 +410,7 @@ public abstract class ModelImp extends TransformableImp {
 				}
 			};
 			runnables[ 1 ] = textToSpeech;
-			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+			org.lgna.common.DoTogether.invokeAndWait( runnables );
 		}
 		else
 		{

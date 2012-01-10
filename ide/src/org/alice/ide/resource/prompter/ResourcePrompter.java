@@ -46,7 +46,7 @@ package org.alice.ide.resource.prompter;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resource> {
+public abstract class ResourcePrompter<E extends org.lgna.common.Resource> {
 	protected abstract String getInitialFileText();
 	protected abstract java.util.Set< String > getLowercaseSupportedExtensions();
 	protected abstract E createResourceFromFile( java.io.File file ) throws java.io.IOException;

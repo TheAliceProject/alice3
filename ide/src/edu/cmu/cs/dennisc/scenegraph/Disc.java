@@ -47,26 +47,53 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class Disc extends Shape {
+	public enum Axis {
+		X,
+		Y,
+		Z
+	}
+	public final edu.cmu.cs.dennisc.property.InstanceProperty< Axis > axis = new edu.cmu.cs.dennisc.property.InstanceProperty< Axis >( this, Axis.Y ) {
+		@Override
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Axis value ) {
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+				super.setValue( owner, value );
+				Disc.this.fireBoundChange();
+			}
+		};
+	};
 	public final edu.cmu.cs.dennisc.property.DoubleProperty innerRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
-			assert value >= 0.0;
+			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty outerRadius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
-			assert value >= 0.0;
+			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isFrontFaceVisible = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isBackFaceVisible = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
 
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		double d = outerRadius.getValue();
-		boundingBox.setMinimum( -d, -d, 0 );
-		boundingBox.setMaximum( d, d, 0 );
+		Axis axis = this.axis.getValue();
+		if( axis == Axis.X ) {
+			boundingBox.setMinimum( 0, -d, -d );
+			boundingBox.setMaximum( 0, d, d );
+		} else if( axis == Axis.Y ) {
+			boundingBox.setMinimum( -d, 0, -d );
+			boundingBox.setMaximum( d, 0, d );
+		} else if( axis == Axis.Z ) {
+			boundingBox.setMinimum( -d, -d, 0 );
+			boundingBox.setMaximum( d, d, 0 );
+		} else {
+			boundingBox.setNaN();
+		}
 	}
 
 	@Override

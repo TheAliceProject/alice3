@@ -48,7 +48,7 @@ package org.alice.ide.stencil;
  */
 public class DropFeedbackStencil extends org.lgna.stencil.Stencil {
 	public DropFeedbackStencil( javax.swing.JLayeredPane layeredPane ) {
-		super( layeredPane, org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE, org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK );
+		super( layeredPane, org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE );
 	}
 	@Override
 	protected org.lgna.stencil.Page getCurrentPage() {

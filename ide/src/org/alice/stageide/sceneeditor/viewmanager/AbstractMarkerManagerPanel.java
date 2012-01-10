@@ -47,7 +47,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import org.alice.ide.typeeditor.FieldList;
+import org.alice.ide.declarationseditor.type.components.FieldList;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.GridBagPanel;

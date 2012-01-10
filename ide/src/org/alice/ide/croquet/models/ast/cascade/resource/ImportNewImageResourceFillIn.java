@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportNewImageResourceFillIn extends ImportNewResourceFillIn<org.alice.virtualmachine.resources.ImageResource> {
+public class ImportNewImageResourceFillIn extends ImportNewResourceFillIn<org.lgna.common.resources.ImageResource> {
 	private static class SingletonHolder {
 		private static ImportNewImageResourceFillIn instance = new ImportNewImageResourceFillIn();
 	}
@@ -61,11 +61,11 @@ public class ImportNewImageResourceFillIn extends ImportNewResourceFillIn<org.al
 		return "Import New Image Resource...";
 	}
 	@Override
-	protected org.alice.ide.resource.prompter.ResourcePrompter<org.alice.virtualmachine.resources.ImageResource> getResourcePrompter() {
+	protected org.alice.ide.resource.prompter.ResourcePrompter<org.lgna.common.resources.ImageResource> getResourcePrompter() {
 		return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
 	}
 	@Override
-	protected Class<org.alice.virtualmachine.resources.ImageResource> getResourceClass() {
-		return org.alice.virtualmachine.resources.ImageResource.class;
+	protected Class<org.lgna.common.resources.ImageResource> getResourceClass() {
+		return org.lgna.common.resources.ImageResource.class;
 	}
 }

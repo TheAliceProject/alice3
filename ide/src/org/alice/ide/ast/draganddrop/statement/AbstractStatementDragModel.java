@@ -54,7 +54,7 @@ public abstract class AbstractStatementDragModel extends org.alice.ide.croquet.m
 		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			org.alice.ide.codeeditor.CodeEditor codeEditor = ide.getCodeEditorInFocus();
+			org.alice.ide.codedrop.CodeDropReceptor codeEditor = ide.getCodeEditorInFocus();
 			if( codeEditor != null ) {
 				codeEditor.addPotentialDropReceptors( rv, org.lgna.project.ast.JavaType.VOID_TYPE );
 			} else {

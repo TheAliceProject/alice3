@@ -121,11 +121,11 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 	}
 	private org.lgna.project.ast.Expression createImageSourceExpression( org.lgna.story.ImageSource imageSource ) {
 		if( imageSource != null ) {
-			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( org.lgna.story.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
+			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( org.lgna.story.ImageSource.class, org.lgna.common.resources.ImageResource.class );
 			org.lgna.project.ast.Expression arg0Expression;
-			org.alice.virtualmachine.resources.ImageResource imageResource = imageSource.getImageResource();
+			org.lgna.common.resources.ImageResource imageResource = imageSource.getImageResource();
 			if( imageResource != null ) {
-				arg0Expression = new org.lgna.project.ast.ResourceExpression( org.alice.virtualmachine.resources.ImageResource.class, imageResource );
+				arg0Expression = new org.lgna.project.ast.ResourceExpression( org.lgna.common.resources.ImageResource.class, imageResource );
 			} else {
 				arg0Expression = new org.lgna.project.ast.NullLiteral();
 			}

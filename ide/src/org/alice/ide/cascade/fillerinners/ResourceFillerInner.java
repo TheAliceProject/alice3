@@ -45,7 +45,7 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceFillerInner< R extends org.alice.virtualmachine.Resource > extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+public abstract class ResourceFillerInner< R extends org.lgna.common.Resource > extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	public ResourceFillerInner( Class< R> cls ) {
 		super( cls );
 	}
@@ -54,10 +54,10 @@ public abstract class ResourceFillerInner< R extends org.alice.virtualmachine.Re
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		java.util.Set< org.alice.virtualmachine.Resource > resources = ide.getResources();
+		java.util.Set< org.lgna.common.Resource > resources = ide.getResources();
 		if( resources != null && resources.isEmpty() == false ) {
 			synchronized( resources ) {
-				for( org.alice.virtualmachine.Resource resource : resources ) {
+				for( org.lgna.common.Resource resource : resources ) {
 					if( this.getType().isAssignableFrom( resource.getClass() ) ) {
 						rv.add( this.getResourceExpressionFillIn( (R)resource ) ); 
 					}

@@ -87,7 +87,7 @@ public class Logger {
 				level = java.util.logging.Level.SEVERE;
 			}
 		}
-		getInstance().setLevel( level );
+		setLevel( level );
 		SegregatingConsoleHandler consoleHandler = new SegregatingConsoleHandler();
 		consoleHandler.setFormatter( new ConsoleFormatter() );
 		getInstance().addHandler( consoleHandler );
@@ -97,6 +97,12 @@ public class Logger {
 		throw new AssertionError();
 	}
 	
+	public static java.util.logging.Level getLevel() {
+		return getInstance().getLevel();
+	}
+	public static void setLevel( java.util.logging.Level level ) {
+		getInstance().setLevel( level );
+	}
 	private static String buildMessage( Object object ) {
 		return object != null ? object.toString() : null;
 	}

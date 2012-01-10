@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -50,23 +49,30 @@ public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
 	public IdeDragModel( java.util.UUID id ) {
 		super( id );
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getActiveInstance();
+	private org.alice.ide.stencils.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
+		return org.alice.ide.IDE.getActiveInstance().getPotentialDropReceptorsStencil();
 	}
 	@Override
 	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
-		getIDE().handleDragStarted( step );
+		this.getPotentialDropReceptorsStencil().handleDragStarted( step );
+//		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
+//		if( (step.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0 ) {
+//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.DRAG_AND_DROP;
+//		} else {
+//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
+//		}
+//		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	@Override
 	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		getIDE().handleDragEnteredDropReceptor( step );
+		this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor( step );
 	}
 	@Override
 	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		getIDE().handleDragExitedDropReceptor( step );
+		this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor( step );
 	}
 	@Override
 	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
-		getIDE().handleDragStopped( step );
+		this.getPotentialDropReceptorsStencil().handleDragStopped( step );
 	}
 }

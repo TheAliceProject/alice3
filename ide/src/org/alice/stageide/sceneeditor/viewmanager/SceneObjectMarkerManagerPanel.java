@@ -43,8 +43,8 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import org.alice.ide.typeeditor.FieldList;
-import org.alice.ide.typeeditor.ManagedObjectMarkerFieldList;
+import org.alice.ide.declarationseditor.type.components.FieldList;
+import org.alice.ide.declarationseditor.type.components.ManagedObjectMarkerFieldList;
 import org.lgna.croquet.components.Button;
 import org.lgna.project.ast.NamedUserType;
 

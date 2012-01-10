@@ -46,7 +46,7 @@ package org.alice.stageide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class MarkerManagedFieldState extends org.alice.ide.typeeditor.AbstractManagedFieldState {
+public class MarkerManagedFieldState extends org.alice.ide.declarationseditor.type.AbstractManagedFieldState {
 	private static java.util.Map< org.lgna.project.ast.NamedUserType, MarkerManagedFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized MarkerManagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		MarkerManagedFieldState rv = map.get( type );

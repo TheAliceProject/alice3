@@ -49,10 +49,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.ide.ast.CurrentThisExpression;
+import org.alice.ide.declarationseditor.type.ManagedCameraMarkerFieldState;
+import org.alice.ide.declarationseditor.type.ManagedObjectMarkerFieldState;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.ide.typeeditor.ManagedCameraMarkerFieldState;
-import org.alice.ide.typeeditor.ManagedObjectMarkerFieldState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
@@ -234,7 +234,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private boolean isInitialized = false;
 	
-	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	private SidePane sidePanel = new SidePane();
@@ -281,7 +281,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	{
 		super.setProgramInstance(programInstance);
 		ProgramImp programImplementation = ImplementationAccessor.getImplementation(getProgramInstanceInJava());
-		programImplementation.setAnimator(this.animator);
+		programImplementation.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_setClockBasedAnimator(this.animator);
 		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
 	}
 	

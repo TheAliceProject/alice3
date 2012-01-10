@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationProperty< E extends AbstractDeclaration > extends NodeProperty< E > {
+public class DeclarationProperty< E extends Declaration > extends NodeProperty< E > {
 	public DeclarationProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		super( owner );
 	}

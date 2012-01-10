@@ -236,7 +236,7 @@ public enum PersonResourceManager {
 						if( index != -1 ) {
 							//pass
 						} else {
-							index = org.alice.random.RandomUtilities.nextIntegerFrom0ToNExclusive( hairColors.length );
+							index = org.lgna.common.RandomUtilities.nextIntegerFrom0ToNExclusive( hairColors.length );
 						}
 						org.alice.stageide.person.models.HairColorNameState.getInstance().setListData( index, hairColors );
 					}

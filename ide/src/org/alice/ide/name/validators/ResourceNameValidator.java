@@ -44,11 +44,11 @@
 package org.alice.ide.name.validators;
 
 public class ResourceNameValidator extends org.alice.ide.name.NameValidator {
-	private org.alice.virtualmachine.Resource resource;
-	public ResourceNameValidator( org.alice.virtualmachine.Resource resource ) {
+	private org.lgna.common.Resource resource;
+	public ResourceNameValidator( org.lgna.common.Resource resource ) {
 		this.resource = resource;
 	}
-	public org.alice.virtualmachine.Resource getResource() {
+	public org.lgna.common.Resource getResource() {
 		return this.resource;
 	}
 	@Override
@@ -57,9 +57,9 @@ public class ResourceNameValidator extends org.alice.ide.name.NameValidator {
 		if( ide != null ) {
 			org.lgna.project.Project project = ide.getProject();
 			if( project != null ) {
-				java.util.Set< org.alice.virtualmachine.Resource > resources = project.getResources();
+				java.util.Set< org.lgna.common.Resource > resources = project.getResources();
 				if( resources != null ) {
-					for( org.alice.virtualmachine.Resource resource : resources ) {
+					for( org.lgna.common.Resource resource : resources ) {
 						if( resource != null && resource != this.resource ) {
 							if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( name, resource.getName(), edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE ) ) {
 								return false;

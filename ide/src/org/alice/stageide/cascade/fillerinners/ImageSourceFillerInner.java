@@ -45,9 +45,9 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageSourceFillerInner extends SourceFillerInner< org.alice.virtualmachine.resources.ImageResource > {
+public class ImageSourceFillerInner extends SourceFillerInner< org.lgna.common.resources.ImageResource > {
 	public ImageSourceFillerInner() {
-		super( org.lgna.story.ImageSource.class, org.alice.virtualmachine.resources.ImageResource.class );
+		super( org.lgna.story.ImageSource.class, org.lgna.common.resources.ImageResource.class );
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class ImageSourceFillerInner extends SourceFillerInner< org.alice.virtual
 		return new org.alice.stageide.croquet.models.cascade.source.ImportNewImageSourceFillIn();
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getResourceFillIn( org.alice.virtualmachine.resources.ImageResource resource ) {
+	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getResourceFillIn( org.lgna.common.resources.ImageResource resource ) {
 		return new org.alice.stageide.croquet.models.cascade.source.ImageSourceFillIn( resource );
 	}
 }

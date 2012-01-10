@@ -91,7 +91,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	class Stencil extends org.lgna.stencil.Stencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
 		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.stencil.MenuPolicy menuPolicy ) {
-			super( getLayeredPane( window ), scrollingRequiredRenderer, menuPolicy );
+			super( getLayeredPane( window ), menuPolicy, scrollingRequiredRenderer );
 			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
 			org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
 			controlPanel.addComponent( StencilsPresentation.this.prevOperation.createButton() );

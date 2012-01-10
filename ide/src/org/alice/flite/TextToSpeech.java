@@ -51,7 +51,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-import org.alice.virtualmachine.resources.AudioResource;
+import org.lgna.common.resources.AudioResource;
 
 public class TextToSpeech 
 {

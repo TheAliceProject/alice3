@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportNewAudioResourceFillIn extends ImportNewResourceFillIn<org.alice.virtualmachine.resources.AudioResource> {
+public class ImportNewAudioResourceFillIn extends ImportNewResourceFillIn<org.lgna.common.resources.AudioResource> {
 	private static class SingletonHolder {
 		private static ImportNewAudioResourceFillIn instance = new ImportNewAudioResourceFillIn();
 	}
@@ -61,11 +61,11 @@ public class ImportNewAudioResourceFillIn extends ImportNewResourceFillIn<org.al
 		return "Import New Audio Resource...";
 	}
 	@Override
-	protected org.alice.ide.resource.prompter.ResourcePrompter<org.alice.virtualmachine.resources.AudioResource> getResourcePrompter() {
+	protected org.alice.ide.resource.prompter.ResourcePrompter<org.lgna.common.resources.AudioResource> getResourcePrompter() {
 		return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton();
 	}
 	@Override
-	protected Class<org.alice.virtualmachine.resources.AudioResource> getResourceClass() {
-		return org.alice.virtualmachine.resources.AudioResource.class;
+	protected Class<org.lgna.common.resources.AudioResource> getResourceClass() {
+		return org.lgna.common.resources.AudioResource.class;
 	}
 }

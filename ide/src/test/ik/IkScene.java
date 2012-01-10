@@ -92,10 +92,10 @@ public class IkScene extends Scene {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
 			} else {
-				this.restoreVehiclesAndVantagePoints();
+				this.restoreStateAndEventListeners();
 			}
 		} else {
-			this.preserveVehiclesAndVantagePoints();
+			this.restoreStateAndEventListeners();
 		}
 	}
 }

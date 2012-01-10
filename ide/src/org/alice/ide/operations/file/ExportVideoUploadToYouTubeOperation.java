@@ -42,9 +42,6 @@
  */
 package org.alice.ide.operations.file;
 
-//import org.alice.media.VideoCapturePane;
-//import edu.cmu.cs.dennisc.alice.Project;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -55,7 +52,8 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 	}
 	@Override
 	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
-		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+		final org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.Project project = ide.getUpToDateProject();
 		if( project != null ) {
 			final int frameRate = 24;
 			//this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
@@ -64,8 +62,6 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 				@Override
 				protected edu.cmu.cs.dennisc.animation.Program createProgram( org.lgna.project.Project project )
 				{
-				    org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
-			        ide.ensureProjectCodeUpToDate();
 					org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 					return ide.createRuntimeProgramForMovieEncoding( vm, project.getProgramType(), frameRate );
 				}

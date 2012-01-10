@@ -59,14 +59,18 @@ public class DropDownArrowIcon extends AbstractArrowIcon {
 		java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.Paint fillPaint;
-		if( buttonModel.isPressed() ) {
-			fillPaint = java.awt.Color.BLACK;
-		} else {
-			if( buttonModel.isRollover() ) {
-				fillPaint = java.awt.Color.GRAY;
+		if( buttonModel.isEnabled() ) {
+			if( buttonModel.isPressed() ) {
+				fillPaint = java.awt.Color.BLACK;
 			} else {
-				fillPaint = java.awt.Color.DARK_GRAY;
+				if( buttonModel.isRollover() ) {
+					fillPaint = java.awt.Color.GRAY;
+				} else {
+					fillPaint = java.awt.Color.DARK_GRAY;
+				}
 			}
+		} else {
+			fillPaint = java.awt.Color.LIGHT_GRAY;
 		}
 		g2.setPaint( fillPaint );
 		g2.fill( path );

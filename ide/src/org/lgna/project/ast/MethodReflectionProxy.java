@@ -103,5 +103,10 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 			return null;
 		}
 	}
-	
+	@Override
+	protected void appendRepr( StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( ";name=" );
+		sb.append( this.name );
+	}
 }

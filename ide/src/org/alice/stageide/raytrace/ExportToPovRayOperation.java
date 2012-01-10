@@ -47,11 +47,6 @@ package org.alice.stageide.raytrace;
  * @author Dennis Cosgrove
  */
 public class ExportToPovRayOperation extends org.lgna.croquet.ActionOperation {
-	//todo:
-	private static final org.lgna.croquet.Group EXPORT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "c3cf5b76-8b67-467f-a0f9-34cfa9d36240" ), "EXPORT_GROUP" );
-	
-	
-	
 	private static class SingletonHolder {
 		private static ExportToPovRayOperation instance = new ExportToPovRayOperation();
 	}
@@ -59,7 +54,7 @@ public class ExportToPovRayOperation extends org.lgna.croquet.ActionOperation {
 		return SingletonHolder.instance;
 	}
 	private ExportToPovRayOperation() {
-		super( EXPORT_GROUP, java.util.UUID.fromString( "7f14ddfc-d090-4ef5-b47d-4d5036f6d784" ) );
+		super( org.alice.ide.IDE.EXPORT_GROUP, java.util.UUID.fromString( "7f14ddfc-d090-4ef5-b47d-4d5036f6d784" ) );
 	}
 	@Override
 	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {

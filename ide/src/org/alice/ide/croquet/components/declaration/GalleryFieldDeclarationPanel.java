@@ -47,7 +47,53 @@ package org.alice.ide.croquet.components.declaration;
  * @author Dennis Cosgrove
  */
 public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation > {
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > initializerListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+			GalleryFieldDeclarationPanel.this.update();
+		}
+	};
+	private final org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label();
+
 	public GalleryFieldDeclarationPanel( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation model ) {
 		super( model );
+		this.iconLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
+		this.addComponent( this.iconLabel, Constraint.LINE_END );
+	}
+	private void update() {
+		this.updateNameTextField();
+		javax.swing.Icon prevIcon = this.iconLabel.getIcon();
+		javax.swing.Icon nextIcon;
+		
+		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
+		java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
+		if( fld != null ) {
+			java.awt.Image thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( fld.getDeclaringClass(), fld.getName() );
+			if( thumbnail != null ) {
+				nextIcon = new javax.swing.ImageIcon( thumbnail );
+			} else {
+				nextIcon = null;
+			}
+		} else {
+			nextIcon = null;
+		}
+		this.iconLabel.setIcon( nextIcon );
+		if( edu.cmu.cs.dennisc.javax.swing.IconUtilities.areSizesEqual( prevIcon, nextIcon ) ) {
+			//pass
+		} else {
+			this.revalidateAndRepaint();
+		}
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().getInitializerState().addValueObserver( this.initializerListener );
+		this.update();
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.getModel().getInitializerState().removeValueObserver( this.initializerListener );
+		super.handleUndisplayable();
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceExpressionFillIn<T extends org.alice.virtualmachine.Resource> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.ResourceExpression > {
+public abstract class ResourceExpressionFillIn<T extends org.lgna.common.Resource> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.ResourceExpression > {
 	private final org.lgna.project.ast.ResourceExpression transientValue;
 	public ResourceExpressionFillIn( java.util.UUID id, Class<T> resourceCls, T resource ) {
 		super( java.util.UUID.fromString( "5e4bec2b-83f7-4702-832f-ec38f0b61828" ) );

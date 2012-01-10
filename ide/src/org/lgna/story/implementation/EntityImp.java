@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.story.AudioSource;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -246,6 +248,12 @@ public abstract class EntityImp implements ReferenceFrame {
 		this.alreadyAdjustedDelay( this.adjustDurationIfNecessary( duration ) );
 	}
 		
+	public void playAudio( AudioSource audioSource ) {
+		edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
+		edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
+		this.perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );		
+	}
+
 	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		ProgramImp programImplementation = this.getProgram();
 		if( programImplementation != null ) {

@@ -96,11 +96,11 @@ public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
 	}
 	@Override
 	public void handlePostDectivation() {
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().removeValueObserver( this.typeListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueObserver( this.typeListener );
 		super.handlePostDectivation();
 	}
 }

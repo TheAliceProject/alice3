@@ -67,11 +67,11 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactoryListener );
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().addValueObserver( this.typeListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().addValueObserver( this.typeListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().removeValueObserver( this.typeListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueObserver( this.typeListener );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactoryListener );
 		super.handleUndisplayable();
 	}

@@ -46,53 +46,23 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class UserMethod extends AbstractMethod implements UserCode {
-	public edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel > accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel >( this, AccessLevel.PUBLIC );
+public class UserMethod extends AbstractUserMethod implements UserCode {
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isAbstract = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isFinal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	//public edu.cmu.cs.dennisc.property.BooleanProperty isNative = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public DeclarationProperty< AbstractType<?,?,?> > returnType = new DeclarationProperty< AbstractType<?,?,?> >( this );
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public NodeListProperty< UserParameter > requiredParameters = new NodeListProperty< UserParameter >( this );
-	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel > managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel >( this, ManagementLevel.NONE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 
 	private UserType<?> m_declaringType;
-	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME; 
-
 	public UserMethod() {
 	}
-	public UserMethod( String name, AbstractType<?,?,?> returnType, UserParameter[] parameters, BlockStatement body ) {
+	public UserMethod( String name, AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
+		super( returnType, requiredParameters, body );
 		this.name.setValue( name );
-		this.returnType.setValue( returnType );
-		this.requiredParameters.add( parameters );
-		this.body.setValue( body );
 	}
-	public UserMethod( String name, Class<?> returnCls, UserParameter[] parameters, BlockStatement body ) {
-		this( name, JavaType.getInstance( returnCls ), parameters, body );
+	public UserMethod( String name, Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
+		this( name, JavaType.getInstance( returnCls ), requiredParameters, body );
 	}
 		
-	public org.lgna.project.ast.ManagementLevel getManagementLevel() {
-		return this.managementLevel.getValue();
-	}
-
-	public NodeProperty< BlockStatement > getBodyProperty() {
-		return this.body;
-	}
-	public NodeListProperty< UserParameter > getRequiredParamtersProperty() {
-		return this.requiredParameters;
-	}
-	
-	@Override
-	public boolean isValid() {
-		return true;
-	}
-	
 	@Override
 	public String getName() {
 		return this.name.getValue();
@@ -102,56 +72,12 @@ public class UserMethod extends AbstractMethod implements UserCode {
 		return this.name;
 	}
 	@Override
-	public AbstractType<?,?,?> getReturnType() {
-		return returnType.getValue();
-	}
-	@Override
-	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
-		return requiredParameters.getValue();
-	}
-	@Override
 	public UserType<?> getDeclaringType() {
 		return m_declaringType;
 	}
 	public void setDeclaringType( UserType<?> declaringType ) {
 		m_declaringType = declaringType;
 	}
-	@Override
-	public org.lgna.project.annotations.Visibility getVisibility() {
-		return m_visibility;
-	}
-	public void setVisibility( org.lgna.project.annotations.Visibility visibility ) {
-		m_visibility = visibility;
-	}
-	
-	@Override
-	public AbstractCode getNextLongerInChain() {
-		return null;
-	}
-	@Override
-	public AbstractCode getNextShorterInChain() {
-		return null;
-	}
-	
-	@Override
-	public boolean isSignatureLocked() {
-		return this.isSignatureLocked.getValue();
-	}
-
-	@Override
-	public AccessLevel getAccessLevel() {
-		return this.accessLevel.getValue();
-	}
-
-	@Override
-	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
-		return null;
-	}
-	@Override
-	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
-		return null;
-	}
-
 	@Override
 	public boolean isStatic() {
 		return this.isStatic.getValue();
@@ -164,20 +90,6 @@ public class UserMethod extends AbstractMethod implements UserCode {
 	public boolean isFinal() {
 		return this.isFinal.getValue();
 	}
-	@Override
-	public boolean isNative() {
-		return false;
-		//return this.isNative.getValue();
-	}
-	@Override
-	public boolean isSynchronized() {
-		return this.isSynchronized.getValue();
-	}
-	@Override
-	public boolean isStrictFloatingPoint() {
-		return this.isStrictFloatingPoint.getValue();
-	}
-	
 //	@Override
 //	public boolean isOverride() {
 //		//todo: this will need to be updated when you can inherit from other TypesDeclaredInAlice

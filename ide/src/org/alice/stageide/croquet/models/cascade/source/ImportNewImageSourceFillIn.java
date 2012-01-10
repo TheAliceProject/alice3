@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.cascade.source;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportNewImageSourceFillIn extends ImportNewSourceFillIn< org.lgna.story.ImageSource, org.alice.virtualmachine.resources.ImageResource > {
+public class ImportNewImageSourceFillIn extends ImportNewSourceFillIn< org.lgna.story.ImageSource, org.lgna.common.resources.ImageResource > {
 	public ImportNewImageSourceFillIn() {
 		super( java.util.UUID.fromString( "dc0d114b-50c1-45d9-8ed5-9bdc0ea96326" ) );
 	}
@@ -54,12 +54,12 @@ public class ImportNewImageSourceFillIn extends ImportNewSourceFillIn< org.lgna.
 		return "Import New Image Source...";
 	}
 	@Override
-	protected org.alice.ide.resource.prompter.ResourcePrompter<org.alice.virtualmachine.resources.ImageResource> getResourcePrompter() {
+	protected org.alice.ide.resource.prompter.ResourcePrompter<org.lgna.common.resources.ImageResource> getResourcePrompter() {
 		return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
 	}
 	@Override
-	protected Class<org.alice.virtualmachine.resources.ImageResource> getResourceClass() {
-		return org.alice.virtualmachine.resources.ImageResource.class;
+	protected Class<org.lgna.common.resources.ImageResource> getResourceClass() {
+		return org.lgna.common.resources.ImageResource.class;
 	}
 	@Override
 	protected Class<org.lgna.story.ImageSource> getSourceClass() {

@@ -94,10 +94,9 @@ public class ResourceTab extends GalleryTab {
 			public ResourceView() {
 				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel();
 				topPanel.addComponent( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.LINE_START );
-				org.lgna.croquet.components.TextField filterTextField = FilterStringState.getInstance().createTextField();
+				org.lgna.croquet.components.TextField filterTextField = FilterState.getInstance().createTextField();
 				filterTextField.setMinimumPreferredWidth( 320 );
 				filterTextField.setMaximumSizeClampedToPreferredSize( true );
-				filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
 				filterTextField.scaleFont( 1.5f );
 
 				topPanel.addComponent( filterTextField, Constraint.LINE_END );
@@ -129,6 +128,7 @@ public class ResourceTab extends GalleryTab {
 				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation.getInstance().createButton() );
 				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation.getInstance().createButton() );
 				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.SphereFieldDeclarationOperation.getInstance().createButton() );
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.DiscFieldDeclarationOperation.getInstance().createButton() );
 				this.addComponent( lineEndPanel, Constraint.LINE_END );
 				//todo
 				this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );

@@ -122,6 +122,21 @@ public class BootstrapUtilties {
 		performGeneratedSetupMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		org.lgna.project.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 		
+		org.lgna.project.ast.UserMethod initializeEventListenersMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
+
+		org.lgna.project.ast.UserLambda sceneActivationListener = org.lgna.project.ast.AstUtilities.createUserLambda( org.lgna.story.event.SceneActivationListener.class );
+		org.lgna.project.ast.LambdaExpression sceneActivationListenerExpression = new org.lgna.project.ast.LambdaExpression( sceneActivationListener );
+
+		org.lgna.project.ast.JavaMethod addSceneActivationListenerMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "addSceneActivationListener", org.lgna.story.event.SceneActivationListener.class );
+		
+		initializeEventListenersMethod.body.getValue().statements.add(
+				org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(  
+						new org.lgna.project.ast.ThisExpression(), 
+						addSceneActivationListenerMethod, 
+						sceneActivationListenerExpression 
+				)
+		);
+		
 		for( org.lgna.project.ast.UserField field : new org.lgna.project.ast.UserField[] { cameraField, sunField, groundField } ) {
 //			java.lang.reflect.Method mthd;
 //			try {
@@ -205,11 +220,12 @@ public class BootstrapUtilties {
 
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performGeneratedSetupMethod ) );
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performCustomSetupMethod ) );
+		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), initializeEventListenersMethod ) );
 
 		Class< ? > sceneCls = org.lgna.story.Scene.class;
 		
-		org.lgna.project.ast.JavaMethod preserveVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "preserveVehiclesAndVantagePoints" );
-		org.lgna.project.ast.JavaMethod restoreVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "restoreVehiclesAndVantagePoints" );
+		org.lgna.project.ast.JavaMethod preserveVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "preserveStateAndEventListeners" );
+		org.lgna.project.ast.JavaMethod restoreVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "restoreStateAndEventListeners" );
 		ifInnerFalseBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), restoreVehiclesAndVantagePointsMethod ) );
 		ifOuterFalseBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), preserveVehiclesAndVantagePointsMethod ) );
 
@@ -221,20 +237,14 @@ public class BootstrapUtilties {
 		sceneType.fields.add( cameraField );
 		sceneType.methods.add( performCustomSetupMethod );
 		sceneType.methods.add( performGeneratedSetupMethod );
+		sceneType.methods.add( initializeEventListenersMethod );
 		sceneType.methods.add( handleActiveChangedMethod );
 		sceneType.methods.add( myFirstMethod );
 
 		org.lgna.project.ast.UserField sceneField = createPrivateFinalField( sceneType, "myScene" );
-		org.lgna.project.ast.UserMethod playOutStoryMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "playOutStory" );
-		org.lgna.project.ast.BlockStatement playOutStoryBody = playOutStoryMethod.body.getValue();
-		playOutStoryBody.statements.add( 
-				createMethodInvocationStatement( 
-						new org.lgna.project.ast.ThisExpression(), 
-						org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
-						createThisFieldAccess( sceneField )
-				)
-		);
-		playOutStoryBody.statements.add( 
+//		org.lgna.project.ast.UserMethod playOutStoryMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "playOutStory" );
+//		org.lgna.project.ast.BlockStatement playOutStoryBody = playOutStoryMethod.body.getValue();
+		sceneActivationListener.body.getValue().statements.add( 
 				createMethodInvocationStatement( 
 						createThisFieldAccess( sceneField ),
 						myFirstMethod
@@ -243,7 +253,7 @@ public class BootstrapUtilties {
 		
 		org.lgna.project.ast.NamedUserType rv = createType( "MyProgram", org.lgna.story.Program.class );
 		rv.fields.add( sceneField );
-		rv.methods.add( playOutStoryMethod );
+		//rv.methods.add( playOutStoryMethod );
 
 		
 		
@@ -259,7 +269,18 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.UserLocal storyLocal = localDeclarationStatement.local.getValue();
 		mainBody.statements.add( localDeclarationStatement );
 		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), rv.findMethod( "initializeInFrame", String[].class ), new org.lgna.project.ast.ParameterAccess( argsParameter ) ) );
-		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), playOutStoryMethod ) );
+//		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), playOutStoryMethod ) );
+		mainBody.statements.add( 
+				createMethodInvocationStatement( 
+						new org.lgna.project.ast.LocalAccess( storyLocal ), 
+						org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
+						new org.lgna.project.ast.FieldAccess(
+								new org.lgna.project.ast.LocalAccess( storyLocal ),
+								sceneField
+						)
+				)
+		);
+		
 		rv.methods.add( mainMethod );
 		
 		return rv;
