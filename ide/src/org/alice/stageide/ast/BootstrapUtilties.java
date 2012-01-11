@@ -105,6 +105,7 @@ public class BootstrapUtilties {
 		return org.lgna.project.ast.AstUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
 	
+	public static String GET_MY_SCENE_METHOD_NAME = "getMyScene";
 	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.SurfaceAppearance appearance ) {
 		org.lgna.project.ast.UserField sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
 		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
@@ -242,8 +243,6 @@ public class BootstrapUtilties {
 		sceneType.methods.add( myFirstMethod );
 
 		org.lgna.project.ast.UserField sceneField = createPrivateFinalField( sceneType, "myScene" );
-//		org.lgna.project.ast.UserMethod playOutStoryMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "playOutStory" );
-//		org.lgna.project.ast.BlockStatement playOutStoryBody = playOutStoryMethod.body.getValue();
 		sceneActivationListener.body.getValue().statements.add( 
 				createMethodInvocationStatement( 
 						createThisFieldAccess( sceneField ),
@@ -251,9 +250,20 @@ public class BootstrapUtilties {
 				)
 		);
 		
+		org.lgna.project.ast.UserMethod getSceneMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, sceneType, GET_MY_SCENE_METHOD_NAME );
+		getSceneMethod.body.getValue().statements.add(
+				new org.lgna.project.ast.ReturnStatement( 
+						sceneType, 
+						new org.lgna.project.ast.FieldAccess(
+								new org.lgna.project.ast.ThisExpression(),
+								sceneField
+						) 
+				)
+		);
+
 		org.lgna.project.ast.NamedUserType rv = createType( "MyProgram", org.lgna.story.Program.class );
 		rv.fields.add( sceneField );
-		//rv.methods.add( playOutStoryMethod );
+		rv.methods.add( getSceneMethod );
 
 		
 		
@@ -268,15 +278,20 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = createLocalDeclarationStatementInitializedByInstanceCreation( "story", rv, true );
 		org.lgna.project.ast.UserLocal storyLocal = localDeclarationStatement.local.getValue();
 		mainBody.statements.add( localDeclarationStatement );
-		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), rv.findMethod( "initializeInFrame", String[].class ), new org.lgna.project.ast.ParameterAccess( argsParameter ) ) );
-//		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), playOutStoryMethod ) );
 		mainBody.statements.add( 
 				createMethodInvocationStatement( 
 						new org.lgna.project.ast.LocalAccess( storyLocal ), 
-						org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
-						new org.lgna.project.ast.FieldAccess(
+						rv.findMethod( "initializeInFrame", String[].class ), 
+						new org.lgna.project.ast.ParameterAccess( argsParameter ) 
+				) 
+		);
+		mainBody.statements.add( 
+				createMethodInvocationStatement( 
+						new org.lgna.project.ast.LocalAccess( storyLocal ), 
+						org.alice.stageide.StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD,
+						new org.lgna.project.ast.MethodInvocation(
 								new org.lgna.project.ast.LocalAccess( storyLocal ),
-								sceneField
+								getSceneMethod
 						)
 				)
 		);

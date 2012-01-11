@@ -101,12 +101,18 @@ public abstract class ProgramContext {
 	public void setActiveScene() {
 		org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
 			public void run() {
+				org.lgna.project.ast.UserField sceneField = null;
+				for( org.lgna.project.ast.UserField field : programInstance.getType().fields ) {
+					if( field.valueType.getValue().isAssignableTo( org.lgna.story.Scene.class ) ) {
+						sceneField = field;
+					}
+				}
+				assert sceneField != null;
 				org.lgna.project.virtualmachine.UserInstance programInstance = ProgramContext.this.getProgramInstance();
-				org.lgna.project.ast.JavaMethod setActiveSceneMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class );
 				ProgramContext.this.getVirtualMachine().ENTRY_POINT_invoke( 
 						programInstance, 
-						setActiveSceneMethod,
-						programInstance.getFieldValue( programInstance.getType().getDeclaredField( "myScene" ) )
+						org.alice.stageide.StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD,
+						programInstance.getFieldValue( sceneField )
 				);
 			}
 		} );
