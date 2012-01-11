@@ -137,14 +137,28 @@ public class SceneImp extends EntityImp {
 		this.sceneActivationListeners.remove( sceneActivationListener );
 	}
 	
+	private int EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount = 0;
+	@Deprecated
+	public void EPIC_HACK_FOR_SCENE_EDITOR_pushDoNotFireSceneActivationListeners() {
+		EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount ++;
+	}
+	@Deprecated
+	public void EPIC_HACK_FOR_SCENE_EDITOR_popDoNotFireSceneActivationListeners() {
+		EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount --;
+	}
+	
 	public void fireSceneActivationListeners() {
-		final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
-		for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
-			new org.lgna.common.ComponentThread( new Runnable() {
-				public void run() {
-					sceneActivationListener.sceneActivated( e );
-				}
-			}, "SceneActivation" ).start();
+		if( EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount > 0 ) {
+			//pass
+		} else {
+			final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
+			for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
+				new org.lgna.common.ComponentThread( new Runnable() {
+					public void run() {
+						sceneActivationListener.sceneActivated( e );
+					}
+				}, "SceneActivation" ).start();
+			}
 		}
 	}
 	
