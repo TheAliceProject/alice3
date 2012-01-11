@@ -47,7 +47,14 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class LambdaExpression extends Expression {
-	public DeclarationProperty<Lambda> value = new DeclarationProperty<Lambda>( this );
+	public DeclarationProperty<Lambda> value = new DeclarationProperty<Lambda>( this ) {
+		//todo?
+		@Override
+		public boolean isReference() {
+			return false;
+		}
+	};
+
 	public LambdaExpression() {
 	}
 	public LambdaExpression( Lambda value ) {

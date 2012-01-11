@@ -46,11 +46,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.MovementDirection;
 import org.alice.interact.PickHint;
+import org.alice.interact.PickUtilities;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
+import org.lgna.story.Entity;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -155,23 +157,65 @@ public class HandleManager implements ManipulationListener{
 		return popped;
 	}
 	
+	public static boolean canHaveHandles(Transformable object) {
+		PickHint objectPickHint = PickUtilities.getPickType(object);
+		if ( (objectPickHint.intersects( PickHint.PickType.RESIZABLE.pickHint()) ||
+				objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint()) ||
+				objectPickHint.intersects( PickHint.PickType.TURNABLE.pickHint()) ||
+				objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint()))  &&
+				!(objectPickHint.intersects(PickHint.PickType.SUN.pickHint())))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	private static boolean canHaveHandle(Transformable selectedObject, ManipulationHandle handle) 
+	{
+		if (handle instanceof ManipulationHandleIndirection) {
+			handle = ((ManipulationHandleIndirection)handle).getCurrentHandle();
+		}
+		PickHint objectPickHint = PickUtilities.getPickType(selectedObject);
+		if (handle instanceof LinearTranslateHandle) {
+			return (objectPickHint.intersects(PickHint.PickType.MOVEABLE.pickHint()));
+		}
+		else if (handle instanceof RotationRingHandle) {
+			return (objectPickHint.intersects(PickHint.PickType.TURNABLE.pickHint()));
+		}
+		else if (handle instanceof LinearScaleHandle) {
+			LinearScaleHandle scaleHandle = (LinearScaleHandle)handle;
+			if (objectPickHint.intersects(PickHint.PickType.RESIZABLE.pickHint())) {
+				Entity entity = PickUtilities.getEntityFromPickedObject(selectedObject);
+				if (entity instanceof org.lgna.story.Disc) {
+					if (scaleHandle.getMovementDescription().direction == MovementDirection.UP || scaleHandle.getMovementDescription().direction == MovementDirection.DOWN) {
+						return false;
+					}
+				}
+				else return true;
+			}
+		}
+		return true;
+	}
+	
 	public void setSelectedObject(Transformable selectedObject)
 	{
 //		PrintUtilities.println("Setting handle selected object to "+selectedObject);
 		for (ManipulationHandle handle : this.handles)
 		{
-			handle.setSelectedObject( selectedObject );
+			if (canHaveHandle(selectedObject, handle)) {
+				handle.setSelectedObject( selectedObject );
+			}
+			else {
+				handle.setSelectedObject(null);
+			}
+				
 		}
 	}
 	
+	
 	public static boolean isSelectable(Transformable object)
 	{
-		PickHint objectPickHint = AbstractDragAdapter.getPickType(object);
-		if ( objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint()) )
-		{
-			return true;
-		}
-		return false;
+		return canHaveHandles(object);
 	}
 	
 	public Transformable getSelectedObject()

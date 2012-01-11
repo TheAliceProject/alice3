@@ -104,7 +104,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 	
 	public boolean isValid() {
-		boolean rv = false;
+		boolean rv;
 		Expression e = expression.getValue();
 		AbstractMethod m = method.getValue();
 		if( e != null && m != null ) {

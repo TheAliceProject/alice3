@@ -52,7 +52,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -68,7 +67,6 @@ import org.alice.interact.event.SelectionListener;
 import org.alice.interact.handle.HandleManager;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
-import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
@@ -76,7 +74,6 @@ import org.alice.interact.manipulator.ClickAdapterManipulator;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.story.Entity;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ObjectMarkerImp;
@@ -695,116 +692,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		{
 			this.hasObjectToBeSelected = false;
 			this.setSelectedImplementation( this.toBeSelected );
-		}
-	}
-	
-	public static PickHint getPickType( edu.cmu.cs.dennisc.lookingglass.PickResult pickObject )
-	{
-		boolean isNull = pickObject == null || pickObject.getGeometry() == null || pickObject.getVisual() == null;
-		if (isNull)
-		{
-			return PickHint.PickType.NOTHING.pickHint();
-		}
-		else
-		{
-			PickHint pickType = getPickType( pickObject.getVisual() );
-			return pickType;
-		}
-	}
-	
-	private static <E> E getParentOfClass( edu.cmu.cs.dennisc.scenegraph.Component object, Class<E> cls) {
-		if( object != null ) {
-			if( cls.isAssignableFrom( object.getClass() ) ) {
-				return cls.cast( object );
-			}
-			return getParentOfClass(object.getParent(), cls);
-		}
-		return null;
-	}
-	
-	public static PickHint getPickType( edu.cmu.cs.dennisc.scenegraph.Component pickedObject )
-	{
-		List<PickHint.PickType> pickTypes = new LinkedList<PickHint.PickType>();
-		if (pickedObject != null)
-		{
-			edu.cmu.cs.dennisc.scenegraph.Component mainComponent = InputState.getFirstClassFromComponent(pickedObject);
-			EntityImp entityImplementation = EntityImp.getInstance(mainComponent);
-			if (entityImplementation != null)
-			{
-				Entity entity = entityImplementation.getAbstraction();
-				if (entity instanceof org.lgna.story.Turnable)
-				{
-					pickTypes.add(PickHint.PickType.TURNABLE);
-				}
-				if (entity instanceof org.lgna.story.MovableTurnable)
-				{
-					pickTypes.add(PickHint.PickType.MOVEABLE);
-				}
-				if (entity instanceof org.lgna.story.Resizable)
-				{
-					pickTypes.add(PickHint.PickType.RESIZABLE);
-				}
-				if (entity instanceof org.lgna.story.Camera || entity instanceof org.lgna.story.Model || entity instanceof org.lgna.story.Marker)
-				{
-					pickTypes.add(PickHint.PickType.SELECTABLE);
-				}
-				if (entity instanceof org.lgna.story.MovableTurnable)
-				{
-					pickTypes.add(PickHint.PickType.VIEWABLE);
-				}
-				if (entity instanceof org.lgna.story.CameraMarker)
-				{
-					pickTypes.add(PickHint.PickType.CAMERA_MARKER);
-				}
-				if (entity instanceof org.lgna.story.ObjectMarker)
-				{
-					pickTypes.add(PickHint.PickType.OBJECT_MARKER);
-				}
-			}
-			else
-			{
-				//System.out.println("No implementation for "+pickedObject);
-				EntityImp e = EntityImp.getInstance(pickedObject);
-			}
-				
-			if (pickedObject instanceof edu.cmu.cs.dennisc.scenegraph.Composite)
-			{
-				edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = null;
-				for(edu.cmu.cs.dennisc.scenegraph.Component c : ((edu.cmu.cs.dennisc.scenegraph.Composite)pickedObject).getComponents())
-				{
-					if (c instanceof edu.cmu.cs.dennisc.scenegraph.AbstractCamera)
-					{
-						camera = (edu.cmu.cs.dennisc.scenegraph.AbstractCamera)c;
-					}
-				}
-				if (camera != null)
-				{
-					if (camera instanceof SymmetricPerspectiveCamera)
-					{
-						pickTypes.add(PickHint.PickType.PERSPECTIVE_CAMERA);
-					}
-					else if (camera instanceof OrthographicCamera)
-					{
-						pickTypes.add(PickHint.PickType.ORTHOGRAPHIC_CAMERA);
-					}
-				}
-				else
-				{
-					ManipulationHandle3D handle3D = getParentOfClass(pickedObject, ManipulationHandle3D.class);
-					if (handle3D != null)
-					{
-						pickTypes.add(PickHint.PickType.THREE_D_HANDLE);
-					}
-				}
-			}
-		}
-		if (pickTypes.size() == 0)
-		{
-			return PickHint.PickType.NOTHING.pickHint();
-		}
-		else
-		{
-			return new PickHint(pickTypes.toArray(new PickHint.PickType[pickTypes.size()]));
 		}
 	}
 	

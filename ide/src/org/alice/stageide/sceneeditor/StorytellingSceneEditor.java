@@ -715,7 +715,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 
 		org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
 		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getJavaInstance();
-		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
+
+		org.lgna.story.Program program = getProgramInstanceInJava();
+		org.lgna.story.Scene scene = sceneAliceInstance.getJavaInstance( org.lgna.story.Scene.class );
+		SceneImp EPIC_HACK_sceneImp = ImplementationAccessor.getImplementation( scene );
+		EPIC_HACK_sceneImp.EPIC_HACK_FOR_SCENE_EDITOR_pushDoNotFireSceneActivationListeners();
+		try {
+			program.setActiveScene(sceneJavaInstance);
+		} finally {
+			EPIC_HACK_sceneImp.EPIC_HACK_FOR_SCENE_EDITOR_popDoNotFireSceneActivationListeners();
+		}
+		
 		getPropertyPanel().setSceneInstance(sceneAliceInstance);
 		getObjectMarkerPanel().setType(sceneAliceInstance.getType());
 		getCameraMarkerPanel().setType(sceneAliceInstance.getType());

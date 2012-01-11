@@ -50,7 +50,7 @@ public class StorytellingResources {
 	} 
 
 	private File findResourcePath( String relativePath ) {
-		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery", "required/gallery/" + org.lgna.project.Version.getCurrentVersionText() } );
+		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery" } );
 		if( rootGallery != null && rootGallery.exists() ) {
 			File path = new File( rootGallery, relativePath );
 			if( path.exists() ) {
