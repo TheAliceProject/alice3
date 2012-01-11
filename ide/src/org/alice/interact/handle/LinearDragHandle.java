@@ -120,8 +120,11 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	
 	protected void setSize(double size)
 	{
-		this.distanceFromOrigin = size;
-		this.positionRelativeToObject();
+		if (!Double.isInfinite(size)) 
+		{
+			this.distanceFromOrigin = size;
+			this.positionRelativeToObject();
+		}
 	}
 	
 	protected double getSize()
