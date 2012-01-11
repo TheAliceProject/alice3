@@ -53,8 +53,7 @@ public class ThisExpression extends Expression {
 		if( rv != null ) {
 			//pass
 		} else {
-			//System.err.println( "WARNING: ThisExpression cannot find type" );
-			//Thread.dumpStack();
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		}
 		return rv;
 //		//todo

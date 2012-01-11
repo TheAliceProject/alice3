@@ -47,5 +47,5 @@ package org.lgna.project.virtualmachine;
  * @author Dennis Cosgrove
  */
 public interface LambdaContext {
-	public void invokeEntryPoint( org.lgna.project.ast.Lambda lambda, Object... arguments );
+	public void invokeEntryPoint( org.lgna.project.ast.Lambda lambda, UserInstance thisInstance, Object... arguments );
 }

@@ -245,7 +245,7 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.UserField sceneField = createPrivateFinalField( sceneType, "myScene" );
 		sceneActivationListener.body.getValue().statements.add( 
 				createMethodInvocationStatement( 
-						createThisFieldAccess( sceneField ),
+						new org.lgna.project.ast.ThisExpression(),
 						myFirstMethod
 				)
 		);

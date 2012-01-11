@@ -457,9 +457,12 @@ public class AstUtilities {
 	public static UserLambda createUserLambda( Class<?> cls ) {
 		return createUserLambda( JavaType.getInstance( cls ) );
 	}
-	public static LambdaExpression createLambdaExpression( Class<?> cls ) {
+	public static LambdaExpression createLambdaExpression( AbstractType< ?,?,? > type ) {
 		return new LambdaExpression(
-				createUserLambda( cls )
+				createUserLambda( type )
 		);
+	}
+	public static LambdaExpression createLambdaExpression( Class<?> cls ) {
+		return createLambdaExpression( JavaType.getInstance( cls ) );
 	}
 }

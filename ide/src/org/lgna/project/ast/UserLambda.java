@@ -57,12 +57,7 @@ public class UserLambda extends AbstractUserMethod implements Lambda {
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getDeclaringType() {
-		UserCode code = this.getFirstAncestorAssignableTo( UserCode.class );
-		if( code != null ) {
-			return code.getDeclaringType();
-		} else {
-			return null;
-		}
+		return this.getFirstAncestorAssignableTo( AbstractType.class );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {

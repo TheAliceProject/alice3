@@ -48,12 +48,15 @@ package org.alice.stageide.apis.story.event;
  */
 public class SceneActivationAdapter implements org.lgna.story.event.SceneActivationListener {
 	private final org.lgna.project.virtualmachine.LambdaContext context;
+	private final org.lgna.project.virtualmachine.UserInstance userInstance;
 	private final org.lgna.project.ast.Lambda lambda;
-	public SceneActivationAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda ) {
+	public SceneActivationAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
 		this.context = context;
 		this.lambda = lambda;
+		this.userInstance = userInstance;
+		assert this.userInstance != null;
 	}
 	public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
-		this.context.invokeEntryPoint( this.lambda, e );
+		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
 	}
 }
