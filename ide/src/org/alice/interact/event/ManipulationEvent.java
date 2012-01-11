@@ -45,6 +45,7 @@ package org.alice.interact.event;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
+import org.alice.interact.PickUtilities;
 import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -92,7 +93,7 @@ public class ManipulationEvent {
 	{
 		if ( this.getTarget() != null )
 		{
-			return AbstractDragAdapter.getPickType(this.getTarget()); 
+			return PickUtilities.getPickType(this.getTarget()); 
 		}
 		else
 		{

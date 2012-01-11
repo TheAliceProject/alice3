@@ -61,7 +61,8 @@ public class PickHint extends BitSet{
 		CAMERA_MARKER,
 		OBJECT_MARKER,
 		ORTHOGRAPHIC_CAMERA,
-		PERSPECTIVE_CAMERA;
+		PERSPECTIVE_CAMERA,
+		SUN;
 		
 		private PickHint pickHint;
 		
