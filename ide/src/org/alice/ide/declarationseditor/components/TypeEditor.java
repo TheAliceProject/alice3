@@ -61,12 +61,67 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 			TypeEditor.this.handleIsEmphasizingClassesChanged();
 		}
 	};
+	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+			TypeEditor.this.handleTypeStateChanged( nextValue );
+		}
+	};
 
 	private final org.lgna.croquet.components.FolderTabbedPane< org.alice.ide.declarationseditor.DeclarationComposite > tabbedPane;
+	private final org.lgna.croquet.components.PopupButton popupButton;
 	private TypeEditor() {
-		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
+		// note:
+		// trigger side effect to initialize isEnabled
+		org.alice.ide.declarationseditor.DeclarationCompositeHistory.getInstance();
+
+		int y = 0;
+		int x = 2;
+		javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( y,x,y,x );
+
+		org.lgna.croquet.components.Button backwardButton = org.alice.ide.declarationseditor.BackwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.BackwardCascade.getInstance() );
+		org.lgna.croquet.components.Button forwardButton = org.alice.ide.declarationseditor.ForwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.ForwardCascade.getInstance() );
+
+		forwardButton.setBorder( border );
+
+		final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
+		org.lgna.croquet.components.JComponent< ? > backwardFowardComponent;
+		if( ARE_CASCADE_BUTTONS_DESIRED ) {
+			org.lgna.croquet.components.PopupButton backPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+			org.lgna.croquet.components.PopupButton forwardPopupButton = org.alice.ide.declarationseditor.ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+			
+			backPopupButton.setBorder( border );
+			forwardPopupButton.setBorder( border );
+
+			org.lgna.croquet.components.BorderPanel backPanel = new org.lgna.croquet.components.BorderPanel();
+			org.lgna.croquet.components.BorderPanel forwardPanel = new org.lgna.croquet.components.BorderPanel();
+			backPanel.addComponent( backwardButton, Constraint.CENTER );
+			forwardPanel.addComponent( forwardButton, Constraint.CENTER );
+			backPanel.addComponent( backPopupButton, Constraint.LINE_END );
+			forwardPanel.addComponent( forwardPopupButton, Constraint.LINE_END );
+
+			backwardFowardComponent = new org.lgna.croquet.components.LineAxisPanel(  
+					backPanel,
+					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 3 ),
+					forwardPanel
+			);
+		} else {
+			org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel();
+			borderPanel.addComponent( backwardButton, Constraint.CENTER );
+			borderPanel.addComponent( forwardButton, Constraint.LINE_END );
+			backwardFowardComponent = borderPanel;
+		}
+		
+
+		org.lgna.croquet.components.LineAxisPanel headerTrailingComponent = new org.lgna.croquet.components.LineAxisPanel(
+				backwardFowardComponent,
+				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
+				org.alice.ide.clipboard.Clipboard.getInstance()
+		);
 		this.tabbedPane = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().createFolderTabbedPane();
-		this.tabbedPane.setHeaderTrailingComponent( clipboard );
+		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
+		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
 		this.addComponent( tabbedPane, Constraint.CENTER );
 	}
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
@@ -83,20 +138,28 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	private void handleIsEmphasizingClassesChanged() {
 		org.lgna.croquet.components.JComponent< ? > component;
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			component = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
+			component = this.popupButton;
 		} else {
 			component = null;
 		}
 		this.tabbedPane.setHeaderLeadingComponent( component );
 	}
 
+	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
+		org.alice.ide.common.TypeDropDownIcon icon = new org.alice.ide.common.TypeDropDownIcon( type, this.popupButton.getAwtComponent().getModel() );
+		this.popupButton.setIcon( icon );
+	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueObserver( this.isEmphasizingClassesListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueObserver( this.typeListener );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesListener );
 		super.handleUndisplayable();
 	}

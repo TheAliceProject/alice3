@@ -297,10 +297,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
 
 	public void saveProjectTo( java.io.File file ) throws java.io.IOException {
-		org.lgna.project.Project project = getProject();
-		this.ensureProjectCodeUpToDate();
+		org.lgna.project.Project project = this.getUpToDateProject();
 		this.preserveProjectProperties();
-
 		edu.cmu.cs.dennisc.zip.DataSource[] dataSources;
 		try {
 			final java.awt.image.BufferedImage thumbnailImage = createThumbnail();
@@ -337,6 +335,12 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		return org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 
+	public final org.lgna.project.Project getUpToDateProject() {
+		org.lgna.project.Project rv = this.getProject();
+		if( rv != null ) {
+			this.ensureProjectCodeUpToDate();
+		}
+		return rv;
+	}
 	public abstract void ensureProjectCodeUpToDate();
-	//public abstract java.io.File getApplicationRootDirectory();
 }

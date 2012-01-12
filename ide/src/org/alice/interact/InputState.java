@@ -249,7 +249,7 @@ public class InputState {
 	{
 		this.clickPickResult = pickResult;
 		Transformable picked = this.getClickPickedTransformable( true );
-		PickHint clickedObjectType = AbstractDragAdapter.getPickType( this.clickPickResult );
+		PickHint clickedObjectType = PickUtilities.getPickType( this.clickPickResult );
 		if ( !clickedObjectType.intersects( PickHint.PickType.NOTHING.pickHint()) )
 		{
 			this.setClickPickTransformable( picked );
@@ -281,7 +281,7 @@ public class InputState {
 	{
 		if ( this.getCurrentlySelectedObject() != null )
 		{
-			return AbstractDragAdapter.getPickType(this.getCurrentlySelectedObject()); 
+			return PickUtilities.getPickType(this.getCurrentlySelectedObject()); 
 		}
 		else
 		{
@@ -298,7 +298,7 @@ public class InputState {
 		}
 		else if (this.getClickPickResult() != null)
 		{
-			return AbstractDragAdapter.getPickType(this.getClickPickResult());
+			return PickUtilities.getPickType(this.getClickPickResult());
 		}
 		else
 		{
@@ -310,7 +310,7 @@ public class InputState {
 	{
 		if (this.getRolloverPickResult() != null)
 		{
-			return AbstractDragAdapter.getPickType(this.getRolloverPickResult());
+			return PickUtilities.getPickType(this.getRolloverPickResult());
 		}
 		else if ( this.rolloverHandle != null )
 		{
@@ -339,7 +339,7 @@ public class InputState {
 			}
 				
 		}
-		PickHint rolloverObjectType = AbstractDragAdapter.getPickType( this.rolloverPickResult );
+		PickHint rolloverObjectType = PickUtilities.getPickType( this.rolloverPickResult );
 		if ( validPick && !rolloverObjectType.intersects( PickHint.PickType.NOTHING.pickHint() ) )
 		{
 			this.setRolloverPickTransformable( picked );
@@ -374,22 +374,7 @@ public class InputState {
 		this.clickPickTransformable = clickPickTransformable;
 	}
 
-	public static Component getFirstClassFromComponent( Component object )
-	{
-		if (object == null)
-		{
-			return null;
-		}
-		if (object instanceof ManipulationHandle3D)
-		{
-			return object;
-		}
-		if ( EntityImp.getInstance(object) != null )
-		{
-			return object;
-		}
-		return getFirstClassFromComponent( object.getParent() );
-	}
+	
 	
 	protected Transformable getPickedTransformable( PickResult pickResult, boolean getFirstClass)
 	{
@@ -401,7 +386,7 @@ public class InputState {
 				if( sgParent instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
 					if (getFirstClass)
 					{
-						Component firstClassComponent = getFirstClassFromComponent( sgParent );
+						Component firstClassComponent = PickUtilities.getFirstClassFromComponent( sgParent );
 						if (firstClassComponent instanceof Transformable)
 						{
 							return (Transformable)firstClassComponent;

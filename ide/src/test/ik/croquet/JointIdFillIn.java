@@ -48,18 +48,18 @@ package test.ik.croquet;
  */
 public class JointIdFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.story.resources.JointId, Void > {
 	private static final java.util.Map< org.lgna.story.resources.JointId, JointIdFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized JointIdFillIn getInstance( org.lgna.story.resources.JointId field ) {
-		JointIdFillIn rv = map.get( field );
+	public static synchronized JointIdFillIn getInstance( org.lgna.story.resources.JointId jointId ) {
+		JointIdFillIn rv = map.get( jointId );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new JointIdFillIn( field );
-			map.put( field, rv );
+			rv = new JointIdFillIn( jointId );
+			map.put( jointId, rv );
 		}
 		return rv;
 	}
 	private final org.lgna.story.resources.JointId jointId;
-	public JointIdFillIn( org.lgna.story.resources.JointId jointId ) {
+	private JointIdFillIn( org.lgna.story.resources.JointId jointId ) {
 		super( java.util.UUID.fromString( "1250c3c2-3545-442c-9f5a-d4191d5642ee" ) );
 		this.jointId = jointId;
 	}

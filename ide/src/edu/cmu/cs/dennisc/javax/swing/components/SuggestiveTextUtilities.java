@@ -49,7 +49,7 @@ class SuggestiveTextUtilities {
 	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
 		if( textComponent.isEditable() && textComponent.isEnabled() ) {
 			String text = textComponent.getText();
-			if( text.length() > 0 || textForBlankCondition == null ) {
+			if( text.length() > 0 || textForBlankCondition == null || textForBlankCondition.length() == 0 ) {
 				//pass
 			} else {
 				java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont(textComponent.getFont(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );

@@ -121,6 +121,10 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		
 		this.nameValidator = nameValidator;
 	}
+	
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getInitialValueComponentType() {
+		return this.initialValueComponentType;
+	}
 	protected org.alice.ide.croquet.models.ExpressionState createInitializerState( org.lgna.project.ast.Expression initialValue ) {
 		return new InitializerState( this, initialValue );
 	}
@@ -346,7 +350,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 			this.declaringTypeState.setValueTransactionlessly( this.initialDeclaringType );
 		}
 		if( this.valueComponentTypeState != null ) {
-			this.valueComponentTypeState.setValueTransactionlessly( this.initialValueComponentType );
+			this.valueComponentTypeState.setValueTransactionlessly( this.getInitialValueComponentType() );
 		}
 		if( this.isArrayValueTypeState != null ) {
 			this.isArrayValueTypeState.setValueTransactionlessly( this.initialIsArrayValueType );

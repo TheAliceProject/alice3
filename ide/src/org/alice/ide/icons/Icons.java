@@ -59,5 +59,8 @@ public class Icons {
 
 	public static final javax.swing.Icon FOLDER_ICON_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/folder.png" ) ); 
 	public static final javax.swing.Icon FOLDER_BACK_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderBack.png" ) ); 
-	public static final javax.swing.Icon FOLDER_FRONT_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderFront.png" ) ); 
+	public static final javax.swing.Icon FOLDER_FRONT_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderFront.png" ) );
+	
+	public static final javax.swing.Icon NEXT_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-next.png" ) );
+	public static final javax.swing.Icon PREVIOUS_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-previous.png" ) );
 }

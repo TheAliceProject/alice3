@@ -446,6 +446,9 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		return this.cardPanel;
 	}
 	
+	public JComponent<?> getHeaderLeadingComponent() {
+		return (JComponent<?>)this.innerHeaderPanel.getComponent( BorderPanel.Constraint.LINE_START );
+	}
 	public void setHeaderLeadingComponent( JComponent< ? > component ) {
 		if( component != null ) {
 			if( component.isOpaque() ) {

@@ -52,7 +52,7 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 		private final java.util.UUID id;
 		private double minimum = 0.0;
 		private double maximum = 1.0;
-		private double extent = 0.01;
+		private double delta = 0.01;
 		private double initialValue = 0.5;
 		public Details( Group group, java.util.UUID id ) {
 			this.group = group;
@@ -66,8 +66,8 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 			this.maximum = maximum;
 			return this;
 		}
-		public Details extent( double extent ) {
-			this.extent = extent;
+		public Details delta( double delta ) {
+			this.delta = delta;
 			return this;
 		}
 		public Details initialValue( double initialValue ) {
@@ -82,9 +82,9 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 			} else {
 				this.boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
 				int min = 0;
-				int max = (int)((this.maximum-this.minimum)/this.extent);
-				int ext = 1;
-				int val = (int)((this.initialValue-this.minimum)/this.extent);
+				int max = (int)((this.maximum-this.minimum)/this.delta);
+				int ext = 0;
+				int val = (int)((this.initialValue-this.minimum)/this.delta);
 				this.boundedRangeModel.setRangeProperties( val, ext, min, max, false );
 			}
 			return this.boundedRangeModel;

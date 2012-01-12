@@ -93,6 +93,7 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 	protected InstanceCreationInitializerState createInitializerState( org.lgna.project.ast.Expression initialValue ) {
 		return new InstanceCreationInitializerState( this, initialValue );
 	}
+	
 	@Override
 	protected boolean isFieldFinal() {
 		return true;

@@ -234,7 +234,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private boolean isInitialized = false;
 	
-	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	private SidePane sidePanel = new SidePane();
@@ -281,7 +281,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	{
 		super.setProgramInstance(programInstance);
 		ProgramImp programImplementation = ImplementationAccessor.getImplementation(getProgramInstanceInJava());
-		programImplementation.setAnimator(this.animator);
+		programImplementation.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_setClockBasedAnimator(this.animator);
 		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
 	}
 	

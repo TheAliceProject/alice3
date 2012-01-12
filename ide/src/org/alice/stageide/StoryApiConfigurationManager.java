@@ -360,23 +360,6 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		return rv;
 	}
 	
-	private static String convertConstantNameToMethodName( String constantName ) {
-		StringBuilder sb = new StringBuilder();
-		boolean isUpperNext = true;
-		for( char c : constantName.toCharArray() ) {
-			if( c == '_' ) {
-				isUpperNext = true;
-			} else {
-				if( isUpperNext ) {
-					sb.append( c );
-				} else {
-					sb.append( Character.toLowerCase( c ) );
-				}
-				isUpperNext = false;
-			}
-		}
-		return sb.toString();
-	}
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
 	@Override
 	public org.lgna.project.ast.UserType< ? > augmentTypeIfNecessary( org.lgna.project.ast.UserType< ? > rv ) {
@@ -400,7 +383,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 					for( org.lgna.project.ast.AbstractField field : resourceType.getDeclaredFields() ) {
 						if( field.isStatic() ) {
 							if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId.class ) ) {
-								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( "get" + convertConstantNameToMethodName( field.getName() ), org.lgna.story.Joint.class );
+								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" ), org.lgna.story.Joint.class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
 								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation( 

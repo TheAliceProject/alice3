@@ -64,4 +64,11 @@ public class IconUtilities {
 			return null;
 		}
 	}
+	public static boolean areSizesEqual( javax.swing.Icon prevIcon, javax.swing.Icon nextIcon ) {
+		int prevWidth = prevIcon != null ? prevIcon.getIconWidth() : 0;
+		int prevHeight = prevIcon != null ? prevIcon.getIconHeight() : 0;
+		int nextWidth = nextIcon != null ? nextIcon.getIconWidth() : 0;
+		int nextHeight = nextIcon != null ? nextIcon.getIconHeight() : 0;
+		return prevWidth == nextWidth && prevHeight == nextHeight;
+	}
 }

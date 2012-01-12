@@ -85,6 +85,8 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 			}
 		}
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
+		rv.add( org.alice.ide.clipboard.CopyToClipboardOperation.getInstance( statement ).getMenuItemPrepModel() );
+		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		rv.add( org.alice.ide.croquet.models.ast.DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
 		if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
 			org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;

@@ -48,8 +48,12 @@ package org.lgna.story.implementation;
  */
 public class ProgramImp {
 	private final org.lgna.story.Program abstraction;
-	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+
+	public static final Double CLOCK_BASED_FRAME_RATE = null;
+	private Double frameRate = CLOCK_BASED_FRAME_RATE;
+	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator clockBasedAnimator;
+	private edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator;
 	
 	private double simulationSpeedFactor = 1.0; 
 	public ProgramImp( org.lgna.story.Program abstraction ) {
@@ -60,8 +64,7 @@ public class ProgramImp {
 		private final javax.swing.JLabel label = new javax.swing.JLabel();
 		private final javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
 		public ControlPanel() {
-			javax.swing.JToggleButton toggleButton = new javax.swing.JToggleButton();
-			final javax.swing.ButtonModel buttonModel = toggleButton.getModel();
+			final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 			buttonModel.setSelected( true );
 			buttonModel.addChangeListener( new javax.swing.event.ChangeListener() {
 				public void stateChanged( javax.swing.event.ChangeEvent e ) {
@@ -69,28 +72,30 @@ public class ProgramImp {
 				}
 			} );
 
-			toggleButton.setIcon( new javax.swing.Icon() {
+			javax.swing.JButton playPauseButton = new javax.swing.JButton();
+			playPauseButton.setModel( buttonModel );
+			playPauseButton.setIcon( new javax.swing.Icon() {
 				public int getIconWidth() {
-					return 16;
+					return 12;
 				}
 				public int getIconHeight() {
-					return 16;
+					return 12;
 				}
 				public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-					javax.swing.JToggleButton toggleButton = (javax.swing.JToggleButton)c;
+					javax.swing.AbstractButton toggleButton = (javax.swing.AbstractButton)c;
 					javax.swing.ButtonModel buttonModel = toggleButton.getModel();
 					if( buttonModel.isSelected() ) {
-						g.fillRect( x+1, y+1, 4, 14 );
-						g.fillRect( x+9, y+1, 4, 14 );
+						g.fillRect( x+1, y+1, 3, 10 );
+						g.fillRect( x+7, y+1, 3, 10 );
 					} else {
-						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, x, y, 16, 16 );
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, x, y, 12, 12 );
 					}
 				}
 			} );
 			
 			final int PAD_X = 12;
 			final int PAD_Y = 8;
-			toggleButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD_Y, PAD_X, PAD_Y, PAD_X ) );
+			playPauseButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD_Y, PAD_X, PAD_Y, PAD_X ) );
 			
 			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
 			
@@ -125,7 +130,7 @@ public class ProgramImp {
 
 			javax.swing.JPanel leadingPanel = new javax.swing.JPanel();
 			leadingPanel.setLayout( new javax.swing.BoxLayout( leadingPanel, javax.swing.BoxLayout.LINE_AXIS ) );
-			leadingPanel.add( toggleButton );
+			leadingPanel.add( playPauseButton );
 			leadingPanel.add( javax.swing.Box.createHorizontalStrut( 12 ) );
 			leadingPanel.add( this.label );
 
@@ -154,10 +159,10 @@ public class ProgramImp {
 		} else {
 			speedFactor = 0.0;
 		}
-		this.animator.setSpeedFactor( speedFactor );
+		this.getAnimator().setSpeedFactor( speedFactor );
 	}
 	private void handleSpeedChange( double speedFactor ) {
-		this.animator.setSpeedFactor( speedFactor );
+		this.getAnimator().setSpeedFactor( speedFactor );
 	}
 	
 	private javax.swing.Action restartAction;
@@ -180,7 +185,7 @@ public class ProgramImp {
 			//pass
 		} else {
 			this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass();
-			//this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
+			//this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createLightweightOnscreenLookingGlass();
 		}
 		return this.onscreenLookingGlass;
 	}
@@ -188,16 +193,44 @@ public class ProgramImp {
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 	
-	public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
-		if( this.animator != null ) {
+	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator getClockBasedAnimator() {
+		if( this.clockBasedAnimator != null ) {
 			//pass
 		} else {
-			this.animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+			this.clockBasedAnimator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 		}
-		return this.animator;
+		return this.clockBasedAnimator;
 	}
-	public void setAnimator( edu.cmu.cs.dennisc.animation.Animator animator ) {
-		this.animator = animator;
+	private edu.cmu.cs.dennisc.animation.FrameBasedAnimator getFrameBasedAnimator() {
+		if( this.frameBasedAnimator != null ) {
+			//pass
+		} else {
+			this.frameBasedAnimator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
+		}
+		return this.frameBasedAnimator;
+	}
+	public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+		if( this.frameRate == CLOCK_BASED_FRAME_RATE ) {
+			return this.getClockBasedAnimator();
+		} else {
+			return this.getFrameBasedAnimator();
+		}
+	}
+	
+	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_setClockBasedAnimator( edu.cmu.cs.dennisc.animation.ClockBasedAnimator clockBasedAnimator ) {
+		this.clockBasedAnimator = clockBasedAnimator;
+	}
+	
+	public Double getFrameRate() {
+		return this.frameRate;
+	}
+	public void setFrameRate( Double frameRate ) {
+		if( frameRate == CLOCK_BASED_FRAME_RATE ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator = this.getFrameBasedAnimator();
+			frameBasedAnimator.setFramesPerSecond( frameRate );
+		}
 	}
 	
 	public double getSimulationSpeedFactor() {
@@ -212,12 +245,12 @@ public class ProgramImp {
 			ProgramImp.this.getAnimator().update();
 		}
 	};
-	private void startAnimator() {
+	public void startAnimator() {
 		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
 		lookingGlassFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
 		lookingGlassFactory.incrementAutomaticDisplayCount();
 	}
-	private void stopAnimator() {
+	public void stopAnimator() {
 		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
 		lookingGlassFactory.decrementAutomaticDisplayCount();
 		lookingGlassFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );

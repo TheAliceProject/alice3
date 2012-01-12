@@ -51,12 +51,7 @@ public class InitializerManagedFieldDeclarationOperation  extends ManagedFieldDe
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > type;
-			if( nextValue instanceof org.lgna.project.ast.InstanceCreation ) {
-				type = ((org.lgna.project.ast.InstanceCreation)nextValue).constructor.getValue().getDeclaringType();
-			} else {
-				type = null;
-			}
+			org.lgna.project.ast.AbstractType< ?,?,? > type = getDeclaringTypeFromInitializer( nextValue );
 			InitializerManagedFieldDeclarationOperation.this.getComponentValueTypeState().setValueTransactionlessly( type );
 		}
 	};
@@ -69,6 +64,19 @@ public class InitializerManagedFieldDeclarationOperation  extends ManagedFieldDe
 				initialExpression, true 
 		);
 		this.getInitializerState().addAndInvokeValueObserver( initializerObserver );
+	}
+	
+	private org.lgna.project.ast.AbstractType< ?,?,? > getDeclaringTypeFromInitializer( org.lgna.project.ast.Expression expression ) {
+		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+			return instanceCreation.constructor.getValue().getDeclaringType();
+		} else {
+			return null;
+		}
+	}
+	@Override
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getInitialValueComponentType() {
+		return this.getDeclaringTypeFromInitializer( this.getInitializer() );
 	}
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {

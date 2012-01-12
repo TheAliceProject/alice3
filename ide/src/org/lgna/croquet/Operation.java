@@ -277,4 +277,8 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	public org.lgna.croquet.components.Hyperlink createHyperlink() {
 		return new org.lgna.croquet.components.Hyperlink( this );
 	}
+
+	public org.lgna.croquet.components.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade< ? > cascade ) {
+		return new org.lgna.croquet.components.ButtonWithRightClickCascade( this, cascade );
+	}
 }

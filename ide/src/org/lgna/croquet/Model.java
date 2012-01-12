@@ -78,7 +78,7 @@ public abstract class Model extends Element implements org.lgna.croquet.resolver
 		throw new RuntimeException( "todo" );
 	}
 	public void setEnabled( boolean isEnabled ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 	}
 	
 	
