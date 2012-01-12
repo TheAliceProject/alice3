@@ -61,6 +61,8 @@ import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
+import org.lgna.story.event.MouseButtonEvent;
+import org.lgna.story.event.MouseButtonListener;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -69,6 +71,7 @@ import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
+import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.matt.CollisionListener;
 import edu.cmu.cs.dennisc.matt.EventPolicy;
 import edu.cmu.cs.dennisc.matt.KeyPressedListener;
@@ -227,32 +230,38 @@ class SnowScene extends Scene{
 		LinkedList<Model> list = new LinkedList<Model>();
 		list.add(ogre);
 		list.add(susan);
-		this.addListener( new MouseClickedListener(list, EventPolicy.ENQUEUE) {
-			@Override
-			public void mouseButtonClicked(Model target) {
-					target.move(MoveDirection.RIGHT, 1);
-					target.move(MoveDirection.LEFT, 1);
-			}
-		});
-		
-		this.addListener(new CollisionListener(ogre, susan) {
+		LinkedList<Model> colListOne = new LinkedList<Model>();
+		colListOne.add(ogre);
+		LinkedList<Model> colListTwo = new LinkedList<Model>();
+		colListTwo.add(susan);
+		this.addCollisionListener(new CollisionListener() {
+
 			@Override
 			public void whenTheseCollide(LinkedList<Model> targets) {
-				susan.move(MoveDirection.UP, 1);
-				susan.move(MoveDirection.DOWN, 1);
+				targets.get(1).move(MoveDirection.UP, 1);
+				targets.get(1).move(MoveDirection.DOWN, 1);
 			}
-		});
-		this.addListener(new KeyPressedListener(EventPolicy.COMBINE) {
+		}, colListOne, colListTwo);
+		this.addKeyPressedListener(new KeyPressedListener() {
+
 			@Override
-			public void keyPressed(Key key) { 
+			public void keyPressed(Key key) {
 				if(key.equals(Key.A)){
-					armoire.move(MoveDirection.UP, 1.0);
-					armoire.move(MoveDirection.DOWN, 1.0);
+					armoire.move(MoveDirection.UP, 1);
+					armoire.move(MoveDirection.DOWN, 1);
 				}
 			}
-		});
+		}, EventPolicy.COMBINE);
+		this.addMouseButtonListener(new MouseClickedListener() {
+
+			@Override
+			public void mouseButtonClicked(Model target) {
+				target.move(MoveDirection.RIGHT, 1);
+				target.move(MoveDirection.LEFT, 1);
+			}
+		}, EventPolicy.ENQUEUE, list);
 	}
-	
+
 	public void chillInSkiChalet() {
 		this.armoire.getLeftDoor().turn( TurnDirection.RIGHT, 0.375 );
 		this.armoire.getRightDoor().turn( TurnDirection.LEFT, 0.375 );
@@ -301,8 +310,8 @@ class RagsToRichesStory extends Program {
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	public void playOutStory() {
-//		this.setActiveScene( this.desertScene );
-//		this.desertScene.turnBigRocksIntoLittleRocks();
+		//		this.setActiveScene( this.desertScene );
+		//		this.desertScene.turnBigRocksIntoLittleRocks();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}

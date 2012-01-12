@@ -5,13 +5,13 @@ import java.util.LinkedList;
 import org.lgna.story.Model;
 
 
-abstract class TransformationListener extends AbstractListener {
+abstract class TransformationListener extends AbstractEventHandler {
 	
 	private LinkedList<Model> observing;
 
-	public TransformationListener(LinkedList<Model> objectsToObserve) {
-		super(EventPolicy.IGNORE);
-		this.observing = objectsToObserve;
+	public TransformationListener() {
+//		super(EventPolicy.IGNORE);
+//		this.observing = objectsToObserve;
 	}
 
 	public LinkedList<Model> getObserving() {

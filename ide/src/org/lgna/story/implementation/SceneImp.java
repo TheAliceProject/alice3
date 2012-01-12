@@ -44,6 +44,7 @@
 package org.lgna.story.implementation;
 
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
 
 import org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit;
 import org.lgna.project.ProgramClosedException;
@@ -53,8 +54,12 @@ import org.lgna.story.event.MouseButtonListener;
 
 import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.matt.AbstractListener;
+import edu.cmu.cs.dennisc.matt.AbstractEventHandler;
+import edu.cmu.cs.dennisc.matt.CollisionListener;
 import edu.cmu.cs.dennisc.matt.EventManager;
+import edu.cmu.cs.dennisc.matt.EventPolicy;
+import edu.cmu.cs.dennisc.matt.KeyPressedListener;
+import edu.cmu.cs.dennisc.matt.MouseClickedListener;
 
 /**
  * @author Dennis Cosgrove
@@ -91,9 +96,14 @@ public class SceneImp extends EntityImp {
 	public void addMouseButtonListener(MouseButtonListener mouseButtonListener){
 		this.mouseButtonListeners.add( mouseButtonListener);
 	}
-	
 	public void removeMouseButtonListener(MouseButtonListener mouseButtonListener){
 		this.mouseButtonListeners.remove( mouseButtonListener );
+	}
+	public void addKeyListener(KeyListener keyListener){
+		this.keyListeners.add( keyListener);
+	}
+	public void removeKeyListener(KeyListener keyListener){
+		this.keyListeners.remove( keyListener );
 	}
 	
 	private boolean isMouseButtonListenerInExistence() {
@@ -376,7 +386,7 @@ public class SceneImp extends EntityImp {
 		}
 	}
 
-	public void addListener(AbstractListener event) {
+	public void addListener(AbstractEventHandler event) {
 		eventManager.addListener(event);
 	}
 
@@ -386,5 +396,17 @@ public class SceneImp extends EntityImp {
 
 	public void restoreAllListeners() {
 		eventManager.restoreAllListeners();
+	}
+	public void addMouseButtonListener(MouseClickedListener mouseButtonListener,
+			EventPolicy eventPolicy, LinkedList<Model> targets) {
+		eventManager.addMouseButtonListener(mouseButtonListener, eventPolicy, targets);
+	}
+	public void addKeyPressedListener(KeyPressedListener keyPressedListener,
+			EventPolicy eventPolicy) {
+		eventManager.addKeyPressedListener(keyPressedListener, eventPolicy);
+	}
+	public void addCollisionListener(CollisionListener collisionListener,
+			LinkedList<Model> groupOne, LinkedList<Model> groupTwo) {
+		eventManager.addCollisionListener(collisionListener, groupOne, groupTwo);
 	}
 }

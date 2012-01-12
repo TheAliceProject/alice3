@@ -43,12 +43,19 @@
 
 package org.lgna.story;
 
-import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
-import org.lgna.project.annotations.*;
-import org.lgna.story.event.MouseButtonListener;
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.ValueTemplate;
+import org.lgna.project.annotations.Visibility;
 
-import edu.cmu.cs.dennisc.matt.AbstractListener;
+import edu.cmu.cs.dennisc.matt.AbstractEventHandler;
+import edu.cmu.cs.dennisc.matt.CollisionListener;
+import edu.cmu.cs.dennisc.matt.EventPolicy;
+import edu.cmu.cs.dennisc.matt.KeyPressedListener;
+import edu.cmu.cs.dennisc.matt.MouseClickedListener;
 /**
  * @author Dennis Cosgrove
  */
@@ -60,13 +67,6 @@ public abstract class Scene extends Entity{
 		return this.implementation;
 	}
 
-	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
-		this.implementation.addSceneActivationListener( sceneActivationListener );
-	}
-	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
-		this.implementation.removeSceneActivationListener( sceneActivationListener );
-	}
-	
 	private void changeActiveStatus( Program program, boolean isActive, int activeCount ) {
 		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
 		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
@@ -140,15 +140,35 @@ public abstract class Scene extends Entity{
 	}
 	
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
-	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
-		this.getImplementation().addMouseButtonListener( mouseButtonListener );
+	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.implementation.addSceneActivationListener( sceneActivationListener );
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.implementation.removeSceneActivationListener( sceneActivationListener );
+	}
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	public void addMouseButtonListener( MouseClickedListener mouseButtonListener, EventPolicy eventPolicy, LinkedList<Model> targets) {
+		this.getImplementation().addMouseButtonListener( mouseButtonListener, eventPolicy, targets );
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
 	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
 		this.getImplementation().removeMouseButtonListener( mouseButtonListener );
 	}
+	public void addCollisionListener( CollisionListener collisionListener, LinkedList<Model> groupOne, LinkedList<Model> groupTwo){
+		this.getImplementation().addCollisionListener(collisionListener, groupOne, groupTwo);
+	}
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	public void addKeyPressedListener( KeyPressedListener keyListener,  EventPolicy policy) {
+		this.implementation.addKeyPressedListener( keyListener, policy );
+	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	protected void addListener(AbstractListener event){
+	public void removeKeyListener( org.lgna.story.event.KeyListener keyListener ) {
+		this.implementation.removeKeyListener( keyListener );
+	}
+
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	protected void addListener(AbstractEventHandler event){
 		this.getImplementation().addListener(event);
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
