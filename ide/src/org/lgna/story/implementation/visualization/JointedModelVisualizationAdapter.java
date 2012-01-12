@@ -146,7 +146,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 	}
 	private void pushOffset( javax.media.opengl.GL gl ) {
 		gl.glPushMatrix();
-		gl.glTranslated( 1,0,0 );		
+//		gl.glTranslated( 1,0,0 );		
 	}
 	private void popOffset( javax.media.opengl.GL gl ) {
 		gl.glPopMatrix();

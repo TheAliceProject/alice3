@@ -112,7 +112,7 @@ class TestScene extends Scene {
 		imp.showVisualization();
 		while( true ) {
 ////			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
+//			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
 ////			this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.25 );
 ////			this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.25 );
 		}
@@ -145,8 +145,9 @@ class TestJointedModel extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
+	private final MyBiped ogre = new MyBiped(org.lgna.story.resources.biped.Ogre.BROWN_OGRE);
 	private final ObjectMarker marker = new ObjectMarker();
-	private final TestScene testScene = new TestScene( camera, susan, marker );
+	private final TestScene testScene = new TestScene( camera, ogre, marker );
 	
 	private int previousX = -1;
 	private int previousY = -1;
