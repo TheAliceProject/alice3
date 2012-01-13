@@ -94,6 +94,53 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
             context.gl.glVertex3d( 0, 0, 0 );
             context.gl.glVertex3d( 0, 0, axisLength );
             context.gl.glEnd();
+            
+            edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = joint.getAxisAlignedMinimumBoundingBox();
+//            boundingBox = null;
+            if (boundingBox != null)
+            {
+                context.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+                edu.cmu.cs.dennisc.math.Point3 min = boundingBox.getMinimum();
+                edu.cmu.cs.dennisc.math.Point3 max = boundingBox.getMaximum();
+                
+                //Bottom
+                context.gl.glBegin( GL_LINE_LOOP );
+                context.gl.glVertex3d( min.x, min.y, min.z );
+                context.gl.glVertex3d( min.x, min.y, max.z );
+                context.gl.glVertex3d( max.x, min.y, max.z );
+                context.gl.glVertex3d( max.x, min.y, min.z );
+                context.gl.glEnd();
+                
+                //Top
+                context.gl.glBegin( GL_LINE_LOOP );
+                context.gl.glVertex3d( min.x, max.y, min.z );
+                context.gl.glVertex3d( min.x, max.y, max.z );
+                context.gl.glVertex3d( max.x, max.y, max.z );
+                context.gl.glVertex3d( max.x, max.y, min.z );
+                context.gl.glEnd();
+                
+                //Sides
+                context.gl.glBegin( GL_LINES );
+                context.gl.glVertex3d( min.x, min.y, min.z );
+                context.gl.glVertex3d( min.x, max.y, min.z );
+                context.gl.glEnd();
+                
+                context.gl.glBegin( GL_LINES );
+                context.gl.glVertex3d( max.x, min.y, min.z );
+                context.gl.glVertex3d( max.x, max.y, min.z );
+                context.gl.glEnd();
+                
+                context.gl.glBegin( GL_LINES );
+                context.gl.glVertex3d( min.x, min.y, max.z );
+                context.gl.glVertex3d( min.x, max.y, max.z );
+                context.gl.glEnd();
+                
+                context.gl.glBegin( GL_LINES );
+                context.gl.glVertex3d( max.x, min.y, max.z );
+                context.gl.glVertex3d( max.x, max.y, max.z );
+                context.gl.glEnd();
+            }
+     
 			
 		}
 		public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {

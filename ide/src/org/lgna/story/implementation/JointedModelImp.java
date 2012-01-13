@@ -146,12 +146,24 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 //		}
 	}
 	
-	protected edu.cmu.cs.dennisc.math.Vector4 getOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {
+	protected edu.cmu.cs.dennisc.math.Vector4 getFrontOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {
 		edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 jointTransform = jointImp.getTransformation(this);
-		offsetAsSeenBySubject.x = jointTransform.translation.x;
-		offsetAsSeenBySubject.y = jointTransform.translation.y;
-		offsetAsSeenBySubject.z = jointTransform.translation.z;
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = jointImp.getAxisAlignedMinimumBoundingBox(this);
+		edu.cmu.cs.dennisc.math.Point3 point = bbox.getCenterOfFrontFace();
+		offsetAsSeenBySubject.x = point.x;
+		offsetAsSeenBySubject.y = point.y;
+		offsetAsSeenBySubject.z = point.z;
+		offsetAsSeenBySubject.w = 1;
+		return offsetAsSeenBySubject;
+	}
+	
+	protected edu.cmu.cs.dennisc.math.Vector4 getTopOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {
+		edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = jointImp.getAxisAlignedMinimumBoundingBox(this);
+		edu.cmu.cs.dennisc.math.Point3 point = bbox.getCenterOfTopFace();
+		offsetAsSeenBySubject.x = point.x;
+		offsetAsSeenBySubject.y = point.y;
+		offsetAsSeenBySubject.z = point.z;
 		offsetAsSeenBySubject.w = 1;
 		return offsetAsSeenBySubject;
 	}
