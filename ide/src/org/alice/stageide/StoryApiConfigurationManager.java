@@ -48,12 +48,15 @@ import java.util.List;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.story.Model;
 import org.lgna.story.Scene;
+import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.EventPolicy;
 import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonListener;
 import org.lgna.story.event.SceneActivationListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.matt.AddKeyPressedListener;
+import edu.cmu.cs.dennisc.matt.AddMouseButtonListener;
 
 /**
  * @author Dennis Cosgrove
@@ -69,15 +72,18 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 	
 	private static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addSceneActivationListener", SceneActivationListener.class );
-	private static final JavaMethod ADD_MOUSE_BUTTON_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseButtonListener.class, EventPolicy.class, Model[].class );
-	private static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addKeyPressedListener", KeyListener.class, EventPolicy.class );
+	private static final JavaMethod ADD_MOUSE_BUTTON_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseButtonListener.class, AddMouseButtonListener.Detail[].class );
+	private static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addKeyPressedListener", KeyListener.class, AddKeyPressedListener.Detail[].class );
+	private static final JavaMethod ADD_COLLISION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addCollisionListener", CollisionListener.class, Model[].class, Model[].class );
+	
 	
 	@Override
 	public List<JavaMethod> getAddEventListenerMethods() {
 		return Collections.newLinkedList(
 				ADD_SCENE_ACTIVATION_LISTENER_METHOD,
 				ADD_MOUSE_BUTTON_LISTENER_METHOD,
-				ADD_KEY_LISTENER_METHOD
+				ADD_KEY_LISTENER_METHOD,
+				ADD_COLLISION_LISTENER_METHOD
 		);
 	}
 

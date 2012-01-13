@@ -76,6 +76,10 @@ import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
+import edu.cmu.cs.dennisc.matt.AddMouseButtonListener;
+import edu.cmu.cs.dennisc.matt.MultipleEventPolicy;
+import edu.cmu.cs.dennisc.matt.TargetedModels;
+
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
 		super( resource );
@@ -226,13 +230,9 @@ class SnowScene extends Scene{
 	}
 
 	private void performInitializeEvents() {
-		Model[] list = {ogre, susan};//new LinkedList<Model>();
-//		list.add(ogre);
-//		list.add(susan);
-		LinkedList<Model> colListOne = new LinkedList<Model>();
-		colListOne.add(ogre);
-		LinkedList<Model> colListTwo = new LinkedList<Model>();
-		colListTwo.add(susan);
+		Model[] list = {ogre, susan};
+		Model[] colListOne = {ogre};
+		Model[] colListTwo = {susan};
 		this.addCollisionListener(new CollisionListener() {
 			public void whenTheseCollide(CollisionEvent event) {
 				event.getModels().get(1).move(MoveDirection.UP, 1);
@@ -246,13 +246,13 @@ class SnowScene extends Scene{
 					armoire.move(MoveDirection.DOWN, 1);
 				}
 			}
-		}, EventPolicy.COMBINE);
+		}, new MultipleEventPolicy(EventPolicy.COMBINE));
 		this.addMouseButtonListener( new MouseButtonListener() {
 			public void mouseButtonClicked(MouseButtonEvent e) {
 				e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
 				e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);
 			}
-		}, EventPolicy.ENQUEUE, list);
+		}, new MultipleEventPolicy(EventPolicy.ENQUEUE), new TargetedModels(list));
 	}
 
 	public void chillInSkiChalet() {

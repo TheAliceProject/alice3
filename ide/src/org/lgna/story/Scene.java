@@ -54,6 +54,8 @@ import org.lgna.story.event.EventPolicy;
 import org.lgna.story.event.MouseButtonListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.matt.AddKeyPressedListener;
+import edu.cmu.cs.dennisc.matt.AddMouseButtonListener;
 
 
 /**
@@ -148,19 +150,19 @@ public abstract class Scene extends Entity{
 		this.implementation.removeSceneActivationListener( sceneActivationListener );
 	}
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
-	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, EventPolicy eventPolicy, Model[] targets) {
-		this.getImplementation().getEventManager().addMouseButtonListener( mouseButtonListener, eventPolicy, Collections.newArrayList(targets) );
+	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, AddMouseButtonListener.Detail... details){//, EventPolicy eventPolicy, Model[] targets) {
+		this.getImplementation().getEventManager().addMouseButtonListener( mouseButtonListener, AddMouseButtonListener.getPolicy( details ), AddMouseButtonListener.getTargeted(details));
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
 	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
 		this.getImplementation().getEventManager().removeMouseButtonListener( mouseButtonListener );
 	}
-	public void addCollisionListener( CollisionListener collisionListener, List<Model> groupOne, List<Model> groupTwo){
-		this.getImplementation().getEventManager().addCollisionListener(collisionListener, groupOne, groupTwo);
+	public void addCollisionListener( CollisionListener collisionListener, Model[] groupOne, Model[] groupTwo){
+		this.getImplementation().getEventManager().addCollisionListener(collisionListener, Collections.newArrayList(groupOne), Collections.newArrayList(groupTwo));
 	}
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
-	public void addKeyPressedListener( org.lgna.story.event.KeyListener keyListener,  EventPolicy policy) {
-		this.implementation.getEventManager().addKeyListener( keyListener, policy );
+	public void addKeyPressedListener( org.lgna.story.event.KeyListener keyListener,  AddKeyPressedListener.Detail... details) {
+		this.implementation.getEventManager().addKeyListener( keyListener, AddKeyPressedListener.getPolicy(details) );
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
 	public void removeKeyListener( org.lgna.story.event.KeyListener keyListener ) {
