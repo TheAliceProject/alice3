@@ -43,6 +43,9 @@
 
 package org.alice.ide.declarationseditor;
 
+import org.alice.ide.declarationseditor.events.components.EventListenersView;
+import org.alice.stageide.StageIDE;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -105,7 +108,11 @@ public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.ali
 	@Override
 	protected org.alice.ide.declarationseditor.components.DeclarationView createView() {
 		if( this.declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			return new org.alice.ide.declarationseditor.code.components.CodeDeclarationView( this );
+			if( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( this.declaration.getName() ) ) {
+				return new EventListenersView( this );
+			} else {
+				return new org.alice.ide.declarationseditor.code.components.CodeDeclarationView( this );
+			}
 		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ){
 			return new org.alice.ide.declarationseditor.type.components.TypeDeclarationView( this );
 		} else {

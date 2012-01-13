@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -42,7 +42,32 @@
  */
 package test;
 
-import org.lgna.story.*;
+import java.util.LinkedList;
+
+import org.lgna.story.Biped;
+import org.lgna.story.Camera;
+import org.lgna.story.Color;
+import org.lgna.story.Cone;
+import org.lgna.story.Ground;
+import org.lgna.story.Joint;
+import org.lgna.story.Key;
+import org.lgna.story.Model;
+import org.lgna.story.Move;
+import org.lgna.story.MoveDirection;
+import org.lgna.story.Program;
+import org.lgna.story.Prop;
+import org.lgna.story.RollDirection;
+import org.lgna.story.Scene;
+import org.lgna.story.Sphere;
+import org.lgna.story.Sun;
+import org.lgna.story.TurnDirection;
+import org.lgna.story.event.CollisionEvent;
+import org.lgna.story.event.CollisionListener;
+import org.lgna.story.event.EventPolicy;
+import org.lgna.story.event.KeyEvent;
+import org.lgna.story.event.KeyListener;
+import org.lgna.story.event.MouseButtonEvent;
+import org.lgna.story.event.MouseButtonListener;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -50,6 +75,8 @@ import org.lgna.story.resources.sims2.BaseSkinTone;
 import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -96,14 +123,14 @@ class DesertScene extends Scene {
 		this.sphere.setVehicle( this );
 		this.ogre.setVehicle( this );
 		this.fellowLaborer.setVehicle( this );
-		
+
 		this.billboard.setVehicle( this );
 		this.billboard.setPaint( Color.RED );
 		this.billboard.setBackPaint( Color.BLUE );
 
 		this.ogre.move( MoveDirection.LEFT, 1.0 );
 		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
-		
+
 		this.desert.setPaint( Ground.SurfaceAppearance.SAND );
 		this.sphere.setRadius( 0.1 );
 		this.sphere.setPaint( Color.RED );
@@ -124,14 +151,14 @@ class DesertScene extends Scene {
 			this.preserveStateAndEventListeners();
 		}
 	}
-		
+
 	public void turnBigRocksIntoLittleRocks() {
 		this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 		this.ogre.getRightElbow().turn( TurnDirection.FORWARD, 0.25 );
 	}
 }
 
-class SnowScene extends Scene {
+class SnowScene extends Scene{
 	private final Sun sun = new Sun();
 	private final Ground snow = new Ground();
 	private final Cone redCone = new Cone(); 
@@ -146,7 +173,7 @@ class SnowScene extends Scene {
 		this.susan = susan;
 		this.ogre = ogre;
 	}
-	
+
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
@@ -159,8 +186,8 @@ class SnowScene extends Scene {
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
-		
-	
+
+
 		this.redCone.setPaint( Color.RED );
 		this.greenCone.setPaint( Color.GREEN );
 		this.blueCone.setPaint( Color.BLUE );
@@ -174,29 +201,60 @@ class SnowScene extends Scene {
 		this.redCone.move( MoveDirection.LEFT, 0.5 );
 		this.greenCone.move( MoveDirection.LEFT, 1.0 );
 		this.blueCone.move( MoveDirection.LEFT, 1.5 );
-		
+
 		this.armoire.move( MoveDirection.BACKWARD, 2.0 );
 
-		this.ogre.move( MoveDirection.LEFT, 1.5 );
+		this.ogre.move( MoveDirection.LEFT, 1.0 );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
 	private void performCustomSetup() {
 	}
-	
+
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
 		if( isActive ) {
 			if( activeCount == 1 ) {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
+				this.performInitializeEvents();
 			} else {
 				this.restoreStateAndEventListeners();
 			}
 		} else {
 			this.preserveStateAndEventListeners();
 		}
+	}
+
+	private void performInitializeEvents() {
+		Model[] list = {ogre, susan};//new LinkedList<Model>();
+//		list.add(ogre);
+//		list.add(susan);
+		LinkedList<Model> colListOne = new LinkedList<Model>();
+		colListOne.add(ogre);
+		LinkedList<Model> colListTwo = new LinkedList<Model>();
+		colListTwo.add(susan);
+		this.addCollisionListener(new CollisionListener() {
+			public void whenTheseCollide(CollisionEvent event) {
+				event.getModels().get(1).move(MoveDirection.UP, 1);
+				event.getModels().get(1).move(MoveDirection.DOWN, 1);
+			}
+		}, colListOne, colListTwo);
+		this.addKeyPressedListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				if(e.isKey(Key.A)){
+					armoire.move(MoveDirection.UP, 1);
+					armoire.move(MoveDirection.DOWN, 1);
+				}
+			}
+		}, EventPolicy.COMBINE);
+		this.addMouseButtonListener( new MouseButtonListener() {
+			public void mouseButtonClicked(MouseButtonEvent e) {
+				e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
+				e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);
+			}
+		}, EventPolicy.ENQUEUE, list);
 	}
 
 	public void chillInSkiChalet() {
@@ -228,11 +286,11 @@ class SnowScene extends Scene {
 		}
 	}
 }
-
 /**
  * @author Dennis Cosgrove
  */
 class RagsToRichesStory extends Program {
+
 	private final Camera camera = new Camera();
 	private final MyBiped susan = new MyBiped( 
 			new AdultPersonResource(
@@ -242,13 +300,13 @@ class RagsToRichesStory extends Program {
 					FemaleAdultHairBraids.BLACK,
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
-	) );
+					) );
 	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.Ogre.GREEN_OGRE );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 	public void playOutStory() {
-//		this.setActiveScene( this.desertScene );
-//		this.desertScene.turnBigRocksIntoLittleRocks();
+		//		this.setActiveScene( this.desertScene );
+		//		this.desertScene.turnBigRocksIntoLittleRocks();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}

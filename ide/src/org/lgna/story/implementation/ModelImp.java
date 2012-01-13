@@ -43,6 +43,11 @@
 
 package org.lgna.story.implementation;
 
+import java.awt.List;
+import java.util.LinkedList;
+
+import org.lgna.story.event.MouseButtonListener;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -421,6 +426,7 @@ public abstract class ModelImp extends TransformableImp {
 	}
 	
 	private edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator m_originator = createOriginator();
+	private LinkedList<MouseButtonListener> mouseButtonListeners = new LinkedList<MouseButtonListener>();
 	
 	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
 		edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
@@ -493,8 +499,10 @@ public abstract class ModelImp extends TransformableImp {
 //		sgBackFace.scale.setValue( scale );
 //	}
 	
-//	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
-//	}
-//	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
-//	}
+	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+		this.mouseButtonListeners.add(mouseButtonListener);
+	}
+	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+		this.mouseButtonListeners.remove(mouseButtonListener);
+	}
 }

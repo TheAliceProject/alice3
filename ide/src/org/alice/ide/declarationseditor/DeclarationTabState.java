@@ -43,6 +43,8 @@
 
 package org.alice.ide.declarationseditor;
 
+import org.alice.stageide.StageIDE;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -114,7 +116,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 				if( this.type != null ) {
 					this.addItem( DeclarationComposite.getInstance( this.type ) );
 					for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
-						if( method.isPublicAccess() ) {
+						if( method.isPublicAccess() || StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( method.getName() ) ) {
 							if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
 								this.addItem( DeclarationComposite.getInstance( method ) );
 							}

@@ -43,11 +43,14 @@
 
 package org.alice.ide;
 
+import org.lgna.project.ast.JavaMethod;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ApiConfigurationManager {
 	
+	public abstract java.util.List<JavaMethod> getAddEventListenerMethods();
 	//override to create user types if desired
 	public org.lgna.project.ast.AbstractType< ?,?,? > getTypeFor( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		return type;

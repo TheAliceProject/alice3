@@ -43,45 +43,27 @@
 
 package org.alice.stageide.croquet.models.cascade.adapters;
 
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.story.event.KeyListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class KeyAdapterFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.InstanceCreation > {
+public class KeyAdapterFillIn extends LambdaExpressionFillIn {
 	private static class SingletonHolder {
 		private static KeyAdapterFillIn instance = new KeyAdapterFillIn();
 	}
-
 	public static KeyAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.project.ast.InstanceCreation transientValue;
+	
 	private KeyAdapterFillIn() {
 		super( java.util.UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ) );
 		this.transientValue = this.createValue();
 	}
+	
 	@Override
-	public boolean isAutomaticallySelectedWhenSoleOption() {
-		return true;
-	}
-	private org.lgna.project.ast.InstanceCreation createValue() { 
-		org.lgna.project.ast.UserParameter[] parameters = new org.lgna.project.ast.UserParameter[] { 
-				new org.lgna.project.ast.UserParameter( "e", org.lgna.story.event.KeyEvent.class ) 
-		};
-		org.lgna.project.ast.BlockStatement body = new org.lgna.project.ast.BlockStatement();
-		org.lgna.project.ast.UserMethod method = new org.lgna.project.ast.UserMethod( "keyPressed", Void.TYPE, parameters, body );
-		method.isSignatureLocked.setValue( true );
-		org.lgna.project.ast.AnonymousUserType type = new org.lgna.project.ast.AnonymousUserType();
-		type.superType.setValue( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.KeyListener.class ) );
-		type.methods.add( method );
-		org.lgna.project.ast.AnonymousUserConstructor constructor = org.lgna.project.ast.AnonymousUserConstructor.get( type );
-		return new org.lgna.project.ast.InstanceCreation( constructor );
-	}
-	@Override
-	public org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation,Void > step ) {
-		return this.createValue();
-	}
-	@Override
-	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation,Void > step ) {
-		return this.transientValue;
+	protected org.lgna.project.ast.LambdaExpression createValue() { 
+		return AstUtilities.createLambdaExpression(KeyListener.class);
 	}
 }

@@ -43,11 +43,23 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import java.util.List;
+
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.ValueTemplate;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.story.event.CollisionListener;
+import org.lgna.story.event.EventPolicy;
+import org.lgna.story.event.MouseButtonListener;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
+
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Scene extends Entity {
+public abstract class Scene extends Entity{
 	private final org.lgna.story.implementation.SceneImp implementation = new org.lgna.story.implementation.SceneImp( this );
 
 	@Override
@@ -55,19 +67,13 @@ public abstract class Scene extends Entity {
 		return this.implementation;
 	}
 
-	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
-		this.implementation.addSceneActivationListener( sceneActivationListener );
-	}
-	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
-		this.implementation.removeSceneActivationListener( sceneActivationListener );
-	}
-	
 	private void changeActiveStatus( Program program, boolean isActive, int activeCount ) {
 		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
 		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 		this.handleActiveChanged( isActive, activeCount );
 		this.implementation.fireSceneActivationListeners();
 		if( isActive ) {
+			
 			this.implementation.addCamerasTo( program.getImplementation() );
 		} else {
 			this.implementation.removeCamerasFrom( program.getImplementation() );
@@ -133,4 +139,44 @@ public abstract class Scene extends Entity {
 		this.getImplementation().fogDensity.animateValue( density.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.implementation.addSceneActivationListener( sceneActivationListener );
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.implementation.removeSceneActivationListener( sceneActivationListener );
+	}
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, EventPolicy eventPolicy, Model[] targets) {
+		this.getImplementation().getEventManager().addMouseButtonListener( mouseButtonListener, eventPolicy, Collections.newArrayList(targets) );
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+		this.getImplementation().getEventManager().removeMouseButtonListener( mouseButtonListener );
+	}
+	public void addCollisionListener( CollisionListener collisionListener, List<Model> groupOne, List<Model> groupTwo){
+		this.getImplementation().getEventManager().addCollisionListener(collisionListener, groupOne, groupTwo);
+	}
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	public void addKeyPressedListener( org.lgna.story.event.KeyListener keyListener,  EventPolicy policy) {
+		this.implementation.getEventManager().addKeyListener( keyListener, policy );
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	public void removeKeyListener( org.lgna.story.event.KeyListener keyListener ) {
+		this.implementation.getEventManager().removeKeyListener( keyListener );
+	}
+
+//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+//	protected void addListener(AbstractEventHandler event){
+//		this.getImplementation().addListener(event);
+//	}
+//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+//	protected void silenceAllListeners(){
+//		this.getImplementation().silenceAllListeners();
+//	}
+//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+//	protected void restoreAllListeners(){
+//		this.getImplementation().restoreAllListeners();
+//	}
 }
