@@ -76,8 +76,6 @@ import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
-
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
 		super( resource );

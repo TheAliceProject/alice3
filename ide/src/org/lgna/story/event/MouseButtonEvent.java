@@ -43,7 +43,6 @@
 package org.lgna.story.event;
 
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Visual;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
