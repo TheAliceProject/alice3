@@ -14,8 +14,7 @@ public class GenericModelAdapter< E extends Model > extends edu.cmu.cs.dennisc.l
 	}
 	@Override
 	public boolean isAlphaBlended() {
-		//todo
-		return false;
+		return m_element.isAlphaBlended();
 	}
 	@Override
 	protected void pickGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, boolean isSubElementRequired ) {

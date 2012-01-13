@@ -90,9 +90,9 @@ public class Quadruped extends JointedModel implements Articulable {
 	public Joint getMouth() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.MOUTH);
 	}
-	public Joint getJawTip() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.JAW_TIP);
-	}
+//	public Joint getJawTip() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.JAW_TIP);
+//	}
 	public Joint getRightEar() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.RIGHT_EAR);
 	}

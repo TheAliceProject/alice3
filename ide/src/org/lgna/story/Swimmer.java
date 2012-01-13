@@ -26,9 +26,9 @@ public class Swimmer extends JointedModel {
 	public Joint getMouth() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.MOUTH);
 	}
-	public Joint getLowerLip() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LOWER_LIP);
-	}
+//	public Joint getLowerLip() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LOWER_LIP);
+//	}
 	public Joint getLeftEye() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_EYE);
 	}
@@ -38,30 +38,30 @@ public class Swimmer extends JointedModel {
 	public Joint getLeftPectoralFin() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_PECTORAL_FIN);
 	}
-	public Joint getLeftPectoralFinTip() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_PECTORAL_FIN_TIP);
-	}
+//	public Joint getLeftPectoralFinTip() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_PECTORAL_FIN_TIP);
+//	}
 	public Joint getRightPectoralFin() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_PECTORAL_FIN);
 	}
-	public Joint getRightPectoralFinTip() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_PECTORAL_FIN_TIP);
-	}
-	public Joint getPelvisUpperBody() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.PELVIS_UPPER_BODY);
+//	public Joint getRightPectoralFinTip() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_PECTORAL_FIN_TIP);
+//	}
+	public Joint getSpineBase() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_1);
 	}
 	public Joint getSpineMiddle() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_MIDDLE);
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_2);
 	}
-	public Joint getSpineUpper() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_UPPER);
+	public Joint getTail() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.TAIL);
 	}
-	public Joint getTopTailFin() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.TOP_TAIL_FIN);
-	}
-	public Joint getBottomTailFin() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.BOTTOM_TAIL_FIN);
-	}
+//	public Joint getTopTailFin() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.TOP_TAIL_FIN);
+//	}
+//	public Joint getBottomTailFin() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.BOTTOM_TAIL_FIN);
+//	}
 }
 	
 

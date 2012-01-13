@@ -205,7 +205,14 @@ public class StorytellingResources {
 			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find the Alice gallery resources." );
 		}
 		else {
-			setAliceResourceDir( resourcePaths.get( 0 ).getParent() );
+			File galleryFile = resourcePaths.get( 0 );
+			if (galleryFile.isDirectory()) {
+				setAliceResourceDir( galleryFile.getAbsolutePath() );
+			}
+			else
+			{
+				setAliceResourceDir( galleryFile.getParentFile().getAbsolutePath() );
+			}
 		}
 	}
 	
@@ -233,7 +240,14 @@ public class StorytellingResources {
 		if( simsPathsLoaded.size() == 0 ) {
 			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find The Sims (TM) 2 Art Assets." );
 		} else {
-			setNebulousResourceDir( simsPathsLoaded.get( 0 ).getParent() );
+			File galleryFile = simsPathsLoaded.get( 0 );
+			if (galleryFile.isDirectory()) {
+				setNebulousResourceDir( galleryFile.getAbsolutePath() );
+			}
+			else
+			{
+				setNebulousResourceDir( galleryFile.getParentFile().getAbsolutePath() );
+			}
 		}
 	}
 
