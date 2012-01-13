@@ -55,6 +55,9 @@ public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel< org.
 	private OtherTypesMenuModel() {
 		super( java.util.UUID.fromString( "909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0" ) );
 	}
+	public boolean isEmpty() {
+		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes().size() == 0;
+	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
 		java.util.List< org.lgna.project.ast.JavaType > otherTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes();
