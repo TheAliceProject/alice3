@@ -43,7 +43,6 @@
 
 package org.alice.stageide;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 import org.lgna.project.ast.JavaMethod;

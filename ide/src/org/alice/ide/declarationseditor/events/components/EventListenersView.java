@@ -8,7 +8,6 @@ import org.alice.ide.codeeditor.CodeEditor;
 import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;
 import org.alice.ide.declarationseditor.events.AddEventListenerCascade;
-import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.PopupButton;
 import org.lgna.project.ast.AbstractCode;
 

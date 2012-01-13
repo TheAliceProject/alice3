@@ -43,7 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import java.awt.List;
 import java.util.LinkedList;
 
 import org.lgna.story.event.MouseButtonListener;
