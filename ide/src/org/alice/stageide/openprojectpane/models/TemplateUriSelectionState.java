@@ -47,26 +47,47 @@ package org.alice.stageide.openprojectpane.models;
  * @author Dennis Cosgrove
  */
 public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.models.UriSelectionState {
-	public static org.lgna.story.Ground.SurfaceAppearance getSurfaceAppearance( java.net.URI uri ) {
-		return org.lgna.story.Ground.SurfaceAppearance.valueOf( uri.getFragment() );
+	public static Template getSurfaceAppearance( java.net.URI uri ) {
+		return Template.valueOf( uri.getFragment() );
 	}
 	public static final String SCHEME = "gen";
-	private static enum Template {
-		GRASS,
-		WATER,
-		OCEAN_FLOOR,
-		MOON,
-		SNOW,
-		SAND,
-		DIRT;
-//		private org.lookingglassandalice.storytelling.Ground.Appearance getAppearance() {
-//			for( java.lang.reflect.Field fld : this.getClass().getFields() ) {
-//				if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null ) == this ) {
-//					return org.lookingglassandalice.storytelling.Ground.Appearance.valueOf( fld.getName() );
-//				}
-//			}
-//			return null;
+	public static enum Template {
+		GRASS( org.lgna.story.Ground.SurfaceAppearance.GRASS ),
+		MOON( org.lgna.story.Ground.SurfaceAppearance.MOON, "BLACK" ),
+		SNOW( org.lgna.story.Ground.SurfaceAppearance.SNOW ),
+		SEA_SURFACE( org.lgna.story.Ground.SurfaceAppearance.WATER ),
+		SEA_FLOOR( org.lgna.story.Ground.SurfaceAppearance.OCEAN_FLOOR, "DARK_BLUE", 0.4 ),
+		LAGOON_FLOOR( org.lgna.story.Ground.SurfaceAppearance.SAND, "DARK_BLUE", 0.4 ),
+		DESERT( org.lgna.story.Ground.SurfaceAppearance.SAND ),
+		DIRT( org.lgna.story.Ground.SurfaceAppearance.DIRT );
+		private final org.lgna.story.Ground.SurfaceAppearance surfaceAppearance;
+		//private final org.lgna.story.Color atmosphereColor;
+		private final String atmospherColorConstantName;
+		private final double fogDensity;
+		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, String atmospherColorConstantName/*org.lgna.story.Color atmosphereColor*/, double fogDensity ) {
+			this.surfaceAppearance = surfaceAppearance;
+			//this.atmosphereColor = atmosphereColor;
+			this.atmospherColorConstantName = atmospherColorConstantName;
+			this.fogDensity = fogDensity;
+		}
+		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, String atmospherColorConstantName/*org.lgna.story.Color atmosphereColor*/ ) {
+			this( surfaceAppearance, atmospherColorConstantName, Double.NaN );
+		}
+		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance ) {
+			this( surfaceAppearance, null );
+		}
+		public org.lgna.story.Ground.SurfaceAppearance getSurfaceAppearance() {
+			return this.surfaceAppearance;
+		}
+//		public org.lgna.story.Color getAtmosphereColor() {
+//			return this.atmosphereColor;
 //		}
+		public String getAtmospherColorConstantName() {
+			return this.atmospherColorConstantName;
+		}
+		public double getFogDensity() {
+			return this.fogDensity;
+		}
 		public java.net.URI getUri() {
 			try {
 				//todo: investigate
