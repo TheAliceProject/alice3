@@ -43,44 +43,25 @@
 
 package org.alice.stageide.croquet.models.cascade.adapters;
 
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.story.event.MouseButtonListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MouseButtonAdapterFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.InstanceCreation > {
+public class MouseButtonAdapterFillIn extends LambdaExpressionFillIn {
 	private static class SingletonHolder {
 		private static MouseButtonAdapterFillIn instance = new MouseButtonAdapterFillIn();
 	}
 	public static MouseButtonAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.project.ast.InstanceCreation transientValue;
 	private MouseButtonAdapterFillIn() {
 		super( java.util.UUID.fromString( "3c9038a4-bb71-4e03-a33a-d17434b13f89" ) );
 		this.transientValue = this.createValue();
 	}
 	@Override
-	public boolean isAutomaticallySelectedWhenSoleOption() {
-		return true;
-	}
-	private org.lgna.project.ast.InstanceCreation createValue() { 
-		org.lgna.project.ast.UserParameter[] parameters = new org.lgna.project.ast.UserParameter[] { 
-				new org.lgna.project.ast.UserParameter( "e", org.lgna.story.event.MouseButtonEvent.class ) 
-		};
-		org.lgna.project.ast.BlockStatement body = new org.lgna.project.ast.BlockStatement();
-		org.lgna.project.ast.UserMethod method = new org.lgna.project.ast.UserMethod( "mouseButtonClicked", Void.TYPE, parameters, body );
-		method.isSignatureLocked.setValue( true );
-		org.lgna.project.ast.AnonymousUserType type = new org.lgna.project.ast.AnonymousUserType();
-		type.superType.setValue( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.MouseButtonListener.class ) );
-		type.methods.add( method );
-		org.lgna.project.ast.AnonymousUserConstructor constructor = org.lgna.project.ast.AnonymousUserConstructor.get( type );
-		return new org.lgna.project.ast.InstanceCreation( constructor );
-	}
-	@Override
-	public org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation,Void > step ) {
-		return this.createValue();
-	}
-	@Override
-	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation,Void > step ) {
-		return this.transientValue;
+	protected org.lgna.project.ast.LambdaExpression createValue() { 
+		return AstUtilities.createLambdaExpression(MouseButtonListener.class);
 	}
 }

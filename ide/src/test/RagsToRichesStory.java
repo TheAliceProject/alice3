@@ -228,9 +228,9 @@ class SnowScene extends Scene{
 	}
 
 	private void performInitializeEvents() {
-		LinkedList<Model> list = new LinkedList<Model>();
-		list.add(ogre);
-		list.add(susan);
+		Model[] list = {ogre, susan};//new LinkedList<Model>();
+//		list.add(ogre);
+//		list.add(susan);
 		LinkedList<Model> colListOne = new LinkedList<Model>();
 		colListOne.add(ogre);
 		LinkedList<Model> colListTwo = new LinkedList<Model>();

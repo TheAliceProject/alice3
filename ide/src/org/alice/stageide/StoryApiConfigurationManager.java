@@ -43,9 +43,11 @@
 
 package org.alice.stageide;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import org.lgna.project.ast.JavaMethod;
+import org.lgna.story.Model;
 import org.lgna.story.Scene;
 import org.lgna.story.event.EventPolicy;
 import org.lgna.story.event.KeyListener;
@@ -68,8 +70,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 	
 	private static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addSceneActivationListener", SceneActivationListener.class );
-	private static final JavaMethod ADD_MOUSE_BUTTON_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseButtonListener.class, EventPolicy.class );
-	private static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addKeyListener", KeyListener.class );
+	private static final JavaMethod ADD_MOUSE_BUTTON_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseButtonListener.class, EventPolicy.class, Model[].class );
+	private static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addKeyPressedListener", KeyListener.class, EventPolicy.class );
 	
 	@Override
 	public List<JavaMethod> getAddEventListenerMethods() {

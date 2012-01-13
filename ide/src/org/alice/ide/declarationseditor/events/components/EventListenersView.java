@@ -9,13 +9,16 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;
 import org.alice.ide.declarationseditor.events.AddEventListenerCascade;
 import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.PopupButton;
 import org.lgna.project.ast.AbstractCode;
 
 public class EventListenersView extends DeclarationView {
 
 	public EventListenersView(DeclarationComposite composite) {
 		super(composite);
-		this.addComponent( AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton(), Constraint.PAGE_START);
+		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+
+		this.addComponent( button, Constraint.PAGE_START);
 		this.addComponent( new CodeEditor((AbstractCode)composite.getDeclaration()), Constraint.CENTER );
 	}
 

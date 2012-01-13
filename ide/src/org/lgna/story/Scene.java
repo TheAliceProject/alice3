@@ -53,6 +53,8 @@ import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.EventPolicy;
 import org.lgna.story.event.MouseButtonListener;
 
+import edu.cmu.cs.dennisc.java.util.Collections;
+
 
 /**
  * @author Dennis Cosgrove
@@ -146,8 +148,8 @@ public abstract class Scene extends Entity{
 		this.implementation.removeSceneActivationListener( sceneActivationListener );
 	}
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
-	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, EventPolicy eventPolicy, List<Model> targets) {
-		this.getImplementation().getEventManager().addMouseButtonListener( mouseButtonListener, eventPolicy, targets );
+	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, EventPolicy eventPolicy, Model[] targets) {
+		this.getImplementation().getEventManager().addMouseButtonListener( mouseButtonListener, eventPolicy, Collections.newArrayList(targets) );
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
 	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
