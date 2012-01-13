@@ -115,6 +115,10 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		}
 	}
 	@Override
+	public org.alice.ide.codeeditor.CodeEditor getCodeDropReceptor() {
+		return null;
+	}
+	@Override
 	public boolean isPrintSupported() {
 		return false;
 	}
