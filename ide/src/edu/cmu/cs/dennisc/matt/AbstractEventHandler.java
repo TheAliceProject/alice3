@@ -1,36 +1,38 @@
 ﻿package edu.cmu.cs.dennisc.matt;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Map;
 
-import org.lgna.story.Model;
+import org.lgna.story.event.AbstractEvent;
+import org.lgna.story.event.EventPolicy;
 
-public abstract class AbstractEventHandler {
+import edu.cmu.cs.dennisc.java.util.Collections;
+
+public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 	
 	protected boolean shouldFire = true;
 	protected Integer count = 0;
-	protected HashMap<Object, Boolean> isFiringMap = new HashMap<Object, Boolean>();
-	protected HashMap<Object, EventPolicy> policyMap = new HashMap<Object, EventPolicy>();
+	protected Map<Object, Boolean> isFiringMap = Collections.newHashMap();
+	protected Map<Object, EventPolicy> policyMap = Collections.newHashMap();
 
-	protected void fireEvent(final Object event, final LinkedList<Model> targets){
+	protected void fireEvent(final L listener, final E event){
 		if(shouldFire){
 			Thread thread = new Thread(){
 				@Override
 				public void run(){
-					fire(event, targets);
-					if(policyMap.get(event).equals(EventPolicy.ENQUEUE)){
-						fireDequeue(event, targets);
+					fire(listener, event);
+					if(policyMap.get(listener).equals(EventPolicy.ENQUEUE)){
+						fireDequeue(listener, event);
 					}
-					isFiringMap.put(event, false);
+					isFiringMap.put(listener, false);
 				}
 			};
-			if(isFiringMap.get(event).equals(false)){
-				isFiringMap.put(event, true);
+			if(isFiringMap.get(listener).equals(false)){
+				isFiringMap.put(listener, true);
 				thread.start();
 				return;
-			}else if(policyMap.get(event).equals(EventPolicy.COMBINE)){
+			}else if(policyMap.get(listener).equals(EventPolicy.COMBINE)){
 				thread.start();
-			}else if(policyMap.get(event).equals(EventPolicy.ENQUEUE)){
+			}else if(policyMap.get(listener).equals(EventPolicy.ENQUEUE)){
 				enqueue();
 			}
 		}
@@ -41,7 +43,7 @@ public abstract class AbstractEventHandler {
 		}
 	}
 
-	protected void fireDequeue(Object event, LinkedList<Model> targets) {
+	protected void fireDequeue(L listener, E event) {
 		int subCount;
 		synchronized (count) {
 			if(count == 0){
@@ -51,18 +53,18 @@ public abstract class AbstractEventHandler {
 			count = 0;
 		}
 		while(subCount > 0){
-			fire(event, targets);
+			fire(listener, event);
 			--subCount;
 		}
-		fireDequeue(event, targets);
+		fireDequeue(listener, event);
 	}
 
-	protected abstract void fire(Object event, LinkedList<Model> targets);
+	protected abstract void fire(L listener, E event);
 
-	public void silenceListeners(){
+	public final void silenceListeners(){
 		shouldFire = false;
 	}
-	public void restoreListeners(){
+	public final void restoreListeners(){
 		shouldFire = true;
 	}
 

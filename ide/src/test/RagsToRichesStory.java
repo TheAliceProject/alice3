@@ -61,6 +61,11 @@ import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
+import org.lgna.story.event.CollisionEvent;
+import org.lgna.story.event.CollisionListener;
+import org.lgna.story.event.EventPolicy;
+import org.lgna.story.event.KeyEvent;
+import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonEvent;
 import org.lgna.story.event.MouseButtonListener;
 import org.lgna.story.resources.BipedResource;
@@ -72,10 +77,6 @@ import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.matt.CollisionListener;
-import edu.cmu.cs.dennisc.matt.EventPolicy;
-import edu.cmu.cs.dennisc.matt.KeyPressedListener;
-import edu.cmu.cs.dennisc.matt.MouseClickedListener;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -235,29 +236,23 @@ class SnowScene extends Scene{
 		LinkedList<Model> colListTwo = new LinkedList<Model>();
 		colListTwo.add(susan);
 		this.addCollisionListener(new CollisionListener() {
-
-			@Override
-			public void whenTheseCollide(LinkedList<Model> targets) {
-				targets.get(1).move(MoveDirection.UP, 1);
-				targets.get(1).move(MoveDirection.DOWN, 1);
+			public void whenTheseCollide(CollisionEvent event) {
+				event.getModels().get(1).move(MoveDirection.UP, 1);
+				event.getModels().get(1).move(MoveDirection.DOWN, 1);
 			}
 		}, colListOne, colListTwo);
-		this.addKeyPressedListener(new KeyPressedListener() {
-
-			@Override
-			public void keyPressed(Key key) {
-				if(key.equals(Key.A)){
+		this.addKeyPressedListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				if(e.isKey(Key.A)){
 					armoire.move(MoveDirection.UP, 1);
 					armoire.move(MoveDirection.DOWN, 1);
 				}
 			}
 		}, EventPolicy.COMBINE);
-		this.addMouseButtonListener(new MouseClickedListener() {
-
-			@Override
-			public void mouseButtonClicked(Model target) {
-				target.move(MoveDirection.RIGHT, 1);
-				target.move(MoveDirection.LEFT, 1);
+		this.addMouseButtonListener( new MouseButtonListener() {
+			public void mouseButtonClicked(MouseButtonEvent e) {
+				e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
+				e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);
 			}
 		}, EventPolicy.ENQUEUE, list);
 	}

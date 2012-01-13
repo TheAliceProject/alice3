@@ -1,4 +1,4 @@
-package edu.cmu.cs.dennisc.matt;
+package org.lgna.story.event;
 
 public enum EventPolicy {
 	

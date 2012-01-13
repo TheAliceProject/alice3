@@ -1,10 +1,6 @@
-﻿package edu.cmu.cs.dennisc.matt;
+﻿package org.lgna.story.event;
 
-import java.util.LinkedList;
-
-import org.lgna.story.Model;
-
-public abstract class CollisionListener {
+public interface CollisionListener {
 	
 //	LinkedList<Model> groupOne;
 //	LinkedList<Model> groupTwo;
@@ -17,7 +13,7 @@ public abstract class CollisionListener {
 //		whenTheseCollide(targets);
 //	}
 //	
-	public abstract void whenTheseCollide(LinkedList<Model> targets);
+	public void whenTheseCollide( CollisionEvent event );
 	
 //	private static LinkedList<Model> combine(Model observeForCollision,
 //			Model withThis) {

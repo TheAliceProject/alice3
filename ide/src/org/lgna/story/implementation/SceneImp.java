@@ -43,23 +43,7 @@
 
 package org.lgna.story.implementation;
 
-import java.awt.event.KeyEvent;
-import java.util.LinkedList;
-
-import org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit;
-import org.lgna.project.ProgramClosedException;
-import org.lgna.story.Model;
-import org.lgna.story.event.KeyListener;
-import org.lgna.story.event.MouseButtonListener;
-
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.matt.AbstractEventHandler;
-import edu.cmu.cs.dennisc.matt.CollisionListener;
 import edu.cmu.cs.dennisc.matt.EventManager;
-import edu.cmu.cs.dennisc.matt.EventPolicy;
-import edu.cmu.cs.dennisc.matt.KeyPressedListener;
-import edu.cmu.cs.dennisc.matt.MouseClickedListener;
 
 /**
  * @author Dennis Cosgrove
@@ -82,91 +66,6 @@ public class SceneImp extends EntityImp {
 		}
 	}
 
-	private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
-	private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
-	private EventManager eventManager = new EventManager();
-	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-			SceneImp.this.handleMouseQuoteClickedUnquote( e, quoteClickCountUnquote );
-		}
-	};
-
-	
-	public void addMouseButtonListener(MouseButtonListener mouseButtonListener){
-		this.mouseButtonListeners.add( mouseButtonListener);
-	}
-	public void removeMouseButtonListener(MouseButtonListener mouseButtonListener){
-		this.mouseButtonListeners.remove( mouseButtonListener );
-	}
-	public void addKeyListener(KeyListener keyListener){
-		this.keyListeners.add( keyListener);
-	}
-	public void removeKeyListener(KeyListener keyListener){
-		this.keyListeners.remove( keyListener );
-	}
-	
-	private boolean isMouseButtonListenerInExistence() {
-//		if( this.mouseButtonListeners.size() > 0 ) {
-//			return true;
-//		} else {
-//			for( Transformable component : this.getComponents() ) {
-//				if( component instanceof Model ) {
-//					Model model = (Model)component;
-//					if( model.getMouseButtonListeners().size() > 0 ) {
-//						return true;
-//					}
-//				}
-//			}
-//			return false;
-//		}
-		return true;
-	}
-	private void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-		if( this.isMouseButtonListenerInExistence() ) {
-			final org.lgna.story.event.MouseButtonEvent mbe = new org.lgna.story.event.MouseButtonEvent( e, this.getAbstraction() );
-			Model model = mbe.getModelAtMouseLocation();
-			//todo
-			if( model != null ) {
-				for( final org.lgna.story.event.MouseButtonListener mouseButtonListener : this.mouseButtonListeners ) {
-					Logger.todo( "use parent tracking thread" );
-					new Thread() {
-						@Override
-						public void run() {
-							ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
-								public void run() {
-									mouseButtonListener.mouseButtonClicked( mbe );
-								}
-							} );
-						}
-					}.start();
-				}
-//				for( final org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener : model.getMouseButtonListeners() ) {
-//					new Thread() {
-//						@Override
-//						public void run() {
-//							edu.cmu.cs.dennisc.alice.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
-//								public void run() {
-//									mouseButtonListener.mouseButtonClicked( mbe );
-//								}
-//							} );
-//						}
-//					}.start();
-//				}
-			}
-		}
-	}
-	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
-		public void keyPressed(java.awt.event.KeyEvent e) {
-			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent(e);
-			SceneImp.this.handleKeyPressed( event );
-		}
-		public void keyReleased(java.awt.event.KeyEvent e) {
-		}
-		public void keyTyped(java.awt.event.KeyEvent e) {
-		}
-	};
-
 	private final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = new edu.cmu.cs.dennisc.scenegraph.Scene();
 	private final edu.cmu.cs.dennisc.scenegraph.Background sgBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 	private final edu.cmu.cs.dennisc.scenegraph.AmbientLight sgAmbientLight = new edu.cmu.cs.dennisc.scenegraph.AmbientLight(); 
@@ -178,7 +77,12 @@ public class SceneImp extends EntityImp {
 	private ProgramImp program;
 	private final org.lgna.story.Scene abstraction;
 	private float fogDensityValue = 0;
+	private final EventManager eventManager;
 	
+	public EventManager getEventManager() {
+		return this.eventManager;
+	}
+
 	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this ) {
 		@Override
 		public org.lgna.story.Color getValue() {
@@ -230,19 +134,9 @@ public class SceneImp extends EntityImp {
 		this.sgScene.addComponent( this.sgAmbientLight );
 		this.setFogDensity(0);
 		this.putInstance( this.sgScene );
-		addMouseButtonListener(eventManager);
-		addKeyPressedListener(eventManager);
+		this.eventManager = new EventManager( this );
 	}
 	
-	private void addKeyPressedListener(KeyListener listener) {
-		this.keyListeners.add(listener);
-	}
-
-	protected void handleKeyPressed(org.lgna.story.event.KeyEvent event) {
-		for(KeyListener listener: keyListeners){
-			listener.keyPressed(event);
-		}
-	}
 
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
 		this.sceneActivationListeners.add( sceneActivationListener );
@@ -307,27 +201,20 @@ public class SceneImp extends EntityImp {
 	public void setProgram( ProgramImp program ) {
 		if( this.program != program ) {
 			if( program != null ) {
-				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = program.getOnscreenLookingGlass();
-				java.awt.Component component = lg.getAWTComponent();
-				component.removeMouseListener( this.mouseAdapter );
-				component.removeMouseMotionListener( this.mouseAdapter );
-//				component.removeKeyListener( this.keyAdapter );
+				this.eventManager.removeListenersFrom( program.getOnscreenLookingGlass() );
 			}
 			//handleOwnerChange( null );
 			this.program = program;
 //			handleOwnerChange( program );
 			if( program != null ) {
-				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = program.getOnscreenLookingGlass();
-				java.awt.Component component = lg.getAWTComponent();
-				component.addMouseListener( this.mouseAdapter );
-				component.addMouseMotionListener( this.mouseAdapter );
-				component.addKeyListener( this.keyAdapter );
+				this.eventManager.addListenersTo( program.getOnscreenLookingGlass() );
 			}
 		}
 		this.program = program;
 	}
 
 	public void preserveStateAndEventListeners() {
+		this.eventManager.silenceAllListeners();
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}
@@ -336,6 +223,7 @@ public class SceneImp extends EntityImp {
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}
+		this.eventManager.restoreAllListeners();
 	}
 	public void addCamerasTo( ProgramImp program ) {
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
@@ -385,28 +273,28 @@ public class SceneImp extends EntityImp {
 			} );
 		}
 	}
-
-	public void addListener(AbstractEventHandler event) {
-		eventManager.addListener(event);
-	}
-
-	public void silenceAllListeners() {
-		eventManager.silenceAllListeners();
-	}
-
-	public void restoreAllListeners() {
-		eventManager.restoreAllListeners();
-	}
-	public void addMouseButtonListener(MouseClickedListener mouseButtonListener,
-			EventPolicy eventPolicy, LinkedList<Model> targets) {
-		eventManager.addMouseButtonListener(mouseButtonListener, eventPolicy, targets);
-	}
-	public void addKeyPressedListener(KeyPressedListener keyPressedListener,
-			EventPolicy eventPolicy) {
-		eventManager.addKeyPressedListener(keyPressedListener, eventPolicy);
-	}
-	public void addCollisionListener(CollisionListener collisionListener,
-			LinkedList<Model> groupOne, LinkedList<Model> groupTwo) {
-		eventManager.addCollisionListener(collisionListener, groupOne, groupTwo);
-	}
+//
+//	public void addListener(AbstractEventHandler event) {
+//		eventManager.addListener(event);
+//	}
+//
+//	public void silenceAllListeners() {
+//		eventManager.silenceAllListeners();
+//	}
+//
+//	public void restoreAllListeners() {
+//		eventManager.restoreAllListeners();
+//	}
+//	public void addMouseButtonListener(MouseClickedListener mouseButtonListener,
+//			EventPolicy eventPolicy, LinkedList<Model> targets) {
+//		eventManager.addMouseButtonListener(mouseButtonListener, eventPolicy, targets);
+//	}
+//	public void addKeyPressedListener(KeyPressedListener keyPressedListener,
+//			EventPolicy eventPolicy) {
+//		eventManager.addKeyPressedListener(keyPressedListener, eventPolicy);
+//	}
+//	public void addCollisionListener(CollisionListener collisionListener,
+//			LinkedList<Model> groupOne, LinkedList<Model> groupTwo) {
+//		eventManager.addCollisionListener(collisionListener, groupOne, groupTwo);
+//	}
 }

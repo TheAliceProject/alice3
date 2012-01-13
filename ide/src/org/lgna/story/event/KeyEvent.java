@@ -45,10 +45,9 @@ package org.lgna.story.event;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyEvent extends edu.cmu.cs.dennisc.pattern.event.Event< java.awt.Component > {
+public class KeyEvent extends AbstractEvent {
 	private java.awt.event.KeyEvent e;
 	public KeyEvent( java.awt.event.KeyEvent e ) {
-		super( e.getComponent() );
 		this.e = e;
 	}
 	

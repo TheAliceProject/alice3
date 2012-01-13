@@ -47,12 +47,12 @@ import java.util.List;
 
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.story.Scene;
+import org.lgna.story.event.EventPolicy;
 import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonListener;
 import org.lgna.story.event.SceneActivationListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.matt.EventPolicy;
 
 /**
  * @author Dennis Cosgrove
