@@ -53,11 +53,12 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 	public static final String SCHEME = "gen";
 	private static enum Template {
 		GRASS,
-		DIRT,
-		SAND,
-		SNOW,
 		WATER,
-		MOON;
+		OCEAN_FLOOR,
+		MOON,
+		SNOW,
+		SAND,
+		DIRT;
 //		private org.lookingglassandalice.storytelling.Ground.Appearance getAppearance() {
 //			for( java.lang.reflect.Field fld : this.getClass().getFields() ) {
 //				if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null ) == this ) {

@@ -165,7 +165,7 @@ public class BootstrapUtilties {
 			org.lgna.project.ast.JavaMethod setAtmosphereColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, org.lgna.story.SetAtmosphereColor.Detail[].class );
 			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAtmosphereColorMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( org.lgna.story.Color.class, "BLACK" ) ) );
 		}
-		else if ( appearance == org.lgna.story.Ground.SurfaceAppearance.SAND ) {
+		else if ( appearance == org.lgna.story.Ground.SurfaceAppearance.OCEAN_FLOOR ) {
 			org.lgna.project.ast.JavaMethod setAtmosphereColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, org.lgna.story.SetAtmosphereColor.Detail[].class );
 			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAtmosphereColorMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( org.lgna.story.Color.class, "DARK_BLUE" ) ) );
 			org.lgna.project.ast.JavaMethod setFogDensityMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFogDensity", Number.class, org.lgna.story.SetFogDensity.Detail[].class );

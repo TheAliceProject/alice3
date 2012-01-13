@@ -46,7 +46,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.PickHint;
 import org.alice.interact.PickUtilities;

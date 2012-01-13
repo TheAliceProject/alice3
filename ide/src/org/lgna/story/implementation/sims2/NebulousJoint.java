@@ -43,7 +43,6 @@
 
 package org.lgna.story.implementation.sims2;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 
 /**
