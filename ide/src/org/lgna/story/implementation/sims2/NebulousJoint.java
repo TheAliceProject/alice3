@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation.sims2;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 
 /**
@@ -141,6 +142,10 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
         }
         return super.getTransformation(rv, asSeenBy);
     }
+    
+    public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedBoundingBox(  ) {
+		return this.nebModel.getAxisAlignedBoundingBoxForJoint(this.jointId);
+	}
 	
 //	
 //	@Override

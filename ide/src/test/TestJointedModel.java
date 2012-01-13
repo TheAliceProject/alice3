@@ -147,7 +147,7 @@ class TestJointedModel extends Program {
 	) );
 	private final MyBiped ogre = new MyBiped(org.lgna.story.resources.biped.Ogre.BROWN_OGRE);
 	private final ObjectMarker marker = new ObjectMarker();
-	private final TestScene testScene = new TestScene( camera, ogre, marker );
+	private final TestScene testScene = new TestScene( camera, susan, marker );
 	
 	private int previousX = -1;
 	private int previousY = -1;

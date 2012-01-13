@@ -66,6 +66,13 @@ public class CumulativeBound {
 
 	public void add( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		edu.cmu.cs.dennisc.math.AxisAlignedBox box = sgVisual.getAxisAlignedMinimumBoundingBox();
+		this.addBoundingBox(box, trans);
+	}
+	public void addOrigin( edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		addPoint( edu.cmu.cs.dennisc.math.Point3.createZero(), trans );
+	}
+	
+	public void addBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox box, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		if( box.isNaN() ) {
 			//pass
 		} else {
@@ -74,9 +81,6 @@ public class CumulativeBound {
 				addPoint( hexahedron.getPointAt( i ), trans );
 			}
 		}
-	}
-	public void addOrigin( edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
-		addPoint( edu.cmu.cs.dennisc.math.Point3.createZero(), trans );
 	}
 
 	

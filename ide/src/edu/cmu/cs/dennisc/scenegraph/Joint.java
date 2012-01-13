@@ -127,11 +127,6 @@ public class Joint extends Transformable
         {
             return null;
         }
-        
-        if (c instanceof AbstractTransformable)
-        {
-            transform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable)c).accessLocalTransformation());
-        }
         if (c instanceof Joint)
         {
             Joint j = (Joint)c;
@@ -141,6 +136,11 @@ public class Joint extends Transformable
             Point3 transformedMax = transform.createTransformed(localMax);
             AxisAlignedBox transformedBBox = new AxisAlignedBox(transformedMin, transformedMax);
             rv.union(transformedBBox);
+        }
+        //Make transform work for children
+        if (c instanceof AbstractTransformable)
+        {
+            transform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable)c).accessLocalTransformation());
         }
         for (int i=0; i<c.getComponentCount(); i++)
         {
