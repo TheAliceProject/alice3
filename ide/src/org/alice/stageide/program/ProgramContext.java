@@ -62,6 +62,7 @@ public abstract class ProgramContext {
 	public ProgramContext() {
 		this.vm = this.createVirtualMachine();
 		this.vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.story.event.MouseButtonAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
 		//String[] args = {};
@@ -97,11 +98,22 @@ public abstract class ProgramContext {
 	}
 	
 
-	public void invokeMethod0() {
+	public void setActiveScene() {
 		org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
 			public void run() {
+				org.lgna.project.ast.UserField sceneField = null;
+				for( org.lgna.project.ast.UserField field : programInstance.getType().fields ) {
+					if( field.valueType.getValue().isAssignableTo( org.lgna.story.Scene.class ) ) {
+						sceneField = field;
+					}
+				}
+				assert sceneField != null;
 				org.lgna.project.virtualmachine.UserInstance programInstance = ProgramContext.this.getProgramInstance();
-				ProgramContext.this.getVirtualMachine().ENTRY_POINT_invoke( programInstance, programInstance.getType().methods.get( 0 ) );
+				ProgramContext.this.getVirtualMachine().ENTRY_POINT_invoke( 
+						programInstance, 
+						org.alice.stageide.StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD,
+						programInstance.getFieldValue( sceneField )
+				);
 			}
 		} );
 	}

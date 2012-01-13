@@ -54,7 +54,7 @@ public class Logger {
 //	public static java.util.logging.Logger getInstance() {
 //		return InstanceHolder.instance;
 //	}
-	private static java.util.logging.Logger getInstance() {
+	public static java.util.logging.Logger getInstance() {
 		return java.util.logging.Logger.global;
 	}
 	private static final String LEVEL_KEY = Logger.class.getName() + ".Level";

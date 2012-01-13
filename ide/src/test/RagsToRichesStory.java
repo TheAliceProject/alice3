@@ -118,10 +118,10 @@ class DesertScene extends Scene {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
 			} else {
-				this.restoreVehiclesAndVantagePoints();
+				this.restoreStateAndEventListeners();
 			}
 		} else {
-			this.preserveVehiclesAndVantagePoints();
+			this.preserveStateAndEventListeners();
 		}
 	}
 		
@@ -192,10 +192,10 @@ class SnowScene extends Scene {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
 			} else {
-				this.restoreVehiclesAndVantagePoints();
+				this.restoreStateAndEventListeners();
 			}
 		} else {
-			this.preserveVehiclesAndVantagePoints();
+			this.preserveStateAndEventListeners();
 		}
 	}
 

@@ -47,13 +47,14 @@ package org.alice.stageide;
  * @author Dennis Cosgrove
  */
 public class StoryApiConfigurationManager extends org.alice.ide.ApiConfigurationManager {
+	public static final org.lgna.project.ast.JavaMethod SET_ACTIVE_SCENE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class );
+
 	private static class SingletonHolder {
 		private static StoryApiConfigurationManager instance = new StoryApiConfigurationManager();
 	}
 	public static StoryApiConfigurationManager getInstance() {
 		return SingletonHolder.instance;
 	}
-	
 	@Override
 	protected boolean isNamedUserTypesAcceptableForGallery( org.lgna.project.ast.NamedUserType type ) {
 		return type.isAssignableTo( org.lgna.story.Model.class );

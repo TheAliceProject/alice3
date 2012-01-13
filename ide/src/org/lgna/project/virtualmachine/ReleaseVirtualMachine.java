@@ -168,6 +168,19 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			return rv;
 		}
 	}
+	protected static class LambdaInvocationFrame extends InvocationFrame {
+		public LambdaInvocationFrame( Frame owner, UserInstance instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
+			super( owner, instance, mapParameterToValue );
+			assert instance != null;
+		}
+		public LambdaInvocationFrame( Frame owner, LambdaInvocationFrame other ) {
+			super( owner, other );
+		}
+		@Override
+		protected StringBuilder appendRepr( StringBuilder rv ) {
+			return null;
+		}
+	}
 
 	
 	protected static class ThreadFrame extends AbstractFrame {
@@ -269,6 +282,11 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	protected void pushMethodFrame( UserInstance instance, java.util.Map< AbstractParameter, Object > map ) {
 		Frame owner = getCurrentFrame();
 		this.pushFrame( new MethodInvocationFrame( owner, instance, map ) );
+	}
+	@Override
+	protected void pushLambdaFrame( org.lgna.project.virtualmachine.UserInstance instance, java.util.Map< org.lgna.project.ast.AbstractParameter, java.lang.Object > map ) {
+		Frame owner = getCurrentFrame();
+		this.pushFrame( new LambdaInvocationFrame( owner, instance, map ) );
 	}
 	@Override
 	protected void pushLocal( org.lgna.project.ast.UserLocal local, Object value ) {

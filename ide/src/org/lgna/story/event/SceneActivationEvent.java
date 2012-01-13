@@ -40,11 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.virtualmachine;
+
+package org.lgna.story.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Context {
-	public void invokeEntryPoint( org.lgna.project.ast.AbstractMethod method, Object... arguments );
+public class SceneActivationEvent {
 }

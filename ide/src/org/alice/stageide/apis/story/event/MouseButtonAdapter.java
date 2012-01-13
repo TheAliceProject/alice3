@@ -42,10 +42,13 @@
  */
 package org.alice.stageide.apis.story.event;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public class MouseButtonAdapter implements org.lgna.story.event.MouseButtonListener {
-	private org.lgna.project.virtualmachine.Context context;
+	private org.lgna.project.virtualmachine.MethodContext context;
 	private org.lgna.project.ast.UserMethod method;
-	public MouseButtonAdapter( org.lgna.project.virtualmachine.Context context, org.lgna.project.ast.UserType< ? > type, Object[] arguments ) {
+	public MouseButtonAdapter( org.lgna.project.virtualmachine.MethodContext context, org.lgna.project.ast.UserType< ? > type, Object[] arguments ) {
 		this.context = context;
 		this.method = type.getDeclaredMethod( "mouseButtonClicked", org.lgna.story.event.MouseButtonEvent.class );
 	}

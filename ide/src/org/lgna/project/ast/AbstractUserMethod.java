@@ -46,87 +46,86 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class NamedUserConstructor extends UserConstructor implements UserCode {
-	public NodeListProperty< UserParameter > requiredParameters = new NodeListProperty< UserParameter >( this );
+public abstract class AbstractUserMethod extends AbstractMethod {
 	public edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel > accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel >( this, AccessLevel.PUBLIC );
-	public NodeProperty< ConstructorBlockStatement > body = new NodeProperty< ConstructorBlockStatement >( this );
+	public edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public DeclarationProperty< AbstractType<?,?,?> > returnType = new DeclarationProperty< AbstractType<?,?,?> >( this );
+	public NodeListProperty< UserParameter > requiredParameters = new NodeListProperty< UserParameter >( this );
+	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
 	public edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel > managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel >( this, ManagementLevel.NONE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 
-	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME; 
-	private UserType<?> m_declaringType;
-
-	public NamedUserConstructor() {
+	public AbstractUserMethod() {
 	}
-	public NamedUserConstructor( UserParameter[] parameters, ConstructorBlockStatement body ) {
-		this.requiredParameters.add( parameters );
+	public AbstractUserMethod( AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
+		this.returnType.setValue( returnType );
+		this.requiredParameters.add( requiredParameters );
 		this.body.setValue( body );
 	}
-
+		
 	@Override
-	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.Property property, Object value ) {
-		value = super.convertPropertyValueIfNecessary( property, value );
-		if( property == this.body ) {
-			if( value instanceof BlockStatement ) {
-				if( value instanceof ConstructorBlockStatement ) {
-					//pass
-				} else {
-					BlockStatement prevBlockStatement = (BlockStatement)value;
-					Statement[] buffer = new Statement[ prevBlockStatement.statements.size() ];
-					ConstructorBlockStatement constructorBlockStatement = new ConstructorBlockStatement( new SuperConstructorInvocationStatement(), prevBlockStatement.statements.toArray( buffer ) );
-					constructorBlockStatement.isEnabled.setValue( prevBlockStatement.isEnabled.getValue() );
-					value = constructorBlockStatement;
-				}
-			}
-		}
-		return value;
+	public final org.lgna.project.annotations.Visibility getVisibility() {
+		return org.lgna.project.annotations.Visibility.PRIME_TIME;
 	}
-
-	public org.lgna.project.ast.ManagementLevel getManagementLevel() {
+	public final org.lgna.project.ast.ManagementLevel getManagementLevel() {
 		return this.managementLevel.getValue();
 	}
 
-	public NodeProperty< ConstructorBlockStatement > getBodyProperty() {
+	public final NodeProperty< BlockStatement > getBodyProperty() {
 		return this.body;
 	}
-	public NodeListProperty< UserParameter > getRequiredParamtersProperty() {
+	public final NodeListProperty< UserParameter > getRequiredParamtersProperty() {
 		return this.requiredParameters;
 	}
-	@Override
-	public UserType<?> getDeclaringType() {
-		return m_declaringType;
-	}
-	public void setDeclaringType( UserType<?> declaringType ) {
-		m_declaringType = declaringType;
-	}
-	@Override
-	public org.lgna.project.annotations.Visibility getVisibility() {
-		return m_visibility;
-	}
-	public void setVisibility( org.lgna.project.annotations.Visibility visibility ) {
-		m_visibility = visibility;
-	}
 	
 	@Override
-	public AbstractCode getNextLongerInChain() {
+	public final boolean isValid() {
+		return true;
+	}
+	
+	public final AbstractType<?,?,?> getReturnType() {
+		return returnType.getValue();
+	}
+	public final java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
+		return requiredParameters.getValue();
+	}
+	public final org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+		return null;
+	}
+	public final org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+		return null;
+	}
+
+	@Override
+	public final AbstractCode getNextLongerInChain() {
 		return null;
 	}
 	@Override
-	public AbstractCode getNextShorterInChain() {
+	public final AbstractCode getNextShorterInChain() {
 		return null;
 	}
 	
 	@Override
-	public boolean isSignatureLocked() {
+	public final boolean isSignatureLocked() {
 		return this.isSignatureLocked.getValue();
 	}
 
-	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
-		return requiredParameters.getValue();
+	@Override
+	public final AccessLevel getAccessLevel() {
+		return this.accessLevel.getValue();
 	}
 	@Override
-	public AccessLevel getAccessLevel() {
-		return this.accessLevel.getValue();
+	public final boolean isNative() {
+		return false;
+	}
+	@Override
+	public final boolean isSynchronized() {
+		return this.isSynchronized.getValue();
+	}
+	@Override
+	public final boolean isStrictFloatingPoint() {
+		return this.isStrictFloatingPoint.getValue();
 	}
 }

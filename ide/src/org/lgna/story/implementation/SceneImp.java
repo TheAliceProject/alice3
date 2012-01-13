@@ -69,6 +69,7 @@ public class SceneImp extends EntityImp {
 	private final edu.cmu.cs.dennisc.scenegraph.AmbientLight sgAmbientLight = new edu.cmu.cs.dennisc.scenegraph.AmbientLight(); 
 	private final edu.cmu.cs.dennisc.scenegraph.ExponentialFog sgFog = new edu.cmu.cs.dennisc.scenegraph.ExponentialFog();
 
+	private final java.util.List< org.lgna.story.event.SceneActivationListener > sceneActivationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List< Capsule > capsules = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private ProgramImp program;
@@ -129,6 +130,38 @@ public class SceneImp extends EntityImp {
 		this.putInstance( this.sgScene );
 	}
 	
+	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.sceneActivationListeners.add( sceneActivationListener );
+	}
+	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.sceneActivationListeners.remove( sceneActivationListener );
+	}
+	
+	private int EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount = 0;
+	@Deprecated
+	public void EPIC_HACK_FOR_SCENE_EDITOR_pushDoNotFireSceneActivationListeners() {
+		EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount ++;
+	}
+	@Deprecated
+	public void EPIC_HACK_FOR_SCENE_EDITOR_popDoNotFireSceneActivationListeners() {
+		EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount --;
+	}
+	
+	public void fireSceneActivationListeners() {
+		if( EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount > 0 ) {
+			//pass
+		} else {
+			final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
+			for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
+				new org.lgna.common.ComponentThread( new Runnable() {
+					public void run() {
+						sceneActivationListener.sceneActivated( e );
+					}
+				}, "SceneActivation" ).start();
+			}
+		}
+	}
+	
 	private void setFogDensity(float densityValue) {
 		this.fogDensityValue = densityValue;
 		if (densityValue == 0 && this.sgFog.getParent() == this.sgScene) {
@@ -161,12 +194,12 @@ public class SceneImp extends EntityImp {
 		this.program = program;
 	}
 
-	public void preserveVehiclesAndVantagePoints() {
+	public void preserveStateAndEventListeners() {
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}
 	}
-	public void restoreVehiclesAndVantagePoints() {
+	public void restoreStateAndEventListeners() {
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}

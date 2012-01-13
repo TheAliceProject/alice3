@@ -55,10 +55,20 @@ public abstract class Scene extends Entity {
 		return this.implementation;
 	}
 
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
+	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.implementation.addSceneActivationListener( sceneActivationListener );
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.implementation.removeSceneActivationListener( sceneActivationListener );
+	}
+	
 	private void changeActiveStatus( Program program, boolean isActive, int activeCount ) {
 		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
 		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 		this.handleActiveChanged( isActive, activeCount );
+		this.implementation.fireSceneActivationListeners();
 		if( isActive ) {
 			this.implementation.addCamerasTo( program.getImplementation() );
 		} else {
@@ -88,11 +98,11 @@ public abstract class Scene extends Entity {
 
 	protected abstract void handleActiveChanged( Boolean isActive, Integer activeCount );
 
-	protected void preserveVehiclesAndVantagePoints() {
-		this.implementation.preserveVehiclesAndVantagePoints();
+	protected void preserveStateAndEventListeners() {
+		this.implementation.preserveStateAndEventListeners();
 	}
-	protected void restoreVehiclesAndVantagePoints() {
-		this.implementation.restoreVehiclesAndVantagePoints();
+	protected void restoreStateAndEventListeners() {
+		this.implementation.restoreStateAndEventListeners();
 	}
 
 	@GetterTemplate(isPersistent = true)

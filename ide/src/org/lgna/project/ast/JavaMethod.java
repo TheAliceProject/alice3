@@ -101,31 +101,6 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
-		if( this.variableOrKeyedParameter != null ) {
-			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
-				return this.variableOrKeyedParameter;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-	@Override
-	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
-		if( this.variableOrKeyedParameter != null ) {
-			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
-				return null;
-			} else {
-				return this.variableOrKeyedParameter;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	@Override
 	public boolean isValid() {
 		return this.methodReflectionProxy.getReification() != null;
 	}
@@ -138,7 +113,6 @@ public class JavaMethod extends AbstractMethod {
 		return null;
 	}
 
-	@Override
 	public JavaType getReturnType() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		if( mthd != null ) {
@@ -147,9 +121,30 @@ public class JavaMethod extends AbstractMethod {
 			return null;
 		}
 	}
-	@Override
 	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
 		return this.requiredParameters;
+	}
+	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+		if( this.variableOrKeyedParameter != null ) {
+			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
+				return this.variableOrKeyedParameter;
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+		if( this.variableOrKeyedParameter != null ) {
+			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
+				return null;
+			} else {
+				return this.variableOrKeyedParameter;
+			}
+		} else {
+			return null;
+		}
 	}
 
 	@Override

@@ -40,16 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationProperty< E extends Declaration > extends NodeProperty< E > {
-	public DeclarationProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		super( owner );
+public class UserLambda extends AbstractUserMethod implements Lambda {
+	public UserLambda() {
 	}
-	public boolean isReference() {
-		return true;
+	public UserLambda( AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
+		super( returnType, requiredParameters, body );
+	}
+	public UserLambda( Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
+		this( JavaType.getInstance( returnCls ), requiredParameters, body );
+	}
+	@Override
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getDeclaringType() {
+		return this.getFirstAncestorAssignableTo( AbstractType.class );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
+	@Override
+	public boolean isStatic() {
+		return false;
+	}
+	@Override
+	public boolean isAbstract() {
+		return false;
+	}
+	@Override
+	public boolean isFinal() {
+		return false;
 	}
 }

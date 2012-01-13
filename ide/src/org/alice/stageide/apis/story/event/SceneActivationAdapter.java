@@ -40,16 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+
+package org.alice.stageide.apis.story.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationProperty< E extends Declaration > extends NodeProperty< E > {
-	public DeclarationProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		super( owner );
+public class SceneActivationAdapter implements org.lgna.story.event.SceneActivationListener {
+	private final org.lgna.project.virtualmachine.LambdaContext context;
+	private final org.lgna.project.virtualmachine.UserInstance userInstance;
+	private final org.lgna.project.ast.Lambda lambda;
+	public SceneActivationAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
+		this.context = context;
+		this.lambda = lambda;
+		this.userInstance = userInstance;
+		assert this.userInstance != null;
 	}
-	public boolean isReference() {
-		return true;
+	public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
+		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
 	}
 }

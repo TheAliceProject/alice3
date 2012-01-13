@@ -42,10 +42,13 @@
  */
 package org.alice.stageide.apis.story.event;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public class KeyAdapter implements org.lgna.story.event.KeyListener {
-	private org.lgna.project.virtualmachine.Context context;
+	private org.lgna.project.virtualmachine.MethodContext context;
 	private org.lgna.project.ast.UserMethod method;
-	public KeyAdapter( org.lgna.project.virtualmachine.Context context, org.lgna.project.ast.UserType< ? > type, Object[] arguments ) {
+	public KeyAdapter( org.lgna.project.virtualmachine.MethodContext context, org.lgna.project.ast.UserType< ? > type, Object[] arguments ) {
 		this.context = context;
 		this.method = type.getDeclaredMethod( "keyPressed", org.lgna.story.event.KeyEvent.class );
 	}

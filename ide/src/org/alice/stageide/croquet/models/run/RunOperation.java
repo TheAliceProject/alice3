@@ -102,7 +102,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 					RunOperation.this.programContext = new org.alice.stageide.program.RunProgramContext();
 					RunOperation.this.programContext.getProgramImp().setRestartAction( RunOperation.this.restartAction );
 					RunOperation.this.programContext.initializeInContainer( rv.getAwtComponent() );
-					RunOperation.this.programContext.invokeMethod0();
+					RunOperation.this.programContext.setActiveScene();
 				}
 			}.start();
 			return rv;
