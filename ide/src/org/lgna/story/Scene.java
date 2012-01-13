@@ -55,9 +55,11 @@ public abstract class Scene extends Entity {
 		return this.implementation;
 	}
 
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
 		this.implementation.addSceneActivationListener( sceneActivationListener );
 	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
 	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
 		this.implementation.removeSceneActivationListener( sceneActivationListener );
 	}
