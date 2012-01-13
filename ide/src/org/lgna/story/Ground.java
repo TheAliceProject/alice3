@@ -55,6 +55,7 @@ public class Ground extends Entity implements MutableRider, Visual {
 		SAND("sand"), 
 		SNOW("snow"), 
 		WATER("water"), 
+		OCEAN_FLOOR("underwater"), 
 		MOON("moon");
 		private String resourceName;
 

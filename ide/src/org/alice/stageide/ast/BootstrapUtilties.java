@@ -106,7 +106,7 @@ public class BootstrapUtilties {
 	}
 	
 	public static String GET_MY_SCENE_METHOD_NAME = "getMyScene";
-	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.SurfaceAppearance appearance ) {
+	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.SurfaceAppearance appearance, String atmosphereColorConstantName, double fogDensity ) {
 		org.lgna.project.ast.UserField sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
 		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
 		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
@@ -177,15 +177,21 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
 		
-		if( appearance == org.lgna.story.Ground.SurfaceAppearance.MOON ) {
+		if( atmosphereColorConstantName != null ) {
 			org.lgna.project.ast.JavaMethod setAtmosphereColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, org.lgna.story.SetAtmosphereColor.Detail[].class );
-			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAtmosphereColorMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( org.lgna.story.Color.class, "BLACK" ) ) );
+			performGeneratedSetupBody.statements.add( 
+					createMethodInvocationStatement( 
+							new org.lgna.project.ast.ThisExpression(), 
+							setAtmosphereColorMethod, 
+							org.lgna.project.ast.AstUtilities.createStaticFieldAccess( org.lgna.story.Color.class, atmosphereColorConstantName ) 
+					) 
+			);
 		}
-		else if ( appearance == org.lgna.story.Ground.SurfaceAppearance.SAND ) {
-			org.lgna.project.ast.JavaMethod setAtmosphereColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, org.lgna.story.SetAtmosphereColor.Detail[].class );
-			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAtmosphereColorMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( org.lgna.story.Color.class, "DARK_BLUE" ) ) );
+		if( Double.isNaN( fogDensity) ) {
+			//pass
+		} else {
 			org.lgna.project.ast.JavaMethod setFogDensityMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFogDensity", Number.class, org.lgna.story.SetFogDensity.Detail[].class );
-			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setFogDensityMethod, new org.lgna.project.ast.DoubleLiteral( .4 ) ));
+			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setFogDensityMethod, new org.lgna.project.ast.DoubleLiteral( fogDensity ) ));
 		}
 
 		org.lgna.project.ast.UserMethod performCustomSetupMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, "performCustomSetup" );

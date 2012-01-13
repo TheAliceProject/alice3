@@ -84,4 +84,12 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	public void setCustomJointSgParent(Composite sgParent) {
 		sgJoint.setSgParent(sgParent);
 	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 transform = this.getTransformation(asSeenBy);
+		edu.cmu.cs.dennisc.math.AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox(null);
+		rv.addBoundingBox(jointBBox, transform);
+		return rv;
+	}
 }

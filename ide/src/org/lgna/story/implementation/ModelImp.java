@@ -185,8 +185,9 @@ public abstract class ModelImp extends TransformableImp {
 	}
 	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		if( duration > 0  ) {
-			
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( duration );
 		}
+		this.setScale( scale );
 	}
 
 //	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox()

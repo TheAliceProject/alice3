@@ -168,8 +168,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 					this.showUnableToOpenFileDialog( file, "It does not exist." );
 				}
 			} else {
-				org.lgna.story.Ground.SurfaceAppearance surfaceAppearance = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getSurfaceAppearance( uri );
-				org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( surfaceAppearance );
+				org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getSurfaceAppearance( uri );
+				org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColorConstantName(), template.getFogDensity() );
 				project = new org.lgna.project.Project( programType );
 			}
 		}
