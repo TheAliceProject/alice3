@@ -66,7 +66,10 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		return null;
 	}
 	protected boolean isValueTypeRowDesired() {
-		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
+		return true;
+	}
+	protected boolean isInitializerRowDesired() {
+		return true;
 	}
 	
 	@Override
@@ -163,7 +166,7 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", this.nameTextField ) );
 			this.updateNameTextField();
 		}
-		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue() ) {
+		if( this.isInitializerRowDesired() ) {
 			if( model.getInitializerState() != null ) {
 				org.lgna.croquet.components.Component< ? > component;
 				if( model.isInitializerEditable() ) {

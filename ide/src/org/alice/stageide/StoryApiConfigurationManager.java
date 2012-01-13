@@ -353,6 +353,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Billboard.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Axes.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Shape.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Sphere.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Cone.class ) );
