@@ -164,7 +164,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 
 	@Override
 	protected javax.swing.JPanel createJPanel() {
-		final boolean IS_FEEDBACK_DESIRED = false;
+		final boolean IS_FEEDBACK_DESIRED = true;
 		javax.swing.JPanel rv;
 		if( IS_FEEDBACK_DESIRED ) {
 			rv = new javax.swing.JPanel() {
