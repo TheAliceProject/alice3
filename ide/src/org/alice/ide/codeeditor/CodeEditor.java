@@ -49,7 +49,7 @@ import org.alice.ide.x.components.StatementListPropertyView;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implements org.lgna.croquet.DropReceptor, java.awt.print.Printable {
+public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implements org.lgna.croquet.DropReceptor {
 	private static class RootStatementListPropertyPane extends StatementListPropertyView {
 		private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
 		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
@@ -75,7 +75,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 	}
 
 	private final org.lgna.project.ast.AbstractCode code;
-	private final org.lgna.croquet.components.ScrollPane scrollPane;
+	//private final org.lgna.croquet.components.ScrollPane scrollPane;
 	private final RootStatementListPropertyPane rootStatementListPropertyPane;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 
@@ -105,13 +105,13 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 		this.rootStatementListPropertyPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)this.code );
 		org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( this.rootStatementListPropertyPane );
 
-		this.scrollPane = new org.lgna.croquet.components.ScrollPane( bodyPane );
-		this.scrollPane.setBothScrollBarIncrements( 12, 24 );
-		this.scrollPane.setBorder( null );
-		this.scrollPane.setBackgroundColor( null );
-		this.scrollPane.getAwtComponent().getViewport().setOpaque( false );
-		this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
-		this.internalAddComponent( this.scrollPane, java.awt.BorderLayout.CENTER );
+		org.lgna.croquet.components.ScrollPane scrollPane = this.getScrollPane();
+		scrollPane.setViewportView( bodyPane );
+		scrollPane.setBothScrollBarIncrements( 12, 24 );
+		scrollPane.setBorder( null );
+		scrollPane.setBackgroundColor( null );
+		scrollPane.getAwtComponent().getViewport().setOpaque( false );
+		scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 
 		final org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)this.code;
 		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), userCode );
@@ -125,7 +125,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 		} else {
 			throw new RuntimeException();
 		}
-		this.internalAddComponent( header, java.awt.BorderLayout.NORTH );
+		this.addComponent( header, Constraint.PAGE_START );
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			this.addComponent( org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView(), Constraint.PAGE_END );
 		}
@@ -295,7 +295,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 		this.repaint();
 	}
 	private org.lgna.croquet.components.Component< ? > getAsSeenBy() {
-		return this.scrollPane.getViewportView();
+		return this.getScrollPane().getViewportView();
 	}
 	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( org.lgna.croquet.components.Container<?> source ) {
 		java.util.List< StatementListPropertyView > statementListPropertyPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, StatementListPropertyView.class );
@@ -683,23 +683,23 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 		return null;
 	}
 
-	public int print(java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex) throws java.awt.print.PrinterException {
-		if( pageIndex > 0 ) {
-			return NO_SUCH_PAGE;
-		} else {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
-			int width = Math.max( component0.getAwtComponent().getPreferredSize().width, this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().width );
-			int height = this.scrollPane.getY() + this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().height;
-			double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
-			g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-			if( scale > 1.0 ) {
-				g2.scale( 1.0/scale, 1.0/scale );
-			}
-			component0.getAwtComponent().printAll( g2 );
-			g2.translate( this.scrollPane.getX(), this.scrollPane.getY() );
-			this.scrollPane.getViewportView().getAwtComponent().printAll( g2 );
-			return PAGE_EXISTS;
-		}
-	}
+//	public int print(java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex) throws java.awt.print.PrinterException {
+//		if( pageIndex > 0 ) {
+//			return NO_SUCH_PAGE;
+//		} else {
+//			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+//			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
+//			int width = Math.max( component0.getAwtComponent().getPreferredSize().width, this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().width );
+//			int height = this.scrollPane.getY() + this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().height;
+//			double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
+//			g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
+//			if( scale > 1.0 ) {
+//				g2.scale( 1.0/scale, 1.0/scale );
+//			}
+//			component0.getAwtComponent().printAll( g2 );
+//			g2.translate( this.scrollPane.getX(), this.scrollPane.getY() );
+//			this.scrollPane.getViewportView().getAwtComponent().printAll( g2 );
+//			return PAGE_EXISTS;
+//		}
+//	}
 }

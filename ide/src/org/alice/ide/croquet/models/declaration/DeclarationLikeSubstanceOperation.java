@@ -122,6 +122,9 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		this.nameValidator = nameValidator;
 	}
 	
+	protected org.lgna.project.ast.UserType< ? > getInitialDeclaringType() {
+		return this.initialDeclaringType;
+	}
 	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getInitialValueComponentType() {
 		return this.initialValueComponentType;
 	}
