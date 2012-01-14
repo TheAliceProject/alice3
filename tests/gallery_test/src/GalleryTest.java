@@ -50,10 +50,13 @@ public class GalleryTest {
 			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)node;
 			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldGalleryNode.getDeclaration();
 			java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info("TESTING: "+field.getName());
 			Object resource = fld.get( null );
 			assert parameterClses[ 0 ].isInstance( resource ) : parameterClses[ 0 ] + " " + resource;
 			org.lgna.story.JointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( instanceCls, parameterClses, resource );
-			jointedModel.straightenOutJoints();
+			if (jointedModel instanceof org.lgna.story.Swimmer) {
+				jointedModel.straightenOutJoints();
+			}
 		}
 		final int N = node.getChildCount();
 		for( int i=0; i<N; i++ ) {

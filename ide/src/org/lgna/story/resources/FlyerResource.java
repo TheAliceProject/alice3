@@ -67,19 +67,19 @@ public interface FlyerResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId RIGHT_ELBOW = new org.lgna.story.resources.JointId( RIGHT_SHOULDER, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId RIGHT_WRIST = new org.lgna.story.resources.JointId( RIGHT_ELBOW, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId PELVIS_LOWER_BODY = new org.lgna.story.resources.JointId( null, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, FlyerResource.class );
+//	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, FlyerResource.class );
+//	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, FlyerResource.class );
+//	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_HIP = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_KNEE = new org.lgna.story.resources.JointId( LEFT_HIP, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_ANKLE = new org.lgna.story.resources.JointId( LEFT_KNEE, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_BALL = new org.lgna.story.resources.JointId( LEFT_ANKLE, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId LEFT_TOE = new org.lgna.story.resources.JointId( LEFT_BALL, FlyerResource.class );
+//	public static final org.lgna.story.resources.JointId LEFT_TOE = new org.lgna.story.resources.JointId( LEFT_BALL, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId RIGHT_HIP = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId RIGHT_KNEE = new org.lgna.story.resources.JointId( RIGHT_HIP, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId RIGHT_ANKLE = new org.lgna.story.resources.JointId( RIGHT_KNEE, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId RIGHT_BALL = new org.lgna.story.resources.JointId( RIGHT_ANKLE, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId RIGHT_TOE = new org.lgna.story.resources.JointId( RIGHT_BALL, FlyerResource.class );
+//	public static final org.lgna.story.resources.JointId RIGHT_TOE = new org.lgna.story.resources.JointId( RIGHT_BALL, FlyerResource.class );
 	
 	public static final JointId[] JOINT_ID_ROOTS = { PELVIS_LOWER_BODY, PELVIS_UPPER_BODY };
 	
