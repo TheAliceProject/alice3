@@ -48,10 +48,10 @@ public class Swimmer extends JointedModel {
 //		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_PECTORAL_FIN_TIP);
 //	}
 	public Joint getSpineBase() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_1);
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_BASE);
 	}
 	public Joint getSpineMiddle() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_2);
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_MIDDLE);
 	}
 	public Joint getTail() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.TAIL);
