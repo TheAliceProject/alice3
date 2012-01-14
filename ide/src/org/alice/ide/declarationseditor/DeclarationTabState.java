@@ -172,4 +172,8 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 			}
 		}
 	}
+
+	public org.lgna.croquet.ActionOperation getItemSelectionOperation( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		return super.getItemSelectionOperation( DeclarationComposite.getInstance( declaration ) );
+	}	
 }
