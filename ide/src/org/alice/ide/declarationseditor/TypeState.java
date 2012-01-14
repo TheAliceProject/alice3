@@ -111,8 +111,8 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.NamedUserType > blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
+		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = apiConfigurationManager.getNamedUserTypesAsTreeFilteredForSelection();
 		if( root != null ) {
 			for( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node : root.getChildren() ) {
 				addTypeFillIns( rv, node );
