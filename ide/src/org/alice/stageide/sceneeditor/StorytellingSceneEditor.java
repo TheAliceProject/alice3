@@ -83,6 +83,7 @@ import org.lgna.croquet.components.SpringPanel.Vertical;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
@@ -227,6 +228,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			{
 				UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
 				StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
+			}
+			else if (expression instanceof MethodInvocation){
+				System.out.println(expression);
 			}
 			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = false;
 		}
