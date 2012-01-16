@@ -40,17 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story.event;
 
-package org.alice.stageide.apis.story.event;
+import java.util.List;
+
+import org.lgna.story.Model;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SceneActivationAdapter extends AbstractAdapter implements org.lgna.story.event.SceneActivationListener {
-	public SceneActivationAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
-		super(context, lambda, userInstance);
+public class ProximityEvent extends AbstractEvent{
+	
+	private final List<Model> models;
+	
+	public ProximityEvent( List<Model> models ) {
+		this.models = models;
 	}
-	public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
-		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
+	public List<Model> getModels() {
+		return models;
 	}
+
 }

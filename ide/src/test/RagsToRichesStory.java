@@ -68,6 +68,8 @@ import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonEvent;
 import org.lgna.story.event.MouseButtonListener;
+import org.lgna.story.event.ProximityEvent;
+import org.lgna.story.event.ProximityEventListener;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -78,6 +80,7 @@ import org.lgna.story.resources.sims2.Gender;
 
 import edu.cmu.cs.dennisc.matt.AddMouseButtonListener;
 import edu.cmu.cs.dennisc.matt.MultipleEventPolicy;
+import edu.cmu.cs.dennisc.matt.ProximityDistance;
 import edu.cmu.cs.dennisc.matt.TargetedModels;
 
 class MyBiped extends Biped {
@@ -206,7 +209,7 @@ class SnowScene extends Scene{
 
 		this.armoire.move( MoveDirection.BACKWARD, 2.0 );
 
-		this.ogre.move( MoveDirection.LEFT, 1.0 );
+		this.ogre.move( MoveDirection.LEFT, 2.0 );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
@@ -233,12 +236,12 @@ class SnowScene extends Scene{
 		Model[] list = {ogre, susan};
 		Model[] colListOne = {ogre};
 		Model[] colListTwo = {susan};
-		this.addCollisionListener(new CollisionListener() {
-			public void whenTheseCollide(CollisionEvent event) {
-				event.getModels().get(1).move(MoveDirection.UP, 1);
-				event.getModels().get(1).move(MoveDirection.DOWN, 1);
-			}
-		}, colListOne, colListTwo);
+//		this.addCollisionListener(new CollisionListener() {
+//			public void whenTheseCollide(CollisionEvent event) {
+//				event.getModels().get(1).move(MoveDirection.UP, 1);
+//				event.getModels().get(1).move(MoveDirection.DOWN, 1);
+//			}
+//		}, colListOne, colListTwo);
 		this.addKeyPressedListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if(e.isKey(Key.A)){
@@ -247,6 +250,13 @@ class SnowScene extends Scene{
 				}
 			}
 		}, new MultipleEventPolicy(EventPolicy.COMBINE));
+		this.addProximityEventListener( new ProximityEventListener() {
+
+			public void whenTheseGetClose( ProximityEvent e ) {
+				e.getModels().get(1).move(MoveDirection.UP, 1);
+				e.getModels().get(1).move(MoveDirection.DOWN, 1);				
+			}
+		}, colListOne, colListTwo, new ProximityDistance( 1.0 ) );
 		this.addMouseButtonListener( new MouseButtonListener() {
 			public void mouseButtonClicked(MouseButtonEvent e) {
 				e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);

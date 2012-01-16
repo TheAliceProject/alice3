@@ -43,19 +43,18 @@
 
 package org.lgna.story;
 
-import java.util.List;
-
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.event.CollisionListener;
-import org.lgna.story.event.EventPolicy;
 import org.lgna.story.event.MouseButtonListener;
+import org.lgna.story.event.ProximityEventListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.matt.AddKeyPressedListener;
 import edu.cmu.cs.dennisc.matt.AddMouseButtonListener;
+import edu.cmu.cs.dennisc.matt.AddProximityEventListener;
 
 
 /**
@@ -159,6 +158,9 @@ public abstract class Scene extends Entity{
 	}
 	public void addCollisionListener( CollisionListener collisionListener, Model[] groupOne, Model[] groupTwo){
 		this.getImplementation().getEventManager().addCollisionListener(collisionListener, Collections.newArrayList(groupOne), Collections.newArrayList(groupTwo));
+	}
+	public void addProximityEventListener( ProximityEventListener proximityEventListener, Model[] groupOne, Model[] groupTwo, AddProximityEventListener.Detail... details){
+		this.getImplementation().getEventManager().addProximityEventListener(proximityEventListener, Collections.newArrayList(groupOne), Collections.newArrayList(groupTwo), AddProximityEventListener.getDist( details ));
 	}
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
 	public void addKeyPressedListener( org.lgna.story.event.KeyListener keyListener,  AddKeyPressedListener.Detail... details) {

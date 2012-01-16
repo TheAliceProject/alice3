@@ -40,17 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.apis.story.event;
+package org.alice.stageide.cascade.fillerinners;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SceneActivationAdapter extends AbstractAdapter implements org.lgna.story.event.SceneActivationListener {
-	public SceneActivationAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
-		super(context, lambda, userInstance);
+public class ProximityEventListenerFillerInner  extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public ProximityEventListenerFillerInner() {
+		super( org.lgna.story.event.ProximityEventListener.class );
 	}
-	public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
-		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
+	@Override
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		rv.add( org.alice.stageide.croquet.models.cascade.adapters.ProximityEventListenerAdapterFillIn.getInstance() );
+		return rv;
 	}
 }
+

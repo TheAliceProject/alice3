@@ -40,17 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.croquet.models.cascade.adapters;
 
-package org.alice.stageide.apis.story.event;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.story.event.ProximityEventListener;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SceneActivationAdapter extends AbstractAdapter implements org.lgna.story.event.SceneActivationListener {
-	public SceneActivationAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
-		super(context, lambda, userInstance);
+public class ProximityEventListenerAdapterFillIn extends LambdaExpressionFillIn{
+	
+	private static class SingletonHolder {
+		private static ProximityEventListenerAdapterFillIn instance = new ProximityEventListenerAdapterFillIn();
 	}
-	public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
-		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
+	public static ProximityEventListenerAdapterFillIn getInstance() {
+		return SingletonHolder.instance;
 	}
+
+	public ProximityEventListenerAdapterFillIn() {
+		super( java.util.UUID.fromString( "db25d316-7282-493f-9838-124d272db0ca" ) );
+		this.transientValue = this.createValue();
+	}
+	@Override
+	protected org.lgna.project.ast.LambdaExpression createValue() { 
+		return AstUtilities.createLambdaExpression(ProximityEventListener.class);
+	}
+
 }
+

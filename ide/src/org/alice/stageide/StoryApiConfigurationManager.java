@@ -52,11 +52,13 @@ import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.EventPolicy;
 import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonListener;
+import org.lgna.story.event.ProximityEventListener;
 import org.lgna.story.event.SceneActivationListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.matt.AddKeyPressedListener;
 import edu.cmu.cs.dennisc.matt.AddMouseButtonListener;
+import edu.cmu.cs.dennisc.matt.AddProximityEventListener;
 
 /**
  * @author Dennis Cosgrove
@@ -75,6 +77,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private static final JavaMethod ADD_MOUSE_BUTTON_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseButtonListener.class, AddMouseButtonListener.Detail[].class );
 	private static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addKeyPressedListener", KeyListener.class, AddKeyPressedListener.Detail[].class );
 	private static final JavaMethod ADD_COLLISION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addCollisionListener", CollisionListener.class, Model[].class, Model[].class );
+	private static final JavaMethod ADD_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addProximityEventListener", ProximityEventListener.class, Model[].class, Model[].class, AddProximityEventListener.Detail[].class );
 	
 	
 	@Override
@@ -83,7 +86,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 				ADD_SCENE_ACTIVATION_LISTENER_METHOD,
 				ADD_MOUSE_BUTTON_LISTENER_METHOD,
 				ADD_KEY_LISTENER_METHOD,
-				ADD_COLLISION_LISTENER_METHOD
+				ADD_COLLISION_LISTENER_METHOD,
+				ADD_PROXIMITY_LISTENER_METHOD
 		);
 	}
 

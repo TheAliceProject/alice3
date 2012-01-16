@@ -40,17 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.apis.story.event;
+package edu.cmu.cs.dennisc.matt;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SceneActivationAdapter extends AbstractAdapter implements org.lgna.story.event.SceneActivationListener {
-	public SceneActivationAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
-		super(context, lambda, userInstance);
+public class ProximityDistance implements AddProximityEventListener.Detail{
+	
+	private Double dist;
+
+	public ProximityDistance(Double dist){
+		this.dist = dist;
 	}
-	public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
-		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
+
+	public Double getDist() {
+		return this.dist;
 	}
+
 }
