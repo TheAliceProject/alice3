@@ -81,7 +81,7 @@ public class SkeletonVisual extends Visual {
 	public void setParent(Composite parent) {
     	super.setParent(parent);
     	if (this.skeleton.getValue() != null) {
-    		this.skeleton.getValue().setSgParent(parent);
+    		this.skeleton.getValue().setParent(parent);
     	}
     };
 	
