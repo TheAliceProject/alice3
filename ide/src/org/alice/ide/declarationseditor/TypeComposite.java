@@ -40,31 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.print;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PrintCurrentCodeOperation extends PrintOperation {
-	private static class SingletonHolder {
-		private static PrintCurrentCodeOperation instance = new PrintCurrentCodeOperation();
-	}
-	public static PrintCurrentCodeOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private PrintCurrentCodeOperation() {
-		super( java.util.UUID.fromString( "097b41bf-d1ea-4991-a0d6-0fae51be35ef" ) );
-	}
-	@Override
-	protected java.awt.print.Printable getPrintable() {
-		org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
-		org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
-		if( view.isPrintSupported() ) {
-			return view;
+public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.AbstractType<?,?,?>, org.alice.ide.declarationseditor.type.components.TypeDeclarationView > {
+	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, TypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TypeComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		if( type != null ) {
+			TypeComposite rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new TypeComposite( type );
+				map.put( type, rv );
+			}
+			return rv;
 		} else {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Print not supported for " + composite, "Print not supported", org.lgna.croquet.MessageType.INFORMATION );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "print not supported for:", composite );
 			return null;
 		}
+	}
+	private TypeComposite( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type );
+	}
+	@Override
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+		super.customizeTitleComponent( booleanState, button );
+		button.scaleFont( 1.6f );
+	}
+	@Override
+	protected org.alice.ide.declarationseditor.type.components.TypeDeclarationView createView() {
+		return new org.alice.ide.declarationseditor.type.components.TypeDeclarationView( this );
 	}
 }
