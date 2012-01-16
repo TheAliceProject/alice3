@@ -64,7 +64,7 @@ public class FieldArrayLengthDragModel extends AbstractExpressionDragModel {
 		this.field = field;
 	}
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
 		return org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE;
 	}
 	@Override

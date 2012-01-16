@@ -49,6 +49,16 @@ public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
 	public IdeDragModel( java.util.UUID id ) {
 		super( id );
 	}
+	@Override
+	public final java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
+		org.lgna.croquet.Perspective perspective = org.alice.ide.IDE.getActiveInstance().getPerspective();
+		if( perspective instanceof org.alice.ide.perspectives.IdePerspective ) {
+			org.alice.ide.perspectives.IdePerspective idePerspective = (org.alice.ide.perspectives.IdePerspective)perspective;
+			return idePerspective.createListOfPotentialDropReceptors( this );
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
 	private org.alice.ide.stencils.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
 		return org.alice.ide.IDE.getActiveInstance().getPotentialDropReceptorsStencil();
 	}

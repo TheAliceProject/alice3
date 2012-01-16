@@ -45,9 +45,9 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.AbstractType<?,?,?>, org.alice.ide.declarationseditor.type.components.TypeDeclarationView > {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, TypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized TypeComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.AbstractType, org.alice.ide.declarationseditor.type.components.TypeDeclarationView > {
+	private static java.util.Map< org.lgna.project.ast.AbstractType, TypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TypeComposite getInstance( org.lgna.project.ast.AbstractType type ) {
 		if( type != null ) {
 			TypeComposite rv = map.get( type );
 			if( rv != null ) {
@@ -61,8 +61,8 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Ab
 			return null;
 		}
 	}
-	private TypeComposite( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type );
+	private TypeComposite( org.lgna.project.ast.AbstractType type ) {
+		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.AbstractType.class );
 	}
 	@Override
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {

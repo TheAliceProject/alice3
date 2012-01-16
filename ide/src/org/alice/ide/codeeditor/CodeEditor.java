@@ -232,37 +232,6 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 		super.handleUndisplayable();
 	}
 
-	@Override
-	public java.util.List< org.lgna.croquet.DropReceptor > addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > rv, final org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		if( type == org.lgna.project.ast.JavaType.VOID_TYPE ) {
-			rv.add( this );
-		} else {
-			java.util.List< ExpressionPropertyDropDownPane > list = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
-				public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
-					org.lgna.project.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
-					assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();
-					if( expressionType.isAssignableFrom( type ) ) {
-						return true;
-//					} else {
-//						if( type.isArray() ) {
-//							if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
-//								return true;
-//							} else {
-//								for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
-//									if( expressionType == integerType ) {
-//										return true;
-//									}
-//								}
-//							}
-//						}
-					}
-					return false;
-				}
-			} );
-			rv.addAll( list );
-		}
-		return rv;
-	}
 	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel ) {

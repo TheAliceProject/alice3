@@ -59,9 +59,11 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 	}
 
 	private final D declaration;
-	public DeclarationComposite( java.util.UUID id, D declaration ) {
+	private final Class<D> declarationCls;
+	public DeclarationComposite( java.util.UUID id, D declaration, Class<D> declarationCls ) {
 		super( id );
 		this.declaration = declaration;
+		this.declarationCls = declarationCls;
 	}
 	@Override
 	public java.util.UUID getTabId() {
@@ -87,5 +89,9 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 	@Override
 	public org.lgna.croquet.components.ScrollPane createScrollPane() {
 		return null;
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.CodableResolver< DeclarationComposite< D,V > > createCodableResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > >( this, this.declaration, this.declarationCls );
 	}
 }

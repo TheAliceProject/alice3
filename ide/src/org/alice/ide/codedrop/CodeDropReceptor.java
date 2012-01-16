@@ -47,5 +47,4 @@ package org.alice.ide.codedrop;
  * @author Dennis Cosgrove
  */
 public abstract class CodeDropReceptor extends org.alice.ide.croquet.components.PrintableBorderPanelWithCenterScrollPane {
-	public abstract java.util.List< org.lgna.croquet.DropReceptor > addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > rv, final org.lgna.project.ast.AbstractType<?,?,?> type );
 }

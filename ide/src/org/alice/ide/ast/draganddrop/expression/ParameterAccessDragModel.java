@@ -64,7 +64,7 @@ public class ParameterAccessDragModel extends AbstractExpressionDragModel {
 		this.parameter = parameter;
 	}
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
 		return this.parameter.getValueType();
 	}
 	@Override

@@ -60,4 +60,7 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspec
 	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		return null;
 	}
+	@Override
+	protected void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+	}
 }
