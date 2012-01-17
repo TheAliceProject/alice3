@@ -54,7 +54,11 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 		} else if( declaration instanceof org.lgna.project.ast.NamedUserType ) {
 			return TypeComposite.getInstance( (org.lgna.project.ast.AbstractType< ?,?,? >)declaration );
 		} else {
-			throw new RuntimeException( "todo" );
+			if( declaration != null ) {
+				throw new RuntimeException( "todo " + declaration );
+			} else {
+				throw new NullPointerException();
+			}
 		}
 	}
 

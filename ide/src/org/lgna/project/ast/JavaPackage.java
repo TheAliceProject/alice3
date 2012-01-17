@@ -71,7 +71,6 @@ public class JavaPackage extends AbstractPackage {
 	private JavaPackage( PackageReflectionProxy packageReflectionProxy ) {
 		this.packageReflectionProxy = packageReflectionProxy;
 	}
-
 	public PackageReflectionProxy getPackageReflectionProxy() {
 		return this.packageReflectionProxy;
 	}

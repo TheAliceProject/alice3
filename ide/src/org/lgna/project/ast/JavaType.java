@@ -179,7 +179,6 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	private JavaType( ClassReflectionProxy classReflectionProxy ) {
 		this.classReflectionProxy = classReflectionProxy;
 	}
-
 	@Override
 	public AbstractType< ?, ?, ? > getKeywordFactoryType() {
 		Class< ? > cls = this.classReflectionProxy.getReification();

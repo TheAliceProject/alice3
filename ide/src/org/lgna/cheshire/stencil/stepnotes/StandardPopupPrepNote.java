@@ -50,4 +50,8 @@ public class StandardPopupPrepNote extends PopupPrepNote< org.lgna.croquet.histo
 	public StandardPopupPrepNote( org.lgna.croquet.history.StandardPopupPrepStep step ) {
 		super( step );
 	}
+	@Override
+	protected void addFeatures(org.lgna.croquet.history.StandardPopupPrepStep step) {
+		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+	}
 }

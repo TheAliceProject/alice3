@@ -95,7 +95,7 @@ public class JavaMethod extends AbstractMethod {
 			this.variableOrKeyedParameter = null;
 		}
 	}
-
+	
 	public MethodReflectionProxy getMethodReflectionProxy() {
 		return this.methodReflectionProxy;
 	}

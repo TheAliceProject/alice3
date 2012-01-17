@@ -60,7 +60,12 @@ public class TypeFunctionsPane extends AbstractTypeMethodsPane {
 	}
 	@Override
 	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
-		return org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectionOperation( type.getDeclaredConstructor() ).createButton();
+		org.lgna.project.ast.NamedUserConstructor constructor = type.getDeclaredConstructor();
+		if( constructor != null ) {
+			return org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectionOperation( constructor ).createButton();
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createFunctionTemplate( org.lgna.project.ast.AbstractMethod method ) {
