@@ -154,7 +154,13 @@ public class JointId {
 				}
 				
 				Class<?>[] interfaces = currentClass.getInterfaces();
-				Class<?> superClass = interfaces[0];
+				Class<?> superClass = null;
+				if (interfaces.length > 0) {
+					superClass = interfaces[0];
+				}	
+				else {
+					superClass = currentClass.getSuperclass();
+				}
 				if (JointedModelResource.class.isAssignableFrom(superClass)) {
 					currentClass = (Class<? extends JointedModelResource>)superClass;
 				}
