@@ -107,9 +107,17 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 		}
 		return rv;
 	}
-
+	
+	protected void appendRepr( StringBuilder sb ) {
+		sb.append("name=\"" + getName() + "\"");
+	}
 	@Override
 	public final String toString() {
-		return getClass().getName() + "[name=\"" + getName() + "\"]";
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		this.appendRepr( sb );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

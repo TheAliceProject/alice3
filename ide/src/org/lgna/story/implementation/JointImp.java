@@ -125,6 +125,6 @@ public abstract class JointImp extends AbstractTransformableImp {
 	@Override
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 		super.appendRepr( sb );
-		sb.append( this.getJointId() );
+		sb.append( this.getJointId().toString() );
 	}
 }
