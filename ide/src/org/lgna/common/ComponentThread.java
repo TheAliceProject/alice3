@@ -48,12 +48,18 @@ package org.lgna.common;
  */
 public final class ComponentThread extends Thread {
 	private static final ThreadGroup threadGroup = new ThreadGroup( ComponentThread.class.getPackage().getName() + " component thread group" );
+	private final Runnable target; 
 	private Thread parentThread;
-	public ComponentThread( Runnable runnable, String description ) {
-		super( threadGroup, runnable, description );
+	public ComponentThread( Runnable target, String description ) {
+		super( threadGroup, null, description );
+		this.target = target;
 	}
 	public Thread getParentThread() {
 		return this.parentThread;
+	}
+	@Override
+	public void run() {
+		org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( this.target );
 	}
 	@Override
 	public synchronized void start() {
