@@ -136,8 +136,35 @@ public class JointId {
 			this.forJoint = forJoint;
 			this.currentClass = forClass;
 			this.currentIterator = this.forJoint.getDeclaredChildren().iterator();
+			if (!this.currentIterator.hasNext())
+			{
+				this.currentIterator = getIteratorForExternalChildren();
+			}
 		}
 
+		private java.util.Iterator<JointId> getIteratorForExternalChildren()
+		{
+			java.util.Iterator<JointId> externalIterator = null;
+			while (currentClass != null && externalIterator == null)
+			{
+				java.util.List<JointId> jointList = JointId.getChildList(currentClass, forJoint);
+				if (jointList != null)
+				{
+					externalIterator = jointList.iterator();
+				}
+				
+				Class<?>[] interfaces = currentClass.getInterfaces();
+				Class<?> superClass = interfaces[0];
+				if (JointedModelResource.class.isAssignableFrom(superClass)) {
+					currentClass = (Class<? extends JointedModelResource>)superClass;
+				}
+				else {
+					currentClass = null;
+				}
+			}
+			return externalIterator;
+		}
+		
 		public boolean hasNext() {
 			if (currentIterator != null)
 			{
@@ -152,26 +179,9 @@ public class JointId {
 				JointId next = currentIterator.next();
 				if (!currentIterator.hasNext())
 				{
-					currentIterator = null;
-					while (currentClass != null)
-					{
-						Class<?> superClass = currentClass.getSuperclass();
-						if (JointedModelResource.class.isAssignableFrom(superClass))
-						{
-							currentClass = (Class<? extends JointedModelResource>)superClass;
-						}
-						else
-						{
-							currentClass = null;
-						}
-						java.util.List<JointId> jointList = JointId.getChildList(currentClass, forJoint);
-						if (jointList != null)
-						{
-							currentIterator = jointList.iterator();
-							break;
-						}
-					}
+					currentIterator = getIteratorForExternalChildren();
 				}
+				
 				return next;
 			}
 			return null;

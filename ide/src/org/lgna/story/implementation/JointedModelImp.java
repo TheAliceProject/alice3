@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,21 +79,13 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	
 	private JointImp createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
-		//System.err.println( "createJointTree " + jointId );
 		JointImp joint = this.createJointImplementation( jointId );
 		if (joint == null) {
 			joint = this.createJointImplementation(jointId);
 		}
-		if( joint != null && parent instanceof JointedModelImp ) {
-			joint.setCustomJointSgParent( parent.getSgComposite() );
-		} else {
-			if (joint != null && joint.getSgComposite().getParent() == null && parent != null) {
-				joint.setVehicle( parent );
-			}
-		}
 		this.mapIdToJoint.put( jointId, joint );
 		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-			this.createJointTree( childId, joint );
+			createJointTree(childId, parent);
 		}
 		return joint;
 	}

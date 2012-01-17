@@ -81,16 +81,20 @@ import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.croquet.components.SpringPanel.Horizontal;
 import org.lgna.croquet.components.SpringPanel.Vertical;
 import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
+import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Joint;
 import org.lgna.story.Marker;
 import org.lgna.story.OrthographicCameraMarker;
 import org.lgna.story.PerspectiveCameraMarker;
@@ -105,6 +109,7 @@ import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.TransformableImp;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
@@ -212,7 +217,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = true;
-			org.lgna.project.ast.Expression expression = nextValue != null ? nextValue.createTransientExpression() : null;
+			org.lgna.project.ast.Expression expression = nextValue != null ? nextValue.createExpression() : null;
 			if (expression instanceof FieldAccess)
 			{
 				FieldAccess fa = (FieldAccess)expression;
@@ -223,7 +228,20 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 					StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
 				}
 			}
-			else if (expression instanceof CurrentThisExpression)
+			else if (expression instanceof MethodInvocation)
+			{
+				MethodInvocation mi = (MethodInvocation)expression;
+				//mi.expression.getValue();
+				
+				Object[] values = StorytellingSceneEditor.this.getVM().ENTRY_POINT_evaluate(
+						getActiveSceneInstance(), 
+						new Expression[] { expression }
+				);
+				
+				Logger.severe( values[ 0 ] );
+				
+			}
+			else if (expression instanceof ThisExpression)
 			{
 				UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
 				StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
