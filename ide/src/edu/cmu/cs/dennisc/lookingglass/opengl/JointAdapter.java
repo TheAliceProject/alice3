@@ -40,49 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.implementation.alice;
-
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementation extends org.lgna.story.implementation.JointImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Joint sgJoint;
-	private final org.lgna.story.resources.JointId jointId;
-	public JointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
-		super( jointedModelImplementation );
-		assert sgJoint != null;
-		this.jointId = jointId;
-		this.sgJoint = sgJoint;
-		putInstance( this.sgJoint );
-	}
-	@Override
-	public org.lgna.story.resources.JointId getJointId() {
-		return this.jointId;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Joint getSgComposite() {
-		return this.sgJoint;
-	}
+public class JointAdapter extends TransformableAdapter< edu.cmu.cs.dennisc.scenegraph.Joint > {
 	
 	@Override
-	public boolean isFreeInX() {
-		return this.sgJoint.isFreeInX.getValue();
-	}
-	@Override
-	public boolean isFreeInY() {
-		return this.sgJoint.isFreeInY.getValue();
-	}
-	@Override
-	public boolean isFreeInZ() {
-		return this.sgJoint.isFreeInZ.getValue();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 transform = this.getTransformation(asSeenBy);
-		edu.cmu.cs.dennisc.math.AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox(null);
-		rv.addBoundingBox(jointBBox, transform);
-		return rv;
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.jointID ) {
+			//pass
+		} else if( property == m_element.isFreeInX ) {
+			//pass
+		} else if( property == m_element.isFreeInY ) {
+			//pass
+		} else if( property == m_element.isFreeInZ ) {
+			//pass
+		} else if( property == m_element.boundingBox ) {
+			//pass
+		} else if( property == m_element.oStiffness ) {
+			//pass
+		} else if( property == m_element.oBoneOrientation ) {
+			//pass
+		} else if( property == m_element.oPreferedAngles ) {
+			//pass
+		} else if( property == m_element.oLocalRotationAxis ) {
+			//pass
+		} else if( property == m_element.oMinimumDampRange ) {
+			//pass
+		} else if( property == m_element.oMaximumDampRange ) {
+			//pass
+		} else if( property == m_element.oMaximumDampRange ) {
+			//pass
+		} else if( property == m_element.oMinimumDampStrength ) {
+			//pass
+		} else if( property == m_element.oMaximumDampStrength ) {
+			//pass
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }
