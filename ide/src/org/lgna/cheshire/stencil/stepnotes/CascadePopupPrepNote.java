@@ -50,8 +50,4 @@ public class CascadePopupPrepNote extends PopupPrepNote< org.lgna.croquet.histor
 	public CascadePopupPrepNote( org.lgna.croquet.history.CascadePopupPrepStep< ? > step ) {
 		super( step );
 	}
-	@Override
-	protected void addFeatures(org.lgna.croquet.history.CascadePopupPrepStep< ? > step) {
-		this.addFeature( DropNoteUtilities.createHole( step ) );
-	}
 }

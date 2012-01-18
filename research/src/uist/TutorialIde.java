@@ -91,7 +91,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			return this.getReplacementProject();
 		}
 	}
-	
+
 	private void retarget() {
 		//note: we leverage the fact that the uuids are identical for much of the initial states of the two projects
 		class AstDecodingRetargeter implements org.lgna.croquet.Retargeter {
@@ -101,53 +101,12 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 				edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.Node > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.Node.class );
 				programType.crawl( crawler, true );
 				for( org.lgna.project.ast.Node node : crawler.getList() ) {
-					this.addKeyValuePair( node, node );
+					mapIdToReplacementNode.put( node.getId(), node );
 				}
 			}
-			private void addType( org.lgna.project.ast.NamedUserType originalType, org.lgna.project.ast.NamedUserType replacementType ) {
-				this.addKeyValuePair( originalType, replacementType );
-				for( org.lgna.project.ast.UserMethod originalMethod : originalType.methods ) {
-					java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = originalMethod.getRequiredParameters();
-					final int N = requiredParameters.size();
-					org.lgna.project.ast.AbstractType< ?,?,? >[] parameterTypes = new org.lgna.project.ast.AbstractType< ?,?,? >[ N ];
-					for( int i=0; i<N; i++ ) {
-						parameterTypes[ i ] = requiredParameters.get( i ).getValueType();
-					}
-					org.lgna.project.ast.UserMethod replacementMethod = replacementType.getDeclaredMethod( originalMethod.getName(), parameterTypes );
-					if( replacementMethod != null ) {
-						this.addKeyValuePair( originalMethod, replacementMethod );
-						this.addKeyValuePair( originalMethod.body.getValue(), replacementMethod.body.getValue() );
-					}
-				}
-			}
-			private void addType( org.lgna.project.ast.NamedUserType originalType, java.util.Set< org.lgna.project.ast.NamedUserType > replacementTypes ) {
-				for( org.lgna.project.ast.NamedUserType replacementType : replacementTypes ) {
-					if( originalType.getName().equals( replacementType.getName() ) ) {
-						addType( originalType, replacementType );
-					}
-				}
-			}
-			public void addNodesFromTemplateToReplacementMap( org.lgna.project.Project originalProject, org.lgna.project.Project replacementProject ) {
-				java.util.Set< org.lgna.project.ast.NamedUserType > originalTypes = originalProject.getNamedUserTypes();
-				java.util.Set< org.lgna.project.ast.NamedUserType > replacementTypes = replacementProject.getNamedUserTypes();
-				
-				for( org.lgna.project.ast.NamedUserType originalType : originalTypes ) {
-					addType( originalType, replacementTypes );
-				}
-				for( Class<?> cls : new Class[] { org.lgna.story.MovableTurnable.class } ) {
-					org.lgna.project.ast.JavaType javaType = org.lgna.project.ast.JavaType.getInstance( cls );
-					this.addKeyValuePair( javaType, javaType );
-					for( org.lgna.project.ast.JavaMethod javaMethod : javaType.getDeclaredMethods() ) {
-						this.addKeyValuePair( javaMethod, javaMethod );
-					}
-				}
-			}
-
 			public void addKeyValuePair( Object key, Object value ) {
 				if( key instanceof org.lgna.project.ast.Node && value instanceof org.lgna.project.ast.Node ) {
-					org.lgna.project.ast.Node keyNode = (org.lgna.project.ast.Node)key;
-					org.lgna.project.ast.Node valueNode = (org.lgna.project.ast.Node)value;
-					mapIdToReplacementNode.put( keyNode.getId(), valueNode );
+					mapIdToReplacementNode.put( ((org.lgna.project.ast.Node)key).getId(), (org.lgna.project.ast.Node)value );
 				} else {
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: IGNORING addKeyValuePair", key, value );
 				}
@@ -155,15 +114,11 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			public <N> N retarget(N value) {
 				if( value instanceof org.lgna.project.ast.Node ) {
 					org.lgna.project.ast.Node originalNode = (org.lgna.project.ast.Node)value;
-					if( originalNode instanceof org.lgna.project.ast.JavaMethod ) {
-						return value;
+					org.lgna.project.ast.Node retargetedNode = mapIdToReplacementNode.get( originalNode.getId() );
+					if( retargetedNode != null ) {
+						return (N)retargetedNode;
 					} else {
-						org.lgna.project.ast.Node retargetedNode = mapIdToReplacementNode.get( originalNode.getId() );
-						if( retargetedNode != null ) {
-							return (N)retargetedNode;
-						} else {
-							return value;
-						}
+						return value;
 					}
 				} else if( value instanceof org.alice.ide.declarationseditor.DeclarationComposite ) {
 					return (N)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.declarationseditor.DeclarationComposite)value).getDeclaration() ) );
@@ -172,19 +127,109 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 				}
 			}
 		};
-
-		org.lgna.project.Project originalProject = this.getOriginalProject();
 		org.lgna.project.Project replacementProject = this.getReplacementProject();
 		AstDecodingRetargeter astDecodingRetargeter = new AstDecodingRetargeter();
-		
 		astDecodingRetargeter.addAllToReplacementMap( replacementProject );
-		astDecodingRetargeter.addNodesFromTemplateToReplacementMap( originalProject, replacementProject );
 
 		if( IS_WIZARD_OF_OZ_HASTINGS_DESIRED ) {
-			WizardOfHastings.castPart( astDecodingRetargeter, originalProject, "shark", replacementProject, "car" );
+			WizardOfHastings.castPart( astDecodingRetargeter, this.getOriginalProject(), "puffy", replacementProject, "car" );
 		}
 		this.originalTransactionHistory.retarget( astDecodingRetargeter );
 	}
+//	
+//	private void retarget() {
+//		//note: we leverage the fact that the uuids are identical for much of the initial states of the two projects
+//		class AstDecodingRetargeter implements org.lgna.croquet.Retargeter {
+//			private java.util.Map< java.util.UUID, org.lgna.project.ast.Node > mapIdToReplacementNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+//			public void addAllToReplacementMap( org.lgna.project.Project project ) {
+//				org.lgna.project.ast.NamedUserType programType = project.getProgramType();
+//				edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.Node > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.Node.class );
+//				programType.crawl( crawler, true );
+//				for( org.lgna.project.ast.Node node : crawler.getList() ) {
+//					this.addKeyValuePair( node, node );
+//				}
+//			}
+//			private void addType( org.lgna.project.ast.NamedUserType originalType, org.lgna.project.ast.NamedUserType replacementType ) {
+//				this.addKeyValuePair( originalType, replacementType );
+//				for( org.lgna.project.ast.UserMethod originalMethod : originalType.methods ) {
+//					java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = originalMethod.getRequiredParameters();
+//					final int N = requiredParameters.size();
+//					org.lgna.project.ast.AbstractType< ?,?,? >[] parameterTypes = new org.lgna.project.ast.AbstractType< ?,?,? >[ N ];
+//					for( int i=0; i<N; i++ ) {
+//						parameterTypes[ i ] = requiredParameters.get( i ).getValueType();
+//					}
+//					org.lgna.project.ast.UserMethod replacementMethod = replacementType.getDeclaredMethod( originalMethod.getName(), parameterTypes );
+//					if( replacementMethod != null ) {
+//						this.addKeyValuePair( originalMethod, replacementMethod );
+//						this.addKeyValuePair( originalMethod.body.getValue(), replacementMethod.body.getValue() );
+//					}
+//				}
+//			}
+//			private void addType( org.lgna.project.ast.NamedUserType originalType, java.util.Set< org.lgna.project.ast.NamedUserType > replacementTypes ) {
+//				for( org.lgna.project.ast.NamedUserType replacementType : replacementTypes ) {
+//					if( originalType.getName().equals( replacementType.getName() ) ) {
+//						addType( originalType, replacementType );
+//					}
+//				}
+//			}
+//			public void addNodesFromTemplateToReplacementMap( org.lgna.project.Project originalProject, org.lgna.project.Project replacementProject ) {
+//				java.util.Set< org.lgna.project.ast.NamedUserType > originalTypes = originalProject.getNamedUserTypes();
+//				java.util.Set< org.lgna.project.ast.NamedUserType > replacementTypes = replacementProject.getNamedUserTypes();
+//				
+//				for( org.lgna.project.ast.NamedUserType originalType : originalTypes ) {
+//					addType( originalType, replacementTypes );
+//				}
+//				for( Class<?> cls : new Class[] { org.lgna.story.MovableTurnable.class } ) {
+//					org.lgna.project.ast.JavaType javaType = org.lgna.project.ast.JavaType.getInstance( cls );
+//					this.addKeyValuePair( javaType, javaType );
+//					for( org.lgna.project.ast.JavaMethod javaMethod : javaType.getDeclaredMethods() ) {
+//						this.addKeyValuePair( javaMethod, javaMethod );
+//					}
+//				}
+//			}
+//
+//			public void addKeyValuePair( Object key, Object value ) {
+//				if( key instanceof org.lgna.project.ast.Node && value instanceof org.lgna.project.ast.Node ) {
+//					org.lgna.project.ast.Node keyNode = (org.lgna.project.ast.Node)key;
+//					org.lgna.project.ast.Node valueNode = (org.lgna.project.ast.Node)value;
+//					mapIdToReplacementNode.put( keyNode.getId(), valueNode );
+//				} else {
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: IGNORING addKeyValuePair", key, value );
+//				}
+//			}
+//			public <N> N retarget(N value) {
+//				if( value instanceof org.lgna.project.ast.Node ) {
+//					org.lgna.project.ast.Node originalNode = (org.lgna.project.ast.Node)value;
+//					if( originalNode instanceof org.lgna.project.ast.JavaMethod ) {
+//						return value;
+//					} else {
+//						org.lgna.project.ast.Node retargetedNode = mapIdToReplacementNode.get( originalNode.getId() );
+//						if( retargetedNode != null ) {
+//							return (N)retargetedNode;
+//						} else {
+//							return value;
+//						}
+//					}
+//				} else if( value instanceof org.alice.ide.declarationseditor.DeclarationComposite ) {
+//					return (N)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.declarationseditor.DeclarationComposite)value).getDeclaration() ) );
+//				} else {
+//					return value;
+//				}
+//			}
+//		};
+//
+//		org.lgna.project.Project originalProject = this.getOriginalProject();
+//		org.lgna.project.Project replacementProject = this.getReplacementProject();
+//		AstDecodingRetargeter astDecodingRetargeter = new AstDecodingRetargeter();
+//		
+//		astDecodingRetargeter.addAllToReplacementMap( replacementProject );
+//		//astDecodingRetargeter.addNodesFromTemplateToReplacementMap( originalProject, replacementProject );
+//
+//		if( IS_WIZARD_OF_OZ_HASTINGS_DESIRED ) {
+//			WizardOfHastings.castPart( astDecodingRetargeter, originalProject, "shark", replacementProject, "car" );
+//		}
+//		this.originalTransactionHistory.retarget( astDecodingRetargeter );
+//	}
 	private static org.lgna.project.ast.BlockStatement getRunBody( org.lgna.project.Project project ) {
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
 		org.lgna.project.ast.UserMethod runMethod = sceneType.getDeclaredMethod( "run" );
