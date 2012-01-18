@@ -40,35 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package uist;
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-class WizardOfHastings {
-	public static void castPart( org.lgna.croquet.Retargeter retargeter, org.lgna.project.Project originalProject, String originalFieldName, org.lgna.project.Project replacementProject, String replacementFieldName ) {
-		org.lgna.project.ast.AbstractType<?,?,?> orginalSceneType = originalProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();		
-		org.lgna.project.ast.AbstractField originalField = orginalSceneType.getDeclaredField( originalFieldName );
-		org.lgna.project.ast.AbstractType<?,?,?> replacementSceneType = replacementProject.getProgramType().getDeclaredFields().get( 0 ).getValueType();
-		org.lgna.project.ast.AbstractField replacementField = replacementSceneType.getDeclaredField( replacementFieldName );
-		
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "original:", originalField.getName(), originalField.getValueType().getName(), originalField.getValueType().getId() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "replacement:", replacementField.getName(), replacementField.getValueType().getName(), replacementField.getValueType().getId() );
-		retargeter.addKeyValuePair( originalField, replacementField );
-		retargeter.addKeyValuePair( originalField.getValueType(), replacementField.getValueType() );
+public class BackDoor {
+	private BackDoor() {
+		throw new AssertionError();
 	}
-	public static void castType( org.lgna.croquet.Retargeter retargeter, org.lgna.project.Project originalProject, String originalTypeName, org.lgna.project.Project replacementProject, String replacementTypeName ) {
-		for( org.lgna.project.ast.NamedUserType originalType : originalProject.getNamedUserTypes() ) {
-			if( originalType.getName().equals( originalTypeName ) ) {
-				for( org.lgna.project.ast.NamedUserType replacementType : replacementProject.getNamedUserTypes() ) {
-					if( replacementType.getName().equals( replacementTypeName ) ) {
-						retargeter.addKeyValuePair( originalType, replacementType );
-						return;
-					}
-				}
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( originalTypeName, replacementTypeName );
-			}
-		}
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( originalTypeName );
+	
+	public static void invokeHandleActiveChanged( Scene scene, boolean isActive, int activationCount ) {
+		scene.handleActiveChanged( isActive, activationCount );
 	}
+
 }

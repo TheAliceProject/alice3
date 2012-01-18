@@ -124,7 +124,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 			this.setValue((Entity)value);
 		}
 		else {
-			Logger.severe("Trying to set vehicle expression to something other than an Entity.");
+			Logger.severe("Trying to set vehicle expression to something other than an Entity.", value);
 		}
 	}
 	

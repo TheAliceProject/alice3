@@ -55,10 +55,15 @@ public class UserLambda extends AbstractUserMethod implements Lambda {
 	public UserLambda( Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
 		this( JavaType.getInstance( returnCls ), requiredParameters, body );
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getDeclaringType() {
-		return this.getFirstAncestorAssignableTo( AbstractType.class );
+	public UserType< ? > getDeclaringType() {
+		return this.getFirstAncestorAssignableTo( UserType.class );
 	}
+	public void setDeclaringType( UserType< ? > declaringType ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( declaringType );
+	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;
