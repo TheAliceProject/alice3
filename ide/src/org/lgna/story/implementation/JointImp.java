@@ -72,17 +72,17 @@ public abstract class JointImp extends AbstractTransformableImp {
 		return 0;
 	}
 
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
-		edu.cmu.cs.dennisc.scenegraph.Composite rv = super.getSgVehicle();
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.jointedModelImplementation.getSgComposite();
-		}
-		assert rv != null;
-		return rv;
-	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
+//		edu.cmu.cs.dennisc.scenegraph.Composite rv = super.getSgVehicle();
+//		if( rv != null ) {
+//			//pass
+//		} else {
+//			rv = this.jointedModelImplementation.getSgComposite();
+//		}
+//		assert rv != null;
+//		return rv;
+//	}
 	public abstract boolean isFreeInX();
 	public abstract boolean isFreeInY();
 	public abstract boolean isFreeInZ();
