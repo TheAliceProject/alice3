@@ -57,12 +57,12 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		//this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lgna.story.Color.class ) );
-		
+
 		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Entity.class );
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( org.lgna.project.ast.AbstractType<?,?,?> interfaceType ) {
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getEnumTypeForInterfaceType( org.lgna.project.ast.AbstractType< ?, ?, ? > interfaceType ) {
 		if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Style.class ) ) {
 			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.AnimationStyle.class );
 		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.EyeColor.class ) ) {
@@ -83,7 +83,8 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		}
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode,
+			org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		rv = super.addCustomFillIns( rv, blankNode, type );
 		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression != null ) {
@@ -123,6 +124,12 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		}
 		return rv;
 	}
+	@Override
+	protected void addBonusFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.AbstractType< ?, ?, ? > selectedType, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+//		if( type.isAssignableFrom( org.lgna.story.Joint.class ) ) {
+//			rv.add( new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn( new org.lgna.project.ast.TypeLiteral( type ) ) );
+//		}
+	}
 
 	@Override
 	protected org.lgna.croquet.CascadeBlankChild createBlankChildForFillInAndPossiblyPartFillIns( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractType< ?, ?, ? > type2 ) {
@@ -135,29 +142,29 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 			}
 		}
 		return fillIn;
-	}	
-//	@Override
-//	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addFillInAndPossiblyPartFillIns(  java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.AbstractType<?,?,?> type2 ) {
-//		super.addFillInAndPossiblyPartFillIns( rv, expression, type, type2 );
-//		if( type.isAssignableTo( org.lookingglassandalice.storytelling.PolygonalModel.class ) ) {
-//			org.lgna.project.ast.TypeDeclaredInJava typeInJava = null;
-//			Class< ? > paramCls = null;
-//			if( type2.isAssignableFrom( org.lookingglassandalice.storytelling.Model.class ) ) {
-//				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-//				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
-//				for( Class innerCls : cls.getDeclaredClasses() ) {
-//					if( innerCls.getSimpleName().equals( "Part" ) ) {
-//						paramCls = innerCls;
-//					}
-//				}
-//			}
-//			if( paramCls != null ) {
-//				org.lgna.project.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
-//				if( getPartMethod != null ) {
-//					rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
-//				}
-//			}
-//		}
-//		return rv;
-//	}
+	}
+	//	@Override
+	//	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addFillInAndPossiblyPartFillIns(  java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.AbstractType<?,?,?> type2 ) {
+	//		super.addFillInAndPossiblyPartFillIns( rv, expression, type, type2 );
+	//		if( type.isAssignableTo( org.lookingglassandalice.storytelling.PolygonalModel.class ) ) {
+	//			org.lgna.project.ast.TypeDeclaredInJava typeInJava = null;
+	//			Class< ? > paramCls = null;
+	//			if( type2.isAssignableFrom( org.lookingglassandalice.storytelling.Model.class ) ) {
+	//				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+	//				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
+	//				for( Class innerCls : cls.getDeclaredClasses() ) {
+	//					if( innerCls.getSimpleName().equals( "Part" ) ) {
+	//						paramCls = innerCls;
+	//					}
+	//				}
+	//			}
+	//			if( paramCls != null ) {
+	//				org.lgna.project.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
+	//				if( getPartMethod != null ) {
+	//					rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
+	//				}
+	//			}
+	//		}
+	//		return rv;
+	//	}
 }
