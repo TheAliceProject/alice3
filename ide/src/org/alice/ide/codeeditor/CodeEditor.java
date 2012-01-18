@@ -80,8 +80,8 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 
 	@Deprecated
-	public static class Resolver implements org.lgna.croquet.resolvers.CodableResolver< CodeEditor > {
-		private final org.lgna.project.ast.AbstractCode code;
+	public static class Resolver implements org.lgna.croquet.resolvers.RetargetableResolver< CodeEditor > {
+		private org.lgna.project.ast.AbstractCode code;
 		public Resolver( org.lgna.project.ast.AbstractCode code ) {
 			this.code = code;
 		}
@@ -96,6 +96,9 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 		}
 		public org.alice.ide.codeeditor.CodeEditor getResolved() {
 			return (org.alice.ide.codeeditor.CodeEditor)((org.alice.ide.declarationseditor.code.components.CodeDeclarationView)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( this.code ).getView()).getCodeDropReceptor();
+		}
+		public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+			this.code = retargeter.retarget( this.code );
 		}
 	}
 
@@ -648,7 +651,11 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implemen
 					return new StatementListIndexTrackableShape(statementListProperty, index, statementListPropertyPane, boundsAtIndex);
 				}
 			}
+//			org.lgna.project.ast.Node a = ((org.lgna.project.ast.BlockStatement)statementListProperty.getOwner()).getParent();
+//			org.lgna.project.ast.Node b = ((org.lgna.project.ast.BlockStatement)statementListPropertyPaneInfos[0].getStatementListPropertyPane().getProperty().getOwner()).getParent();
+//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( a, b, a.hashCode(), b.hashCode(), a.getId(), b.getId() );
 		}
+		
 		return null;
 	}
 

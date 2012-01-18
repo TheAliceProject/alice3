@@ -94,6 +94,7 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.reso
 		for( int i=0; i<N; i++ ) {
 			java.util.UUID id = binaryDecoder.decodeId();
 			rv[ i ] = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
+			//assert rv[ i ] != null : this;
 		}
 		return rv;
 	}

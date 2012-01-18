@@ -63,4 +63,13 @@ public class DropSiteResolver implements org.lgna.croquet.resolvers.RuntimeResol
 			return null;
 		}
 	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( this.step );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }

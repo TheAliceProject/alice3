@@ -278,11 +278,13 @@ public abstract class Presentation {
 	
 	
 	protected org.lgna.croquet.history.Transaction createTabSelectionRecoveryTransactionIfAppropriate( org.lgna.croquet.history.Transaction transaction ) {
-		org.lgna.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
-		for( org.lgna.croquet.TabSelectionState< org.lgna.croquet.TabComposite > tabSelectionState : org.lgna.croquet.Manager.getRegisteredModels( org.lgna.croquet.TabSelectionState.class ) ) {
-			for( org.lgna.croquet.TabComposite item : tabSelectionState ) {
-				if( item.contains( model ) ) {
-					return org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( transaction.getParent(), tabSelectionState, tabSelectionState.getValue(), item, false );
+		if( false ) {
+			org.lgna.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
+			for( org.lgna.croquet.TabSelectionState< org.lgna.croquet.TabComposite > tabSelectionState : org.lgna.croquet.Manager.getRegisteredModels( org.lgna.croquet.TabSelectionState.class ) ) {
+				for( org.lgna.croquet.TabComposite item : tabSelectionState ) {
+					if( item.contains( model ) ) {
+						return org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( transaction.getParent(), tabSelectionState, tabSelectionState.getValue(), item, false );
+					}
 				}
 			}
 		}

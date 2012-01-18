@@ -407,7 +407,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			} else {
 				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addItem( declarationComposite );
 			}
-			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setSelectedItem( declarationComposite );
+			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setValueTransactionlessly( declarationComposite );
 		}
 	}
 	private void selectDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {

@@ -110,13 +110,13 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			this.pushAtomic();
 			try {
-				this.clear();
+				java.util.List< DeclarationComposite > items = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				if( this.type != null ) {
-					this.addItem( DeclarationComposite.getInstance( this.type ) );
+					items.add( DeclarationComposite.getInstance( this.type ) );
 					for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
 						if( method.isPublicAccess() ) {
 							if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
-								this.addItem( DeclarationComposite.getInstance( method ) );
+								items.add( DeclarationComposite.getInstance( method ) );
 							}
 						}
 					}
@@ -129,7 +129,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 						index = this.getItemCount()-1;
 						//index = -1;
 					}
-					this.setSelectedIndex( index );
+					this.setListData( index, items );
 				} else {
 					this.setSelectedIndex( -1 );
 				}

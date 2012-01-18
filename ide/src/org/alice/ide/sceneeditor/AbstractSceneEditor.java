@@ -268,7 +268,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		//
 		
 		
-		SceneFieldListSelectionState.getInstance().setSelectedItem(sceneField);
+		SceneFieldListSelectionState.getInstance().setValueTransactionlessly(sceneField);
 
 		//Run the "setActiveScene" call on the program to get the active scene set in the right state
 //		edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneAliceInstance = getActiveSceneInstance();
