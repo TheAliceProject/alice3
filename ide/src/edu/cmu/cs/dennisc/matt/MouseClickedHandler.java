@@ -2,18 +2,18 @@ package edu.cmu.cs.dennisc.matt;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.lgna.story.Model;
+import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Scene;
-import org.lgna.story.event.EventPolicy;
+import org.lgna.story.Visual;
 import org.lgna.story.event.MouseButtonEvent;
 import org.lgna.story.event.MouseButtonListener;
 
 
 public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListener, MouseButtonEvent > {
 
-	HashMap<Model, LinkedList<MouseButtonListener>> map = new HashMap<Model, LinkedList<MouseButtonListener>>();
+	HashMap<Visual, LinkedList<MouseButtonListener>> map = new HashMap<Visual, LinkedList<MouseButtonListener>>();
 
 	private boolean isMouseButtonListenerInExistence() {
 //		if( this.mouseButtonListeners.size() > 0 ) {
@@ -74,22 +74,24 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListen
 				LinkedList<MouseButtonListener> listeners = map.get(event.getModelAtMouseLocation());
 				if(listeners != null){
 					for(MouseButtonListener listener: listeners){
-						fireEvent(listener, event);
+						fireEvent(listener, event, event.getModelAtMouseLocation());
 					}
 				}
 			}
 		}
 	}
-	public void addListener(MouseButtonListener mouseButtonListener, EventPolicy eventPolicy, List<Model> targets) {
-		isFiringMap.put(mouseButtonListener, false);
+	public void addListener(MouseButtonListener mouseButtonListener, MultipleEventPolicy eventPolicy, Visual[] targets) {
+//		isFiringMap.put(mouseButtonListener, false);
+		isFiringMap.put(mouseButtonListener, new HashMap< Object, Boolean >());
 		policyMap.put(mouseButtonListener, eventPolicy);
-		for(Model target: targets){
+		for(Visual target: targets){
 			if(map.get(target) != null){
 				map.get(target).add(mouseButtonListener);
 			} else{
 				LinkedList<MouseButtonListener> list = new LinkedList<MouseButtonListener>();
 				list.add(mouseButtonListener);
 				map.put(target, list);
+				isFiringMap.get(mouseButtonListener).put( target, false );
 			}
 		}
 	}

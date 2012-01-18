@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import java.util.List;
+
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;
@@ -52,9 +54,6 @@ import org.lgna.story.event.MouseButtonListener;
 import org.lgna.story.event.ProximityEventListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.matt.AddKeyPressedListener;
-import edu.cmu.cs.dennisc.matt.AddMouseButtonListener;
-import edu.cmu.cs.dennisc.matt.AddProximityEventListener;
 
 
 /**
@@ -149,26 +148,28 @@ public abstract class Scene extends Entity{
 		this.implementation.removeSceneActivationListener( sceneActivationListener );
 	}
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
-	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, AddMouseButtonListener.Detail... details){//, EventPolicy eventPolicy, Model[] targets) {
-		this.getImplementation().getEventManager().addMouseButtonListener( mouseButtonListener, AddMouseButtonListener.getPolicy( details ), AddMouseButtonListener.getTargeted(details));
+	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, AddMouseButtonListener.Detail... details ) {
+		this.getImplementation().getEventManager().addMouseButtonListener( mouseButtonListener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
 	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
 		this.getImplementation().getEventManager().removeMouseButtonListener( mouseButtonListener );
 	}
-	public void addCollisionListener( CollisionListener collisionListener, Model[] groupOne, Model[] groupTwo){
-		this.getImplementation().getEventManager().addCollisionListener(collisionListener, Collections.newArrayList(groupOne), Collections.newArrayList(groupTwo));
-	}
-	public void addProximityEventListener( ProximityEventListener proximityEventListener, Model[] groupOne, Model[] groupTwo, AddProximityEventListener.Detail... details){
-		this.getImplementation().getEventManager().addProximityEventListener(proximityEventListener, Collections.newArrayList(groupOne), Collections.newArrayList(groupTwo), AddProximityEventListener.getDist( details ));
-	}
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
 	public void addKeyPressedListener( org.lgna.story.event.KeyListener keyListener,  AddKeyPressedListener.Detail... details) {
-		this.implementation.getEventManager().addKeyListener( keyListener, AddKeyPressedListener.getPolicy(details) );
+		this.implementation.getEventManager().addKeyListener( keyListener, MultipleEventPolicy.getValue( details ) );
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
 	public void removeKeyListener( org.lgna.story.event.KeyListener keyListener ) {
 		this.implementation.getEventManager().removeKeyListener( keyListener );
+	}
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	public void addCollisionListener( CollisionListener collisionListener, Entity[] groupOne, Entity[] groupTwo){
+		this.getImplementation().getEventManager().addCollisionListener(collisionListener, Collections.newArrayList(groupOne), Collections.newArrayList(groupTwo));
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	public void addProximityEventListener( ProximityEventListener proximityEventListener, Entity[] groupOne, Entity[] groupTwo, AddProximityEventListener.Detail... details){
+		this.getImplementation().getEventManager().addProximityEventListener(proximityEventListener, Collections.newArrayList(groupOne), Collections.newArrayList(groupTwo), AddProximityEventListener.getDist( details ));
 	}
 
 //	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)

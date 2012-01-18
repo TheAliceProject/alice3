@@ -42,8 +42,6 @@
  */
 package test;
 
-import java.util.LinkedList;
-
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
@@ -54,16 +52,15 @@ import org.lgna.story.Key;
 import org.lgna.story.Model;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
+import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Program;
 import org.lgna.story.Prop;
 import org.lgna.story.RollDirection;
 import org.lgna.story.Scene;
+import org.lgna.story.SetOfVisuals;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.event.CollisionEvent;
-import org.lgna.story.event.CollisionListener;
-import org.lgna.story.event.EventPolicy;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonEvent;
@@ -78,10 +75,7 @@ import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
-import edu.cmu.cs.dennisc.matt.AddMouseButtonListener;
-import edu.cmu.cs.dennisc.matt.MultipleEventPolicy;
 import edu.cmu.cs.dennisc.matt.ProximityDistance;
-import edu.cmu.cs.dennisc.matt.TargetedModels;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -249,12 +243,14 @@ class SnowScene extends Scene{
 					armoire.move(MoveDirection.DOWN, 1);
 				}
 			}
-		}, new MultipleEventPolicy(EventPolicy.COMBINE));
+		}, MultipleEventPolicy.COMBINE );
 		this.addProximityEventListener( new ProximityEventListener() {
 
 			public void whenTheseGetClose( ProximityEvent e ) {
-				e.getModels().get(1).move(MoveDirection.UP, 1);
-				e.getModels().get(1).move(MoveDirection.DOWN, 1);				
+				if( e.getModels().get( 1 ) instanceof Model ) {
+					((Model)e.getModels().get(1)).move(MoveDirection.UP, 1);
+					((Model)e.getModels().get(1)).move(MoveDirection.DOWN, 1);
+				}			
 			}
 		}, colListOne, colListTwo, new ProximityDistance( 1.0 ) );
 		this.addMouseButtonListener( new MouseButtonListener() {
@@ -262,7 +258,7 @@ class SnowScene extends Scene{
 				e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
 				e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);
 			}
-		}, new MultipleEventPolicy(EventPolicy.ENQUEUE), new TargetedModels(list));
+		}, MultipleEventPolicy.ENQUEUE, new SetOfVisuals(list));
 	}
 
 	public void chillInSkiChalet() {

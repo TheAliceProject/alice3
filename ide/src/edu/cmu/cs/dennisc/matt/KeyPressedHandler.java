@@ -1,8 +1,9 @@
 package edu.cmu.cs.dennisc.matt;
 
+import java.util.HashMap;
 import java.util.List;
 
-import org.lgna.story.event.EventPolicy;
+import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyListener;
 
@@ -12,8 +13,10 @@ public class KeyPressedHandler extends AbstractEventHandler<KeyListener, KeyEven
 
 	private final List<KeyListener> list = Collections.newLinkedList();
 
-	public void addListener(KeyListener keyList, EventPolicy policy) {
-		isFiringMap.put(keyList, false);
+	public void addListener(KeyListener keyList, MultipleEventPolicy policy) {
+//		isFiringMap.put(keyList, false);
+		isFiringMap.put(keyList, new HashMap< Object, Boolean >());
+		isFiringMap.get( keyList ).put( keyList, false );//TODO: @mmay make key list discriminate based on key pressed
 		policyMap.put(keyList, policy);
 		if(!list.contains(keyList)){
 			list.add(keyList);
@@ -23,7 +26,7 @@ public class KeyPressedHandler extends AbstractEventHandler<KeyListener, KeyEven
 	public void fireAllTargeted(KeyEvent e) {
 		if(shouldFire){
 			for(KeyListener listener: list){
-				fireEvent(listener, e);
+				fireEvent(listener, e, listener);//TODO
 			}
 		}
 	}

@@ -2,14 +2,17 @@ package edu.cmu.cs.dennisc.matt;
 
 import java.util.List;
 
-import org.lgna.story.Model;
+import org.lgna.story.Entity;
+import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.Visual;
 import org.lgna.story.event.CollisionListener;
-import org.lgna.story.event.EventPolicy;
 import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonListener;
 import org.lgna.story.event.ProximityEventListener;
 import org.lgna.story.implementation.SceneImp;
 
+import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 
 public class EventManager {
@@ -46,7 +49,7 @@ public class EventManager {
 		this.scene = scene;
 	}
 
-	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, EventPolicy eventPolicy, List< Model > targets ) {
+	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, MultipleEventPolicy eventPolicy, Visual[] targets ) {
 		this.mouseHandler.addListener( mouseButtonListener, eventPolicy, targets );
 		//		this.mouseButtonListeners.add( mouseButtonListener);
 	}
@@ -55,7 +58,7 @@ public class EventManager {
 		//		this.mouse.removeListener(mouseButtonListener);
 		//		this.mouseButtonListeners.remove( mouseButtonListener );
 	}
-	public void addKeyListener( KeyListener keyListener, EventPolicy eventPolicy ) {
+	public void addKeyListener( KeyListener keyListener, MultipleEventPolicy eventPolicy ) {
 		this.keyHandler.addListener( keyListener, eventPolicy );
 		//		this.keyListeners.add( keyListener);
 	}
@@ -108,10 +111,10 @@ public class EventManager {
 			handler.restoreListeners();
 		}
 	}
-	public void addCollisionListener( CollisionListener collisionListener, List< Model > groupOne, List< Model > groupTwo ) {
+	public void addCollisionListener( CollisionListener collisionListener, List< Entity > groupOne, List< Entity > groupTwo ) {
 		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
 	}
-	public void addProximityEventListener( ProximityEventListener proximityEventListener, List< Model > groupOne, List< Model > groupTwo, Double dist ) {
+	public void addProximityEventListener( ProximityEventListener proximityEventListener, List< Entity > groupOne, List< Entity > groupTwo, Double dist ) {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
 	}
 

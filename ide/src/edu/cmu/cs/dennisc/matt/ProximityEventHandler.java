@@ -47,9 +47,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Model;
-import org.lgna.story.event.EventPolicy;
+import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.ProximityEvent;
 import org.lgna.story.event.ProximityEventListener;
 
@@ -62,12 +62,14 @@ public class ProximityEventHandler extends TransformationChangedHandler<Proximit
 	
 	private ProximityEventManager proximityEventManager = new ProximityEventManager();
 	
-	public void addProximityEventListener( ProximityEventListener pEList, List< Model > groupOne, List< Model > groupTwo, Double distance ) {
-		policyMap.put( pEList, EventPolicy.IGNORE );
-		isFiringMap.put( pEList, false );
-		List< Model > allObserving = Collections.newArrayList( groupOne );
+	public void addProximityEventListener( ProximityEventListener pEList, List< Entity > groupOne, List< Entity > groupTwo, Double distance ) {
+		policyMap.put( pEList, MultipleEventPolicy.IGNORE );
+//		isFiringMap.put( pEList, false );
+		isFiringMap.put( pEList, new HashMap< Object, Boolean >() );
+		isFiringMap.get(pEList).put( pEList, false );
+		List< Entity > allObserving = Collections.newArrayList( groupOne );
 		allObserving.addAll( groupTwo );
-		for( Model m : allObserving ) {
+		for( Entity m : allObserving ) {
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
@@ -83,38 +85,38 @@ public class ProximityEventHandler extends TransformationChangedHandler<Proximit
 	}
 
 	@Override
-	protected void check( Model changedEntity ) {
+	protected void check( Entity changedEntity ) {
 		proximityEventManager.check(changedEntity);
 		
 	}
 	
 	protected class ProximityEventManager {
 
-		Map< Model, LinkedList< Model >> checkMap = new HashMap< Model, LinkedList< Model >>();
-		Map< Model, HashMap< Model, LinkedList< ProximityEventListener >>> eventMap = new HashMap< Model, HashMap< Model, LinkedList< ProximityEventListener >>>();
+		Map< Entity, LinkedList< Entity >> checkMap = new HashMap< Entity, LinkedList< Entity >>();
+		Map< Entity, HashMap< Entity, LinkedList< ProximityEventListener >>> eventMap = new HashMap< Entity, HashMap< Entity, LinkedList< ProximityEventListener >>>();
 		Map< ProximityEventListener, Double > distMap = new HashMap< ProximityEventListener, Double >();
 
-		public void check( Model changedEntity ) {
-			for( Model m : checkMap.get( changedEntity ) ) {
+		public void check( Entity changedEntity ) {
+			for( Entity m : checkMap.get( changedEntity ) ) {
 					for( ProximityEventListener proxList : eventMap.get( changedEntity ).get( m ) ) {
 				if( AabbCollisionDetector.doTheseCollide( m, changedEntity, distMap.get(proxList) ) ) {
-						LinkedList< Model > models = new LinkedList< Model >();
+						LinkedList< Entity > models = new LinkedList< Entity >();
 						models.add( changedEntity );
 						models.add( m );
-						fireEvent( proxList, new ProximityEvent( models ) );
+						fireEvent( proxList, new ProximityEvent( models ), proxList );
 					}
 				}
 			}
 		}
 
-		public void register( ProximityEventListener proximityEventListener, List< Model > groupOne, List< Model > groupTwo, Double dist ) {
+		public void register( ProximityEventListener proximityEventListener, List< Entity > groupOne, List< Entity > groupTwo, Double dist ) {
 			distMap.put(proximityEventListener, dist);
-			for( Model m : groupOne ) {
+			for( Entity m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap< Model, LinkedList< ProximityEventListener >>() );
-					checkMap.put( m, new LinkedList< Model >() );
+					eventMap.put( m, new HashMap< Entity, LinkedList< ProximityEventListener >>() );
+					checkMap.put( m, new LinkedList< Entity >() );
 				}
-				for( Model t : groupTwo ) {
+				for( Entity t : groupTwo ) {
 					if( eventMap.get( m ).get( t ) == null ) {
 						eventMap.get( m ).put( t, new LinkedList< ProximityEventListener >() );
 					}
@@ -124,12 +126,12 @@ public class ProximityEventHandler extends TransformationChangedHandler<Proximit
 					}
 				}
 			}
-			for( Model m : groupTwo ) {
+			for( Entity m : groupTwo ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap< Model, LinkedList< ProximityEventListener >>() );
-					checkMap.put( m, new LinkedList< Model >() );
+					eventMap.put( m, new HashMap< Entity, LinkedList< ProximityEventListener >>() );
+					checkMap.put( m, new LinkedList< Entity >() );
 				}
-				for( Model t : groupOne ) {
+				for( Entity t : groupOne ) {
 					if( eventMap.get( m ).get( t ) == null ) {
 						eventMap.get( m ).put( t, new LinkedList< ProximityEventListener >() );
 					}

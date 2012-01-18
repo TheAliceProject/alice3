@@ -46,11 +46,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Model;
+import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.CollisionEvent;
 import org.lgna.story.event.CollisionListener;
-import org.lgna.story.event.EventPolicy;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -61,12 +61,14 @@ public class CollisionHandler extends TransformationChangedHandler<CollisionList
 
 	protected CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 
-	public void addCollisionListener( CollisionListener collisionListener, List< Model > groupOne, List< Model > groupTwo ) {
-		policyMap.put( collisionListener, EventPolicy.IGNORE );
-		isFiringMap.put( collisionListener, false );
-		List< Model > allObserving = Collections.newArrayList( groupOne );
+	public void addCollisionListener( CollisionListener collisionListener, List< Entity > groupOne, List< Entity > groupTwo ) {
+		policyMap.put( collisionListener, MultipleEventPolicy.IGNORE );
+//		isFiringMap.put( collisionListener, false );
+		isFiringMap.put( collisionListener, new HashMap< Object, Boolean >() );
+		isFiringMap.get( collisionListener ).put( collisionListener, false );
+		List< Entity > allObserving = Collections.newArrayList( groupOne );
 		allObserving.addAll( groupTwo );
-		for( Model m : allObserving ) {
+		for( Entity m : allObserving ) {
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
@@ -76,7 +78,7 @@ public class CollisionHandler extends TransformationChangedHandler<CollisionList
 	}
 
 	@Override
-	protected void check( Model changedEntity ) {
+	protected void check( Entity changedEntity ) {
 		collisionEventHandler.check( changedEntity );
 	}
 
@@ -88,29 +90,29 @@ public class CollisionHandler extends TransformationChangedHandler<CollisionList
 
 	private class CollisionEventHandler {
 
-		HashMap< Model, LinkedList< Model >> checkMap = new HashMap< Model, LinkedList< Model >>();
-		HashMap< Model, HashMap< Model, LinkedList< CollisionListener >>> eventMap = new HashMap< Model, HashMap< Model, LinkedList< CollisionListener >>>();
+		HashMap< Entity, LinkedList< Entity >> checkMap = new HashMap< Entity, LinkedList< Entity >>();
+		HashMap< Entity, HashMap< Entity, LinkedList< CollisionListener >>> eventMap = new HashMap< Entity, HashMap< Entity, LinkedList< CollisionListener >>>();
 
-		public void check( Model changedEntity ) {
-			for( Model m : checkMap.get( changedEntity ) ) {
+		public void check( Entity changedEntity ) {
+			for( Entity m : checkMap.get( changedEntity ) ) {
 				if( AabbCollisionDetector.doTheseCollide( m, changedEntity ) ) {
-					LinkedList< Model > models = new LinkedList< Model >();
+					LinkedList< Entity > models = new LinkedList< Entity >();
 					models.add( changedEntity );
 					models.add( m );
 					for( CollisionListener colList : eventMap.get( changedEntity ).get( m ) ) {
-						fireEvent( colList, new CollisionEvent( models ) );
+						fireEvent( colList, new CollisionEvent( models ), colList );
 					}
 				}
 			}
 		}
 
-		public void register( CollisionListener collisionListener, List< Model > groupOne, List< Model > groupTwo ) {
-			for( Model m : groupOne ) {
+		public void register( CollisionListener collisionListener, List< Entity > groupOne, List< Entity > groupTwo ) {
+			for( Entity m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap< Model, LinkedList< CollisionListener >>() );
-					checkMap.put( m, new LinkedList< Model >() );
+					eventMap.put( m, new HashMap< Entity, LinkedList< CollisionListener >>() );
+					checkMap.put( m, new LinkedList< Entity >() );
 				}
-				for( Model t : groupTwo ) {
+				for( Entity t : groupTwo ) {
 					if( eventMap.get( m ).get( t ) == null ) {
 						eventMap.get( m ).put( t, new LinkedList< CollisionListener >() );
 					}
@@ -122,12 +124,12 @@ public class CollisionHandler extends TransformationChangedHandler<CollisionList
 					}
 				}
 			}
-			for( Model m : groupTwo ) {
+			for( Entity m : groupTwo ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap< Model, LinkedList< CollisionListener >>() );
-					checkMap.put( m, new LinkedList< Model >() );
+					eventMap.put( m, new HashMap< Entity, LinkedList< CollisionListener >>() );
+					checkMap.put( m, new LinkedList< Entity >() );
 				}
-				for( Model t : groupOne ) {
+				for( Entity t : groupOne ) {
 					if( eventMap.get( m ).get( t ) == null ) {
 						eventMap.get( m ).put( t, new LinkedList< CollisionListener >() );
 					}

@@ -1,9 +1,10 @@
 ﻿package edu.cmu.cs.dennisc.matt;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.AbstractEvent;
-import org.lgna.story.event.EventPolicy;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -11,28 +12,31 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 	
 	protected boolean shouldFire = true;
 	protected Integer count = 0;
-	protected Map<Object, Boolean> isFiringMap = Collections.newHashMap();
-	protected Map<Object, EventPolicy> policyMap = Collections.newHashMap();
+//	protected Map<Object, Boolean> isFiringMap = Collections.newHashMap();
+	protected Map<Object, MultipleEventPolicy> policyMap = Collections.newHashMap();
+	protected Map<Object, HashMap< Object, Boolean >> isFiringMap = Collections.newHashMap();
 
-	protected void fireEvent(final L listener, final E event){
+	protected void fireEvent(final L listener, final E event, final Object o){
 		if(shouldFire){
 			Thread thread = new Thread(){
 				@Override
 				public void run(){
 					fire(listener, event);
-					if(policyMap.get(listener).equals(EventPolicy.ENQUEUE)){
+					if(policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)){
 						fireDequeue(listener, event);
 					}
-					isFiringMap.put(listener, false);
+					isFiringMap.get(listener).put(o, false);
 				}
 			};
-			if(isFiringMap.get(listener).equals(false)){
-				isFiringMap.put(listener, true);
+//			if(isFiringMap.get(listener).equals(false)){
+//			isFiringMap.put(listener, true);
+			if(isFiringMap.get(listener).get( o ).equals(false)){
+				isFiringMap.get(listener).put(o, true);
 				thread.start();
 				return;
-			}else if(policyMap.get(listener).equals(EventPolicy.COMBINE)){
+			}else if(policyMap.get(listener).equals(MultipleEventPolicy.COMBINE)){
 				thread.start();
-			}else if(policyMap.get(listener).equals(EventPolicy.ENQUEUE)){
+			}else if(policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)){
 				enqueue();
 			}
 		}
