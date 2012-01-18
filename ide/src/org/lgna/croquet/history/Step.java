@@ -56,6 +56,11 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		} else {
 			this.modelResolver = null;
 		}
+		if( trigger != null ) {
+			//pass
+		} else {
+			trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
+		}
 		this.trigger = trigger;
 		this.id = java.util.UUID.randomUUID();
 	}
