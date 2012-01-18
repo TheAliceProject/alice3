@@ -53,7 +53,7 @@ public class ScaledImageIcon implements javax.swing.Icon {
 		if( image != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null", this );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "image is null", this );
 		}
 		this.image = image;
 		this.width = width;

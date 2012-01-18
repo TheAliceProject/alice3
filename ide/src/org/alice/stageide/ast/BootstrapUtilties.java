@@ -198,7 +198,7 @@ public class BootstrapUtilties {
 
 		org.lgna.project.ast.UserMethod handleActiveChangedMethod = createMethod( org.lgna.project.ast.AccessLevel.PROTECTED, Void.TYPE, "handleActiveChanged" );
 		org.lgna.project.ast.UserParameter isActiveParameter = new org.lgna.project.ast.UserParameter( "isActive", Boolean.class );
-		org.lgna.project.ast.UserParameter activeCountParameter = new org.lgna.project.ast.UserParameter( "activeCount", Integer.class );
+		org.lgna.project.ast.UserParameter activeCountParameter = new org.lgna.project.ast.UserParameter( "activationCount", Integer.class );
 		handleActiveChangedMethod.requiredParameters.add( isActiveParameter );
 		handleActiveChangedMethod.requiredParameters.add( activeCountParameter );
 		handleActiveChangedMethod.isSignatureLocked.setValue( true );

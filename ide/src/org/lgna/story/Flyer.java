@@ -65,7 +65,10 @@ public class Flyer extends JointedModel implements Articulable {
 	public void touch( Entity entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );
 	}
-	
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
+	public Joint getRoot() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.ROOT);
+	}
 	public Joint getPelvisUpperBody() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.PELVIS_UPPER_BODY);
 	}

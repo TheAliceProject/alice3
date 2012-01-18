@@ -40,44 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserLambda extends AbstractUserMethod implements Lambda {
-	public UserLambda() {
+public class BackDoor {
+	private BackDoor() {
+		throw new AssertionError();
 	}
-	public UserLambda( AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
-		super( returnType, requiredParameters, body );
-	}
-	public UserLambda( Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
-		this( JavaType.getInstance( returnCls ), requiredParameters, body );
-	}
-
-	@Override
-	public UserType< ? > getDeclaringType() {
-		return this.getFirstAncestorAssignableTo( UserType.class );
-	}
-	public void setDeclaringType( UserType< ? > declaringType ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( declaringType );
+	
+	public static void invokeHandleActiveChanged( Scene scene, boolean isActive, int activationCount ) {
+		scene.handleActiveChanged( isActive, activationCount );
 	}
 
-	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
-	@Override
-	public boolean isAbstract() {
-		return false;
-	}
-	@Override
-	public boolean isFinal() {
-		return false;
-	}
 }

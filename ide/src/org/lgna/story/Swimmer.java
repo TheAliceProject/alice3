@@ -16,7 +16,10 @@ public class Swimmer extends JointedModel {
 	public void swimTo( Entity entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: swimTo" );
 	}
-
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
+	public Joint getRoot() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.ROOT);
+	}
 	public Joint getNeck() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.NECK);
 	}

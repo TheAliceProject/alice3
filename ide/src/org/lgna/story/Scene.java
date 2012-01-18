@@ -64,39 +64,7 @@ public abstract class Scene extends Entity {
 		this.implementation.removeSceneActivationListener( sceneActivationListener );
 	}
 	
-	private void changeActiveStatus( Program program, boolean isActive, int activeCount ) {
-		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
-		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
-		this.handleActiveChanged( isActive, activeCount );
-		this.implementation.fireSceneActivationListeners();
-		if( isActive ) {
-			this.implementation.addCamerasTo( program.getImplementation() );
-		} else {
-			this.implementation.removeCamerasFrom( program.getImplementation() );
-		}
-		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
-	}
-
-	private int activeCount;
-	private int deactiveCount;
-
-	/*package-private*/void activate( Program program ) {
-		assert deactiveCount == activeCount;
-		activeCount++;
-		this.implementation.setProgram( program.getImplementation() );
-		this.implementation.setGlobalBrightness( 0.0f );
-		this.changeActiveStatus( program, true, activeCount );
-		this.implementation.animateGlobalBrightness( 1.0f, 0.5, AnimationStyle.BEGIN_AND_END_GENTLY.getInternal() );
-	}
-	/*package-private*/void deactivate( Program program ) {
-		deactiveCount++;
-		assert deactiveCount == activeCount;
-		this.implementation.animateGlobalBrightness( 0.0f, 0.25, AnimationStyle.BEGIN_AND_END_GENTLY.getInternal() );
-		this.changeActiveStatus( program, false, activeCount );
-		this.implementation.setProgram( null );
-	}
-
-	protected abstract void handleActiveChanged( Boolean isActive, Integer activeCount );
+	protected abstract void handleActiveChanged( Boolean isActive, Integer activationCount );
 
 	protected void preserveStateAndEventListeners() {
 		this.implementation.preserveStateAndEventListeners();

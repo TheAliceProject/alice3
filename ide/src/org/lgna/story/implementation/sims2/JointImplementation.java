@@ -1,6 +1,6 @@
 package org.lgna.story.implementation.sims2;
 
-import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 
 public class JointImplementation extends org.lgna.story.implementation.JointImp {
 	private final NebulousJoint sgJoint;
@@ -16,10 +16,6 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	@Override
 	public NebulousJoint getSgComposite() {
 		return this.sgJoint;
-	}
-	@Override
-	public void setCustomJointSgParent(Composite sgParent) {
-		sgJoint.setSgParent(sgParent);
 	}
 	@Override
 	public boolean isFreeInX() {

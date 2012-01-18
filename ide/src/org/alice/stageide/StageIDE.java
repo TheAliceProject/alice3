@@ -128,7 +128,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				if( thumbnail != null ) {
 					return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 20, 20 );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( resourceClass, field.getName() );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( resourceClass, field.getName() );
 					return null;
 				}
 			} else {

@@ -451,6 +451,7 @@ public class AstUtilities {
 				dstRequiredParameters,
 				new BlockStatement()
 		);
+		rv.isSignatureLocked.setValue( true );
 		return rv;
 	}
 
