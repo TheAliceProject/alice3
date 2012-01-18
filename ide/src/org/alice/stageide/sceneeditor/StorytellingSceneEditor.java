@@ -238,7 +238,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 						new Expression[] { expression }
 				);
 				
-				Logger.severe( values[ 0 ] );
+				Logger.todo( "SetSelectedMethod in SceneEditor (for joint selection)" );
 				
 			}
 			else if (expression instanceof ThisExpression)

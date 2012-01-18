@@ -29,16 +29,16 @@ public class NebulousJointAdapter extends AbstractTransformableAdapter< edu.cmu.
 		this.updateLocalTransformation();
 		return this.m_localTransformationBuffer;
 	}
-	@Override
-	public void renderOpaque( RenderContext rc ) {
-		//todo
-	}
-	@Override
-	public void renderGhost( RenderContext rc, GhostAdapter root ) {
-		//todo
-	}
-	@Override
-	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		//todo
-	}
+//	@Override
+//	public void renderOpaque( RenderContext rc ) {
+//		//todo
+//	}
+//	@Override
+//	public void renderGhost( RenderContext rc, GhostAdapter root ) {
+//		//todo
+//	}
+//	@Override
+//	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+//		//todo
+//	}
 }
