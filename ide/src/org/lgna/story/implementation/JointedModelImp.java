@@ -80,12 +80,11 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	
 	private JointImp createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
 		JointImp joint = this.createJointImplementation( jointId );
-		if (joint == null) {
-			joint = this.createJointImplementation(jointId);
-		}
+		joint.setVehicle(parent);
 		this.mapIdToJoint.put( jointId, joint );
 		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-			createJointTree(childId, parent);
+			JointImp childTree = createJointTree(childId, joint);
+			childTree.setVehicle(joint);
 		}
 		return joint;
 	}
@@ -121,23 +120,6 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	
 	public org.lgna.story.implementation.JointImp getJointImplementation( org.lgna.story.resources.JointId jointId ) {
 		return this.mapIdToJoint.get( jointId );
-//		synchronized( this.mapIdToJoint ) {
-//			org.lgna.story.implementation.JointImp rv = this.mapIdToJoint.get( jointId );
-//			if( rv != null || this.mapIdToJoint.containsKey( jointId ) ) {
-//				//pass
-//			} else {
-//				rv = this.createJointImplementation( jointId );
-//				this.mapIdToJoint.put( jointId, rv );
-//				if (rv.getVehicle() == null && jointId.getParent() != null ) {
-//					org.lgna.story.implementation.JointImp parentJoint = getJointImplementation(jointId.getParent());
-//					rv.setVehicle(parentJoint);
-//				}
-//				else if ( jointId.getParent() == null ) {
-//					rv.setCustomJointSgParent(this.getSgComposite());
-//				}
-//			}
-//			return rv;
-//		}
 	}
 	
 	protected edu.cmu.cs.dennisc.math.Vector4 getFrontOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {

@@ -120,8 +120,6 @@ public abstract class JointImp extends AbstractTransformableImp {
 		this.getPivot().setParent( this.getSgComposite() );
 	}
 	
-	//Joints don't actually want to be directly hooked into the sg tree, so we have this method as a way to link them in indirectly
-	public abstract void setCustomJointSgParent(edu.cmu.cs.dennisc.scenegraph.Composite sgParent);
 	@Override
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 		super.appendRepr( sb );

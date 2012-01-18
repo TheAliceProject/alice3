@@ -41,18 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.implementation.sims2;
+package edu.cmu.cs.dennisc.nebulous;
 
+import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 
 /**
  * @author Dennis Cosgrove
  */
 public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable {
+	static {
+		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( NebulousJoint.class, NebulousJointAdapter.class );
+	}
 	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
 	private final org.lgna.story.resources.JointId jointId;
-	private Composite sgParent = null;
-	
+
 	public NebulousJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lgna.story.resources.JointId jointId ) {
 		this.nebModel = nebModel;
 		this.jointId = jointId;
@@ -62,12 +65,16 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation() {
-		
 		return this.nebModel.getLocalTransformationForJoint( this.jointId );
 	}
 	@Override
 	protected void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 		this.nebModel.setLocalTransformationForJoint( this.jointId, m );
+	}
+	
+	@Override
+	public void setParent( Composite parent ) {
+		super.setParent(parent);
 	}
 //	
 //	public void setSgParent( Composite sgParent )
