@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.nebulous;
 
-import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 
 /**

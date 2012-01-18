@@ -50,9 +50,11 @@ public class TransformableAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Trans
 	private double[] m_localTransformation = new double[ 16 ];
 	private java.nio.DoubleBuffer m_localTransformationBuffer = java.nio.DoubleBuffer.wrap( m_localTransformation );
 	
+	@Override
 	public double[] accessLocalTransformation() {
 		return m_localTransformation;
 	}
+	@Override
 	public java.nio.DoubleBuffer accessLocalTransformationAsBuffer() {
 		return m_localTransformationBuffer;
 	}

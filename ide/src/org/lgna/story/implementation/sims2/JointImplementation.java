@@ -1,7 +1,6 @@
 package org.lgna.story.implementation.sims2;
 
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
 
 public class JointImplementation extends org.lgna.story.implementation.JointImp {
 	private final NebulousJoint sgJoint;

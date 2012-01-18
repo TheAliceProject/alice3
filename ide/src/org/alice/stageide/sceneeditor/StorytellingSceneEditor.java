@@ -48,7 +48,6 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.alice.ide.ast.CurrentThisExpression;
 import org.alice.ide.declarationseditor.type.ManagedCameraMarkerFieldState;
 import org.alice.ide.declarationseditor.type.ManagedObjectMarkerFieldState;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
@@ -94,7 +93,6 @@ import org.lgna.project.ast.UserType;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Joint;
 import org.lgna.story.Marker;
 import org.lgna.story.OrthographicCameraMarker;
 import org.lgna.story.PerspectiveCameraMarker;
