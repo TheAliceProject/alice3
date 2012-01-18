@@ -176,7 +176,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 
 		if( IS_WIZARD_OF_OZ_HASTINGS_DESIRED ) {
 			WizardOfHastings.castPart( astDecodingRetargeter, this.getOriginalProject(), "puffy", replacementProject, "car" );
-			WizardOfHastings.castType( astDecodingRetargeter, this.getOriginalProject(), "MyFish", replacementProject, "MyPirateShip" );
+			//WizardOfHastings.castType( astDecodingRetargeter, this.getOriginalProject(), "MyClownFish", replacementProject, "MyPirateShip" );
 		}
 		originalTransactionHistory.retarget( astDecodingRetargeter );
 
