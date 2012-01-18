@@ -293,7 +293,11 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 
 		
 		try {
-			originalProject = org.lgna.project.io.IoUtilities.readProject( new java.io.File( ROOT_PATH+POST_PROJECT_PATH ) );
+			if (IS_ENCODING) {
+				originalProject = null;
+			} else {
+				originalProject = org.lgna.project.io.IoUtilities.readProject( new java.io.File( ROOT_PATH+POST_PROJECT_PATH ) );
+			}
 		} catch( java.io.IOException ioe ) {			
 			throw new AssertionError();
 		} catch( org.lgna.project.VersionNotSupportedException vnse )  {
