@@ -46,9 +46,8 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 
-import org.alice.ide.x.EditableAstI18Factory;
+import org.alice.ide.codeeditor.ParametersPane;
 import org.alice.ide.x.components.StatementListPropertyView;
-import org.alice.stageide.StoryApiConfigurationManager;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.JComponent;
 import org.lgna.croquet.components.Label;
@@ -58,12 +57,8 @@ import org.lgna.project.ast.LambdaExpression;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.UserLambda;
-import org.lgna.story.event.AbstractEvent;
-import org.lgna.story.event.MouseButtonEvent;
 
-import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
-import edu.cmu.cs.dennisc.javax.swing.border.BevelBorder;
 
 /**
  * @author Matt May
@@ -78,9 +73,11 @@ public class EventListenerComponent extends BorderPanel {
 		LambdaExpression lambdaExpression = (LambdaExpression)argument0.expression.getValue();
 		UserLambda lambda = (UserLambda)lambdaExpression.value.getValue();
 		this.addComponent( createHeader(methodInvocation), Constraint.PAGE_START );
+		
+//		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), lambda );
+
 		StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), lambda.body.getValue().statements );
 		putCodeHere.setBackgroundColor( codeContainerColor );
-		putCodeHere.setBorder( BorderFactory.createRaisedSoftBevelBorder() );
 		this.addComponent( putCodeHere, Constraint.CENTER );
 		this.setBorder( BorderFactory.createRaisedSoftBevelBorder() );
 	}
@@ -91,18 +88,11 @@ public class EventListenerComponent extends BorderPanel {
 		rv.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		Label label = new Label( methodInvocation.method.getValue().getName(), TextWeight.BOLD );
 		rv.addComponent( label );
-		JComponent< ? > keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), methodInvocation.getKeyedArgumentsProperty() );
-		if(methodInvocation.getKeyedArgumentsProperty().size() != 0){
+		if(method.getKeyedParameter() != null) {
+			JComponent< ? > keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), methodInvocation.getKeyedArgumentsProperty() );
 			rv.addComponent( keyedArgumentListView );
 		}
 		this.setBackgroundColor( panelColor );
-//		if( method == StoryApiConfigurationManager.ADD_SCENE_ACTIVATION_LISTENER_METHOD ) {
-//		} else if( method == StoryApiConfigurationManager.ADD_MOUSE_BUTTON_LISTENER_METHOD ) {
-//			//this.setBackgroundColor( Color.WHITE );
-//		} else {
-//			rv.addComponent( keyedArgumentListView );
-//			//this.setBackgroundColor( Color.GRAY );
-//		}
 		return rv;
 	}
 

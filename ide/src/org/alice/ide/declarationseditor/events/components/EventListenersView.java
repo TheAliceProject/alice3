@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 
+import org.alice.ide.codeeditor.ParametersPane;
 import org.alice.ide.controlflow.ControlFlowComposite;
 import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;
@@ -22,6 +23,7 @@ public class EventListenersView extends DeclarationView {
 		super( composite );
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 		eventsPanel = new EventsContentPanel(composite);
+		
 //		BorderPanel borderPanel = new BorderPanel();
 //		eventsPanel.addComponent( this.contentPanel, Constraint.PAGE_START );
 		ScrollPane scrollPane = new ScrollPane( eventsPanel );
