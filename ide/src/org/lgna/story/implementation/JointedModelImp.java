@@ -96,9 +96,9 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		}
 	}
 	
-	public void setJointAxisVisibility(boolean jointAxisIsVisible) {
+	public void setAllJointPivotsVisibile(boolean isPivotVisible) {
 		for (java.util.Map.Entry< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > jointEntry : this.mapIdToJoint.entrySet()) {
-			jointEntry.getValue().setJointAxisVisible(jointAxisIsVisible);
+			jointEntry.getValue().setPivotVisible( isPivotVisible );
 		}
 	}
 	

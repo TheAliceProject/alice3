@@ -87,8 +87,47 @@ public abstract class JointImp extends AbstractTransformableImp {
 	public abstract boolean isFreeInY();
 	public abstract boolean isFreeInZ();
 	
-	public void setJointAxisVisible(boolean jointAxisVisible) {	
-	}
+	
+//	private edu.cmu.cs.dennisc.scenegraph.Visual sgAxisVisual;
+//	private static edu.cmu.cs.dennisc.scenegraph.Geometry[] sgAxisGeometries = new edu.cmu.cs.dennisc.scenegraph.Geometry[] { null };
+//	
+//	private static edu.cmu.cs.dennisc.scenegraph.Geometry[] getSgAxisGeometries() {
+//		if( sgAxisGeometries[ 0 ] != null ) {
+//			//pass
+//		} else {
+//			edu.cmu.cs.dennisc.scenegraph.LineArray lineArray = new edu.cmu.cs.dennisc.scenegraph.LineArray();
+//			lineArray.vertices.setValue( new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 1,1,1 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,-2, 1,1,1 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 0,0,1 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,1, 0,0,1 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 0,1,0 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,1,0, 0,1,0 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 1,0,0 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 1,0,0, 1,0,0 ),
+//			} );
+//			sgAxisGeometries[ 0 ] = lineArray;
+//		}
+//		return sgAxisGeometries;
+//	}
+//	private edu.cmu.cs.dennisc.scenegraph.Visual getSgAxisVisual() {
+//		if( this.sgAxisVisual != null ) {
+//			//pass
+//		} else {
+//			this.sgAxisVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
+//			this.sgAxisVisual.geometries.setValue( getSgAxisGeometries() );
+//		}
+//		return this.sgAxisVisual;
+//	}
+//	public void setJointAxisVisible( boolean isJointAxisVisible ) {
+//		if( isJointAxisVisible ) {
+//			getSgAxisVisual().setParent( this.getSgComposite() );
+//		} else {
+//			if( this.sgAxisVisual != null ) {
+//				this.sgAxisVisual.setParent( null );
+//			}
+//		}
+//	}
 	
 	@Override
 	public void setVehicle(EntityImp vehicle) {
@@ -117,7 +156,13 @@ public abstract class JointImp extends AbstractTransformableImp {
 		}
 	}
 	public void setPivotVisible( boolean isPivotVisible ) {
-		this.getPivot().setParent( this.getSgComposite() );
+		if( isPivotVisible ) {
+			this.getPivot().setParent( this.getSgComposite() );
+		} else {
+			if( this.axes != null ) {
+				this.axes.setParent( null );
+			}
+		}
 	}
 	
 	//Joints don't actually want to be directly hooked into the sg tree, so we have this method as a way to link them in indirectly
