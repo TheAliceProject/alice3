@@ -136,6 +136,18 @@ public abstract class EntityImp implements ReferenceFrame {
 	protected void setSgVehicle( edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle ) {
 		this.getSgComposite().setParent( sgVehicle );
 	}
+	
+	//HACK
+	private EntityImp getEntityImpForSgObject(edu.cmu.cs.dennisc.scenegraph.Composite sgObject) {
+		EntityImp rv = getInstance( sgObject );
+		if( rv != null ) {
+			return rv;
+		} else if (sgObject.getParent() != null){
+			return getEntityImpForSgObject(sgObject.getParent());
+		}
+		return null;
+	}
+	
 	public final EntityImp getVehicle() {
 		edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle = this.getSgVehicle();
 		if( sgVehicle != null ) {
@@ -143,7 +155,14 @@ public abstract class EntityImp implements ReferenceFrame {
 			if( rv != null ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, sgVehicle );
+				rv = getEntityImpForSgObject(sgVehicle);
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "No instance found for sgVehicle "+sgVehicle+". Searched parent and got "+rv );
+				if (rv != null) {
+					//pass
+				}
+				else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, sgVehicle );
+				}
 			}
 			return rv;
 		} else {

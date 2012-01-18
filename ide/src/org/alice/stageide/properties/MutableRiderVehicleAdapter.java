@@ -52,6 +52,7 @@ import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MutableRider;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
@@ -123,7 +124,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 			this.setValue((Entity)value);
 		}
 		else {
-			System.out.println("???");
+			Logger.severe("Trying to set vehicle expression to something other than an Entity.");
 		}
 	}
 	

@@ -271,4 +271,15 @@ public class Joint extends Transformable
 //        }
 //    }
     
+    
+    /* (non-Javadoc)
+     * @see edu.cmu.cs.dennisc.scenegraph.Element#appendRepr(java.lang.StringBuilder)
+     */
+    @Override
+    protected void appendRepr(StringBuilder sb) {
+    	// TODO Auto-generated method stub
+    	super.appendRepr(sb);
+    	sb.append(" jointId="+this.jointID.getValue());
+    }
+    
 }
