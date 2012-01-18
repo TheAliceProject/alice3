@@ -3,11 +3,6 @@ package edu.cmu.cs.dennisc.nebulous;
 import java.nio.DoubleBuffer;
 
 import edu.cmu.cs.dennisc.lookingglass.opengl.AbstractTransformableAdapter;
-import edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults;
-import edu.cmu.cs.dennisc.lookingglass.opengl.GhostAdapter;
-import edu.cmu.cs.dennisc.lookingglass.opengl.PickContext;
-import edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters;
-import edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext;
 
 public class NebulousJointAdapter extends AbstractTransformableAdapter< edu.cmu.cs.dennisc.nebulous.NebulousJoint > {
 	private double[] m_localTransformation = new double[ 16 ];

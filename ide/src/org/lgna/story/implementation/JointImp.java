@@ -143,7 +143,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 		if( this.axes != null ) {
 			//pass
 		} else {
-			this.axes = new edu.cmu.cs.dennisc.scenegraph.util.ModestAxes( 1.0 );
+			this.axes = new edu.cmu.cs.dennisc.scenegraph.util.ModestAxes( 0.1 );
 			putInstance( this.axes );
 		}
 		return this.axes;
