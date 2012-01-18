@@ -76,9 +76,38 @@ public class ThumbnailMaker {
 		return instance;
 	}
 	
+	public static ThumbnailMaker getNewInstance() {
+		if (instance != null) {
+			instance.release();
+			instance = null;
+			try { 
+				System.gc();
+				Thread.sleep(100); 
+			} catch (Exception e){}
+		}
+		instance = new ThumbnailMaker();
+		return instance;
+	}
+	
 	private ThumbnailMaker()
 	{
 		world.addComponent(this.sgModelTransformable);
+	}
+	
+	private void release()
+	{
+		if (this.offscreenLookingGlass != null) {
+			this.offscreenLookingGlass.release();
+			this.offscreenLookingGlass = null;
+		}
+		
+		if (this.testImageOffscreenLookingGlass != null) {
+			this.testImageOffscreenLookingGlass.release();
+			this.testImageOffscreenLookingGlass = null;
+		}
+		if (this.world != null) {
+			this.world.release();
+		}
 	}
 	
 	private void setUpCamera(edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass lookingGlass)
@@ -114,7 +143,7 @@ public class ThumbnailMaker {
 	
 	private void initializeIfNecessary(int width, int height)
 	{
-		boolean forceNew = this.width != width || this.height != height || true;
+		boolean forceNew = this.width != width || this.height != height;
 		this.width = width;
 		this.height = height;
 		if( offscreenLookingGlass == null || forceNew) {
@@ -133,6 +162,12 @@ public class ThumbnailMaker {
 			}
 			testImageOffscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( null );
 			testImageOffscreenLookingGlass.setSize( (int)(this.width*SEARCH_FACTOR), (int)(this.height*SEARCH_FACTOR) );
+		}
+		if (forceNew) {
+			try { 
+				System.gc();
+				Thread.sleep(100); 
+			} catch (Exception e){}
 		}
 		setUpCamera(offscreenLookingGlass);
 		setUpCamera(testImageOffscreenLookingGlass);
@@ -302,7 +337,7 @@ public class ThumbnailMaker {
 	}
 	
 	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int inputWidth, int inputHeight) throws Exception {
-		initializeIfNecessary(inputWidth, inputHeight);
+//		initializeIfNecessary(inputWidth, inputHeight);
 		this.setSize((int)(inputWidth*SEARCH_FACTOR), (int)(inputHeight*SEARCH_FACTOR));
 		
 		v.setParent(this.sgModelTransformable);

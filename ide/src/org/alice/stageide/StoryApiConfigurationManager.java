@@ -387,14 +387,22 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes(java.util.List<? super org.lgna.project.ast.JavaType> rv) {
 		super.addSecondaryJavaTypes(rv);
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Billboard.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Axes.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Shape.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Sphere.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Cone.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Disc.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Marker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.ObjectMarker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.CameraMarker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Paint.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MoveDirection.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TurnDirection.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.RollDirection.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Marker.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.ObjectMarker.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.CameraMarker.class ) );
 		return rv;
 	}
 	

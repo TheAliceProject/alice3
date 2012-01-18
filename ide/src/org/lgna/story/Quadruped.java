@@ -90,18 +90,18 @@ public class Quadruped extends JointedModel implements Articulable {
 	public Joint getMouth() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.MOUTH);
 	}
-	public Joint getJawTip() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.JAW_TIP);
-	}
+//	public Joint getJawTip() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.JAW_TIP);
+//	}
 	public Joint getRightEar() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.RIGHT_EAR);
 	}
 	public Joint getRightEye() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.RIGHT_EYE);
 	}
-	public Joint getFrontLeftScapula() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.FRONT_LEFT_SCAPULA);
-	}
+//	public Joint getFrontLeftScapula() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.FRONT_LEFT_SCAPULA);
+//	}
 	public Joint getFrontLeftShoulder() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.FRONT_LEFT_SHOULDER);
 	}
@@ -117,9 +117,9 @@ public class Quadruped extends JointedModel implements Articulable {
 	public Joint getFrontLeftToe() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.FRONT_LEFT_TOE);
 	}
-	public Joint getFrontRightScapula() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.FRONT_RIGHT_SCAPULA);
-	}
+//	public Joint getFrontRightScapula() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.FRONT_RIGHT_SCAPULA);
+//	}
 	public Joint getFrontRightShoulder() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.FRONT_RIGHT_SHOULDER);
 	}
@@ -138,18 +138,18 @@ public class Quadruped extends JointedModel implements Articulable {
 	public Joint getPelvisLowerBody() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.PELVIS_LOWER_BODY);
 	}
-	public Joint getTail1() {
+	public Joint getTail() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_1);
 	}
 	public Joint getTail2() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_2);
 	}
-	public Joint getTail3() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_3);
-	}
-	public Joint getTail4() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_4);
-	}
+//	public Joint getTail3() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_3);
+//	}
+//	public Joint getTail4() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_4);
+//	}
 	public Joint getBackLeftHip() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.BACK_LEFT_HIP);
 	}

@@ -14,7 +14,7 @@ public class GenericModelAdapter< E extends Model > extends edu.cmu.cs.dennisc.l
 	}
 	@Override
 	public boolean isAlphaBlended() {
-		//todo
+//		return m_element.isAlphaBlended();
 		return false;
 	}
 	@Override

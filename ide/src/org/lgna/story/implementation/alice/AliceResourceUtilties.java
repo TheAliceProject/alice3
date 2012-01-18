@@ -283,26 +283,18 @@ public class AliceResourceUtilties {
 	{
 		URL resourceURL = getThumbnailURLInternal(modelResource, name);
 		if (resourceURL == null) {
-			System.err.println("Can't load thumbnail for "+name);
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Cannot load thumbnail for", name);
 		}
-		assert resourceURL != null;
-		if (resourceURL != null)
-		{
-			try
-			{
-				BufferedImage image = ImageIO.read(resourceURL);
-				return image;
+		if( resourceURL != null ) {
+			try {
+				return ImageIO.read( resourceURL );
+			} catch( Throwable t ) {
+				t.printStackTrace();
+				return null;
 			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		else
-		{
+		} else {
 			return null;
 		}
-		return null;
 	}
 	
 	public static BufferedImage getThumbnail(Class<?> modelResource, String instanceName)

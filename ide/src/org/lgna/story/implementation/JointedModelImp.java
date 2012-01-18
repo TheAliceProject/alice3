@@ -86,7 +86,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		if( joint != null && parent instanceof JointedModelImp ) {
 			joint.setCustomJointSgParent( parent.getSgComposite() );
 		} else {
-			if (joint != null && joint.getSgVehicle() == null && parent != null) {
+			if (joint != null && joint.getSgComposite().getParent() == null && parent != null) {
 				joint.setVehicle( parent );
 			}
 		}

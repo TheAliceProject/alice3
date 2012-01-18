@@ -66,7 +66,7 @@ public abstract class Scene extends Entity{
 	/*package-private*/org.lgna.story.implementation.SceneImp getImplementation() {
 		return this.implementation;
 	}
-
+	
 	private void changeActiveStatus( Program program, boolean isActive, int activeCount ) {
 		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
 		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
