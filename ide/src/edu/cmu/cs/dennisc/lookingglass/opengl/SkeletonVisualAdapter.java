@@ -220,10 +220,10 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                 rc.gl.glEnd();
             }
      
-            if( this.currentSkeleton != null) 
-            {
-                this.currentSkeleton.renderVisualization(rc);
-            }
+//            if( this.currentSkeleton != null) 
+//            {
+//                this.currentSkeleton.renderVisualization(rc);
+//            }
         }
         //END DEBUG RENDERING
         

@@ -58,11 +58,11 @@ public /*abstract*/ class Program {
 	}
 	public void setActiveScene( Scene scene ) {
 		if( this.activeScene != null ) {
-			this.activeScene.deactivate( this );
+			this.activeScene.getImplementation().deactivate( this.getImplementation() );
 		}
 		this.activeScene = scene;
 		if( this.activeScene != null ) {
-			this.activeScene.activate( this );
+			this.activeScene.getImplementation().activate( this.getImplementation() );
 		}
 	}
 	

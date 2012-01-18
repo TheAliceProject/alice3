@@ -141,7 +141,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	private void setShowJointsOfField(org.lgna.project.ast.AbstractField field, boolean showJoints) {
 		JointedModelImp<? extends JointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation( field );
 		if (imp != null) {
-			imp.setJointAxisVisibility(showJoints);
+			imp.setAllJointPivotsVisibile(showJoints);
 		}
 	}
 	

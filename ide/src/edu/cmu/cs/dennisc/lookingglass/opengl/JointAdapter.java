@@ -40,44 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserLambda extends AbstractUserMethod implements Lambda {
-	public UserLambda() {
-	}
-	public UserLambda( AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
-		super( returnType, requiredParameters, body );
-	}
-	public UserLambda( Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
-		this( JavaType.getInstance( returnCls ), requiredParameters, body );
-	}
-
+public class JointAdapter extends TransformableAdapter< edu.cmu.cs.dennisc.scenegraph.Joint > {
+	
 	@Override
-	public UserType< ? > getDeclaringType() {
-		return this.getFirstAncestorAssignableTo( UserType.class );
-	}
-	public void setDeclaringType( UserType< ? > declaringType ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( declaringType );
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
-	@Override
-	public boolean isAbstract() {
-		return false;
-	}
-	@Override
-	public boolean isFinal() {
-		return false;
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.jointID ) {
+			//pass
+		} else if( property == m_element.isFreeInX ) {
+			//pass
+		} else if( property == m_element.isFreeInY ) {
+			//pass
+		} else if( property == m_element.isFreeInZ ) {
+			//pass
+		} else if( property == m_element.boundingBox ) {
+			//pass
+		} else if( property == m_element.oStiffness ) {
+			//pass
+		} else if( property == m_element.oBoneOrientation ) {
+			//pass
+		} else if( property == m_element.oPreferedAngles ) {
+			//pass
+		} else if( property == m_element.oLocalRotationAxis ) {
+			//pass
+		} else if( property == m_element.oMinimumDampRange ) {
+			//pass
+		} else if( property == m_element.oMaximumDampRange ) {
+			//pass
+		} else if( property == m_element.oMaximumDampRange ) {
+			//pass
+		} else if( property == m_element.oMinimumDampStrength ) {
+			//pass
+		} else if( property == m_element.oMaximumDampStrength ) {
+			//pass
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }

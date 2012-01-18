@@ -79,7 +79,7 @@ public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemS
 		updateBlankChildren( rv, programType, root );
 
 		org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel otherTypesMenuModel = org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel.getInstance();
-		if( otherTypesMenuModel.getInstance().isEmpty() ) {
+		if( otherTypesMenuModel.isEmpty() ) {
 			//pass
 		} else {
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
