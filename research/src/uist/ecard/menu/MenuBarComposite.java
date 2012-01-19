@@ -9,10 +9,10 @@ public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
 	}
 	private MenuBarComposite() {
 		super( java.util.UUID.fromString( "78686290-eac5-47b3-9ec1-625fdb838721" ) );
-		this.addMenuModel( FileMenuModel.getInstance() );
-		this.addMenuModel( EditMenuModel.getInstance() );
-		this.addMenuModel( InsertMenuModel.getInstance() );
-		this.addMenuModel( PictureEffectsMenuModel.getInstance() );
-		this.addMenuModel( HelpMenuModel.getInstance() );
+		this.addItem( FileMenuModel.getInstance() );
+		this.addItem( EditMenuModel.getInstance() );
+		this.addItem( InsertMenuModel.getInstance() );
+		this.addItem( PictureEffectsMenuModel.getInstance() );
+		this.addItem( HelpMenuModel.getInstance() );
 	}
 }
