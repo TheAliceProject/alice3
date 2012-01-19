@@ -3,7 +3,6 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.TimerEvent;
 import org.lgna.story.event.TimerEventListener;
 

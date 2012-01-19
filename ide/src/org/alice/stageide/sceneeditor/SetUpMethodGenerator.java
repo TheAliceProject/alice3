@@ -365,6 +365,40 @@ public class SetUpMethodGenerator {
 						throw new RuntimeException( ccee );
 					}
 				}
+				if (instance instanceof org.lgna.story.JointedModel) {
+					org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp = org.lgna.story.ImplementationAccessor.getImplementation((org.lgna.story.JointedModel)instance);
+					java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( field.getValueType() );
+					for (org.alice.stageide.ast.JointedTypeInfo jointInfo : jointedTypeInfos) {
+						for (org.lgna.project.ast.AbstractMethod jointGetter : jointInfo.getJointGetters()) {
+							org.lgna.project.ast.Expression getJointExpression = new org.lgna.project.ast.MethodInvocation(new org.lgna.project.ast.FieldAccess(new org.lgna.project.ast.ThisExpression(), field), jointGetter);
+							Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(
+									sceneInstance, 
+									new org.lgna.project.ast.Expression[] { getJointExpression }
+							);
+							for (Object o : values) {
+								if (o instanceof org.lgna.story.Joint) {
+									org.lgna.story.Joint jointEntity = (org.lgna.story.Joint)o;
+									org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.ImplementationAccessor.getImplementation(jointEntity);
+									edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = gottenJoint.getLocalTransformation();
+									edu.cmu.cs.dennisc.math.AffineMatrix4x4 originalTransform = jointedModelImp.getOriginalJointTransformation(gottenJoint.getJointId());
+									if (!currentTransform.orientation.isWithinReasonableEpsilonOf(originalTransform.orientation)) {
+										try {
+											org.lgna.story.Orientation orientation = jointEntity.getOrientationRelativeToVehicle();
+											statements.add( 
+												createStatement( 
+														org.lgna.story.Turnable.class, "setOrientationRelativeToVehicle", org.lgna.story.Orientation.class, 
+														getJointExpression, getExpressionCreator().createExpression( orientation ) 
+												));
+										} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+											throw new RuntimeException( ccee );
+										}
+									}
+									
+								}
+							}
+						}
+					}
+				}
 			} 
 		}
 		

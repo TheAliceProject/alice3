@@ -40,27 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models;
+package org.alice.ide.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
-	private static class SingletonHolder {
-		private static MenuBarComposite instance = new MenuBarComposite();
-	}
-	public static MenuBarComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private MenuBarComposite() {
-		super( java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		this.addItem( org.alice.ide.croquet.models.menubar.FileMenuModel.getInstance() );
-		this.addItem( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
-		this.addItem( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
-		this.addItem( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
-		this.addItem( org.alice.ide.croquet.models.menubar.WindowMenuModel.getInstance() );
-		this.addItem( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
-		//this.addItem( org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance().getMenuItemPrepModel() );
+public class AddEventListenerStatementPanel extends StatementLikeSubstance {
+	public AddEventListenerStatementPanel( org.lgna.project.ast.ExpressionStatement statement ) {
+		super(
+				org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ),
+				org.lgna.project.ast.ExpressionStatement.class,
+				javax.swing.BoxLayout.PAGE_AXIS
+		);
 	}
 }

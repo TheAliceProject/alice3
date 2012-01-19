@@ -45,6 +45,7 @@ package org.alice.stageide.utilities;
 
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
@@ -61,6 +62,9 @@ public class BoundingBoxUtilities {
 			if (entityImp instanceof ModelImp)
 			{
 				boundingBox = ((ModelImp)entityImp).getAxisAlignedMinimumBoundingBox();
+			}
+			else if (entityImp instanceof JointImp) {
+				boundingBox = ((JointImp)entityImp).getAxisAlignedMinimumBoundingBox();
 			}
 		}
 		if (boundingBox != null && scaled)

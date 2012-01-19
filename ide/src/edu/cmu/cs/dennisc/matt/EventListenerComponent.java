@@ -79,7 +79,7 @@ public class EventListenerComponent extends BorderPanel {
 		StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), lambda.body.getValue().statements );
 		putCodeHere.setBackgroundColor( codeContainerColor );
 		this.addComponent( putCodeHere, Constraint.CENTER );
-		this.setBorder( BorderFactory.createRaisedSoftBevelBorder() );
+		this.setBorder( BorderFactory.createRaisedBevelBorder() );
 	}
 
 	private JComponent< ? > createHeader( MethodInvocation methodInvocation ) {
