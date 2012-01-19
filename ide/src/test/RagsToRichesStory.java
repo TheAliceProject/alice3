@@ -42,6 +42,7 @@
  */
 package test;
 
+import org.lgna.story.AddTimerEventListener;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
@@ -60,6 +61,7 @@ import org.lgna.story.Scene;
 import org.lgna.story.SetOfVisuals;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
+import org.lgna.story.TimerFrequency;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyListener;
@@ -67,6 +69,8 @@ import org.lgna.story.event.MouseButtonEvent;
 import org.lgna.story.event.MouseButtonListener;
 import org.lgna.story.event.ProximityEvent;
 import org.lgna.story.event.ProximityEventListener;
+import org.lgna.story.event.TimerEvent;
+import org.lgna.story.event.TimerEventListener;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -236,6 +240,12 @@ class SnowScene extends Scene{
 //				event.getModels().get(1).move(MoveDirection.DOWN, 1);
 //			}
 //		}, colListOne, colListTwo);
+		this.addTimerEventListener( new TimerEventListener() {
+			public void timeElapsed(TimerEvent e) {
+				blueCone.move(MoveDirection.UP, 1);
+				blueCone.move(MoveDirection.DOWN, 1);
+			}
+		}, AddTimerEventListener.timerFrequency(5.0) );
 		this.addKeyPressedListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if(e.isKey(Key.A)){

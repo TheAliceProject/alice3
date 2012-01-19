@@ -74,8 +74,8 @@ public class EventListenerComponent extends BorderPanel {
 		UserLambda lambda = (UserLambda)lambdaExpression.value.getValue();
 		this.addComponent( createHeader(methodInvocation), Constraint.PAGE_START );
 		
-//		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), lambda );
-
+		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), lambda );
+		this.addComponent(parametersPane, Constraint.PAGE_END);
 		StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), lambda.body.getValue().statements );
 		putCodeHere.setBackgroundColor( codeContainerColor );
 		this.addComponent( putCodeHere, Constraint.CENTER );

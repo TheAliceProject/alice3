@@ -52,6 +52,7 @@ import org.lgna.project.annotations.Visibility;
 import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.MouseButtonListener;
 import org.lgna.story.event.ProximityEventListener;
+import org.lgna.story.event.TimerEventListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -66,41 +67,8 @@ public abstract class Scene extends Entity{
 	/*package-private*/org.lgna.story.implementation.SceneImp getImplementation() {
 		return this.implementation;
 	}
-	
-	private void changeActiveStatus( Program program, boolean isActive, int activeCount ) {
-		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
-		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
-		this.handleActiveChanged( isActive, activeCount );
-		this.implementation.fireSceneActivationListeners();
-		if( isActive ) {
-			
-			this.implementation.addCamerasTo( program.getImplementation() );
-		} else {
-			this.implementation.removeCamerasFrom( program.getImplementation() );
-		}
-		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
-	}
 
-	private int activeCount;
-	private int deactiveCount;
-
-	/*package-private*/void activate( Program program ) {
-		assert deactiveCount == activeCount;
-		activeCount++;
-		this.implementation.setProgram( program.getImplementation() );
-		this.implementation.setGlobalBrightness( 0.0f );
-		this.changeActiveStatus( program, true, activeCount );
-		this.implementation.animateGlobalBrightness( 1.0f, 0.5, AnimationStyle.BEGIN_AND_END_GENTLY.getInternal() );
-	}
-	/*package-private*/void deactivate( Program program ) {
-		deactiveCount++;
-		assert deactiveCount == activeCount;
-		this.implementation.animateGlobalBrightness( 0.0f, 0.25, AnimationStyle.BEGIN_AND_END_GENTLY.getInternal() );
-		this.changeActiveStatus( program, false, activeCount );
-		this.implementation.setProgram( null );
-	}
-
-	protected abstract void handleActiveChanged( Boolean isActive, Integer activeCount );
+	protected abstract void handleActiveChanged( Boolean isActive, Integer activationCount );
 
 	protected void preserveStateAndEventListeners() {
 		this.implementation.preserveStateAndEventListeners();
@@ -170,6 +138,10 @@ public abstract class Scene extends Entity{
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
 	public void addProximityEventListener( ProximityEventListener proximityEventListener, Entity[] groupOne, Entity[] groupTwo, AddProximityEventListener.Detail... details){
 		this.getImplementation().getEventManager().addProximityEventListener(proximityEventListener, Collections.newArrayList(groupOne), Collections.newArrayList(groupTwo), AddProximityEventListener.getDist( details ));
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	public void addTimerEventListener(TimerEventListener timerEventListener, AddTimerEventListener.Detail... details) {
+		this.getImplementation().getEventManager().addTimerEventListener(timerEventListener, TimerFrequency.getValue(details).getFrequency());
 	}
 
 //	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)

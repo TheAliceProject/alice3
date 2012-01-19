@@ -80,7 +80,7 @@ public class MainComposite extends org.lgna.croquet.Composite< org.lgna.croquet.
 		if (app.isRibbonBased()) {
 			org.lgna.croquet.components.FolderTabbedPane< ? > folderTabbedPane = uist.ecard.ribbon.ECardRibbonModel.getInstance().createFolderTabbedPane();
 			folderTabbedPane.setBackgroundColor( java.awt.SystemColor.controlShadow );
-			rv.addComponent( folderTabbedPane, org.lgna.croquet.components.BorderPanel.Constraint.NORTH );
+			rv.addComponent( folderTabbedPane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		} else {
 			app.getFrame().setMenuBarModel( uist.ecard.menu.MenuBarComposite.getInstance() );
 

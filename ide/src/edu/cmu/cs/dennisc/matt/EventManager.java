@@ -9,6 +9,7 @@ import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonListener;
 import org.lgna.story.event.ProximityEventListener;
+import org.lgna.story.event.TimerEventListener;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
@@ -21,6 +22,7 @@ public class EventManager {
 	private final CollisionHandler collisionHandler = new CollisionHandler();
 	private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
 	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
+	private final TimerEventHandler timer = new TimerEventHandler();
 	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { mouseHandler, collisionHandler, proxyHandler, keyHandler };
 
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
@@ -116,6 +118,10 @@ public class EventManager {
 	}
 	public void addProximityEventListener( ProximityEventListener proximityEventListener, List< Entity > groupOne, List< Entity > groupTwo, Double dist ) {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
+	}
+
+	public void addTimerEventListener(TimerEventListener timerEventListener, Long frequency) {
+		timer.addListener(timerEventListener, frequency);
 	}
 
 }

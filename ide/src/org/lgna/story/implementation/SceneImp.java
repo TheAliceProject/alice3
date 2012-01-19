@@ -145,30 +145,61 @@ public class SceneImp extends EntityImp {
 		this.sceneActivationListeners.remove( sceneActivationListener );
 	}
 	
-	private int EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount = 0;
-	@Deprecated
-	public void EPIC_HACK_FOR_SCENE_EDITOR_pushDoNotFireSceneActivationListeners() {
-		EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount ++;
+	private int ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount = 0;
+	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization() {
+		ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount ++;
 	}
-	@Deprecated
-	public void EPIC_HACK_FOR_SCENE_EDITOR_popDoNotFireSceneActivationListeners() {
-		EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount --;
+	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_popPerformMinimalInitialization() {
+		ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount --;
 	}
 	
-	public void fireSceneActivationListeners() {
-		if( EPIC_HACK_FOR_SCENE_EDITOR_doNotFireSceneActivationListenersCount > 0 ) {
-			//pass
-		} else {
-			final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
-			for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
-				new org.lgna.common.ComponentThread( new Runnable() {
-					public void run() {
-						sceneActivationListener.sceneActivated( e );
-					}
-				}, "SceneActivation" ).start();
-			}
+	private void fireSceneActivationListeners() {
+		final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
+		for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
+			new org.lgna.common.ComponentThread( new Runnable() {
+				public void run() {
+					sceneActivationListener.sceneActivated( e );
+				}
+			}, "SceneActivation" ).start();
 		}
 	}
+	
+	private void changeActiveStatus( ProgramImp programImp, boolean isActive, int activationCount ) {
+		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
+		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
+		if( ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount > 0 ) {
+			//pass
+		} else {
+			org.lgna.story.BackDoor.invokeHandleActiveChanged( this.getAbstraction(), isActive, activationCount );
+			this.fireSceneActivationListeners();
+		}
+		if( isActive ) {
+			this.addCamerasTo( programImp );
+		} else {
+			this.removeCamerasFrom( programImp );
+		}
+		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
+	}
+
+	private int activeCount;
+	private int deactiveCount;
+
+	public void activate( ProgramImp programImp ) {
+		assert deactiveCount == activeCount;
+		activeCount++;
+		this.setProgram( programImp );
+		this.setGlobalBrightness( 0.0f );
+		this.changeActiveStatus( program, true, activeCount );
+		this.animateGlobalBrightness( 1.0f, 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+	}
+	public void deactivate( ProgramImp programImp ) {
+		deactiveCount++;
+		assert deactiveCount == activeCount;
+		this.animateGlobalBrightness( 0.0f, 0.25, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+		this.changeActiveStatus( programImp, false, activeCount );
+		this.setProgram( null );
+	}
+
 	
 	private void setFogDensity(float densityValue) {
 		this.fogDensityValue = densityValue;

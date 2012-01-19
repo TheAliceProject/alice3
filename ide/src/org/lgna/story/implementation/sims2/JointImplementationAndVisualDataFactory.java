@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation.sims2;
 
+import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
+
 /**
  * @author Dennis Cosgrove
  */

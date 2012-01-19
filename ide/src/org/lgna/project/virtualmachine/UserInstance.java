@@ -69,11 +69,13 @@ public class UserInstance {
 		return new UserInstance( vm, constructor, arguments, new java.util.HashMap< UserField, Object >(), new java.util.HashMap< Object, UserField >() );
 	}
 	
+	private final VirtualMachine vm;
 	private final Object nextInstance;
 	private final UserType<?> type;
 	private final java.util.Map< UserField, Object > fieldMap;
 	private java.util.Map< Object, UserField > inverseFieldMap;
 	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments, java.util.Map< UserField, Object > fieldMap, java.util.Map< Object, UserField > inverseFieldMap ) {
+		this.vm = vm;
 		this.type = constructor.getDeclaringType();
 		this.fieldMap = fieldMap;
 		this.inverseFieldMap = inverseFieldMap;
@@ -114,6 +116,9 @@ public class UserInstance {
 		}
 	}
 
+	public VirtualMachine getVM() {
+		return this.vm;
+	}
 	public void ensureInverseMapExists() {
 		if( this.inverseFieldMap != null ) {
 			//pass

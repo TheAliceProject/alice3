@@ -48,7 +48,8 @@ package org.lgna.story.resources;
  */
 @org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Quadruped.class )
 public interface QuadrupedResource extends JointedModelResource {
-	public static final org.lgna.story.resources.JointId PELVIS_UPPER_BODY = new org.lgna.story.resources.JointId( null, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId ROOT = new JointId( null, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId PELVIS_UPPER_BODY = new org.lgna.story.resources.JointId( ROOT, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId SPINE_MIDDLE = new org.lgna.story.resources.JointId( PELVIS_UPPER_BODY, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId SPINE_UPPER = new org.lgna.story.resources.JointId( SPINE_MIDDLE, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId NECK = new org.lgna.story.resources.JointId( SPINE_UPPER, QuadrupedResource.class );
@@ -71,7 +72,7 @@ public interface QuadrupedResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId FRONT_RIGHT_ANKLE = new org.lgna.story.resources.JointId( FRONT_RIGHT_KNEE, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId FRONT_RIGHT_BALL = new org.lgna.story.resources.JointId( FRONT_RIGHT_ANKLE, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId FRONT_RIGHT_TOE = new org.lgna.story.resources.JointId( FRONT_RIGHT_BALL, QuadrupedResource.class );
-	public static final org.lgna.story.resources.JointId PELVIS_LOWER_BODY = new org.lgna.story.resources.JointId( null, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId PELVIS_LOWER_BODY = new org.lgna.story.resources.JointId( ROOT, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, QuadrupedResource.class );
 //	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, QuadrupedResource.class );
@@ -87,7 +88,7 @@ public interface QuadrupedResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId BACK_RIGHT_BALL = new org.lgna.story.resources.JointId( BACK_RIGHT_ANKLE, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_RIGHT_TOE = new org.lgna.story.resources.JointId( BACK_RIGHT_BALL, QuadrupedResource.class );
 
-	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { PELVIS_UPPER_BODY, PELVIS_LOWER_BODY };
+	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.Quadruped abstraction );
 }
