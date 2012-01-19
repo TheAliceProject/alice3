@@ -120,8 +120,8 @@ public class EventManager {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
 	}
 
-	public void addTimerEventListener(TimerEventListener timerEventListener, Long frequency) {
-		timer.addListener(timerEventListener, frequency);
+	public void addTimerEventListener(TimerEventListener timerEventListener, Long frequency, MultipleEventPolicy policy) {
+		timer.addListener(timerEventListener, frequency, policy);
 	}
 
 }

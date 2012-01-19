@@ -81,9 +81,8 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListen
 		}
 	}
 	public void addListener(MouseButtonListener mouseButtonListener, MultipleEventPolicy eventPolicy, Visual[] targets) {
-//		isFiringMap.put(mouseButtonListener, false);
-		isFiringMap.put(mouseButtonListener, new HashMap< Object, Boolean >());
-		policyMap.put(mouseButtonListener, eventPolicy);
+		registerIsFiringMap(mouseButtonListener, targets);
+		registerPolicyMap(mouseButtonListener, eventPolicy);
 		for(Visual target: targets){
 			if(map.get(target) != null){
 				map.get(target).add(mouseButtonListener);
@@ -91,7 +90,6 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListen
 				LinkedList<MouseButtonListener> list = new LinkedList<MouseButtonListener>();
 				list.add(mouseButtonListener);
 				map.put(target, list);
-				isFiringMap.get(mouseButtonListener).put( target, false );
 			}
 		}
 	}

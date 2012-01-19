@@ -93,17 +93,17 @@ class MyOgre extends MyBiped {
 	}
 }
 
-class MyArmoire extends Prop {
-	public MyArmoire() {
-		super( org.lgna.story.resources.prop.Helicopter.VEHICLE_HELICOPTER );
-	}
-	public Joint getLeftDoor() {
-		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
-	}
-	public Joint getRightDoor() {
-		return this.getJoint( org.lgna.story.resources.ArmoireResource.RIGHT_DOOR );
-	}
-}
+//class MyArmoire extends Prop {
+//	public MyArmoire() {
+//		super( org.lgna.story.resources.prop.Helicopter.VEHICLE_HELICOPTER );
+//	}
+//	public Joint getLeftDoor() {
+//		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
+//	}
+//	public Joint getRightDoor() {
+//		return this.getJoint( org.lgna.story.resources.ArmoireResource.RIGHT_DOOR );
+//	}
+//}
 
 class DesertScene extends Scene {
 	private final Sun sun = new Sun();
@@ -167,7 +167,7 @@ class SnowScene extends Scene{
 	private final Cone redCone = new Cone(); 
 	private final Cone greenCone = new Cone(); 
 	private final Cone blueCone = new Cone();
-	private final MyArmoire armoire = new MyArmoire();
+//	private final MyArmoire armoire = new MyArmoire();
 	private final Camera camera;
 	private final MyOgre ogre;
 	private final MyBiped susan;
@@ -185,7 +185,7 @@ class SnowScene extends Scene{
 		this.redCone.setVehicle( this );
 		this.greenCone.setVehicle( this );
 		this.blueCone.setVehicle( this );
-		this.armoire.setVehicle( this );
+//		this.armoire.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
@@ -205,7 +205,7 @@ class SnowScene extends Scene{
 		this.greenCone.move( MoveDirection.LEFT, 1.0 );
 		this.blueCone.move( MoveDirection.LEFT, 1.5 );
 
-		this.armoire.move( MoveDirection.BACKWARD, 2.0 );
+//		this.armoire.move( MoveDirection.BACKWARD, 2.0 );
 
 		this.ogre.move( MoveDirection.LEFT, 2.0 );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
@@ -242,15 +242,16 @@ class SnowScene extends Scene{
 //		}, colListOne, colListTwo);
 		this.addTimerEventListener( new TimerEventListener() {
 			public void timeElapsed(TimerEvent e) {
-				blueCone.move(MoveDirection.UP, 1);
-				blueCone.move(MoveDirection.DOWN, 1);
+				System.out.println("tick");
+				greenCone.move(MoveDirection.UP, 1);
+				greenCone.move(MoveDirection.DOWN, 1);
 			}
-		}, AddTimerEventListener.timerFrequency(5.0) );
+		}, AddTimerEventListener.timerFrequency(0.0), MultipleEventPolicy.ENQUEUE );
 		this.addKeyPressedListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if(e.isKey(Key.A)){
-					armoire.move(MoveDirection.UP, 1);
-					armoire.move(MoveDirection.DOWN, 1);
+//					armoire.move(MoveDirection.UP, 1);
+//					armoire.move(MoveDirection.DOWN, 1);
 				}
 			}
 		}, MultipleEventPolicy.COMBINE );
@@ -268,12 +269,12 @@ class SnowScene extends Scene{
 				e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
 				e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);
 			}
-		}, MultipleEventPolicy.ENQUEUE, new SetOfVisuals(list));
+		}, MultipleEventPolicy.COMBINE, new SetOfVisuals(list));
 	}
 
 	public void chillInSkiChalet() {
-		this.armoire.getLeftDoor().turn( TurnDirection.RIGHT, 0.375 );
-		this.armoire.getRightDoor().turn( TurnDirection.LEFT, 0.375 );
+//		this.armoire.getLeftDoor().turn( TurnDirection.RIGHT, 0.375 );
+//		this.armoire.getRightDoor().turn( TurnDirection.LEFT, 0.375 );
 		while( true ) {
 			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );

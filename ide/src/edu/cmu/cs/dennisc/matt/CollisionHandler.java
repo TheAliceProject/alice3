@@ -62,10 +62,8 @@ public class CollisionHandler extends TransformationChangedHandler<CollisionList
 	protected CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 
 	public void addCollisionListener( CollisionListener collisionListener, List< Entity > groupOne, List< Entity > groupTwo ) {
-		policyMap.put( collisionListener, MultipleEventPolicy.IGNORE );
-//		isFiringMap.put( collisionListener, false );
-		isFiringMap.put( collisionListener, new HashMap< Object, Boolean >() );
-		isFiringMap.get( collisionListener ).put( collisionListener, false );
+		registerIsFiringMap(collisionListener);
+		registerPolicyMap(collisionListener, MultipleEventPolicy.IGNORE);
 		List< Entity > allObserving = Collections.newArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		for( Entity m : allObserving ) {

@@ -8,82 +8,68 @@ import org.lgna.story.event.TimerEvent;
 import org.lgna.story.event.TimerEventListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent;
+import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent;
+import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener;
+import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
 
-public class TimerEventHandler extends AbstractEventHandler<TimerEventListener, TimerEvent> implements LookingGlassListener{
+public class TimerEventHandler extends AbstractEventHandler<TimerEventListener, TimerEvent> {
 
 	private Map<TimerEventListener, Long> freqMap = Collections.newHashMap();
 	private List<TimerEventListener> timerList = Collections.newArrayList();
-	private List<TimerEventListener> fireList = Collections.newArrayList();
 	private Long currentTime;
 	private Map<TimerEventListener, Long> mostRecentFire = Collections.newHashMap();
 
+	private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
+		public void automaticDisplayCompleted(AutomaticDisplayEvent e) {
+			currentTime = System.currentTimeMillis();
+			update();
+		}
+	};
+	private boolean isEnabled = false;
 
-	public void addListener(TimerEventListener timerEventListener, Long frequency) {
-		freqMap.put(timerEventListener, secondsToMills(frequency));
-		mostRecentFire.put(timerEventListener, Double.doubleToLongBits(0));
-		if(frequency > 0){
-			timerList.add(timerEventListener);
-		}
-		if(frequency == 0){
-			fireList.add(timerEventListener);
-		}
+	public void enable() {
+		isEnabled  = true;
+		LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
+	}
+	public void disable() {
+		isEnabled = false;
+		LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
+	public void addListener(TimerEventListener timerEventListener, Long frequency, MultipleEventPolicy policy) {
+		if(!isEnabled){
+			enable();
+		}
+		registerPolicyMap(timerEventListener, policy);
+		registerIsFiringMap(timerEventListener);
+		Long a = secondsToMills(frequency);
+		freqMap.put(timerEventListener, a);
+		mostRecentFire.put(timerEventListener, Double.doubleToLongBits(0));
+		timerList.add(timerEventListener);
+	}
+	
 	private void update() {
 		for(TimerEventListener listener: timerList){
-			if(timeToFire(listener))
-				fireList.add(listener);
+			if(timeToFire(listener)){
+				trigger(listener, new TimerEvent());
+			}
 		}
 	}
 
+	private void trigger(TimerEventListener listener, TimerEvent timerEvent) {
+		mostRecentFire.put(listener, currentTime);
+		fireEvent(listener, timerEvent, listener);
+	}
 	private boolean timeToFire(TimerEventListener listener) {
 		return currentTime - mostRecentFire.get(listener) > freqMap.get(listener);
 	}
 
 	private Long secondsToMills(Long frequency) {
-		return frequency*1000;
-	}
-
-	private void fireAllTargeted(){
-		for(TimerEventListener listener: fireList){
-			fire(listener, new TimerEvent());
-			if(freqMap.get(listener) != 0){
-				fireList.remove(listener);
-				mostRecentFire .put(listener, currentTime);
-			}
-		}
+		return 1000*frequency;
 	}
 
 	@Override
-	protected void fire(final TimerEventListener listener, final TimerEvent event) {
-		Thread thread = new Thread(){
-			@Override
-			public void run(){
-				listener.timeElapsed(event);
-				if(freqMap.get(listener) == -1){
-					fireList.add(listener);
-				}
-			}
-		};
-		thread.start();
-	}
-
-	public void initialized(LookingGlassInitializeEvent e) {}
-
-	public void cleared(LookingGlassRenderEvent e) {}
-
-	public void rendered(LookingGlassRenderEvent e) {}
-
-	public void resized(LookingGlassResizeEvent e) {}
-
-	public void displayChanged(LookingGlassDisplayChangeEvent e) {
-		currentTime = System.currentTimeMillis();
-		update();
-		fireAllTargeted();
+	protected void fire(final TimerEventListener listener, TimerEvent event) {
+		listener.timeElapsed(event);
 	}
 }

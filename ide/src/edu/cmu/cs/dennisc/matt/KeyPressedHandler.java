@@ -14,10 +14,8 @@ public class KeyPressedHandler extends AbstractEventHandler<KeyListener, KeyEven
 	private final List<KeyListener> list = Collections.newLinkedList();
 
 	public void addListener(KeyListener keyList, MultipleEventPolicy policy) {
-//		isFiringMap.put(keyList, false);
-		isFiringMap.put(keyList, new HashMap< Object, Boolean >());
-		isFiringMap.get( keyList ).put( keyList, false );//TODO: @mmay make key list discriminate based on key pressed
-		policyMap.put(keyList, policy);
+		registerIsFiringMap(keyList);
+		registerPolicyMap(keyList, policy);
 		if(!list.contains(keyList)){
 			list.add(keyList);
 		}

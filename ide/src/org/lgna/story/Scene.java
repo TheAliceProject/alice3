@@ -141,7 +141,7 @@ public abstract class Scene extends Entity{
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
 	public void addTimerEventListener(TimerEventListener timerEventListener, AddTimerEventListener.Detail... details) {
-		this.getImplementation().getEventManager().addTimerEventListener(timerEventListener, TimerFrequency.getValue(details).getFrequency());
+		this.getImplementation().getEventManager().addTimerEventListener(timerEventListener, TimerFrequency.getValue(details).getFrequency(), MultipleEventPolicy.getValue(details));
 	}
 
 //	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)

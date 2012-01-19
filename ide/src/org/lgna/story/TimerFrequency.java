@@ -9,7 +9,7 @@ public class TimerFrequency implements AddTimerEventListener.Detail {
 	private Long frequency;
 	
 	public TimerFrequency(double frequency) {
-		this.frequency = Double.doubleToLongBits(frequency);
+		this.frequency = (new Double(frequency)).longValue();
 	}
 
 	public static TimerFrequency getValue(Detail[] details) {

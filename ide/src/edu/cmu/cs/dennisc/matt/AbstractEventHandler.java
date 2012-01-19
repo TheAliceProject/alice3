@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
+import org.lgna.story.event.MouseButtonListener;
+import org.lgna.story.event.TimerEventListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -12,7 +15,6 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 	
 	protected boolean shouldFire = true;
 	protected Integer count = 0;
-//	protected Map<Object, Boolean> isFiringMap = Collections.newHashMap();
 	protected Map<Object, MultipleEventPolicy> policyMap = Collections.newHashMap();
 	protected Map<Object, HashMap< Object, Boolean >> isFiringMap = Collections.newHashMap();
 
@@ -28,8 +30,6 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 					isFiringMap.get(listener).put(o, false);
 				}
 			};
-//			if(isFiringMap.get(listener).equals(false)){
-//			isFiringMap.put(listener, true);
 			if(isFiringMap.get(listener).get( o ).equals(false)){
 				isFiringMap.get(listener).put(o, true);
 				thread.start();
@@ -70,6 +70,20 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 	}
 	public final void restoreListeners(){
 		shouldFire = true;
+	}
+
+	protected void registerIsFiringMap(Object eventListener) {
+		isFiringMap.put(eventListener, new HashMap<Object, Boolean>());
+		isFiringMap.get(eventListener).put(eventListener, false);
+	}
+	protected void registerIsFiringMap(MouseButtonListener eventListener, Visual[] targets) {
+		isFiringMap.put(eventListener, new HashMap<Object, Boolean>());
+		for(Visual target: targets){
+			isFiringMap.get(eventListener).put(target, false);
+		}
+	}
+	protected void registerPolicyMap(Object timerEventListener, MultipleEventPolicy policy) {
+		policyMap.put(timerEventListener, policy);
 	}
 
 }
