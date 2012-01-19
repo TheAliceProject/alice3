@@ -61,7 +61,6 @@ import org.lgna.story.Scene;
 import org.lgna.story.SetOfVisuals;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
-import org.lgna.story.TimerFrequency;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyListener;

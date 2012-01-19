@@ -43,8 +43,6 @@
 
 package org.lgna.story;
 
-import java.util.List;
-
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;

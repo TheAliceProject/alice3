@@ -12,8 +12,6 @@ import org.lgna.story.event.ProximityEventListener;
 import org.lgna.story.event.TimerEventListener;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 
 public class EventManager {

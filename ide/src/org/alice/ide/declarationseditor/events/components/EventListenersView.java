@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 
-import org.alice.ide.codeeditor.ParametersPane;
 import org.alice.ide.controlflow.ControlFlowComposite;
 import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;

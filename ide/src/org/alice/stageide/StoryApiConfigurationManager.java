@@ -50,8 +50,6 @@ import org.lgna.story.AddKeyPressedListener;
 import org.lgna.story.AddMouseButtonListener;
 import org.lgna.story.AddProximityEventListener;
 import org.lgna.story.Entity;
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.Model;
 import org.lgna.story.Scene;
 import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.KeyListener;
