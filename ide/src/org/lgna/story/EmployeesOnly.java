@@ -45,8 +45,8 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class BackDoor {
-	private BackDoor() {
+public class EmployeesOnly {
+	private EmployeesOnly() {
 		throw new AssertionError();
 	}
 	
