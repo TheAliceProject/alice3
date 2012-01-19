@@ -40,34 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.implementation;
+package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleVisualModelImp extends VisualScaleModelImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] { new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance() };
-	public SingleVisualModelImp( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
-		this.sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { sgVisual };
-		this.sgVisuals[ 0 ].frontFacingAppearance.setValue( this.sgAppearances[ 0 ] );
-		this.sgVisuals[ 0 ].setParent( this.getSgComposite() );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
-		return this.sgVisuals;
-	}
-	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances() {
-		return this.sgAppearances;
-	}
-	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
-		return this.getSgPaintAppearances();
-	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return this.getSgVisuals()[ 0 ].getBoundingSphere().radius;
-	}
+public class Scalable extends Composite {
+	public final edu.cmu.cs.dennisc.math.property.Dimension3Property scale = new edu.cmu.cs.dennisc.math.property.Dimension3Property( this, new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 ) ) {
+		@Override
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
+			super.setValue( owner, value );
+			Scalable.this.fireAbsoluteTransformationChange();
+		}
+	};
+	
+	//todo: absolute transformation
 }

@@ -40,34 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.implementation;
+package edu.cmu.cs.dennisc.math.property;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleVisualModelImp extends VisualScaleModelImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] { new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance() };
-	public SingleVisualModelImp( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
-		this.sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { sgVisual };
-		this.sgVisuals[ 0 ].frontFacingAppearance.setValue( this.sgAppearances[ 0 ] );
-		this.sgVisuals[ 0 ].setParent( this.getSgComposite() );
+public class Dimension3Property extends edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.math.Dimension3 > implements edu.cmu.cs.dennisc.property.CopyableProperty< edu.cmu.cs.dennisc.math.Dimension3 >{
+	public Dimension3Property( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
+		super( owner, value );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
-		return this.sgVisuals;
+	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
+		assert value != null;
+		assert value.isNaN() == false;  
+		super.setValue( owner, value );
 	}
-	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances() {
-		return this.sgAppearances;
+	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.math.Dimension3 rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+		rv.set( getValue( owner ) );
+		return rv;
 	}
-	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
-		return this.getSgPaintAppearances();
+	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+		return getCopy( edu.cmu.cs.dennisc.math.Dimension3.createNaN(), owner );
 	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return this.getSgVisuals()[ 0 ].getBoundingSphere().radius;
+	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
+		//todo?
+		setValue( owner, new edu.cmu.cs.dennisc.math.Dimension3( value ) );
 	}
 }

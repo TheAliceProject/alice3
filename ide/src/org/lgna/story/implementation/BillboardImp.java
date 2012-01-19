@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class BillboardImp extends ModelImp {
+public class BillboardImp extends VisualScaleModelImp {
 	private static final float MIN_U = 0.0f;
 	private static final float MAX_U = 1.0f;
 	private static final float MIN_V = 1.0f;

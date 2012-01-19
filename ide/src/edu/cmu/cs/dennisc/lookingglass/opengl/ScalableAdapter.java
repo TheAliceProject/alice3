@@ -40,34 +40,69 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.implementation;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleVisualModelImp extends VisualScaleModelImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] { new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance() };
-	public SingleVisualModelImp( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
-		this.sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { sgVisual };
-		this.sgVisuals[ 0 ].frontFacingAppearance.setValue( this.sgAppearances[ 0 ] );
-		this.sgVisuals[ 0 ].setParent( this.getSgComposite() );
+public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegraph.Scalable > {
+	private final double[] matrix = { 1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,0,1 };
+	private final java.nio.DoubleBuffer matrixBuffer = java.nio.DoubleBuffer.wrap( matrix );
+	private boolean isIdentity = true;
+	@Override
+	public void renderOpaque( RenderContext rc ) {
+		if( this.isIdentity ) {
+			super.renderOpaque( rc );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( matrix[ 0 ], matrix[ 5 ], matrix[ 10 ] );
+			rc.gl.glPushMatrix();
+			try {
+				rc.gl.glMultMatrixd( matrixBuffer );
+				super.renderOpaque( rc );
+			} finally {
+				rc.gl.glPopMatrix();
+			}
+		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
-		return this.sgVisuals;
+	public void renderGhost( RenderContext rc, GhostAdapter root ) {
+		if( this.isIdentity ) {
+			super.renderGhost( rc, root );
+		} else {
+			rc.gl.glPushMatrix();
+			try {
+				rc.gl.glMultMatrixd( matrixBuffer );
+				super.renderGhost( rc, root );
+			} finally {
+				rc.gl.glPopMatrix();
+			}
+		}
 	}
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances() {
-		return this.sgAppearances;
+	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+		if( this.isIdentity ) {
+			super.pick( pc, pickParameters, conformanceTestResults );
+		} else {
+			pc.gl.glPushMatrix();
+			try {
+				pc.gl.glMultMatrixd( matrixBuffer );
+				super.pick( pc, pickParameters, conformanceTestResults );
+			} finally {
+				pc.gl.glPopMatrix();
+			}
+		}
 	}
+	
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
-		return this.getSgPaintAppearances();
-	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return this.getSgVisuals()[ 0 ].getBoundingSphere().radius;
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == m_element.scale ) {
+			edu.cmu.cs.dennisc.math.Dimension3 scale = m_element.scale.getValue();
+			this.isIdentity = scale.x == 1.0 && scale.y == 1.0 && scale.z == 1.0;
+			this.matrix[ 0 ] = scale.x;
+			this.matrix[ 5 ] = scale.y;
+			this.matrix[ 10 ] = scale.z;
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }
