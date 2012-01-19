@@ -153,6 +153,10 @@ public class PickUtilities {
 				{
 					pickTypes.add(PickHint.PickType.SUN);
 				}
+				if (entity instanceof org.lgna.story.Joint)
+				{
+					pickTypes.add(PickHint.PickType.JOINT);
+				}
 			}
 			else
 			{

@@ -320,6 +320,29 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		rotateAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION);
 		rotateAboutZAxis.setDragAdapterAndAddHandle( this );
 		
+		
+		ManipulationHandleIndirection rotateJointAboutZAxis = new ManipulationHandleIndirection(new RotationRingHandle(MovementDirection.BACKWARD, Color4f.BLUE));
+		rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT);
+		rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
+		
+		ManipulationHandleIndirection rotateJointAboutYAxis = new ManipulationHandleIndirection(new RotationRingHandle(MovementDirection.UP, Color4f.GREEN));
+		rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT);
+		rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
+		
+		ManipulationHandleIndirection rotateJointAboutXAxis = new ManipulationHandleIndirection(new RotationRingHandle(MovementDirection.LEFT, Color4f.RED));
+		rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT);
+		rotateJointAboutXAxis.setDragAdapterAndAddHandle( this );
+		
+		
+		
+		
+		
 		ManipulationHandleIndirection translateUp = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), Color4f.GREEN));
 		ManipulationHandleIndirection translateDown = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), Color4f.GREEN));
 		translateUp.setManipulation( new LinearDragManipulator() );

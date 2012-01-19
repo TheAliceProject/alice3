@@ -54,7 +54,8 @@ import org.alice.interact.manipulator.AbstractManipulator;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector2;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+//import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 
 /**
@@ -161,17 +162,17 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 	
 	public boolean isMemberOf( HandleSet.HandleGroup group)
 	{
-		return this.handleSet.get( group.getIndex() );
+		return this.handleSet.get( group.ordinal() );
 	}
 
 
-	public Transformable getManipulatedObject() {
+	public AbstractTransformable getManipulatedObject() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
-	public void setManipulatedObject( Transformable manipulatedObject ) {
+	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -247,7 +248,7 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
-	public void setSelectedObject( Transformable manipulatedObject ) {
+	public void setSelectedObject( AbstractTransformable manipulatedObject ) {
 		// TODO Auto-generated method stub
 		
 	}

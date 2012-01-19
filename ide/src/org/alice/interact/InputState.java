@@ -48,9 +48,10 @@ import org.alice.interact.handle.ManipulationHandle;
 
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+//import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
@@ -77,9 +78,9 @@ public class InputState {
 	private InputEventType currentInputEventType = InputEventType.NULL_EVENT;
 	private PickResult clickPickResult = null;
 	private PickResult rolloverPickResult = null;
-	private Transformable rolloverPickTransformable = null;
-	private Transformable clickPickTransformable = null;
-	private Transformable currentlySelectedObject = null;
+	private AbstractTransformable rolloverPickTransformable = null;
+	private AbstractTransformable clickPickTransformable = null;
+	private AbstractTransformable currentlySelectedObject = null;
 	private ManipulationHandle clickHandle = null;
 	private ManipulationHandle rolloverHandle = null;
 	private long timeCaptured = 0;
@@ -150,14 +151,14 @@ public class InputState {
 	/**
 	 * @return the currentlySelectedObject
 	 */
-	public Transformable getCurrentlySelectedObject() {
+	public AbstractTransformable getCurrentlySelectedObject() {
 		return currentlySelectedObject;
 	}
 
 	/**
 	 * @param currentlySelectedObject the currentlySelectedObject to set
 	 */
-	public void setCurrentlySelectedObject( Transformable currentlySelectedObject ) {
+	public void setCurrentlySelectedObject( AbstractTransformable currentlySelectedObject ) {
 		this.currentlySelectedObject = currentlySelectedObject;
 	}
 
@@ -246,7 +247,7 @@ public class InputState {
 	public void setClickPickResult( edu.cmu.cs.dennisc.lookingglass.PickResult pickResult )
 	{
 		this.clickPickResult = pickResult;
-		Transformable picked = this.getClickPickedTransformable( true );
+		AbstractTransformable picked = this.getClickPickedTransformable( true );
 		PickHint clickedObjectType = PickUtilities.getPickType( this.clickPickResult );
 		if ( !clickedObjectType.intersects( PickHint.PickType.NOTHING.pickHint()) )
 		{
@@ -326,7 +327,7 @@ public class InputState {
 
 	public void setRolloverPickResult( PickResult rolloverPickResult ) {
 		this.rolloverPickResult = rolloverPickResult;
-		Transformable picked = this.getRolloverPickedTransformable( true );
+		AbstractTransformable picked = this.getRolloverPickedTransformable( true );
 		boolean validPick = true;
 		if (picked instanceof ManipulationHandle)
 		{
@@ -356,25 +357,25 @@ public class InputState {
 		}
 	}
 
-	public Transformable getRolloverPickTransformable() {
+	public AbstractTransformable getRolloverPickTransformable() {
 		return this.rolloverPickTransformable;
 	}
 
-	public void setRolloverPickTransformable( Transformable rolloverPickTransformable ) {
+	public void setRolloverPickTransformable( AbstractTransformable rolloverPickTransformable ) {
 		this.rolloverPickTransformable = rolloverPickTransformable;
 	}
 	
-	public Transformable getClickPickTransformable() {
+	public AbstractTransformable getClickPickTransformable() {
 		return this.clickPickTransformable;
 	}
 
-	public void setClickPickTransformable( Transformable clickPickTransformable ) {
+	public void setClickPickTransformable( AbstractTransformable clickPickTransformable ) {
 		this.clickPickTransformable = clickPickTransformable;
 	}
 
 	
 	
-	protected Transformable getPickedTransformable( PickResult pickResult, boolean getFirstClass)
+	protected AbstractTransformable getPickedTransformable( PickResult pickResult, boolean getFirstClass)
 	{
 		if (pickResult != null)
 		{
@@ -388,9 +389,9 @@ public class InputState {
 					if (getFirstClass)
 					{
 						Component firstClassComponent = PickUtilities.getFirstClassFromComponent( sgParent );
-						if (firstClassComponent instanceof Transformable)
+						if (firstClassComponent instanceof AbstractTransformable)
 						{
-							return (Transformable)firstClassComponent;
+							return (AbstractTransformable)firstClassComponent;
 						}
 					}
 					else
@@ -403,12 +404,12 @@ public class InputState {
 		return null;
 	}
 	
-	public Transformable getClickPickedTransformable( boolean getFirstClassObject )
+	public AbstractTransformable getClickPickedTransformable( boolean getFirstClassObject )
 	{
 		return this.getPickedTransformable( this.clickPickResult, getFirstClassObject );
 	}
 	
-	public Transformable getRolloverPickedTransformable( boolean getFirstClassObject )
+	public AbstractTransformable getRolloverPickedTransformable( boolean getFirstClassObject )
 	{
 		return this.getPickedTransformable( this.rolloverPickResult, getFirstClassObject );
 	}

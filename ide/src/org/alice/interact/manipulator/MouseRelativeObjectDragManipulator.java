@@ -259,7 +259,7 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 			
 			this.hasMoved = false;
 			
-			this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.localTransformation.getValue());
+			this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
 			this.originalMousePoint = new Point(startInput.getMouseLocation());
 			this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
 			this.orthographicPickPlane = new Plane( this.originalPosition, this.getCamera().getAxes( AsSeenBy.SCENE ).backward );

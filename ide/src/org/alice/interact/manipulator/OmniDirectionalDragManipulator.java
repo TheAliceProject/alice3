@@ -68,6 +68,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -392,7 +393,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		this.showCursor();
 	}
 
-	protected Transformable getInitialTransformable( InputState startInput )
+	protected AbstractTransformable getInitialTransformable( InputState startInput )
 	{
 		return startInput.getClickPickTransformable();
 	}

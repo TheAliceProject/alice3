@@ -93,4 +93,9 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( jointId );
 		return null;
 	}
+	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( jointId );
+		return null;
+	}
 }

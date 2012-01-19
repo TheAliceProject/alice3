@@ -67,6 +67,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 
@@ -177,6 +178,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		this.rotationHandle = handle;
 		this.manipulatedTransformable = this.rotationHandle.getManipulatedObject();
 		this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.rotationHandle.getRotationAxis() );
+		this.absoluteRotationAxis.normalize();
 		//PickResult pick = this.onscreenLookingGlass.pickFrontMost( startInput.getMouseLocation().x, startInput.getMouseLocation().y, /*isSubElementRequired=*/false );
 		startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
 		startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
@@ -210,7 +212,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 //		DEBUG_setDebugSpherePosition(this.initialClickPoint);
 		
 		this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
-		this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.localTransformation.getValue());
+		this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
 		this.originalAbsoluteTransformation = manipulatedTransformable.getAbsoluteTransformation();
 		this.originalAngleBasedOnMouse = getRotationBasedOnMouse( startInput.getMouseLocation() );
 	}
@@ -219,7 +221,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	public boolean doStartManipulator( InputState startInput ) {
 		if ( startInput.getClickPickHint().intersects(PickHint.PickType.THREE_D_HANDLE.pickHint()))
 		{
-			Transformable clickedHandle = startInput.getClickPickedTransformable(true);
+			AbstractTransformable clickedHandle = startInput.getClickPickedTransformable(true);
 			if (clickedHandle instanceof RotationRingHandle)
 			{
 				this.initManipulator( (RotationRingHandle)clickedHandle, startInput );

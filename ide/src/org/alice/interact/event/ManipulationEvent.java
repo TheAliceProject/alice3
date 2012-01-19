@@ -47,7 +47,7 @@ import org.alice.interact.PickHint;
 import org.alice.interact.PickUtilities;
 import org.alice.interact.condition.MovementDescription;
 
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 /**
  * @author David Culyba
@@ -64,10 +64,10 @@ public class ManipulationEvent {
 	
 	private EventType type;
 	private MovementDescription movementDescription;
-	private Transformable target;
+	private AbstractTransformable target;
 	private InputState inputState;
 	
-	public ManipulationEvent( EventType type, MovementDescription movementDescription, Transformable target)
+	public ManipulationEvent( EventType type, MovementDescription movementDescription, AbstractTransformable target)
 	{
 		this.type = type;
 		this.movementDescription = movementDescription;
@@ -84,7 +84,7 @@ public class ManipulationEvent {
 	/**
 	 * @return the target
 	 */
-	public Transformable getTarget() {
+	public AbstractTransformable getTarget() {
 		return target;
 	}
 

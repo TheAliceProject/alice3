@@ -74,21 +74,21 @@ import org.alice.interact.manipulator.ClickAdapterManipulator;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.lgna.croquet.ListSelectionState;
+import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ObjectMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
-import org.lgna.story.implementation.TransformableImp;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
@@ -181,7 +181,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	private boolean hasSetCameraTransformables = false;
 	
 	private boolean isInStageChange = false;
-	private TransformableImp toBeSelected = null;
+	private AbstractTransformableImp toBeSelected = null;
 	private boolean hasObjectToBeSelected = false;
 	
 	private Component currentRolloverComponent = null;
@@ -191,7 +191,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected InteractionGroup currentInteractionState = null;
 	protected ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
 	
-	private TransformableImp selectedObject = null;
+	private AbstractTransformableImp selectedObject = null;
 	private CameraMarkerImp selectedCameraMarker = null;
 	private ObjectMarkerImp selectedObjectMarker = null;
 
@@ -282,7 +282,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.isInStageChange;
 	}
 	
-	public void setToBeSelected(TransformableImp toBeSelected)
+	public void setToBeSelected(AbstractTransformableImp toBeSelected)
 	{
 		this.toBeSelected = toBeSelected;
 		this.hasObjectToBeSelected = true;
@@ -368,12 +368,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.animator;
 	}
 	
-	public TransformableImp getSelectedImplementation()
+	public AbstractTransformableImp getSelectedImplementation()
 	{
 		return this.selectedObject;
 	}
 	
-	public void setHandleShowingForSelectedImplementation( TransformableImp object, boolean handlesShowing)
+	public void setHandleShowingForSelectedImplementation( AbstractTransformableImp object, boolean handlesShowing)
 	{
 		if (this.selectedObject == object)
 		{
@@ -381,7 +381,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void triggerImplementationSelection(TransformableImp selected)
+	public void triggerImplementationSelection(AbstractTransformableImp selected)
 	{	
 		if (this.selectedObject != selected)
 		{
@@ -389,9 +389,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void triggerSgObjectSelection(Transformable selected)
+	public void triggerSgObjectSelection(AbstractTransformable selected)
 	{	
-		triggerImplementationSelection( EntityImp.getInstance(selected, TransformableImp.class) );
+		triggerImplementationSelection( EntityImp.getInstance(selected, AbstractTransformableImp.class) );
 	}
 	
 	private static double MARKER_SELECTION_DURATION = .25;
@@ -443,12 +443,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void setSelectedSceneObjectImplementation( TransformableImp selected )
+	public void setSelectedSceneObjectImplementation( AbstractTransformableImp selected )
 	{
 		if (this.selectedObject != selected) 
 		{
 			this.fireSelecting( new SelectionEvent(this, selected) );
-			Transformable sgTransformable = selected != null ? selected.getSgComposite() : null;
+			AbstractTransformable sgTransformable = selected != null ? selected.getSgComposite() : null;
 			if (HandleManager.isSelectable( sgTransformable ))
 			{
 				this.handleManager.setHandlesShowing(true);
@@ -486,7 +486,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 //		}
 //	}
 	
-	public void setSelectedImplementation(TransformableImp selected)
+	
+	
+	public void setSelectedImplementation(AbstractTransformableImp selected)
 	{
 		if (this.isInStateChange())
 		{
@@ -683,7 +685,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		
 		if (!this.hasObjectToBeSelected && this.currentInputState.getCurrentlySelectedObject() != this.previousInputState.getCurrentlySelectedObject())
 		{
-			this.triggerImplementationSelection( EntityImp.getInstance( this.currentInputState.getCurrentlySelectedObject(), TransformableImp.class) );
+			this.triggerImplementationSelection( EntityImp.getInstance( this.currentInputState.getCurrentlySelectedObject(), AbstractTransformableImp.class) );
 		}
 		
 		this.previousInputState.copyState(this.currentInputState);

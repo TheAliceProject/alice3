@@ -49,6 +49,7 @@ import org.alice.interact.handle.ManipulationHandle;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 
@@ -175,7 +176,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	}
 	
 	@Override
-	public Transformable getManipulatedTransformable() {
+	public AbstractTransformable getManipulatedTransformable() {
 		if (this.activeManipulator != null)
 		{
 			return this.activeManipulator.getManipulatedTransformable();

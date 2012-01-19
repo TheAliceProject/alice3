@@ -44,6 +44,7 @@
 package org.lgna.story.implementation.alice;
 
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,6 +79,7 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	public boolean isFreeInZ() {
 		return this.sgJoint.isFreeInZ.getValue();
 	}
+	
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 transform = this.getTransformation(asSeenBy);

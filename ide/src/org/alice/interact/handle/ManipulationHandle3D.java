@@ -50,6 +50,7 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.interact.manipulator.Scalable;
 import org.alice.stageide.utilities.BoundingBoxUtilities;
 
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -65,6 +66,7 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
@@ -86,7 +88,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	protected Visual sgVisual = new Visual();
 	protected SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
-	protected Transformable manipulatedObject;
+	protected AbstractTransformable manipulatedObject;
 	protected Animator animator;
 	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
 	
@@ -237,16 +239,26 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	};
 	
+	private Scalable getScalable(AbstractTransformable object) {
+		Scalable scalable = null;
+		if (object instanceof Scalable) {
+			scalable = (Scalable)object;
+		}
+		else if (object != null) {
+			scalable = object.getBonusDataFor( Scalable.KEY );
+		}
+		return scalable;
+	}
+	
 	/**
 	 * @param manipulatedObject the manipulatedObject to set
 	 */
-	public void setManipulatedObject( Transformable manipulatedObjectIn ) {
+	public void setManipulatedObject( AbstractTransformable manipulatedObjectIn ) {
 		if (this.manipulatedObject != null)
 		{
-			Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
-			if (visualElement != null)
-			{
-				visualElement.scale.removePropertyListener( this.scaleListener );
+			Scalable s = getScalable(this.manipulatedObject);
+			if (s != null) {
+				s.removeScaleListener(this.scaleListener);
 			}
 		}
 		if (this.manipulatedObject != manipulatedObjectIn)
@@ -266,15 +278,14 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 		if (this.manipulatedObject != null)
 		{
-			Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
-			if (visualElement != null)
-			{
-				visualElement.scale.addPropertyListener( this.scaleListener );
+			Scalable s = getScalable(this.manipulatedObject);
+			if (s != null) {
+				s.addScaleListener(this.scaleListener);
 			}
 		}
 	}
 	
-	public void setSelectedObject( Transformable selectedObject ) {
+	public void setSelectedObject( AbstractTransformable selectedObject ) {
 		this.setManipulatedObject( selectedObject );
 	}
 	
@@ -323,15 +334,19 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	public ManipulationHandle3D( )
 	{
-		HandleRenderState renderState = HandleRenderState.getStateForHandle( this );
-		sgFrontFacingAppearance.diffuseColor.setValue( this.getDesiredColor(renderState) );
-		sgFrontFacingAppearance.opacity.setValue( new Float(this.getDesiredOpacity(renderState)) );
 		sgVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
+		setCurrentColorInternal();
 		sgVisual.setParent( this );
 		this.putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.PickType.THREE_D_HANDLE.pickHint() );
 		this.addAbsoluteTransformationListener(this.absoluteTransformationListener);
 	}
 
+	protected void setCurrentColorInternal() {
+		HandleRenderState renderState = HandleRenderState.getStateForHandle( this );
+		sgFrontFacingAppearance.diffuseColor.setValue( this.getDesiredColor(renderState) );
+		sgFrontFacingAppearance.opacity.setValue( new Float(this.getDesiredOpacity(renderState)) );
+	}
+	
 	protected void initializeAppearance()
 	{
 		HandleRenderState renderState = HandleRenderState.getStateForHandle( this );
@@ -339,13 +354,13 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		sgFrontFacingAppearance.opacity.setValue( new Float(this.getDesiredOpacity(renderState)) );
 	}
 	
-	protected void setTransformableScale( Transformable t, edu.cmu.cs.dennisc.math.Matrix3x3 scaleMatrix )
+	protected void setTransformableScale( AbstractTransformable t, edu.cmu.cs.dennisc.math.Matrix3x3 scaleMatrix )
 	{
 		Visual objectVisual = getSGVisualForTransformable( t );
 		objectVisual.scale.setValue( scaleMatrix );
 	}
 	
-	protected Visual getSGVisualForTransformable( Transformable object )
+	protected Visual getSGVisualForTransformable( AbstractTransformable object )
 	{
 		if (object == null)
 		{
@@ -400,7 +415,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	public boolean isMemberOf( HandleSet.HandleGroup group)
 	{
-		return this.handleSet.get( group.getIndex() );
+		return this.handleSet.get( group.ordinal() );
 	}
 	
 	public void setAnimator( Animator animator )
@@ -416,7 +431,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return sgFrontFacingAppearance;
 	}
 	
-	public Transformable getManipulatedObject()
+	public AbstractTransformable getManipulatedObject()
 	{
 		return this.manipulatedObject;
 //		return (Transformable)this.getParent();

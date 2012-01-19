@@ -46,7 +46,11 @@ package org.alice.interact.manipulator;
  * @author Dennis Cosgrove
  */
 public interface Scalable {
-	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key< Scalable > KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "Scalable.KEY" ); 
+	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key< Scalable > KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "Scalable.KEY" );
+	
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale();
 	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 size );
+
+	public void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
+	public void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
 }

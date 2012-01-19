@@ -46,19 +46,16 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBar extends View< javax.swing.JMenuBar, org.lgna.croquet.MenuBarComposite > {
+public class MenuBar extends View< javax.swing.JMenuBar, org.lgna.croquet.MenuBarComposite > implements MenuItemContainer {
 	public MenuBar( org.lgna.croquet.MenuBarComposite composite ) {
 		super( composite );
-		for( org.lgna.croquet.MenuModel menuModel : composite.getChildren() ) {
-			this.addMenu( menuModel.createMenu() );
+		for( org.lgna.croquet.StandardMenuItemPrepModel item : composite.getChildren() ) {
+			item.createMenuItemAndAddTo( this );
 		}
 	}
 	@Override
 	protected javax.swing.JMenuBar createAwtComponent() {
 		return new javax.swing.JMenuBar();
-	}
-	/*package-private*/ void addMenu( Menu menu ) {
-		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
 	@Override
 	protected void handleDisplayable() {
@@ -77,4 +74,46 @@ public class MenuBar extends View< javax.swing.JMenuBar, org.lgna.croquet.MenuBa
 //		this.mapMenuBarToListener.remove( menuBar );
 		super.handleUndisplayable();
 	}
+	public ViewController< ?, ? > getViewController() {
+		return null;
+	}
+	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( listener );
+	}
+	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( listener );
+	}
+	public void addMenu( Menu menu ) {
+		this.getAwtComponent().add( menu.getAwtComponent() );
+	}
+	public void addMenuItem( MenuItem menuItem ) {
+//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( this.getAwtComponent().getLayout() );
+//		menuItem.setMaximumSizeClampedToPreferredSize( true );
+//		menuItem.setHorizontalAlignment( HorizontalAlignment.TRAILING );
+//		menuItem.setAlignmentX( 1.0f );
+		this.getAwtComponent().add( menuItem.getAwtComponent() );
+	}
+	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( cascadeMenu );
+	}
+	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( cascadeMenuItem );
+	}
+	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( checkBoxMenuItem );
+	}
+	public void addSeparator() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+	}
+	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuTextSeparator );
+	}
+	public void forgetAndRemoveAllMenuItems() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+	}
+	public void removeAllMenuItems() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+	}
+	
+	
 }

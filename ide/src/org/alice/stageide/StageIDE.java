@@ -104,6 +104,9 @@ public class StageIDE extends org.alice.ide.IDE {
 	private java.util.Map< org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon > mapFieldToIcon = new java.util.HashMap< org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon >();
 
 	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
+		if (field == null) {
+			return null;
+		}
 		org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
 		org.lgna.project.ast.AbstractType< ?,?,? > valueType = field.getValueType();
 		if( declaringType != null && valueType != null ) {
