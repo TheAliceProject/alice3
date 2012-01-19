@@ -9,7 +9,12 @@ import org.lgna.croquet.components.ScrollPane;
 import org.lgna.project.ast.AbstractCode;
 
 public class EventListenersView extends org.alice.ide.declarationseditor.code.components.CodeDeclarationView {
-
+//	private final org.alice.ide.codedrop.CodeDropReceptor codeDropReceptor = new org.alice.ide.codedrop.CodeDropReceptor() {
+//		@Override
+//		public org.lgna.project.ast.AbstractCode getCode() {
+//			return ((org.alice.ide.declarationseditor.CodeComposite)getComposite()).getDeclaration();
+//		}
+//	};
 	private final EventsContentPanel eventsPanel;
 //	private final PageAxisPanel contentPanel = new PageAxisPanel();
 	//	private final CodeEditor codeEditor;
