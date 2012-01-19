@@ -61,6 +61,9 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId );
 		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId );
 	}
+	
+	private final edu.cmu.cs.dennisc.property.InstanceProperty< Void > bogusPropertyForScale = new edu.cmu.cs.dennisc.property.InstanceProperty< Void >( null, null );
+	
 	private final JointImplementationAndVisualDataFactory<R> factory;
 	private final A abstraction;
 	private final VisualData visualData;
@@ -176,11 +179,13 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	
 	@Override
 	public void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
+		this.bogusPropertyForScale.addPropertyListener( listener );
 		//this.sgScalable.localTransformation.addPropertyListener( listener );
 	}
 	@Override
 	public void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
 		//this.sgScalable.localTransformation.removePropertyListener( listener );
+		this.bogusPropertyForScale.removePropertyListener( listener );
 	}
 	
 	@Override
@@ -202,6 +207,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		m.translation.y *= scale.y;
 		m.translation.z *= scale.z;
 		this.sgScalable.setLocalTransformation( m );
+		this.bogusPropertyForScale.setValue( null );
 	}
 	
 //	@Override
