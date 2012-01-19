@@ -1,6 +1,5 @@
 package edu.cmu.cs.dennisc.matt;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.lgna.story.MultipleEventPolicy;

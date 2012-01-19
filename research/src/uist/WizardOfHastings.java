@@ -57,4 +57,18 @@ class WizardOfHastings {
 		retargeter.addKeyValuePair( originalField, replacementField );
 		retargeter.addKeyValuePair( originalField.getValueType(), replacementField.getValueType() );
 	}
+	public static void castType( org.lgna.croquet.Retargeter retargeter, org.lgna.project.Project originalProject, String originalTypeName, org.lgna.project.Project replacementProject, String replacementTypeName ) {
+		for( org.lgna.project.ast.NamedUserType originalType : originalProject.getNamedUserTypes() ) {
+			if( originalType.getName().equals( originalTypeName ) ) {
+				for( org.lgna.project.ast.NamedUserType replacementType : replacementProject.getNamedUserTypes() ) {
+					if( replacementType.getName().equals( replacementTypeName ) ) {
+						retargeter.addKeyValuePair( originalType, replacementType );
+						return;
+					}
+				}
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( originalTypeName, replacementTypeName );
+			}
+		}
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( originalTypeName );
+	}
 }

@@ -50,6 +50,21 @@ public class AstUtilities {
 	private AstUtilities() {
 		throw new AssertionError();
 	}
+	
+	public static <N extends org.lgna.project.ast.AbstractNode> N createCopy( N original, org.lgna.project.ast.NamedUserType root ) {
+		java.util.Set< org.lgna.project.ast.AbstractDeclaration > abstractDeclarations = root.createDeclarationSet();
+		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
+		java.util.Map< Integer, org.lgna.project.ast.AbstractDeclaration > map = org.lgna.project.ast.AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
+		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
+		try {
+			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.Version.getCurrentVersionText(), map, false );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
+			return (N)dst;
+		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+			throw new AssertionError( vnse );
+		}
+	}
+	
 	public static boolean isKeywordExpression( Expression expression ) {
 		if( expression != null ) {
 //			if( expression instanceof MethodInvocation ) {

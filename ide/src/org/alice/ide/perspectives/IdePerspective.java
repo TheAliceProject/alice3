@@ -60,6 +60,17 @@ public abstract class IdePerspective extends org.lgna.croquet.Perspective {
 		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
 		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
 	}
+	
+	protected abstract void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel );
+	public final java.util.List< org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.addPotentialDropReceptors( rv, dragModel );
+		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
+		if( clipboard.isPotentiallyAcceptingOf( dragModel ) ) {
+			rv.add( clipboard );
+		}
+		return rv;
+	}
 //	public void handleDeactivation( org.alice.ide.MainComponent mainComponent ) {
 //		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
 //		view.handleDeactivated( mainComponent );

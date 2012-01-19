@@ -50,16 +50,16 @@ public class BorderPanel extends Panel {
 	public enum Constraint {
 		CENTER( java.awt.BorderLayout.CENTER ),
 		
-		NORTH( java.awt.BorderLayout.NORTH ),
+		//NORTH( java.awt.BorderLayout.NORTH ),
 		PAGE_START( java.awt.BorderLayout.PAGE_START ),
 		
-		SOUTH( java.awt.BorderLayout.SOUTH ),
+		//SOUTH( java.awt.BorderLayout.SOUTH ),
 		PAGE_END( java.awt.BorderLayout.PAGE_END ),
 		
-		WEST( java.awt.BorderLayout.WEST ),
+		//WEST( java.awt.BorderLayout.WEST ),
 		LINE_START( java.awt.BorderLayout.LINE_START ),
 
-		EAST( java.awt.BorderLayout.EAST ),
+		//EAST( java.awt.BorderLayout.EAST ),
 		LINE_END( java.awt.BorderLayout.LINE_END );
 		
 		private String internal;

@@ -49,6 +49,11 @@ package org.lgna.project.ast;
 public abstract class AbstractDeclaration extends AbstractNode implements Declaration {
 	public abstract boolean isUserAuthored();
 	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
+	
+	@Override
+	public boolean isAppropriatelyIdenitifiedById() {
+		return this.isUserAuthored();
+	}
 	@Override
 	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< AbstractNode > nodes ) {
 		rv.add( this );

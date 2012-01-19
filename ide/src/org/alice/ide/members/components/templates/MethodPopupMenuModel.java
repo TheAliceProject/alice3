@@ -51,7 +51,7 @@ package org.alice.ide.members.components.templates;
 			java.util.UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),
 			org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( userMethod ).getMenuItemPrepModel(),
 			org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( userMethod ).getMenuItemPrepModel(),
-			org.alice.ide.operations.ast.FocusCodeOperation.getInstance( userMethod ).getMenuItemPrepModel(),
+			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectionOperation( userMethod ).getMenuItemPrepModel(),
 			org.lgna.croquet.MenuModel.SEPARATOR,
 			org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( userMethod ).getMenuItemPrepModel()
 		);

@@ -56,6 +56,11 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		} else {
 			this.modelResolver = null;
 		}
+		if( trigger != null ) {
+			//pass
+		} else {
+			trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
+		}
 		this.trigger = trigger;
 		this.id = java.util.UUID.randomUUID();
 	}
@@ -89,7 +94,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		org.lgna.croquet.Model model = this.getModelForTutorialNoteText();
 		if( model != null ) {
 			org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
-			String triggerText = trigger.getNoteText( userInformation.getLocale() );
+			String triggerText = trigger != null ? trigger.getNoteText( userInformation.getLocale() ) : null;
 			return model.getTutorialNoteText( this, triggerText, edit, userInformation );
 		} else {
 			return null;
@@ -103,19 +108,29 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		if( this.modelResolver instanceof org.lgna.croquet.resolvers.RetargetableResolver<?> ) {
 			org.lgna.croquet.resolvers.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<?>)this.modelResolver;
 			retargetableResolver.retarget( retargeter );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.modelResolver );
 		}
 		if( this.trigger instanceof org.lgna.croquet.triggers.RetargetableTrigger ) {
 			org.lgna.croquet.triggers.RetargetableTrigger retargetableTrigger = (org.lgna.croquet.triggers.RetargetableTrigger)this.trigger;
 			retargetableTrigger.retarget( retargeter );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.trigger );
 		}
 	}
 	
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		org.lgna.croquet.Model model = this.getModel();
 		if( model != null ) {
+			java.util.Locale locale = null;
+			rv.append( "model=" );
 			rv.append( model.getClass().getName() );
-			rv.append( ";" );
+			rv.append( ";trigger=" );
+			org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
+			rv.append( trigger != null ? trigger.getNoteText( locale ) : null );
+			rv.append( ";text=" );
 			rv.append( model.getTutorialNoteText( this, null, null, null ) );
+			rv.append( ";" );
 		}
 		return rv;
 	}

@@ -40,34 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
-		super( model );
-	}
-	@Override
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getType();
-	}
-	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
-	}
-	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
+public class CodeComposite extends DeclarationComposite< org.lgna.project.ast.AbstractCode, org.alice.ide.declarationseditor.code.components.CodeDeclarationView > {
+	private static java.util.Map< org.lgna.project.ast.AbstractCode, CodeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized CodeComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
+		if( code != null ) {
+			CodeComposite rv = map.get( code );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new CodeComposite( code );
+				map.put( code, rv );
+			}
+			return rv;
 		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
+			return null;
 		}
 	}
-//	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
-//	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
+	private CodeComposite( org.lgna.project.ast.AbstractCode code ) {
+		super( java.util.UUID.fromString( "b8043e06-495b-4f24-9cfb-0e447d97cc7c" ), code, org.lgna.project.ast.AbstractCode.class );
+	}
+	@Override
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+		super.customizeTitleComponent( booleanState, button );
+		button.scaleFont( 1.2f );
+	}
+	@Override
+	protected org.alice.ide.declarationseditor.code.components.CodeDeclarationView createView() {
+		if( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( this.getDeclaration().getName() ) ) {
+			return new org.alice.ide.declarationseditor.events.components.EventListenersView( this );
+		} else {
+			return new org.alice.ide.declarationseditor.code.components.CodeDeclarationView( this );
+		}
+	}
 }

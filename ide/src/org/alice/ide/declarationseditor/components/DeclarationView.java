@@ -53,4 +53,5 @@ public abstract class DeclarationView extends org.lgna.croquet.components.Border
 	public abstract boolean isPrintSupported();
 	@Deprecated
 	public abstract org.alice.ide.codeeditor.CodeEditor getCodeDropReceptor();
+	public abstract void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel );
 }

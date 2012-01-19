@@ -40,55 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FocusCodeOperation extends org.lgna.croquet.ActionOperation {
-	private org.lgna.project.ast.AbstractCode nextCode;
-	
-	private static java.util.Map< org.lgna.project.ast.AbstractCode, FocusCodeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FocusCodeOperation getInstance( org.lgna.project.ast.AbstractCode nextCode ) {
-		FocusCodeOperation rv = map.get( nextCode );
-		if( rv != null ) {
-			//pass
+public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.AbstractType, org.alice.ide.declarationseditor.type.components.TypeDeclarationView > {
+	private static java.util.Map< org.lgna.project.ast.AbstractType, TypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized TypeComposite getInstance( org.lgna.project.ast.AbstractType type ) {
+		if( type != null ) {
+			TypeComposite rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new TypeComposite( type );
+				map.put( type, rv );
+			}
+			return rv;
 		} else {
-			rv = new FocusCodeOperation( nextCode );
-			map.put( nextCode, rv );
+			return null;
 		}
-		return rv;
 	}
-	
-	private FocusCodeOperation( org.lgna.project.ast.AbstractCode nextCode ) {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "82bf4d2a-f1ff-4df5-a5dc-80f981181ba5" ) );
-		this.nextCode = nextCode;
-		String name;
-		if( nextCode instanceof org.lgna.project.ast.NamedUserConstructor ) {
-			name = "Edit Constructor";
-		} else {
-			name = "Edit";
-		}
-		this.setName( name );
+	private TypeComposite( org.lgna.project.ast.AbstractType type ) {
+		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.AbstractType.class );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
-		final org.lgna.project.ast.AbstractCode prevCode = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
-		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
-			@Override
-			protected final void doOrRedoInternal( boolean isDo ) {
-				org.alice.ide.IDE.getActiveInstance().setFocusedCode( nextCode );
-			}
-			@Override
-			protected final void undoInternal() {
-				org.alice.ide.IDE.getActiveInstance().setFocusedCode( prevCode );
-			}
-			@Override
-			protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-				rv.append( "focus: " );
-				rv.append( org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, nextCode, locale) );
-				return rv;
-			}
-		} );
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+		super.customizeTitleComponent( booleanState, button );
+		button.scaleFont( 1.6f );
+	}
+	@Override
+	protected org.alice.ide.declarationseditor.type.components.TypeDeclarationView createView() {
+		return new org.alice.ide.declarationseditor.type.components.TypeDeclarationView( this );
 	}
 }

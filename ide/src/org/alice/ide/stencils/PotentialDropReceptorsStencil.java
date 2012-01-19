@@ -87,12 +87,12 @@ public class PotentialDropReceptorsStencil extends org.lgna.stencil.LayeredPaneC
 	}
 	
 
-	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+	public void showStencilOver( org.lgna.croquet.components.DragComponent<?,?> potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.codedrop.CodeDropReceptor codeEditor = ide.getCodeEditorInFocus();
-		if( codeEditor != null ) {
-			this.holes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			codeEditor.addPotentialDropReceptors( this.holes, type );
+		org.alice.ide.perspectives.IdePerspective idePerspective = (org.alice.ide.perspectives.IdePerspective)ide.getPerspective();
+		java.util.List< org.lgna.croquet.DropReceptor > dropReceptors = idePerspective.createListOfPotentialDropReceptors( (org.alice.ide.croquet.models.IdeDragModel)potentialDragSource.getModel() );
+		if( dropReceptors.size() > 0 ) {
+			this.holes = dropReceptors;
 			this.potentialDragSource = potentialDragSource;
 			this.addToLayeredPane();
 		}

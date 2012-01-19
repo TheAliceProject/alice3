@@ -119,6 +119,9 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		return null;
 	}
 	@Override
+	public void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+	}
+	@Override
 	public boolean isPrintSupported() {
 		return false;
 	}

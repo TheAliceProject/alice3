@@ -48,11 +48,22 @@ package uist;
  */
 /*package-private*/ class AstLiveRetargeter implements org.lgna.croquet.Retargeter {
 	private java.util.Map< Object, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private void addBody( org.lgna.project.ast.BlockStatement keyBlockStatement, org.lgna.project.ast.BlockStatement valueBlockStatement ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "recursive retarget" );
+		this.addKeyValuePair( keyBlockStatement, valueBlockStatement );
+	}
 	public void addKeyValuePair( Object key, Object value ) {
 		this.map.put( key, value );
 		if( key instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+			org.lgna.project.ast.AbstractStatementWithBody keyAbstractStatementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)key;
+			org.lgna.project.ast.AbstractStatementWithBody valueAbstractStatementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)key;
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "addKeyValuePair recursive retarget" );
-			this.addKeyValuePair( ((org.lgna.project.ast.AbstractStatementWithBody)key).body.getValue(), ((org.lgna.project.ast.AbstractStatementWithBody)value).body.getValue() );
+			this.addBody( keyAbstractStatementWithBody.body.getValue(), valueAbstractStatementWithBody.body.getValue() );
+		}
+		if( key instanceof org.lgna.project.ast.UserCode ) {
+			org.lgna.project.ast.UserCode keyUserCode = (org.lgna.project.ast.UserCode)key;
+			org.lgna.project.ast.UserCode valueUserCode = (org.lgna.project.ast.UserCode)key;
+			this.addBody( keyUserCode.getBodyProperty().getValue(), valueUserCode.getBodyProperty().getValue() );
 		}
 	}
 	public <N> N retarget(N original) {

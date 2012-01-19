@@ -70,7 +70,11 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 		this.label = label;
 	}
 	protected void addFeature( Feature feature ) {
-		this.features.add( feature );
+		if( feature != null ) {
+			this.features.add( feature );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
+		}
 	}
 	public java.util.List< Feature > getFeatures() {
 		return this.features;

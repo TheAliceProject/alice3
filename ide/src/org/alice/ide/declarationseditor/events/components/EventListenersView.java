@@ -1,19 +1,14 @@
 package org.alice.ide.declarationseditor.events.components;
 
-import java.awt.Graphics;
-import java.awt.print.PageFormat;
-import java.awt.print.PrinterException;
-
 import org.alice.ide.controlflow.ControlFlowComposite;
 import org.alice.ide.declarationseditor.DeclarationComposite;
-import org.alice.ide.declarationseditor.components.DeclarationView;
 import org.alice.ide.declarationseditor.events.AddEventListenerCascade;
 import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.PopupButton;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.project.ast.AbstractCode;
 
-public class EventListenersView extends DeclarationView {
+public class EventListenersView extends org.alice.ide.declarationseditor.code.components.CodeDeclarationView {
 
 	private final EventsContentPanel eventsPanel;
 //	private final PageAxisPanel contentPanel = new PageAxisPanel();
@@ -54,19 +49,8 @@ public class EventListenersView extends DeclarationView {
 ////		this.eventsPanel.addContent( BoxUtilities.createVerticalGlue() );
 //	}
 
-	public int print( Graphics graphics, PageFormat pageFormat, int pageIndex ) throws PrinterException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	@Override
 	public org.alice.ide.codeeditor.CodeEditor getCodeDropReceptor() {
 		return null;
 	}
-
-	@Override
-	public boolean isPrintSupported() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }

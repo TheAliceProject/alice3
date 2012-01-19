@@ -8,7 +8,7 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="uist.TutorialIde"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;${project_loc:ccat}/src/uist/clown.a3p&quot; 0 0 1280 720 false &quot;${workspace_loc}/lg-tutorial&quot; true false true false false"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;${project_loc:ccat}/src/uist/clown.a3p&quot; 0 0 1280 720 false &quot;${workspace_loc}/lg-tutorial&quot; true false true false"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ccat"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/dev/jogl/native/${system_property:os.name}-${system_property:os.arch}&quot;${system_property:path.separator}&quot;${project_loc:ide}/dev/nebulous/native/${system_property:os.name}-${system_property:os.arch}&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.apis.gallery.dir=&quot;${project_loc:ide}/generated/gallery&quot; -Dorg.alice.ide.internalTesting=true"/>
 </launchConfiguration>
