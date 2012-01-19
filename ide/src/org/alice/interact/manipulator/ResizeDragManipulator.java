@@ -50,13 +50,14 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
+import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.Vector3;
 
 public class ResizeDragManipulator extends AbstractManipulator
 {
 
 	protected Point initialPoint;
-	private Vector3 accumulatedScaleVector = new Vector3(1.0, 1.0, 1.0);
+	private Dimension3 accumulatedScaleVector = new Dimension3(1.0, 1.0, 1.0);
 	private static final double RESIZE_SCALE = .005;
 	
 	@Override
@@ -113,15 +114,6 @@ public class ResizeDragManipulator extends AbstractManipulator
 			edu.cmu.cs.dennisc.math.Dimension3 scale = new edu.cmu.cs.dennisc.math.Dimension3( scaleAmount, scaleAmount, scaleAmount );
 			scalable.setScale( scale );
 		}
-//		
-//		Vector3 scaleVector = new Vector3( scaleAmount, scaleAmount, scaleAmount );
-//		//First remove the old scale
-//		Vector3 inverseScale = ScaleDragManipulator.getInvertedScaleVector(accumulatedScaleVector);
-//		ScaleUtilities.applyScale( this.manipulatedTransformable, inverseScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
-//		//Now apply the new scale
-//		accumulatedScaleVector.set( scaleVector );
-//		ScaleUtilities.applyScale( this.manipulatedTransformable, scaleVector, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
-//
 	}
 
 	@Override
@@ -138,7 +130,7 @@ public class ResizeDragManipulator extends AbstractManipulator
 
 	@Override
 	public void undoRedoBeginManipulation() {
-		accumulatedScaleVector = new Vector3(1.0, 1.0, 1.0);
+		accumulatedScaleVector = new Dimension3(1.0, 1.0, 1.0);
 	}
 
 	@Override

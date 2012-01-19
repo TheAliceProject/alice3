@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.scale;
 
+import org.alice.interact.manipulator.Scalable;
+
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
@@ -125,17 +127,18 @@ public class ScaleUtilities {
 	
 	public static edu.cmu.cs.dennisc.math.Matrix3x3 getTransformableScale( edu.cmu.cs.dennisc.scenegraph.Transformable t )
 	{
-		edu.cmu.cs.dennisc.math.Matrix3x3 returnScale;
-		Visual objectVisual = getSGVisualForTransformable( t );
-		if (objectVisual != null)
-		{
-			returnScale = new edu.cmu.cs.dennisc.math.Matrix3x3();
-			returnScale.setValue( objectVisual.scale.getValue() );
+		Scalable scalable;
+		if (t instanceof Scalable) {
+			scalable = (Scalable)t;
 		}
-		else
-		{
-			returnScale = edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( 1.0d, 1.0d, 1.0d );
+		else {
+			scalable = t.getBonusDataFor( Scalable.KEY );
 		}
-		return returnScale;
+		if( scalable != null ) {
+			return edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( scalable.getScale() );
+		}
+		else {
+			return edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( 1.0d, 1.0d, 1.0d );
+		}
 	}
 }

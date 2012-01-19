@@ -117,6 +117,9 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
 		return AliceResourceUtilties.getOriginalJointOrientation( this.resource, jointId );
 	}
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId ) {
+		return AliceResourceUtilties.getOriginalJointTransformation( this.resource, jointId );
+	}
 	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData( org.lgna.story.implementation.JointedModelImp jointedModelImplementation ) {
 		return new VisualData( this.resource );
 	}
