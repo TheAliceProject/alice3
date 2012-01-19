@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba

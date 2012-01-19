@@ -42,9 +42,7 @@
  */
 package org.alice.ide.sceneeditor;
 
-import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.MethodInvocation;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 

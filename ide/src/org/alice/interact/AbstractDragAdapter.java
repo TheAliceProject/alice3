@@ -79,7 +79,6 @@ import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ObjectMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
-//import org.lgna.story.implementation.TransformableImp;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
@@ -90,7 +89,6 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 

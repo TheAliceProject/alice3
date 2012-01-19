@@ -49,7 +49,6 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba

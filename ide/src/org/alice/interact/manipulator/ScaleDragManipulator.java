@@ -48,8 +48,6 @@ import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
 import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
 
 /**
  * @author David Culyba

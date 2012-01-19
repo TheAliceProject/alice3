@@ -48,7 +48,6 @@ import org.alice.interact.PickUtilities;
 import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba

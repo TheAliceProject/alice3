@@ -80,8 +80,6 @@ import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.croquet.components.SpringPanel.Horizontal;
 import org.lgna.croquet.components.SpringPanel.Vertical;
 import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.MethodInvocation;
@@ -109,7 +107,6 @@ import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.TransformableImp;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
