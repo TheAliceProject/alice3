@@ -195,6 +195,9 @@ public class HandleManager implements ManipulationListener{
 				}
 				else return true;
 			}
+			else {
+				return false;
+			}
 		}
 		return true;
 	}
