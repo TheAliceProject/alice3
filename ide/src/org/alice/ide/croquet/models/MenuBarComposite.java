@@ -55,11 +55,12 @@ public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
 	}
 	private MenuBarComposite() {
 		super( java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.FileMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.WindowMenuModel.getInstance() );
-		this.addMenuModel( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
+		this.addItem( org.alice.ide.croquet.models.menubar.FileMenuModel.getInstance() );
+		this.addItem( org.alice.ide.croquet.models.menubar.EditMenuModel.getInstance() );
+		this.addItem( org.alice.ide.croquet.models.menubar.ProjectMenuModel.getInstance() );
+		this.addItem( org.alice.ide.croquet.models.menubar.RunMenuModel.getInstance() );
+		this.addItem( org.alice.ide.croquet.models.menubar.WindowMenuModel.getInstance() );
+		this.addItem( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
+		//this.addItem( org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance().getMenuItemPrepModel() );
 	}
 }

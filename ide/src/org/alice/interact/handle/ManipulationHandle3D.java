@@ -50,6 +50,7 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.interact.manipulator.Scalable;
 import org.alice.stageide.utilities.BoundingBoxUtilities;
 
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -238,16 +239,26 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	};
 	
+	private Scalable getScalable(AbstractTransformable object) {
+		Scalable scalable = null;
+		if (object instanceof Scalable) {
+			scalable = (Scalable)object;
+		}
+		else if (object != null) {
+			scalable = object.getBonusDataFor( Scalable.KEY );
+		}
+		return scalable;
+	}
+	
 	/**
 	 * @param manipulatedObject the manipulatedObject to set
 	 */
 	public void setManipulatedObject( AbstractTransformable manipulatedObjectIn ) {
 		if (this.manipulatedObject != null)
 		{
-			Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
-			if (visualElement != null)
-			{
-				visualElement.scale.removePropertyListener( this.scaleListener );
+			Scalable s = getScalable(this.manipulatedObject);
+			if (s != null) {
+				s.removeScaleListener(this.scaleListener);
 			}
 		}
 		if (this.manipulatedObject != manipulatedObjectIn)
@@ -267,10 +278,9 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 		if (this.manipulatedObject != null)
 		{
-			Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
-			if (visualElement != null)
-			{
-				visualElement.scale.addPropertyListener( this.scaleListener );
+			Scalable s = getScalable(this.manipulatedObject);
+			if (s != null) {
+				s.addScaleListener(this.scaleListener);
 			}
 		}
 	}
