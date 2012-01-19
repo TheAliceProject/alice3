@@ -61,7 +61,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  */
 public abstract class AbstractManipulator {
 	
-	protected edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable = null;
+	protected edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedTransformable = null;
 	protected AffineMatrix4x4 originalTransformation = null;
 	private boolean hasStarted = false;
 	protected AbstractDragAdapter dragAdapter;
@@ -74,7 +74,7 @@ public abstract class AbstractManipulator {
 		this.manipulatedTransformable = manipulatedTransformable;
 	}
 	
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getManipulatedTransformable()
+	public edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getManipulatedTransformable()
 	{
 		return this.manipulatedTransformable;
 	}

@@ -42,6 +42,8 @@
  */
 package org.alice.ide.sceneeditor;
 
+import org.lgna.project.ast.Expression;
+
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
@@ -137,9 +139,29 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 			return getActiveSceneInstance().getFieldValueInstanceInJava((org.lgna.project.ast.UserField)field);
 		}
 	}
+	
+	public Object getInstanceInJavaVMForMethodInvocation( org.lgna.project.ast.MethodInvocation method) {
+		if (method == null) {
+			return null;
+		}
+		Object[] values = this.getVM().ENTRY_POINT_evaluate(
+				getActiveSceneInstance(), 
+				new Expression[] { method }
+		);
+		if (values.length > 0) {
+			return values[0];
+		}
+		else {
+			return null;
+		}
+	}
 
 	public <E> E getInstanceInJavaVMForField( org.lgna.project.ast.AbstractField field, Class<E> cls) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(getInstanceInJavaVMForField(field), cls);
+	}
+	
+	public <E> E getInstanceInJavaVMForMethodInvocation( org.lgna.project.ast.MethodInvocation method, Class<E> cls) {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(getInstanceInJavaVMForMethodInvocation(method), cls);
 	}
 	
 	public  <T extends org.lgna.story.implementation.EntityImp> T getImplementation( org.lgna.project.ast.AbstractField field ) {

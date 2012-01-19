@@ -59,29 +59,37 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		public JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
 		public VisualData createVisualData( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation );
 		public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId );
+		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId );
 	}
+	
+	private final edu.cmu.cs.dennisc.property.InstanceProperty< Void > bogusPropertyForScale = new edu.cmu.cs.dennisc.property.InstanceProperty< Void >( null, null );
+	
 	private final JointImplementationAndVisualDataFactory<R> factory;
 	private final A abstraction;
 	private final VisualData visualData;
 
 	//todo
 	//private final edu.cmu.cs.dennisc.scenegraph.Scalable sgScalable = new edu.cmu.cs.dennisc.scenegraph.Scalable();
-	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgScalable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+//	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgScalable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+	
+	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgScalable;
+	private org.lgna.story.implementation.JointImp rootJointImp;
 	
 	private final java.util.Map< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > mapIdToJoint = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public JointedModelImp( A abstraction, JointImplementationAndVisualDataFactory< R > factory ) {
 		this.abstraction = abstraction;
 		this.factory = factory;
 		
-		this.sgScalable.setParent( this.getSgComposite() );
+//		this.sgScalable.setParent( this.getSgComposite() );
 		
 		this.visualData = this.factory.createVisualData( this );
-		this.visualData.setSGParent(this.sgScalable);
+		this.visualData.setSGParent(this.getSgComposite());
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
-			sgVisual.setParent( this.sgScalable );
+			sgVisual.setParent( this.getSgComposite() );
 		}
 		for( org.lgna.story.resources.JointId root : this.getRootJointIds() ) {
-			this.createJointTree( root, this );
+			this.rootJointImp = this.createJointTree( root, this );
+			this.sgScalable = this.rootJointImp.getSgComposite();
 		}
 	}
 	
@@ -155,6 +163,10 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		return this.factory.getOriginalJointOrientation( jointId );
 	}
 	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId ) {
+		return this.factory.getOriginalJointTransformation( jointId );
+	}
+	
 	public abstract org.lgna.story.resources.JointId[] getRootJointIds();
 	
 	public edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getSgSkeletonVisual() {
@@ -167,11 +179,13 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	
 	@Override
 	public void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
-		this.sgScalable.localTransformation.addPropertyListener( listener );
+		this.bogusPropertyForScale.addPropertyListener( listener );
+		//this.sgScalable.localTransformation.addPropertyListener( listener );
 	}
 	@Override
 	public void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
-		this.sgScalable.localTransformation.removePropertyListener( listener );
+		//this.sgScalable.localTransformation.removePropertyListener( listener );
+		this.bogusPropertyForScale.removePropertyListener( listener );
 	}
 	
 	@Override
@@ -180,16 +194,20 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.sgScalable.localTransformation.getValue();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.sgScalable.getLocalTransformation();
 		return new edu.cmu.cs.dennisc.math.Dimension3( m.orientation.right.x, m.orientation.up.y, m.orientation.backward.z );
 	}
 	@Override
 	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.rootJointImp.getOriginalTransformation();
 		m.orientation.right.x = scale.x;
 		m.orientation.up.y = scale.y;
 		m.orientation.backward.z = scale.z;
-		this.sgScalable.localTransformation.setValue( m );
+		m.translation.x *= scale.x;
+		m.translation.y *= scale.y;
+		m.translation.z *= scale.z;
+		this.sgScalable.setLocalTransformation( m );
+		this.bogusPropertyForScale.setValue( null );
 	}
 	
 //	@Override

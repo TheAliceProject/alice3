@@ -137,7 +137,7 @@ public class CameraMoveDragManipulator  extends CameraManipulator implements OnS
 	public boolean doStartManipulator( InputState startInput ) {
 		if (super.doStartManipulator( startInput ))
 		{
-			this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.localTransformation.getValue());
+			this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
 			this.originalMousePoint = new Point(startInput.getMouseLocation());
 			AffineMatrix4x4 absoluteTransform = this.manipulatedTransformable.getAbsoluteTransformation();
 			initialCameraDotVertical = Vector3.calculateDotProduct(absoluteTransform.orientation.backward, Vector3.accessPositiveYAxis());

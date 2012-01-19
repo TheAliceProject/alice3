@@ -44,7 +44,7 @@ package org.alice.interact.event;
 
 import org.alice.interact.AbstractDragAdapter;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.implementation.TransformableImp;
+import org.lgna.story.implementation.AbstractTransformableImp;
 
 import edu.cmu.cs.dennisc.pattern.event.Event;
 
@@ -52,8 +52,8 @@ import edu.cmu.cs.dennisc.pattern.event.Event;
  * @author David Culyba
  */
 public class SelectionEvent extends Event< AbstractDragAdapter >{
-	private TransformableImp transformable;
-	public SelectionEvent( AbstractDragAdapter source, TransformableImp transformable ) {
+	private AbstractTransformableImp transformable;
+	public SelectionEvent( AbstractDragAdapter source, AbstractTransformableImp transformable ) {
 		super( source );
 		this.transformable = transformable;
 	}
@@ -70,7 +70,7 @@ public class SelectionEvent extends Event< AbstractDragAdapter >{
 		}
 	}
 	
-	public TransformableImp getTransformable() {
+	public AbstractTransformableImp getTransformable() {
 		return this.transformable;
 	}
 }

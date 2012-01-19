@@ -139,6 +139,10 @@ public abstract class JointImp extends AbstractTransformableImp {
 		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
 	}
 	
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
+		return this.jointedModelImplementation.getOriginalJointTransformation( this.getJointId() );
+	}
+	
 	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes getPivot() {
 		if( this.axes != null ) {
 			//pass

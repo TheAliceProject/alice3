@@ -80,7 +80,6 @@ import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.croquet.components.SpringPanel.Horizontal;
 import org.lgna.croquet.components.SpringPanel.Vertical;
 import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.MethodInvocation;
@@ -96,6 +95,7 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Marker;
 import org.lgna.story.OrthographicCameraMarker;
 import org.lgna.story.PerspectiveCameraMarker;
+import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.MarkerImp;
@@ -107,7 +107,6 @@ import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.TransformableImp;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
@@ -228,21 +227,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			}
 			else if (expression instanceof MethodInvocation)
 			{
-				MethodInvocation mi = (MethodInvocation)expression;
-				//mi.expression.getValue();
-				
-				Object[] values = StorytellingSceneEditor.this.getVM().ENTRY_POINT_evaluate(
-						getActiveSceneInstance(), 
-						new Expression[] { expression }
-				);
-				
-				Logger.todo( "SetSelectedMethod in SceneEditor (for joint selection)" );
+				StorytellingSceneEditor.this.setSelectedMethod((MethodInvocation)expression);
 				
 			}
 			else if (expression instanceof ThisExpression)
 			{
 				UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
 				StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
+			}
+			else if (expression instanceof MethodInvocation){
+				System.out.println(expression);
 			}
 			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = false;
 		}
@@ -316,6 +310,38 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				}
 			}
 			this.globalDragAdapter.setSelectedImplementation(transImp);
+		}
+	}
+	
+	private void setSelectedMethodOnManipulator(MethodInvocation method)
+	{
+		if (this.globalDragAdapter != null)
+		{
+			Entity selectedEntity = this.getInstanceInJavaVMForMethodInvocation(method, Entity.class);
+			AbstractTransformableImp transImp = null;
+			if (selectedEntity != null)
+			{
+				EntityImp imp = ImplementationAccessor.getImplementation(selectedEntity);
+				if (imp instanceof AbstractTransformableImp)
+				{
+					transImp = (AbstractTransformableImp)imp;
+				}
+			}
+			this.globalDragAdapter.setSelectedImplementation(transImp);
+		}
+	}
+	
+	public void setSelectedMethod(MethodInvocation method) {
+		if (!this.selectionIsFromMain)
+		{
+			this.selectionIsFromMain = true;
+			
+			if (this.globalDragAdapter != null)
+			{
+				setSelectedMethodOnManipulator(method);
+			}
+			
+			this.selectionIsFromMain = false;
 		}
 	}
 	

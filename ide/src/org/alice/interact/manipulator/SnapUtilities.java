@@ -62,6 +62,7 @@ import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
@@ -184,7 +185,7 @@ public class SnapUtilities
 		ANGLE_SNAP_SPHERE.setParent(null);
 	}
 	
-	public static Visual getSGVisualForTransformable( Transformable t )
+	public static Visual getSGVisualForTransformable( AbstractTransformable t )
 	{
 		if (t == null)
 		{
@@ -201,7 +202,7 @@ public class SnapUtilities
 		return null;
 	}
 	
-	public static edu.cmu.cs.dennisc.math.Matrix3x3 getTransformableScale( Transformable t )
+	public static edu.cmu.cs.dennisc.math.Matrix3x3 getTransformableScale( AbstractTransformable t )
 	{
 		edu.cmu.cs.dennisc.math.Matrix3x3 returnScale;
 		Visual objectVisual = getSGVisualForTransformable( t );
@@ -218,7 +219,7 @@ public class SnapUtilities
 		
 	}
 	
-	public static AxisAlignedBox getBoundingBox(Transformable t)
+	public static AxisAlignedBox getBoundingBox(AbstractTransformable t)
 	{
 		AxisAlignedBox boundingBox = null;
 		if (t != null)
@@ -250,7 +251,7 @@ public class SnapUtilities
 		return boundingBox;
 	}
 	
-	public static Point3 snapObjectToGround(Transformable toSnap, Point3 newPosition, ReferenceFrame referenceFrame)
+	public static Point3 snapObjectToGround(AbstractTransformable toSnap, Point3 newPosition, ReferenceFrame referenceFrame)
 	{
 
 		Point3 returnSnapPosition = new Point3(newPosition);
@@ -371,7 +372,7 @@ public class SnapUtilities
 		return snapObjectToGrid(toSnap, newPosition, DEFAULT_GRID_SPACING, toSnap.getRoot());
 	}
 	
-	public static Point3 snapObjectToGrid(Transformable toSnap, Point3 originalPositionIn, double gridSpacing, ReferenceFrame referenceFrame)
+	public static Point3 snapObjectToGrid(AbstractTransformable toSnap, Point3 originalPositionIn, double gridSpacing, ReferenceFrame referenceFrame)
 	{
 		AffineMatrix4x4 toReferenceFrame = referenceFrame.getInverseAbsoluteTransformation();
 		AffineMatrix4x4 backToScene = referenceFrame.getAbsoluteTransformation();
@@ -450,7 +451,7 @@ public class SnapUtilities
 		
 	}
 	
-	public static Point3 doMovementSnapping(Transformable t, Point3 currentPosition, AbstractDragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera)
+	public static Point3 doMovementSnapping(AbstractTransformable t, Point3 currentPosition, AbstractDragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera)
 	{
 		Point3 snapPosition = new Point3(currentPosition);
 		if (dragAdapter != null)

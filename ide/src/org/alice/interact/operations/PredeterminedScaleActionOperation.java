@@ -42,6 +42,7 @@
  */
 package org.alice.interact.operations;
 
+import org.alice.interact.manipulator.Scalable;
 import org.lgna.croquet.Group;
 
 /**
@@ -51,12 +52,12 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable;
-	private edu.cmu.cs.dennisc.math.Vector3 redoVector;
-	private edu.cmu.cs.dennisc.math.Vector3 undoVector;
+	private edu.cmu.cs.dennisc.math.Dimension3 redoVector;
+	private edu.cmu.cs.dennisc.math.Dimension3 undoVector;
 	private edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion;
 	
 	private String editPresentationKey;
-	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion, String editPresentationKey ) {
+	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.Dimension3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion, String editPresentationKey ) {
 		super( group, java.util.UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ) );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
@@ -68,30 +69,36 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 		assert axis.z != 0.0;
 
 		this.redoVector = axis;
-		this.undoVector = new edu.cmu.cs.dennisc.math.Vector3( 1.0/axis.x, 1.0/axis.y, 1.0/axis.z );
+		this.undoVector = new edu.cmu.cs.dennisc.math.Dimension3( 1.0/axis.x, 1.0/axis.y, 1.0/axis.z );
 		assert this.undoVector.isNaN() == false;
 		
 		this.criterion = criterion;
 		this.editPresentationKey = editPresentationKey;
 	}
-	private void scale( final edu.cmu.cs.dennisc.math.Vector3 axis ) {
+	private void scale( final edu.cmu.cs.dennisc.math.Dimension3 axis ) {
 		if( this.animator != null ) {
 			class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
-				private edu.cmu.cs.dennisc.math.Vector3 m_vPrev = new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 );
-				private edu.cmu.cs.dennisc.math.Vector3 m_vBuffer = new edu.cmu.cs.dennisc.math.Vector3();
+				private edu.cmu.cs.dennisc.math.Dimension3 m_vPrev = new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 );
+				private edu.cmu.cs.dennisc.math.Dimension3 m_vBuffer = new edu.cmu.cs.dennisc.math.Dimension3();
 				public ScaleAnimation() {
-					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 ), axis );
+					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 ), new edu.cmu.cs.dennisc.math.Vector3( axis ) );
 				}
 				@Override
 				protected void updateValue( edu.cmu.cs.dennisc.math.Vector3 v ) {
-					edu.cmu.cs.dennisc.math.Vector3.setReturnValueToDivision( m_vBuffer, v, m_vPrev );
-					edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.applyScale( PredeterminedScaleActionOperation.this.sgTransformable, m_vBuffer, PredeterminedScaleActionOperation.this.criterion );
+					edu.cmu.cs.dennisc.math.Dimension3.setReturnValueToDivision( m_vBuffer, v, m_vPrev );
+					Scalable scalable = PredeterminedScaleActionOperation.this.sgTransformable.getBonusDataFor( Scalable.KEY );
+					if( scalable != null ) {
+						scalable.setScale( m_vBuffer );
+					}
 					m_vPrev.set( v );
 				}
 			}
 			this.animator.invokeLater( new ScaleAnimation(), null );
 		} else {
-			edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.applyScale( this.sgTransformable, axis, this.criterion );
+			Scalable scalable = this.sgTransformable.getBonusDataFor( Scalable.KEY );
+			if( scalable != null ) {
+				scalable.setScale( axis );
+			}
 		}
 		
 	}
