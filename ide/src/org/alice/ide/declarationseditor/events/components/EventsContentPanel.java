@@ -115,7 +115,9 @@ public class EventsContentPanel extends BorderPanel {
 				Expression expression = expressionStatement.expression.getValue();
 				if( expression instanceof MethodInvocation ) {
 					MethodInvocation methodInvocation = (MethodInvocation)expression;
-					panel.addComponent( new EventListenerComponent( methodInvocation ) );
+					org.alice.ide.common.AddEventListenerStatementPanel statementPanel = new org.alice.ide.common.AddEventListenerStatementPanel( expressionStatement );
+					statementPanel.addComponent( new EventListenerComponent( methodInvocation ) );
+					panel.addComponent( statementPanel );
 				}
 			}
 		}
