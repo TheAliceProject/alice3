@@ -45,6 +45,7 @@ package org.alice.interact;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -74,7 +75,7 @@ public enum MovementType {
 		return (this.index == index);
 	}
 	
-	public void applyTranslation( Transformable transformable, Point3 translateAmount)
+	public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount)
 	{
 		switch (this)
 		{
@@ -99,7 +100,7 @@ public enum MovementType {
 		}
 	}
 	
-	public void applyRotation( Transformable transformable, Vector3 rotationAxis, Angle rotation)
+	public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation)
 	{
 		switch (this)
 		{

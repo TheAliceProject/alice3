@@ -56,6 +56,7 @@ import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
@@ -196,12 +197,12 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 		{
 			boolean success = false;
 			
-			this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.localTransformation.getValue());
+			this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
 			this.originalMousePoint = new Point(startInput.getMouseLocation());
 			
 			addPivotSphereToScene();
 			
-			Transformable clickedObject = startInput.getClickPickTransformable();
+			AbstractTransformable clickedObject = startInput.getClickPickTransformable();
 			if (clickedObject != null)
 			{
 				this.setPivotPoint(clickedObject.getAbsoluteTransformation().translation);

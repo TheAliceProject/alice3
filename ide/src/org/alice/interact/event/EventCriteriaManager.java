@@ -44,7 +44,7 @@ package org.alice.interact.event;
 
 import java.util.List;
 
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 /**
  * @author David Culyba
@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 public class EventCriteriaManager {
 
 	private List< ManipulationEventCriteria > manipulationConditions = new java.util.LinkedList< ManipulationEventCriteria >();
-	private Transformable targetTransformable;
+	private AbstractTransformable targetTransformable;
 
 	public void addCondition( ManipulationEventCriteria condition )
 	{
@@ -71,7 +71,7 @@ public class EventCriteriaManager {
 		}
 	}
 	
-	public void setTargetTransformable(Transformable transformable)
+	public void setTargetTransformable(AbstractTransformable transformable)
 	{
 		this.targetTransformable = transformable;
 	}

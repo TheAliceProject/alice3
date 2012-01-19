@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -104,17 +105,17 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	}
 	
 	@Override
-	public void setManipulatedObject( Transformable manipulatedObject ) {
+	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
 		if (this.manipulatedObject != manipulatedObject)
 		{
-			if (this.manipulatedObject != null)
+			if (this.manipulatedObject instanceof Transformable)
 			{
-				this.manipulatedObject.localTransformation.removePropertyListener( this );
+				((Transformable)this.manipulatedObject).localTransformation.removePropertyListener( this );
 			}
 			super.setManipulatedObject( manipulatedObject );
 			if (this.manipulatedObject != null)
 			{
-				this.manipulatedObject.localTransformation.addPropertyListener( this );
+				((Transformable)this.manipulatedObject).localTransformation.addPropertyListener( this );
 			}
 			positionRelativeToObject();
 		}

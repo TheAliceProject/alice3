@@ -48,6 +48,7 @@ import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -100,7 +101,7 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		}
 		else if (clickedObjectType.intersects( PickHint.PickType.THREE_D_HANDLE.pickHint() ) )
 		{
-			Transformable pickedHandle = startInput.getClickPickedTransformable(true);
+			AbstractTransformable pickedHandle = startInput.getClickPickedTransformable(true);
 			if (pickedHandle instanceof RotationRingHandle)
 			{
 				this.globalDragAdapter.triggerSgObjectSelection( ((RotationRingHandle)pickedHandle).getManipulatedObject() );

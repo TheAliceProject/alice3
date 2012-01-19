@@ -54,46 +54,37 @@ public class HandleSet extends BitSet
 	public static HandleSet DEFAULT_INTERACTION = new HandleSet(HandleGroup.DEFAULT, HandleGroup.INTERACTION);
 	public static HandleSet RESIZE_INTERACTION = new HandleSet(HandleGroup.RESIZE, HandleGroup.INTERACTION);
 	public static HandleSet ROTATION_INTERACTION = new HandleSet(HandleGroup.ROTATION, HandleGroup.INTERACTION);
+	public static HandleSet JOINT_ROTATION_INTERACTION = new HandleSet(HandleGroup.ROTATION, HandleGroup.INTERACTION);
 	public static HandleSet TRANSLATION_INTERACTION = new HandleSet(HandleGroup.TRANSLATION, HandleGroup.INTERACTION);
 	public static HandleSet MAIN_ORTHOGRAPHIC_CAMERA_CONTROLS = new HandleSet(HandleGroup.ORTHOGRAPHIC_CAMERA, HandleGroup.MAIN_CAMERA);
 	public static HandleSet MAIN_PERSPECTIVE_CAMERA_CONTROLS = new HandleSet(HandleGroup.PERSPECTIVE_CAMERA, HandleGroup.MAIN_CAMERA);
 	
 	public enum HandleGroup {
-		ROTATION(0),
-		TRANSLATION(1),
-		RESIZE(2),
-		DEFAULT(3),
-		LOCAL(4),
-		STOOD_UP(5),
-		ABSOLUTE(6),
-		VISUALIZATION(7),
-		INTERACTION(8),
-		X_AXIS(9),
-		Y_AXIS(10),
-		Z_AXIS(11),
-		RESIZE_AXIS(12),
-		X_AND_Z_AXIS(13),
-		X_AND_Y_AXIS(14),
-		CAMERA(15),
-		ORTHOGRAPHIC_CAMERA(16),
-		PERSPECTIVE_CAMERA(17),
-		MAIN_CAMERA(18),
-		TOP_LEFT_CAMERA(19),
-		TOP_RIGHT_CAMERA(20),
-		BOTTOM_LEFT_CAMERA(21),
-		BOTTOM_RIGHT_CAMERA(22);
+		ROTATION,
+		TRANSLATION,
+		RESIZE,
+		DEFAULT,
+		LOCAL,
+		STOOD_UP,
+		ABSOLUTE,
+		VISUALIZATION,
+		INTERACTION,
+		X_AXIS,
+		Y_AXIS,
+		Z_AXIS,
+		RESIZE_AXIS,
+		X_AND_Z_AXIS,
+		X_AND_Y_AXIS,
+		CAMERA,
+		ORTHOGRAPHIC_CAMERA,
+		PERSPECTIVE_CAMERA,
+		MAIN_CAMERA,
+		TOP_LEFT_CAMERA,
+		TOP_RIGHT_CAMERA,
+		BOTTOM_LEFT_CAMERA,
+		BOTTOM_RIGHT_CAMERA,
+		JOINT,
 		
-		private int index;
-		
-		private HandleGroup(int index)
-		{
-			this.index = index;
-		}
-		
-		public int getIndex()
-		{
-			return this.index;
-		}
 	}
 		 
 	@Override
@@ -165,14 +156,14 @@ public class HandleSet extends BitSet
 	
 	public void addGroup( HandleGroup group )
 	{
-		this.set( group.getIndex() );
+		this.set( group.ordinal() );
 	}
 	
 	public void addGroups( HandleGroup...groups )
 	{
 		for (int i=0; i<groups.length; i++)
 		{
-			this.set( groups[i].getIndex() );
+			this.set( groups[i].ordinal() );
 		}
 	}
 	

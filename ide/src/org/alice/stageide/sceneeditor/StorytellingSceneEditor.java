@@ -80,6 +80,7 @@ import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.croquet.components.SpringPanel.Horizontal;
 import org.lgna.croquet.components.SpringPanel.Vertical;
 import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaType;
@@ -96,6 +97,7 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Marker;
 import org.lgna.story.OrthographicCameraMarker;
 import org.lgna.story.PerspectiveCameraMarker;
+import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.MarkerImp;
@@ -228,15 +230,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			}
 			else if (expression instanceof MethodInvocation)
 			{
-				MethodInvocation mi = (MethodInvocation)expression;
-				//mi.expression.getValue();
-				
-				Object[] values = StorytellingSceneEditor.this.getVM().ENTRY_POINT_evaluate(
-						getActiveSceneInstance(), 
-						new Expression[] { expression }
-				);
-				
-				Logger.todo( "SetSelectedMethod in SceneEditor (for joint selection)" );
+				StorytellingSceneEditor.this.setSelectedMethod((MethodInvocation)expression);
 				
 			}
 			else if (expression instanceof ThisExpression)
@@ -319,6 +313,38 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				}
 			}
 			this.globalDragAdapter.setSelectedImplementation(transImp);
+		}
+	}
+	
+	private void setSelectedMethodOnManipulator(MethodInvocation method)
+	{
+		if (this.globalDragAdapter != null)
+		{
+			Entity selectedEntity = this.getInstanceInJavaVMForMethodInvocation(method, Entity.class);
+			AbstractTransformableImp transImp = null;
+			if (selectedEntity != null)
+			{
+				EntityImp imp = ImplementationAccessor.getImplementation(selectedEntity);
+				if (imp instanceof AbstractTransformableImp)
+				{
+					transImp = (AbstractTransformableImp)imp;
+				}
+			}
+			this.globalDragAdapter.setSelectedImplementation(transImp);
+		}
+	}
+	
+	public void setSelectedMethod(MethodInvocation method) {
+		if (!this.selectionIsFromMain)
+		{
+			this.selectionIsFromMain = true;
+			
+			if (this.globalDragAdapter != null)
+			{
+				setSelectedMethodOnManipulator(method);
+			}
+			
+			this.selectionIsFromMain = false;
 		}
 	}
 	

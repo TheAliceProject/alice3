@@ -56,7 +56,8 @@ import org.lgna.story.Entity;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+//import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -157,7 +158,7 @@ public class HandleManager implements ManipulationListener{
 		return popped;
 	}
 	
-	public static boolean canHaveHandles(Transformable object) {
+	public static boolean canHaveHandles(AbstractTransformable object) {
 		PickHint objectPickHint = PickUtilities.getPickType(object);
 		if ( (objectPickHint.intersects( PickHint.PickType.RESIZABLE.pickHint()) ||
 				objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint()) ||
@@ -170,7 +171,7 @@ public class HandleManager implements ManipulationListener{
 		return false;
 	}
 	
-	private static boolean canHaveHandle(Transformable selectedObject, ManipulationHandle handle) 
+	private static boolean canHaveHandle(AbstractTransformable selectedObject, ManipulationHandle handle) 
 	{
 		if (handle instanceof ManipulationHandleIndirection) {
 			handle = ((ManipulationHandleIndirection)handle).getCurrentHandle();
@@ -180,7 +181,8 @@ public class HandleManager implements ManipulationListener{
 			return (objectPickHint.intersects(PickHint.PickType.MOVEABLE.pickHint()));
 		}
 		else if (handle instanceof RotationRingHandle) {
-			return (objectPickHint.intersects(PickHint.PickType.TURNABLE.pickHint()));
+			boolean doJointsMatch = objectPickHint.intersects(PickHint.PickType.JOINT.pickHint()) == handle.isMemberOf( HandleSet.HandleGroup.JOINT);
+			return doJointsMatch && objectPickHint.intersects(PickHint.PickType.TURNABLE.pickHint());
 		}
 		else if (handle instanceof LinearScaleHandle) {
 			LinearScaleHandle scaleHandle = (LinearScaleHandle)handle;
@@ -197,7 +199,7 @@ public class HandleManager implements ManipulationListener{
 		return true;
 	}
 	
-	public void setSelectedObject(Transformable selectedObject)
+	public void setSelectedObject(AbstractTransformable selectedObject)
 	{
 //		PrintUtilities.println("Setting handle selected object to "+selectedObject);
 		for (ManipulationHandle handle : this.handles)
@@ -213,18 +215,18 @@ public class HandleManager implements ManipulationListener{
 	}
 	
 	
-	public static boolean isSelectable(Transformable object)
+	public static boolean isSelectable(AbstractTransformable object)
 	{
 		return canHaveHandles(object);
 	}
 	
-	public Transformable getSelectedObject()
+	public AbstractTransformable getSelectedObject()
 	{
 		if (this.handles.size() == 0)
 		{
 			return null;
 		}
-		Transformable selected = this.handles.get(0).getManipulatedObject();
+		AbstractTransformable selected = this.handles.get(0).getManipulatedObject();
 		for (ManipulationHandle handle : this.handles)
 		{
 			if (handle.getManipulatedObject() != selected && !(handle instanceof ManipulationHandle2D))

@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  */
 public class ScaleUtilities {
 	private static void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgRoot, edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > inclusionCriterion ) {
-		if( inclusionCriterion == null || inclusionCriterion.accept( sgComponent ) ) {
+		if( inclusionCriterion == null || inclusionCriterion.accept( sgComponent ) /*&& !(sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Joint)*/) {
 			if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 				edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
 				if( sgComposite instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {

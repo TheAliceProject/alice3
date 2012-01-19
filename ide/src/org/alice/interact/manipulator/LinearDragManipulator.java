@@ -62,6 +62,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -237,7 +238,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	public boolean doStartManipulator( InputState startInput ) {
 		if ( startInput.getClickPickHint().intersects(PickHint.PickType.THREE_D_HANDLE.pickHint()))
 		{
-			Transformable clickedHandle = startInput.getClickPickedTransformable(true);
+			AbstractTransformable clickedHandle = startInput.getClickPickedTransformable(true);
 			if (clickedHandle instanceof LinearDragHandle)
 			{
 				this.linearHandle = (LinearDragHandle)clickedHandle;
