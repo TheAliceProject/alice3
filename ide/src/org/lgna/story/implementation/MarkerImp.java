@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author dculyba
  *
  */
-public abstract class MarkerImp extends ModelImp {
+public abstract class MarkerImp extends VisualScaleModelImp {
 	
 	private final org.lgna.story.Marker abstraction;
 	
