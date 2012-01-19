@@ -147,7 +147,7 @@ public class MainComposite extends org.lgna.croquet.Composite< org.lgna.croquet.
 			//deleteJButton.setFocusable(false);
 			//toolbar.add(deleteJButton);	
 
-			rv.addComponent(new org.lgna.croquet.components.SwingAdapter(toolbar) , org.lgna.croquet.components.BorderPanel.Constraint.NORTH );
+			rv.addComponent(new org.lgna.croquet.components.SwingAdapter(toolbar) , org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		}
 
 		return rv;

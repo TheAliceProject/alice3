@@ -40,18 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
+package org.alice.interact.manipulator;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BackDoor {
-	private BackDoor() {
-		throw new AssertionError();
-	}
-	
-	public static void invokeHandleActiveChanged( Scene scene, boolean isActive, int activationCount ) {
-		scene.handleActiveChanged( isActive, activationCount );
-	}
-
+public interface Scalable {
+	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key< Scalable > KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "Scalable.KEY" ); 
+	public edu.cmu.cs.dennisc.math.Dimension3 getScale();
+	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 size );
 }
