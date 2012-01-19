@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ModelImp extends TransformableImp {
+public abstract class ModelImp extends TransformableImp implements org.alice.interact.manipulator.Scalable {
 	public final PaintProperty paint = new PaintProperty( ModelImp.this ) {
 		@Override
 		protected void internalSetValue(org.lgna.story.Paint value) {
@@ -82,6 +82,9 @@ public abstract class ModelImp extends TransformableImp {
 		}
 	};
 	
+	public ModelImp() {
+		this.getSgComposite().putBonusDataFor( org.alice.interact.manipulator.Scalable.KEY, this );
+	}
 	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
@@ -102,82 +105,11 @@ public abstract class ModelImp extends TransformableImp {
 //			}
 //		}
 //	}
-	
-	public void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener){
-		this.getSgVisuals()[0].scale.addPropertyListener(listener);
-	}
-	
-	public void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener){
-		this.getSgVisuals()[0].scale.removePropertyListener(listener);
-	}
-	
-	private edu.cmu.cs.dennisc.math.Matrix3x3 getSgVisualsScale() {
-		return this.getSgVisuals()[0].scale.getValue();
-	}
-	private void setSgVisualsScale( edu.cmu.cs.dennisc.math.Matrix3x3 m ) {
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
-			sgVisual.scale.setValue( m );
-		}
-	}
-	
-	private void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
-		if( isScootDesired ) {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
-			m.translation.multiply( axis );
-			this.getSgComposite().localTransformation.setValue( m );
-		}
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
-			edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgVisual.scale.getValue();
-			edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
-			sgVisual.scale.setValue( scale );
-		}
-	}
-	private void animateApplyScale( edu.cmu.cs.dennisc.math.Vector3 axis, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
-			private final edu.cmu.cs.dennisc.math.Vector3 vPrev = new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 );
-			private final edu.cmu.cs.dennisc.math.Vector3 vBuffer = new edu.cmu.cs.dennisc.math.Vector3();
 
-			private final ModelImp subject;
-			private final ModelImp[] scoots;
-			public ScaleAnimation( double duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Vector3 axis, ModelImp subject, ModelImp[] scoots ) {
-				super( duration, style, new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 ), axis );
-				this.subject = subject;
-				this.scoots = scoots;
-			}
-			@Override
-			protected void updateValue( edu.cmu.cs.dennisc.math.Vector3 v ) {
-				edu.cmu.cs.dennisc.math.Vector3.setReturnValueToDivision( this.vBuffer, v, this.vPrev );
-				this.subject.applyScale( this.vBuffer, false );
-				for( ModelImp model : this.scoots ) {
-					model.applyScale( this.vBuffer, true );
-				}
-				this.vPrev.set( v );
-			}
-		}
-
-		double actualDuration = adjustDurationIfNecessary( duration );
-		ModelImp[] scoots = {};
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
-			this.applyScale( axis, false );
-			for( ModelImp model : scoots ) {
-				model.applyScale( axis, true );
-			}
-		} else {
-			this.perform( new ScaleAnimation( actualDuration, style, axis, this, scoots ) );
-		}
-	}
-	
-	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.math.Matrix3x3 scale = this.getSgVisualsScale();
-		return new edu.cmu.cs.dennisc.math.Dimension3( scale.right.x, scale.up.y, scale.backward.z );
-	}
-	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
-		edu.cmu.cs.dennisc.math.Matrix3x3 m = edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity();
-		m.right.x = scale.x;
-		m.up.y = scale.y;
-		m.backward.z = scale.z;
-		this.setSgVisualsScale( m );
-	}
+	public abstract void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
+	public abstract void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
+	public abstract edu.cmu.cs.dennisc.math.Dimension3 getScale();
+	public abstract void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale );
 	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		if( duration > 0  ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( duration );
@@ -225,6 +157,9 @@ public abstract class ModelImp extends TransformableImp {
 			return nextSize/prevSize;
 		}
 	}
+	
+	protected abstract void animateApplyScale( edu.cmu.cs.dennisc.math.Vector3 axis, double duration, edu.cmu.cs.dennisc.animation.Style style );
+
 	public void animateSetSize( edu.cmu.cs.dennisc.math.Dimension3 size, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		edu.cmu.cs.dennisc.math.Dimension3 prevSize = this.getSize();
 		edu.cmu.cs.dennisc.math.Vector3 scale = new edu.cmu.cs.dennisc.math.Vector3(

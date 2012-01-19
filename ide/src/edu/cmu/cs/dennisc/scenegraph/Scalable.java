@@ -40,18 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
+package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BackDoor {
-	private BackDoor() {
-		throw new AssertionError();
-	}
+public class Scalable extends Composite {
+	public final edu.cmu.cs.dennisc.math.property.Dimension3Property scale = new edu.cmu.cs.dennisc.math.property.Dimension3Property( this, new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 ) ) {
+		@Override
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
+			super.setValue( owner, value );
+			Scalable.this.fireAbsoluteTransformationChange();
+		}
+	};
 	
-	public static void invokeHandleActiveChanged( Scene scene, boolean isActive, int activationCount ) {
-		scene.handleActiveChanged( isActive, activationCount );
-	}
-
+	//todo: absolute transformation
 }
