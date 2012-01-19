@@ -51,7 +51,6 @@ import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
 
 public class ResizeDragManipulator extends AbstractManipulator
 {
@@ -109,14 +108,20 @@ public class ResizeDragManipulator extends AbstractManipulator
 	
 	protected void setScale( double scaleAmount ) 
 	{
-		Vector3 scaleVector = new Vector3( scaleAmount, scaleAmount, scaleAmount );
-		//First remove the old scale
-		Vector3 inverseScale = ScaleDragManipulator.getInvertedScaleVector(accumulatedScaleVector);
-		ScaleUtilities.applyScale( this.manipulatedTransformable, inverseScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
-		//Now apply the new scale
-		accumulatedScaleVector.set( scaleVector );
-		ScaleUtilities.applyScale( this.manipulatedTransformable, scaleVector, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
-
+		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
+		if( scalable != null ) {
+			edu.cmu.cs.dennisc.math.Dimension3 scale = new edu.cmu.cs.dennisc.math.Dimension3( scaleAmount, scaleAmount, scaleAmount );
+			scalable.setScale( scale );
+		}
+//		
+//		Vector3 scaleVector = new Vector3( scaleAmount, scaleAmount, scaleAmount );
+//		//First remove the old scale
+//		Vector3 inverseScale = ScaleDragManipulator.getInvertedScaleVector(accumulatedScaleVector);
+//		ScaleUtilities.applyScale( this.manipulatedTransformable, inverseScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
+//		//Now apply the new scale
+//		accumulatedScaleVector.set( scaleVector );
+//		ScaleUtilities.applyScale( this.manipulatedTransformable, scaleVector, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
+//
 	}
 
 	@Override
