@@ -162,7 +162,7 @@ public class SceneImp extends EntityImp {
 		if( ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount > 0 ) {
 			//pass
 		} else {
-			org.lgna.story.BackDoor.invokeHandleActiveChanged( this.getAbstraction(), isActive, activationCount );
+			org.lgna.story.EmployeesOnly.invokeHandleActiveChanged( this.getAbstraction(), isActive, activationCount );
 			this.fireSceneActivationListeners();
 		}
 		if( isActive ) {

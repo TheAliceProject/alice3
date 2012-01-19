@@ -40,34 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.implementation;
+package org.alice.interact.manipulator;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleVisualModelImp extends VisualScaleModelImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] { new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance() };
-	public SingleVisualModelImp( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
-		this.sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { sgVisual };
-		this.sgVisuals[ 0 ].frontFacingAppearance.setValue( this.sgAppearances[ 0 ] );
-		this.sgVisuals[ 0 ].setParent( this.getSgComposite() );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
-		return this.sgVisuals;
-	}
-	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances() {
-		return this.sgAppearances;
-	}
-	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
-		return this.getSgPaintAppearances();
-	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return this.getSgVisuals()[ 0 ].getBoundingSphere().radius;
-	}
+public interface Scalable {
+	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key< Scalable > KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "Scalable.KEY" ); 
+	public edu.cmu.cs.dennisc.math.Dimension3 getScale();
+	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 size );
 }
