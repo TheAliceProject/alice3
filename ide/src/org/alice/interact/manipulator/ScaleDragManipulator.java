@@ -42,6 +42,7 @@
  */
 package org.alice.interact.manipulator;
 
+import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
@@ -56,6 +57,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 
 	public static final double MIN_HANDLE_PULL = .1d;
 
+	private Dimension3 initialScale;
 	private Dimension3 accumulatedScaleVector = new Dimension3(1.0, 1.0, 1.0);
 
 	protected static Dimension3 getInvertedScaleVector( Dimension3 scaleVector )
@@ -88,6 +90,23 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		return invertedScale;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.alice.interact.manipulator.LinearDragManipulator#doStartManipulator(org.alice.interact.InputState)
+	 */
+	@Override
+	public boolean doStartManipulator(InputState startInput) {
+		boolean started = super.doStartManipulator(startInput);
+		
+		if (started) {
+			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
+			if( scalable != null ) {
+				initialScale = scalable.getScale();
+			}
+		}
+		
+		return started;
+	}
+	
 	@Override
 	protected void updateBasedOnHandlePull( double initialPull, double newPull ) 
 	{
@@ -110,9 +129,12 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		if( newPull <= MIN_HANDLE_PULL ) {
 			scaleVector = new Dimension3( 1.0d, 1.0d, 1.0d );
 		}
-		
+//		scaleVector.x += this.initialScale.x;
+//		scaleVector.y += this.initialScale.y;
+//		scaleVector.z += this.initialScale.z;
 		//Now apply the new scale
-		accumulatedScaleVector.set( scaleVector );
+		accumulatedScaleVector.set(scaleVector);
+		
 		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 		if( scalable != null ) {
 			scalable.setScale( scaleVector );
@@ -122,7 +144,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 
 	@Override
 	public void undoRedoBeginManipulation() {
-		accumulatedScaleVector = new Dimension3(1.0, 1.0, 1.0);
+		accumulatedScaleVector = new Dimension3(this.initialScale);
 	}
 
 	@Override
