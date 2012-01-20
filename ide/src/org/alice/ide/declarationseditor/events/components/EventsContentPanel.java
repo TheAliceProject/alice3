@@ -42,13 +42,7 @@
  */
 package org.alice.ide.declarationseditor.events.components;
 
-import javax.swing.BorderFactory;
-
-import org.alice.ide.declarationseditor.DeclarationComposite;
-import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.BoxUtilities;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.JComponent;
 import org.lgna.croquet.components.PageAxisPanel;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.Expression;
@@ -67,8 +61,7 @@ import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
 /**
  * @author Matt May
  */
-public class EventsContentPanel extends BorderPanel {
-
+public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor {
 	private final ListPropertyListener< Statement > statementsListener = new SimplifiedListPropertyAdapter< Statement >() {
 		@Override
 		protected void changing( ListPropertyEvent< Statement > e ) {
@@ -79,30 +72,18 @@ public class EventsContentPanel extends BorderPanel {
 		}
 	};
 
-	private PageAxisPanel panel = new PageAxisPanel(  );
+	private final org.lgna.project.ast.AbstractCode code;
+	private final PageAxisPanel panel = new PageAxisPanel();
 	
-	public EventsContentPanel( DeclarationComposite composite ) {
-		super(composite);
+	public EventsContentPanel( org.lgna.project.ast.AbstractCode code ) {
+		this.code = code;
 		this.addComponent( this.panel, Constraint.PAGE_START );
+		this.panel.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
 	}
-
-//	@Override
-//	public List< DropReceptor > addPotentialDropReceptors( List< DropReceptor > rv, AbstractType< ?, ?, ? > type ) {
-//		return null;
-//	}
-
-	public void addComponent( Component< ? > eventListenerComponent ) {
-		this.panel.addComponent( eventListenerComponent );
-	}
+	
 	@Override
-	public void forgetAndRemoveAllComponents(){
-//		super.forgetAndRemoveAllComponents();
-		panel.forgetAndRemoveAllComponents();
-		panel.setBorder( BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
-	}
-
-	public void addContent( JComponent< ? > jComponent ) {
-		panel.addComponent( jComponent );
+	public org.lgna.project.ast.AbstractCode getCode() {
+		return this.code;
 	}
 
 	@Override
@@ -141,7 +122,22 @@ public class EventsContentPanel extends BorderPanel {
 	}
 
 	private NodeProperty< ? extends BlockStatement > getBodyProperty() {
-		UserCode code = (UserCode)((DeclarationComposite)this.getComposite()).getDeclaration();
-		return code.getBodyProperty();
+		return ((UserCode)this.code).getBodyProperty();
+	}
+	
+	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > getCodableResolver() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+		return null;
+	}
+	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( potentialDropSite );
+		return null;
+	}
+	public java.lang.String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model, edit );
+		return null;
+	}
+	public org.lgna.croquet.components.JComponent< ? > getViewController() {
+		return this.panel;
 	}
 }
