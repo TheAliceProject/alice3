@@ -46,8 +46,12 @@ package org.alice.ide.croquet.components;
  * @author Dennis Cosgrove
  */
 public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.components.BorderPanel implements java.awt.print.Printable {
-	public PrintableBorderPanelWithCenterScrollPane() {
+	public PrintableBorderPanelWithCenterScrollPane( org.lgna.croquet.Composite< ? > composite ) {
+		super( composite );
 		this.addComponent( new org.lgna.croquet.components.ScrollPane(), Constraint.CENTER );
+	}
+	public PrintableBorderPanelWithCenterScrollPane() {
+		this( null );
 	}
 	public org.lgna.croquet.components.ScrollPane getScrollPane() {
 		return (org.lgna.croquet.components.ScrollPane)this.getComponent( Constraint.CENTER );
