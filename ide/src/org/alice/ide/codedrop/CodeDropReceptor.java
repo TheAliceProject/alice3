@@ -51,7 +51,7 @@ import org.alice.ide.common.*;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CodeDropReceptor extends org.alice.ide.croquet.components.PrintableBorderPanelWithCenterScrollPane {
+public abstract class CodeDropReceptor extends org.alice.ide.croquet.components.PrintableBorderPanelWithCenterScrollPane implements org.lgna.croquet.DropReceptor {
 	protected StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	public abstract org.lgna.project.ast.AbstractCode getCode();
 	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
