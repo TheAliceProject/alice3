@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuBarComposite extends Composite< org.lgna.croquet.components.MenuBar > {
-	private final java.util.List< MenuModel > menuModels = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< StandardMenuItemPrepModel > items = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	public MenuBarComposite( java.util.UUID id ) {
 		super( id );
 	}
@@ -55,16 +55,16 @@ public class MenuBarComposite extends Composite< org.lgna.croquet.components.Men
 	}
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		return this.menuModels.contains( model );
+		return this.items.contains( model );
 	}
-	public void addMenuModel( MenuModel menuModel ) {
-		this.menuModels.add( menuModel );
+	public void addItem( StandardMenuItemPrepModel item ) {
+		this.items.add( item );
 	}
-	public void removeMenuModel( MenuModel menuModel ) {
-		this.menuModels.remove( menuModel );
+	public void removeItem( StandardMenuItemPrepModel item ) {
+		this.items.remove( item );
 	}
-	public Iterable< MenuModel > getChildren() {
-		return this.menuModels;
+	public Iterable< StandardMenuItemPrepModel > getChildren() {
+		return this.items;
 	}
 
 	@Override

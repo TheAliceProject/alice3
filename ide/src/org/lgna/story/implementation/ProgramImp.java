@@ -251,6 +251,7 @@ public class ProgramImp {
 		lookingGlassFactory.incrementAutomaticDisplayCount();
 	}
 	public void stopAnimator() {
+		this.getAnimator().completeAll( null );
 		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
 		lookingGlassFactory.decrementAutomaticDisplayCount();
 		lookingGlassFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
@@ -310,7 +311,7 @@ public class ProgramImp {
 	}
 	private boolean isProgramClosedExceptionDesired = false;
 	public void shutDown() {
-		//this.stopAnimator();
+		this.stopAnimator();
 		this.isProgramClosedExceptionDesired = true;
 	}
 	
