@@ -42,6 +42,7 @@
  */
 package test;
 
+import org.lgna.story.AddMouseButtonListener;
 import org.lgna.story.AddTimerEventListener;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
@@ -239,7 +240,6 @@ class SnowScene extends Scene{
 //		}, colListOne, colListTwo);
 		this.addTimerEventListener( new TimerEventListener() {
 			public void timeElapsed(TimerEvent e) {
-				System.out.println("tick");
 				greenCone.move(MoveDirection.UP, 1);
 				greenCone.move(MoveDirection.DOWN, 1);
 			}
@@ -252,21 +252,26 @@ class SnowScene extends Scene{
 				}
 			}
 		}, MultipleEventPolicy.COMBINE );
-		this.addProximityEventListener( new ProximityEventListener() {
-
-			public void whenTheseGetClose( ProximityEvent e ) {
-				if( e.getModels().get( 1 ) instanceof Model ) {
-					((Model)e.getModels().get(1)).move(MoveDirection.UP, 1);
-					((Model)e.getModels().get(1)).move(MoveDirection.DOWN, 1);
-				}			
-			}
-		}, colListOne, colListTwo, new ProximityDistance( 1.0 ) );
+//		this.addProximityEventListener( new ProximityEventListener() {
+//
+//			public void whenTheseGetClose( ProximityEvent e ) {
+//				if( e.getModels().get( 1 ) instanceof Model ) {
+//					((Model)e.getModels().get(1)).move(MoveDirection.UP, 1);
+//					((Model)e.getModels().get(1)).move(MoveDirection.DOWN, 1);
+//				}			
+//			}
+//		}, colListOne, colListTwo, new ProximityDistance( 1.0 ) );
 		this.addMouseButtonListener( new MouseButtonListener() {
 			public void mouseButtonClicked(MouseButtonEvent e) {
-				e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
-				e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);
+				if(e.getModelAtMouseLocation() != null){
+					e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
+					e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);
+				}else{
+					camera.move(MoveDirection.UP, 1);
+					camera.move(MoveDirection.DOWN, 1);
+				}
 			}
-		}, MultipleEventPolicy.COMBINE, new SetOfVisuals(list));
+		}, MultipleEventPolicy.COMBINE, AddMouseButtonListener.setOfVisuals(list));
 	}
 
 	public void chillInSkiChalet() {

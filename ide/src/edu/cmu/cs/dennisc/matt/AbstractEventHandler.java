@@ -18,6 +18,12 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 	protected Map<Object, HashMap< Object, Boolean >> isFiringMap = Collections.newHashMap();
 
 	protected void fireEvent(final L listener, final E event, final Object o){
+		if(isFiringMap.get(listener) == null){
+			isFiringMap.put(listener, new HashMap<Object, Boolean>());
+		}
+		if(isFiringMap.get(listener).get(o) == null){
+			isFiringMap.get(listener).put(o, false);
+		}
 		if(shouldFire){
 			Thread thread = new Thread(){
 				@Override
@@ -75,10 +81,12 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 		isFiringMap.put(eventListener, new HashMap<Object, Boolean>());
 		isFiringMap.get(eventListener).put(eventListener, false);
 	}
-	protected void registerIsFiringMap(MouseButtonListener eventListener, Visual[] targets) {
+	protected void registerIsFiringMap(Object eventListener, Visual[] targets) {
 		isFiringMap.put(eventListener, new HashMap<Object, Boolean>());
-		for(Visual target: targets){
-			isFiringMap.get(eventListener).put(target, false);
+		if(targets != null && targets.length > 0){
+			for(Visual target: targets){
+				isFiringMap.get(eventListener).put(target, false);
+			}
 		}
 	}
 	protected void registerPolicyMap(Object timerEventListener, MultipleEventPolicy policy) {
