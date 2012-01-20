@@ -6,7 +6,7 @@ import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.PopupButton;
 import org.lgna.croquet.components.ScrollPane;
 
-public class EventListenersView extends org.alice.ide.declarationseditor.code.components.CodeDeclarationView {
+public class EventListenersView extends org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView {
 	private final EventsContentPanel eventsPanel;
 	public EventListenersView( org.alice.ide.declarationseditor.CodeComposite composite ) {
 		super( composite );
@@ -20,7 +20,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		this.addComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView(), Constraint.PAGE_END );
 	}
 	@Override
-		public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor() {
-			return this.eventsPanel;
-		}
+	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor() {
+		return this.eventsPanel;
+	}
 }

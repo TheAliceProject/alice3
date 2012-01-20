@@ -85,6 +85,10 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 	public org.lgna.project.ast.AbstractCode getCode() {
 		return this.code;
 	}
+	@Override
+	protected org.lgna.croquet.components.Component< ? > getAsSeenBy() {
+		return this;
+	}
 
 	@Override
 	protected void internalRefresh() {
