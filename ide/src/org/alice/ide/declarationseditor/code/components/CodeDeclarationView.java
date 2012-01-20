@@ -55,8 +55,7 @@ public class CodeDeclarationView extends org.alice.ide.declarationseditor.compon
 		this.addComponent( this.codeEditor, Constraint.CENTER );
 	}
 	@Deprecated
-	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeDropReceptor() {
+	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor() {
 		return this.codeEditor;
 	}
 	@Override

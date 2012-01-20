@@ -48,7 +48,7 @@ import org.alice.ide.x.components.StatementListPropertyView;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor implements org.lgna.croquet.DropReceptor {
+public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 	private static class RootStatementListPropertyPane extends StatementListPropertyView {
 		private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
 		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {

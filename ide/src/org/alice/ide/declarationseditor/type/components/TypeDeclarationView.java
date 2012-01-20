@@ -115,10 +115,6 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		}
 	}
 	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeDropReceptor() {
-		return null;
-	}
-	@Override
 	public void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
 	}
 	@Override
