@@ -58,18 +58,18 @@ public class TransactionHistoryGenerator {
 	public org.lgna.croquet.history.TransactionHistory generate( org.lgna.croquet.UserInformation userInformation ) {
 		// For now
 		assert userInformation == null;
-		
+
 		org.lgna.croquet.history.TransactionHistory rv = new org.lgna.croquet.history.TransactionHistory();
-		//generate( rv, this.src, this.dst, this.dstIndex0 );
-		
-		// TODO: Do we want this?
+		generate( rv, this.src, this.dst, this.dstIndex0 );
+
+		// Create a run operation, at the end of the tutorial
 		rv.addTransaction( createOpenAndClosePlainDialogOperationTransaction( rv, org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) );
 		return rv;
 	}
-	
+
 	private static org.lgna.croquet.history.Transaction generateMethodDeclarationTransaction( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.project.ast.UserMethod userMethod ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
-		
+
 		org.lgna.project.ast.UserType<?> declaringType = userMethod.getDeclaringType();
 		org.alice.ide.croquet.models.declaration.MethodDeclarationOperation operation;
 		if( userMethod.isProcedure() ) {
@@ -77,7 +77,7 @@ public class TransactionHistoryGenerator {
 		} else {
 			operation = org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( declaringType );
 		}
-		
+
 		org.lgna.croquet.history.InputDialogOperationStep step = org.lgna.croquet.history.InputDialogOperationStep.createAndAddToTransaction( rv, operation, new org.lgna.croquet.triggers.SimulatedTrigger() );
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit edit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( step, declaringType, userMethod );
 		addEdit( step, edit );
@@ -89,7 +89,7 @@ public class TransactionHistoryGenerator {
 		for( org.lgna.project.ast.Statement statement : src.statements ) {
 			org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( history );
 			
-		}
+			
 //			org.alice.ide.croquet.models.ast.InsertStatementActionOperation insertStatementActionOperation = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( dst, dstIndex, statement );
 //			org.lgna.croquet.history.ActionOperationStep insertStatementContext = org.lgna.croquet.history.ActionOperationStep.createAndAddToTransaction( transaction, insertStatementActionOperation, new org.lgna.croquet.triggers.SimulatedTrigger() );
 //			addEdit( insertStatementContext, new org.alice.ide.croquet.edits.DependentEdit() );
@@ -151,45 +151,45 @@ public class TransactionHistoryGenerator {
 //			}
 //
 //
-//			dstIndex++;
+			dstIndex++;
 //			history.addChild( dragAndDropContext );
 //
 //			if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
 //				org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
 //				generate( history, statementWithBody.body.getValue() );
 //			}
-//		}
+		}
 	}
 
 	private static <M extends org.lgna.croquet.CompletionModel> org.lgna.croquet.history.CompletionStep< M > addEdit( org.lgna.croquet.history.CompletionStep< M > rv, org.lgna.croquet.edits.Edit< M > edit ) {
-//		org.lgna.croquet.history.CommitEvent commitEvent = new org.lgna.croquet.history.CommitEvent( edit );
-//		rv.addChild( commitEvent );
-//		edit.setContext( rv );
+		//		org.lgna.croquet.history.CommitEvent commitEvent = new org.lgna.croquet.history.CommitEvent( edit );
+		//		rv.addChild( commitEvent );
+		//		edit.setContext( rv );
 		return rv;
 	}
-	
+
 	private static org.lgna.croquet.history.Transaction createOpenAndClosePlainDialogOperationTransaction( org.lgna.croquet.history.TransactionHistory parent, org.lgna.croquet.PlainDialogOperation plainDialogOperation ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( parent );
 		org.lgna.croquet.history.PlainDialogOperationStep step = org.lgna.croquet.history.PlainDialogOperationStep.createAndAddToTransaction( rv, plainDialogOperation, new org.lgna.croquet.triggers.SimulatedTrigger() );
 		step.finish();
-		
+
 		// TODO: This may not be right. this should probably be step.getParent()
 		org.lgna.croquet.history.PlainDialogCloseOperationStep step2 = org.lgna.croquet.history.PlainDialogCloseOperationStep.createAndAddToTransaction( step.getTransactionHistory().getActiveTransaction(), plainDialogOperation.getCloseOperation(), new org.lgna.croquet.triggers.SimulatedTrigger());
 		step2.finish();
 		return rv;
 	}
-	
+
 	public static void main( String[] args ) {
 		org.lgna.project.ast.BlockStatement dst = new org.lgna.project.ast.BlockStatement(
 				org.lgna.project.ast.AstUtilities.createDoInOrder()
-		);
+				);
 		org.lgna.project.ast.BlockStatement src = new org.lgna.project.ast.BlockStatement(
 				org.lgna.project.ast.AstUtilities.createDoTogether(),
 				org.lgna.project.ast.AstUtilities.createCountLoop( new org.lgna.project.ast.IntegerLiteral( 3 ) )
-		);
-		
+				);
+
 		TransactionHistoryGenerator generator = new TransactionHistoryGenerator( src, dst, 1 );
-//		org.lgna.croquet.RootContext rootContext = generator.generate( null );
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( rootContext );
+		//		org.lgna.croquet.RootContext rootContext = generator.generate( null );
+		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( rootContext );
 	}
 }
