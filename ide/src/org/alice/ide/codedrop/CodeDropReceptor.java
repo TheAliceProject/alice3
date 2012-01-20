@@ -53,7 +53,16 @@ import org.alice.ide.common.*;
  */
 public abstract class CodeDropReceptor extends org.alice.ide.croquet.components.PrintableBorderPanelWithCenterScrollPane implements org.lgna.croquet.DropReceptor {
 	protected StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
+	
+	public CodeDropReceptor( org.lgna.croquet.Composite< ? > composite ) {
+		super( composite );
+	}
+	public CodeDropReceptor() {
+		this( null );
+	}
+	
 	public abstract org.lgna.project.ast.AbstractCode getCode();
+	
 	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel ) {
