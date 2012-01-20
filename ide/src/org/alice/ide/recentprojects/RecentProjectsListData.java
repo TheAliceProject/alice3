@@ -40,43 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.recentprojects;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				PrintMenuModel.getInstance(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel()
-		);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
-			list.add(org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel());
-		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
-	}
+public class RecentProjectsListData extends org.lgna.croquet.AbstractListData< java.net.URI > {
 	private static class SingletonHolder {
-		private static FileMenuModel instance = new FileMenuModel();
+		private static RecentProjectsListData instance = new RecentProjectsListData();
 	}
-	public static FileMenuModel getInstance() {
+	public static RecentProjectsListData getInstance() {
 		return SingletonHolder.instance;
 	}
-	private FileMenuModel() {
-		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), createMenuItemPrepModels() );
+	private final java.util.List< java.net.URI > list = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private RecentProjectsListData() {
+	}
+	public org.lgna.croquet.ItemCodec< java.net.URI > getItemCodec() {
+		return org.alice.ide.croquet.codecs.UriCodec.SINGLETON;
+	}
+	public int getSize() {
+		return this.list.size();
+	}
+	public java.net.URI get( int index ) {
+		return this.list.get( index );
+	}
+	
+	public java.net.URI[] createArray() {
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.list, java.net.URI.class );
+	}
+
+	private void addFile( java.io.File file ) {
+		if( file != null ) {
+			final int N = org.alice.ide.croquet.models.openproject.RecentProjectCountState.getInstance().getValue();
+			if( N > 0 ) {
+				java.net.URI uri = file.toURI();
+				if( this.list.contains( uri ) ) {
+					this.list.remove( uri );
+				}
+				this.list.add( 0, uri );
+				while( this.list.size() > N ) {
+					this.list.remove( this.list.size()-1 );
+				}
+			} else {
+				this.list.clear();
+			}
+			this.fireChanged();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( file );
+		}
+	}
+	public void handleOpen( java.io.File file ) {
+		this.addFile( file );
+	}
+	public void handleSave( java.io.File file ) {
+		this.addFile( file );
 	}
 }

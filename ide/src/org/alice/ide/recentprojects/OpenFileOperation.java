@@ -40,43 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.recentprojects;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				PrintMenuModel.getInstance(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel()
-		);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
-			list.add(org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel());
+public class OpenFileOperation extends org.lgna.croquet.ActionOperation {
+	private static java.util.Map< java.net.URI, OpenFileOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static OpenFileOperation getInstance( java.net.URI uri ) {
+		synchronized( map ) {
+			OpenFileOperation rv = map.get( uri );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new OpenFileOperation( uri );
+				map.put( uri, rv );
+			}
+			return rv;
 		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
-	private static class SingletonHolder {
-		private static FileMenuModel instance = new FileMenuModel();
+	private final java.net.URI uri;
+	private OpenFileOperation( java.net.URI uri ) {
+		super( org.alice.ide.ProjectApplication.URI_GROUP, java.util.UUID.fromString( "f0c3069a-62d8-4b33-84ac-49dcb2109c93" ) );
+		this.uri = uri;
 	}
-	public static FileMenuModel getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setName( this.uri.toString() );
 	}
-	private FileMenuModel() {
-		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), createMenuItemPrepModels() );
+	@Override
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		step.finish();
 	}
 }
