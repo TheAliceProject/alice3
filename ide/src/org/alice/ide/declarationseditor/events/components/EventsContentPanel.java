@@ -42,8 +42,6 @@
  */
 package org.alice.ide.declarationseditor.events.components;
 
-import org.lgna.croquet.components.BoxUtilities;
-import org.lgna.croquet.components.PageAxisPanel;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
@@ -73,12 +71,15 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 	};
 
 	private final org.lgna.project.ast.AbstractCode code;
-	private final PageAxisPanel panel = new PageAxisPanel();
+	private final org.lgna.croquet.components.GridBagPanel panel = new org.lgna.croquet.components.GridBagPanel();
 	
 	public EventsContentPanel( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
-		this.addComponent( this.panel, Constraint.PAGE_START );
-		this.panel.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
+		this.getScrollPane().setViewportView( this.panel );
+		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor();
+		this.getScrollPane().setBackgroundColor( color );
+		this.panel.setBackgroundColor( color );
+		this.setBackgroundColor( color );
 	}
 	
 	@Override
@@ -94,6 +95,11 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 	protected void internalRefresh() {
 		super.internalRefresh();
 		panel.forgetAndRemoveAllComponents();
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
+		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.weightx = 1.0f;
 		for( Statement statement : getStatements() ) {
 			if( statement instanceof ExpressionStatement ) {
 				ExpressionStatement expressionStatement = (ExpressionStatement)statement;
@@ -102,11 +108,13 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 					MethodInvocation methodInvocation = (MethodInvocation)expression;
 					org.alice.ide.common.AddEventListenerStatementPanel statementPanel = new org.alice.ide.common.AddEventListenerStatementPanel( expressionStatement );
 					statementPanel.addComponent( new EventListenerComponent( methodInvocation ) );
-					panel.addComponent( statementPanel );
+					panel.addComponent( statementPanel, gbc );
 				}
 			}
 		}
-		panel.addComponent( BoxUtilities.createVerticalGlue() );
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.weighty = 1.0;
+		panel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue(), gbc );
 	}
 
 	@Override
