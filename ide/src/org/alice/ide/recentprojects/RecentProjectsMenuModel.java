@@ -55,19 +55,28 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 	private RecentProjectsMenuModel() {
 		super( java.util.UUID.fromString( "0a39a07c-d23f-4cf8-a195-5d114b903505" ) );
 	}
+	
+	private void addChildren( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+		java.net.URI[] uris = RecentProjectsListData.getInstance().createArray();
+		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( java.net.URI uri : uris  ) {
+			models.add( OpenFileOperation.getInstance( uri ).getMenuItemPrepModel() );
+		}
+		if( models.size() == 0 ) {
+			models.add( NoRecentUrisSeparatorModel.getInstance() );
+		} else {
+		}
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( menuItemContainer, models );
+	}
 	@Override
 	public org.lgna.croquet.components.Menu createMenu() {
 		org.lgna.croquet.components.Menu rv = super.createMenu();
-		java.net.URI[] uris = RecentProjectsListData.getInstance().createArray();
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		if( uris.length < 2 ) {
-			models.add( NoRecentUrisSeparatorModel.getInstance() );
-		} else {
-			for( int i=1; i<uris.length; i++ ) {
-				models.add( NoRecentUrisSeparatorModel.getInstance() );
-			}
-		}
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( rv, models );
+		this.addChildren( rv );
 		return rv;
+	}
+	@Override
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
+		super.handlePopupMenuPrologue( popupMenu, step );
+		this.addChildren( popupMenu );
 	}
 }
