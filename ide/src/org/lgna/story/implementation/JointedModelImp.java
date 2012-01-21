@@ -184,13 +184,19 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	
 	@Override
 	public void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
-		this.bogusPropertyForScale.addPropertyListener( listener );
-		//this.sgScalable.localTransformation.addPropertyListener( listener );
+		if( this.rootJointImp != null ) {
+			this.bogusPropertyForScale.addPropertyListener( listener );
+		} else {
+			this.visualData.getSgVisuals()[ 0 ].scale.addPropertyListener( listener );
+		}
 	}
 	@Override
 	public void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
-		//this.sgScalable.localTransformation.removePropertyListener( listener );
-		this.bogusPropertyForScale.removePropertyListener( listener );
+		if( this.rootJointImp != null ) {
+			this.bogusPropertyForScale.removePropertyListener( listener );
+		} else {
+			this.visualData.getSgVisuals()[ 0 ].scale.removePropertyListener( listener );
+		}
 	}
 	
 	@Override
@@ -203,13 +209,21 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.rootJointImp.getLocalTransformation();
 			return new edu.cmu.cs.dennisc.math.Dimension3( m.orientation.right.x, m.orientation.up.y, m.orientation.backward.z );
 		} else {
-			return new edu.cmu.cs.dennisc.math.Dimension3( 1,1,1 );
+			edu.cmu.cs.dennisc.math.Matrix3x3 m = this.visualData.getSgVisuals()[ 0 ].scale.getValue();
+			return new edu.cmu.cs.dennisc.math.Dimension3( m.right.x, m.up.y, m.backward.z );
 		}
 	}
 	@Override
 	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
 		if( this.rootJointImp != null ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.rootJointImp.getOriginalTransformation();
+			if( m != null ) {
+				//pass
+			} else {
+				m = this.rootJointImp.getLocalTransformation();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			}
+			m.orientation.setIdentity();
 			m.orientation.right.x = scale.x;
 			m.orientation.up.y = scale.y;
 			m.orientation.backward.z = scale.z;
@@ -219,7 +233,13 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			this.rootJointImp.setLocalTransformation( m );
 			this.bogusPropertyForScale.setValue( null );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( scale );
+			edu.cmu.cs.dennisc.math.Matrix3x3 m = edu.cmu.cs.dennisc.math.Matrix3x3.createZero();
+			m.right.x = scale.x;
+			m.up.y = scale.y;
+			m.backward.z = scale.z;
+			for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
+				sgVisual.scale.setValue( m );
+			}
 		}
 	}
 	
