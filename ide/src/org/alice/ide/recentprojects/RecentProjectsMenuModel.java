@@ -42,6 +42,15 @@
  */
 package org.alice.ide.recentprojects;
 
+import org.lgna.croquet.components.CascadeMenu;
+import org.lgna.croquet.components.CascadeMenuItem;
+import org.lgna.croquet.components.CheckBoxMenuItem;
+import org.lgna.croquet.components.Container;
+import org.lgna.croquet.components.Menu;
+import org.lgna.croquet.components.MenuItem;
+import org.lgna.croquet.components.MenuTextSeparator;
+import org.lgna.croquet.components.ViewController;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,19 +64,94 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 	private RecentProjectsMenuModel() {
 		super( java.util.UUID.fromString( "0a39a07c-d23f-4cf8-a195-5d114b903505" ) );
 	}
-	@Override
-	public org.lgna.croquet.components.Menu createMenu() {
-		org.lgna.croquet.components.Menu rv = super.createMenu();
+	
+	private void setChildren( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		java.net.URI currentUri = ide.getUri();
 		java.net.URI[] uris = RecentProjectsListData.getInstance().createArray();
 		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		if( uris.length < 2 ) {
-			models.add( NoRecentUrisSeparatorModel.getInstance() );
-		} else {
-			for( int i=1; i<uris.length; i++ ) {
-				models.add( NoRecentUrisSeparatorModel.getInstance() );
+		for( java.net.URI uri : uris  ) {
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( uri, currentUri ) ) {
+				//pass
+			} else {
+				models.add( OpenFileOperation.getInstance( uri ).getMenuItemPrepModel() );
 			}
 		}
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( rv, models );
-		return rv;
+		if( models.size() == 0 ) {
+			models.add( NoRecentUrisSeparatorModel.getInstance() );
+		}
+		menuItemContainer.forgetAndRemoveAllMenuItems();
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( menuItemContainer, models );
+	}
+//	@Override
+//	public org.lgna.croquet.components.Menu createMenu() {
+//		org.lgna.croquet.components.Menu rv = super.createMenu();
+//		this.addChildren( rv );
+//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( rv );
+//		return rv;
+//	}
+//	@Override
+//	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
+//		super.handlePopupMenuPrologue( popupMenu, step );
+//		this.addChildren( popupMenu );
+//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( popupMenu );
+//	}
+	@Override
+	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		Object src = e.getSource();
+		if( src instanceof javax.swing.JPopupMenu ) {
+			final javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
+			this.setChildren( new org.lgna.croquet.components.MenuItemContainer() {
+				public ViewController< ?, ? > getViewController() {
+					return null;
+				}
+
+				public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
+				}
+
+				public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
+				}
+
+				public Container< ? > getParent() {
+					return null;
+				}
+
+				public void addMenu( Menu menu ) {
+					jPopupMenu.add( menu.getAwtComponent() );
+				}
+
+				public void addMenuItem( MenuItem menuItem ) {
+					jPopupMenu.add( menuItem.getAwtComponent() );
+				}
+
+				public void addCascadeMenu( CascadeMenu cascadeMenu ) {
+				}
+
+				public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
+				}
+
+				public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
+				}
+
+				public void addSeparator() {
+					jPopupMenu.addSeparator();
+				}
+
+				public void addSeparator( MenuTextSeparator menuTextSeparator ) {
+					jPopupMenu.add( menuTextSeparator.getAwtComponent() );
+				}
+
+				public void forgetAndRemoveAllMenuItems() {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+					this.removeAllMenuItems();
+				}
+
+				public void removeAllMenuItems() {
+					jPopupMenu.removeAll();
+				}
+				
+			} );
+		}
+		super.handleShowing( menuItemContainer, e );
 	}
 }
