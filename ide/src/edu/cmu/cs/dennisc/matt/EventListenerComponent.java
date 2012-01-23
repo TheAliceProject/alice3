@@ -45,10 +45,14 @@ package edu.cmu.cs.dennisc.matt;
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 
+import org.alice.ide.codeeditor.ArgumentListPropertyPane;
 import org.alice.ide.codeeditor.ParametersPane;
+
 import org.alice.ide.x.components.StatementListPropertyView;
 import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.JComponent;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
@@ -56,6 +60,7 @@ import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.LambdaExpression;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.SimpleArgumentListProperty;
 import org.lgna.project.ast.UserLambda;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
@@ -64,7 +69,7 @@ import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
  * @author Matt May
  */
 public class EventListenerComponent extends BorderPanel {
-	
+
 	private Color panelColor = new Color( 100, 200, 100 );
 	private Color codeContainerColor = new Color( 150, 225, 150 );
 
@@ -73,12 +78,23 @@ public class EventListenerComponent extends BorderPanel {
 		LambdaExpression lambdaExpression = (LambdaExpression)argument0.expression.getValue();
 		UserLambda lambda = (UserLambda)lambdaExpression.value.getValue();
 		this.addComponent( createHeader(methodInvocation), Constraint.PAGE_START );
-		
+
+		AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get(0);
 		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), lambda );
-		this.addComponent(parametersPane, Constraint.PAGE_END);
+		LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
+				new Label( singleAbstractMethod.getName(), TextWeight.BOLD ),
+				parametersPane
+		);
+		BorderPanel codeContainer = new BorderPanel();
 		StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), lambda.body.getValue().statements );
-		putCodeHere.setBackgroundColor( codeContainerColor );
-		this.addComponent( putCodeHere, Constraint.CENTER );
+		codeContainer.setBackgroundColor( codeContainerColor );
+		//		Border emptyBorder = BorderFactory.createEmptyBorder(100, 100, 10, 10);
+		//		putCodeHere.setBorder(emptyBorder);
+		codeContainer.addComponent(putCodeHere, Constraint.CENTER);
+		codeContainer.addComponent(singleAbstractMethodHeader, Constraint.PAGE_START);
+		
+		codeContainer.setBorder( BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
+		this.addComponent(codeContainer, Constraint.CENTER);
 		this.setBorder( BorderFactory.createRaisedBevelBorder() );
 	}
 
@@ -88,6 +104,26 @@ public class EventListenerComponent extends BorderPanel {
 		rv.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		Label label = new Label( methodInvocation.method.getValue().getName(), TextWeight.BOLD );
 		rv.addComponent( label );
+		if(method.getRequiredParameters() != null){
+			SimpleArgumentListProperty requiredArgumentsProperty = methodInvocation.getRequiredArgumentsProperty();
+			ArgumentListPropertyPane requiredParametersListView = new ArgumentListPropertyPane(
+					org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), requiredArgumentsProperty) {
+				@Override
+				protected Component<?> createComponent(
+						SimpleArgument argument) {
+					if( argument.expression.getValue() instanceof LambdaExpression ) {// TODO Auto-generated method stub
+						return new Label( "todo: get dennis to handle null" );
+					} else {
+						return super.createComponent(argument);
+					}
+				}
+			};
+//			if(requiredParametersListView.getComposite() != null){
+//			requiredParametersListView.
+			rv.addComponent(requiredParametersListView);
+//			}
+//			System.out.println(requiredParametersListView);
+		}
 		if(method.getKeyedParameter() != null) {
 			JComponent< ? > keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), methodInvocation.getKeyedArgumentsProperty() );
 			rv.addComponent( keyedArgumentListView );
