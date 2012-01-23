@@ -130,7 +130,7 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 		rows.add( this.rowEnvironment );
 		return rows;
 	}
-	private org.lgna.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type > typeSelectionListener = new org.lgna.croquet.ListSelectionState.ValueObserver< edu.cmu.cs.dennisc.jira.JIRAReport.Type >() {
+	private org.lgna.croquet.ListSelectionState.ValueListener< edu.cmu.cs.dennisc.jira.JIRAReport.Type > typeSelectionListener = new org.lgna.croquet.ListSelectionState.ValueListener< edu.cmu.cs.dennisc.jira.JIRAReport.Type >() {
 		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.jira.JIRAReport.Type > state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.jira.JIRAReport.Type > state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
@@ -140,11 +140,11 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 	@Override
 	public void addNotify() {
 		super.addNotify();
-		this.typeSelectionState.addAndInvokeValueObserver( this.typeSelectionListener );
+		this.typeSelectionState.addAndInvokeValueListener( this.typeSelectionListener );
 	}
 	@Override
 	public void removeNotify() {
-		this.typeSelectionState.removeValueObserver( this.typeSelectionListener );
+		this.typeSelectionState.removeValueListener( this.typeSelectionListener );
 		super.removeNotify();
 	}
 	protected final void refreshRows() {

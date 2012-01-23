@@ -58,7 +58,7 @@ public abstract class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState
 		return this.getModel().getCascadeRoot().getPopupPrepModel().getAction();
 	}
 
-	private final org.lgna.croquet.State.ValueObserver< T > valueObserver = new org.lgna.croquet.State.ValueObserver< T >() {
+	private final org.lgna.croquet.State.ValueListener< T > valueObserver = new org.lgna.croquet.State.ValueListener< T >() {
 		public void changing( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting ) {
@@ -69,12 +69,12 @@ public abstract class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState
 	protected abstract void handleChanged( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		this.getModel().addAndInvokeValueObserver( this.valueObserver );
+		this.getModel().addAndInvokeValueListener( this.valueObserver );
 		super.handleAddedTo( parent );
 	}
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleRemovedFrom( parent );
-		this.getModel().removeValueObserver( this.valueObserver );
+		this.getModel().removeValueListener( this.valueObserver );
 	}
 }

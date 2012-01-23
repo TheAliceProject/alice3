@@ -54,14 +54,14 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		return SingletonHolder.instance;
 	}
 	
-	private final org.lgna.croquet.State.ValueObserver< Boolean > isEmphasizingClassesListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+	private final org.lgna.croquet.State.ValueListener< Boolean > isEmphasizingClassesListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			TypeEditor.this.handleIsEmphasizingClassesChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
@@ -154,13 +154,13 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueObserver( this.isEmphasizingClassesListener );
-		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueListener( this.isEmphasizingClassesListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueObserver( this.typeListener );
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueListener( this.isEmphasizingClassesListener );
 		super.handleUndisplayable();
 	}
 }

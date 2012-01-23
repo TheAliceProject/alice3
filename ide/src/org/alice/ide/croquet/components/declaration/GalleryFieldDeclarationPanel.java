@@ -47,7 +47,7 @@ package org.alice.ide.croquet.components.declaration;
  * @author Dennis Cosgrove
  */
 public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation > {
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > initializerListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression > initializerListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
@@ -88,12 +88,12 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.ali
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.getModel().getInitializerState().addValueObserver( this.initializerListener );
+		this.getModel().getInitializerState().addValueListener( this.initializerListener );
 		this.update();
 	}
 	@Override
 	protected void handleUndisplayable() {
-		this.getModel().getInitializerState().removeValueObserver( this.initializerListener );
+		this.getModel().getInitializerState().removeValueListener( this.initializerListener );
 		super.handleUndisplayable();
 	}
 }

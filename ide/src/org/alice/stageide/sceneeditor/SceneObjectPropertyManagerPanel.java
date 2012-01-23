@@ -104,7 +104,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	
 	private ShowJointedModelJointAxesState showJointsState;
 	
-	private org.lgna.croquet.State.ValueObserver<Boolean> showJointsStateObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+	private org.lgna.croquet.State.ValueListener<Boolean> showJointsStateObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -408,10 +408,10 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 				
 				if (this.selectedImp instanceof JointedModelImp) {
 					if (this.showJointsState != null) {
-						this.showJointsState.removeValueObserver(this.showJointsStateObserver);
+						this.showJointsState.removeValueListener(this.showJointsStateObserver);
 					}
 					this.showJointsState = ShowJointedModelJointAxesState.getInstance(this.selectedField);
-					this.showJointsState.addValueObserver(this.showJointsStateObserver);
+					this.showJointsState.addValueListener(this.showJointsStateObserver);
 					this.addNameAndControllerToPanel(createLabel("Show Joints: "), this.showJointsState.createCheckBox(), this, mainPropertyCount++);
 				}
 				

@@ -54,7 +54,7 @@ public class DeclarationCompositeHistory {
 	}
 	private java.util.List< DeclarationComposite > history = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int index = -1;
-	private final org.lgna.croquet.State.ValueObserver< DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueObserver< DeclarationComposite >() {
+	private final org.lgna.croquet.State.ValueListener< DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueListener< DeclarationComposite >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
@@ -72,7 +72,7 @@ public class DeclarationCompositeHistory {
 	private int ignoreCount = 0;
 	private DeclarationCompositeHistory() {
 		org.alice.ide.IDE.getActiveInstance().addProjectObserver( this.projectListener );
-		DeclarationTabState.getInstance().addValueObserver( this.declarationListener );
+		DeclarationTabState.getInstance().addValueListener( this.declarationListener );
 		this.resetStack();
 	}
 	

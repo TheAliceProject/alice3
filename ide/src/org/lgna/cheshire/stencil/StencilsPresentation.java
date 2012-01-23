@@ -224,7 +224,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		this.stencil = new Stencil( application.getFrame(), scrollingRequiredRenderer, menuPolicy );
-		this.isInterceptingEvents.addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		this.isInterceptingEvents.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -232,7 +232,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			}
 		} );
 
-		this.isPaintingStencil.addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		this.isPaintingStencil.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -242,7 +242,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			}
 		} );
 
-		this.isPlayingSounds.addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		this.isPlayingSounds.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {

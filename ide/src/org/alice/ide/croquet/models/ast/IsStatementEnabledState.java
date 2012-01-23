@@ -63,7 +63,7 @@ public class IsStatementEnabledState extends org.lgna.croquet.BooleanState {
 	private IsStatementEnabledState( org.lgna.project.ast.Statement statement ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
 		this.statement = statement;
-		this.addValueObserver( new ValueObserver<Boolean>() {
+		this.addValueListener( new ValueListener<Boolean>() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {

@@ -54,7 +54,7 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.declarationseditor.DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.declarationseditor.DeclarationComposite >() {
+	private final org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
@@ -83,11 +83,11 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( this.declarationListener );
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addAndInvokeValueListener( this.declarationListener );
 	}
 	@Override
 	public void handlePostDectivation() {
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().removeValueObserver( this.declarationListener );
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().removeValueListener( this.declarationListener );
 		super.handlePostDectivation();
 	}
 }

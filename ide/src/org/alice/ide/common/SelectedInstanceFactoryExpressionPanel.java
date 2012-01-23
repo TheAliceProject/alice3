@@ -47,7 +47,7 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.components.LineAxisPanel {
-	private org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueObserver<org.alice.ide.instancefactory.InstanceFactory>() {
+	private org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
@@ -70,11 +70,11 @@ public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.com
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueObserver( this.instanceFactorySelectionObserver );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueObserver( this.instanceFactorySelectionObserver );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactorySelectionObserver );
 		super.handleUndisplayable();
 	}
 }
