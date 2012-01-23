@@ -10,8 +10,6 @@ import org.lgna.story.Visual;
 import org.lgna.story.event.MouseButtonEvent;
 import org.lgna.story.event.MouseButtonListener;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
-
 
 public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListener, MouseButtonEvent > {
 

@@ -45,11 +45,9 @@ package edu.cmu.cs.dennisc.matt;
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
-import javax.swing.border.Border;
 
 import org.alice.ide.codeeditor.ArgumentListPropertyPane;
 import org.alice.ide.codeeditor.ParametersPane;
-
 import org.alice.ide.x.components.StatementListPropertyView;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.Component;

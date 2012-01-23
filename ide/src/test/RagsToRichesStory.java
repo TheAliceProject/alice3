@@ -57,7 +57,6 @@ import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Program;
 import org.lgna.story.RollDirection;
 import org.lgna.story.Scene;
-import org.lgna.story.SetOfVisuals;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
@@ -65,8 +64,6 @@ import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonEvent;
 import org.lgna.story.event.MouseButtonListener;
-import org.lgna.story.event.ProximityEvent;
-import org.lgna.story.event.ProximityEventListener;
 import org.lgna.story.event.TimerEvent;
 import org.lgna.story.event.TimerEventListener;
 import org.lgna.story.resources.BipedResource;
@@ -76,8 +73,6 @@ import org.lgna.story.resources.sims2.BaseSkinTone;
 import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
-
-import edu.cmu.cs.dennisc.matt.ProximityDistance;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {

@@ -6,7 +6,6 @@ import java.util.Map;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
-import org.lgna.story.event.MouseButtonListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
