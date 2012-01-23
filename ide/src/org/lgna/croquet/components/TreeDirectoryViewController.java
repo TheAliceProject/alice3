@@ -68,7 +68,7 @@ public abstract class TreeDirectoryViewController< T > extends PanelViewControll
 		}
 	}
 
-	private final org.lgna.croquet.State.ValueObserver< T > valueObserver = new org.lgna.croquet.State.ValueObserver< T >() {
+	private final org.lgna.croquet.State.ValueListener< T > valueObserver = new org.lgna.croquet.State.ValueListener< T >() {
 		public void changing(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
 		}
 		public void changed(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
@@ -82,11 +82,11 @@ public abstract class TreeDirectoryViewController< T > extends PanelViewControll
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.getModel().addValueObserver( this.valueObserver );
+		this.getModel().addValueListener( this.valueObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		this.getModel().removeValueObserver( this.valueObserver );
+		this.getModel().removeValueListener( this.valueObserver );
 		super.handleUndisplayable();
 	}
 	protected abstract JComponent< ? > getComponentFor( T value );

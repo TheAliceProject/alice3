@@ -59,7 +59,7 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
-public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.View>
+public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.ListSelectionState.ValueListener<org.alice.stageide.sceneeditor.View>
 {
 	private SymmetricPerspectiveCamera perspectiveCamera = null;
 	private OrthographicCamera orthographicCamera = null;

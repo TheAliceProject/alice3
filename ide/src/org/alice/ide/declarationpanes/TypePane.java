@@ -51,7 +51,7 @@ class IsArrayState extends org.lgna.croquet.BooleanState {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue() );
 		this.isArrayProperty = isArrayProperty;
 		this.setTextForBothTrueAndFalse( "is array" );
-		this.addValueObserver( new ValueObserver< Boolean >() {
+		this.addValueListener( new ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {

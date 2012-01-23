@@ -63,7 +63,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 	protected StandardExpressionState expressionState;
 	
 
-	private org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
+	private org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
@@ -173,14 +173,14 @@ public abstract class AbstractPropertyAdapter<P, O>
 	protected void startExpressionListening() {
 		if (this.expressionState != null)
 		{
-			this.expressionState.addValueObserver( this.valueObserver );
+			this.expressionState.addValueListener( this.valueObserver );
 		}
 	}
 	
 	protected void stopExpressionListening() {
 		if (this.expressionState != null)
 		{
-			this.expressionState.removeValueObserver( this.valueObserver );
+			this.expressionState.removeValueListener( this.valueObserver );
 		}
 	}
 	

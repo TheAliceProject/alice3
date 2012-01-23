@@ -422,7 +422,17 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
 		super.fireChanging( prevValue, nextValue, isAdjusting );
 		this.swingModel.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.swingModel.listSelectionModel.getValueIsAdjusting() );
-		this.swingModel.comboBoxModel.ACCESS_fireContentsChanged( this, this.index, this.index );
+		this.fireContentsChanged( this.index, this.index );
+	}
+	
+	protected void fireContentsChanged( int index0, int index1 ) {
+		this.swingModel.comboBoxModel.ACCESS_fireContentsChanged( this, index0, index1 );
+	}
+	protected void fireIntervalAdded( int index0, int index1 ) {
+		this.swingModel.comboBoxModel.ACCESS_fireIntervalAdded( this, index0, index1 );
+	}
+	protected void fireIntervalRemoved( int index0, int index1 ) {
+		this.swingModel.comboBoxModel.ACCESS_fireIntervalRemoved( this, index0, index1 );
 	}
 
 	public final void setItems( T... items ) {

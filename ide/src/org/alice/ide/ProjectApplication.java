@@ -178,7 +178,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 			this.uri = uri;
 			try {
 				if( file != null && file.canWrite() ) {
-					org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
+					//org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
+					org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleOpen( file );
 				}
 			} catch( Throwable throwable ) {
 				throwable.printStackTrace();

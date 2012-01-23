@@ -343,8 +343,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		
 		
 		
-		ManipulationHandleIndirection translateUp = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), Color4f.GREEN));
-		ManipulationHandleIndirection translateDown = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), Color4f.GREEN));
+		ManipulationHandleIndirection translateUp = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), Color4f.YELLOW));
+		ManipulationHandleIndirection translateDown = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), Color4f.YELLOW));
 		translateUp.setManipulation( new LinearDragManipulator() );
 		translateUp.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION);
 		translateDown.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION);
@@ -372,8 +372,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		translateDown.setDragAdapterAndAddHandle( this );
 		translateUp.setDragAdapterAndAddHandle( this );
 		
-		ManipulationHandleIndirection translateXAxisRight = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.ABSOLUTE), Color4f.RED));
-		ManipulationHandleIndirection translateXAxisLeft = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.LEFT, MovementType.ABSOLUTE), Color4f.RED));
+		ManipulationHandleIndirection translateXAxisRight = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.ABSOLUTE), Color4f.YELLOW));
+		ManipulationHandleIndirection translateXAxisLeft = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.LEFT, MovementType.ABSOLUTE), Color4f.YELLOW));
 		translateXAxisLeft.setManipulation( new LinearDragManipulator() );
 		//Add the left handle to the group to be shown by the system
 		translateXAxisLeft.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.X_AND_Z_AXIS );
@@ -402,8 +402,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		translateXAxisRight.setDragAdapterAndAddHandle( this );
 		translateXAxisLeft.setDragAdapterAndAddHandle( this );
 		
-		ManipulationHandleIndirection translateForward = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.ABSOLUTE), Color4f.BLUE));
-		ManipulationHandleIndirection translateBackward = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.BACKWARD, MovementType.ABSOLUTE), Color4f.BLUE));
+		ManipulationHandleIndirection translateForward = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.ABSOLUTE), Color4f.YELLOW));
+		ManipulationHandleIndirection translateBackward = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.BACKWARD, MovementType.ABSOLUTE), Color4f.YELLOW));
 		translateForward.setManipulation( new LinearDragManipulator() );
 		translateForward.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.X_AND_Z_AXIS, HandleSet.HandleGroup.VISUALIZATION);
 		translateBackward.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.X_AND_Z_AXIS, HandleSet.HandleGroup.VISUALIZATION);
@@ -490,7 +490,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 //			
 //			this.interactionSelectionState.setSelectedItem(defaultInteraction);
 			
-			org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().addAndInvokeValueObserver(this.handleStateValueObserver);
+			org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().addAndInvokeValueListener(this.handleStateValueObserver);
 		}
 	}
 	

@@ -40,62 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.openprojectpane.models;
+package org.alice.ide.recentprojects;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.ListSelectionState< E > {
-	private boolean isRefreshNecessary = true;
-	private E[] array;
-	public ArrayBasedListSelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< E > itemCodec, int selectionIndex ) {
-		super( group, id, itemCodec, selectionIndex );
+public class RecentProjectsListData extends org.lgna.croquet.AbstractListData< java.net.URI > {
+	private static class SingletonHolder {
+		private static RecentProjectsListData instance = new RecentProjectsListData();
 	}
-	protected abstract E[] createArray();
-	private void refreshIfNecessary() {
-		if( this.isRefreshNecessary ) {
-			this.array = this.createArray();
-			this.fireContentsChanged( 0, this.array.length-1 );
-			this.isRefreshNecessary = false;
+	public static RecentProjectsListData getInstance() {
+		return SingletonHolder.instance;
+	}
+	private final java.util.List< java.net.URI > list = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private RecentProjectsListData() {
+	}
+	public org.lgna.croquet.ItemCodec< java.net.URI > getItemCodec() {
+		return org.alice.ide.croquet.codecs.UriCodec.SINGLETON;
+	}
+	public int getSize() {
+		return this.list.size();
+	}
+	public java.net.URI get( int index ) {
+		return this.list.get( index );
+	}
+	
+	public java.net.URI[] createArray() {
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.list, java.net.URI.class );
+	}
+
+	private void addFile( java.io.File file ) {
+		if( file != null ) {
+			final int N = org.alice.ide.croquet.models.openproject.RecentProjectCountState.getInstance().getValue();
+			if( N > 0 ) {
+				java.net.URI uri = file.toURI();
+				if( this.list.contains( uri ) ) {
+					this.list.remove( uri );
+				}
+				this.list.add( 0, uri );
+				while( this.list.size() > N ) {
+					this.list.remove( this.list.size()-1 );
+				}
+			} else {
+				this.list.clear();
+			}
+			this.fireChanged();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( file );
 		}
 	}
-	public final void refresh() {
-		this.isRefreshNecessary = true;
-		this.refreshIfNecessary();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
+	public void handleOpen( java.io.File file ) {
+		this.addFile( file );
 	}
-	@Override
-	public final E getItemAt( int index ) {
-		return this.array[ index ];
-	}
-	@Override
-	public final int getItemCount() {
-		this.refreshIfNecessary();
-		return this.array.length;
-	}
-	@Override
-	public final int indexOf( E item ) {
-		return java.util.Arrays.asList( this.array ).indexOf( item );
-	}
-	@Override
-	protected final void internalAddItem( E item ) {
-		throw new AssertionError();
-	}
-	@Override
-	protected final void internalRemoveItem( E item ) {
-		throw new AssertionError();
-	}
-	@Override
-	protected final void internalSetItems( java.util.Collection< E > items ) {
-	}
-	public final java.util.Iterator< E > iterator() {
-		this.refreshIfNecessary();
-		return java.util.Arrays.asList( this.array ).iterator();
-	}
-	@Override
-	public final E[] toArray( Class< E > componentType ) {
-		this.refreshIfNecessary();
-		return this.array;
+	public void handleSave( java.io.File file ) {
+		this.addFile( file );
 	}
 }

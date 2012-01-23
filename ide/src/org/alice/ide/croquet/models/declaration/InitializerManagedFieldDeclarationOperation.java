@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class InitializerManagedFieldDeclarationOperation  extends ManagedFieldDeclarationOperation {
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression > initializerObserver = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.Expression >() {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression > initializerObserver = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
@@ -63,7 +63,7 @@ public class InitializerManagedFieldDeclarationOperation  extends ManagedFieldDe
 				"", true, 
 				initialExpression, true 
 		);
-		this.getInitializerState().addAndInvokeValueObserver( initializerObserver );
+		this.getInitializerState().addAndInvokeValueListener( initializerObserver );
 	}
 	
 	private org.lgna.project.ast.AbstractType< ?,?,? > getDeclaringTypeFromInitializer( org.lgna.project.ast.Expression expression ) {

@@ -40,62 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.openprojectpane.models;
+package org.alice.ide.recentprojects;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.ListSelectionState< E > {
-	private boolean isRefreshNecessary = true;
-	private E[] array;
-	public ArrayBasedListSelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< E > itemCodec, int selectionIndex ) {
-		super( group, id, itemCodec, selectionIndex );
-	}
-	protected abstract E[] createArray();
-	private void refreshIfNecessary() {
-		if( this.isRefreshNecessary ) {
-			this.array = this.createArray();
-			this.fireContentsChanged( 0, this.array.length-1 );
-			this.isRefreshNecessary = false;
+public class OpenFileOperation extends org.lgna.croquet.ActionOperation {
+	private static java.util.Map< java.net.URI, OpenFileOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static OpenFileOperation getInstance( java.net.URI uri ) {
+		synchronized( map ) {
+			OpenFileOperation rv = map.get( uri );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new OpenFileOperation( uri );
+				map.put( uri, rv );
+			}
+			return rv;
 		}
 	}
-	public final void refresh() {
-		this.isRefreshNecessary = true;
-		this.refreshIfNecessary();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
+	private final java.net.URI uri;
+	private OpenFileOperation( java.net.URI uri ) {
+		super( org.alice.ide.ProjectApplication.URI_GROUP, java.util.UUID.fromString( "f0c3069a-62d8-4b33-84ac-49dcb2109c93" ) );
+		this.uri = uri;
 	}
 	@Override
-	public final E getItemAt( int index ) {
-		return this.array[ index ];
+	protected void localize() {
+		super.localize();
+		this.setName( this.uri.toString() );
 	}
 	@Override
-	public final int getItemCount() {
-		this.refreshIfNecessary();
-		return this.array.length;
-	}
-	@Override
-	public final int indexOf( E item ) {
-		return java.util.Arrays.asList( this.array ).indexOf( item );
-	}
-	@Override
-	protected final void internalAddItem( E item ) {
-		throw new AssertionError();
-	}
-	@Override
-	protected final void internalRemoveItem( E item ) {
-		throw new AssertionError();
-	}
-	@Override
-	protected final void internalSetItems( java.util.Collection< E > items ) {
-	}
-	public final java.util.Iterator< E > iterator() {
-		this.refreshIfNecessary();
-		return java.util.Arrays.asList( this.array ).iterator();
-	}
-	@Override
-	public final E[] toArray( Class< E > componentType ) {
-		this.refreshIfNecessary();
-		return this.array;
+	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		step.finish();
 	}
 }

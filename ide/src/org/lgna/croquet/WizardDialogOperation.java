@@ -211,7 +211,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		}
 	}
 	
-	private ListSelectionState.ValueObserver< Card > selectionObserver = new ListSelectionState.ValueObserver< Card >() {
+	private ListSelectionState.ValueListener< Card > selectionObserver = new ListSelectionState.ValueListener< Card >() {
 		public void changing( org.lgna.croquet.State< org.lgna.croquet.WizardDialogOperation.Card > state, org.lgna.croquet.WizardDialogOperation.Card prevValue, org.lgna.croquet.WizardDialogOperation.Card nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.croquet.WizardDialogOperation.Card > state, org.lgna.croquet.WizardDialogOperation.Card prevValue, org.lgna.croquet.WizardDialogOperation.Card nextValue, boolean isAdjusting ) {
@@ -291,7 +291,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 			cards.add( card );
 		}
 		this.cardSelectionState.setListData( 0, cards );
-		this.cardSelectionState.addAndInvokeValueObserver( this.selectionObserver );
+		this.cardSelectionState.addAndInvokeValueListener( this.selectionObserver );
 		
 		BorderPanel rv = new BorderPanel();
 		GridBagPanel centerPanel = new GridBagPanel();

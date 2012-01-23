@@ -43,7 +43,6 @@
 
 package org.lgna.story.implementation;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -72,7 +71,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	//private final edu.cmu.cs.dennisc.scenegraph.Scalable sgScalable = new edu.cmu.cs.dennisc.scenegraph.Scalable();
 //	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgScalable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 	
-	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgScalable;
+	//todo: make final
 	private org.lgna.story.implementation.JointImp rootJointImp;
 	
 	private final java.util.Map< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > mapIdToJoint = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -87,9 +86,15 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getSgComposite() );
 		}
-		for( org.lgna.story.resources.JointId root : this.getRootJointIds() ) {
-			this.rootJointImp = this.createJointTree( root, this );
-			this.sgScalable = this.rootJointImp.getSgComposite();
+
+		//todo: change to getRootJointId()
+		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
+		if( rootIds.length == 0 ) {
+			this.rootJointImp = null;
+		} else {
+			for( org.lgna.story.resources.JointId root : rootIds ) {
+				this.rootJointImp = this.createJointTree( root, this );
+			}
 		}
 	}
 	
@@ -179,13 +184,19 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	
 	@Override
 	public void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
-		this.bogusPropertyForScale.addPropertyListener( listener );
-		//this.sgScalable.localTransformation.addPropertyListener( listener );
+		if( this.rootJointImp != null ) {
+			this.bogusPropertyForScale.addPropertyListener( listener );
+		} else {
+			this.visualData.getSgVisuals()[ 0 ].scale.addPropertyListener( listener );
+		}
 	}
 	@Override
 	public void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
-		//this.sgScalable.localTransformation.removePropertyListener( listener );
-		this.bogusPropertyForScale.removePropertyListener( listener );
+		if( this.rootJointImp != null ) {
+			this.bogusPropertyForScale.removePropertyListener( listener );
+		} else {
+			this.visualData.getSgVisuals()[ 0 ].scale.removePropertyListener( listener );
+		}
 	}
 	
 	@Override
@@ -194,20 +205,42 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.sgScalable.getLocalTransformation();
-		return new edu.cmu.cs.dennisc.math.Dimension3( m.orientation.right.x, m.orientation.up.y, m.orientation.backward.z );
+		if( this.rootJointImp != null ) {
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.rootJointImp.getLocalTransformation();
+			return new edu.cmu.cs.dennisc.math.Dimension3( m.orientation.right.x, m.orientation.up.y, m.orientation.backward.z );
+		} else {
+			edu.cmu.cs.dennisc.math.Matrix3x3 m = this.visualData.getSgVisuals()[ 0 ].scale.getValue();
+			return new edu.cmu.cs.dennisc.math.Dimension3( m.right.x, m.up.y, m.backward.z );
+		}
 	}
 	@Override
 	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.rootJointImp.getOriginalTransformation();
-		m.orientation.right.x = scale.x;
-		m.orientation.up.y = scale.y;
-		m.orientation.backward.z = scale.z;
-		m.translation.x *= scale.x;
-		m.translation.y *= scale.y;
-		m.translation.z *= scale.z;
-		this.sgScalable.setLocalTransformation( m );
-		this.bogusPropertyForScale.setValue( null );
+		if( this.rootJointImp != null ) {
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.rootJointImp.getOriginalTransformation();
+			if( m != null ) {
+				//pass
+			} else {
+				m = this.rootJointImp.getLocalTransformation();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			}
+			m.orientation.setIdentity();
+			m.orientation.right.x = scale.x;
+			m.orientation.up.y = scale.y;
+			m.orientation.backward.z = scale.z;
+			m.translation.x *= scale.x;
+			m.translation.y *= scale.y;
+			m.translation.z *= scale.z;
+			this.rootJointImp.setLocalTransformation( m );
+			this.bogusPropertyForScale.setValue( null );
+		} else {
+			edu.cmu.cs.dennisc.math.Matrix3x3 m = edu.cmu.cs.dennisc.math.Matrix3x3.createZero();
+			m.right.x = scale.x;
+			m.up.y = scale.y;
+			m.backward.z = scale.z;
+			for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
+				sgVisual.scale.setValue( m );
+			}
+		}
 	}
 	
 //	@Override

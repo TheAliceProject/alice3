@@ -207,14 +207,14 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 		rv.setLayout( new java.awt.BorderLayout() );
 		return rv;
 	}
-	private org.lgna.croquet.State.ValueObserver<Boolean> typeFeedbackObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+	private org.lgna.croquet.State.ValueListener<Boolean> typeFeedbackObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			CodeEditor.this.rootStatementListPropertyPane.refreshLater();
 		}
 	};
-	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter > formatterSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.formatter.Formatter >() {
+	private org.lgna.croquet.ListSelectionState.ValueListener< org.alice.ide.formatter.Formatter > formatterSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueListener< org.alice.ide.formatter.Formatter >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.formatter.Formatter > state, org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.formatter.Formatter > state, org.alice.ide.formatter.Formatter prevValue, org.alice.ide.formatter.Formatter nextValue, boolean isAdjusting ) {
@@ -224,13 +224,13 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().addValueObserver( formatterSelectionObserver );
-		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().addAndInvokeValueObserver( this.typeFeedbackObserver );
+		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().addValueListener( formatterSelectionObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().addAndInvokeValueListener( this.typeFeedbackObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().removeValueObserver( this.typeFeedbackObserver );
-		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().removeValueObserver( formatterSelectionObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().removeValueListener( this.typeFeedbackObserver );
+		org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().removeValueListener( formatterSelectionObserver );
 		super.handleUndisplayable();
 	}
 

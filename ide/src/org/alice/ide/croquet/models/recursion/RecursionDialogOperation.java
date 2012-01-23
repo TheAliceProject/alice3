@@ -93,7 +93,7 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 				}
 			};
 		}
-		private org.lgna.croquet.State.ValueObserver< Boolean > valueObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		private org.lgna.croquet.State.ValueListener< Boolean > valueObserver = new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -111,11 +111,11 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
-			IsAccessToRecursionAllowedEnabledState.getInstance().addAndInvokeValueObserver( valueObserver );
+			IsAccessToRecursionAllowedEnabledState.getInstance().addAndInvokeValueListener( valueObserver );
 		}
 		@Override
 		protected void handleUndisplayable() {
-			IsAccessToRecursionAllowedEnabledState.getInstance().removeValueObserver( valueObserver );
+			IsAccessToRecursionAllowedEnabledState.getInstance().removeValueListener( valueObserver );
 			super.handleUndisplayable();
 		}
 	}

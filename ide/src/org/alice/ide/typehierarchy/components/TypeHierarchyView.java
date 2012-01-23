@@ -94,7 +94,7 @@ class NamedUserTypeTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rende
  * @author Dennis Cosgrove
  */
 public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
@@ -155,7 +155,7 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	protected void handleAddedTo(org.lgna.croquet.components.Component<?> parent) {
 		org.alice.ide.ast.AstEventManager.addAndInvokeTypeHierarchyListener( this.typeHierarchyListener );
-		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 		this.jTree.addKeyListener( this.keyListener );
 		this.jTree.addTreeSelectionListener( this.treeSelectionListener );
 	}
@@ -163,7 +163,7 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 	protected void handleRemovedFrom(org.lgna.croquet.components.Component<?> parent) {
 		this.jTree.removeTreeSelectionListener( this.treeSelectionListener );
 		this.jTree.removeKeyListener( this.keyListener );
-		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueObserver( this.typeListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
 		org.alice.ide.ast.AstEventManager.removeTypeHierarchyListener( this.typeHierarchyListener );
 	}
 	

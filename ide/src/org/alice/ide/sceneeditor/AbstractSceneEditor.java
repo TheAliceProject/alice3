@@ -66,7 +66,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	};
 	
-	private org.lgna.croquet.ListSelectionState.ValueObserver< org.lgna.project.ast.UserField > selectedSceneObserver  = new org.lgna.croquet.ListSelectionState.ValueObserver< org.lgna.project.ast.UserField >() {
+	private org.lgna.croquet.ListSelectionState.ValueListener< org.lgna.project.ast.UserField > selectedSceneObserver  = new org.lgna.croquet.ListSelectionState.ValueListener< org.lgna.project.ast.UserField >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.UserField > state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.UserField > state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
@@ -74,7 +74,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	};
 	
-	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.perspectives.IdePerspective > perspectiveListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.perspectives.IdePerspective >() {
+	private final org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.IdePerspective > perspectiveListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.IdePerspective >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
@@ -114,7 +114,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		
 	}
 	protected void initializeObservers(){
-		org.alice.stageide.perspectives.PerspectiveState.getInstance().addAndInvokeValueObserver( this.perspectiveListener );
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().addAndInvokeValueListener( this.perspectiveListener );
 	}
 	
 	
@@ -316,7 +316,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	protected void setProgramType( org.lgna.project.ast.NamedUserType programType ) {
 		if (this.programType != programType) {
 			if (this.programType != null) {
-				SceneFieldListSelectionState.getInstance().removeValueObserver(this.selectedSceneObserver);
+				SceneFieldListSelectionState.getInstance().removeValueListener(this.selectedSceneObserver);
 				SceneFieldListSelectionState.getInstance().clear();
 			}
 			this.programType = programType;
@@ -338,7 +338,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 			{
 				SceneFieldListSelectionState.getInstance().setSelectedIndex(0);
 			}
-			SceneFieldListSelectionState.getInstance().addAndInvokeValueObserver(this.selectedSceneObserver);
+			SceneFieldListSelectionState.getInstance().addAndInvokeValueListener(this.selectedSceneObserver);
 		}
 	}
 	

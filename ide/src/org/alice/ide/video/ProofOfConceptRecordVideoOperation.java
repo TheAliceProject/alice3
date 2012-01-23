@@ -54,7 +54,7 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 		return SingletonHolder.instance;
 	}
 	
-	private final org.lgna.croquet.State.ValueObserver< Boolean > isRecordingListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+	private final org.lgna.croquet.State.ValueListener< Boolean > isRecordingListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -71,12 +71,12 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step, org.lgna.croquet.components.Dialog dialog ) {
 		IsRecordingState.getInstance().setValue( false );
-		IsRecordingState.getInstance().addValueObserver( this.isRecordingListener );
+		IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}
 	@Override
 	protected void handleFinally( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
-		IsRecordingState.getInstance().removeValueObserver( this.isRecordingListener );
+		IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
 		super.handleFinally( context, dialog, contentPane );
 	}
 	@Override

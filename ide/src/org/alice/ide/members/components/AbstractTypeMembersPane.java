@@ -74,7 +74,7 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 			AbstractTypeMembersPane.this.refresh();
 		}
 	};
-	private org.lgna.croquet.State.ValueObserver<Boolean> isEmphasizingClassesObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+	private org.lgna.croquet.State.ValueListener<Boolean> isEmphasizingClassesObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -84,11 +84,11 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueObserver( this.isEmphasizingClassesObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueListener( this.isEmphasizingClassesObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueListener( this.isEmphasizingClassesObserver );
 		super.handleUndisplayable();
 	}
 	public AbstractTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
