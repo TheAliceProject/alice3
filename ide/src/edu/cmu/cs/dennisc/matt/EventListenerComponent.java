@@ -109,8 +109,8 @@ public class EventListenerComponent extends BorderPanel {
 				@Override
 				protected Component<?> createComponent(
 						SimpleArgument argument) {
-					if( argument.expression.getValue() instanceof LambdaExpression ) {// TODO Auto-generated method stub
-						return new Label( "todo: get dennis to handle null" );
+					if( argument.expression.getValue() instanceof LambdaExpression ) {
+						return null;
 					} else {
 						return super.createComponent(argument);
 					}
