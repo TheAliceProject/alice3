@@ -113,6 +113,29 @@ public class Transaction extends Node< TransactionHistory > {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
 		binaryEncoder.encode( this.completionStep );
 	}
+	public <C extends org.lgna.croquet.Context> C findFirstContext( Step<?> step, Class<C> cls ) {
+		while( step != null ) {
+			for( org.lgna.croquet.Context context : step.getContexts() ) {
+				if( cls.isAssignableFrom( context.getClass() ) ) {
+					return cls.cast( context );
+				}
+			}
+			C context = step.findFirstContext( cls );
+			if( context != null ) {
+				return context;
+			} else {
+				step = step.getPreviousStep();
+			}
+		}
+		CompletionStep< ? > grandparent = this.getFirstAncestorAssignableTo( CompletionStep.class );
+		if( grandparent != null ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "note: searching outside transaction", cls );
+			return grandparent.findFirstContext( cls );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls );
+			return null;
+		}
+	}
 	
 	public boolean isValid() {
 		if( this.completionStep != null ) {

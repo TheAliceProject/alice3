@@ -46,6 +46,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Transaction> {
+	private final java.util.List< org.lgna.croquet.Context > contexts;
 	private final org.lgna.croquet.resolvers.CodableResolver< M > modelResolver;
 	private final transient org.lgna.croquet.triggers.Trigger trigger;
 	private final java.util.UUID id;
@@ -54,6 +55,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		if( model != null ) {
 			this.modelResolver = model.getCodableResolver();
 		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 			this.modelResolver = null;
 		}
 		if( trigger != null ) {
@@ -63,19 +65,44 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		}
 		this.trigger = trigger;
 		this.id = java.util.UUID.randomUUID();
+		
+		java.util.List< org.lgna.croquet.Context > contexts = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		if( model != null ) {
+			for( org.lgna.croquet.ContextFactory<?> contextFactory : model.getContextFactories() ) {
+				contexts.add( contextFactory.createContext() );
+			}
+		}
+		this.contexts = java.util.Collections.unmodifiableList( contexts );
 	}
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.trigger = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.id = binaryDecoder.decodeId();
+		org.lgna.croquet.Context[] contexts = binaryDecoder.decodeBinaryEncodableAndDecodableArray( org.lgna.croquet.Context.class );
+		this.contexts = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( contexts ) );
 	}
+	
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.modelResolver );
 		binaryEncoder.encode( this.trigger );
 		binaryEncoder.encode( this.id );
+		org.lgna.croquet.Context[] contexts = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.contexts, org.lgna.croquet.Context.class );
+		binaryEncoder.encode( contexts );
 	}
 
+	/*package-private*/ Iterable<org.lgna.croquet.Context> getContexts() {
+		return this.contexts;
+	}
+	public <C extends org.lgna.croquet.Context> C findFirstContext( Class<C> cls ) {
+		Transaction transaction = this.getParent();
+		if( transaction != null ) {
+			return transaction.findFirstContext( this, cls );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls );
+			return null;
+		}
+	}
 	public org.lgna.croquet.triggers.Trigger getTrigger() {
 		return this.trigger;
 	}
@@ -83,6 +110,15 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		return this.id;
 	}
 	
+	/*package-private*/ Step<?> getPreviousStep() {
+		Transaction transaction = getParent();
+		int index = transaction.getIndexOfChildStep( this );
+		if( index > 0 ) {
+			return transaction.getChildStepAt( index-1 );
+		} else {
+			return null;
+		}
+	}
 	protected org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 		return this.trigger != null ? this.trigger.getViewController() : null;
 	}
@@ -105,6 +141,9 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 	}
 
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		for( org.lgna.croquet.Context context : this.contexts ) {
+			context.retarget( retargeter );
+		}
 		if( this.modelResolver instanceof org.lgna.croquet.resolvers.RetargetableResolver<?> ) {
 			org.lgna.croquet.resolvers.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<?>)this.modelResolver;
 			retargetableResolver.retarget( retargeter );

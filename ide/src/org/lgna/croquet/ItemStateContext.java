@@ -41,39 +41,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.draganddrop.statement;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ProcedureInvocationTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ProcedureInvocationTemplateDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
-		ProcedureInvocationTemplateDragModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ProcedureInvocationTemplateDragModel( method );
-			map.put( method, rv );
-		}
-		return rv;
+public class ItemStateContext< T > implements Context {
+	private final org.lgna.croquet.resolvers.CodableResolver< ItemState< T > > stateResolver;
+	private T value;
+	public ItemStateContext( ItemState< T > state ) {
+		this.stateResolver = state.getCodableResolver();
+		this.value = state.getValue();
 	}
-	private org.lgna.project.ast.AbstractMethod method;
-	private ProcedureInvocationTemplateDragModel( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocationStatement( method ) );
-		this.method = method;
-		assert this.method.isProcedure();
-		this.addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+	public ItemStateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.stateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		ItemState<T> state = this.stateResolver.getResolved();
+		this.value = state.getItemCodec().decodeValue( binaryDecoder );
 	}
-	public org.lgna.project.ast.AbstractMethod getMethod() {
-		return this.method;
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.stateResolver );
+		ItemState<T> state = this.stateResolver.getResolved();
+		state.getItemCodec().encodeValue( binaryEncoder, this.value );
 	}
-	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< ProcedureInvocationTemplateDragModel > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel >( this, this.method, org.lgna.project.ast.AbstractMethod.class );
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this.stateResolver );
+		//this.stateResolver.retarget( retarget );
+		this.value = retargeter.retarget( this.value );
 	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method );
+	
+	public org.lgna.croquet.resolvers.CodableResolver< ItemState< T >> getStateResolver() {
+		return this.stateResolver;
+	}
+	public T getValue() {
+		return this.value;
 	}
 }
