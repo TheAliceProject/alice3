@@ -69,8 +69,11 @@ public class ItemStateContext< T > implements Context {
 		this.value = retargeter.retarget( this.value );
 	}
 	
-	public org.lgna.croquet.resolvers.CodableResolver< ItemState< T >> getStateResolver() {
-		return this.stateResolver;
+	public boolean isGoodToGo() {
+		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getItemState().getValue(), this.value );
+	}
+	public ItemState< T > getItemState() {
+		return this.stateResolver.getResolved();
 	}
 	public T getValue() {
 		return this.value;
