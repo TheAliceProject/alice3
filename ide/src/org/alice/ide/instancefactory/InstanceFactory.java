@@ -47,7 +47,7 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public interface InstanceFactory {
-	public < F extends InstanceFactory > org.lgna.croquet.resolvers.CodableResolver< F > getCodableResolver();
+	public < F extends InstanceFactory > org.lgna.croquet.resolvers.RetargetableResolver< F > getResolver();
 	public org.lgna.project.ast.AbstractType< ?,?,? > getValueType(); 
 	public org.lgna.project.ast.Expression createTransientExpression();
 	public org.lgna.project.ast.Expression createExpression();

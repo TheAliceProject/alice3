@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPairAndMethodStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > {
+public class BlockStatementIndexPairAndMethodStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, org.lgna.project.ast.AbstractMethod.class };
 	public BlockStatementIndexPairAndMethodStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade instance ) {
 		super( instance );
@@ -55,6 +55,7 @@ public class BlockStatementIndexPairAndMethodStaticGetInstanceResolver extends o
 		super( binaryDecoder );
 	}
 
+	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
 		assert arguments != null;

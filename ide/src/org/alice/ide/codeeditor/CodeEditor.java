@@ -142,7 +142,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 		return "Drop...";
 	}
 	
-	public org.lgna.croquet.resolvers.CodableResolver< CodeEditor > getCodableResolver() {
+	public org.lgna.croquet.resolvers.RetargetableResolver< CodeEditor > getResolver() {
 		return new Resolver( this.code );
 	}
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {

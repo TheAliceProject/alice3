@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMemberOperationResolver< N extends org.lgna.project.ast.AbstractMember > extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.DeleteMemberOperation< N > > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.DeleteMemberOperation<N> > {
+public class DeleteMemberOperationResolver< N extends org.lgna.project.ast.AbstractMember > extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.DeleteMemberOperation< N > > {
 	public DeleteMemberOperationResolver( org.alice.ide.croquet.models.ast.DeleteMemberOperation<N> instance ) {
 		super( instance );
 	}
@@ -69,6 +69,7 @@ public class DeleteMemberOperationResolver< N extends org.lgna.project.ast.Abstr
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		this.getInstance().encodeArguments( binaryEncoder );
 	}
+	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
 		org.alice.ide.croquet.models.ast.DeleteMemberOperation.retargetArguments( arguments, retargeter );

@@ -80,9 +80,8 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 		return "Drop...";
 	}
 	
-	public org.lgna.croquet.resolvers.CodableResolver< ExpressionPropertyDropDownPane > getCodableResolver() {
-		//todo:
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "" );
+	public org.lgna.croquet.resolvers.RetargetableResolver< ExpressionPropertyDropDownPane > getResolver() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 		return null;
 	}
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {

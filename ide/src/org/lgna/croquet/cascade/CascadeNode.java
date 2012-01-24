@@ -47,11 +47,11 @@ package org.lgna.croquet.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeNode< P extends CascadeNode<?,?>, E extends org.lgna.croquet.Element > extends org.lgna.croquet.history.Node< P > {
-	private final org.lgna.croquet.resolvers.CodableResolver< E > elementResolver;
+	private final org.lgna.croquet.resolvers.RetargetableResolver< E > elementResolver;
 	public CascadeNode( P parent, E element ) {
 		super( parent );
 		if( element != null ) {
-			this.elementResolver = element.getCodableResolver();
+			this.elementResolver = element.getResolver();
 		} else {
 			this.elementResolver = null;
 		}

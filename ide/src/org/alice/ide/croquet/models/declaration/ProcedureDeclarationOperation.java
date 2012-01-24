@@ -76,7 +76,7 @@ public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureDeclarationOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureDeclarationOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureDeclarationOperation >( this, this.getInitialDeclaringType(), org.lgna.project.ast.UserType.class );
 	}
 }

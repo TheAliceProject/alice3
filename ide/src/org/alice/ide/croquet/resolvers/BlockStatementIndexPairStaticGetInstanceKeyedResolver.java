@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > implements org.lgna.croquet.resolvers.RetargetableResolver< T > {
+public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class };
 	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( T instance, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
@@ -57,6 +57,7 @@ public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends or
 		super( binaryDecoder );
 	}
 	
+	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		Object[] arguments = this.getArguments();
 		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );

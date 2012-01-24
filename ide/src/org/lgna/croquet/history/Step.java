@@ -47,13 +47,13 @@ package org.lgna.croquet.history;
  */
 public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Transaction> {
 	private final java.util.List< org.lgna.croquet.Context > contexts;
-	private final org.lgna.croquet.resolvers.CodableResolver< M > modelResolver;
-	private final transient org.lgna.croquet.triggers.Trigger trigger;
+	private final org.lgna.croquet.resolvers.RetargetableResolver< M > modelResolver;
+	private final org.lgna.croquet.triggers.Trigger trigger;
 	private final java.util.UUID id;
 	public Step( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent );
 		if( model != null ) {
-			this.modelResolver = model.getCodableResolver();
+			this.modelResolver = model.getResolver();
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 			this.modelResolver = null;
@@ -144,12 +144,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		for( org.lgna.croquet.Context context : this.contexts ) {
 			context.retarget( retargeter );
 		}
-		if( this.modelResolver instanceof org.lgna.croquet.resolvers.RetargetableResolver<?> ) {
-			org.lgna.croquet.resolvers.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<?>)this.modelResolver;
-			retargetableResolver.retarget( retargeter );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.modelResolver );
-		}
+		this.modelResolver.retarget( retargeter );
 		if( this.trigger instanceof org.lgna.croquet.triggers.RetargetableTrigger ) {
 			org.lgna.croquet.triggers.RetargetableTrigger retargetableTrigger = (org.lgna.croquet.triggers.RetargetableTrigger)this.trigger;
 			retargetableTrigger.retarget( retargeter );

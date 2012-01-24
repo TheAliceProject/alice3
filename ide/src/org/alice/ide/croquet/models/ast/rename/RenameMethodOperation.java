@@ -62,7 +62,7 @@ public class RenameMethodOperation extends RenameDeclarationOperation< org.lgna.
 		super( java.util.UUID.fromString( "98b443d0-c7d3-4ff8-ba1b-b16d2695c618" ), method, new org.alice.ide.name.validators.MethodNameValidator( method ) );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserMethod.class );
 	}
 }

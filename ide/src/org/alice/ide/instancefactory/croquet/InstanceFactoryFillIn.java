@@ -86,7 +86,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 		}
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< InstanceFactoryFillIn > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.InstanceFactoryStaticGetInstanceKeyedResolver< InstanceFactoryFillIn > createResolver() {
 		return new org.alice.ide.croquet.resolvers.InstanceFactoryStaticGetInstanceKeyedResolver< InstanceFactoryFillIn >( this, this.value );
 	}
 	@Override

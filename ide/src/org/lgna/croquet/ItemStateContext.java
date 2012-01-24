@@ -47,10 +47,10 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class ItemStateContext< T > implements Context {
-	private final org.lgna.croquet.resolvers.CodableResolver< ItemState< T > > stateResolver;
+	private final org.lgna.croquet.resolvers.RetargetableResolver< ItemState< T > > stateResolver;
 	private T value;
 	public ItemStateContext( ItemState< T > state ) {
-		this.stateResolver = state.getCodableResolver();
+		this.stateResolver = state.getResolver();
 		this.value = state.getValue();
 	}
 	public ItemStateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -65,7 +65,7 @@ public class ItemStateContext< T > implements Context {
 	}
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this.stateResolver );
-		//this.stateResolver.retarget( retarget );
+		this.stateResolver.retarget( retargeter );
 		this.value = retargeter.retarget( this.value );
 	}
 	

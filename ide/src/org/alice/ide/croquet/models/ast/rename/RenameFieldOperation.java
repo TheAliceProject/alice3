@@ -62,7 +62,7 @@ public class RenameFieldOperation extends RenameDeclarationOperation< org.lgna.p
 		super( java.util.UUID.fromString( "acdff8cd-51f0-4708-92b7-c05827409ac8" ), field, new org.alice.ide.name.validators.FieldNameValidator( field ) );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserField.class );
 	}
 }

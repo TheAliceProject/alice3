@@ -69,7 +69,7 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		return this.method;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< ProcedureInvocationTemplateDragModel > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel >( this, this.method, org.lgna.project.ast.AbstractMethod.class );
 	}
 	@Override
