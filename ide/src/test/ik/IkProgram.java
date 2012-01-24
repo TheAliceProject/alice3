@@ -64,7 +64,7 @@ class IkProgram extends Program {
 	private final Sphere target = new Sphere();
 	private final IkScene scene = new IkScene( camera, ogre, target );
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
-	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
+	private final NiceDragAdapter modelManipulationDragAdapter = new NiceDragAdapter();
 
 	private final org.lgna.croquet.State.ValueObserver< Boolean > linearAngularEnabledListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -288,11 +288,6 @@ class IkProgram extends Program {
 				Point3 ep = chain.getEndEffectorPosition();
 				scene.ee.setPositionRelativeToVehicle(new Position(ep.x, ep.y, ep.z));
 				Entity ev = scene.ee.getVehicle();
-				
-				System.out.println(scene);
-//				System.out.println(av);
-				System.out.println(ev);
-				System.out.println("");
 			}
 			
 			

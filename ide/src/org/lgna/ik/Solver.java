@@ -112,16 +112,16 @@ public class Solver {
 			if(chain.isLinearVelocityEnabled()) {
 				//give this to a constraint set, together with the desired velocity (chain has it). 
 				constraints.add(new Constraint(chain.getLinearVelocityContributions(), chain.getDesiredEndEffectorLinearVelocity()));
-				System.out.println("lin");
+//				System.out.println("lin");
 			} else {
-				System.out.println("nolin");
+//				System.out.println("nolin");
 			}
 			if(chain.isAngularVelocityEnabled()) {
 				//give this to a constraint set, together with the desired velocity.
 				constraints.add(new Constraint(chain.getAngularVelocityContributions(), chain.getDesiredEndEffectorAngularVelocity()));
-				System.out.println("ang");
+//				System.out.println("ang");
 			} else {
-				System.out.println("noang");
+//				System.out.println("noang");
 			}
 		}
 	}
@@ -165,7 +165,7 @@ public class Solver {
 	}
 	private Jama.Matrix invertJacobian(double sThreshold) {
 		Jama.Matrix j = createJacobianMatrix(this.jacobianColumns);
-		System.out.println("jacobian " + j.getRowDimension() + "x" + j.getColumnDimension());
+//		System.out.println("jacobian " + j.getRowDimension() + "x" + j.getColumnDimension());
 		Jama.Matrix ji = svdInvert(j, sThreshold);
 
 		// TODO also do any optimizations (don't move too fast, etc)
@@ -240,7 +240,7 @@ public class Solver {
 		assert(s.getRowDimension() == s.getColumnDimension());
 		for(int i = 0; i < s.getRowDimension(); ++i) {
 			if(s.get(i, i) < threshold) {
-				System.out.printf("A value in S was lower than threshold %f < %f. Correcting.\n", s.get(i, i), threshold);
+//				System.out.printf("A value in S was lower than threshold %f < %f. Correcting.\n", s.get(i, i), threshold);
 				s.set(i, i, 0.0);
 				assert threshold > 0.0;
 			} else {
