@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,55 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.properties;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.story.implementation.TextModelImp;
+package org.alice.stageide.croquet.models.declaration;
 
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class TextValuePropertyAdapter extends AbstractPropertyAdapter<String, TextModelImp> {
-
-	
-	public TextValuePropertyAdapter(TextModelImp instance, StandardExpressionState expressionState) 
-	{
-		super("Text", instance, expressionState);
+public class TextModelFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+	private static class SingletonHolder {
+		private static TextModelFieldDeclarationOperation instance = new TextModelFieldDeclarationOperation();
 	}
-	
-
+	public static TextModelFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private TextModelFieldDeclarationOperation() {
+		super( 
+				java.util.UUID.fromString( "d22b663b-966a-4a8e-a2ef-ca43523b4c1e" ), 
+				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TextModel.class ), false, 
+				false, false, 
+				"", true, 
+				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.TextModel.class ), false 
+		);
+	}
 	@Override
-	public void setValue(String value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			this.instance.setValue(value);
-		}
+	protected org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel( this );
 	}
-
 	@Override
-	public Class<String> getPropertyType() 
-	{
-		return String.class;
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		return rv;
 	}
-
-	@Override
-	public String getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getValue();
-		}
-		return null;
-	}
-	
-	@Override
-	public String getValueCopyIfMutable() 
-	{
-		return new String(this.getValue());
-	}
-
 }
