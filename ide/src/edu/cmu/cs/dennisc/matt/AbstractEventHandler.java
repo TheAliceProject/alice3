@@ -15,6 +15,7 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 	protected Integer count = 0;
 	protected Map<Object, MultipleEventPolicy> policyMap = Collections.newHashMap();
 	protected Map<Object, HashMap< Object, Boolean >> isFiringMap = Collections.newHashMap();
+	protected EventRecorder recorder = EventRecorder.getSingleton();
 
 	protected void fireEvent(final L listener, final E event, final Object o){
 		if(isFiringMap.get(listener) == null){
@@ -27,6 +28,7 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 			Thread thread = new Thread(){
 				@Override
 				public void run(){
+					recorder.recordEvent(event);
 					fire(listener, event);
 					if(policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)){
 						fireDequeue(listener, event);

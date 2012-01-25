@@ -42,10 +42,20 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import java.util.Map;
+
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.Statement;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
+
 /**
  * @author Dennis Cosgrove
  */
 public class StatisticsOperation extends org.lgna.croquet.InformationDialogOperation {
+	
+	private Map<String, Integer> expressionStatementMap = Collections.newHashMap();
+	
 	private static class SingletonHolder {
 		private static StatisticsOperation instance = new StatisticsOperation();
 	}
@@ -61,11 +71,21 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
 		if( programType != null ) {
 			class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-				private java.util.Map< Class<? extends org.lgna.project.ast.Statement>, Integer > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap(); 
+				private java.util.Map< Class<? extends org.lgna.project.ast.Statement>, Integer > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+				
 				public void visit(edu.cmu.cs.dennisc.pattern.Crawlable crawlable) {
 					if( crawlable instanceof org.lgna.project.ast.Statement ) {
 						org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
 						Class<? extends org.lgna.project.ast.Statement> cls = statement.getClass();
+//						if(cls.equals(org.lgna.project.ast.ExpressionStatement.class)){
+//							String statementName = statement.getInstancePropertyNamed(name);
+//							
+//							if(expressionStatementMap.get(statementName) != null) {
+//								System.out.println(statementName);
+//								expressionStatementMap.put(statementName, expressionStatementMap.get(statementName) + 1);
+//							}
+//							expressionStatementMap.put(statementName, 1);
+//						}
 						Integer count = this.map.get( cls );
 						if( count != null ) {
 							count += 1;
@@ -111,6 +131,13 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 					sb.append( ": " );
 					sb.append( count );
 					sb.append( "<br>" );
+					if( cls.equals(org.lgna.project.ast.ExpressionStatement.class) ){
+						for(String str: expressionStatementMap.keySet()){
+							sb.append(str);
+							sb.append( ": ");
+							sb.append( expressionStatementMap.get(str));
+						}
+					}
 				}
 			}
 			sb.append( "</html>" );
