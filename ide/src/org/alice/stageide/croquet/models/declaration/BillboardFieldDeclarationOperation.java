@@ -53,7 +53,7 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 	public static BillboardFieldDeclarationOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private String frontPaintLabelText;
+	private String paintLabelText;
 	private String backPaintLabelText;
 	private BillboardFieldDeclarationOperation() {
 		super( 
@@ -67,24 +67,17 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 	@Override
 	protected void localize() {
 		super.localize();
-		this.frontPaintLabelText = this.findLocalizedText( "paintLabel", BillboardFieldDeclarationOperation.class );
+		this.paintLabelText = this.findLocalizedText( "paintLabel", BillboardFieldDeclarationOperation.class );
 		this.backPaintLabelText = this.findLocalizedText( "backPaintLabel", BillboardFieldDeclarationOperation.class );
 	}
 
 	public String getFrontPaintLabelText() {
-		return this.frontPaintLabelText;
+		return this.paintLabelText;
 	}
 	public String getBackPaintLabelText() {
 		return this.backPaintLabelText;
 	}
 	
-	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( org.lgna.project.ast.JavaMethod getter ) {
-		return org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( org.lgna.croquet.Application.INHERIT_GROUP, getter );
-	}
-	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( Class<?> cls, String name, Class<?>... parameterTypes ) {
-		return getStateForGetter( org.lgna.project.ast.JavaMethod.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, name, parameterTypes ) ) );
-	}
-
 	public org.alice.ide.croquet.models.ast.PropertyState getFrontPaintState() {
 		return this.getStateForGetter( org.lgna.story.Model.class, "getPaint" );
 	}

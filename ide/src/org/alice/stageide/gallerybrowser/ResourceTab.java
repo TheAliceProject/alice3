@@ -129,6 +129,7 @@ public class ResourceTab extends GalleryTab {
 				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation.getInstance().createButton() );
 				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.SphereFieldDeclarationOperation.getInstance().createButton() );
 				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.DiscFieldDeclarationOperation.getInstance().createButton() );
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation.getInstance().createButton() );
 				this.addComponent( lineEndPanel, Constraint.LINE_END );
 				//todo
 				this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
