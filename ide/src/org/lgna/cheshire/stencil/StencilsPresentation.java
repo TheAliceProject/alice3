@@ -296,7 +296,26 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				if( context.isGoodToGo() ) {
 					//pass
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( context );
+					org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
+					
+					if( context instanceof org.lgna.croquet.ItemStateContext< ? > ) {
+						org.lgna.croquet.ItemStateContext< ? > itemStateContext = (org.lgna.croquet.ItemStateContext< ? >)context;
+						org.lgna.croquet.ItemState< ? > itemState = itemStateContext.getItemState();
+
+						if( itemState instanceof org.lgna.croquet.ListSelectionState ) {
+							org.lgna.croquet.ListSelectionState listSelectionState = (org.lgna.croquet.ListSelectionState)itemState;
+
+							boolean isPrepStepDesired = false;
+							org.lgna.croquet.history.Transaction recoveryTransaction = org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( transaction.getParent(), listSelectionState, listSelectionState.getValue(), itemStateContext.getValue(), isPrepStepDesired );
+							this.insertRecoveryTransactionChapter( recoveryTransaction );
+							
+							return;
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.todo(itemState);
+						}
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( context );
+					}
 				}
 			}
 			if( chapterPage.isGoodToGo() ) {

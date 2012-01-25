@@ -64,7 +64,6 @@ public class ItemStateContext< T > implements Context {
 		state.getItemCodec().encodeValue( binaryEncoder, this.value );
 	}
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this.stateResolver );
 		this.stateResolver.retarget( retargeter );
 		this.value = retargeter.retarget( this.value );
 	}
