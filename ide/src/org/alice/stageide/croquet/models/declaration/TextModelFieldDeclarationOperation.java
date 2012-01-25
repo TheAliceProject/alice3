@@ -53,6 +53,7 @@ public class TextModelFieldDeclarationOperation extends org.alice.ide.croquet.mo
 	public static TextModelFieldDeclarationOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+	private String valueLabelText;
 	private TextModelFieldDeclarationOperation() {
 		super( 
 				java.util.UUID.fromString( "d22b663b-966a-4a8e-a2ef-ca43523b4c1e" ), 
@@ -63,12 +64,33 @@ public class TextModelFieldDeclarationOperation extends org.alice.ide.croquet.mo
 		);
 	}
 	@Override
-	protected org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
-		return new org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel( this );
+	protected void localize() {
+		super.localize();
+		this.valueLabelText = this.findLocalizedText( "valueLabel", TextModelFieldDeclarationOperation.class );
+	}
+
+	public String getValueLabelText() {
+		return this.valueLabelText;
+	}
+	
+	public org.alice.ide.croquet.models.ast.PropertyState getValueState() {
+		return this.getStateForGetter( org.lgna.story.TextModel.class, "getValue" );
 	}
 	@Override
 	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		super.customize( step, declaringType, field, rv );
+		org.alice.ide.croquet.models.ast.PropertyState valueState = this.getValueState();
+		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
+				false, field, 
+				valueState.getSetter(), 
+				valueState.getValue()
+		) );
 		return rv;
+	}
+	
+	@Override
+	protected org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		this.getValueState().setValue( new org.lgna.project.ast.StringLiteral( "" ) );
+		return new org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel( this );
 	}
 }

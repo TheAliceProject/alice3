@@ -53,6 +53,7 @@ public class TextModelImp extends SimpleModelImp {
 
 	public TextModelImp( org.lgna.story.TextModel abstraction ) {
 		this.abstraction = abstraction;
+		this.sgText.text.setValue( "" );
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgText } );
 	}
 	@Override
