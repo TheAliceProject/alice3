@@ -113,6 +113,20 @@ public class Transaction extends Node< TransactionHistory > {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
 		binaryEncoder.encode( this.completionStep );
 	}
+	@Override
+	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
+		for( PrepStep< ? > prepStep : this.prepSteps ) {
+			prepStep.appendContexts( out );
+		}
+		if( this.completionStep != null ) {
+			this.completionStep.appendContexts( out );
+		}
+	}
+	public Iterable< org.lgna.croquet.Context > getAllContexts() {
+		java.util.List< org.lgna.croquet.Context > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.appendContexts( rv );
+		return rv;
+	}
 	public <C extends org.lgna.croquet.Context> C findFirstContext( Step<?> step, Class<C> cls ) {
 		while( step != null ) {
 			for( org.lgna.croquet.Context context : step.getContexts() ) {

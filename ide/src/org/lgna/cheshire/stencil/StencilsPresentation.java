@@ -291,6 +291,14 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		if( chapter != null ) {
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			chapterPage.refreshNotes();
+			Iterable< org.lgna.croquet.Context > contexts = chapter.getAllContexts();
+			for( org.lgna.croquet.Context context : contexts ) {
+				if( context.isGoodToGo() ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( context );
+				}
+			}
 			if( chapterPage.isGoodToGo() ) {
 				java.awt.Cursor cursor = java.awt.Cursor.getDefaultCursor();
 				if( chapterPage.isStencilRenderingDesired() ) {

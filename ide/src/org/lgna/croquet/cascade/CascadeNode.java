@@ -66,4 +66,8 @@ public abstract class CascadeNode< P extends CascadeNode<?,?>, E extends org.lgn
 	public E getElement() {
 		return this.elementResolver != null ? this.elementResolver.getResolved() : null;
 	}
+	@Override
+	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "?" );
+	}
 }

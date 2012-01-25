@@ -60,6 +60,9 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 	/*package-private*/ void setParent( P parent ) {
 		this.parent = parent;
 	}
+
+	protected abstract void appendContexts( java.util.List< org.lgna.croquet.Context > out );
+	
 	private <N extends Node<?>> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
 		Node<?> rv;
 		if( isThisIncludedInSearch ) {

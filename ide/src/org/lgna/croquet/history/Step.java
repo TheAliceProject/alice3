@@ -91,6 +91,10 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		binaryEncoder.encode( contexts );
 	}
 
+	@Override
+	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
+		out.addAll( this.contexts );
+	}
 	/*package-private*/ Iterable<org.lgna.croquet.Context> getContexts() {
 		return this.contexts;
 	}
