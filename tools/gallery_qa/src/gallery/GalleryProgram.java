@@ -41,63 +41,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package gallery;
+
+import org.lgna.story.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractType< ?,?,? > > {
-	private static class CompositeIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DefaultCompositeIcon {
-		public CompositeIcon( javax.swing.ImageIcon imageIcon ) {
-			super( 
-					org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE,
-					imageIcon,
-					org.alice.ide.icons.Icons.FOLDER_FRONT_ICON_LARGE 
-			);
-		}
-	}
-	private final javax.swing.Icon largeIcon;
-	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( id, type );
-		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-		String path = "images/" + cls.getName().replace( ".", "/" ) + ".png";
-		javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( path ) );
-		if( imageIcon != null ) {
-			this.largeIcon = new CompositeIcon(imageIcon);
-		} else {
-			this.largeIcon = org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
-		}
-	}
-	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
-	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
-		return this.getDeclarationChildren( apiConfigurationManager );
-	}
-	@Override
-	public int getChildCount() {
-		return this.getDeclarationChildren().size();
-	}
-	@Override
-	public GalleryNode getChild( int index ) {
-		return getDeclarationNodeInstance( this.getDeclarationChildren().get( index ) );
-	}
-	@Override
-	public int getIndexOfChild( GalleryNode child ) {
-		return this.getDeclarationChildren().indexOf( ((DeclarationGalleryNode<?>)child).getDeclaration() );
-	}
-	@Override
-	public javax.swing.Icon getSmallIcon() {
-		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
-	}
-	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return this.largeIcon;
-	}
+public class GalleryProgram extends Program {
+	private final Camera camera = new Camera();
+	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
+	private final Sphere target = new Sphere();
+	private final GalleryScene scene = new GalleryScene( camera, ogre, target );
+	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
+	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
 
-	@Override
-	protected void appendClassName( java.lang.StringBuilder sb ) {
-		String name = this.getDeclaration().getName();
-		sb.append( "My" );
-		sb.append( name.replace( "Resource", "" ) );
+	private void initializeTest() {
+		this.setActiveScene( this.scene );
+		this.modelManipulationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
+		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
+		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
+		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
+	}
+	public static void main( String[] args ) {
+		GalleryApplication app = new GalleryApplication();
+		app.initialize( args );
+		app.setPerspective( new gallery.croquet.GalleryPerspective() );
+		GalleryProgram program = new GalleryProgram();
+
+		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
+		program.initializeTest();
+
+		app.getFrame().setSize( 1200, 800 );
+		app.getFrame().setVisible( true );
 	}
 }
