@@ -76,6 +76,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	};
 
 	private final org.alice.ide.stencils.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
+			IDE.this.updateEnabled( nextValue );
+		}
+	};
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -93,16 +100,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueListener( this.isAlwaysShowingBlocksListener );
 
-		this.getRunOperation().setEnabled( false );
-		this.addProjectObserver( new ProjectObserver() {
-			public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
-			}
-			public void projectOpened( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
-				getRunOperation().setEnabled( nextProject != null );
-			}
-		} );
+		org.alice.ide.project.ProjectState.getInstance().addAndInvokeValueListener( this.projectListener );
 		
 		this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
+	}
+	
+	protected void updateEnabled( org.lgna.project.Project project ) {
+		getRunOperation().setEnabled( project != null );
 	}
 
 	public abstract ApiConfigurationManager getApiConfigurationManager();

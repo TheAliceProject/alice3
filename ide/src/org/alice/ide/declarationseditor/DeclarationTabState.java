@@ -91,10 +91,10 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		}
 	};
 	
-	private final org.alice.ide.ProjectApplication.ProjectObserver projectListener = new org.alice.ide.ProjectApplication.ProjectObserver() {
-		public void projectOpening(org.lgna.project.Project previousProject, org.lgna.project.Project nextProject) {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
 		}
-		public void projectOpened(org.lgna.project.Project previousProject, org.lgna.project.Project nextProject) {
+		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
 			DeclarationTabState.this.clear();
 		}
 	};
@@ -104,7 +104,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
 		TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueListener( this.isEmphasizingClassesListener );
-		org.alice.ide.ProjectApplication.getActiveInstance().addProjectObserver( this.projectListener );
+		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
 	}
 	private void refresh() {
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
