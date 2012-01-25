@@ -371,10 +371,16 @@ public class SetUpMethodGenerator {
 					for (org.alice.stageide.ast.JointedTypeInfo jointInfo : jointedTypeInfos) {
 						for (org.lgna.project.ast.AbstractMethod jointGetter : jointInfo.getJointGetters()) {
 							org.lgna.project.ast.Expression getJointExpression = new org.lgna.project.ast.MethodInvocation(new org.lgna.project.ast.FieldAccess(new org.lgna.project.ast.ThisExpression(), field), jointGetter);
-							Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(
-									sceneInstance, 
-									new org.lgna.project.ast.Expression[] { getJointExpression }
-							);
+							Object[] values;
+							try {
+								values = sceneInstance.getVM().ENTRY_POINT_evaluate(
+										sceneInstance, 
+										new org.lgna.project.ast.Expression[] { getJointExpression }
+								);
+							} catch( RuntimeException re ) {
+								edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( re, jointGetter );
+								values = new Object[ 0 ];
+							}
 							for (Object o : values) {
 								if (o instanceof org.lgna.story.Joint) {
 									org.lgna.story.Joint jointEntity = (org.lgna.story.Joint)o;
