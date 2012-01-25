@@ -59,13 +59,13 @@ public class TextModel extends Model {
 	public void setValue( String text ) {
 		this.implementation.setValue( text );
 	}
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	public Font getFont() {
-		return new Font( this.implementation.getFont() );
-	}
-	public void setFont( Font font ) {
-		this.implementation.setFont( font.getAsAWTFont() );
-	}
+//	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+//	public Font getFont() {
+//		return new Font( this.implementation.getFont() );
+//	}
+//	public void setFont( Font font ) {
+//		this.implementation.setFont( font.getAsAWTFont() );
+//	}
 	
 	public void append( Object value ) {
 		this.implementation.append( value );
