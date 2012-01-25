@@ -223,13 +223,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 				m = this.rootJointImp.getLocalTransformation();
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 			}
-			m.orientation.setIdentity();
-			m.orientation.right.x = scale.x;
-			m.orientation.up.y = scale.y;
-			m.orientation.backward.z = scale.z;
-			m.translation.x *= scale.x;
-			m.translation.y *= scale.y;
-			m.translation.z *= scale.z;
+			edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( m, scale );
 			this.rootJointImp.setLocalTransformation( m );
 			this.bogusPropertyForScale.setValue( null );
 		} else {

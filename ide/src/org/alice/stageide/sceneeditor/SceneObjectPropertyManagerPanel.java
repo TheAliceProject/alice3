@@ -89,7 +89,7 @@ import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.ModelImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.SphereImp;
-import org.lgna.story.implementation.TextImp;
+import org.lgna.story.implementation.TextModelImp;
 import org.lgna.story.resources.JointedModelResource;
 
 
@@ -284,16 +284,16 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			}
 			else if (setter.getName().equalsIgnoreCase("setFont"))
 			{
-				if (entityImp instanceof TextImp)
+				if (entityImp instanceof TextModelImp)
 				{
-					return new TextFontPropertyAdapter((TextImp)entityImp, state);
+					return new TextFontPropertyAdapter((TextModelImp)entityImp, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setValue"))
 			{
-				if (entityImp instanceof TextImp)
+				if (entityImp instanceof TextModelImp)
 				{
-					return new TextValuePropertyAdapter((TextImp)entityImp, state);
+					return new TextValuePropertyAdapter((TextModelImp)entityImp, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setRadius"))
