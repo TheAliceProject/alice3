@@ -47,6 +47,9 @@ package org.alice.stageide.program;
  * @author Dennis Cosgrove
  */
 public class RunProgramContext extends ProgramContext {
+	public RunProgramContext() {
+		super( getUpToDateProgramTypeFromActiveIde() );
+	}
 	public void initializeInContainer( java.awt.Container container ) {
 		this.disableRendering();
 		this.getProgramImp().initializeInAwtContainer( container );

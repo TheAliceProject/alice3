@@ -47,7 +47,7 @@ package org.alice.stageide.program;
  * @author Dennis Cosgrove
  */
 public abstract class ProgramContext {
-	private static org.lgna.project.ast.NamedUserType getUpToDateProgramType() {
+	protected static org.lgna.project.ast.NamedUserType getUpToDateProgramTypeFromActiveIde() {
 		final org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
 		if( ide != null ) {
 			return ide.getUpToDateProgramType();
@@ -59,20 +59,15 @@ public abstract class ProgramContext {
 	private final org.lgna.project.virtualmachine.UserInstance programInstance;
 	private final org.lgna.project.virtualmachine.VirtualMachine vm;
 
-	public ProgramContext() {
+	public ProgramContext( org.lgna.project.ast.NamedUserType programType ) {
+		assert programType != null;
 		this.vm = this.createVirtualMachine();
 		this.vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.story.event.MouseButtonAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
-		//String[] args = {};
-		final org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
-		if( ide != null ) {
-			org.lgna.project.ast.NamedUserType programType = getUpToDateProgramType();
-			this.programInstance = vm.ENTRY_POINT_createInstance( programType );
-		} else {
-			throw new RuntimeException();
-		}
+
+		this.programInstance = vm.ENTRY_POINT_createInstance( programType );
 	}
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachine() {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
