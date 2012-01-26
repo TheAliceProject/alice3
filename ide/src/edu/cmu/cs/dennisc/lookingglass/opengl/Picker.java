@@ -109,7 +109,6 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	}
 	/*package-protected*/ void release() {
 		if (this.drawable != null) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( "releasing", this );
 			this.drawable.removeGLEventListener( this.glEventListener );
 			this.drawable.destroy();
 			this.drawable = null;
