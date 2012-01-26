@@ -48,6 +48,7 @@ package org.alice.stageide.program;
  */
 public class VideoEncodingProgramContext extends ProgramContext {
 	public VideoEncodingProgramContext( double frameRate ) {
+		super( getUpToDateProgramTypeFromActiveIde() );
 		this.getProgramImp().setFrameRate( frameRate );
 	}
 	public void initialize( java.awt.Container container ) {

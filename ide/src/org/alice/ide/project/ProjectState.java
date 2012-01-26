@@ -40,68 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+
+package org.alice.ide.project;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegraph.Scalable > {
-	private final double[] matrix = { 1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,0,1 };
-	private final java.nio.DoubleBuffer matrixBuffer = java.nio.DoubleBuffer.wrap( matrix );
-	private boolean isIdentity = true;
-	@Override
-	public void renderOpaque( RenderContext rc ) {
-		if( this.isIdentity ) {
-			super.renderOpaque( rc );
-		} else {
-			rc.gl.glPushMatrix();
-			try {
-				rc.gl.glMultMatrixd( matrixBuffer );
-				super.renderOpaque( rc );
-			} finally {
-				rc.gl.glPopMatrix();
-			}
-		}
+public class ProjectState extends org.lgna.croquet.ItemState< org.lgna.project.Project > {
+	private static class SingletonHolder {
+		private static ProjectState instance = new ProjectState();
+	}
+	public static ProjectState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private org.lgna.project.Project value;
+	private ProjectState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), null, org.alice.ide.project.codecs.ProjectCodec.SINGLETON );
 	}
 	@Override
-	public void renderGhost( RenderContext rc, GhostAdapter root ) {
-		if( this.isIdentity ) {
-			super.renderGhost( rc, root );
-		} else {
-			rc.gl.glPushMatrix();
-			try {
-				rc.gl.glMultMatrixd( matrixBuffer );
-				super.renderGhost( rc, root );
-			} finally {
-				rc.gl.glPopMatrix();
-			}
-		}
+	protected void localize() {
 	}
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		if( this.isIdentity ) {
-			super.pick( pc, pickParameters, conformanceTestResults );
-		} else {
-			pc.gl.glPushMatrix();
-			try {
-				pc.gl.glMultMatrixd( matrixBuffer );
-				super.pick( pc, pickParameters, conformanceTestResults );
-			} finally {
-				pc.gl.glPopMatrix();
-			}
-		}
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		return rv;
 	}
-	
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.scale ) {
-			edu.cmu.cs.dennisc.math.Dimension3 scale = m_element.scale.getValue();
-			this.isIdentity = scale.x == 1.0 && scale.y == 1.0 && scale.z == 1.0;
-			this.matrix[ 0 ] = scale.x;
-			this.matrix[ 5 ] = scale.y;
-			this.matrix[ 10 ] = scale.z;
-		} else {
-			super.propertyChanged( property );
-		}
+	protected void updateSwingModel( org.lgna.project.Project nextValue ) {
+		this.value = nextValue;
+	}
+	@Override
+	protected org.lgna.project.Project getActualValue() {
+		return this.value;
+	}
+	@Override
+	protected void commitStateEdit( org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 	}
 }

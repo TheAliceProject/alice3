@@ -100,7 +100,11 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	}
 	public void startListening( javax.media.opengl.GLAutoDrawable drawable ) {
 		if( this.isListening ) {
-			assert drawable == this.drawable;
+			if( drawable == this.drawable ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( drawable, this.drawable );
+			}
 			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "request GLEventAdapter.startListening( drawable ) ignored; already listening." );
 		} else {
 			this.isListening = true;
@@ -109,7 +113,11 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 	}
 	public void stopListening( javax.media.opengl.GLAutoDrawable drawable ) {
-		assert drawable == this.drawable;
+		if( drawable == this.drawable ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( drawable, this.drawable );
+		}
 		if( this.isListening ) {
 			this.isListening = false;
 			drawable.removeGLEventListener( this );
