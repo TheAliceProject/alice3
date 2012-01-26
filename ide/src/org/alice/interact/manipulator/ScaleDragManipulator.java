@@ -110,11 +110,11 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 	@Override
 	protected void updateBasedOnHandlePull( double initialPull, double newPull ) 
 	{
-		double pullDif = (newPull) / (initialPull);
+		double pullDif = newPull - initialPull;
 		LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
 		Dimension3 scaleVector;
 		if( scaleHandle.applyAlongAxis() ) {
-			scaleVector = new Dimension3( 1.0d, 1.0d, 1.0d );
+			scaleVector = new Dimension3( 0.0d, 0.0d, 0.0d );
 			if( scaleHandle.getDragAxis().x != 0.0d )
 				scaleVector.x = Math.abs( scaleHandle.getDragAxis().x ) * pullDif;
 			if( scaleHandle.getDragAxis().y != 0.0d )
@@ -127,11 +127,11 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 
 		//Don't scale if the handles are pulled past their origin
 		if( newPull <= MIN_HANDLE_PULL ) {
-			scaleVector = new Dimension3( 1.0d, 1.0d, 1.0d );
+			scaleVector = new Dimension3( 0.0d, 0.0d, 0.0d );
 		}
-//		scaleVector.x += this.initialScale.x;
-//		scaleVector.y += this.initialScale.y;
-//		scaleVector.z += this.initialScale.z;
+		scaleVector.x += this.initialScale.x;
+		scaleVector.y += this.initialScale.y;
+		scaleVector.z = this.initialScale.z;
 		//Now apply the new scale
 		accumulatedScaleVector.set(scaleVector);
 		
