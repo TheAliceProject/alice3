@@ -1000,7 +1000,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 
 	
 // ######### Begin implementation of org.lgna.croquet.DropReceptor
-	public org.lgna.croquet.resolvers.RetargetableResolver<StorytellingSceneEditor> getResolver() {
+	public org.lgna.croquet.resolvers.Resolver<StorytellingSceneEditor> getResolver() {
 		return new org.lgna.croquet.resolvers.SingletonResolver<StorytellingSceneEditor>(this);
 	}
 

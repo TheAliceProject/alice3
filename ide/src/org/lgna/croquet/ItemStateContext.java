@@ -47,7 +47,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class ItemStateContext< T > implements Context {
-	private final org.lgna.croquet.resolvers.RetargetableResolver< ItemState< T > > stateResolver;
+	private final org.lgna.croquet.resolvers.Resolver< ItemState< T > > stateResolver;
 	private T value;
 	public ItemStateContext( ItemState< T > state ) {
 		this.stateResolver = state.getResolver();

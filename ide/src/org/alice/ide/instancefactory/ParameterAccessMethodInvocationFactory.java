@@ -65,7 +65,7 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
 		this.parameter = parameter;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.RetargetableResolver< ParameterAccessMethodInvocationFactory > createResolver() {
+	protected org.lgna.croquet.resolvers.Resolver< ParameterAccessMethodInvocationFactory > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterAccessMethodInvocationFactory >( 
 				this,
 				new org.lgna.project.ast.Node[] { this.parameter, this.getMethod() }, 

@@ -65,7 +65,7 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		this.field = field;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.RetargetableResolver< ThisFieldAccessFactory > createResolver() {
+	protected org.lgna.croquet.resolvers.Resolver< ThisFieldAccessFactory > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisFieldAccessFactory >( this, this.field, org.lgna.project.ast.UserField.class );
 	}
 	public org.lgna.project.ast.UserField getField() {

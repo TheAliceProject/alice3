@@ -63,7 +63,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	}
 
 	@Override
-	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.RetargetableResolver< M > createResolver() {
+	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.Resolver< M > createResolver() {
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
 	}
 }

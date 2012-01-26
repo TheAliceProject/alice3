@@ -157,7 +157,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.
 		this.setDragReceptorState( DragReceptorState.IDLE );
 	}
 	
-	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.RetargetableResolver< org.lgna.croquet.DropReceptor > getResolver() {
+	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.Resolver< org.lgna.croquet.DropReceptor > getResolver() {
 		return new org.lgna.croquet.resolvers.SingletonResolver( this );
 	}
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {

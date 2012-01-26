@@ -54,8 +54,8 @@ public abstract class Element {
 		}
 	}
 	
-	protected static abstract class IndirectResolver<D extends Element, I extends Element> implements org.lgna.croquet.resolvers.RetargetableResolver< D > {
-		private final org.lgna.croquet.resolvers.RetargetableResolver<I> resolver;
+	protected static abstract class IndirectResolver<D extends Element, I extends Element> implements org.lgna.croquet.resolvers.Resolver< D > {
+		private final org.lgna.croquet.resolvers.Resolver<I> resolver;
 		public IndirectResolver( I indirect ) {
 			this.resolver = indirect.getResolver();
 		}
@@ -76,7 +76,7 @@ public abstract class Element {
 
 	
 	private final java.util.UUID migrationId;
-	private org.lgna.croquet.resolvers.RetargetableResolver<Element> resolver;
+	private org.lgna.croquet.resolvers.Resolver<Element> resolver;
 	public Element( java.util.UUID migrationId ) {
 		this.migrationId = migrationId;
 		if( map != null ) {
@@ -236,16 +236,16 @@ public abstract class Element {
 	protected abstract void localize();
 	
 //	protected abstract <M extends Model> org.lgna.croquet.resolvers.RetargetableResolver< M > createResolver();
-	protected <M extends Element> org.lgna.croquet.resolvers.RetargetableResolver< M > createResolver() {
+	protected <M extends Element> org.lgna.croquet.resolvers.Resolver< M > createResolver() {
 		return new org.lgna.croquet.resolvers.SingletonResolver( this );
 	}
-	public <M extends Element> org.lgna.croquet.resolvers.RetargetableResolver< M > getResolver() {
+	public <M extends Element> org.lgna.croquet.resolvers.Resolver< M > getResolver() {
 		if( this.resolver != null ) {
 			//pass
 		} else {
 			this.resolver = this.createResolver();
 		}
-		return (org.lgna.croquet.resolvers.RetargetableResolver< M >)this.resolver;
+		return (org.lgna.croquet.resolvers.Resolver< M >)this.resolver;
 	}
 	
 	protected StringBuilder appendRepr( StringBuilder rv ) {

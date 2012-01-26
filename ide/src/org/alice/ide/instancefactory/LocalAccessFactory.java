@@ -65,7 +65,7 @@ public class LocalAccessFactory extends AbstractInstanceFactory {
 		this.local = local;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.RetargetableResolver< LocalAccessFactory > createResolver() {
+	protected org.lgna.croquet.resolvers.Resolver< LocalAccessFactory > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAccessFactory >( this, this.local, org.lgna.project.ast.UserLocal.class );
 	}
 	public org.lgna.project.ast.UserLocal getLocal() {

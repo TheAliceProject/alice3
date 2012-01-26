@@ -46,7 +46,7 @@ package org.lgna.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public final class SingletonResolver<T> implements RetargetableResolver< T > {
+public final class SingletonResolver<T> implements Resolver< T > {
 	private final T instance;
 	public SingletonResolver( T instance ) {
 		this.instance = instance;

@@ -211,6 +211,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );
 
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() );
+
 		presentation.setVisible( true );
 		this.getFrame().setVisible( true );
 		
@@ -294,7 +296,6 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( false );
 		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( true );
 
-		
 		try {
 			if (IS_ENCODING) {
 				originalProject = null;

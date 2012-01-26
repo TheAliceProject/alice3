@@ -54,12 +54,12 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 		return new org.lgna.project.ast.ThisExpression();
 	}
 	private final edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] mutablePropertiesOfInterest;
-	private org.lgna.croquet.resolvers.RetargetableResolver resolver;
+	private org.lgna.croquet.resolvers.Resolver resolver;
 	public AbstractInstanceFactory( edu.cmu.cs.dennisc.property.InstanceProperty< ? >... mutablePropertiesOfInterest ) { 
 		this.mutablePropertiesOfInterest = mutablePropertiesOfInterest;
 	}
-	protected abstract < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.RetargetableResolver< F > createResolver();
-	public final < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.RetargetableResolver< F > getResolver() {
+	protected abstract < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.Resolver< F > createResolver();
+	public final < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.Resolver< F > getResolver() {
 		if( this.resolver != null ) {
 			//pass
 		} else {

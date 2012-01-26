@@ -47,7 +47,7 @@ package org.lgna.croquet.history;
  */
 public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Transaction> {
 	private final java.util.List< org.lgna.croquet.Context > contexts;
-	private final org.lgna.croquet.resolvers.RetargetableResolver< M > modelResolver;
+	private final org.lgna.croquet.resolvers.Resolver< M > modelResolver;
 	private final org.lgna.croquet.triggers.Trigger trigger;
 	private final java.util.UUID id;
 	public Step( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {

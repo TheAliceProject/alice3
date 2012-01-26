@@ -66,7 +66,7 @@ public class InstanceFactoryStaticGetInstanceKeyedResolver<T> extends org.lgna.c
 	}
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.instancefactory.InstanceFactory > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		org.lgna.croquet.resolvers.Resolver< org.alice.ide.instancefactory.InstanceFactory > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		return new Object[] { resolver.getResolved() };
 	}
 	@Override

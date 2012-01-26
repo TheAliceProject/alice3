@@ -46,6 +46,7 @@ package org.lgna.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public interface CodableResolver<T> extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public interface Resolver<T> extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public T getResolved();
+	public void retarget( org.lgna.croquet.Retargeter retargeter );
 }

@@ -52,7 +52,7 @@ public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec< org.alice
 		return org.alice.ide.perspectives.IdePerspective.class;
 	}
 	public org.alice.ide.perspectives.IdePerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.perspectives.IdePerspective > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		org.lgna.croquet.resolvers.Resolver< org.alice.ide.perspectives.IdePerspective > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		return resolver.getResolved();
 	}
 	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.IdePerspective value ) {

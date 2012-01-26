@@ -52,7 +52,7 @@ public enum InstanceFactoryCodec implements org.lgna.croquet.ItemCodec< org.alic
 		return org.alice.ide.instancefactory.InstanceFactory.class;
 	}
 	public org.alice.ide.instancefactory.InstanceFactory decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.instancefactory.InstanceFactory > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		org.lgna.croquet.resolvers.Resolver< org.alice.ide.instancefactory.InstanceFactory > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		return resolver.getResolved();
 	}
 	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.instancefactory.InstanceFactory value ) {

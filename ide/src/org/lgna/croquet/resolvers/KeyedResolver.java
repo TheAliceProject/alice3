@@ -46,7 +46,7 @@ package org.lgna.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KeyedResolver<T> implements RetargetableResolver< T > {
+public abstract class KeyedResolver<T> implements Resolver< T > {
 	//todo: rework
 	
 	//either

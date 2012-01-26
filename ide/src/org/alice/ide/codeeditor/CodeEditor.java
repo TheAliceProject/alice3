@@ -78,7 +78,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 	private final RootStatementListPropertyPane rootStatementListPropertyPane;
 
 	@Deprecated
-	public static class Resolver implements org.lgna.croquet.resolvers.RetargetableResolver< CodeEditor > {
+	public static class Resolver implements org.lgna.croquet.resolvers.Resolver< CodeEditor > {
 		private org.lgna.project.ast.AbstractCode code;
 		public Resolver( org.lgna.project.ast.AbstractCode code ) {
 			this.code = code;
@@ -142,7 +142,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 		return "Drop...";
 	}
 	
-	public org.lgna.croquet.resolvers.RetargetableResolver< CodeEditor > getResolver() {
+	public org.lgna.croquet.resolvers.Resolver< CodeEditor > getResolver() {
 		return new Resolver( this.code );
 	}
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
