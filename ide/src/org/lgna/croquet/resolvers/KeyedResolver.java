@@ -122,7 +122,15 @@ public abstract class KeyedResolver<T> implements RetargetableResolver< T > {
 			return this.resolve( this.instanceCls, this.parameterTypes, this.arguments );
 		}
 	}
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( retargeter );
+	@Deprecated
+	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove" );
+	}
+	public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		this.instance = null;
+		for( int i=0; i<this.arguments.length; i++ ) {
+			this.arguments[ i ] = retargeter.retarget( this.arguments[ i ] );
+		}
+		this.performCustomRetargeting( retargeter );
 	}
 }

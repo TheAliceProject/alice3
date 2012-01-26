@@ -70,5 +70,11 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] getMutablePropertiesOfInterest() {
 		return this.mutablePropertiesOfInterest;
 	}
-
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getRepr() );
+		return sb.toString();
+	}
 }

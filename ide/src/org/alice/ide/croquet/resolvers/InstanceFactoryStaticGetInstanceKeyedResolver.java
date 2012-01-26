@@ -58,13 +58,6 @@ public class InstanceFactoryStaticGetInstanceKeyedResolver<T> extends org.lgna.c
 	}
 
 	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		Object[] arguments = this.getArguments();
-		for( int i=0; i<arguments.length; i++ ) {
-			arguments[ i ] = retargeter.retarget( arguments[ i ] );
-		}
-	}
-	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return new Class<?>[] { org.alice.ide.instancefactory.InstanceFactory.class };
 	}

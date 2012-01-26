@@ -56,7 +56,8 @@ public class BlockStatementIndexPairAndMethodStaticGetInstanceResolver extends o
 	}
 
 	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {
+		super.performCustomRetargeting( retargeter );
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
 		assert arguments.length == 2;

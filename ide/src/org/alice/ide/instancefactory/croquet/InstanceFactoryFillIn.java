@@ -110,4 +110,11 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.instancefactory.InstanceFactory, java.lang.Void > step ) {
 		return this.value;
 	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "value=" );
+		rv.append( this.value );
+		return rv;
+	}
 }

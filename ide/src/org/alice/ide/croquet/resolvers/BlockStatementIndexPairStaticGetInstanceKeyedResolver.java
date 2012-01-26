@@ -55,14 +55,7 @@ public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends or
 	}
 	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		Object[] arguments = this.getArguments();
-		arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
-	}
-	
+	}	
 	@Override
 	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return PARAMETER_TYPES;

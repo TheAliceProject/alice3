@@ -162,7 +162,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		if( model != null ) {
 			java.util.Locale locale = null;
 			rv.append( "model=" );
-			rv.append( model.getClass().getName() );
+			rv.append( model );
 			rv.append( ";trigger=" );
 			org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
 			rv.append( trigger != null ? trigger.getNoteText( locale ) : null );

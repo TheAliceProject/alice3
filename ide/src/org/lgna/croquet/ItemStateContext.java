@@ -69,7 +69,8 @@ public class ItemStateContext< T > implements Context {
 	}
 	
 	public boolean isGoodToGo() {
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getItemState().getValue(), this.value );
+		T currentValue = this.getItemState().getValue();
+		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currentValue, this.value );
 	}
 	public ItemState< T > getItemState() {
 		return this.stateResolver.getResolved();
