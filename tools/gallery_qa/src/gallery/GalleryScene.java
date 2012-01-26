@@ -43,46 +43,75 @@
 
 package gallery;
 
+import gallery.croquet.IsVisualizationShowingState;
+
+import org.lgna.croquet.State;
 import org.lgna.story.*;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GalleryScene extends Scene {
+	
 	private final Sun sun = new Sun();
 	private final Ground snow = new Ground();
 	private final Camera camera;
-	private final Biped ogre;
-	private final Sphere target;
-	public GalleryScene( Camera camera, Biped ogre, Sphere target ) {
+	private Model model;
+	private boolean shouldShow;
+	public GalleryScene( Camera camera ) {
 		this.camera = camera;
-		this.ogre = ogre;
-		this.target = target;
+		IsVisualizationShowingState.getInstance().addValueObserver( this.isVizShowingListener );
 	}
+	
+	public void setModel(JointedModel model){
+		if( this.model != null ) {
+			this.model.setVehicle( null );
+		}
+		this.model = model;
+		if( this.model != null ) {
+			this.model.setVehicle( this );
+			updateVisualization();
+		}
+	}
+	
+	private void updateVisualization(){
+		if( this.getModel() != null ) {
+			org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.getModel() );
+			if(shouldShow){
+				impl.showVisualization();
+			}else{
+				impl.hideVisualization();
+			}
+			
+		}
+	}
+	private final State.ValueObserver<Boolean> isVizShowingListener = new State.ValueObserver<Boolean>() {
+
+		public void changing(State<Boolean> state, Boolean prevValue,
+				Boolean nextValue, boolean isAdjusting) {
+		}
+
+		public void changed(State<Boolean> state, Boolean prevValue,
+				Boolean nextValue, boolean isAdjusting) {
+			shouldShow = nextValue;
+			updateVisualization();
+		}
+		
+	};
 	
 	private void performGeneratedSetup() {
 		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
-		this.ogre.setVehicle( this );
-		this.target.setVehicle( this );
-		
-		this.ogre.place( SpatialRelation.ABOVE, this.snow );
+
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 
-		this.target.setRadius( 0.2 );
-		this.target.setPaint( Color.RED );
-		this.target.setOpacity( 0.5 );
-		
 		//camera vantage point taken care of by camera navigator
 		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
 	private void performCustomSetup() {
 		//if you want the skeleton visualization to be co-located
 		//this.ogre.setOpacity( 0.25 );
-		
-		org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.ogre );
-		impl.showVisualization();
 	}
 	
 	@Override
@@ -97,5 +126,9 @@ public class GalleryScene extends Scene {
 		} else {
 			this.restoreStateAndEventListeners();
 		}
+	}
+
+	public Model getModel() {
+		return model;
 	}
 }

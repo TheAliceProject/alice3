@@ -43,18 +43,198 @@
 
 package gallery;
 
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+
+import org.alice.ide.croquet.models.gallerybrowser.ArgumentTypeGalleryNode;
+import org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode;
+import org.alice.ide.croquet.models.gallerybrowser.GalleryNode;
+import org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState;
+import org.lgna.common.ComponentThread;
+import org.lgna.croquet.State;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
 import org.lgna.story.*;
+import org.lgna.story.implementation.BasicJointedModelImp;
+import org.lgna.story.resources.BasicResource;
+import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.FlyerResource;
+import org.lgna.story.resources.PropResource;
+import org.lgna.story.resources.QuadrupedResource;
+import org.lgna.story.resources.SwimmerResource;
+import org.lgna.story.resources.VehicleResource;
+import org.lgna.story.resources.sims2.AdultPersonResource;
+import org.lgna.story.resources.sims2.BaseEyeColor;
+import org.lgna.story.resources.sims2.BaseSkinTone;
+import org.lgna.story.resources.sims2.FullBodyOutfitManager;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.HairManager;
+import org.lgna.story.resources.sims2.IngredientManager;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.PersonResource;
+import org.lgna.story.resources.sims2.SkinTone;
+
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GalleryProgram extends Program {
 	private final Camera camera = new Camera();
-	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-	private final Sphere target = new Sphere();
-	private final GalleryScene scene = new GalleryScene( camera, ogre, target );
+	private final GalleryScene scene = new GalleryScene( camera );
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
+
+	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
+	private final State.ValueObserver<GalleryNode> galleryListener = new State.ValueObserver<GalleryNode>() {
+		public void changing(State<GalleryNode> state, GalleryNode prevValue,
+				GalleryNode nextValue, boolean isAdjusting) {
+		}
+		public void changed(State<GalleryNode> state, GalleryNode prevValue,
+				GalleryNode nextValue, boolean isAdjusting) {
+			JointedModel model;
+			if (nextValue instanceof FieldGalleryNode) {
+				FieldGalleryNode fieldGalleryNode = (FieldGalleryNode) nextValue;
+				AbstractField field = fieldGalleryNode.getDeclaration();
+				if (field instanceof JavaField) {
+					JavaField javaField = (JavaField) field;
+					Field fld = javaField.getFieldReflectionProxy().getReification();
+					try {
+						Object constant = fld.get( null );
+						if (constant instanceof BasicResource) {
+							BasicResource basicResource = (BasicResource) constant;
+							if (basicResource instanceof PropResource) {
+								PropResource propResource = (PropResource) basicResource;
+								model = new Prop( propResource );
+							}else{
+								model = null;
+							}
+						}else if (constant instanceof BipedResource) {
+							BipedResource bipedResource = (BipedResource) constant;
+							model = new Biped( bipedResource );
+						} else if (constant instanceof FlyerResource) {
+							FlyerResource flyerResource = (FlyerResource) constant;
+							model = new Flyer( flyerResource );
+						} else if (constant instanceof QuadrupedResource) {
+							QuadrupedResource quadrupedResource = (QuadrupedResource) constant;
+							model = new Quadruped( quadrupedResource );
+						} else if (constant instanceof SwimmerResource) {
+							SwimmerResource swimmerResource = (SwimmerResource) constant;
+							model = new Swimmer( swimmerResource );
+						} else if (constant instanceof VehicleResource) {
+							VehicleResource vehicleResource = (VehicleResource) constant;
+							model = new Vehicle( vehicleResource );
+						} else {
+							model = null;
+						}
+					} catch (IllegalArgumentException e) {
+						throw new RuntimeException( e );
+					} catch (IllegalAccessException e) {
+						throw new RuntimeException( e );
+					}
+				} else {
+					model = null;
+				}
+			} else if( nextValue instanceof ArgumentTypeGalleryNode) {
+				ArgumentTypeGalleryNode argumentTypeGalleryNode = (ArgumentTypeGalleryNode) nextValue;
+				AbstractType<?,?,?> type = argumentTypeGalleryNode.getDeclaration();
+				if (type instanceof JavaType) {
+					JavaType javaType = (JavaType) type;
+					if( javaType.isAssignableTo( PersonResource.class ) ) {
+						LifeStage lifeStage = LifeStage.ADULT;
+						Gender gender = Gender.getRandom();
+						model = new Biped( new AdultPersonResource(
+								gender, 
+								BaseSkinTone.getRandom(), 
+								BaseEyeColor.getRandom(), 
+								HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender),
+								0.5,
+								FullBodyOutfitManager.getSingleton().getRandomEnumConstant(lifeStage, gender)
+						) );
+					} else {
+						model = null;
+					}
+				} else {
+					model = null;
+				}
+			} else {
+				model = null;
+			}
+			scene.setModel( model );
+			animate();
+		}
+	};
+	private void animate() {
+		Model model = scene.getModel();
+		if (model instanceof Biped) {
+			Biped biped = (Biped) model;
+			warmUp(biped);
+		}else if (model instanceof Quadruped) {
+			Quadruped quadruped = (Quadruped) model;
+			warmUp(quadruped);
+		}
+	}
+	
+	private void warmUp(Quadruped quadruped) {
+		
+	}
+
+	private void warmUp(Biped biped) {
+		final Joint leftShoulder = biped.getLeftShoulder();
+		final Joint rightShoulder = biped.getRightShoulder();
+		final Joint rightElbow = biped.getRightElbow();
+		final Joint leftElbow = biped.getLeftElbow();
+		final Joint rightHip = biped.getRightHip();
+		final Joint leftHip = biped.getLeftHip();
+		final Joint rightKnee = biped.getRightKnee();
+		final Joint leftKnee = biped.getLeftKnee();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				leftShoulder.turn(TurnDirection.BACKWARD, 0.40);
+				leftShoulder.turn(TurnDirection.FORWARD, 0.40);
+				leftShoulder.turn(TurnDirection.RIGHT, 0.25, Turn.duration(0.5));
+				leftElbow.turn(TurnDirection.RIGHT, 0.25, Turn.duration(0.5));
+				leftElbow.turn(TurnDirection.BACKWARD, 0.25);
+				leftElbow.turn(TurnDirection.FORWARD, 0.25);
+				leftElbow.turn(TurnDirection.LEFT, 0.25, Turn.duration(0.5));
+				leftShoulder.turn(TurnDirection.LEFT, 0.25, Turn.duration(0.5));
+			}
+		}, "leftArm" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				rightShoulder.turn(TurnDirection.BACKWARD, 0.40);
+				rightShoulder.turn(TurnDirection.FORWARD, 0.40);
+				rightShoulder.turn(TurnDirection.LEFT, 0.25, Turn.duration(0.5));
+				rightElbow.turn(TurnDirection.LEFT, 0.25, Turn.duration(0.5));
+				rightElbow.turn(TurnDirection.BACKWARD, 0.25);
+				rightElbow.turn(TurnDirection.FORWARD, 0.25);
+				rightElbow.turn(TurnDirection.RIGHT, 0.25, Turn.duration(0.5));
+				rightShoulder.turn(TurnDirection.RIGHT, 0.25, Turn.duration(0.5));
+			}
+		}, "rightArm" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				rightHip.turn(TurnDirection.RIGHT, 0.15);
+				rightHip.turn(TurnDirection.LEFT, 0.15);
+				rightHip.turn(TurnDirection.BACKWARD, 0.25);
+				rightKnee.turn(TurnDirection.FORWARD, 0.25);
+				rightKnee.turn(TurnDirection.BACKWARD, 0.25);
+				rightHip.turn(TurnDirection.FORWARD, 0.25);
+			}
+		}, "leftLeg" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				leftHip.turn(TurnDirection.LEFT, 0.15);
+				leftHip.turn(TurnDirection.RIGHT, 0.15);
+				leftHip.turn(TurnDirection.BACKWARD, 0.25);
+				leftKnee.turn(TurnDirection.FORWARD, 0.25);
+				leftKnee.turn(TurnDirection.BACKWARD, 0.25);
+				leftHip.turn(TurnDirection.FORWARD, 0.25);
+			}
+		}, "rightLeg" ).start();
+	}
 
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
@@ -62,8 +242,14 @@ public class GalleryProgram extends Program {
 		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
+		
+		GalleryResourceTreeSelectionState.getInstance().addValueObserver( this.galleryListener );
+		
+		Logger.todo( "remove ogre" );
+		this.scene.setModel( this.ogre );
 	}
 	public static void main( String[] args ) {
+		Logger.setLevel( Level.WARNING );
 		GalleryApplication app = new GalleryApplication();
 		app.initialize( args );
 		app.setPerspective( new gallery.croquet.GalleryPerspective() );
