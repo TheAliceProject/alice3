@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,55 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.properties;
-
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.story.implementation.TextModelImp;
+package org.lgna.story;
 
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class TextValuePropertyAdapter extends AbstractPropertyAdapter<String, TextModelImp> {
-
-	
-	public TextValuePropertyAdapter(TextModelImp instance, StandardExpressionState expressionState) 
-	{
-		super("Text", instance, expressionState);
+public class GetDistanceTo {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=GetDistanceTo.class )
+	public static interface Detail {
 	}
-	
-
-	@Override
-	public void setValue(String value) 
-	{
-		super.setValue(value);
-		if (this.instance != null)
-		{
-			this.instance.setValue(value);
-		}
+	private GetDistanceTo() {
+		super();
 	}
-
-	@Override
-	public Class<String> getPropertyType() 
-	{
-		return String.class;
-	}
-
-	@Override
-	public String getValue() 
-	{
-		if (this.instance != null)
-		{
-			return this.instance.getValue();
-		}
-		return null;
-	}
-	
-	@Override
-	public String getValueCopyIfMutable() 
-	{
-		return new String(this.getValue());
-	}
-
 }

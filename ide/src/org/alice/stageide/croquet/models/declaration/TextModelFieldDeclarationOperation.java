@@ -41,103 +41,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.implementation;
+package org.alice.stageide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextImp extends SimpleModelImp {
-	private final org.lgna.story.Text abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.Text sgText = new edu.cmu.cs.dennisc.scenegraph.Text();
-	private StringBuffer sb = new StringBuffer();
-
-	public TextImp( org.lgna.story.Text abstraction ) {
-		this.abstraction = abstraction;
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgText } );
+public class TextModelFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+	private static class SingletonHolder {
+		private static TextModelFieldDeclarationOperation instance = new TextModelFieldDeclarationOperation();
+	}
+	public static TextModelFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private String valueLabelText;
+	private TextModelFieldDeclarationOperation() {
+		super( 
+				java.util.UUID.fromString( "d22b663b-966a-4a8e-a2ef-ca43523b4c1e" ), 
+				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TextModel.class ), false, 
+				false, false, 
+				"", true, 
+				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.TextModel.class ), false 
+		);
 	}
 	@Override
-	public org.lgna.story.Text getAbstraction() {
-		return this.abstraction;
+	protected void localize() {
+		super.localize();
+		this.valueLabelText = this.findLocalizedText( "valueLabel", TextModelFieldDeclarationOperation.class );
 	}
-	private void updateSGText() {
-		this.sgText.text.setValue( this.sb.toString() );
+
+	public String getValueLabelText() {
+		return this.valueLabelText;
 	}
 	
-	public String getValue() {
-		return this.sb.toString();
+	public org.alice.ide.croquet.models.ast.PropertyState getValueState() {
+		return this.getStateForGetter( org.lgna.story.TextModel.class, "getValue" );
 	}
-	public void setValue( String text ) {
-		this.sb = new StringBuffer( text );
-		updateSGText();
-	}
-
-	public java.awt.Font getFont() {
-		return this.sgText.font.getValue();
-	}
-	public void setFont( java.awt.Font font ) {
-		this.sgText.font.setValue( font );
-	}
-
-	public void append( Object value ) {
-		this.sb.append( value );
-		this.updateSGText();
-	}
-	
-	public char charAt( int index ) {
-		return this.sb.charAt( index );
-	}
-
-	public void delete( int start, int end ) {
-		this.sb.delete( start, end );
-		this.updateSGText();
-	}
-	public void deleteCharAt( int index ) {
-		this.sb.deleteCharAt( index );
-		this.updateSGText();
-	}
-
-	public int indexOf( String s ) {
-		return this.sb.indexOf( s );
-	}
-	public int indexOf( String s, int fromIndex ) {
-		return this.sb.indexOf( s, fromIndex );
-	}
-
-	public void insert( int offset, Object value ) {
-		this.sb.append( value );
-		this.updateSGText();
-	}
-
-	public int lastIndexOf( String s ) {
-		return this.sb.lastIndexOf( s );
-	}
-	public int lastIndexOf( String s, int fromIndex ) {
-		return this.sb.lastIndexOf( s, fromIndex );
-	}
-	
-	//todo: rename length?
-	public int getLength() {
-		return this.sb.length();
-	}
-
-	public void replace( int start, int end, String s ) {
-		this.sb.replace( start, end, s );
-		this.updateSGText();
-	}
-
-	public void setCharAt( int index, Character c ) {
-		this.sb.setCharAt( index, c );
-		this.updateSGText();
-	}
-	
-//	public void setLength( int length ) {
-//		this.sb.setLength( length );
-//		updateSGText();
-//	}
-
 	@Override
-	protected double getBoundingSphereRadius() {
-		//todo
-		return 1.0;
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		org.alice.ide.croquet.models.ast.PropertyState valueState = this.getValueState();
+		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
+				false, field, 
+				valueState.getSetter(), 
+				valueState.getValue()
+		) );
+		return rv;
+	}
+	
+	@Override
+	protected org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		this.getValueState().setValue( new org.lgna.project.ast.StringLiteral( "" ) );
+		return new org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel( this );
 	}
 }

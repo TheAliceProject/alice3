@@ -105,4 +105,9 @@ public abstract class Turnable extends Entity {
 	public void setOrientationRelativeToVehicle( Orientation position ) {
 		this.getImplementation().setLocalOrientation( position.getInternal() );
 	}
+	
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public Double getDistanceTo( Turnable other, GetDistanceTo.Detail... details ) {
+		return this.getImplementation().getDistanceTo( other.getImplementation() );
+	}
 }
