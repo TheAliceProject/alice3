@@ -54,7 +54,6 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 		if( this.isIdentity ) {
 			super.renderOpaque( rc );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( matrix[ 0 ], matrix[ 5 ], matrix[ 10 ] );
 			rc.gl.glPushMatrix();
 			try {
 				rc.gl.glMultMatrixd( matrixBuffer );
