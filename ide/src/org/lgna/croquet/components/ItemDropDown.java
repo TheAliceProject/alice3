@@ -46,16 +46,18 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState< T >> extends DropDown< M > {
-	public ItemDropDown( M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
-		super( model, prefixComponent, mainComponent, postfixComponent );
+public abstract class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState< T >> extends DropDown< org.lgna.croquet.PopupPrepModel > {
+	private final M state;
+	public ItemDropDown( M state, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
+		super( state.getCascadeRoot().getPopupPrepModel(), prefixComponent, mainComponent, postfixComponent );
+		this.state = state;
 	}
 	public ItemDropDown( M model ) {
 		this( model, null, null, null );
 	}
 	@Override
 	protected javax.swing.Action getAction() {
-		return this.getModel().getCascadeRoot().getPopupPrepModel().getAction();
+		return this.getModel().getAction();
 	}
 
 	private final org.lgna.croquet.State.ValueListener< T > valueObserver = new org.lgna.croquet.State.ValueListener< T >() {
@@ -69,12 +71,12 @@ public abstract class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState
 	protected abstract void handleChanged( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		this.getModel().addAndInvokeValueListener( this.valueObserver );
+		this.state.addAndInvokeValueListener( this.valueObserver );
 		super.handleAddedTo( parent );
 	}
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleRemovedFrom( parent );
-		this.getModel().removeValueListener( this.valueObserver );
+		this.state.removeValueListener( this.valueObserver );
 	}
 }
