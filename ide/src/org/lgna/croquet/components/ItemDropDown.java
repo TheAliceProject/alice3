@@ -46,13 +46,11 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState< T >> extends DropDown< org.lgna.croquet.PopupPrepModel > {
-	private final M state;
-	public ItemDropDown( M state, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
+public abstract class ItemDropDown<T, CM extends org.lgna.croquet.CustomItemState< T >> extends DropDown< org.lgna.croquet.Cascade.InternalRoot.InternalPopupPrepModel< T > > {
+	public ItemDropDown( CM state, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
 		super( state.getCascadeRoot().getPopupPrepModel(), prefixComponent, mainComponent, postfixComponent );
-		this.state = state;
 	}
-	public ItemDropDown( M model ) {
+	public ItemDropDown( CM model ) {
 		this( model, null, null, null );
 	}
 	@Override
@@ -69,14 +67,19 @@ public abstract class ItemDropDown<T, M extends org.lgna.croquet.CustomItemState
 	};
 
 	protected abstract void handleChanged( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting );
+	private org.lgna.croquet.CustomItemState< T > getState() {
+		org.lgna.croquet.Cascade.InternalRoot.InternalPopupPrepModel< T > model = this.getModel();
+		org.lgna.croquet.CustomItemState.InternalRoot<T> root = (org.lgna.croquet.CustomItemState.InternalRoot<T>)model.getCascadeRoot();
+		return root.getCompletionModel();
+	}
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
-		this.state.addAndInvokeValueListener( this.valueObserver );
+		this.getState().addAndInvokeValueListener( this.valueObserver );
 		super.handleAddedTo( parent );
 	}
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleRemovedFrom( parent );
-		this.state.removeValueListener( this.valueObserver );
+		this.getState().removeValueListener( this.valueObserver );
 	}
 }
