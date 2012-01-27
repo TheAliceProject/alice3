@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop;
 /**
  * @author Dennis Cosgrove
  */
-public final class BlockStatementIndexPair implements org.lgna.croquet.RetargetableDropSite {
+public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite {
 	private final org.lgna.project.ast.BlockStatement blockStatement;
 	private final int index;
 	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {

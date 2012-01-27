@@ -75,10 +75,7 @@ public class DropTrigger extends MouseEventTrigger {
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		this.dropReceptorResolver.retarget( retargeter );
-		if( this.dropSite instanceof org.lgna.croquet.RetargetableDropSite ) {
-			org.lgna.croquet.RetargetableDropSite retargetableDropSite = (org.lgna.croquet.RetargetableDropSite)this.dropSite;
-			this.dropSite = retargetableDropSite.createReplacement( retargeter );
-		}
+		this.dropSite = this.dropSite.createReplacement( retargeter );
 	}
 	@Override
 	public String getNoteText( java.util.Locale locale ) {

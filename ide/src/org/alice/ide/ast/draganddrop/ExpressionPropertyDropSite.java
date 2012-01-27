@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropSite implements org.lgna.croquet.RetargetableDropSite {
+public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
 	public ExpressionPropertyDropSite( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		this.expressionProperty = expressionProperty;
