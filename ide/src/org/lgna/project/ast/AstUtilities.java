@@ -196,9 +196,6 @@ public class AstUtilities {
 	public static DoTogether createDoTogether() {
 		return new DoTogether( new BlockStatement() );
 	}
-	public static DoInThread createDoInThread() {
-		return new DoInThread( new BlockStatement() );
-	}
 	public static Comment createComment() {
 		return new Comment();
 	}

@@ -85,7 +85,7 @@ public class DefaultTheme implements Theme {
 		if( org.lgna.project.ast.Comment.class.isAssignableFrom( cls ) ) {
 			return color;
 		} else {
-			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.DoTogether.class, org.lgna.project.ast.EachInArrayTogether.class, org.lgna.project.ast.DoInThread.class ) ) {
+			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.DoTogether.class, org.lgna.project.ast.EachInArrayTogether.class ) ) {
 				java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
 				java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
 				return new java.awt.GradientPaint( x, y, colorA, x + 200, y, colorB );
