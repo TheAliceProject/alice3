@@ -41,13 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Context extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public boolean isGoodToGo();
-	public org.lgna.croquet.history.Transaction createRecoveryTransaction();
-	public void retarget( Retargeter retargeter );
+public final class NullResolver<T> implements Resolver< T > {
+	public NullResolver() {
+	}
+	public NullResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	public T getResolved() {
+		return null;
+	}
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+	}
 }

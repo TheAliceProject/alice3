@@ -72,6 +72,9 @@ public class ItemStateContext< T > implements Context {
 		T currentValue = this.getItemState().getValue();
 		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currentValue, this.value );
 	}
+	public org.lgna.croquet.history.Transaction createRecoveryTransaction() {
+		return org.lgna.croquet.history.Transaction.createSimulatedTransactionForState( this.getItemState(), this.value );
+	}
 	public ItemState< T > getItemState() {
 		return this.stateResolver.getResolved();
 	}

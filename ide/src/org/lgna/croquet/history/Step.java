@@ -55,15 +55,13 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		if( model != null ) {
 			this.modelResolver = model.getResolver();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-			this.modelResolver = null;
+			this.modelResolver = new org.lgna.croquet.resolvers.NullResolver< M >();
 		}
 		if( trigger != null ) {
-			//pass
+			this.trigger = trigger;
 		} else {
-			trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
+			this.trigger = new org.lgna.croquet.triggers.NullTrigger();
 		}
-		this.trigger = trigger;
 		this.id = java.util.UUID.randomUUID();
 		
 		java.util.List< org.lgna.croquet.Context > contexts = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

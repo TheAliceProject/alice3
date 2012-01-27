@@ -41,13 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Context extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public boolean isGoodToGo();
-	public org.lgna.croquet.history.Transaction createRecoveryTransaction();
-	public void retarget( Retargeter retargeter );
+public class NullTrigger extends AbstractTrigger {
+	public NullTrigger() {
+	}
+	public NullTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+		return null;
+	}
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
+	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "null";
+	}
 }

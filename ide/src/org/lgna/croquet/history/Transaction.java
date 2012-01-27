@@ -46,6 +46,21 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class Transaction extends Node< TransactionHistory > {
+	public static <T> Transaction createSimulatedTransactionForState( org.lgna.croquet.State< T > state, T value ) {
+		Transaction rv = new Transaction( (TransactionHistory)null );
+		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
+		if( state instanceof org.lgna.croquet.ListSelectionState ) {
+			org.lgna.croquet.ListSelectionState< T > listSelectionState = (org.lgna.croquet.ListSelectionState< T >)state;
+			ListSelectionStateChangeStep.createAndAddToTransaction( rv, listSelectionState, trigger );
+		} else if( state instanceof org.lgna.croquet.CustomItemState ) { 
+			org.lgna.croquet.CustomItemState< T > customItemState = (org.lgna.croquet.CustomItemState< T >)state;
+			CustomItemStateChangeStep.createAndAddToTransaction( rv, customItemState, trigger );
+		} else {
+			throw new RuntimeException();
+		}
+		return rv;
+	}
+	
 	private static class DescendantStepIterator implements java.util.Iterator< Step<?> > {
 		private final java.util.List< Transaction > transactions = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private int transactionIndex;
