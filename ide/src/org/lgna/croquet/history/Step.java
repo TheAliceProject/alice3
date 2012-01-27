@@ -114,7 +114,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		return this.id;
 	}
 	
-	/*package-private*/ Step<?> getPreviousStep() {
+	public Step<?> getPreviousStep() {
 		Transaction transaction = getParent();
 		int index = transaction.getIndexOfChildStep( this );
 		if( index > 0 ) {

@@ -45,14 +45,16 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementEdit extends org.lgna.croquet.edits.Edit {
+public class InsertStatementEdit< M extends org.lgna.croquet.CompletionModel > extends org.lgna.croquet.edits.Edit< M > {
 	public static final int AT_END = Short.MAX_VALUE;
 	private org.lgna.project.ast.BlockStatement blockStatement;
 	private org.lgna.project.ast.Statement statement;
 	private int specifiedIndex;
 	private org.lgna.project.ast.Expression[] initialExpressions;
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
+	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toBeRemovedblockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
 		super( completionStep );
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = this.findFirstDropSite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class );
+		assert blockStatementIndexPair.equals( toBeRemovedblockStatementIndexPair );
 		this.blockStatement = blockStatementIndexPair.getBlockStatement();
 		this.specifiedIndex = blockStatementIndexPair.getIndex();
 		this.statement = statement;
