@@ -71,68 +71,68 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 	}
 
 	private void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
+		getOwner().fireAdding( e );
 		if( m_listPropertyListeners != null ) {
 			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > l : m_listPropertyListeners ) {
 				l.adding( e );
 			}
 		}
-		getOwner().fireAdding( e );
 	}
 	private void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
+		getOwner().fireAdded( e );
 		if( m_listPropertyListeners != null ) {
 			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > l : m_listPropertyListeners ) {
 				l.added( e );
 			}
 		}
-		getOwner().fireAdded( e );
 	}
 	private void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
+		getOwner().fireClearing( e );
 		if( m_listPropertyListeners != null ) {
 			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > l : m_listPropertyListeners ) {
 				l.clearing( e );
 			}
 		}
-		getOwner().fireClearing( e );
 	}
 	private void fireCleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
+		getOwner().fireCleared( e );
 		if( m_listPropertyListeners != null ) {
 			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > l : m_listPropertyListeners ) {
 				l.cleared( e );
 			}
 		}
-		getOwner().fireCleared( e );
 	}
 	private void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
+		getOwner().fireRemoving( e );
 		if( m_listPropertyListeners != null ) {
 			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > l : m_listPropertyListeners ) {
 				l.removing( e );
 			}
 		}
-		getOwner().fireRemoving( e );
 	}
 	private void fireRemoved( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
+		getOwner().fireRemoved( e );
 		if( m_listPropertyListeners != null ) {
 			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > l : m_listPropertyListeners ) {
 				l.removed( e );
 			}
 		}
-		getOwner().fireRemoved( e );
 	}
 	private void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
+		getOwner().fireSetting( e );
 		if( m_listPropertyListeners != null ) {
 			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > l : m_listPropertyListeners ) {
 				l.setting( e );
 			}
 		}
-		getOwner().fireSetting( e );
 	}
 	private void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
+		getOwner().fireSet( e );
 		if( m_listPropertyListeners != null ) {
 			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > l : m_listPropertyListeners ) {
 				l.set( e );
 			}
 		}
-		getOwner().fireSet( e );
 	}
 
 	public Object[] toArray() {
