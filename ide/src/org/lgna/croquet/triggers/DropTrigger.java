@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class DropTrigger extends MouseEventTrigger implements RetargetableTrigger {
+public class DropTrigger extends MouseEventTrigger {
 	private final org.lgna.croquet.resolvers.Resolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
 	private org.lgna.croquet.DropSite dropSite;
 	public DropTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
@@ -71,7 +71,9 @@ public class DropTrigger extends MouseEventTrigger implements RetargetableTrigge
 	public org.lgna.croquet.DropSite getDropSite() {
 		return this.dropSite;
 	}
+	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
 		this.dropReceptorResolver.retarget( retargeter );
 		if( this.dropSite instanceof org.lgna.croquet.RetargetableDropSite ) {
 			org.lgna.croquet.RetargetableDropSite retargetableDropSite = (org.lgna.croquet.RetargetableDropSite)this.dropSite;

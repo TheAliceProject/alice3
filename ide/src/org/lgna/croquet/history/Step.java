@@ -149,12 +149,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 			context.retarget( retargeter );
 		}
 		this.modelResolver.retarget( retargeter );
-		if( this.trigger instanceof org.lgna.croquet.triggers.RetargetableTrigger ) {
-			org.lgna.croquet.triggers.RetargetableTrigger retargetableTrigger = (org.lgna.croquet.triggers.RetargetableTrigger)this.trigger;
-			retargetableTrigger.retarget( retargeter );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.trigger );
-		}
+		this.trigger.retarget( retargeter );
 	}
 	
 	protected StringBuilder updateRepr( StringBuilder rv ) {
