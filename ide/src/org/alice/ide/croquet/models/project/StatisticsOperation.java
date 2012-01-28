@@ -44,9 +44,6 @@ package org.alice.ide.croquet.models.project;
 
 import java.util.Map;
 
-import org.lgna.project.ast.ExpressionStatement;
-import org.lgna.project.ast.Statement;
-
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
