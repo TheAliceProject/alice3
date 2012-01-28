@@ -57,6 +57,10 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 	public org.lgna.project.ast.Statement getPossiblyIncompleteStatement() {
 		return this.possiblyIncompleteStatement;
 	}
+	@Override
+	public boolean isAddEventListenerLikeSubstance() {
+		return false;
+	}
 	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair dropSite );
 	@Override
 	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {

@@ -343,7 +343,9 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 			//choose any non-ancestor
 			
 			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
-			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( arbitrarilyChosenSource );
+			org.lgna.croquet.DragModel dragModel = null;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( dragModel );
+			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( dragModel, arbitrarilyChosenSource );
 			final int N = statementListPropertyPaneInfos.length;
 			for( int i=0; i<N; i++ ) {
 				StatementListPropertyPaneInfo statementListPropertyPaneInfo = statementListPropertyPaneInfos[ i ];

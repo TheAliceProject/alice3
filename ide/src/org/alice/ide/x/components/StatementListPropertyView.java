@@ -84,6 +84,9 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 //		} );
 	}
 	
+	public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
+		return false;
+	}
 	@Override
 	protected int getBoxLayoutPad() {
 		int rv;
