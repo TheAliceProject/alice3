@@ -78,7 +78,7 @@ public class EmptyStatementListAffordance extends org.lgna.croquet.components.JC
 				return ( alternateListProperty != null && alternateListProperty.size() > 0 );
 			}
 			private boolean isEditable() {
-				return EmptyStatementListAffordance.this.factory instanceof org.alice.ide.x.EditableAstI18Factory;
+				return EmptyStatementListAffordance.this.factory instanceof org.alice.ide.x.EditableAstI18nFactory;
 			}
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {

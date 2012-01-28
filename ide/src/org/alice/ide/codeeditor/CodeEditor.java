@@ -52,7 +52,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 	private static class RootStatementListPropertyPane extends StatementListPropertyView {
 		private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
 		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
-			super( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), userCode.getBodyProperty().getValue().statements );
+			super( org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), userCode.getBodyProperty().getValue().statements );
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 48, 0 ) );
 			org.lgna.project.ast.BlockStatement body = userCode.getBodyProperty().getValue();
 			if( body instanceof org.lgna.project.ast.ConstructorBlockStatement ) {
@@ -115,7 +115,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 		scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 
 		final org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)this.code;
-		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), userCode );
+		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), userCode );
 		AbstractCodeHeaderPane header;
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
