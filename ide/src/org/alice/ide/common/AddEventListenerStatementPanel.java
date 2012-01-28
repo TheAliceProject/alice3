@@ -57,4 +57,8 @@ public class AddEventListenerStatementPanel extends StatementLikeSubstance {
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		return org.alice.ide.IDE.getActiveInstance().getTheme().getEventColor();
 	}
+	@Override
+	public boolean isMaximumSizeClampedToPreferredSize() {
+		return false;
+	}
 }

@@ -59,6 +59,10 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 			return true;
 		}
 		@Override
+		protected int getBoxLayoutPad() {
+			return 0;
+		}
+		@Override
 		protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.Statement statement ) {
 			if( statement instanceof ExpressionStatement ) {
 				ExpressionStatement expressionStatement = (ExpressionStatement)statement;
@@ -78,10 +82,29 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 	public EventsContentPanel( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
 		this.rootPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)code );
-		this.getScrollPane().setViewportView( this.rootPane );
+
+		org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel();
+		panel.addComponent( this.rootPane, Constraint.PAGE_START );
+		
+//		org.lgna.croquet.components.GridBagPanel panel = new org.lgna.croquet.components.GridBagPanel();
+//		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+//		gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
+//		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+//		gbc.weightx = 1.0;
+//		gbc.weighty = 0.0;
+//		panel.addComponent( this.rootPane, gbc );
+//		gbc.fill = java.awt.GridBagConstraints.BOTH;
+//		gbc.weighty = 1.0;
+//		panel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue(), gbc );
+		
+		this.getScrollPane().setViewportView( panel );
+		this.getScrollPane().setBorder( null );
+		
 		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor();
-		this.getScrollPane().setBackgroundColor( color );
 		this.rootPane.setBackgroundColor( color );
+		panel.setBackgroundColor( color );
+		this.getScrollPane().setBackgroundColor( color );
 		this.setBackgroundColor( color );
 	}
 	
@@ -91,6 +114,10 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > getAsSeenBy() {
+		return this;
+	}
+	public org.lgna.croquet.components.JComponent< ? > getViewController() {
+		//todo
 		return this;
 	}
 	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.Resolver< org.lgna.croquet.DropReceptor > getResolver() {
@@ -104,8 +131,5 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 	public java.lang.String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model, edit );
 		return null;
-	}
-	public org.lgna.croquet.components.JComponent< ? > getViewController() {
-		return this.rootPane;
 	}
 }
