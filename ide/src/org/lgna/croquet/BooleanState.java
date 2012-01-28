@@ -164,6 +164,15 @@ public abstract class BooleanState extends State< Boolean > {
 	}
 
 	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		if( this.menuPrepModel != null ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.menuPrepModel );
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	@Override
 	public Class< Boolean > getItemClass() {
 		return Boolean.class;
 	}

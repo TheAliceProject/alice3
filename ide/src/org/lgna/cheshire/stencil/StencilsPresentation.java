@@ -331,9 +331,18 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				this.stencil.revalidateAndRepaint();
 				this.stencil.setCursor( cursor );
 			} else {
+				org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
+				
+				org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+				org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
+				
+				Iterable< ? extends org.lgna.croquet.PrepModel > prepModels = completionModel.getPotentialRootPrepModels();
+				for( org.lgna.croquet.PrepModel prepModel : prepModels ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( prepModel );
+				}
+				
 				edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
 				if( false ) {
-					org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
 					org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
 					transaction.removeAllPrepSteps();
 					chapterPage.refreshNotes();

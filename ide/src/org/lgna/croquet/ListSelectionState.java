@@ -213,7 +213,6 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	}
 
 	private InternalPrepModel< T > prepModel;
-
 	public synchronized InternalPrepModel< T > getPrepModel() {
 		if( this.prepModel != null ) {
 			//pass
@@ -221,6 +220,11 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			this.prepModel = new InternalPrepModel< T >( this );
 		}
 		return this.prepModel;
+	}
+	
+	@Override
+	public java.lang.Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
+		return null;
 	}
 
 	public javax.swing.Action createActionForItem( final T item ) {
@@ -616,7 +620,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		
 		
 		public org.lgna.croquet.components.ComboBox< T > createComboBox() {
-			return new org.lgna.croquet.components.ComboBox< T >( this.getListSelectionState() );
+			return new org.lgna.croquet.components.ComboBox< T >( this );
 		}
 		@Override
 		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {

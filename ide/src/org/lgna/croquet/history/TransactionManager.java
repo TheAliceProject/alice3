@@ -158,7 +158,7 @@ public class TransactionManager {
 	}
 //	//todo: reduce accessibility
 	@Deprecated
-	public static void firePopupMenuResized( PopupPrepStep< ? > step ) {
+	public static void firePopupMenuResized( PopupPrepStep step ) {
 		step.fireChanged( new org.lgna.croquet.history.event.PopupMenuResizedEvent( step ) );
 //		for( Observer observer : observers ) {
 //			observer.popupMenuResized( popupMenu );
@@ -237,11 +237,8 @@ public class TransactionManager {
 		Transaction transaction = getActiveTransaction();
 		return WizardDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
 	}
-	public static StandardPopupPrepStep addStandardPopupOperationStep( org.lgna.croquet.MenuModel.InternalPopupPrepModel standardPopupOperation, org.lgna.croquet.triggers.Trigger trigger ) {
-		return StandardPopupPrepStep.createAndAddToTransaction( getActiveTransaction(), standardPopupOperation, trigger );
-	}
-	public static <T> CascadePopupPrepStep<T> addCascadePopupPrepStep( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return CascadePopupPrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
+	public static PopupPrepStep addPopupPrepStep( org.lgna.croquet.PopupPrepModel popupPrepModel, org.lgna.croquet.triggers.Trigger trigger ) {
+		return PopupPrepStep.createAndAddToTransaction( getActiveTransaction(), popupPrepModel, trigger );
 	}
 	public static <T> CascadeCompletionStep<T> addCascadeCompletionStep( org.lgna.croquet.Cascade<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return CascadeCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );

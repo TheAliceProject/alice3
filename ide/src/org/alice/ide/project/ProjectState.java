@@ -46,7 +46,7 @@ package org.alice.ide.project;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectState extends org.lgna.croquet.ItemState< org.lgna.project.Project > {
+public class ProjectState extends org.lgna.croquet.CustomItemState< org.lgna.project.Project > {
 	private static class SingletonHolder {
 		private static ProjectState instance = new ProjectState();
 	}
@@ -55,7 +55,7 @@ public class ProjectState extends org.lgna.croquet.ItemState< org.lgna.project.P
 	}
 	private org.lgna.project.Project value;
 	private ProjectState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), null, org.alice.ide.project.codecs.ProjectCodec.SINGLETON );
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), org.alice.ide.project.codecs.ProjectCodec.SINGLETON );
 	}
 	@Override
 	protected void localize() {

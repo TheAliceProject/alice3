@@ -98,16 +98,15 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 		return true;
 	}
 
-	@Override
-	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
-		super.appendPrepStepsIfNecessary( transaction );
-		if( containsPrepStep( transaction, this.getModel(), org.lgna.croquet.history.PopupPrepStep.class ) ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "add popup step" );
-			//org.lgna.croquet.history.CascadePopupPrepStep.createAndAddToTransaction( transaction, this.getModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
-		}
-	}
+//	@Override
+//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
+//		super.appendPrepStepsIfNecessary( transaction );
+//		if( transaction.containsPrepStep( transaction, this.getModel(), org.lgna.croquet.history.PopupPrepStep.class ) ) {
+//			//pass
+//		} else {
+//			org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
+//		}
+//	}
 	
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {

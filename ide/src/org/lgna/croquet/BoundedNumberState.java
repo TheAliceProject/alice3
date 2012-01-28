@@ -77,6 +77,11 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 	}
 	
 	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+
+	@Override
 	public StringBuilder appendRepresentation( StringBuilder rv, N value, java.util.Locale locale ) {
 		rv.append( value );
 		return rv;

@@ -58,19 +58,6 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 	public M getModel() {
 		return model;
 	}
-	protected static boolean containsPrepStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.PrepModel prepModel, Class<? extends org.lgna.croquet.history.PrepStep> cls ) {
-		Iterable< org.lgna.croquet.history.PrepStep< ? > > prepSteps = transaction.getPrepSteps();
-		for( org.lgna.croquet.history.PrepStep< ? > prepStep : prepSteps ) {
-			if( cls == null || cls.isAssignableFrom( prepStep.getClass() ) ) {
-				if( prepStep.getModel() == prepModel ) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
-	}
 	private boolean isPopupMenuOperationLimitedToRightMouseButton = true;
 //	public boolean isPopupMenuOperationLimitedToRightMouseButton() {
 //		return this.isPopupMenuOperationLimitedToRightMouseButton;

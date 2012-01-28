@@ -62,6 +62,16 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+	
+	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		if( this.menuPrepModel != null ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.menuPrepModel );
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
 	public SwingModel getSwingModel() {
 		this.initializeIfNecessary();
 		return this.swingModel;

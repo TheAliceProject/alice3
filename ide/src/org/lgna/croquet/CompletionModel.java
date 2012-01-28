@@ -83,6 +83,7 @@ public abstract class CompletionModel extends Model {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( originalEdit );
 		return null;
 	}
+	public abstract Iterable< ? extends PrepModel > getPotentialRootPrepModels();
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		super.appendRepr( rv );

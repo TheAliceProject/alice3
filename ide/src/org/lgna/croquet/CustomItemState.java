@@ -102,6 +102,10 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 		return this.root;
 	}
 	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.root.getPopupPrepModel() );
+	}
+	@Override
 	protected void localize() {
 	}
 }

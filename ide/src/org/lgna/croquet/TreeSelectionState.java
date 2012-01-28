@@ -253,6 +253,11 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		this.swingModel.treeSelectionModel.addTreeSelectionListener( this.treeSelectionListener );
 	}
 
+	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}

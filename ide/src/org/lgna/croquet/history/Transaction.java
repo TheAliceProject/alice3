@@ -151,6 +151,18 @@ public class Transaction extends Node< TransactionHistory > {
 		}
 	}
 	
+	public boolean containsPrepStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.PrepModel prepModel, Class<? extends org.lgna.croquet.history.PrepStep> cls ) {
+		Iterable< org.lgna.croquet.history.PrepStep< ? > > prepSteps = transaction.getPrepSteps();
+		for( org.lgna.croquet.history.PrepStep< ? > prepStep : prepSteps ) {
+			if( cls == null || cls.isAssignableFrom( prepStep.getClass() ) ) {
+				if( prepStep.getModel() == prepModel ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public boolean isValid() {
 		if( this.completionStep != null ) {
 			return this.completionStep.isValid();
