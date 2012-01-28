@@ -70,7 +70,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			return this.root;
 		}
 		@Override
-		protected InternalPopupPrepModelResolver<T> createCodableResolver() {
+		protected InternalPopupPrepModelResolver<T> createResolver() {
 			return new InternalPopupPrepModelResolver<T>( this.root );
 		}
 		@Override

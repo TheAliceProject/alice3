@@ -95,7 +95,7 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 		return null;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< DeclarationComposite< D,V > > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > >( this, this.declaration, this.declarationCls );
 	}
 }

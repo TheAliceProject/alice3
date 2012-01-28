@@ -63,7 +63,7 @@ public class RenameTypeOperation extends RenameDeclarationOperation< org.lgna.pr
 		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameTypeOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameTypeOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameTypeOperation >( this, this.getDeclaration(), org.lgna.project.ast.NamedUserType.class );
 	}
 }

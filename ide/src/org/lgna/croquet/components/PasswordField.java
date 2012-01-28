@@ -40,12 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.triggers;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface RetargetableTrigger extends Trigger {
-	public void retarget( org.lgna.croquet.Retargeter retargeter );
+public class PasswordField extends TextComponent< javax.swing.JPasswordField > {
+	public PasswordField( org.lgna.croquet.StringState model ) {
+		super( model );
+	}
+	
+	@Override
+	protected javax.swing.JPasswordField createAwtComponent() {
+		javax.swing.JPasswordField rv = new javax.swing.JPasswordField();
+		return rv;
+	}
 }

@@ -46,17 +46,23 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class TextImp extends SimpleModelImp {
-	private final org.lgna.story.Text abstraction;
+public class TextModelImp extends SimpleModelImp {
+	private final org.lgna.story.TextModel abstraction;
 	private final edu.cmu.cs.dennisc.scenegraph.Text sgText = new edu.cmu.cs.dennisc.scenegraph.Text();
 	private StringBuffer sb = new StringBuffer();
 
-	public TextImp( org.lgna.story.Text abstraction ) {
+	public TextModelImp( org.lgna.story.TextModel abstraction ) {
 		this.abstraction = abstraction;
+		this.sgText.text.setValue( "" );
+		
+		final int height = 12;
+		final double scale = 1.0/height;
+		this.sgText.font.setValue( new java.awt.Font( null, 0, height ) );
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgText } );
+		this.getSgVisuals()[ 0 ].scale.setValue( edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( scale, scale, scale ) );
 	}
 	@Override
-	public org.lgna.story.Text getAbstraction() {
+	public org.lgna.story.TextModel getAbstraction() {
 		return this.abstraction;
 	}
 	private void updateSGText() {

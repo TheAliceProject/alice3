@@ -127,14 +127,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		this.initializeState();
 		return createMainComponent();
 	}
-	
-	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( org.lgna.project.ast.JavaMethod getter ) {
-		return org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( org.lgna.croquet.Application.INHERIT_GROUP, getter );
-	}
-	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( Class<?> cls, String name, Class<?>... parameterTypes ) {
-		return getStateForGetter( org.lgna.project.ast.JavaMethod.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, name, parameterTypes ) ) );
-	}
-	
+
 	public org.alice.ide.croquet.models.ast.PropertyState getColorIdState() {
 		return this.getStateForGetter( org.lgna.story.Marker.class, "getColorId" );
 	}

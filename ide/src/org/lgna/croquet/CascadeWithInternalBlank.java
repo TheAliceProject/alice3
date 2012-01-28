@@ -66,7 +66,7 @@ public abstract class CascadeWithInternalBlank< T > extends Cascade< T > {
 			this.cascade = cascade;
 		}
 		@Override
-		protected InternalBlankResolver<T> createCodableResolver() {
+		protected InternalBlankResolver<T> createResolver() {
 			return new InternalBlankResolver<T>( this.cascade );
 		}
 		@Override

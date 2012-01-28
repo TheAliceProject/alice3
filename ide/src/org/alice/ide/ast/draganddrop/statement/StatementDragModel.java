@@ -67,7 +67,7 @@ public class StatementDragModel extends AbstractStatementDragModel {
 		return this.statement;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< StatementDragModel > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StatementDragModel > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StatementDragModel >( this, this.statement, org.lgna.project.ast.Statement.class );
 	}
 	@Override

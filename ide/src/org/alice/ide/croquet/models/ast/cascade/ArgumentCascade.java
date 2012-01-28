@@ -71,7 +71,7 @@ public class ArgumentCascade extends ProjectExpressionPropertyCascade {
 //		return this.argument.parameter.getValue().getName();
 //	}
 	@Override
-	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade > getCodableResolver() {
+	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade >( this, this.argument, org.lgna.project.ast.SimpleArgument.class );
 	}
 	@Override

@@ -157,4 +157,23 @@ public class ScaleUtilities {
 	public static Matrix4x4 applyScale( Matrix4x4 rv, Tuple3 t ) {
 		return applyScale( rv, t.x, t.y, t.z );
 	}
+	
+	public static AffineMatrix4x4 applyScale( AffineMatrix4x4 rv, double x, double y, double z ) {
+		rv.orientation.right.x *= x;
+		rv.orientation.right.y *= y;
+		rv.orientation.right.z *= z;
+		rv.orientation.up.x *= x;
+		rv.orientation.up.y *= y;
+		rv.orientation.up.z *= z;
+		rv.orientation.backward.x *= x;
+		rv.orientation.backward.y *= y;
+		rv.orientation.backward.z *= z;
+		rv.translation.x *= x;
+		rv.translation.y *= y;
+		rv.translation.z *= z;
+		return rv;
+	}
+	public static AffineMatrix4x4 applyScale( AffineMatrix4x4 rv, Tuple3 t ) {
+		return applyScale( rv, t.x, t.y, t.z );
+	}
 }

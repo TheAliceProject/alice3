@@ -47,7 +47,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class CustomItemStateChangeStep<T> extends ItemStateChangeStep< T, org.lgna.croquet.CustomItemState< T > >{
-	/*package-private*/ static <T> CustomItemStateChangeStep<T> createAndAddToTransaction( Transaction transaction, org.lgna.croquet.CustomItemState<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static <T> CustomItemStateChangeStep<T> createAndAddToTransaction( Transaction transaction, org.lgna.croquet.CustomItemState<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new CustomItemStateChangeStep<T>( transaction, model, trigger );
 	}
 	private CustomItemStateChangeStep( Transaction parent, org.lgna.croquet.CustomItemState< T > model, org.lgna.croquet.triggers.Trigger trigger ) {

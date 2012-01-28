@@ -41,23 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.draganddrop.statement;
+package org.lgna.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoInThreadTemplateDragModel extends StatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static DoInThreadTemplateDragModel instance = new DoInThreadTemplateDragModel();
-	}
-	public static DoInThreadTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private DoInThreadTemplateDragModel() {
-		super( java.util.UUID.fromString( "0684bcaa-289d-4c99-8f9c-a3d5610c805a" ), org.lgna.project.ast.DoInThread.class, org.lgna.project.ast.AstUtilities.createDoInThread() );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.DoInThreadInsertOperation.getInstance( blockStatementIndexPair );
-	}
+public interface Resolver<T> extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public T getResolved();
+	public void retarget( org.lgna.croquet.Retargeter retargeter );
 }

@@ -61,17 +61,17 @@ public class DeclarationCompositeHistory {
 			DeclarationCompositeHistory.this.appendIfAppropriate( nextValue );
 		}
 	};
-	private final org.alice.ide.ProjectApplication.ProjectObserver projectListener = new org.alice.ide.ProjectApplication.ProjectObserver() {
-		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
 		}
-		public void projectOpened( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
+		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
 			DeclarationCompositeHistory.this.resetStack();
 		}
 	};
 
 	private int ignoreCount = 0;
 	private DeclarationCompositeHistory() {
-		org.alice.ide.IDE.getActiveInstance().addProjectObserver( this.projectListener );
+		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
 		DeclarationTabState.getInstance().addValueListener( this.declarationListener );
 		this.resetStack();
 	}

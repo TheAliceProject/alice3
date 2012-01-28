@@ -41,20 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.project.ast;
+package org.alice.stageide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoInThread extends AbstractStatementWithBody {
-	public DoInThread() {
-	}
-	public DoInThread( BlockStatement body ) {
-		super( body );
+public class TextModelFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation > {
+	public TextModelFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation model ) {
+		super( model );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "do in thread" );
-		return super.appendRepr( rv, locale );
+	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation model ) {
+		super.updateComponentRows( rv, model );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueLabelText()+":", model.getValueState().createEditor( this.getFactory() ) ) );
+		return rv;
 	}
 }

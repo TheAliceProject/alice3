@@ -86,7 +86,7 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< org.
 		return this.transientValue;
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue(), org.lgna.project.ast.AbstractField.class );
 	}
 	
@@ -95,7 +95,7 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< org.
 		return this.transientValue.field.getValue().getName();
 	}
 //	@Override
-//	protected org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createCodableResolver() {
+//	protected org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createResolver() {
 //		return new org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue() );
 //	}
 }

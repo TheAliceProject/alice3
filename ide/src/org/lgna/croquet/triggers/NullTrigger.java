@@ -41,11 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.resolvers;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface RetargetableResolver<T> extends CodableResolver<T> {
-	public void retarget( org.lgna.croquet.Retargeter retargeter );
+public class NullTrigger extends AbstractTrigger {
+	public NullTrigger() {
+	}
+	public NullTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+		return null;
+	}
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
+	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "null";
+	}
 }

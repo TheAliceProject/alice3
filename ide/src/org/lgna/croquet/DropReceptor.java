@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface DropReceptor {
-	public <R extends DropReceptor> org.lgna.croquet.resolvers.CodableResolver< DropReceptor > getCodableResolver();
+	public <R extends DropReceptor> org.lgna.croquet.resolvers.Resolver< DropReceptor > getResolver();
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( DropSite potentialDropSite );
 	
 	public boolean isPotentiallyAcceptingOf( DragModel dragModel );

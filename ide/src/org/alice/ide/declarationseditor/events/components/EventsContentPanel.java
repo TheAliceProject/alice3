@@ -137,7 +137,7 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 		return ((UserCode)this.code).getBodyProperty();
 	}
 	
-	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > getCodableResolver() {
+	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.Resolver< org.lgna.croquet.DropReceptor > getResolver() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
 		return null;
 	}

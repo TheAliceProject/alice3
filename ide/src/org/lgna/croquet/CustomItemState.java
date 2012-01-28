@@ -67,7 +67,7 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 			this.state = state;
 		}
 		@Override
-		protected InternalRootResolver<T> createCodableResolver() {
+		protected InternalRootResolver<T> createResolver() {
 			return new InternalRootResolver<T>( this.state );
 		}
 		@Override

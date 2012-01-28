@@ -145,6 +145,9 @@ public abstract class StringState extends State< String > {
 	public org.lgna.croquet.components.TextField createTextField() {
 		return new org.lgna.croquet.components.TextField( this );
 	}
+	public org.lgna.croquet.components.PasswordField createPasswordField() {
+		return new org.lgna.croquet.components.PasswordField( this );
+	}
 	public org.lgna.croquet.components.TextArea createTextArea() {
 		return new org.lgna.croquet.components.TextArea( this );
 	}

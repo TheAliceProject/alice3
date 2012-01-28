@@ -69,7 +69,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			return this.valueInputDialogOperation;
 		}
 		@Override
-		protected InternalFillInResolver<F> createCodableResolver() {
+		protected InternalFillInResolver<F> createResolver() {
 			return new InternalFillInResolver<F>( this.valueInputDialogOperation );
 		}
 		@Override

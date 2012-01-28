@@ -41,29 +41,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.stageide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoInThreadInsertOperation extends StatementInsertOperation {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInThreadInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DoInThreadInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		DoInThreadInsertOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DoInThreadInsertOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
+public class TextModelFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+	private static class SingletonHolder {
+		private static TextModelFieldDeclarationOperation instance = new TextModelFieldDeclarationOperation();
 	}
-	private DoInThreadInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "3a3c15b6-adf7-4665-a45e-8fc0d19e9489" ), blockStatementIndexPair );
+	public static TextModelFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private String valueLabelText;
+	private TextModelFieldDeclarationOperation() {
+		super( 
+				java.util.UUID.fromString( "d22b663b-966a-4a8e-a2ef-ca43523b4c1e" ), 
+				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TextModel.class ), false, 
+				false, false, 
+				"", true, 
+				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.TextModel.class ), false 
+		);
 	}
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement() {
-		return org.lgna.project.ast.AstUtilities.createDoInThread();
+	protected void localize() {
+		super.localize();
+		this.valueLabelText = this.findLocalizedText( "valueLabel", TextModelFieldDeclarationOperation.class );
+	}
+
+	public String getValueLabelText() {
+		return this.valueLabelText;
+	}
+	
+	public org.alice.ide.croquet.models.ast.PropertyState getValueState() {
+		return this.getStateForGetter( org.lgna.story.TextModel.class, "getValue" );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		org.alice.ide.croquet.models.ast.PropertyState valueState = this.getValueState();
+		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
+				false, field, 
+				valueState.getSetter(), 
+				valueState.getValue()
+		) );
+		return rv;
+	}
+	
+	@Override
+	protected org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		this.getValueState().setValue( new org.lgna.project.ast.StringLiteral( "" ) );
+		return new org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel( this );
 	}
 }

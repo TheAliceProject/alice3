@@ -1000,9 +1000,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 
 	
 // ######### Begin implementation of org.lgna.croquet.DropReceptor
-	public org.lgna.croquet.resolvers.CodableResolver<StorytellingSceneEditor> getCodableResolver() {
-		return new org.lgna.croquet.resolvers.SingletonResolver<StorytellingSceneEditor>(
-				this);
+	public org.lgna.croquet.resolvers.Resolver<StorytellingSceneEditor> getResolver() {
+		return new org.lgna.croquet.resolvers.SingletonResolver<StorytellingSceneEditor>(this);
 	}
 
 	public org.lgna.croquet.components.TrackableShape getTrackableShape(

@@ -63,7 +63,7 @@ public class BackspaceOperation extends NumberPadOperation {
 		this.setName( "\u2190" );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation >( this, this.numberModel );
 	}
 	@Override

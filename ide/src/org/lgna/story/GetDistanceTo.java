@@ -40,12 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
-
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface RetargetableDropSite extends DropSite {
-	public RetargetableDropSite createReplacement( org.lgna.croquet.Retargeter retargeter );
+public class GetDistanceTo {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=GetDistanceTo.class )
+	public static interface Detail {
+	}
+	private GetDistanceTo() {
+		super();
+	}
 }

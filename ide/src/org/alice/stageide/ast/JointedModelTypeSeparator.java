@@ -73,7 +73,7 @@ public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSepa
 		return sb.toString();
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator >( this, this.type, org.lgna.project.ast.AbstractType.class );
 	}
 }

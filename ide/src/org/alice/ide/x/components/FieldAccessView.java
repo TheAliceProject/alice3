@@ -99,7 +99,13 @@ public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstanc
 				}
 			}
 		}
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.FieldAccess.class ) );
+		java.awt.Color color;
+		if( factory == org.alice.ide.x.PreviewAstI18nFactory.getInstance() || this.fieldAccess.isValid() ) {
+			color = org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.FieldAccess.class );
+		} else {
+			color = java.awt.Color.RED;
+		}
+		this.setBackgroundColor( color );
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {

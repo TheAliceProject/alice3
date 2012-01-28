@@ -46,7 +46,7 @@ package org.lgna.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KeyedResolver<T> implements CodableResolver< T > {
+public abstract class KeyedResolver<T> implements Resolver< T > {
 	//todo: rework
 	
 	//either
@@ -121,5 +121,16 @@ public abstract class KeyedResolver<T> implements CodableResolver< T > {
 		} else {
 			return this.resolve( this.instanceCls, this.parameterTypes, this.arguments );
 		}
+	}
+	@Deprecated
+	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove" );
+	}
+	public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		this.instance = null;
+		for( int i=0; i<this.arguments.length; i++ ) {
+			this.arguments[ i ] = retargeter.retarget( this.arguments[ i ] );
+		}
+		this.performCustomRetargeting( retargeter );
 	}
 }
