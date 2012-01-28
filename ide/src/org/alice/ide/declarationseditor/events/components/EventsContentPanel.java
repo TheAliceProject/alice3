@@ -42,43 +42,46 @@
  */
 package org.alice.ide.declarationseditor.events.components;
 
-import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NodeProperty;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.StatementListProperty;
-import org.lgna.project.ast.UserCode;
-
-import edu.cmu.cs.dennisc.matt.EventListenerComponent;
-import edu.cmu.cs.dennisc.property.event.ListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
-import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
 
 /**
  * @author Matt May
  */
 public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor {
-	private final ListPropertyListener< Statement > statementsListener = new SimplifiedListPropertyAdapter< Statement >() {
-		@Override
-		protected void changing( ListPropertyEvent< Statement > e ) {
+	private static class RootStatementListPropertyPane extends org.alice.ide.x.components.StatementListPropertyView {
+		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
+			super( org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), userCode.getBodyProperty().getValue().statements );
 		}
 		@Override
-		protected void changed( ListPropertyEvent< Statement > e ) {
-			EventsContentPanel.this.refreshLater();
+		public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
+			return true;
 		}
-	};
-
+		@Override
+		protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.Statement statement ) {
+			if( statement instanceof ExpressionStatement ) {
+				ExpressionStatement expressionStatement = (ExpressionStatement)statement;
+				Expression expression = expressionStatement.expression.getValue();
+				if( expression instanceof MethodInvocation ) {
+					MethodInvocation methodInvocation = (MethodInvocation)expression;
+					org.alice.ide.common.AddEventListenerStatementPanel statementPanel = new org.alice.ide.common.AddEventListenerStatementPanel( expressionStatement );
+					statementPanel.addComponent( new edu.cmu.cs.dennisc.matt.EventListenerComponent( methodInvocation ) );
+					return statementPanel;
+				}
+			}
+			return null;
+		}
+	}
 	private final org.lgna.project.ast.AbstractCode code;
-	private final org.lgna.croquet.components.GridBagPanel panel = new org.lgna.croquet.components.GridBagPanel();
-	
+	private final RootStatementListPropertyPane rootPane;
 	public EventsContentPanel( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
-		this.getScrollPane().setViewportView( this.panel );
+		this.rootPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)code );
+		this.getScrollPane().setViewportView( this.rootPane );
 		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor();
 		this.getScrollPane().setBackgroundColor( color );
-		this.panel.setBackgroundColor( color );
+		this.rootPane.setBackgroundColor( color );
 		this.setBackgroundColor( color );
 	}
 	
@@ -90,53 +93,6 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 	protected org.lgna.croquet.components.Component< ? > getAsSeenBy() {
 		return this;
 	}
-
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		panel.forgetAndRemoveAllComponents();
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
-		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gbc.weightx = 1.0f;
-		for( Statement statement : getStatements() ) {
-			if( statement instanceof ExpressionStatement ) {
-				ExpressionStatement expressionStatement = (ExpressionStatement)statement;
-				Expression expression = expressionStatement.expression.getValue();
-				if( expression instanceof MethodInvocation ) {
-					MethodInvocation methodInvocation = (MethodInvocation)expression;
-					org.alice.ide.common.AddEventListenerStatementPanel statementPanel = new org.alice.ide.common.AddEventListenerStatementPanel( expressionStatement );
-					statementPanel.addComponent( new EventListenerComponent( methodInvocation ) );
-					panel.addComponent( statementPanel, gbc );
-				}
-			}
-		}
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.weighty = 1.0;
-		panel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue(), gbc );
-	}
-
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getStatements().addListPropertyListener( this.statementsListener );
-		this.refreshLater();
-	}
-	@Override
-	protected void handleUndisplayable() {
-		this.getStatements().removeListPropertyListener( this.statementsListener );
-		super.handleUndisplayable();
-	}
-
-	private StatementListProperty getStatements() {
-		return this.getBodyProperty().getValue().statements;
-	}
-
-	private NodeProperty< ? extends BlockStatement > getBodyProperty() {
-		return ((UserCode)this.code).getBodyProperty();
-	}
-	
 	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.Resolver< org.lgna.croquet.DropReceptor > getResolver() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
 		return null;
@@ -150,6 +106,6 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 		return null;
 	}
 	public org.lgna.croquet.components.JComponent< ? > getViewController() {
-		return this.panel;
+		return this.rootPane;
 	}
 }
