@@ -91,7 +91,7 @@ public abstract class ProgramContext {
 	private org.alice.ide.ReasonToDisableSomeAmountOfRendering rendering;
 	
 	protected void disableRendering() {
-		this.rendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM;
+		this.rendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN;
 		org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( rendering );
 	}
 	
