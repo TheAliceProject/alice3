@@ -53,4 +53,8 @@ public class AddEventListenerStatementPanel extends StatementLikeSubstance {
 				javax.swing.BoxLayout.PAGE_AXIS
 		);
 	}
+	@Override
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		return org.alice.ide.IDE.getActiveInstance().getTheme().getEventColor();
+	}
 }
