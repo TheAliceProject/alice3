@@ -40,45 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.edits;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateEdit extends StateEdit<org.lgna.croquet.BooleanState,Boolean> {
-	//can't really imagine this values being the same, but it doesn't seem likely to hurt to track both values
-	private final boolean prevValue;
-	private final boolean nextValue;
-
-	public BooleanStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.BooleanState > completionStep, boolean nextValue ) {
-		super( completionStep );
-		this.prevValue = !nextValue;
-		this.nextValue = nextValue;
+public class StateContext< T > implements Context {
+	private final org.lgna.croquet.resolvers.Resolver< State< T > > stateResolver;
+	private T value;
+	public StateContext( State< T > state ) {
+		this.stateResolver = state.getResolver();
+		this.value = state.getValue();
 	}
-	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.prevValue = binaryDecoder.decodeBoolean();
-		this.nextValue = binaryDecoder.decodeBoolean();
+	public StateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.stateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		State<T> state = this.stateResolver.getResolved();
+		this.value = state.decodeValue( binaryDecoder );
 	}
-	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.prevValue );
-		binaryEncoder.encode( this.nextValue );
+		binaryEncoder.encode( this.stateResolver );
+		State<T> state = this.stateResolver.getResolved();
+		state.encodeValue( binaryEncoder, this.value );
 	}
-	@Override
-	public Boolean getPreviousValue() {
-		return this.prevValue;
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		this.stateResolver.retarget( retargeter );
+		this.value = retargeter.retarget( this.value );
 	}
-	@Override
-	public Boolean getNextValue() {
-		return this.nextValue;
+	
+	public boolean isGoodToGo() {
+		T currentValue = this.getState().getValue();
+		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currentValue, this.value );
 	}
-
-	@Override
-	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-		rv.append( "boolean: " );
-		rv.append( this.nextValue );
-		return rv;
+	public org.lgna.croquet.history.Transaction createRecoveryTransaction() {
+		return org.lgna.croquet.history.TransactionManager.createSimulatedTransactionForState( this.getState(), this.value );
+	}
+	public State< T > getState() {
+		return this.stateResolver.getResolved();
+	}
+	public T getValue() {
+		return this.value;
 	}
 }

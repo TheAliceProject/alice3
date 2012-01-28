@@ -61,18 +61,11 @@ public class ProjectState extends org.lgna.croquet.ItemState< org.lgna.project.P
 	protected void localize() {
 	}
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		return rv;
-	}
-	@Override
 	protected void updateSwingModel( org.lgna.project.Project nextValue ) {
 		this.value = nextValue;
 	}
 	@Override
 	protected org.lgna.project.Project getActualValue() {
 		return this.value;
-	}
-	@Override
-	protected void commitStateEdit( org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 	}
 }

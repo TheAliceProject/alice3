@@ -60,7 +60,7 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 		}
 	}
 
-	public static class InternalRoot< T > extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.CustomItemStateChangeStep< T > > {
+	public static class InternalRoot< T > extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.StateChangeStep< T > > {
 		private final CustomItemState< T > state;
 		private InternalRoot( CustomItemState< T > state, CascadeBlank< T >... blanks ) {
 			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
@@ -71,8 +71,8 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 			return new InternalRootResolver<T>( this.state );
 		}
 		@Override
-		public org.lgna.croquet.history.CustomItemStateChangeStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.TransactionManager.addCustomItemStateChangeStep( this.state, trigger );
+		public org.lgna.croquet.history.StateChangeStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
+			return org.lgna.croquet.history.TransactionManager.addStateChangeStep( this.state, trigger );
 		}
 		@Override
 		public Class< T > getComponentType() {
@@ -89,8 +89,8 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 		public void epilogue() {
 		}
 		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CustomItemStateChangeStep< T > completionStep, T[] values) {
-			return new org.lgna.croquet.edits.CustomItemStateEdit( completionStep, this.state.getValue(), values[ 0 ] );
+		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.StateChangeStep< T > completionStep, T[] values) {
+			return this.state.createEdit( completionStep, values[ 0 ] );
 		}
 	}
 	private final InternalRoot<T> root;
@@ -103,13 +103,5 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 	}
 	@Override
 	protected void localize() {
-	}
-	@Override
-	protected void commitStateEdit(T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger) {
-		//todo
-	}
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		return rv;
 	}
 }
