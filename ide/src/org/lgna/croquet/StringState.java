@@ -89,7 +89,7 @@ public abstract class StringState extends State< String > {
 		this.swingModel.document.addDocumentListener( this.documentListener );
 	}
 
-	private boolean isEnabled;
+	private boolean isEnabled = true;
 	@Override
 	public boolean isEnabled() {
 		return this.isEnabled;
