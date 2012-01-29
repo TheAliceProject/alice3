@@ -114,7 +114,12 @@ public class DeclarationCompositeHistory {
 	}
 	
 	private void update() {
-		DeclarationComposite< ?, ? > original = this.history.get( this.index );
+		DeclarationComposite< ?, ? > original;
+		if( this.index != -1 ) {
+			original = this.history.get( this.index );
+		} else {
+			original = null;
+		}
 		boolean isIndexUpdateRequired = false;
 		java.util.ListIterator< DeclarationComposite > iterator = this.history.listIterator();
 		while( iterator.hasNext() ) {
