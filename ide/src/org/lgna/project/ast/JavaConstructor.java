@@ -99,7 +99,6 @@ public class JavaConstructor extends AbstractConstructor {
 	public ConstructorReflectionProxy getConstructorReflectionProxy() {
 		return this.constructorReflectionProxy;
 	}
-	
 	@Override
 	public JavaType getDeclaringType() {
 		return JavaType.getInstance( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );

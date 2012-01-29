@@ -47,8 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMethod extends AbstractCode implements Method {
-	public abstract boolean isValid();
-	
 	public abstract boolean isStatic();
 	public abstract boolean isAbstract();
 	public abstract boolean isFinal();
