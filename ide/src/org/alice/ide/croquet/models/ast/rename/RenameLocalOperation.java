@@ -62,7 +62,7 @@ public class RenameLocalOperation extends RenameDeclarationOperation< org.lgna.p
 		super( java.util.UUID.fromString( "b2998aa4-dcfc-4977-9070-449b0d587130" ), local, new org.alice.ide.name.validators.LocalNameValidator( local ) );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserLocal.class );
 	}
 }

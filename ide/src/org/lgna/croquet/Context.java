@@ -41,11 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.resolvers;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface RetargetableResolver<T> extends CodableResolver<T> {
-	public void retarget( org.lgna.croquet.Retargeter retargeter );
+public interface Context extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public boolean isGoodToGo();
+	public org.lgna.croquet.history.Transaction createRecoveryTransaction();
+	public void retarget( Retargeter retargeter );
 }

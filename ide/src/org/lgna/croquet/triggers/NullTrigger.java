@@ -41,29 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoInThreadInsertOperation extends StatementInsertOperation {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInThreadInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DoInThreadInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		DoInThreadInsertOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DoInThreadInsertOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
+public class NullTrigger extends AbstractTrigger {
+	public NullTrigger() {
 	}
-	private DoInThreadInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "3a3c15b6-adf7-4665-a45e-8fc0d19e9489" ), blockStatementIndexPair );
+	public NullTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
-	@Override
-	protected final org.lgna.project.ast.Statement createStatement() {
-		return org.lgna.project.ast.AstUtilities.createDoInThread();
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+		return null;
+	}
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
+	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "null";
 	}
 }

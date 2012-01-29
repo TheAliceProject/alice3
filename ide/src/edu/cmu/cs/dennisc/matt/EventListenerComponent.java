@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.matt;
 
-import java.awt.Color;
-
 import javax.swing.BorderFactory;
 
 import org.alice.ide.codeeditor.ArgumentListPropertyPane;
@@ -68,9 +66,6 @@ import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
  */
 public class EventListenerComponent extends BorderPanel {
 
-	private Color panelColor = new Color( 100, 200, 100 );
-	private Color codeContainerColor = new Color( 150, 225, 150 );
-
 	public EventListenerComponent( MethodInvocation methodInvocation ) {
 		SimpleArgument argument0 = methodInvocation.requiredArguments.get( 0 );
 		LambdaExpression lambdaExpression = (LambdaExpression)argument0.expression.getValue();
@@ -78,22 +73,19 @@ public class EventListenerComponent extends BorderPanel {
 		this.addComponent( createHeader(methodInvocation), Constraint.PAGE_START );
 
 		AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get(0);
-		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), lambda );
+		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), lambda );
 		LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
 				new Label( singleAbstractMethod.getName(), TextWeight.BOLD ),
 				parametersPane
 		);
 		BorderPanel codeContainer = new BorderPanel();
-		StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), lambda.body.getValue().statements );
-		codeContainer.setBackgroundColor( codeContainerColor );
-		//		Border emptyBorder = BorderFactory.createEmptyBorder(100, 100, 10, 10);
-		//		putCodeHere.setBorder(emptyBorder);
+		StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), lambda.body.getValue().statements );
+		codeContainer.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getEventBodyColor() );
 		codeContainer.addComponent(putCodeHere, Constraint.CENTER);
 		codeContainer.addComponent(singleAbstractMethodHeader, Constraint.PAGE_START);
 		
 		codeContainer.setBorder( BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 		this.addComponent(codeContainer, Constraint.CENTER);
-		this.setBorder( BorderFactory.createRaisedBevelBorder() );
 	}
 
 	private JComponent< ? > createHeader( MethodInvocation methodInvocation ) {
@@ -105,7 +97,7 @@ public class EventListenerComponent extends BorderPanel {
 		if(method.getRequiredParameters() != null){
 			SimpleArgumentListProperty requiredArgumentsProperty = methodInvocation.getRequiredArgumentsProperty();
 			ArgumentListPropertyPane requiredParametersListView = new ArgumentListPropertyPane(
-					org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), requiredArgumentsProperty) {
+					org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), requiredArgumentsProperty) {
 				@Override
 				protected Component<?> createComponent(
 						SimpleArgument argument) {
@@ -123,10 +115,9 @@ public class EventListenerComponent extends BorderPanel {
 //			System.out.println(requiredParametersListView);
 		}
 		if(method.getKeyedParameter() != null) {
-			JComponent< ? > keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance(), methodInvocation.getKeyedArgumentsProperty() );
+			JComponent< ? > keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), methodInvocation.getKeyedArgumentsProperty() );
 			rv.addComponent( keyedArgumentListView );
 		}
-		this.setBackgroundColor( panelColor );
 		return rv;
 	}
 

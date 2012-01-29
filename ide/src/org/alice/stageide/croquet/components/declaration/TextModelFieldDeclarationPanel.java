@@ -41,11 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.triggers;
+package org.alice.stageide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface RetargetableTrigger extends Trigger {
-	public void retarget( org.lgna.croquet.Retargeter retargeter );
+public class TextModelFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation > {
+	public TextModelFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation model ) {
+		super( model );
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation model ) {
+		super.updateComponentRows( rv, model );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueLabelText()+":", model.getValueState().createEditor( this.getFactory() ) ) );
+		return rv;
+	}
 }

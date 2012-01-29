@@ -127,6 +127,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					}
 				} else if( value instanceof org.alice.ide.declarationseditor.DeclarationComposite ) {
 					rv = (N)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.declarationseditor.DeclarationComposite)value).getDeclaration() ) );
+				} else if( value instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+					rv = (N)org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( retarget( ((org.alice.ide.instancefactory.ThisFieldAccessFactory)value).getField() ) );
 				} else {
 					rv = value;
 				}
@@ -176,6 +178,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 
 		if( IS_WIZARD_OF_OZ_HASTINGS_DESIRED ) {
 			WizardOfHastings.castPart( astDecodingRetargeter, this.getOriginalProject(), "puffy", replacementProject, "car" );
+			WizardOfHastings.castPart( astDecodingRetargeter, this.getOriginalProject(), "shark", replacementProject, "clown" );
 			//WizardOfHastings.castType( astDecodingRetargeter, this.getOriginalProject(), "MyClownFish", replacementProject, "MyPirateShip" );
 		}
 		originalTransactionHistory.retarget( astDecodingRetargeter );
@@ -207,6 +210,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		}
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );
+
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() );
 
 		presentation.setVisible( true );
 		this.getFrame().setVisible( true );
@@ -291,7 +296,6 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( false );
 		//org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().setValue( true );
 
-		
 		try {
 			if (IS_ENCODING) {
 				originalProject = null;

@@ -154,7 +154,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	}
 	
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< InsertStatementActionOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver( this );
 	}
 	@Override

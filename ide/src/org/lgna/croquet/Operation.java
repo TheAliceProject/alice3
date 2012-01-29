@@ -235,7 +235,7 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 			this.operation.setEnabled( isEnabled );
 		}
 		@Override
-		protected InternalMenuPrepModelResolver createCodableResolver() {
+		protected InternalMenuPrepModelResolver createResolver() {
 			return new InternalMenuPrepModelResolver( this.operation );
 		}
 		@Override

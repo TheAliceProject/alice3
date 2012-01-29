@@ -56,8 +56,10 @@ public class ResizeDragManipulator extends AbstractManipulator
 {
 
 	protected Point initialPoint;
+	private Dimension3 initialScale = new Dimension3(1.0, 1.0, 1.0);
 	private Dimension3 accumulatedScaleVector = new Dimension3(1.0, 1.0, 1.0);
 	private static final double RESIZE_SCALE = .005;
+	private static final double MIN_SCALE = .1;
 	
 	@Override
 	public void doClickManipulator(InputState endInput, InputState previousInput) {
@@ -72,12 +74,8 @@ public class ResizeDragManipulator extends AbstractManipulator
 			int xDif = currentInput.getMouseLocation().x - this.initialPoint.x;
 			int yDif = -(currentInput.getMouseLocation().y - this.initialPoint.y);
 			
-			double scaleAmount = 1.0 + ((xDif + yDif)*RESIZE_SCALE);
-			if (scaleAmount < ScaleDragManipulator.MIN_HANDLE_PULL)
-			{
-				scaleAmount = ScaleDragManipulator.MIN_HANDLE_PULL;
-			}
-			setScale(scaleAmount);
+			double scaleAmount = ((xDif + yDif)*RESIZE_SCALE);
+			applyScale(scaleAmount);
 		}
 	}
 
@@ -97,6 +95,10 @@ public class ResizeDragManipulator extends AbstractManipulator
 		this.manipulatedTransformable = startInput.getClickPickTransformable();
 		if (this.manipulatedTransformable != null)
 		{
+			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
+			if( scalable != null ) {
+				initialScale = scalable.getScale();
+			}
 			this.initManipulator( startInput );
 			return true;
 		}
@@ -106,11 +108,20 @@ public class ResizeDragManipulator extends AbstractManipulator
 		}
 	}
 	
-	protected void setScale( double scaleAmount ) 
+	protected void applyScale( double scaleAmount ) 
 	{
 		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 		if( scalable != null ) {
-			edu.cmu.cs.dennisc.math.Dimension3 scale = new edu.cmu.cs.dennisc.math.Dimension3( scaleAmount, scaleAmount, scaleAmount );
+			if (this.initialScale.x + scaleAmount < MIN_SCALE) {
+				scaleAmount = MIN_SCALE - this.initialScale.x;
+			}
+			if (this.initialScale.y + scaleAmount < MIN_SCALE) {
+				scaleAmount = MIN_SCALE - this.initialScale.y;
+			}
+			if (this.initialScale.z + scaleAmount < MIN_SCALE) {
+				scaleAmount = MIN_SCALE - this.initialScale.z;
+			}
+			edu.cmu.cs.dennisc.math.Dimension3 scale = new edu.cmu.cs.dennisc.math.Dimension3( this.initialScale.x + scaleAmount, this.initialScale.y + scaleAmount, this.initialScale.z + scaleAmount );
 			scalable.setScale( scale );
 		}
 	}
@@ -129,7 +140,7 @@ public class ResizeDragManipulator extends AbstractManipulator
 
 	@Override
 	public void undoRedoBeginManipulation() {
-		accumulatedScaleVector = new Dimension3(1.0, 1.0, 1.0);
+		accumulatedScaleVector = new Dimension3(this.initialScale);
 	}
 
 	@Override

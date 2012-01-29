@@ -314,15 +314,16 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 //	/*package-private*/ String getInstanceNameText() {
 //		return this.textVC.getText();
 //	}
-	protected org.lgna.story.Text createText() {
-		org.lgna.story.Text rv = new org.lgna.story.Text();
+	protected org.lgna.story.TextModel createText() {
+		org.lgna.story.TextModel rv = new org.lgna.story.TextModel();
 		org.lgna.story.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
 		org.lgna.story.font.WeightAttribute weightAttribute = this.styleSelection.getWeightAttribute();
 		org.lgna.story.font.PostureAttribute postureAttribute = this.styleSelection.getPostureAttribute();
 
 		rv.setName( this.instanceNameVC.getText() );
 		rv.setValue( this.textVC.getText() );
-		rv.setFont( new org.lgna.story.Font( familyAttribute, weightAttribute, postureAttribute ) );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( familyAttribute, weightAttribute, postureAttribute );
+		//rv.setFont( new org.lgna.story.Font( familyAttribute, weightAttribute, postureAttribute ) );
 		rv.setHeight( Double.parseDouble( this.heightTextField.getText() ) );
 		return rv;
 	}
@@ -361,12 +362,12 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 		return new CreateTextPane( this ); 
 	}
 	
-	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep<Void> context ) {
+	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.TextModel > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep<Void> context ) {
 		//"Create Text"
 		CreateTextPane createTextPane = (CreateTextPane)context.getMainPanel();
-		org.lgna.story.Text text = createTextPane.createText();
+		org.lgna.story.TextModel text = createTextPane.createText();
 		if( text != null ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > type = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeFor( org.lgna.story.Text.class );
+			org.lgna.project.ast.AbstractType< ?,?,? > type = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeFor( org.lgna.story.TextModel.class );
 			org.lgna.project.ast.Expression initializer = org.lgna.project.ast.AstUtilities.createInstanceCreation( type );
 			org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField( text.getName(), type, initializer );
 			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
@@ -387,7 +388,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	@Override
 	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
 		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, org.lgna.story.Text> tuple = this.createFieldAndInstance( step );
+			edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, org.lgna.story.TextModel> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {
 				org.lgna.project.ast.UserField field = tuple.getA();
 				if( field != null ) {

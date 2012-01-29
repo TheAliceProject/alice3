@@ -44,16 +44,16 @@ package org.alice.stageide.properties;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.story.implementation.TextImp;
+import org.lgna.story.implementation.TextModelImp;
 
 /**
  * @author dculyba
  *
  */
-public class TextValuePropertyAdapter extends AbstractPropertyAdapter<String, TextImp> {
+public class TextValuePropertyAdapter extends AbstractPropertyAdapter<String, TextModelImp> {
 
 	
-	public TextValuePropertyAdapter(TextImp instance, StandardExpressionState expressionState) 
+	public TextValuePropertyAdapter(TextModelImp instance, StandardExpressionState expressionState) 
 	{
 		super("Text", instance, expressionState);
 	}

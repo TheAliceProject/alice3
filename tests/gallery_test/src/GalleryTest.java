@@ -54,9 +54,10 @@ public class GalleryTest {
 			Object resource = fld.get( null );
 			assert parameterClses[ 0 ].isInstance( resource ) : parameterClses[ 0 ] + " " + resource;
 			org.lgna.story.JointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( instanceCls, parameterClses, resource );
-			if (jointedModel instanceof org.lgna.story.Swimmer) {
-				jointedModel.straightenOutJoints();
-			}
+			jointedModel.straightenOutJoints();
+//			if (jointedModel instanceof org.lgna.story.Swimmer) {
+//				jointedModel.straightenOutJoints();
+//			}
 		}
 		final int N = node.getChildCount();
 		for( int i=0; i<N; i++ ) {

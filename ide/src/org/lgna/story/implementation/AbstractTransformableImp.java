@@ -969,6 +969,12 @@ public abstract class AbstractTransformableImp extends EntityImp {
 //		
 //	}
 
+	
+	public double getDistanceTo( AbstractTransformableImp other ) {
+		edu.cmu.cs.dennisc.math.Point3 translation = this.getSgComposite().getTranslation( other.getSgComposite() );
+		return translation.calculateMagnitude();
+	}
+	
 	protected abstract double getBoundingSphereRadius();
 	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( ReferenceFrame asSeenBy ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().getTransformation( asSeenBy.getSgReferenceFrame() );

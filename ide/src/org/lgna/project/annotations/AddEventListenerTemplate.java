@@ -40,21 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.lgna.project.annotations;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoInThread extends AbstractStatementWithBody {
-	public DoInThread() {
-	}
-	public DoInThread( BlockStatement body ) {
-		super( body );
-	}
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "do in thread" );
-		return super.appendRepr( rv, locale );
-	}
+@java.lang.annotation.Documented
+@java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+public @interface AddEventListenerTemplate {
 }

@@ -68,7 +68,12 @@ package uist;
 	}
 	public <N> N retarget(N original) {
 		if( original instanceof org.alice.ide.declarationseditor.DeclarationComposite ) {
-			original = (N)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( retarget( ((org.alice.ide.declarationseditor.DeclarationComposite)original).getDeclaration() ) );
+			org.alice.ide.declarationseditor.DeclarationComposite< ?, ? > originalDeclarationComposite = (org.alice.ide.declarationseditor.DeclarationComposite< ?, ? >)original;
+			org.lgna.project.ast.AbstractDeclaration originalDeclaration = originalDeclarationComposite.getDeclaration();
+			org.lgna.project.ast.AbstractDeclaration possiblyRetargettedDeclaration = this.retarget( originalDeclaration ); 
+			return (N)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( possiblyRetargettedDeclaration );
+		} else if( original instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+			original = (N)org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( retarget( ((org.alice.ide.instancefactory.ThisFieldAccessFactory)original).getField() ) );
 		}
 		N rv = (N)map.get( original );
 		if( rv != null ) {

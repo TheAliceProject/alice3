@@ -63,11 +63,15 @@ public class StatementDragModel extends AbstractStatementDragModel {
 		super( java.util.UUID.fromString( "e9c09a94-b2f0-440b-80ee-aff456b382e8" ) );
 		this.statement = statement;
 	}
+	@Override
+	public boolean isAddEventListenerLikeSubstance() {
+		return org.lgna.project.ast.AstUtilities.isAddEventListenerMethodInvocationStatement( this.statement );
+	}
 	public org.lgna.project.ast.Statement getStatement() {
 		return this.statement;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< StatementDragModel > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StatementDragModel > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StatementDragModel >( this, this.statement, org.lgna.project.ast.Statement.class );
 	}
 	@Override

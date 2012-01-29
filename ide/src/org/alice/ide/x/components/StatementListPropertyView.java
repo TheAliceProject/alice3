@@ -84,6 +84,9 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 //		} );
 	}
 	
+	public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
+		return false;
+	}
 	@Override
 	protected int getBoxLayoutPad() {
 		int rv;
@@ -95,6 +98,10 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return rv;
 	}
 
+	@Override
+	protected final org.lgna.croquet.components.Component< ? > createInterstitial( int i, int N ) {
+		return null;
+	}
 	@Override
 	protected DefaultJPanel createJPanel() {
 		final java.awt.Color FEEDBACK_COLOR = java.awt.Color.GREEN.darker().darker();

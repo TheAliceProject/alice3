@@ -55,8 +55,6 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 					return Double.compare( getValue( o1 ), getValue( o2 ) );
 				}
 			} );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( "src", src );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.testing( "rv", rv );
 			return rv;
 		}
 	};

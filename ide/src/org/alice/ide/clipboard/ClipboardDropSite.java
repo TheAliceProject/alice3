@@ -62,4 +62,7 @@ public final class ClipboardDropSite implements org.lgna.croquet.DropSite {
 	public boolean equals( Object obj ) {
 		return obj instanceof ClipboardDropSite;
 	}
+	public ClipboardDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
+		return this;
+	}
 }

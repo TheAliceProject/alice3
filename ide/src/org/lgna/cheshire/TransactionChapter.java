@@ -97,4 +97,9 @@ public class TransactionChapter extends Chapter {
 			return false;
 		}
 	}
+
+	@Override
+	public Iterable< org.lgna.croquet.Context > getAllContexts() {
+		return this.transaction.getAllContexts();
+	}
 }

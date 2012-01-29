@@ -43,17 +43,7 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.GetterTemplate;
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.project.annotations.ValueTemplate;
-import org.lgna.project.annotations.Visibility;
-import org.lgna.story.event.CollisionListener;
-import org.lgna.story.event.MouseButtonListener;
-import org.lgna.story.event.ProximityEventListener;
-import org.lgna.story.event.TimerEventListener;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
-
+import org.lgna.project.annotations.*;
 
 /**
  * @author Dennis Cosgrove
@@ -106,6 +96,7 @@ public abstract class Scene extends Entity{
 	}
 	
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
 		this.implementation.addSceneActivationListener( sceneActivationListener );
 	}
@@ -114,7 +105,8 @@ public abstract class Scene extends Entity{
 		this.implementation.removeSceneActivationListener( sceneActivationListener );
 	}
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
-	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, AddMouseButtonListener.Detail... details ) {
+	@AddEventListenerTemplate()
+	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener, AddMouseButtonListener.Detail... details ) {
 		this.getImplementation().getEventManager().addMouseButtonListener( mouseButtonListener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
@@ -122,6 +114,7 @@ public abstract class Scene extends Entity{
 		this.getImplementation().getEventManager().removeMouseButtonListener( mouseButtonListener );
 	}
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
 	public void addKeyPressedListener( org.lgna.story.event.KeyListener keyListener,  AddKeyPressedListener.Detail... details) {
 		this.implementation.getEventManager().addKeyListener( keyListener, MultipleEventPolicy.getValue( details ) );
 	}
@@ -130,28 +123,26 @@ public abstract class Scene extends Entity{
 		this.implementation.getEventManager().removeKeyListener( keyListener );
 	}
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
-	public void addCollisionListener( CollisionListener collisionListener, Entity[] groupOne, Entity[] groupTwo){
-		this.getImplementation().getEventManager().addCollisionListener(collisionListener, Collections.newArrayList(groupOne), Collections.newArrayList(groupTwo));
+	@AddEventListenerTemplate()
+	public void addCollisionListener( org.lgna.story.event.CollisionListener collisionListener, Entity[] groupOne, Entity[] groupTwo){
+		this.getImplementation().getEventManager().addCollisionListener(collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList(groupOne), edu.cmu.cs.dennisc.java.util.Collections.newArrayList(groupTwo));
 	}
-	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public void addProximityEventListener( ProximityEventListener proximityEventListener, Entity[] groupOne, Entity[] groupTwo, AddProximityEventListener.Detail... details){
-		this.getImplementation().getEventManager().addProximityEventListener(proximityEventListener, Collections.newArrayList(groupOne), Collections.newArrayList(groupTwo), AddProximityEventListener.getDist( details ));
+	
+	//todo: removeCollisionListener
+	
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	public void addProximityEventListener( org.lgna.story.event.ProximityEventListener proximityEventListener, Entity[] groupOne, Entity[] groupTwo, AddProximityEventListener.Detail... details){
+		this.getImplementation().getEventManager().addProximityEventListener(proximityEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList(groupOne), edu.cmu.cs.dennisc.java.util.Collections.newArrayList(groupTwo), AddProximityEventListener.getDist( details ));
 	}
-	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public void addTimerEventListener(TimerEventListener timerEventListener, AddTimerEventListener.Detail... details) {
+
+	//todo: removeProximityListener
+
+	
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
+	public void addTimerEventListener(org.lgna.story.event.TimerEventListener timerEventListener, AddTimerEventListener.Detail... details) {
 		this.getImplementation().getEventManager().addTimerEventListener(timerEventListener, TimerFrequency.getValue(details).getFrequency(), MultipleEventPolicy.getValue(details));
 	}
 
-//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-//	protected void addListener(AbstractEventHandler event){
-//		this.getImplementation().addListener(event);
-//	}
-//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-//	protected void silenceAllListeners(){
-//		this.getImplementation().silenceAllListeners();
-//	}
-//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-//	protected void restoreAllListeners(){
-//		this.getImplementation().restoreAllListeners();
-//	}
+	//todo: removeTimerListener
 }

@@ -44,9 +44,6 @@ package org.alice.ide.croquet.models.project;
 
 import java.util.Map;
 
-import org.lgna.project.ast.ExpressionStatement;
-import org.lgna.project.ast.Statement;
-
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
@@ -115,7 +112,6 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 				org.lgna.project.ast.ConditionalStatement.class,
 				org.lgna.project.ast.DoTogether.class,
 				org.lgna.project.ast.EachInArrayTogether.class,
-				org.lgna.project.ast.DoInThread.class,
 				org.lgna.project.ast.Comment.class,
 				org.lgna.project.ast.LocalDeclarationStatement.class,
 				org.lgna.project.ast.ExpressionStatement.class

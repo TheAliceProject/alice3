@@ -187,6 +187,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	public void handleAstChangeThatCouldBeOfInterest() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 	}
+	
 ////	//todo remove
 //	public boolean isRespondingToRefreshAccessibles = true;
 //	public void refreshAccessibles() {

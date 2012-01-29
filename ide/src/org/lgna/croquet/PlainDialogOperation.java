@@ -75,7 +75,7 @@ public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croq
 			return this.plainDialogOperation;
 		}
 		@Override
-		protected InternalCloseOperationResolver createCodableResolver() {
+		protected InternalCloseOperationResolver createResolver() {
 			return new InternalCloseOperationResolver( this.plainDialogOperation );
 		}
 		@Override

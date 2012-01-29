@@ -84,7 +84,7 @@ public abstract class BooleanState extends State< Boolean > {
 			this.booleanState.setEnabled( isEnabled );
 		}
 		@Override
-		protected InternalMenuItemPrepModelResolver createCodableResolver() {
+		protected InternalMenuItemPrepModelResolver createResolver() {
 			return new InternalMenuItemPrepModelResolver( this.booleanState );
 		}
 		@Override

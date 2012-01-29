@@ -844,7 +844,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	@Override
 	public void enableRendering(
 			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering) {
-		if (reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM
+		if (reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN
 				|| reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK) {
 			this.onscreenLookingGlass.setRenderingEnabled(true);
 		}
@@ -853,7 +853,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	@Override
 	public void disableRendering(
 			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering) {
-		if (reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM
+		if (reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN
 				|| reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK) {
 			this.onscreenLookingGlass.setRenderingEnabled(false);
 		}
@@ -1000,9 +1000,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 
 	
 // ######### Begin implementation of org.lgna.croquet.DropReceptor
-	public org.lgna.croquet.resolvers.CodableResolver<StorytellingSceneEditor> getCodableResolver() {
-		return new org.lgna.croquet.resolvers.SingletonResolver<StorytellingSceneEditor>(
-				this);
+	public org.lgna.croquet.resolvers.Resolver<StorytellingSceneEditor> getResolver() {
+		return new org.lgna.croquet.resolvers.SingletonResolver<StorytellingSceneEditor>(this);
 	}
 
 	public org.lgna.croquet.components.TrackableShape getTrackableShape(

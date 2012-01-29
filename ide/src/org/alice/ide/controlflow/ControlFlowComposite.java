@@ -74,8 +74,6 @@ public class ControlFlowComposite extends org.alice.ide.members.TemplateComposit
 			org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance(),
 			org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance(),
 			null,
-			//org.alice.ide.ast.draganddrop.statement.DoInThreadTemplateDragModel.getInstance(),
-			//null,
 			org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(),
 			null,
 			org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance(),

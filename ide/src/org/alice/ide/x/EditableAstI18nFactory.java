@@ -46,19 +46,19 @@ package org.alice.ide.x;
 /**
  * @author Dennis Cosgrove
  */
-public class EditableAstI18Factory extends AstI18nFactory {
+public class EditableAstI18nFactory extends AstI18nFactory {
 	private static class SingletonHolder {
-		private static EditableAstI18Factory projectGroupInstance = new EditableAstI18Factory( org.alice.ide.IDE.PROJECT_GROUP );
-		private static EditableAstI18Factory inheritGroupInstance = new EditableAstI18Factory( org.alice.ide.IDE.INHERIT_GROUP );
+		private static EditableAstI18nFactory projectGroupInstance = new EditableAstI18nFactory( org.alice.ide.IDE.PROJECT_GROUP );
+		private static EditableAstI18nFactory inheritGroupInstance = new EditableAstI18nFactory( org.alice.ide.IDE.INHERIT_GROUP );
 	}
-	public static EditableAstI18Factory getProjectGroupInstance() {
+	public static EditableAstI18nFactory getProjectGroupInstance() {
 		return SingletonHolder.projectGroupInstance;
 	}
-	public static EditableAstI18Factory getInheritGroupInstance() {
+	public static EditableAstI18nFactory getInheritGroupInstance() {
 		return SingletonHolder.inheritGroupInstance;
 	}
 	private final org.lgna.croquet.Group group;
-	private EditableAstI18Factory( org.lgna.croquet.Group group ) {
+	private EditableAstI18nFactory( org.lgna.croquet.Group group ) {
 		this.group = group;
 	}
 	

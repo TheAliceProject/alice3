@@ -89,7 +89,7 @@ public class EditMethodOperation extends EditCodeOperation< org.lgna.project.ast
 //		this.setName( sb.toString() );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation >( this, this.getCode(), org.lgna.project.ast.UserMethod.class );
 	}
 }

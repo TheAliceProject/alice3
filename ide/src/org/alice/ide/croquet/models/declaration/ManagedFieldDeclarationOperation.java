@@ -89,6 +89,13 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 		);
 	}
 	
+	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		return org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( org.lgna.croquet.Application.INHERIT_GROUP, getter );
+	}
+	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( Class<?> cls, String name, Class<?>... parameterTypes ) {
+		return getStateForGetter( org.lgna.project.ast.JavaMethod.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, name, parameterTypes ) ) );
+	}
+
 	@Override
 	protected InstanceCreationInitializerState createInitializerState( org.lgna.project.ast.Expression initialValue ) {
 		return new InstanceCreationInitializerState( this, initialValue );

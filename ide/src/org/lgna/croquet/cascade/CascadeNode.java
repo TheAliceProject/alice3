@@ -47,11 +47,11 @@ package org.lgna.croquet.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeNode< P extends CascadeNode<?,?>, E extends org.lgna.croquet.Element > extends org.lgna.croquet.history.Node< P > {
-	private final org.lgna.croquet.resolvers.CodableResolver< E > elementResolver;
+	private final org.lgna.croquet.resolvers.Resolver< E > elementResolver;
 	public CascadeNode( P parent, E element ) {
 		super( parent );
 		if( element != null ) {
-			this.elementResolver = element.getCodableResolver();
+			this.elementResolver = element.getResolver();
 		} else {
 			this.elementResolver = null;
 		}
@@ -65,5 +65,9 @@ public abstract class CascadeNode< P extends CascadeNode<?,?>, E extends org.lgn
 	}
 	public E getElement() {
 		return this.elementResolver != null ? this.elementResolver.getResolved() : null;
+	}
+	@Override
+	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "?" );
 	}
 }

@@ -46,6 +46,21 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class Transaction extends Node< TransactionHistory > {
+	public static <T> Transaction createSimulatedTransactionForState( org.lgna.croquet.State< T > state, T value ) {
+		Transaction rv = new Transaction( (TransactionHistory)null );
+		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
+		if( state instanceof org.lgna.croquet.ListSelectionState ) {
+			org.lgna.croquet.ListSelectionState< T > listSelectionState = (org.lgna.croquet.ListSelectionState< T >)state;
+			ListSelectionStateChangeStep.createAndAddToTransaction( rv, listSelectionState, trigger );
+		} else if( state instanceof org.lgna.croquet.CustomItemState ) { 
+			org.lgna.croquet.CustomItemState< T > customItemState = (org.lgna.croquet.CustomItemState< T >)state;
+			CustomItemStateChangeStep.createAndAddToTransaction( rv, customItemState, trigger );
+		} else {
+			throw new RuntimeException();
+		}
+		return rv;
+	}
+	
 	private static class DescendantStepIterator implements java.util.Iterator< Step<?> > {
 		private final java.util.List< Transaction > transactions = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private int transactionIndex;
@@ -112,6 +127,43 @@ public class Transaction extends Node< TransactionHistory > {
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
 		binaryEncoder.encode( this.completionStep );
+	}
+	@Override
+	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
+		for( PrepStep< ? > prepStep : this.prepSteps ) {
+			prepStep.appendContexts( out );
+		}
+		if( this.completionStep != null ) {
+			this.completionStep.appendContexts( out );
+		}
+	}
+	public Iterable< org.lgna.croquet.Context > getAllContexts() {
+		java.util.List< org.lgna.croquet.Context > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.appendContexts( rv );
+		return rv;
+	}
+	public <C extends org.lgna.croquet.Context> C findFirstContext( Step<?> step, Class<C> cls ) {
+		while( step != null ) {
+			for( org.lgna.croquet.Context context : step.getContexts() ) {
+				if( cls.isAssignableFrom( context.getClass() ) ) {
+					return cls.cast( context );
+				}
+			}
+			C context = step.findFirstContext( cls );
+			if( context != null ) {
+				return context;
+			} else {
+				step = step.getPreviousStep();
+			}
+		}
+		CompletionStep< ? > grandparent = this.getFirstAncestorAssignableTo( CompletionStep.class );
+		if( grandparent != null ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "note: searching outside transaction", cls );
+			return grandparent.findFirstContext( cls );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls );
+			return null;
+		}
 	}
 	
 	public boolean isValid() {

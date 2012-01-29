@@ -52,11 +52,11 @@ public enum InstanceFactoryCodec implements org.lgna.croquet.ItemCodec< org.alic
 		return org.alice.ide.instancefactory.InstanceFactory.class;
 	}
 	public org.alice.ide.instancefactory.InstanceFactory decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.CodableResolver< org.alice.ide.instancefactory.InstanceFactory > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		org.lgna.croquet.resolvers.Resolver< org.alice.ide.instancefactory.InstanceFactory > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		return resolver.getResolved();
 	}
 	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.instancefactory.InstanceFactory value ) {
-		binaryEncoder.encode( value.getCodableResolver() );
+		binaryEncoder.encode( value.getResolver() );
 	}
 	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.instancefactory.InstanceFactory value, java.util.Locale locale) {
 		rv.append( value );

@@ -180,6 +180,24 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 	public void addKeyValuePairs( Retargeter retargeter, Edit< ? > edit ) {
 	}
 	
+	protected <D extends org.lgna.croquet.DropSite> D findFirstDropSite( Class<D> cls ) {
+		org.lgna.croquet.history.Step< ? > step = this.getCompletionStep();
+		while( step != null ) {
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+				org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
+				org.lgna.croquet.DropSite dropSite = dropTrigger.getDropSite();
+				if( cls.isAssignableFrom( dropSite.getClass() ) ) {
+					return cls.cast( dropSite );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( dropSite );
+				}
+			}
+			step = step.getPreviousStep();
+		}
+		return null;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

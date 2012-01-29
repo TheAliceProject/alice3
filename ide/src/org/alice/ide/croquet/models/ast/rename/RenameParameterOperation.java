@@ -62,7 +62,7 @@ public class RenameParameterOperation extends RenameDeclarationOperation< org.lg
 		super( java.util.UUID.fromString( "a5ea865d-495f-4962-99a6-b481d4ca3eb9" ), parameter, new org.alice.ide.name.validators.ParameterNameValidator( parameter ) );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserParameter.class );
 	}
 }

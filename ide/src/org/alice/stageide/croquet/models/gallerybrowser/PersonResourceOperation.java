@@ -57,7 +57,7 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.InputDial
 //		org.lgna.story.resources.sims2.PersonResource personResource = this.createInitialPersonResource();
 //		org.alice.stageide.person.components.PersonViewer personViewer = org.alice.stageide.person.PersonResourceManager.SINGLETON.allocatePersonViewer( personResource );
 //		org.alice.stageide.person.components.MainPanel rv = new org.alice.stageide.person.components.MainPanel( personViewer );
-		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ); //todo
+		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN ); //todo
 		return this.getPersonComposite().getView();
 	}
 	@Override
