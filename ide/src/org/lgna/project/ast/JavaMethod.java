@@ -99,11 +99,6 @@ public class JavaMethod extends AbstractMethod {
 	public MethodReflectionProxy getMethodReflectionProxy() {
 		return this.methodReflectionProxy;
 	}
-
-	@Override
-	public boolean isValid() {
-		return this.methodReflectionProxy.getReification() != null;
-	}
 	@Override
 	public String getName() {
 		return this.methodReflectionProxy.getName();
