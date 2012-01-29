@@ -28,7 +28,6 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 			Thread thread = new Thread(){
 				@Override
 				public void run(){
-					recorder.recordEvent(event);
 					fire(listener, event);
 					if(policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)){
 						fireDequeue(listener, event);
@@ -69,7 +68,9 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 		fireDequeue(listener, event);
 	}
 
-	protected abstract void fire(L listener, E event);
+	protected void fire(L listener, E event){
+		recorder.recordEvent(event);
+	}
 
 	public final void silenceListeners(){
 		shouldFire = false;

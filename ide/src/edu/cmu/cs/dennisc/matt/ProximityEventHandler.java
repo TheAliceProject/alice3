@@ -79,6 +79,7 @@ public class ProximityEventHandler extends TransformationChangedHandler<Proximit
 	
 	@Override
 	protected void fire( ProximityEventListener listener, ProximityEvent event ) {
+		super.fire(listener, event);
 		listener.whenTheseGetClose(event);
 	}
 

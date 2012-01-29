@@ -110,6 +110,7 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListen
 	}
 	@Override
 	protected void fire(MouseButtonListener listener, MouseButtonEvent event) {
+		super.fire(listener, event);
 		listener.mouseButtonClicked(event);
 	}
 }

@@ -64,6 +64,8 @@ import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyListener;
 import org.lgna.story.event.MouseButtonEvent;
 import org.lgna.story.event.MouseButtonListener;
+import org.lgna.story.event.SceneActivationEvent;
+import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimerEvent;
 import org.lgna.story.event.TimerEventListener;
 import org.lgna.story.resources.BipedResource;
@@ -224,6 +226,11 @@ class SnowScene extends Scene{
 	}
 
 	private void performInitializeEvents() {
+		this.addSceneActivationListener(new SceneActivationListener() {
+			
+			public void sceneActivated(SceneActivationEvent e) {				
+			}
+		});
 		Model[] list = {ogre, susan};
 		Model[] colListOne = {ogre};
 		Model[] colListTwo = {susan};
@@ -326,5 +333,6 @@ class RagsToRichesStory extends Program {
 		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
 		ragsToRichesStory.initializeInFrame( args );
 		ragsToRichesStory.playOutStory();
+		
 	}
 }

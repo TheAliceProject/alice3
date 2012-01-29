@@ -70,6 +70,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimerEventListener, 
 
 	@Override
 	protected void fire(final TimerEventListener listener, TimerEvent event) {
+		super.fire(listener, event);
 		listener.timeElapsed(event);
 	}
 }

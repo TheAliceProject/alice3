@@ -30,6 +30,7 @@ public class KeyPressedHandler extends AbstractEventHandler<KeyListener, KeyEven
 
 	@Override
 	protected void fire(KeyListener listener, KeyEvent event) {
+		super.fire(listener, event);
 		listener.keyPressed(event);
 	}
 }

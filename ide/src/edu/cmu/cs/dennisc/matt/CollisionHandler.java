@@ -82,6 +82,7 @@ public class CollisionHandler extends TransformationChangedHandler<CollisionList
 
 	@Override
 	protected void fire( CollisionListener listener, CollisionEvent event ) {
+		super.fire(listener, event);
 		listener.whenTheseCollide( event );
 	}
 

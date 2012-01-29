@@ -78,7 +78,7 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 						org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
 						Class<? extends org.lgna.project.ast.Statement> cls = statement.getClass();
 //						if(cls.equals(org.lgna.project.ast.ExpressionStatement.class)){
-//							String statementName = statement.getInstancePropertyNamed(name);
+//							String statementName = ((ExpressionStatement) statement).getName();
 //							
 //							if(expressionStatementMap.get(statementName) != null) {
 //								System.out.println(statementName);
