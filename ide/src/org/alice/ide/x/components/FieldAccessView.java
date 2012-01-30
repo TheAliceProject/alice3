@@ -135,4 +135,8 @@ public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstanc
 			return null;
 		}
 	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+	}
 }
