@@ -40,18 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class SetAmbientLightColor extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetAmbientLightColor.class )
+public class SetFromAboveLightColor extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetFromAboveLightColor.class )
 	public static interface Detail {
 	}
-	private SetAmbientLightColor() {
+	private SetFromAboveLightColor() {
 		super();
 	}
 }

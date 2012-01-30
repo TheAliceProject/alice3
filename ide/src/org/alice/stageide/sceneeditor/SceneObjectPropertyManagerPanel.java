@@ -265,7 +265,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			{
 				if (entityImp instanceof SceneImp)
 				{
-					return new ColorPropertyAdapter<SceneImp>("Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).ambientLightColor, state);
+					return new ColorPropertyAdapter<SceneImp>("Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).fromAboveLightColor, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setBackPaint"))
