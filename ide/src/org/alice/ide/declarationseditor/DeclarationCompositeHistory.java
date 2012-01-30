@@ -98,8 +98,7 @@ public class DeclarationCompositeHistory {
 				}
 				this.index = 0;
 				this.history.add( 0, declarationComposite );
-				this.updateBackEnabled();
-				this.updateFrontEnabled();
+				this.update();
 			}
 		}
 	}
@@ -113,38 +112,62 @@ public class DeclarationCompositeHistory {
 		ForwardOperation.getInstance().setEnabled( isEnabled );
 		ForwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
 	}
+	
+	private void update() {
+		DeclarationComposite< ?, ? > original;
+		if( this.index != -1 ) {
+			original = this.history.get( this.index );
+		} else {
+			original = null;
+		}
+		boolean isIndexUpdateRequired = false;
+		java.util.ListIterator< DeclarationComposite > iterator = this.history.listIterator();
+		while( iterator.hasNext() ) {
+			DeclarationComposite< ?, ? > composite = iterator.next();
+			if( composite.isValid() ) {
+				//pass
+			} else {
+				iterator.remove();
+				isIndexUpdateRequired = true;
+			}
+		}
+		
+		if( isIndexUpdateRequired ) {
+			this.index = this.history.indexOf( original );
+		}
+		this.updateBackEnabled();
+		this.updateFrontEnabled();
+	}
+	
 	private void resetStack() {
 		this.history.clear();
 		this.index = -1;
 		this.appendIfAppropriate( DeclarationTabState.getInstance().getValue() );
-		this.updateBackEnabled();
-		this.updateFrontEnabled();
+		this.update();
 	}
 	
 	private void setIndex( int index ) {
 		this.pushIgnore();
 		try {
 			this.index = index;
-			this.updateBackEnabled();
-			this.updateFrontEnabled();
+			this.update();
 			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( this.history.get( this.index ) );
 //			DeclarationTabState.getInstance().setValue( this.history.get( this.index ) );
 		} finally {
 			this.popIgnore();
 		}
 	}
-	
 	public void goBackward() {
-		this.setIndex( this.index + 1 );
+		this.setIndex( Math.min( this.index+1, this.history.size()-1 ) );
 	}
 	public void goForward() {
-		this.setIndex( this.index - 1 );
+		this.setIndex( Math.max( this.index-1, 0 ) );
 	}
 	public void setDeclarationComposite( DeclarationComposite declarationComposite ) {
 		this.setIndex( this.history.indexOf( declarationComposite ) );
 	}
-	
 	public java.util.List< DeclarationComposite > getBackwardList() {
+		this.update();
 		int minInclusive = this.index+1;
 		int maxExclusive = this.history.size();
 		if( minInclusive < maxExclusive ) {
@@ -154,6 +177,7 @@ public class DeclarationCompositeHistory {
 		}
 	}
 	public java.util.List< DeclarationComposite > getForwardList() {
+		this.update();
 		int minInclusive = 0;
 		int maxExclusive = this.index;
 		if( minInclusive < maxExclusive ) {

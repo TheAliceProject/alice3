@@ -79,12 +79,6 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 	public final NodeListProperty< UserParameter > getRequiredParamtersProperty() {
 		return this.requiredParameters;
 	}
-	
-	@Override
-	public final boolean isValid() {
-		return true;
-	}
-	
 	public final AbstractType<?,?,?> getReturnType() {
 		return returnType.getValue();
 	}

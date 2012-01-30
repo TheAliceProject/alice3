@@ -53,6 +53,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	}
 	private V view;
 	protected abstract V createView();
+	protected V peekView() {
+		return this.view;
+	}
 	public synchronized final V getView() {
 		if( this.view != null ) {
 			//pass

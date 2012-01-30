@@ -99,11 +99,6 @@ public class JavaMethod extends AbstractMethod {
 	public MethodReflectionProxy getMethodReflectionProxy() {
 		return this.methodReflectionProxy;
 	}
-
-	@Override
-	public boolean isValid() {
-		return this.methodReflectionProxy.getReification() != null;
-	}
 	public boolean isAnnotationPresent( Class< ? extends java.lang.annotation.Annotation > annotationCls ) {
 		return this.getMethodReflectionProxy().getReification().isAnnotationPresent( annotationCls );
 	}

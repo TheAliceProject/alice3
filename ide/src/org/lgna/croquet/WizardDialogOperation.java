@@ -116,17 +116,22 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 			}
 		}
 	}
+	private static final class InternalCardComposite extends org.lgna.croquet.CardComposite {
+		public InternalCardComposite() {
+			super( java.util.UUID.fromString( "9512cc7b-4cc8-44d3-ba34-4db944981f50" ) );
+		}
+	}
 
 	private Label title = new Label( "Name/Description", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-	private CardPanel cardPanel = new CardPanel();
+	private InternalCardComposite cardComposite = new InternalCardComposite();
 	
 	private class Card {
 		private WizardStage step;
 		private CardPanel.Key key;
 		public Card( WizardStage step ) {
 			this.step = step;
-			this.key = cardPanel.createKey( this.step.getComponent(), java.util.UUID.randomUUID() );
-			cardPanel.addComponent( key );
+			this.key = cardComposite.getView().createKey( this.step.getComponent(), java.util.UUID.randomUUID() );
+			cardComposite.getView().addComponent( key );
 		}
 		@Override
 		public String toString() {
@@ -242,10 +247,10 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 	}
 	private void handleCardChange( WizardDialogOperation.Card nextValue ) {
 		if( nextValue != null ) {
-			this.cardPanel.showKey( nextValue.key );
+			this.cardComposite.getView().showKey( nextValue.key );
 			this.title.setText( nextValue.step.getTitle() );
 		} else {
-			this.cardPanel.showKey( null );
+			this.cardComposite.getView().showKey( null );
 			this.title.setText( "" );
 		}
 		int index = this.cardSelectionState.getSelectedIndex();
@@ -304,7 +309,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation<o
 		centerPanel.addComponent( this.title, gbc );
 		centerPanel.addComponent( new HorizontalSeparator(), gbc );
 		gbc.weighty = 1.0;
-		centerPanel.addComponent( this.cardPanel, gbc );
+		centerPanel.addComponent( this.cardComposite.getView(), gbc );
 		gbc.weighty = 0.0;
 		centerPanel.addComponent( explanationLabel, gbc );
 		

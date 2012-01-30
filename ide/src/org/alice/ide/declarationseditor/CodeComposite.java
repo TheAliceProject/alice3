@@ -65,6 +65,10 @@ public class CodeComposite extends DeclarationComposite< org.lgna.project.ast.Ab
 		super( java.util.UUID.fromString( "b8043e06-495b-4f24-9cfb-0e447d97cc7c" ), code, org.lgna.project.ast.AbstractCode.class );
 	}
 	@Override
+	public boolean isValid() {
+		return this.getDeclaration().isValid();
+	}
+	@Override
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
 		super.customizeTitleComponent( booleanState, button );
 		button.scaleFont( 1.2f );

@@ -70,6 +70,11 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Ab
 		button.scaleFont( 1.6f );
 	}
 	@Override
+	public boolean isValid() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check to see if type is in project" );
+		return true;
+	}
+	@Override
 	protected org.alice.ide.declarationseditor.type.components.TypeDeclarationView createView() {
 		return new org.alice.ide.declarationseditor.type.components.TypeDeclarationView( this );
 	}
