@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.pattern.Nameable, edu.cmu.cs.dennisc.property.InstancePropertyOwner {
+public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner {
 	public java.util.UUID getId();
 	public Node getParent();
 	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );

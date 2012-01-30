@@ -40,15 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pattern;
-
-
-import edu.cmu.cs.dennisc.property.*;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultInstancePropertyOwner extends AbstractElement implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
+import edu.cmu.cs.dennisc.property.*;
+
+public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
 	private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
 
 	private static java.util.HashMap< Class< ? extends edu.cmu.cs.dennisc.property.PropertyOwner >, java.util.List< Property< ? > > > s_classToPropertiesMap = new java.util.HashMap< Class< ? extends edu.cmu.cs.dennisc.property.PropertyOwner >, java.util.List< Property< ? > > >();
@@ -468,8 +467,8 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		if( this == other || super.equals( other ) ) {
 			return true;
 		} else {
-			if( other instanceof DefaultInstancePropertyOwner ) {
-				DefaultInstancePropertyOwner otherDIPO = (DefaultInstancePropertyOwner)other;
+			if( other instanceof Element ) {
+				Element otherDIPO = (Element)other;
 				int propertyCount = 0;
 				for( Property thisProperty : this.getProperties() ) {
 					String propertyName = thisProperty.getName();
@@ -478,8 +477,8 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 						if( otherProperty != null ) {
 							Object thisValue = thisProperty.getValue( this );
 							Object otherValue = otherProperty.getValue( otherDIPO );
-							if( thisValue instanceof DefaultInstancePropertyOwner ) {
-								if( ((DefaultInstancePropertyOwner)thisValue).isEquivalentTo( otherValue ) ) {
+							if( thisValue instanceof Element ) {
+								if( ((Element)thisValue).isEquivalentTo( otherValue ) ) {
 									//pass
 								} else {
 									return false;

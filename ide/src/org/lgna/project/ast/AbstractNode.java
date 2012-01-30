@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner implements Node, edu.cmu.cs.dennisc.pattern.Crawlable {
+public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.dennisc.pattern.Crawlable {
 	private static final double CURRENT_VERSION = 3.1;
 	private static final double MINIMUM_ACCEPTABLE_VERSION = CURRENT_VERSION;
 

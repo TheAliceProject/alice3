@@ -86,7 +86,8 @@ public class PropertyOfNodeCodec< T extends edu.cmu.cs.dennisc.property.Instance
 			org.alice.ide.croquet.codecs.NodeCodec< org.lgna.project.ast.Node > nodeCodec = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Node.class );
 			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)value.getOwner();
 			nodeCodec.encodeValue( binaryEncoder, node );
-			binaryEncoder.encode( node != null ? node.getName() : null );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "investigate value.getName() or node.getName()" );
+			binaryEncoder.encode( node != null ? value.getName() : null );
 		}
 	}
 	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
