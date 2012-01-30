@@ -124,16 +124,20 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	private double volumeLevel;
 	private double startTime;
 	private double stopTime;
-	/*package private*/ Player( javax.media.Player player, double volumeLevel, double startTime, double stopTime ) {
+	private org.lgna.common.resources.AudioResource audioResource;
+	
+	/*package private*/ Player( javax.media.Player player, double volumeLevel, double startTime, double stopTime, org.lgna.common.resources.AudioResource resourceReference) {
 		//assert player.getState() >= javax.media.Controller.Realized;
 		this.player = player;
 		this.volumeLevel = volumeLevel;
 		this.startTime = startTime;
 		this.stopTime = stopTime;
+		this.audioResource = resourceReference;
 	}
 	@Override
 	public void realize() {
 		if( this.player.getState() < javax.media.Controller.Realized ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "realize: ", this.player.getState() );
 			RealizeControllerListener controllerListener = new RealizeControllerListener();
 			this.player.addControllerListener( controllerListener );
 			this.player.realize();
@@ -261,6 +265,26 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		}.start();
 		dialog.setVisible( true );
 		this.stop();
+	}
+	
+	public double getVolumeLevel()
+	{
+		return this.volumeLevel;
+	}
+	
+	public double getStartTime()
+	{
+		return this.startTime;
+	}
+	
+	public double getStopTime()
+	{
+		return this.stopTime;
+	}
+	
+	public org.lgna.common.resources.AudioResource getAudioResource()
+	{
+		return this.audioResource;
 	}
 	
 }

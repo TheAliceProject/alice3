@@ -21,5 +21,6 @@
 	<classpathentry kind="lib" path="lib/alice/aliceModelSource.jar"/>
 	<classpathentry kind="lib" path="lib/alice/nebulousModelSource.jar"/>
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
+	<classpathentry kind="lib" path="lib/quicktime/QuickTimeDemo2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
