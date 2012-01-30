@@ -220,11 +220,6 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		}
 		super.fireAdded( e );
 	}
-	
-	@Override
-	public boolean isComposedOfGetterAndSetterProperties() {
-		return false;
-	}
 
 	private static void acceptIfCrawlable( java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > alreadyVisited, Object value, edu.cmu.cs.dennisc.pattern.Crawler crawler ) {
 		if( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
