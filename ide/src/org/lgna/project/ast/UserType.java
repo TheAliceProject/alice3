@@ -47,64 +47,6 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class UserType<C extends AbstractConstructor> extends AbstractType<C, UserMethod, UserField> {
-	protected class Adapter<E extends AbstractMember> implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > {
-		private void handleAdd( E member ) {
-			assert member instanceof UserMember;
-			if (member.getDeclaringType() != null) {
-				System.err.println("NOTE: Declaring type of "+member+" is non-null before being added to "+this+". This was probably done to initialize the member before triggering member-added listeners.");
-			}
-			UserMember userMember = (UserMember)member;
-			userMember.setDeclaringType( UserType.this );
-		}
-		private void handleRemove( E member ) {
-			assert member instanceof UserMember;
-			assert member.getDeclaringType() != null;
-			UserMember userMember = (UserMember)member;
-			userMember.setDeclaringType( null );
-		}
-
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
-			for( E element : e.getElements() ) {
-				handleAdd( element );
-			}
-			//todo
-			//			for( E element : e.getCollection() ) {
-			//				handleAdd( element );
-			//			}
-		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
-		}
-
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
-			for( E element : e.getTypedSource() ) {
-				handleRemove( element );
-			}
-		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
-		}
-
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
-			for( E element : e.getElements() ) {
-				handleRemove( element );
-			}
-		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
-		}
-
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
-			int startIndex = e.getStartIndex();
-			java.util.Collection< ? extends E > elements = e.getElements();
-			for( int i = 0; i < elements.size(); i++ ) {
-				handleRemove( e.getTypedSource().get( startIndex + i ) );
-			}
-			for( E element : e.getElements() ) {
-				handleAdd( element );
-			}
-		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
-		}
-	}
-
 	public DeclarationProperty< AbstractType<?,?,?> > superType = new DeclarationProperty< AbstractType<?,?,?> >( this ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?,?,?> value) {
@@ -115,19 +57,12 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 	public NodeListProperty< UserMethod > methods = new NodeListProperty< UserMethod >( this );
 	public NodeListProperty< UserField > fields = new NodeListProperty< UserField >( this );
 	public UserType() {
-		this.addListenersForMethodsAndFields();
 	}
 	public UserType( AbstractType<?,?,?> superType, UserMethod[] methods, UserField[] fields ) {
-		this.addListenersForMethodsAndFields();
 		this.superType.setValue( superType );
 		this.methods.add( methods );
 		this.fields.add( fields );
 	}
-	private void addListenersForMethodsAndFields() {
-		this.methods.addListPropertyListener( new Adapter< UserMethod >() );
-		this.fields.addListPropertyListener( new Adapter< UserField >() );
-	}
-	
 	@Override
 	public AbstractType< ?, ?, ? > getKeywordFactoryType() {
 		return null;

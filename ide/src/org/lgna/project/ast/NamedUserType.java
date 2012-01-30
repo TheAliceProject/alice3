@@ -55,11 +55,9 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
 	public NamedUserType() {
-		this.addListenerForConstructors();
 	}
 	public NamedUserType( String name, UserPackage _package, AbstractType<?,?,?> superType, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields ) {
 		super( superType, methods, fields );
-		this.addListenerForConstructors();
 		this.name.setValue( name );
 		this._package.setValue( _package );
 		this.constructors.add( constructors );
@@ -67,11 +65,6 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 	public NamedUserType( String name, UserPackage _package, Class< ? > superCls, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields ) {
 		this( name, _package, JavaType.getInstance( superCls ), constructors, methods, fields );
 	}
-	
-	private void addListenerForConstructors() {
-		this.constructors.addListPropertyListener( new Adapter< NamedUserConstructor >() );
-	}
-
 	@Override
 	public String getName() {
 		return name.getValue();

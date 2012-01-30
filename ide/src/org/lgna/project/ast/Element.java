@@ -40,15 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pattern;
-
-
-import edu.cmu.cs.dennisc.property.*;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultInstancePropertyOwner extends AbstractElement implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
+import edu.cmu.cs.dennisc.property.*;
+
+//todo: clean up
+public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
 	private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
 
 	private static java.util.HashMap< Class< ? extends edu.cmu.cs.dennisc.property.PropertyOwner >, java.util.List< Property< ? > > > s_classToPropertiesMap = new java.util.HashMap< Class< ? extends edu.cmu.cs.dennisc.property.PropertyOwner >, java.util.List< Property< ? > > >();
@@ -56,8 +56,6 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 
 	private java.util.List< edu.cmu.cs.dennisc.property.event.PropertyListener > m_propertyListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.property.event.PropertyListener >();
 	private java.util.List< edu.cmu.cs.dennisc.property.event.ListPropertyListener< ? > > m_listPropertyListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.property.event.ListPropertyListener< ? > >();
-
-	public abstract boolean isComposedOfGetterAndSetterProperties();
 
 	public void addPropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
 		m_propertyListeners.add( propertyListener );
@@ -132,93 +130,39 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 	}
 
 	public Property< ? > getPropertyNamed( String name ) {
-		if( isComposedOfGetterAndSetterProperties() ) {
-			for( Property< ? > property : getProperties() ) {
-				if( property.getName().equals( name ) ) {
-					return property;
-				}
-			}
-			//throw new RuntimeException( "no property named: " + name );
+		//todo: remove
+		name = Character.toLowerCase( name.charAt( 0 ) ) + name.substring( 1 );
+		try {
+			java.lang.reflect.Field field = getClass().getField( name );
+			return (Property< ? >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
+		} catch (NoSuchFieldException nsfe) {
 			return null;
-		} else {
-			//todo: remove
-			name = Character.toLowerCase( name.charAt( 0 ) ) + name.substring( 1 );
-			try {
-				java.lang.reflect.Field field = getClass().getField( name );
-				return (Property< ? >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
-			} catch (NoSuchFieldException nsfe) {
-				return null;
-			}
 		}
 	}
 	public InstanceProperty< ? > getInstancePropertyNamed( String name ) {
 		return (InstanceProperty< ? >)getPropertyNamed( name );
 	}
-	
-	//	public Iterable< Property<?> > getProperties() {
-	//		Class< ? extends edu.cmu.cs.dennisc.property.PropertyOwner > cls = getClass();
-	//		java.util.List< Property<?> > rv = s_classToPropertiesMap.get( cls );
-	//		if( rv == null ) {
-	//			rv = new java.util.LinkedList< Property<?> >();
-	//			for( java.lang.reflect.Field field : cls.getFields() ) {
-	//				int modifiers = field.getModifiers();
-	//				if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
-	//					if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
-	//						if( GetterSetterProperty.class.isAssignableFrom( field.getType() ) ) {
-	//							rv.add( (Property)edu.cmu.cs.dennisc.reflect.ReflectionUtilities.get( field, null ) );
-	//						}
-	//					} else {
-	//						if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
-	//							InstanceProperty instanceProperty = (InstanceProperty)edu.cmu.cs.dennisc.reflect.ReflectionUtilities.get( field, this );
-	//							assert instanceProperty.getOwner() == this;
-	//							rv.add( instanceProperty );
-	//						}
-	//					}
-	//				}
-	//			}
-	//			s_classToPropertiesMap.put( cls, rv );
-	//		}
-	//		return rv;
-	//	}
+
 	public java.util.List< Property< ? > > getProperties() {
 		Class< ? extends edu.cmu.cs.dennisc.property.PropertyOwner > cls = getClass();
-		if( isComposedOfGetterAndSetterProperties() ) {
-			java.util.List< Property< ? > > rv = s_classToPropertiesMap.get( cls );
-			if( rv == null ) {
-				rv = new java.util.LinkedList< Property< ? > >();
-				for( java.lang.reflect.Field field : cls.getFields() ) {
-					int modifiers = field.getModifiers();
-					if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
-						if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
-							if( GetterSetterProperty.class.isAssignableFrom( field.getType() ) ) {
-								rv.add( (Property)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, null ) );
-							}
-						}
-					}
-				}
-				s_classToPropertiesMap.put( cls, rv );
-			}
-			return rv;
-		} else {
-			if( m_properties == null ) {
-				m_properties = new java.util.LinkedList< Property< ? > >();
-				for( java.lang.reflect.Field field : cls.getFields() ) {
-					int modifiers = field.getModifiers();
-					if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
-						if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
-							//pass
-						} else {
-							if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
-								InstanceProperty instanceProperty = (InstanceProperty)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
-								assert instanceProperty.getOwner() == this;
-								m_properties.add( instanceProperty );
-							}
+		if( m_properties == null ) {
+			m_properties = new java.util.LinkedList< Property< ? > >();
+			for( java.lang.reflect.Field field : cls.getFields() ) {
+				int modifiers = field.getModifiers();
+				if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
+					if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
+						//pass
+					} else {
+						if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
+							InstanceProperty instanceProperty = (InstanceProperty)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
+							assert instanceProperty.getOwner() == this;
+							m_properties.add( instanceProperty );
 						}
 					}
 				}
 			}
-			return m_properties;
 		}
+		return m_properties;
 	}
 	public String lookupNameFor( InstanceProperty< ? > instanceProperty ) {
 		for( java.lang.reflect.Field field : getClass().getFields() ) {
@@ -459,17 +403,12 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		}
 		binaryEncoder.encode( "" );
 	}
-	
-	@Override
-	public final boolean equals( Object obj ) {
-		return super.equals( obj );
-	}
 	public boolean isEquivalentTo( Object other ) {
 		if( this == other || super.equals( other ) ) {
 			return true;
 		} else {
-			if( other instanceof DefaultInstancePropertyOwner ) {
-				DefaultInstancePropertyOwner otherDIPO = (DefaultInstancePropertyOwner)other;
+			if( other instanceof Element ) {
+				Element otherDIPO = (Element)other;
 				int propertyCount = 0;
 				for( Property thisProperty : this.getProperties() ) {
 					String propertyName = thisProperty.getName();
@@ -478,8 +417,8 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 						if( otherProperty != null ) {
 							Object thisValue = thisProperty.getValue( this );
 							Object otherValue = otherProperty.getValue( otherDIPO );
-							if( thisValue instanceof DefaultInstancePropertyOwner ) {
-								if( ((DefaultInstancePropertyOwner)thisValue).isEquivalentTo( otherValue ) ) {
+							if( thisValue instanceof Element ) {
+								if( ((Element)thisValue).isEquivalentTo( otherValue ) ) {
 									//pass
 								} else {
 									return false;
