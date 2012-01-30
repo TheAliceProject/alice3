@@ -105,7 +105,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	
 	private org.lgna.croquet.CascadeBlankChild< InstanceFactory > createFillInMenuComboIfNecessary( org.lgna.croquet.CascadeFillIn< InstanceFactory, Void > item, org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu ) {
 		if( subMenu != null ) {
-			return new org.lgna.croquet.CascadeFillInMenuCombo< InstanceFactory >( item, subMenu );
+			return new org.lgna.croquet.CascadeItemMenuCombo< InstanceFactory >( item, subMenu );
 		} else {
 			return item;
 		}

@@ -41,29 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInMenuCombo<F> implements CascadeBlankChild< F > {
-	private final CascadeItem< F, ? > item;
-	private final CascadeItem< F, ? > menu;
-	public CascadeFillInMenuCombo( CascadeFillIn< F, ? > item, CascadeItem< F, ? > menu ) {
-		this.item = item;
-		this.menu = menu;
-	}
-	public int getItemCount() {
-		return 2;
-	}
-	public org.lgna.croquet.CascadeItem< F, ? > getItemAt( int index ) {
-		switch( index ) {
-		case 0:
-			return this.item;
-		case 1:
-			return this.menu;
-		default:
-			throw new AssertionError();
+public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSeparator {
+	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, JointedModelTypeSeparator > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized JointedModelTypeSeparator getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		assert type != null;
+		JointedModelTypeSeparator rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new JointedModelTypeSeparator( type );
+			map.put( type, rv );
 		}
+		return rv;
+	}
+	private final org.lgna.project.ast.AbstractType<?,?,?> type;
+	private JointedModelTypeSeparator( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		super( java.util.UUID.fromString( "200467b6-6cd7-45c1-850f-b853fa695187" ) );
+		this.type = type;
+	}
+	
+	@Override
+	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.type.getRepr( locale ) );
+		sb.append( " Joints" );
+		return sb.toString();
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator >( this, this.type, org.lgna.project.ast.AbstractType.class );
 	}
 }
