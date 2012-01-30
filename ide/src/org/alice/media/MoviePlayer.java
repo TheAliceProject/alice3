@@ -45,6 +45,7 @@ package org.alice.media;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
+import java.net.URL;
 
 import javax.media.CachingControl;
 import javax.media.CachingControlEvent;
@@ -57,6 +58,7 @@ import javax.media.EndOfMediaEvent;
 import javax.media.Manager;
 import javax.media.MediaLocator;
 import javax.media.Player;
+import javax.media.PrefetchCompleteEvent;
 import javax.media.RealizeCompleteEvent;
 import javax.media.Time;
 import javax.swing.JPanel;
@@ -113,16 +115,22 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 
 	private MediaLocator createMediaLocator( String url ) {
 		MediaLocator ml;
-		if( url.indexOf( ":" ) > 0 ) {
-			return new MediaLocator( url );
+		if( url.indexOf( ":" ) > 0 && (ml = new MediaLocator( url )) != null ) {
+			return ml;
 		}
 
 		if( url.startsWith( File.separator ) ) {
-			return new MediaLocator( "file:" + url );
+			if( (ml = new MediaLocator( "file:" + url )) != null ) {
+				return ml;
+			}
 		} else {
 			String file = "file:" + System.getProperty( "user.dir" ) + File.separator + url;
-			return new MediaLocator( file ); 
+			if( (ml = new MediaLocator( file )) != null ) {
+				return ml;
+			}
 		}
+
+		return null;
 	}
 	
 	public void init()

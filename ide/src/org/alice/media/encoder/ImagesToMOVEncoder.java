@@ -42,46 +42,34 @@
  */
 package org.alice.media.encoder;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.*;
+import java.io.ObjectInputStream.GetField;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.ImageObserver;
+import java.awt.image.WritableRaster;
 
 import javax.imageio.ImageIO;
-import javax.media.Buffer;
-import javax.media.ConfigureCompleteEvent;
-import javax.media.Controller;
-import javax.media.ControllerEvent;
-import javax.media.ControllerListener;
-import javax.media.DataSink;
-import javax.media.EndOfMediaEvent;
-import javax.media.Format;
-import javax.media.Manager;
-import javax.media.MediaLocator;
-import javax.media.PrefetchCompleteEvent;
-import javax.media.Processor;
-import javax.media.RealizeCompleteEvent;
-import javax.media.ResourceUnavailableEvent;
-import javax.media.Time;
-import javax.media.control.TrackControl;
-import javax.media.datasink.DataSinkErrorEvent;
-import javax.media.datasink.DataSinkEvent;
-import javax.media.datasink.DataSinkListener;
-import javax.media.datasink.EndOfStreamEvent;
+import javax.media.*;
+import javax.media.control.*;
+import javax.media.protocol.*;
+import javax.media.datasink.*;
 import javax.media.format.VideoFormat;
-import javax.media.protocol.ContentDescriptor;
-import javax.media.protocol.DataSource;
-import javax.media.protocol.FileTypeDescriptor;
-import javax.media.protocol.PullBufferDataSource;
-import javax.media.protocol.PullBufferStream;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
+import org.alice.media.YouTubeUploader;
+
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
+import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.movie.MovieEncoder;
 
 /**
@@ -125,8 +113,6 @@ import edu.cmu.cs.dennisc.movie.MovieEncoder;
 public class ImagesToMOVEncoder implements ControllerListener,
         DataSinkListener, MovieEncoder
 {
-	private static boolean DEBUG_DUMP_FRAMES = true;
-	
     private int frameRate = 30;
     private BlockingQueue<BufferedImage> images = new LinkedBlockingQueue<BufferedImage>();
     private Object waitSync = new Object();
@@ -198,22 +184,6 @@ public class ImagesToMOVEncoder implements ControllerListener,
     public void setOutputFile(File outputFile)
     {
         this.outputFile = outputFile;
-        if (this.outputFile != null && DEBUG_DUMP_FRAMES)
-        {
-        	String fileName = outputFile.getName();
-        	int dotIndex = fileName.lastIndexOf(".");
-        	if (dotIndex != -1)
-        	{
-        		fileName = fileName.substring(0, dotIndex);
-        	}
-        	File frameDumpDir = new File(this.outputFile.getParentFile(), fileName+"_frames");
-        	if (frameDumpDir.exists())
-        	{
-        		frameDumpDir.delete();
-        	}
-        	frameDumpDir.mkdirs();
-        	this.setFrameOutputDirectory(frameDumpDir.getAbsolutePath());
-        }
     }
 
     public File getOutputFile()
@@ -233,20 +203,28 @@ public class ImagesToMOVEncoder implements ControllerListener,
 
     private MediaLocator createMediaLocator(String url)
     {
-        if (url.indexOf(":") > 0)
+        MediaLocator ml;
+        if (url.indexOf(":") > 0 && (ml = new MediaLocator(url)) != null)
         {
-            return new MediaLocator(url);
+            return ml;
         }
 
         if (url.startsWith(File.separator))
         {
-            return new MediaLocator("file:" + url);
+            if ((ml = new MediaLocator("file:" + url)) != null)
+            {
+                return ml;
+            }
         } else
         {
             String file = "file:" + System.getProperty("user.dir")
                     + File.separator + url;
-            return new MediaLocator(file);
+            if ((ml = new MediaLocator(file)) != null)
+            {
+                return ml;
+            }
         }
+        return null;
     }
 
     private boolean doIt()
@@ -442,7 +420,7 @@ public class ImagesToMOVEncoder implements ControllerListener,
         }
     }
 
-    public void stop()
+	public void stop()
     {
         this.hasStarted = false;
         this.isRunning = false;
@@ -529,7 +507,7 @@ public class ImagesToMOVEncoder implements ControllerListener,
     /**
      * Controller Listener.
      */
-    public void controllerUpdate(ControllerEvent evt)
+	public void controllerUpdate(ControllerEvent evt)
     {
 
         if (evt instanceof ConfigureCompleteEvent
@@ -578,7 +556,7 @@ public class ImagesToMOVEncoder implements ControllerListener,
     /**
      * Event handler for the file writer.
      */
-    public void dataSinkUpdate(DataSinkEvent evt)
+	public void dataSinkUpdate(DataSinkEvent evt)
     {
 
         if (evt instanceof EndOfStreamEvent)
@@ -726,7 +704,7 @@ public class ImagesToMOVEncoder implements ControllerListener,
         /**
          * We should never need to block assuming data are read from files.
          */
-        public boolean willReadBlock()
+		public boolean willReadBlock()
         {
             if (!this.doneReadingImages && this.images.isEmpty())
             {
@@ -739,7 +717,7 @@ public class ImagesToMOVEncoder implements ControllerListener,
          * This is called from the Processor to read a frame worth of video
          * data.
          */
-        public void read(Buffer buf) throws IOException
+		public void read(Buffer buf) throws IOException
         {
 
             // Check if we've finished all the frames.
@@ -810,32 +788,32 @@ public class ImagesToMOVEncoder implements ControllerListener,
         /**
          * Return the format of each video frame. That will be JPEG.
          */
-        public Format getFormat()
+		public Format getFormat()
         {
             return format;
         }
 
-        public ContentDescriptor getContentDescriptor()
+		public ContentDescriptor getContentDescriptor()
         {
             return new ContentDescriptor(ContentDescriptor.RAW);
         }
 
-        public long getContentLength()
+		public long getContentLength()
         {
             return 0;
         }
 
-        public boolean endOfStream()
+		public boolean endOfStream()
         {
             return ended;
         }
 
-        public Object[] getControls()
+		public Object[] getControls()
         {
             return new Object[0];
         }
-
-        public Object getControl(String type)
+		
+		public Object getControl(String type)
         {
             return null;
         }
@@ -845,5 +823,9 @@ public class ImagesToMOVEncoder implements ControllerListener,
             this.doneReadingImages = true;
         }
     }
+
+	public MediaPlayerObserver getMediaPlayerObserver() {
+		return null;
+	}
 
 }
