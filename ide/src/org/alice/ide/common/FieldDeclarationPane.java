@@ -63,7 +63,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		
 		org.lgna.croquet.components.Component< ? > component;
 		if( isDropDownDesired ) {
-			component = org.alice.ide.croquet.models.ast.FieldInitializerState.getInstance( this.field ).createEditor( org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance() );
+			component = org.alice.ide.croquet.models.ast.FieldInitializerState.getInstance( this.field ).createEditor( org.alice.ide.x.EditableAstI18nFactory.getInheritGroupInstance() );
 		} else {
 			component = new org.alice.ide.x.components.ExpressionPropertyView( factory, field.initializer );
 		}

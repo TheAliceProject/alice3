@@ -51,10 +51,14 @@ public class InsertStatementEdit< M extends org.lgna.croquet.CompletionModel > e
 	private org.lgna.project.ast.Statement statement;
 	private int specifiedIndex;
 	private org.lgna.project.ast.Expression[] initialExpressions;
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toBeRemovedblockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
+	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
 		super( completionStep );
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = this.findFirstDropSite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class );
-		assert blockStatementIndexPair.equals( toBeRemovedblockStatementIndexPair );
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromHistoryBlockStatementIndexPair = this.findFirstDropSite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class );
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( blockStatementIndexPair, fromHistoryBlockStatementIndexPair ) ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( blockStatementIndexPair, fromHistoryBlockStatementIndexPair );
+		}
 		this.blockStatement = blockStatementIndexPair.getBlockStatement();
 		this.specifiedIndex = blockStatementIndexPair.getIndex();
 		this.statement = statement;

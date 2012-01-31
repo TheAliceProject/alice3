@@ -48,7 +48,6 @@ package org.lgna.croquet;
 public abstract class StringState extends State< String > {
 	public class SwingModel {
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
-
 		private SwingModel() {
 		}
 		public javax.swing.text.Document getDocument() {
@@ -114,6 +113,21 @@ public abstract class StringState extends State< String > {
 		binaryEncoder.encode( value );
 	}
 
+	private boolean isEnabled = true;
+	@Override
+	public boolean isEnabled() {
+		return this.isEnabled;
+	}
+	@Override
+	public void setEnabled( boolean isEnabled ) {
+		if( this.isEnabled != isEnabled ) {
+			this.isEnabled = isEnabled;
+			for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
+				component.getAwtComponent().setEnabled( this.isEnabled );
+			}
+		}
+	}
+
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}
@@ -155,6 +169,9 @@ public abstract class StringState extends State< String > {
 
 	public org.lgna.croquet.components.TextField createTextField() {
 		return new org.lgna.croquet.components.TextField( this );
+	}
+	public org.lgna.croquet.components.PasswordField createPasswordField() {
+		return new org.lgna.croquet.components.PasswordField( this );
 	}
 	public org.lgna.croquet.components.TextArea createTextArea() {
 		return new org.lgna.croquet.components.TextArea( this );

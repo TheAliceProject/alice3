@@ -310,7 +310,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		CascadeBlankChild< T > blankChild;
 		TreeNodeFillIn< T > fillIn = TreeNodeFillIn.getInstance( this, childNode );
 		if( this.isComboDesired( childNode ) ) {
-			blankChild = new CascadeFillInMenuCombo< T >( fillIn, TreeNodeMenu.getInstance( this, childNode ) );
+			blankChild = new CascadeItemMenuCombo< T >( fillIn, TreeNodeMenu.getInstance( this, childNode ) );
 		} else {
 			blankChild = fillIn;
 		}

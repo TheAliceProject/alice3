@@ -40,35 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserLambda extends AbstractUserMethod implements Lambda {
-	public UserLambda() {
+public class PasswordField extends TextComponent< javax.swing.JPasswordField > {
+	public PasswordField( org.lgna.croquet.StringState model ) {
+		super( model );
 	}
-	public UserLambda( AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
-		super( returnType, requiredParameters, body );
-	}
-	public UserLambda( Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
-		this( JavaType.getInstance( returnCls ), requiredParameters, body );
-	}
+	
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
-	@Override
-	public boolean isAbstract() {
-		return false;
-	}
-	@Override
-	public boolean isFinal() {
-		return false;
+	protected javax.swing.JPasswordField createAwtComponent() {
+		javax.swing.JPasswordField rv = new javax.swing.JPasswordField();
+		return rv;
 	}
 }

@@ -78,7 +78,7 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 		} else {
 			composite = null;
 		}
-		this.getView().showComposite( composite );
+		this.showCard( composite );
 	}
 	@Override
 	public void handlePreActivation() {

@@ -40,35 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserLambda extends AbstractUserMethod implements Lambda {
-	public UserLambda() {
+public class SetFromBelowLightColor extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetFromBelowLightColor.class )
+	public static interface Detail {
 	}
-	public UserLambda( AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
-		super( returnType, requiredParameters, body );
-	}
-	public UserLambda( Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
-		this( JavaType.getInstance( returnCls ), requiredParameters, body );
-	}
-	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
-	@Override
-	public boolean isAbstract() {
-		return false;
-	}
-	@Override
-	public boolean isFinal() {
-		return false;
+	private SetFromBelowLightColor() {
+		super();
 	}
 }

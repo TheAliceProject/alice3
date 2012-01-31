@@ -58,7 +58,7 @@ public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuM
 		if( jointedTypeInfos != null && jointedTypeInfos.size() > 0 ) {
 			//org.alice.stageide.ast.JointedModelUtilities.JointedTypeInfo info = jointedTypes.get( 0 );
 			for( org.alice.stageide.ast.JointedTypeInfo info : jointedTypeInfos ) {
-				rv.add( org.alice.stageide.ast.JointedModelTypeSeparator.getInstance( info.getType() ) );
+				rv.add( org.alice.stageide.cascade.JointedModelTypeSeparator.getInstance( info.getType() ) );
 				for( org.lgna.project.ast.AbstractMethod method : info.getJointGetters() ) {
 					org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > fillIn = this.getFillIn( method );
 					if( fillIn != null ) {

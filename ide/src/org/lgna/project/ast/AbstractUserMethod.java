@@ -64,7 +64,12 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 		this.requiredParameters.add( requiredParameters );
 		this.body.setValue( body );
 	}
-		
+
+	@Override
+	public UserType< ? > getDeclaringType() {
+		return (UserType< ? >)super.getDeclaringType();
+	}
+	
 	@Override
 	public final org.lgna.project.annotations.Visibility getVisibility() {
 		return org.lgna.project.annotations.Visibility.PRIME_TIME;
@@ -79,12 +84,6 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 	public final NodeListProperty< UserParameter > getRequiredParamtersProperty() {
 		return this.requiredParameters;
 	}
-	
-	@Override
-	public final boolean isValid() {
-		return true;
-	}
-	
 	public final AbstractType<?,?,?> getReturnType() {
 		return returnType.getValue();
 	}
