@@ -283,7 +283,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 				releaseRenderingLock();
 			}
 		} else {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
 		}
 		LookingGlassFactory.this.handleDisplayed();
 		return rv;
@@ -322,9 +322,11 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			};
 			this.animator.start();
 		}
+		//Thread.dumpStack();
 	}
 	public synchronized void decrementAutomaticDisplayCount() {
 		this.automaticDisplayCount--;
+		//Thread.dumpStack();
 	}
 		
 	public void releasing( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
