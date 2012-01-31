@@ -56,6 +56,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.CollisionListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ProximityEventListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.SceneActivationEventFillerInner() );
+		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.TimerEventListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );

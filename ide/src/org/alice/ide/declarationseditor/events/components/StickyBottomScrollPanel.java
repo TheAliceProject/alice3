@@ -15,6 +15,8 @@ import javax.swing.JScrollPane;
 import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.croquet.components.ScrollPane;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
 public class StickyBottomScrollPanel extends org.lgna.croquet.components.Panel {
 
 	private final boolean IS_BORDER_PANEL = false;
@@ -56,6 +58,7 @@ public class StickyBottomScrollPanel extends org.lgna.croquet.components.Panel {
 				}
 
 				public Dimension minimumLayoutSize(Container target) {
+			    	Logger.outln( "minimumLayoutSize" );
 					synchronized (target.getTreeLock()) {
 						Dimension dim = new Dimension(0, 0);
 
@@ -79,6 +82,7 @@ public class StickyBottomScrollPanel extends org.lgna.croquet.components.Panel {
 				}
 
 				public Dimension preferredLayoutSize(Container target) {
+			    	Logger.outln( "preferredLayoutSize" );
 					synchronized (target.getTreeLock()) {
 						Dimension dim = new Dimension(0, 0);
 
@@ -102,6 +106,8 @@ public class StickyBottomScrollPanel extends org.lgna.croquet.components.Panel {
 				}
 
 				public void layoutContainer(Container target) {
+			    	Logger.outln( "layoutContainer" );
+//					Thread.dumpStack();
 					synchronized (target.getTreeLock()) {
 						Insets insets = target.getInsets();
 						int top = insets.top;
@@ -138,6 +144,7 @@ public class StickyBottomScrollPanel extends org.lgna.croquet.components.Panel {
 				}
 
 			    public Dimension maximumLayoutSize(Container target) {
+			    	Logger.outln( "maximumLayoutSize" );
 			        return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 			    }
 			    public float getLayoutAlignmentX(Container parent) {
@@ -147,6 +154,7 @@ public class StickyBottomScrollPanel extends org.lgna.croquet.components.Panel {
 			        return 0.5f;
 			    }
 			    public void invalidateLayout(Container target) {
+			    	Logger.outln( "invalidateLayout" );
 			    }
 			};
 		}

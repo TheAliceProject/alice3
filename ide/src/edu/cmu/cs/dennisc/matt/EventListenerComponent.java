@@ -114,6 +114,8 @@ public class EventListenerComponent extends BorderPanel {
 //			}
 //			System.out.println(requiredParametersListView);
 		}
+		System.out.println("methodName " + method.getName());
+		System.out.println("keyedParam " + method.getKeyedParameter());
 		if(method.getKeyedParameter() != null) {
 			JComponent< ? > keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), methodInvocation.getKeyedArgumentsProperty() );
 			rv.addComponent( keyedArgumentListView );
