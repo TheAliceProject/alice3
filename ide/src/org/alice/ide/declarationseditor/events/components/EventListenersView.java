@@ -1,8 +1,5 @@
 package org.alice.ide.declarationseditor.events.components;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-
 import org.alice.ide.controlflow.ControlFlowComposite;
 import org.alice.ide.declarationseditor.events.AddEventListenerCascade;
 import org.lgna.croquet.components.Component;
