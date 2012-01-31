@@ -245,27 +245,37 @@ public class ProgramImp {
 			ProgramImp.this.getAnimator().update();
 		}
 	};
+	
+	private boolean isAnimatorStarted = false;
 	public void startAnimator() {
 		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
 		lookingGlassFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
 		lookingGlassFactory.incrementAutomaticDisplayCount();
+		this.isAnimatorStarted = true;
 	}
 	public void stopAnimator() {
-		this.getAnimator().completeAll( null );
-		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
-		lookingGlassFactory.decrementAutomaticDisplayCount();
-		lookingGlassFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
+		if( this.isAnimatorStarted ) {
+			this.getAnimator().completeAll( null );
+			edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
+			lookingGlassFactory.decrementAutomaticDisplayCount();
+			lookingGlassFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
+			this.isAnimatorStarted = false;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.isAnimatorStarted );
+		}
 	}
 	
 	private void addComponents( java.awt.Container container ) {
-		java.awt.Component awtComponent = this.getOnscreenLookingGlass().getAWTComponent();
-		container.add( awtComponent );
-		javax.swing.JComponent controlPanel = this.createControlPanelIfDesired();
-		if( controlPanel != null ) {
-			container.add( controlPanel, java.awt.BorderLayout.PAGE_START );
-		}
-		if (container instanceof javax.swing.JComponent	) {
-			((javax.swing.JComponent)container).revalidate();
+		synchronized( container.getTreeLock() ) {
+			java.awt.Component awtComponent = this.getOnscreenLookingGlass().getAWTComponent();
+			container.add( awtComponent );
+			javax.swing.JComponent controlPanel = this.createControlPanelIfDesired();
+			if( controlPanel != null ) {
+				container.add( controlPanel, java.awt.BorderLayout.PAGE_START );
+			}
+			if (container instanceof javax.swing.JComponent	) {
+				((javax.swing.JComponent)container).revalidate();
+			}
 		}
 	}
 	
@@ -311,6 +321,7 @@ public class ProgramImp {
 	}
 	private boolean isProgramClosedExceptionDesired = false;
 	public void shutDown() {
+		this.onscreenLookingGlass.release();
 		this.stopAnimator();
 		this.isProgramClosedExceptionDesired = true;
 	}
