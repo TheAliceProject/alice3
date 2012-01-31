@@ -84,7 +84,11 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 		this.rootPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)code );
 
 		org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel();
-		panel.addComponent( this.rootPane, Constraint.PAGE_START );
+		panel.addComponent( this.rootPane, Constraint.CENTER );
+		
+//		//Logger.todo( "remove scroll pane" );
+//		this.getScrollPane().setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy.NEVER );
+//		this.getScrollPane().setVerticalScrollbarPolicy( VerticalScrollbarPolicy.NEVER );
 		
 //		org.lgna.croquet.components.GridBagPanel panel = new org.lgna.croquet.components.GridBagPanel();
 //		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
