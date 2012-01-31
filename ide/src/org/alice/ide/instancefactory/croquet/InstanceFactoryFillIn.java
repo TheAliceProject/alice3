@@ -86,7 +86,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 		}
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< InstanceFactoryFillIn > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.InstanceFactoryStaticGetInstanceKeyedResolver< InstanceFactoryFillIn > createResolver() {
 		return new org.alice.ide.croquet.resolvers.InstanceFactoryStaticGetInstanceKeyedResolver< InstanceFactoryFillIn >( this, this.value );
 	}
 	@Override
@@ -109,5 +109,12 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 	@Override
 	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.instancefactory.InstanceFactory, java.lang.Void > step ) {
 		return this.value;
+	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "value=" );
+		rv.append( this.value );
+		return rv;
 	}
 }

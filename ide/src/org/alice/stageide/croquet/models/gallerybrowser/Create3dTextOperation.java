@@ -188,7 +188,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		this.sample = new org.lgna.croquet.components.Label( "AaBbYyZz", 1.2f );
 		this.updateSample();
 
-		org.lgna.croquet.ListSelectionState.ValueObserver< String > valueObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< String >() {
+		org.lgna.croquet.ListSelectionState.ValueListener< String > valueObserver = new org.lgna.croquet.ListSelectionState.ValueListener< String >() {
 			public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
@@ -200,8 +200,8 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 			}
 		};
 		
-		this.familySelection.addValueObserver( valueObserver );
-		this.styleSelection.addValueObserver( valueObserver );
+		this.familySelection.addValueListener( valueObserver );
+		this.styleSelection.addValueListener( valueObserver );
 //		class ListSelectionAdapter implements javax.swing.event.ListSelectionListener {
 //			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 //				if( e.getValueIsAdjusting() ) {
@@ -231,7 +231,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		public ConstrainInstanceNameToTextBooleanStateOperation() {
 			super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false );
 			this.setTextForBothTrueAndFalse( "constrain to text" );
-			this.addValueObserver( new ValueObserver<Boolean>() {
+			this.addValueListener( new ValueListener<Boolean>() {
 				public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				}
 				public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {

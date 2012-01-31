@@ -111,10 +111,12 @@ public abstract class AbstractListPropertyPane< P extends edu.cmu.cs.dennisc.pro
 			} else {
 				component = new org.lgna.croquet.components.Label( "null" );
 			}
-			this.addComponent( component );
-			org.lgna.croquet.components.Component< ? > interstitial = this.createInterstitial( i, N );
-			if( interstitial != null ) {
-				this.addComponent( interstitial );
+			if( component != null ) {
+				this.addComponent( component );
+				org.lgna.croquet.components.Component< ? > interstitial = this.createInterstitial( i, N );
+				if( interstitial != null ) {
+					this.addComponent( interstitial );
+				}
 			}
 			i++;
 		}

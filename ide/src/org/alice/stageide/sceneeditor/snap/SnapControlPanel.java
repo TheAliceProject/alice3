@@ -73,7 +73,7 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 	
 	private boolean isInitializing = false;
 	
-	private org.lgna.croquet.State.ValueObserver< Boolean > snapStateValueObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+	private org.lgna.croquet.State.ValueListener< Boolean > snapStateValueObserver = new org.lgna.croquet.State.ValueListener< Boolean >() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -86,7 +86,7 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 		this.detailsPanel = new GridBagPanel();
 		this.detailsPalette = AreSnapDetailsExpandedState.getInstance().createToolPalette(detailsPanel);
 		initializeUI();
-		SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueObserver(this.snapStateValueObserver);
+		SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueListener(this.snapStateValueObserver);
 		updateUIFromSnapState();
 	}
 	
@@ -227,7 +227,7 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 	{
 		if (SnapState.getInstance() != null)
 		{
-			SnapState.getInstance().getIsSnapEnabledState().removeValueObserver(this.snapStateValueObserver);
+			SnapState.getInstance().getIsSnapEnabledState().removeValueListener(this.snapStateValueObserver);
 		}
 		initializeUI();
 		

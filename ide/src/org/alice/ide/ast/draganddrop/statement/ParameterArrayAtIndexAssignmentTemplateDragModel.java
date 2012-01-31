@@ -64,7 +64,7 @@ public class ParameterArrayAtIndexAssignmentTemplateDragModel extends StatementT
 		this.parameter = parameter;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< ParameterArrayAtIndexAssignmentTemplateDragModel > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterArrayAtIndexAssignmentTemplateDragModel > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterArrayAtIndexAssignmentTemplateDragModel >( this, this.parameter, org.lgna.project.ast.UserParameter.class );
 	}
 	@Override

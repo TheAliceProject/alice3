@@ -62,7 +62,7 @@ public class EditConstructorOperation extends EditCodeOperation< org.lgna.projec
 //		this.setName( "<html>Edit <strong>constructor</strong></html>" );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditConstructorOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditConstructorOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditConstructorOperation >( this, this.getCode(), org.lgna.project.ast.NamedUserConstructor.class );
 	}
 }

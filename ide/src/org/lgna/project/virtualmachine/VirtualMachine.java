@@ -798,29 +798,6 @@ public abstract class VirtualMachine {
 
 	private static int threadCount = 0;
 
-	protected void executeDoInThread( final org.lgna.project.ast.DoInThread doInThread ) throws ReturnException {
-		throw new RuntimeException();
-		//		final Frame frame = this.createCopyOfCurrentFrame();
-		//		new edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString( org.alice.virtualmachine.ThreadGroupUtilities.getThreadGroup(), "DoInThread-"+(VirtualMachine.threadCount++) ) {
-		//			@Override
-		//			public void run() {
-		//				pushCurrentThread( frame );
-		//				try {
-		//					edu.cmu.cs.dennisc.alice.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
-		//						public void run() {
-		//							try {
-		//								execute( doInThread.body.getValue() );
-		//							} catch( ReturnException re ) {
-		//								//todo
-		//							}
-		//						}
-		//					} );
-		//				} finally {
-		//					popCurrentThread();
-		//				}
-		//			}
-		//		}.start();
-	}
 	protected void executeDoTogether( org.lgna.project.ast.DoTogether doTogether ) throws ReturnException {
 		org.lgna.project.ast.BlockStatement blockStatement = doTogether.body.getValue();
 		//todo?
@@ -958,8 +935,6 @@ public abstract class VirtualMachine {
 				this.executeDoTogether( (org.lgna.project.ast.DoTogether)statement );
 			} else if( statement instanceof org.lgna.project.ast.DoInOrder ) {
 				this.executeDoInOrder( (org.lgna.project.ast.DoInOrder)statement );
-			} else if( statement instanceof org.lgna.project.ast.DoInThread ) {
-				this.executeDoInThread( (org.lgna.project.ast.DoInThread)statement );
 			} else if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
 				this.executeExpressionStatement( (org.lgna.project.ast.ExpressionStatement)statement );
 			} else if( statement instanceof org.lgna.project.ast.ForEachInArrayLoop ) {

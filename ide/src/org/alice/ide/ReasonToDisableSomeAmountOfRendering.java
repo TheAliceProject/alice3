@@ -46,7 +46,7 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public enum ReasonToDisableSomeAmountOfRendering { 
-	RUN_PROGRAM,
+	MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN,
 	DRAG_AND_DROP,
 	CLICK_AND_CLACK
 }

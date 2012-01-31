@@ -40,30 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoInThreadInsertOperation extends StatementInsertOperation {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInThreadInsertOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DoInThreadInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		DoInThreadInsertOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DoInThreadInsertOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
+public abstract class AbstractListData<T> implements ListData< T > {
+	private final java.util.List< Listener<T> > listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public final void addListener( Listener<T> listener ) {
+		this.listeners.add( listener );
+	}
+	public final void removeListener( Listener<T> listener ) {
+		this.listeners.remove( listener );
+	}
+	protected void fireChanged() {
+		for( Listener< T > listener : this.listeners ) {
+			listener.changed();
 		}
-		return rv;
-	}
-	private DoInThreadInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "3a3c15b6-adf7-4665-a45e-8fc0d19e9489" ), blockStatementIndexPair );
-	}
-	@Override
-	protected final org.lgna.project.ast.Statement createStatement() {
-		return org.lgna.project.ast.AstUtilities.createDoInThread();
 	}
 }

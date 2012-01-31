@@ -53,6 +53,24 @@ public class ComboBox<E> extends ItemSelectable< javax.swing.JComboBox, E > {
 		super( model );
 		this.setSwingComboBoxModel( model.getSwingModel().getComboBoxModel() );
 	}
+	
+	@Override
+	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
+		super.appendPrepStepsIfNecessary( transaction );
+		org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+		org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
+		assert completionModel == this.getModel();
+		org.lgna.croquet.ListSelectionState.InternalPrepModel< E > prepModel = this.getModel().getPrepModel();
+		if( transaction.getPrepStepCount() == 1 ) {
+			org.lgna.croquet.history.PrepStep< ? > prepStep = transaction.getPrepStepAt( 0 );
+			if( prepStep.getModel() == prepModel ) {
+				return;
+			}
+		}
+		transaction.removeAllPrepSteps();
+		org.lgna.croquet.history.ListSelectionStatePrepStep.createAndAddToTransaction( transaction, prepModel, new org.lgna.croquet.triggers.SimulatedTrigger() );		
+	}
+	
 
 	@Override
 	public boolean isSingleStageSelectable() {

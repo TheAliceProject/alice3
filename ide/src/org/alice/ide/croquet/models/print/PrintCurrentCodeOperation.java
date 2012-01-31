@@ -57,7 +57,7 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 	}
 	@Override
 	protected java.awt.print.Printable getPrintable() {
-		org.alice.ide.declarationseditor.DeclarationComposite composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+		org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
 		org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
 		if( view.isPrintSupported() ) {
 			return view;

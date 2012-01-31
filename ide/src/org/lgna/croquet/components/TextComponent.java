@@ -57,6 +57,7 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 		super( model );
 		this.getAwtComponent().setBorder( this.border );
 		this.getAwtComponent().setDocument( model.getSwingModel().getDocument() );
+		this.getAwtComponent().setEnabled( model.isEnabled() );
 		this.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
 		this.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
 	}

@@ -40,12 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.triggers;
+package org.alice.ide.recentprojects;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface RetargetableTrigger extends Trigger {
-	public void retarget( org.lgna.croquet.Retargeter retargeter );
+public class NoRecentUrisSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static class SingletonHolder {
+		private static NoRecentUrisSeparatorModel instance = new NoRecentUrisSeparatorModel();
+	}
+	public static NoRecentUrisSeparatorModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private NoRecentUrisSeparatorModel() {
+		super( java.util.UUID.fromString( "6548f15f-f680-4333-84e9-788c4fa7563c" ) );
+	}
 }

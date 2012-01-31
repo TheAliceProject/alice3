@@ -105,7 +105,7 @@ public abstract class MenuModel extends AbstractMenuModel {
 //		}
 		
 		@Override
-		protected org.lgna.croquet.resolvers.CodableResolver< InternalPopupPrepModel > createCodableResolver() {
+		protected InternalPopupPrepModelResolver createResolver() {
 			return new InternalPopupPrepModelResolver( this.menuModel );
 		}
 		

@@ -224,7 +224,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		this.stencil = new Stencil( application.getFrame(), scrollingRequiredRenderer, menuPolicy );
-		this.isInterceptingEvents.addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		this.isInterceptingEvents.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -232,7 +232,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			}
 		} );
 
-		this.isPaintingStencil.addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		this.isPaintingStencil.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -242,7 +242,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			}
 		} );
 
-		this.isPlayingSounds.addAndInvokeValueObserver( new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		this.isPlayingSounds.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -291,6 +291,16 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		if( chapter != null ) {
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			chapterPage.refreshNotes();
+			Iterable< org.lgna.croquet.Context > contexts = chapter.getAllContexts();
+			for( org.lgna.croquet.Context context : contexts ) {
+				if( context.isGoodToGo() ) {
+					//pass
+				} else {
+					org.lgna.croquet.history.Transaction recoveryTransaction = context.createRecoveryTransaction();
+					this.insertRecoveryTransactionChapter( recoveryTransaction );
+					return;
+				}
+			}
 			if( chapterPage.isGoodToGo() ) {
 				java.awt.Cursor cursor = java.awt.Cursor.getDefaultCursor();
 				if( chapterPage.isStencilRenderingDesired() ) {
@@ -321,33 +331,35 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				this.stencil.revalidateAndRepaint();
 				this.stencil.setCursor( cursor );
 			} else {
-				
-				org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
-				org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
-				transaction.removeAllPrepSteps();
-				chapterPage.refreshNotes();
-				if( chapterPage.isGoodToGo() ) {
-					this.handleChapterChanged( chapter );
-				} else {
-					java.util.List< org.lgna.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
-					if( menuItemPrepModels != null ) {
-						org.lgna.croquet.history.TransactionManager.simulatedMenuTransaction( transaction, menuItemPrepModels );
-						chapterPage.refreshNotes();
-						if( chapterPage.isGoodToGo() ) {
-							this.handleChapterChanged( chapter );
-						}
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+				if( false ) {
+					org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
+					org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
+					transaction.removeAllPrepSteps();
+					chapterPage.refreshNotes();
+					if( chapterPage.isGoodToGo() ) {
+						this.handleChapterChanged( chapter );
 					} else {
-						transaction.setPrepSteps( prepSteps );
-						chapterPage.refreshNotes();
-						org.lgna.croquet.history.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
-						if( tabSelectionRecoveryTransaction != null ) {
-							this.insertRecoveryTransactionChapter( tabSelectionRecoveryTransaction );
+						java.util.List< org.lgna.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
+						if( menuItemPrepModels != null ) {
+							org.lgna.croquet.history.TransactionManager.simulatedMenuTransaction( transaction, menuItemPrepModels );
+							chapterPage.refreshNotes();
+							if( chapterPage.isGoodToGo() ) {
+								this.handleChapterChanged( chapter );
+							}
 						} else {
-							org.lgna.croquet.history.Transaction applicationRecoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
-							if( applicationRecoveryTransaction != null ) {
-								this.insertRecoveryTransactionChapter( applicationRecoveryTransaction );
+							transaction.setPrepSteps( prepSteps );
+							chapterPage.refreshNotes();
+							org.lgna.croquet.history.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
+							if( tabSelectionRecoveryTransaction != null ) {
+								this.insertRecoveryTransactionChapter( tabSelectionRecoveryTransaction );
 							} else {
-								org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
+								org.lgna.croquet.history.Transaction applicationRecoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
+								if( applicationRecoveryTransaction != null ) {
+									this.insertRecoveryTransactionChapter( applicationRecoveryTransaction );
+								} else {
+									org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
+								}
 							}
 						}
 					}

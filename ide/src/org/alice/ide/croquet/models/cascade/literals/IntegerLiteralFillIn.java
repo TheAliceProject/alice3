@@ -74,7 +74,7 @@ public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 		return new org.lgna.project.ast.IntegerLiteral( this.transientValue.value.getValue() );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
 	}
 	@Override

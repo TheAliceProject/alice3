@@ -59,11 +59,11 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	
 	@Override
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		rv.append( "Preview your program." );
+		rv.append( " to preview your program." );
 		return rv;
 	}
 //	@Override
-//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
+//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
 //		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 //	}
 	private transient org.alice.stageide.program.RunProgramContext programContext;
@@ -78,9 +78,31 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		dialog.setSize( this.size );
 	}
 	
+	private class ProgramRunnable implements Runnable { 
+		private final java.awt.Container awtContainer;
+		public ProgramRunnable( java.awt.Container awtContainer ) {
+			this.awtContainer = awtContainer;
+		}
+		public void run() {
+			RunOperation.this.programContext = new org.alice.stageide.program.RunProgramContext();
+			RunOperation.this.programContext.getProgramImp().setRestartAction( RunOperation.this.restartAction );
+			RunOperation.this.programContext.initializeInContainer( this.awtContainer );
+			RunOperation.this.programContext.setActiveScene();
+		}		
+	}
+	private void startProgram( java.awt.Container awtContainer ) {
+		new org.lgna.common.ComponentThread( new ProgramRunnable( awtContainer ), RunOperation.this.getName() ).start();
+	}
+	private java.awt.Container stopProgram() {
+		java.awt.Container rv = this.programContext.getContainer(); 
+		this.programContext.cleanUpProgram();
+		this.programContext = null;
+		return rv;
+	}
 	private class RestartAction extends javax.swing.AbstractAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo" );
+			java.awt.Container awtContainer = RunOperation.this.stopProgram();
+			RunOperation.this.startProgram( awtContainer );
 		}
 	};
 	private final RestartAction restartAction = new RestartAction();
@@ -94,17 +116,8 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		if( ide.getProject() != null ) {
-			final org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-			new Thread() {
-				@Override
-				public void run() {
-					super.run();
-					RunOperation.this.programContext = new org.alice.stageide.program.RunProgramContext();
-					RunOperation.this.programContext.getProgramImp().setRestartAction( RunOperation.this.restartAction );
-					RunOperation.this.programContext.initializeInContainer( rv.getAwtComponent() );
-					RunOperation.this.programContext.setActiveScene();
-				}
-			}.start();
+			org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+			this.startProgram( rv.getAwtComponent() );
 			return rv;
 		} else {
 			ide.showMessageDialog( "Please open a project first." );
@@ -123,7 +136,6 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	@Override
 	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		super.handleFinally( step, dialog, contentPane );
-		this.programContext.cleanUpProgram();
-		this.programContext = null;
+		this.stopProgram();
 	}
 }

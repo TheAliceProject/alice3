@@ -203,7 +203,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 		}
 	}
 	
-	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.instancefactory.InstanceFactory > instanceFactoryListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.instancefactory.InstanceFactory >() {
+	private final org.lgna.croquet.State.ValueListener< org.alice.ide.instancefactory.InstanceFactory > instanceFactoryListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.instancefactory.InstanceFactory >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
@@ -241,11 +241,11 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.getModel().addValueObserver( this.instanceFactoryListener );
+		this.getModel().addValueListener( this.instanceFactoryListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		this.getModel().removeValueObserver( this.instanceFactoryListener );
+		this.getModel().removeValueListener( this.instanceFactoryListener );
 		super.handleUndisplayable();
 	}
 }

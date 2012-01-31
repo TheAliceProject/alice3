@@ -49,6 +49,11 @@ package org.lgna.project.ast;
 public abstract class AbstractDeclaration extends AbstractNode implements Declaration {
 	public abstract boolean isUserAuthored();
 	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
+	
+	@Override
+	public boolean isAppropriatelyIdenitifiedById() {
+		return this.isUserAuthored();
+	}
 	@Override
 	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< AbstractNode > nodes ) {
 		rv.add( this );
@@ -61,22 +66,20 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 		return rv;
 	}
 	
-	@Override
 	public String getName() {
 		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
 		if( nameProperty != null ) {
 			return nameProperty.getValue();
 		} else {
-			return super.getName();
+			throw new RuntimeException( this.toString() );
 		}
 	}
-	@Override
 	public void setName( String name ) {
 		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
 		if( nameProperty != null ) {
 			nameProperty.setValue( name );
 		} else {
-			super.setName( name );
+			throw new RuntimeException( this + " " + name );
 		}
 	}
 	@Override

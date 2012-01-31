@@ -67,7 +67,7 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 		super( method );
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< ThisMethodInvocationFactory > createResolver() {
+	protected org.lgna.croquet.resolvers.Resolver< ThisMethodInvocationFactory > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisMethodInvocationFactory >( this, this.getMethod(), org.lgna.project.ast.AbstractMethod.class );
 	}
 	@Override

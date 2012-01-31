@@ -105,7 +105,7 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 			this.getDialog().setVisible( false );
 		}
 		@Override
-		protected InternalCompleteOperationResolver createCodableResolver() {
+		protected InternalCompleteOperationResolver createResolver() {
 			return new InternalCompleteOperationResolver( this.getGatedCommitDialogOperation() );
 		}
 	}
@@ -119,7 +119,7 @@ public abstract class GatedCommitDialogOperation<S extends org.lgna.croquet.hist
 			this.getDialog().setVisible( false );
 		}
 		@Override
-		protected InternalCancelOperationResolver createCodableResolver() {
+		protected InternalCancelOperationResolver createResolver() {
 			return new InternalCancelOperationResolver( this.getGatedCommitDialogOperation() );
 		}
 	}

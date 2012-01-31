@@ -327,6 +327,14 @@ public class TransactionManager {
 ////		finishPendingTransactionIfNecessary();
 //	}
 
+	public static <E> Transaction createSimulatedTransaction( TransactionHistory transactionHistory, CustomItemState< E > state, E prevValue, E nextValue ) {
+		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
+		org.lgna.croquet.history.CustomItemStateChangeStep< E > completionStep = org.lgna.croquet.history.CustomItemStateChangeStep.createAndAddToTransaction( rv, state, new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.edits.CustomItemStateEdit< E > edit = new org.lgna.croquet.edits.CustomItemStateEdit< E >( completionStep, prevValue, nextValue );
+		completionStep.setEdit( edit );
+		return rv;
+	}
+
 	public static <E> Transaction createSimulatedTransaction( TransactionHistory transactionHistory, ListSelectionState< E > state, E prevValue, E nextValue, boolean isPrepStepDesired ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
 		if( isPrepStepDesired ) {

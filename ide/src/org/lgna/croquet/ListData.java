@@ -40,12 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.resolvers;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface CodableResolver<T> extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public T getResolved();
+public interface ListData< T > {
+	public static interface Listener<T> {
+		//todo
+		public void changed();
+	}
+	public ItemCodec< T > getItemCodec();
+	public int getSize();
+	public T get( int index );
+	public void addListener( Listener<T> listener );
+	public void removeListener( Listener<T> listener );
 }

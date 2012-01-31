@@ -422,7 +422,17 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
 		super.fireChanging( prevValue, nextValue, isAdjusting );
 		this.swingModel.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.swingModel.listSelectionModel.getValueIsAdjusting() );
-		this.swingModel.comboBoxModel.ACCESS_fireContentsChanged( this, this.index, this.index );
+		this.fireContentsChanged( this.index, this.index );
+	}
+	
+	protected void fireContentsChanged( int index0, int index1 ) {
+		this.swingModel.comboBoxModel.ACCESS_fireContentsChanged( this, index0, index1 );
+	}
+	protected void fireIntervalAdded( int index0, int index1 ) {
+		this.swingModel.comboBoxModel.ACCESS_fireIntervalAdded( this, index0, index1 );
+	}
+	protected void fireIntervalRemoved( int index0, int index1 ) {
+		this.swingModel.comboBoxModel.ACCESS_fireIntervalRemoved( this, index0, index1 );
 	}
 
 	public final void setItems( T... items ) {
@@ -546,7 +556,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			this.listSelectionState.setEnabled( isEnabled );
 		}
 		@Override
-		protected InternalMenuModelResolver< T > createCodableResolver() {
+		protected InternalMenuModelResolver< T > createResolver() {
 			return new InternalMenuModelResolver< T >( this.listSelectionState );
 		}
 		@Override
@@ -621,7 +631,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			this.listSelectionState.setEnabled( isEnabled );
 		}
 		@Override
-		protected InternalPrepModelResolver<T> createCodableResolver() {
+		protected InternalPrepModelResolver<T> createResolver() {
 			return new InternalPrepModelResolver<T>( this.listSelectionState );
 		}
 		
@@ -652,4 +662,35 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		}
 	}
 
+	private static class InternalSelectItemOperation<T> extends ActionOperation {
+		private final ListSelectionState< T > listSelectionState;
+		private final T item;
+		private InternalSelectItemOperation( ListSelectionState< T > listSelectionState, T item ) {
+			super( listSelectionState.getGroup(), java.util.UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
+			assert listSelectionState != null;
+			this.listSelectionState = listSelectionState;
+			this.item = item;
+		}
+		@Override
+		protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+			this.listSelectionState.setValue( this.item );
+			step.finish();
+		}
+	}
+	private java.util.Map< T, InternalSelectItemOperation<T> > mapItemToSelectionOperation;
+	public ActionOperation getItemSelectionOperation( T item ) {
+		if( mapItemToSelectionOperation != null ) {
+			//pass
+		} else {
+			this.mapItemToSelectionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		}
+		InternalSelectItemOperation<T> rv = this.mapItemToSelectionOperation.get( item );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new InternalSelectItemOperation< T >( this, item );
+			this.mapItemToSelectionOperation.put( item, rv );
+		}
+		return rv;
+	}
 }

@@ -52,7 +52,6 @@ public class UserMethod extends AbstractUserMethod {
 	public edu.cmu.cs.dennisc.property.BooleanProperty isFinal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 
-	private UserType<?> m_declaringType;
 	public UserMethod() {
 	}
 	public UserMethod( String name, AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
@@ -70,13 +69,6 @@ public class UserMethod extends AbstractUserMethod {
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return this.name;
-	}
-	@Override
-	public UserType<?> getDeclaringType() {
-		return m_declaringType;
-	}
-	public void setDeclaringType( UserType<?> declaringType ) {
-		m_declaringType = declaringType;
 	}
 	@Override
 	public boolean isStatic() {

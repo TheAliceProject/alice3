@@ -74,4 +74,8 @@ public class MessageChapter extends Chapter {
 	public boolean isAlreadyInTheDesiredState() {
 		return true;
 	}
+	@Override
+	public Iterable< org.lgna.croquet.Context > getAllContexts() {
+		return java.util.Collections.emptyList();
+	}
 }

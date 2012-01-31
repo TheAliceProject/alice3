@@ -46,41 +46,41 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class State<T> extends CompletionModel {
-	public static interface ValueObserver<T> {
+	public static interface ValueListener<T> {
 		public void changing( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 		public void changed( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 	};
-	private final java.util.List< ValueObserver<T> > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< ValueListener<T> > valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private T prevValueForSkipCheck;
 	public State( Group group, java.util.UUID id, T initialValue ) {
 		super(group, id);
 		this.prevValueForSkipCheck = initialValue;
 	}
-	public void addValueObserver( ValueObserver<T> valueObserver ) {
-		assert this.valueObservers.contains( valueObserver ) == false : valueObserver;
-		this.valueObservers.add( valueObserver );
+	public void addValueListener( ValueListener<T> valueListener ) {
+		assert this.valueListeners.contains( valueListener ) == false : valueListener;
+		this.valueListeners.add( valueListener );
 	}
 	@Deprecated
-	public void addAndInvokeValueObserver( ValueObserver<T> valueObserver ) {
-		this.addValueObserver( valueObserver );
+	public void addAndInvokeValueListener( ValueListener<T> valueListener ) {
+		this.addValueListener( valueListener );
 		//todo
 		T prevValue = null;
-		valueObserver.changed( this, prevValue, this.getValue(), false );
+		valueListener.changed( this, prevValue, this.getValue(), false );
 	}
-	public void removeValueObserver( ValueObserver<T> valueObserver ) {
-		if( this.valueObservers.contains( valueObserver ) ) {
+	public void removeValueListener( ValueListener<T> valueListener ) {
+		if( this.valueListeners.contains( valueListener ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained", valueObserver );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained", valueListener );
 		}
-		this.valueObservers.remove( valueObserver );
+		this.valueListeners.remove( valueListener );
 	}
 	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
 		this.isInTheMidstOfChanging = true;
 		this.prevValueForChanging = prevValue;
 		try {
-			for( ValueObserver<T> valueObserver : this.valueObservers ) {
-				valueObserver.changing( this, prevValue, nextValue, isAdjusting );
+			for( ValueListener<T> valueListener : this.valueListeners ) {
+				valueListener.changing( this, prevValue, nextValue, isAdjusting );
 			}
 		} finally {
 			this.prevValueForChanging = null;
@@ -88,8 +88,8 @@ public abstract class State<T> extends CompletionModel {
 		}
 	}
 	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
-		for( ValueObserver<T> valueObserver : this.valueObservers ) {
-			valueObserver.changed( this, prevValue, nextValue, isAdjusting );
+		for( ValueListener<T> valueListener : this.valueListeners ) {
+			valueListener.changed( this, prevValue, nextValue, isAdjusting );
 		}
 	}
 	

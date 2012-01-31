@@ -41,20 +41,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.project.ast;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoInThread extends AbstractStatementWithBody {
-	public DoInThread() {
+public class CascadeItemMenuCombo<F> implements CascadeBlankChild< F > {
+	private final CascadeItem< F, ? > item;
+	private final CascadeItem< F, ? > menu;
+	public CascadeItemMenuCombo( CascadeItem< F, ? > item, CascadeItem< F, ? > menu ) {
+		this.item = item;
+		this.menu = menu;
 	}
-	public DoInThread( BlockStatement body ) {
-		super( body );
+	public int getItemCount() {
+		return 2;
 	}
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "do in thread" );
-		return super.appendRepr( rv, locale );
+	public org.lgna.croquet.CascadeItem< F, ? > getItemAt( int index ) {
+		switch( index ) {
+		case 0:
+			return this.item;
+		case 1:
+			return this.menu;
+		default:
+			throw new AssertionError();
+		}
 	}
 }

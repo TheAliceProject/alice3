@@ -72,7 +72,7 @@ public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssign
 	}
 	//todo
 //	@Override
-//	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver createCodableResolver() {
+//	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver createResolver() {
 //		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver( this );
 //	}
 }

@@ -41,39 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.ast;
+package org.lgna.croquet.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSeparator {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, JointedModelTypeSeparator > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized JointedModelTypeSeparator getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		assert type != null;
-		JointedModelTypeSeparator rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new JointedModelTypeSeparator( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
-	private final org.lgna.project.ast.AbstractType<?,?,?> type;
-	private JointedModelTypeSeparator( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		super( java.util.UUID.fromString( "200467b6-6cd7-45c1-850f-b853fa695187" ) );
-		this.type = type;
-	}
-	
-	@Override
-	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.type.getRepr( locale ) );
-		sb.append( " Joints" );
-		return sb.toString();
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator > createCodableResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator >( this, this.type, org.lgna.project.ast.AbstractType.class );
-	}
+public interface Resolver<T> extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public T getResolved();
+	public void retarget( org.lgna.croquet.Retargeter retargeter );
 }

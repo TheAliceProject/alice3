@@ -57,7 +57,15 @@ public class CodePerspective extends org.alice.ide.perspectives.IdePerspective {
 		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), org.alice.stageide.perspectives.code.CodePerspectiveComposite.getInstance() );
 	}
 	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
-		return org.alice.ide.declarationseditor.components.TypeEditor.getInstance().getCodeEditorInFocus();
+	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus() {
+		return org.alice.ide.declarationseditor.components.TypeEditor.getInstance().getCodeDropReceptorInFocus();
+	}
+	@Override
+	protected void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+		org.alice.ide.declarationseditor.DeclarationComposite< ?, ? > declarationComposite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+		if( declarationComposite != null ) {
+			org.alice.ide.declarationseditor.components.DeclarationView declarationView = declarationComposite.getView();
+			declarationView.addPotentialDropReceptors( out, dragModel );
+		}
 	}
 }

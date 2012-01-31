@@ -56,8 +56,12 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspec
 	private SetupScenePerspective() {
 		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance() );
 	}
+	
 	@Override
-	public org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
+	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus() {
 		return null;
+	}
+	@Override
+	protected void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
 	}
 }

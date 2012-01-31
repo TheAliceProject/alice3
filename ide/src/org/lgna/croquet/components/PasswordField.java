@@ -40,30 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeFillInMenuCombo<F> implements CascadeBlankChild< F > {
-	private final CascadeItem< F, ? > item;
-	private final CascadeItem< F, ? > menu;
-	public CascadeFillInMenuCombo( CascadeFillIn< F, ? > item, CascadeItem< F, ? > menu ) {
-		this.item = item;
-		this.menu = menu;
+public class PasswordField extends TextComponent< javax.swing.JPasswordField > {
+	public PasswordField( org.lgna.croquet.StringState model ) {
+		super( model );
 	}
-	public int getItemCount() {
-		return 2;
-	}
-	public org.lgna.croquet.CascadeItem< F, ? > getItemAt( int index ) {
-		switch( index ) {
-		case 0:
-			return this.item;
-		case 1:
-			return this.menu;
-		default:
-			throw new AssertionError();
-		}
+	
+	@Override
+	protected javax.swing.JPasswordField createAwtComponent() {
+		javax.swing.JPasswordField rv = new javax.swing.JPasswordField();
+		return rv;
 	}
 }

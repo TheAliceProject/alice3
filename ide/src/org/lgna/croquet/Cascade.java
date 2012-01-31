@@ -67,7 +67,7 @@ public abstract class Cascade<T> extends CompletionModel {
 			this.cascade = cascade;
 		}
 		@Override
-		protected InternalRootResolver<T> createCodableResolver() {
+		protected InternalRootResolver<T> createResolver() {
 			return new InternalRootResolver<T>( this.cascade );
 		}
 		@Override
@@ -163,7 +163,7 @@ public abstract class Cascade<T> extends CompletionModel {
 			this.cascade.setEnabled( isEnabled );
 		}
 		@Override
-		protected InternalMenuModelResolver<T> createCodableResolver() {
+		protected InternalMenuModelResolver<T> createResolver() {
 			return new InternalMenuModelResolver<T>( this.cascade );
 		}
 		private static class ComponentListener<T> implements java.awt.event.ComponentListener {

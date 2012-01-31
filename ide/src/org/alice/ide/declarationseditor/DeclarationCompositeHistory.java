@@ -54,25 +54,25 @@ public class DeclarationCompositeHistory {
 	}
 	private java.util.List< DeclarationComposite > history = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int index = -1;
-	private final org.lgna.croquet.State.ValueObserver< DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueObserver< DeclarationComposite >() {
+	private final org.lgna.croquet.State.ValueListener< DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueListener< DeclarationComposite >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 			DeclarationCompositeHistory.this.appendIfAppropriate( nextValue );
 		}
 	};
-	private final org.alice.ide.ProjectApplication.ProjectObserver projectListener = new org.alice.ide.ProjectApplication.ProjectObserver() {
-		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
 		}
-		public void projectOpened( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject ) {
+		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
 			DeclarationCompositeHistory.this.resetStack();
 		}
 	};
 
 	private int ignoreCount = 0;
 	private DeclarationCompositeHistory() {
-		org.alice.ide.IDE.getActiveInstance().addProjectObserver( this.projectListener );
-		DeclarationTabState.getInstance().addValueObserver( this.declarationListener );
+		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
+		DeclarationTabState.getInstance().addValueListener( this.declarationListener );
 		this.resetStack();
 	}
 	
@@ -98,8 +98,7 @@ public class DeclarationCompositeHistory {
 				}
 				this.index = 0;
 				this.history.add( 0, declarationComposite );
-				this.updateBackEnabled();
-				this.updateFrontEnabled();
+				this.update();
 			}
 		}
 	}
@@ -113,38 +112,62 @@ public class DeclarationCompositeHistory {
 		ForwardOperation.getInstance().setEnabled( isEnabled );
 		ForwardCascade.getInstance().getRoot().getPopupPrepModel().setEnabled( isEnabled );
 	}
+	
+	private void update() {
+		DeclarationComposite< ?, ? > original;
+		if( this.index != -1 ) {
+			original = this.history.get( this.index );
+		} else {
+			original = null;
+		}
+		boolean isIndexUpdateRequired = false;
+		java.util.ListIterator< DeclarationComposite > iterator = this.history.listIterator();
+		while( iterator.hasNext() ) {
+			DeclarationComposite< ?, ? > composite = iterator.next();
+			if( composite.isValid() ) {
+				//pass
+			} else {
+				iterator.remove();
+				isIndexUpdateRequired = true;
+			}
+		}
+		
+		if( isIndexUpdateRequired ) {
+			this.index = this.history.indexOf( original );
+		}
+		this.updateBackEnabled();
+		this.updateFrontEnabled();
+	}
+	
 	private void resetStack() {
 		this.history.clear();
 		this.index = -1;
 		this.appendIfAppropriate( DeclarationTabState.getInstance().getValue() );
-		this.updateBackEnabled();
-		this.updateFrontEnabled();
+		this.update();
 	}
 	
 	private void setIndex( int index ) {
 		this.pushIgnore();
 		try {
 			this.index = index;
-			this.updateBackEnabled();
-			this.updateFrontEnabled();
+			this.update();
 			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( this.history.get( this.index ) );
 //			DeclarationTabState.getInstance().setValue( this.history.get( this.index ) );
 		} finally {
 			this.popIgnore();
 		}
 	}
-	
 	public void goBackward() {
-		this.setIndex( this.index + 1 );
+		this.setIndex( Math.min( this.index+1, this.history.size()-1 ) );
 	}
 	public void goForward() {
-		this.setIndex( this.index - 1 );
+		this.setIndex( Math.max( this.index-1, 0 ) );
 	}
 	public void setDeclarationComposite( DeclarationComposite declarationComposite ) {
 		this.setIndex( this.history.indexOf( declarationComposite ) );
 	}
-	
 	public java.util.List< DeclarationComposite > getBackwardList() {
+		this.update();
 		int minInclusive = this.index+1;
 		int maxExclusive = this.history.size();
 		if( minInclusive < maxExclusive ) {
@@ -154,6 +177,7 @@ public class DeclarationCompositeHistory {
 		}
 	}
 	public java.util.List< DeclarationComposite > getForwardList() {
+		this.update();
 		int minInclusive = 0;
 		int maxExclusive = this.index;
 		if( minInclusive < maxExclusive ) {

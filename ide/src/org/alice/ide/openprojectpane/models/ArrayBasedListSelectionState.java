@@ -56,6 +56,7 @@ public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.L
 	private void refreshIfNecessary() {
 		if( this.isRefreshNecessary ) {
 			this.array = this.createArray();
+			this.fireContentsChanged( 0, this.array.length-1 );
 			this.isRefreshNecessary = false;
 		}
 	}

@@ -69,7 +69,7 @@ public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation >( this, this.type, org.lgna.project.ast.NamedUserType.class );
 	}
 

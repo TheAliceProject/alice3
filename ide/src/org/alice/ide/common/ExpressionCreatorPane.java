@@ -51,7 +51,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	}
 	@Override
 	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getExpressionType();
+		return ((org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel()).getType();
 	}
 	@Override
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {

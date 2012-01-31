@@ -53,44 +53,19 @@ public class RecentProjectsUriSelectionState extends org.alice.ide.openprojectpa
 	public static RecentProjectsUriSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final java.util.List< java.net.URI > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+//	private final java.util.List< java.net.URI > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private org.lgna.croquet.ListData.Listener< java.net.URI > listener = new org.lgna.croquet.ListData.Listener< java.net.URI >() {
+		public void changed() {
+			RecentProjectsUriSelectionState.this.refresh();
+		}
+	};
 	private RecentProjectsUriSelectionState() {
 		super( java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ) );
 		org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeDataOnlyOfListSelectionState( this );
+		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().addListener( this.listener );
 	}
 	@Override
 	protected java.net.URI[] createArray() {
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.list, java.net.URI.class );
-	}
-	
-	private void addFile( java.io.File file ) {
-		final int N = RecentProjectCountState.getInstance().getValue();
-		if( N > 0 ) {
-			java.net.URI uri = file.toURI();
-			if( this.list.contains( uri ) ) {
-				this.list.remove( uri );
-			}
-			this.list.add( 0, uri );
-			while( this.list.size() > N ) {
-				this.list.remove( this.list.size()-1 );
-			}
-		} else {
-			this.list.clear();
-		}
-		this.refresh();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "addFile", file );
-		this.setListData( 0, this.toArray() );
-//		int desiredRecentProjectCount = org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.getValue();
-//		org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.add( file, desiredRecentProjectCount );
-	}
-	public void handleOpen( java.io.File file ) {
-		if( file != null ) {
-			this.addFile( file );
-		} else {
-			this.setSelectedIndex( -1 );
-		}
-	}
-	public void handleSave( java.io.File file ) {
-		this.addFile( file );
+		return org.alice.ide.recentprojects.RecentProjectsListData.getInstance().createArray();
 	}
 }

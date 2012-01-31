@@ -490,7 +490,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 //			
 //			this.interactionSelectionState.setSelectedItem(defaultInteraction);
 			
-			org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().addAndInvokeValueObserver(this.handleStateValueObserver);
+			org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().addAndInvokeValueListener(this.handleStateValueObserver);
 		}
 	}
 	

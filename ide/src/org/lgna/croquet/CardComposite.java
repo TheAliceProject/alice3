@@ -56,6 +56,18 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 	@Override
 	protected void localize() {
 	}
+	
+	public void addCard( Composite<?> card ) {
+		this.cards.add( card );
+		org.lgna.croquet.components.CardPanel view = this.peekView();
+		if( view != null ) {
+			view.addComposite( card );
+		}
+	}
+	public void removeCard( Composite<?> card ) {
+		this.cards.remove( card );
+	}
+	
 	@Override
 	public final boolean contains( org.lgna.croquet.Model model ) {
 		for( Composite< ? > card : this.cards ) {

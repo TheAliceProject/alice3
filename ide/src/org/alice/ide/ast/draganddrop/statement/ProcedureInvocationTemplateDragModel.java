@@ -63,12 +63,13 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocationStatement( method ) );
 		this.method = method;
 		assert this.method.isProcedure();
+		this.addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
 	}
 	public org.lgna.project.ast.AbstractMethod getMethod() {
 		return this.method;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< ProcedureInvocationTemplateDragModel > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel >( this, this.method, org.lgna.project.ast.AbstractMethod.class );
 	}
 	@Override

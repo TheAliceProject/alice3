@@ -76,14 +76,14 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 			DeclarationTabState.this.refresh();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 			DeclarationTabState.this.handleTypeChanged( prevValue, nextValue );
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver<Boolean> isEmphasizingClassesListener = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+	private final org.lgna.croquet.State.ValueListener<Boolean> isEmphasizingClassesListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -91,10 +91,10 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		}
 	};
 	
-	private final org.alice.ide.ProjectApplication.ProjectObserver projectListener = new org.alice.ide.ProjectApplication.ProjectObserver() {
-		public void projectOpening(org.lgna.project.Project previousProject, org.lgna.project.Project nextProject) {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
 		}
-		public void projectOpened(org.lgna.project.Project previousProject, org.lgna.project.Project nextProject) {
+		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
 			DeclarationTabState.this.clear();
 		}
 	};
@@ -102,21 +102,21 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 	private org.lgna.project.ast.NamedUserType type;
 	private DeclarationTabState() {
 		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
-		TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueObserver( this.isEmphasizingClassesListener );
-		org.alice.ide.ProjectApplication.getActiveInstance().addProjectObserver( this.projectListener );
+		TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueListener( this.isEmphasizingClassesListener );
+		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
 	}
 	private void refresh() {
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			this.pushAtomic();
 			try {
-				this.clear();
+				java.util.List< DeclarationComposite > items = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				if( this.type != null ) {
-					this.addItem( DeclarationComposite.getInstance( this.type ) );
+					items.add( DeclarationComposite.getInstance( this.type ) );
 					for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
 						if( method.isPublicAccess() ) {
 							if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
-								this.addItem( DeclarationComposite.getInstance( method ) );
+								items.add( DeclarationComposite.getInstance( method ) );
 							}
 						}
 					}
@@ -129,7 +129,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 						index = this.getItemCount()-1;
 						//index = -1;
 					}
-					this.setSelectedIndex( index );
+					this.setListData( index, items );
 				} else {
 					this.setSelectedIndex( -1 );
 				}
@@ -172,4 +172,8 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 			}
 		}
 	}
+
+	public org.lgna.croquet.ActionOperation getItemSelectionOperation( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		return super.getItemSelectionOperation( DeclarationComposite.getInstance( declaration ) );
+	}	
 }

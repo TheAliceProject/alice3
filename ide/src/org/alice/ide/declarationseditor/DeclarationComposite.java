@@ -46,34 +46,38 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.alice.ide.declarationseditor.components.DeclarationView > {
-	private static java.util.Map< org.lgna.project.ast.AbstractDeclaration, DeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DeclarationComposite getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		if( declaration != null ) {
-			DeclarationComposite rv = map.get( declaration );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new DeclarationComposite( declaration );
-				map.put( declaration, rv );
-			}
-			return rv;
+public abstract class DeclarationComposite< D extends org.lgna.project.ast.AbstractDeclaration, V extends org.alice.ide.declarationseditor.components.DeclarationView > extends org.lgna.croquet.TabComposite< V > {
+	@Deprecated
+	public static synchronized DeclarationComposite<?,?> getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			return CodeComposite.getInstance( (org.lgna.project.ast.AbstractCode)declaration );
+		} else if( declaration instanceof org.lgna.project.ast.NamedUserType ) {
+			return TypeComposite.getInstance( (org.lgna.project.ast.AbstractType< ?,?,? >)declaration );
 		} else {
-			return null;
+			if( declaration != null ) {
+				throw new RuntimeException( "todo " + declaration );
+			} else {
+				throw new NullPointerException();
+			}
 		}
 	}
-	private final org.lgna.project.ast.AbstractDeclaration declaration;
-	public DeclarationComposite( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		super( java.util.UUID.fromString( "291f2cd6-893e-4c7f-a6fd-16c718576d7a" ) );
+
+	private final D declaration;
+	private final Class<D> declarationCls;
+	public DeclarationComposite( java.util.UUID id, D declaration, Class<D> declarationCls ) {
+		super( id );
 		this.declaration = declaration;
+		this.declarationCls = declarationCls;
 	}
 	@Override
 	public java.util.UUID getTabId() {
 		return this.declaration.getId();
 	}
-	public org.lgna.project.ast.AbstractDeclaration getDeclaration() {
+	public D getDeclaration() {
 		return this.declaration;
 	}
+	
+	public abstract boolean isValid();
 	
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
@@ -85,16 +89,6 @@ public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.ali
 		return this.declaration instanceof org.lgna.project.ast.AbstractCode;
 	}
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
-		super.customizeTitleComponent( booleanState, button );
-		if( this.declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			button.scaleFont( 1.2f );
-		} else {
-			button.scaleFont( 1.6f );
-		}
-	}
-	
-	@Override
 	public String getTitleText() {
 		return this.declaration.getName();
 	}
@@ -103,16 +97,7 @@ public class DeclarationComposite extends org.lgna.croquet.TabComposite< org.ali
 		return null;
 	}
 	@Override
-	protected org.alice.ide.declarationseditor.components.DeclarationView createView() {
-		if( this.declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			return new org.alice.ide.declarationseditor.code.components.CodeDeclarationView( this );
-		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ){
-			return new org.alice.ide.declarationseditor.type.components.TypeDeclarationView( this );
-		} else {
-			throw new RuntimeException( "todo" );
-		}
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > >( this, this.declaration, this.declarationCls );
 	}
-//	public java.util.List< org.lgna.croquet.DropReceptor > getPotentialDropReceptors() {
-//		return null;
-//	}
 }

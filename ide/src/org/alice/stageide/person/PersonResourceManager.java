@@ -50,7 +50,7 @@ public enum PersonResourceManager {
 	SINGLETON;
 	private final PersonImp personImp = new PersonImp();
 	private final edu.cmu.cs.dennisc.map.MapToMap< org.lgna.story.resources.sims2.LifeStage, org.lgna.story.resources.sims2.Gender, org.lgna.story.resources.sims2.PersonResource > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private final org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.LifeStage> lifeStageObserver = new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.LifeStage>() {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage> lifeStageObserver = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage>() {
 		public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.LifeStage > state, org.lgna.story.resources.sims2.LifeStage prevValue, org.lgna.story.resources.sims2.LifeStage nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
@@ -59,7 +59,7 @@ public enum PersonResourceManager {
 			popAtomic();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.Gender> genderObserver = new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.Gender>() {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Gender> genderObserver = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Gender>() {
 		public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.Gender > state, org.lgna.story.resources.sims2.Gender prevValue, org.lgna.story.resources.sims2.Gender nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
@@ -68,7 +68,7 @@ public enum PersonResourceManager {
 			popAtomic();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneObserver = new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.BaseSkinTone>() {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneObserver = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone>() {
 		public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseSkinTone > state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
@@ -76,7 +76,7 @@ public enum PersonResourceManager {
 			popAtomic();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorObserver = new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.BaseEyeColor>() {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorObserver = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseEyeColor>() {
 		public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseEyeColor > state, org.lgna.story.resources.sims2.BaseEyeColor prevValue, org.lgna.story.resources.sims2.BaseEyeColor nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
@@ -84,7 +84,7 @@ public enum PersonResourceManager {
 			popAtomic();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver<String> hairColorNameObserver = new org.lgna.croquet.State.ValueObserver<String>() {
+	private final org.lgna.croquet.State.ValueListener<String> hairColorNameObserver = new org.lgna.croquet.State.ValueListener<String>() {
 		public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
@@ -93,7 +93,7 @@ public enum PersonResourceManager {
 			popAtomic();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.Hair> hairObserver = new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.Hair>() {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Hair> hairObserver = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Hair>() {
 		public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.Hair > state, org.lgna.story.resources.sims2.Hair prevValue, org.lgna.story.resources.sims2.Hair nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
@@ -101,7 +101,7 @@ public enum PersonResourceManager {
 			popAtomic();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.FullBodyOutfit> fullBodyOutfitObserver = new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.FullBodyOutfit>() {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.FullBodyOutfit> fullBodyOutfitObserver = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.FullBodyOutfit>() {
 		public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.FullBodyOutfit > state, org.lgna.story.resources.sims2.FullBodyOutfit prevValue, org.lgna.story.resources.sims2.FullBodyOutfit nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
@@ -109,7 +109,7 @@ public enum PersonResourceManager {
 			popAtomic();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver<Double> obesityLevelObserver = new org.lgna.croquet.State.ValueObserver<Double>() {
+	private final org.lgna.croquet.State.ValueListener<Double> obesityLevelObserver = new org.lgna.croquet.State.ValueListener<Double>() {
 		public void changing( org.lgna.croquet.State< Double > state, Double prevValue, Double nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
@@ -121,24 +121,24 @@ public enum PersonResourceManager {
 //	private void handleCataclysm( boolean isLifeStage, boolean isGender, boolean isHairColor ) {
 //	}
 	private void addListeners() {
-		org.alice.stageide.person.models.LifeStageState.getInstance().addValueObserver( this.lifeStageObserver );
-		org.alice.stageide.person.models.GenderState.getInstance().addValueObserver( this.genderObserver );
-		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueObserver( this.baseSkinToneObserver );
-		org.alice.stageide.person.models.BaseEyeColorState.getInstance().addValueObserver( this.baseEyeColorObserver );
-		org.alice.stageide.person.models.HairColorNameState.getInstance().addValueObserver( this.hairColorNameObserver );
-		org.alice.stageide.person.models.HairState.getInstance().addValueObserver( this.hairObserver );
-		org.alice.stageide.person.models.FullBodyOutfitState.getInstance().addValueObserver( this.fullBodyOutfitObserver );
-		org.alice.stageide.person.models.ObesityLevelState.getInstance().addValueObserver( this.obesityLevelObserver );
+		org.alice.stageide.person.models.LifeStageState.getInstance().addValueListener( this.lifeStageObserver );
+		org.alice.stageide.person.models.GenderState.getInstance().addValueListener( this.genderObserver );
+		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueListener( this.baseSkinToneObserver );
+		org.alice.stageide.person.models.BaseEyeColorState.getInstance().addValueListener( this.baseEyeColorObserver );
+		org.alice.stageide.person.models.HairColorNameState.getInstance().addValueListener( this.hairColorNameObserver );
+		org.alice.stageide.person.models.HairState.getInstance().addValueListener( this.hairObserver );
+		org.alice.stageide.person.models.FullBodyOutfitState.getInstance().addValueListener( this.fullBodyOutfitObserver );
+		org.alice.stageide.person.models.ObesityLevelState.getInstance().addValueListener( this.obesityLevelObserver );
 	}
 	private void removeListeners() {
-		org.alice.stageide.person.models.LifeStageState.getInstance().removeValueObserver( this.lifeStageObserver );
-		org.alice.stageide.person.models.GenderState.getInstance().removeValueObserver( this.genderObserver );
-		org.alice.stageide.person.models.BaseSkinToneState.getInstance().removeValueObserver( this.baseSkinToneObserver );
-		org.alice.stageide.person.models.BaseEyeColorState.getInstance().removeValueObserver( this.baseEyeColorObserver );
-		org.alice.stageide.person.models.HairColorNameState.getInstance().removeValueObserver( this.hairColorNameObserver );
-		org.alice.stageide.person.models.HairState.getInstance().removeValueObserver( this.hairObserver );
-		org.alice.stageide.person.models.FullBodyOutfitState.getInstance().removeValueObserver( this.fullBodyOutfitObserver );
-		org.alice.stageide.person.models.ObesityLevelState.getInstance().removeValueObserver( this.obesityLevelObserver );
+		org.alice.stageide.person.models.LifeStageState.getInstance().removeValueListener( this.lifeStageObserver );
+		org.alice.stageide.person.models.GenderState.getInstance().removeValueListener( this.genderObserver );
+		org.alice.stageide.person.models.BaseSkinToneState.getInstance().removeValueListener( this.baseSkinToneObserver );
+		org.alice.stageide.person.models.BaseEyeColorState.getInstance().removeValueListener( this.baseEyeColorObserver );
+		org.alice.stageide.person.models.HairColorNameState.getInstance().removeValueListener( this.hairColorNameObserver );
+		org.alice.stageide.person.models.HairState.getInstance().removeValueListener( this.hairObserver );
+		org.alice.stageide.person.models.FullBodyOutfitState.getInstance().removeValueListener( this.fullBodyOutfitObserver );
+		org.alice.stageide.person.models.ObesityLevelState.getInstance().removeValueListener( this.obesityLevelObserver );
 	}
 	private int activeCount = 0;
 	private void addListenersIfAppropriate() {

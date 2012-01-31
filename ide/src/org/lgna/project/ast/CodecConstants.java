@@ -49,5 +49,5 @@ package org.lgna.project.ast;
 public interface CodecConstants {
 	public static final String KEY_ATTRIBUTE = "key";
 	public static final String TYPE_ATTRIBUTE = "type";
-	public static final String UUID_ATTRIBUTE = "uuid";
+	public static final String ID_ATTRIBUTE = "uuid";
 }

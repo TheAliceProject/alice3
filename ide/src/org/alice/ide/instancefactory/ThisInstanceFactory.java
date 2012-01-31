@@ -56,7 +56,7 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 	private ThisInstanceFactory() {
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< ThisInstanceFactory > createResolver() {
+	protected org.lgna.croquet.resolvers.Resolver< ThisInstanceFactory > createResolver() {
 		return new org.lgna.croquet.resolvers.SingletonResolver< ThisInstanceFactory >( this );
 	}
 	public org.lgna.project.ast.Expression createTransientExpression() {

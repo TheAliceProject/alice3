@@ -46,23 +46,17 @@ package org.alice.ide.declarationseditor.code.components;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeDeclarationView extends org.alice.ide.declarationseditor.components.DeclarationView {
+public class CodeDeclarationView extends AbstractCodeDeclarationView {
 	private final org.alice.ide.codeeditor.CodeEditor codeEditor;
-	public CodeDeclarationView( org.alice.ide.declarationseditor.DeclarationComposite composite ) {
+	public CodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite ) {
 		super( composite );
-		this.codeEditor = new org.alice.ide.codeeditor.CodeEditor( (org.lgna.project.ast.AbstractCode)composite.getDeclaration() );
+		this.codeEditor = new org.alice.ide.codeeditor.CodeEditor( composite.getDeclaration() );
 		this.setBackgroundColor( this.codeEditor.getBackgroundColor() );
 		this.addComponent( this.codeEditor, Constraint.CENTER );
 	}
 	@Deprecated
-	public org.alice.ide.codeeditor.CodeEditor getCodeDropReceptor() {
-		return this.codeEditor;
-	}
 	@Override
-	public boolean isPrintSupported() {
-		return true;
-	}
-	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-		return this.codeEditor.print( g, pageFormat, pageIndex );
+	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor() {
+		return this.codeEditor;
 	}
 }

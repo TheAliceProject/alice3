@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.property.*;
 /**
  * @author Dennis Cosgrove
  */
-
 public abstract class DefaultInstancePropertyOwner extends AbstractElement implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
 	private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
 

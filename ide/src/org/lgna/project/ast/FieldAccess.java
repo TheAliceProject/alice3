@@ -71,6 +71,37 @@ public class FieldAccess extends Expression {
 	public AbstractType<?,?,?> getType() {
 		return field.getValue().getValueType();
 	}
+	public boolean isValid() {
+		boolean rv;
+		Expression e = expression.getValue();
+		AbstractField f = field.getValue();
+		if( e != null && f != null ) {
+			//if( f.isValid() ) {
+				if( f.isStatic() ) {
+					//todo
+					rv = true;
+				} else {
+					AbstractType<?,?,?> declaringType = f.getDeclaringType();
+					AbstractType<?,?,?> expressionType = e.getType();
+					if( expressionType instanceof AnonymousUserType ) {
+						//todo
+						rv = true;
+					} else {
+						if( declaringType != null && expressionType != null ) {
+							rv = declaringType.isAssignableFrom( expressionType );
+						} else {
+							rv = false;
+						}
+					}
+				}
+//			} else {
+//				rv = false;
+//			}
+		} else {
+			rv = false;
+		}
+		return rv;
+	}
 	
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {

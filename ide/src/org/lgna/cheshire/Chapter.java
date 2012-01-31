@@ -73,4 +73,6 @@ public abstract class Chapter {
 	public abstract void complete( org.lgna.croquet.Group completionGroup );
 	
 	public abstract String getTitle();
+	
+	public abstract Iterable< org.lgna.croquet.Context > getAllContexts();
 }

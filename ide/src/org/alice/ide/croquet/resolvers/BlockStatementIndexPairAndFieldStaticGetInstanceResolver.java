@@ -46,7 +46,7 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade > implements org.lgna.croquet.resolvers.RetargetableResolver< org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade > {
+public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade > {
 	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, org.lgna.project.ast.AbstractField.class };
 	public BlockStatementIndexPairAndFieldStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade instance ) {
 		super( instance );
@@ -55,7 +55,9 @@ public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends or
 		super( binaryDecoder );
 	}
 
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+	@Override
+	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {
+		super.performCustomRetargeting( retargeter );
 		Object[] arguments = this.getArguments();
 		assert arguments != null;
 		assert arguments.length == 2;

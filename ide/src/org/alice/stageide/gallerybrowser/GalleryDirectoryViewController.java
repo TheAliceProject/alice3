@@ -64,7 +64,7 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 	}
 
 	
-	private final org.lgna.croquet.StringState.ValueObserver< String > filterObserver = new org.lgna.croquet.StringState.ValueObserver< String >() {
+	private final org.lgna.croquet.StringState.ValueListener< String > filterObserver = new org.lgna.croquet.StringState.ValueListener< String >() {
 		public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
@@ -116,11 +116,11 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		FilterState.getInstance().addAndInvokeValueObserver( this.filterObserver );
+		FilterState.getInstance().addAndInvokeValueListener( this.filterObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		FilterState.getInstance().removeValueObserver( this.filterObserver );
+		FilterState.getInstance().removeValueListener( this.filterObserver );
 		super.handleUndisplayable();
 	}
 	private void handleFilterChanged( String filter ) {

@@ -51,14 +51,14 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
 	private final org.lgna.croquet.components.FolderTabbedPane<?> tabbedPane;
-	private final org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneObserver = new org.lgna.croquet.State.ValueObserver<org.lgna.story.resources.sims2.BaseSkinTone>() {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneObserver = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone>() {
 		public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseSkinTone > state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseSkinTone > state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
 			tabbedPane.repaint();
 		}
 	};
-	private org.lgna.croquet.State.ValueObserver<org.lgna.croquet.TabComposite> tabChangeAdapter = new org.lgna.croquet.State.ValueObserver<org.lgna.croquet.TabComposite>() {
+	private org.lgna.croquet.State.ValueListener<org.lgna.croquet.TabComposite> tabChangeAdapter = new org.lgna.croquet.State.ValueListener<org.lgna.croquet.TabComposite>() {
 		public void changing( org.lgna.croquet.State< org.lgna.croquet.TabComposite > state, org.lgna.croquet.TabComposite prevValue, org.lgna.croquet.TabComposite nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.croquet.TabComposite > state, org.lgna.croquet.TabComposite prevValue, org.lgna.croquet.TabComposite nextValue, boolean isAdjusting ) {
@@ -93,7 +93,7 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.croquet.components.HorizontalSplitPane splitPane = new org.lgna.croquet.components.HorizontalSplitPane( personViewer, ingredientsPanel );
 		splitPane.setDividerLocation( 400 );
 		this.addComponent( splitPane, Constraint.CENTER );
-		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueObserver( this.baseSkinToneObserver );
+		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueListener( this.baseSkinToneObserver );
 	}
 	public PersonViewer getPersonViewer() {
 		return this.personViewer;

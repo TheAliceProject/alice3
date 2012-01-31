@@ -46,11 +46,13 @@ package org.alice.ide.x.components;
  * @author Dennis Cosgrove
  */
 public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstance {
+	private final org.alice.ide.x.AstI18nFactory factory;
 	private final org.lgna.project.ast.FieldAccess fieldAccess;
 	private final org.lgna.croquet.components.JComponent< ? > replacement;
 	
 	public FieldAccessView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
 		super( null );
+		this.factory = factory;
 		this.fieldAccess = fieldAccess;
 		
 		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForFieldAccessIfAppropriate( this.fieldAccess );
@@ -128,5 +130,18 @@ public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstanc
 		} else {
 			return null;
 		}
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				if( factory == org.alice.ide.x.PreviewAstI18nFactory.getInstance() || fieldAccess.isValid() ) {
+					//pass
+				} else {
+					setBackgroundColor( java.awt.Color.RED );
+				}
+			}
+		} );
 	}
 }

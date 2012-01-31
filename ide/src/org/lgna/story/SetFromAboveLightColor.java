@@ -40,12 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.resolvers;
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface RetargetableResolver<T> extends CodableResolver<T> {
-	public void retarget( org.lgna.croquet.Retargeter retargeter );
+public class SetFromAboveLightColor extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetFromAboveLightColor.class )
+	public static interface Detail {
+	}
+	private SetFromAboveLightColor() {
+		super();
+	}
 }
