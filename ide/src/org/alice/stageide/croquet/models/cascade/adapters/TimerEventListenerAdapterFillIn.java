@@ -40,18 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.fillerinners;
+package org.alice.stageide.croquet.models.cascade.adapters;
+
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.story.event.TimerEventListener;
 
 /**
  * @author Matt May
  */
-public class ProximityEventListenerFillerInner  extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public ProximityEventListenerFillerInner() {
-		super( org.lgna.story.event.ProximityEventListener.class );
+public class TimerEventListenerAdapterFillIn extends LambdaExpressionFillIn{
+	
+	private static class SingletonHolder {
+		private static TimerEventListenerAdapterFillIn instance = new TimerEventListenerAdapterFillIn();
+	}
+	public static TimerEventListenerAdapterFillIn getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	public TimerEventListenerAdapterFillIn() {
+		super( java.util.UUID.fromString( "db25d316-7282-493f-9838-124d272db0ca" ) );
+		this.transientValue = this.createValue();
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		rv.add( org.alice.stageide.croquet.models.cascade.adapters.ProximityEventListenerAdapterFillIn.getInstance() );
-		return rv;
+	protected org.lgna.project.ast.LambdaExpression createValue() { 
+		return AstUtilities.createLambdaExpression(TimerEventListener.class);
 	}
+
 }
+

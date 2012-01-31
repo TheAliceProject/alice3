@@ -45,13 +45,13 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Matt May
  */
-public class ProximityEventListenerFillerInner  extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public ProximityEventListenerFillerInner() {
-		super( org.lgna.story.event.ProximityEventListener.class );
+public class TimerEventListenerFillerInner  extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public TimerEventListenerFillerInner() {
+		super( org.lgna.story.event.TimerEventListener.class );
 	}
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		rv.add( org.alice.stageide.croquet.models.cascade.adapters.ProximityEventListenerAdapterFillIn.getInstance() );
+		rv.add( org.alice.stageide.croquet.models.cascade.adapters.TimerEventListenerAdapterFillIn.getInstance() );
 		return rv;
 	}
 }

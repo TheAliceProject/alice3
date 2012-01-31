@@ -43,8 +43,6 @@
 
 package org.alice.stageide.program;
 
-import org.alice.stageide.croquet.models.cascade.adapters.ProximityEventListenerAdapterFillIn;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -69,7 +67,8 @@ public abstract class ProgramContext {
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.story.event.MouseButtonAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.CollisionListener.class, org.alice.stageide.apis.story.event.CollisionAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityEventListener.class, ProximityEventListenerAdapterFillIn.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityEventListener.class, org.alice.stageide.apis.story.event.ProximityAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimerEventListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
 		this.programInstance = vm.ENTRY_POINT_createInstance( programType );
 	}
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachine() {
