@@ -74,6 +74,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 
+import org.alice.ide.video.ProofOfConceptRecordVideoOperation;
+import org.alice.ide.video.RecordVideoOperation;
 import org.alice.media.encoder.EncoderListener;
 import org.alice.media.encoder.ImagesToMOVEncoder;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
