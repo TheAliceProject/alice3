@@ -254,6 +254,20 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 					return new MutableRiderVehicleAdapter((MutableRider)entityImp.getAbstraction(), state, this.sceneInstance);
 				}
 			}
+			else if (setter.getName().equalsIgnoreCase("setFromAboveLightColor"))
+			{
+				if (entityImp instanceof SceneImp)
+				{
+					return new ColorPropertyAdapter<SceneImp>("Above Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).fromAboveLightColor, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setFromBelowLightColor"))
+			{
+				if (entityImp instanceof SceneImp)
+				{
+					return new ColorPropertyAdapter<SceneImp>("Below Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).fromBelowLightColor, state);
+				}
+			}
 			else if (setter.getName().equalsIgnoreCase("setAtmosphereColor"))
 			{
 				if (entityImp instanceof SceneImp)
@@ -265,7 +279,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			{
 				if (entityImp instanceof SceneImp)
 				{
-					return new ColorPropertyAdapter<SceneImp>("Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).ambientLightColor, state);
+					return new ColorPropertyAdapter<SceneImp>("Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).fromAboveLightColor, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setBackPaint"))

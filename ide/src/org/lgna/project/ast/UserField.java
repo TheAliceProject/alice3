@@ -62,8 +62,6 @@ public class UserField extends AbstractField implements UserMember {
 			return UserField.this.valueType.getValue();
 		}
 	};
-	
-	private UserType<?> m_declaringType;
 	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME; 
 
 	public UserField() {
@@ -77,6 +75,11 @@ public class UserField extends AbstractField implements UserMember {
 		this( name, JavaType.getInstance( valueCls ), initializer );
 	}
 
+	@Override
+	public UserType< ? > getDeclaringType() {
+		return (UserType< ? >)super.getDeclaringType();
+	}
+	
 	@Override
 	public String getName() {
 		return name.getValue();
@@ -93,14 +96,6 @@ public class UserField extends AbstractField implements UserMember {
 	@Override
 	public AbstractType<?,?,?> getValueType() {
 		return valueType.getValue();
-	}
-
-	@Override
-	public UserType<?> getDeclaringType() {
-		return m_declaringType;
-	}
-	public void setDeclaringType( UserType<?> declaringType ) {
-		m_declaringType = declaringType;
 	}
 	@Override
 	public org.lgna.project.annotations.Visibility getVisibility() {

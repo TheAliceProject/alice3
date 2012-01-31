@@ -107,13 +107,13 @@ public class BootstrapUtilties {
 	
 	public static String GET_MY_SCENE_METHOD_NAME = "getMyScene";
 	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.SurfaceAppearance appearance, String atmosphereColorConstantName, double fogDensity ) {
-		org.lgna.project.ast.UserField sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
+//		org.lgna.project.ast.UserField sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
 		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
 		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
 
 		cameraField.isDeletionAllowed.setValue( false );
 
-		sunField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
+//		sunField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		groundField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		cameraField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 
@@ -138,16 +138,13 @@ public class BootstrapUtilties {
 				)
 		);
 		
-		for( org.lgna.project.ast.UserField field : new org.lgna.project.ast.UserField[] { cameraField, sunField, groundField } ) {
-//			java.lang.reflect.Method mthd;
-//			try {
-//				mthd = ((org.lgna.project.ast.JavaType)field.getValueType()).getClassReflectionProxy().getReification().getMethod( "setVehicle", org.lgna.story.Entity.class );
-//			} catch( NoSuchMethodException nsme ) {
-//				throw new RuntimeException( nsme );
-//			}
-			//org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.JavaMethod.getInstance( mthd );
+		org.lgna.project.ast.UserField[] fields = {
+			cameraField,
+			//sunField,
+			groundField
+		};
+		for( org.lgna.project.ast.UserField field : fields ) {
 			org.lgna.project.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lgna.story.Entity.class );
-
 			performGeneratedSetupBody.statements.add( 
 					createMethodInvocationStatement( 
 							createThisFieldAccess( field ), 
@@ -239,7 +236,7 @@ public class BootstrapUtilties {
 		handleActiveChangedBody.statements.add( ifOuter );
 		
 		org.lgna.project.ast.NamedUserType sceneType = createType( "MyScene", org.lgna.story.Scene.class );
-		sceneType.fields.add( sunField );
+		//sceneType.fields.add( sunField );
 		sceneType.fields.add( groundField );
 		sceneType.fields.add( cameraField );
 		sceneType.methods.add( performCustomSetupMethod );

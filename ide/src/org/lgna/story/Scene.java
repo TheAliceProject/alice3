@@ -82,14 +82,36 @@ public abstract class Scene extends Entity {
 	public void setAtmosphereColor( Color color, SetAtmosphereColor.Detail... details ) {
 		this.implementation.atmosphereColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
+	@GetterTemplate(isPersistent = false)
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	@Deprecated
+	public Color getAmbientLightColor() {
+		return this.implementation.fromAboveLightColor.getValue();
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	@Deprecated
+	public void setAmbientLightColor( Color color, SetAmbientLightColor.Detail... details ) {
+		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+
 	@GetterTemplate(isPersistent = true)
 	@MethodTemplate()
-	public Color getAmbientLightColor() {
-		return this.implementation.ambientLightColor.getValue();
+	public Color getFromAboveLightColor() {
+		return this.implementation.fromAboveLightColor.getValue();
 	}
 	@MethodTemplate()
-	public void setAmbientLightColor( Color color, SetAmbientLightColor.Detail... details ) {
-		this.implementation.ambientLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void setFromAboveLightColor( Color color, SetFromAboveLightColor.Detail... details ) {
+		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+
+	@GetterTemplate(isPersistent = true)
+	@MethodTemplate()
+	public Color getFromBelowLightColor() {
+		return this.implementation.fromBelowLightColor.getValue();
+	}
+	@MethodTemplate()
+	public void setFromBelowLightColor( Color color, SetFromBelowLightColor.Detail... details ) {
+		this.implementation.fromBelowLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	
 	@MethodTemplate()

@@ -55,13 +55,17 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
 	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME; 
-	private UserType<?> m_declaringType;
 
 	public NamedUserConstructor() {
 	}
 	public NamedUserConstructor( UserParameter[] parameters, ConstructorBlockStatement body ) {
 		this.requiredParameters.add( parameters );
 		this.body.setValue( body );
+	}
+
+	@Override
+	public UserType< ? > getDeclaringType() {
+		return (UserType< ? >)super.getDeclaringType();
 	}
 
 	@Override
@@ -92,13 +96,6 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 	public NodeListProperty< UserParameter > getRequiredParamtersProperty() {
 		return this.requiredParameters;
-	}
-	@Override
-	public UserType<?> getDeclaringType() {
-		return m_declaringType;
-	}
-	public void setDeclaringType( UserType<?> declaringType ) {
-		m_declaringType = declaringType;
 	}
 	@Override
 	public org.lgna.project.annotations.Visibility getVisibility() {
