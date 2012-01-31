@@ -82,33 +82,9 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 	public EventsContentPanel( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
 		this.rootPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)code );
-
-		org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel();
-		panel.addComponent( this.rootPane, Constraint.CENTER );
-		
-//		//Logger.todo( "remove scroll pane" );
-//		this.getScrollPane().setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy.NEVER );
-//		this.getScrollPane().setVerticalScrollbarPolicy( VerticalScrollbarPolicy.NEVER );
-		
-//		org.lgna.croquet.components.GridBagPanel panel = new org.lgna.croquet.components.GridBagPanel();
-//		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-//		gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
-//		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
-//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-//		gbc.weightx = 1.0;
-//		gbc.weighty = 0.0;
-//		panel.addComponent( this.rootPane, gbc );
-//		gbc.fill = java.awt.GridBagConstraints.BOTH;
-//		gbc.weighty = 1.0;
-//		panel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue(), gbc );
-		
-		this.getScrollPane().setViewportView( panel );
-		this.getScrollPane().setBorder( null );
-		
+		this.addComponent( this.rootPane, Constraint.CENTER );
 		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor();
 		this.rootPane.setBackgroundColor( color );
-		panel.setBackgroundColor( color );
-		this.getScrollPane().setBackgroundColor( color );
 		this.setBackgroundColor( color );
 	}
 	
@@ -135,5 +111,9 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 	public java.lang.String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model, edit );
 		return null;
+	}
+	public int print( java.awt.Graphics graphics, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+		return 0;
 	}
 }

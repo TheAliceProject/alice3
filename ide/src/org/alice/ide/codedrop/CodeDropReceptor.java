@@ -51,7 +51,7 @@ import org.alice.ide.common.*;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CodeDropReceptor extends org.alice.ide.croquet.components.PrintableBorderPanelWithCenterScrollPane implements org.lgna.croquet.DropReceptor {
+public abstract class CodeDropReceptor extends org.lgna.croquet.components.BorderPanel implements org.lgna.croquet.DropReceptor, java.awt.print.Printable {
 	protected StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	
 	public CodeDropReceptor( org.lgna.croquet.Composite< ? > composite ) {
@@ -89,15 +89,12 @@ public abstract class CodeDropReceptor extends org.alice.ide.croquet.components.
 	}
 	public final void dragStarted( org.lgna.croquet.history.DragStep step ) {
 	}
-
 	public final void dragEntered( org.lgna.croquet.history.DragStep step ) {
 		org.lgna.croquet.components.DragComponent source = step.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( step.getModel(), source );
 		this.repaint();
 	}
-	protected org.lgna.croquet.components.Component< ? > getAsSeenBy() {
-		return this.getScrollPane().getViewportView();
-	}
+	protected abstract org.lgna.croquet.components.Component< ? > getAsSeenBy();
 	protected StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( org.lgna.croquet.DragModel dragModel, org.lgna.croquet.components.Container<?> source ) {
 		java.util.List< StatementListPropertyView > statementListPropertyPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, StatementListPropertyView.class );
 		

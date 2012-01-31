@@ -64,7 +64,12 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 		this.requiredParameters.add( requiredParameters );
 		this.body.setValue( body );
 	}
-		
+
+	@Override
+	public UserType< ? > getDeclaringType() {
+		return (UserType< ? >)super.getDeclaringType();
+	}
+	
 	@Override
 	public final org.lgna.project.annotations.Visibility getVisibility() {
 		return org.lgna.project.annotations.Visibility.PRIME_TIME;

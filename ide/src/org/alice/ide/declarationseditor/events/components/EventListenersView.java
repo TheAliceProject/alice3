@@ -16,25 +16,25 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< Statement > e ) {
 		}
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< Statement > e ) {
-			EventListenersView.this.revalidateAndRepaint();
+			EventListenersView.this.handleStatementsChanged( true );
 		}
 
 		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< Statement > e ) {
 		}
 		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< Statement > e ) {
-			EventListenersView.this.revalidateAndRepaint();
+			EventListenersView.this.handleStatementsChanged( false );
 		}
 
 		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< Statement > e ) {
 		}
 		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< Statement > e ) {
-			EventListenersView.this.revalidateAndRepaint();
+			EventListenersView.this.handleStatementsChanged( false );
 		}
 
 		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< Statement > e ) {
 		}
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< Statement > e ) {
-			EventListenersView.this.revalidateAndRepaint();
+			EventListenersView.this.handleStatementsChanged( false );
 		}
 		
 	};
@@ -48,13 +48,29 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		StickyBottomScrollPanel panel = new StickyBottomScrollPanel();
 //		panel.addComponent( new Label("Initialize Events: "), Constraint.PAGE_START );
 		scroll = new ScrollPane( eventsPanel );
+		scroll.setBorder( null );
+		scroll.setBothScrollBarIncrements( 12, 24 );
 		panel.addTop( scroll );
-		panel.addBottom( new LineAxisPanel( button ));
+		
+		LineAxisPanel bottom = new LineAxisPanel( button );
+		bottom.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 8, 0 ) );
+		panel.addBottom( bottom );
+		
 		this.addComponent( panel, Constraint.CENTER );
 		this.setBackgroundColor( this.eventsPanel.getBackgroundColor() );
-//		this.addComponent( this.eventsPanel, Constraint.CENTER );
-//		this.addComponent( new LineAxisPanel( button ), Constraint.PAGE_END );
 		this.addComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView(), Constraint.PAGE_END );
+	}
+	
+	private void handleStatementsChanged( boolean isScrollDesired ) {
+		this.revalidateAndRepaint();
+		if( isScrollDesired ) {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					javax.swing.JScrollBar verticalScrollBar = EventListenersView.this.scroll.getAwtComponent().getVerticalScrollBar();
+					verticalScrollBar.setValue( verticalScrollBar.getMaximum() );
+				}
+			} );
+		}
 	}
 	@Override
 	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor() {
