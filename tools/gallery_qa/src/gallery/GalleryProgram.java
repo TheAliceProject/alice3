@@ -88,7 +88,7 @@ public class GalleryProgram extends Program {
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
 
 	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-	private final State.ValueObserver<GalleryNode> galleryListener = new State.ValueObserver<GalleryNode>() {
+	private final State.ValueListener<GalleryNode> galleryListener = new State.ValueListener<GalleryNode>() {
 		public void changing(State<GalleryNode> state, GalleryNode prevValue,
 				GalleryNode nextValue, boolean isAdjusting) {
 		}
@@ -243,7 +243,7 @@ public class GalleryProgram extends Program {
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
 		
-		GalleryResourceTreeSelectionState.getInstance().addValueObserver( this.galleryListener );
+		GalleryResourceTreeSelectionState.getInstance().addValueListener( this.galleryListener );
 		
 		Logger.todo( "remove ogre" );
 		this.scene.setModel( this.ogre );
