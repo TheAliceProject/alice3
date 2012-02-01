@@ -41,63 +41,94 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package gallery;
+
+import gallery.croquet.IsVisualizationShowingState;
+
+import org.lgna.croquet.State;
+import org.lgna.story.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractType< ?,?,? > > {
-	private static class CompositeIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DefaultCompositeIcon {
-		public CompositeIcon( javax.swing.ImageIcon imageIcon ) {
-			super( 
-					org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE,
-					imageIcon,
-					org.alice.ide.icons.Icons.FOLDER_FRONT_ICON_LARGE 
-			);
+public class GalleryScene extends Scene {
+	
+	private final Sun sun = new Sun();
+	private final Ground snow = new Ground();
+	private final Camera camera;
+	private Model model;
+	private boolean shouldShow;
+	public GalleryScene( Camera camera ) {
+		this.camera = camera;
+		IsVisualizationShowingState.getInstance().addValueObserver( this.isVizShowingListener );
+	}
+	
+	public void setModel(JointedModel model){
+		if( this.model != null ) {
+			this.model.setVehicle( null );
+		}
+		this.model = model;
+		if( this.model != null ) {
+			this.model.setVehicle( this );
+			updateVisualization();
 		}
 	}
-	private final javax.swing.Icon largeIcon;
-	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( id, type );
-		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-		String path = "images/" + cls.getName().replace( ".", "/" ) + ".png";
-		javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( path ) );
-		if( imageIcon != null ) {
-			this.largeIcon = new CompositeIcon(imageIcon);
+	
+	private void updateVisualization(){
+		if( this.getModel() != null ) {
+			org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.getModel() );
+			if(shouldShow){
+				impl.showVisualization();
+			}else{
+				impl.hideVisualization();
+			}
+			
+		}
+	}
+	private final State.ValueObserver<Boolean> isVizShowingListener = new State.ValueObserver<Boolean>() {
+
+		public void changing(State<Boolean> state, Boolean prevValue,
+				Boolean nextValue, boolean isAdjusting) {
+		}
+
+		public void changed(State<Boolean> state, Boolean prevValue,
+				Boolean nextValue, boolean isAdjusting) {
+			shouldShow = nextValue;
+			updateVisualization();
+		}
+		
+	};
+	
+	private void performGeneratedSetup() {
+		this.snow.setVehicle( this );
+		this.sun.setVehicle( this );
+		this.camera.setVehicle( this );
+
+		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
+
+		//camera vantage point taken care of by camera navigator
+		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
+	}
+	private void performCustomSetup() {
+		//if you want the skeleton visualization to be co-located
+		//this.ogre.setOpacity( 0.25 );
+	}
+	
+	@Override
+	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
+		if( isActive ) {
+			if( activeCount == 1 ) {
+				this.performGeneratedSetup();
+				this.performCustomSetup();
+			} else {
+				this.restoreStateAndEventListeners();
+			}
 		} else {
-			this.largeIcon = org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
+			this.restoreStateAndEventListeners();
 		}
-	}
-	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
-	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
-		return this.getDeclarationChildren( apiConfigurationManager );
-	}
-	@Override
-	public int getChildCount() {
-		return this.getDeclarationChildren().size();
-	}
-	@Override
-	public GalleryNode getChild( int index ) {
-		return getDeclarationNodeInstance( this.getDeclarationChildren().get( index ) );
-	}
-	@Override
-	public int getIndexOfChild( GalleryNode child ) {
-		return this.getDeclarationChildren().indexOf( ((DeclarationGalleryNode<?>)child).getDeclaration() );
-	}
-	@Override
-	public javax.swing.Icon getSmallIcon() {
-		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
-	}
-	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return this.largeIcon;
 	}
 
-	@Override
-	protected void appendClassName( java.lang.StringBuilder sb ) {
-		String name = this.getDeclaration().getName();
-		sb.append( "My" );
-		sb.append( name.replace( "Resource", "" ) );
+	public Model getModel() {
+		return model;
 	}
 }

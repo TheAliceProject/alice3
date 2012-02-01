@@ -62,6 +62,11 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	public org.lgna.story.resources.JointId getJointId() {
 		return this.jointId;
 	}
+	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalLocalTransformation() {
+		return this.nebModel.getOriginalTransformationForJoint( this.jointId );
+	}
+	
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation() {
 		return this.nebModel.getLocalTransformationForJoint( this.jointId );
