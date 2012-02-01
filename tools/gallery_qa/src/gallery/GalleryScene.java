@@ -60,7 +60,7 @@ public class GalleryScene extends Scene {
 	private boolean shouldShow;
 	public GalleryScene( Camera camera ) {
 		this.camera = camera;
-		IsVisualizationShowingState.getInstance().addValueObserver( this.isVizShowingListener );
+		IsVisualizationShowingState.getInstance().addValueListener( this.isVizShowingListener );
 	}
 	
 	public void setModel(JointedModel model){
@@ -85,7 +85,7 @@ public class GalleryScene extends Scene {
 			
 		}
 	}
-	private final State.ValueObserver<Boolean> isVizShowingListener = new State.ValueObserver<Boolean>() {
+	private final State.ValueListener<Boolean> isVizShowingListener = new State.ValueListener<Boolean>() {
 
 		public void changing(State<Boolean> state, Boolean prevValue,
 				Boolean nextValue, boolean isAdjusting) {
