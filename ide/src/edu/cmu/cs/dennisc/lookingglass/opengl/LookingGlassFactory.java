@@ -190,13 +190,24 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	/*package-private*/ javax.media.opengl.GLJPanel createGLJPanel() {
 		return new javax.media.opengl.GLJPanel( createDesiredGLCapabilities(getDesiredOnscreenSampleCount()), getGLCapabilitiesChooser(), null );
 	}
-	/*package-private*/ javax.media.opengl.GLDrawable createExternalGLDrawable() {
+	
+	
+//	/*package-private*/ boolean canCreateExternalGLDrawable() {
+//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
+//		return glDrawableFactory.canCreateExternalGLDrawable();
+//	}
+//	/*package-private*/ javax.media.opengl.GLDrawable createExternalGLDrawable() {
+//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
+//		if( glDrawableFactory.canCreateExternalGLDrawable() ) {
+//			return glDrawableFactory.createExternalGLDrawable();
+//		} else {
+//			return null;
+//		}
+//	}
+	
+	/*package-private*/ boolean canCreateGLPbuffer() {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-		if( glDrawableFactory.canCreateExternalGLDrawable() ) {
-			return glDrawableFactory.createExternalGLDrawable();
-		} else {
-			return null;
-		}
+		return glDrawableFactory.canCreateGLPbuffer();
 	}
 	/*package-private*/ javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();

@@ -110,7 +110,11 @@ public class ConformanceTestResults {
 		this.renderer = gl.glGetString( GL_RENDERER );
 
 		String extensionsText = gl.glGetString( GL_EXTENSIONS );
-		this.extensions = extensionsText.split( " " );
+		if( extensionsText != null ) {
+			this.extensions = extensionsText.split( " " );
+		} else {
+			this.extensions = new String[] {};
+		}
 
 		//int n = GetUtilities.getInteger(gl, GL_NUM_EXTENSIONS);
 
