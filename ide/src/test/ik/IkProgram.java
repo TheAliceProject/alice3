@@ -303,9 +303,21 @@ class IkProgram extends Program {
 			
 			Bone[] bones = chain.getBones();
 			for(Bone bone: bones) {
-				for(Axis axis: bone.getAxes()) {
-					double dt = .1; //FIXME
-					axis.applyRotationInOriginal(axis.getDesiredAngleSpeedForPrinting() * dt);
+				//TODO get x, y, z. create one rotation vector.
+				boolean doThreeRotations = false;
+				if(doThreeRotations) {
+					for(Axis axis: bone.getAxes()) {
+						double dt = .1; //FIXME
+						axis.applyRotationInOriginal(axis.getDesiredAngleSpeedForPrinting() * dt);
+					}
+				} else {
+					Vector3 cumulativeAxisAngle = Vector3.createZero();
+					for(Axis axis: bone.getAxes()) {
+						double dt = .1; //FIXME
+						
+						cumulativeAxisAngle.add(Vector3.createMultiplication(axis.getLocalAxis(), axis.getDesiredAngleSpeedForPrinting() * dt));
+					}
+					bone.applyLocalRotation(cumulativeAxisAngle);
 				}
 			
 //					bone.getAxes().get(0).applyRotationInOriginal(.1);

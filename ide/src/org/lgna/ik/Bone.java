@@ -46,9 +46,6 @@ package org.lgna.ik;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.JointImp;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
@@ -88,6 +85,7 @@ public class Bone {
 		private final edu.cmu.cs.dennisc.math.Vector3 angularContribution;
 		private final Bone bone;
 		private final int originalIndexInJoint;
+		//named this way because that was the initial goal. rename when you're sure that this is good. 
 		private double desiredAngleSpeedForPrinting; 
 		public Axis( Bone bone, int originalIndexInJoint, boolean isLinearEnabled, boolean isAngularEnabled ) {
 			this.bone = bone;
@@ -122,7 +120,10 @@ public class Bone {
 				this.angularContribution.set( this.axis );
 			}
 		}
-		public void setCurrentValue(Vector3 axis) {
+		public edu.cmu.cs.dennisc.math.Vector3 getCurrentValue() {
+			return axis;
+		}
+		public void setCurrentValue(edu.cmu.cs.dennisc.math.Vector3 axis) {
 			this.axis.set(axis);
 		}
 		public void invertDirection() {
@@ -163,21 +164,25 @@ public class Bone {
 		public void applyRotationInOriginal(double angleInRadians) {
 			//FIXME use for now. later rotate around one axis once. 
 			//get the original axis 
-			Vector3 originalAxis = indexToOriginalLocalVector(originalIndexInJoint);
+			edu.cmu.cs.dennisc.math.Vector3 originalAxis = getLocalAxis();
 			//turn the joint around that
+			//so these have to be local vectors...
 			bone.getA().applyRotationInRadians(originalAxis, angleInRadians);
+		}
+		public edu.cmu.cs.dennisc.math.Vector3 getLocalAxis() {
+			return indexToOriginalLocalVector(originalIndexInJoint);
 		}
 		//FIXME can never have a 2dof joint that rotates an axis? maybe I can? I just always need to apply rotations in order and I'll be fine?
 		//I was using axes to be global x, y, z. ooh, that's right.
 		//FIXME maybe the axis class should be keeping the original, which is inverted of current?
-		private Vector3 indexToOriginalLocalVector(int originalIndexInJoint) {
+		private edu.cmu.cs.dennisc.math.Vector3 indexToOriginalLocalVector(int originalIndexInJoint) {
 			switch (originalIndexInJoint) {
 			case 0:
-				return Vector3.accessPositiveXAxis();
+				return edu.cmu.cs.dennisc.math.Vector3.accessPositiveXAxis();
 			case 1:
-				return Vector3.accessPositiveYAxis();
+				return edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis();
 			case 2:
-				return Vector3.accessPositiveZAxis();
+				return edu.cmu.cs.dennisc.math.Vector3.accessPositiveZAxis();
 			}
 //			if(bone.isABallJoint()) {
 //				//return global x, y, z
@@ -203,7 +208,7 @@ public class Bone {
 	private final Axis[] axesByIndex = new Axis[ 3 ];
 	private final java.util.List< Axis > axesList = new java.util.ArrayList< Axis >();
 	
-	private final Point3 anchor = Point3.createZero();
+	private final edu.cmu.cs.dennisc.math.Point3 anchor = edu.cmu.cs.dennisc.math.Point3.createZero();
 	
 	public Bone( Chain chain, int index, boolean isLinearEnabled, boolean isAngularEnabled ) {
 		this.chain = chain;
@@ -316,7 +321,7 @@ public class Bone {
 		return sb.toString();
 	}
 	
-	public Point3 getAnchorPosition() {
+	public edu.cmu.cs.dennisc.math.Point3 getAnchorPosition() {
 		// this returns the curren anchor position that was just fed to this from the world
 		return anchor;
 	}
@@ -328,7 +333,7 @@ public class Bone {
 		//get axes 
 //		if( !isABallJoint() ) {
 		JointImp a = getA();
-		AffineMatrix4x4 atrans = a.getTransformation(AsSeenBy.SCENE);
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 atrans = a.getTransformation(AsSeenBy.SCENE);
 		//invert if reverse
 		if( a.isFreeInX() ) {
 			this.axesByIndex[ 0 ].setCurrentValue(atrans.orientation.right);
@@ -363,6 +368,11 @@ public class Bone {
 		
 		//these axes HAVE TO BE INVERTED if joint is not in the right direction (not downstream)
 //		throw new RuntimeException("todo invert axes if chain is reverse");
+	}
+	public void applyLocalRotation(Vector3 cumulativeAxisAngle) {
+		double angle = cumulativeAxisAngle.calculateMagnitude();
+		Vector3 axis = Vector3.createDivision(cumulativeAxisAngle, angle);
+		getA().applyRotationInRadians(axis, angle);
 	}
 	
 }
