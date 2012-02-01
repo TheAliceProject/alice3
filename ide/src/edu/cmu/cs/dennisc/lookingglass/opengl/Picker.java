@@ -99,6 +99,13 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 						//pass
 					} else {
 						this.drawable = LookingGlassFactory.getInstance().createGLPbuffer( 1, 1, LookingGlassFactory.getSampleCountForDisabledMultisampling(), shareContext );
+						if( this.drawable != null ) {
+							//pass
+						} else {
+							javax.media.opengl.GLDrawable glDrawable = LookingGlassFactory.getInstance().createExternalGLDrawable();
+							edu.cmu.cs.dennisc.java.util.logging.Logger.errln( glDrawable );
+							Thread.dumpStack();
+						}
 						this.prevShareContext = shareContext;
 						this.drawable.addGLEventListener( this.glEventListener );
 					}
