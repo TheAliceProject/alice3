@@ -42,16 +42,23 @@
  */
 package org.alice.ide.common;
 
+import java.awt.Graphics2D;
+
+import org.lgna.project.ast.ExpressionStatement;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AddEventListenerStatementPanel extends StatementLikeSubstance {
+	private final ExpressionStatement statement;
 	public AddEventListenerStatementPanel( org.lgna.project.ast.ExpressionStatement statement ) {
 		super(
 				org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ),
 				org.lgna.project.ast.ExpressionStatement.class,
 				javax.swing.BoxLayout.PAGE_AXIS
 		);
+		this.statement = statement;
+		this.setPopupPrepModel( org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
 	}
 	@Override
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
@@ -60,5 +67,15 @@ public class AddEventListenerStatementPanel extends StatementLikeSubstance {
 	@Override
 	public boolean isMaximumSizeClampedToPreferredSize() {
 		return false;
+	}
+	@Override
+	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
+		super.paintEpilogue(g2, x, y, width, height);
+		if( this.statement.isEnabled.getValue() ) {
+			//pass
+		} else {
+			g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
+			this.fillBounds( g2 );
+		}
 	}
 }

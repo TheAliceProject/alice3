@@ -42,9 +42,14 @@
  */
 package org.alice.ide.declarationseditor.events.components;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import org.alice.ide.x.EditableAstI18nFactory;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.StatementListProperty;
 
 /**
  * @author Matt May

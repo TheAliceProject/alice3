@@ -42,9 +42,10 @@ public class AddEventListenerCascade extends CascadeWithInternalBlank<MethodInvo
 	}
 	@Override
 	protected List<CascadeBlankChild> updateBlankChildren(List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode) {
-		for( AbstractMethod method : StoryApiConfigurationManager.getInstance().getAddEventListenerMethods() ) {
-			rv.add( AddEventListenerMethodInvocationFillIn.getInstance( method ) );
-		}
+		rv.add( TimeEventListenerMenu.getInstance() );
+		rv.add( KeyboardEventListenerMenu.getInstance() );
+		rv.add( MouseEventListenerMenu.getInstance() );
+		rv.add( TransformationEventListenerMenu.getInstance() );
 		return rv;
 	}
 }

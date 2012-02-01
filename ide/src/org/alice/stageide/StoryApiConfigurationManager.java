@@ -75,22 +75,18 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 	
 	public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addSceneActivationListener", SceneActivationListener.class );
-	public static final JavaMethod ADD_MOUSE_BUTTON_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseButtonListener.class, AddMouseButtonListener.Detail[].class );
-	public static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addKeyPressedListener", KeyListener.class, AddKeyPressedListener.Detail[].class );
-	public static final JavaMethod ADD_COLLISION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addCollisionListener", CollisionListener.class, Entity[].class, Entity[].class );
-	public static final JavaMethod ADD_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addProximityEventListener", ProximityEventListener.class, Entity[].class, Entity[].class, AddProximityEventListener.Detail[].class );
 	public static final JavaMethod ADD_TIMER_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addTimerEventListener", TimerEventListener.class, AddTimerEventListener.Detail[].class );
 	
 	
 	@Override
 	public List<JavaMethod> getAddEventListenerMethods() {
 		return Collections.newLinkedList(
-				ADD_SCENE_ACTIVATION_LISTENER_METHOD,
-				ADD_MOUSE_BUTTON_LISTENER_METHOD,
-				ADD_KEY_LISTENER_METHOD,
-				ADD_COLLISION_LISTENER_METHOD,
-				ADD_PROXIMITY_LISTENER_METHOD,
-				ADD_TIMER_EVENT_LISTENER_METHOD
+//				ADD_SCENE_ACTIVATION_LISTENER_METHOD,
+//				ADD_MOUSE_BUTTON_LISTENER_METHOD,
+//				ADD_KEY_LISTENER_METHOD,
+//				ADD_COLLISION_LISTENER_METHOD,
+//				ADD_PROXIMITY_LISTENER_METHOD,
+//				ADD_TIMER_EVENT_LISTENER_METHOD
 		);
 	}
 
