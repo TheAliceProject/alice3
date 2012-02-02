@@ -71,6 +71,14 @@ public abstract class EntityImp implements ReferenceFrame {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getAbstractionFromSgElement( sgElement ), cls );
 	}
 	
+	private String name;
+	public String getName() {
+		return this.name;
+	}
+	public void setName( String name ) {
+		this.name = name;
+		this.getSgComposite().setName( name + ".sgComposite" );
+	}
 	public Property<?> getPropertyForAbstractionGetter( java.lang.reflect.Method getterMthd ) {
 		String propertyName = edu.cmu.cs.dennisc.property.PropertyUtilities.getPropertyNameForGetter( getterMthd );
 		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField( this.getClass(), propertyName );
