@@ -8,12 +8,12 @@ import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Scene;
 import org.lgna.story.Visual;
 import org.lgna.story.event.MouseButtonEvent;
-import org.lgna.story.event.MouseButtonListener;
+import org.lgna.story.event.MouseClickListener;
 
 
-public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListener, MouseButtonEvent > {
+public class MouseClickedHandler extends AbstractEventHandler< MouseClickListener, MouseButtonEvent > {
 
-	HashMap<Object, LinkedList<MouseButtonListener>> map = new HashMap<Object, LinkedList<MouseButtonListener>>();
+	HashMap<Object, LinkedList<MouseClickListener>> map = new HashMap<Object, LinkedList<MouseClickListener>>();
 	Object empty = new Object();
 
 	private boolean isMouseButtonListenerInExistence() {
@@ -34,7 +34,7 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListen
 	}
 	
 	public MouseClickedHandler() {
-		map.put(empty, new LinkedList<MouseButtonListener>());
+		map.put(empty, new LinkedList<MouseClickListener>());
 	}
 	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, Scene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
@@ -76,7 +76,7 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListen
 	public void fireAllTargeted(org.lgna.story.event.MouseButtonEvent event) {
 		if(shouldFire){
 			if(event != null){
-				LinkedList<MouseButtonListener> listeners = new LinkedList<MouseButtonListener>();
+				LinkedList<MouseClickListener> listeners = new LinkedList<MouseClickListener>();
 				listeners.addAll(map.get(empty));
 				Model modelAtMouseLocation = event.getModelAtMouseLocation();
 				if(modelAtMouseLocation != null){
@@ -84,14 +84,14 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListen
 					listeners.addAll(map.get(modelAtMouseLocation));
 				}
 				if(listeners != null){
-					for(MouseButtonListener listener: listeners){
+					for(MouseClickListener listener: listeners){
 						fireEvent(listener, event, modelAtMouseLocation);
 					}
 				}
 			}
 		}
 	}
-	public void addListener(MouseButtonListener mouseButtonListener, MultipleEventPolicy eventPolicy, Visual[] targets) {
+	public void addListener(MouseClickListener mouseButtonListener, MultipleEventPolicy eventPolicy, Visual[] targets) {
 		registerIsFiringMap(mouseButtonListener, targets);
 		registerPolicyMap(mouseButtonListener, eventPolicy);
 		if(targets != null && targets.length > 0){
@@ -99,7 +99,7 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListen
 				if(map.get(target) != null){
 					map.get(target).add(mouseButtonListener);
 				} else{
-					LinkedList<MouseButtonListener> list = new LinkedList<MouseButtonListener>();
+					LinkedList<MouseClickListener> list = new LinkedList<MouseClickListener>();
 					list.add(mouseButtonListener);
 					map.put(target, list);
 				}
@@ -109,8 +109,8 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseButtonListen
 		}
 	}
 	@Override
-	protected void fire(MouseButtonListener listener, MouseButtonEvent event) {
+	protected void fire(MouseClickListener listener, MouseButtonEvent event) {
 		super.fire(listener, event);
-		listener.mouseButtonClicked(event);
+		listener.mouseClicked(event);
 	}
 }

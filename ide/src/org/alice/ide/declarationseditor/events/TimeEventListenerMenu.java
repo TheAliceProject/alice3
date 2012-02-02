@@ -10,12 +10,12 @@ import org.lgna.project.ast.MethodInvocation;
 import org.lgna.story.AddTimerEventListener;
 import org.lgna.story.Scene;
 import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimerEventListener;
+import org.lgna.story.event.TimeListener;
 
 public class TimeEventListenerMenu  extends CascadeMenuModel< org.lgna.project.ast.MethodInvocation > {
 
 	public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addSceneActivationListener", SceneActivationListener.class );
-	public static final JavaMethod ADD_TIMER_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addTimerEventListener", TimerEventListener.class, AddTimerEventListener.Detail[].class );
+	public static final JavaMethod ADD_TIMER_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addTimerEventListener", TimeListener.class, AddTimerEventListener.Detail[].class );
 
 	private static class SingletonHolder {
 		private static TimeEventListenerMenu instance = new TimeEventListenerMenu();
@@ -31,7 +31,7 @@ public class TimeEventListenerMenu  extends CascadeMenuModel< org.lgna.project.a
 	protected List<CascadeBlankChild> updateBlankChildren(
 			List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode) {
 		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_SCENE_ACTIVATION_LISTENER_METHOD ) );
-		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_TIMER_EVENT_LISTENER_METHOD ) );
+//		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_TIMER_EVENT_LISTENER_METHOD ) );
 		return rv;
 	}
 

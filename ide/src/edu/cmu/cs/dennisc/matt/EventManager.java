@@ -5,11 +5,16 @@ import java.util.List;
 import org.lgna.story.Entity;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
+import org.lgna.story.event.AbstractKeyPressListener;
+import org.lgna.story.event.ArrowKeyEvent;
+import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.CollisionListener;
-import org.lgna.story.event.KeyListener;
-import org.lgna.story.event.MouseButtonListener;
+import org.lgna.story.event.KeyPressListener;
+import org.lgna.story.event.MouseClickListener;
+import org.lgna.story.event.NumberKeyEvent;
+import org.lgna.story.event.NumberKeyPressListener;
 import org.lgna.story.event.ProximityEventListener;
-import org.lgna.story.event.TimerEventListener;
+import org.lgna.story.event.TimeListener;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
@@ -49,20 +54,16 @@ public class EventManager {
 		this.scene = scene;
 	}
 
-	public void addMouseButtonListener( MouseButtonListener mouseButtonListener, MultipleEventPolicy eventPolicy, Visual[] targets ) {
+	public void addMouseButtonListener( MouseClickListener mouseButtonListener, MultipleEventPolicy eventPolicy, Visual[] targets ) {
 		this.mouseHandler.addListener( mouseButtonListener, eventPolicy, targets );
 		//		this.mouseButtonListeners.add( mouseButtonListener);
 	}
-	public void removeMouseButtonListener( MouseButtonListener mouseButtonListener ) {
+	public void removeMouseButtonListener( MouseClickListener mouseButtonListener ) {
 		throw new RuntimeException( "todo" );
 		//		this.mouse.removeListener(mouseButtonListener);
 		//		this.mouseButtonListeners.remove( mouseButtonListener );
 	}
-	public void addKeyListener( KeyListener keyListener, MultipleEventPolicy eventPolicy ) {
-		this.keyHandler.addListener( keyListener, eventPolicy );
-		//		this.keyListeners.add( keyListener);
-	}
-	public void removeKeyListener( KeyListener keyListener ) {
+	public void removeKeyListener( KeyPressListener keyListener ) {
 		throw new RuntimeException( "todo" );
 		//		this.mouse.removeListener(keyListener);
 		//		this.keyListeners.remove( keyListener );
@@ -118,8 +119,18 @@ public class EventManager {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
 	}
 
-	public void addTimerEventListener(TimerEventListener timerEventListener, Long frequency, MultipleEventPolicy policy) {
-		timer.addListener(timerEventListener, frequency, policy);
+	public void addTimerEventListener( TimeListener timerEventListener, Long frequency, MultipleEventPolicy policy ) {
+		timer.addListener( timerEventListener, frequency, policy );
+	}
+
+	public void addKeyListener( AbstractKeyPressListener keyListener, MultipleEventPolicy eventPolicy ) {
+		this.keyHandler.addListener( keyListener, eventPolicy, null );
+	}
+	public void addNumberKeyListener( NumberKeyPressListener keyPressListener, MultipleEventPolicy policy ) {
+		keyHandler.addListener( keyPressListener, policy, NumberKeyEvent.NUMBERS );
+	}
+	public void addArrowKeyListener( ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy ) {
+		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS );
 	}
 
 }

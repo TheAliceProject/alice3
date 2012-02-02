@@ -175,7 +175,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation) expression;
 					org.lgna.project.ast.AbstractType<?,?,?> type = instanceCreation.getType();
 					if( type instanceof org.lgna.project.ast.AnonymousUserType ) {
-						if( type.isAssignableTo( org.lgna.story.event.KeyListener.class ) || type.isAssignableTo( org.lgna.story.event.MouseButtonListener.class ) ) {
+						if( type.isAssignableTo( org.lgna.story.event.KeyPressListener.class ) || type.isAssignableTo( org.lgna.story.event.MouseClickListener.class ) ) {
 							return false;
 						}
 					}

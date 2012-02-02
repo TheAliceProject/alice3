@@ -44,6 +44,7 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.event.TimeListener;
 
 /**
  * @author Dennis Cosgrove
@@ -117,6 +118,29 @@ public abstract class Scene extends Entity{
 		this.getImplementation().fogDensity.animateValue( density.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	
+	public static class MouseClickedOnScreenEvent {
+	}
+	public static interface MouseClickOnScreenListener {
+		public void mouseClicked( MouseClickedOnScreenEvent event );
+	};
+
+	public static class MouseClickOnObjectEvent< T extends Visual > {
+		public T getClickedObject() {
+			return null;
+		}
+	}
+	public static interface MouseClickOnObjectListener< T extends Visual > {
+		public void mouseClicked( MouseClickOnObjectEvent<T> event );
+	};
+	
+	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener ) {
+	}
+	public void addMouseClickOnModelListener( MouseClickOnObjectListener<Model> listener, Model... subSet ) {
+	}
+	public <T extends Visual> void addMouseClickOnObjectListener( MouseClickOnObjectListener<T> listener, Class<T> cls, T... subSet ) {
+	}
+	
+	
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
@@ -128,22 +152,45 @@ public abstract class Scene extends Entity{
 	}
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener, AddMouseButtonListener.Detail... details ) {
+	public void addMouseButtonListener( org.lgna.story.event.MouseClickListener mouseButtonListener, AddMouseButtonListener.Detail... details ) {
 		this.getImplementation().getEventManager().addMouseButtonListener( mouseButtonListener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+	public void removeMouseButtonListener( org.lgna.story.event.MouseClickListener mouseButtonListener ) {
 		this.getImplementation().getEventManager().removeMouseButtonListener( mouseButtonListener );
 	}
+
+//	public void addKeyPressListener( org.lgna.story.event.KeyPressListener keyPressListener,  AddKeyPressListener.Detail... details) {
+//		//method on Listener keyPressed
+//	}
+	
+	public void addArrowKeyPressListener( org.lgna.story.event.ArrowKeyPressListener keyPressListener,  AddKeyPressListener.Detail... details) {
+		this.getImplementation().getEventManager().addArrowKeyListener( keyPressListener, MultipleEventPolicy.getValue( details ) );
+	}
+	public void addNumberKeyPressListener( org.lgna.story.event.NumberKeyPressListener keyPressListener,  AddKeyPressListener.Detail... details) {
+		this.getImplementation().getEventManager().addNumberKeyListener( keyPressListener, MultipleEventPolicy.getValue( details ) );
+	}
+	
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addKeyPressedListener( org.lgna.story.event.KeyListener keyListener,  AddKeyPressedListener.Detail... details) {
+	public void addTimerEventListener(TimeListener timerEventListener, AddTimerEventListener.Detail... details) {
+		this.getImplementation().getEventManager().addTimerEventListener(timerEventListener, TimerFrequency.getValue(details).getFrequency(), MultipleEventPolicy.getValue(details));
+	}
+
+	//todo: removeTimerListener
+
+	
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
+	public void addKeyPressListener( org.lgna.story.event.KeyPressListener keyListener,  AddKeyPressListener.Detail... details) {
 		this.implementation.getEventManager().addKeyListener( keyListener, MultipleEventPolicy.getValue( details ) );
 	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public void removeKeyListener( org.lgna.story.event.KeyListener keyListener ) {
+	public void removeKeyListener( org.lgna.story.event.KeyPressListener keyListener ) {
 		this.implementation.getEventManager().removeKeyListener( keyListener );
 	}
+	
+	
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
 	public void addCollisionListener( org.lgna.story.event.CollisionListener collisionListener, Entity[] groupOne, Entity[] groupTwo){
@@ -160,11 +207,4 @@ public abstract class Scene extends Entity{
 	//todo: removeProximityListener
 
 	
-	@MethodTemplate(visibility=Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
-	public void addTimerEventListener(org.lgna.story.event.TimerEventListener timerEventListener, AddTimerEventListener.Detail... details) {
-		this.getImplementation().getEventManager().addTimerEventListener(timerEventListener, TimerFrequency.getValue(details).getFrequency(), MultipleEventPolicy.getValue(details));
-	}
-
-	//todo: removeTimerListener
 }

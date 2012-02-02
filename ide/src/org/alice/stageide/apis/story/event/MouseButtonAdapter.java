@@ -42,14 +42,16 @@
  */
 package org.alice.stageide.apis.story.event;
 
+import org.lgna.story.event.MouseButtonEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MouseButtonAdapter extends AbstractAdapter implements org.lgna.story.event.MouseButtonListener {
+public class MouseButtonAdapter extends AbstractAdapter implements org.lgna.story.event.MouseClickListener {
 	public MouseButtonAdapter( org.lgna.project.virtualmachine.LambdaContext context, org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance userInstance ) {
 		super(context, lambda, userInstance);
 	}
-	public void mouseButtonClicked( org.lgna.story.event.MouseButtonEvent e ) {
+	public void mouseClicked(MouseButtonEvent e) {
 		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
 	}
 }

@@ -43,7 +43,7 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
-import org.lgna.story.event.TimerEventListener;
+import org.lgna.story.event.TimerEvent;
 
 /**
  * @author Matt May
@@ -63,7 +63,7 @@ public class TimerEventListenerAdapterFillIn extends LambdaExpressionFillIn{
 	}
 	@Override
 	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(TimerEventListener.class);
+		return AstUtilities.createLambdaExpression(TimerEvent.class);
 	}
 
 }

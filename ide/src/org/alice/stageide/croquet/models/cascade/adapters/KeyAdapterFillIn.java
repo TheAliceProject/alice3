@@ -44,7 +44,7 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
-import org.lgna.story.event.KeyListener;
+import org.lgna.story.event.KeyPressListener;
 
 /**
  * @author Dennis Cosgrove
@@ -64,6 +64,6 @@ public class KeyAdapterFillIn extends LambdaExpressionFillIn {
 	
 	@Override
 	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(KeyListener.class);
+		return AstUtilities.createLambdaExpression(KeyPressListener.class);
 	}
 }

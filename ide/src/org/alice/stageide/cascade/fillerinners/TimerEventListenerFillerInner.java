@@ -47,7 +47,7 @@ package org.alice.stageide.cascade.fillerinners;
  */
 public class TimerEventListenerFillerInner  extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	public TimerEventListenerFillerInner() {
-		super( org.lgna.story.event.TimerEventListener.class );
+		super( org.lgna.story.event.TimeListener.class );
 	}
 	@Override
 	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {

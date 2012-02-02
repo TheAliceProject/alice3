@@ -1,6 +1,6 @@
 package org.lgna.story;
 
-public enum MultipleEventPolicy implements AddMouseButtonListener.Detail, AddKeyPressedListener.Detail, AddTimerEventListener.Detail {
+public enum MultipleEventPolicy implements AddMouseButtonListener.Detail, AddKeyPressListener.Detail, AddTimerEventListener.Detail {
 	ENQUEUE,
 	//todo
 	//ENQUEUE_PER_SUBJECT,

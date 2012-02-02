@@ -46,18 +46,10 @@ package org.alice.stageide;
 import java.util.List;
 
 import org.lgna.project.ast.JavaMethod;
-import org.lgna.story.AddKeyPressedListener;
-import org.lgna.story.AddMouseButtonListener;
-import org.lgna.story.AddProximityEventListener;
 import org.lgna.story.AddTimerEventListener;
-import org.lgna.story.Entity;
 import org.lgna.story.Scene;
-import org.lgna.story.event.CollisionListener;
-import org.lgna.story.event.KeyListener;
-import org.lgna.story.event.MouseButtonListener;
-import org.lgna.story.event.ProximityEventListener;
 import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimerEventListener;
+import org.lgna.story.event.TimeListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -74,8 +66,6 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		return SingletonHolder.instance;
 	}
 	
-	public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addSceneActivationListener", SceneActivationListener.class );
-	public static final JavaMethod ADD_TIMER_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addTimerEventListener", TimerEventListener.class, AddTimerEventListener.Detail[].class );
 	
 	
 	@Override

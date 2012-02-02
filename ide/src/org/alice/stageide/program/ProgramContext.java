@@ -64,11 +64,13 @@ public abstract class ProgramContext {
 		this.vm = this.createVirtualMachine();
 		this.vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.story.event.MouseButtonAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseClickListener.class, org.alice.stageide.apis.story.event.MouseButtonAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.KeyPressListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.ArrowKeyPressListener.class, org.alice.stageide.apis.story.event.ArrowKeyAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.NumberKeyPressListener.class, org.alice.stageide.apis.story.event.NumberKeyAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.CollisionListener.class, org.alice.stageide.apis.story.event.CollisionAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityEventListener.class, org.alice.stageide.apis.story.event.ProximityAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimerEventListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
 		this.programInstance = vm.ENTRY_POINT_createInstance( programType );
 	}
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachine() {

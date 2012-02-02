@@ -9,11 +9,11 @@ import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.story.AddMouseButtonListener;
 import org.lgna.story.Scene;
-import org.lgna.story.event.MouseButtonListener;
+import org.lgna.story.event.MouseClickListener;
 
 public class MouseEventListenerMenu extends CascadeMenuModel< org.lgna.project.ast.MethodInvocation > {	
 	
-	public static final JavaMethod ADD_MOUSE_BUTTON_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseButtonListener.class, AddMouseButtonListener.Detail[].class );
+	public static final JavaMethod ADD_MOUSE_BUTTON_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseClickListener.class, AddMouseButtonListener.Detail[].class );
 
 	private static class SingletonHolder {
 		private static MouseEventListenerMenu instance = new MouseEventListenerMenu();

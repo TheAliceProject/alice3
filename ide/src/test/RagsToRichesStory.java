@@ -60,14 +60,20 @@ import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
+import org.lgna.story.event.ArrowKeyEvent;
+import org.lgna.story.event.ArrowKeyPressListener;
+import org.lgna.story.event.CollisionEvent;
+import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.KeyEvent;
-import org.lgna.story.event.KeyListener;
+import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseButtonEvent;
-import org.lgna.story.event.MouseButtonListener;
+import org.lgna.story.event.MouseClickListener;
+import org.lgna.story.event.NumberKeyEvent;
+import org.lgna.story.event.NumberKeyPressListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
+import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TimerEvent;
-import org.lgna.story.event.TimerEventListener;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -240,13 +246,13 @@ class SnowScene extends Scene{
 //				event.getModels().get(1).move(MoveDirection.DOWN, 1);
 //			}
 //		}, colListOne, colListTwo);
-		this.addTimerEventListener( new TimerEventListener() {
+		this.addTimerEventListener( new TimeListener() {
 			public void timeElapsed(TimerEvent e) {
 				greenCone.move(MoveDirection.UP, 1);
 				greenCone.move(MoveDirection.DOWN, 1);
 			}
 		}, AddTimerEventListener.timerFrequency(0.0), MultipleEventPolicy.ENQUEUE );
-		this.addKeyPressedListener(new KeyListener() {
+		this.addKeyPressListener(new KeyPressListener() {
 			public void keyPressed(KeyEvent e) {
 				if(e.isKey(Key.A)){
 //					armoire.move(MoveDirection.UP, 1);
@@ -254,6 +260,18 @@ class SnowScene extends Scene{
 				}
 			}
 		}, MultipleEventPolicy.COMBINE );
+		this.addArrowKeyPressListener(new ArrowKeyPressListener() {
+			public void keyPressed(ArrowKeyEvent e) {
+				ogre.move(e.getFowardBackwardLeftRightMoveDirection(), 1);
+			}
+		}, MultipleEventPolicy.COMBINE );
+		this.addNumberKeyPressListener(new NumberKeyPressListener() {
+			
+			public void keyPressed(NumberKeyEvent e) {
+				ogre.move(MoveDirection.UP, e.getNumber());
+				ogre.move(MoveDirection.DOWN, e.getNumber());
+			}
+		});
 //		this.addProximityEventListener( new ProximityEventListener() {
 //
 //			public void whenTheseGetClose( ProximityEvent e ) {
@@ -263,8 +281,8 @@ class SnowScene extends Scene{
 //				}			
 //			}
 //		}, colListOne, colListTwo, new ProximityDistance( 1.0 ) );
-		this.addMouseButtonListener( new MouseButtonListener() {
-			public void mouseButtonClicked(MouseButtonEvent e) {
+		this.addMouseButtonListener( new MouseClickListener() {
+			public void mouseClicked(MouseButtonEvent e) {
 				if(e.getModelAtMouseLocation() != null){
 					e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
 					e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);

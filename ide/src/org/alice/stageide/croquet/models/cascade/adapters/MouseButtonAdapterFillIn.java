@@ -44,7 +44,7 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
-import org.lgna.story.event.MouseButtonListener;
+import org.lgna.story.event.MouseClickListener;
 
 /**
  * @author Dennis Cosgrove
@@ -62,6 +62,6 @@ public class MouseButtonAdapterFillIn extends LambdaExpressionFillIn {
 	}
 	@Override
 	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(MouseButtonListener.class);
+		return AstUtilities.createLambdaExpression(MouseClickListener.class);
 	}
 }
