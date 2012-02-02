@@ -587,7 +587,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			EntityImp entityImp = EntityImp.getInstance(element);
 			Entity entity = entityImp.getAbstraction();
 			UserField field = this.getFieldForInstanceInJavaVM(entity);
-			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( field ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.InputEventTrigger( clickInput.getInputEvent() ) );
+			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
+			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.InputEventTrigger( clickInput.getInputEvent() ) );
 		}
 	}
 	

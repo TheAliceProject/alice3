@@ -47,21 +47,21 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class ProceduresCascade extends org.lgna.croquet.Cascade< MethodInvocationEditFactory > {
-	private static java.util.Map< org.lgna.project.ast.UserField, ProceduresCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ProceduresCascade getInstance( org.lgna.project.ast.UserField field ) {
+	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, ProceduresCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ProceduresCascade getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 		synchronized( map ) {
-			ProceduresCascade rv = map.get( field );
+			ProceduresCascade rv = map.get( instanceFactory );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ProceduresCascade( field );
-				map.put( field, rv );
+				rv = new ProceduresCascade( instanceFactory );
+				map.put( instanceFactory, rv );
 			}
 			return rv;
 		}
 	}
-	private ProceduresCascade( org.lgna.project.ast.UserField field ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) ) );
+	private ProceduresCascade( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( instanceFactory ) );
 	}
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadeCompletionStep< MethodInvocationEditFactory > step, MethodInvocationEditFactory[] values ) {
