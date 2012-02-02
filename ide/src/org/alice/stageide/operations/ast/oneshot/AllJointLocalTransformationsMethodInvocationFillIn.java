@@ -40,36 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalTransformationEdit extends MethodInvocationEdit {
-	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
-	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
-	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
-	}
-	public LocalTransformationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
-	@Override
-	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof org.lgna.story.MovableTurnable ) {
-			org.lgna.story.MovableTurnable movableTurnable = (org.lgna.story.MovableTurnable)instance;
-			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( movableTurnable );
-			this.m = this.transformable.getLocalTransformation();
-		} else {
-			this.transformable = null;
-			this.m = null;
+public class AllJointLocalTransformationsMethodInvocationFillIn extends MethodInvocationFillIn {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, AllJointLocalTransformationsMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		synchronized( map ) {
+			AllJointLocalTransformationsMethodInvocationFillIn rv = map.get( instanceFactory, method );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new AllJointLocalTransformationsMethodInvocationFillIn( instanceFactory, method );
+				map.put( instanceFactory, method, rv );
+			}
+			return rv;
 		}
 	}
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
+		assert method != null : methodName;
+		return getInstance( instanceFactory, method );
+	}
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+	}
+	private AllJointLocalTransformationsMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "1931250e-3f00-4d95-85e9-f8c06922eb17" ), instanceFactory, method );
+	}
 	@Override
-	protected void undoInternal() {
-		if( this.transformable != null && this.m != null ) {
-			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.PARENT, this.m );
-		}
+	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		return new AllJointLocalTransformationsMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

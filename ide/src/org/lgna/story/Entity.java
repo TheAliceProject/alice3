@@ -49,16 +49,15 @@ import org.lgna.project.annotations.*;
  */
 @org.lgna.project.annotations.ClassTemplate(isFollowToSuperClassDesired = false)
 public abstract class Entity implements Rider {
-	private String name;
 	/*package-private*/ abstract org.lgna.story.implementation.EntityImp getImplementation();
 	@GetterTemplate(isPersistent = true)
 	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public String getName() {
-		return this.name;
+		return this.getImplementation().getName();
 	}
 	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
 	public void setName( String name ) {
-		this.name = name;
+		this.getImplementation().setName( name );
 	}
 	@GetterTemplate(isPersistent = true)
 	@MethodTemplate()

@@ -90,6 +90,15 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 
 	@Override
+	public void setName( java.lang.String name ) {
+		super.setName( name );
+		int i = 0;
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+			sgVisual.setName( name + ".sgVisual" + i );
+			i += 1;
+		}
+	}
+	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
 			rv.add( sgVisual, this.getTransformation( asSeenBy ) );
