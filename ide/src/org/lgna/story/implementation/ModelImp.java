@@ -157,17 +157,17 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 			return nextSize/prevSize;
 		}
 	}
-	
-	protected abstract void animateApplyScale( edu.cmu.cs.dennisc.math.Vector3 axis, double duration, edu.cmu.cs.dennisc.animation.Style style );
 
 	public void animateSetSize( edu.cmu.cs.dennisc.math.Dimension3 size, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		edu.cmu.cs.dennisc.math.Dimension3 prevSize = this.getSize();
-		edu.cmu.cs.dennisc.math.Vector3 scale = new edu.cmu.cs.dennisc.math.Vector3(
-				getScale( prevSize.x, size.x ),
-				getScale( prevSize.y, size.y ),
-				getScale( prevSize.z, size.z )
+		edu.cmu.cs.dennisc.math.Dimension3 prevScale = this.getScale();
+		
+		edu.cmu.cs.dennisc.math.Dimension3 scale = new edu.cmu.cs.dennisc.math.Dimension3(
+				size.x / (prevSize.x / prevScale.x),
+				size.y / (prevSize.y / prevScale.y),
+				size.z / (prevSize.z / prevScale.z)
 		);
-		this.animateApplyScale( scale, duration, style );
+		this.animateSetScale( scale, duration, style );
 	}
 
 	public void animateSetWidth( double width, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
@@ -241,7 +241,7 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 			assert this.isXScaled ^ this.isYScaled ^ this.isZScaled;
 		}
 		
-		public edu.cmu.cs.dennisc.math.Vector3 getResizeAxis( edu.cmu.cs.dennisc.math.Vector3 rv, double amount, boolean isVolumePreserved ) {
+		public edu.cmu.cs.dennisc.math.Dimension3 getResizeAxis( edu.cmu.cs.dennisc.math.Dimension3 rv, double amount, boolean isVolumePreserved ) {
 			//todo: center around 0 as opposed to 1?
 			assert amount > 0;
 			
@@ -284,23 +284,23 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 			rv.set( x, y, z );
 			return rv;
 		}
-		public edu.cmu.cs.dennisc.math.Vector3 getResizeAxis( double amount, boolean isVolumePreserved ) {
-			return getResizeAxis( edu.cmu.cs.dennisc.math.Vector3.createNaN(), amount, isVolumePreserved );
+		public edu.cmu.cs.dennisc.math.Dimension3 getResizeAxis( double amount, boolean isVolumePreserved ) {
+			return getResizeAxis( edu.cmu.cs.dennisc.math.Dimension3.createNaN(), amount, isVolumePreserved );
 		}
 	}
 
 	public void animateResize( double factor, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.animateApplyScale( new edu.cmu.cs.dennisc.math.Vector3( factor, factor, factor ), duration, style );
+		this.animateSetScale( new edu.cmu.cs.dennisc.math.Dimension3( factor, factor, factor ), duration, style );
 	}
 	
 	public void animateResizeWidth( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.animateApplyScale( Dimension.LEFT_TO_RIGHT.getResizeAxis( factor, isVolumePreserved ), duration, style );
+		this.animateSetScale( Dimension.LEFT_TO_RIGHT.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 	public void animateResizeHeight( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.animateApplyScale( Dimension.TOP_TO_BOTTOM.getResizeAxis( factor, isVolumePreserved ), duration, style );
+		this.animateSetScale( Dimension.TOP_TO_BOTTOM.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 	public void animateResizeDepth( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.animateApplyScale( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ), duration, style );
+		this.animateSetScale( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 	
 	public void displayBubble(edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, Number duration) {
