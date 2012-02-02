@@ -43,6 +43,7 @@
 
 package gallery;
 
+import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import gallery.croquet.IsVisualizationShowingState;
 
 import org.lgna.croquet.State;
@@ -56,6 +57,7 @@ public class GalleryScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground snow = new Ground();
 	private final Camera camera;
+	private final Cone measuringStick = new Cone();
 	private Model model;
 	private boolean shouldShow;
 	public GalleryScene( Camera camera ) {
@@ -69,6 +71,7 @@ public class GalleryScene extends Scene {
 		}
 		this.model = model;
 		if( this.model != null ) {
+			model.turn( TurnDirection.RIGHT, 0.0625 );
 			this.model.setVehicle( this );
 			updateVisualization();
 		}
@@ -100,10 +103,13 @@ public class GalleryScene extends Scene {
 	};
 	
 	private void performGeneratedSetup() {
+		measuringStick.setBaseRadius( .1 );
+		measuringStick.move( MoveDirection.LEFT, 1 );
+		measuringStick.setPaint( Color.BLACK );
 		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
-
+		this.measuringStick.setVehicle( this );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 
 		//camera vantage point taken care of by camera navigator
