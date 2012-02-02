@@ -43,8 +43,6 @@
 
 package org.alice.stageide.ast;
 
-import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
-
 /**
  * @author Dennis Cosgrove
  */
