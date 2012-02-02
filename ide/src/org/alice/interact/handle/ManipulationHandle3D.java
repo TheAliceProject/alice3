@@ -712,19 +712,22 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		
 	}
 	
-	protected Transformable getParentTransformable()
+	protected edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getParentTransformable()
 	{
 		Composite parent = this.getParent();
-		if (parent instanceof Transformable)
+		if (parent instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)
 		{
-			return (Transformable)parent;
+			return (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)parent;
+		}
+		if (parent != null) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Unknown parent type for handle: "+parent);
 		}
 		return null;
 	}
 
 	protected AxisAlignedBox getManipulatedObjectBox()
 	{
-		Transformable parent = this.getParentTransformable();
+		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable parent = this.getParentTransformable();
 		AxisAlignedBox boundingBox = BoundingBoxUtilities.getSGTransformableScaledBBox(parent);
 		if (boundingBox == null)
 		{

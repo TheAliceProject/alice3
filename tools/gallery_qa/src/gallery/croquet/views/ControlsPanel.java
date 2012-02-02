@@ -41,30 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package test;
+package gallery.croquet.views;
+
+import java.awt.Component;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+
+import org.alice.ide.croquet.models.gallerybrowser.GalleryNode;
+import org.lgna.croquet.components.ScrollPane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TestBootstrap {
-	public static void main( String[] args ) {
-		org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.SurfaceAppearance.GRASS, null, Double.NaN, null, null );
-		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
-		if( true ) {
-			org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
-			vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			System.err.println();
-		} else {
-			vm.ENTRY_POINT_invoke( null, programType.findMethod( "main", String[].class ), (Object)args );
-		}
+public class ControlsPanel extends org.lgna.croquet.components.BorderPanel {
+	public ControlsPanel( gallery.croquet.ControlsComposite composite ) {
+		super( composite );
+//		this.addComponent(composite.getNextOperation().createButton(), Constraint.PAGE_START);
+		this.addComponent(composite.getViz().createCheckBox(), Constraint.PAGE_START);
+
+		org.lgna.croquet.components.Tree< ? > tree = composite.getTreeState().createTree();
+		tree.expandAllRows();
+		tree.setCellRenderer(new edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<GalleryNode>() {
+			@Override
+			protected JLabel updateListCellRendererComponent(JLabel rv,
+					JTree tree, GalleryNode value, boolean sel, boolean expanded,
+					boolean leaf, int row, boolean hasFocus) {
+				rv.setIcon(value.getSmallIcon());
+				rv.setText(value.getText());
+				return rv;
+			}
+		});
+		
+		ScrollPane scrollPane = new ScrollPane( tree );
+		this.addComponent( scrollPane, Constraint.CENTER );
 	}
 }

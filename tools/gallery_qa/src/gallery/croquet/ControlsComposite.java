@@ -41,30 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package test;
+package gallery.croquet;
+
+import org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TestBootstrap {
-	public static void main( String[] args ) {
-		org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.SurfaceAppearance.GRASS, null, Double.NaN, null, null );
-		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
-		if( true ) {
-			org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
-			vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			System.err.println();
-		} else {
-			vm.ENTRY_POINT_invoke( null, programType.findMethod( "main", String[].class ), (Object)args );
-		}
+public class ControlsComposite extends org.lgna.croquet.Composite< gallery.croquet.views.ControlsPanel > {
+	
+	private final NextOperation next = new NextOperation();
+	
+	public ControlsComposite() {
+		super( java.util.UUID.fromString( "76991dd9-0b64-43b0-9ca9-c60e6a914dfc" ) );
+	}
+	@Override
+	protected void localize() {
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
+	}
+	@Override
+	protected gallery.croquet.views.ControlsPanel createView() {
+		return new gallery.croquet.views.ControlsPanel( this );
+	}
+	
+	public NextOperation getNextOperation() {
+		return next;
+	}
+	public GalleryResourceTreeSelectionState getTreeState() {
+		return GalleryResourceTreeSelectionState.getInstance();
+	}
+	public IsVisualizationShowingState getViz() {
+		return IsVisualizationShowingState.getInstance();
 	}
 }

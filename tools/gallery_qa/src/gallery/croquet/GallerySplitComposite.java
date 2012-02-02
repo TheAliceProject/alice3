@@ -41,30 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package test;
+package gallery.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TestBootstrap {
-	public static void main( String[] args ) {
-		org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.SurfaceAppearance.GRASS, null, Double.NaN, null, null );
-		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
-		if( true ) {
-			org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
-			vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			System.err.println();
-		} else {
-			vm.ENTRY_POINT_invoke( null, programType.findMethod( "main", String[].class ), (Object)args );
-		}
+public class GallerySplitComposite extends org.lgna.croquet.SplitComposite {
+	public GallerySplitComposite() {
+		super( java.util.UUID.fromString( "fe1830bd-21da-44a3-80f1-cb288459080e" ), new ControlsComposite(), test.ik.croquet.SceneComposite.getInstance() );
+	}
+	@Override
+	protected org.lgna.croquet.components.SplitPane createView() {
+		return new org.lgna.croquet.components.HorizontalSplitPane( this );
 	}
 }

@@ -386,7 +386,7 @@ public class SetUpMethodGenerator {
 									org.lgna.story.Joint jointEntity = (org.lgna.story.Joint)o;
 									org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.ImplementationAccessor.getImplementation(jointEntity);
 									edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = gottenJoint.getLocalTransformation();
-									edu.cmu.cs.dennisc.math.AffineMatrix4x4 originalTransform = jointedModelImp.getOriginalJointTransformation(gottenJoint.getJointId());
+									edu.cmu.cs.dennisc.math.AffineMatrix4x4 originalTransform = gottenJoint.getOriginalTransformation();
 									if (!currentTransform.orientation.isWithinReasonableEpsilonOf(originalTransform.orientation)) {
 										try {
 											org.lgna.story.Orientation orientation = jointEntity.getOrientationRelativeToVehicle();

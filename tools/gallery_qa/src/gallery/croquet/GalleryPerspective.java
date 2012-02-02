@@ -41,30 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package test;
+package gallery.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TestBootstrap {
-	public static void main( String[] args ) {
-		org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.SurfaceAppearance.GRASS, null, Double.NaN, null, null );
-		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
-		if( true ) {
-			org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
-			vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			System.err.println();
-		} else {
-			vm.ENTRY_POINT_invoke( null, programType.findMethod( "main", String[].class ), (Object)args );
-		}
+public class GalleryPerspective extends org.lgna.croquet.Perspective {
+	public GalleryPerspective() {
+		super( java.util.UUID.fromString( "db725789-5ad4-4f6f-9653-12f383f6815e" ), new GallerySplitComposite() );
 	}
 }
