@@ -46,32 +46,32 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class AllJointLocalTransformationsMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.project.ast.AbstractMethod, AllJointLocalTransformationsMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, AllJointLocalTransformationsMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {
-			AllJointLocalTransformationsMethodInvocationFillIn rv = map.get( field, method );
+			AllJointLocalTransformationsMethodInvocationFillIn rv = map.get( instanceFactory, method );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new AllJointLocalTransformationsMethodInvocationFillIn( field, method );
-				map.put( field, method, rv );
+				rv = new AllJointLocalTransformationsMethodInvocationFillIn( instanceFactory, method );
+				map.put( instanceFactory, method, rv );
 			}
 			return rv;
 		}
 	}
-	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
 		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
-		return getInstance( field, method );
+		return getInstance( instanceFactory, method );
 	}
-	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractField field, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( field, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
 	}
-	private AllJointLocalTransformationsMethodInvocationFillIn( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "1931250e-3f00-4d95-85e9-f8c06922eb17" ), field, method );
+	private AllJointLocalTransformationsMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "1931250e-3f00-4d95-85e9-f8c06922eb17" ), instanceFactory, method );
 	}
 	@Override
-	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		return new AllJointLocalTransformationsMethodInvocationEditFactory( field, method, argumentExpressions );
+	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		return new AllJointLocalTransformationsMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }
