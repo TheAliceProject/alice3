@@ -51,7 +51,6 @@ import java.awt.RenderingHints;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
 import org.alice.stageide.properties.FieldNameAdapter;
 import org.lgna.croquet.components.Button;
@@ -113,26 +112,24 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
                 new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
                 0, // ipadX
                 0) // ipadY
-                );
-        FieldNameAdapter fieldNameAdapter = (FieldNameAdapter)this.propertyAdapter;
-        if (fieldNameAdapter.allowsEdit())
-        {
-	        this.editButton = RenameFieldOperation.getInstance( fieldNameAdapter.getInstance() ).createButton();
-	        this.editButton.getAwtComponent().setText("Rename...");
-	        componentPanel.addComponent(this.editButton, new GridBagConstraints(
-	                xIndex++, // gridX
-	                0, // gridY
-	                0, // gridWidth
-	                1, // gridHeight
-	                0.0, // weightX
-	                0.0, // weightY
-	                GridBagConstraints.WEST, // anchor
-	                GridBagConstraints.HORIZONTAL, // fill
-	                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
-	                0, // ipadX
-	                0) // ipadY
-	                );
-        }
+        );
+        
+        org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+        org.lgna.croquet.components.JComponent< ? > oneShotComponent = org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
+        componentPanel.addComponent(oneShotComponent, new GridBagConstraints(
+                xIndex++, // gridX
+                0, // gridY
+                0, // gridWidth
+                1, // gridHeight
+                0.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.HORIZONTAL, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+        );
+        
         
         return componentPanel;
     }
