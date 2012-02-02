@@ -53,25 +53,36 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 	public static final String SCHEME = "gen";
 	public static enum Template {
 		GRASS( org.lgna.story.Ground.SurfaceAppearance.GRASS ),
-		MOON( org.lgna.story.Ground.SurfaceAppearance.MOON, "BLACK" ),
+		MOON( org.lgna.story.Ground.SurfaceAppearance.MOON, org.lgna.story.Color.BLACK ),
 		SNOW( org.lgna.story.Ground.SurfaceAppearance.SNOW ),
 		SEA_SURFACE( org.lgna.story.Ground.SurfaceAppearance.WATER ),
-		SEA_FLOOR( org.lgna.story.Ground.SurfaceAppearance.OCEAN_FLOOR, "DARK_BLUE", 0.4 ),
-		LAGOON_FLOOR( org.lgna.story.Ground.SurfaceAppearance.SAND, "DARK_BLUE", 0.4 ),
+		SEA_FLOOR( org.lgna.story.Ground.SurfaceAppearance.OCEAN_FLOOR, org.lgna.story.Color.DARK_BLUE, 0.3, org.lgna.story.Color.WHITE, org.lgna.story.Color.CYAN ),
+		LAGOON_FLOOR( org.lgna.story.Ground.SurfaceAppearance.SAND, org.lgna.story.Color.DARK_BLUE, 0.3, org.lgna.story.Color.WHITE, org.lgna.story.Color.CYAN ),
 		DESERT( org.lgna.story.Ground.SurfaceAppearance.SAND ),
+		MARS( org.lgna.story.Ground.SurfaceAppearance.SAND, org.lgna.story.Color.PINK, 0.3 ),
 		DIRT( org.lgna.story.Ground.SurfaceAppearance.DIRT );
 		private final org.lgna.story.Ground.SurfaceAppearance surfaceAppearance;
 		//private final org.lgna.story.Color atmosphereColor;
-		private final String atmospherColorConstantName;
+		private final org.lgna.story.Color atmosphereColor;
 		private final double fogDensity;
-		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, String atmospherColorConstantName/*org.lgna.story.Color atmosphereColor*/, double fogDensity ) {
+		private final org.lgna.story.Color aboveLightColor;
+		private final org.lgna.story.Color belowLightColor;
+		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor) {
 			this.surfaceAppearance = surfaceAppearance;
 			//this.atmosphereColor = atmosphereColor;
-			this.atmospherColorConstantName = atmospherColorConstantName;
+			this.atmosphereColor = atmosphereColor;
 			this.fogDensity = fogDensity;
+			this.aboveLightColor = aboveLightColor;
+			this.belowLightColor = belowLightColor;
 		}
-		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, String atmospherColorConstantName/*org.lgna.story.Color atmosphereColor*/ ) {
-			this( surfaceAppearance, atmospherColorConstantName, Double.NaN );
+		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor ) {
+			this( surfaceAppearance, atmosphereColor, fogDensity, aboveLightColor, null );
+		}
+		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity ) {
+			this( surfaceAppearance, atmosphereColor, fogDensity, null );
+		}
+		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor ) {
+			this( surfaceAppearance, atmosphereColor, Double.NaN );
 		}
 		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance ) {
 			this( surfaceAppearance, null );
@@ -82,8 +93,14 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 //		public org.lgna.story.Color getAtmosphereColor() {
 //			return this.atmosphereColor;
 //		}
-		public String getAtmospherColorConstantName() {
-			return this.atmospherColorConstantName;
+		public org.lgna.story.Color getAtmospherColor() {
+			return this.atmosphereColor;
+		}
+		public org.lgna.story.Color getAboveLightColor() {
+			return this.aboveLightColor;
+		}
+		public org.lgna.story.Color getBelowLightColor() {
+			return this.belowLightColor;
 		}
 		public double getFogDensity() {
 			return this.fogDensity;
