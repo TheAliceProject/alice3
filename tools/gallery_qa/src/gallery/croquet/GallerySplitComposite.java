@@ -41,42 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package gallery.croquet;
 
-import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-@org.lgna.project.annotations.ClassTemplate(isFollowToSuperClassDesired = false)
-public abstract class Entity implements Rider {
-	/*package-private*/ abstract org.lgna.story.implementation.EntityImp getImplementation();
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
-	public String getName() {
-		return this.getImplementation().getName();
+public class GallerySplitComposite extends org.lgna.croquet.SplitComposite {
+	public GallerySplitComposite() {
+		super( java.util.UUID.fromString( "fe1830bd-21da-44a3-80f1-cb288459080e" ), new ControlsComposite(), test.ik.croquet.SceneComposite.getInstance() );
 	}
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
-	public void setName( String name ) {
-		this.getImplementation().setName( name );
-	}
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate()
-	public Entity getVehicle() {
-		org.lgna.story.implementation.EntityImp vehicleImplementation = this.getImplementation().getVehicle();
-		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
-	}
-	
-	public VantagePoint getVantagePoint( Entity entity ) {
-		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) ); 
-	}
-	
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void delay( Number duration ) {
-		this.getImplementation().delay( duration.doubleValue() );
-	}
-
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void playAudio( AudioSource audioSource ) {
-		this.getImplementation().playAudio( audioSource );
+	@Override
+	protected org.lgna.croquet.components.SplitPane createView() {
+		return new org.lgna.croquet.components.HorizontalSplitPane( this );
 	}
 }

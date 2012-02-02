@@ -27,6 +27,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 //    public native boolean isAlphaBlended();
     private native void getAxisAlignedBoundingBoxForJoint(org.lgna.story.resources.JointId name, double[] bboxData);
     private native void updateAxisAlignedBoundingBox(double[] bboxData);
+    public native void getOriginalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
     public native void getLocalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
 	public native void setLocalTransformationForPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
 	public native void getAbsoluteTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
@@ -37,6 +38,18 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	
 	public edu.cmu.cs.dennisc.scenegraph.Composite getSGParent() {
 		return this.sgParent;
+	}
+	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformationForJoint( org.lgna.story.resources.JointId joint ) {
+		double[] buffer = new double[ 12 ];
+		try {
+			getOriginalTransformationForPartNamed( buffer, joint );
+		} catch( RuntimeException re ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( joint );
+			throw re;
+		}
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 affineMatrix = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createFromColumnMajorArray12( buffer );
+		return affineMatrix;
 	}
 	
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformationForJoint( org.lgna.story.resources.JointId joint ) {

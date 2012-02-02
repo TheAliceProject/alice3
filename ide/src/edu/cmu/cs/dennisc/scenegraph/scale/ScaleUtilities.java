@@ -125,7 +125,7 @@ public class ScaleUtilities {
 		return null;
 	}
 	
-	public static edu.cmu.cs.dennisc.math.Matrix3x3 getTransformableScale( edu.cmu.cs.dennisc.scenegraph.Transformable t )
+	public static edu.cmu.cs.dennisc.math.Matrix3x3 getTransformableScale( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable t )
 	{
 		Scalable scalable;
 		if (t instanceof Scalable) {

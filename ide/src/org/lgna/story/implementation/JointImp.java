@@ -135,11 +135,11 @@ public abstract class JointImp extends AbstractTransformableImp {
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 	
-	protected edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
+	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
 		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
 	}
 	
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
 		return this.jointedModelImplementation.getOriginalJointTransformation( this.getJointId() );
 	}
 	

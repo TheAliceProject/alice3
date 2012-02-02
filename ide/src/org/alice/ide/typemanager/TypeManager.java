@@ -99,7 +99,10 @@ public class TypeManager {
 			rv.constructors.add( userConstructor );
 		}
 
-		org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().augmentTypeIfNecessary( rv );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			ide.getApiConfigurationManager().augmentTypeIfNecessary( rv );
+		}
 		return rv;
 	}
 
@@ -274,12 +277,15 @@ public class TypeManager {
 	
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFromSuperType( org.lgna.project.ast.JavaType superType ) {
 		ExtendsTypeCriterion criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, ConstructorArgumentUtilities.getContructor0Parameter0Type( superType ) );
-		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		if( project != null ) {
-			java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
-			for( org.lgna.project.ast.NamedUserType existingType : existingTypes ) {
-				if( criterion.accept( existingType ) ) {
-					return existingType;
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			org.lgna.project.Project project = ide.getProject();
+			if( project != null ) {
+				java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
+				for( org.lgna.project.ast.NamedUserType existingType : existingTypes ) {
+					if( criterion.accept( existingType ) ) {
+						return existingType;
+					}
 				}
 			}
 		}

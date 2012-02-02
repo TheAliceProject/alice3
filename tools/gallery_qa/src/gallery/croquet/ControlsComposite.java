@@ -41,42 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package gallery.croquet;
 
-import org.lgna.project.annotations.*;
+import org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState;
+
 /**
  * @author Dennis Cosgrove
  */
-@org.lgna.project.annotations.ClassTemplate(isFollowToSuperClassDesired = false)
-public abstract class Entity implements Rider {
-	/*package-private*/ abstract org.lgna.story.implementation.EntityImp getImplementation();
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
-	public String getName() {
-		return this.getImplementation().getName();
+public class ControlsComposite extends org.lgna.croquet.Composite< gallery.croquet.views.ControlsPanel > {
+	
+	private final NextOperation next = new NextOperation();
+	
+	public ControlsComposite() {
+		super( java.util.UUID.fromString( "76991dd9-0b64-43b0-9ca9-c60e6a914dfc" ) );
 	}
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
-	public void setName( String name ) {
-		this.getImplementation().setName( name );
+	@Override
+	protected void localize() {
 	}
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate()
-	public Entity getVehicle() {
-		org.lgna.story.implementation.EntityImp vehicleImplementation = this.getImplementation().getVehicle();
-		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
+	}
+	@Override
+	protected gallery.croquet.views.ControlsPanel createView() {
+		return new gallery.croquet.views.ControlsPanel( this );
 	}
 	
-	public VantagePoint getVantagePoint( Entity entity ) {
-		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) ); 
+	public NextOperation getNextOperation() {
+		return next;
 	}
-	
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void delay( Number duration ) {
-		this.getImplementation().delay( duration.doubleValue() );
+	public GalleryResourceTreeSelectionState getTreeState() {
+		return GalleryResourceTreeSelectionState.getInstance();
 	}
-
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void playAudio( AudioSource audioSource ) {
-		this.getImplementation().playAudio( audioSource );
+	public IsVisualizationShowingState getViz() {
+		return IsVisualizationShowingState.getInstance();
 	}
 }

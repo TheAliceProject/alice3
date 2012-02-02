@@ -41,42 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package gallery.croquet;
 
-import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-@org.lgna.project.annotations.ClassTemplate(isFollowToSuperClassDesired = false)
-public abstract class Entity implements Rider {
-	/*package-private*/ abstract org.lgna.story.implementation.EntityImp getImplementation();
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
-	public String getName() {
-		return this.getImplementation().getName();
-	}
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
-	public void setName( String name ) {
-		this.getImplementation().setName( name );
-	}
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate()
-	public Entity getVehicle() {
-		org.lgna.story.implementation.EntityImp vehicleImplementation = this.getImplementation().getVehicle();
-		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
-	}
-	
-	public VantagePoint getVantagePoint( Entity entity ) {
-		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) ); 
-	}
-	
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void delay( Number duration ) {
-		this.getImplementation().delay( duration.doubleValue() );
-	}
-
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void playAudio( AudioSource audioSource ) {
-		this.getImplementation().playAudio( audioSource );
+public class GalleryPerspective extends org.lgna.croquet.Perspective {
+	public GalleryPerspective() {
+		super( java.util.UUID.fromString( "db725789-5ad4-4f6f-9653-12f383f6815e" ), new GallerySplitComposite() );
 	}
 }
