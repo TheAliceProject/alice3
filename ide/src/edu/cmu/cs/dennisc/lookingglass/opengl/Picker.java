@@ -53,24 +53,54 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	private final AbstractLookingGlass lookingGlass;
 	private final PickContext pickContext = new PickContext();
 	private final java.nio.IntBuffer selectionAsIntBuffer;
-	private PickParameters pickParameters;
 	private javax.media.opengl.GLDrawable glDrawable;
 	private javax.media.opengl.GLContext glContext;
 	private javax.media.opengl.GLContext prevShareContext;
 
-	private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
+	private class GlEventAdapter implements javax.media.opengl.GLEventListener {
+		private PickParameters pickParameters;
+		public void setPickParameters( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+			this.pickParameters = new PickParameters( sgCamera, x, y, isSubElementRequired, pickObserver );
+		}
+		public void clearPickParameters() {
+			this.pickParameters = null;
+		}
+		public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > accessAllPickResults() {
+			return this.pickParameters.accessAllPickResults();
+		}
+		public edu.cmu.cs.dennisc.lookingglass.PickResult accessFrontMostPickResult() {
+			return this.pickParameters.accessFrontMostPickResult();
+		}
+
 		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
 		}
 		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int arg1, int arg2, int arg3, int arg4 ) {
 		}
 		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
-			Picker.this.performPick( drawable.getGL() );
+			Throwable throwable = null;
+			try {
+				drawable.getGL();
+			} catch( Throwable t ) {
+				throwable = t;
+			}
+			if( throwable != null ) {
+				if( throwable instanceof NullPointerException ) {
+					NullPointerException nullPointerException = (NullPointerException)throwable;
+					edu.cmu.cs.dennisc.java.util.logging.Logger.info( nullPointerException );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( throwable );
+				}
+			} else {
+				Picker.this.performPick( drawable.getGL(), this.pickParameters );
+			}
 		}
 		public void displayChanged( javax.media.opengl.GLAutoDrawable arg0, boolean arg1, boolean arg2 ) {
 		}
 		//jogl2
 		//public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
 		//}
+	};
+	private final GlEventAdapter glEventListener = new GlEventAdapter() {
 	};
 
 	private final Runnable displayAdapter = new Runnable() {
@@ -112,15 +142,17 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 						//pass
 					} else {
 						if( LookingGlassFactory.getInstance().canCreateGLPbuffer() ) {
-							this.glDrawable = LookingGlassFactory.getInstance().createGLPbuffer( 1, 1, LookingGlassFactory.getSampleCountForDisabledMultisampling(), shareContext );
+							javax.media.opengl.GLPbuffer glPixelBuffer = LookingGlassFactory.getInstance().createGLPbuffer( 1, 1, LookingGlassFactory.getSampleCountForDisabledMultisampling(), shareContext );;
+							this.glContext = glPixelBuffer.getContext();
+							this.glDrawable = glPixelBuffer;
 						} else {
 							javax.media.opengl.GLCapabilities glCapabilities = shareDrawable.getChosenGLCapabilities();
 							glCapabilities.setDoubleBuffered( false );
 							this.glDrawable = com.sun.opengl.impl.GLDrawableFactoryImpl.getFactoryImpl().createOffscreenDrawable(glCapabilities, LookingGlassFactory.getGLCapabilitiesChooser());
 							this.glDrawable.setSize(1,1);
+							this.glContext = this.glDrawable.createContext( shareContext );
+							this.glContext.setSynchronized(true);
 						}
-						this.glContext = this.glDrawable.createContext( shareContext );
-						this.glContext.setSynchronized(true);
 						this.prevShareContext = shareContext;
 					}
 				}
@@ -130,12 +162,15 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	}
 	/*package-protected*/ void release() {
 		if( this.glContext != null ) {
-			this.glContext.destroy();
+			if( this.glDrawable instanceof javax.media.opengl.GLPbuffer ) {
+				//pass
+			} else {
+				this.glContext.destroy();
+			}
 			this.glContext = null;
 		}
 
 		if( this.glDrawable != null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this.glDrawable );
 			if( this.glDrawable instanceof javax.media.opengl.GLPbuffer ) {
 				javax.media.opengl.GLPbuffer glPixelBufer = (javax.media.opengl.GLPbuffer)this.glDrawable;
 				glPixelBufer.destroy();
@@ -154,7 +189,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 	private static ConformanceTestResults conformanceTestResults = null;
 
-	private void performPick( javax.media.opengl.GL gl ) {
+	private void performPick( javax.media.opengl.GL gl, PickParameters pickParameters ) {
 		this.pickContext.gl = gl;
 		if( conformanceTestResults != null ) {
 			//pass
@@ -171,12 +206,12 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			}
 		}
 
-		edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver = this.pickParameters.getPickObserver();
+		edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver = pickParameters.getPickObserver();
 		if( pickObserver != null ) {
 			pickObserver.prePick();
 			ChangeHandler.handleBufferedChanges();
 		}
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = this.pickParameters.getSGCamera();
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = pickParameters.getSGCamera();
 		AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 
 		this.selectionAsIntBuffer.rewind();
@@ -187,7 +222,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 		java.awt.Rectangle actualViewport = this.lookingGlass.getActualViewport( sgCamera );
 		this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
-		cameraAdapter.performPick( this.pickContext, this.pickParameters, actualViewport, conformanceTestResults );
+		cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport, conformanceTestResults );
 		this.pickContext.gl.glFlush();
 
 		this.selectionAsIntBuffer.rewind();
@@ -205,8 +240,8 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			}
 
 			if( conformanceTestResults.isPickFunctioningCorrectly() ) {
-				double x = this.pickParameters.getX();
-				double y = this.pickParameters.getFlippedY( actualViewport );
+				double x = pickParameters.getX();
+				double y = pickParameters.getFlippedY( actualViewport );
 
 				edu.cmu.cs.dennisc.math.Matrix4x4 m = new edu.cmu.cs.dennisc.math.Matrix4x4();
 				m.translation.set( actualViewport.width - 2 * (x - actualViewport.x), actualViewport.height - 2 * (y - actualViewport.y), 0, 1 );
@@ -286,7 +321,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				java.util.Arrays.sort( selectionBufferInfos, comparator );
 			}
 			for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
-				this.pickParameters.addPickResult( sgCamera, selectionBufferInfo.getSGVisual(), selectionBufferInfo.isFrontFacing(), selectionBufferInfo.getSGGeometry(), selectionBufferInfo.getSubElement(), selectionBufferInfo.getPointInSource() );
+				pickParameters.addPickResult( sgCamera, selectionBufferInfo.getSGVisual(), selectionBufferInfo.isFrontFacing(), selectionBufferInfo.getSGGeometry(), selectionBufferInfo.getSubElement(), selectionBufferInfo.getPointInSource() );
 			}
 		}
 		if( pickObserver != null ) {
@@ -295,26 +330,32 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 		}
 	}
 
-	
-	
-	private edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+	private boolean isGoodToGo() {
 		javax.media.opengl.GLContext glUpToDataContext = getUpToDateContext();
 		if( glUpToDataContext != null ) {
-			this.pickParameters = new PickParameters( sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+		if( this.isGoodToGo() ) {
+			this.glEventListener.setPickParameters( sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
 			try {
 				if( sgCamera != null ) {
 					if( javax.media.opengl.Threading.isSingleThreaded() && javax.media.opengl.Threading.isOpenGLThread() == false ) {
 						javax.media.opengl.Threading.invokeOnOpenGLThread( displayAdapter );
 					} else {
-						drawableHelper.invokeGL( this.glDrawable, glUpToDataContext, displayAdapter, initAdapter );
+						drawableHelper.invokeGL( this.glDrawable, this.glContext, displayAdapter, initAdapter );
 					}
 				}
-				return this.pickParameters.accessFrontMostPickResult();
+				return this.glEventListener.accessFrontMostPickResult();
 			} finally {
-				this.pickParameters = null;
+				this.glEventListener.clearPickParameters();
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "opengl context is null" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.glDrawable, this.glContext );
 			return new edu.cmu.cs.dennisc.lookingglass.PickResult( sgCamera );
 		}
 	}
@@ -322,23 +363,22 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	private final com.sun.opengl.impl.GLDrawableHelper drawableHelper = new com.sun.opengl.impl.GLDrawableHelper();
 
 	public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickAll( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
-		javax.media.opengl.GLContext glUpToDataContext = getUpToDateContext();
-		if( glUpToDataContext != null ) {
-			this.pickParameters = new PickParameters( sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
+		if( this.isGoodToGo() ) {
+			this.glEventListener.setPickParameters( sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
 			try {
 				if( sgCamera != null ) {
 					if( javax.media.opengl.Threading.isSingleThreaded() && javax.media.opengl.Threading.isOpenGLThread() == false ) {
 						javax.media.opengl.Threading.invokeOnOpenGLThread( displayAdapter );
 					} else {
-						drawableHelper.invokeGL( this.glDrawable, glUpToDataContext, displayAdapter, initAdapter );
+						drawableHelper.invokeGL( this.glDrawable, this.glContext, displayAdapter, initAdapter );
 					}
 				}
-				return this.pickParameters.accessAllPickResults();
+				return this.glEventListener.accessAllPickResults();
 			} finally {
-				this.pickParameters = null;
+				this.glEventListener.clearPickParameters();
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "opengl context is null" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.glDrawable, this.glContext );
 			return java.util.Collections.emptyList();
 		}
 	}
