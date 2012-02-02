@@ -203,7 +203,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
 		if( this.rootJointImp != null ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.rootJointImp.getLocalTransformation();
-			return new edu.cmu.cs.dennisc.math.Dimension3( m.orientation.right.x, m.orientation.up.y, m.orientation.backward.z );
+			return new edu.cmu.cs.dennisc.math.Dimension3( m.orientation.right.calculateMagnitude(), m.orientation.up.calculateMagnitude(), m.orientation.backward.calculateMagnitude() );
 		} else {
 			edu.cmu.cs.dennisc.math.Matrix3x3 m = this.visualData.getSgVisuals()[ 0 ].scale.getValue();
 			return new edu.cmu.cs.dennisc.math.Dimension3( m.right.x, m.up.y, m.backward.z );

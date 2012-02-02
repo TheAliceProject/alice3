@@ -41,63 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.gallerybrowser;
+package gallery.croquet.views;
+
+import java.awt.Component;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+
+import org.alice.ide.croquet.models.gallerybrowser.GalleryNode;
+import org.lgna.croquet.components.ScrollPane;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractType< ?,?,? > > {
-	private static class CompositeIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DefaultCompositeIcon {
-		public CompositeIcon( javax.swing.ImageIcon imageIcon ) {
-			super( 
-					org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE,
-					imageIcon,
-					org.alice.ide.icons.Icons.FOLDER_FRONT_ICON_LARGE 
-			);
-		}
-	}
-	private final javax.swing.Icon largeIcon;
-	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( id, type );
-		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-		String path = "images/" + cls.getName().replace( ".", "/" ) + ".png";
-		javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( path ) );
-		if( imageIcon != null ) {
-			this.largeIcon = new CompositeIcon(imageIcon);
-		} else {
-			this.largeIcon = org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
-		}
-	}
-	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
-	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
-		return this.getDeclarationChildren( apiConfigurationManager );
-	}
-	@Override
-	public int getChildCount() {
-		return this.getDeclarationChildren().size();
-	}
-	@Override
-	public GalleryNode getChild( int index ) {
-		return getDeclarationNodeInstance( this.getDeclarationChildren().get( index ) );
-	}
-	@Override
-	public int getIndexOfChild( GalleryNode child ) {
-		return this.getDeclarationChildren().indexOf( ((DeclarationGalleryNode<?>)child).getDeclaration() );
-	}
-	@Override
-	public javax.swing.Icon getSmallIcon() {
-		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
-	}
-	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return this.largeIcon;
-	}
+public class ControlsPanel extends org.lgna.croquet.components.BorderPanel {
+	public ControlsPanel( gallery.croquet.ControlsComposite composite ) {
+		super( composite );
+//		this.addComponent(composite.getNextOperation().createButton(), Constraint.PAGE_START);
+		this.addComponent(composite.getViz().createCheckBox(), Constraint.PAGE_START);
 
-	@Override
-	protected void appendClassName( java.lang.StringBuilder sb ) {
-		String name = this.getDeclaration().getName();
-		sb.append( "My" );
-		sb.append( name.replace( "Resource", "" ) );
+		org.lgna.croquet.components.Tree< ? > tree = composite.getTreeState().createTree();
+		tree.expandAllRows();
+		tree.setCellRenderer(new edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<GalleryNode>() {
+			@Override
+			protected JLabel updateListCellRendererComponent(JLabel rv,
+					JTree tree, GalleryNode value, boolean sel, boolean expanded,
+					boolean leaf, int row, boolean hasFocus) {
+				rv.setIcon(value.getSmallIcon());
+				rv.setText(value.getText());
+				return rv;
+			}
+		});
+		
+		ScrollPane scrollPane = new ScrollPane( tree );
+		this.addComponent( scrollPane, Constraint.CENTER );
 	}
 }
