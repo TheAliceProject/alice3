@@ -216,10 +216,6 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	
 	@Override
-	protected void animateApplyScale( edu.cmu.cs.dennisc.math.Vector3 axis, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( axis );
-	}
-	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
 		if( this.rootJointImp != null ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.rootJointImp.getLocalTransformation();

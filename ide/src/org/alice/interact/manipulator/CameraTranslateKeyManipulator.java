@@ -70,9 +70,9 @@ public class CameraTranslateKeyManipulator extends TranslateKeyManipulator imple
 	public void setCamera( AbstractCamera camera ) 
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if (this.camera != null && this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)this.camera.getParent());
 		}
 	}
 	

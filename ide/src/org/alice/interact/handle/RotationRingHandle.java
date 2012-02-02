@@ -130,13 +130,13 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	{
 		super();
 		this.init(rotationAxisDirection, handlePosition);
-		this.setColor(color);
+		this.initColor(color);
 	}
 	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor )
 	{
 		super();
 		this.init(rotationAxisDirection, handlePosition);
-		this.setColors(baseColor, activeColor, rolloverColor, mutedColor);
+		this.initColors(baseColor, activeColor, rolloverColor, mutedColor);
 	}
 	
 	private void init(MovementDirection rotationAxisDirection, HandlePosition handlePosition)
@@ -169,7 +169,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		this.handleOffset.set( handle.handleOffset );
 	}
 	
-	protected void setColor(Color4f color) {
+	protected void initColor(Color4f color) {
 		this.baseColor = color;
 		Color colorColor = new Color(this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue);
 		this.activeColor = new Color4f(ColorUtilities.shiftHSB( colorColor, 0.0d, 0.0d, .1d ));
@@ -178,7 +178,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		setCurrentColorInternal();
 	}
 	
-	protected void setColors(Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor) {
+	protected void initColors(Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor) {
 		this.baseColor = baseColor;
 		this.activeColor = activeColor;
 		this.rolloverColor = rolloverColor;
@@ -253,7 +253,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	@Override
 	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
 		super.setManipulatedObject( manipulatedObject );
-		this.setPositionRelativeToObjectSize( );
+//		this.setPositionRelativeToObjectSize( );
 	}
 	
 	public void setSphereVisibility( boolean showSphere )
@@ -456,8 +456,8 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	}
 	
 	@Override
-	public void setHandleShowing(boolean showing) {
-		super.setHandleShowing(showing);
+	public void setVisualsShowing(boolean showing) {
+		super.setVisualsShowing(showing);
 	}
 
 }

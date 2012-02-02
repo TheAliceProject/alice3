@@ -75,7 +75,7 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
 	public void setCamera( AbstractCamera camera ) 
 	{
 		this.camera = camera;
-		this.manipulatedTransformable = this.getManipulatedTransformableFromCamera();
+		this.setManipulatedTransformable(this.getManipulatedTransformableFromCamera());
 	}
 	
 	public Transformable getManipulatedTransformableFromCamera()

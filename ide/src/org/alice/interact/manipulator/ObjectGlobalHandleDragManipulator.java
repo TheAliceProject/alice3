@@ -71,9 +71,9 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	public void setCamera( AbstractCamera camera ) 
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if (this.camera != null && this.camera.getParent() instanceof AbstractTransformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((AbstractTransformable)this.camera.getParent());
 		}
 		if (this.activeManipulator != null && this.activeManipulator instanceof CameraInformedManipulator)
 		{
@@ -200,6 +200,15 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		{
 			this.activeManipulator.triggerAllDeactivateEvents();
 		}
+	}
+	
+	@Override
+	public org.alice.interact.event.ManipulationEvent getMainManipulationEvent() {
+		if (this.activeManipulator != null)
+		{
+			return this.activeManipulator.getMainManipulationEvent();
+		}
+		return null;
 	}
 
 	protected void setManipulatorStartState(AbstractManipulator manipulator, InputState startState)

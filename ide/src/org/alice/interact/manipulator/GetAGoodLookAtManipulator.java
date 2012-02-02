@@ -66,9 +66,9 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 	public void setCamera(AbstractCamera camera) 
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if (this.camera != null && this.camera.getParent() instanceof AbstractTransformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((AbstractTransformable)this.camera.getParent());
 		}
 	}
 

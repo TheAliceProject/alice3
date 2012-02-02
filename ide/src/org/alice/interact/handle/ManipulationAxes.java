@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,75 +40,100 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.manipulator;
+package org.alice.interact.handle;
 
-
-import org.alice.interact.MovementDirection;
-import org.alice.interact.MovementType;
-import org.alice.interact.PlaneUtilities;
-import org.alice.interact.condition.MovementDescription;
-import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.handle.HandleSet;
-
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 
 /**
- * @author David Culyba
+ * @author dculyba
+ *
  */
-public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator {
+public class ManipulationAxes extends ManipulationHandle3D {
+
+	private edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes axis;
+
+	public ManipulationAxes()
+	{
+		this.axis = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes(1, 1.5);
+		this.axis.setParent(this);
+	}
+	
+	@Override
+	public ManipulationHandle3D clone() {
+		return new ManipulationAxes();
+	}
 
 	@Override
-	protected void initializeEventMessages()
+	protected void setScale(double scale) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public ReferenceFrame getSnapReferenceFrame() {
+		return null;
+	}
+
+	@Override
+	public void positionRelativeToObject()
 	{
-		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
-		this.manipulationEvents.clear();
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.DOWN, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
+		//Do nothing
+	}
+
+	@Override
+	public boolean isPickable() {
+		return false;
 	}
 	
 	@Override
-	protected Plane createPickPlane( Point3 clickPoint )
-	{
-		return this.createCameraFacingStoodUpPlane( clickPoint );
+	public void setVisualsShowing(boolean showing) {
+		super.setVisualsShowing(showing);
+		this.axis.setIsShowing(showing);
 	}
 	
 	@Override
-	protected Plane createBadAnglePlane( Point3 clickPoint )
+	protected float getOpacity() {
+		return this.axis.getOpacity();
+	}
+	
+	@Override
+	protected void setOpacity(float opacity) {
+		super.setOpacity(opacity);
+		this.axis.setOpacity(opacity);
+	}
+	
+	@Override
+	protected double getDesiredOpacity(HandleRenderState renderState)
 	{
-		Vector3 cameraUp = this.getCamera().getAbsoluteTransformation().orientation.up;
-		Vector3 badPlaneNormal = Vector3.createPositiveYAxis();
-		badPlaneNormal.subtract( cameraUp );
-		badPlaneNormal.normalize();
-		if (badPlaneNormal.isNaN())
+		switch (renderState)
 		{
-			badPlaneNormal = Vector3.createPositiveYAxis();
+		case NOT_VISIBLE : return 0.0d;
+		default : return 0.7d * this.cameraRelativeOpacity;
 		}
-		return new Plane( clickPoint, badPlaneNormal );
 	}
-	
+
 	@Override
-	protected Point3 getPositionForPlane( Plane movementPlane, Ray pickRay )
+	public void resizeToObject()
 	{
-		if (pickRay != null)
+		if (this.getParentTransformable() != null)
 		{
-			Point3 pointInPlane = PlaneUtilities.getPointInPlane( movementPlane, pickRay );
-			Point3 newPosition = Point3.createAddition( this.offsetToOrigin, pointInPlane );
-			newPosition.x = this.initialObjectPosition.x;
-			newPosition.z = this.initialObjectPosition.z;
-			return newPosition;
-		}
-		else
-		{
-			return null;
+			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
+			float opacity = .7f;
+			if (this.axis != null)
+			{
+				opacity = this.axis.getOpacity();
+				this.axis.setParent(null);
+				this.axis = null;
+			}
+			this.axis = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes(boundingBox.getVolume()*2, 1.5);
+			this.axis.setParent(this);
+			this.axis.setOpacity(opacity);
 		}
 	}
-	
-	@Override
-	protected HandleSet getHandleSetToEnable() {
-		return new HandleSet(HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.TRANSLATION);
-	}
-	
+
 }

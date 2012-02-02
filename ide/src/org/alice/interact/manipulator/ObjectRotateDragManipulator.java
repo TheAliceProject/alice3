@@ -50,9 +50,12 @@ import javax.swing.SwingUtilities;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
+import org.alice.interact.MovementDirection;
 import org.alice.interact.PickHint;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
+import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
 
@@ -141,9 +144,9 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	public void setCamera( AbstractCamera camera ) 
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if (this.camera != null && this.camera.getParent() instanceof AbstractTransformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((AbstractTransformable)this.camera.getParent());
 		}
 	}
 	
@@ -171,12 +174,23 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 //		DEBUG_setupDebugSphere();
 	}
 	
+	@Override
+	protected void initializeEventMessages()
+	{
+		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable );
+		this.manipulationEvents.clear();
+		if (rotationHandle != null) {
+			org.alice.interact.MovementType type = this.rotationHandle instanceof org.alice.interact.handle.StoodUpRotationRingHandle ? org.alice.interact.MovementType.STOOD_UP : org.alice.interact.MovementType.LOCAL;	
+			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription(this.rotationHandle.getRotationDirection(), type), this.manipulatedTransformable ) );
+		}
+	}
+	
 	protected void initManipulator( RotationRingHandle handle, InputState startInput )
 	{
 //		DEBUG_addDebugSphereToScene();
 		this.hidCursor = false;
 		this.rotationHandle = handle;
-		this.manipulatedTransformable = this.rotationHandle.getManipulatedObject();
+		this.setManipulatedTransformable(this.rotationHandle.getManipulatedObject());
 		this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.rotationHandle.getRotationAxis() );
 		this.absoluteRotationAxis.normalize();
 		//PickResult pick = this.onscreenLookingGlass.pickFrontMost( startInput.getMouseLocation().x, startInput.getMouseLocation().y, /*isSubElementRequired=*/false );

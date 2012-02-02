@@ -140,6 +140,22 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 	
+	public Object getInstanceInJavaVMForExpression( org.lgna.project.ast.Expression expression) {
+		if (expression == null) {
+			return null;
+		}
+		Object[] values = this.getVM().ENTRY_POINT_evaluate(
+				getActiveSceneInstance(), 
+				new Expression[] { expression }
+		);
+		if (values.length > 0) {
+			return values[0];
+		}
+		else {
+			return null;
+		}
+	}
+	
 	public Object getInstanceInJavaVMForMethodInvocation( org.lgna.project.ast.MethodInvocation method) {
 		if (method == null) {
 			return null;
@@ -160,8 +176,8 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(getInstanceInJavaVMForField(field), cls);
 	}
 	
-	public <E> E getInstanceInJavaVMForMethodInvocation( org.lgna.project.ast.MethodInvocation method, Class<E> cls) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(getInstanceInJavaVMForMethodInvocation(method), cls);
+	public <E> E getInstanceInJavaVMForExpression( org.lgna.project.ast.Expression expression, Class<E> cls) {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(getInstanceInJavaVMForExpression(expression), cls);
 	}
 	
 	public  <T extends org.lgna.story.implementation.EntityImp> T getImplementation( org.lgna.project.ast.AbstractField field ) {
