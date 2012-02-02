@@ -43,8 +43,6 @@
 package org.alice.interact.manipulator;
 
 import org.alice.interact.InputState;
-import org.alice.interact.MovementDirection;
-import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;

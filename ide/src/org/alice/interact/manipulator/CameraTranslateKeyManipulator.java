@@ -46,7 +46,6 @@ import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.MovementKey;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba

@@ -50,7 +50,6 @@ import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 public class GetAGoodLookAtManipulator extends AbstractManipulator implements CameraInformedManipulator{
 
