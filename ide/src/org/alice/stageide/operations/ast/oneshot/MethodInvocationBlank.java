@@ -72,7 +72,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< MethodInvocationEditFactory > blankNode ) {
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Turnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MovableTurnable.class );
-//		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
+		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
 
 		org.lgna.project.ast.AbstractType< ?, ?, ? > fieldValueType = this.field.getValueType();
 		java.util.List< org.lgna.project.ast.AbstractMethod > methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -92,16 +92,19 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.PLACE_METHOD );
 		}
 
-//		if( jointedModelType.isAssignableFrom( fieldValueType ) ) {
-//			//todo: joint tree undo
-//			//rv.add( JointTreeLocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.JointedModel.class, "straightenOutJoints", org.lgna.story.StraightenOutJoints.Detail[].class ) );
-//		}
+		if( jointedModelType.isAssignableFrom( fieldValueType ) ) {
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD );
+		}
 
 		java.util.List< org.lgna.project.ast.AbstractMethod > sortedMethods = org.alice.stageide.ast.sort.OneShotSorter.SINGLETON.createSortedList( methods );
 		for( org.lgna.project.ast.AbstractMethod method : sortedMethods ) {
 			if( method != null ) {
-				// note: we will need to track the kind of fillIn we need as soon as simple subject local transformation undo won't suffice
-				rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, method ) );
+				//todo
+				if( method == org.alice.stageide.ast.sort.OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD ) {
+					rv.add( AllJointLocalTransformationsMethodInvocationFillIn.getInstance( this.field, method ) );
+				} else {
+					rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, method ) );
+				}
 			} else {
 				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}

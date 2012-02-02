@@ -40,25 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit {
+public class AllJointLocalTransformationsEdit extends org.lgna.croquet.edits.Edit {
 	private final org.lgna.project.ast.AbstractField field;
 	private final org.lgna.project.ast.AbstractMethod method;
 	private final org.lgna.project.ast.Expression[] argumentExpressions;
-	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
-	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
-	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	
+	private static class JointUndoRunnable implements Runnable {
+		private final org.lgna.story.implementation.JointImp joint;
+		private final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation;
+		public JointUndoRunnable( org.lgna.story.implementation.JointImp joint ) {
+			this.joint = joint;
+			this.orientation = this.joint.getLocalTransformation().orientation;
+		}
+		public boolean isUndoNecessary() {
+			return this.joint.getOriginalOrientation().isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon( this.orientation.createUnitQuaternion() ) == false;
+		}
+		public void run() {
+			this.joint.animateLocalOrientationOnly( this.orientation, 1.0, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+		}
+	}
+	private transient JointUndoRunnable[] jointUndoRunnables;
+	public AllJointLocalTransformationsEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		super( completionStep );
 		this.field = field;
 		this.method = method;
 		this.argumentExpressions = argumentExpressions;
 	}
-	public LocalTransformationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public AllJointLocalTransformationsEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 		this.field = org.lgna.project.io.IoUtilities.decodeNode( project, binaryDecoder );
@@ -78,10 +91,19 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
 		Object instance = sceneEditor.getInstanceInJavaVMForField( field );
-		if( instance instanceof org.lgna.story.MovableTurnable ) {
-			org.lgna.story.MovableTurnable movableTurnable = (org.lgna.story.MovableTurnable)instance;
-			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( movableTurnable );
-			this.m = this.transformable.getLocalTransformation();
+		if( instance instanceof org.lgna.story.JointedModel ) {
+			org.lgna.story.JointedModel jointedModel = (org.lgna.story.JointedModel)instance;
+			org.lgna.story.implementation.JointedModelImp< ?, ? > jointedModelImp = org.lgna.story.ImplementationAccessor.getImplementation( jointedModel );
+			
+			Iterable< org.lgna.story.implementation.JointImp > joints = jointedModelImp.getJoints();
+			java.util.List< JointUndoRunnable > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( org.lgna.story.implementation.JointImp joint : joints ) {
+				JointUndoRunnable jointUndoRunnable = new JointUndoRunnable( joint );
+				if( jointUndoRunnable.isUndoNecessary() ) {
+					list.add( jointUndoRunnable );
+				}
+			}
+			this.jointUndoRunnables = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, JointUndoRunnable.class );
 			org.lgna.project.ast.Expression methodInvocation = org.lgna.project.ast.AstUtilities.createMethodInvocation( 
 					new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field ), 
 					method, 
@@ -91,14 +113,24 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit {
 			org.lgna.project.ast.ExpressionStatement statement = new org.lgna.project.ast.ExpressionStatement( methodInvocation );
 			sceneEditor.executeStatements( statement );
 		} else {
-			this.transformable = null;
-			this.m = null;
+			this.jointUndoRunnables = new JointUndoRunnable[] {};
 		}
 	}
 	@Override
 	protected void undoInternal() {
-		if( this.transformable != null && this.m != null ) {
-			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.PARENT, this.m );
+		switch( this.jointUndoRunnables.length ) {
+		case 0:
+			break;
+		case 1:
+			this.jointUndoRunnables[ 0 ].run();
+			break;
+		default:
+			new Thread() {
+				@Override
+				public void run() {
+					org.lgna.common.DoTogether.invokeAndWait( jointUndoRunnables );
+				}
+			}.start();
 		}
 	}
 	@Override
