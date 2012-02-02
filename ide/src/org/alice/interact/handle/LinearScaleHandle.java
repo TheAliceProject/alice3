@@ -193,8 +193,8 @@ public class LinearScaleHandle extends LinearDragHandle{
 	}
 
 	@Override
-	public void setHandleShowing(boolean showing) {
-		super.setHandleShowing(showing);
+	public void setVisualsShowing(boolean showing) {
+		super.setVisualsShowing(showing);
 		this.arrow.setVisualShowing(showing);
 	}
 	

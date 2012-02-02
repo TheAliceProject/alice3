@@ -77,8 +77,7 @@ public abstract class MethodInvocationEdit extends org.lgna.croquet.edits.Edit {
 	protected final void doOrRedoInternal( boolean isDo ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
-		org.lgna.project.ast.UserField field = ((org.alice.ide.instancefactory.ThisFieldAccessFactory)this.instanceFactory).getField();
-		Object instance = sceneEditor.getInstanceInJavaVMForField( field );
+		Object instance = sceneEditor.getInstanceInJavaVMForExpression( this.instanceFactory.createExpression() );
 		this.preserveUndoInfo( instance, isDo );
 		org.lgna.project.ast.Expression methodInvocation = org.lgna.project.ast.AstUtilities.createMethodInvocation( 
 				this.instanceFactory.createExpression(), 

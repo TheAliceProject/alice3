@@ -72,6 +72,7 @@ public class Camera2DDragStrafeManipulator extends Camera2DDragManipulator {
 	@Override
 	protected void initializeEventMessages()
 	{
+		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), this.manipulatedTransformable ) );
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), this.manipulatedTransformable ) );

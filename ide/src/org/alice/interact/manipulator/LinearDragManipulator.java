@@ -91,9 +91,9 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	public void setCamera( AbstractCamera camera ) 
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if (this.camera != null && this.camera.getParent() instanceof AbstractTransformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((AbstractTransformable)this.camera.getParent());
 		}	
 	}
 	
@@ -124,6 +124,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	@Override
 	protected void initializeEventMessages()
 	{
+		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
 		MovementDirection oppositeDirection = this.linearHandle.getMovementDescription().direction.getOpposite();
@@ -242,7 +243,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 			if (clickedHandle instanceof LinearDragHandle)
 			{
 				this.linearHandle = (LinearDragHandle)clickedHandle;
-				this.manipulatedTransformable = this.linearHandle.getManipulatedObject();
+				this.setManipulatedTransformable(this.linearHandle.getManipulatedObject());
 				this.initializeEventMessages();
 				this.absoluteDragAxis = this.linearHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.linearHandle.getDragAxis() );
 				

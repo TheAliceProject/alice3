@@ -206,6 +206,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		public boolean matchesTarget(double target)
 		{
 			return this.target == target;
+//			return edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon(this.target, target);
 		}
 		
 		public void cancel()
@@ -283,6 +284,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 				s.addScaleListener(this.scaleListener);
 			}
 		}
+		this.resizeToObject();
 	}
 	
 	public void setSelectedObject( AbstractTransformable selectedObject ) {
@@ -454,9 +456,24 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	abstract public void positionRelativeToObject();
 	abstract public void resizeToObject();
 	
+	protected float getOpacity()
+	{
+		return this.sgFrontFacingAppearance.opacity.getValue();
+	}
+	
+	protected void setOpacity(float opacity)
+	{
+		this.sgFrontFacingAppearance.opacity.setValue(opacity);
+	}
+	
+	protected void setColor(Color4f color)
+	{
+		this.sgFrontFacingAppearance.diffuseColor.setValue(color);
+	}
+	
 	protected void animateToOpacity(double targetOpacity)
 	{
-		double currentOpacity = this.sgFrontFacingAppearance.opacity.getValue();
+		double currentOpacity = this.getOpacity();
 		//Check to see if the animation is going to get us to the desired value
 		if (this.opacityAnimation != null && this.opacityAnimation.isActive() && this.opacityAnimation.matchesTarget(targetOpacity))
 		{
@@ -468,6 +485,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			this.opacityAnimation.cancel();
 		}
 		//The animation is not going to get us to the desired value, so see if we're already there
+//		if (edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon(currentOpacity, targetOpacity))
 		if (currentOpacity == targetOpacity)
 		{
 			return;
@@ -478,7 +496,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			@Override
 			protected void updateValue(Double v) 
 			{
-				ManipulationHandle3D.this.sgFrontFacingAppearance.opacity.setValue(v.floatValue());
+				ManipulationHandle3D.this.setOpacity(v.floatValue());
 			}
 		};
 		this.animator.invokeLater(this.opacityAnimation, null);
@@ -508,7 +526,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			@Override
 			protected void updateValue(Color4f v) 
 			{
-				ManipulationHandle3D.this.sgFrontFacingAppearance.diffuseColor.setValue(v);
+				ManipulationHandle3D.this.setColor(v);
 				
 			}
 		};
@@ -603,7 +621,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		if (this.cameraRelativeOpacity != cameraRelativeOpacity)
 		{
 			this.cameraRelativeOpacity = cameraRelativeOpacity;
-			this.sgFrontFacingAppearance.opacity.setValue((float)this.getDesiredOpacity(HandleRenderState.getStateForHandle( this )));
+			this.setOpacity((float)this.getDesiredOpacity(HandleRenderState.getStateForHandle( this )));
 		}
 	}
 	
@@ -770,19 +788,13 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	public void setHandleVisible( boolean visible ) 
 	{
-//		PrintUtilities.println(this.hashCode()+":"+this.getClass().getSimpleName()+" setting visible from "+this.state.isVisible()+" to "+visible);
-//		if (this.state.isVisible() && !visible)
-//		{
-//			Thread.dumpStack();
-//		}
 		this.state.setVisible(visible);
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 	
-	public void setHandleShowing(boolean showing)
+	public void setVisualsShowing(boolean showing)
 	{
-//		PrintUtilities.println(this.hashCode()+" setting is showing to "+showing);
-		this.sgVisual.isShowing.setValue(showing);
+		this.getSGVisual().isShowing.setValue(showing);
 	}
 	
 	public PickHint getPickHint()

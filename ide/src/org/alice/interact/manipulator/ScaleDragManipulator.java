@@ -43,6 +43,9 @@
 package org.alice.interact.manipulator;
 
 import org.alice.interact.InputState;
+import org.alice.interact.MovementDirection;
+import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
@@ -90,9 +93,17 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		return invertedScale;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.alice.interact.manipulator.LinearDragManipulator#doStartManipulator(org.alice.interact.InputState)
-	 */
+	@Override
+	protected void initializeEventMessages()
+	{
+		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Scale, null, this.manipulatedTransformable );
+		this.manipulationEvents.clear();
+		if (this.linearHandle != null) {
+			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Scale, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
+		}
+		
+	}
+
 	@Override
 	public boolean doStartManipulator(InputState startInput) {
 		boolean started = super.doStartManipulator(startInput);

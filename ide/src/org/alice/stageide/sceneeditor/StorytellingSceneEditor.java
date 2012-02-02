@@ -317,7 +317,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	{
 		if (this.globalDragAdapter != null)
 		{
-			Entity selectedEntity = this.getInstanceInJavaVMForMethodInvocation(method, Entity.class);
+			Entity selectedEntity = this.getInstanceInJavaVMForExpression(method, Entity.class);
 			AbstractTransformableImp transImp = null;
 			if (selectedEntity != null)
 			{

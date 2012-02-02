@@ -72,6 +72,7 @@ public class Camera2DDragDriveManipulator extends Camera2DDragManipulator {
 	@Override
 	protected void initializeEventMessages()
 	{
+		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.BACKWARD, MovementType.STOOD_UP), this.manipulatedTransformable ) );
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.FORWARD, MovementType.STOOD_UP), this.manipulatedTransformable ) );
