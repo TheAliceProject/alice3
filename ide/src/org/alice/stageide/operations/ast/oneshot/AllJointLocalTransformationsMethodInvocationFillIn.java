@@ -40,20 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.choosers;
+package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorRedState extends ColorChannelState {
-	private static class SingletonHolder {
-		private static ColorRedState instance = new ColorRedState();
+public class AllJointLocalTransformationsMethodInvocationFillIn extends MethodInvocationFillIn {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, AllJointLocalTransformationsMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		synchronized( map ) {
+			AllJointLocalTransformationsMethodInvocationFillIn rv = map.get( instanceFactory, method );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new AllJointLocalTransformationsMethodInvocationFillIn( instanceFactory, method );
+				map.put( instanceFactory, method, rv );
+			}
+			return rv;
+		}
 	}
-	public static ColorRedState getInstance() {
-		return SingletonHolder.instance;
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
+		assert method != null : methodName;
+		return getInstance( instanceFactory, method );
 	}
-	private ColorRedState() {
-		super( java.util.UUID.fromString( "27812581-1793-43ab-92c5-5888352ade2d" ) );
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+	}
+	private AllJointLocalTransformationsMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "1931250e-3f00-4d95-85e9-f8c06922eb17" ), instanceFactory, method );
+	}
+	@Override
+	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		return new AllJointLocalTransformationsMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

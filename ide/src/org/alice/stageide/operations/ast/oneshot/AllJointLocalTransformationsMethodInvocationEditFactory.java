@@ -40,20 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.choosers;
+package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorBlueState extends ColorChannelState {
-	private static class SingletonHolder {
-		private static ColorBlueState instance = new ColorBlueState();
+public class AllJointLocalTransformationsMethodInvocationEditFactory implements MethodInvocationEditFactory {
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	private final org.lgna.project.ast.AbstractMethod method;
+	private final org.lgna.project.ast.Expression[] argumentExpressions;
+	public AllJointLocalTransformationsMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		this.instanceFactory = instanceFactory;
+		this.method = method;
+		this.argumentExpressions = argumentExpressions;
 	}
-	public static ColorBlueState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ColorBlueState() {
-		super( java.util.UUID.fromString( "96cca03f-f696-485a-9698-9d2b699c32e7" ) );
+	public org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CascadeCompletionStep< MethodInvocationEditFactory > step ) {
+		return new AllJointLocalTransformationsEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

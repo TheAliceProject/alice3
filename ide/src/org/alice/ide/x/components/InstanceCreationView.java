@@ -40,33 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.operations.ast.oneshot;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldLabelSeparatorModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FieldLabelSeparatorModel getInstance( org.lgna.project.ast.AbstractField value ) {
-		synchronized( map ) {
-			FieldLabelSeparatorModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new FieldLabelSeparatorModel( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class InstanceCreationView extends AbstractExpressionView {
+	public InstanceCreationView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		super( instanceCreation );
+		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation );
+		if( prefixPane != null ) {
+			this.addComponent( prefixPane );
 		}
-	}
-	private final org.lgna.project.ast.AbstractField field;
-	private FieldLabelSeparatorModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
-		this.field = field;
-	}
-	@Override
-	public String getName() {
-		return this.field.getName();
+		this.addComponent( factory.createComponent( instanceCreation ) );
 	}
 }

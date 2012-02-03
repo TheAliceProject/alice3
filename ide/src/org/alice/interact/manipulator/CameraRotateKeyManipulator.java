@@ -70,7 +70,7 @@ public class CameraRotateKeyManipulator extends RotateKeyManipulator implements 
 		this.camera = camera;
 		if (this.camera != null && this.camera.getParent() instanceof Transformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((Transformable)this.camera.getParent());
 		}
 	}
 	

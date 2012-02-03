@@ -242,6 +242,7 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 	@Override
 	protected void initializeEventMessages()
 	{
+		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.LEFT, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.RIGHT, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
@@ -251,7 +252,7 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getClickPickTransformable();	
+		this.setManipulatedTransformable(startInput.getClickPickTransformable());
 		hidCursor = false;
 		if (this.manipulatedTransformable != null)
 		{

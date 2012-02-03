@@ -272,9 +272,9 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		this.currentHandle.setHandleVisible( visible );
 	}
 	
-	public void setHandleShowing(boolean showing)
+	public void setVisualsShowing(boolean showing)
 	{
-		this.currentHandle.setHandleShowing( showing );
+		this.currentHandle.setVisualsShowing( showing );
 	}
 
 	public PickHint getPickHint() {

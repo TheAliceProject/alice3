@@ -44,11 +44,11 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.stageide.properties.FieldNameAdapter;
+import org.alice.stageide.properties.SelectedExpressionAdapter;
 import org.alice.stageide.properties.ModelSizeAdapter;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;
-import org.alice.stageide.properties.uicontroller.FieldNamePropertyController;
+import org.alice.stageide.properties.uicontroller.SelectedExpressionPropertyController;
 import org.alice.stageide.properties.uicontroller.ModelSizePropertyController;
 
 import edu.cmu.cs.dennisc.math.Point3;
@@ -68,9 +68,9 @@ public class AdapterControllerUtilities
 			return new ExpressionBasedPropertyController(propertyAdapter);
 		}
 		//Check for adapter specific rules first
-		else if (propertyAdapter instanceof FieldNameAdapter)
+		else if (propertyAdapter instanceof SelectedExpressionAdapter)
 		{
-		    return new FieldNamePropertyController((FieldNameAdapter)propertyAdapter);
+		    return new SelectedExpressionPropertyController((SelectedExpressionAdapter)propertyAdapter);
 		}
 		//Now check based on desired type
 		else if (edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyType))

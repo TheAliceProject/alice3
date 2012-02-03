@@ -123,7 +123,7 @@ public class SkeletonVisual extends Visual {
     @Override
     public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
         if( skeleton.getValue()!= null  ) {
-            skeleton.getValue().getBoundingBox(rv);
+            skeleton.getValue().getBoundingBox(rv, true);
         } else {
             rv.setNaN();
         }
