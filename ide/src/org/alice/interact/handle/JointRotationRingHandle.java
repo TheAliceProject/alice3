@@ -42,111 +42,89 @@
  */
 package org.alice.interact.handle;
 
+import org.alice.interact.MovementDirection;
+import org.alice.interact.PlaneUtilities;
+import org.alice.interact.VectorUtilities;
+import org.alice.interact.handle.RotationRingHandle.HandlePosition;
+
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Plane;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
-import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 
 /**
  * @author dculyba
  *
  */
-public class ManipulationAxes extends ManipulationHandle3D {
-	private static final double MIN_SIZE = .6;
+public class JointRotationRingHandle extends RotationRingHandle {
 	
-	private edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes axis;
-	private double diameterScale = 1;
-
-	public ManipulationAxes()
+	protected static final double JOINT_MIN_RADIUS = .2d;
+	
+	public JointRotationRingHandle( )
 	{
-		this.axis = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes(1, 1.5);
-		this.axis.setParent(this);
+		super();
 	}
 	
-	@Override
-	public ManipulationHandle3D clone() {
-		return new ManipulationAxes();
-	}
-
-	@Override
-	protected void setScale(double scale) {
-		if (scale < 1.0) {
-			scale = 1;
-		}
-		this.diameterScale = scale * 1.4;
-	}
-
-	@Override
-	public ReferenceFrame getSnapReferenceFrame() {
-		return null;
-	}
-
-	@Override
-	public void positionRelativeToObject()
+	public JointRotationRingHandle( MovementDirection rotationAxisDirection )
 	{
-		//Do nothing
-	}
-
-	@Override
-	public boolean isPickable() {
-		return false;
+		super( rotationAxisDirection );
 	}
 	
-	@Override
-	public void setVisualsShowing(boolean showing) {
-		super.setVisualsShowing(showing);
-		if (this.axis != null) {
-			this.axis.setIsShowing(showing);
-		}
-	}
-	
-	@Override
-	protected float getOpacity() {
-		if (this.axis != null) {
-			return this.axis.getOpacity();
-		}
-		else {
-			return super.getOpacity();
-		}
-	}
-	
-	@Override
-	protected void setOpacity(float opacity) {
-		super.setOpacity(opacity);
-		if (this.axis != null) {
-			this.axis.setOpacity(opacity);
-		}
-		
-	}
-	
-	@Override
-	protected double getDesiredOpacity(HandleRenderState renderState)
+	public JointRotationRingHandle( MovementDirection rotationAxisDirection, Color4f color )
 	{
-		switch (renderState)
-		{
-		case NOT_VISIBLE : return 0.0d;
-		default : return 0.6d * this.cameraRelativeOpacity;
-		}
+		super( rotationAxisDirection, color);
 	}
-
+	
+	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
+	{
+		super(rotationAxisDirection, handlePosition);
+	}
+	
+	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f color )
+	{
+		super(rotationAxisDirection, handlePosition, color);
+	}
+	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor )
+	{
+		super(rotationAxisDirection, handlePosition, baseColor, activeColor, rolloverColor, mutedColor);
+	}
+	
+	public JointRotationRingHandle( JointRotationRingHandle handle )
+	{
+		super(handle.rotationAxisDirection, handle.handlePosition, handle.baseColor, handle.activeColor, handle.rolloverColor, handle.mutedColor);
+	}
+	
 	@Override
-	public void resizeToObject()
+	public JointRotationRingHandle clone()
+	{
+		JointRotationRingHandle newHandle = new JointRotationRingHandle(this);
+		return newHandle;
+	}
+	
+	@Override
+	protected double getObjectScale() {
+		return super.getObjectScale() * 1.5;
+	}
+	
+	@Override
+	protected double getMajorAxisRadius( )
 	{
 		if (this.getParentTransformable() != null)
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-			double diagonal = boundingBox.getDiagonal();
-			if (Double.isNaN(diagonal) || diagonal < MIN_SIZE) {
-				diagonal = MIN_SIZE;
-			}
-			if (this.axis != null)
+			double radius = boundingBox.getDiagonal();
+			if (Double.isNaN( radius ) || radius < JOINT_MIN_RADIUS)
 			{
-				this.axis.resize(diagonal * .5, 1.5, this.diameterScale);
+				radius = JOINT_MIN_RADIUS;
 			}
+			return radius;
 		}
+		return 0.0d;
 	}
 
 }

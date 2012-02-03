@@ -266,6 +266,14 @@ public final class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEnco
 	public double getVolume() {
 		return getWidth() * getHeight() * getDepth();
 	}
+	
+	public double getDiagonal() {
+		if (isNaN())
+		{
+			return Double.NaN;
+		}
+		return Point3.calculateDistanceBetween(this.getMinimum(), this.getMaximum());
+	}
 
 	public void union( Point3 p ) {
 	    if( this.minimum.isNaN() ) {

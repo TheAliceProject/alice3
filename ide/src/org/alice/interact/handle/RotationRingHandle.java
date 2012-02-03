@@ -85,7 +85,6 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	protected static final Color4f MUTED_COLOR = new Color4f(0.5f, 0.5f, 0.4f, 1.0f);
 	protected static final Color4f BASE_COLOR = new Color4f(0.7f, 0.7f, 0.3f, 1.0f);
 	
-	
 	protected Color4f activeColor = ACTIVE_COLOR;
 	protected Color4f baseColor = BASE_COLOR;
 	protected Color4f rolloverColor = ROLLOVER_COLOR;
@@ -333,12 +332,13 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	protected void updateVisibleState(HandleRenderState renderState)
 	{
 		super.updateVisibleState(renderState);
-		double endRadius = this.isRenderable() ? this.getMajorAxisRadius() : 0.0d;
-//		if (endRadius == 0 && this.opacityAnimationTarget != 0)
-//		{
-//			double targetOpacity = this.isRenderable() ? this.getDesiredOpacity(renderState) : 0.0;
-//			PrintUtilities.println("Huh?");
-//		}
+		double endRadius;
+		if (this.isRenderable()) {
+			endRadius = this.getMajorAxisRadius();
+		}
+		else {
+			endRadius = 0.0d;
+		}
 		animateHandleToRadius(endRadius);
 	}
 	
@@ -396,7 +396,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		return RotationRingHandle.this.sgTorus.majorRadius.getValue();
 	}
 	
-	private double getMajorAxisRadius( )
+	protected double getMajorAxisRadius( )
 	{
 		if (this.getParentTransformable() != null)
 		{
