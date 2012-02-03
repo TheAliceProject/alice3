@@ -48,6 +48,11 @@ package org.alice.stageide.choosers;
  */
 public class ColorChooser extends org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.Expression > {
 	private final javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
+	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
+		}
+	};
 	public ColorChooser() {
 		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression != null ) {
@@ -63,6 +68,16 @@ public class ColorChooser extends org.alice.ide.choosers.ValueChooser< org.lgna.
 		}
 	}
 
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.jColorChooser.getSelectionModel().removeChangeListener( this.changeListener );
+		super.handleUndisplayable();
+	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		return new org.lgna.croquet.components.SwingAdapter( this.jColorChooser );
