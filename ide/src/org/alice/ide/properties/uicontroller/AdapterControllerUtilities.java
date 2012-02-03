@@ -44,11 +44,11 @@
 package org.alice.ide.properties.uicontroller;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.alice.stageide.properties.SelectedExpressionAdapter;
+import org.alice.stageide.properties.SelectedInstanceAdapter;
 import org.alice.stageide.properties.ModelSizeAdapter;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.alice.stageide.properties.uicontroller.CompositePropertyController;
-import org.alice.stageide.properties.uicontroller.SelectedExpressionPropertyController;
+import org.alice.stageide.properties.uicontroller.SelectedInstancePropertyController;
 import org.alice.stageide.properties.uicontroller.ModelSizePropertyController;
 
 import edu.cmu.cs.dennisc.math.Point3;
@@ -59,6 +59,10 @@ public class AdapterControllerUtilities
 	public static PropertyAdapterController getValuePanelForPropertyAdapter(AbstractPropertyAdapter<?,?> propertyAdapter)
 	{
 		Class<?> propertyType = propertyAdapter != null?  propertyAdapter.getPropertyType() : null;
+		if (propertyAdapter instanceof SelectedInstanceAdapter)
+		{
+		    return new SelectedInstancePropertyController((SelectedInstanceAdapter)propertyAdapter);
+		}
 		if (propertyType == null)
 		{
 			return new BlankPropertyController(propertyAdapter);
@@ -67,13 +71,8 @@ public class AdapterControllerUtilities
 		{
 			return new ExpressionBasedPropertyController(propertyAdapter);
 		}
-		//Check for adapter specific rules first
-		else if (propertyAdapter instanceof SelectedExpressionAdapter)
-		{
-		    return new SelectedExpressionPropertyController((SelectedExpressionAdapter)propertyAdapter);
-		}
 		//Now check based on desired type
-		else if (edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyType))
+		if (edu.cmu.cs.dennisc.color.Color4f.class.isAssignableFrom(propertyType))
 		{
 			return new Color4fPropertyController((AbstractPropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?>)propertyAdapter);
 		}
