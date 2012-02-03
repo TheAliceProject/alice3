@@ -41,25 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory.croquet.joint.declaration;
+package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CollectionCascadeMenuModel< FB > extends org.lgna.croquet.CascadeMenuModel< FB > {
-	private final java.util.List< org.lgna.croquet.CascadeItem< FB, ? > > items = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public CollectionCascadeMenuModel() {
-		super( java.util.UUID.fromString( "94632c3a-e5b6-4007-ab73-4552532cce9a" ) );
+public class InstanceFactoryLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryLabelSeparatorModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static InstanceFactoryLabelSeparatorModel getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
+		synchronized( map ) {
+			InstanceFactoryLabelSeparatorModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new InstanceFactoryLabelSeparatorModel( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
 	}
-	public void addItem( org.lgna.croquet.CascadeItem< FB, ? > item ) {
-		this.items.add( item );
-	}
-	public void removeItem( org.lgna.croquet.CascadeItem< FB, ? > item ) {
-		this.items.remove( item );
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	private InstanceFactoryLabelSeparatorModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		super( java.util.UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
+		this.instanceFactory = instanceFactory;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode ) {
-		rv.addAll( this.items );
-		return rv;
+	public String getName() {
+		return this.instanceFactory.getRepr();
 	}
 }

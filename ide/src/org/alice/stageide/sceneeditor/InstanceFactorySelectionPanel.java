@@ -128,14 +128,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 		}
 		
 		protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
-			if( this.instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-				org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.instanceFactory;
-				org.lgna.project.ast.AbstractField field = thisFieldAccessFactory.getField();
-				if( field instanceof org.lgna.project.ast.UserField ) {
-					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
-					org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( userField ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.MouseEventTrigger( null, e ) );
-				}
-			}
+			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.MouseEventTrigger( null, e ) );
 		}
 		@Override
 		protected void handleDisplayable() {
