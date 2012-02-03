@@ -11,6 +11,7 @@ import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseClickListener;
+import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
@@ -55,10 +56,6 @@ public class EventManager {
 		this.scene = scene;
 	}
 
-	public void addMouseButtonListener( MouseClickListener mouseButtonListener, MultipleEventPolicy eventPolicy, Visual[] targets ) {
-		this.mouseHandler.addListener( mouseButtonListener, eventPolicy, targets );
-		//		this.mouseButtonListeners.add( mouseButtonListener);
-	}
 	public void removeMouseButtonListener( MouseClickListener mouseButtonListener ) {
 		throw new RuntimeException( "todo" );
 		//		this.mouse.removeListener(mouseButtonListener);
@@ -135,7 +132,13 @@ public class EventManager {
 	}
 
 	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, MultipleEventPolicy policy ) {
-//		mouseHandler.addListener( listener, policy, null );
+		mouseHandler.addListener( listener, policy, null );
+	}
+	public void addMouseClickOnObjectListener( MouseClickOnObjectListener listener, MultipleEventPolicy policy, Visual[] targets ) {
+		this.mouseHandler.addListener( listener, policy, targets );
+	}
+	public void addMouseButtonListener( MouseClickListener listener, MultipleEventPolicy policy, Visual[] targets ) {
+		this.mouseHandler.addListener( listener, policy, targets );
 	}
 
 }

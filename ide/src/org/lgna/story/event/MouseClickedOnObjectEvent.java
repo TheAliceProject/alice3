@@ -9,7 +9,10 @@ public class MouseClickedOnObjectEvent /*< T extends Visual >*/ extends MouseBut
 
 	public MouseClickedOnObjectEvent(MouseEvent e, Scene scene) {
 		super(e, scene);
-		// TODO Auto-generated constructor stub
 	}
 
+	public MouseClickedOnObjectEvent( MouseButtonEvent e ) {
+		super( e.e, e.scene );
+	}
+	
 }

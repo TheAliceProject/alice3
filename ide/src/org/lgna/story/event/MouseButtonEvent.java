@@ -53,8 +53,8 @@ import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
  * @author Dennis Cosgrove
  */
 public class MouseButtonEvent extends AbstractEvent {
-	private java.awt.event.MouseEvent e;
-	private org.lgna.story.Scene scene;
+	protected java.awt.event.MouseEvent e;
+	protected org.lgna.story.Scene scene;
 	private boolean isPickPerformed;
 	private org.lgna.story.Model partAtMouseLocation;
 	private org.lgna.story.Model modelAtMouseLocation;

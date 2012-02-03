@@ -10,11 +10,12 @@ import org.lgna.project.ast.MethodInvocation;
 import org.lgna.story.AddMouseButtonListener;
 import org.lgna.story.Scene;
 import org.lgna.story.event.MouseClickListener;
+import org.lgna.story.event.MouseClickOnScreenListener;
 
 public class MouseEventListenerMenu extends CascadeMenuModel< org.lgna.project.ast.MethodInvocation > {	
 
 	public static final JavaMethod ADD_MOUSE_BUTTON_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseClickListener.class, AddMouseButtonListener.Detail[].class );
-	public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseClickListener.class, AddMouseButtonListener.Detail[].class );
+	public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseClickOnScreenListener", MouseClickOnScreenListener.class, AddMouseButtonListener.Detail[].class );
 	public static final JavaMethod ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseButtonListener", MouseClickListener.class, AddMouseButtonListener.Detail[].class );
 
 	private static class SingletonHolder {
@@ -31,6 +32,7 @@ public class MouseEventListenerMenu extends CascadeMenuModel< org.lgna.project.a
 	protected List<CascadeBlankChild> updateBlankChildren(
 			List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode) {
 		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_MOUSE_BUTTON_LISTENER_METHOD ) );
+		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD ) );
 		return rv;
 	}
 

@@ -7,15 +7,19 @@ import org.lgna.story.Model;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Scene;
 import org.lgna.story.Visual;
+import org.lgna.story.event.AbstractMouseClickListener;
 import org.lgna.story.event.MouseButtonEvent;
 import org.lgna.story.event.MouseClickListener;
+import org.lgna.story.event.MouseClickOnObjectListener;
+import org.lgna.story.event.MouseClickOnScreenListener;
+import org.lgna.story.event.MouseClickedOnObjectEvent;
 //import org.lgna.story.event.MouseClickOnObjectListener;
 //import org.lgna.story.event.MouseClickedOnObjectEvent;
 
 
-public class MouseClickedHandler extends AbstractEventHandler< MouseClickListener, MouseButtonEvent > {
+public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClickListener, MouseButtonEvent > {
 
-	HashMap<Object, LinkedList<MouseClickListener>> map = new HashMap<Object, LinkedList<MouseClickListener>>();
+	HashMap<Object, LinkedList<AbstractMouseClickListener>> map = new HashMap<Object, LinkedList<AbstractMouseClickListener>>();
 	Object empty = new Object();
 
 	private boolean isMouseButtonListenerInExistence() {
@@ -36,7 +40,7 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseClickListene
 	}
 	
 	public MouseClickedHandler() {
-		map.put(empty, new LinkedList<MouseClickListener>());
+		map.put(empty, new LinkedList<AbstractMouseClickListener>());
 	}
 	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, Scene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
@@ -78,7 +82,7 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseClickListene
 	public void fireAllTargeted(org.lgna.story.event.MouseButtonEvent event) {
 		if(shouldFire){
 			if(event != null){
-				LinkedList<MouseClickListener> listeners = new LinkedList<MouseClickListener>();
+				LinkedList<AbstractMouseClickListener> listeners = new LinkedList<AbstractMouseClickListener>();
 				listeners.addAll(map.get(empty));
 				Model modelAtMouseLocation = event.getModelAtMouseLocation();
 				if(modelAtMouseLocation != null){
@@ -86,37 +90,42 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseClickListene
 					listeners.addAll(map.get(modelAtMouseLocation));
 				}
 				if(listeners != null){
-					for(MouseClickListener listener: listeners){
+					for(AbstractMouseClickListener listener: listeners){
 						fireEvent(listener, event, modelAtMouseLocation);
 					}
 				}
 			}
 		}
 	}
-	public void addListener(MouseClickListener mouseButtonListener, MultipleEventPolicy eventPolicy, Visual[] targets) {
-		registerIsFiringMap(mouseButtonListener, targets);
-		registerPolicyMap(mouseButtonListener, eventPolicy);
+	public void addListener(AbstractMouseClickListener listener, MultipleEventPolicy eventPolicy, Visual[] targets) {
+		registerIsFiringMap(listener, targets);
+		registerPolicyMap(listener, eventPolicy);
 		if(targets != null && targets.length > 0){
 			for(Visual target: targets){
 				if(map.get(target) != null){
-					map.get(target).add(mouseButtonListener);
+					map.get(target).add(listener);
 				} else{
-					LinkedList<MouseClickListener> list = new LinkedList<MouseClickListener>();
-					list.add(mouseButtonListener);
+					LinkedList<AbstractMouseClickListener> list = new LinkedList<AbstractMouseClickListener>();
+					list.add(listener);
 					map.put(target, list);
 				}
 			}
 		} else{
-			map.get(empty).add(mouseButtonListener);
+			map.get(empty).add(listener);
 		}
 	}
 	@Override
-	protected void fire(MouseClickListener listener, MouseButtonEvent event) {
+	protected void fire(AbstractMouseClickListener listener, MouseButtonEvent event) {
 		super.fire( listener, event );
-//		if (event instanceof MouseClickedOnObjectEvent) {
-//			MouseClickedOnObjectEvent mouseCOOE = (MouseClickListener) event;
-			listener.mouseClicked( event );
-//			
-//		}
+		if (listener instanceof MouseClickOnObjectListener) {
+			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) event;
+			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
+		} else if ( listener instanceof MouseClickOnScreenListener ) {
+			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) event;
+			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
+		} else if (listener instanceof MouseButtonEvent ) {//TODO: Depricated
+			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) event;
+			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
+		}
 	}
 }

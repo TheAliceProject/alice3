@@ -44,6 +44,7 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.TimeListener;
 
@@ -119,8 +120,8 @@ public abstract class Scene extends Entity{
 		this.getImplementation().fogDensity.animateValue( density.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	
-	public static class MouseClickedOnScreenEvent {
-	}
+//	public static class MouseClickedOnScreenEvent {
+//	}
 //	public static interface MouseClickOnScreenListener {
 //		public void mouseClicked( MouseClickedOnScreenEvent event );
 //	};
@@ -133,9 +134,12 @@ public abstract class Scene extends Entity{
 //	public static interface MouseClickOnObjectListener< T extends Visual > {
 //		public void mouseClicked( MouseClickOnObjectEvent<T> event );
 //	};
-	
+
 	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, AddMouseButtonListener.Detail... details ) {
 		this.implementation.getEventManager().addMouseClickOnScreenListener( listener, MultipleEventPolicy.getValue( details ) );
+	}
+	public void addMouseClickOnObjectListener( MouseClickOnObjectListener listener, AddMouseButtonListener.Detail... details ) {
+		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
 //	public void addMouseClickOnModelListener( MouseClickOnObjectListener<Model> listener, Model... subSet ) {
 //	}
