@@ -77,7 +77,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 		if( constructor instanceof org.lgna.project.ast.AnonymousUserConstructor ) {
 			return new org.alice.ide.common.AnonymousConstructorPane( this, (org.lgna.project.ast.AnonymousUserConstructor)constructor );
 		} else {
-			return new org.alice.ide.x.components.ExpressionView( this, instanceCreation );
+			return new org.alice.ide.x.components.InstanceCreationView( this, instanceCreation );
 		}
 	}
 	protected org.lgna.croquet.components.JComponent< ? > createFieldAccessPane( org.lgna.project.ast.FieldAccess fieldAccess ) {

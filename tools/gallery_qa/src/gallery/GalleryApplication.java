@@ -41,19 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.choosers;
+package gallery;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorGreenState extends ColorChannelState {
-	private static class SingletonHolder {
-		private static ColorGreenState instance = new ColorGreenState();
+public class GalleryApplication extends org.lgna.croquet.Application {
+	@Override
+	protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+		return null;
 	}
-	public static ColorGreenState getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+		return null;
 	}
-	private ColorGreenState() {
-		super( java.util.UUID.fromString( "9ee9da0c-a6aa-454d-92af-61206e00420a" ) );
+	@Override
+	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	}
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+	@Override
+	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
+		return null;
+	}
+	@Override
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+		System.exit( 0 );
 	}
 }

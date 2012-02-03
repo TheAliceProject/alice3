@@ -521,6 +521,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.lgna.croquet.components.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
+	public org.lgna.croquet.components.Component< ? > getPrefixPaneForInstanceCreationIfAppropriate( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		return null;
+	}
 
 	public String getApplicationSubPath() {
 		String rv = getApplicationName();

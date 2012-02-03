@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,108 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.interact.handle;
 
-package org.alice.stageide.operations.ast.oneshot;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class FieldLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldLabelSeparatorModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FieldLabelSeparatorModel getInstance( org.lgna.project.ast.AbstractField value ) {
-		synchronized( map ) {
-			FieldLabelSeparatorModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new FieldLabelSeparatorModel( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class ManipulationAxes extends ManipulationHandle3D {
+	private static final double MIN_SIZE = .6;
+	
+	private edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes axis;
+	private double diameterScale = 1;
+
+	public ManipulationAxes()
+	{
+		this.axis = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes(1, 1.5);
+		this.axis.setParent(this);
+	}
+	
+	@Override
+	public ManipulationHandle3D clone() {
+		return new ManipulationAxes();
+	}
+
+	@Override
+	protected void setScale(double scale) {
+		if (scale < 1.0) {
+			scale = 1;
+		}
+		this.diameterScale = scale * 1.4;
+	}
+
+	@Override
+	public ReferenceFrame getSnapReferenceFrame() {
+		return null;
+	}
+
+	@Override
+	public void positionRelativeToObject()
+	{
+		//Do nothing
+	}
+
+	@Override
+	public boolean isPickable() {
+		return false;
+	}
+	
+	@Override
+	public void setVisualsShowing(boolean showing) {
+		super.setVisualsShowing(showing);
+		if (this.axis != null) {
+			this.axis.setIsShowing(showing);
 		}
 	}
-	private final org.lgna.project.ast.AbstractField field;
-	private FieldLabelSeparatorModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
-		this.field = field;
-	}
+	
 	@Override
-	public String getName() {
-		return this.field.getName();
+	protected float getOpacity() {
+		if (this.axis != null) {
+			return this.axis.getOpacity();
+		}
+		else {
+			return super.getOpacity();
+		}
 	}
+	
+	@Override
+	protected void setOpacity(float opacity) {
+		super.setOpacity(opacity);
+		if (this.axis != null) {
+			this.axis.setOpacity(opacity);
+		}
+		
+	}
+	
+	@Override
+	protected double getDesiredOpacity(HandleRenderState renderState)
+	{
+		switch (renderState)
+		{
+		case NOT_VISIBLE : return 0.0d;
+		default : return 0.6d * this.cameraRelativeOpacity;
+		}
+	}
+
+	@Override
+	public void resizeToObject()
+	{
+		if (this.getParentTransformable() != null)
+		{
+			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
+			double diagonal = boundingBox.getDiagonal();
+			if (Double.isNaN(diagonal) || diagonal < MIN_SIZE) {
+				diagonal = MIN_SIZE;
+			}
+			if (this.axis != null)
+			{
+				this.axis.resize(diagonal * .5, 1.5, this.diameterScale);
+			}
+		}
+	}
+
 }

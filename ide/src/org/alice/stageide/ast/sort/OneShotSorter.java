@@ -73,10 +73,13 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 	public static final org.lgna.project.ast.JavaMethod MOVE_TO_METHOD;
 	public static final org.lgna.project.ast.JavaMethod MOVE_AND_ORIENT_TO_METHOD;
 	public static final org.lgna.project.ast.JavaMethod PLACE_METHOD;
+	
+	public static final org.lgna.project.ast.JavaMethod STRAIGHTEN_OUT_JOINTS_METHOD;
 
 	static {
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Turnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MovableTurnable.class );
+		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
 
 		TURN_METHOD = turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class );
 		assert TURN_METHOD != null;
@@ -104,6 +107,9 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		PLACE_METHOD = movableTurnableType.getDeclaredMethod( "place", org.lgna.story.SpatialRelation.class, org.lgna.story.Entity.class, org.lgna.story.Place.Detail[].class );
 		assert PLACE_METHOD != null;
 
+		STRAIGHTEN_OUT_JOINTS_METHOD = jointedModelType.getDeclaredMethod( "straightenOutJoints", org.lgna.story.StraightenOutJoints.Detail[].class );
+		assert STRAIGHTEN_OUT_JOINTS_METHOD != null;
+
 		double value = 1.0;
 		final double INCREMENT = 0.01;
 		map.put( MOVE_METHOD, value += INCREMENT );
@@ -121,6 +127,8 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		map.put( ORIENT_TO_UPRIGHT_METHOD, value += INCREMENT );
 		map.put( ORIENT_TO_METHOD, value += INCREMENT );
 		
+		value = 3.0;
+		map.put( STRAIGHTEN_OUT_JOINTS_METHOD, value += INCREMENT );
 	}
 	private static double getValue( org.lgna.project.ast.AbstractMember method ) {
 		Double rv = map.get( method );
