@@ -44,7 +44,6 @@
 package org.alice.stageide.properties;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.StringPropertyAdapter;
 import org.lgna.project.ast.Expression;
 
 

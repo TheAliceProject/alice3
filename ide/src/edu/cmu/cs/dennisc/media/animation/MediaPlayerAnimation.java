@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.media.animation;
 
-import org.alice.media.audio.ScheduledAudioStream;
-
 /**
  * @author Dennis Cosgrove
  */

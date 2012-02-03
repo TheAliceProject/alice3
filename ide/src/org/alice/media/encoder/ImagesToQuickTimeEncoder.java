@@ -47,18 +47,14 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -69,9 +65,7 @@ import org.alice.media.audio.ScheduledAudioStream;
 import ch.randelshofer.media.mp3.MP3AudioInputStream;
 import ch.randelshofer.media.quicktime.QuickTimeWriter;
 import ch.randelshofer.media.quicktime.QuickTimeWriter.VideoFormat;
-
 import edu.cmu.cs.dennisc.animation.Animation;
-import edu.cmu.cs.dennisc.animation.AnimationObserver;
 import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;

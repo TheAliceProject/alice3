@@ -67,17 +67,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 
-import org.alice.ide.video.ProofOfConceptRecordVideoOperation;
-import org.alice.ide.video.RecordVideoOperation;
 import org.alice.media.encoder.EncoderListener;
-import org.alice.media.encoder.ImagesToMOVEncoder;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.jdesktop.swingworker.SwingWorker;
 

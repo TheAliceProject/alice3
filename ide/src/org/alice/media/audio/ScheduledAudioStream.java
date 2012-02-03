@@ -1,13 +1,10 @@
 package org.alice.media.audio;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-
-import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
 
 /**
  * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
