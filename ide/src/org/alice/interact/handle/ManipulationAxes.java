@@ -50,8 +50,10 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  *
  */
 public class ManipulationAxes extends ManipulationHandle3D {
-
+	private static final double MIN_SIZE = .6;
+	
 	private edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes axis;
+	private double diameterScale = 1;
 
 	public ManipulationAxes()
 	{
@@ -66,7 +68,10 @@ public class ManipulationAxes extends ManipulationHandle3D {
 
 	@Override
 	protected void setScale(double scale) {
-		// TODO Auto-generated method stub
+		if (scale < 1.0) {
+			scale = 1;
+		}
+		this.diameterScale = scale * 1.4;
 	}
 
 	@Override
@@ -88,18 +93,28 @@ public class ManipulationAxes extends ManipulationHandle3D {
 	@Override
 	public void setVisualsShowing(boolean showing) {
 		super.setVisualsShowing(showing);
-		this.axis.setIsShowing(showing);
+		if (this.axis != null) {
+			this.axis.setIsShowing(showing);
+		}
 	}
 	
 	@Override
 	protected float getOpacity() {
-		return this.axis.getOpacity();
+		if (this.axis != null) {
+			return this.axis.getOpacity();
+		}
+		else {
+			return super.getOpacity();
+		}
 	}
 	
 	@Override
 	protected void setOpacity(float opacity) {
 		super.setOpacity(opacity);
-		this.axis.setOpacity(opacity);
+		if (this.axis != null) {
+			this.axis.setOpacity(opacity);
+		}
+		
 	}
 	
 	@Override
@@ -108,7 +123,7 @@ public class ManipulationAxes extends ManipulationHandle3D {
 		switch (renderState)
 		{
 		case NOT_VISIBLE : return 0.0d;
-		default : return 0.7d * this.cameraRelativeOpacity;
+		default : return 0.6d * this.cameraRelativeOpacity;
 		}
 	}
 
@@ -118,16 +133,14 @@ public class ManipulationAxes extends ManipulationHandle3D {
 		if (this.getParentTransformable() != null)
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-			float opacity = .7f;
+			double diagonal = boundingBox.getDiagonal();
+			if (Double.isNaN(diagonal) || diagonal < MIN_SIZE) {
+				diagonal = MIN_SIZE;
+			}
 			if (this.axis != null)
 			{
-				opacity = this.axis.getOpacity();
-				this.axis.setParent(null);
-				this.axis = null;
+				this.axis.resize(diagonal * .5, 1.5, this.diameterScale);
 			}
-			this.axis = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes(boundingBox.getVolume()*2, 1.5);
-			this.axis.setParent(this);
-			this.axis.setOpacity(opacity);
 		}
 	}
 

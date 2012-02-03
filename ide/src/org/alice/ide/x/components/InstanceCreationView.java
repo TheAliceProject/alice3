@@ -40,20 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.choosers;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorRedState extends ColorChannelState {
-	private static class SingletonHolder {
-		private static ColorRedState instance = new ColorRedState();
-	}
-	public static ColorRedState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ColorRedState() {
-		super( java.util.UUID.fromString( "27812581-1793-43ab-92c5-5888352ade2d" ) );
+public class InstanceCreationView extends AbstractExpressionView {
+	public InstanceCreationView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		super( instanceCreation );
+		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation );
+		if( prefixPane != null ) {
+			this.addComponent( prefixPane );
+		}
+		this.addComponent( factory.createComponent( instanceCreation ) );
 	}
 }

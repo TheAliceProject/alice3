@@ -41,19 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.choosers;
+package org.alice.stageide.properties;
 
-/**
- * @author Dennis Cosgrove
- */
-public class ColorBlueState extends ColorChannelState {
-	private static class SingletonHolder {
-		private static ColorBlueState instance = new ColorBlueState();
+import org.alice.ide.croquet.models.StandardExpressionState;
+
+public class SelectedInstanceAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.alice.ide.instancefactory.InstanceFactory, org.alice.ide.instancefactory.InstanceFactory> {
+	
+	
+	public SelectedInstanceAdapter(org.alice.ide.instancefactory.InstanceFactory instance, StandardExpressionState expressionState)
+	{
+		super("Selected", instance, expressionState);
 	}
-	public static ColorBlueState getInstance() {
-		return SingletonHolder.instance;
+	
+
+	@Override
+	public org.alice.ide.instancefactory.InstanceFactory getValue() {
+		// TODO Auto-generated method stub
+		return this.instance;
 	}
-	private ColorBlueState() {
-		super( java.util.UUID.fromString( "96cca03f-f696-485a-9698-9d2b699c32e7" ) );
+
+	@Override
+	public Class<org.alice.ide.instancefactory.InstanceFactory> getPropertyType() {
+		// TODO Auto-generated method stub
+		return org.alice.ide.instancefactory.InstanceFactory.class;
+	}
+
+	@Override
+	public org.alice.ide.instancefactory.InstanceFactory getValueCopyIfMutable() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
