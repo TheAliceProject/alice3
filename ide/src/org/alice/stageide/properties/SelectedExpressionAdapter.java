@@ -45,20 +45,33 @@ package org.alice.stageide.properties;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.StringPropertyAdapter;
+import org.lgna.project.ast.Expression;
 
 
-public class FieldNameAdapter extends StringPropertyAdapter<org.lgna.project.ast.UserField> {
+public class SelectedExpressionAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> {
 	
-	private final boolean allowEdit;
 	
-	public FieldNameAdapter(org.lgna.project.ast.UserField instance, StandardExpressionState expressionState, boolean allowEdit)
+	public SelectedExpressionAdapter(org.lgna.project.ast.Expression instance, StandardExpressionState expressionState)
 	{
-		super("Name", instance, instance.name, expressionState);
-		this.allowEdit = allowEdit;
+		super("Selected", instance, expressionState);
 	}
 	
-	public boolean allowsEdit()
-	{
-		return this.allowEdit;
+
+	@Override
+	public Expression getValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Class<Expression> getPropertyType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Expression getValueCopyIfMutable() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

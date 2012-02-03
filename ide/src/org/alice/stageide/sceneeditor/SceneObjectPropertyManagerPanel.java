@@ -58,7 +58,7 @@ import org.alice.ide.properties.uicontroller.PropertyAdapterController;
 import org.alice.stageide.croquet.models.sceneditor.AreExtraPropertiesShownState;
 import org.alice.stageide.properties.BillboardBackPaintPropertyAdapter;
 import org.alice.stageide.properties.BillboardFrontPaintPropertyAdapter;
-import org.alice.stageide.properties.FieldNameAdapter;
+import org.alice.stageide.properties.SelectedExpressionAdapter;
 import org.alice.stageide.properties.GroundOpacityAdapter;
 import org.alice.stageide.properties.ModelOpacityAdapter;
 import org.alice.stageide.properties.ModelSizeAdapter;
@@ -351,7 +351,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			Iterable< org.lgna.project.ast.JavaMethod > getterMethods = org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters(this.selectedField.getValueType());
 			JavaType declaringType = this.selectedField.getValueType().getFirstEncounteredJavaType();
 			boolean isScene = this.selectedImp instanceof SceneImp;
-			propertyAdapters.add(new FieldNameAdapter(this.selectedField, (StandardExpressionState)null, !isScene));
+			propertyAdapters.add(new SelectedExpressionAdapter(this.selectedField, (StandardExpressionState)null, !isScene));
 			
 			for (org.lgna.project.ast.JavaMethod getter : getterMethods )
 			{
@@ -386,7 +386,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 					assert propertyController != null;
 					LabelValueControllerPair matchingLabelController = new LabelValueControllerPair(createLabel(propertyAdapter.getRepr()+ " = "), propertyController);
 					assert matchingLabelController != null;
-					if (propertyAdapter instanceof FieldNameAdapter)
+					if (propertyAdapter instanceof SelectedExpressionAdapter)
 					{
 					    //Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
 					    fieldNamePair = matchingLabelController;

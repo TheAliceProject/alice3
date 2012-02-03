@@ -52,20 +52,19 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
-import org.alice.stageide.properties.FieldNameAdapter;
+import org.alice.stageide.properties.SelectedExpressionAdapter;
 import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 
 
-public class FieldNamePropertyController extends BasicPropertyController<String>
+public class SelectedExpressionPropertyController extends BasicPropertyController<org.lgna.project.ast.Expression>
 {
 
     private Label label;
-    private Button editButton;
     
-    public FieldNamePropertyController(FieldNameAdapter propertyAdapter)
+    public SelectedExpressionPropertyController(SelectedExpressionAdapter propertyAdapter)
     {
         super(propertyAdapter);
     }
@@ -137,20 +136,13 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
     @Override
     public Class<?> getPropertyType()
     {
-        return String.class;
+        return org.lgna.project.ast.Expression.class;
     }
  
     @Override
-    protected void setValueOnUI(String value)
+    protected void setValueOnUI(org.lgna.project.ast.Expression value)
     {
-        if (value != null)
-        {
-            this.label.getAwtComponent().setText(value);
-        }
-        else
-        {
-            this.label.getAwtComponent().setText(BLANK_STRING);
-        }
+        edu.cmu.cs.dennisc.java.util.logging.Logger.severe("NOT SUPPORTED");
         
     }
     
