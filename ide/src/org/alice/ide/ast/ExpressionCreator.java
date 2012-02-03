@@ -47,6 +47,10 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionCreator {
+	public static final java.text.DecimalFormat MILLI_FORMAT = new java.text.DecimalFormat( "#.###" ); 
+	public static final java.text.DecimalFormat MICRO_FORMAT = new java.text.DecimalFormat( "#.######" ); 
+	public static final java.text.DecimalFormat DEFAULT_FORMAT = MICRO_FORMAT; 
+
 	public static final class CannotCreateExpressionException extends Exception {
 		private final Object value;
 		public CannotCreateExpressionException( Object value ) {
@@ -73,7 +77,7 @@ public abstract class ExpressionCreator {
 		return new org.lgna.project.ast.DoubleLiteral( value );
 	}
 	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value ) {
-		return this.createDoubleExpression( value, null );
+		return this.createDoubleExpression( value, DEFAULT_FORMAT );
 	}
 	protected final org.lgna.project.ast.Expression createIntegerExpression( Integer value ) {
 		return new org.lgna.project.ast.IntegerLiteral( value );

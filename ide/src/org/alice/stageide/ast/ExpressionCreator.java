@@ -47,8 +47,6 @@ package org.alice.stageide.ast;
  * @author Dennis Cosgrove
  */
 public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
-	private static final java.text.DecimalFormat MILLI_FORMAT = new java.text.DecimalFormat( "#.###" ); 
-	private static final java.text.DecimalFormat MICRO_FORMAT = new java.text.DecimalFormat( "#.######" ); 
 	private org.lgna.project.ast.Expression createPositionExpression( org.lgna.story.Position position ) {
 		if( position != null ) {
 			Class< ? > cls = org.lgna.story.Position.class;
