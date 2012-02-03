@@ -15,6 +15,7 @@ import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MouseClickedOnObjectEvent;
 //import org.lgna.story.event.MouseClickOnObjectListener;
 //import org.lgna.story.event.MouseClickedOnObjectEvent;
+import org.lgna.story.event.MouseClickedOnScreenEvent;
 
 
 public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClickListener, MouseButtonEvent > {
@@ -118,13 +119,13 @@ public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClic
 	protected void fire(AbstractMouseClickListener listener, MouseButtonEvent event) {
 		super.fire( listener, event );
 		if (listener instanceof MouseClickOnObjectListener) {
-			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) event;
+			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
 			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
 		} else if ( listener instanceof MouseClickOnScreenListener ) {
-			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) event;
-			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
+			MouseClickOnScreenListener mouseCOSL = ( MouseClickOnScreenListener ) listener;
+			mouseCOSL.mouseClicked(  );
 		} else if (listener instanceof MouseButtonEvent ) {//TODO: Depricated
-			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) event;
+			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
 			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
 		}
 	}

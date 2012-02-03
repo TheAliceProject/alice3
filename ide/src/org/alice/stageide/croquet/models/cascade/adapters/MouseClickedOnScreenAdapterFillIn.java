@@ -2,6 +2,7 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.story.event.MouseClickListener;
+import org.lgna.story.event.MouseClickOnScreenListener;
 
 public class MouseClickedOnScreenAdapterFillIn extends LambdaExpressionFillIn {
 	private static class SingletonHolder {
@@ -16,6 +17,6 @@ public class MouseClickedOnScreenAdapterFillIn extends LambdaExpressionFillIn {
 	}
 	@Override
 	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(MouseClickListener.class);
+		return AstUtilities.createLambdaExpression(MouseClickOnScreenListener.class);
 	}
 }

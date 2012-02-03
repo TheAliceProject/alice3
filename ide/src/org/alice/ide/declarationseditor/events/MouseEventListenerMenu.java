@@ -29,10 +29,10 @@ public class MouseEventListenerMenu extends CascadeMenuModel< org.lgna.project.a
 	}
 	
 	@Override
-	protected List<CascadeBlankChild> updateBlankChildren(
-			List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode) {
-		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_MOUSE_BUTTON_LISTENER_METHOD ) );
+	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode) {
+//		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_MOUSE_BUTTON_LISTENER_METHOD ) );
 		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD ) );
+		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD ) );
 		return rv;
 	}
 
