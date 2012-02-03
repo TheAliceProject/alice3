@@ -47,15 +47,17 @@ package org.alice.stageide.ast;
  * @author Dennis Cosgrove
  */
 public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
+	private static final java.text.DecimalFormat MILLI_FORMAT = new java.text.DecimalFormat( "#.###" ); 
+	private static final java.text.DecimalFormat MICRO_FORMAT = new java.text.DecimalFormat( "#.######" ); 
 	private org.lgna.project.ast.Expression createPositionExpression( org.lgna.story.Position position ) {
 		if( position != null ) {
 			Class< ? > cls = org.lgna.story.Position.class;
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
 			return org.lgna.project.ast.AstUtilities.createInstanceCreation( 
 					constructor, 
-					this.createDoubleExpression( position.getRight() ),
-					this.createDoubleExpression( position.getUp() ), 
-					this.createDoubleExpression( position.getBackward() ) 
+					this.createDoubleExpression( position.getRight(), MILLI_FORMAT ),
+					this.createDoubleExpression( position.getUp(), MILLI_FORMAT ), 
+					this.createDoubleExpression( position.getBackward(), MILLI_FORMAT ) 
 			);
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
@@ -68,10 +70,10 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			Class< ? > cls = org.lgna.story.Orientation.class;
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class, Number.class);
 			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, 
-					this.createDoubleExpression( q.x ), 
-					this.createDoubleExpression( q.y ), 
-					this.createDoubleExpression( q.z ), 
-					this.createDoubleExpression( q.w ) 
+					this.createDoubleExpression( q.x, MICRO_FORMAT ), 
+					this.createDoubleExpression( q.y, MICRO_FORMAT ), 
+					this.createDoubleExpression( q.z, MICRO_FORMAT ), 
+					this.createDoubleExpression( q.w, MICRO_FORMAT ) 
 			);
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
@@ -83,9 +85,9 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
 			return org.lgna.project.ast.AstUtilities.createInstanceCreation( 
 					constructor, 
-					this.createDoubleExpression( scale.getLeftToRight() ), 
-					this.createDoubleExpression( scale.getBottomToTop() ), 
-					this.createDoubleExpression( scale.getFrontToBack() ) 
+					this.createDoubleExpression( scale.getLeftToRight(), MILLI_FORMAT ), 
+					this.createDoubleExpression( scale.getBottomToTop(), MILLI_FORMAT ), 
+					this.createDoubleExpression( scale.getFrontToBack(), MILLI_FORMAT ) 
 			);
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
@@ -101,7 +103,6 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 				this.createExpression( font.getPosture() ) 
 		);
 	}
-	
 	private org.lgna.project.ast.Expression createColorExpression( org.lgna.story.Color color ) {
 		org.lgna.project.ast.Expression rv = null;
 		Class< ? > cls = org.lgna.story.Color.class;
@@ -115,7 +116,15 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			//pass
 		} else {
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			rv = org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, this.createDoubleExpression( color.getRed() ), this.createDoubleExpression( color.getGreen() ), this.createDoubleExpression( color.getBlue() ) );
+			double red = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( color.getRed(), MILLI_FORMAT );
+			double green = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( color.getRed(), MILLI_FORMAT );
+			double blue = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( color.getRed(), MILLI_FORMAT );
+			rv = org.lgna.project.ast.AstUtilities.createInstanceCreation( 
+					constructor, 
+					this.createDoubleExpression( red, MILLI_FORMAT ), 
+					this.createDoubleExpression( green, MILLI_FORMAT ), 
+					this.createDoubleExpression( blue, MILLI_FORMAT ) 
+			);
 		}
 		return rv;
 	}

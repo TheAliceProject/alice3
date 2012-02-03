@@ -66,8 +66,14 @@ public abstract class ExpressionCreator {
 			throw new RuntimeException( fld.toGenericString() );
 		}
 	}
-	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value ) {
+	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value, java.text.NumberFormat format ) {
+		if( format != null ) {
+			value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( value, format );
+		}
 		return new org.lgna.project.ast.DoubleLiteral( value );
+	}
+	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value ) {
+		return this.createDoubleExpression( value, null );
 	}
 	protected final org.lgna.project.ast.Expression createIntegerExpression( Integer value ) {
 		return new org.lgna.project.ast.IntegerLiteral( value );
