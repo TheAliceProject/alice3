@@ -44,32 +44,30 @@
 package org.alice.stageide.properties;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
-import org.lgna.project.ast.Expression;
 
-
-public class SelectedExpressionAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> {
+public class SelectedInstanceAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.alice.ide.instancefactory.InstanceFactory, org.alice.ide.instancefactory.InstanceFactory> {
 	
 	
-	public SelectedExpressionAdapter(org.lgna.project.ast.Expression instance, StandardExpressionState expressionState)
+	public SelectedInstanceAdapter(org.alice.ide.instancefactory.InstanceFactory instance, StandardExpressionState expressionState)
 	{
 		super("Selected", instance, expressionState);
 	}
 	
 
 	@Override
-	public Expression getValue() {
+	public org.alice.ide.instancefactory.InstanceFactory getValue() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.instance;
 	}
 
 	@Override
-	public Class<Expression> getPropertyType() {
+	public Class<org.alice.ide.instancefactory.InstanceFactory> getPropertyType() {
 		// TODO Auto-generated method stub
-		return null;
+		return org.alice.ide.instancefactory.InstanceFactory.class;
 	}
 
 	@Override
-	public Expression getValueCopyIfMutable() {
+	public org.alice.ide.instancefactory.InstanceFactory getValueCopyIfMutable() {
 		// TODO Auto-generated method stub
 		return null;
 	}
