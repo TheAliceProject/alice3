@@ -50,14 +50,14 @@ import org.alice.interact.condition.MovementDescription;
  */
 public class ManipulationEventCriteria {
 	
-	public MovementDescription description;
+	public MovementDescription movementDescription;
 	public ManipulationEvent.EventType eventType;
 	public PickHint targetCriteria;
 	
 	public ManipulationEventCriteria( ManipulationEvent.EventType eventType, MovementDescription description, PickHint targetCriteria)
 	{
 		this.eventType = eventType;
-		this.description = description;
+		this.movementDescription = description;
 		this.targetCriteria = targetCriteria;
 	}
 	
@@ -65,14 +65,20 @@ public class ManipulationEventCriteria {
 	{
 		boolean isValidEventType = event.getType() == this.eventType;
 		boolean isValidTarget = this.targetCriteria.intersects( event.getTargetPickHint() );
-		boolean isValidMovement = event.getMovementDescription().equals(this.description);
+		boolean isValidMovement;
+		if (event.getMovementDescription() == null || this.movementDescription == null){
+			isValidMovement = event.getMovementDescription() == this.movementDescription;
+		}
+		else {
+			isValidMovement = event.getMovementDescription().equals(this.movementDescription);
+		}
 		return isValidEventType && isValidTarget && isValidMovement;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return this.description.toString() + ", "+ this.targetCriteria; 
+		return this.movementDescription.toString() + ", "+ this.targetCriteria; 
 	}
 
 }

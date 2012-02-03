@@ -293,6 +293,18 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		}
 		
 		
+		ManipulationHandleIndirection handleAxis = new ManipulationHandleIndirection(new org.alice.interact.handle.ManipulationAxes());
+		handleAxis.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
+		handleAxis.addToSet( HandleSet.DEFAULT_INTERACTION );
+		handleAxis.addToSet( HandleSet.ROTATION_INTERACTION );
+		handleAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		handleAxis.addToSet( HandleSet.TRANSLATION_INTERACTION );
+		handleAxis.addCondition( new ManipulationEventCriteria(ManipulationEvent.EventType.Rotate, null, PickHint.ANYTHING ) );
+		handleAxis.addCondition( new ManipulationEventCriteria(ManipulationEvent.EventType.Translate, null, PickHint.ANYTHING ) );
+		this.manipulationEventManager.addManipulationListener( handleAxis );
+		handleAxis.setDragAdapterAndAddHandle( this );
+		
+		
 		ManipulationHandleIndirection rotateAboutYAxis = new ManipulationHandleIndirection(new StoodUpRotationRingHandle(MovementDirection.UP, RotationRingHandle.HandlePosition.BOTTOM ));
 		rotateAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
 		rotateAboutYAxis.addToSet( HandleSet.ROTATION_INTERACTION );

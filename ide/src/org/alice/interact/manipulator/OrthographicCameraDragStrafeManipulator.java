@@ -72,6 +72,7 @@ public class OrthographicCameraDragStrafeManipulator extends Camera2DDragManipul
 	@Override
 	protected void initializeEventMessages()
 	{
+		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.UP, MovementType.LOCAL), this.manipulatedTransformable ) );
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.DOWN, MovementType.LOCAL), this.manipulatedTransformable ) );

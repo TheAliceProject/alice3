@@ -41,47 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory.croquet.joint.declaration;
+package gallery;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.stageide.ast.JointedTypeInfo, org.lgna.project.ast.UserField, ThisFieldAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static ThisFieldAccessJointedTypeMenuModel getInstance( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo, org.lgna.project.ast.UserField field ) {
-		synchronized( map ) {
-			ThisFieldAccessJointedTypeMenuModel rv = map.get( jointedTypeInfo, field );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisFieldAccessJointedTypeMenuModel( jointedTypeInfo, field );
-				map.put( jointedTypeInfo, field, rv );
-			}
-			return rv;
-		}
-	}
-	public static org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getMenuModel( org.lgna.project.ast.UserField field ) {
-		java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( field.getValueType() );
-		switch( jointedTypeInfos.size() ) {
-		case 0:
-			return null;
-		case 1:
-			return getInstance( jointedTypeInfos.get( 0 ), field );
-		default:
-			CollectionCascadeMenuModel rv = new CollectionCascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory >();
-			for( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo : jointedTypeInfos ) {
-				rv.addItem( getInstance( jointedTypeInfo, field ) );
-			}
-			return rv;
-		}
-	}
-	private final org.lgna.project.ast.UserField field;
-	private ThisFieldAccessJointedTypeMenuModel( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo, org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), jointedTypeInfo );
-		this.field = field;
+public class GalleryApplication extends org.lgna.croquet.Application {
+	@Override
+	protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+		return null;
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory.getInstance( this.field, method ) );
+	protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+		return null;
+	}
+	@Override
+	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	}
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+	@Override
+	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
+		return null;
+	}
+	@Override
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+		System.exit( 0 );
 	}
 }

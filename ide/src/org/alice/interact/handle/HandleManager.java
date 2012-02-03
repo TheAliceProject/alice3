@@ -247,7 +247,7 @@ public class HandleManager implements ManipulationListener{
 		for (ManipulationHandle handle : this.handles)
 		{
 //			PrintUtilities.println("Setting handle "+handle+", which is visible? "+handle.isHandleVisible());
-			handle.setHandleShowing(showing);
+			handle.setVisualsShowing(showing);
 		}
 	}
 	

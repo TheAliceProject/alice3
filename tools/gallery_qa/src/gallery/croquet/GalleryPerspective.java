@@ -41,25 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory.croquet.joint.declaration;
+package gallery.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CollectionCascadeMenuModel< FB > extends org.lgna.croquet.CascadeMenuModel< FB > {
-	private final java.util.List< org.lgna.croquet.CascadeItem< FB, ? > > items = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public CollectionCascadeMenuModel() {
-		super( java.util.UUID.fromString( "94632c3a-e5b6-4007-ab73-4552532cce9a" ) );
-	}
-	public void addItem( org.lgna.croquet.CascadeItem< FB, ? > item ) {
-		this.items.add( item );
-	}
-	public void removeItem( org.lgna.croquet.CascadeItem< FB, ? > item ) {
-		this.items.remove( item );
-	}
-	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode ) {
-		rv.addAll( this.items );
-		return rv;
+public class GalleryPerspective extends org.lgna.croquet.Perspective {
+	public GalleryPerspective() {
+		super( java.util.UUID.fromString( "db725789-5ad4-4f6f-9653-12f383f6815e" ), new GallerySplitComposite() );
 	}
 }

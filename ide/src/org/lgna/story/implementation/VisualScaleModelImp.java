@@ -76,7 +76,7 @@ public abstract class VisualScaleModelImp extends ModelImp {
 		}
 	}
 	@Override
-	protected void animateApplyScale( edu.cmu.cs.dennisc.math.Vector3 axis, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
 			private final edu.cmu.cs.dennisc.math.Vector3 vPrev = new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 );
 			private final edu.cmu.cs.dennisc.math.Vector3 vBuffer = new edu.cmu.cs.dennisc.math.Vector3();
@@ -101,13 +101,28 @@ public abstract class VisualScaleModelImp extends ModelImp {
 
 		double actualDuration = adjustDurationIfNecessary( duration );
 		VisualScaleModelImp[] scoots = {};
+//		edu.cmu.cs.dennisc.math.Vector3 newScaleVec = new edu.cmu.cs.dennisc.math.Vector3(scale);
+		edu.cmu.cs.dennisc.math.Dimension3 currentScale = this.getScale();
+		edu.cmu.cs.dennisc.math.Vector3 appliedScaleVec = new edu.cmu.cs.dennisc.math.Vector3(scale.x/currentScale.x, scale.y/currentScale.y, scale.z/currentScale.z);
+		if (Double.isNaN(appliedScaleVec.x))
+		{
+			appliedScaleVec.x = 1;
+		}
+		if (Double.isNaN(appliedScaleVec.y))
+		{
+			appliedScaleVec.y = 1;
+		}
+		if (Double.isNaN(appliedScaleVec.z))
+		{
+			appliedScaleVec.z = 1;
+		}
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
-			this.applyScale( axis, false );
+			this.applyScale( appliedScaleVec, false );
 			for( VisualScaleModelImp model : scoots ) {
-				model.applyScale( axis, true );
+				model.applyScale( appliedScaleVec, true );
 			}
 		} else {
-			this.perform( new ScaleAnimation( actualDuration, style, axis, this, scoots ) );
+			this.perform( new ScaleAnimation( actualDuration, style, appliedScaleVec, this, scoots ) );
 		}
 	}
 	@Override

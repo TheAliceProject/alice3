@@ -67,11 +67,18 @@ public abstract class AbstractManipulator {
 	protected AbstractDragAdapter dragAdapter;
 	protected boolean hasDoneUpdate = false;
 
+	protected ManipulationEvent mainManipulationEvent;
 	protected List< ManipulationEvent > manipulationEvents = new Vector< ManipulationEvent >();
 	
-	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)
+	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedTransformable)
 	{
-		this.manipulatedTransformable = manipulatedTransformable;
+		if (manipulatedTransformable != this.manipulatedTransformable)
+		{
+			this.manipulatedTransformable = manipulatedTransformable;
+			if (this.manipulatedTransformable != null) {
+				this.initializeEventMessages();
+			}
+		}
 	}
 	
 	public edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getManipulatedTransformable()
@@ -106,6 +113,11 @@ public abstract class AbstractManipulator {
 		this.manipulationEvents.clear();
 	}
 	
+	public ManipulationEvent getMainManipulationEvent()
+	{
+		return this.mainManipulationEvent;
+	}
+	
 	public boolean doesManipulatedObjectHaveHandles()
 	{
 //		if (!(this.manipulatedTransformable instanceof org.lookingglassandalice.storytelling.implementation.MarkerImplementation))
@@ -127,6 +139,10 @@ public abstract class AbstractManipulator {
 		{
 			this.dragAdapter.triggerManipulationEvent( this.manipulationEvents.get( i ), false );
 		}
+		if (this.mainManipulationEvent != null)
+		{
+			this.dragAdapter.triggerManipulationEvent( this.mainManipulationEvent, false );
+		}
 	}
 	
 	public boolean startManipulator( InputState startInput )
@@ -141,6 +157,10 @@ public abstract class AbstractManipulator {
 		if (this.hasStarted)
 		{
 			undoRedoBeginManipulation();
+			if (this.getMainManipulationEvent() != null)
+			{
+				this.dragAdapter.triggerManipulationEvent( this.getMainManipulationEvent(), true );
+			}
 			if (this.doesManipulatedObjectHaveHandles())
 			{
 				HandleSet setToShow = this.getHandleSetToEnable();
