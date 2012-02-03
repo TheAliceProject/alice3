@@ -113,7 +113,7 @@ public class Joint extends Transformable
     }
     
     
-    public AxisAlignedBox getBoundingBox(Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform)
+    public AxisAlignedBox getBoundingBox(Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative)
     {
         if (c == null)
         {
@@ -134,33 +134,35 @@ public class Joint extends Transformable
         {
             transform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable)c).accessLocalTransformation());
         }
-        for (int i=0; i<c.getComponentCount(); i++)
-        {
-            Component comp = c.getComponentAt(i);
-            if (comp instanceof Composite)
-            {
-                getBoundingBox((Composite)comp, rv, transform);
-            }
+        if (cumulative) {
+	        for (int i=0; i<c.getComponentCount(); i++)
+	        {
+	            Component comp = c.getComponentAt(i);
+	            if (comp instanceof Composite)
+	            {
+	                getBoundingBox((Composite)comp, rv, transform, cumulative);
+	            }
+	        }
         }
         return rv;
     }
-    public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, AffineMatrix4x4 transform)
+    public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative)
     {
         if (rv == null)
         {
             rv = new AxisAlignedBox();
         }
-        getBoundingBox(this, rv, transform);
+        getBoundingBox(this, rv, transform, cumulative);
         return rv;
     }
     
-    public AxisAlignedBox getBoundingBox(AxisAlignedBox rv)
+    public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, boolean cumulative)
     {
         if (rv == null)
         {
             rv = new AxisAlignedBox();
         }
-        getBoundingBox(this, rv, AffineMatrix4x4.createIdentity());
+        getBoundingBox(this, rv, AffineMatrix4x4.createIdentity(), cumulative);
         return rv;
     }
 
