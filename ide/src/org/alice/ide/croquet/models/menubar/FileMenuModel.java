@@ -60,7 +60,7 @@ public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 				org.lgna.croquet.MenuModel.SEPARATOR,
 				PrintMenuModel.getInstance(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel()
+				org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation.getInstance().getMenuItemPrepModel()
 		);
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			//pass

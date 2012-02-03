@@ -82,10 +82,10 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 	protected abstract void handleImage( java.awt.image.BufferedImage image, int i );
 	
 	private boolean isRecording;
-	protected boolean isRecording() {
+	public boolean isRecording() {
 		return this.isRecording;
 	}
-	protected void setRecording( boolean isRecording ) {
+	public void setRecording( boolean isRecording ) {
 		if( this.isRecording != isRecording ) {
 			if( this.isRecording ) {
 				programContext.getProgramImp().stopAnimator();

@@ -77,7 +77,6 @@ import org.alice.media.encoder.EncoderListener;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.jdesktop.swingworker.SwingWorker;
 
-import edu.cmu.cs.dennisc.animation.Program;
 import edu.cmu.cs.dennisc.inputpane.FileSelectionPane;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
@@ -161,16 +160,15 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	private static final Color HAPPY_COLOR = new Color(0f, .6f, 0f);
 	private static final Dimension worldSize = new Dimension(512, 384);
 	
+	private final org.alice.stageide.program.VideoEncodingProgramContext programContext;
+
 	private MovieFileSelectionPane fileSelectionPane = new MovieFileSelectionPane();
 	private OwnerPane worldPane = new OwnerPane(worldSize);
-	private org.lgna.project.Project project;
-	private Program rtProgram;
 	private boolean isRestart = false;
 	private UploadToYouTubePane youTubeUploaderPane;
 	private File recordedMovieFile;
 	private File savedMovieFile;
 	private MoviePlayer moviePlayer;
-	private int frameRate = 24;
 	
 	private JButton recordButton;
 	private ImageIcon recordIcon;
@@ -218,12 +216,8 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	private static final String NO_RECORDING_STATUS = "Ready to record.";
 	private static final String YOUTUBE_NOT_UPLOADED_STATUS = "Not uploaded to YouTube.";
 	
-	
-	
-	public VideoCapturePane(org.lgna.project.Project project, int frameRate) {
-		this.project = project;
-		this.frameRate = frameRate;
-		this.rtProgram = this.createProgram( this.project );
+	public VideoCapturePane( org.alice.stageide.program.VideoEncodingProgramContext programContext ) {
+		this.programContext = programContext;
 		
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
 		Frame frame = null;
@@ -239,7 +233,8 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		this.youTubeUploaderPane = new UploadToYouTubePane(frame);
 		youTubeInitialized = this.youTubeUploaderPane.init();
 		
-		this.encoder = new ImagesToQuickTimeEncoder(this.frameRate);
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "frame rate" );
+		this.encoder = new ImagesToQuickTimeEncoder( 24.0 );
 		this.encoder.addListener( this );
 		//this.encoder = new SeriesOfImagesMovieEncoder("C:/movie_dump", "test", "0000", "png");
 		
@@ -727,7 +722,12 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		//this.recordButton.getAction().setEnabled( false );
 	}
 
-	abstract protected Program createProgram(org.lgna.project.Project project);
+	public OwnerPane getWorldPane() {
+		return this.worldPane;
+	}
+	public org.alice.media.encoder.ImagesToQuickTimeEncoder getEncoder() {
+		return this.getEncoder();
+	}
 	
 	abstract protected void onClose();
 	
@@ -762,7 +762,6 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 				{
 					VideoCapturePane.this.isRestart = true;
 				}
-				VideoCapturePane.this.rtProgram.setMovieEncoder( VideoCapturePane.this.encoder );
 				VideoCapturePane.this.runWorld();
 				return Boolean.TRUE;
 			}
@@ -831,10 +830,9 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	
 	protected void showWorldInContainer(java.awt.Container awtContainer)
 	{
-		this.rtProgram.setArgs(  new String[] {} );
-		this.rtProgram.init();
 		awtContainer.setLayout( new java.awt.GridLayout( 1, 1 ) );
-		awtContainer.add( this.rtProgram );
+		this.programContext.initialize( awtContainer );
+		this.programContext.setActiveScene();
 		if( awtContainer instanceof javax.swing.JComponent ) {
 			((javax.swing.JComponent)awtContainer).revalidate();
 		}
@@ -845,10 +843,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	{
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				java.awt.Container contentPane = VideoCapturePane.this.rtProgram.getContentPane();
-				contentPane.repaint();
 				VideoCapturePane.this.onWorldStart();
-				VideoCapturePane.this.rtProgram.start();
 			}
 		} );
 	}
@@ -856,12 +851,17 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	private void restartWorld()
 	{
 		this.worldPane.removeAll();
-		this.rtProgram = this.createProgram( this.project );
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "shut down and create new program context" );
+		//this.programContext.cleanUpProgram();
+		//this.programContext.initialize( container );
+		
 		showWorldInContainer(VideoCapturePane.this.worldPane);
 	}
-	
+
 	private void onWorldStart()
 	{
+		org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation.getInstance().setRecording( true );
 		this.fileNameField.setEnabled( false );
 		this.fileNameField.setEditable( false );
 		this.browseButton.setEnabled( false );
@@ -872,6 +872,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	
 	private void onWorldEnd()
 	{
+		org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation.getInstance().setRecording( false );
 		this.fileNameField.setEnabled( true );
 		this.fileNameField.setEditable( true );
 		this.browseButton.setEnabled( true );
@@ -881,8 +882,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	}
 	
 	private void stop() {
-		this.rtProgram.shutDownCleanly();
-		//this.rtProgram.setClosed( true );
+		this.programContext.cleanUpProgram();
 	}
 
 	private void uploadToYouTube()

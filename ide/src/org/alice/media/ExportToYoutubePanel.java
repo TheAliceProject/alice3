@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -42,52 +42,30 @@
  */
 package org.alice.media;
 
-
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class RecordWorldOperation extends org.alice.ide.video.RecordVideoOperation {
-	private static class SingletonHolder {
-		private static RecordWorldOperation instance = new RecordWorldOperation();
-	}
-	public static RecordWorldOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final org.lgna.croquet.State.ValueListener< Boolean > isRecordingListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			RecordWorldOperation.this.setRecording( nextValue );
+public class ExportToYoutubePanel extends org.alice.ide.video.components.RecordVideoPanel {
+	private final VideoCapturePane videoCapturePane = new org.alice.media.VideoCapturePane( new org.alice.stageide.program.VideoEncodingProgramContext( 24.0 ) ) {
+		@Override
+		protected void onClose() {
+			javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
 		}
 	};
+
+	public ExportToYoutubePanel() {
+		this.getAwtComponent().add( this.videoCapturePane );
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.BorderLayout();
+	}
 	
-	private org.alice.media.encoder.ImagesToQuickTimeEncoder encoder;
-	
-	private RecordWorldOperation() {
-		super( java.util.UUID.fromString( "e01a8089-6de1-4e46-ba89-75606e01c7a3" ) );
+	public org.alice.media.encoder.ImagesToQuickTimeEncoder getEncoder() {
+		return this.videoCapturePane.getEncoder();
 	}
 	@Override
-	protected ExportToYoutubePanel createVideoExportPanel() {
-		ExportToYoutubePanel rv = new ExportToYoutubePanel();
-		this.encoder = rv.getEncoder();
-		return rv;
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step, org.lgna.croquet.components.Dialog dialog ) {
-		org.alice.ide.video.IsRecordingState.getInstance().setValue( false );
-		org.alice.ide.video.IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
-		return super.createControlsPanel( step, dialog );
-	}
-	@Override
-	protected void handleFinally( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
-		org.alice.ide.video.IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
-		super.handleFinally( context, dialog, contentPane );
-	}
-	@Override
-	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( image );
-		this.encoder.addBufferedImage( image );
+	public java.awt.Container getLookingGlassContainer() {
+		return this.videoCapturePane.getWorldPane();
 	}
 }

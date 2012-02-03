@@ -83,7 +83,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false);
 	private static VideoFormat QUICKTIME_VIDEO_FORMAT = VideoFormat.JPG;
 	
-	private float framesPerSecond;
+	private double framesPerSecond;
 	private int width = -1;
 	private int height = -1;
 	private File outputFile = null;
@@ -114,7 +114,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 		return (temp);
 	}
 	
-	public ImagesToQuickTimeEncoder(float framesPerSecond)
+	public ImagesToQuickTimeEncoder(double framesPerSecond)
 	{
 		this.framesPerSecond = framesPerSecond;
 		this.frameCount = 0;

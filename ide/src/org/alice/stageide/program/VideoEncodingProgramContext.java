@@ -51,6 +51,10 @@ public class VideoEncodingProgramContext extends ProgramContext {
 		super( getUpToDateProgramTypeFromActiveIde() );
 		this.getProgramImp().setFrameRate( frameRate );
 	}
+	public Double getFrameRate() {
+		return this.getProgramImp().getFrameRate();
+	}
+	//todo: add String[] args?
 	public void initialize( java.awt.Container container ) {
 		container.add( this.getProgramImp().getOnscreenLookingGlass().getAWTComponent() );
 	}
