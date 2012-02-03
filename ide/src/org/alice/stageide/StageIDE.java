@@ -193,6 +193,17 @@ public class StageIDE extends org.alice.ide.IDE {
 								return false;
 							}
 						}
+					} else if( parent instanceof org.lgna.project.ast.AbstractArgument ) {
+						org.lgna.project.ast.AbstractArgument argument = (org.lgna.project.ast.AbstractArgument)parent;
+						org.lgna.project.ast.Node grandparent = argument.getParent();
+						if( grandparent instanceof org.lgna.project.ast.InstanceCreation ) {
+							org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)grandparent;
+							org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+							if( constructor != null ) {
+								org.lgna.project.ast.AbstractType< ?,?,? > type = constructor.getDeclaringType();
+								return COLOR_TYPE.isAssignableFrom( type ) == false;
+							}
+						}
 					}
 				}
 			}
