@@ -43,11 +43,21 @@
 
 package gallery;
 
-import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import gallery.croquet.IsVisualizationShowingState;
 
 import org.lgna.croquet.State;
-import org.lgna.story.*;
+import org.lgna.story.Camera;
+import org.lgna.story.Color;
+import org.lgna.story.Cone;
+import org.lgna.story.Cylinder;
+import org.lgna.story.Ground;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.JointedModel;
+import org.lgna.story.Model;
+import org.lgna.story.MoveDirection;
+import org.lgna.story.Scene;
+import org.lgna.story.Sun;
+import org.lgna.story.TurnDirection;
 
 /**
  * @author Dennis Cosgrove
@@ -57,7 +67,7 @@ public class GalleryScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground snow = new Ground();
 	private final Camera camera;
-	private final Cone measuringStick = new Cone();
+	private final Cylinder measuringStick = new Cylinder();
 	private Model model;
 	private boolean shouldShow;
 	public GalleryScene( Camera camera ) {
@@ -103,7 +113,7 @@ public class GalleryScene extends Scene {
 	};
 	
 	private void performGeneratedSetup() {
-		measuringStick.setBaseRadius( .1 );
+		measuringStick.setRadius( .1 );
 		measuringStick.move( MoveDirection.LEFT, 1 );
 		measuringStick.setPaint( Color.BLACK );
 		this.snow.setVehicle( this );
