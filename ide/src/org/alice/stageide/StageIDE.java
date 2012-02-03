@@ -291,6 +291,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		org.lgna.project.ast.JavaType javaType = userType.getFirstEncounteredJavaType();
 		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( javaType.getClassReflectionProxy().getReification(), org.lgna.story.Scene.class, org.lgna.story.Camera.class );
 	}
+
 	private static final int THUMBNAIL_WIDTH = 160;
 	private static final int THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH * 3 / 4;
 	@Override
