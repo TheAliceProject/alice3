@@ -3,7 +3,6 @@ package org.lgna.story.event;
 import java.awt.event.MouseEvent;
 
 import org.lgna.story.Scene;
-import org.lgna.story.Visual;
 
 public class MouseClickedOnObjectEvent /*< T extends Visual >*/ extends MouseButtonEvent {
 

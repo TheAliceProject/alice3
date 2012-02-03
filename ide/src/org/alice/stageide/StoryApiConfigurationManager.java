@@ -46,10 +46,6 @@ package org.alice.stageide;
 import java.util.List;
 
 import org.lgna.project.ast.JavaMethod;
-import org.lgna.story.AddTimerEventListener;
-import org.lgna.story.Scene;
-import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimeListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 

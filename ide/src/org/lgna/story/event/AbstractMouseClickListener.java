@@ -42,8 +42,6 @@
  */
 package org.lgna.story.event;
 
-import org.lgna.story.Visual;
-
 /**
  * @author Dennis Cosgrove
  */
