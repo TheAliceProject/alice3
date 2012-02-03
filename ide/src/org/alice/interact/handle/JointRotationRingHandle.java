@@ -43,19 +43,9 @@
 package org.alice.interact.handle;
 
 import org.alice.interact.MovementDirection;
-import org.alice.interact.PlaneUtilities;
-import org.alice.interact.VectorUtilities;
-import org.alice.interact.handle.RotationRingHandle.HandlePosition;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Plane;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
-import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 
 /**
  * @author dculyba
