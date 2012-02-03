@@ -166,6 +166,21 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
+	@Override
+	public org.lgna.croquet.components.Component< ? > getPrefixPaneForInstanceCreationIfAppropriate( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+		if( constructor != null ) {
+			org.lgna.project.ast.AbstractType< ?,?,? > type = constructor.getDeclaringType();
+			if( COLOR_TYPE.isAssignableFrom( type ) ) {
+				org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label();
+				org.lgna.story.Color color = this.getSceneEditor().getInstanceInJavaVMForExpression( instanceCreation, org.lgna.story.Color.class );
+				java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor();
+				rv.setIcon( new org.alice.ide.swing.icons.ColorIcon( awtColor ) );
+				return rv;
+			}
+		}
+		return super.getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation );
+	}
 
 	@Override
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {

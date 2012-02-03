@@ -114,14 +114,11 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			//pass
 		} else {
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			double red = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( color.getRed(), MILLI_FORMAT );
-			double green = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( color.getRed(), MILLI_FORMAT );
-			double blue = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( color.getRed(), MILLI_FORMAT );
 			rv = org.lgna.project.ast.AstUtilities.createInstanceCreation( 
 					constructor, 
-					this.createDoubleExpression( red, MILLI_FORMAT ), 
-					this.createDoubleExpression( green, MILLI_FORMAT ), 
-					this.createDoubleExpression( blue, MILLI_FORMAT ) 
+					this.createDoubleExpression( color.getRed(), MILLI_FORMAT ), 
+					this.createDoubleExpression( color.getGreen(), MILLI_FORMAT ), 
+					this.createDoubleExpression( color.getBlue(), MILLI_FORMAT ) 
 			);
 		}
 		return rv;
