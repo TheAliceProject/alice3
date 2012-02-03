@@ -53,7 +53,6 @@ import javax.swing.JLabel;
 
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
 import org.alice.stageide.properties.SelectedInstanceAdapter;
-import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
