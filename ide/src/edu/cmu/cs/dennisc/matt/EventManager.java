@@ -11,6 +11,7 @@ import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseClickListener;
+import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 import org.lgna.story.event.ProximityEventListener;
@@ -131,6 +132,10 @@ public class EventManager {
 	}
 	public void addArrowKeyListener( ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy ) {
 		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS );
+	}
+
+	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, MultipleEventPolicy policy ) {
+//		mouseHandler.addListener( listener, policy, null );
 	}
 
 }

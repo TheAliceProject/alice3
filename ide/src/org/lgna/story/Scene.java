@@ -44,6 +44,7 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.TimeListener;
 
 /**
@@ -120,25 +121,26 @@ public abstract class Scene extends Entity{
 	
 	public static class MouseClickedOnScreenEvent {
 	}
-	public static interface MouseClickOnScreenListener {
-		public void mouseClicked( MouseClickedOnScreenEvent event );
-	};
-
-	public static class MouseClickOnObjectEvent< T extends Visual > {
-		public T getClickedObject() {
-			return null;
-		}
-	}
-	public static interface MouseClickOnObjectListener< T extends Visual > {
-		public void mouseClicked( MouseClickOnObjectEvent<T> event );
-	};
+//	public static interface MouseClickOnScreenListener {
+//		public void mouseClicked( MouseClickedOnScreenEvent event );
+//	};
+//
+//	public static class MouseClickOnObjectEvent< T extends Visual > {
+//		public T getClickedObject() {
+//			return null;
+//		}
+//	}
+//	public static interface MouseClickOnObjectListener< T extends Visual > {
+//		public void mouseClicked( MouseClickOnObjectEvent<T> event );
+//	};
 	
-	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener ) {
+	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, AddMouseButtonListener.Detail... details ) {
+		this.implementation.getEventManager().addMouseClickOnScreenListener( listener, MultipleEventPolicy.getValue( details ) );
 	}
-	public void addMouseClickOnModelListener( MouseClickOnObjectListener<Model> listener, Model... subSet ) {
-	}
-	public <T extends Visual> void addMouseClickOnObjectListener( MouseClickOnObjectListener<T> listener, Class<T> cls, T... subSet ) {
-	}
+//	public void addMouseClickOnModelListener( MouseClickOnObjectListener<Model> listener, Model... subSet ) {
+//	}
+//	public <T extends Visual> void addMouseClickOnObjectListener( MouseClickOnObjectListener<T> listener, Class<T> cls, T... subSet ) {
+//	}
 	
 	
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
