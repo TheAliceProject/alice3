@@ -9,6 +9,8 @@ import org.lgna.story.Scene;
 import org.lgna.story.Visual;
 import org.lgna.story.event.MouseButtonEvent;
 import org.lgna.story.event.MouseClickListener;
+//import org.lgna.story.event.MouseClickOnObjectListener;
+//import org.lgna.story.event.MouseClickedOnObjectEvent;
 
 
 public class MouseClickedHandler extends AbstractEventHandler< MouseClickListener, MouseButtonEvent > {
@@ -110,7 +112,11 @@ public class MouseClickedHandler extends AbstractEventHandler< MouseClickListene
 	}
 	@Override
 	protected void fire(MouseClickListener listener, MouseButtonEvent event) {
-		super.fire(listener, event);
-		listener.mouseClicked(event);
+		super.fire( listener, event );
+//		if (event instanceof MouseClickedOnObjectEvent) {
+//			MouseClickedOnObjectEvent mouseCOOE = (MouseClickListener) event;
+			listener.mouseClicked( event );
+//			
+//		}
 	}
 }

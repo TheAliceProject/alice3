@@ -31,7 +31,7 @@ public class TimeEventListenerMenu  extends CascadeMenuModel< org.lgna.project.a
 	protected List<CascadeBlankChild> updateBlankChildren(
 			List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode) {
 		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_SCENE_ACTIVATION_LISTENER_METHOD ) );
-//		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_TIMER_EVENT_LISTENER_METHOD ) );
+		rv.add(AddEventListenerMethodInvocationFillIn.getInstance( ADD_TIMER_EVENT_LISTENER_METHOD ) );
 		return rv;
 	}
 

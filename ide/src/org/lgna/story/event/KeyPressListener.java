@@ -40,31 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.cascade.adapters;
-
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.TimerEvent;
+package org.lgna.story.event;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class TimerEventListenerAdapterFillIn extends LambdaExpressionFillIn{
-	
-	private static class SingletonHolder {
-		private static TimerEventListenerAdapterFillIn instance = new TimerEventListenerAdapterFillIn();
-	}
-	public static TimerEventListenerAdapterFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	public TimerEventListenerAdapterFillIn() {
-		super( java.util.UUID.fromString( "0c3b6e28-affd-43a6-b646-acf28adf7cbe" ) );
-		this.transientValue = this.createValue();
-	}
-	@Override
-	protected org.lgna.project.ast.LambdaExpression createValue() {
-		return AstUtilities.createLambdaExpression(TimeListener.class);
-	}
-
+public interface KeyPressListener extends AbstractKeyPressListener {
+	public void keyPressed( KeyEvent e );
 }

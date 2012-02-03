@@ -42,7 +42,6 @@
  */
 package test;
 
-import org.lgna.story.AddMouseButtonListener;
 import org.lgna.story.AddTimerEventListener;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
@@ -62,12 +61,9 @@ import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.CollisionEvent;
-import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseButtonEvent;
-import org.lgna.story.event.MouseClickListener;
+import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 import org.lgna.story.event.SceneActivationEvent;
@@ -281,17 +277,24 @@ class SnowScene extends Scene{
 //				}			
 //			}
 //		}, colListOne, colListTwo, new ProximityDistance( 1.0 ) );
-		this.addMouseButtonListener( new MouseClickListener() {
-			public void mouseClicked(MouseButtonEvent e) {
-				if(e.getModelAtMouseLocation() != null){
-					e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
-					e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);
-				}else{
-					camera.move(MoveDirection.UP, 1);
-					camera.move(MoveDirection.DOWN, 1);
-				}
-			}
-		}, MultipleEventPolicy.COMBINE, AddMouseButtonListener.setOfVisuals(list));
+//		this.addMouseClickOnScreenListener(new MouseClickOnScreenListener() {
+//
+//			public void mouseClicked() {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+//		( new MouseClickListener() {
+//			public void mouseClicked(MouseButtonEvent e) {
+//				if(e.getModelAtMouseLocation() != null){
+//					e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
+//					e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);
+//				}else{
+//					camera.move(MoveDirection.UP, 1);
+//					camera.move(MoveDirection.DOWN, 1);
+//				}
+//			}
+//		}, MultipleEventPolicy.COMBINE);//, AddMouseButtonListener.setOfVisuals(list));
 	}
 
 	public void chillInSkiChalet() {
