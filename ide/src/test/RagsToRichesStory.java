@@ -63,7 +63,6 @@ import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 import org.lgna.story.event.SceneActivationEvent;

@@ -46,45 +46,50 @@ package org.alice.stageide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public class ColorChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< org.lgna.project.ast.Expression > {
-	private org.lgna.croquet.components.Component< ? >[] components = { 
-			ColorRedState.getInstance().createSlider(), 
-			ColorGreenState.getInstance().createSlider(),
-			ColorBlueState.getInstance().createSlider() 
+public class ColorChooser extends org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.Expression > {
+	private final javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
+	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
+		}
 	};
-	private static final String[] LABEL_TEXTS = { "red:", "green:", "blue:" };
-	@Override
-	protected String[] getLabelTexts() {
-		return LABEL_TEXTS;
-	}
-	
 	public ColorChooser() {
 		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression != null ) {
-			//todo
-//			if( previousExpression instanceof org.lgna.project.ast.InstanceCreation ) {
-//				
-//			} else {
-//				
-//			}
-//			ColorRedState.getInstance().setValueTransactionlessly( rValue );
-//			ColorGreenState.getInstance().setValueTransactionlessly( gValue );
-//			ColorBlueState.getInstance().setValueTransactionlessly( bValue );
+			try {
+				org.lgna.story.Color color = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( previousExpression, org.lgna.story.Color.class );
+				if( color != null ) {
+					edu.cmu.cs.dennisc.color.Color4f color4f = org.lgna.story.ImplementationAccessor.getColor4f( color );
+					this.jColorChooser.setColor( color4f.getAsAWTColor() );
+				}
+			} catch( Throwable t ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, previousExpression );
+			}
 		}
 	}
+
 	@Override
-	public org.lgna.croquet.components.Component< ? >[] getRowComponents() {
-		return this.components;
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.jColorChooser.getSelectionModel().removeChangeListener( this.changeListener );
+		super.handleUndisplayable();
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+		return new org.lgna.croquet.components.SwingAdapter( this.jColorChooser );
 	}
 	@Override
 	public org.lgna.project.ast.Expression getValue() {
-		double rValue = ColorRedState.getInstance().getValue();
-		double gValue = ColorGreenState.getInstance().getValue();
-		double bValue = ColorBlueState.getInstance().getValue();
+		java.awt.Color awtColor = this.jColorChooser.getColor();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.ast.ExpressionCreator expressionCreator = ide.getApiConfigurationManager().getExpressionCreator();
+		org.lgna.story.Color color = org.lgna.story.ImplementationAccessor.createColor( new edu.cmu.cs.dennisc.color.Color4f( awtColor ) );
 		try {
-			return expressionCreator.createExpression( new org.lgna.story.Color( rValue, gValue, bValue ) );
+			return expressionCreator.createExpression( color );
 		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 			ccee.printStackTrace();
 			return null;
@@ -95,4 +100,3 @@ public class ColorChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser
 		return null;
 	}
 }
-

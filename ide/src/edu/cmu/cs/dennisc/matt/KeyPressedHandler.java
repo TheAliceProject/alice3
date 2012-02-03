@@ -14,8 +14,6 @@ import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
-
 public class KeyPressedHandler extends AbstractEventHandler< AbstractKeyPressListener, KeyEvent > {
 
 //	private final List< AbstractKeyPressListener > list = Collections.newLinkedList();

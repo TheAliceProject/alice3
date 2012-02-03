@@ -52,4 +52,7 @@ public class DoubleUtilities {
 	public static Double divide( Number numerator, Number denominator ) {
 		return numerator.doubleValue() / denominator.doubleValue();
 	}
+	public static double format( double d, java.text.NumberFormat format ) {
+		return Double.parseDouble( format.format( d ) );
+	}
 }

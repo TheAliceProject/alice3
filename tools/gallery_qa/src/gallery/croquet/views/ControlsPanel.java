@@ -41,19 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.choosers;
+package gallery.croquet.views;
+
+import java.awt.Component;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+
+import org.alice.ide.croquet.models.gallerybrowser.GalleryNode;
+import org.lgna.croquet.components.ScrollPane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorRedState extends ColorChannelState {
-	private static class SingletonHolder {
-		private static ColorRedState instance = new ColorRedState();
-	}
-	public static ColorRedState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ColorRedState() {
-		super( java.util.UUID.fromString( "27812581-1793-43ab-92c5-5888352ade2d" ) );
+public class ControlsPanel extends org.lgna.croquet.components.BorderPanel {
+	public ControlsPanel( gallery.croquet.ControlsComposite composite ) {
+		super( composite );
+//		this.addComponent(composite.getNextOperation().createButton(), Constraint.PAGE_START);
+		this.addComponent(composite.getViz().createCheckBox(), Constraint.PAGE_START);
+
+		org.lgna.croquet.components.Tree< ? > tree = composite.getTreeState().createTree();
+		tree.expandAllRows();
+		tree.setCellRenderer(new edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<GalleryNode>() {
+			@Override
+			protected JLabel updateListCellRendererComponent(JLabel rv,
+					JTree tree, GalleryNode value, boolean sel, boolean expanded,
+					boolean leaf, int row, boolean hasFocus) {
+				rv.setIcon(value.getSmallIcon());
+				rv.setText(value.getText());
+				return rv;
+			}
+		});
+		
+		ScrollPane scrollPane = new ScrollPane( tree );
+		this.addComponent( scrollPane, Constraint.CENTER );
 	}
 }

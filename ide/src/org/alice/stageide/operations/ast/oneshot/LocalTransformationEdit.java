@@ -46,50 +46,21 @@ package org.alice.stageide.operations.ast.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit {
-	private final org.lgna.project.ast.AbstractField field;
-	private final org.lgna.project.ast.AbstractMethod method;
-	private final org.lgna.project.ast.Expression[] argumentExpressions;
+public class LocalTransformationEdit extends MethodInvocationEdit {
 	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
 	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
-	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		super( completionStep );
-		this.field = field;
-		this.method = method;
-		this.argumentExpressions = argumentExpressions;
+	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
 	public LocalTransformationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		this.field = org.lgna.project.io.IoUtilities.decodeNode( project, binaryDecoder );
-		this.method = org.lgna.project.io.IoUtilities.decodeNode( project, binaryDecoder );
-		this.argumentExpressions = null;
-		assert false : this.argumentExpressions;
 	}
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		org.lgna.project.io.IoUtilities.encodeNode( binaryEncoder, this.field );
-		org.lgna.project.io.IoUtilities.encodeNode( binaryEncoder, this.method );
-		assert false : this.argumentExpressions;
-	}
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
-		Object instance = sceneEditor.getInstanceInJavaVMForField( field );
+	protected void preserveUndoInfo( Object instance, boolean isDo ) {
 		if( instance instanceof org.lgna.story.MovableTurnable ) {
 			org.lgna.story.MovableTurnable movableTurnable = (org.lgna.story.MovableTurnable)instance;
 			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( movableTurnable );
 			this.m = this.transformable.getLocalTransformation();
-			org.lgna.project.ast.Expression methodInvocation = org.lgna.project.ast.AstUtilities.createMethodInvocation( 
-					new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field ), 
-					method, 
-					argumentExpressions 
-			);
-			
-			org.lgna.project.ast.ExpressionStatement statement = new org.lgna.project.ast.ExpressionStatement( methodInvocation );
-			sceneEditor.executeStatements( statement );
 		} else {
 			this.transformable = null;
 			this.m = null;
@@ -100,9 +71,5 @@ public class LocalTransformationEdit extends org.lgna.croquet.edits.Edit {
 		if( this.transformable != null && this.m != null ) {
 			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.PARENT, this.m );
 		}
-	}
-	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		return null;
 	}
 }

@@ -47,11 +47,13 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public abstract class MethodInvocationFillIn extends org.lgna.croquet.CascadeFillIn< MethodInvocationEditFactory, org.lgna.project.ast.Expression > {
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 	private final org.lgna.project.ast.MethodInvocation transientValue;
-	public MethodInvocationFillIn( java.util.UUID id, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
+	public MethodInvocationFillIn( java.util.UUID id, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
 		super( id );
+		this.instanceFactory = instanceFactory;
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( method );
-		this.transientValue.expression.setValue( new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field ) );
+		this.transientValue.expression.setValue( instanceFactory.createExpression() );
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
 			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameter ) );
 		}
@@ -59,18 +61,15 @@ public abstract class MethodInvocationFillIn extends org.lgna.croquet.CascadeFil
 	private org.lgna.project.ast.AbstractMethod getMethod() {
 		return this.transientValue.method.getValue();
 	}
-	private org.lgna.project.ast.AbstractField getField() {
-		return ((org.lgna.project.ast.FieldAccess)this.transientValue.expression.getValue()).field.getValue();
-	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, org.lgna.project.ast.Expression > itemNode ) {
 		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( new org.lgna.project.ast.ExpressionStatement( this.transientValue ) ).getAwtComponent();
 	}
-	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions );
+	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions );
 	@Override
 	public MethodInvocationEditFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, org.lgna.project.ast.Expression > itemNode ) {
 		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( itemNode, org.lgna.project.ast.Expression.class );
-		return this.createMethodInvocationEditFactory( this.getField(), this.getMethod(), argumentExpressions );
+		return this.createMethodInvocationEditFactory( this.instanceFactory, this.getMethod(), argumentExpressions );
 	}
 	@Override
 	public MethodInvocationEditFactory getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, org.lgna.project.ast.Expression > itemNode ) {

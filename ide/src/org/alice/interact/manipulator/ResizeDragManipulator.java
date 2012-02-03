@@ -92,7 +92,7 @@ public class ResizeDragManipulator extends AbstractManipulator
 	
 	@Override
 	public boolean doStartManipulator(InputState startInput) {
-		this.manipulatedTransformable = startInput.getClickPickTransformable();
+		this.setManipulatedTransformable(startInput.getClickPickTransformable());
 		if (this.manipulatedTransformable != null)
 		{
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );

@@ -42,8 +42,6 @@
  */
 package org.alice.ide.common;
 
-import java.awt.Graphics2D;
-
 import org.lgna.project.ast.ExpressionStatement;
 
 /**

@@ -70,7 +70,8 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 	}
 	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
 	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
-		return this.getDeclarationChildren( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
+		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
+		return this.getDeclarationChildren( apiConfigurationManager );
 	}
 	@Override
 	public int getChildCount() {

@@ -106,7 +106,7 @@ public class BootstrapUtilties {
 	}
 	
 	public static String GET_MY_SCENE_METHOD_NAME = "getMyScene";
-	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.SurfaceAppearance appearance, String atmosphereColorConstantName, double fogDensity ) {
+	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.SurfaceAppearance appearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
 //		org.lgna.project.ast.UserField sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
 		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
 		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
@@ -174,21 +174,41 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
 		
-		if( atmosphereColorConstantName != null ) {
+		if( atmosphereColor != null ) {
 			org.lgna.project.ast.JavaMethod setAtmosphereColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, org.lgna.story.SetAtmosphereColor.Detail[].class );
-			performGeneratedSetupBody.statements.add( 
-					createMethodInvocationStatement( 
-							new org.lgna.project.ast.ThisExpression(), 
-							setAtmosphereColorMethod, 
-							org.lgna.project.ast.AstUtilities.createStaticFieldAccess( org.lgna.story.Color.class, atmosphereColorConstantName ) 
-					) 
-			);
+			try {
+				org.lgna.project.ast.Expression colorExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(atmosphereColor);
+				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAtmosphereColorMethod, colorExpression ) );
+			}
+			catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) { 
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe("This exception should not occure: "+e); 
+			}
 		}
 		if( Double.isNaN( fogDensity) ) {
 			//pass
 		} else {
 			org.lgna.project.ast.JavaMethod setFogDensityMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFogDensity", Number.class, org.lgna.story.SetFogDensity.Detail[].class );
 			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setFogDensityMethod, new org.lgna.project.ast.DoubleLiteral( fogDensity ) ));
+		}
+		if (aboveLightColor != null) {
+			org.lgna.project.ast.JavaMethod setAboveLightColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFromAboveLightColor", org.lgna.story.Color.class, org.lgna.story.SetFromAboveLightColor.Detail[].class );
+			try {
+				org.lgna.project.ast.Expression colorExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(aboveLightColor);
+				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAboveLightColorMethod, colorExpression ) );
+			}
+			catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) { 
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe("This exception should not occure: "+e); 
+			}
+		}
+		if ( belowLightColor != null) {
+			org.lgna.project.ast.JavaMethod setBelowLightColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFromBelowLightColor", org.lgna.story.Color.class, org.lgna.story.SetFromBelowLightColor.Detail[].class );
+			try {
+				org.lgna.project.ast.Expression colorExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(belowLightColor);
+				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setBelowLightColorMethod, colorExpression ) );
+			}
+			catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) { 
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe("This exception should not occure: "+e); 
+			}
 		}
 
 		org.lgna.project.ast.UserMethod performCustomSetupMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, "performCustomSetup" );

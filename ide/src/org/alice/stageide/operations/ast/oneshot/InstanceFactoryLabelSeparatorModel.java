@@ -41,47 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.instancefactory.croquet.joint.declaration;
+package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.stageide.ast.JointedTypeInfo, org.lgna.project.ast.UserField, ThisFieldAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static ThisFieldAccessJointedTypeMenuModel getInstance( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo, org.lgna.project.ast.UserField field ) {
+public class InstanceFactoryLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryLabelSeparatorModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static InstanceFactoryLabelSeparatorModel getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
 		synchronized( map ) {
-			ThisFieldAccessJointedTypeMenuModel rv = map.get( jointedTypeInfo, field );
+			InstanceFactoryLabelSeparatorModel rv = map.get( value );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ThisFieldAccessJointedTypeMenuModel( jointedTypeInfo, field );
-				map.put( jointedTypeInfo, field, rv );
+				rv = new InstanceFactoryLabelSeparatorModel( value );
+				map.put( value, rv );
 			}
 			return rv;
 		}
 	}
-	public static org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getMenuModel( org.lgna.project.ast.UserField field ) {
-		java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( field.getValueType() );
-		switch( jointedTypeInfos.size() ) {
-		case 0:
-			return null;
-		case 1:
-			return getInstance( jointedTypeInfos.get( 0 ), field );
-		default:
-			CollectionCascadeMenuModel rv = new CollectionCascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory >();
-			for( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo : jointedTypeInfos ) {
-				rv.addItem( getInstance( jointedTypeInfo, field ) );
-			}
-			return rv;
-		}
-	}
-	private final org.lgna.project.ast.UserField field;
-	private ThisFieldAccessJointedTypeMenuModel( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo, org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), jointedTypeInfo );
-		this.field = field;
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	private InstanceFactoryLabelSeparatorModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		super( java.util.UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
+		this.instanceFactory = instanceFactory;
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory.getInstance( this.field, method ) );
+	public String getName() {
+		return this.instanceFactory.getRepr();
 	}
 }

@@ -47,15 +47,15 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class LocalTransformationMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final org.lgna.project.ast.AbstractField field;
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 	private final org.lgna.project.ast.AbstractMethod method;
 	private final org.lgna.project.ast.Expression[] argumentExpressions;
-	public LocalTransformationMethodInvocationEditFactory( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		this.field = field;
+	public LocalTransformationMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		this.instanceFactory = instanceFactory;
 		this.method = method;
 		this.argumentExpressions = argumentExpressions;
 	}
 	public org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CascadeCompletionStep< MethodInvocationEditFactory > step ) {
-		return new LocalTransformationEdit( step, this.field, this.method, this.argumentExpressions );
+		return new LocalTransformationEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }
