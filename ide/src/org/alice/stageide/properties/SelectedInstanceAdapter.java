@@ -40,56 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.program;
 
-/**
- * @author Dennis Cosgrove
- */
-class ExceptionPane extends javax.swing.JPanel {
-	private javax.swing.JLabel m_threadLabel = new javax.swing.JLabel();
-	private javax.swing.JLabel m_throwableLabel = new javax.swing.JLabel();
-	private javax.swing.JList m_stackTraceVC = new javax.swing.JList();
-	private javax.swing.JCheckBox m_continuePostingExceptionsVC = new javax.swing.JCheckBox( "continue posting exceptions" );
-	public ExceptionPane() {
-		setLayout( new java.awt.BorderLayout() );
-		m_continuePostingExceptionsVC.setSelected( true );
-		setLayout( new java.awt.GridBagLayout() );
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gbc.weighty = 0.0;
-		add( m_threadLabel, gbc );
-		add( m_throwableLabel, gbc );
-		gbc.weighty = 1.0;
-		add( new javax.swing.JScrollPane( m_stackTraceVC ), gbc );
-		gbc.weighty = 0.0;
-		add( m_continuePostingExceptionsVC, gbc );
-	}
-	public boolean isDialogPostDesired() {
-		return m_continuePostingExceptionsVC.isSelected();
-	}
-	public void setThreadAndThrowable( Thread thread, Throwable throwable ) {
-		m_threadLabel.setText( "Thread: " + thread.getName() );
-		m_throwableLabel.setText( "Exception: " + throwable.getClass().getName() );
-		m_stackTraceVC.setListData( throwable.getStackTrace() );
-	}
-}
+package org.alice.stageide.properties;
 
-/**
- * @author Dennis Cosgrove
- */
-public class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
-	private ExceptionPane m_exceptionPane = new ExceptionPane();
-	public void uncaughtException( Thread thread, Throwable throwable ) {
-		if( m_exceptionPane.isDialogPostDesired() ) {
-			m_exceptionPane.setThreadAndThrowable( thread, throwable );
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					javax.swing.JOptionPane.showMessageDialog( null, m_exceptionPane, "Caught Unhandled Exception", javax.swing.JOptionPane.ERROR_MESSAGE );
-				}	
-			} );
-		}
-		throwable.printStackTrace();
+import org.alice.ide.croquet.models.StandardExpressionState;
+
+public class SelectedInstanceAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.alice.ide.instancefactory.InstanceFactory, org.alice.ide.instancefactory.InstanceFactory> {
+	
+	
+	public SelectedInstanceAdapter(org.alice.ide.instancefactory.InstanceFactory instance, StandardExpressionState expressionState)
+	{
+		super("Selected", instance, expressionState);
+	}
+	
+
+	@Override
+	public org.alice.ide.instancefactory.InstanceFactory getValue() {
+		// TODO Auto-generated method stub
+		return this.instance;
+	}
+
+	@Override
+	public Class<org.alice.ide.instancefactory.InstanceFactory> getPropertyType() {
+		// TODO Auto-generated method stub
+		return org.alice.ide.instancefactory.InstanceFactory.class;
+	}
+
+	@Override
+	public org.alice.ide.instancefactory.InstanceFactory getValueCopyIfMutable() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

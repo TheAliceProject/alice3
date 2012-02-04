@@ -40,44 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultProgram extends Program {
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass m_onscreenLookingGlass;
-	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return m_onscreenLookingGlass;
-	}
-
-	protected boolean isLightweightOnscreenLookingGlassDesired() {
-		return false;
-	}
-
-	protected void initializeAWT( java.awt.Container container, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		container.setLayout( new java.awt.BorderLayout() );
-		container.add( m_onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
-	}
-	protected void exitAWT( java.awt.Container container, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		container.remove( m_onscreenLookingGlass.getAWTComponent() );
-	}
-	
-	@Override
-	protected void preInitialize() {
-		super.preInitialize();
-		if( isLightweightOnscreenLookingGlassDesired() ) {
-			m_onscreenLookingGlass = getLookingGlassFactory().createLightweightOnscreenLookingGlass();
-		} else {
-			m_onscreenLookingGlass = getLookingGlassFactory().createHeavyweightOnscreenLookingGlass();
+public class CylinderImp extends ShapeImp {
+	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
+	private final org.lgna.story.Cylinder abstraction;
+	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
+		@Override
+		public Double getValue() {
+			return CylinderImp.this.sgCylinder.bottomRadius.getValue();
 		}
-		initializeAWT( getContentPane(), m_onscreenLookingGlass );
+		@Override
+		protected void handleSetValue( Double value ) {
+			CylinderImp.this.sgCylinder.bottomRadius.setValue( value );
+			CylinderImp.this.sgCylinder.topRadius.setValue( value );
+		}
+	};
+	public final DoubleProperty length = new DoubleProperty( CylinderImp.this ) {
+		@Override
+		public Double getValue() {
+			return CylinderImp.this.sgCylinder.length.getValue();
+		}
+		@Override
+		protected void handleSetValue( Double value ) {
+			CylinderImp.this.sgCylinder.length.setValue( value );
+		}
+	};
+
+	public CylinderImp( org.lgna.story.Cylinder abstraction ) {
+		this.abstraction = abstraction;
+		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
 	}
-	
 	@Override
-	protected void handleShutDown() {
-		super.handleShutDown();
-		exitAWT( getContentPane(), m_onscreenLookingGlass );
-		m_onscreenLookingGlass.release();
+	public org.lgna.story.Cylinder getAbstraction() {
+		return this.abstraction;
 	}
+	//todo: produce more tight bound by shifting center of bounding sphere
+	@Override
+	protected double getBoundingSphereRadius() {
+		return Math.max( this.length.getValue(), this.radius.getValue());
+	}
+
 }

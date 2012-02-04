@@ -40,25 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story;
 
-package org.alice.stageide.properties;
+import org.lgna.project.annotations.*;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.StringPropertyAdapter;
-
-
-public class FieldNameAdapter extends StringPropertyAdapter<org.lgna.project.ast.UserField> {
-	
-	private final boolean allowEdit;
-	
-	public FieldNameAdapter(org.lgna.project.ast.UserField instance, StandardExpressionState expressionState, boolean allowEdit)
-	{
-		super("Name", instance, instance.name, expressionState);
-		this.allowEdit = allowEdit;
+/**
+ * @author Dennis Cosgrove
+ */
+public class Cylinder extends Shape {
+	private final org.lgna.story.implementation.CylinderImp implementation = new org.lgna.story.implementation.CylinderImp( this );
+	@Override
+	/*package-private*/ org.lgna.story.implementation.CylinderImp getImplementation() {
+		return this.implementation;
 	}
 	
-	public boolean allowsEdit()
-	{
-		return this.allowEdit;
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getRadius() {
+		return this.implementation.radius.getValue();
+	}
+	@MethodTemplate()
+	public void setRadius( Number radius, SetRadius.Detail... details ) {
+		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getLength() {
+		return this.implementation.length.getValue();
+	}
+	@MethodTemplate()
+	public void setLength( Number length, SetLength.Detail... details ) {
+		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

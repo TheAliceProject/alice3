@@ -40,40 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.program;
+package org.alice.stageide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultProgram extends Program {
-	@Override
-	protected void preInitialize() {
+public class CylinderFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.CylinderFieldDeclarationOperation > {
+	public CylinderFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.CylinderFieldDeclarationOperation model ) {
+		super( model );
 	}
-	@Override
-	protected void initialize() {
-	}
-	@Override
-	protected void postInitialize( boolean success ) {
-		validate();
-	}
-	@Override
-	protected void preRun() {
-	}
-	@Override
-	protected void run() {
-	}
-	@Override
-	protected void postRun() {
-	}
-//	@Override
-//	protected void handleShownForTheFirstTime() {
-//	}
-	@Override
-	protected boolean isAcceptableToClose( java.awt.event.WindowEvent e ) {
-		return true;
-	}
-	@Override
-	protected void handleShutDown() {
-	}
-	
 }

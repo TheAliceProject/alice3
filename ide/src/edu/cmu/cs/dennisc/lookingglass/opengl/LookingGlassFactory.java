@@ -283,7 +283,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 				releaseRenderingLock();
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
 		}
 		LookingGlassFactory.this.handleDisplayed();
 		return rv;
