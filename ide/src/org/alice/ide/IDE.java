@@ -534,7 +534,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType );
-	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.NamedUserType programType, int frameRate );
 
 	public java.util.Set< org.lgna.common.Resource > getResources() {
 		org.lgna.project.Project project = this.getProject();

@@ -40,56 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.program;
+package org.lgna.story;
+
+import org.lgna.project.annotations.*;
 
 /**
  * @author Dennis Cosgrove
  */
-class ExceptionPane extends javax.swing.JPanel {
-	private javax.swing.JLabel m_threadLabel = new javax.swing.JLabel();
-	private javax.swing.JLabel m_throwableLabel = new javax.swing.JLabel();
-	private javax.swing.JList m_stackTraceVC = new javax.swing.JList();
-	private javax.swing.JCheckBox m_continuePostingExceptionsVC = new javax.swing.JCheckBox( "continue posting exceptions" );
-	public ExceptionPane() {
-		setLayout( new java.awt.BorderLayout() );
-		m_continuePostingExceptionsVC.setSelected( true );
-		setLayout( new java.awt.GridBagLayout() );
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gbc.weighty = 0.0;
-		add( m_threadLabel, gbc );
-		add( m_throwableLabel, gbc );
-		gbc.weighty = 1.0;
-		add( new javax.swing.JScrollPane( m_stackTraceVC ), gbc );
-		gbc.weighty = 0.0;
-		add( m_continuePostingExceptionsVC, gbc );
+public class Cylinder extends Shape {
+	private final org.lgna.story.implementation.CylinderImp implementation = new org.lgna.story.implementation.CylinderImp( this );
+	@Override
+	/*package-private*/ org.lgna.story.implementation.CylinderImp getImplementation() {
+		return this.implementation;
 	}
-	public boolean isDialogPostDesired() {
-		return m_continuePostingExceptionsVC.isSelected();
+	
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getRadius() {
+		return this.implementation.radius.getValue();
 	}
-	public void setThreadAndThrowable( Thread thread, Throwable throwable ) {
-		m_threadLabel.setText( "Thread: " + thread.getName() );
-		m_throwableLabel.setText( "Exception: " + throwable.getClass().getName() );
-		m_stackTraceVC.setListData( throwable.getStackTrace() );
+	@MethodTemplate()
+	public void setRadius( Number radius, SetRadius.Detail... details ) {
+		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-public class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
-	private ExceptionPane m_exceptionPane = new ExceptionPane();
-	public void uncaughtException( Thread thread, Throwable throwable ) {
-		if( m_exceptionPane.isDialogPostDesired() ) {
-			m_exceptionPane.setThreadAndThrowable( thread, throwable );
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					javax.swing.JOptionPane.showMessageDialog( null, m_exceptionPane, "Caught Unhandled Exception", javax.swing.JOptionPane.ERROR_MESSAGE );
-				}	
-			} );
-		}
-		throwable.printStackTrace();
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getLength() {
+		return this.implementation.length.getValue();
+	}
+	@MethodTemplate()
+	public void setLength( Number length, SetLength.Detail... details ) {
+		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }
