@@ -9,13 +9,9 @@ import org.lgna.story.Scene;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractMouseClickListener;
 import org.lgna.story.event.MouseButtonEvent;
-import org.lgna.story.event.MouseClickListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MouseClickedOnObjectEvent;
-//import org.lgna.story.event.MouseClickOnObjectListener;
-//import org.lgna.story.event.MouseClickedOnObjectEvent;
-import org.lgna.story.event.MouseClickedOnScreenEvent;
 
 
 public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClickListener, MouseButtonEvent > {

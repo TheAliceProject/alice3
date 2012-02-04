@@ -1,7 +1,6 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
-import org.lgna.story.event.MouseClickListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 
 public class MouseClickedOnScreenAdapterFillIn extends LambdaExpressionFillIn {
