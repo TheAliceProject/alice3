@@ -44,64 +44,85 @@
 package org.lgna.croquet.cascade;
 
 import org.lgna.croquet.*;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> extends RtBlankOwner< T[], T, CascadeRoot< T, CS >, RootNode< T, CS > > {
-	public RtRoot( CascadeRoot< T, CS > element ) {
-		super( element, RootNode.createInstance( element ), null, -1 );
-	}
-	@Override
-	public RtRoot< T, CS > getRtRoot() {
-		return this;
-	}
-	@Override
-	public RtBlank< ? > getNearestBlank() {
-		return null;
-	}
-	@Override
-	public void select() {
-	}
+abstract class RtNode<E extends Element, N extends CascadeNode< ?,E >> {
+	private final E element;
+	private final N node;
+	private RtNode< ?, ? > parent;
+	private RtNode< ?, ? > nextSibling;
 
-	protected T[] createValues( Class< T > componentType ) {
-		RtBlank< T >[] rtBlanks = this.getChildren();
-		T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
-		for( int i = 0; i < rtBlanks.length; i++ ) {
-			rv[ i ] = rtBlanks[ i ].createValue();
+	public RtNode( E element, N node ) {
+		assert element != null;
+		this.element = element;
+		assert node != null : element;
+		this.node = node;
+	}
+	public E getElement() {
+		return this.element;
+	}
+	public N getNode() {
+		return this.node;
+	}
+	public RtRoot< ?, ? > getRtRoot() {
+		return this.parent.getRtRoot();
+	}
+	
+	
+	
+	protected RtNode< ?, ? > getParent() {
+		return this.parent;
+	}
+	protected RtNode< ?, ? > getNextSibling() {
+		return this.nextSibling;
+	}
+	public void setParent( RtNode< ?, ? > parent ) {
+		this.parent = parent;
+	}
+	public void setNextSibling( RtNode< ?, ? > nextSibling ) {
+		this.nextSibling = nextSibling;
+	}
+	protected void updateParentsAndNextSiblings( RtNode< ?, ? >[] rtNodes ) {
+		for( RtNode< ?, ? > rtNode : rtNodes ) {
+			rtNode.setParent( this );
 		}
-		return rv;
-	}
-
-	public void cancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
-		this.getElement().handleCancel( completionStep, trigger, ce );
-	}
-
-	public CS complete( org.lgna.croquet.triggers.Trigger trigger ) {
-		CascadeRoot< T, CS > root = this.getElement();
-		CS completionStep = root.createCompletionStep( trigger );
-		try {
-			T[] values = this.createValues( root.getComponentType() );
-			root.handleCompletion( completionStep, values );
-		} catch( CancelException ce ) {
-			this.cancel( completionStep, trigger, ce );
+		if( rtNodes.length > 0 ) {
+			RtNode< ?, ? > rtNodeA = rtNodes[ 0 ];
+			for( int i = 1; i < rtNodes.length; i++ ) {
+				RtNode< ?, ? > rtNodeB = rtNodes[ i ];
+				rtNodeA.setNextSibling( rtNodeB );
+				rtNodeA = rtNodeB;
+			}
+			rtNodeA.setNextSibling( null );
 		}
-		return completionStep;
-	}
-	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		this.complete( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
 	}
 
-	public javax.swing.event.PopupMenuListener createPopupMenuListener( final org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
-		return new javax.swing.event.PopupMenuListener() {
-			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-				RtRoot.this.addNextNodeMenuItems( menuItemContainer );
+
+	protected abstract RtNode[] getChildren();
+	protected abstract RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?, ? > > getNextNode();
+	public abstract RtBlank< ? > getNearestBlank();
+	public RtBlank< ? > getNextBlank() {
+		RtBlank< ? > blank = this.getNearestBlank();
+		if( blank != null && blank.getNextSibling() != null ) {
+			return (RtBlank< ? >)blank.getNextSibling();
+		} else {
+			if( this.parent != null ) {
+				return this.parent.getNextBlank();
+			} else {
+				return null;
 			}
-			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-				RtRoot.this.removeAll( menuItemContainer );
-			}
-			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-				RtRoot.this.cancel( null, new org.lgna.croquet.triggers.PopupMenuEventTrigger( e ), null );
-			}
-		};
+		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() );
+		sb.append( "[" );
+		sb.append( this.element );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }
