@@ -107,12 +107,21 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 		}
 		return true;
 	}
-	protected RtBlank< ? > getNextNode() {
+	
+	//todo: rename
+	private RtBlank< ? > getNextNode() {
+		RtBlank<?> rv;
 		if( this.rtBlanks.length > 0 ) {
-			return this.rtBlanks[ 0 ];
+			rv = this.rtBlanks[ 0 ];
 		} else {
-			return this.getNextBlank();
+			rv = this.getNextBlank();
 		}
+		if( rv != null ) {
+			if( rv.isAutomaticallyDetermined() ) {
+				return rv.getNextBlank();
+			}
+		}
+		return rv;
 	}
 	public F createValue() {
 		return this.getElement().createValue( this.getNode() );
@@ -133,7 +142,10 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 	}
 
 	protected void addNextNodeMenuItems( org.lgna.croquet.components.MenuItemContainer parent ) {
-		RtBlank nextNode = (RtBlank)this.getNextNode();
+		RtBlank<?> nextNode = this.getNextNode();
+		if( nextNode.isAutomaticallyDetermined() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextNode );
+		}
 		RtItem[] children = nextNode.getItemChildren();
 		for( RtItem< ?, ?, ?, ? > rtItem : children ) {
 			org.lgna.croquet.components.ViewController< ?, ? > menuItem = rtItem.getMenuItem();
