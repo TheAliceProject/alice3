@@ -95,7 +95,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 	protected RtBlank< B >[] getBlankChildren() {
 		return this.rtBlanks;
 	}
-	public boolean isGoodToGo() {
+	public boolean isAutomaticallyDetermined() {
 		if( this.rtBlanks.length > 0 ) {
 			for( RtBlank< B > rtBlank : this.rtBlanks ) {
 				if( rtBlank.isAutomaticallyDetermined() ) {

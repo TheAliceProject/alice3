@@ -92,7 +92,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			this.root.prologue();
 			final org.lgna.croquet.cascade.RtRoot< T,? > rtRoot = new org.lgna.croquet.cascade.RtRoot( this.root );
 			org.lgna.croquet.history.Step< ? > rv;
-			if( rtRoot.isGoodToGo() ) {
+			if( rtRoot.isAutomaticallyDetermined() ) {
 				rv = rtRoot.complete( new org.lgna.croquet.triggers.AutomaticCompletionTrigger( trigger ) );
 				this.handleFinally();
 			} else {

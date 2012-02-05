@@ -209,7 +209,7 @@ public abstract class Cascade<T> extends CompletionModel {
 			//javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
 			//org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
 			final org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CascadeCompletionStep< T > > rtRoot = new org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CascadeCompletionStep< T > >( this.getCascade().getRoot() );
-			if( rtRoot.isGoodToGo() ) {
+			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {
 				final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( cascade.getRoot().getPopupPrepModel(), null );
