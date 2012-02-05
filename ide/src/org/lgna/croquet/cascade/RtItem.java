@@ -98,7 +98,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 	public boolean isGoodToGo() {
 		if( this.rtBlanks.length > 0 ) {
 			for( RtBlank< B > rtBlank : this.rtBlanks ) {
-				if( rtBlank.isFillInAlreadyDetermined() ) {
+				if( rtBlank.isAutomaticallyDetermined() ) {
 					//pass
 				} else {
 					return false;

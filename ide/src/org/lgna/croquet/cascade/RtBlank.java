@@ -49,32 +49,59 @@ import org.lgna.croquet.*;
  * @author Dennis Cosgrove
  */
 class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.BlankNode< B > > {
-	private static boolean isDevoidOfNonSeparators( java.util.List< RtItem > rtItems ) {
-		for( RtItem rtItem : rtItems ) {
-			if( rtItem instanceof RtSeparator ) {
-				//pass
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	private RtItem[] rtItems;
+	private boolean isAutomaticallyDetermined;
 	private RtItem< B, ?, ?, ? > rtSelectedFillIn;
+	
 
 	public RtBlank( CascadeBlank< B > element ) {
 		super( element, BlankNode.createInstance( element ) );
 		this.getNode().setRtBlank( this );
 	}
 
+	@Override
+	public RtBlank< ? > getNearestBlank() {
+		return this;
+	}
 
-	public org.lgna.croquet.cascade.AbstractItemNode getSelectedFillInContext() {
+	public boolean isAutomaticallyDetermined() {
+		this.getItemChildren();
+		return this.isAutomaticallyDetermined;
+	}
+
+	public org.lgna.croquet.cascade.AbstractItemNode getSelectedFillInNode() {
 		if( this.rtSelectedFillIn != null ) {
 			return this.rtSelectedFillIn.getNode();
 		} else {
 			return null;
 		}
+	}
+	
+	private RtFillIn getOneAndOnlyOneFillInIfAppropriate() {
+		RtFillIn rv = null;
+		RtItem[] children = this.getItemChildren();
+		for( RtItem child : children ) {
+			if( child instanceof RtFillIn ) {
+				if( rv != null ) {
+					return null;
+				} else {
+					rv = (RtFillIn)child;
+				}
+			} else if( child instanceof RtCancel ) {
+				return null;
+			} else if( child instanceof RtMenu ) {
+				return null;
+			} else if( child instanceof RtRoot ) {
+				//??
+				return null;
+			} else if( child instanceof RtSeparator ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unhandled child", child );
+				return null;
+			}
+		}
+		return rv;
 	}
 
 	protected RtItem[] getItemChildren() {
@@ -109,22 +136,30 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 				}
 			}
 
-			if( isDevoidOfNonSeparators( baseRtItems ) ) {
+			boolean isDevoidOfNonSeparators = true;
+			for( RtItem rtItem : baseRtItems ) {
+				if( rtItem instanceof RtSeparator ) {
+					//pass
+				} else {
+					isDevoidOfNonSeparators = false;
+				}
+			}
+			if( isDevoidOfNonSeparators ) {
 				baseRtItems.add( new RtCancel( CascadeUnfilledInCancel.getInstance(), null, -1 ) );
 			}
 
 			this.rtItems = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( baseRtItems, RtItem.class );
 			this.updateParentsAndNextSiblings( this.rtItems );
+
+			RtFillIn rtFillIn = this.getOneAndOnlyOneFillInIfAppropriate();
+			if( rtFillIn != null && rtFillIn.isAutomaticallySelectedWhenSoleOption() ) {
+				this.rtSelectedFillIn = rtFillIn;
+				this.isAutomaticallyDetermined = true;
+			} else {
+				this.isAutomaticallyDetermined = false;
+			}
 		}
 		return this.rtItems;
-	}
-//	@Override
-//	protected RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?, ? > > getNextNode() {
-//		return this;
-//	}
-	@Override
-	public RtBlank< ? > getNearestBlank() {
-		return this;
 	}
 
 	public void setSelectedFillIn( RtItem< B, ?, ?, ? > item ) {
@@ -141,41 +176,6 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 			}
 			parentFillIn.select();
 		}
-	}
-
-	private RtFillIn getOneAndOnlyOneFillInIfAppropriate() {
-		RtFillIn rv = null;
-		RtItem[] children = this.getItemChildren();
-		for( RtItem child : children ) {
-			if( child instanceof RtFillIn ) {
-				if( rv != null ) {
-					return null;
-				} else {
-					rv = (RtFillIn)child;
-				}
-			} else if( child instanceof RtCancel ) {
-				return null;
-			} else if( child instanceof RtMenu ) {
-				return null;
-			} else if( child instanceof RtRoot ) {
-				//??
-				return null;
-			} else if( child instanceof RtSeparator ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unhandled child", child );
-				return null;
-			}
-		}
-		return rv;
-	}
-
-	public boolean isFillInAlreadyDetermined() {
-		RtFillIn rtFillIn = this.getOneAndOnlyOneFillInIfAppropriate();
-		if( rtFillIn != null && rtFillIn.isAutomaticallySelectedWhenSoleOption() ) {
-			this.rtSelectedFillIn = rtFillIn;
-		}
-		return this.rtSelectedFillIn != null;
 	}
 
 	public B createValue() {
