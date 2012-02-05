@@ -64,7 +64,7 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 	}
 
 	protected T[] createValues( Class< T > componentType ) {
-		RtBlank< T >[] rtBlanks = this.getChildren();
+		RtBlank< T >[] rtBlanks = this.getBlankChildren();
 		T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
 		for( int i = 0; i < rtBlanks.length; i++ ) {
 			rv[ i ] = rtBlanks[ i ].createValue();

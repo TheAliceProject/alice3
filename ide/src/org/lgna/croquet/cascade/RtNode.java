@@ -69,9 +69,7 @@ abstract class RtNode<E extends Element, N extends CascadeNode< ?,E >> {
 	public RtRoot< ?, ? > getRtRoot() {
 		return this.parent.getRtRoot();
 	}
-	
-	
-	
+
 	protected RtNode< ?, ? > getParent() {
 		return this.parent;
 	}
@@ -99,20 +97,19 @@ abstract class RtNode<E extends Element, N extends CascadeNode< ?,E >> {
 		}
 	}
 
-
-	protected abstract RtNode[] getChildren();
-	protected abstract RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?, ? > > getNextNode();
 	public abstract RtBlank< ? > getNearestBlank();
 	public RtBlank< ? > getNextBlank() {
 		RtBlank< ? > blank = this.getNearestBlank();
-		if( blank != null && blank.getNextSibling() != null ) {
-			return (RtBlank< ? >)blank.getNextSibling();
-		} else {
-			if( this.parent != null ) {
-				return this.parent.getNextBlank();
-			} else {
-				return null;
+		if( blank != null ) {
+			RtBlank<?> nextSibling = (RtBlank<?>)blank.getNextSibling();
+			if( nextSibling != null ) {
+				return nextSibling;
 			}
+		}
+		if( this.parent != null ) {
+			return this.parent.getNextBlank();
+		} else {
+			return null;
 		}
 	}
 

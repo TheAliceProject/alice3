@@ -92,8 +92,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 		RtNode< ?, ? > parent = this.getParent();
 		return parent.getNearestBlank();
 	}
-	@Override
-	protected RtBlank< B >[] getChildren() {
+	protected RtBlank< B >[] getBlankChildren() {
 		return this.rtBlanks;
 	}
 	public boolean isGoodToGo() {
@@ -108,7 +107,6 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 		}
 		return true;
 	}
-	@Override
 	protected RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?, ? > > getNextNode() {
 		if( this.rtBlanks.length > 0 ) {
 			return this.rtBlanks[ 0 ];
@@ -135,11 +133,9 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 	}
 
 	protected void addNextNodeMenuItems( org.lgna.croquet.components.MenuItemContainer parent ) {
-		RtNode nextNode = this.getNextNode();
-		RtNode[] children = nextNode.getChildren();
-		for( RtNode child : children ) {
-			assert child instanceof RtBlank == false;
-			RtItem< ?, ?, ?, ? > rtItem = (RtItem< ?, ?, ?, ? >)child;
+		RtBlank nextNode = (RtBlank)this.getNextNode();
+		RtItem[] children = nextNode.getItemChildren();
+		for( RtItem< ?, ?, ?, ? > rtItem : children ) {
 			org.lgna.croquet.components.ViewController< ?, ? > menuItem = rtItem.getMenuItem();
 			if( menuItem != null ) {
 				if( menuItem instanceof org.lgna.croquet.components.CascadeMenu ) {

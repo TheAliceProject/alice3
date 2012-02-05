@@ -77,8 +77,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		}
 	}
 
-	@Override
-	protected RtItem[] getChildren() {
+	protected RtItem[] getItemChildren() {
 		if( this.rtItems != null ) {
 			//pass
 		} else {
@@ -119,10 +118,10 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		}
 		return this.rtItems;
 	}
-	@Override
-	protected RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?, ? > > getNextNode() {
-		return this;
-	}
+//	@Override
+//	protected RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?, ? > > getNextNode() {
+//		return this;
+//	}
 	@Override
 	public RtBlank< ? > getNearestBlank() {
 		return this;
@@ -133,7 +132,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		RtNode parent = this.getParent();
 		if( parent instanceof RtFillIn< ?, ? > ) {
 			RtFillIn< ?, ? > parentFillIn = (RtFillIn< ?, ? >)parent;
-			for( RtBlank blank : parentFillIn.getChildren() ) {
+			for( RtBlank blank : parentFillIn.getBlankChildren() ) {
 				if( blank.rtSelectedFillIn != null ) {
 					//pass
 				} else {
@@ -146,7 +145,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 
 	private RtFillIn getOneAndOnlyOneFillInIfAppropriate() {
 		RtFillIn rv = null;
-		RtItem[] children = this.getChildren();
+		RtItem[] children = this.getItemChildren();
 		for( RtItem child : children ) {
 			if( child instanceof RtFillIn ) {
 				if( rv != null ) {
