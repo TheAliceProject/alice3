@@ -107,7 +107,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 		}
 		return true;
 	}
-	protected RtNode< ? extends Element, ? extends org.lgna.croquet.cascade.CascadeNode< ?, ? > > getNextNode() {
+	protected RtBlank< ? > getNextNode() {
 		if( this.rtBlanks.length > 0 ) {
 			return this.rtBlanks[ 0 ];
 		} else {
@@ -342,16 +342,12 @@ class RtSeparator extends RtItem< Void, Void, CascadeSeparator, org.lgna.croquet
 		super( element, SeparatorNode.createInstance( element ), owner, index );
 	}
 	@Override
+	protected boolean isLast() {
+		return true;
+	}
+	@Override
 	protected CascadeBlank< Void >[] getModelBlanks() {
 		return new CascadeBlank[] {};
-	}
-	@Override
-	public final RtBlank getNearestBlank() {
-		return null;
-	}
-	@Override
-	protected final RtNode getNextNode() {
-		return null;
 	}
 	@Override
 	protected org.lgna.croquet.components.ViewController< ?, ? > createMenuItem( CascadeItem< Void, Void > item, boolean isLast ) {

@@ -111,6 +111,25 @@ abstract class RtNode<E extends Element, N extends CascadeNode< ?,E >> {
 		} else {
 			return null;
 		}
+//		RtBlank< ? > rv = null;
+//		RtBlank< ? > blank = this.getNearestBlank();
+//		if( blank != null ) {
+//			RtBlank<?> nextSibling = (RtBlank<?>)blank.getNextSibling();
+//			if( nextSibling != null ) {
+//				rv = nextSibling;
+//			}
+//		}
+//		if( rv != null ) {
+//			if( this.parent != null ) {
+//				rv = this.parent.getNextBlank();
+//			}
+//		}
+//		if( rv != null ) {
+//			if( rv.isAutomaticallyDetermined() ) {
+//				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
+//			}
+//		}
+//		return rv;
 	}
 
 	@Override
