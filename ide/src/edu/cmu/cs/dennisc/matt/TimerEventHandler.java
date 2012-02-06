@@ -40,6 +40,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 		if(!isEnabled){
 			enable();
 		}
+		System.out.println("policy: " + policy);
 		registerPolicyMap(timerEventListener, policy);
 		registerIsFiringMap(timerEventListener);
 		Long a = secondsToMills(frequency);

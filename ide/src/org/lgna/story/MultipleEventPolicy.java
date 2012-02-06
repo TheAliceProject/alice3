@@ -8,7 +8,8 @@ public enum MultipleEventPolicy implements AddMouseButtonListener.Detail, AddKey
 	COMBINE;
 	//todo
 	//private static final EventPolicy DEFAULT_VALUE = EventPolicy.ENQUEUE_PER_SUBJECT;
-	private static final MultipleEventPolicy DEFAULT_VALUE = MultipleEventPolicy.COMBINE;
+	private static final MultipleEventPolicy DEFAULT_VALUE = MultipleEventPolicy.ENQUEUE;
+	
 	private static MultipleEventPolicy getValue( Object[] details, MultipleEventPolicy defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof MultipleEventPolicy ) {

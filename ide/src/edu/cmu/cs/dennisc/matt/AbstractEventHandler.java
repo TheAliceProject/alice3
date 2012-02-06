@@ -3,6 +3,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
+import org.lgna.common.ComponentThread;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
@@ -25,16 +26,15 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 			isFiringMap.get(listener).put(o, false);
 		}
 		if(shouldFire){
-			Thread thread = new Thread(){
-				@Override
-				public void run(){
+			ComponentThread thread = new org.lgna.common.ComponentThread( new Runnable() {
+				public void run() {
 					fire(listener, event);
 					if(policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)){
 						fireDequeue(listener, event);
 					}
 					isFiringMap.get(listener).put(o, false);
 				}
-			};
+			}, "eventThread" );
 			if(isFiringMap.get(listener).get( o ).equals(false)){
 				isFiringMap.get(listener).put(o, true);
 				thread.start();
