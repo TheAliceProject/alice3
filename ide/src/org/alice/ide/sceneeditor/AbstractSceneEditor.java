@@ -144,14 +144,19 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		if (expression == null) {
 			return null;
 		}
-		Object[] values = this.getVM().ENTRY_POINT_evaluate(
-				getActiveSceneInstance(), 
-				new Expression[] { expression }
-		);
-		if (values.length > 0) {
-			return values[0];
-		}
-		else {
+		try {
+			Object[] values = this.getVM().ENTRY_POINT_evaluate(
+					getActiveSceneInstance(), 
+					new Expression[] { expression }
+			);
+			if (values.length > 0) {
+				return values[0];
+			}
+			else {
+				return null;
+			}
+		} catch( Throwable t ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
 			return null;
 		}
 	}
