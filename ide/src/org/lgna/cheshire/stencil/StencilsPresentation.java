@@ -71,7 +71,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		return layeredPane;
 	}
 
-	private final org.lgna.croquet.Operation< ? > prevOperation = new PrevStepOperation( this );
+	private final org.lgna.croquet.Operation prevOperation = new PrevStepOperation( this );
 	private final org.lgna.croquet.BooleanState isInterceptingEvents = new PresentationBooleanState( java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
 	private final org.lgna.croquet.BooleanState isPaintingStencil = new PresentationBooleanState( java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
 	private final org.lgna.croquet.BooleanState isPlayingSounds = new PresentationBooleanState( java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
@@ -199,7 +199,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		}
 		
 		@Override
-		public org.lgna.croquet.Operation< ? > getNextOperation() {
+		public org.lgna.croquet.Operation getNextOperation() {
 			return NextStepOperation.getInstance();
 		}
 	}

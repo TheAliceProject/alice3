@@ -56,7 +56,7 @@ public class ButtonWithRightClickCascade extends Button {
 			}
 		}
 	};
-	public ButtonWithRightClickCascade( org.lgna.croquet.Operation<?> model, org.lgna.croquet.Cascade< ? > cascade ) {
+	public ButtonWithRightClickCascade( org.lgna.croquet.Operation model, org.lgna.croquet.Cascade< ? > cascade ) {
 		super( model );
 		this.cascade = cascade;
 	}

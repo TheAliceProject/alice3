@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor.type.components;
  * @author Dennis Cosgrove
  */
 public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMethod > {
-	public MethodList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserMethod > model, org.lgna.croquet.Operation< ? > operation ) {
+	public MethodList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserMethod > model, org.lgna.croquet.Operation operation ) {
 		super( model, operation );
 	}
 	@Override

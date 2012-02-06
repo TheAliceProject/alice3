@@ -51,7 +51,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 		this.setName( "Export Video / Upload To YouTube\u2122..." );
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.OperationStep step ) {
 		final org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getUpToDateProject();
 		if( project != null ) {

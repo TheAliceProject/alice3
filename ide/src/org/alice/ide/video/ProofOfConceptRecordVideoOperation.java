@@ -69,15 +69,15 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 		return new org.alice.ide.video.components.ProofOfConceptRecordVideoPanel();
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step, org.lgna.croquet.components.Dialog dialog ) {
+	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog ) {
 		IsRecordingState.getInstance().setValue( false );
 		IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
-		super.handleFinally( context, dialog, contentPane );
+		super.handleFinally( step, dialog, contentPane );
 	}
 	@Override
 	protected void handleImage( java.awt.image.BufferedImage image, int i ) {

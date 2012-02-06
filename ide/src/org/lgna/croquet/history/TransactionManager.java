@@ -209,33 +209,9 @@ public class TransactionManager {
 	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static ActionOperationStep addActionOperationStep( org.lgna.croquet.ActionOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static OperationStep addActionOperationStep( org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
-		return ActionOperationStep.createAndAddToTransaction( transaction, model, trigger ); 
-	}
-	public static SerialOperationStep addSerialOperationStep( org.lgna.croquet.SerialOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		Transaction transaction = getActiveTransaction();
-		return SerialOperationStep.createAndAddToTransaction( transaction, model, trigger ); 
-	}
-	public static PlainDialogOperationStep addPlainDialogOperationStep( org.lgna.croquet.PlainDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		Transaction transaction = getActiveTransaction();
-		return PlainDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
-	}
-	public static PlainDialogCloseOperationStep addPlainDialogCloseOperationStep( org.lgna.croquet.PlainDialogOperation.InternalCloseOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		Transaction transaction = getActiveTransaction();
-		return PlainDialogCloseOperationStep.createAndAddToTransaction( transaction, model, trigger );
-	}
-	public static InputDialogOperationStep addInputDialogOperationStep( org.lgna.croquet.InputDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		Transaction transaction = getActiveTransaction();
-		return InputDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
-	}
-	public static InformationDialogOperationStep addInformationDialogOperationStep( org.lgna.croquet.InformationDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		Transaction transaction = getActiveTransaction();
-		return InformationDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
-	}
-	public static WizardDialogOperationStep addWizardDialogOperationStep( org.lgna.croquet.WizardDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		Transaction transaction = getActiveTransaction();
-		return WizardDialogOperationStep.createAndAddToTransaction( transaction, model, trigger );
+		return OperationStep.createAndAddToTransaction( transaction, model, trigger ); 
 	}
 	public static PopupPrepStep addPopupPrepStep( org.lgna.croquet.PopupPrepModel popupPrepModel, org.lgna.croquet.triggers.Trigger trigger ) {
 		return PopupPrepStep.createAndAddToTransaction( getActiveTransaction(), popupPrepModel, trigger );

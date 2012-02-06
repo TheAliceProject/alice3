@@ -79,13 +79,13 @@ public class UnmanagedFieldDeclarationOperation extends org.alice.ide.croquet.mo
 		return org.lgna.project.ast.ManagementLevel.NONE;
 	}
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.ide.croquet.components.declaration.FieldDeclarationPanel( this ) {
 			
 		};
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
 		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
 	}
 }

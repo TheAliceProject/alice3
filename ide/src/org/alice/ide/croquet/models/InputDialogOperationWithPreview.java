@@ -51,7 +51,7 @@ public abstract class InputDialogOperationWithPreview<T> extends org.lgna.croque
 		super( group, id );
 	}
 	@Override
-	protected void updateExplanation( org.lgna.croquet.history.InputDialogOperationStep< T > step ) {
+	protected void updateExplanation( org.lgna.croquet.history.OperationStep step ) {
 		super.updateExplanation( step );
 		org.alice.ide.croquet.components.PanelWithPreview< ? > panelWithPreview = (org.alice.ide.croquet.components.PanelWithPreview< ? >)step.getMainPanel();
 		if( panelWithPreview != null ) {
@@ -59,5 +59,5 @@ public abstract class InputDialogOperationWithPreview<T> extends org.lgna.croque
 		}
 	}
 	@Override
-	protected abstract org.alice.ide.croquet.components.PanelWithPreview< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep< T > step );
+	protected abstract org.alice.ide.croquet.components.PanelWithPreview< ? > prologue( org.lgna.croquet.history.OperationStep step );
 }

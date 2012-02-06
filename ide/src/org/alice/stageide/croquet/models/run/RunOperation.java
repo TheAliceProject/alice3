@@ -113,7 +113,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	
 	@Override
-	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
+	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog ) {
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		if( ide.getProject() != null ) {
 			org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
@@ -125,7 +125,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		}
 	}
 	@Override
-	protected void releaseContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void releaseContentPane( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
@@ -134,7 +134,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		super.handleFinally( step, dialog, contentPane );
 		this.stopProgram();
 	}

@@ -82,7 +82,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		}
 		@Override
 		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
-			org.lgna.croquet.history.InputDialogOperationStep<F> inputDialogStep = this.valueInputDialogOperation.fire();
+			org.lgna.croquet.history.OperationStep inputDialogStep = this.valueInputDialogOperation.fire();
 			if( inputDialogStep.isValueCommitted() ) {
 				return inputDialogStep.getCommittedValue();
 			} else {
@@ -116,9 +116,9 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		}
 		return this.cascadeFillIn;
 	}
-	protected abstract T createValue( org.lgna.croquet.history.InputDialogOperationStep< T > step );
+	protected abstract T createValue( org.lgna.croquet.history.OperationStep step );
 	@Override
-	protected final void epilogue( org.lgna.croquet.history.InputDialogOperationStep< T > step, boolean isCommit ) {
+	protected final void epilogue( org.lgna.croquet.history.OperationStep step, boolean isCommit ) {
 		if( isCommit ) {
 			T value = this.createValue( step );
 			if( value != null ) {

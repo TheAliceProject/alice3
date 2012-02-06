@@ -56,7 +56,7 @@ public class CustomIntegerInputDialogOperation extends CustomNumberInputDialogOp
 		super( java.util.UUID.fromString( "02c76b90-a9c6-4317-a4ef-10f797a75f80" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.IntegerChooser prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.choosers.IntegerChooser prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.ide.choosers.IntegerChooser();
 	}
 }

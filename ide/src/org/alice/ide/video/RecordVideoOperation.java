@@ -98,7 +98,7 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 	}
 	
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step ) {
+	protected org.lgna.croquet.components.JComponent< ? > prologue( org.lgna.croquet.history.OperationStep step ) {
 		final org.alice.ide.video.components.RecordVideoPanel videoExportPanel = this.createVideoExportPanel();
 		new Thread() {
 			@Override
@@ -115,17 +115,17 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 		return videoExportPanel;
 	}
 	@Override
-	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step, boolean isCommit ) {
+	protected void epilogue( org.lgna.croquet.history.OperationStep step, boolean isCommit ) {
 		if( isCommit ) {
 			step.finish();
 		}
 	}
 	
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		this.setRecording( false );
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
 		programContext.cleanUpProgram();
-		super.handleFinally( context, dialog, contentPane );
+		super.handleFinally( step, dialog, contentPane );
 	}
 }

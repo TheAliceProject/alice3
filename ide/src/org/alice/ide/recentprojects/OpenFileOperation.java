@@ -70,7 +70,7 @@ public class OpenFileOperation extends org.lgna.croquet.ActionOperation {
 		this.setName( this.uri.toString() );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.OperationStep step ) {
 		step.finish();
 	}
 }

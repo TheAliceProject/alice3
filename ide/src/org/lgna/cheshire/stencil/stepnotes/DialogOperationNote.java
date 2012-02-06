@@ -46,8 +46,8 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperationNote< S extends org.lgna.croquet.history.DialogOperationStep<?> > extends SingleThreadOperationNote< S > {
-	public DialogOperationNote( S step ) {
+public abstract class DialogOperationNote extends SingleThreadOperationNote {
+	public DialogOperationNote( org.lgna.croquet.history.OperationStep step ) {
 		super( step );
 	}
 }

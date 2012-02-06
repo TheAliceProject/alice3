@@ -109,7 +109,7 @@ class GarbageCollectAction extends org.lgna.croquet.ActionOperation {
 		this.setName( "garbage collect" );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.OperationStep step ) {
 		System.gc();
 		step.finish();
 	}

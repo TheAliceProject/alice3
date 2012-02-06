@@ -267,7 +267,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		}
 	}
 	@Override
-	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected String getInternalExplanation( org.lgna.croquet.history.OperationStep step ) {
 		final String valueTypeText;
 		if( this.valueComponentTypeState != null ) {
 			valueTypeText = this.getValueTypeExplanation( this.getValueType() );
@@ -345,10 +345,10 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		this.initializerState.setValue( nextInitializer );
 	}
 	
-	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType, String declarationName, org.lgna.project.ast.Expression initializer );
-	protected abstract org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step );
+	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType, String declarationName, org.lgna.project.ast.Expression initializer );
+	protected abstract org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.OperationStep step );
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.OperationStep step ) {
 		if( this.declaringTypeState != null ) {
 			this.declaringTypeState.setValueTransactionlessly( this.initialDeclaringType );
 		}
@@ -377,7 +377,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		return this.createMainComponent( step );
 	}
 	@Override
-	protected final void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isCommit ) {
+	protected final void epilogue( org.lgna.croquet.history.OperationStep step, boolean isCommit ) {
 		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {
 			if( this.isIsArrayValueTypeEditable ) {
 				this.isArrayValueTypeState.removeValueListener( this.isArrayValueTypeListener );

@@ -220,7 +220,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 			this.setSmallIcon( this.treeSelectionState.getIconForNode( this.treeNode ) );
 		}
 		@Override
-		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+		protected final void perform(org.lgna.croquet.history.OperationStep step) {
 			//todo: create edit
 			this.treeSelectionState.setSelectedNode( this.treeNode );
 			step.finish();

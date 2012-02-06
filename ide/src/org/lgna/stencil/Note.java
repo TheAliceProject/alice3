@@ -62,7 +62,7 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 	
 
 	protected abstract String getText();
-	protected abstract org.lgna.croquet.Operation< ? > getNextOperation();
+	protected abstract org.lgna.croquet.Operation getNextOperation();
 	public String getLabel() {
 		return this.label;
 	}

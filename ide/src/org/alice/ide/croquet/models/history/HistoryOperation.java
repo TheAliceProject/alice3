@@ -51,7 +51,7 @@ public abstract class HistoryOperation extends org.lgna.croquet.ActionOperation 
 	}
 	protected abstract void performInternal( edu.cmu.cs.dennisc.history.HistoryManager historyManager );
 	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.OperationStep step) {
 		edu.cmu.cs.dennisc.history.HistoryManager historyManager = org.alice.ide.ProjectApplication.getActiveInstance().getProjectHistoryManager();
 		this.performInternal(historyManager);
 		step.finish();

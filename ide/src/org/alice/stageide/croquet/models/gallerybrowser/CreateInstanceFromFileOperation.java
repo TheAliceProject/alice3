@@ -68,7 +68,7 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 	}
 	
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel<?> prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel<?> prologue(org.lgna.croquet.history.OperationStep step) {
 		org.alice.ide.croquet.components.declaration.DeclarationPanel<?> rv = null;
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		java.io.File directory = this.getInitialDirectory();

@@ -46,14 +46,14 @@ package org.alice.ide.croquet.models.projecturi;
  * @author Dennis Cosgrove
  */
 public abstract class ClearanceRequiringUriSerialOperation extends UriSerialOperation {
-	private final org.lgna.croquet.SingleThreadOperation<?> otherOperation;
-	public ClearanceRequiringUriSerialOperation( java.util.UUID individualUUID, org.lgna.croquet.SingleThreadOperation<?> otherOperation ) {
+	private final org.lgna.croquet.SingleThreadOperation otherOperation;
+	public ClearanceRequiringUriSerialOperation( java.util.UUID individualUUID, org.lgna.croquet.SingleThreadOperation otherOperation ) {
 		super( individualUUID );
 		this.otherOperation = otherOperation;
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.SingleThreadOperation<?> > getOperations() {
-		java.util.List< org.lgna.croquet.SingleThreadOperation<?> > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	protected java.util.List< org.lgna.croquet.SingleThreadOperation > getOperations() {
+		java.util.List< org.lgna.croquet.SingleThreadOperation > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.alice.ide.ProjectApplication application = this.getProjectApplication();
 		if( application.isProjectUpToDateWithFile() ) {
 			operations.add( this.otherOperation );

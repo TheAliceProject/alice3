@@ -123,7 +123,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 	protected abstract org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<? extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation > createMainComponent();
 	
 	@Override
-	protected org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<? extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<? extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation > createMainComponent( org.lgna.croquet.history.OperationStep step ) {
 		this.initializeState();
 		return createMainComponent();
 	}
@@ -137,7 +137,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 	}
 	
 	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		super.customize( step, declaringType, field, rv );
 		org.alice.ide.croquet.models.ast.PropertyState colorState = this.getColorIdState();
 		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
