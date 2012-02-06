@@ -55,6 +55,6 @@ public class KeyAdapter extends AbstractAdapter implements org.lgna.story.event.
 	}
 
 	public void keyPressed( org.lgna.story.event.KeyEvent e ) {
-		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
+		invokeEntryPoint( e );
 	}
 }

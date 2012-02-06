@@ -13,7 +13,7 @@ public class CollisionAdapter extends AbstractAdapter implements CollisionListen
 	}
 
 	public void whenTheseCollide(CollisionEvent e) {
-		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
+		invokeEntryPoint( e );
 	}
 
 }

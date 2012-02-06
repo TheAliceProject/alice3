@@ -58,7 +58,7 @@ public class ProximityAdapter extends AbstractAdapter implements ProximityEventL
 	}
 
 	public void whenTheseGetClose(ProximityEvent e) {
-		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
+		invokeEntryPoint( e );
 	}
 
 }

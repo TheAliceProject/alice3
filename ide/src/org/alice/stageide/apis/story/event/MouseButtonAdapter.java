@@ -52,6 +52,6 @@ public class MouseButtonAdapter extends AbstractAdapter implements org.lgna.stor
 		super(context, lambda, userInstance);
 	}
 	public void mouseClicked(MouseButtonEvent e) {
-		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
+		invokeEntryPoint( e );
 	}
 }

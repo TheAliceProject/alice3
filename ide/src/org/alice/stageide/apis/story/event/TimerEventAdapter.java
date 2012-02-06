@@ -58,7 +58,7 @@ public class TimerEventAdapter extends AbstractAdapter implements TimeListener {
 	}
 
 	public void timeElapsed(TimerEvent e) {
-		this.context.invokeEntryPoint(this.lambda, this.userInstance, e);
+		invokeEntryPoint( e );
 	}
 
 }

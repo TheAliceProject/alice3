@@ -10,6 +10,6 @@ public class ArrowKeyAdapter extends AbstractAdapter implements org.lgna.story.e
 	}
 
 	public void keyPressed( org.lgna.story.event.ArrowKeyEvent e ) {
-		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
+		invokeEntryPoint( e );
 	}
 }

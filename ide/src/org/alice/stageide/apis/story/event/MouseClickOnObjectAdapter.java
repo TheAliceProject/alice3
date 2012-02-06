@@ -7,6 +7,6 @@ public class MouseClickOnObjectAdapter extends AbstractAdapter implements org.lg
 		super(context, lambda, userInstance);
 	}
 	public void mouseClicked(MouseClickedOnObjectEvent e) {
-		this.context.invokeEntryPoint( this.lambda, this.userInstance, e );
+		invokeEntryPoint( e );
 	}
 }
