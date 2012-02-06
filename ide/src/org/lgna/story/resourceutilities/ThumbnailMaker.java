@@ -46,8 +46,6 @@ package org.lgna.story.resourceutilities;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import javax.media.opengl.glu.GLU;
-
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;

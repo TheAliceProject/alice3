@@ -575,7 +575,7 @@ public abstract class VirtualMachine {
 			assert parameterCount == allArguments.length : methodInvocation.method.getValue().getName();
 			return this.invoke( this.evaluate( methodInvocation.expression.getValue() ), methodInvocation.method.getValue(), allArguments );
 		} else {
-			javax.swing.JOptionPane.showMessageDialog( null, "skipping invalid methodInvocation: " + methodInvocation.method.getValue().getName() );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( methodInvocation.method.getValue() );
 			return null;
 		}
 	}

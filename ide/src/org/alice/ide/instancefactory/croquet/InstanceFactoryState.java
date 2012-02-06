@@ -69,40 +69,71 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 	private final org.alice.ide.MetaDeclarationState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationState.ValueListener() {
 		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
-			InstanceFactoryState.this.handleDeclaringTypeChange( getDeclaringType( prevValue ), getDeclaringType( nextValue ) );
+			InstanceFactoryState.this.handleDeclarationChanged( prevValue, nextValue );
 		}
 	};
-	private java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//todo: map AbstractCode to Stack< InstanceFactory >
+	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private InstanceFactory value;
 	private InstanceFactoryState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
 		org.alice.ide.MetaDeclarationState.getInstance().addValueListener( declarationListener );
 	}
-	private void handleDeclaringTypeChange( org.lgna.project.ast.AbstractType< ?,?,? > prevType, org.lgna.project.ast.AbstractType< ?,?,? > nextType ) {
-		if( prevType != nextType ) {
-			InstanceFactory prevValue = this.getValue();
-			if( prevType != null ) {
-				if( prevValue != null ) {
-					map.put( prevType, prevValue );
-				} else {
-					map.remove( prevType );
-				}
-			}
-			InstanceFactory nextValue;
-			if( nextType != null ) {
-				nextValue = map.get( nextType );
-				if( nextValue != null ) {
+	private void fallBackToDefaultFactory() {
+		this.setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() );
+	}
+	private void handleDeclarationChanged( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
+		if( this.ignoreCount == 0 ) {
+			InstanceFactory instanceFactory = this.getValue();
+			if( instanceFactory != null ) {
+				if( instanceFactory.isValid() ) {
 					//pass
 				} else {
-					nextValue = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
+					this.fallBackToDefaultFactory();
 				}
 			} else {
-				nextValue = null;
+				this.fallBackToDefaultFactory();
 			}
-			this.setValueTransactionlessly( nextValue );
+//			org.lgna.project.ast.AbstractType< ?,?,? > prevType = getDeclaringType( prevValue );
+//			org.lgna.project.ast.AbstractType< ?,?,? > nextType = getDeclaringType( nextValue );
+//			if( prevType != nextType ) {
+//				InstanceFactory prevValue = this.getValue();
+//				if( prevType != null ) {
+//					if( prevValue != null ) {
+//						map.put( prevType, prevValue );
+//					} else {
+//						map.remove( prevType );
+//					}
+//				}
+//				InstanceFactory nextValue;
+//				if( nextType != null ) {
+//					nextValue = map.get( nextType );
+//					if( nextValue != null ) {
+//						//pass
+//					} else {
+//						nextValue = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
+//					}
+//				} else {
+//					nextValue = null;
+//				}
+//				this.setValueTransactionlessly( nextValue );
+//			}
 		}
 	}
 	
+	public void handleAstChangeThatCouldBeOfInterest() {
+		InstanceFactory instanceFactory = this.getValue();
+		if( instanceFactory != null ) {
+			if( instanceFactory.isValid() ) {
+				//pass
+			} else {
+				this.fallBackToDefaultFactory();
+			}
+		} else {
+			this.fallBackToDefaultFactory();
+		}
+	}
+
 	private org.lgna.croquet.CascadeBlankChild< InstanceFactory > createFillInMenuComboIfNecessary( org.lgna.croquet.CascadeFillIn< InstanceFactory, Void > item, org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu ) {
 		if( subMenu != null ) {
 			return new org.lgna.croquet.CascadeItemMenuCombo< InstanceFactory >( item, subMenu );
@@ -184,66 +215,4 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			this.handleAstChangeThatCouldBeOfInterest();
 		}
 	}
-	public void handleAstChangeThatCouldBeOfInterest() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
-	}
-	
-////	//todo remove
-//	public boolean isRespondingToRefreshAccessibles = true;
-//	public void refreshAccessibles() {
-////		this.typeHierarchyView.refresh();
-////		if( isRespondingToRefreshAccessibles ) {
-////			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: reduce visibility of refreshAccessibles" );
-////
-////			org.lgna.project.ast.AbstractCode code = this.getFocusedCode();
-////			org.lgna.project.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-////
-////			java.util.List< org.lgna.project.ast.Accessible > accessibles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-////			if( this.rootField != null ) {
-////				accessibles.add( this.rootField );
-////				for( org.lgna.project.ast.AbstractField field : this.getRootTypeDeclaredInAlice().fields ) {
-////					if( this.isAccessibleDesired( field ) ) {
-////						accessibles.add( field );
-////					}
-////				}
-////			}
-////
-////			int indexOfLastField = accessibles.size() - 1;
-////			if( code instanceof org.lgna.project.ast.CodeDeclaredInAlice ) {
-////				org.lgna.project.ast.CodeDeclaredInAlice codeDeclaredInAlice = (org.lgna.project.ast.CodeDeclaredInAlice)code;
-////				for( org.lgna.project.ast.ParameterDeclaredInAlice parameter : codeDeclaredInAlice.getParamtersProperty() ) {
-////					if( this.isAccessibleDesired( parameter ) ) {
-////						accessibles.add( parameter );
-////					}
-////				}
-////				for( org.lgna.project.ast.VariableDeclaredInAlice variable : IDE.getVariables( code ) ) {
-////					if( this.isAccessibleDesired( variable ) ) {
-////						accessibles.add( variable );
-////					}
-////				}
-////				for( org.lgna.project.ast.ConstantDeclaredInAlice constant : IDE.getConstants( code ) ) {
-////					if( this.isAccessibleDesired( constant ) ) {
-////						accessibles.add( constant );
-////					}
-////				}
-////			}
-////
-////			int selectedIndex;
-////			if( accessible != null ) {
-////				selectedIndex = accessibles.indexOf( accessible );
-////			} else {
-////				selectedIndex = -1;
-////			}
-////			if( selectedIndex == -1 ) {
-////				if( code != null ) {
-////					accessible = this.mapCodeToAccessible.get( code );
-////					selectedIndex = accessibles.indexOf( accessible );
-////				}
-////			}
-////			if( selectedIndex == -1 ) {
-////				selectedIndex = indexOfLastField;
-////			}
-////			org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().setListData( selectedIndex, accessibles );
-////		}
-//	}
 }
