@@ -81,7 +81,8 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 				if( m_owner != null ) {
 					return m_owner.get( local );
 				} else {
-					throw new RuntimeException( "cannot find local: " + local.toString() );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( local );
+					return null;
 				}
 			}
 		}
@@ -133,7 +134,12 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 		@Override
 		public Object lookup( AbstractParameter parameter ) {
-			return m_mapParameterToValue.get( parameter );
+			if( m_mapParameterToValue.containsKey( parameter ) ) {
+				return m_mapParameterToValue.get( parameter );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( parameter );
+				return null;
+			}
 		}
 	}
 	
