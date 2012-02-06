@@ -86,7 +86,6 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		if( this.ignoreCount == 0 ) {
 			InstanceFactory instanceFactory = this.getValue();
 			if( instanceFactory != null ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instanceFactory );
 				if( instanceFactory.isValid() ) {
 					//pass
 				} else {
