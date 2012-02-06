@@ -261,7 +261,7 @@ public class ProgramImp {
 			lookingGlassFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
 			this.isAnimatorStarted = false;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.isAnimatorStarted );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.isAnimatorStarted );
 		}
 	}
 	
@@ -328,7 +328,9 @@ public class ProgramImp {
 	
 	/*package-private*/ void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		if( this.isProgramClosedExceptionDesired ) {
-			this.stopAnimator();
+			if( this.isAnimatorStarted ) {
+				this.stopAnimator();
+			}
 			throw new org.lgna.project.ProgramClosedException();
 		}
 		this.getAnimator().invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );
