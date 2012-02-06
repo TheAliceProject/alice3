@@ -52,6 +52,13 @@ public abstract class MethodInvocationFactory extends AbstractInstanceFactory {
 		super( mutablePropertiesOfInterest );
 		this.method = method;
 	}
+	protected abstract org.lgna.project.ast.AbstractType< ?,?,? > getValidInstanceType( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code );
+	@Override
+	protected final boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > methodDeclarationType = this.method.getDeclaringType();
+		return methodDeclarationType != null && methodDeclarationType.isAssignableFrom( this.getValidInstanceType( type, code ) );
+	}
+
 	public org.lgna.project.ast.AbstractMethod getMethod() {
 		return this.method;
 	}

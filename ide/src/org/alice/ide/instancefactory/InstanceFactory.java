@@ -48,6 +48,7 @@ package org.alice.ide.instancefactory;
  */
 public interface InstanceFactory {
 	public < F extends InstanceFactory > org.lgna.croquet.resolvers.Resolver< F > getResolver();
+	public boolean isValid();
 	public org.lgna.project.ast.AbstractType< ?,?,? > getValueType(); 
 	public org.lgna.project.ast.Expression createTransientExpression();
 	public org.lgna.project.ast.Expression createExpression();

@@ -71,6 +71,23 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 		return this.mutablePropertiesOfInterest;
 	}
 	
+	protected abstract boolean isValid( org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.AbstractCode code );
+	public final boolean isValid() {
+		org.lgna.project.ast.AbstractType<?,?,?> type;
+		org.lgna.project.ast.AbstractCode code;
+		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationState.getInstance().getValue();
+		if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
+			type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
+			code = null;
+		} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			code = (org.lgna.project.ast.AbstractCode)declaration;
+			type = code.getDeclaringType();
+		} else {
+			code = null;
+			type = null;
+		}
+		return this.isValid( type, code );
+	}
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

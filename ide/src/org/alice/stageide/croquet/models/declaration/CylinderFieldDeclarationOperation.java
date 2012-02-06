@@ -40,90 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass;
+package org.alice.stageide.croquet.models.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Program extends edu.cmu.cs.dennisc.program.Program {
-	private static LookingGlassFactory s_lookingGlassFactory;
-
-	public edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory getLookingGlassFactory() {
-		if( s_lookingGlassFactory == null ) {
-			s_lookingGlassFactory = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance();
-		}
-		return s_lookingGlassFactory;
+public class CylinderFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+	private static class SingletonHolder {
+		private static CylinderFieldDeclarationOperation instance = new CylinderFieldDeclarationOperation();
 	}
-	private boolean m_isReleaseRenderingLockNecessary = false;
-
-	private void acquireRenderingLock() {
-		s_lookingGlassFactory.acquireRenderingLock();
-		m_isReleaseRenderingLockNecessary = true;
+	public static CylinderFieldDeclarationOperation getInstance() {
+		return SingletonHolder.instance;
 	}
-	private void releaseRenderingLock() {
-		if( m_isReleaseRenderingLockNecessary ) {
-			s_lookingGlassFactory.releaseRenderingLock();
-		}
-	}
-	
-	public void invokeLater( Runnable runnable ) {
-		s_lookingGlassFactory.invokeLater( runnable );
-	}
-	public void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
-		s_lookingGlassFactory.invokeAndWait( runnable );
-	}
-	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable ) {
-		s_lookingGlassFactory.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( runnable );
-	}
-	
-	@Override
-	protected void preInitialize() {
-		getLookingGlassFactory();
-		acquireRenderingLock();
-	}
-
-	@Override
-	protected void postInitialize( boolean success ) {
-		releaseRenderingLock();
-		if( success ) {
-			//todo: investigate
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					java.awt.Container contentPane = getContentPane();
-//					if( contentPane instanceof javax.swing.JComponent ) {
-//						((javax.swing.JComponent)contentPane).revalidate();
-//					} else {
-						contentPane.invalidate();
-						contentPane.doLayout();
-//					}
-				}
-			} );
-			s_lookingGlassFactory.incrementAutomaticDisplayCount();
-			s_lookingGlassFactory.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( new Runnable() {
-				public void run() {
-					//pass
-				}
-			} );
-		}
-	}
-
-	
-	@Override
-	protected void preRun() {
+	private CylinderFieldDeclarationOperation() {
+		super( 
+				java.util.UUID.fromString( "ce0b0697-67a3-44bd-b8d8-0a473a2a0def" ), 
+				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Cylinder.class ), false, 
+				false, false, 
+				"", true, 
+				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.Cylinder.class ), false 
+		);
 	}
 	@Override
-	protected void postRun() {
-	}
-	
-//	@Override
-//	protected void handleShownForTheFirstTime() {
-//	}
-	@Override
-	protected boolean isAcceptableToClose( java.awt.event.WindowEvent e ) {
-		return true;
+	protected org.alice.stageide.croquet.components.declaration.CylinderFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+		return new org.alice.stageide.croquet.components.declaration.CylinderFieldDeclarationPanel( this );
 	}
 	@Override
-	protected void handleShutDown() {
-		s_lookingGlassFactory.decrementAutomaticDisplayCount();
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		return rv;
 	}
 }
