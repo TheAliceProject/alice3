@@ -79,12 +79,14 @@ public interface QuadrupedResource extends JointedModelResource {
 //	public static final org.lgna.story.resources.JointId TAIL_4 = new org.lgna.story.resources.JointId( TAIL_3, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_LEFT_HIP = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_LEFT_KNEE = new org.lgna.story.resources.JointId( BACK_LEFT_HIP, QuadrupedResource.class );
-	public static final org.lgna.story.resources.JointId BACK_LEFT_ANKLE = new org.lgna.story.resources.JointId( BACK_LEFT_KNEE, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId BACK_LEFT_HOCK = new org.lgna.story.resources.JointId( BACK_LEFT_KNEE, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId BACK_LEFT_ANKLE = new org.lgna.story.resources.JointId( BACK_LEFT_HOCK, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_LEFT_FOOT = new org.lgna.story.resources.JointId( BACK_LEFT_ANKLE, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_LEFT_TOE = new org.lgna.story.resources.JointId( BACK_LEFT_FOOT, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_RIGHT_HIP = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_RIGHT_KNEE = new org.lgna.story.resources.JointId( BACK_RIGHT_HIP, QuadrupedResource.class );
-	public static final org.lgna.story.resources.JointId BACK_RIGHT_ANKLE = new org.lgna.story.resources.JointId( BACK_RIGHT_KNEE, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId BACK_RIGHT_HOCK = new org.lgna.story.resources.JointId( BACK_RIGHT_KNEE, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId BACK_RIGHT_ANKLE = new org.lgna.story.resources.JointId( BACK_RIGHT_HOCK, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_RIGHT_FOOT = new org.lgna.story.resources.JointId( BACK_RIGHT_ANKLE, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_RIGHT_TOE = new org.lgna.story.resources.JointId( BACK_RIGHT_FOOT, QuadrupedResource.class );
 

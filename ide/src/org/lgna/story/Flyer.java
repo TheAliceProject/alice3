@@ -141,7 +141,7 @@ public class Flyer extends JointedModel implements Articulable {
 	public Joint getLeftAnkle() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_ANKLE);
 	}
-	public Joint getLeftBall() {
+	public Joint getLeftFoot() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_FOOT);
 	}
 //	public Joint getLeftToe() {

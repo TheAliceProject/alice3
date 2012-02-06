@@ -72,10 +72,10 @@ public class Biped extends JointedModel implements Articulable {
 		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.ROOT );
 	}
 
-	public Joint getPelvisForLowerBody() {
+	public Joint getPelvis() {
 		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY );
 	}
-	public Joint getSpineBaseBody() {
+	public Joint getSpineBase() {
 		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.SPINE_BASE );
 	}
 
