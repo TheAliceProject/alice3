@@ -171,14 +171,125 @@ public class GalleryProgram extends Program {
 		if (model instanceof Biped) {
 			Biped biped = (Biped) model;
 			warmUp(biped);
-		}else if (model instanceof Quadruped) {
+		} else if (model instanceof Quadruped) {
 			Quadruped quadruped = (Quadruped) model;
 			warmUp(quadruped);
+		} else if (model instanceof Flyer) {
+			Flyer flyer = (Flyer) model;
+			warmUp(flyer);
 		}
 	}
 	
-	private void warmUp(Quadruped quadruped) {
+	private void warmUp(Flyer flyer) {
+		final Joint rightKnee = flyer.getRightKnee();
+		final Joint rightHip = flyer.getRightHip();
+		final Joint leftKnee = flyer.getLeftKnee();
+		final Joint leftHip = flyer.getLeftHip();
+		final Joint rightShoulder = flyer.getRightShoulder();
+		final Joint rightElbow = flyer.getRightElbow();
+		final Joint leftShoulder = flyer.getLeftShoulder();
+		final Joint leftElbow = flyer.getLeftElbow();
+		final Joint head = flyer.getHead();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				head.turn( TurnDirection.FORWARD, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.BACKWARD, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.LEFT, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.RIGHT, .12, Turn.duration(0.5) );
+			}
+		}, "head" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				leftShoulder.turn(TurnDirection.BACKWARD, 0.12, Turn.duration(0.5) );
+				leftShoulder.turn(TurnDirection.FORWARD, 0.25);
+				leftShoulder.turn(TurnDirection.BACKWARD, 0.25);
+				leftShoulder.turn(TurnDirection.FORWARD, 0.12, Turn.duration(0.5) );
+			}
+		}, "leftArm" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				rightShoulder.turn(TurnDirection.BACKWARD, 0.12, Turn.duration(0.5) );
+				rightShoulder.turn(TurnDirection.FORWARD, 0.25);
+				rightShoulder.turn(TurnDirection.BACKWARD, 0.25);
+				rightShoulder.turn(TurnDirection.FORWARD, 0.12, Turn.duration(0.5) );
+			}
+		}, "rightArm" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				rightHip.turn(TurnDirection.RIGHT, 0.15);
+				rightHip.turn(TurnDirection.LEFT, 0.15);
+				rightHip.turn(TurnDirection.BACKWARD, 0.25);
+				rightKnee.turn(TurnDirection.FORWARD, 0.25);
+				rightKnee.turn(TurnDirection.BACKWARD, 0.25);
+				rightHip.turn(TurnDirection.FORWARD, 0.25);
+			}
+		}, "leftLeg" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				leftHip.turn(TurnDirection.LEFT, 0.15);
+				leftHip.turn(TurnDirection.RIGHT, 0.15);
+				leftHip.turn(TurnDirection.BACKWARD, 0.25);
+				leftKnee.turn(TurnDirection.FORWARD, 0.25);
+				leftKnee.turn(TurnDirection.BACKWARD, 0.25);
+				leftHip.turn(TurnDirection.FORWARD, 0.25);
+			}
+		}, "rightLeg" ).start();
 		
+	}
+
+	private void warmUp(Quadruped quadruped) {
+		final Joint rightHip = quadruped.getBackRightHip();
+		final Joint leftHip = quadruped.getBackLeftHip();
+		final Joint leftKnee = quadruped.getBackLeftKnee();
+		final Joint rightKnee = quadruped.getBackRightKnee();
+		final Joint rightShoulder = quadruped.getFrontRightShoulder();
+		final Joint leftShoulder = quadruped.getFrontLeftShoulder();
+		final Joint leftElbow = quadruped.getFrontLeftKnee();
+		final Joint rightElbow = quadruped.getFrontRightKnee();
+		final Joint neck = quadruped.getNeck();
+		final Joint head = quadruped.getHead();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				neck.turn( TurnDirection.FORWARD, 0.25 );
+				neck.turn( TurnDirection.BACKWARD, 0.25 );
+				head.turn( TurnDirection.FORWARD, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.BACKWARD, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.LEFT, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.RIGHT, .12, Turn.duration(0.5) );
+			}
+		}, "head" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				rightShoulder.turn( TurnDirection.BACKWARD, 0.25 );
+				rightElbow.turn( TurnDirection.FORWARD, 0.25 );
+				rightElbow.turn( TurnDirection.BACKWARD, 0.25 );
+				rightShoulder.turn( TurnDirection.FORWARD, 0.25 );
+			}
+		}, "rightFront" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				leftShoulder.turn( TurnDirection.BACKWARD, 0.25 );
+				leftElbow.turn( TurnDirection.FORWARD, 0.25 );
+				leftElbow.turn( TurnDirection.BACKWARD, 0.25 );
+				leftShoulder.turn( TurnDirection.FORWARD, 0.25 );
+			}
+		}, "leftFront" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				leftHip.turn( TurnDirection.BACKWARD, 0.25 );
+				leftKnee.turn( TurnDirection.FORWARD, 0.25 );
+				leftKnee.turn( TurnDirection.BACKWARD, 0.25 );
+				leftHip.turn( TurnDirection.FORWARD, 0.25 );
+			}
+		}, "rightBack" ).start();
+		new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				rightHip.turn( TurnDirection.BACKWARD, 0.25 );
+				rightKnee.turn( TurnDirection.FORWARD, 0.25 );
+				rightKnee.turn( TurnDirection.BACKWARD, 0.25 );
+				rightHip.turn( TurnDirection.FORWARD, 0.25 );
+			}
+		}, "leftBack" ).start();
 	}
 
 	private void warmUp(Biped biped) {
@@ -189,7 +300,15 @@ public class GalleryProgram extends Program {
 		final Joint rightHip = biped.getRightHip();
 		final Joint leftHip = biped.getLeftHip();
 		final Joint rightKnee = biped.getRightKnee();
-		final Joint leftKnee = biped.getLeftKnee();
+		final Joint head = biped.getHead();
+		final Joint leftKnee = biped.getLeftKnee();new org.lgna.common.ComponentThread( new Runnable() {
+			public void run() {
+				head.turn( TurnDirection.FORWARD, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.BACKWARD, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.LEFT, .12, Turn.duration(0.5) );
+				head.turn( TurnDirection.RIGHT, .12, Turn.duration(0.5) );
+			}
+		}, "head" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
 				leftShoulder.turn(TurnDirection.BACKWARD, 0.40);

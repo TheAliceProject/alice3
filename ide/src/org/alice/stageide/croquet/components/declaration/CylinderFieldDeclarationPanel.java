@@ -40,44 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass;
+package org.alice.stageide.croquet.components.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultProgram extends Program {
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass m_onscreenLookingGlass;
-	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return m_onscreenLookingGlass;
-	}
-
-	protected boolean isLightweightOnscreenLookingGlassDesired() {
-		return false;
-	}
-
-	protected void initializeAWT( java.awt.Container container, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		container.setLayout( new java.awt.BorderLayout() );
-		container.add( m_onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
-	}
-	protected void exitAWT( java.awt.Container container, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		container.remove( m_onscreenLookingGlass.getAWTComponent() );
-	}
-	
-	@Override
-	protected void preInitialize() {
-		super.preInitialize();
-		if( isLightweightOnscreenLookingGlassDesired() ) {
-			m_onscreenLookingGlass = getLookingGlassFactory().createLightweightOnscreenLookingGlass();
-		} else {
-			m_onscreenLookingGlass = getLookingGlassFactory().createHeavyweightOnscreenLookingGlass();
-		}
-		initializeAWT( getContentPane(), m_onscreenLookingGlass );
-	}
-	
-	@Override
-	protected void handleShutDown() {
-		super.handleShutDown();
-		exitAWT( getContentPane(), m_onscreenLookingGlass );
-		m_onscreenLookingGlass.release();
+public class CylinderFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.CylinderFieldDeclarationOperation > {
+	public CylinderFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.CylinderFieldDeclarationOperation model ) {
+		super( model );
 	}
 }

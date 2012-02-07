@@ -58,14 +58,6 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 			final int frameRate = 24;
 			//this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
 			org.alice.media.VideoCapturePane videoCapturePane = new org.alice.media.VideoCapturePane(project, frameRate){
-
-				@Override
-				protected edu.cmu.cs.dennisc.animation.Program createProgram( org.lgna.project.Project project )
-				{
-					org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-					return ide.createRuntimeProgramForMovieEncoding( vm, project.getProgramType(), frameRate );
-				}
-				
 				@Override
 				protected void onClose()
 				{

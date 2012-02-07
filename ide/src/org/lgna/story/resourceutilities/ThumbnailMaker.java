@@ -53,6 +53,8 @@ import edu.cmu.cs.dennisc.math.Hexahedron;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 public class ThumbnailMaker {
 	private static final int THUMBNAIL_WIDTH = 160;
@@ -62,8 +64,11 @@ public class ThumbnailMaker {
 	
 	private int width;
 	private int height;
-	private final edu.cmu.cs.dennisc.scenegraph.util.World world = new edu.cmu.cs.dennisc.scenegraph.util.World();
+//	private final edu.cmu.cs.dennisc.scenegraph.util.World world = new edu.cmu.cs.dennisc.scenegraph.util.World();
+	private final org.lgna.story.implementation.SceneImp world = new org.lgna.story.implementation.SceneImp(null);
 	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgModelTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+	private Transformable m_sgCameraVehicle = new Transformable();
+	private SymmetricPerspectiveCamera m_sgCamera = new SymmetricPerspectiveCamera();
 	private edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
 	private edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass testImageOffscreenLookingGlass;
 	
@@ -91,31 +96,37 @@ public class ThumbnailMaker {
 	
 	private ThumbnailMaker()
 	{
-		world.addComponent(this.sgModelTransformable);
+		world.getSgComposite().addComponent(this.sgModelTransformable);
+		m_sgCameraVehicle.setParent( world.getSgComposite() );
+		m_sgCameraVehicle.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createTranslation( 0, 0, 32 ) );
+		m_sgCamera.farClippingPlaneDistance.setValue( 1000.0 );
+		m_sgCamera.nearClippingPlaneDistance.setValue( .1 );
+		m_sgCamera.setParent( m_sgCameraVehicle );
 	}
 	
 	private void release()
 	{
 		if (this.offscreenLookingGlass != null) {
+			this.offscreenLookingGlass.forgetAllCachedItems();
 			this.offscreenLookingGlass.release();
 			this.offscreenLookingGlass = null;
 		}
 		
 		if (this.testImageOffscreenLookingGlass != null) {
+			this.testImageOffscreenLookingGlass.forgetAllCachedItems();
 			this.testImageOffscreenLookingGlass.release();
 			this.testImageOffscreenLookingGlass = null;
 		}
 		if (this.world != null) {
-			this.world.release();
+			this.world.getSgComposite().release();
 		}
 	}
 	
 	private void setUpCamera(edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass lookingGlass)
 	{
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = world.getSGCamera();
 		boolean isClearingAndAddingRequired;
 		if( lookingGlass.getCameraCount() == 1 ) {
-			if( lookingGlass.getCameraAt( 0 ) == sgCamera ) {
+			if( lookingGlass.getCameraAt( 0 ) == this.m_sgCamera ) {
 				isClearingAndAddingRequired = false;
 			} else {
 				isClearingAndAddingRequired = true;
@@ -125,7 +136,7 @@ public class ThumbnailMaker {
 		}
 		if( isClearingAndAddingRequired ) {
 			lookingGlass.clearCameras();
-			lookingGlass.addCamera( sgCamera );
+			lookingGlass.addCamera( m_sgCamera );
 		}
 	}
 	
@@ -174,14 +185,22 @@ public class ThumbnailMaker {
 		
 	}
 	
+	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera getSGCamera() {
+		return this.m_sgCamera;
+	}
+	
+	private edu.cmu.cs.dennisc.scenegraph.Transformable getSGCameraVehicle() {
+		return m_sgCameraVehicle;
+	}
+	
 	private AffineMatrix4x4 getThumbnailCameraOrientation(AxisAlignedBox bbox)
 	{
 		Vector3 cameraDir = new Vector3(-1.0, -2.0, 3.0);
 		cameraDir.normalize();
 		
 		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray(bbox.getCenter(), cameraDir);
-		double horizontalAngle = world.getSGCamera().horizontalViewingAngle.getValue().getAsRadians();
-		double verticalAngle = world.getSGCamera().verticalViewingAngle.getValue().getAsRadians();
+		double horizontalAngle = getSGCamera().horizontalViewingAngle.getValue().getAsRadians();
+		double verticalAngle = getSGCamera().verticalViewingAngle.getValue().getAsRadians();
 		double halfCameraFOV = (horizontalAngle < verticalAngle) ? horizontalAngle : verticalAngle;
 		halfCameraFOV /= 2.0;
 		
@@ -337,24 +356,25 @@ public class ThumbnailMaker {
 	}
 	
 	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int inputWidth, int inputHeight) throws Exception {
-//		initializeIfNecessary(inputWidth, inputHeight);
-		this.setSize((int)(inputWidth*SEARCH_FACTOR), (int)(inputHeight*SEARCH_FACTOR));
+		initializeIfNecessary(inputWidth, inputHeight);
+//		this.setSize((int)(inputWidth*SEARCH_FACTOR), (int)(inputHeight*SEARCH_FACTOR));
+		
+		edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass testImageLG = testImageOffscreenLookingGlass;
 		
 		v.setParent(this.sgModelTransformable);
-		world.getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox));
+		getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox));
 		
-		AffineMatrix4x4 cameraTransform = world.getSGCameraVehicle().getAbsoluteTransformation();
-		java.awt.image.BufferedImage testImage = offscreenLookingGlass.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
-		java.nio.FloatBuffer depthBuffer = offscreenLookingGlass.createFloatBufferForUseAsDepthBuffer();
+		AffineMatrix4x4 cameraTransform = getSGCameraVehicle().getAbsoluteTransformation();
+		java.awt.image.BufferedImage testImage = testImageLG.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+		java.nio.FloatBuffer depthBuffer = testImageLG.createFloatBufferForUseAsDepthBuffer();
 		
-		offscreenLookingGlass.clearAndRenderOffscreen();
-		testImage = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+		testImageLG.clearAndRenderOffscreen();
+		testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 		
 		ImageUtilities.write("C:/batchOutput/thumbnailTest/initial.png", testImage);
 		
 		Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation, bbox);
-		world.getSGCameraVehicle().setTranslationOnly(testPosition, world);
-		boolean framed = true;
+		getSGCameraVehicle().setTranslationOnly(testPosition, world.getSgReferenceFrame());
 		Point3 lastGoodPosition = new Point3(testPosition);
 		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray(testPosition, Vector3.createMultiplication(cameraTransform.orientation.backward, -1));
 		double distanceToCenter = Point3.calculateDistanceBetween(cameraRay.accessOrigin(), bbox.getCenter());
@@ -363,12 +383,31 @@ public class ThumbnailMaker {
 		double distanceStep = distanceToCenter / 20;
 		double currentT = 0;
 		int count = 0;
-		while (framed && (distanceToEdge - currentT > this.world.getSGCamera().nearClippingPlaneDistance.getValue()))
+		boolean framed = isFullyFramed(testImage);
+		//zoom out until framed
+		while (!framed) {
+			cameraRay.getPointAlong(testPosition, currentT);
+			getSGCameraVehicle().setTranslationOnly(testPosition, world.getSgReferenceFrame());
+			testImageLG.clearAndRenderOffscreen();
+			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+			
+			ImageUtilities.write("C:/batchOutput/thumbnailTest/test"+count+".png", testImage);
+			
+			framed = isFullyFramed(testImage);
+			if (framed)
+			{
+				lastGoodPosition.set(testPosition);
+			}
+			count++;
+			currentT -= distanceStep;
+		}
+		//zoom in until just framed
+		while (framed && ((distanceToEdge - currentT) > getSGCamera().nearClippingPlaneDistance.getValue()))
 		{
 			cameraRay.getPointAlong(testPosition, currentT);
-			world.getSGCameraVehicle().setTranslationOnly(testPosition, world);
-			offscreenLookingGlass.clearAndRenderOffscreen();
-			testImage = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+			getSGCameraVehicle().setTranslationOnly(testPosition, world.getSgReferenceFrame());
+			testImageLG.clearAndRenderOffscreen();
+			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 			
 			ImageUtilities.write("C:/batchOutput/thumbnailTest/test"+count+".png", testImage);
 			
@@ -380,8 +419,8 @@ public class ThumbnailMaker {
 			count++;
 			currentT += distanceStep;
 		}
-		
-		world.getSGCameraVehicle().setTranslationOnly(lastGoodPosition, world);
+		System.out.println(v.getName()+": framed: "+framed+", distance to edge: "+distanceToEdge+", t: "+currentT+", near clip: "+getSGCamera().nearClippingPlaneDistance.getValue());
+		getSGCameraVehicle().setTranslationOnly(lastGoodPosition, world.getSgReferenceFrame());
 		
 		this.setSize( inputWidth*ANTI_ALIAS_FACTOR, inputHeight*ANTI_ALIAS_FACTOR );
 		

@@ -85,7 +85,6 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	protected static final Color4f MUTED_COLOR = new Color4f(0.5f, 0.5f, 0.4f, 1.0f);
 	protected static final Color4f BASE_COLOR = new Color4f(0.7f, 0.7f, 0.3f, 1.0f);
 	
-	
 	protected Color4f activeColor = ACTIVE_COLOR;
 	protected Color4f baseColor = BASE_COLOR;
 	protected Color4f rolloverColor = ROLLOVER_COLOR;
@@ -130,13 +129,13 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	{
 		super();
 		this.init(rotationAxisDirection, handlePosition);
-		this.setColor(color);
+		this.initColor(color);
 	}
 	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor )
 	{
 		super();
 		this.init(rotationAxisDirection, handlePosition);
-		this.setColors(baseColor, activeColor, rolloverColor, mutedColor);
+		this.initColors(baseColor, activeColor, rolloverColor, mutedColor);
 	}
 	
 	private void init(MovementDirection rotationAxisDirection, HandlePosition handlePosition)
@@ -169,7 +168,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		this.handleOffset.set( handle.handleOffset );
 	}
 	
-	protected void setColor(Color4f color) {
+	protected void initColor(Color4f color) {
 		this.baseColor = color;
 		Color colorColor = new Color(this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue);
 		this.activeColor = new Color4f(ColorUtilities.shiftHSB( colorColor, 0.0d, 0.0d, .1d ));
@@ -178,7 +177,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		setCurrentColorInternal();
 	}
 	
-	protected void setColors(Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor) {
+	protected void initColors(Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor) {
 		this.baseColor = baseColor;
 		this.activeColor = activeColor;
 		this.rolloverColor = rolloverColor;
@@ -253,7 +252,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	@Override
 	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
 		super.setManipulatedObject( manipulatedObject );
-		this.setPositionRelativeToObjectSize( );
+//		this.setPositionRelativeToObjectSize( );
 	}
 	
 	public void setSphereVisibility( boolean showSphere )
@@ -333,12 +332,13 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	protected void updateVisibleState(HandleRenderState renderState)
 	{
 		super.updateVisibleState(renderState);
-		double endRadius = this.isRenderable() ? this.getMajorAxisRadius() : 0.0d;
-//		if (endRadius == 0 && this.opacityAnimationTarget != 0)
-//		{
-//			double targetOpacity = this.isRenderable() ? this.getDesiredOpacity(renderState) : 0.0;
-//			PrintUtilities.println("Huh?");
-//		}
+		double endRadius;
+		if (this.isRenderable()) {
+			endRadius = this.getMajorAxisRadius();
+		}
+		else {
+			endRadius = 0.0d;
+		}
 		animateHandleToRadius(endRadius);
 	}
 	
@@ -396,7 +396,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		return RotationRingHandle.this.sgTorus.majorRadius.getValue();
 	}
 	
-	private double getMajorAxisRadius( )
+	protected double getMajorAxisRadius( )
 	{
 		if (this.getParentTransformable() != null)
 		{
@@ -456,8 +456,8 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	}
 	
 	@Override
-	public void setHandleShowing(boolean showing) {
-		super.setHandleShowing(showing);
+	public void setVisualsShowing(boolean showing) {
+		super.setVisualsShowing(showing);
 	}
 
 }

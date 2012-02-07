@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +40,81 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.interact.handle;
 
-package org.alice.stageide.choosers;
+import org.alice.interact.MovementDirection;
+
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class ColorRedState extends ColorChannelState {
-	private static class SingletonHolder {
-		private static ColorRedState instance = new ColorRedState();
+public class JointRotationRingHandle extends RotationRingHandle {
+	
+	protected static final double JOINT_MIN_RADIUS = .2d;
+	
+	public JointRotationRingHandle( )
+	{
+		super();
 	}
-	public static ColorRedState getInstance() {
-		return SingletonHolder.instance;
+	
+	public JointRotationRingHandle( MovementDirection rotationAxisDirection )
+	{
+		super( rotationAxisDirection );
 	}
-	private ColorRedState() {
-		super( java.util.UUID.fromString( "27812581-1793-43ab-92c5-5888352ade2d" ) );
+	
+	public JointRotationRingHandle( MovementDirection rotationAxisDirection, Color4f color )
+	{
+		super( rotationAxisDirection, color);
 	}
+	
+	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
+	{
+		super(rotationAxisDirection, handlePosition);
+	}
+	
+	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f color )
+	{
+		super(rotationAxisDirection, handlePosition, color);
+	}
+	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor )
+	{
+		super(rotationAxisDirection, handlePosition, baseColor, activeColor, rolloverColor, mutedColor);
+	}
+	
+	public JointRotationRingHandle( JointRotationRingHandle handle )
+	{
+		super(handle.rotationAxisDirection, handle.handlePosition, handle.baseColor, handle.activeColor, handle.rolloverColor, handle.mutedColor);
+	}
+	
+	@Override
+	public JointRotationRingHandle clone()
+	{
+		JointRotationRingHandle newHandle = new JointRotationRingHandle(this);
+		return newHandle;
+	}
+	
+	@Override
+	protected double getObjectScale() {
+		return super.getObjectScale() * 1.5;
+	}
+	
+	@Override
+	protected double getMajorAxisRadius( )
+	{
+		if (this.getParentTransformable() != null)
+		{
+			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
+			double radius = boundingBox.getDiagonal();
+			if (Double.isNaN( radius ) || radius < JOINT_MIN_RADIUS)
+			{
+				radius = JOINT_MIN_RADIUS;
+			}
+			return radius;
+		}
+		return 0.0d;
+	}
+
 }

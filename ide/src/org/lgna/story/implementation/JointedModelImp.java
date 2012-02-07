@@ -98,6 +98,22 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		}
 	}
 	
+	public Iterable< JointImp > getJoints() {
+		final java.util.List< JointImp > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.treeWalk( new TreeWalkObserver() {
+			public void pushJoint( org.lgna.story.implementation.JointImp joint ) {
+				//todo: remove null check?
+				if( joint != null ) {
+					rv.add( joint );
+				}
+			}
+			public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
+			}
+			public void popJoint( org.lgna.story.implementation.JointImp joint ) {
+			}
+		} );
+		return rv;
+	}
 	private JointImp createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
 		JointImp joint = this.createJointImplementation( jointId );
 		joint.setVehicle(parent);
@@ -199,10 +215,6 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		}
 	}
 	
-	@Override
-	protected void animateApplyScale( edu.cmu.cs.dennisc.math.Vector3 axis, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( axis );
-	}
 	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
 		if( this.rootJointImp != null ) {

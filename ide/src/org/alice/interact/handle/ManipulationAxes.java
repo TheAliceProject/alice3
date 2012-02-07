@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,108 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.program;
+package org.alice.interact.handle;
+
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public abstract class DefaultProgram extends Program {
-	@Override
-	protected void preInitialize() {
-	}
-	@Override
-	protected void initialize() {
-	}
-	@Override
-	protected void postInitialize( boolean success ) {
-		validate();
-	}
-	@Override
-	protected void preRun() {
-	}
-	@Override
-	protected void run() {
-	}
-	@Override
-	protected void postRun() {
-	}
-//	@Override
-//	protected void handleShownForTheFirstTime() {
-//	}
-	@Override
-	protected boolean isAcceptableToClose( java.awt.event.WindowEvent e ) {
-		return true;
-	}
-	@Override
-	protected void handleShutDown() {
+public class ManipulationAxes extends ManipulationHandle3D {
+	private static final double MIN_SIZE = .6;
+	
+	private edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes axis;
+	private double diameterScale = 1;
+
+	public ManipulationAxes()
+	{
+		this.axis = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes(1, 1.5);
+		this.axis.setParent(this);
 	}
 	
+	@Override
+	public ManipulationHandle3D clone() {
+		return new ManipulationAxes();
+	}
+
+	@Override
+	protected void setScale(double scale) {
+		if (scale < 1.0) {
+			scale = 1;
+		}
+		this.diameterScale = scale * 1.4;
+	}
+
+	@Override
+	public ReferenceFrame getSnapReferenceFrame() {
+		return null;
+	}
+
+	@Override
+	public void positionRelativeToObject()
+	{
+		//Do nothing
+	}
+
+	@Override
+	public boolean isPickable() {
+		return false;
+	}
+	
+	@Override
+	public void setVisualsShowing(boolean showing) {
+		super.setVisualsShowing(showing);
+		if (this.axis != null) {
+			this.axis.setIsShowing(showing);
+		}
+	}
+	
+	@Override
+	protected float getOpacity() {
+		if (this.axis != null) {
+			return this.axis.getOpacity();
+		}
+		else {
+			return super.getOpacity();
+		}
+	}
+	
+	@Override
+	protected void setOpacity(float opacity) {
+		super.setOpacity(opacity);
+		if (this.axis != null) {
+			this.axis.setOpacity(opacity);
+		}
+		
+	}
+	
+	@Override
+	protected double getDesiredOpacity(HandleRenderState renderState)
+	{
+		switch (renderState)
+		{
+		case NOT_VISIBLE : return 0.0d;
+		default : return 0.6d * this.cameraRelativeOpacity;
+		}
+	}
+
+	@Override
+	public void resizeToObject()
+	{
+		if (this.getParentTransformable() != null)
+		{
+			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
+			double diagonal = boundingBox.getDiagonal();
+			if (Double.isNaN(diagonal) || diagonal < MIN_SIZE) {
+				diagonal = MIN_SIZE;
+			}
+			if (this.axis != null)
+			{
+				this.axis.resize(diagonal * .5, 1.5, this.diameterScale);
+			}
+		}
+	}
+
 }

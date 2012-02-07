@@ -51,22 +51,19 @@ import java.awt.RenderingHints;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
 import org.alice.ide.properties.uicontroller.BasicPropertyController;
-import org.alice.stageide.properties.FieldNameAdapter;
-import org.lgna.croquet.components.Button;
+import org.alice.stageide.properties.SelectedInstanceAdapter;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 
 
-public class FieldNamePropertyController extends BasicPropertyController<String>
+public class SelectedInstancePropertyController extends BasicPropertyController<org.alice.ide.instancefactory.InstanceFactory>
 {
 
     private Label label;
-    private Button editButton;
     
-    public FieldNamePropertyController(FieldNameAdapter propertyAdapter)
+    public SelectedInstancePropertyController(SelectedInstanceAdapter propertyAdapter)
     {
         super(propertyAdapter);
     }
@@ -113,26 +110,24 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
                 new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
                 0, // ipadX
                 0) // ipadY
-                );
-        FieldNameAdapter fieldNameAdapter = (FieldNameAdapter)this.propertyAdapter;
-        if (fieldNameAdapter.allowsEdit())
-        {
-	        this.editButton = RenameFieldOperation.getInstance( fieldNameAdapter.getInstance() ).createButton();
-	        this.editButton.getAwtComponent().setText("Rename...");
-	        componentPanel.addComponent(this.editButton, new GridBagConstraints(
-	                xIndex++, // gridX
-	                0, // gridY
-	                0, // gridWidth
-	                1, // gridHeight
-	                0.0, // weightX
-	                0.0, // weightY
-	                GridBagConstraints.WEST, // anchor
-	                GridBagConstraints.HORIZONTAL, // fill
-	                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
-	                0, // ipadX
-	                0) // ipadY
-	                );
-        }
+        );
+        
+        org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+        org.lgna.croquet.components.JComponent< ? > oneShotComponent = org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
+        componentPanel.addComponent(oneShotComponent, new GridBagConstraints(
+                xIndex++, // gridX
+                0, // gridY
+                0, // gridWidth
+                1, // gridHeight
+                0.0, // weightX
+                0.0, // weightY
+                GridBagConstraints.WEST, // anchor
+                GridBagConstraints.HORIZONTAL, // fill
+                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                0, // ipadX
+                0) // ipadY
+        );
+        
         
         return componentPanel;
     }
@@ -140,20 +135,13 @@ public class FieldNamePropertyController extends BasicPropertyController<String>
     @Override
     public Class<?> getPropertyType()
     {
-        return String.class;
+        return org.alice.ide.instancefactory.InstanceFactory.class;
     }
  
     @Override
-    protected void setValueOnUI(String value)
+    protected void setValueOnUI(org.alice.ide.instancefactory.InstanceFactory value)
     {
-        if (value != null)
-        {
-            this.label.getAwtComponent().setText(value);
-        }
-        else
-        {
-            this.label.getAwtComponent().setText(BLANK_STRING);
-        }
+        edu.cmu.cs.dennisc.java.util.logging.Logger.warning("NOT SUPPORTED");
         
     }
     

@@ -40,20 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story;
 
-package org.alice.stageide.choosers;
+import org.lgna.project.annotations.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorBlueState extends ColorChannelState {
-	private static class SingletonHolder {
-		private static ColorBlueState instance = new ColorBlueState();
+public class Cylinder extends Shape {
+	private final org.lgna.story.implementation.CylinderImp implementation = new org.lgna.story.implementation.CylinderImp( this );
+	@Override
+	/*package-private*/ org.lgna.story.implementation.CylinderImp getImplementation() {
+		return this.implementation;
 	}
-	public static ColorBlueState getInstance() {
-		return SingletonHolder.instance;
+	
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getRadius() {
+		return this.implementation.radius.getValue();
 	}
-	private ColorBlueState() {
-		super( java.util.UUID.fromString( "96cca03f-f696-485a-9698-9d2b699c32e7" ) );
+	@MethodTemplate()
+	public void setRadius( Number radius, SetRadius.Detail... details ) {
+		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getLength() {
+		return this.implementation.length.getValue();
+	}
+	@MethodTemplate()
+	public void setLength( Number length, SetLength.Detail... details ) {
+		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

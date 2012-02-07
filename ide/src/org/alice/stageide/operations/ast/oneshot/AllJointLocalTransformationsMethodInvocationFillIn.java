@@ -40,48 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.instancefactory.croquet.joint.declaration;
+package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.stageide.ast.JointedTypeInfo, org.lgna.project.ast.UserField, ThisFieldAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static ThisFieldAccessJointedTypeMenuModel getInstance( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo, org.lgna.project.ast.UserField field ) {
+public class AllJointLocalTransformationsMethodInvocationFillIn extends MethodInvocationFillIn {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, AllJointLocalTransformationsMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {
-			ThisFieldAccessJointedTypeMenuModel rv = map.get( jointedTypeInfo, field );
+			AllJointLocalTransformationsMethodInvocationFillIn rv = map.get( instanceFactory, method );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ThisFieldAccessJointedTypeMenuModel( jointedTypeInfo, field );
-				map.put( jointedTypeInfo, field, rv );
+				rv = new AllJointLocalTransformationsMethodInvocationFillIn( instanceFactory, method );
+				map.put( instanceFactory, method, rv );
 			}
 			return rv;
 		}
 	}
-	public static org.lgna.croquet.CascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory > getMenuModel( org.lgna.project.ast.UserField field ) {
-		java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( field.getValueType() );
-		switch( jointedTypeInfos.size() ) {
-		case 0:
-			return null;
-		case 1:
-			return getInstance( jointedTypeInfos.get( 0 ), field );
-		default:
-			CollectionCascadeMenuModel rv = new CollectionCascadeMenuModel< org.alice.ide.instancefactory.InstanceFactory >();
-			for( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo : jointedTypeInfos ) {
-				rv.addItem( getInstance( jointedTypeInfo, field ) );
-			}
-			return rv;
-		}
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
+		assert method != null : methodName;
+		return getInstance( instanceFactory, method );
 	}
-	private final org.lgna.project.ast.UserField field;
-	private ThisFieldAccessJointedTypeMenuModel( org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo, org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), jointedTypeInfo );
-		this.field = field;
+	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+	}
+	private AllJointLocalTransformationsMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "1931250e-3f00-4d95-85e9-f8c06922eb17" ), instanceFactory, method );
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory.getInstance( this.field, method ) );
+	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		return new AllJointLocalTransformationsMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

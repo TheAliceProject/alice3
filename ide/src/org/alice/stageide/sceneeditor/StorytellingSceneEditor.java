@@ -214,30 +214,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = true;
-			org.lgna.project.ast.Expression expression = nextValue != null ? nextValue.createExpression() : null;
-			if (expression instanceof FieldAccess)
-			{
-				FieldAccess fa = (FieldAccess)expression;
-				AbstractField field = fa.field.getValue();
-				if (field instanceof UserField)
-				{
-					UserField uf = (UserField)field;
-					StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
-				}
-			}
-			else if (expression instanceof MethodInvocation)
-			{
-				StorytellingSceneEditor.this.setSelectedMethod((MethodInvocation)expression);
-				
-			}
-			else if (expression instanceof ThisExpression)
-			{
-				UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
-				StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
-			}
-			else if (expression instanceof MethodInvocation){
-				System.out.println(expression);
-			}
+			StorytellingSceneEditor.this.setSelectedInstance(nextValue);
 			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = false;
 		}
 	};
@@ -317,7 +294,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	{
 		if (this.globalDragAdapter != null)
 		{
-			Entity selectedEntity = this.getInstanceInJavaVMForMethodInvocation(method, Entity.class);
+			Entity selectedEntity = this.getInstanceInJavaVMForExpression(method, Entity.class);
 			AbstractTransformableImp transImp = null;
 			if (selectedEntity != null)
 			{
@@ -331,16 +308,39 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		}
 	}
 	
+	public void setSelectedInstance(org.alice.ide.instancefactory.InstanceFactory instanceFactory) {
+		org.lgna.project.ast.Expression expression = instanceFactory != null ? instanceFactory.createExpression() : null;
+		if (expression instanceof FieldAccess)
+		{
+			FieldAccess fa = (FieldAccess)expression;
+			AbstractField field = fa.field.getValue();
+			if (field instanceof UserField)
+			{
+				UserField uf = (UserField)field;
+				StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
+			}
+		}
+		else if (expression instanceof MethodInvocation)
+		{
+			StorytellingSceneEditor.this.setSelectedMethod((MethodInvocation)expression);
+			
+		}
+		else if (expression instanceof ThisExpression)
+		{
+			UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
+			StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
+		}
+		getPropertyPanel().setSelectedInstance(instanceFactory);
+	}
+	
 	public void setSelectedMethod(MethodInvocation method) {
 		if (!this.selectionIsFromMain)
 		{
 			this.selectionIsFromMain = true;
-			
 			if (this.globalDragAdapter != null)
 			{
 				setSelectedMethodOnManipulator(method);
 			}
-			
 			this.selectionIsFromMain = false;
 		}
 	}
@@ -351,7 +351,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		{
 			this.selectionIsFromMain = true;
 			super.setSelectedField(declaringType, field);
-			getPropertyPanel().setField(field);
 			
 			MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(field);
 			MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(field);
@@ -587,7 +586,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			EntityImp entityImp = EntityImp.getInstance(element);
 			Entity entity = entityImp.getAbstraction();
 			UserField field = this.getFieldForInstanceInJavaVM(entity);
-			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( field ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.InputEventTrigger( clickInput.getInputEvent() ) );
+			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
+			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.InputEventTrigger( clickInput.getInputEvent() ) );
 		}
 	}
 	

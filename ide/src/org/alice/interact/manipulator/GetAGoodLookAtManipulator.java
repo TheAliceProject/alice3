@@ -50,7 +50,6 @@ import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 public class GetAGoodLookAtManipulator extends AbstractManipulator implements CameraInformedManipulator{
 
@@ -66,9 +65,9 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 	public void setCamera(AbstractCamera camera) 
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if (this.camera != null && this.camera.getParent() instanceof AbstractTransformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((AbstractTransformable)this.camera.getParent());
 		}
 	}
 

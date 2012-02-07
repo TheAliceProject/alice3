@@ -40,20 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.choosers;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorGreenState extends ColorChannelState {
-	private static class SingletonHolder {
-		private static ColorGreenState instance = new ColorGreenState();
+public class CylinderImp extends ShapeImp {
+	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
+	private final org.lgna.story.Cylinder abstraction;
+	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
+		@Override
+		public Double getValue() {
+			return CylinderImp.this.sgCylinder.bottomRadius.getValue();
+		}
+		@Override
+		protected void handleSetValue( Double value ) {
+			CylinderImp.this.sgCylinder.bottomRadius.setValue( value );
+			CylinderImp.this.sgCylinder.topRadius.setValue( value );
+		}
+	};
+	public final DoubleProperty length = new DoubleProperty( CylinderImp.this ) {
+		@Override
+		public Double getValue() {
+			return CylinderImp.this.sgCylinder.length.getValue();
+		}
+		@Override
+		protected void handleSetValue( Double value ) {
+			CylinderImp.this.sgCylinder.length.setValue( value );
+		}
+	};
+
+	public CylinderImp( org.lgna.story.Cylinder abstraction ) {
+		this.abstraction = abstraction;
+		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
 	}
-	public static ColorGreenState getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	public org.lgna.story.Cylinder getAbstraction() {
+		return this.abstraction;
 	}
-	private ColorGreenState() {
-		super( java.util.UUID.fromString( "9ee9da0c-a6aa-454d-92af-61206e00420a" ) );
+	//todo: produce more tight bound by shifting center of bounding sphere
+	@Override
+	protected double getBoundingSphereRadius() {
+		return Math.max( this.length.getValue(), this.radius.getValue());
 	}
+
 }

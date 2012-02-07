@@ -40,34 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.instancefactory.croquet.joint.declaration;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
-	private final org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo;
-	public JointedTypeMenuModel( java.util.UUID id, org.alice.stageide.ast.JointedTypeInfo jointedTypeInfo ) {
-		super( id );
-		this.jointedTypeInfo = jointedTypeInfo;
-	}
-//	@Override
-//	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.instancefactory.InstanceFactory, org.alice.ide.instancefactory.InstanceFactory > node ) {
-//		return org.alice.ide.common.TypeIcon.getInstance( this.jointedTypeInfo.getType() );
-//	}
-	protected abstract org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method );
-	@Override
-	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
-		rv.add( org.alice.stageide.cascade.JointedModelTypeSeparator.getInstance( this.jointedTypeInfo.getType() ) );
-		for( org.lgna.project.ast.AbstractMethod method : this.jointedTypeInfo.getJointGetters() ) {
-			org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > fillIn = this.getFillIn( method );
-			if( fillIn != null ) {
-				rv.add( fillIn );
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
-			}
+public class InstanceCreationView extends AbstractExpressionView {
+	public InstanceCreationView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		super( instanceCreation );
+		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation );
+		if( prefixPane != null ) {
+			this.addComponent( prefixPane );
 		}
-		return rv;
+		this.addComponent( factory.createComponent( instanceCreation ) );
 	}
 }

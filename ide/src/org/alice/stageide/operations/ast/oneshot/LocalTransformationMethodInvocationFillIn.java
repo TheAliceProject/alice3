@@ -48,32 +48,32 @@ package org.alice.stageide.operations.ast.oneshot;
  */
 public class LocalTransformationMethodInvocationFillIn extends MethodInvocationFillIn {
 	//private static java.util.Map< org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static LocalTransformationMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {
-			LocalTransformationMethodInvocationFillIn rv = map.get( field, method );
+			LocalTransformationMethodInvocationFillIn rv = map.get( instanceFactory, method );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new LocalTransformationMethodInvocationFillIn( field, method );
-				map.put( field, method, rv );
+				rv = new LocalTransformationMethodInvocationFillIn( instanceFactory, method );
+				map.put( instanceFactory, method, rv );
 			}
 			return rv;
 		}
 	}
-	public static LocalTransformationMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
 		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
-		return getInstance( field, method );
+		return getInstance( instanceFactory, method );
 	}
-	public static LocalTransformationMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractField field, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( field, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
 	}
-	private LocalTransformationMethodInvocationFillIn( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "955cb8c1-3861-4ac7-b76f-72ca93b1289b" ), field, method );
+	private LocalTransformationMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "955cb8c1-3861-4ac7-b76f-72ca93b1289b" ), instanceFactory, method );
 	}
 	@Override
-	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		return new LocalTransformationMethodInvocationEditFactory( field, method, argumentExpressions );
+	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		return new LocalTransformationMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

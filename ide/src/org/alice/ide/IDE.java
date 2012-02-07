@@ -521,6 +521,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.lgna.croquet.components.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
+	public org.lgna.croquet.components.Component< ? > getPrefixPaneForInstanceCreationIfAppropriate( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		return null;
+	}
 
 	public String getApplicationSubPath() {
 		String rv = getApplicationName();
@@ -531,7 +534,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType );
-	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.NamedUserType programType, int frameRate );
 
 	public java.util.Set< org.lgna.common.Resource > getResources() {
 		org.lgna.project.Project project = this.getProject();

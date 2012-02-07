@@ -69,8 +69,8 @@ public class Flyer extends JointedModel implements Articulable {
 	public Joint getRoot() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.ROOT);
 	}
-	public Joint getPelvisUpperBody() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.PELVIS_UPPER_BODY);
+	public Joint getSpineBase() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_BASE);
 	}
 	public Joint getSpineMiddle() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_MIDDLE);
@@ -141,8 +141,8 @@ public class Flyer extends JointedModel implements Articulable {
 	public Joint getLeftAnkle() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_ANKLE);
 	}
-	public Joint getLeftBall() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_BALL);
+	public Joint getLeftFoot() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_FOOT);
 	}
 //	public Joint getLeftToe() {
 //		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_TOE);
@@ -156,8 +156,8 @@ public class Flyer extends JointedModel implements Articulable {
 	public Joint getRightAnkle() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_ANKLE);
 	}
-	public Joint getRightBall() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_BALL);
+	public Joint getRightFoot() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_FOOT);
 	}
 //	public Joint getRightToe() {
 //		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_TOE);

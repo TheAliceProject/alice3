@@ -58,7 +58,7 @@ public class ObjectRotateKeyManipulator extends RotateKeyManipulator {
 	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
+		this.setManipulatedTransformable(startInput.getCurrentlySelectedObject());
 		if (this.manipulatedTransformable != null)
 		{
 			return super.doStartManipulator( startInput );

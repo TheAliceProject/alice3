@@ -67,6 +67,10 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 		super( method );
 	}
 	@Override
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getValidInstanceType( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+		return type;
+	}
+	@Override
 	protected org.lgna.croquet.resolvers.Resolver< ThisMethodInvocationFactory > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisMethodInvocationFactory >( this, this.getMethod(), org.lgna.project.ast.AbstractMethod.class );
 	}

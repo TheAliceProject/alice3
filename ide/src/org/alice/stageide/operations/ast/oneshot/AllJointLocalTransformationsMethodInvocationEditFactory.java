@@ -40,33 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.operations.ast.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldLabelSeparatorModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FieldLabelSeparatorModel getInstance( org.lgna.project.ast.AbstractField value ) {
-		synchronized( map ) {
-			FieldLabelSeparatorModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new FieldLabelSeparatorModel( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
+public class AllJointLocalTransformationsMethodInvocationEditFactory implements MethodInvocationEditFactory {
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	private final org.lgna.project.ast.AbstractMethod method;
+	private final org.lgna.project.ast.Expression[] argumentExpressions;
+	public AllJointLocalTransformationsMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		this.instanceFactory = instanceFactory;
+		this.method = method;
+		this.argumentExpressions = argumentExpressions;
 	}
-	private final org.lgna.project.ast.AbstractField field;
-	private FieldLabelSeparatorModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
-		this.field = field;
-	}
-	@Override
-	public String getName() {
-		return this.field.getName();
+	public org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CascadeCompletionStep< MethodInvocationEditFactory > step ) {
+		return new AllJointLocalTransformationsEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }
