@@ -94,8 +94,8 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 			}
 		}
 	}
-	protected void registerPolicyMap(Object timerEventListener, MultipleEventPolicy policy) {
-		policyMap.put(timerEventListener, policy);
+	protected void registerPolicyMap(L listener, MultipleEventPolicy policy) {
+		policyMap.put(listener, policy);
 	}
 
 	protected void fireEvent(L listener, E event) {

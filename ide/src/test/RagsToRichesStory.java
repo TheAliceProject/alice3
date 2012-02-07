@@ -62,6 +62,8 @@ import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
+import org.lgna.story.event.ComesIntoViewEvent;
+import org.lgna.story.event.ComesIntoViewEventListener;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.NumberKeyEvent;
@@ -252,6 +254,13 @@ class SnowScene extends Scene{
 //				greenCone.move(MoveDirection.DOWN, 1);
 //			}
 //		}, AddTimerEventListener.timerFrequency(0.0), MultipleEventPolicy.ENQUEUE );
+		this.addComesIntoViewEventListener(new ComesIntoViewEventListener() {
+			
+			public void cameIntoView(ComesIntoViewEvent e) {
+				susan.move( MoveDirection.UP, 5 );
+				susan.move( MoveDirection.DOWN, 5 );
+			}
+		}, colListOne );
 		this.addKeyPressListener(new KeyPressListener() {
 			public void keyPressed(KeyEvent e) {
 				if(e.isKey(Key.A)){

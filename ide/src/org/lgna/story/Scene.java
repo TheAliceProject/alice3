@@ -44,6 +44,7 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
+import org.lgna.story.event.ComesIntoViewEventListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.OcclusionEventListener;
@@ -132,7 +133,9 @@ public abstract class Scene extends Entity{
 		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
 	
-//	public void addComesIntoViewEventListenr
+	public void addComesIntoViewEventListener( ComesIntoViewEventListener listener, Entity[] entities ) {
+		this.implementation.getEventManager().addComesIntoViewEventListener( listener, entities );
+	}
 	
 	
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
