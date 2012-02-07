@@ -113,56 +113,73 @@ public class PickUtilities {
 		return null;
 	}
 	
+	public static PickHint getPickHintForEntity(Entity entity) {
+		List<PickHint.PickType> pickTypes = new LinkedList<PickHint.PickType>();
+		if (entity != null)
+		{
+			if (entity instanceof org.lgna.story.Turnable)
+			{
+				pickTypes.add(PickHint.PickType.TURNABLE);
+			}
+			if (entity instanceof org.lgna.story.MovableTurnable)
+			{
+				pickTypes.add(PickHint.PickType.MOVEABLE);
+			}
+			if (entity instanceof org.lgna.story.Resizable)
+			{
+				pickTypes.add(PickHint.PickType.RESIZABLE);
+			}
+			if (entity instanceof org.lgna.story.Camera || entity instanceof org.lgna.story.Model || entity instanceof org.lgna.story.Marker)
+			{
+				pickTypes.add(PickHint.PickType.SELECTABLE);
+			}
+			if (entity instanceof org.lgna.story.MovableTurnable)
+			{
+				pickTypes.add(PickHint.PickType.VIEWABLE);
+			}
+			if (entity instanceof org.lgna.story.CameraMarker)
+			{
+				pickTypes.add(PickHint.PickType.CAMERA_MARKER);
+			}
+			if (entity instanceof org.lgna.story.ObjectMarker)
+			{
+				pickTypes.add(PickHint.PickType.OBJECT_MARKER);
+			}
+			if (entity instanceof org.lgna.story.Sun)
+			{
+				pickTypes.add(PickHint.PickType.SUN);
+			}
+			if (entity instanceof org.lgna.story.Joint)
+			{
+				pickTypes.add(PickHint.PickType.JOINT);
+			}
+		}
+		if (pickTypes.size() == 0)
+		{
+			return new PickHint();
+		}
+		else
+		{
+			return new PickHint(pickTypes.toArray(new PickHint.PickType[pickTypes.size()]));
+		}
+	}
+	
+	public static PickHint getPickTypeForImp(EntityImp imp) {
+		if (imp != null) {
+			return getPickHintForEntity(imp.getAbstraction());
+		}
+		else  {
+			return getPickHintForEntity((Entity)null);
+		}
+	}
+	
 	public static PickHint getPickType( edu.cmu.cs.dennisc.scenegraph.Component pickedObject )
 	{
-		List<PickHint.PickType> pickTypes = new LinkedList<PickHint.PickType>();
+		PickHint returnHint = null;
 		if (pickedObject != null)
 		{
 			Entity entity = getEntityFromPickedObject(pickedObject);
-			if (entity != null)
-			{
-				if (entity instanceof org.lgna.story.Turnable)
-				{
-					pickTypes.add(PickHint.PickType.TURNABLE);
-				}
-				if (entity instanceof org.lgna.story.MovableTurnable)
-				{
-					pickTypes.add(PickHint.PickType.MOVEABLE);
-				}
-				if (entity instanceof org.lgna.story.Resizable)
-				{
-					pickTypes.add(PickHint.PickType.RESIZABLE);
-				}
-				if (entity instanceof org.lgna.story.Camera || entity instanceof org.lgna.story.Model || entity instanceof org.lgna.story.Marker)
-				{
-					pickTypes.add(PickHint.PickType.SELECTABLE);
-				}
-				if (entity instanceof org.lgna.story.MovableTurnable)
-				{
-					pickTypes.add(PickHint.PickType.VIEWABLE);
-				}
-				if (entity instanceof org.lgna.story.CameraMarker)
-				{
-					pickTypes.add(PickHint.PickType.CAMERA_MARKER);
-				}
-				if (entity instanceof org.lgna.story.ObjectMarker)
-				{
-					pickTypes.add(PickHint.PickType.OBJECT_MARKER);
-				}
-				if (entity instanceof org.lgna.story.Sun)
-				{
-					pickTypes.add(PickHint.PickType.SUN);
-				}
-				if (entity instanceof org.lgna.story.Joint)
-				{
-					pickTypes.add(PickHint.PickType.JOINT);
-				}
-			}
-			else
-			{
-				//System.out.println("No implementation for "+pickedObject);
-				EntityImp e = EntityImp.getInstance(pickedObject);
-			}
+			returnHint = getPickHintForEntity(entity);
 				
 			if (pickedObject instanceof edu.cmu.cs.dennisc.scenegraph.Composite)
 			{
@@ -178,11 +195,11 @@ public class PickUtilities {
 				{
 					if (camera instanceof SymmetricPerspectiveCamera)
 					{
-						pickTypes.add(PickHint.PickType.PERSPECTIVE_CAMERA);
+						returnHint.addPickType(PickHint.PickType.PERSPECTIVE_CAMERA);
 					}
 					else if (camera instanceof OrthographicCamera)
 					{
-						pickTypes.add(PickHint.PickType.ORTHOGRAPHIC_CAMERA);
+						returnHint.addPickType(PickHint.PickType.ORTHOGRAPHIC_CAMERA);
 					}
 				}
 				else
@@ -190,18 +207,18 @@ public class PickUtilities {
 					ManipulationHandle3D handle3D = getParentOfClass(pickedObject, ManipulationHandle3D.class);
 					if (handle3D != null)
 					{
-						pickTypes.add(PickHint.PickType.THREE_D_HANDLE);
+						returnHint.addPickType(PickHint.PickType.THREE_D_HANDLE);
 					}
 				}
 			}
 		}
-		if (pickTypes.size() == 0)
+		if (returnHint == null || returnHint.isEmpty())
 		{
 			return PickHint.PickType.NOTHING.pickHint();
 		}
 		else
 		{
-			return new PickHint(pickTypes.toArray(new PickHint.PickType[pickTypes.size()]));
+			return returnHint;
 		}
 	}
 	
