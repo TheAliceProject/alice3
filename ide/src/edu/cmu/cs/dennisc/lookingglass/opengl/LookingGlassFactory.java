@@ -206,8 +206,13 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 //	}
 	
 	/*package-private*/ boolean canCreateGLPbuffer() {
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-		return glDrawableFactory.canCreateGLPbuffer();
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "solve pBuffer crash on linux" );
+			return false;
+		} else {
+			javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
+			return glDrawableFactory.canCreateGLPbuffer();
+		}
 	}
 	/*package-private*/ javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
