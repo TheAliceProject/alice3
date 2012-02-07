@@ -64,7 +64,7 @@ public abstract class RenameOperation extends org.lgna.croquet.InputDialogOperat
 	@Override
 	protected void epilogue( org.lgna.croquet.history.OperationStep step, boolean isOk) {
 		if( isOk ) {
-			org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getBonusDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
+			org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 			String nextValue = renamePane.getNameText();
 			step.commitAndInvokeDo( this.createEdit( step, nextValue ) );
 		} else {
@@ -78,7 +78,7 @@ public abstract class RenameOperation extends org.lgna.croquet.InputDialogOperat
 	}
 	@Override
 	protected String getInternalExplanation( org.lgna.croquet.history.OperationStep step ) {
-		org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getBonusDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
+		org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 		String rv = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( renamePane.getNameText() );
 		if( rv != null ) {
 			return rv;

@@ -47,8 +47,11 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public final class OperationStep extends CompletionStep< org.lgna.croquet.Operation >{
-	public static OperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory  ) {
+	public static OperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
 		return new OperationStep( parent, model, trigger, transactionHistory );
+	}
+	public static OperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return createAndAddToTransaction( parent, model, trigger, null );
 	}
 	private OperationStep( Transaction parent, org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
 		super( parent, model, trigger, transactionHistory );

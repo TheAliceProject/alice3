@@ -388,7 +388,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		@Override
 		protected void epilogue(org.lgna.croquet.history.OperationStep step, boolean isOk) {
 			if( isOk ) {
-				org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getBonusDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
+				org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 				final String nextName = renamePane.getNameText();
 				if( nextName != null && nextName.length() > 0 ) {
 					final String prevName = this.resource.getName();

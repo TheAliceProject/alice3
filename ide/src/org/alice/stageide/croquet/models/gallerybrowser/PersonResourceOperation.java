@@ -47,6 +47,8 @@ package org.alice.stageide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public abstract class PersonResourceOperation extends org.lgna.croquet.InputDialogOperation< org.lgna.story.resources.sims2.PersonResource > {
+	public static final org.lgna.croquet.history.Step.Key< org.lgna.story.resources.sims2.PersonResource > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueInputDialogOperation.VALUE_KEY" );
+
 	public PersonResourceOperation( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
@@ -79,7 +81,7 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.InputDial
 				if( edit != null ) {
 					step.commitAndInvokeDo( edit );
 				} else { 
-					step.commitValue( personResource );
+					step.putEphemeralDataFor( VALUE_KEY, personResource );
 				}
 			}
 		} else {

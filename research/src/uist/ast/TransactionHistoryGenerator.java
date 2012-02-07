@@ -78,7 +78,7 @@ public class TransactionHistoryGenerator {
 			operation = org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( declaringType );
 		}
 
-		org.lgna.croquet.history.InputDialogOperationStep step = org.lgna.croquet.history.InputDialogOperationStep.createAndAddToTransaction( rv, operation, new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.history.OperationStep step = org.lgna.croquet.history.OperationStep.createAndAddToTransaction( rv, operation, new org.lgna.croquet.triggers.SimulatedTrigger() );
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit edit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( step, declaringType, userMethod );
 		addEdit( step, edit );
 		return rv;
@@ -161,7 +161,7 @@ public class TransactionHistoryGenerator {
 		}
 	}
 
-	private static <M extends org.lgna.croquet.CompletionModel> org.lgna.croquet.history.CompletionStep< M > addEdit( org.lgna.croquet.history.CompletionStep< M > rv, org.lgna.croquet.edits.Edit< M > edit ) {
+	private static <M extends org.lgna.croquet.CompletionModel> org.lgna.croquet.history.CompletionStep< M > addEdit( org.lgna.croquet.history.CompletionStep< M > rv, org.lgna.croquet.edits.Edit edit ) {
 		//		org.lgna.croquet.history.CommitEvent commitEvent = new org.lgna.croquet.history.CommitEvent( edit );
 		//		rv.addChild( commitEvent );
 		//		edit.setContext( rv );
@@ -170,11 +170,11 @@ public class TransactionHistoryGenerator {
 
 	private static org.lgna.croquet.history.Transaction createOpenAndClosePlainDialogOperationTransaction( org.lgna.croquet.history.TransactionHistory parent, org.lgna.croquet.PlainDialogOperation plainDialogOperation ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( parent );
-		org.lgna.croquet.history.PlainDialogOperationStep step = org.lgna.croquet.history.PlainDialogOperationStep.createAndAddToTransaction( rv, plainDialogOperation, new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.history.OperationStep step = org.lgna.croquet.history.OperationStep.createAndAddToTransaction( rv, plainDialogOperation, new org.lgna.croquet.triggers.SimulatedTrigger() );
 		step.finish();
 
 		// TODO: This may not be right. this should probably be step.getParent()
-		org.lgna.croquet.history.PlainDialogCloseOperationStep step2 = org.lgna.croquet.history.PlainDialogCloseOperationStep.createAndAddToTransaction( step.getTransactionHistory().getActiveTransaction(), plainDialogOperation.getCloseOperation(), new org.lgna.croquet.triggers.SimulatedTrigger());
+		org.lgna.croquet.history.OperationStep step2 = org.lgna.croquet.history.OperationStep.createAndAddToTransaction( step.getTransactionHistory().getActiveTransaction(), plainDialogOperation.getCloseOperation(), new org.lgna.croquet.triggers.SimulatedTrigger() );
 		step2.finish();
 		return rv;
 	}

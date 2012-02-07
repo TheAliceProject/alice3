@@ -47,6 +47,8 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ValueInputDialogOperation<T> extends InputDialogOperation< T > {
+	public static final org.lgna.croquet.history.Step.Key< Object > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueInputDialogOperation.VALUE_KEY" );
+
 	public static final class InternalFillInResolver<F> extends IndirectResolver< InternalFillIn<F>, ValueInputDialogOperation<F> > {
 		private InternalFillInResolver( ValueInputDialogOperation<F> internal ) {
 			super( internal );
@@ -83,8 +85,8 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		@Override
 		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 			org.lgna.croquet.history.OperationStep inputDialogStep = this.valueInputDialogOperation.fire();
-			if( inputDialogStep.isValueCommitted() ) {
-				return inputDialogStep.getCommittedValue();
+			if( inputDialogStep.containsEphemeralDataFor( VALUE_KEY ) ) {
+				return (F)inputDialogStep.getEphemeralDataFor( VALUE_KEY );
 			} else {
 				throw new CancelException();
 			}
@@ -122,7 +124,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		if( isCommit ) {
 			T value = this.createValue( step );
 			if( value != null ) {
-				step.commitValue( value );
+				step.putEphemeralDataFor( VALUE_KEY, value );
 			} else {
 				step.cancel();
 			}
