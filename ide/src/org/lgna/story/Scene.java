@@ -132,6 +132,8 @@ public abstract class Scene extends Entity{
 		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
 	
+//	public void addComesIntoViewEventListenr
+	
 	
 	@MethodTemplate(visibility=Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
