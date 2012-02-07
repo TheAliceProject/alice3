@@ -54,6 +54,8 @@ import org.lgna.croquet.components.LineAxisPanel;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation {
+	public static final org.lgna.croquet.history.Node.Key< org.lgna.croquet.components.Container< ? > > INPUT_PANEL_KEY = org.lgna.croquet.history.Node.Key.createInstance( "InputDialogOperation.INPUT_PANEL_KEY" );
+
 	public InputDialogOperation(Group group, java.util.UUID individualId) {
 		super(group, individualId);
 	}
@@ -80,7 +82,7 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 	protected org.lgna.croquet.components.Component< ? > createMainPanel( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.JComponent< javax.swing.JLabel > explanationLabel ) {
 		JComponent< ? > child = this.prologue( step );
 		if( child != null ) {
-			step.setMainPanel( child );
+			step.putBonusDataFor( INPUT_PANEL_KEY, child );
 			BorderPanel rv = new BorderPanel();
 			rv.setBackgroundColor( child.getBackgroundColor() );
 			rv.addComponent( child, BorderPanel.Constraint.CENTER );

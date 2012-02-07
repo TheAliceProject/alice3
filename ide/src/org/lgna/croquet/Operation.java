@@ -154,10 +154,12 @@ public abstract class Operation extends CompletionModel {
 		return fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 	}
 	
+	protected abstract org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary();
+	
 	/*package-private*/ final org.lgna.croquet.history.OperationStep handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
 		//todo: move up to Model
 		this.initializeIfNecessary();
-		final org.lgna.croquet.history.OperationStep step = org.lgna.croquet.history.TransactionManager.addOperationStep( this, trigger );
+		final org.lgna.croquet.history.OperationStep step = org.lgna.croquet.history.TransactionManager.addOperationStep( this, trigger, this.createTransactionHistoryIfNecessary() );
 		this.perform( step );
 		return step;
 	}

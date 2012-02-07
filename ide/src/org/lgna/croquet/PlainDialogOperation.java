@@ -70,7 +70,10 @@ public abstract class PlainDialogOperation extends DialogOperation {
 			rv.append( "Press the <strong>Close</strong> button when you are ready." );
 			return rv;
 		}
-		
+		@Override
+		protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
+			return null;
+		}
 		public PlainDialogOperation getPlainDialogOperation() {
 			return this.plainDialogOperation;
 		}

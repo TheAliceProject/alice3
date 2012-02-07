@@ -59,5 +59,10 @@ public abstract class SerialOperation extends SingleThreadOperation {
 	public SerialOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+	@Override
+	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
+		//todo?
+		return null;
+	}
 	protected abstract java.util.List< SingleThreadOperation > getOperations();
 }

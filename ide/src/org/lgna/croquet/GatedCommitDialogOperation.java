@@ -255,12 +255,7 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 		if( event != null ) {
 			org.lgna.croquet.history.Node< ? > node = event.getNode();
 			if( node != null ) {
-				org.lgna.croquet.history.GatedCommitDialogOperationStep gatedCommitDialogOperationStep = node.getFirstAncestorAssignableTo( org.lgna.croquet.history.GatedCommitDialogOperationStep.class );
-				try {
-					s = (S)gatedCommitDialogOperationStep;
-				} catch( Throwable t ) {
-					t.printStackTrace();
-				}
+				s = node.getFirstAncestorStepOfModelAssignableTo( GatedCommitDialogOperation.class, org.lgna.croquet.history.OperationStep.class );
 			}
 		}
 		this.updateExplanation( s );

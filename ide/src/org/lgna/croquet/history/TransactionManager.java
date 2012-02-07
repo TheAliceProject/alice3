@@ -209,9 +209,9 @@ public class TransactionManager {
 	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	public static OperationStep addActionOperationStep( org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static OperationStep addOperationStep( org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
 		Transaction transaction = getActiveTransaction();
-		return OperationStep.createAndAddToTransaction( transaction, model, trigger ); 
+		return OperationStep.createAndAddToTransaction( transaction, model, trigger, transactionHistory ); 
 	}
 	public static PopupPrepStep addPopupPrepStep( org.lgna.croquet.PopupPrepModel popupPrepModel, org.lgna.croquet.triggers.Trigger trigger ) {
 		return PopupPrepStep.createAndAddToTransaction( getActiveTransaction(), popupPrepModel, trigger );

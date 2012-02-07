@@ -63,8 +63,10 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation {
 		public WizardOperation( java.util.UUID id ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 		}
-		protected ListSelectionState< Card > getCardSelectionState(  org.lgna.croquet.history.OperationStep step ) {
-			return step.getFirstAncestorAssignableTo( org.lgna.croquet.history.WizardDialogOperationStep.class ).getModel().cardSelectionState;
+		protected ListSelectionState< Card > getCardSelectionState( org.lgna.croquet.history.OperationStep step ) {
+			org.lgna.croquet.history.OperationStep operationStep = step.getFirstAncestorStepOfModelAssignableTo( WizardDialogOperation.class, org.lgna.croquet.history.OperationStep.class );
+			WizardDialogOperation wizardDialogOperation = (WizardDialogOperation)operationStep.getModel();
+			return wizardDialogOperation.cardSelectionState;
 		}
 	}
 	private static class NextOperation extends WizardOperation {
@@ -231,7 +233,7 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation {
 	}
 
 	@Override
-	protected String getExplanation( org.lgna.croquet.history.WizardDialogOperationStep step ) {
+	protected String getExplanation( org.lgna.croquet.history.OperationStep step ) {
 		Card card = this.cardSelectionState.getSelectedItem();
 		if( card != null ) {
 			return card.step.getExplanationIfProcedeButtonShouldBeDisabled();
@@ -263,15 +265,11 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation {
 		//todo
 		this.updateExplanation( null );
 	}
-	@Override
-	public org.lgna.croquet.history.WizardDialogOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
-		return org.lgna.croquet.history.TransactionManager.addWizardDialogOperationStep( this, trigger );
-	}
 
 	protected abstract WizardStage[] createSteps( org.lgna.croquet.history.OperationStep step );
 	
 	@Override
-	protected Component< ? > createControlsPanel( org.lgna.croquet.history.WizardDialogOperationStep step, Dialog dialog ) {
+	protected Component< ? > createControlsPanel( org.lgna.croquet.history.OperationStep step, Dialog dialog ) {
 		Button finishButton = this.getCompleteOperation().createButton();
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );

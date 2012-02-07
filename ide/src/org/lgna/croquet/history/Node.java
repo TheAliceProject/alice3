@@ -48,12 +48,40 @@ package org.lgna.croquet.history;
 public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private final java.util.List<org.lgna.croquet.history.event.Listener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	
+	public static class Key<T> {
+		public static <T> Key<T> createInstance( String repr ) {
+			return new Key<T>( repr );
+		}
+		private final String repr;
+		private Key( String repr ) {
+			this.repr = repr;
+		}
+		@Override
+		public java.lang.String toString() {
+			return this.repr;
+		}
+	}
+	private final java.util.Map/*< Key<T>, T >*/ dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private P parent;
 	public Node( P parent ) {
 		this.setParent( parent );
 	}
 	public Node( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
+
+	public <T> boolean containsBonusDataFor( Key<T> key ) {
+		return this.dataMap.containsKey( key );
+	}
+	public <T> T getBonusDataFor( Key<T> key ) {
+		return (T)this.dataMap.get( key );
+	}
+	public <T> void putBonusDataFor( Key<T> key, T value ) {
+		this.dataMap.put( key, value );
+	}
+	public <T> void removeBonusDataFor( Key<T> key ) {
+		this.dataMap.remove( key );
+	}
+	
 	public P getParent() {
 		return this.parent;
 	}
@@ -81,6 +109,38 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 	public final <N extends Node<?>> N getFirstAncestorAssignableTo( Class<N> cls ) {
 		return this.getFirstAncestorAssignableTo( cls, false );
 	}
+	
+	public final <S extends Step<M>, M extends org.lgna.croquet.Model> S getFirstAncestorStepOfEquivalentModel( M model, Class<S> stepCls ) {
+		S step = this.getFirstAncestorAssignableTo( stepCls );
+		if( step != null ) {
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( step.getModel(), model ) ) {
+				return step;
+			} else {
+				return step.getFirstAncestorStepOfEquivalentModel( model, stepCls );
+			}
+		} else {
+			return null;
+		}
+	}
+	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstAncestorStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
+		S step = this.getFirstAncestorAssignableTo( stepCls );
+		if( step != null ) {
+			org.lgna.croquet.Model m = step.getModel();
+			if( m != null ) {
+				if( modelCls.isAssignableFrom( m.getClass() ) ) {
+					return step;
+				} else {
+					return step.getFirstAncestorStepOfModelAssignableTo( modelCls, stepCls );
+				}
+			} else {
+				//todo: return null?
+				return step.getFirstAncestorStepOfModelAssignableTo( modelCls, stepCls );
+			}
+		} else {
+			return null;
+		}
+	}
+	
 	
 	public void addListener( org.lgna.croquet.history.event.Listener listener ) {
 		this.listeners.add( listener );
