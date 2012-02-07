@@ -46,6 +46,7 @@ package org.lgna.story;
 import org.lgna.project.annotations.*;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
+import org.lgna.story.event.OcclusionEventListener;
 import org.lgna.story.event.TimeListener;
 
 /**
@@ -120,9 +121,13 @@ public abstract class Scene extends Entity{
 		this.getImplementation().fogDensity.animateValue( density.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
 	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, AddMouseButtonListener.Detail... details ) {
 		this.implementation.getEventManager().addMouseClickOnScreenListener( listener, MultipleEventPolicy.getValue( details ) );
 	}
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
 	public void addMouseClickOnObjectListener( MouseClickOnObjectListener listener, AddMouseButtonListener.Detail... details ) {
 		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
@@ -147,13 +152,24 @@ public abstract class Scene extends Entity{
 		this.getImplementation().getEventManager().removeMouseButtonListener( mouseButtonListener );
 	}
 
-//	public void addKeyPressListener( org.lgna.story.event.KeyPressListener keyPressListener,  AddKeyPressListener.Detail... details) {
-//		//method on Listener keyPressed
-//	}
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
+	public void addTransformationListener( org.lgna.story.event.TransformationListener transformationlistener, Entity[] shouldListenTo ) {
+		this.getImplementation().getEventManager().addTransformationListener( transformationlistener, shouldListenTo );
+	}
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
+	public void addOcclusionEventListener(  org.lgna.story.event.OcclusionEventListener occlusionEventListener, Entity[] groupOne, Entity[] groupTwo ){
+		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList(groupOne), edu.cmu.cs.dennisc.java.util.Collections.newArrayList(groupTwo) );
+	}
 	
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
 	public void addArrowKeyPressListener( org.lgna.story.event.ArrowKeyPressListener keyPressListener,  AddKeyPressListener.Detail... details) {
 		this.getImplementation().getEventManager().addArrowKeyListener( keyPressListener, MultipleEventPolicy.getValue( details ) );
 	}
+	@MethodTemplate(visibility=Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
 	public void addNumberKeyPressListener( org.lgna.story.event.NumberKeyPressListener keyPressListener,  AddKeyPressListener.Detail... details) {
 		this.getImplementation().getEventManager().addNumberKeyListener( keyPressListener, MultipleEventPolicy.getValue( details ) );
 	}

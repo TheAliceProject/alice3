@@ -69,6 +69,8 @@ import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TimerEvent;
+import org.lgna.story.event.TransformationEvent;
+import org.lgna.story.event.TransformationListener;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -267,6 +269,12 @@ class SnowScene extends Scene{
 				ogre.move(MoveDirection.DOWN, e.getNumber());
 			}
 		});
+		this.addTransformationListener(new TransformationListener() {
+			
+			public void whenThisMoves(TransformationEvent e) {
+				ogre.say( "Hi, I have moved!" );
+			}
+		}, colListOne );
 //		this.addProximityEventListener( new ProximityEventListener() {
 //
 //			public void whenTheseGetClose( ProximityEvent e ) {

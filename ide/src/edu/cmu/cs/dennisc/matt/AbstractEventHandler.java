@@ -68,10 +68,13 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 		fireDequeue(listener, event);
 	}
 
-	protected void fire(L listener, E event){
+	private void fire(L listener, E event){
 		recorder.recordEvent(event);
+		nameOfFireCall(listener, event);
 	}
 
+	protected abstract void nameOfFireCall(L listener, E event);
+	
 	public final void silenceListeners(){
 		shouldFire = false;
 	}
@@ -93,6 +96,10 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 	}
 	protected void registerPolicyMap(Object timerEventListener, MultipleEventPolicy policy) {
 		policyMap.put(timerEventListener, policy);
+	}
+
+	protected void fireEvent(L listener, E event) {
+		fireEvent( listener, event, listener ); //used if policy is not constrained by anything else, such as selected model for mouse click events
 	}
 
 }

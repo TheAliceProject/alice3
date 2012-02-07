@@ -47,19 +47,18 @@ public class KeyPressedHandler extends AbstractEventHandler< AbstractKeyPressLis
 				Key key = e.getKey();
 			if ( map.get(key) != null ) {
 				for( AbstractKeyPressListener listener: map.get( key ) ){
-					fireEvent( listener, e, listener );
+					fireEvent( listener, e );
 				}
 			}
 			for( AbstractKeyPressListener listener: map.get( empty ) ){
-				fireEvent( listener, e, listener );
+				fireEvent( listener, e );
 			}
 			
 		}
 	}
 
 	@Override
-	protected void fire( AbstractKeyPressListener listener, KeyEvent event ) {
-		super.fire( listener, event );
+	protected void nameOfFireCall(AbstractKeyPressListener listener, KeyEvent event) {
 		if ( listener instanceof ArrowKeyPressListener ) {
 			ArrowKeyPressListener arrowListener = ( ArrowKeyPressListener ) listener;
 			arrowListener.keyPressed(new ArrowKeyEvent( event ) );

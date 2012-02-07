@@ -57,7 +57,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class CollisionHandler extends TransformationChangedHandler<CollisionListener, CollisionEvent>{	
+public class CollisionHandler extends TransformationChangedHandler < CollisionListener, CollisionEvent > {	
 
 	protected CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 
@@ -79,13 +79,10 @@ public class CollisionHandler extends TransformationChangedHandler<CollisionList
 	protected void check( Entity changedEntity ) {
 		collisionEventHandler.check( changedEntity );
 	}
-
 	@Override
-	protected void fire( CollisionListener listener, CollisionEvent event ) {
-		super.fire(listener, event);
+	protected void nameOfFireCall(CollisionListener listener, CollisionEvent event) {
 		listener.whenTheseCollide( event );
 	}
-
 
 	private class CollisionEventHandler {
 
@@ -99,7 +96,7 @@ public class CollisionHandler extends TransformationChangedHandler<CollisionList
 					models.add( changedEntity );
 					models.add( m );
 					for( CollisionListener colList : eventMap.get( changedEntity ).get( m ) ) {
-						fireEvent( colList, new CollisionEvent( models ), colList );
+						fireEvent( colList, new CollisionEvent( models ) );
 					}
 				}
 			}

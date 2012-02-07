@@ -1,5 +1,6 @@
 package edu.cmu.cs.dennisc.matt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lgna.story.Entity;
@@ -15,8 +16,10 @@ import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
+import org.lgna.story.event.OcclusionEventListener;
 import org.lgna.story.event.ProximityEventListener;
 import org.lgna.story.event.TimeListener;
+import org.lgna.story.event.TransformationListener;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
@@ -24,11 +27,14 @@ import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 public class EventManager {
 
 	private final MouseClickedHandler mouseHandler = new MouseClickedHandler();
+	
+	private final TransformationHandler transHandler = new TransformationHandler();
+	private OcclusionHandler occlusionHandler;
 	private final CollisionHandler collisionHandler = new CollisionHandler();
 	private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
 	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
 	private final TimerEventHandler timer = new TimerEventHandler();
-	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { mouseHandler, collisionHandler, proxyHandler, keyHandler };
+	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { mouseHandler, transHandler, collisionHandler, proxyHandler, keyHandler };
 
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
@@ -54,6 +60,7 @@ public class EventManager {
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
+		this.occlusionHandler = new OcclusionHandler( scene.findFirstCamera() );
 	}
 
 	public void removeMouseButtonListener( MouseClickListener mouseButtonListener ) {
@@ -139,6 +146,14 @@ public class EventManager {
 	}
 	public void addMouseButtonListener( MouseClickListener listener, MultipleEventPolicy policy, Visual[] targets ) {
 		this.mouseHandler.addListener( listener, policy, targets );
+	}
+
+	public void addTransformationListener( TransformationListener transformationlistener, Entity[] shouldListenTo) {
+		this.transHandler.addTransformationListener( transformationlistener, shouldListenTo );
+	}
+
+	public void addOcclusionEventListener( OcclusionEventListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
+		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	}
 
 }

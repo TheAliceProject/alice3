@@ -76,17 +76,15 @@ public class ProximityEventHandler extends TransformationChangedHandler<Proximit
 		}
 
 	}
-	
+
 	@Override
-	protected void fire( ProximityEventListener listener, ProximityEvent event ) {
-		super.fire(listener, event);
+	protected void nameOfFireCall(ProximityEventListener listener, ProximityEvent event) {
 		listener.whenTheseGetClose(event);
 	}
 
 	@Override
 	protected void check( Entity changedEntity ) {
 		proximityEventManager.check(changedEntity);
-		
 	}
 	
 	protected class ProximityEventManager {
@@ -102,7 +100,7 @@ public class ProximityEventHandler extends TransformationChangedHandler<Proximit
 						LinkedList< Entity > models = new LinkedList< Entity >();
 						models.add( changedEntity );
 						models.add( m );
-						fireEvent( proxList, new ProximityEvent( models ), proxList );
+						fireEvent( proxList, new ProximityEvent( models ) );
 					}
 				}
 			}

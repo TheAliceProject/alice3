@@ -40,7 +40,6 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 		if(!isEnabled){
 			enable();
 		}
-		System.out.println("policy: " + policy);
 		registerPolicyMap(timerEventListener, policy);
 		registerIsFiringMap(timerEventListener);
 		Long a = secondsToMills(frequency);
@@ -57,9 +56,9 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 		}
 	}
 
-	private void trigger(TimeListener listener, TimerEvent timerEvent) {
-		mostRecentFire.put(listener, currentTime);
-		fireEvent(listener, timerEvent, listener);
+	private void trigger( TimeListener listener, TimerEvent timerEvent ) {
+		mostRecentFire.put( listener, currentTime );
+		fireEvent( listener, timerEvent );
 	}
 	private boolean timeToFire(TimeListener listener) {
 		return currentTime - mostRecentFire.get(listener) > freqMap.get(listener);
@@ -68,10 +67,8 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 	private Long secondsToMills(Long frequency) {
 		return 1000*frequency;
 	}
-
 	@Override
-	protected void fire(final TimeListener listener, TimerEvent event) {
-		super.fire(listener, event);
+	protected void nameOfFireCall(TimeListener listener, TimerEvent event) {
 		listener.timeElapsed(event);
 	}
 }

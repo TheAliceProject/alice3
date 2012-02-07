@@ -36,6 +36,20 @@ public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClic
 		return true;
 	}
 	
+	@Override
+	protected void nameOfFireCall(AbstractMouseClickListener listener, MouseButtonEvent event) {
+		if (listener instanceof MouseClickOnObjectListener) {
+			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
+			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
+		} else if ( listener instanceof MouseClickOnScreenListener ) {
+			MouseClickOnScreenListener mouseCOSL = ( MouseClickOnScreenListener ) listener;
+			mouseCOSL.mouseClicked(  );
+		} else if (listener instanceof MouseButtonEvent ) {//TODO: Deprecated
+			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
+			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
+		}
+	}
+	
 	public MouseClickedHandler() {
 		map.put(empty, new LinkedList<AbstractMouseClickListener>());
 	}
@@ -109,20 +123,6 @@ public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClic
 			}
 		} else{
 			map.get(empty).add(listener);
-		}
-	}
-	@Override
-	protected void fire(AbstractMouseClickListener listener, MouseButtonEvent event) {
-		super.fire( listener, event );
-		if (listener instanceof MouseClickOnObjectListener) {
-			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
-			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
-		} else if ( listener instanceof MouseClickOnScreenListener ) {
-			MouseClickOnScreenListener mouseCOSL = ( MouseClickOnScreenListener ) listener;
-			mouseCOSL.mouseClicked(  );
-		} else if (listener instanceof MouseButtonEvent ) {//TODO: Depricated
-			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
-			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
 		}
 	}
 }
