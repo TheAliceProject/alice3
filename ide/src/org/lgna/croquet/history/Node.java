@@ -64,7 +64,7 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 
 	protected abstract void appendContexts( java.util.List< org.lgna.croquet.Context > out );
 	
-	private <N extends Node<?>> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
+	private <N extends Node<?>> N findNodeAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
 		Node<?> rv;
 		if( isThisIncludedInSearch ) {
 			rv = this;
@@ -79,39 +79,54 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 		}
 		return (N)rv;
 	}
+	public final <N extends Node<?>> N getFirstAssignableTo( Class<N> cls ) {
+		return this.findNodeAssignableTo( cls, true );
+	}
 	public final <N extends Node<?>> N getFirstAncestorAssignableTo( Class<N> cls ) {
-		return this.getFirstAncestorAssignableTo( cls, false );
+		return this.findNodeAssignableTo( cls, false );
 	}
 	
-	public final <S extends Step<M>, M extends org.lgna.croquet.Model> S getFirstAncestorStepOfEquivalentModel( M model, Class<S> stepCls ) {
-		S step = this.getFirstAncestorAssignableTo( stepCls );
+	protected <S extends Step<M>, M extends org.lgna.croquet.Model> S findStepOfEquivalentModel( M model, Class<S> stepCls, boolean isThisIncludedInSearch ) {
+		S step = this.findNodeAssignableTo( stepCls, isThisIncludedInSearch );
 		if( step != null ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( step.getModel(), model ) ) {
 				return step;
 			} else {
-				return step.getFirstAncestorStepOfEquivalentModel( model, stepCls );
+				return step.findStepOfEquivalentModel( model, stepCls, false );
 			}
 		} else {
 			return null;
 		}
 	}
-	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstAncestorStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
-		S step = this.getFirstAncestorAssignableTo( stepCls );
+	public final <S extends Step<M>, M extends org.lgna.croquet.Model> S getFirstAncestorStepOfEquivalentModel( M model, Class<S> stepCls ) {
+		return this.findStepOfEquivalentModel( model, stepCls, false );
+	}
+	public final <S extends Step<M>, M extends org.lgna.croquet.Model> S getFirstStepOfEquivalentModel( M model, Class<S> stepCls ) {
+		return this.findStepOfEquivalentModel( model, stepCls, true );
+	}
+	protected final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S findStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls, boolean isThisIncludedInSearch ) {
+		S step = this.findNodeAssignableTo( stepCls, isThisIncludedInSearch );
 		if( step != null ) {
 			org.lgna.croquet.Model m = step.getModel();
 			if( m != null ) {
 				if( modelCls.isAssignableFrom( m.getClass() ) ) {
 					return step;
 				} else {
-					return step.getFirstAncestorStepOfModelAssignableTo( modelCls, stepCls );
+					return step.findStepOfModelAssignableTo( modelCls, stepCls, false );
 				}
 			} else {
 				//todo: return null?
-				return step.getFirstAncestorStepOfModelAssignableTo( modelCls, stepCls );
+				return step.findStepOfModelAssignableTo( modelCls, stepCls, false );
 			}
 		} else {
 			return null;
 		}
+	}
+	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstAncestorStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
+		return this.findStepOfModelAssignableTo( modelCls, stepCls, false );
+	}
+	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
+		return this.findStepOfModelAssignableTo( modelCls, stepCls, true );
 	}
 	
 	
