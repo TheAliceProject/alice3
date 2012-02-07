@@ -225,6 +225,10 @@ public abstract class EntityImp implements ReferenceFrame {
 		return rv;
 	}
 	
+	public java.awt.Point transformToAwt( edu.cmu.cs.dennisc.math.Point3 xyz, CameraImp< ? > camera ) {
+		return this.getSgComposite().transformToAWT_New( xyz, this.getProgram().getOnscreenLookingGlass(), camera.getSgCamera() );
+	}
+	
 	protected static final double RIGHT_NOW = 0.0;
 	protected static final double DEFAULT_DURATION = 1.0;
 	protected static final edu.cmu.cs.dennisc.animation.Style DEFAULT_STYLE = edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY;
