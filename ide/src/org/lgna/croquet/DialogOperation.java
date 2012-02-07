@@ -132,12 +132,12 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				org.lgna.croquet.history.TransactionManager.fireDialogOpened( dialog );
-				step.handleWindowOpened( e );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "step.handleWindowOpened( e )?" );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				if( DialogOperation.this.isWindowClosingEnabled( e ) ) {
 					dialog.setVisible( false );
-					step.handleWindowClosing( e );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "step.handleWindowClosing( e )?" );
 				}
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
