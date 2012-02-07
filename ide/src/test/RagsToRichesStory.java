@@ -48,6 +48,7 @@ import org.lgna.story.Camera;
 import org.lgna.story.Color;
 import org.lgna.story.Cone;
 import org.lgna.story.Ground;
+import org.lgna.story.JointedModel;
 import org.lgna.story.Key;
 import org.lgna.story.Model;
 import org.lgna.story.Move;
@@ -65,6 +66,8 @@ import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
+import org.lgna.story.event.OcclusionEvent;
+import org.lgna.story.event.OcclusionEventListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeListener;
@@ -243,12 +246,12 @@ class SnowScene extends Scene{
 //				event.getModels().get(1).move(MoveDirection.DOWN, 1);
 //			}
 //		}, colListOne, colListTwo);
-		this.addTimerEventListener( new TimeListener() {
-			public void timeElapsed(TimerEvent e) {
-				greenCone.move(MoveDirection.UP, 1);
-				greenCone.move(MoveDirection.DOWN, 1);
-			}
-		}, AddTimerEventListener.timerFrequency(0.0), MultipleEventPolicy.ENQUEUE );
+//		this.addTimerEventListener( new TimeListener() {
+//			public void timeElapsed(TimerEvent e) {
+//				greenCone.move(MoveDirection.UP, 1);
+//				greenCone.move(MoveDirection.DOWN, 1);
+//			}
+//		}, AddTimerEventListener.timerFrequency(0.0), MultipleEventPolicy.ENQUEUE );
 		this.addKeyPressListener(new KeyPressListener() {
 			public void keyPressed(KeyEvent e) {
 				if(e.isKey(Key.A)){
@@ -275,6 +278,12 @@ class SnowScene extends Scene{
 				ogre.say( "Hi, I have moved!" );
 			}
 		}, colListOne );
+		this.addOcclusionEventListener(new OcclusionEventListener() {
+			
+			public void whenTheseOcclude(OcclusionEvent e) {
+				( ( JointedModel ) e.getBackgroundEntity() ).say( "Get behind me!" );
+			}
+		}, colListOne, colListTwo );
 //		this.addProximityEventListener( new ProximityEventListener() {
 //
 //			public void whenTheseGetClose( ProximityEvent e ) {

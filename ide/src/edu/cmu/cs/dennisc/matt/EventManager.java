@@ -60,7 +60,7 @@ public class EventManager {
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
-		this.occlusionHandler = new OcclusionHandler( scene.findFirstCamera() );
+		this.occlusionHandler = new OcclusionHandler( scene );
 	}
 
 	public void removeMouseButtonListener( MouseClickListener mouseButtonListener ) {

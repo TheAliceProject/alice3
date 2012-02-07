@@ -70,8 +70,10 @@ public abstract class ProgramContext {
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.KeyPressListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.ArrowKeyPressListener.class, org.alice.stageide.apis.story.event.ArrowKeyAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.NumberKeyPressListener.class, org.alice.stageide.apis.story.event.NumberKeyAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.TransformationListener.class, org.alice.stageide.apis.story.event.TransformationEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.CollisionListener.class, org.alice.stageide.apis.story.event.CollisionAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityEventListener.class, org.alice.stageide.apis.story.event.ProximityAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionEventListener.class, org.alice.stageide.apis.story.event.OcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
 		this.programInstance = vm.ENTRY_POINT_createInstance( programType );
 	}

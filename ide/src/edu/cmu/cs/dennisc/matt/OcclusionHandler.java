@@ -11,20 +11,23 @@ import org.lgna.story.event.OcclusionEvent;
 import org.lgna.story.event.OcclusionEventListener;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraImp;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class OcclusionHandler extends TransformationChangedHandler < OcclusionEventListener, OcclusionEvent > {
 	
 
-	private OcclusionEventHandler occlusionEventHandler;
+	private OcclusionEventHandler occlusionEventHandler = new OcclusionEventHandler();
+	private SceneImp sceneImp;
 	private CameraImp camera;
 	
-	public OcclusionHandler(CameraImp cameraImp) {
-		this.camera = cameraImp;
+	public OcclusionHandler( SceneImp sceneImp ) {
+		this.sceneImp = sceneImp;
 	}
 
-	public void addOcclusionEvent( OcclusionEventListener occlusionEventListener, List< Entity > groupOne, List< Entity > groupTwo ) {
+	public void addOcclusionEvent( OcclusionEventListener occlusionEventListener, 
+			List< Entity > groupOne, List< Entity > groupTwo ) {
 		registerIsFiringMap(occlusionEventListener);
 		registerPolicyMap(occlusionEventListener, MultipleEventPolicy.IGNORE);
 		List< Entity > allObserving = Collections.newArrayList( groupOne );
@@ -51,19 +54,26 @@ public class OcclusionHandler extends TransformationChangedHandler < OcclusionEv
 	private class OcclusionEventHandler {
 
 		private HashMap< Entity, LinkedList< Entity >> checkMap = new HashMap< Entity, LinkedList< Entity >>();
-		private HashMap< Entity, HashMap< Entity, LinkedList< OcclusionEventListener >>> eventMap = new HashMap< Entity, HashMap< Entity, LinkedList< OcclusionEventListener >>>();
+		private HashMap< Entity, HashMap< Entity, LinkedList< OcclusionEventListener >>> eventMap =
+				new HashMap< Entity, HashMap< Entity, LinkedList< OcclusionEventListener >>>();
 
 		public void check( Entity changedEntity ) {
+			if( camera == null ){
+				camera = sceneImp.findFirstCamera();
+				if( camera == null ) {
+					return;
+				}
+			}
 			for( Entity m : checkMap.get( changedEntity ) ) {
-				if( AabbCollisionDetector.doTheseCollide( m, changedEntity ) ) {
+				if( AabbOcclusionDetector.doesTheseOcclude( camera, m, changedEntity ) ) {
 					LinkedList< Entity > models = new LinkedList< Entity >();
 					if ( camera.getDistanceTo( (AbstractTransformableImp) ImplementationAccessor.getImplementation( m ) ) <
 							camera.getDistanceTo( (AbstractTransformableImp) ImplementationAccessor.getImplementation( changedEntity ) ) ){
 						models.add( m );
 						models.add( changedEntity );
 					} else {
-						models.add( m );
 						models.add( changedEntity );
+						models.add( m );
 					}
 					for( OcclusionEventListener colList : eventMap.get( changedEntity ).get( m ) ) {
 						fireEvent( colList, new OcclusionEvent( models ) );
@@ -72,7 +82,8 @@ public class OcclusionHandler extends TransformationChangedHandler < OcclusionEv
 			}
 		}
 
-		public void register( OcclusionEventListener occlusionListener, List< Entity > groupOne, List< Entity > groupTwo ) {
+		public void register( OcclusionEventListener occlusionListener, List< Entity > groupOne,
+				List< Entity > groupTwo ) {
 			for( Entity m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
 					eventMap.put( m, new HashMap< Entity, LinkedList< OcclusionEventListener >>() );
