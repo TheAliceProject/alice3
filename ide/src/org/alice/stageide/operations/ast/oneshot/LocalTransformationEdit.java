@@ -62,6 +62,7 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
 			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( turnable );
 			this.m = this.transformable.getLocalTransformation();
 		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
 			this.transformable = null;
 			this.m = null;
 		}
