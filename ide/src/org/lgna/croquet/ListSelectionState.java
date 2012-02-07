@@ -260,8 +260,20 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			return null;
 		}
 	}
+	protected void handleMissingItem( T missingItem ) {
+	}
 	public void setSelectedItem( T selectedItem ) {
-		this.setSelectedIndex( this.indexOf( selectedItem ) );
+		int index;
+		if( selectedItem != null ) {
+			index = this.indexOf( selectedItem );
+			if( index == -1 ) {
+				this.handleMissingItem( selectedItem );
+				index = this.indexOf( selectedItem );
+			}
+		} else {
+			index = -1;
+		}
+		this.setSelectedIndex( index );
 	}
 	@Override
 	protected void updateSwingModel( T nextValue ) {

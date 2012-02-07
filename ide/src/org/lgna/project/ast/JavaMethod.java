@@ -192,43 +192,43 @@ public class JavaMethod extends AbstractMethod {
 	@Override
 	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return AccessLevel.get( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isStatic() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isStatic( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isAbstract() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isAbstract( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isFinal() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isFinal( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isNative() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isNative( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isSynchronized() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isSynchronized( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isStrictFloatingPoint() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isStrict( mthd.getModifiers() );
 	}
 
