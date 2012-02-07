@@ -356,18 +356,20 @@ public class ThumbnailMaker {
 	}
 	
 	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int inputWidth, int inputHeight) throws Exception {
-//		initializeIfNecessary(inputWidth, inputHeight);
-		this.setSize((int)(inputWidth*SEARCH_FACTOR), (int)(inputHeight*SEARCH_FACTOR));
+		initializeIfNecessary(inputWidth, inputHeight);
+//		this.setSize((int)(inputWidth*SEARCH_FACTOR), (int)(inputHeight*SEARCH_FACTOR));
+		
+		edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass testImageLG = testImageOffscreenLookingGlass;
 		
 		v.setParent(this.sgModelTransformable);
 		getSGCameraVehicle().setLocalTransformation(getThumbnailCameraOrientation(bbox));
 		
 		AffineMatrix4x4 cameraTransform = getSGCameraVehicle().getAbsoluteTransformation();
-		java.awt.image.BufferedImage testImage = offscreenLookingGlass.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
-		java.nio.FloatBuffer depthBuffer = offscreenLookingGlass.createFloatBufferForUseAsDepthBuffer();
+		java.awt.image.BufferedImage testImage = testImageLG.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+		java.nio.FloatBuffer depthBuffer = testImageLG.createFloatBufferForUseAsDepthBuffer();
 		
-		offscreenLookingGlass.clearAndRenderOffscreen();
-		testImage = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+		testImageLG.clearAndRenderOffscreen();
+		testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 		
 		ImageUtilities.write("C:/batchOutput/thumbnailTest/initial.png", testImage);
 		
@@ -386,8 +388,8 @@ public class ThumbnailMaker {
 		while (!framed) {
 			cameraRay.getPointAlong(testPosition, currentT);
 			getSGCameraVehicle().setTranslationOnly(testPosition, world.getSgReferenceFrame());
-			offscreenLookingGlass.clearAndRenderOffscreen();
-			testImage = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+			testImageLG.clearAndRenderOffscreen();
+			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 			
 			ImageUtilities.write("C:/batchOutput/thumbnailTest/test"+count+".png", testImage);
 			
@@ -404,8 +406,8 @@ public class ThumbnailMaker {
 		{
 			cameraRay.getPointAlong(testPosition, currentT);
 			getSGCameraVehicle().setTranslationOnly(testPosition, world.getSgReferenceFrame());
-			offscreenLookingGlass.clearAndRenderOffscreen();
-			testImage = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
+			testImageLG.clearAndRenderOffscreen();
+			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 			
 			ImageUtilities.write("C:/batchOutput/thumbnailTest/test"+count+".png", testImage);
 			
