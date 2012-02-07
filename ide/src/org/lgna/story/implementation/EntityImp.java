@@ -204,6 +204,10 @@ public abstract class EntityImp implements ReferenceFrame {
 		SceneImp scene = this.getScene();
 		return scene != null ? scene.getProgram() : null;
 	}
+	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		ProgramImp program = this.getProgram();
+		return program != null ? program.getOnscreenLookingGlass() : null;
+	}
 	
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
 		return this.getSgComposite().getAbsoluteTransformation();
@@ -226,7 +230,7 @@ public abstract class EntityImp implements ReferenceFrame {
 	}
 	
 	public java.awt.Point transformToAwt( edu.cmu.cs.dennisc.math.Point3 xyz, CameraImp< ? > camera ) {
-		return this.getSgComposite().transformToAWT_New( xyz, this.getProgram().getOnscreenLookingGlass(), camera.getSgCamera() );
+		return this.getSgComposite().transformToAWT_New( xyz, this.getOnscreenLookingGlass(), camera.getSgCamera() );
 	}
 	
 	protected static final double RIGHT_NOW = 0.0;
