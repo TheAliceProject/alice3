@@ -66,7 +66,12 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 	}
 	@Override
 	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
-		return this.field.getDeclaringType().isAssignableFrom( type );
+		org.lgna.project.ast.AbstractType< ?,?,? > fieldDeclaringType = this.field.getDeclaringType();
+		if( fieldDeclaringType != null ) {
+			return fieldDeclaringType.isAssignableFrom( type );
+		} else {
+			return false;
+		}
 	}
 	@Override
 	protected org.lgna.croquet.resolvers.Resolver< ThisFieldAccessFactory > createResolver() {
