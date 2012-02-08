@@ -53,6 +53,6 @@ public class ShowClassPathPropertyOperation extends ShowPathPropertyOperation {
 		return SingletonHolder.instance;
 	}
 	private ShowClassPathPropertyOperation() {
-		super( java.util.UUID.fromString( "9105ebd2-79f6-498f-a652-1bd2bcd0daa8" ), "java.class.path" );
+		super( java.util.UUID.fromString( "b33142ba-0e96-4823-935e-99c702eb57eb" ), "java.class.path" );
 	}
 }

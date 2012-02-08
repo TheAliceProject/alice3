@@ -295,41 +295,50 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		
 		ManipulationHandleIndirection handleAxis = new ManipulationHandleIndirection(new org.alice.interact.handle.ManipulationAxes());
 		handleAxis.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
-		handleAxis.addToSet( HandleSet.DEFAULT_INTERACTION );
-		handleAxis.addToSet( HandleSet.ROTATION_INTERACTION );
-		handleAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		handleAxis.addToSet( HandleSet.TRANSLATION_INTERACTION );
+		
+//		handleAxis.addToSet( HandleSet.DEFAULT_INTERACTION );
+//		handleAxis.addToSet( HandleSet.ROTATION_INTERACTION );
+//		handleAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+//		handleAxis.addToSet( HandleSet.TRANSLATION_INTERACTION );
+		
 		handleAxis.addCondition( new ManipulationEventCriteria(ManipulationEvent.EventType.Rotate, null, PickHint.ANYTHING ) );
 		handleAxis.addCondition( new ManipulationEventCriteria(ManipulationEvent.EventType.Translate, null, PickHint.ANYTHING ) );
 		this.manipulationEventManager.addManipulationListener( handleAxis );
 		handleAxis.setDragAdapterAndAddHandle( this );
 		
 		
-		ManipulationHandleIndirection rotateAboutYAxis = new ManipulationHandleIndirection(new StoodUpRotationRingHandle(MovementDirection.UP, RotationRingHandle.HandlePosition.BOTTOM ));
-		rotateAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
-		rotateAboutYAxis.addToSet( HandleSet.ROTATION_INTERACTION );
-		rotateAboutYAxis.addToGroups( HandleSet.HandleGroup.DEFAULT, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION);
-		rotateAboutYAxis.addCondition( new ManipulationEventCriteria(
+		ManipulationHandleIndirection rotateAboutYAxisStoodUp = new ManipulationHandleIndirection(new StoodUpRotationRingHandle(MovementDirection.UP, RotationRingHandle.HandlePosition.BOTTOM ));
+		rotateAboutYAxisStoodUp.setManipulation( new ObjectRotateDragManipulator() );
+		rotateAboutYAxisStoodUp.addToSet( HandleSet.DEFAULT_INTERACTION );
+		rotateAboutYAxisStoodUp.addToGroups( HandleSet.HandleGroup.DEFAULT, HandleSet.HandleGroup.ROTATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION);
+		rotateAboutYAxisStoodUp.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Rotate,
 				new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP),
 				PickHint.PickType.TURNABLE.pickHint() ) );
-		rotateAboutYAxis.addCondition( 
+		rotateAboutYAxisStoodUp.addCondition( 
 				new ManipulationEventCriteria(ManipulationEvent.EventType.Rotate,
 				new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP),
 				PickHint.PickType.TURNABLE.pickHint() ) );
+		this.manipulationEventManager.addManipulationListener( rotateAboutYAxisStoodUp );
+		rotateAboutYAxisStoodUp.setDragAdapterAndAddHandle( this );
+		
+		ManipulationHandleIndirection rotateAboutYAxis = new ManipulationHandleIndirection(new RotationRingHandle(MovementDirection.UP, Color4f.GREEN ));
+		rotateAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateAboutYAxis.addToSet( HandleSet.ROTATION_INTERACTION );
+		rotateAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.LOCAL);
 		this.manipulationEventManager.addManipulationListener( rotateAboutYAxis );
 		rotateAboutYAxis.setDragAdapterAndAddHandle( this );
 		
-		ManipulationHandleIndirection rotateAboutXAxis = new ManipulationHandleIndirection( new RotationRingHandle(MovementDirection.LEFT) );
+		ManipulationHandleIndirection rotateAboutXAxis = new ManipulationHandleIndirection( new RotationRingHandle(MovementDirection.LEFT, Color4f.RED) );
 		rotateAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
 		rotateAboutXAxis.addToSet( HandleSet.ROTATION_INTERACTION );
-		rotateAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION);
+		rotateAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.LOCAL);
 		rotateAboutXAxis.setDragAdapterAndAddHandle( this );
 		
-		ManipulationHandleIndirection rotateAboutZAxis = new ManipulationHandleIndirection(new RotationRingHandle(MovementDirection.BACKWARD));
+		ManipulationHandleIndirection rotateAboutZAxis = new ManipulationHandleIndirection(new RotationRingHandle(MovementDirection.BACKWARD, Color4f.BLUE));
 		rotateAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
 		rotateAboutZAxis.addToSet( HandleSet.ROTATION_INTERACTION );
-		rotateAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION);
+		rotateAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.LOCAL);
 		rotateAboutZAxis.setDragAdapterAndAddHandle( this );
 		
 		
@@ -360,7 +369,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		translateUp.setManipulation( new LinearDragManipulator() );
 		translateUp.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION);
 		translateDown.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION);
-		translateUp.addToGroup( HandleSet.HandleGroup.INTERACTION );
+		translateUp.addToSet( HandleSet.TRANSLATION_INTERACTION );
 		translateUp.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 		translateDown.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 		translateDown.addCondition( new ManipulationEventCriteria(
@@ -391,6 +400,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		translateXAxisLeft.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.X_AND_Z_AXIS );
 		translateXAxisRight.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.X_AND_Z_AXIS );
 		translateXAxisLeft.addToGroup( HandleSet.HandleGroup.INTERACTION );
+		translateXAxisLeft.addToSet( HandleSet.TRANSLATION_INTERACTION );
 		translateXAxisLeft.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 		translateXAxisRight.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 		translateXAxisLeft.addCondition( new ManipulationEventCriteria(
@@ -420,6 +430,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		translateForward.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.X_AND_Z_AXIS, HandleSet.HandleGroup.VISUALIZATION);
 		translateBackward.addToGroups( HandleSet.HandleGroup.TRANSLATION, HandleSet.HandleGroup.STOOD_UP, HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.X_AND_Z_AXIS, HandleSet.HandleGroup.VISUALIZATION);
 		translateForward.addToGroup( HandleSet.HandleGroup.INTERACTION );
+		translateForward.addToSet( HandleSet.TRANSLATION_INTERACTION );
 		translateForward.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 		translateBackward.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 		translateBackward.addCondition( new ManipulationEventCriteria(
@@ -486,10 +497,10 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		
 		if (this.sceneEditor != null)
 		{
-			InteractionGroup defaultInteraction = new InteractionGroup(HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject);
-			InteractionGroup rotationInteraction = new InteractionGroup(HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight);
-			InteractionGroup translationInteraction = new InteractionGroup(HandleSet.TRANSLATION_INTERACTION, leftClickMouseTranslateObject);
-			InteractionGroup resizeInteraction = new InteractionGroup(HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject);
+			InteractionGroup defaultInteraction = new InteractionGroup(HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE);
+			InteractionGroup rotationInteraction = new InteractionGroup(HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, org.alice.interact.PickHint.PickType.TURNABLE);
+			InteractionGroup translationInteraction = new InteractionGroup(HandleSet.TRANSLATION_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE);
+			InteractionGroup resizeInteraction = new InteractionGroup(HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, org.alice.interact.PickHint.PickType.RESIZABLE);
 			
 			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.DEFAULT, defaultInteraction );
 			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, rotationInteraction );

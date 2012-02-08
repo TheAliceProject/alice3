@@ -213,6 +213,6 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 
 	@Override
 	protected HandleSet getHandleSetToEnable() {
-		return new HandleSet(this.rotateAxisDirection.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.ROTATION);
+		return new HandleSet(this.rotateAxisDirection.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.ROTATION, HandleSet.HandleGroup.STOOD_UP);
 	}
 }

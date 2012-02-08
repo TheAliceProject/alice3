@@ -397,7 +397,14 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
 	@Override
 	protected HandleSet getHandleSetToEnable() {
-		return new HandleSet(this.rotationHandle.getRotationDirection().getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.ROTATION);
+		HandleSet.HandleGroup rotationType;
+		if (this.rotationHandle instanceof org.alice.interact.handle.StoodUpRotationRingHandle) {
+			rotationType = HandleSet.HandleGroup.STOOD_UP;
+		}
+		else {
+			rotationType = HandleSet.HandleGroup.LOCAL;
+		}
+		return new HandleSet(this.rotationHandle.getRotationDirection().getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.ROTATION, rotationType);
 	}
 
 }

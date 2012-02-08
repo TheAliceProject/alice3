@@ -52,16 +52,6 @@ public class PickContext extends Context {
 	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
 
 	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private PickParameters m_pickParameters;
-
-	public void pick( PickParameters pickParameters ) {
-		m_pickParameters = pickParameters;
-//		javax.media.opengl.Threading.invokeOnOpenGLThread( new Runnable() {
-//			public void run() {
-				m_pickParameters.getGLAutoDrawable().display();
-//			}
-//		} );
-	}
 	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
 		synchronized( m_pickNameMap ) {
 			int name = m_pickNameMap.size();
