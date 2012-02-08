@@ -116,11 +116,10 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			return rv;
 		}
 	}
-	private final InternalPopupPrepModel< T > popupPrepModel;
+	private final InternalPopupPrepModel< T > popupPrepModel = new InternalPopupPrepModel< T >( this );
 
 	public CascadeRoot( java.util.UUID id, CascadeBlank< T >[] blanks ) {
 		super( id );
-		this.popupPrepModel = new InternalPopupPrepModel< T >( this );
 		if( blanks != null ) {
 			for( int i = 0; i < blanks.length; i++ ) {
 				assert blanks[ i ] != null : this;
