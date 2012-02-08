@@ -2,6 +2,7 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.story.event.CollisionListener;
+import org.lgna.story.event.TransformationListener;
 
 public class TransformationEventAdapterFillIn extends LambdaExpressionFillIn {
 	
@@ -18,7 +19,7 @@ public class TransformationEventAdapterFillIn extends LambdaExpressionFillIn {
 	}
 	@Override
 	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(CollisionListener.class);
+		return AstUtilities.createLambdaExpression(TransformationListener.class);
 	}
 
 }

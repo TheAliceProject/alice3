@@ -19,13 +19,8 @@ public class OcclusionHandler extends TransformationChangedHandler < OcclusionEv
 	
 
 	private OcclusionEventHandler occlusionEventHandler = new OcclusionEventHandler();
-	private SceneImp sceneImp;
 	private CameraImp camera;
 	
-	public OcclusionHandler( SceneImp sceneImp ) {
-		this.sceneImp = sceneImp;
-	}
-
 	public void addOcclusionEvent( OcclusionEventListener occlusionEventListener, 
 			List< Entity > groupOne, List< Entity > groupTwo ) {
 		registerIsFiringMap(occlusionEventListener);
@@ -59,7 +54,7 @@ public class OcclusionHandler extends TransformationChangedHandler < OcclusionEv
 
 		public void check( Entity changedEntity ) {
 			if( camera == null ){
-				camera = sceneImp.findFirstCamera();
+				camera = ImplementationAccessor.getImplementation(changedEntity).getScene().findFirstCamera();
 				if( camera == null ) {
 					return;
 				}

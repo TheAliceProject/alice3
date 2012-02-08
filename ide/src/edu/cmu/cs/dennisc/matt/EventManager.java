@@ -12,6 +12,7 @@ import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.ComesIntoViewEventListener;
 import org.lgna.story.event.KeyPressListener;
+import org.lgna.story.event.LeavesViewEventListener;
 import org.lgna.story.event.MouseClickListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
@@ -30,8 +31,8 @@ public class EventManager {
 	private final MouseClickedHandler mouseHandler = new MouseClickedHandler();
 	
 	private final TransformationHandler transHandler = new TransformationHandler();
-	private OcclusionHandler occlusionHandler;
-	private ViewEventHandler viewHandler;
+	private final OcclusionHandler occlusionHandler = new OcclusionHandler();
+	private final ViewEventHandler viewHandler = new ViewEventHandler();
 	private final CollisionHandler collisionHandler = new CollisionHandler();
 	private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
 	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
@@ -62,8 +63,6 @@ public class EventManager {
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
-		this.occlusionHandler = new OcclusionHandler( scene );
-		this.viewHandler = new ViewEventHandler( scene );
 	}
 
 	public void removeMouseButtonListener( MouseClickListener mouseButtonListener ) {
@@ -160,7 +159,10 @@ public class EventManager {
 	}
 
 	public void addComesIntoViewEventListener( ComesIntoViewEventListener listener, Entity[] entities ) {
-		this.viewHandler.addComesIntoViewEventListener( listener, entities );
+		this.viewHandler.addViewEventListener( listener, entities );
+	}
+	public void addLeavesViewEventListener(LeavesViewEventListener listener, Entity[] entities) {
+		this.viewHandler.addViewEventListener( listener, entities );
 	}
 
 }

@@ -66,6 +66,8 @@ import org.lgna.story.event.ComesIntoViewEvent;
 import org.lgna.story.event.ComesIntoViewEventListener;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
+import org.lgna.story.event.LeavesViewEvent;
+import org.lgna.story.event.LeavesViewEventListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 import org.lgna.story.event.OcclusionEvent;
@@ -254,45 +256,45 @@ class SnowScene extends Scene{
 //				greenCone.move(MoveDirection.DOWN, 1);
 //			}
 //		}, AddTimerEventListener.timerFrequency(0.0), MultipleEventPolicy.ENQUEUE );
-		this.addComesIntoViewEventListener(new ComesIntoViewEventListener() {
+		this.addLeavesViewEventListener(new LeavesViewEventListener() {
 			
-			public void cameIntoView(ComesIntoViewEvent e) {
+			public void leftView(LeavesViewEvent e) {
 				susan.move( MoveDirection.UP, 5 );
 				susan.move( MoveDirection.DOWN, 5 );
 			}
 		}, colListOne );
-		this.addKeyPressListener(new KeyPressListener() {
-			public void keyPressed(KeyEvent e) {
-				if(e.isKey(Key.A)){
-//					armoire.move(MoveDirection.UP, 1);
-//					armoire.move(MoveDirection.DOWN, 1);
-				}
-			}
-		}, MultipleEventPolicy.COMBINE );
+//		this.addKeyPressListener(new KeyPressListener() {
+//			public void keyPressed(KeyEvent e) {
+//				if(e.isKey(Key.A)){
+////					armoire.move(MoveDirection.UP, 1);
+////					armoire.move(MoveDirection.DOWN, 1);
+//				}
+//			}
+//		}, MultipleEventPolicy.COMBINE );
 		this.addArrowKeyPressListener(new ArrowKeyPressListener() {
 			public void keyPressed(ArrowKeyEvent e) {
 				ogre.move(e.getFowardBackwardLeftRightMoveDirection(), 1);
 			}
 		}, MultipleEventPolicy.COMBINE );
-		this.addNumberKeyPressListener(new NumberKeyPressListener() {
-			
-			public void keyPressed(NumberKeyEvent e) {
-				ogre.move(MoveDirection.UP, e.getNumber());
-				ogre.move(MoveDirection.DOWN, e.getNumber());
-			}
-		});
-		this.addTransformationListener(new TransformationListener() {
-			
-			public void whenThisMoves(TransformationEvent e) {
-				ogre.say( "Hi, I have moved!" );
-			}
-		}, colListOne );
-		this.addOcclusionEventListener(new OcclusionEventListener() {
-			
-			public void whenTheseOcclude(OcclusionEvent e) {
-				( ( JointedModel ) e.getBackgroundEntity() ).say( "Get behind me!" );
-			}
-		}, colListOne, colListTwo );
+//		this.addNumberKeyPressListener(new NumberKeyPressListener() {
+//			
+//			public void keyPressed(NumberKeyEvent e) {
+//				ogre.move(MoveDirection.UP, e.getNumber());
+//				ogre.move(MoveDirection.DOWN, e.getNumber());
+//			}
+//		});
+//		this.addTransformationListener(new TransformationListener() {
+//			
+//			public void whenThisMoves(TransformationEvent e) {
+//				ogre.say( "Hi, I have moved!" );
+//			}
+//		}, colListOne );
+//		this.addOcclusionEventListener(new OcclusionEventListener() {
+//			
+//			public void whenTheseOcclude(OcclusionEvent e) {
+//				( ( JointedModel ) e.getBackgroundEntity() ).say( "Get behind me!" );
+//			}
+//		}, colListOne, colListTwo );
 //		this.addProximityEventListener( new ProximityEventListener() {
 //
 //			public void whenTheseGetClose( ProximityEvent e ) {

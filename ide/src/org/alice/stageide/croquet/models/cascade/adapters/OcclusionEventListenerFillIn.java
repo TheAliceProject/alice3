@@ -1,7 +1,7 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
-import org.lgna.story.event.CollisionListener;
+import org.lgna.story.event.OcclusionEventListener;
 
 public class OcclusionEventListenerFillIn extends LambdaExpressionFillIn {
 	
@@ -18,7 +18,7 @@ public class OcclusionEventListenerFillIn extends LambdaExpressionFillIn {
 	}
 	@Override
 	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(CollisionListener.class);
+		return AstUtilities.createLambdaExpression(OcclusionEventListener.class);
 	}
 
 }

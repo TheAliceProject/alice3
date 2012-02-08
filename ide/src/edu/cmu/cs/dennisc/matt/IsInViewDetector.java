@@ -2,7 +2,6 @@ package edu.cmu.cs.dennisc.matt;
 
 import java.awt.Point;
 
-import org.alice.stageide.StageIDE;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.CameraImp;
@@ -23,9 +22,12 @@ public class IsInViewDetector {
 	}
 
 	private static boolean isInView(Point[] awtPoints, CameraImp camera) {
-//		StageIDE.getActiveInstance();
+		int width = camera.getScene().getProgram().getOnscreenLookingGlass().getWidth();
+		int height = camera.getScene().getProgram().getOnscreenLookingGlass().getWidth();
 		for( Point p : awtPoints ) {
-			System.out.println( "( " + p.x + ", " + p.y + " )" );
+			if ( p.x < width && p.x > 0 && p.y < height && p.y > 0) {//point is inside
+				return true;
+			}
 		}
 		return false;
 	}

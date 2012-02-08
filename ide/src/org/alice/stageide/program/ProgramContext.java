@@ -71,6 +71,8 @@ public abstract class ProgramContext {
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.ArrowKeyPressListener.class, org.alice.stageide.apis.story.event.ArrowKeyAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.NumberKeyPressListener.class, org.alice.stageide.apis.story.event.NumberKeyAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.TransformationListener.class, org.alice.stageide.apis.story.event.TransformationEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.ComesIntoViewEventListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.LeavesViewEventListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.CollisionListener.class, org.alice.stageide.apis.story.event.CollisionAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityEventListener.class, org.alice.stageide.apis.story.event.ProximityAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionEventListener.class, org.alice.stageide.apis.story.event.OcclusionEventAdapter.class );
