@@ -46,7 +46,7 @@ package org.alice.stageide.person;
 /**
  * @author Dennis Cosgrove
  */
-public class IngredientsComposite extends org.lgna.croquet.Composite< org.alice.stageide.person.components.IngredientsPanel > {
+public class IngredientsComposite extends org.lgna.croquet.SimpleComposite< org.alice.stageide.person.components.IngredientsPanel > {
 	private static class SingletonHolder {
 		private static IngredientsComposite instance = new IngredientsComposite();
 	}

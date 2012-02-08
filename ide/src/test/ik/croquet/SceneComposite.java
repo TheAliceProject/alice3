@@ -46,7 +46,7 @@ package test.ik.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneComposite extends org.lgna.croquet.Composite< test.ik.croquet.views.ScenePanel > {
+public class SceneComposite extends org.lgna.croquet.SimpleComposite< test.ik.croquet.views.ScenePanel > {
 	private static class SingletonHolder {
 		private static SceneComposite instance = new SceneComposite();
 	}

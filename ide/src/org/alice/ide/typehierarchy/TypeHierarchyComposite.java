@@ -46,7 +46,7 @@ package org.alice.ide.typehierarchy;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeHierarchyComposite extends org.lgna.croquet.Composite< org.alice.ide.typehierarchy.components.TypeHierarchyView > {
+public class TypeHierarchyComposite extends org.lgna.croquet.SimpleComposite< org.alice.ide.typehierarchy.components.TypeHierarchyView > {
 	private static class SingletonHolder {
 		private static TypeHierarchyComposite instance = new TypeHierarchyComposite();
 	}

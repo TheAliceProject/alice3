@@ -46,7 +46,7 @@ package org.alice.ide.members;
 /**
  * @author Dennis Cosgrove
  */
-public class MembersComposite extends org.lgna.croquet.Composite< org.alice.ide.members.components.MembersView > {
+public class MembersComposite extends org.lgna.croquet.SimpleComposite< org.alice.ide.members.components.MembersView > {
 	private static class SingletonHolder {
 		private static MembersComposite instance = new MembersComposite();
 	}
