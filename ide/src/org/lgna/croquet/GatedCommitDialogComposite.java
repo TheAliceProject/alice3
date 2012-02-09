@@ -104,7 +104,7 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 		}
 		private static final class InternalCompleteOperation extends InternalDialogOperation {
 			private InternalCompleteOperation( ControlsComposite controlsComposite ) {
-				super( java.util.UUID.fromString( "fc908f6f-4b72-48b6-9b65-352dc9f2e18b" ), controlsComposite, true );
+				super( java.util.UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), controlsComposite, true );
 			}
 			@Override
 			protected InternalCompleteOperationResolver createResolver() {
@@ -113,7 +113,7 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 		}
 		private static final class InternalCancelOperation extends InternalDialogOperation {
 			private InternalCancelOperation( ControlsComposite controlsComposite ) {
-				super( java.util.UUID.fromString( "3363c6f0-c8a2-48f2-aefc-c53894ec8a99" ), controlsComposite, false );
+				super( java.util.UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), controlsComposite, false );
 			}
 			@Override
 			protected InternalCancelOperationResolver createResolver() {
@@ -214,11 +214,14 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 		@Override
 		protected org.lgna.croquet.components.GridBagPanel createView() {
 			org.lgna.croquet.components.LineAxisPanel controlLine = new org.lgna.croquet.components.LineAxisPanel();
+			this.addComponentsToControlLine( controlLine );
 			controlLine.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 			
 			org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel();
 			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			gbc.fill = java.awt.GridBagConstraints.VERTICAL;
+			gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
 			rv.addComponent( this.explanationLabel, gbc );
 			rv.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
 			rv.addComponent( controlLine, gbc );
@@ -243,6 +246,14 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 	public GatedCommitDialogComposite( java.util.UUID id, Group operationGroup, Composite<?> mainComposite ) {
 		super( id, operationGroup );
 		this.mainComposite = mainComposite;
+	}
+	public Composite<?> getMainComposite() {
+		return this.mainComposite;
+	}
+	@Override
+	protected void localize() {
+		this.getControlsComposite().completeOperation.setName( this.findLocalizedText( "commit", GatedCommitDialogComposite.class ) );
+		this.getControlsComposite().cancelOperation.setName( this.findLocalizedText( "cancel", GatedCommitDialogComposite.class ) );
 	}
 	protected abstract ControlsComposite getControlsComposite();
 	@Override

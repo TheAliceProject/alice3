@@ -40,32 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
 
+package org.alice.stageide.videoencode;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
+public class UploadPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > { 
+	public UploadPage() {
+		super( java.util.UUID.fromString( "92fe0efa-60f6-4ed7-af7c-6f27389356ac" ) );
 	}
-	public static InternalTestingMenuModel getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	protected void localize() {
 	}
-	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.stageide.videoencode.VideoEncodeWizardComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().getMenuItemPrepModel(),
-				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.video.ProofOfConceptRecordVideoOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel()
-		);
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.components.BorderPanel createView() {
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( new org.lgna.croquet.components.Label( "todo: upload" ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+		return rv;
 	}
 }

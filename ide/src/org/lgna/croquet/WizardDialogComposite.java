@@ -47,6 +47,27 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class WizardDialogComposite extends GatedCommitDialogComposite {
+	private static class WizardDialogControlsComposite extends ControlsComposite {
+		private final org.lgna.croquet.components.Button completeButton;
+		public WizardDialogControlsComposite( WizardDialogComposite composite ) {
+			super( java.util.UUID.fromString( "56e28f65-6da2-4f25-a86b-16b7e3c4940c" ), composite );
+			this.completeButton = this.getCompleteOperation().createButton();
+		}
+		public org.lgna.croquet.components.Button getCompleteButton() {
+			return this.completeButton;
+		}
+		@Override
+		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine ) {
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
+			controlLine.addComponent( this.completeButton );
+			
+			//todo: use isCancelDesired?
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+			controlLine.addComponent( this.getCancelOperation().createButton() );
+		}
+	}
+
+	private final WizardDialogControlsComposite controlsComposite;
 	private static class WizardCardComposite extends CardComposite {
 		public WizardCardComposite( WizardPageComposite<?>[] wizardPages ) {
 			super( java.util.UUID.fromString( "d660e0ed-900a-4f98-ac23-bec8804dba22" ), wizardPages );
@@ -54,9 +75,24 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite {
 	}
 	public WizardDialogComposite( java.util.UUID id, Group operationGroup, WizardPageComposite<?>... wizardPages ) {
 		super( id, operationGroup, new WizardCardComposite( wizardPages ) );
+		this.controlsComposite = new WizardDialogControlsComposite( this );
+	}
+	@Override
+	public CardComposite getMainComposite() {
+		return (CardComposite)super.getMainComposite();
 	}
 	@Override
 	protected ControlsComposite getControlsComposite() {
+		return this.controlsComposite;
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
+	}
+	@Override
+	protected String getExplanation( org.lgna.croquet.history.OperationStep step ) {
+		//todo
 		return null;
 	}
 }

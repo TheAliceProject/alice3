@@ -64,12 +64,17 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 		}
 	}
 
-	private static final class InternalOperation<V extends org.lgna.croquet.components.View<?,?>> extends Operation {
+	private static final class InternalOperation<V extends org.lgna.croquet.components.View<?,?>> extends ActionOperation {
 		private final DialogComposite<V> composite;
 
 		private InternalOperation( Group group, DialogComposite<V> composite ) {
-			super( group, java.util.UUID.fromString( "56116a5f-a081-4ce8-9626-9c515c6c5887" ) );
+			super( group, java.util.UUID.fromString( "57aa20b4-0d4b-4cbf-82ae-191ee681aa6f" ) );
 			this.composite = composite;
+		}
+		@Override
+		protected void initialize() {
+			super.initialize();
+			this.composite.initializeIfNecessary();
 		}
 		public DialogComposite<V> getComposite() {
 			return this.composite;
@@ -170,7 +175,11 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 	public Operation getOperation() {
 		return this.operation;
 	}
-	protected abstract boolean isWindowClosingEnabled( java.awt.event.WindowEvent e );
+	
+	//todo: remove?
+	protected boolean isWindowClosingEnabled( java.awt.event.WindowEvent e ) {
+		return true;
+	}
 	protected String getDialogTitle( org.lgna.croquet.history.OperationStep step ) {
 //		String rv = this.getName();
 //		if( rv != null ) {
