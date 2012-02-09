@@ -51,6 +51,20 @@ public abstract class PropertyKey<T> {
 		return map.get( id );
 	}
 	
+	public static void decodeIdAndValueAndPut( org.lgna.project.Project project, edu.cmu.cs.dennisc.codec.BinaryDecoder decoder, String version ) {
+		java.util.UUID id = decoder.decodeId();
+		byte[] buffer = decoder.decodeByteArray();
+		org.lgna.project.properties.PropertyKey< Object > propertyKey = org.lgna.project.properties.PropertyKey.lookupInstance( id );
+		if( propertyKey != null ) {
+			java.io.ByteArrayInputStream bisProperty = new java.io.ByteArrayInputStream( buffer );
+			edu.cmu.cs.dennisc.codec.BinaryDecoder bdProperty = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bisProperty );
+			Object value = propertyKey.decodeValue( bdProperty );
+			project.putValueFor( propertyKey, value );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( id, buffer );
+		}
+	}
+	
 	private final java.util.UUID id;
 	private final String repr;
 	public PropertyKey( java.util.UUID id, String repr ) {
@@ -63,11 +77,20 @@ public abstract class PropertyKey<T> {
 	}
 	protected abstract T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	protected abstract void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
-	public T decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return this.decodeValue( binaryDecoder );
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
-		this.encodeValue( binaryEncoder, value );
+	
+	public void encodeIdAndValue( org.lgna.project.Project project, edu.cmu.cs.dennisc.codec.BinaryEncoder encoder ) {
+		T value = project.getValueFor( this ); 
+		java.io.ByteArrayOutputStream bos = new java.io.ByteArrayOutputStream();
+		edu.cmu.cs.dennisc.codec.BinaryEncoder internalEncoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( bos );
+		this.encodeValue( internalEncoder, value );
+		try {
+			bos.flush();
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( ioe );
+		}
+		byte[] buffer = bos.toByteArray();
+		encoder.encode( this.getId() );
+		encoder.encode( buffer );
 	}
 	@Override
 	public String toString() {

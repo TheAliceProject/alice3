@@ -144,10 +144,7 @@ public abstract class IoUtilities {
 			String version = binaryDecoder.decodeString();
 			final int N = binaryDecoder.decodeInt();
 			for( int i=0; i<N; i++ ) {
-				java.util.UUID id = binaryDecoder.decodeId();
-				org.lgna.project.properties.PropertyKey< Object > propertyKey = org.lgna.project.properties.PropertyKey.lookupInstance( id );
-				Object value = propertyKey.decode( binaryDecoder );
-				rv.putValueFor( propertyKey, value );
+				org.lgna.project.properties.PropertyKey.decodeIdAndValueAndPut( rv, binaryDecoder, version );
 			}
 		}
 		return rv;
@@ -354,9 +351,7 @@ public abstract class IoUtilities {
 					binaryEncoder.encode( org.lgna.project.Version.getCurrentVersionText() );
 					binaryEncoder.encode( propertyKeys.size() );
 					for( org.lgna.project.properties.PropertyKey<Object> propertyKey : propertyKeys ) {
-						binaryEncoder.encode( propertyKey.getId() );
-						Object value = project.getValueFor( propertyKey ); 
-						propertyKey.encode( binaryEncoder, value );
+						propertyKey.encodeIdAndValue( project, binaryEncoder );
 					}
 				}
 			} );
