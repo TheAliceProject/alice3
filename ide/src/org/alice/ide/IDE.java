@@ -310,6 +310,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
+//	private static final org.lgna.project.properties.IdPropertyKey SELECTED_TYPE_PROPERTY_KEY = new org.lgna.project.properties.IdPropertyKey( java.util.UUID.fromString( "5c12ebea-6f6c-42b6-b1b3-e1fb96733fa5" ), "SELECTED_TYPE_PROPERTY_KEY" );
+//	@Override
+//	protected void preserveProjectProperties() {
+//		super.preserveProjectProperties();
+//		org.lgna.project.Project project = this.getProject();
+//		if( project != null ) {
+//			project.putValueFor( SELECTED_TYPE_PROPERTY_KEY, java.util.UUID.randomUUID() );
+//		}
+//	}
 	public <N extends org.lgna.project.ast.AbstractNode> N createCopy( N original ) {
 		org.lgna.project.ast.NamedUserType root = this.getProgramType();
 		return org.lgna.project.ast.AstUtilities.createCopy( original, root );

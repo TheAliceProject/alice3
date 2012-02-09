@@ -353,6 +353,7 @@ public abstract class IoUtilities {
 					for( org.lgna.project.properties.PropertyKey<Object> propertyKey : propertyKeys ) {
 						propertyKey.encodeIdAndValue( project, binaryEncoder );
 					}
+					binaryEncoder.flush();
 				}
 			} );
 		}
