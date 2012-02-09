@@ -51,11 +51,11 @@ public class HandleSet extends BitSet
 {
 	public static HandleSet GROUND_TRANSLATION_VISUALIZATION = new HandleSet(HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.X_AND_Z_AXIS);
 	public static HandleSet UP_DOWN_TRANSLATION_VISUALIZATION = new HandleSet(HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.Y_AXIS);
-	public static HandleSet DEFAULT_INTERACTION = new HandleSet(HandleGroup.DEFAULT_GROUP, HandleGroup.DEFAULT, HandleGroup.INTERACTION);
-	public static HandleSet RESIZE_INTERACTION = new HandleSet(HandleGroup.RESIZE_GROUP, HandleGroup.RESIZE, HandleGroup.INTERACTION);
-	public static HandleSet ROTATION_INTERACTION = new HandleSet(HandleGroup.ROTATION_GROUP, HandleGroup.ROTATION, HandleGroup.INTERACTION);
-	public static HandleSet JOINT_ROTATION_INTERACTION = new HandleSet(HandleGroup.ROTATION_GROUP, HandleGroup.ROTATION, HandleGroup.INTERACTION);
-	public static HandleSet TRANSLATION_INTERACTION = new HandleSet(HandleGroup.TRANSLATION_GROUP, HandleGroup.TRANSLATION, HandleGroup.INTERACTION);
+	public static HandleSet DEFAULT_INTERACTION = new HandleSet(HandleGroup.DEFAULT, HandleGroup.INTERACTION);
+	public static HandleSet RESIZE_INTERACTION = new HandleSet(HandleGroup.RESIZE, HandleGroup.INTERACTION);
+	public static HandleSet ROTATION_INTERACTION = new HandleSet(HandleGroup.ROTATION, HandleGroup.INTERACTION);
+	public static HandleSet JOINT_ROTATION_INTERACTION = new HandleSet(HandleGroup.ROTATION, HandleGroup.INTERACTION);
+	public static HandleSet TRANSLATION_INTERACTION = new HandleSet(HandleGroup.TRANSLATION, HandleGroup.INTERACTION);
 	public static HandleSet MAIN_ORTHOGRAPHIC_CAMERA_CONTROLS = new HandleSet(HandleGroup.ORTHOGRAPHIC_CAMERA, HandleGroup.MAIN_CAMERA);
 	public static HandleSet MAIN_PERSPECTIVE_CAMERA_CONTROLS = new HandleSet(HandleGroup.PERSPECTIVE_CAMERA, HandleGroup.MAIN_CAMERA);
 	
@@ -83,10 +83,6 @@ public class HandleSet extends BitSet
 		TOP_RIGHT_CAMERA,
 		BOTTOM_LEFT_CAMERA,
 		BOTTOM_RIGHT_CAMERA,
-		ROTATION_GROUP,
-		DEFAULT_GROUP,
-		RESIZE_GROUP,
-		TRANSLATION_GROUP,
 		JOINT,
 		
 	}
