@@ -217,7 +217,7 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 			this.addComponentsToControlLine( controlLine );
 			controlLine.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 			
-			org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel();
+			org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel( this );
 			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 			gbc.fill = java.awt.GridBagConstraints.VERTICAL;
@@ -251,7 +251,7 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 		return this.mainComposite;
 	}
 	@Override
-	protected void localize() {
+	protected final void localize() {
 		this.getControlsComposite().completeOperation.setName( this.findLocalizedText( "commit", GatedCommitDialogComposite.class ) );
 		this.getControlsComposite().cancelOperation.setName( this.findLocalizedText( "cancel", GatedCommitDialogComposite.class ) );
 	}

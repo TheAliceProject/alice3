@@ -50,6 +50,9 @@ public abstract class View< J extends javax.swing.JComponent, C extends org.lgna
 	private final C composite;
 	public View( C composite ) {
 		this.composite = composite;
+		if( this.composite != null ) {
+			this.composite.initializeIfNecessary();
+		}
 	}
 	public C getComposite() {
 		return composite;

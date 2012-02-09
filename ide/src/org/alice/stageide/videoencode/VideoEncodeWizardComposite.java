@@ -63,7 +63,4 @@ public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogCom
 		this.getMainComposite().addCard( this.captureImagesPage );
 		this.getMainComposite().addCard( this.uploadPage );
 	}
-	@Override
-	protected void localize() {
-	}
 }
