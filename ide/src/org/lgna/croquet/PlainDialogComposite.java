@@ -41,19 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PlainDialogOperationStep extends DialogOperationStep< org.lgna.croquet.PlainDialogOperation > {
-	public static PlainDialogOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.PlainDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new PlainDialogOperationStep( parent, model, trigger );
-	}
-	private PlainDialogOperationStep( Transaction parent, org.lgna.croquet.PlainDialogOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger );
-	}
-	public PlainDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+public abstract class PlainDialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends DialogComposite<V>{
+	public PlainDialogComposite( java.util.UUID id, Group operationGroup ) {
+		super( id, operationGroup );
 	}
 }

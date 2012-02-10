@@ -41,19 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.project.properties;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PlainDialogCloseOperationStep extends SingleThreadOperationStep< org.lgna.croquet.PlainDialogOperation.InternalCloseOperation > {
-	public static PlainDialogCloseOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.PlainDialogOperation.InternalCloseOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new PlainDialogCloseOperationStep( parent, model, trigger );
+public class CodablePropertyKey< T extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable > extends PropertyKey< T > {
+	public static <T extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> CodablePropertyKey<T> createInstance( java.util.UUID id, String repr ) {
+		return new CodablePropertyKey<T>( id, repr );
 	}
-	private PlainDialogCloseOperationStep( Transaction parent, org.lgna.croquet.PlainDialogOperation.InternalCloseOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger, null );
+	private CodablePropertyKey( java.util.UUID id, String repr ) {
+		super( id, repr );
 	}
-	public PlainDialogCloseOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	@Override
+	protected T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return binaryDecoder.decodeBinaryEncodableAndDecodable();
+	}
+	@Override
+	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+		binaryEncoder.encode( value );
 	}
 }

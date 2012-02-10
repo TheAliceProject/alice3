@@ -40,23 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.edits;
+package org.lgna.project.properties;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedNumberStateEdit<M extends org.lgna.croquet.BoundedNumberState<N>,N extends Number> extends StateEdit<M,N> {
-	public BoundedNumberStateEdit( org.lgna.croquet.history.CompletionStep< M > completionStep ) {
-		super( completionStep );
-	}
-	public BoundedNumberStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
+public class BooleanPropertyKey extends PropertyKey< Boolean > {
+	public BooleanPropertyKey( java.util.UUID id, String repr ) {
+		super( id, repr );
 	}
 	@Override
-	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-		rv.append("change: ");
-		rv.append(this.getNextValue());
-		return rv;
+	protected Boolean decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		boolean isNotNull = binaryDecoder.decodeBoolean();
+		if( isNotNull ) {
+			return binaryDecoder.decodeBoolean();
+		} else {
+			return null;
+		}
+	}
+	@Override
+	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Boolean value ) {
+		binaryEncoder.encode( value != null );
+		binaryEncoder.encode( value );
 	}
 }

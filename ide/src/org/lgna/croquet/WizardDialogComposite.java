@@ -40,49 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.history;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InputDialogOperationStep<T> extends GatedCommitDialogOperationStep< org.lgna.croquet.InputDialogOperation<T> > {
-	public static <T> InputDialogOperationStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.InputDialogOperation<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new InputDialogOperationStep<T>( parent, model, trigger );
+public abstract class WizardDialogComposite extends GatedCommitDialogComposite {
+	private static class WizardCardComposite extends CardComposite {
+		public WizardCardComposite( WizardPageComposite<?>[] wizardPages ) {
+			super( java.util.UUID.fromString( "d660e0ed-900a-4f98-ac23-bec8804dba22" ), wizardPages );
+		}
 	}
-	private InputDialogOperationStep( Transaction parent, org.lgna.croquet.InputDialogOperation<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger );
+	public WizardDialogComposite( java.util.UUID id, Group operationGroup, WizardPageComposite<?>... wizardPages ) {
+		super( id, operationGroup, new WizardCardComposite( wizardPages ) );
 	}
-	public InputDialogOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	private boolean isValueCommitted = false;
-	private T committedValue;
-	public boolean isValueCommitted() {
-		return this.isValueCommitted;
-	}
-	public T getCommittedValue() {
-		return this.committedValue;
-	}
-	public void commitValue( T value ) {
-		org.lgna.croquet.history.event.ValueCommittedEvent<T> e = new org.lgna.croquet.history.event.ValueCommittedEvent<T>( this, value );
-		this.fireChanging( e );
-
-		
-		this.setSuccessfullyCompleted( true );
-		this.committedValue = value;
-		this.isValueCommitted = true;
-		this.setPending( false );
-
-		this.fireChanged( e );
-		this.popTransactionHistoryIfNecessary();
-	}
-	
-	private org.lgna.croquet.components.JComponent<?> mainPanel;
-	public org.lgna.croquet.components.JComponent<?> getMainPanel() {
-		return this.mainPanel;
-	}
-	public void setMainPanel( org.lgna.croquet.components.JComponent<?> mainPanel ) {
-		this.mainPanel = mainPanel;
+	@Override
+	protected ControlsComposite getControlsComposite() {
+		return null;
 	}
 }

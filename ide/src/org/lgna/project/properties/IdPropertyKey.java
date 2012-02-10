@@ -41,19 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.project.properties;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BoundedDoubleStateChangeStep extends BoundedNumberStateChangeStep< org.lgna.croquet.BoundedDoubleState, Double > {
-	/*package-private*/ static BoundedDoubleStateChangeStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.BoundedDoubleState model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new BoundedDoubleStateChangeStep( parent, model, trigger );
+public class IdPropertyKey extends PropertyKey< java.util.UUID > {
+	public IdPropertyKey( java.util.UUID id, String repr ) {
+		super( id, repr );
 	}
-	private BoundedDoubleStateChangeStep( Transaction parent, org.lgna.croquet.BoundedDoubleState model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger );
+	@Override
+	protected java.util.UUID decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return binaryDecoder.decodeId();
 	}
-	public BoundedDoubleStateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	@Override
+	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.UUID value ) {
+		binaryEncoder.encode( value );
 	}
 }

@@ -40,19 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RetargetableMenuModel extends MenuModel {
-	public RetargetableMenuModel( java.util.UUID individualId ) {
-		super( individualId );
+public abstract class SimpleComposite< V extends org.lgna.croquet.components.View< ?, ? > > extends Composite< V >{
+	public SimpleComposite( java.util.UUID id ) {
+		super( id );
 	}
-	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
-		super.handlePopupMenuPrologue( popupMenu, step );
-		step.handleRetargetableMenuModelInitialization( this.getRetargetableData() );
-	}
-	public abstract RetargetingData getRetargetableData();
 }

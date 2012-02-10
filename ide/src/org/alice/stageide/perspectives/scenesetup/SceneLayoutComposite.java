@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives.scenesetup;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneLayoutComposite extends org.lgna.croquet.Composite< org.lgna.croquet.components.BorderPanel > {
+public class SceneLayoutComposite extends org.lgna.croquet.SimpleComposite< org.lgna.croquet.components.BorderPanel > {
 	private static class SingletonHolder {
 		private static SceneLayoutComposite instance = new SceneLayoutComposite();
 	}

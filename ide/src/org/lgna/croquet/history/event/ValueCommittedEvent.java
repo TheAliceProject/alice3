@@ -46,9 +46,9 @@ package org.lgna.croquet.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public class ValueCommittedEvent<T> extends Event< org.lgna.croquet.history.InputDialogOperationStep< T > > {
+public class ValueCommittedEvent<T> extends Event< org.lgna.croquet.history.OperationStep > {
 	private final T value;
-	public ValueCommittedEvent( org.lgna.croquet.history.InputDialogOperationStep< T > step, T value ) {
+	public ValueCommittedEvent( org.lgna.croquet.history.OperationStep step, T value ) {
 		super( step );
 		this.value = value;
 	}

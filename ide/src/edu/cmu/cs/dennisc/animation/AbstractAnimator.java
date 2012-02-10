@@ -46,7 +46,8 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractAnimator implements Animator {
-	private java.util.List< WaitingAnimation > waitingAnimations = new java.util.LinkedList< WaitingAnimation >();
+	private final java.util.List< WaitingAnimation > waitingAnimations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List< FrameObserver > frameObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private double speedFactor = 1.0;
 	private double tCurrent;
@@ -99,10 +100,8 @@ public abstract class AbstractAnimator implements Animator {
 				}
 			}
 			if( this.frameObservers.size() > 0 ) {
-				synchronized( this.frameObservers ) {
-					for( FrameObserver frameObserver : this.frameObservers ) {
-						frameObserver.update( tCurrent );
-					}
+				for( FrameObserver frameObserver : this.frameObservers ) {
+					frameObserver.update( tCurrent );
 				}
 			}
 		}
@@ -115,8 +114,6 @@ public abstract class AbstractAnimator implements Animator {
 		WaitingAnimation waitingAnimation = createWaitingAnimation( animation, animationObserver, null );
 		synchronized( this.waitingAnimations ) {
 			this.waitingAnimations.add( waitingAnimation );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.waitingAnimations.size()", this.waitingAnimations.size() );
-//			Thread.dumpStack();
 		}
 	}
 	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
@@ -147,21 +144,14 @@ public abstract class AbstractAnimator implements Animator {
 		}
 	}
 	
-	private java.util.LinkedList< FrameObserver > frameObservers = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	public Iterable< FrameObserver > getFrameObservers() {
-		synchronized( this.frameObservers ) {
-			return this.frameObservers;
-		}
+		return this.frameObservers;
 	}
 	public void addFrameObserver( FrameObserver frameObserver ) {
-		synchronized( this.frameObservers ) {
-			this.frameObservers.add( frameObserver );
-		}
+		this.frameObservers.add( frameObserver );
 	}
 	public void removeFrameObserver( FrameObserver frameObserver ) {
-		synchronized( this.frameObservers ) {
-			this.frameObservers.remove( frameObserver );
-		}
+		this.frameObservers.remove( frameObserver );
 	}
 
 	public void cancelAnimation() {
@@ -198,10 +188,8 @@ public abstract class AbstractAnimator implements Animator {
 	}
 	public void completeFrameObservers() {
 		if( this.frameObservers.size() > 0 ) {
-			synchronized( this.frameObservers ) {
-				for( FrameObserver frameObserver : this.frameObservers ) {
-					frameObserver.complete();
-				}
+			for( FrameObserver frameObserver : this.frameObservers ) {
+				frameObserver.complete();
 			}
 		}
 	}

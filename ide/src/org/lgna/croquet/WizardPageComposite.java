@@ -41,13 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StandardPopupPrepNote extends PopupPrepNote< org.lgna.croquet.history.StandardPopupPrepStep > {
-	public StandardPopupPrepNote( org.lgna.croquet.history.StandardPopupPrepStep step ) {
-		super( step );
+public abstract class WizardPageComposite< V extends org.lgna.croquet.components.View<?,?>> extends Composite< V > {
+	public WizardPageComposite( java.util.UUID id ) {
+		super( id );
 	}
 }

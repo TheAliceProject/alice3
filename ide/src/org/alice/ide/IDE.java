@@ -146,14 +146,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	@Override
-	public org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+	public org.lgna.croquet.Operation getPreferencesOperation() {
 		return null;
 	}
 	public abstract org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.IdePerspective > getPerspectiveState();
-	public abstract org.lgna.croquet.Operation< ? > getRunOperation();
-	public abstract org.lgna.croquet.Operation< ? > getRestartOperation();
+	public abstract org.lgna.croquet.Operation getRunOperation();
+	public abstract org.lgna.croquet.Operation getRestartOperation();
 
-	public abstract org.lgna.croquet.Operation< ? > createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
+	public abstract org.lgna.croquet.Operation createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
 	public enum AccessorAndMutatorDisplayStyle {
 		GETTER_AND_SETTER, ACCESS_AND_ASSIGNMENT

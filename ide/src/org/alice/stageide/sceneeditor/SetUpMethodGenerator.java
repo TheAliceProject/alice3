@@ -377,8 +377,8 @@ public class SetUpMethodGenerator {
 										sceneInstance, 
 										new org.lgna.project.ast.Expression[] { getJointExpression }
 								);
-							} catch( RuntimeException re ) {
-								edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( re, jointGetter );
+							} catch( Throwable t ) {
+								edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, jointGetter );
 								values = new Object[ 0 ];
 							}
 							for (Object o : values) {

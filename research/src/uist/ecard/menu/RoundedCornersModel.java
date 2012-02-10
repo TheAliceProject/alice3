@@ -14,7 +14,7 @@ public class RoundedCornersModel extends org.lgna.croquet.ActionOperation {
 		this.setSmallIcon( new ImageIcon(getClass().getResource("../resources/menu/rounded-corners.png") ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.OperationStep step ) {
 		// TODO Auto-generated method stub
 	}
 }

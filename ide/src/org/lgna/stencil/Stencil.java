@@ -277,5 +277,5 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 			return superContains;
 		}
 	}
-	public abstract org.lgna.croquet.Operation< ? > getNextOperation();
+	public abstract org.lgna.croquet.Operation getNextOperation();
 }

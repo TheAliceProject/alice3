@@ -52,19 +52,19 @@ public abstract class RenameOperation extends org.lgna.croquet.InputDialogOperat
 		this.nameValidator = nameValidator;
 	}
 	protected abstract String getInitialText();
-	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep<String> step, String nextValue );
+	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.OperationStep step, String nextValue );
 	
 	@Override
-	protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.InputDialogOperationStep<String> step) {
+	protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.OperationStep step) {
 		org.alice.ide.name.RenamePane renamePane = new org.alice.ide.name.RenamePane();
 		renamePane.setAndSelectNameText( this.getInitialText() );
 		return renamePane;
 	}
 	
 	@Override
-	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep<String> step, boolean isOk) {
+	protected void epilogue( org.lgna.croquet.history.OperationStep step, boolean isOk) {
 		if( isOk ) {
-			org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getMainPanel();
+			org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 			String nextValue = renamePane.getNameText();
 			step.commitAndInvokeDo( this.createEdit( step, nextValue ) );
 		} else {
@@ -77,8 +77,8 @@ public abstract class RenameOperation extends org.lgna.croquet.InputDialogOperat
 		dialog.setSize( 300, 150 );
 	}
 	@Override
-	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep<String> step ) {
-		org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getMainPanel();
+	protected String getInternalExplanation( org.lgna.croquet.history.OperationStep step ) {
+		org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 		String rv = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( renamePane.getNameText() );
 		if( rv != null ) {
 			return rv;

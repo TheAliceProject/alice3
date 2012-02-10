@@ -45,11 +45,24 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StateChangeStep< M extends org.lgna.croquet.State<?> > extends CompletionStep< M > {
-	public StateChangeStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
+public final class StateChangeStep< T > extends CompletionStep< org.lgna.croquet.State< T > > {
+	/*package-private*/ static <T> StateChangeStep<T> createAndAddToTransaction( Transaction transaction, org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return new StateChangeStep<T>( transaction, model, trigger );
+	}
+	private StateChangeStep( Transaction parent, org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger, null );
 	}
 	public StateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	public final T getItem() {
+		org.lgna.croquet.edits.Edit< ? > edit = this.getEdit();
+		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
+			org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)edit;
+			return stateEdit.getNextValue();
+		} else {
+			//todo: throw Exception?
+			return null;
+		}
 	}
 }

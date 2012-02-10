@@ -40,19 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.history;
+package edu.cmu.cs.dennisc.javax.swing.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ActionOperationStep extends SingleThreadOperationStep< org.lgna.croquet.ActionOperation >{
-	public static ActionOperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.ActionOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new ActionOperationStep( parent, model, trigger );
+public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends javax.swing.JScrollPane {
+	private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
+		//edu.cmu.cs.dennisc.java.util.logging.Logger.info( jScrollBar.getMinimum(), jScrollBar.getValue(), jScrollBar.getMaximum(), jScrollBar.getVisibleAmount() );
+		return jScrollBar.getMinimum() != jScrollBar.getValue() || jScrollBar.getMaximum() != jScrollBar.getVisibleAmount();
 	}
-	private ActionOperationStep( Transaction parent, org.lgna.croquet.ActionOperation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger, null );
+	protected class PaintOmittingJScrollBar extends javax.swing.JScrollBar {
+		public PaintOmittingJScrollBar( int orientation ) {
+			super( orientation );
+		}
+		@Override
+		public void paint( java.awt.Graphics g ) {
+			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar();
+			if( isPaintRequiredFor( this ) || isPaintRequiredFor( otherScrollBar ) ) {
+				super.paint( g );
+			} else {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				java.awt.Shape clip = g.getClip();
+				g2.setPaint( ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getBackground() );
+				g2.fill( clip );
+			}
+		}
 	}
-	public ActionOperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
+	protected abstract javax.swing.JScrollBar getOtherScrollBar();
 }

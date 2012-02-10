@@ -164,6 +164,32 @@ public abstract class BooleanState extends State< Boolean > {
 	}
 
 	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		if( this.menuPrepModel != null ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.menuPrepModel );
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	@Override
+	public Class< Boolean > getItemClass() {
+		return Boolean.class;
+	}
+	@Override
+	public Boolean decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return binaryDecoder.decodeBoolean();
+	}
+	@Override
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Boolean value ) {
+		binaryEncoder.encode( value );
+	}
+	@Override
+	public StringBuilder appendRepresentation( StringBuilder rv, Boolean value, java.util.Locale locale ) {
+		rv.append( value );
+		return rv;
+	}
+	@Override
 	public boolean isEnabled() {
 		return this.swingModel.action.isEnabled();
 	}
@@ -199,43 +225,33 @@ public abstract class BooleanState extends State< Boolean > {
 		}
 	}
 	
-	@Override
-	protected void commitStateEdit( Boolean prevValue, Boolean nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.TransactionManager.commitEdit( this, nextValue, trigger );
-	}
-	@Override
-	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		assert originalEdit instanceof org.lgna.croquet.edits.BooleanStateEdit;
-		org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)originalEdit;
-		return org.lgna.croquet.history.TransactionManager.commitEdit( this, booleanStateEdit.getNextValue(), new org.lgna.croquet.triggers.SimulatedTrigger() );
-	}
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
-		if( edit instanceof org.lgna.croquet.edits.BooleanStateEdit ) {
-			org.lgna.croquet.edits.BooleanStateEdit booleanStateEdit = (org.lgna.croquet.edits.BooleanStateEdit)edit;
-			rv.append( " " );
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
-//				if( booleanStateEdit.getNextValue() ) {
-//					rv.append( "Select " );
+//	@Override
+//	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
+//		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
+//			org.lgna.croquet.edits.StateEdit<?,Boolean> stateEdit = (org.lgna.croquet.edits.StateEdit<?,Boolean>)edit;
+//			rv.append( " " );
+//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
+////				if( booleanStateEdit.getNextValue() ) {
+////					rv.append( "Select " );
+////				} else {
+////					rv.append( "Unselect " );
+////				}
+//				rv.append( "<strong>" );
+//				rv.append( this.trueText );
+//				rv.append( "</strong>" );
+//			} else {
+////				rv.append( "Press " );
+//				rv.append( "<strong>" );
+//				if( stateEdit.getNextValue() ) {
+//					rv.append( this.falseText );
 //				} else {
-//					rv.append( "Unselect " );
+//					rv.append( this.trueText );
 //				}
-				rv.append( "<strong>" );
-				rv.append( this.trueText );
-				rv.append( "</strong>" );
-			} else {
-//				rv.append( "Press " );
-				rv.append( "<strong>" );
-				if( booleanStateEdit.getNextValue() ) {
-					rv.append( this.falseText );
-				} else {
-					rv.append( this.trueText );
-				}
-				rv.append( "</strong>" );
-			}
-		}
-		return rv;
-	}
+//				rv.append( "</strong>" );
+//			}
+//		}
+//		return rv;
+//	}
 
 	@Override
 	protected Boolean getActualValue() {

@@ -57,7 +57,7 @@ public class DeclareLocalDragModel extends StatementTemplateDragModel {
 		super( java.util.UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ), org.lgna.project.ast.LocalDeclarationStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalDeclarationStatement() );
 	}
 	@Override
-	public org.lgna.croquet.Operation< ? > getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public org.lgna.croquet.Operation getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.declaration.LocalDeclarationStatementOperation.getInstance( blockStatementIndexPair );
 	}
 }

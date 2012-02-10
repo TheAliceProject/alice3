@@ -41,17 +41,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringStateChangeNote extends StateChangeNote< org.lgna.croquet.history.StringStateChangeStep > {
-	public StringStateChangeNote( org.lgna.croquet.history.StringStateChangeStep step ) {
-		super( step );
+public class StateContext< T > implements Context {
+	private final org.lgna.croquet.resolvers.Resolver< State< T > > stateResolver;
+	private T value;
+	public StateContext( State< T > state ) {
+		this.stateResolver = state.getResolver();
+		this.value = state.getValue();
 	}
-	@Override
-	protected void addFeatures(org.lgna.croquet.history.StringStateChangeStep step) {
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+	public StateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.stateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		State<T> state = this.stateResolver.getResolved();
+		this.value = state.decodeValue( binaryDecoder );
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.stateResolver );
+		State<T> state = this.stateResolver.getResolved();
+		state.encodeValue( binaryEncoder, this.value );
+	}
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		this.stateResolver.retarget( retargeter );
+		this.value = retargeter.retarget( this.value );
+	}
+	
+	public boolean isGoodToGo() {
+		T currentValue = this.getState().getValue();
+		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currentValue, this.value );
+	}
+	public org.lgna.croquet.history.Transaction createRecoveryTransaction() {
+		return org.lgna.croquet.history.TransactionManager.createSimulatedTransactionForState( this.getState(), this.value );
+	}
+	public State< T > getState() {
+		return this.stateResolver.getResolved();
+	}
+	public T getValue() {
+		return this.value;
 	}
 }

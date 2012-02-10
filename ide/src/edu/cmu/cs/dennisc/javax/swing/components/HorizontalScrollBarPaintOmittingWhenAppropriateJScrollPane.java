@@ -40,39 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.edits;
+package edu.cmu.cs.dennisc.javax.swing.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TreeSelectionStateEdit<T> extends ItemStateEdit<org.lgna.croquet.TreeSelectionState<T>,T> {
-	private final org.lgna.croquet.TreeSelectionState<T> model;
-	public TreeSelectionStateEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.croquet.TreeSelectionState<T> model, T prevValue, T nextValue ) {
-		super( completionStep, prevValue, nextValue );
-		this.model = model;
-	}
-	public TreeSelectionStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.TreeSelectionState<T> > completionStep, T prevValue, T nextValue ) {
-		this( completionStep, null, prevValue, nextValue );
-	}
-	public TreeSelectionStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		//todo:
-		this.model = null;
+public class HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane extends ScrollBarPaintOmittingWhenAppropriateJScrollPane {
+	@Override
+	protected javax.swing.JScrollBar getOtherScrollBar() {
+		return this.getVerticalScrollBar();
 	}
 	@Override
-	public org.lgna.croquet.TreeSelectionState< T > getModel() {
-		if( this.model != null ) {
-			return this.model;
-		} else {
-			return super.getModel();
-		}
+	public javax.swing.JScrollBar createHorizontalScrollBar() {
+		return new PaintOmittingJScrollBar( javax.swing.JScrollBar.HORIZONTAL );
 	}
-//	@Override
-//	public void addKeyValuePairs( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, edu.cmu.cs.dennisc.croquet.Edit< ? > replacementEdit ) {
-//		super.addKeyValuePairs( retargeter, replacementEdit );
-//		ListSelectionStateEdit listSelectionStateEdit = (ListSelectionStateEdit)replacementEdit;
-//		retargeter.addKeyValuePair( this.prevValue, listSelectionStateEdit.prevValue );
-//		retargeter.addKeyValuePair( this.nextValue, listSelectionStateEdit.nextValue );
-//	}
 }

@@ -40,18 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.project.properties;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanStateChangeNote extends StateChangeNote< org.lgna.croquet.history.BooleanStateChangeStep > {
-	public BooleanStateChangeNote( org.lgna.croquet.history.BooleanStateChangeStep step ) {
-		super( step );
+public class IntegerPropertyKey extends PropertyKey< Integer > {
+	public IntegerPropertyKey( java.util.UUID id, String repr ) {
+		super( id, repr );
 	}
 	@Override
-	protected void addFeatures(org.lgna.croquet.history.BooleanStateChangeStep step) {
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+	protected Integer decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		boolean isNotNull = binaryDecoder.decodeBoolean();
+		if( isNotNull ) {
+			return binaryDecoder.decodeInt();
+		} else {
+			return null;
+		}
+	}
+	@Override
+	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Integer value ) {
+		binaryEncoder.encode( value != null );
+		binaryEncoder.encode( value );
 	}
 }

@@ -58,8 +58,6 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 	public M getModel() {
 		return model;
 	}
-	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
-	}
 	private boolean isPopupMenuOperationLimitedToRightMouseButton = true;
 //	public boolean isPopupMenuOperationLimitedToRightMouseButton() {
 //		return this.isPopupMenuOperationLimitedToRightMouseButton;

@@ -52,7 +52,7 @@ public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.Inp
 	}
 	protected abstract boolean isNew();
 	@Override
-	protected String getInternalExplanation(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected String getInternalExplanation(org.lgna.croquet.history.OperationStep step) {
 		if( org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI() != null ) {
 			return super.getInternalExplanation(step);
 		} else {
@@ -61,13 +61,13 @@ public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.Inp
 	}
 	
 	@Override
-	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(org.lgna.croquet.history.OperationStep step) {
 		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().selectAppropriateTab( this.isNew() );
 		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().refresh();
 		return org.alice.ide.openprojectpane.SelectProjectToOpenPanel.getInstance();
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.OperationStep step, boolean isOk) {
 		if( isOk ) {
 			//org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = step.getMainPanel();
 			java.net.URI uri = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI();

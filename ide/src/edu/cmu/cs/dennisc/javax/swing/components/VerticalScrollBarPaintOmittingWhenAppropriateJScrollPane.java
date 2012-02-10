@@ -40,38 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.edits;
+package edu.cmu.cs.dennisc.javax.swing.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class BoundedIntegerStateEdit extends BoundedNumberStateEdit<org.lgna.croquet.BoundedIntegerState,Integer> {
-	private final int prevValue;
-	private final int nextValue;
-	public BoundedIntegerStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.BoundedIntegerState > completionStep, int prevValue, int nextValue ) {
-		super( completionStep );
-		this.prevValue = prevValue;
-		this.nextValue = nextValue;
-	}
-	public BoundedIntegerStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.prevValue = binaryDecoder.decodeInt();
-		this.nextValue = binaryDecoder.decodeInt();
+public class VerticalScrollBarPaintOmittingWhenAppropriateJScrollPane extends ScrollBarPaintOmittingWhenAppropriateJScrollPane {
+	@Override
+	protected javax.swing.JScrollBar getOtherScrollBar() {
+		return this.getHorizontalScrollBar();
 	}
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.prevValue );
-		binaryEncoder.encode( this.nextValue );
-	}
-	
-
-	@Override
-	public Integer getPreviousValue() {
-		return this.prevValue;
-	}
-	@Override
-	public Integer getNextValue() {
-		return this.nextValue;
+	public javax.swing.JScrollBar createVerticalScrollBar() {
+		return new PaintOmittingJScrollBar( javax.swing.JScrollBar.VERTICAL );
 	}
 }

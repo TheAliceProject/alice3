@@ -97,6 +97,16 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 	protected boolean isInactiveFeedbackDesired() {
 		return true;
 	}
+
+//	@Override
+//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
+//		super.appendPrepStepsIfNecessary( transaction );
+//		if( transaction.containsPrepStep( transaction, this.getModel(), org.lgna.croquet.history.PopupPrepStep.class ) ) {
+//			//pass
+//		} else {
+//			org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
+//		}
+//	}
 	
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {

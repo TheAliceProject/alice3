@@ -125,11 +125,13 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
-		MovementDirection oppositeDirection = this.linearHandle.getMovementDescription().direction.getOpposite();
-		if (oppositeDirection != this.linearHandle.getMovementDescription().direction)
-		{
-			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(oppositeDirection, this.linearHandle.getMovementDescription().type), this.manipulatedTransformable ) );
+		if (this.linearHandle != null) {
+			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
+			MovementDirection oppositeDirection = this.linearHandle.getMovementDescription().direction.getOpposite();
+			if (oppositeDirection != this.linearHandle.getMovementDescription().direction)
+			{
+				this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(oppositeDirection, this.linearHandle.getMovementDescription().type), this.manipulatedTransformable ) );
+			}
 		}
 	}
 	

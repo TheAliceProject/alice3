@@ -190,12 +190,36 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	/*package-private*/ javax.media.opengl.GLJPanel createGLJPanel() {
 		return new javax.media.opengl.GLJPanel( createDesiredGLCapabilities(getDesiredOnscreenSampleCount()), getGLCapabilitiesChooser(), null );
 	}
+	
+	
+//	/*package-private*/ boolean canCreateExternalGLDrawable() {
+//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
+//		return glDrawableFactory.canCreateExternalGLDrawable();
+//	}
+//	/*package-private*/ javax.media.opengl.GLDrawable createExternalGLDrawable() {
+//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
+//		if( glDrawableFactory.canCreateExternalGLDrawable() ) {
+//			return glDrawableFactory.createExternalGLDrawable();
+//		} else {
+//			return null;
+//		}
+//	}
+	
+	/*package-private*/ boolean canCreateGLPbuffer() {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "solve pBuffer crash on linux" );
+			return false;
+		} else {
+			javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
+			return glDrawableFactory.canCreateGLPbuffer();
+		}
+	}
 	/*package-private*/ javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
 		if (glDrawableFactory.canCreateGLPbuffer()) {
 			return glDrawableFactory.createGLPbuffer(createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share);
 		} else {
-			throw new RuntimeException("cannot create pbuffer");
+			return null;
 		}
 //todo: jogl2
 //		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();

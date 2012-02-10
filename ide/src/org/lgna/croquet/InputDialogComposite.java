@@ -40,45 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.edits;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateEdit extends StateEdit<org.lgna.croquet.BooleanState,Boolean> {
-	//can't really imagine this values being the same, but it doesn't seem likely to hurt to track both values
-	private final boolean prevValue;
-	private final boolean nextValue;
-
-	public BooleanStateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.BooleanState > completionStep, boolean nextValue ) {
-		super( completionStep );
-		this.prevValue = !nextValue;
-		this.nextValue = nextValue;
+public abstract class InputDialogComposite extends GatedCommitDialogComposite {
+	private static class InputDialogControlsComposite extends ControlsComposite {
+		private final org.lgna.croquet.components.Button completeButton;
+		public InputDialogControlsComposite( InputDialogComposite composite ) {
+			super( java.util.UUID.fromString( "56e28f65-6da2-4f25-a86b-16b7e3c4940c" ), composite );
+			this.completeButton = this.getCompleteOperation().createButton();
+		}
+		public org.lgna.croquet.components.Button getCompleteButton() {
+			return this.completeButton;
+		}
+		@Override
+		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine ) {
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
+			controlLine.addComponent( this.completeButton );
+			
+			//todo: use isCancelDesired?
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+			controlLine.addComponent( this.getCancelOperation().createButton() );
+		}
 	}
-	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.prevValue = binaryDecoder.decodeBoolean();
-		this.nextValue = binaryDecoder.decodeBoolean();
+	private final InputDialogControlsComposite controlsComposite = new InputDialogControlsComposite( this );
+	public InputDialogComposite( java.util.UUID id, Group operationGroup, Composite<?> mainComposite ) {
+		super( id, operationGroup, mainComposite );
 	}
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.prevValue );
-		binaryEncoder.encode( this.nextValue );
+	protected org.lgna.croquet.GatedCommitDialogComposite.ControlsComposite getControlsComposite() {
+		assert this.controlsComposite != null : this;
+		return this.controlsComposite;
 	}
+	
 	@Override
-	public Boolean getPreviousValue() {
-		return this.prevValue;
-	}
-	@Override
-	public Boolean getNextValue() {
-		return this.nextValue;
-	}
-
-	@Override
-	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-		rv.append( "boolean: " );
-		rv.append( this.nextValue );
-		return rv;
+	protected void handlePreShowDialog( org.lgna.croquet.history.OperationStep step ) {
+		org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
+		dialog.setDefaultButton( this.controlsComposite.getCompleteButton() );
+		super.handlePreShowDialog( step );
 	}
 }

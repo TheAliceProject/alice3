@@ -11,7 +11,7 @@ public class PictureEffectsRibbonModel extends org.lgna.croquet.TabComposite {
 	public static PictureEffectsRibbonModel getInstance() {
 		return SingletonHolder.instance;
 	}
-	private org.lgna.croquet.Operation< ? >[] operations = new org.lgna.croquet.Operation< ? >[] {
+	private org.lgna.croquet.Operation[] operations = new org.lgna.croquet.Operation[] {
 			uist.ecard.menu.DropShadowModel.getInstance(),
 			null,
 			uist.ecard.menu.RoundedCornersModel.getInstance(),
@@ -102,7 +102,7 @@ public class PictureEffectsRibbonModel extends org.lgna.croquet.TabComposite {
 	}
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		for( org.lgna.croquet.Operation< ? > operation : this.operations ) {
+		for( org.lgna.croquet.Operation operation : this.operations ) {
 			if( operation == model ) {
 				return true;
 			}

@@ -63,7 +63,7 @@ public class EachInArrayTogetherInsertOperation extends InArrayInsertOperation< 
 		super( java.util.UUID.fromString( "32bbd6f7-1e9b-44d8-9bb8-ddad9d265732" ), blockStatementIndexPair );
 	}
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.ide.croquet.components.declaration.EachInArrayTogetherPanel( this );
 	}
 	@Override

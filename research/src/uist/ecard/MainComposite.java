@@ -50,7 +50,7 @@ import javax.swing.JButton;
 /**
  * @author Dennis Cosgrove
  */
-public class MainComposite extends org.lgna.croquet.Composite< org.lgna.croquet.components.BorderPanel > {
+public class MainComposite extends org.lgna.croquet.SimpleComposite< org.lgna.croquet.components.BorderPanel > {
 	private static class SingletonHolder {
 		private static MainComposite instance = new MainComposite();
 	}

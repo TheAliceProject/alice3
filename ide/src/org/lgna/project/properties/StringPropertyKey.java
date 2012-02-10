@@ -40,14 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.cheshire.stencil.stepnotes;
+package org.lgna.project.properties;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemStateChangeNote< S extends org.lgna.croquet.history.ItemStateChangeStep<?,?> > extends StateChangeNote< S > {
-	public ItemStateChangeNote( S step ) {
-		super( step );
+public class StringPropertyKey extends PropertyKey< String > {
+	public StringPropertyKey( java.util.UUID id, String repr ) {
+		super( id, repr );
+	}
+	@Override
+	protected String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return binaryDecoder.decodeString();
+	}
+	@Override
+	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
+		binaryEncoder.encode( value );
 	}
 }

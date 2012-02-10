@@ -46,7 +46,7 @@ package org.alice.stageide.person;
 /**
  * @author Dennis Cosgrove
  */
-public class RenderComposite extends org.lgna.croquet.Composite< org.alice.stageide.person.components.PersonViewer > {
+public class RenderComposite extends org.lgna.croquet.SimpleComposite< org.alice.stageide.person.components.PersonViewer > {
 	private static class SingletonHolder {
 		private static RenderComposite instance = new RenderComposite();
 	}

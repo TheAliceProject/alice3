@@ -125,13 +125,13 @@ public abstract class Application {
 		} );
 		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
 			public void handleAbout( java.util.EventObject e ) {
-				Operation< ? > aboutOperation = Application.this.getAboutOperation();
+				Operation aboutOperation = Application.this.getAboutOperation();
 				if( aboutOperation != null ) {
 					aboutOperation.fire( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 				}
 			}
 			public void handlePreferences( java.util.EventObject e ) {
-				Operation< ? > preferencesOperation = Application.this.getPreferencesOperation();
+				Operation preferencesOperation = Application.this.getPreferencesOperation();
 				if( preferencesOperation != null ) {
 					preferencesOperation.fire( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 				}
@@ -180,8 +180,8 @@ public abstract class Application {
 		}
 	}
 
-	protected abstract Operation< ? > getAboutOperation();
-	protected abstract Operation< ? > getPreferencesOperation();
+	protected abstract Operation getAboutOperation();
+	protected abstract Operation getPreferencesOperation();
 
 	protected abstract void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger );
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
