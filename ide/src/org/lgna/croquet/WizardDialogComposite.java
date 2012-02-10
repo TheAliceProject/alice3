@@ -48,22 +48,49 @@ package org.lgna.croquet;
  */
 public abstract class WizardDialogComposite extends GatedCommitDialogComposite {
 	private static class WizardDialogControlsComposite extends ControlsComposite {
-		private final org.lgna.croquet.components.Button completeButton;
+		private static class NextOperation extends InternalDialogOperation {
+			public NextOperation( WizardDialogControlsComposite composite ) {
+				super( java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ), composite );
+			}
+			@Override
+			protected void perform( org.lgna.croquet.history.OperationStep step ) {
+//				ListSelectionState< Card > cardSelectionState = this.getCardSelectionState(step);
+//				int index = cardSelectionState.getSelectedIndex();
+//				final int N = cardSelectionState.getItemCount();
+//				if( index < N-1 ) {
+//					cardSelectionState.setSelectedIndex( index+1 );
+//				}
+			}
+		}
+		private static class PreviousOperation extends InternalDialogOperation {
+			public PreviousOperation( WizardDialogControlsComposite composite ) {
+				super( java.util.UUID.fromString( "2b1ff0fd-8d8a-4d23-9d95-6203e9abff9c" ), composite );
+			}
+			@Override
+			protected void perform( org.lgna.croquet.history.OperationStep step ) {
+//				ListSelectionState< Card > cardSelectionState = this.getCardSelectionState(step);
+//				int index = cardSelectionState.getSelectedIndex();
+//				if( index > 0 ) {
+//					cardSelectionState.setSelectedIndex( index-1 );
+//				}
+			}
+		}
+		
+		private NextOperation nextOperation = new NextOperation( this );
+		private PreviousOperation prevOperation = new PreviousOperation( this );
+
 		public WizardDialogControlsComposite( WizardDialogComposite composite ) {
 			super( java.util.UUID.fromString( "56e28f65-6da2-4f25-a86b-16b7e3c4940c" ), composite );
-			this.completeButton = this.getCompleteOperation().createButton();
-		}
-		public org.lgna.croquet.components.Button getCompleteButton() {
-			return this.completeButton;
 		}
 		@Override
-		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine ) {
+		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
 			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
-			controlLine.addComponent( this.completeButton );
-			
-			//todo: use isCancelDesired?
-			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
-			controlLine.addComponent( this.getCancelOperation().createButton() );
+			controlLine.addComponent( this.prevOperation.createButton() );
+			controlLine.addComponent( this.nextOperation.createButton() );
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+			controlLine.addComponent( leadingOkCancelButton );
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+			controlLine.addComponent( trailingOkCancelButton );
 		}
 	}
 
@@ -78,11 +105,17 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite {
 		this.controlsComposite = new WizardDialogControlsComposite( this );
 	}
 	@Override
+	protected void localize() {
+		super.localize();
+		this.getControlsComposite().nextOperation.setName( this.findLocalizedText( "next", WizardDialogComposite.class ) );
+		this.getControlsComposite().prevOperation.setName( this.findLocalizedText( "previous", WizardDialogComposite.class ) );
+	}
+	@Override
 	public CardComposite getMainComposite() {
 		return (CardComposite)super.getMainComposite();
 	}
 	@Override
-	protected ControlsComposite getControlsComposite() {
+	protected WizardDialogControlsComposite getControlsComposite() {
 		return this.controlsComposite;
 	}
 	@Override

@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogComposite extends DialogComposite< org.lgna.croquet.components.GridBagPanel > {
+public abstract class GatedCommitDialogComposite extends DialogComposite< org.lgna.croquet.components.BorderPanel > {
 	private static final org.lgna.croquet.history.Step.Key< Boolean > IS_COMPLETED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "GatedCommitDialogComposite.IS_COMPLETED_KEY" );
 
 	private static final String NULL_EXPLANATION = "good to go";
@@ -77,32 +77,40 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 				return indirect.cancelOperation;
 			}
 		}
-		private static abstract class InternalDialogOperation extends ActionOperation {
+		protected static abstract class InternalDialogOperation extends ActionOperation {
 			private final ControlsComposite controlsComposite;
-			private final boolean isCompletion;
-			public InternalDialogOperation( java.util.UUID id, ControlsComposite controlsComposite, boolean isCompletion ) {
+			public InternalDialogOperation( java.util.UUID id, ControlsComposite controlsComposite ) {
 				super( DIALOG_IMPLEMENTATION_GROUP, id );
 				this.controlsComposite = controlsComposite;
-				this.isCompletion = isCompletion;
 			}
 			public ControlsComposite getControlsComposite() {
 				return this.controlsComposite;
 			}
 			@Override
-			protected void localize() {
+			protected final void localize() {
 				//note: do not invoke super
 				//super.localize();
 			}
+		}
+		
+		private static abstract class InternalFinishOperation extends InternalDialogOperation {
+			private final boolean isCompletion;
+			public InternalFinishOperation( java.util.UUID id, ControlsComposite controlsComposite, boolean isCompletion ) {
+				super( id, controlsComposite );
+				this.isCompletion = isCompletion;
+			}
 			@Override
 			protected final void perform(org.lgna.croquet.history.OperationStep step) {
-				org.lgna.croquet.history.OperationStep dialogStep = step.getFirstAncestorStepOfEquivalentModel( this.controlsComposite.getGatedCommitDialogComposite().getOperation(), org.lgna.croquet.history.OperationStep.class );
+				org.lgna.croquet.history.OperationStep dialogStep = step.getFirstAncestorStepOfEquivalentModel( this.getControlsComposite().getGatedCommitDialogComposite().getOperation(), org.lgna.croquet.history.OperationStep.class );
 				org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( DIALOG_KEY );
 				dialogStep.putEphemeralDataFor( IS_COMPLETED_KEY, this.isCompletion );
 				dialog.setVisible( false );
 				step.finish();
 			}
+			
 		}
-		private static final class InternalCompleteOperation extends InternalDialogOperation {
+		
+		private static final class InternalCompleteOperation extends InternalFinishOperation {
 			private InternalCompleteOperation( ControlsComposite controlsComposite ) {
 				super( java.util.UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), controlsComposite, true );
 			}
@@ -111,7 +119,7 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 				return new InternalCompleteOperationResolver( this.getControlsComposite() );
 			}
 		}
-		private static final class InternalCancelOperation extends InternalDialogOperation {
+		private static final class InternalCancelOperation extends InternalFinishOperation {
 			private InternalCancelOperation( ControlsComposite controlsComposite ) {
 				super( java.util.UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), controlsComposite, false );
 			}
@@ -195,13 +203,17 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 		private final ExplanationLabel explanationLabel = new ExplanationLabel();
 		private final InternalCompleteOperation completeOperation = new InternalCompleteOperation( this );
 		private final InternalCancelOperation cancelOperation = new InternalCancelOperation( this );
-
+		private final org.lgna.croquet.components.Button completeButton;
 		public ControlsComposite( java.util.UUID id, GatedCommitDialogComposite gatedCommitDialogComposite ) {
 			super( id );
 			this.gatedCommitDialogComposite = gatedCommitDialogComposite;
+			this.completeButton = this.getCompleteOperation().createButton();
 		}
 		public GatedCommitDialogComposite getGatedCommitDialogComposite() {
 			return this.gatedCommitDialogComposite;
+		}
+		public org.lgna.croquet.components.Button getCompleteButton() {
+			return this.completeButton;
 		}
 		@Override
 		protected void localize() {
@@ -210,21 +222,37 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 		public boolean contains( org.lgna.croquet.Model model ) {
 			return false;
 		}
-		protected abstract void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine );
+		protected abstract void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton );
 		@Override
 		protected org.lgna.croquet.components.GridBagPanel createView() {
+			org.lgna.croquet.components.Button okButton = this.getCompleteButton();
+			org.lgna.croquet.components.Button cancelButton = this.getCancelOperation().createButton();
+			
+			org.lgna.croquet.components.Button leadingOkCancelButton;
+			org.lgna.croquet.components.Button trailingOkCancelButton;
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+				leadingOkCancelButton = okButton;
+				trailingOkCancelButton = cancelButton;
+			} else {
+				leadingOkCancelButton = cancelButton;
+				trailingOkCancelButton = okButton;
+			}
 			org.lgna.croquet.components.LineAxisPanel controlLine = new org.lgna.croquet.components.LineAxisPanel();
-			this.addComponentsToControlLine( controlLine );
+			this.addComponentsToControlLine( controlLine, leadingOkCancelButton, trailingOkCancelButton );
 			controlLine.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 			
 			org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel( this );
 			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+			gbc.anchor = java.awt.GridBagConstraints.NORTH;
 			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-			gbc.fill = java.awt.GridBagConstraints.VERTICAL;
-			gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
+			gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gbc.weightx = 1.0;
+			gbc.weighty = 0.0;
 			rv.addComponent( this.explanationLabel, gbc );
 			rv.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
 			rv.addComponent( controlLine, gbc );
+			controlLine.setBackgroundColor( null );
+			rv.setBackgroundColor( null );
 			return rv;
 		}
 		public Operation getCompleteOperation() {
@@ -251,25 +279,20 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 		return this.mainComposite;
 	}
 	@Override
-	protected final void localize() {
+	protected void localize() {
 		this.getControlsComposite().completeOperation.setName( this.findLocalizedText( "commit", GatedCommitDialogComposite.class ) );
 		this.getControlsComposite().cancelOperation.setName( this.findLocalizedText( "cancel", GatedCommitDialogComposite.class ) );
 	}
 	protected abstract ControlsComposite getControlsComposite();
 	@Override
-	protected org.lgna.croquet.components.GridBagPanel createView() {
-		org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel();
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.weightx = 1.0;
-		gbc.weighty = 1.0;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		rv.addComponent( this.mainComposite.getView(), gbc );
-		gbc.weighty = 0.0;
-		rv.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
-		rv.addComponent( this.getControlsComposite().getView(), gbc );
+	protected org.lgna.croquet.components.BorderPanel createView() {
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( this.mainComposite.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		rv.addComponent( this.getControlsComposite().getView(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
+		rv.setBackgroundColor( this.mainComposite.getView().getBackgroundColor() );
 		return rv;
 	}
+
 	protected abstract String getExplanation( org.lgna.croquet.history.OperationStep step );
 	protected void updateExplanation( org.lgna.croquet.history.OperationStep step ) {
 		String explanation;
@@ -300,9 +323,11 @@ public abstract class GatedCommitDialogComposite extends DialogComposite< org.lg
 	}
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.OperationStep step ) {
-		super.handlePreShowDialog( step );
+		org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
+		dialog.setDefaultButton( this.getControlsComposite().getCompleteButton() );
 		step.addListener( this.listener );
 		this.updateExplanation( step );
+		super.handlePreShowDialog( step );
 	}
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.OperationStep step ) {

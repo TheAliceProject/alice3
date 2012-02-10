@@ -48,22 +48,15 @@ package org.lgna.croquet;
  */
 public abstract class InputDialogComposite extends GatedCommitDialogComposite {
 	private static class InputDialogControlsComposite extends ControlsComposite {
-		private final org.lgna.croquet.components.Button completeButton;
 		public InputDialogControlsComposite( InputDialogComposite composite ) {
 			super( java.util.UUID.fromString( "56e28f65-6da2-4f25-a86b-16b7e3c4940c" ), composite );
-			this.completeButton = this.getCompleteOperation().createButton();
-		}
-		public org.lgna.croquet.components.Button getCompleteButton() {
-			return this.completeButton;
 		}
 		@Override
-		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine ) {
+		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
 			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
-			controlLine.addComponent( this.completeButton );
-			
-			//todo: use isCancelDesired?
+			controlLine.addComponent( leadingOkCancelButton );
 			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
-			controlLine.addComponent( this.getCancelOperation().createButton() );
+			controlLine.addComponent( trailingOkCancelButton );
 		}
 	}
 	private final InputDialogControlsComposite controlsComposite = new InputDialogControlsComposite( this );
@@ -74,12 +67,5 @@ public abstract class InputDialogComposite extends GatedCommitDialogComposite {
 	protected org.lgna.croquet.GatedCommitDialogComposite.ControlsComposite getControlsComposite() {
 		assert this.controlsComposite != null : this;
 		return this.controlsComposite;
-	}
-	
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.OperationStep step ) {
-		org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
-		dialog.setDefaultButton( this.controlsComposite.getCompleteButton() );
-		super.handlePreShowDialog( step );
 	}
 }
