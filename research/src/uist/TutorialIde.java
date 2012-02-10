@@ -142,6 +142,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private static final org.lgna.project.properties.CodablePropertyKey< org.lgna.croquet.history.TransactionHistory > INTERACTION_HISTORY_PROPERTY_KEY = org.lgna.project.properties.CodablePropertyKey.createInstance( java.util.UUID.fromString( "5c12ebea-6f6c-42b6-b1b3-e1fb96733fa5" ), "INTERACTION_HISTORY_PROPERTY_KEY" );
 
 	private static org.lgna.project.ast.BlockStatement getMyFirstMethodBody( org.lgna.project.Project project ) {
+		// TODO: This may not be always called myFirstMethod
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
 		org.lgna.project.ast.UserMethod myFirstMethod = sceneType.getDeclaredMethod( "myFirstMethod" );
 		return myFirstMethod.body.getValue();
