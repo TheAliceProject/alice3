@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractAnimator implements Animator {
-	private final java.util.List< WaitingAnimation > waitingAnimations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.Queue< WaitingAnimation > waitingAnimations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentLinkedQueue();
 	private final java.util.List< FrameObserver > frameObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private double speedFactor = 1.0;
@@ -79,23 +79,21 @@ public abstract class AbstractAnimator implements Animator {
 		} else {
 			double tCurrent = getCurrentTime();
 			if( this.waitingAnimations.size() > 0 ) {
-				synchronized( this.waitingAnimations ) {
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.waitingAnimations.size() );
-					java.util.Iterator< WaitingAnimation > iterator = this.waitingAnimations.iterator();
-					while( iterator.hasNext() ) {
-						WaitingAnimation waitingAnimation = iterator.next();
-						double tRemaining = waitingAnimation.getAnimation().update( tCurrent, waitingAnimation.getAnimationObserver() );
-						if( tRemaining > 0.0 ) {
-							//pass
-						} else {
-							Thread thread = waitingAnimation.getThread();
-							if( thread != null ) {
-								synchronized( thread ) {
-									thread.notify();
-								}
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.waitingAnimations.size() );
+				java.util.Iterator< WaitingAnimation > iterator = this.waitingAnimations.iterator();
+				while( iterator.hasNext() ) {
+					WaitingAnimation waitingAnimation = iterator.next();
+					double tRemaining = waitingAnimation.getAnimation().update( tCurrent, waitingAnimation.getAnimationObserver() );
+					if( tRemaining > 0.0 ) {
+						//pass
+					} else {
+						Thread thread = waitingAnimation.getThread();
+						if( thread != null ) {
+							synchronized( thread ) {
+								thread.notify();
 							}
-							iterator.remove();
 						}
+						iterator.remove();
 					}
 				}
 			}
@@ -112,9 +110,7 @@ public abstract class AbstractAnimator implements Animator {
 	
 	public void invokeLater( Animation animation, AnimationObserver animationObserver ) {
 		WaitingAnimation waitingAnimation = createWaitingAnimation( animation, animationObserver, null );
-		synchronized( this.waitingAnimations ) {
-			this.waitingAnimations.add( waitingAnimation );
-		}
+		this.waitingAnimations.add( waitingAnimation );
 	}
 	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
 		if( java.awt.EventQueue.isDispatchThread() ) {
@@ -124,9 +120,7 @@ public abstract class AbstractAnimator implements Animator {
 			Thread currentThread = Thread.currentThread();
 			WaitingAnimation waitingAnimation = createWaitingAnimation( animation, animationObserver, currentThread );
 			synchronized( currentThread ) {
-				synchronized( this.waitingAnimations ) {
-					this.waitingAnimations.add( waitingAnimation );
-				}
+				this.waitingAnimations.add( waitingAnimation );
 				currentThread.wait();
 			}
 			if( waitingAnimation.getException() != null ) {
@@ -155,35 +149,31 @@ public abstract class AbstractAnimator implements Animator {
 	}
 
 	public void cancelAnimation() {
-		synchronized( this.waitingAnimations ) {
-			java.util.Iterator< WaitingAnimation > iterator = this.waitingAnimations.iterator();
-			while( iterator.hasNext() ) {
-				WaitingAnimation waitingAnimation = iterator.next();
-				Thread thread = waitingAnimation.getThread();
-				if( thread != null ) {
-					synchronized( thread ) {
-						thread.notify();
-					}
+		java.util.Iterator< WaitingAnimation > iterator = this.waitingAnimations.iterator();
+		while( iterator.hasNext() ) {
+			WaitingAnimation waitingAnimation = iterator.next();
+			Thread thread = waitingAnimation.getThread();
+			if( thread != null ) {
+				synchronized( thread ) {
+					thread.notify();
 				}
-				iterator.remove();
 			}
+			iterator.remove();
 		}
 	}
 
 	public void completeAnimations( AnimationObserver animationObserver ) {
-		synchronized( this.waitingAnimations ) {
-			java.util.Iterator< WaitingAnimation > iterator = this.waitingAnimations.iterator();
-			while( iterator.hasNext() ) {
-				WaitingAnimation waitingAnimation = iterator.next();
-				waitingAnimation.getAnimation().complete( waitingAnimation.getAnimationObserver() );
-				Thread thread = waitingAnimation.getThread();
-				if( thread != null ) {
-					synchronized( thread ) {
-						thread.notify();
-					}
+		java.util.Iterator< WaitingAnimation > iterator = this.waitingAnimations.iterator();
+		while( iterator.hasNext() ) {
+			WaitingAnimation waitingAnimation = iterator.next();
+			waitingAnimation.getAnimation().complete( waitingAnimation.getAnimationObserver() );
+			Thread thread = waitingAnimation.getThread();
+			if( thread != null ) {
+				synchronized( thread ) {
+					thread.notify();
 				}
-				iterator.remove();
 			}
+			iterator.remove();
 		}
 	}
 	public void completeFrameObservers() {
@@ -194,7 +184,7 @@ public abstract class AbstractAnimator implements Animator {
 		}
 	}
 	public void completeAll( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		completeAnimations( animationObserver );
-		completeFrameObservers();
+		this.completeAnimations( animationObserver );
+		this.completeFrameObservers();
 	}
 }
