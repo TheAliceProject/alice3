@@ -85,10 +85,6 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 		return false;
 	}
 	@Override
-	public boolean isCloseable() {
-		return this.declaration instanceof org.lgna.project.ast.AbstractCode;
-	}
-	@Override
 	public String getTitleText() {
 		return this.declaration.getName();
 	}

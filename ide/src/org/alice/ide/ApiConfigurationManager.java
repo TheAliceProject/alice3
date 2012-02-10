@@ -190,4 +190,7 @@ public abstract class ApiConfigurationManager {
 	public abstract org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails );
 	public abstract org.alice.ide.ast.ExpressionCreator getExpressionCreator();
 	public abstract org.lgna.project.ast.UserType< ? > augmentTypeIfNecessary( org.lgna.project.ast.UserType<?> rv );
+
+
+	public abstract boolean isTabClosable( org.lgna.project.ast.AbstractCode code );
 }
