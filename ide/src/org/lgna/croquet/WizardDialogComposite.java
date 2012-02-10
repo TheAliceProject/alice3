@@ -112,8 +112,8 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 			}
 		}
 		
-		private NextOperation nextOperation = new NextOperation( this );
-		private PreviousOperation prevOperation = new PreviousOperation( this );
+		private final NextOperation nextOperation = new NextOperation( this );
+		private final PreviousOperation prevOperation = new PreviousOperation( this );
 
 		public WizardDialogControlsComposite( WizardDialogComposite composite ) {
 			super( java.util.UUID.fromString( "56e28f65-6da2-4f25-a86b-16b7e3c4940c" ), composite );
