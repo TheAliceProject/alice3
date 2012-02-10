@@ -46,158 +46,10 @@ package org.lgna.project;
  * @author Dennis Cosgrove
  */
 public class Project {
-	private static int readInt( java.io.BufferedInputStream bis ) throws java.io.IOException {
-		byte[] lengthArray = new byte[ 4 ];
-		bis.read( lengthArray );
-		java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( lengthArray );
-		return buffer.getInt();
-	}
-	private static String readString( java.io.BufferedInputStream bis ) throws java.io.IOException {
-		int length = readInt( bis );
-		byte[] stringArray = new byte[ length ];
-		bis.read( stringArray );
-		return new String( stringArray );
-	}
-	private static void writeInt( java.io.BufferedOutputStream bos, int i ) throws java.io.IOException {
-		byte[] array = new byte[ 4 ];
-		java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( array );
-		buffer.putInt( i );
-		bos.write( array );
-	}
-	private static void writeString( java.io.BufferedOutputStream bos, String s ) throws java.io.IOException {
-		writeInt( bos, s.length() );
-		bos.write( s.getBytes() );
-	}
-
-	private class Properties {
-		private java.util.Map< String, String > map = new java.util.HashMap< String, String >();
-		public void read( java.io.BufferedInputStream bis ) {
-			if( bis != null ) {
-				try {
-					String version = readString( bis );
-					int count = readInt( bis );
-					for( int i=0; i<count; i++ ) {
-						String key = readString( bis );
-						String value = readString( bis );
-						this.map.put( key, value );
-					}
-				} catch( Throwable t ) {
-					this.map.clear();
-					t.printStackTrace();
-				}
-			}
-		}
-		public void write( java.io.BufferedOutputStream bos ) throws java.io.IOException {
-			String version = Version.getCurrentVersionText();
-			writeString( bos, version );
-			synchronized( this.map ) {
-				writeInt( bos, this.map.size() );
-				for( String key : this.map.keySet() ) {
-					String value = this.map.get( key );
-					writeString( bos, key );
-					writeString( bos, value );
-				}
-			}
-			bos.flush();
-		}
-		
-		public String getString( String key, String def ) {
-			String rv;
-			String value = this.map.get( key );
-			if( value != null ) {
-				rv = value;
-			} else {
-				rv = def; 
-			}
-			return rv;
-		}
-		public boolean getBoolean( String key, boolean def ) {
-			boolean rv;
-			String value = this.map.get( key );
-			if( value != null ) {
-				rv = Boolean.valueOf( value );
-			} else {
-				rv = def; 
-			}
-			return rv;
-		}
-		public int getInteger( String key, int def ) {
-			int rv;
-			String value = this.map.get( key );
-			if( value != null ) {
-				rv = Integer.valueOf( value );
-			} else {
-				rv = def; 
-			}
-			return rv;
-		}
-		public long getLong( String key, long def ) {
-			long rv;
-			String value = this.map.get( key );
-			if( value != null ) {
-				rv = Long.valueOf( value );
-			} else {
-				rv = def; 
-			}
-			return rv;
-		}
-		public float getFloat( String key, float def ) {
-			float rv;
-			String value = this.map.get( key );
-			if( value != null ) {
-				rv = Float.valueOf( value );
-			} else {
-				rv = def; 
-			}
-			return rv;
-		}
-		public double getDouble( String key, double def ) {
-			double rv;
-			String value = this.map.get( key );
-			if( value != null ) {
-				rv = Double.valueOf( value );
-			} else {
-				rv = def; 
-			}
-			return rv;
-		}
-		public byte[] getByteArray( String key, byte[] def ) {
-			byte[] rv;
-			String value = this.map.get( key );
-			if( value != null ) {
-				rv = value.getBytes();
-			} else {
-				rv = def; 
-			}
-			return rv;
-		}
-		public void putString( String key, String value ) {
-			this.map.put( key, value );
-		}
-		public void putBoolean( String key, boolean value ) {
-			this.map.put( key, Boolean.toString( value ) );
-		}
-		public void putInteger( String key, int value ) {
-			this.map.put( key, Integer.toString( value ) );
-		}
-		public void putLong( String key, long value ) {
-			this.map.put( key, Long.toString( value ) );
-		}
-		public void putFloat( String key, float value ) {
-			this.map.put( key, Float.toString( value ) );
-		}
-		public void putDouble( String key, double value ) {
-			this.map.put( key, Double.toString( value ) );
-		}
-		public void putByteArray( String key, byte[] value ) {
-			this.map.put( key, new String( value ) );
-		}
-	}
-	
-	private org.lgna.project.ast.NamedUserType programType = null;
-	private java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
-	private java.util.Set< org.lgna.common.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
-	private Properties properties = new Properties();
+	private final org.lgna.project.ast.NamedUserType programType;
+	private final java.util.Set< org.lgna.common.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
+	private final java.util.Map/*< org.lgna.project.properties.PropertyKey< T >, T >*/ propertyMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes, java.util.Set< org.lgna.common.Resource > resources ) {
 		this( programType );
 		this.namedUserTypes.addAll( namedUserTypes );
@@ -209,69 +61,6 @@ public class Project {
 	public org.lgna.project.ast.NamedUserType getProgramType() {
 		return this.programType;
 	}
-
-
-	private static String IS_SCOPE_RESPECTED_KEY = Project.class.getName() + ".IS_SCOPE_RESPECTED";
-	public boolean isScopeRespected() {
-		return getBooleanProperty( IS_SCOPE_RESPECTED_KEY, true );
-	}
-	public void putScopeRespected( boolean isScopeRespected ) {
-		putBooleanProperty( IS_SCOPE_RESPECTED_KEY, isScopeRespected );
-	}
-	
-	public String getStringProperty( String key, String def ) {
-		return this.properties.getString( key, def );
-	}
-	public boolean getBooleanProperty( String key, boolean def ) {
-		return this.properties.getBoolean( key, def );
-	}
-	public int getIntegerProperty( String key, int def ) {
-		return this.properties.getInteger( key, def );
-	}
-	public long getLongProperty( String key, long def ) {
-		return this.properties.getLong( key, def );
-	}
-	public float getFloatProperty( String key, float def ) {
-		return this.properties.getFloat( key, def );
-	}
-	public double getDoubleProperty( String key, double def ) {
-		return this.properties.getDouble( key, def );
-	}
-	public byte[] getByteArrayProperty( String key, byte[] def ) {
-		return this.properties.getByteArray( key, def );
-	}
-	public void putStringProperty( String key, String value ) {
-		this.properties.putString( key, value );
-	}
-	public void putBooleanProperty( String key, boolean value ) {
-		this.properties.putBoolean( key, value );
-	}
-	public void putIntegerProperty( String key, int value ) {
-		this.properties.putInteger( key, value );
-	}
-	public void putLongProperty( String key, long value ) {
-		this.properties.putLong( key, value );
-	}
-	public void putFloatProperty( String key, float value ) {
-		this.properties.putFloat( key, value );
-	}
-	public void putDoubleProperty( String key, double value ) {
-		this.properties.putDouble( key, value );
-	}
-	public void putByteArrayProperty( String key, byte[] value ) {
-		this.properties.putByteArray( key, value );
-	}
-	
-	public java.util.Set< String > getPropertyKeySet() {
-		return this.properties.map.keySet();
-	}
-	public void readProperties( java.io.BufferedInputStream bis ) {
-		this.properties.read( bis );
-	}
-	public void writeProperties( java.io.BufferedOutputStream bos ) throws java.io.IOException {
-		this.properties.write( bos );
-	}
-	
 	public void addResource( org.lgna.common.Resource resource ) {
 		if( this.resources.contains( resource ) ) {
 			//todo
@@ -287,6 +76,23 @@ public class Project {
 		return this.resources;
 	}
 
+	
+	public java.util.Set< org.lgna.project.properties.PropertyKey<Object> > getPropertyKeys() {
+		return this.propertyMap.keySet();
+	}
+	public <T> boolean containsValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
+		return this.propertyMap.containsKey( key );
+	}
+	public <T> T getValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
+		return (T)this.propertyMap.get( key );
+	}
+	public <T> void putValueFor( org.lgna.project.properties.PropertyKey<T> key, T value ) {
+		this.propertyMap.put( key, value );
+	}
+	public <T> void removeValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
+		this.propertyMap.remove( key );
+	}
+	
 	public void addNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
 		if( this.namedUserTypes.contains( namedUserType ) ) {
 			//todo

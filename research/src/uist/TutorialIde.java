@@ -55,7 +55,6 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private static boolean IS_STENCILS;
 	
 	private static String ROOT_PATH;
-	private static final String TRANSACTION_HISTORY_PATH = "/transactionHistory.bin";
 	private static final String AST_MIMIC_PATH = "/astMimic1.bin";
 	private static final String POST_PROJECT_PATH = "/post.a3p";
 	
@@ -140,6 +139,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		}
 	};
 
+	private static final org.lgna.project.properties.CodablePropertyKey< org.lgna.croquet.history.TransactionHistory > INTERACTION_HISTORY_PROPERTY_KEY = org.lgna.project.properties.CodablePropertyKey.createInstance( java.util.UUID.fromString( "5c12ebea-6f6c-42b6-b1b3-e1fb96733fa5" ), "INTERACTION_HISTORY_PROPERTY_KEY" );
+
 	private static org.lgna.project.ast.BlockStatement getMyFirstMethodBody( org.lgna.project.Project project ) {
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
 		org.lgna.project.ast.UserMethod myFirstMethod = sceneType.getDeclaredMethod( "myFirstMethod" );
@@ -162,7 +163,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 			try {
 				this.isOriginalProjectLive = true;
 //				edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+CONTEXT_PATH, edu.cmu.cs.dennisc.croquet.RootContext.class );
-				originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH+TRANSACTION_HISTORY_PATH, org.lgna.croquet.history.TransactionHistory.class );
+				originalTransactionHistory = this.getProject().getValueFor( INTERACTION_HISTORY_PROPERTY_KEY );
 				this.isOriginalProjectLive = false;
 			} finally {
 				edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
@@ -239,26 +240,10 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
 //				rootContext = filter.filter( rootContext );
 //			}
-
-			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
+			org.lgna.project.Project project = this.getProject();
+			project.putValueFor( INTERACTION_HISTORY_PROPERTY_KEY, org.lgna.croquet.history.TransactionManager.getRootTransactionHistory() );
 			try {
-				edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory(), ROOT_PATH+TRANSACTION_HISTORY_PATH );
-				
-//				edu.cmu.cs.dennisc.croquet.RootContext rootContext = edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext();
-//				edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
-//						edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
-//				};
-//				for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
-//					rootContext = filter.filter( rootContext );
-//				}
-//				
-//				edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( edu.cmu.cs.dennisc.croquet.ContextManager.getRootContext(), ROOT_PATH+CONTEXT_PATH );
-			} finally {
-				edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
-			}
-
-			try {
-				org.lgna.project.io.IoUtilities.writeProject( ROOT_PATH+POST_PROJECT_PATH, this.getProject() );
+				org.lgna.project.io.IoUtilities.writeProject( ROOT_PATH+POST_PROJECT_PATH, project );
 			} catch( java.io.IOException ioe ) {
 				throw new RuntimeException( ioe );
 			}

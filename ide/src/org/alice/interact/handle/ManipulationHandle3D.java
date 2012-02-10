@@ -708,7 +708,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 		final double VOLUME_NORMALIZER = 1d;
 		AxisAlignedBox bbox = this.getManipulatedObjectBox();
-		if (bbox == null)
+		if (bbox == null || bbox.isNaN())
 		{
 			return 1.0d;
 		}
@@ -718,6 +718,9 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		min.y = 0d;
 		double volume = Point3.createSubtraction( max, min ).calculateMagnitude();
 		double scale = volume / VOLUME_NORMALIZER;
+		if (Double.isNaN(scale)) {
+			return 1;
+		}
 		if (scale < .25d)
 		{
 			scale = .25d;
