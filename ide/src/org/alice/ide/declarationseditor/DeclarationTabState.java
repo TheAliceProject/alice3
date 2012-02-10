@@ -179,7 +179,11 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 
 	public org.lgna.croquet.ActionOperation getItemSelectionOperation( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		org.lgna.croquet.ActionOperation rv = super.getItemSelectionOperation( DeclarationComposite.getInstance( declaration ) );
-		rv.setName( "Edit" );
+		if( declaration instanceof org.lgna.project.ast.AbstractConstructor ) {
+			rv.setName( "Edit Constructor" );
+		} else {
+			rv.setName( "Edit" );
+		}
 		return rv;
 	}	
 }
