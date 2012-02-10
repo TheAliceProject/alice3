@@ -59,12 +59,15 @@ public class TransactionHistoryGenerator {
 		// For now
 		assert userInformation == null;
 
-		org.lgna.croquet.history.TransactionHistory rv = new org.lgna.croquet.history.TransactionHistory();
-		generate( rv, this.src, this.dst, this.dstIndex0 );
+		org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
+		//generate( transactionHistory, this.src, this.dst, this.dstIndex0 );
+		
+		AstPrintlnVisitor astPrintlnVisitor = new AstPrintlnVisitor(transactionHistory);
+		this.src.crawl(astPrintlnVisitor, true);
 
 		// Create a run operation, at the end of the tutorial
-		rv.addTransaction( createOpenAndClosePlainDialogOperationTransaction( rv, org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) );
-		return rv;
+		transactionHistory.addTransaction( createOpenAndClosePlainDialogOperationTransaction( transactionHistory, org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) );
+		return transactionHistory;
 	}
 
 	private static org.lgna.croquet.history.Transaction generateMethodDeclarationTransaction( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.project.ast.UserMethod userMethod ) {

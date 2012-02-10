@@ -141,6 +141,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	};
 
 	private static org.lgna.project.ast.BlockStatement getMyFirstMethodBody( org.lgna.project.Project project ) {
+		// TODO: This may not be always called myFirstMethod
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
 		org.lgna.project.ast.UserMethod myFirstMethod = sceneType.getDeclaredMethod( "myFirstMethod" );
 		return myFirstMethod.body.getValue();
