@@ -187,10 +187,12 @@ class IkProgram extends Program {
 			AffineMatrix4x4 ltrans = lastJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
 
 			edu.cmu.cs.dennisc.math.Point3 eePos = new edu.cmu.cs.dennisc.math.Point3(ltrans.translation);
-//			eePos.add(Point3.createMultiplication(ltrans.orientation.backward, -.2)); //can do something like this to drag fingertips. right now it results in jumping. 
+			eePos.add(Point3.createMultiplication(ltrans.orientation.backward, -.2)); //can do something like this to drag fingertips. right now it results in jumping. 
 			chain.setEndEffectorPosition(eePos);
 			
-			this.getTargetImp().setTransformation( this.getEndImp() );
+//			this.getTargetImp().setTransformation( this.getEndImp() );
+			//assuming that all are parented to scene...
+			this.getTargetImp().setLocalTransformation( new AffineMatrix4x4(chain.getEndEffectorOrientation(), chain.getEndEffectorPosition()) );
 			solver.addChain(chain);
 		} else {
 			setDragAdornmentsVisible(false);
