@@ -61,6 +61,10 @@ public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.Inp
 	}
 	
 	@Override
+	protected boolean isWindowClosingEnabled( org.lgna.croquet.components.Dialog dialog ) {
+		return super.isWindowClosingEnabled( dialog );
+	}
+	@Override
 	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(org.lgna.croquet.history.OperationStep step) {
 		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().selectAppropriateTab( this.isNew() );
 		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().refresh();

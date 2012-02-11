@@ -95,7 +95,7 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		return rv;
 	}
 
-	protected boolean isWindowClosingEnabled( java.awt.event.WindowEvent e ) {
+	protected boolean isWindowClosingEnabled( Dialog dialog ) {
 		return true;
 	}
 
@@ -132,15 +132,15 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				org.lgna.croquet.history.TransactionManager.fireDialogOpened( dialog );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "step.handleWindowOpened( e )?" );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				if( DialogOperation.this.isWindowClosingEnabled( e ) ) {
+				if( isWindowClosingEnabled( dialog ) ) {
 					dialog.setVisible( false );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "step.handleWindowClosing( e )?" );
 				}
+				org.lgna.croquet.history.TransactionManager.fireDialogClosing( dialog );
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
+				org.lgna.croquet.history.TransactionManager.fireDialogClosed( dialog );
 			}
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}

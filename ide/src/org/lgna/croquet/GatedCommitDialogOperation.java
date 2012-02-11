@@ -100,9 +100,11 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 		}
 		@Override
 		protected final void perform(org.lgna.croquet.history.OperationStep step) {
-			this.getGatedCommitDialogOperation().isCompleted = true;
-			step.finish();
-			this.getDialog().setVisible( false );
+			if( this.getGatedCommitDialogOperation().isWindowClosingEnabled( this.getDialog() ) ) {
+				this.getGatedCommitDialogOperation().isCompleted = true;
+				step.finish();
+				this.getDialog().setVisible( false );
+			}
 		}
 		@Override
 		protected InternalCompleteOperationResolver createResolver() {
@@ -115,8 +117,10 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 		}
 		@Override
 		protected void perform(org.lgna.croquet.history.OperationStep step) {
-			step.cancel();
-			this.getDialog().setVisible( false );
+			if( this.getGatedCommitDialogOperation().isWindowClosingEnabled( this.getDialog() ) ) {
+				step.cancel();
+				this.getDialog().setVisible( false );
+			}
 		}
 		@Override
 		protected InternalCancelOperationResolver createResolver() {
