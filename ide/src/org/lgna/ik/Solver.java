@@ -74,7 +74,7 @@ public class Solver {
 	public java.util.Map<org.lgna.ik.Bone.Axis, Double> solve() {
 		prepareConstraints();
 		if(constraints.size() == 0) {
-			System.out.println("no constraints!");
+//			System.out.println("no constraints!");
 			return null;
 		}
 		constructJacobianEntries();
@@ -102,11 +102,15 @@ public class Solver {
 		return axisSpeeds;
 	}
 	private void prepareConstraints() {
+//		System.out.println("num chains " + chains.size());
 		constraints.clear();
 		for(Chain chain: chains) {
 			//calculate contributions on the last joint location
 			if(chain.isLinearVelocityEnabled() || chain.isAngularVelocityEnabled()) {
 				chain.computeVelocityContributions();
+//				System.out.println("computed contribs");
+			} else {
+//				System.out.println("no enables");
 			}
 			
 			if(chain.isLinearVelocityEnabled()) {

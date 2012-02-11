@@ -51,6 +51,8 @@ import org.lgna.story.*;
 import org.lgna.story.implementation.JointImp;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisRotation;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 
@@ -61,7 +63,7 @@ class IkProgram extends Program {
 	
 	private final Camera camera = new Camera();
 	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-	private final Sphere target = new Sphere();
+	private final Model target = createDragProp();;
 	private final IkScene scene = new IkScene( camera, ogre, target );
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final NiceDragAdapter modelManipulationDragAdapter = new NiceDragAdapter();
@@ -99,6 +101,30 @@ class IkProgram extends Program {
 	private org.lgna.story.implementation.SphereImp getTargetImp() {
 		return ImplementationAccessor.getImplementation( this.target );
 	}
+	private Model createDragProp() {
+		Sphere mainSphere = new Sphere();
+		
+		mainSphere.setRadius( 0.13 );
+		mainSphere.setPaint( Color.RED );
+		mainSphere.setOpacity( 0.5 );
+		
+		mainSphere.resizeHeight(.7);
+		mainSphere.resizeWidth(.5);
+		
+		Cone cone = new Cone();
+		cone.setBaseRadius(.07);
+		cone.setLength(.2);
+		cone.setPaint(Color.ORANGE);
+//		cone.setOpacity(.5);
+		cone.resizeWidth(.5);
+		cone.resize(.8);
+		cone.setVehicle(mainSphere);
+		cone.move(MoveDirection.DOWN, .1);
+		cone.move(MoveDirection.RIGHT, .05);
+		cone.turn(TurnDirection.FORWARD, .25, Turn.asSeenBy(cone.getVehicle()));
+		
+		return mainSphere;
+	}
 	private org.lgna.story.implementation.JointedModelImp< ?,? > getSubjectImp() {
 		return ImplementationAccessor.getImplementation( this.ogre );
 	}
@@ -113,7 +139,7 @@ class IkProgram extends Program {
 	
 	private void handleTargetTransformChanged() {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getTargetImp().getTransformation( this.getAnchorImp() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.printlns( m );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.printlns( m );
 		this.updateInfo();
 	}
 	private void updateInfo() {
@@ -141,6 +167,9 @@ class IkProgram extends Program {
 	private org.lgna.ik.Chain createChain() {
 		boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
 		boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
+		
+		if(!isLinearEnabled && !isAngularEnabled) return null;
+		
 		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
 		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
 		return org.lgna.ik.Chain.createInstance( this.getSubjectImp(), anchorId, endId, isLinearEnabled, isAngularEnabled );
@@ -151,19 +180,33 @@ class IkProgram extends Program {
 		}
 		chain = createChain();
 		
-		JointImp lastJointImp = chain.getLastJointImp();
-		
-		AffineMatrix4x4 ltrans = lastJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
-		edu.cmu.cs.dennisc.math.Point3 eePos = new edu.cmu.cs.dennisc.math.Point3(ltrans.translation);
-		eePos.add(Point3.createMultiplication(ltrans.orientation.backward, -.2));
-		chain.setEndEffectorPosition(eePos);
-		
-//		chain.setDesiredEndEffectorLinearVelocity(customLinVel); //TODO temporary of course
-		
-		solver.addChain(chain);
+		if(chain != null) {
+			setDragAdornmentsVisible(true);
+			JointImp lastJointImp = chain.getLastJointImp();
+			
+			AffineMatrix4x4 ltrans = lastJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+
+			edu.cmu.cs.dennisc.math.Point3 eePos = new edu.cmu.cs.dennisc.math.Point3(ltrans.translation);
+//			eePos.add(Point3.createMultiplication(ltrans.orientation.backward, -.2)); //can do something like this to drag fingertips. right now it results in jumping. 
+			chain.setEndEffectorPosition(eePos);
+			
+			this.getTargetImp().setTransformation( this.getEndImp() );
+			solver.addChain(chain);
+		} else {
+			setDragAdornmentsVisible(false);
+		}
 		
 		test.ik.croquet.BonesState.getInstance().setChain( chain );
 		this.updateInfo();
+	}
+	private void setDragAdornmentsVisible(boolean visible) {
+		if(visible) {
+			scene.anchor.setVehicle(scene);
+			scene.ee.setVehicle(scene);
+		} else {
+			scene.anchor.setVehicle(null);
+			scene.ee.setVehicle(null);
+		}
 	}
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
@@ -216,28 +259,75 @@ class IkProgram extends Program {
 					if(chain != null && (linearActivated || angularActivated)) { //not good concurrent programming practice but temporary solution
 						//make chain setter not race with this
 
-						Point3 direction = Point3.createSubtraction(getTargetImp().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).translation, chain.getEndEffectorPosition());
+						AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+						if(linearActivated) {
+							Point3 desiredLinearDistance = Point3.createSubtraction(targetTransformation.translation, chain.getEndEffectorPosition());
+							
+							//not going to use it directly because is likely to be too fast (linear is bad approximation for large steps)
+							
+							Vector3 linVelToUse;
+							
+							double maxLinearSpeed = 0.1;
+							
+							if(desiredLinearDistance.calculateMagnitude() > maxLinearSpeed) {
+								desiredLinearDistance.normalize();
+								linVelToUse = Vector3.createMultiplication(desiredLinearDistance, maxLinearSpeed);
+							} else {
+								linVelToUse = new Vector3(desiredLinearDistance);
+							}
+							while(chain.getDesiredEndEffectorLinearVelocity() == null); //preventing race condition temporarily...
+							chain.setDesiredEndEffectorLinearVelocity(linVelToUse);
+						}
 						
-						direction.normalize();
+						if(angularActivated) {
+							//these both are not local, so it's good.
+							OrthogonalMatrix3x3 desiredOrientation = targetTransformation.orientation;
+							OrthogonalMatrix3x3 currentOrientation = chain.getEndEffectorOrientation();
+							
+							OrthogonalMatrix3x3 inverseCurrent = new OrthogonalMatrix3x3(currentOrientation);
+							inverseCurrent.invert();
+							
+							OrthogonalMatrix3x3 diff = new OrthogonalMatrix3x3();
+							diff.setToMultiplication(desiredOrientation, inverseCurrent);
+							
+							AxisRotation diffAxisRotation = new edu.cmu.cs.dennisc.math.AxisRotation(diff);
+							
+							Vector3 desiredAngularDistance = Vector3.createMultiplication(diffAxisRotation.axis, diffAxisRotation.angle.getAsRadians());
+							
+							//not going to use it directly because is likely to be too fast (linear is bad approximation for large steps)
+							
+							Vector3 angVelToUse;
+
+							double maxAngularSpeed = Math.PI / 10.0;
+							
+							if(desiredAngularDistance.calculateMagnitude() > maxAngularSpeed) {
+								desiredAngularDistance.normalize();
+								angVelToUse = Vector3.createMultiplication(desiredAngularDistance, maxAngularSpeed);
+							} else {
+								angVelToUse = desiredAngularDistance;
+							}
+							while(chain.getDesiredEndEffectorAngularVelocity() == null); //preventing race condition temporarily...
+							chain.setDesiredEndEffectorAngularVelocity(angVelToUse);
+						}
 						
-						customLinVel.setToMultiplication(direction, 0.1);
 						
-						chain.setDesiredEndEffectorLinearVelocity(customLinVel); 
 						
 						java.util.Map<org.lgna.ik.Bone.Axis, Double> speeds = solver.solve();
 						
-						if(speeds == null) continue;
+						if(speeds == null) {
+//							System.out.println("speeds is null");
+							continue;
+						}
 						
 						currentSpeeds = speeds;
 						
-						//TODO now apply these
-						//at least display first. see how it can be.
+						//now apply these
 						
 						for(java.util.Map.Entry<org.lgna.ik.Bone.Axis, Double> e: currentSpeeds.entrySet()) {
 							Axis axis = e.getKey();
 							Double speed = e.getValue();
 							
-							axis.setDesiredAngleSpeedForPrinting(speed);
+							axis.setDesiredAngleSpeed(speed);
 						}
 						
 						javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -275,53 +365,19 @@ class IkProgram extends Program {
 //			bones[0].getA().applyRotationInRadians(new Vector3(1, 1, 0), Math.PI / 100.0); //this is local. that's the issue... FIXME
 //		}
 //	}
-	Vector3 customLinVel = new Vector3(0, 1, 1);
 	private void movePls() {
 		if(chain != null) {
-
-			if(chain.getBones().length > 0) {
-				Bone[] bones = chain.getBones();
-				Point3 ap = bones[0].getAnchorPosition();
-				scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));
-				Entity av = scene.anchor.getVehicle();
-				
+			
+			if(!chain.isEmpty()) {
+				Point3 ap = chain.getAnchorPosition();
 				Point3 ep = chain.getEndEffectorPosition();
+				//vehicle is scene, so it's not local. 
+				scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));
 				scene.ee.setPositionRelativeToVehicle(new Position(ep.x, ep.y, ep.z));
-				Entity ev = scene.ee.getVehicle();
 			}
 			
-			
-//			chain.getBones()[0].getA().applyRotationInDegrees(Vector3.accessPositiveXAxis(), .1);
-//				System.out.println("turn");
-//				Joint abstraction = chain.getBones()[0].getA().getAbstraction();
-//				
-//				if(abstraction != null) {
-//					abstraction.turn(TurnDirection.BACKWARD, .1);
-//				} else {
-//					System.out.println("abs was null");
-//				}
-			
-			Bone[] bones = chain.getBones();
-			for(Bone bone: bones) {
-				//TODO get x, y, z. create one rotation vector.
-				boolean doThreeRotations = false;
-				if(doThreeRotations) {
-					for(Axis axis: bone.getAxes()) {
-						double dt = .1; //FIXME
-						axis.applyRotationInOriginal(axis.getDesiredAngleSpeedForPrinting() * dt);
-					}
-				} else {
-					Vector3 cumulativeAxisAngle = Vector3.createZero();
-					for(Axis axis: bone.getAxes()) {
-						double dt = .1; //FIXME
-						
-						cumulativeAxisAngle.add(Vector3.createMultiplication(axis.getLocalAxis(), axis.getDesiredAngleSpeedForPrinting() * dt));
-					}
-					bone.applyLocalRotation(cumulativeAxisAngle);
-				}
-			
-//					bone.getAxes().get(0).applyRotationInOriginal(.1);
-			}
+			double dt = .1; //FIXME
+			chain.applyVelocitiesForDuration(dt);
 		}
 	}
 
@@ -334,7 +390,7 @@ class IkProgram extends Program {
 		app.setPerspective( new test.ik.croquet.IkPerspective() );
 
 		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.RIGHT_SHOULDER; 
-		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.RIGHT_SHOULDER; 
+		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.RIGHT_WRIST; 
 
 		test.ik.croquet.AnchorJointIdState.getInstance().setValue( initialAnchor );
 		test.ik.croquet.EndJointIdState.getInstance().setValue( initialEnd );

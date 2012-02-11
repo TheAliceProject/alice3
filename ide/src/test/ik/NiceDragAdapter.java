@@ -42,6 +42,7 @@
  */
 package test.ik;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.ui.scenegraph.SetPointOfViewAction;
 
 //TODO(gazi) should move this to an appropriate package other than test.
@@ -143,22 +144,17 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 		if( m_sgDragAcceptor == null || m_planeInAbsolute.isNaN() || m_xyzInDragAcceptorAtPress.isNaN() ) {
 			//pass
 		} else {
-			if( dragStyle.isControlDown() ) {
-//				if( false ) {
-//					final int THRESHOLD = 25;
-//					if( (yDeltaSince0 * yDeltaSince0 + xDeltaSince0 * xDeltaSince0) > THRESHOLD ) {
-//						edu.cmu.cs.dennisc.math.Vector3d dir = edu.cmu.cs.dennisc.math.LinearAlgebra.subtract( xyzInAbsolutePlane, m_xyzInAbsoluteAtPress );
-//						double yaw = Math.atan2( dir.x, dir.z );
-//						//y += Math.PI / 2;
-//						m_sgDragAcceptor.setAxesOnly( edu.cmu.cs.dennisc.math.LinearAlgebra.newRotationAboutYAxisMatrix3d( yaw, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS ), edu.cmu.cs.dennisc.scenegraph.ReferenceFrame.AsSeenBy.SCENE );
-//					} else {
-//						//						System.out.println( "too close" );
-//					}
-//				} else {
-					//double yaw0 = Math.atan2( m_undoPOV.right.z, m_undoPOV.backward.z );
-					m_sgDragAcceptor.applyRotationAboutYAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( xDeltaSincePrevious * 0.01 ) );
-//				}
+			if(dragStyle.isShiftDown()) {
+				//angular drag
+				AffineMatrix4x4 cameraMatrixWrtDragged = m_sgCamera.getTransformation(m_sgDragAcceptor);
+				if(dragStyle.isControlDown()) {
+					m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.up, new edu.cmu.cs.dennisc.math.AngleInRadians( xDeltaSincePrevious * 0.01 ) );
+				} else {
+					m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.backward, new edu.cmu.cs.dennisc.math.AngleInRadians( xDeltaSincePrevious * 0.01 ) );
+					m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.right, new edu.cmu.cs.dennisc.math.AngleInRadians( yDeltaSincePrevious * 0.01 ) );
+				}
 			} else {
+				//linear drag
 				final edu.cmu.cs.dennisc.math.Point3 xyzInAbsolutePlane = getPointInPlane( m_planeInAbsolute, current.x, current.y );
 				xyzInAbsolutePlane.subtract( m_offset );
 				getOnscreenLookingGlass().getLookingGlassFactory().invokeLater( new Runnable() {
@@ -191,25 +187,5 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 		}
 		return rv;
 	}
-	
-	public boolean isDraggingLocation() {
-		return isDraggingLocation;
-	}
-	public void setDraggingLocation(boolean isDraggingLocation) {
-		this.isDraggingLocation = isDraggingLocation;
-	}
-
-
-	public boolean isDraggingOrientation() {
-		return isDraggingOrientation;
-	}
-	public void setDraggingOrientation(boolean isDraggingOrientation) {
-		this.isDraggingOrientation = isDraggingOrientation;
-	}
-
-	//sphere - location, small
-	private boolean isDraggingLocation = true;
-	//box - orientation
-	private boolean isDraggingOrientation = false;
 	
 }

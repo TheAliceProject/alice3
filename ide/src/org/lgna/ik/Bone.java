@@ -81,12 +81,12 @@ public class Bone {
 	public static class Axis {
 		private final edu.cmu.cs.dennisc.math.Vector3 axis;
 		private double angularVelocity;
+		//these are not local. angular is naturally radian.
 		private final edu.cmu.cs.dennisc.math.Vector3 linearContribution; 
 		private final edu.cmu.cs.dennisc.math.Vector3 angularContribution;
 		private final Bone bone;
 		private final int originalIndexInJoint;
-		//named this way because that was the initial goal. rename when you're sure that this is good. 
-		private double desiredAngleSpeedForPrinting; 
+		private double desiredAngleSpeed; 
 		public Axis( Bone bone, int originalIndexInJoint, boolean isLinearEnabled, boolean isAngularEnabled ) {
 			this.bone = bone;
 			this.originalIndexInJoint = originalIndexInJoint;
@@ -110,9 +110,9 @@ public class Bone {
 		public edu.cmu.cs.dennisc.math.Vector3 getAngularContribution() {
 			return angularContribution;
 		}
-		public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 v ) {
+		public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 jointEeVector ) {
 			if( this.linearContribution != null ) {
-				edu.cmu.cs.dennisc.math.Vector3.setReturnValueToCrossProduct( this.linearContribution, this.axis, v );
+				edu.cmu.cs.dennisc.math.Vector3.setReturnValueToCrossProduct( this.linearContribution, this.axis, jointEeVector );
 			}
 		}
 		public void updateAngularContributions() {
@@ -154,28 +154,27 @@ public class Bone {
 				return false;
 			}
 		}
-		public void setDesiredAngleSpeedForPrinting(double speed) {
-			this.desiredAngleSpeedForPrinting = speed;
+		public void setDesiredAngleSpeed(double speed) {
+			this.desiredAngleSpeed = speed;
 		}
-		public double getDesiredAngleSpeedForPrinting() {
-			return desiredAngleSpeedForPrinting;
+		public double getDesiredAngleSpeed() {
+			return desiredAngleSpeed;
 		}
 		
-		public void applyRotationInOriginal(double angleInRadians) {
-			//FIXME use for now. later rotate around one axis once. 
+		public void applyRotation(double angleInRadians) {
+			//it's nicer to rotate around one axis once using Bone.applyLocalRotation(angle, axis) 
 			//get the original axis 
 			edu.cmu.cs.dennisc.math.Vector3 originalAxis = getLocalAxis();
-			//turn the joint around that
-			//so these have to be local vectors...
+			//turn the joint around the original local vector
 			bone.getA().applyRotationInRadians(originalAxis, angleInRadians);
 		}
 		public edu.cmu.cs.dennisc.math.Vector3 getLocalAxis() {
-			return indexToOriginalLocalVector(originalIndexInJoint);
+			return indexToLocalVector(originalIndexInJoint);
 		}
 		//FIXME can never have a 2dof joint that rotates an axis? maybe I can? I just always need to apply rotations in order and I'll be fine?
 		//I was using axes to be global x, y, z. ooh, that's right.
 		//FIXME maybe the axis class should be keeping the original, which is inverted of current?
-		private edu.cmu.cs.dennisc.math.Vector3 indexToOriginalLocalVector(int originalIndexInJoint) {
+		private edu.cmu.cs.dennisc.math.Vector3 indexToLocalVector(int originalIndexInJoint) {
 			switch (originalIndexInJoint) {
 			case 0:
 				return edu.cmu.cs.dennisc.math.Vector3.accessPositiveXAxis();
@@ -277,10 +276,10 @@ public class Bone {
 		}
 		return rv;
 	}
-	public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 v ) {
+	public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 jointEeVector ) {
 		for( Axis axis : axesByIndex ) {
 			if( axis != null ) {
-				axis.updateLinearContributions( v );
+				axis.updateLinearContributions( jointEeVector );
 			}
 		}
 	}
@@ -310,7 +309,7 @@ public class Bone {
 		for(Axis axis: axesList) {
 			sb.append(axis.originalIndexInJoint);
 			sb.append(": ");
-			sb.append(String.format("%.2f", axis.desiredAngleSpeedForPrinting));
+			sb.append(String.format("%.2f", axis.desiredAngleSpeed));
 			if(count < axesList.size() - 1) {
 				sb.append(", ");
 			}
@@ -369,9 +368,7 @@ public class Bone {
 		//these axes HAVE TO BE INVERTED if joint is not in the right direction (not downstream)
 //		throw new RuntimeException("todo invert axes if chain is reverse");
 	}
-	public void applyLocalRotation(Vector3 cumulativeAxisAngle) {
-		double angle = cumulativeAxisAngle.calculateMagnitude();
-		Vector3 axis = Vector3.createDivision(cumulativeAxisAngle, angle);
+	public void applyLocalRotation(Vector3 axis, double angle) {
 		getA().applyRotationInRadians(axis, angle);
 	}
 	

@@ -53,12 +53,12 @@ public class IkScene extends Scene {
 	private final Ground snow = new Ground();
 	private final Camera camera;
 	public final Biped ogre;
-	private final Sphere target;
+	private final Model target;
 	
 	public Sphere anchor = new Sphere();
 	public Sphere ee = new Sphere();
 	
-	public IkScene( Camera camera, Biped ogre, Sphere target ) {
+	public IkScene( Camera camera, Biped ogre, Model target ) {
 		this.camera = camera;
 		this.ogre = ogre;
 		this.target = target;
@@ -83,15 +83,13 @@ public class IkScene extends Scene {
 		this.ogre.place( SpatialRelation.ABOVE, this.snow );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 
-		this.target.setRadius( 0.2 );
-		this.target.setPaint( Color.RED );
-		this.target.setOpacity( 0.5 );
 //		target.setPositionRelativeToVehicle(new Position(1, 0, 0));
 		
 		
 		//camera vantage point taken care of by camera navigator
 		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
+
 	private void performCustomSetup() {
 		//if you want the skeleton visualization to be co-located
 		//this.ogre.setOpacity( 0.25 );

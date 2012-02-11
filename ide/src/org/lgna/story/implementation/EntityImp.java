@@ -141,8 +141,12 @@ public abstract class EntityImp implements ReferenceFrame {
 			if( rv != null ) {
 				//pass
 			} else {
-				//TODO this does happen when calling jointA.isDescendantOf( jointB ) in org.lgna.story.implementation.JointedModelImp.getInclusiveListOfJointsBetween(JointImp, JointImp, List<Direction>)
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, sgVehicle );
+				//this does happen when the vehicle is the ROOT bone of a biped
+				//ROOT apparently has no scenegraph counterpart. 
+				//ROOT won't be the child of any joint. however it could be the child of something else in the scene. 
+				//Therefore I realize that this is not a good fix in a generic EntityImp class. 
+				//However I don't know what is. Therefore this is what I do for now. 
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "This is a known issue. One reason is because ROOT bone needs a scenegraph counterpart.", this, sgVehicle );
 			}
 			return rv;
 		} else {

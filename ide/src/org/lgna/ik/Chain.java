@@ -47,6 +47,10 @@ import java.util.List;
 
 import org.lgna.story.implementation.JointImp;
 
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -74,13 +78,12 @@ public class Chain {
 		this.jointImps = jointImps;
 		this.directions = directions;
 		
+		this.endEffectorLocalPosition = edu.cmu.cs.dennisc.math.Point3.createZero();
 		if( isLinearEnabled ) {
 			this.desiredEndEffectorLinearVelocity = edu.cmu.cs.dennisc.math.Vector3.createZero();
-			this.endEffectorLocalPosition = edu.cmu.cs.dennisc.math.Point3.createZero();
 			this.linearVelocityContributions = new java.util.HashMap< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
 		} else {
 			this.desiredEndEffectorLinearVelocity = null;
-			this.endEffectorLocalPosition = null;
 			this.linearVelocityContributions = null;
 		}
 		if( isAngularEnabled ) {
@@ -158,17 +161,21 @@ public class Chain {
 		return eeJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).setReturnValueToTransformed(new edu.cmu.cs.dennisc.math.Point3(), endEffectorLocalPosition);
 	}
 	
+	public OrthogonalMatrix3x3 getEndEffectorOrientation() {
+		org.lgna.story.implementation.JointImp eeJointImp = jointImps.get(jointImps.size() - 1);
+		return eeJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).orientation;
+	}
+	
 	public void computeVelocityContributions() {
-		edu.cmu.cs.dennisc.math.Point3 endEffectorPos = this.getEndEffectorPosition();
 		for( Bone bone : this.bones ) {
 			bone.updateStateFromJoint();
 			
 			if( this.isLinearVelocityEnabled() ) {
-				edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( 
-						endEffectorPos, 
+				edu.cmu.cs.dennisc.math.Vector3 jointEeVector = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( 
+						this.getEndEffectorPosition(), 
 						bone.getAnchorPosition()
 				); 
-				bone.updateLinearContributions( v );
+				bone.updateLinearContributions( jointEeVector );
 				
 				
 				//axis has inverse value. then contrib should also be inversed when merging here?
@@ -210,5 +217,35 @@ public class Chain {
 
 	public JointImp getLastJointImp() {
 		return jointImps.get(jointImps.size() - 1);
+	}
+
+	public Point3 getAnchorPosition() {
+		return bones[0].getAnchorPosition();
+	}
+
+	public boolean isEmpty() {
+		return getBones().length == 0;
+	}
+
+	public void applyVelocitiesForDuration(double dt) {
+		for(Bone bone: bones) {
+			boolean doThreeSeparateRotationsWhichIsNotDesired = false;
+			if(doThreeSeparateRotationsWhichIsNotDesired) {
+				for(org.lgna.ik.Bone.Axis axis: bone.getAxes()) {
+					axis.applyRotation(axis.getDesiredAngleSpeed() * dt);
+				}
+			} else {
+				edu.cmu.cs.dennisc.math.Vector3 cumulativeAxisAngle = edu.cmu.cs.dennisc.math.Vector3.createZero();
+				for(org.lgna.ik.Bone.Axis axis: bone.getAxes()) {
+					Vector3 contribution = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(axis.getLocalAxis(), axis.getDesiredAngleSpeed() * dt);
+					cumulativeAxisAngle.add(contribution);
+				}
+				double angle = cumulativeAxisAngle.calculateMagnitude();
+				if(!edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon(0, angle)) {
+					Vector3 axis = Vector3.createDivision(cumulativeAxisAngle, angle);
+					bone.applyLocalRotation(axis, angle);
+				}
+			}
+		}
 	}
 }

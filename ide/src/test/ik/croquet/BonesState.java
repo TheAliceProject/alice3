@@ -57,19 +57,23 @@ public class BonesState extends org.lgna.croquet.DefaultListSelectionState< org.
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "32660ce0-bf86-4472-8f12-6aa2bc0a39b5" ), test.ik.croquet.codecs.BoneCodec.SINGLETON, -1 );
 	}
 	public void setChain( org.lgna.ik.Chain chain ) {
-		org.lgna.ik.Bone prevBone = this.getSelectedItem();
-		org.lgna.ik.Bone[] bones = chain.getBones();
-		int selectionIndex = -1;
-		if( prevBone != null ) {
-			int index = 0;
-			for( org.lgna.ik.Bone bone : bones ) {
-				if( prevBone.getA() == bone.getA() ) {
-					selectionIndex = index;
-					break;
+		if(chain == null) {
+			this.clear();
+		} else {
+			org.lgna.ik.Bone prevBone = this.getSelectedItem();
+			org.lgna.ik.Bone[] bones = chain.getBones();
+			int selectionIndex = -1;
+			if( prevBone != null ) {
+				int index = 0;
+				for( org.lgna.ik.Bone bone : bones ) {
+					if( prevBone.getA() == bone.getA() ) {
+						selectionIndex = index;
+						break;
+					}
+					index ++;
 				}
-				index ++;
 			}
+			this.setListData( selectionIndex, bones );
 		}
-		this.setListData( selectionIndex, bones );
 	}
 }
