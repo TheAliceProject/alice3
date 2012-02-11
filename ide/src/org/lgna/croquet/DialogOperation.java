@@ -95,7 +95,7 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		return rv;
 	}
 
-	protected boolean isWindowClosingEnabled( java.awt.event.WindowEvent e ) {
+	protected boolean isWindowClosingEnabled( Dialog dialog ) {
 		return true;
 	}
 
@@ -123,36 +123,15 @@ public abstract class DialogOperation extends SingleThreadOperation {
 				owner = Application.getActiveInstance().getFrame().getContentPanel();
 			}
 		}
-		final Dialog dialog = new Dialog( owner );
+		final Dialog dialog = new Dialog( owner ) {
+			@Override
+			protected boolean isClearedToClose() {
+				return isWindowClosingEnabled( this );
+			}
+		};
 		step.putEphemeralDataFor( DIALOG_KEY, dialog );
 		//		dialog.getAwtComponent().setUndecorated( true );
 		//		dialog.getRootPane().setWindowDecorationStyle(javax.swing.JRootPane.PLAIN_DIALOG);
-
-		dialog.setDefaultCloseOperation( org.lgna.croquet.components.Dialog.DefaultCloseOperation.DO_NOTHING );
-		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				org.lgna.croquet.history.TransactionManager.fireDialogOpened( dialog );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "step.handleWindowOpened( e )?" );
-			}
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				if( DialogOperation.this.isWindowClosingEnabled( e ) ) {
-					dialog.setVisible( false );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "step.handleWindowClosing( e )?" );
-				}
-			}
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-		};
-		dialog.addWindowListener( windowListener );
-
 		Container< ? > contentPane = this.createContentPane( step, dialog );
 		step.putEphemeralDataFor( CONTENT_PANE_KEY, contentPane );
 		
@@ -181,8 +160,7 @@ public abstract class DialogOperation extends SingleThreadOperation {
 					dialog.setVisible( true );
 					this.handleClosing();
 					this.releaseContentPane( step, dialog, contentPane );
-					dialog.removeWindowListener( windowListener );
-					dialog.getAwtComponent().dispose();
+					dialog.dispose();
 				} finally {
 					this.EPIC_HACK_activeDialog = null;
 				}

@@ -123,8 +123,8 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 	
 	@Override
 	protected void handleFinally( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
-		this.setRecording( false );
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
+		this.setRecording( false );
 		programContext.cleanUpProgram();
 		super.handleFinally( step, dialog, contentPane );
 	}

@@ -340,6 +340,11 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 	
 	@Override
+	public boolean isTabClosable( org.lgna.project.ast.AbstractCode code ) {
+		return "myFirstMethod".equalsIgnoreCase( code.getName() ) == false;
+	}
+	
+	@Override
 	protected java.util.List< ? super org.lgna.project.ast.JavaType > addPrimeTimeJavaTypes( java.util.List< ? super org.lgna.project.ast.JavaType > rv ) {
 		rv = super.addPrimeTimeJavaTypes( rv );
 //		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
