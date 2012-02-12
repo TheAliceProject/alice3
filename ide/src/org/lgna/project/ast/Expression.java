@@ -48,4 +48,9 @@ package org.lgna.project.ast;
  */
 public abstract class Expression extends AbstractNode {
 	public abstract AbstractType<?,?,?> getType();
+	//todo
+	//public abstract boolean isValid();
+	public boolean isValid() {
+		return true;
+	}
 }

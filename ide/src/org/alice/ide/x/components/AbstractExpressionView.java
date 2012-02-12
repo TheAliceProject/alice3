@@ -56,6 +56,15 @@ public class AbstractExpressionView extends org.alice.ide.common.ExpressionLikeS
 		}
 	}
 	@Override
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		if( this.expression != null && this.expression.isValid() ) {
+			return super.getBackgroundPaint( x, y, width, height );
+		} else {
+			return java.awt.Color.RED;
+		}
+	}
+	
+	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		if( this.expression != null ) {
 			if( org.lgna.project.ast.AstUtilities.isKeywordExpression( expression ) ) {
