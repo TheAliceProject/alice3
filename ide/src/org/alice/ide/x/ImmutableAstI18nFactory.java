@@ -40,23 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.x;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewAstI18nFactory extends ImmutableAstI18nFactory {
-	private static class SingletonHolder {
-		private static PreviewAstI18nFactory instance = new PreviewAstI18nFactory();
-	}
-	public static PreviewAstI18nFactory getInstance() {
-		return SingletonHolder.instance;
-	}
-	private PreviewAstI18nFactory() {
+public abstract class ImmutableAstI18nFactory extends IdeAstI18nFactory {
+	@Override
+	protected final org.lgna.croquet.components.JComponent< ? > createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
+		return new org.alice.ide.preview.ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getFallBackTypeForThisExpression() {
-		return null;
+	protected final org.lgna.croquet.components.JComponent< ? > createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
+		//todo
+		return new org.lgna.croquet.components.Label();
 	}
 }

@@ -47,11 +47,10 @@ package org.alice.ide.x;
  * @author Dennis Cosgrove
  */
 public abstract class AstI18nFactory extends I18nFactory {
-	
+	protected abstract org.lgna.project.ast.AbstractType< ?,?,? > getFallBackTypeForThisExpression();
 	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
 		return component;
 	}
-	
 	public org.lgna.croquet.components.JComponent< ? > createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.Component< ? > prefixPane ) {
 		if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
 			org.lgna.project.ast.SimpleArgument simpleArgument = (org.lgna.project.ast.SimpleArgument)argument;

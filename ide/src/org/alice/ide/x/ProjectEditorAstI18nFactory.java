@@ -46,17 +46,14 @@ package org.alice.ide.x;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewAstI18nFactory extends ImmutableAstI18nFactory {
+public class ProjectEditorAstI18nFactory extends MutableAstI18nFactory {
 	private static class SingletonHolder {
-		private static PreviewAstI18nFactory instance = new PreviewAstI18nFactory();
+		private static ProjectEditorAstI18nFactory instance = new ProjectEditorAstI18nFactory();
 	}
-	public static PreviewAstI18nFactory getInstance() {
+	public static ProjectEditorAstI18nFactory getInstance() {
 		return SingletonHolder.instance;
 	}
-	private PreviewAstI18nFactory() {
-	}
-	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getFallBackTypeForThisExpression() {
-		return null;
+	private ProjectEditorAstI18nFactory() {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
 	}
 }

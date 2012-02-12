@@ -75,7 +75,7 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 	public final boolean isValid() {
 		org.lgna.project.ast.AbstractType<?,?,?> type;
 		org.lgna.project.ast.AbstractCode code;
-		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationState.getInstance().getValue();
+		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationFauxState.getInstance().getValue();
 		if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
 			type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
 			code = null;

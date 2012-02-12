@@ -40,23 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.x;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewAstI18nFactory extends ImmutableAstI18nFactory {
+public class MenuIconIdeAstI18nFactory extends ImmutableAstI18nFactory {
 	private static class SingletonHolder {
-		private static PreviewAstI18nFactory instance = new PreviewAstI18nFactory();
+		private static MenuIconIdeAstI18nFactory instance = new MenuIconIdeAstI18nFactory();
 	}
-	public static PreviewAstI18nFactory getInstance() {
+	public static MenuIconIdeAstI18nFactory getInstance() {
 		return SingletonHolder.instance;
 	}
-	private PreviewAstI18nFactory() {
+	private MenuIconIdeAstI18nFactory() {
 	}
 	@Override
 	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getFallBackTypeForThisExpression() {
 		return null;
+	}
+	// todo: investigate
+	// this epic hack was inserted to account for menu item icons returning a size of 0,0
+	// dennisc
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
+		return new org.lgna.croquet.components.LineAxisPanel( component );
 	}
 }
