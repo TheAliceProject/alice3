@@ -66,13 +66,6 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		return null;
 	}
 
-	private Dialog EPIC_HACK_activeDialog;
-
-	@Deprecated
-	public Dialog EPIC_HACK_getActiveDialog() {
-		return this.EPIC_HACK_activeDialog;
-	}
-	
 	@Override
 	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
 		return new org.lgna.croquet.history.TransactionHistory();
@@ -95,7 +88,7 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		return rv;
 	}
 
-	protected boolean isWindowClosingEnabled( Dialog dialog ) {
+	protected boolean isClearedToClose( Dialog dialog ) {
 		return true;
 	}
 
@@ -126,7 +119,7 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		final Dialog dialog = new Dialog( owner ) {
 			@Override
 			protected boolean isClearedToClose() {
-				return isWindowClosingEnabled( this );
+				return DialogOperation.this.isClearedToClose( this );
 			}
 		};
 		step.putEphemeralDataFor( DIALOG_KEY, dialog );
@@ -155,15 +148,10 @@ public abstract class DialogOperation extends SingleThreadOperation {
 				}
 
 				dialog.setTitle( this.getDialogTitle( step ) );
-				this.EPIC_HACK_activeDialog = dialog;
-				try {
-					dialog.setVisible( true );
-					this.handleClosing();
-					this.releaseContentPane( step, dialog, contentPane );
-					dialog.dispose();
-				} finally {
-					this.EPIC_HACK_activeDialog = null;
-				}
+				dialog.setVisible( true );
+				this.handleClosing();
+				this.releaseContentPane( step, dialog, contentPane );
+				dialog.dispose();
 			} else {
 				this.releaseContentPane( step, dialog, contentPane );
 			}
