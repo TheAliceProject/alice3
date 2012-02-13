@@ -80,7 +80,8 @@ public class JavaMethodParameter extends JavaParameter {
 		m_valueType = JavaType.getInstance( methodReflectionProxy.getParameterClassReflectionProxies()[ m_index ] );
 	}
 	
-	public JavaMethod getMethod() {
+	@Override
+	public JavaMethod getCode() {
 		return m_method;
 	}
 	public int getIndex() {
