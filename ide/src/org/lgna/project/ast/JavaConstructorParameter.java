@@ -80,7 +80,8 @@ public class JavaConstructorParameter extends JavaParameter {
 		assert m_valueType != null;
 	}
 	
-	public JavaConstructor getConstructor() {
+	@Override
+	public JavaConstructor getCode() {
 		return m_constructor;
 	}
 	public int getIndex() {

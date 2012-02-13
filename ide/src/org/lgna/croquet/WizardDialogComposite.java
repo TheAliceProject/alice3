@@ -46,17 +46,131 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardDialogComposite extends GatedCommitDialogComposite {
-	private static class WizardCardComposite extends CardComposite {
+public abstract class WizardDialogComposite extends GatedCommitDialogComposite< WizardDialogComposite.WizardCardComposite, WizardDialogComposite.WizardDialogControlsComposite > {
+	protected static class WizardCardComposite extends CardComposite {
+		private int index = 0;
 		public WizardCardComposite( WizardPageComposite<?>[] wizardPages ) {
 			super( java.util.UUID.fromString( "d660e0ed-900a-4f98-ac23-bec8804dba22" ), wizardPages );
 		}
+		public int getIndex() {
+			return this.index;
+		}
+		public void setIndex( int index ) {
+			this.index = index;
+			this.showCard( this.getCards().get( index ) );
+		}
+		public boolean isPrevPageAvailable() {
+			return this.index > 0; 
+		}
+		public boolean isNextPageAvailable() {
+			return this.index < this.getCards().size()-1; 
+		}
+		public void prev() {
+			this.setIndex( this.getIndex()-1 );
+		}
+		public void next() {
+			this.setIndex( this.getIndex()+1 );
+		}
 	}
+	protected static class WizardDialogControlsComposite extends GatedCommitDialogComposite.ControlsComposite {
+		private static abstract class InternalWizardDialogOperation extends InternalDialogOperation {
+			public InternalWizardDialogOperation( java.util.UUID id, WizardDialogControlsComposite composite ) {
+				super( id, composite );
+			}
+			@Override
+			public WizardDialogControlsComposite getControlsComposite() {
+				return (WizardDialogControlsComposite)super.getControlsComposite();
+			}
+			protected WizardCardComposite getWizardCardComposite() {
+				return (WizardCardComposite)this.getControlsComposite().getGatedCommitDialogComposite().getMainComposite();
+			}
+		}
+		private static class PreviousOperation extends InternalWizardDialogOperation {
+			public PreviousOperation( WizardDialogControlsComposite composite ) {
+				super( java.util.UUID.fromString( "2b1ff0fd-8d8a-4d23-9d95-6203e9abff9c" ), composite );
+			}
+			@Override
+			protected void perform( org.lgna.croquet.history.OperationStep step ) {
+				WizardCardComposite wizardCardComposite = this.getWizardCardComposite();
+				if( wizardCardComposite.isPrevPageAvailable() ) {
+					wizardCardComposite.prev();
+				}
+				step.finish();
+			}
+		}
+		private static class NextOperation extends InternalWizardDialogOperation {
+			public NextOperation( WizardDialogControlsComposite composite ) {
+				super( java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ), composite );
+			}
+			@Override
+			protected void perform( org.lgna.croquet.history.OperationStep step ) {
+				WizardCardComposite wizardCardComposite = this.getWizardCardComposite();
+				if( wizardCardComposite.isNextPageAvailable() ) {
+					wizardCardComposite.next();
+				}
+				step.finish();
+			}
+		}
+		
+		private final NextOperation nextOperation = new NextOperation( this );
+		private final PreviousOperation prevOperation = new PreviousOperation( this );
+
+		public WizardDialogControlsComposite( WizardDialogComposite composite ) {
+			super( java.util.UUID.fromString( "56e28f65-6da2-4f25-a86b-16b7e3c4940c" ), composite );
+		}
+		@Override
+		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
+			controlLine.addComponent( this.prevOperation.createButton() );
+			controlLine.addComponent( this.nextOperation.createButton() );
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+			controlLine.addComponent( leadingOkCancelButton );
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+			controlLine.addComponent( trailingOkCancelButton );
+		}
+	}
+
+	private final WizardDialogControlsComposite controlsComposite;
 	public WizardDialogComposite( java.util.UUID id, Group operationGroup, WizardPageComposite<?>... wizardPages ) {
 		super( id, operationGroup, new WizardCardComposite( wizardPages ) );
+		this.controlsComposite = new WizardDialogControlsComposite( this );
 	}
 	@Override
-	protected ControlsComposite getControlsComposite() {
+	protected void localize() {
+		super.localize();
+		this.getControlsComposite().nextOperation.setName( this.findLocalizedText( "next", WizardDialogComposite.class ) );
+		this.getControlsComposite().prevOperation.setName( this.findLocalizedText( "previous", WizardDialogComposite.class ) );
+	}
+	@Override
+	protected WizardDialogControlsComposite getControlsComposite() {
+		return this.controlsComposite;
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		//todo
+		return false;
+	}
+	@Override
+	protected String getExplanation( org.lgna.croquet.history.OperationStep step ) {
+		//todo
 		return null;
+	}
+	
+	private void updateEnabled() {
+		WizardCardComposite wizardCardComposite = this.getMainComposite();
+		this.getControlsComposite().nextOperation.setEnabled( wizardCardComposite.isNextPageAvailable() );
+		this.getControlsComposite().prevOperation.setEnabled( wizardCardComposite.isPrevPageAvailable() );
+	}
+	@Override
+	public void handleFiredEvent( org.lgna.croquet.history.event.Event< ? > event ) {
+		super.handleFiredEvent( event );
+		this.updateEnabled();
+	}
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.OperationStep step ) {
+		WizardCardComposite wizardCardComposite = (WizardCardComposite)this.getMainComposite();
+		wizardCardComposite.setIndex( 0 );
+		this.updateEnabled();
+		super.handlePreShowDialog( step );
 	}
 }

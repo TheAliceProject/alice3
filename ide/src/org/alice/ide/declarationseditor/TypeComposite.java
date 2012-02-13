@@ -70,6 +70,10 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Ab
 		button.scaleFont( 1.6f );
 	}
 	@Override
+	public boolean isCloseable() {
+		return false;
+	}
+	@Override
 	public boolean isValid() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check to see if type is in project" );
 		return true;

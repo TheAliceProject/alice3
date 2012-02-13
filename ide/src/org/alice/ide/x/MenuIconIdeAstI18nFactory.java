@@ -40,58 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.alice.ide.x;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayAccess extends Expression {
-	public DeclarationProperty< AbstractType<?,?,?> > arrayType = new DeclarationProperty< AbstractType<?,?,?> >( this );
-	public ExpressionProperty array = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?,?,?> getExpressionType() {
-			AbstractType<?,?,?> arrayType = ArrayAccess.this.arrayType.getValue();
-			assert arrayType != null;
-			return arrayType;
-		}
-	};
-	public ExpressionProperty index = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?,?,?> getExpressionType() {
-			return JavaType.getInstance( Integer.class );
-		}
-	};
-
-	public ArrayAccess() {
+public class MenuIconIdeAstI18nFactory extends ImmutableAstI18nFactory {
+	private static class SingletonHolder {
+		private static MenuIconIdeAstI18nFactory instance = new MenuIconIdeAstI18nFactory();
 	}
-	public ArrayAccess( AbstractType<?,?,?> arrayType, Expression array, Expression index ){
-		assert arrayType.isArray();
-		this.arrayType.setValue( arrayType );
-		this.array.setValue( array );
-		this.index.setValue( index );
+	public static MenuIconIdeAstI18nFactory getInstance() {
+		return SingletonHolder.instance;
 	}
-	public ArrayAccess( Class<?> arrayCls, Expression array, Expression index ){
-		this( JavaType.getInstance( arrayCls ), array, index );
+	private MenuIconIdeAstI18nFactory() {
 	}
 	@Override
-	public AbstractType<?,?,?> getType() {
-		AbstractType<?,?,?> arrayType = this.arrayType.getValue();
-		assert arrayType != null;
-		return arrayType.getComponentType();
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getFallBackTypeForThisExpression() {
+		return null;
 	}
+	// todo: investigate
+	// this epic hack was inserted to account for menu item icons returning a size of 0,0
+	// dennisc
 	@Override
-	public boolean isValid() {
-		Expression arrayExpression = this.array.getValue();
-		if( arrayExpression != null ) {
-			AbstractType< ?,?,? > type = arrayExpression.getType();
-			if( type != null ) {
-				return type.isArray();
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
+		return new org.lgna.croquet.components.LineAxisPanel( component );
 	}
 }

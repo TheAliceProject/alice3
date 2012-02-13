@@ -62,4 +62,8 @@ public abstract class IdeAstI18nFactory extends AstI18nFactory {
 			throw new RuntimeException( ideExpression.toString() );
 		}
 	}
+	@Override
+	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+		return this.createExpressionPane( expressionProperty.getValue() );
+	}
 }

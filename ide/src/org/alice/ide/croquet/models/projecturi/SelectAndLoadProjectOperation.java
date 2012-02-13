@@ -59,7 +59,6 @@ public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.Inp
 			return "must select project to open.";
 		}
 	}
-	
 	@Override
 	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(org.lgna.croquet.history.OperationStep step) {
 		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().selectAppropriateTab( this.isNew() );

@@ -170,6 +170,18 @@ public class TransactionManager {
 //			observer.dialogOpened( dialog );
 //		}
 	}
+	@Deprecated
+	public static void fireDialogClosing( org.lgna.croquet.components.Dialog dialog ) {
+//		for( Observer observer : observers ) {
+//			observer.dialogClosing( dialog );
+//		}
+	}
+	@Deprecated
+	public static void fireDialogClosed( org.lgna.croquet.components.Dialog dialog ) {
+//		for( Observer observer : observers ) {
+//			observer.dialogClosed( dialog );
+//		}
+	}
 //	private static void fireEditCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
 //		for( Observer observer : observers ) {
 //			observer.editCommitting( edit );
