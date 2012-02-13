@@ -42,12 +42,15 @@
  */
 package test;
 
+import javax.swing.SwingUtilities;
+
 import org.lgna.story.AddTimerEventListener;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
 import org.lgna.story.Cone;
 import org.lgna.story.Ground;
+import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.JointedModel;
 import org.lgna.story.Key;
 import org.lgna.story.Model;
@@ -237,7 +240,6 @@ class SnowScene extends Scene{
 
 	private void performInitializeEvents() {
 		this.addSceneActivationListener(new SceneActivationListener() {
-			
 			public void sceneActivated(SceneActivationEvent e) {				
 			}
 		});
@@ -377,10 +379,18 @@ class RagsToRichesStory extends Program {
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}
-	public static void main( String[] args ) {
-		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
-		ragsToRichesStory.initializeInFrame( args );
-		ragsToRichesStory.playOutStory();
-		
+	public static void main( final String[] args ) {
+//		SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
+				final RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
+				ragsToRichesStory.initializeInFrame( args );
+				new Thread() {
+					public void run() {
+						ImplementationAccessor.getImplementation(ragsToRichesStory).getOnscreenLookingGlass().getAWTComponent().doLayout();
+						ragsToRichesStory.playOutStory();
+					}
+				}.start();
+//			}
+//		} );
 	}
 }
