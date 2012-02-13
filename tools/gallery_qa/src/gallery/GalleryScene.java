@@ -48,7 +48,6 @@ import gallery.croquet.IsVisualizationShowingState;
 import org.lgna.croquet.State;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
-import org.lgna.story.Cone;
 import org.lgna.story.Cylinder;
 import org.lgna.story.Ground;
 import org.lgna.story.ImplementationAccessor;
