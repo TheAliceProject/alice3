@@ -66,7 +66,8 @@ public class TransactionHistoryGenerator {
 		this.src.crawl(astPrintlnVisitor, true);
 
 		// Create a run operation, at the end of the tutorial
-		transactionHistory.addTransaction( createOpenAndClosePlainDialogOperationTransaction( transactionHistory, org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) );
+		// TODO: This is now broken
+		//transactionHistory.addTransaction( createOpenAndClosePlainDialogOperationTransaction( transactionHistory, org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) );
 		return transactionHistory;
 	}
 

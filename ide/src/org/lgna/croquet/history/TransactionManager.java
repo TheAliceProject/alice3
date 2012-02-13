@@ -353,13 +353,21 @@ public class TransactionManager {
 		}
 	}
 
-	public static <E> Transaction createSimulatedTransaction( TransactionHistory transactionHistory, State< E > state, E prevValue, E nextValue ) {
+	public static <T> Transaction createSimulatedTransaction( TransactionHistory transactionHistory, State< T > state, T prevValue, T nextValue ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
-		org.lgna.croquet.history.StateChangeStep< E > completionStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( rv, state, new org.lgna.croquet.triggers.SimulatedTrigger() );
-		org.lgna.croquet.edits.StateEdit< E > edit = new org.lgna.croquet.edits.StateEdit( completionStep, prevValue, nextValue );
+		org.lgna.croquet.history.StateChangeStep< T > completionStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( rv, state, new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.edits.StateEdit< T > edit = new org.lgna.croquet.edits.StateEdit( completionStep, prevValue, nextValue );
 		completionStep.setEdit( edit );
 		return rv;
 	}
+	public static <T> Transaction createSimulatedTransactionForCascade( TransactionHistory transactionHistory, Cascade<T> cascade ) {
+		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
+		org.lgna.croquet.history.CascadeCompletionStep< T > completionStep = org.lgna.croquet.history.CascadeCompletionStep.createAndAddToTransaction( rv, cascade, new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.edits.Edit edit = null; //todo
+		completionStep.setEdit( edit );
+		return rv;
+	}
+
 	public static void handleDocumentEvent( StringState stringState, org.lgna.croquet.triggers.Trigger trigger, String previousValue, String nextValue ) {
 		Transaction transaction = getLastTransaction();
 		StateChangeStep< String > stateChangeStep = null;

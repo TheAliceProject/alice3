@@ -34,12 +34,15 @@ public class AstPrintlnVisitor implements edu.cmu.cs.dennisc.pattern.Crawler {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "yes! ", countLoop);
 		
 		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)countLoop.getParent();
-		// TODO: Index
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair(blockStatement, 0);
+		int index = blockStatement.statements.indexOf( countLoop );
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair(blockStatement, index);
 		org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade countLoopInsertCascade = org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.getInstance(blockStatementIndexPair);
+
+		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.createSimulatedTransactionForCascade( this.transactionHistory, countLoopInsertCascade );
+		org.lgna.croquet.edits.Edit edit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit(transaction.getCompletionStep(), blockStatementIndexPair, countLoop);
 		
-//		org.lgna.croquet.history.ActionOperationStep actionOperationStep = org.lgna.croquet.history.ActionOperationStep.createAndAddToTransaction( transaction, insertStatementActionOperation, new org.lgna.croquet.triggers.SimulatedTrigger() );
-//		addEdit( insertStatementContext, new org.alice.ide.croquet.edits.DependentEdit() );
+		transaction.getCompletionStep().setEdit( edit );
+		this.transactionHistory.addTransaction(transaction);
 	}
 
 	public void visit(org.lgna.project.ast.DoInOrder doInOrder) {
