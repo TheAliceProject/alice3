@@ -122,7 +122,7 @@ public abstract class StringState extends State< String > {
 	public void setEnabled( boolean isEnabled ) {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
-			for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
+			for( org.lgna.croquet.components.JComponent< ? > component : ComponentManager.getComponents( this ) ) {
 				component.getAwtComponent().setEnabled( this.isEnabled );
 			}
 		}

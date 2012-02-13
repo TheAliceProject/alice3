@@ -249,10 +249,6 @@ public abstract class Operation extends CompletionModel {
 			return new InternalMenuPrepModelResolver( this.operation );
 		}
 		@Override
-		public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
-			return this.operation.getFirstComponent();
-		}
-		@Override
 		public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
 			rv.addMenuItem( new org.lgna.croquet.components.MenuItem( this.getOperation() ) );
 			return rv;

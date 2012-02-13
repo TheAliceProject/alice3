@@ -505,7 +505,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	}
 
 	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( T item ) {
-		org.lgna.croquet.components.ItemSelectable< ?, T > itemSelectable = this.getFirstComponent( org.lgna.croquet.components.ItemSelectable.class );
+		org.lgna.croquet.components.ItemSelectable< ?, T > itemSelectable = ComponentManager.getFirstComponent( this, org.lgna.croquet.components.ItemSelectable.class );
 		if( itemSelectable != null ) {
 			return itemSelectable.getTrackableShapeFor( item );
 		} else {
@@ -623,14 +623,6 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		protected InternalPrepModelResolver<T> createResolver() {
 			return new InternalPrepModelResolver<T>( this.listSelectionState );
 		}
-		
-		//todo
-		@Override
-		public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
-			return this.listSelectionState.getFirstComponent();
-		}
-		
-		
 		public org.lgna.croquet.components.ComboBox< T > createComboBox() {
 			return new org.lgna.croquet.components.ComboBox< T >( this );
 		}

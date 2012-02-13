@@ -158,7 +158,7 @@ public abstract class Application {
 				java.util.Locale.setDefault( locale );
 				javax.swing.JComponent.setDefaultLocale( locale );
 
-				Manager.localizeAllModels();
+				Manager.relocalizeAllElements();
 
 				try {
 					javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getLookAndFeel() );

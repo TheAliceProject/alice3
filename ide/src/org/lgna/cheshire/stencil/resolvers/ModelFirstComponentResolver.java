@@ -57,7 +57,7 @@ public class ModelFirstComponentResolver implements org.lgna.croquet.resolvers.R
 	public org.lgna.croquet.components.Component<?> getResolved() {
 		org.lgna.croquet.Model model = this.getModel();
 		if( model != null ) {
-			return model.getFirstComponent();
+			return org.lgna.croquet.ComponentManager.getFirstComponent( model );
 		} else {
 			return null;
 		}

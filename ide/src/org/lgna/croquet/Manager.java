@@ -56,12 +56,13 @@ public class Manager {
 	public static Model findFirstAppropriateModel( java.util.UUID id ) {
 		java.util.Set< Model > models = lookupModels( id );
 		for( Model model : models ) {
-			for( org.lgna.croquet.components.JComponent<?> component : model.getComponents() ) {
+			java.util.Queue< org.lgna.croquet.components.JComponent<?> > components = ComponentManager.getComponents( model );
+			for( org.lgna.croquet.components.JComponent<?> component : components ) {
 				if( component.getAwtComponent().isShowing() ) {
 					return model;
 				}
 			}
-			for( org.lgna.croquet.components.JComponent<?> component : model.getComponents() ) {
+			for( org.lgna.croquet.components.JComponent<?> component : components ) {
 				if( component.getAwtComponent().isVisible() ) {
 					return model;
 				}
@@ -124,12 +125,12 @@ public class Manager {
 		return rv;
 	}
 
-	/*package-private*/ static void localizeAllModels() {
+	/*package-private*/ static void relocalizeAllElements() {
 		synchronized ( mapIdToModels ) {
 			java.util.Collection< java.util.Set< Model > > sets = mapIdToModels.values();
 			for( java.util.Set< Model > set : sets ) {
 				for( Model model : set ) {
-					model.localize();
+					model.relocalize();
 //					for( JComponent<?> component : model.getComponents() ) {
 //					}
 				}

@@ -88,10 +88,6 @@ public abstract class BooleanState extends State< Boolean > {
 			return new InternalMenuItemPrepModelResolver( this.booleanState );
 		}
 		@Override
-		public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
-			return this.booleanState.getFirstComponent();
-		}
-		@Override
 		public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
 			rv.addCheckBoxMenuItem( new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() ) );
 			return rv;

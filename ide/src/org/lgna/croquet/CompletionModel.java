@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompletionModel extends Model {
+public abstract class CompletionModel extends AbstractModel {
 	private final Group group;
 	private int ignoreCount = 0;
 
