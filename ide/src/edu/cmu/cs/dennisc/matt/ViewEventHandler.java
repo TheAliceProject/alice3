@@ -26,20 +26,33 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 
 	@Override
 	protected void check(Entity changedEntity) {
-		System.out.println("check");
-		if ( camera == null ){
+		if ( camera == null ){ //should not really be hit
 			camera = ImplementationAccessor.getImplementation( changedEntity ).getScene().findFirstCamera();
 			if( camera == null ){
 				return;
+			} else {
+				camera.getSgComposite().addAbsoluteTransformationListener( this );
 			}
 		}
-		for( ViewEventListener listener : map.get( changedEntity ) ) {
-			if ( check( listener, changedEntity ) ) {
-				ViewEvent event = listener instanceof ComesIntoViewEventListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
-				fireEvent( listener, event );
+		if ( changedEntity == camera.getAbstraction() ) {
+			for( Entity entity : map.keySet() ) {
+				for( ViewEventListener listener : map.get( entity ) ) {
+					if ( check( listener, entity ) ) {
+						ViewEvent event = listener instanceof ComesIntoViewEventListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
+						fireEvent( listener, event );
+					}
+				}
+				wasInView.put( entity, IsInViewDetector.isThisInView( entity, camera ) );
 			}
+		} else {
+			for( ViewEventListener listener : map.get( changedEntity ) ) {
+				if ( check( listener, changedEntity ) ) {
+					ViewEvent event = listener instanceof ComesIntoViewEventListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
+					fireEvent( listener, event );
+				}
+			}
+			wasInView.put( changedEntity, IsInViewDetector.isThisInView( changedEntity, camera ) );
 		}
-		wasInView.put( changedEntity, IsInViewDetector.isThisInView( changedEntity, camera ) );
 	}
 	
 	private boolean check( ViewEventListener listener, Entity changedEntity ) {
@@ -70,10 +83,8 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 
 	public void addViewEventListener( ViewEventListener listener, Entity[] entities) {
 		registerIsFiringMap( listener );
-		System.out.println("foo");
 		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
 		for( Entity m : entities ) {
-			System.out.println("for1");
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
@@ -85,12 +96,10 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 			}
 		}
 		for( Entity entity : entities ){
-			System.out.println("for2");
 			if ( map.get( entity ) == null ){
 				map.put( entity, new LinkedList<ViewEventListener>() );
 			}
 			map.get( entity ).add( listener );
 		}
 	}
-
 }

@@ -33,7 +33,9 @@ public class IsInViewDetector {
 		boolean below = false;
 		for( int i = 0; i != awtPoints.length; ++i ) {
 			if ( awtPoints[i].x < width && awtPoints[i].x > 0 && awtPoints[i].y < height && awtPoints[i].y > 0 ){
-				return relativeToCamera[i].z < 0;
+				if( relativeToCamera[i].z < 0 ) {
+					return true;
+				}
 			}else{
 				if ( awtPoints[i].x > width ) {
 					if( relativeToCamera[i].z < 0 ) {
@@ -55,13 +57,13 @@ public class IsInViewDetector {
 			}
 
 		}
-		if( leftOf && rightOf && above && below ){
+		if( leftOf && rightOf && above && below ) {
 			return true;
 		}
-		if( leftOf && rightOf && !above || !below ){
+		if( ( leftOf && rightOf ) && ( !above || !below ) ) {
 			return true;
 		}
-		if( !leftOf || !rightOf && above && below ){
+		if( ( !leftOf || !rightOf ) && ( above && below ) ) {
 			return true;
 		}
 		return false;

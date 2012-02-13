@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lgna.story.Entity;
+import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractKeyPressListener;
@@ -16,6 +17,7 @@ import org.lgna.story.event.LeavesViewEventListener;
 import org.lgna.story.event.MouseClickListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
+import org.lgna.story.event.MoveWithArrows;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 import org.lgna.story.event.OcclusionEventListener;
@@ -139,6 +141,9 @@ public class EventManager {
 	public void addArrowKeyListener( ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy ) {
 		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS );
 	}
+	public void moveWithArrows( MovableTurnable entity ) {
+		this.keyHandler.addListener( new MoveWithArrows( entity ), MultipleEventPolicy.COMBINE, ArrowKeyEvent.ARROWS );
+	}
 
 	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, MultipleEventPolicy policy ) {
 		mouseHandler.addListener( listener, policy, null );
@@ -164,5 +169,4 @@ public class EventManager {
 	public void addLeavesViewEventListener(LeavesViewEventListener listener, Entity[] entities) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
-
 }

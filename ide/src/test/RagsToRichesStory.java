@@ -42,6 +42,8 @@
  */
 package test;
 
+import java.awt.Component;
+
 import javax.swing.SwingUtilities;
 
 import org.lgna.story.AddTimerEventListener;
@@ -49,6 +51,7 @@ import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
 import org.lgna.story.Cone;
+import org.lgna.story.Entity;
 import org.lgna.story.Ground;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.JointedModel;
@@ -81,6 +84,7 @@ import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TimerEvent;
 import org.lgna.story.event.TransformationEvent;
 import org.lgna.story.event.TransformationListener;
+import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -88,6 +92,12 @@ import org.lgna.story.resources.sims2.BaseSkinTone;
 import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
+
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
+import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -258,13 +268,13 @@ class SnowScene extends Scene{
 //				greenCone.move(MoveDirection.DOWN, 1);
 //			}
 //		}, AddTimerEventListener.timerFrequency(0.0), MultipleEventPolicy.ENQUEUE );
-		this.addLeavesViewEventListener(new LeavesViewEventListener() {
-			
-			public void leftView(LeavesViewEvent e) {
-				susan.move( MoveDirection.UP, 5 );
-				susan.move( MoveDirection.DOWN, 5 );
-			}
-		}, colListOne );
+//		this.addLeavesViewEventListener(new LeavesViewEventListener() {
+//			
+//			public void leftView(LeavesViewEvent e) {
+//				susan.move( MoveDirection.UP, 5 );
+//				susan.move( MoveDirection.DOWN, 5 );
+//			}
+//		}, colListOne );
 //		this.addKeyPressListener(new KeyPressListener() {
 //			public void keyPressed(KeyEvent e) {
 //				if(e.isKey(Key.A)){
@@ -273,24 +283,24 @@ class SnowScene extends Scene{
 //				}
 //			}
 //		}, MultipleEventPolicy.COMBINE );
-		this.addArrowKeyPressListener(new ArrowKeyPressListener() {
-			public void keyPressed(ArrowKeyEvent e) {
-				ogre.move(e.getFowardBackwardLeftRightMoveDirection(), 1);
-			}
-		}, MultipleEventPolicy.COMBINE );
+//		this.addArrowKeyPressListener(new ArrowKeyPressListener() {
+//			public void keyPressed(ArrowKeyEvent e) {
+//				camera.move(e.getFowardBackwardLeftRightMoveDirection(), 1);
+//			}
+//		}, MultipleEventPolicy.COMBINE );
+		this.moveThisWithArrows( camera );
 //		this.addNumberKeyPressListener(new NumberKeyPressListener() {
 //			
 //			public void keyPressed(NumberKeyEvent e) {
 //				ogre.move(MoveDirection.UP, e.getNumber());
 //				ogre.move(MoveDirection.DOWN, e.getNumber());
-//			}
 //		});
 //		this.addTransformationListener(new TransformationListener() {
 //			
 //			public void whenThisMoves(TransformationEvent e) {
 //				ogre.say( "Hi, I have moved!" );
 //			}
-//		}, colListOne );
+//		}, new Entity[] { blueCone } );
 //		this.addOcclusionEventListener(new OcclusionEventListener() {
 //			
 //			public void whenTheseOcclude(OcclusionEvent e) {
@@ -365,6 +375,7 @@ class RagsToRichesStory extends Program {
 			new AdultPersonResource(
 					Gender.FEMALE,
 					BaseSkinTone.getRandom(),
+					
 					BaseEyeColor.getRandom(),
 					FemaleAdultHairBraids.BLACK,
 					0.5,
@@ -380,17 +391,21 @@ class RagsToRichesStory extends Program {
 		this.snowScene.chillInSkiChalet();
 	}
 	public static void main( final String[] args ) {
-//		SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-				final RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
-				ragsToRichesStory.initializeInFrame( args );
-				new Thread() {
-					public void run() {
-						ImplementationAccessor.getImplementation(ragsToRichesStory).getOnscreenLookingGlass().getAWTComponent().doLayout();
-						ragsToRichesStory.playOutStory();
-					}
-				}.start();
-//			}
-//		} );
+		final RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
+		ragsToRichesStory.initializeInFrame( args );
+		new Thread() {
+			public void run() {
+				ragsToRichesStory.playOutStory();
+			}
+		}.start();
+		Logger.todo( "remove this EPIC HACK" );
+		new Thread() {
+			public void run() {
+				ThreadUtilities.sleep( 250 );
+				Component awtComponent = ImplementationAccessor.getImplementation(ragsToRichesStory).getOnscreenLookingGlass().getAWTComponent();
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootFrame( awtComponent ).setSize( 1024, 768 );
+			}
+		}.start();
+		
 	}
 }
