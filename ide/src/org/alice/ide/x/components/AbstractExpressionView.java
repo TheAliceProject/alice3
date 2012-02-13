@@ -55,12 +55,16 @@ public class AbstractExpressionView extends org.alice.ide.common.ExpressionLikeS
 			this.setBackgroundColor( ide.getTheme().getColorFor( expression ) );
 		}
 	}
+	protected java.awt.Paint getInvalidPaint( java.awt.Paint validPaint, int x, int y, int width, int height ) {
+		return java.awt.Color.RED;
+	}
 	@Override
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		java.awt.Paint validPaint = super.getBackgroundPaint( x, y, width, height );
 		if( this.expression != null && this.expression.isValid() ) {
-			return super.getBackgroundPaint( x, y, width, height );
+			return validPaint;
 		} else {
-			return java.awt.Color.RED;
+			return this.getInvalidPaint( validPaint, x, y, width, height );
 		}
 	}
 	

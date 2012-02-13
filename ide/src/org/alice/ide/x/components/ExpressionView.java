@@ -47,8 +47,14 @@ package org.alice.ide.x.components;
  * @author Dennis Cosgrove
  */
 public class ExpressionView extends AbstractExpressionView {
+	private final org.alice.ide.x.AstI18nFactory factory;
 	public ExpressionView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
 		super( expression );
+		this.factory = factory;
 		this.addComponent( factory.createComponent( expression ) );
+	}
+	@Override
+	protected java.awt.Paint getInvalidPaint( java.awt.Paint validPaint, int x, int y, int width, int height ) {
+		return this.factory.getInvalidExpressionPaint( validPaint, x, y, width, height );
 	}
 }
