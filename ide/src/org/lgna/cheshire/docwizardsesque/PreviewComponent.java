@@ -66,7 +66,7 @@ public class PreviewComponent extends org.lgna.croquet.components.JComponent< ja
 //							model = standardPopupOperationPrepStep.getStandardPopupOperation();
 //						}
 						if( model != null ) {
-							org.lgna.croquet.components.Component component = org.lgna.croquet.ComponentManager.getFirstComponent( model );
+							org.lgna.croquet.components.Component component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
 							if( component != null ) {
 								if( component instanceof org.lgna.croquet.components.FolderTabbedPane ) {
 									org.lgna.croquet.components.FolderTabbedPane folderTabbedPane = (org.lgna.croquet.components.FolderTabbedPane)component;

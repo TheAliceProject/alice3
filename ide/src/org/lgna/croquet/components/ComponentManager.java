@@ -41,7 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.lgna.croquet.components;
+
+import org.lgna.croquet.Manager;
+import org.lgna.croquet.Model;
 
 /**
  * @author Dennis Cosgrove
@@ -51,7 +54,7 @@ public class ComponentManager {
 		throw new AssertionError();
 	}
 	public static final java.util.Map< Model, java.util.Queue< org.lgna.croquet.components.JComponent<?> > > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	/*package-private*/ static java.util.Queue< org.lgna.croquet.components.JComponent<?> > getComponents( Model model ) {
+	public static java.util.Queue< org.lgna.croquet.components.JComponent<?> > getComponents( Model model ) {
 		synchronized( map ) {
 			java.util.Queue< org.lgna.croquet.components.JComponent<?> > rv = map.get( model );
 			if( rv != null ) {

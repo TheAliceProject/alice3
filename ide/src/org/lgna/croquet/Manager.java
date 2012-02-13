@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.ComponentManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -82,7 +84,7 @@ public class Manager {
 		return composites;
 	}
 	
-	/*package-private*/ static void registerModel( Model model ) {
+	public static void registerModel( Model model ) {
 		java.util.UUID id = model.getMigrationId();
 		synchronized ( mapIdToModels ) {
 			java.util.Set< Model > set = mapIdToModels.get( id );
@@ -95,7 +97,7 @@ public class Manager {
 			set.add( model );
 		}
 	}
-	/*package-private*/ static void unregisterModel( Model model ) {
+	public static void unregisterModel( Model model ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
 		java.util.UUID id = model.getMigrationId();
 		synchronized ( mapIdToModels ) {

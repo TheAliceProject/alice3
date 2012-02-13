@@ -43,6 +43,8 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.ComponentManager;
+
 /**
  * @author Dennis Cosgrove
  */

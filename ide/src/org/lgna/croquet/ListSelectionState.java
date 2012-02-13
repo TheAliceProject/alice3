@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.ComponentManager;
+
 /*package-private*/class ComboBoxModel<T> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private final ListSelectionState< T > listSelectionState;
 
