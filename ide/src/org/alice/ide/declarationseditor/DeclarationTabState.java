@@ -109,6 +109,14 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 	@Override
 	protected void handleMissingItem( org.alice.ide.declarationseditor.DeclarationComposite missingItem ) {
 		this.addItem( missingItem );
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			if( missingItem != null ) {
+				org.lgna.project.ast.NamedUserType missingItemType = (org.lgna.project.ast.NamedUserType)missingItem.getType();
+				if( missingItemType != TypeState.getInstance().getValue() ) {
+					TypeState.getInstance().setValue( missingItemType );
+				}
+			}
+		}
 	}
 	private void refresh() {
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
@@ -176,7 +184,6 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 			}
 		}
 	}
-
 	public org.lgna.croquet.ActionOperation getItemSelectionOperation( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		org.lgna.croquet.ActionOperation rv = super.getItemSelectionOperation( DeclarationComposite.getInstance( declaration ) );
 		if( declaration instanceof org.lgna.project.ast.AbstractConstructor ) {
