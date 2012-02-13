@@ -73,13 +73,13 @@ public class EventListenerComponent extends BorderPanel {
 		this.addComponent( createHeader(methodInvocation), Constraint.PAGE_START );
 
 		AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get(0);
-		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), lambda );
+		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda );
 		LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
 				new Label( singleAbstractMethod.getName(), TextWeight.BOLD ),
 				parametersPane
 		);
 		BorderPanel codeContainer = new BorderPanel();
-		StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), lambda.body.getValue().statements );
+		StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
 		codeContainer.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getEventBodyColor() );
 		codeContainer.addComponent(putCodeHere, Constraint.CENTER);
 		codeContainer.addComponent(singleAbstractMethodHeader, Constraint.PAGE_START);
@@ -97,7 +97,7 @@ public class EventListenerComponent extends BorderPanel {
 		if(method.getRequiredParameters() != null){
 			SimpleArgumentListProperty requiredArgumentsProperty = methodInvocation.getRequiredArgumentsProperty();
 			ArgumentListPropertyPane requiredParametersListView = new ArgumentListPropertyPane(
-					org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), requiredArgumentsProperty) {
+					org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), requiredArgumentsProperty) {
 				@Override
 				protected Component<?> createComponent(
 						SimpleArgument argument) {
@@ -115,7 +115,7 @@ public class EventListenerComponent extends BorderPanel {
 //			System.out.println(requiredParametersListView);
 		}
 		if(method.getKeyedParameter() != null) {
-			JComponent< ? > keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.EditableAstI18nFactory.getProjectGroupInstance(), methodInvocation.getKeyedArgumentsProperty() );
+			JComponent< ? > keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), methodInvocation.getKeyedArgumentsProperty() );
 			rv.addComponent( keyedArgumentListView );
 		}
 		return rv;
