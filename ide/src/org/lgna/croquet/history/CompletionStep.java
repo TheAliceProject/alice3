@@ -101,7 +101,11 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	protected void popTransactionHistoryIfNecessary() {
 		if( this.transactionHistory != null ) {
 			TransactionHistory pop = TransactionManager.popTransactionHistory();
-			assert pop == this.transactionHistory;
+			if( pop == this.transactionHistory ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( pop, this.transactionHistory );
+			}
 		}
 	}
 	public boolean isPending() {

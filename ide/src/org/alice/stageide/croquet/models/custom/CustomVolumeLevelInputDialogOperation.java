@@ -56,7 +56,7 @@ public class CustomVolumeLevelInputDialogOperation extends org.alice.ide.croquet
 		super( java.util.UUID.fromString( "8064949c-a980-42c6-af79-d9fea15a9211" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.DoubleLiteral > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.DoubleLiteral > prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.stageide.choosers.VolumeLevelChooser();
 	}
 }

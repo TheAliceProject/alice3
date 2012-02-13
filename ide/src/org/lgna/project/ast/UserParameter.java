@@ -58,6 +58,11 @@ public class UserParameter extends AbstractParameter {
 	public UserParameter( String name, Class< ? > valueCls ) {
 		this( name, JavaType.getInstance( valueCls ) );
 	}
+	
+	@Override
+	public UserCode getCode() {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getParent(), UserCode.class );
+	}
 	@Override
 	public boolean isUserAuthored() {
 		return true;

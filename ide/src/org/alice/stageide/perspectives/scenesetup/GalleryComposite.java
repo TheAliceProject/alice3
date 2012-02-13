@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives.scenesetup;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryComposite extends org.lgna.croquet.Composite< org.alice.stageide.gallerybrowser.GalleryBrowser > {
+public class GalleryComposite extends org.lgna.croquet.SimpleComposite< org.alice.stageide.gallerybrowser.GalleryBrowser > {
 	private static class SingletonHolder {
 		private static GalleryComposite instance = new GalleryComposite();
 	}

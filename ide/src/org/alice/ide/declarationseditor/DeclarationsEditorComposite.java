@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationsEditorComposite extends org.lgna.croquet.Composite< org.alice.ide.declarationseditor.components.TypeEditor > {
+public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposite< org.alice.ide.declarationseditor.components.TypeEditor > {
 	private static class SingletonHolder {
 		private static DeclarationsEditorComposite instance = new DeclarationsEditorComposite();
 	}

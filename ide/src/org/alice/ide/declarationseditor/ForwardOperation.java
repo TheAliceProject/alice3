@@ -61,7 +61,7 @@ public class ForwardOperation extends org.lgna.croquet.ActionOperation {
 		this.setSmallIcon( org.alice.ide.icons.Icons.NEXT_SMALL );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.OperationStep step ) {
 		DeclarationCompositeHistory.getInstance().goForward();
 		step.finish();
 	}

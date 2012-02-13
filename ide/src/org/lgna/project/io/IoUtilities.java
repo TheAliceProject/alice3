@@ -140,7 +140,12 @@ public abstract class IoUtilities {
 		java.io.InputStream is = zipEntryContainer.getInputStream( PROPERTIES_ENTRY_NAME );
 		if( is != null ) {
 			java.io.BufferedInputStream bis = new java.io.BufferedInputStream( is );
-			rv.readProperties( bis );
+			edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder binaryDecoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bis );
+			String version = binaryDecoder.decodeString();
+			final int N = binaryDecoder.decodeInt();
+			for( int i=0; i<N; i++ ) {
+				org.lgna.project.properties.PropertyKey.decodeIdAndValueAndPut( rv, binaryDecoder, version );
+			}
 		}
 		return rv;
 	}
@@ -333,7 +338,8 @@ public abstract class IoUtilities {
 		writeVersion( zos );
 		org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
 		writeType( programType, zos, PROGRAM_TYPE_ENTRY_NAME );
-		if( project.getPropertyKeySet().isEmpty() ) {
+		final java.util.Set< org.lgna.project.properties.PropertyKey<Object> > propertyKeys = project.getPropertyKeys();
+		if( propertyKeys.isEmpty() ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
@@ -341,8 +347,13 @@ public abstract class IoUtilities {
 					return PROPERTIES_ENTRY_NAME;
 				}
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
-					assert os instanceof java.io.BufferedOutputStream;
-					project.writeProperties( (java.io.BufferedOutputStream)os );
+					edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder binaryEncoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
+					binaryEncoder.encode( org.lgna.project.Version.getCurrentVersionText() );
+					binaryEncoder.encode( propertyKeys.size() );
+					for( org.lgna.project.properties.PropertyKey<Object> propertyKey : propertyKeys ) {
+						propertyKey.encodeIdAndValue( project, binaryEncoder );
+					}
+					binaryEncoder.flush();
 				}
 			} );
 		}

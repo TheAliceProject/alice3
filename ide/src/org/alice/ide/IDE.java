@@ -146,14 +146,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	@Override
-	public org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+	public org.lgna.croquet.Operation getPreferencesOperation() {
 		return null;
 	}
 	public abstract org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.IdePerspective > getPerspectiveState();
-	public abstract org.lgna.croquet.Operation< ? > getRunOperation();
-	public abstract org.lgna.croquet.Operation< ? > getRestartOperation();
+	public abstract org.lgna.croquet.Operation getRunOperation();
+	public abstract org.lgna.croquet.Operation getRestartOperation();
 
-	public abstract org.lgna.croquet.Operation< ? > createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
+	public abstract org.lgna.croquet.Operation createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
 	public enum AccessorAndMutatorDisplayStyle {
 		GETTER_AND_SETTER, ACCESS_AND_ASSIGNMENT
@@ -380,7 +380,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	
 	public org.lgna.project.ast.AbstractCode getFocusedCode() {
-		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationState.getInstance().getValue();
+		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationFauxState.getInstance().getValue();
 		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
 			return (org.lgna.project.ast.AbstractCode)declaration;
 		} else {

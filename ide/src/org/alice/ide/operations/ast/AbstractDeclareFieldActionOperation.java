@@ -47,13 +47,13 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractDeclareFieldActionOperation extends org.lgna.croquet.ActionOperation {
 	protected abstract org.lgna.project.ast.NamedUserType getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[]> createFieldAndStatements( org.lgna.croquet.history.ActionOperationStep step, org.lgna.project.ast.NamedUserType ownerType );
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[]> createFieldAndStatements( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.NamedUserType ownerType );
 	protected abstract boolean isInstanceValid();
 	public AbstractDeclareFieldActionOperation( java.util.UUID individualId ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
 	@Override
-	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.OperationStep step ) {
 		org.lgna.project.ast.NamedUserType ownerType = this.getOwnerType();
 		if( ownerType != null ) {
 			final edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[]> tuple = this.createFieldAndStatements( step, ownerType );

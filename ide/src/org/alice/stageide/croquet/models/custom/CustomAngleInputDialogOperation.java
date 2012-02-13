@@ -56,7 +56,7 @@ public class CustomAngleInputDialogOperation extends org.alice.ide.croquet.model
 		super( java.util.UUID.fromString( "c8214788-57c8-4d1b-99df-1ab9b33b9d76" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.DoubleLiteral > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.DoubleLiteral > prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.stageide.choosers.AngleChooser();
 	}
 }

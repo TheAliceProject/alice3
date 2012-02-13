@@ -71,7 +71,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		return layeredPane;
 	}
 
-	private final org.lgna.croquet.Operation< ? > prevOperation = new PrevStepOperation( this );
+	private final org.lgna.croquet.Operation prevOperation = new PrevStepOperation( this );
 	private final org.lgna.croquet.BooleanState isInterceptingEvents = new PresentationBooleanState( java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
 	private final org.lgna.croquet.BooleanState isPaintingStencil = new PresentationBooleanState( java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
 	private final org.lgna.croquet.BooleanState isPlayingSounds = new PresentationBooleanState( java.util.UUID.fromString( "4d8ac630-0679-415a-882f-780c7cb014ef" ), true, "play sounds" );
@@ -199,7 +199,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		}
 		
 		@Override
-		public org.lgna.croquet.Operation< ? > getNextOperation() {
+		public org.lgna.croquet.Operation getNextOperation() {
 			return NextStepOperation.getInstance();
 		}
 	}
@@ -331,9 +331,18 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				this.stencil.revalidateAndRepaint();
 				this.stencil.setCursor( cursor );
 			} else {
+				org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
+				
+				org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+				org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
+				
+				Iterable< ? extends org.lgna.croquet.PrepModel > prepModels = completionModel.getPotentialRootPrepModels();
+				for( org.lgna.croquet.PrepModel prepModel : prepModels ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( prepModel );
+				}
+				
 				edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
 				if( false ) {
-					org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
 					org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
 					transaction.removeAllPrepSteps();
 					chapterPage.refreshNotes();

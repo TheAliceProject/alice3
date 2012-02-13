@@ -56,7 +56,7 @@ public class CustomStringInputDialogOperation extends CustomInputDialogOperation
 		super( java.util.UUID.fromString( "5e6422df-8145-404b-a34d-e8fe9eea6e76" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.StringLiteral > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.StringLiteral > prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.ide.choosers.StringChooser();
 	}
 }

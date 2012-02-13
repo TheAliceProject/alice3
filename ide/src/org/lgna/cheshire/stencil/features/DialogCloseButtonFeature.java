@@ -46,12 +46,13 @@ package org.lgna.cheshire.stencil.features;
  * @author Dennis Cosgrove
  */
 public class DialogCloseButtonFeature extends org.lgna.stencil.Feature {
-	public DialogCloseButtonFeature( final org.lgna.croquet.history.PlainDialogCloseOperationStep step ) {
+	public DialogCloseButtonFeature( final org.lgna.croquet.history.OperationStep step ) {
 		super( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
 			public org.lgna.croquet.components.TrackableShape getResolved() {
-				org.lgna.croquet.PlainDialogOperation dialogOperation = step.getModel().getPlainDialogOperation();
+				org.lgna.croquet.PlainDialogOperation.InternalCloseOperation closeOperation = (org.lgna.croquet.PlainDialogOperation.InternalCloseOperation)step.getModel();
+				org.lgna.croquet.PlainDialogOperation dialogOperation = closeOperation.getPlainDialogOperation();
 				if( dialogOperation != null ) {
-					org.lgna.croquet.components.Dialog activeDialog = dialogOperation.EPIC_HACK_getActiveDialog();
+					org.lgna.croquet.components.Dialog activeDialog = step.getEphemeralDataFor( org.lgna.croquet.DialogOperation.DIALOG_KEY );
 					if( activeDialog != null ) {
 						return activeDialog.getCloseButtonTrackableShape();
 					} else {

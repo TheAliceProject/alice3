@@ -51,7 +51,4 @@ public abstract class ItemSelectable< J extends javax.swing.JComponent, E > exte
 		super( model );
 	}
 	public abstract org.lgna.croquet.components.TrackableShape getTrackableShapeFor( E item );
-	public boolean isSingleStageSelectable() {
-		return true;
-	}
 }

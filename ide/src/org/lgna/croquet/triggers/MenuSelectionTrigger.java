@@ -114,8 +114,8 @@ public class MenuSelectionTrigger extends ChangeEventTrigger {
 							org.lgna.croquet.MenuItemPrepModel menuItemPrepModel;
 							if( model instanceof org.lgna.croquet.MenuItemPrepModel ) {
 								menuItemPrepModel = (org.lgna.croquet.MenuItemPrepModel)model;
-							} else if( model instanceof org.lgna.croquet.Operation<?> ) {
-								menuItemPrepModel = ((org.lgna.croquet.Operation< ? >)model).getMenuItemPrepModel();
+							} else if( model instanceof org.lgna.croquet.Operation ) {
+								menuItemPrepModel = ((org.lgna.croquet.Operation)model).getMenuItemPrepModel();
 							} else if( model instanceof org.lgna.croquet.BooleanState ) {
 								menuItemPrepModel = ((org.lgna.croquet.BooleanState)model).getMenuItemPrepModel();
 							} else {

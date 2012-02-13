@@ -83,11 +83,11 @@ public class TypeDeclarationOperation extends org.lgna.croquet.InputDialogOperat
 	}
 	
 	@Override
-	protected org.alice.ide.ast.declaration.components.TypeDeclarationPanel prologue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.project.ast.NamedUserType > step ) {
+	protected org.alice.ide.ast.declaration.components.TypeDeclarationPanel prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.ide.ast.declaration.components.TypeDeclarationPanel( this );
 	}
 	@Override
-	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.project.ast.NamedUserType > step, boolean isCommit ) {
+	protected void epilogue( org.lgna.croquet.history.OperationStep step, boolean isCommit ) {
 		if( isCommit ) {
 			step.finish();
 		} else {

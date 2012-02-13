@@ -47,13 +47,15 @@ package org.alice.stageide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public abstract class PersonResourceOperation extends org.lgna.croquet.InputDialogOperation< org.lgna.story.resources.sims2.PersonResource > {
+	public static final org.lgna.croquet.history.Step.Key< org.lgna.story.resources.sims2.PersonResource > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueInputDialogOperation.VALUE_KEY" );
+
 	public PersonResourceOperation( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
 	protected abstract org.alice.stageide.person.PersonComposite getPersonComposite();
 //	protected abstract org.lgna.story.resources.sims2.PersonResource createInitialPersonResource();
 	@Override
-	protected org.lgna.croquet.components.SplitPane prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.lgna.croquet.components.SplitPane prologue( org.lgna.croquet.history.OperationStep step ) {
 //		org.lgna.story.resources.sims2.PersonResource personResource = this.createInitialPersonResource();
 //		org.alice.stageide.person.components.PersonViewer personViewer = org.alice.stageide.person.PersonResourceManager.SINGLETON.allocatePersonViewer( personResource );
 //		org.alice.stageide.person.components.MainPanel rv = new org.alice.stageide.person.components.MainPanel( personViewer );
@@ -66,7 +68,7 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.InputDial
 	}
 	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.story.resources.sims2.PersonResource personResource );
 	@Override
-	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > step, boolean isCommit ) {
+	protected void epilogue( org.lgna.croquet.history.OperationStep step, boolean isCommit ) {
 //		org.alice.stageide.person.components.MainPanel mainPanel = (org.alice.stageide.person.components.MainPanel)step.getMainPanel();
 //		org.alice.stageide.person.components.PersonViewer personViewer = mainPanel.getPersonViewer();
 //		org.alice.stageide.person.PersonResourceManager.SINGLETON.releasePersonViewer( personViewer );
@@ -79,7 +81,7 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.InputDial
 				if( edit != null ) {
 					step.commitAndInvokeDo( edit );
 				} else { 
-					step.commitValue( personResource );
+					step.putEphemeralDataFor( VALUE_KEY, personResource );
 				}
 			}
 		} else {

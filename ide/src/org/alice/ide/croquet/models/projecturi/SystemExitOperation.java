@@ -56,7 +56,7 @@ public class SystemExitOperation extends UriActionOperation {
 		super( java.util.UUID.fromString( "ea33dc98-e41d-4a7a-850e-cc4e612efbe8" ) );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.OperationStep step) {
 		System.exit( 0 );
 	}
 }

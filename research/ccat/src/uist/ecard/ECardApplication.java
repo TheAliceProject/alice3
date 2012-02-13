@@ -1,0 +1,162 @@
+package uist.ecard;
+
+public class ECardApplication extends org.lgna.croquet.Application {
+	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
+	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
+
+	protected String year = "2003";
+	protected ECardPanel cardPanel;
+
+	public static ECardApplication getActiveInstance() {
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), ECardApplication.class );
+	}
+	@Override
+	public void initialize( String args[] ) {
+		this.setPerspective( MainPerspective.getInstance() );
+		int x = Integer.parseInt( args[ 0 ] );
+		int y = Integer.parseInt( args[ 1 ] );
+		int width = Integer.parseInt( args[ 2 ] );
+		int height = Integer.parseInt( args[ 3 ] );
+		this.year = args[ 4 ];
+
+		try {
+			if (isRibbonBased()) {
+				// Office 2007
+				javax.swing.UIManager.setLookAndFeel(new org.jvnet.substance.skin.SubstanceOfficeBlue2007LookAndFeel());
+			} else {
+				// We like nimbus?
+				//javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+				// We like the current platform?
+				javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+			}
+		} catch (Exception e) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( e, "setLookAndFeel" );
+		}
+
+		java.awt.Image icon = java.awt.Toolkit.getDefaultToolkit().getImage( ECardApplication.class.getResource( "resources/e-card-icon.png" ));
+		getFrame().getAwtComponent().setIconImage(icon);
+
+		getFrame().setSize( x, y );
+		getFrame().setSize( width, height );
+
+		super.initialize( args );
+	}
+
+	public ECardPanel getCardPanel() {
+		return this.cardPanel;
+	}
+
+	public String getYear() {
+		return this.year;
+	}
+	public boolean isRibbonBased() {
+		return "2007".equals( this.year );
+	}
+//	@Override
+//	protected org.lgna.croquet.components.Component<?> createContentPane() {
+//		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+//
+//		this.cardPanel = new ECardPanel(ECardPanel.CardState.PHOTO);
+////		this.cardPanel = new ECardPanel(ECardPanel.CardState.EMPTY);
+//		rv.addComponent( new org.lgna.croquet.components.SwingAdapter(this.cardPanel), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+//
+//		if (this.isRibbonBased()) {
+//			org.lgna.croquet.components.FolderTabbedPane< ? > folderTabbedPane = uist.ecard.ribbon.ECardRibbonModel.getInstance().createDefaultFolderTabbedPane();
+//			folderTabbedPane.setBackgroundColor( java.awt.SystemColor.controlShadow );
+//			rv.addComponent( folderTabbedPane, org.lgna.croquet.components.BorderPanel.Constraint.NORTH );
+//		} else {
+//			getFrame().setMenuBarModel( uist.ecard.menu.MenuBarComposite.getInstance() );
+//
+//			// Make mock toolbar
+//			javax.swing.JToolBar toolbar = new javax.swing.JToolBar();
+//			toolbar.setFloatable(false);
+//			toolbar.setRollover(true);
+//
+//			JButton newButton = new JButton();
+//			newButton.setFocusable(false);
+//			newButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/document-new.png")));
+//			toolbar.add(newButton);
+//
+//			JButton openButton = new JButton();
+//			openButton.setFocusable(false);
+//			openButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/document-open.png")));
+//			toolbar.add(openButton);
+//
+//			JButton saveButton = new JButton();
+//			saveButton.setFocusable(false);
+//			saveButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/document-save.png")));
+//			toolbar.add(saveButton);
+//
+//			toolbar.addSeparator();
+//
+//			JButton printButton = new JButton();
+//			printButton.setFocusable(false);
+//			//printButton.setText("Print");
+//			printButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/document-print.png")));
+//			toolbar.add(printButton);
+//
+//			toolbar.addSeparator();
+//
+//			JButton undoButton = new JButton();
+//			undoButton.setFocusable(false);
+//			undoButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/edit-undo.png")));
+//			toolbar.add(undoButton);
+//
+//			JButton redoButton = new JButton();
+//			redoButton.setFocusable(false);
+//			redoButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/edit-redo.png")));
+//			toolbar.add(redoButton);
+//
+//			toolbar.addSeparator();
+//
+//			JButton copyButton = new JButton();
+//			copyButton.setFocusable(false);
+//			copyButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/edit-copy.png")));
+//			toolbar.add(copyButton);	
+//
+//			JButton cutButton = new JButton();
+//			cutButton.setFocusable(false);
+//			cutButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/edit-cut.png")));
+//			toolbar.add(cutButton);	
+//
+//			JButton pasteButton = new JButton();
+//			pasteButton.setFocusable(false);
+//			pasteButton.setIcon(new ImageIcon(ECardApplication.class.getResource("resources/toolbar/edit-paste.png")));
+//			toolbar.add(pasteButton);	
+//
+//			//toolbar.addSeparator();
+//
+//			//JButton deleteJButton = DeletePictureModel.getInstance().createButton().getAwtComponent();
+//			//deleteJButton.setFocusable(false);
+//			//toolbar.add(deleteJButton);	
+//
+//			rv.addComponent(new org.lgna.croquet.components.SwingAdapter(toolbar) , org.lgna.croquet.components.BorderPanel.Constraint.NORTH );
+//		}
+//
+//		return rv;
+//	}
+	@Override
+	public org.lgna.croquet.DropReceptor getDropReceptor(org.lgna.croquet.DropSite dropSite) {
+		return null;
+	}
+	@Override
+	protected void handleWindowOpened(java.awt.event.WindowEvent e) {
+	}
+	@Override
+	protected void handleQuit(org.lgna.croquet.triggers.Trigger trigger) {
+		System.exit(0);
+	}
+
+	@Override
+	protected org.lgna.croquet.Operation getAboutOperation() {
+		return null;
+	}
+	@Override
+	protected org.lgna.croquet.Operation getPreferencesOperation() {
+		return null;
+	}
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+
+}

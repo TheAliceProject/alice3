@@ -63,11 +63,11 @@ public class CreatePersonComposite extends PersonComposite {
 				return null;
 			}
 			@Override
-			protected org.lgna.croquet.Operation< ? > getAboutOperation() {
+			protected org.lgna.croquet.Operation getAboutOperation() {
 				return null;
 			}
 			@Override
-			protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
+			protected org.lgna.croquet.Operation getPreferencesOperation() {
 				return null;
 			}
 			@Override

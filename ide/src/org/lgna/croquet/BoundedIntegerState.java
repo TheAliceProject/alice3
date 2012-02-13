@@ -110,9 +110,21 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 		super( details.group, details.id, details.getBoundedRangeModel().getValue(), details.getBoundedRangeModel(), details.getSpinnerModel() );
 	}
 	@Override
-	protected void commitStateEdit( Integer prevValue, Integer nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.TransactionManager.handleBoundedIntegerStateChanged( BoundedIntegerState.this, nextValue, isAdjusting, trigger );
+	public Class< Integer > getItemClass() {
+		return Integer.class;
 	}
+	@Override
+	public Integer decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return binaryDecoder.decodeInt();
+	}
+	@Override
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Integer value ) {
+		binaryEncoder.encode( value );
+	}
+//	@Override
+//	protected void commitStateEdit( Integer prevValue, Integer nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+//		org.lgna.croquet.history.TransactionManager.handleBoundedIntegerStateChanged( BoundedIntegerState.this, nextValue, isAdjusting, trigger );
+//	}
 	@Override
 	protected Integer fromInt( int value ) {
 		return value;

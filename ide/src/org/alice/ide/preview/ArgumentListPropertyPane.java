@@ -46,7 +46,7 @@ package org.alice.ide.preview;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.x.PreviewAstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
+	public ArgumentListPropertyPane( org.alice.ide.x.ImmutableAstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
 		super( factory, property );
 	}
 	@Override

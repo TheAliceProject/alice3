@@ -60,4 +60,5 @@ public abstract class AbstractParameter extends AbstractTransient {
 	public String getValidName( Node context ) {
 		return this.getName();
 	}
+	public abstract Code getCode();
 }

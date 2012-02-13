@@ -93,6 +93,7 @@ public class InstanceCreation extends Expression implements ArgumentOwner {
 		return constructor.getValue().getDeclaringType();
 	}
 
+	@Override
 	public boolean isValid() {
 		//todo
 		return true;

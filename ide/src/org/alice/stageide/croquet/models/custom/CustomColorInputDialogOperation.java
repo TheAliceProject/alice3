@@ -57,7 +57,7 @@ public class CustomColorInputDialogOperation extends org.alice.ide.croquet.model
 		super( java.util.UUID.fromString( "a3f1e6a7-89b7-4de3-9c54-ac1d3f65a571" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.Expression > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.Expression > prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.stageide.choosers.ColorChooser();
 	}
 }

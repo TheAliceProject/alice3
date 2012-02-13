@@ -358,13 +358,13 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 //	}
 
 	@Override
-	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.history.InputDialogOperationStep<Void> context ) {
+	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new CreateTextPane( this ); 
 	}
 	
-	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.TextModel > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep<Void> context ) {
+	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.TextModel > createFieldAndInstance( org.lgna.croquet.history.OperationStep step ) {
 		//"Create Text"
-		CreateTextPane createTextPane = (CreateTextPane)context.getMainPanel();
+		CreateTextPane createTextPane = (CreateTextPane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 		org.lgna.story.TextModel text = createTextPane.createText();
 		if( text != null ) {
 			org.lgna.project.ast.AbstractType< ?,?,? > type = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeFor( org.lgna.story.TextModel.class );
@@ -386,7 +386,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	}
 	
 	@Override
-	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
+	protected final void epilogue(org.lgna.croquet.history.OperationStep step, boolean isOk) {
 		if( isOk ) {
 			edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, org.lgna.story.TextModel> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {

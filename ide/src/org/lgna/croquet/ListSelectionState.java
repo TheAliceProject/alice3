@@ -213,7 +213,6 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	}
 
 	private InternalPrepModel< T > prepModel;
-
 	public synchronized InternalPrepModel< T > getPrepModel() {
 		if( this.prepModel != null ) {
 			//pass
@@ -221,6 +220,11 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			this.prepModel = new InternalPrepModel< T >( this );
 		}
 		return this.prepModel;
+	}
+	
+	@Override
+	public java.lang.Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
+		return null;
 	}
 
 	public javax.swing.Action createActionForItem( final T item ) {
@@ -260,8 +264,20 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			return null;
 		}
 	}
+	protected void handleMissingItem( T missingItem ) {
+	}
 	public void setSelectedItem( T selectedItem ) {
-		this.setSelectedIndex( this.indexOf( selectedItem ) );
+		int index;
+		if( selectedItem != null ) {
+			index = this.indexOf( selectedItem );
+			if( index == -1 ) {
+				this.handleMissingItem( selectedItem );
+				index = this.indexOf( selectedItem );
+			}
+		} else {
+			index = -1;
+		}
+		this.setSelectedIndex( index );
 	}
 	@Override
 	protected void updateSwingModel( T nextValue ) {
@@ -410,13 +426,6 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		}
 	}
 
-	@Override
-	protected void commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.ListSelectionStateChangeStep< T > step = org.lgna.croquet.history.TransactionManager.addListSelectionStateChangeStep( this, trigger );
-		org.lgna.croquet.edits.ListSelectionStateEdit< T > edit = new org.lgna.croquet.edits.ListSelectionStateEdit< T >( step, prevValue, nextValue );
-		step.commitAndInvokeDo( edit );
-	}
-
 	//todo
 	@Override
 	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
@@ -485,26 +494,6 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		return null;
 	}
 
-	@Override
-	public org.lgna.croquet.edits.ListSelectionStateEdit< T > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		assert originalEdit instanceof org.lgna.croquet.edits.ListSelectionStateEdit;
-		org.lgna.croquet.edits.ListSelectionStateEdit< T > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< T >)originalEdit;
-		this.commitStateEdit( listSelectionStateEdit.getPreviousValue(), listSelectionStateEdit.getNextValue(), false, new org.lgna.croquet.triggers.SimulatedTrigger() );
-		return listSelectionStateEdit;
-	}
-
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		if( edit instanceof org.lgna.croquet.edits.ListSelectionStateEdit ) {
-			org.lgna.croquet.edits.ListSelectionStateEdit< T > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< T >)edit;
-			rv.append( " <strong>" );
-			this.getItemCodec().appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
-			rv.append( "</strong>." );
-		} else {
-			rv.append( "UNKNOWN EDIT" );
-		}
-		return rv;
-	}
 	public org.lgna.croquet.components.List< T > createList() {
 		return new org.lgna.croquet.components.List< T >( this );
 	}
@@ -643,19 +632,19 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		
 		
 		public org.lgna.croquet.components.ComboBox< T > createComboBox() {
-			return new org.lgna.croquet.components.ComboBox< T >( this.getListSelectionState() );
+			return new org.lgna.croquet.components.ComboBox< T >( this );
 		}
 		@Override
 		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
 			if( edit != null ) {
-				org.lgna.croquet.edits.ListSelectionStateEdit< T > listSelectionStateEdit = (org.lgna.croquet.edits.ListSelectionStateEdit< T >)edit;
+				org.lgna.croquet.edits.StateEdit< T > stateEdit = (org.lgna.croquet.edits.StateEdit< T >)edit;
 				rv.append( "First press on " );
 				rv.append( "<strong>" );
-				this.getListSelectionState().getItemCodec().appendRepresentation( rv, listSelectionStateEdit.getPreviousValue(), java.util.Locale.getDefault() );
+				this.getListSelectionState().appendRepresentation( rv, stateEdit.getPreviousValue(), userInformation.getLocale() );
 				rv.append( "</strong>" );
 				rv.append( " in order to change it to " );
 				rv.append( "<strong>" );
-				this.getListSelectionState().getItemCodec().appendRepresentation( rv, listSelectionStateEdit.getNextValue(), java.util.Locale.getDefault() );
+				this.getListSelectionState().appendRepresentation( rv, stateEdit.getNextValue(), userInformation.getLocale() );
 				rv.append( "</strong>." );
 			}
 			return rv;
@@ -672,7 +661,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			this.item = item;
 		}
 		@Override
-		protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+		protected void perform( org.lgna.croquet.history.OperationStep step ) {
 			this.listSelectionState.setValue( this.item );
 			step.finish();
 		}

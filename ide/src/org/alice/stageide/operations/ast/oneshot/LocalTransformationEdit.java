@@ -57,11 +57,12 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
 	}
 	@Override
 	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof org.lgna.story.MovableTurnable ) {
-			org.lgna.story.MovableTurnable movableTurnable = (org.lgna.story.MovableTurnable)instance;
-			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( movableTurnable );
+		if( instance instanceof org.lgna.story.Turnable ) {
+			org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)instance;
+			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( turnable );
 			this.m = this.transformable.getLocalTransformation();
 		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
 			this.transformable = null;
 			this.m = null;
 		}

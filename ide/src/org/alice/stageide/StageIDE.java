@@ -228,15 +228,15 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public org.lgna.croquet.Operation<?> getRunOperation() {
+	public org.lgna.croquet.Operation getRunOperation() {
 		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 	}
 	@Override
-	public org.lgna.croquet.Operation< ? > getRestartOperation() {
+	public org.lgna.croquet.Operation getRestartOperation() {
 		return org.alice.stageide.croquet.models.run.RestartOperation.getInstance();
 	}
 	@Override
-	public org.lgna.croquet.Operation<?> createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+	public org.lgna.croquet.Operation createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return new org.alice.stageide.croquet.models.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
 
@@ -272,7 +272,7 @@ public class StageIDE extends org.alice.ide.IDE {
 //	}
 
 	@Override
-	public org.lgna.croquet.Operation< ? > getAboutOperation() {
+	public org.lgna.croquet.Operation getAboutOperation() {
 		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
 	}
 	@Override

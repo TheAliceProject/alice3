@@ -108,6 +108,11 @@ public abstract class Cascade<T> extends CompletionModel {
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T > blank ) {
 		this( group, id, componentType, new CascadeBlank[] { blank } );
 	}
+	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.root.getPopupPrepModel() );
+	}
+
 	public InternalRoot< T > getRoot() {
 		return this.root;
 	}
@@ -167,14 +172,14 @@ public abstract class Cascade<T> extends CompletionModel {
 			return new InternalMenuModelResolver<T>( this.cascade );
 		}
 		private static class ComponentListener<T> implements java.awt.event.ComponentListener {
-			private org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep;
-			public ComponentListener( org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep ) {
+			private org.lgna.croquet.history.PopupPrepStep prepStep;
+			public ComponentListener( org.lgna.croquet.history.PopupPrepStep prepStep ) {
 				this.prepStep = prepStep;
 			}
-			public org.lgna.croquet.history.CascadePopupPrepStep< T > getPrepStep() {
+			public org.lgna.croquet.history.PopupPrepStep getPrepStep() {
 				return this.prepStep;
 			}
-			public void setPrepStep( org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep ) {
+			public void setPrepStep( org.lgna.croquet.history.PopupPrepStep prepStep ) {
 				this.prepStep = prepStep;
 			}
 			public void componentShown( java.awt.event.ComponentEvent e ) {
@@ -212,7 +217,7 @@ public abstract class Cascade<T> extends CompletionModel {
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {
-				final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( cascade.getRoot().getPopupPrepModel(), null );
+				final org.lgna.croquet.history.PopupPrepStep prepStep = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( cascade.getRoot().getPopupPrepModel(), null );
 
 				Listeners listeners = map.get( menuItemContainer );
 				if( listeners != null ) {

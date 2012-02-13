@@ -56,7 +56,7 @@ public class CustomAudioSourceInputDialogOperation extends org.alice.ide.croquet
 		super( java.util.UUID.fromString( "dadfcdb7-87a2-4e82-b8dd-72c38ec93ec6" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.InstanceCreation > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.InstanceCreation > prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.stageide.choosers.AudioSourceChooser();
 	}
 }

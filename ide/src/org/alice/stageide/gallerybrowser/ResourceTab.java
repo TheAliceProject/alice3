@@ -50,30 +50,6 @@ public class ResourceTab extends GalleryTab {
 	public static final javax.swing.Icon CREATE_PERSON_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person.png") );
 	public static final javax.swing.Icon CREATE_PERSON_SMALL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person_24.png") );
 	
-	static class HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane extends javax.swing.JScrollPane {
-		private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.info( jScrollBar.getMinimum(), jScrollBar.getValue(), jScrollBar.getMaximum(), jScrollBar.getVisibleAmount() );
-			return jScrollBar.getMinimum() != jScrollBar.getValue() || jScrollBar.getMaximum() != jScrollBar.getVisibleAmount();
-		}
-		@Override
-		public javax.swing.JScrollBar createHorizontalScrollBar() {
-			return new javax.swing.JScrollBar( javax.swing.JScrollBar.HORIZONTAL ) {
-				@Override
-				public void paint( java.awt.Graphics g ) {
-					javax.swing.JScrollBar verticalScrollBar = HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getVerticalScrollBar();
-					if( isPaintRequiredFor( this ) || isPaintRequiredFor( verticalScrollBar ) ) {
-						super.paint( g );
-					} else {
-						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-						java.awt.Shape clip = g.getClip();
-						g2.setPaint( HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getBackground() );
-						g2.fill( clip );
-					}
-				}
-			};
-		}
-	}
-
 	private static class SingletonHolder {
 		private static ResourceTab instance = new ResourceTab();
 	}
@@ -107,7 +83,7 @@ public class ResourceTab extends GalleryTab {
 				org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new GalleryDirectoryViewController() ) {
 					@Override
 					protected javax.swing.JScrollPane createAwtComponent() {
-						return new HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+						return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
 					}
 				};
 				scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );

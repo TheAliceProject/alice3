@@ -89,6 +89,30 @@ public abstract class StringState extends State< String > {
 		this.swingModel.document.addDocumentListener( this.documentListener );
 	}
 
+	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+
+	@Override
+	public StringBuilder appendRepresentation( StringBuilder rv, String value, java.util.Locale locale ) {
+		rv.append( value );
+		return rv;
+	}
+
+	@Override
+	public Class< String > getItemClass() {
+		return String.class;
+	}
+	@Override
+	public String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return binaryDecoder.decodeString();
+	}
+	@Override
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
+		binaryEncoder.encode( value );
+	}
+
 	private boolean isEnabled = true;
 	@Override
 	public boolean isEnabled() {
@@ -130,10 +154,10 @@ public abstract class StringState extends State< String > {
 		return this.textForBlankCondition;
 	}
 
-	@Override
-	protected void commitStateEdit( String prevValue, String nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
-	}
+//	@Override
+//	protected void commitStateEdit( String prevValue, String nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+//		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
+//	}
 	@Override
 	protected String getActualValue() {
 		try {
@@ -141,19 +165,6 @@ public abstract class StringState extends State< String > {
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
-	}
-
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		if( edit instanceof org.lgna.croquet.edits.StringStateEdit ) {
-			org.lgna.croquet.edits.StringStateEdit stringStateEdit = (org.lgna.croquet.edits.StringStateEdit)edit;
-			rv.append( " <strong>" );
-			rv.append( stringStateEdit.getNextValue() );
-			rv.append( "</strong>" );
-		} else {
-			rv.append( "UNKNOWN EDIT" );
-		}
-		return rv;
 	}
 
 	public org.lgna.croquet.components.TextField createTextField() {
