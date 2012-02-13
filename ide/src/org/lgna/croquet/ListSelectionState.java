@@ -592,7 +592,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		}
 	}
 	
-	public static final class InternalPrepModel<T> extends PrepModel {
+	public static final class InternalPrepModel<T> extends AbstractPrepModel {
 		private final ListSelectionState< T > listSelectionState;
 		private InternalPrepModel( ListSelectionState< T > listSelectionState ) {
 			super( java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );

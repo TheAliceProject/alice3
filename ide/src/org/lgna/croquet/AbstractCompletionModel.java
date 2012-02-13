@@ -40,47 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragModel extends AbstractPrepModel {
-	public DragModel( java.util.UUID id ) {
+public abstract class AbstractCompletionModel extends AbstractModel implements CompletionModel {
+	private final Group group;
+	private int ignoreCount = 0;
+
+	public AbstractCompletionModel( Group group, java.util.UUID id ) {
 		super( id );
+		this.group = group;
 	}
-	@Override
-	protected void localize() {
+	public Group getGroup() {
+		return this.group;
 	}
-	
+
+	protected void pushIgnore() {
+		this.ignoreCount++;
+	}
+	protected void popIgnore() {
+		this.ignoreCount--;
+		assert this.ignoreCount >= 0;
+	}
+	protected boolean isAppropriateToComplete() {
+		return Manager.isInTheMidstOfUndoOrRedo()==false && this.ignoreCount == 0;
+	}
+	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step, UserInformation userInformation ) {
+		this.initializeIfNecessary();
+		org.lgna.croquet.edits.Edit< ? > edit = step.getEdit();
+		if( edit != null ) {
+			return edit.getTutorialTransactionTitle( userInformation );
+		} else {
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			return this.getTutorialNoteText( step, trigger != null ? trigger.getNoteText( userInformation.getLocale() ) : "", edit, userInformation );
+		}
+	}
+	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit );
+	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( originalEdit );
+		return null;
+	}
+	public abstract Iterable< ? extends PrepModel > getPotentialRootPrepModels();
 	@Override
-	protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit, UserInformation userInformation) {
-		rv.append( "..." );
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
+		rv.append( this.getGroup() );
+		rv.append( "]" );
 		return rv;
-	}
-	
-	@Override
-	public Iterable< ? extends Model > getChildren() {
-		return java.util.Collections.emptyList();
-	}
-	@Override
-	public boolean isChild( org.lgna.croquet.Model model ) {
-		//todo
-		return true;
-	}
-	
-	
-	//public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource );
-	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors();
-	public abstract void handleDragStarted( org.lgna.croquet.history.DragStep step );
-	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step );
-	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step );
-	public abstract void handleDragStopped( org.lgna.croquet.history.DragStep step );
-	
-	public abstract Model getDropModel( org.lgna.croquet.history.DragStep step, DropSite dropSite );
-	
-	@Override
-	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
-		throw new UnsupportedOperationException();
 	}
 }

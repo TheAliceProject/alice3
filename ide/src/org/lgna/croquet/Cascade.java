@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Cascade<T> extends CompletionModel {
+public abstract class Cascade<T> extends AbstractCompletionModel {
 	public static class InternalRootResolver<T> extends IndirectResolver< InternalRoot<T>, Cascade<T> > {
 		private InternalRootResolver( Cascade<T> indirect ) {
 			super( indirect );

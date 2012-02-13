@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation extends CompletionModel {
+public abstract class Operation extends AbstractCompletionModel {
 	public class SwingModel {
 		private javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {

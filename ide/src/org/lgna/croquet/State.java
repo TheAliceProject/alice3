@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class State<T> extends CompletionModel implements org.lgna.croquet.ContextFactory< StateContext<T> > {
+public abstract class State<T> extends AbstractCompletionModel implements org.lgna.croquet.ContextFactory< StateContext<T> > {
 	public static interface ValueListener<T> {
 		public void changing( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
 		public void changed( State< T > state, T prevValue, T nextValue, boolean isAdjusting );
