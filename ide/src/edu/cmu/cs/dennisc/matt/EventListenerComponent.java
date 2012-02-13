@@ -68,24 +68,24 @@ public class EventListenerComponent extends BorderPanel {
 
 	public EventListenerComponent( MethodInvocation methodInvocation ) {
 		SimpleArgument argument0 = methodInvocation.requiredArguments.get( 0 );
-		LambdaExpression lambdaExpression = (LambdaExpression)argument0.expression.getValue();
-		UserLambda lambda = (UserLambda)lambdaExpression.value.getValue();
 		this.addComponent( createHeader(methodInvocation), Constraint.PAGE_START );
-
 		AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get(0);
-		ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda );
-		LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
-				new Label( singleAbstractMethod.getName(), TextWeight.BOLD ),
-				parametersPane
-		);
-		BorderPanel codeContainer = new BorderPanel();
-		StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
-		codeContainer.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getEventBodyColor() );
-		codeContainer.addComponent(putCodeHere, Constraint.CENTER);
-		codeContainer.addComponent(singleAbstractMethodHeader, Constraint.PAGE_START);
-		
-		codeContainer.setBorder( BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
-		this.addComponent(codeContainer, Constraint.CENTER);
+		if (argument0.expression.getValue() instanceof LambdaExpression) {
+			LambdaExpression lambdaExpression = (LambdaExpression) argument0.expression.getValue();
+			if (lambdaExpression.value.getValue() instanceof UserLambda) {
+				UserLambda lambda = (UserLambda) lambdaExpression.value.getValue();
+				ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda );
+				LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
+						new Label( singleAbstractMethod.getName(), TextWeight.BOLD ), parametersPane );
+				BorderPanel codeContainer = new BorderPanel();
+				StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
+				codeContainer.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getEventBodyColor() );
+				codeContainer.addComponent(putCodeHere, Constraint.CENTER);
+				codeContainer.addComponent(singleAbstractMethodHeader, Constraint.PAGE_START);
+				codeContainer.setBorder( BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
+				this.addComponent(codeContainer, Constraint.CENTER);
+			}
+		}
 	}
 
 	private JComponent< ? > createHeader( MethodInvocation methodInvocation ) {
@@ -108,11 +108,11 @@ public class EventListenerComponent extends BorderPanel {
 					}
 				}
 			};
-//			if(requiredParametersListView.getComposite() != null){
-//			requiredParametersListView.
+			//			if(requiredParametersListView.getComposite() != null){
+			//			requiredParametersListView.
 			rv.addComponent(requiredParametersListView);
-//			}
-//			System.out.println(requiredParametersListView);
+			//			}
+			//			System.out.println(requiredParametersListView);
 		}
 		if(method.getKeyedParameter() != null) {
 			JComponent< ? > keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), methodInvocation.getKeyedArgumentsProperty() );
