@@ -61,9 +61,12 @@ public class LocalAccess extends Expression {
 	public boolean isValid() {
 		UserLocal local = this.local.getValue();
 		if( local != null ) {
-			Code localCode = this.getFirstAncestorAssignableTo( Code.class );
+			Code localCode = local.getFirstAncestorAssignableTo( Code.class );
 			if( localCode != null ) {
 				Code code = this.getFirstAncestorAssignableTo( Code.class );
+				
+				//todo: check location
+				
 				return code == localCode;
 			} else {
 				return false;
