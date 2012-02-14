@@ -45,18 +45,20 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class AbstractExpressionView extends org.alice.ide.common.ExpressionLikeSubstance  {
-	private final org.lgna.project.ast.Expression expression;
-	public AbstractExpressionView( org.lgna.project.ast.Expression expression ) {
+public class AbstractExpressionView< E extends org.lgna.project.ast.Expression > extends org.alice.ide.common.ExpressionLikeSubstance  {
+	private final org.alice.ide.x.AstI18nFactory factory;
+	private final E expression;
+	public AbstractExpressionView( org.alice.ide.x.AstI18nFactory factory, E expression ) {
 		super( null, expression != null ? expression.getType() == org.lgna.project.ast.JavaType.VOID_TYPE : false );
+		this.factory = factory;
 		this.expression = expression;
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
 			this.setBackgroundColor( ide.getTheme().getColorFor( expression ) );
 		}
 	}
-	protected java.awt.Paint getInvalidPaint( java.awt.Paint validPaint, int x, int y, int width, int height ) {
-		return java.awt.Color.RED;
+	public E getExpression() {
+		return this.expression;
 	}
 	@Override
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
@@ -64,7 +66,7 @@ public class AbstractExpressionView extends org.alice.ide.common.ExpressionLikeS
 		if( this.expression != null && this.expression.isValid() ) {
 			return validPaint;
 		} else {
-			return this.getInvalidPaint( validPaint, x, y, width, height );
+			return this.factory.getInvalidExpressionPaint( validPaint, x, y, width, height );
 		}
 	}
 	
