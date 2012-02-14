@@ -11,7 +11,6 @@ import org.lgna.story.event.OcclusionEvent;
 import org.lgna.story.event.OcclusionEventListener;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraImp;
-import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 

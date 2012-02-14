@@ -44,47 +44,23 @@ package test;
 
 import java.awt.Component;
 
-import javax.swing.SwingUtilities;
-
-import org.lgna.story.AddTimerEventListener;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
 import org.lgna.story.Cone;
-import org.lgna.story.Entity;
 import org.lgna.story.Ground;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.JointedModel;
-import org.lgna.story.Key;
 import org.lgna.story.Model;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
-import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Program;
 import org.lgna.story.RollDirection;
 import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.event.ArrowKeyEvent;
-import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.ComesIntoViewEvent;
-import org.lgna.story.event.ComesIntoViewEventListener;
-import org.lgna.story.event.KeyEvent;
-import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.LeavesViewEvent;
-import org.lgna.story.event.LeavesViewEventListener;
-import org.lgna.story.event.NumberKeyEvent;
-import org.lgna.story.event.NumberKeyPressListener;
-import org.lgna.story.event.OcclusionEvent;
-import org.lgna.story.event.OcclusionEventListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.TimerEvent;
-import org.lgna.story.event.TransformationEvent;
-import org.lgna.story.event.TransformationListener;
-import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -94,10 +70,7 @@ import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
-import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -394,12 +367,14 @@ class RagsToRichesStory extends Program {
 		final RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
 		ragsToRichesStory.initializeInFrame( args );
 		new Thread() {
+			@Override
 			public void run() {
 				ragsToRichesStory.playOutStory();
 			}
 		}.start();
 		Logger.todo( "remove this EPIC HACK" );
 		new Thread() {
+			@Override
 			public void run() {
 				ThreadUtilities.sleep( 250 );
 				Component awtComponent = ImplementationAccessor.getImplementation(ragsToRichesStory).getOnscreenLookingGlass().getAWTComponent();

@@ -1,6 +1,5 @@
 package org.lgna.story.event;
 
-import org.lgna.story.Entity;
 import org.lgna.story.MovableTurnable;
 
 public class MoveWithArrows implements ArrowKeyPressListener {

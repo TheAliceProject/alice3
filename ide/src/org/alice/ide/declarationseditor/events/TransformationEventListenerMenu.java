@@ -11,7 +11,6 @@ import org.lgna.story.AddProximityEventListener;
 import org.lgna.story.Entity;
 import org.lgna.story.Scene;
 import org.lgna.story.event.CollisionListener;
-import org.lgna.story.event.ComesIntoViewEvent;
 import org.lgna.story.event.ComesIntoViewEventListener;
 import org.lgna.story.event.LeavesViewEventListener;
 import org.lgna.story.event.OcclusionEventListener;
