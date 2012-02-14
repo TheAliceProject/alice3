@@ -128,42 +128,42 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 
 	@Override
-	public final org.lgna.croquet.history.OperationStep fire( org.lgna.croquet.triggers.Trigger trigger ) {
+	public final org.lgna.croquet.history.CompletionStep<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
 		if( this.isEnabled() ) {
 			return this.handleFire( trigger );
 		} else {
 			return null;
 		}
 	}
-	public final org.lgna.croquet.history.OperationStep fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
+	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
 		return this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( viewController, e ) );
 	}
-	public final org.lgna.croquet.history.OperationStep fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
+	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
 		return this.fire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, e ) );
 	}
 	@Deprecated
-	public final org.lgna.croquet.history.OperationStep fire( java.awt.event.MouseEvent e ) {
+	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.MouseEvent e ) {
 		return fire( e, null );
 	}
 	@Deprecated
-	public final org.lgna.croquet.history.OperationStep fire( java.awt.event.ActionEvent e ) {
+	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.ActionEvent e ) {
 		return fire( e, null );
 	}
 	@Deprecated
-	public final org.lgna.croquet.history.OperationStep fire() {
+	public final org.lgna.croquet.history.CompletionStep<?> fire() {
 		return fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 	}
 	
 	protected abstract org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary();
 	
-	/*package-private*/ final org.lgna.croquet.history.OperationStep handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
+	/*package-private*/ final org.lgna.croquet.history.CompletionStep<?> handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
 		//todo: move up to Model
 		this.initializeIfNecessary();
-		final org.lgna.croquet.history.OperationStep step = org.lgna.croquet.history.TransactionManager.addOperationStep( this, trigger, this.createTransactionHistoryIfNecessary() );
+		final org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.TransactionManager.addOperationStep( this, trigger, this.createTransactionHistoryIfNecessary() );
 		this.perform( step );
 		return step;
 	}
-	protected abstract void perform( org.lgna.croquet.history.OperationStep step );
+	protected abstract void perform( org.lgna.croquet.history.CompletionStep<?> step );
 
 	public String getName() {
 		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );

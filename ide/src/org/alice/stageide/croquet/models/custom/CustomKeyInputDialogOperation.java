@@ -56,7 +56,7 @@ public class CustomKeyInputDialogOperation extends org.alice.ide.croquet.models.
 		super( java.util.UUID.fromString( "6971bf07-e626-49fc-87cd-5ccad1c92445" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.FieldAccess > prologue( org.lgna.croquet.history.OperationStep step ) {
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.FieldAccess > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return new org.alice.stageide.choosers.KeyChooser();
 	}
 }

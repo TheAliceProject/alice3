@@ -56,7 +56,7 @@ public class CustomPortionInputDialogOperation extends org.alice.ide.croquet.mod
 		super( java.util.UUID.fromString( "a200dbc2-5a16-4931-8a5d-2a793973e053" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.DoubleLiteral > prologue( org.lgna.croquet.history.OperationStep step ) {
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.DoubleLiteral > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return new org.alice.stageide.choosers.PortionChooser();
 	}
 }

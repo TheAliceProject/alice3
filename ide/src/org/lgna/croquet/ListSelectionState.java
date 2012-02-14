@@ -655,7 +655,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			this.item = item;
 		}
 		@Override
-		protected void perform( org.lgna.croquet.history.OperationStep step ) {
+		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 			this.listSelectionState.setValueTransactionlessly( this.item );
 			step.finish();
 		}

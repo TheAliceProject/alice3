@@ -67,7 +67,7 @@ public class DeleteStatementOperation extends org.lgna.croquet.ActionOperation {
 		return this.statement;
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.OperationStep step) {
+	protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
 		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeleteStatementEdit( step ) );
 	}
 }

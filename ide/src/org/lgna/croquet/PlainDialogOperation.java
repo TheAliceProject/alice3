@@ -82,7 +82,7 @@ public abstract class PlainDialogOperation extends DialogOperation {
 			return new InternalCloseOperationResolver( this.plainDialogOperation );
 		}
 		@Override
-		protected void perform( org.lgna.croquet.history.OperationStep step ) {
+		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 			step.finish();
 		}
 	}
@@ -94,7 +94,7 @@ public abstract class PlainDialogOperation extends DialogOperation {
 	public synchronized InternalCloseOperation getCloseOperation() {
 		return this.closeOperation;
 	}
-	public String getTutorialCloseNoteText( org.lgna.croquet.history.OperationStep step, UserInformation userInformation ) {
+	public String getTutorialCloseNoteText( org.lgna.croquet.history.CompletionStep<?> step, UserInformation userInformation ) {
 		return "When finished press the <strong>Close</strong> button.";
 	}
 	@Override

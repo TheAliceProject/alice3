@@ -71,12 +71,12 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		return new org.lgna.croquet.history.TransactionHistory();
 	}
 
-	protected abstract Container< ? > createContentPane( org.lgna.croquet.history.OperationStep step, Dialog dialog );
-	protected abstract void releaseContentPane( org.lgna.croquet.history.OperationStep step, Dialog dialog, Container< ? > contentPane );
-	protected void handleFinally( org.lgna.croquet.history.OperationStep step, Dialog dialog, Container< ? > contentPane ) {
+	protected abstract Container< ? > createContentPane( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog );
+	protected abstract void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog, Container< ? > contentPane );
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog, Container< ? > contentPane ) {
 	}
 
-	protected String getDialogTitle( org.lgna.croquet.history.OperationStep step ) {
+	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String rv = this.getName();
 		if( rv != null ) {
 			rv = rv.replaceAll( "<[a-z]*>", "" );
@@ -96,8 +96,8 @@ public abstract class DialogOperation extends SingleThreadOperation {
 	}
 
 	@Override
-	protected final void perform( final org.lgna.croquet.history.OperationStep step ) {
-		org.lgna.croquet.history.OperationStep ancestor = step.getFirstAncestorStepOfModelAssignableTo( DialogOperation.class, org.lgna.croquet.history.OperationStep.class );
+	protected final void perform( final org.lgna.croquet.history.CompletionStep<?> step ) {
+		org.lgna.croquet.history.CompletionStep<?> ancestor = step.getFirstAncestorStepOfModelAssignableTo( DialogOperation.class, org.lgna.croquet.history.CompletionStep.class );
 		Dialog ownerDialog;
 		if( ancestor != null ) {
 			ownerDialog = ancestor.getEphemeralDataFor( DIALOG_KEY );

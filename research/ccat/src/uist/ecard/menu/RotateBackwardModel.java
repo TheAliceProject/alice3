@@ -21,7 +21,7 @@ public class RotateBackwardModel extends org.lgna.croquet.ActionOperation {
 		}
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		// TODO Auto-generated method stub
 	}
 }

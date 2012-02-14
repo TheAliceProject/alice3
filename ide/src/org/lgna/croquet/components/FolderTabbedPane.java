@@ -349,7 +349,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 			this.setName( ">>" );
 		}
 		@Override
-		protected void perform(org.lgna.croquet.history.OperationStep step) {
+		protected void perform(org.lgna.croquet.history.CompletionStep<?> step) {
 			javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for( E item : FolderTabbedPane.this.getModel() ) {

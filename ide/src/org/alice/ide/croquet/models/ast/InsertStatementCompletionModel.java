@@ -40,30 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.custom;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomArrayInputDialogOperation extends CustomInputDialogOperation< org.lgna.project.ast.ArrayInstanceCreation > {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, CustomArrayInputDialogOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized CustomArrayInputDialogOperation getInstance( org.lgna.project.ast.AbstractType< ?,?,? > componentType ) {
-		CustomArrayInputDialogOperation rv = map.get( componentType );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CustomArrayInputDialogOperation( componentType );
-			map.put( componentType, rv );
-		}
-		return rv;
-	}
-	private final org.lgna.project.ast.AbstractType< ?,?,? > componentType;
-	private CustomArrayInputDialogOperation( org.lgna.project.ast.AbstractType< ?,?,? > componentType ) {
-		super( java.util.UUID.fromString( "e4101f45-9c74-478e-b406-f8726a7b706a" ) );
-		this.componentType = componentType;
-	}
-	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.ArrayInstanceCreation > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.ide.choosers.ArrayChooser( this.componentType );
-	}
+public interface InsertStatementCompletionModel extends StatementCompletionModel {
+	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair( org.lgna.croquet.history.CompletionStep step );
+	public org.lgna.project.ast.Expression[] getInitialExpressions( org.lgna.croquet.history.CompletionStep step );
 }

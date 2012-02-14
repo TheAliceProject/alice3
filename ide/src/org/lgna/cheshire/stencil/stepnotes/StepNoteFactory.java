@@ -67,7 +67,7 @@ public class StepNoteFactory {
 		} else {
 			Class<?> stepCls = step.getClass();
 			String stepClsName = stepCls.getSimpleName();
-			if( stepCls == org.lgna.croquet.history.OperationStep.class ) {
+			if( stepCls == org.lgna.croquet.history.CompletionStep.class ) {
 				org.lgna.croquet.Operation model = (org.lgna.croquet.Operation)step.getModel();
 				if( model instanceof org.lgna.croquet.ActionOperation ) {
 					stepClsName = "Action" + stepClsName;

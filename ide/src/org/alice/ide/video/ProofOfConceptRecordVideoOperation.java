@@ -69,13 +69,13 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 		return new org.alice.ide.video.components.ProofOfConceptRecordVideoPanel();
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog ) {
+	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		IsRecordingState.getInstance().setValue( false );
 		IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
 		super.handleFinally( step, dialog, contentPane );
 	}

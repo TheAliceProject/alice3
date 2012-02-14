@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.project;
 /**
  * @author Dennis Cosgrove
  */
-public class ManageResourcesOperation extends org.lgna.croquet.InputDialogOperation {
+public class ManageResourcesOperation extends org.lgna.croquet.InputDialogOperation<Void> {
 	private static class SingletonHolder {
 		private static ManageResourcesOperation instance = new ManageResourcesOperation();
 	}
@@ -57,11 +57,11 @@ public class ManageResourcesOperation extends org.lgna.croquet.InputDialogOperat
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle cancel" );
 	}
 	@Override
-	protected org.alice.ide.resource.manager.ResourceManagerPane prologue(org.lgna.croquet.history.OperationStep step) {
+	protected org.alice.ide.resource.manager.ResourceManagerPane prologue(org.lgna.croquet.history.CompletionStep<?> step) {
 		return new org.alice.ide.resource.manager.ResourceManagerPane();
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.history.OperationStep step, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.CompletionStep<?> step, boolean isOk) {
 		if( isOk ) {
 			step.finish();
 		} else {

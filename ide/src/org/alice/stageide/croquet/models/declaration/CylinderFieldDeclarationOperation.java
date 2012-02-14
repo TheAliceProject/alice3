@@ -62,11 +62,11 @@ public class CylinderFieldDeclarationOperation extends org.alice.ide.croquet.mod
 		);
 	}
 	@Override
-	protected org.alice.stageide.croquet.components.declaration.CylinderFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.OperationStep step ) {
+	protected org.alice.stageide.croquet.components.declaration.CylinderFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return new org.alice.stageide.croquet.components.declaration.CylinderFieldDeclarationPanel( this );
 	}
 	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		super.customize( step, declaringType, field, rv );
 		return rv;
 	}

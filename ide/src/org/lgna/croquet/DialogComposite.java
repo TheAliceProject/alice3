@@ -93,8 +93,8 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 			return new org.lgna.croquet.history.TransactionHistory();
 		}
 		@Override
-		protected void perform( org.lgna.croquet.history.OperationStep step ) {
-			org.lgna.croquet.history.OperationStep ancestor = step.getFirstAncestorStepOfModelAssignableTo( DialogOperation.class, org.lgna.croquet.history.OperationStep.class );
+		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+			org.lgna.croquet.history.CompletionStep<?> ancestor = step.getFirstAncestorStepOfModelAssignableTo( DialogOperation.class, org.lgna.croquet.history.CompletionStep.class );
 			org.lgna.croquet.components.Dialog ownerDialog;
 			if( ancestor != null ) {
 				ownerDialog = ancestor.getEphemeralDataFor( DIALOG_KEY );
@@ -184,7 +184,7 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 	protected boolean isWindowClosingEnabled( java.awt.event.WindowEvent e ) {
 		return true;
 	}
-	protected String getDialogTitle( org.lgna.croquet.history.OperationStep step ) {
+	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
 //		String rv = this.getName();
 //		if( rv != null ) {
 //			rv = rv.replaceAll( "<[a-z]*>", "" );
@@ -206,10 +206,10 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 	}
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
-	protected void handlePreShowDialog( org.lgna.croquet.history.OperationStep step ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 	}
-	protected void handlePostHideDialog( org.lgna.croquet.history.OperationStep step ) {
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 	}
-	protected void handleFinally( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 	}
 }

@@ -55,7 +55,7 @@ import org.lgna.cheshire.Presentation;
 		this.presentation = presentation;
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.OperationStep step) {
+	protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
 		this.presentation.decrementSelectedIndex();
 		step.finish();
 	}

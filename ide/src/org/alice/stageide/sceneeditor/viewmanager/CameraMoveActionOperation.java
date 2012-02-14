@@ -161,7 +161,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 	}
 	
 	@Override
-	protected void perform(org.lgna.croquet.history.OperationStep step) 
+	protected void perform(org.lgna.croquet.history.CompletionStep<?> step) 
 	{
 		if (this.toMoveImp != null && this.toMoveToImp != null && 
 			this.toMoveImp.getAbstraction() instanceof org.lgna.story.MovableTurnable &&

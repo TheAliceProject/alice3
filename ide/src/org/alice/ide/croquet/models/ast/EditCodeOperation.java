@@ -56,7 +56,7 @@ package org.alice.ide.croquet.models.ast;
 		return this.code;
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.OperationStep step) {
+	protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
 		org.alice.ide.IDE.getActiveInstance().setFocusedCode( this.code );
 		step.finish();
 	}

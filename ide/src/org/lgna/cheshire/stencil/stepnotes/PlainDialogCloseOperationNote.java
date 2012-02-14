@@ -47,11 +47,11 @@ package org.lgna.cheshire.stencil.stepnotes;
  * @author Dennis Cosgrove
  */
 public class PlainDialogCloseOperationNote extends OperationNote {
-	public PlainDialogCloseOperationNote( org.lgna.croquet.history.OperationStep step ) {
+	public PlainDialogCloseOperationNote( org.lgna.croquet.history.CompletionStep<?> step ) {
 		super( step );
 	}
 	@Override
-	protected void addFeatures( org.lgna.croquet.history.OperationStep step ) {
+	protected void addFeatures( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//note: do not call super
 		//super.addFeatures( step );
 		this.addFeature( new org.lgna.cheshire.stencil.features.DialogCloseButtonFeature( step ) );

@@ -56,7 +56,7 @@ public class CustomFloatInputDialogOperation extends CustomNumberInputDialogOper
 		super( java.util.UUID.fromString( "6a04b351-ed30-44e0-a849-783945698720" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.FloatChooser prologue( org.lgna.croquet.history.OperationStep step ) {
+	protected org.alice.ide.choosers.FloatChooser prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return new org.alice.ide.choosers.FloatChooser();
 	}
 }

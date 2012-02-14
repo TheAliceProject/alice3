@@ -90,7 +90,7 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 				super( java.util.UUID.fromString( "2b1ff0fd-8d8a-4d23-9d95-6203e9abff9c" ), composite );
 			}
 			@Override
-			protected void perform( org.lgna.croquet.history.OperationStep step ) {
+			protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 				WizardCardComposite wizardCardComposite = this.getWizardCardComposite();
 				if( wizardCardComposite.isPrevPageAvailable() ) {
 					wizardCardComposite.prev();
@@ -103,7 +103,7 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 				super( java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ), composite );
 			}
 			@Override
-			protected void perform( org.lgna.croquet.history.OperationStep step ) {
+			protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 				WizardCardComposite wizardCardComposite = this.getWizardCardComposite();
 				if( wizardCardComposite.isNextPageAvailable() ) {
 					wizardCardComposite.next();
@@ -151,7 +151,7 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 		return false;
 	}
 	@Override
-	protected String getExplanation( org.lgna.croquet.history.OperationStep step ) {
+	protected String getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return null;
 	}
@@ -167,7 +167,7 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 		this.updateEnabled();
 	}
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.OperationStep step ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		WizardCardComposite wizardCardComposite = (WizardCardComposite)this.getMainComposite();
 		wizardCardComposite.setIndex( 0 );
 		this.updateEnabled();
