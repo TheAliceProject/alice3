@@ -57,4 +57,22 @@ public class LocalAccess extends Expression {
 	public AbstractType<?,?,?> getType() {
 		return this.local.getValue().valueType.getValue();
 	}
+	@Override
+	public boolean isValid() {
+		UserLocal local = this.local.getValue();
+		if( local != null ) {
+			Code localCode = local.getFirstAncestorAssignableTo( Code.class );
+			if( localCode != null ) {
+				Code code = this.getFirstAncestorAssignableTo( Code.class );
+				
+				//todo: check location
+				
+				return code == localCode;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 }
