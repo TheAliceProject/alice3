@@ -51,8 +51,8 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 		PLUS() { 
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null;
-				assert rightOperand != null;
+				assert leftOperand != null : this;
+				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
 					return leftOperand.doubleValue() + rightOperand.doubleValue();
@@ -74,8 +74,8 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 		MINUS() { 
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null;
-				assert rightOperand != null;
+				assert leftOperand != null : this;
+				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
 					return leftOperand.doubleValue() - rightOperand.doubleValue();
@@ -97,8 +97,8 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 		TIMES() { 
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null;
-				assert rightOperand != null;
+				assert leftOperand != null : this;
+				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
 					return leftOperand.doubleValue() * rightOperand.doubleValue();
@@ -120,8 +120,8 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 		REAL_DIVIDE() { 
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null;
-				assert rightOperand != null;
+				assert leftOperand != null : this;
+				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
 					return leftOperand.doubleValue() / rightOperand.doubleValue();
@@ -143,8 +143,8 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 		INTEGER_DIVIDE() { 
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null;
-				assert rightOperand != null;
+				assert leftOperand != null : this;
+				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
 					return ((int)leftOperand.doubleValue()) / (int)rightOperand.doubleValue();
@@ -166,8 +166,8 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 		REAL_REMAINDER() { 
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null;
-				assert rightOperand != null;
+				assert leftOperand != null : this;
+				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
 					return leftOperand.doubleValue() % rightOperand.doubleValue();
@@ -189,8 +189,8 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 		INTEGER_REMAINDER() { 
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null;
-				assert rightOperand != null;
+				assert leftOperand != null : this;
+				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
 					return ((int)leftOperand.doubleValue()) % (int)rightOperand.doubleValue();
@@ -221,7 +221,9 @@ public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixE
 			|| 
 			JavaType.getInstance( Double.TYPE ).isAssignableFrom( expressionType ) 
 			|| 
-			JavaType.getInstance( Integer.TYPE ).isAssignableFrom( expressionType );
+			JavaType.getInstance( Integer.TYPE ).isAssignableFrom( expressionType )
+			:
+			expressionType;
 		this.expressionType.setValue( expressionType );
 	}
 	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, Class<?> expressionCls ) {
