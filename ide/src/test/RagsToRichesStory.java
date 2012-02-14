@@ -289,6 +289,7 @@ class SnowScene extends Scene{
 //			}
 //		}, MultipleEventPolicy.COMBINE );
 		this.moveThisWithArrows( camera );
+		this.addDefaultModelManipulation();
 //		this.addNumberKeyPressListener(new NumberKeyPressListener() {
 //			
 //			public void keyPressed(NumberKeyEvent e) {
@@ -394,12 +395,14 @@ class RagsToRichesStory extends Program {
 		final RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
 		ragsToRichesStory.initializeInFrame( args );
 		new Thread() {
+			@Override
 			public void run() {
 				ragsToRichesStory.playOutStory();
 			}
 		}.start();
 		Logger.todo( "remove this EPIC HACK" );
 		new Thread() {
+			@Override
 			public void run() {
 				ThreadUtilities.sleep( 250 );
 				Component awtComponent = ImplementationAccessor.getImplementation(ragsToRichesStory).getOnscreenLookingGlass().getAWTComponent();

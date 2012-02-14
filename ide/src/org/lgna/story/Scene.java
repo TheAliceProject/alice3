@@ -159,6 +159,11 @@ public abstract class Scene extends Entity{
 	public void addMouseButtonListener( org.lgna.story.event.MouseClickListener mouseButtonListener, AddMouseButtonListener.Detail... details ) {
 		this.getImplementation().getEventManager().addMouseButtonListener( mouseButtonListener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
+	public void addDefaultModelManipulation() {
+		this.getImplementation().getEventManager().addDragAdapter();
+	}
 	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
 	public void removeMouseButtonListener( org.lgna.story.event.MouseClickListener mouseButtonListener ) {
 		this.getImplementation().getEventManager().removeMouseButtonListener( mouseButtonListener );

@@ -3,7 +3,11 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.GlobalDragAdapter;
+import org.alice.interact.RuntimeDragAdapter;
 import org.lgna.story.Entity;
+import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
@@ -27,6 +31,9 @@ import org.lgna.story.event.TransformationListener;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 public class EventManager {
 
@@ -62,6 +69,8 @@ public class EventManager {
 	//	private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
 
 	private final SceneImp scene;
+
+	private GlobalDragAdapter dragAdapter;
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
@@ -168,5 +177,31 @@ public class EventManager {
 	}
 	public void addLeavesViewEventListener(LeavesViewEventListener listener, Entity[] entities) {
 		this.viewHandler.addViewEventListener( listener, entities );
+	}
+
+	public void addDragAdapter() {
+		if( this.dragAdapter != null ) {
+			//pass
+		} else {
+//			this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
+			this.dragAdapter = new org.alice.interact.GlobalDragAdapter();
+			OnscreenLookingGlass lookingGlass = this.scene.getProgram().getOnscreenLookingGlass();
+			SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
+//			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {
+//				System.out.println("hi");
+//				if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera ) 
+//				{
+//					camera = (SymmetricPerspectiveCamera)lookingGlass.getCameraAt( i );
+//					break;
+//				}
+//			}
+			this.dragAdapter.setOnscreenLookingGlass( lookingGlass );
+			this.dragAdapter.addCameraView(CameraView.MAIN, camera, null);
+			this.dragAdapter.makeCameraActive(camera);
+			this.dragAdapter.setAnimator(  this.scene.getProgram().getAnimator() );
+//			for( Transformable transformable : this.scene.getComponents() ) {
+//				this.putBonusDataFor( transformable );
+//			}
+		}
 	}
 }
