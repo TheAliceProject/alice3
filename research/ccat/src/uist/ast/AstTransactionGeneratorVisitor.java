@@ -2,11 +2,11 @@ package uist.ast;
 
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 
-public class AstPrintlnVisitor implements edu.cmu.cs.dennisc.pattern.Crawler {
-	
+public class AstTransactionGeneratorVisitor implements edu.cmu.cs.dennisc.pattern.Crawler {
+
 	protected org.lgna.croquet.history.TransactionHistory transactionHistory;
-	
-	public AstPrintlnVisitor( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+
+	public AstTransactionGeneratorVisitor( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		this.transactionHistory = transactionHistory;
 	}
 
@@ -31,8 +31,8 @@ public class AstPrintlnVisitor implements edu.cmu.cs.dennisc.pattern.Crawler {
 	}
 
 	public void visit(org.lgna.project.ast.CountLoop countLoop) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "yes! ", countLoop);
-		
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln(countLoop);
+
 		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)countLoop.getParent();
 		int index = blockStatement.statements.indexOf( countLoop );
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair(blockStatement, index);
@@ -40,7 +40,7 @@ public class AstPrintlnVisitor implements edu.cmu.cs.dennisc.pattern.Crawler {
 
 		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.createSimulatedTransactionForCascade( this.transactionHistory, countLoopInsertCascade );
 		org.lgna.croquet.edits.Edit edit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit(transaction.getCompletionStep(), blockStatementIndexPair, countLoop);
-		
+
 		transaction.getCompletionStep().setEdit( edit );
 		this.transactionHistory.addTransaction(transaction);
 	}
@@ -93,13 +93,13 @@ public class AstPrintlnVisitor implements edu.cmu.cs.dennisc.pattern.Crawler {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln(whileLoop);
 	}
 
-//	public void visit(Statement statement) {
-//		edu.cmu.cs.dennisc.java.util.logging.Logger.errln(statement);
-//	}
+	//	public void visit(Statement statement) {
+	//		edu.cmu.cs.dennisc.java.util.logging.Logger.errln(statement);
+	//	}
 
-//	public void visit(org.lgna.project.ast.AbstractNode abstractNode) {
-//		edu.cmu.cs.dennisc.java.util.logging.Logger.errln("  UH OH!: ", abstractNode );
-//	}
+	//	public void visit(org.lgna.project.ast.AbstractNode abstractNode) {
+	//		edu.cmu.cs.dennisc.java.util.logging.Logger.errln("  UH OH!: ", abstractNode );
+	//	}
 
 	public void visit(Crawlable crawlable) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln("  NO NO!: ", crawlable );

@@ -85,21 +85,6 @@ public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState 
 			public void windowClosed(java.awt.event.WindowEvent e) {
 			}
 		} );
-		boolean isInternalTesting = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" );
-		if( isInternalTesting ) {
-			rv.addComponentListener( new java.awt.event.ComponentListener() {
-				public void componentShown( java.awt.event.ComponentEvent e ) {
-				}
-				public void componentHidden( java.awt.event.ComponentEvent e ) {
-				}
-				public void componentMoved( java.awt.event.ComponentEvent e ) {
-					System.out.println( "frame location: " + e.getComponent().getLocation() );
-				}
-				public void componentResized( java.awt.event.ComponentEvent e ) {
-					System.out.println( "frame size: " + e.getComponent().getSize() );
-				}
-			} );
-		}
 
 		rv.pack();
 		

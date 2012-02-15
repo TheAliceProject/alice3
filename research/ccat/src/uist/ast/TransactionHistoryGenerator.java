@@ -61,9 +61,12 @@ public class TransactionHistoryGenerator {
 
 		org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		//generate( transactionHistory, this.src, this.dst, this.dstIndex0 );
-		
-		AstPrintlnVisitor astPrintlnVisitor = new AstPrintlnVisitor(transactionHistory);
-		this.src.crawl(astPrintlnVisitor, true);
+
+		PrintAstVisitor printAstVisitor = new PrintAstVisitor(this.src);
+		this.src.crawl(printAstVisitor, false);
+
+		AstTransactionGeneratorVisitor astGenerator = new AstTransactionGeneratorVisitor(transactionHistory);
+		this.src.crawl(astGenerator, true);
 
 		// Create a run operation, at the end of the tutorial
 		// TODO: This is now broken
@@ -92,76 +95,76 @@ public class TransactionHistoryGenerator {
 		int dstIndex = dstIndex0; 
 		for( org.lgna.project.ast.Statement statement : src.statements ) {
 			org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( history );
-			
-			
-//			org.alice.ide.croquet.models.ast.InsertStatementActionOperation insertStatementActionOperation = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( dst, dstIndex, statement );
-//			org.lgna.croquet.history.ActionOperationStep insertStatementContext = org.lgna.croquet.history.ActionOperationStep.createAndAddToTransaction( transaction, insertStatementActionOperation, new org.lgna.croquet.triggers.SimulatedTrigger() );
-//			addEdit( insertStatementContext, new org.alice.ide.croquet.edits.DependentEdit() );
-//
-//			org.lgna.croquet.DragModel dragModel;
-//			if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-//				org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-//				org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-//				if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-//					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-//					org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-//					if( method instanceof org.lgna.project.ast.UserMethod ) {
-//						org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
-//						history.addTransaction( generateMethodDeclarationTransaction( history, userMethod ) );
-//
-//						generate( history, userMethod.body.getValue() );
-//
-//						org.lgna.project.ast.UserMethod invokedFromMethod = dst.getFirstAncestorAssignableTo( org.lgna.project.ast.UserMethod.class );
-//
-//						org.lgna.croquet.history.ListSelectionStateChangeStep< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > listSelectionStateChangeStep = org.lgna.croquet.history.ListSelectionStateChangeStep< org.alice.ide.editorstabbedpane.CodeComposite >( org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance() );
-//						org.lgna.croquet.edits.ListSelectionStateEdit< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > edit = new org.lgna.croquet.edits.ListSelectionStateEdit< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >( org.alice.ide.editorstabbedpane.CodeComposite.getInstance( userMethod ), org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( invokedFromMethod ) );
-//						addEdit( listSelectionStateContext, edit );
-//						history.addChild( listSelectionStateContext );
-//					}
-//					dragModel = org.alice.ide.croquet.models.ast.MethodTemplateDragModel.getInstance( method );
-//				} else {
-//					dragModel = null;
-//				}
-//			} else {
-//				dragModel = org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel.getInstance( statement.getClass() );
-//			}
-//
-//			org.lgna.croquet.DragAndDropContext dragAndDropContext = createDragAndDropContext( dragModel ); 
-//			org.lgna.croquet.DropReceptor dropReceptor = null;
-//			org.lgna.croquet.DropSite dropSite = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( dst, dstIndex );
-//			org.lgna.croquet.DragAndDropContext.EnteredDropReceptorEvent enteredDropReceptorEvent = new org.lgna.croquet.DragAndDropContext.EnteredDropReceptorEvent( dropReceptor );
-//			org.lgna.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent enteredPotentialDropSiteEvent = new org.lgna.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent( dropReceptor, dropSite );
-//			org.lgna.croquet.DragAndDropContext.DroppedEvent droppedEvent = new org.lgna.croquet.DragAndDropContext.DroppedEvent( dropReceptor );
-//			dragAndDropContext.addChild( enteredDropReceptorEvent );
-//			dragAndDropContext.addChild( enteredPotentialDropSiteEvent );
-//			dragAndDropContext.addChild( droppedEvent );
-//
-//			if( statement instanceof org.lgna.project.ast.CountLoop ) {
-//				org.lgna.croquet.CascadePopupOperation popupMenuOperation = null;
-//				org.lgna.croquet.CascadePopupOperationContext popupMenuOperationContext = new org.lgna.croquet.CascadePopupOperationContext( popupMenuOperation );
-//				java.util.List< org.lgna.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-//
-//
-//				//todo
-//				//models.add( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP, null ) ); 
-//
-//
-//				org.lgna.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent = new org.lgna.croquet.PopupOperationContext.MenuSelectionEvent( models );
-//				popupMenuOperationContext.addChild( menuSelectionEvent );
-//				popupMenuOperationContext.addChild( insertStatementContext );
-//				dragAndDropContext.addChild( popupMenuOperationContext );
-//			} else {
-//				dragAndDropContext.addChild( insertStatementContext );
-//			}
-//
-//
+
+
+			//			org.alice.ide.croquet.models.ast.InsertStatementActionOperation insertStatementActionOperation = new org.alice.ide.croquet.models.ast.InsertStatementActionOperation( dst, dstIndex, statement );
+			//			org.lgna.croquet.history.ActionOperationStep insertStatementContext = org.lgna.croquet.history.ActionOperationStep.createAndAddToTransaction( transaction, insertStatementActionOperation, new org.lgna.croquet.triggers.SimulatedTrigger() );
+			//			addEdit( insertStatementContext, new org.alice.ide.croquet.edits.DependentEdit() );
+			//
+			//			org.lgna.croquet.DragModel dragModel;
+			//			if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+			//				org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+			//				org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+			//				if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+			//					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+			//					org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+			//					if( method instanceof org.lgna.project.ast.UserMethod ) {
+			//						org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+			//						history.addTransaction( generateMethodDeclarationTransaction( history, userMethod ) );
+			//
+			//						generate( history, userMethod.body.getValue() );
+			//
+			//						org.lgna.project.ast.UserMethod invokedFromMethod = dst.getFirstAncestorAssignableTo( org.lgna.project.ast.UserMethod.class );
+			//
+			//						org.lgna.croquet.history.ListSelectionStateChangeStep< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > listSelectionStateChangeStep = org.lgna.croquet.history.ListSelectionStateChangeStep< org.alice.ide.editorstabbedpane.CodeComposite >( org.alice.ide.editorstabbedpane.EditorsTabSelectionState.getInstance() );
+			//						org.lgna.croquet.edits.ListSelectionStateEdit< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > edit = new org.lgna.croquet.edits.ListSelectionStateEdit< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >( org.alice.ide.editorstabbedpane.CodeComposite.getInstance( userMethod ), org.alice.ide.croquet.models.typeeditor.DeclarationComposite.getInstance( invokedFromMethod ) );
+			//						addEdit( listSelectionStateContext, edit );
+			//						history.addChild( listSelectionStateContext );
+			//					}
+			//					dragModel = org.alice.ide.croquet.models.ast.MethodTemplateDragModel.getInstance( method );
+			//				} else {
+			//					dragModel = null;
+			//				}
+			//			} else {
+			//				dragModel = org.alice.ide.croquet.models.ast.StatementClassTemplateDragModel.getInstance( statement.getClass() );
+			//			}
+			//
+			//			org.lgna.croquet.DragAndDropContext dragAndDropContext = createDragAndDropContext( dragModel ); 
+			//			org.lgna.croquet.DropReceptor dropReceptor = null;
+			//			org.lgna.croquet.DropSite dropSite = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( dst, dstIndex );
+			//			org.lgna.croquet.DragAndDropContext.EnteredDropReceptorEvent enteredDropReceptorEvent = new org.lgna.croquet.DragAndDropContext.EnteredDropReceptorEvent( dropReceptor );
+			//			org.lgna.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent enteredPotentialDropSiteEvent = new org.lgna.croquet.DragAndDropContext.EnteredPotentialDropSiteEvent( dropReceptor, dropSite );
+			//			org.lgna.croquet.DragAndDropContext.DroppedEvent droppedEvent = new org.lgna.croquet.DragAndDropContext.DroppedEvent( dropReceptor );
+			//			dragAndDropContext.addChild( enteredDropReceptorEvent );
+			//			dragAndDropContext.addChild( enteredPotentialDropSiteEvent );
+			//			dragAndDropContext.addChild( droppedEvent );
+			//
+			//			if( statement instanceof org.lgna.project.ast.CountLoop ) {
+			//				org.lgna.croquet.CascadePopupOperation popupMenuOperation = null;
+			//				org.lgna.croquet.CascadePopupOperationContext popupMenuOperationContext = new org.lgna.croquet.CascadePopupOperationContext( popupMenuOperation );
+			//				java.util.List< org.lgna.croquet.Model > models = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			//
+			//
+			//				//todo
+			//				//models.add( edu.cmu.cs.dennisc.cascade.InternalCascadingItemOperation.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP, null ) ); 
+			//
+			//
+			//				org.lgna.croquet.PopupOperationContext.MenuSelectionEvent menuSelectionEvent = new org.lgna.croquet.PopupOperationContext.MenuSelectionEvent( models );
+			//				popupMenuOperationContext.addChild( menuSelectionEvent );
+			//				popupMenuOperationContext.addChild( insertStatementContext );
+			//				dragAndDropContext.addChild( popupMenuOperationContext );
+			//			} else {
+			//				dragAndDropContext.addChild( insertStatementContext );
+			//			}
+			//
+			//
 			dstIndex++;
-//			history.addChild( dragAndDropContext );
-//
-//			if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
-//				org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
-//				generate( history, statementWithBody.body.getValue() );
-//			}
+			//			history.addChild( dragAndDropContext );
+			//
+			//			if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+			//				org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
+			//				generate( history, statementWithBody.body.getValue() );
+			//			}
 		}
 	}
 
