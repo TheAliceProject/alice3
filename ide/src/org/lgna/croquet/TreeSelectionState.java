@@ -179,7 +179,7 @@ class TreeNodeCascade<T> extends Cascade< T > {
 		this.node = node;
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, T[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< T >> completionStep, T[] values ) {
 		assert values.length == 1;
 		this.model.setValue( values[ 0 ] );
 		return null;

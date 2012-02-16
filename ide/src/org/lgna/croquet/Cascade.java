@@ -60,7 +60,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 		}
 	}
 
-	public static final class InternalRoot<T> extends CascadeRoot< T, org.lgna.croquet.history.CascadeCompletionStep< T > > {
+	public static final class InternalRoot<T> extends CascadeRoot<T,org.lgna.croquet.history.CompletionStep<Cascade<T>>> {
 		private final Cascade< T > cascade;
 		private InternalRoot( Cascade< T > cascade, CascadeBlank< T >[] blanks ) {
 			super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ), blanks );
@@ -88,11 +88,11 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 			this.cascade.epilogue();
 		}
 		@Override
-		public org.lgna.croquet.history.CascadeCompletionStep< T > createCompletionStep( org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.TransactionManager.addCascadeCompletionStep( this.cascade, trigger );
+		public org.lgna.croquet.history.CompletionStep< Cascade<T> > createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			return transaction.createAndSetCompletionStep( this.cascade, trigger );
 		}
 		@Override
-		protected org.lgna.croquet.edits.Edit createEdit(org.lgna.croquet.history.CascadeCompletionStep<T> completionStep, T[] values) {
+		protected org.lgna.croquet.edits.Edit createEdit(org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values) {
 			return this.cascade.createEdit( completionStep, values );
 		}
 	}
@@ -134,7 +134,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 	}
 	protected void epilogue() {
 	}
-	protected abstract org.lgna.croquet.edits.Edit< ? extends Cascade< T > > createEdit( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, T[] values );
+	protected abstract org.lgna.croquet.edits.Edit< ? extends Cascade< T > > createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
 
 	public static final class InternalMenuModelResolver<T> extends IndirectResolver< InternalMenuModel<T>, Cascade< T > > {
 		private InternalMenuModelResolver( Cascade< T > indirect ) {
@@ -213,7 +213,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 			javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
 			//javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
 			//org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
-			final org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CascadeCompletionStep< T > > rtRoot = new org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CascadeCompletionStep< T > >( this.getCascade().getRoot() );
+			final org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CompletionStep<Cascade<T>>> rtRoot = new org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CompletionStep<Cascade<T>> >( this.getCascade().getRoot() );
 			if( rtRoot.isGoodToGo() ) {
 				throw new RuntimeException( "todo" );
 			} else {

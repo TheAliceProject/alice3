@@ -57,7 +57,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	}
 	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions );
 	@Override
-	protected org.alice.ide.croquet.edits.ast.InsertStatementEdit createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > step, org.lgna.project.ast.Expression[] values ) {
+	protected org.alice.ide.croquet.edits.ast.InsertStatementEdit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> step, org.lgna.project.ast.Expression[] values ) {
 		org.lgna.project.ast.Statement statement = this.createStatement( values );
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement, values );
 	}
