@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public final class StateChangeStep< T > extends CompletionStep< org.lgna.croquet.State< T > > {
-	/*package-private*/ static <T> StateChangeStep<T> createAndAddToTransaction( Transaction transaction, org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static <T> StateChangeStep<T> createAndAddToTransaction( Transaction transaction, org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new StateChangeStep<T>( transaction, model, trigger );
 	}
 	private StateChangeStep( Transaction parent, org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {

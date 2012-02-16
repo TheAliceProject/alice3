@@ -72,7 +72,7 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 		}
 		@Override
 		public org.lgna.croquet.history.CompletionStep< State<T> > createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			return (org.lgna.croquet.history.CompletionStep)org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( transaction, this.state, trigger ); 
+			return org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( transaction, this.state, trigger ); 
 		}
 		@Override
 		public Class< T > getComponentType() {
