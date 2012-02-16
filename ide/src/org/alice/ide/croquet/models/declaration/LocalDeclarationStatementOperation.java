@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class LocalDeclarationStatementOperation extends DeclarationLikeSubstanceOperation< org.lgna.project.ast.LocalDeclarationStatement >{
+public class LocalDeclarationStatementOperation extends DeclarationLikeSubstanceOperation< org.lgna.project.ast.LocalDeclarationStatement > implements org.alice.ide.croquet.models.ast.InsertStatementCompletionModel {
 	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalDeclarationStatementOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static LocalDeclarationStatementOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		synchronized( map ) {

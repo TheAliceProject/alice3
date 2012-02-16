@@ -47,5 +47,4 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public interface StatementCompletionModel extends org.lgna.croquet.CompletionModel {
-	public org.lgna.project.ast.Statement getStatement( org.lgna.croquet.history.CompletionStep step );
 }

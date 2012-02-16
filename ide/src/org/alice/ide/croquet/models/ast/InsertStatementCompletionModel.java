@@ -47,6 +47,4 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public interface InsertStatementCompletionModel extends StatementCompletionModel {
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair( org.lgna.croquet.history.CompletionStep step );
-	public org.lgna.project.ast.Expression[] getInitialExpressions( org.lgna.croquet.history.CompletionStep step );
 }
