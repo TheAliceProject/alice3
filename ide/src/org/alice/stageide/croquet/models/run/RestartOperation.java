@@ -56,7 +56,8 @@ public class RestartOperation extends org.lgna.croquet.ActionOperation {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "f8acb9c4-f4d8-4c6e-84ae-6555cc0da4e0" ) );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				org.alice.ide.IDE.getActiveInstance().getRunOperation().fire();

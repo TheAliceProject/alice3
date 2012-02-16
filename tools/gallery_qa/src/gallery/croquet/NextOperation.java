@@ -7,7 +7,8 @@ public class NextOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	@Override
-	protected void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		//GalleryResourceTreeSelectionState.getInstance().getSelectedNode();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo("NEXT");
 		step.finish();

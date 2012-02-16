@@ -13,7 +13,8 @@ public class ThoughtBubbleEffectModel extends org.lgna.croquet.ActionOperation {
 		this.setSmallIcon( new javax.swing.ImageIcon(getClass().getResource("resources/menu/thought-bubble.png") ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		ECardApplication.getActiveInstance().getCardPanel().setImage(ECardPanel.CardState.BUBBLE_PHOTO);
 		step.finish();
 	}

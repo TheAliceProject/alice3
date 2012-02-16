@@ -161,8 +161,8 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 	}
 	
 	@Override
-	protected void perform(org.lgna.croquet.history.CompletionStep<?> step) 
-	{
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		if (this.toMoveImp != null && this.toMoveToImp != null && 
 			this.toMoveImp.getAbstraction() instanceof org.lgna.story.MovableTurnable &&
 			this.toMoveToImp.getAbstraction() != null) {

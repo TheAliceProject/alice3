@@ -131,7 +131,7 @@ public class TransactionManager {
 		javax.swing.MenuSelectionManager.defaultManager().removeChangeListener( menuSelectionChangeListener );
 	}
 
-	/*package-private*/ static Transaction getActiveTransaction() {
+	public static Transaction getActiveTransaction() {
 		return getActiveTransactionHistory().getActiveTransaction();
 	}
 	private static Transaction getLastTransaction() {

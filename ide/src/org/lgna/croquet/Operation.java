@@ -154,16 +154,15 @@ public abstract class Operation extends AbstractCompletionModel {
 		return fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 	}
 	
-	protected abstract org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary();
-	
+	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
+
 	/*package-private*/ final org.lgna.croquet.history.CompletionStep<?> handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
 		//todo: move up to Model
 		this.initializeIfNecessary();
-		final org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.TransactionManager.addOperationStep( this, trigger, this.createTransactionHistoryIfNecessary() );
-		this.perform( step );
-		return step;
+		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.getActiveTransaction();
+		this.perform( transaction, trigger );
+		return transaction.getCompletionStep();
 	}
-	protected abstract void perform( org.lgna.croquet.history.CompletionStep<?> step );
 
 	public String getName() {
 		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );

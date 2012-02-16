@@ -53,7 +53,8 @@ public class LoadProjectOperation extends org.lgna.croquet.ActionOperation {
 		this.uri = uri;
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		if (this.uri != null) {
 			org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom(this.uri);
 			step.finish();

@@ -100,7 +100,8 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 				this.isCompletion = isCompletion;
 			}
 			@Override
-			protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+			protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 				org.lgna.croquet.history.CompletionStep<?> dialogStep = step.getFirstAncestorStepOfEquivalentModel( this.getControlsComposite().getGatedCommitDialogComposite().getOperation(), org.lgna.croquet.history.CompletionStep.class );
 				org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( DIALOG_KEY );
 				dialogStep.putEphemeralDataFor( IS_COMPLETED_KEY, this.isCompletion );

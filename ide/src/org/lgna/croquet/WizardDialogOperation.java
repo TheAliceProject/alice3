@@ -85,7 +85,8 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation {
 			this.setName( "Next >" );
 		}
 		@Override
-		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			ListSelectionState< Card > cardSelectionState = this.getCardSelectionState(step);
 			int index = cardSelectionState.getSelectedIndex();
 			final int N = cardSelectionState.getItemCount();
@@ -110,7 +111,8 @@ public abstract class WizardDialogOperation extends GatedCommitDialogOperation {
 			this.setName( "< Back" );
 		}
 		@Override
-		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			ListSelectionState< Card > cardSelectionState = this.getCardSelectionState(step);
 			int index = cardSelectionState.getSelectedIndex();
 			if( index > 0 ) {

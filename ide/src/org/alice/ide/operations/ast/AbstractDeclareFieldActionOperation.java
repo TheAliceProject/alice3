@@ -53,7 +53,8 @@ public abstract class AbstractDeclareFieldActionOperation extends org.lgna.croqu
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
 	@Override
-	protected final void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.lgna.project.ast.NamedUserType ownerType = this.getOwnerType();
 		if( ownerType != null ) {
 			final edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[]> tuple = this.createFieldAndStatements( step, ownerType );

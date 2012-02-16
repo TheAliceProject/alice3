@@ -77,7 +77,8 @@ public class RemoveKeyedArgumentOperation extends org.lgna.croquet.ActionOperati
 		return this.argumentListProperty;
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.keyed.RemoveKeyedArgumentEdit( step ) );
 	}
 }

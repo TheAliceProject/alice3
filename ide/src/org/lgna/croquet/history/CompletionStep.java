@@ -50,10 +50,10 @@ public class CompletionStep< M extends org.lgna.croquet.CompletionModel > extend
 	private org.lgna.croquet.edits.Edit<M> edit;
 	private boolean isSuccessfullyCompleted;
 	private boolean isPending = true;
-	public static CompletionStep<?> createAndAddToTransaction( Transaction parent, org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
-		return new CompletionStep( parent, model, trigger, transactionHistory );
+	public static <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndAddToTransaction( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
+		return new CompletionStep<M>( parent, model, trigger, transactionHistory );
 	}
-	public static CompletionStep<?> createAndAddToTransaction( Transaction parent, org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndAddToTransaction( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return createAndAddToTransaction( parent, model, trigger, null );
 	}
 	

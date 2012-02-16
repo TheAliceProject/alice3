@@ -61,7 +61,8 @@ public class BackwardOperation extends org.lgna.croquet.ActionOperation {
 		this.setSmallIcon( org.alice.ide.icons.Icons.PREVIOUS_SMALL );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		DeclarationCompositeHistory.getInstance().goBackward();
 		step.finish();
 	}

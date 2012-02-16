@@ -56,7 +56,8 @@ package org.alice.ide.croquet.models.ast;
 		return this.code;
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.alice.ide.IDE.getActiveInstance().setFocusedCode( this.code );
 		step.finish();
 	}

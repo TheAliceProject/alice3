@@ -56,7 +56,8 @@ package org.lgna.cheshire.stencil;
 		super( java.util.UUID.fromString( "114060ef-1231-433b-9084-48faa024d1ba" ), "Next \u2192" );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		StencilsPresentation.getInstance().incrementSelectedIndex();
 		step.finish();
 	}

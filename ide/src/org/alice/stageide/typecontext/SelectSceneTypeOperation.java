@@ -57,7 +57,8 @@ public class SelectSceneTypeOperation extends org.lgna.croquet.ActionOperation {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "53176db0-cfaa-4560-bbb7-2a18244ca97c" ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.alice.ide.declarationseditor.TypeState.getInstance().setValue( org.alice.stageide.StageIDE.getActiveInstance().getSceneType() );
 		step.finish();
 	}

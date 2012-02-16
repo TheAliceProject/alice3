@@ -59,7 +59,8 @@ public class UndoOperation extends org.lgna.croquet.ActionOperation {
 		this.setSmallIcon( org.alice.ide.croquet.models.history.UndoOperation.getInstance().getSmallIcon() );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		DocWizardsesquePresentation docWizardsesquePresentation = (DocWizardsesquePresentation)org.lgna.cheshire.Presentation.getInstance();
 		docWizardsesquePresentation.getBackOnTrack();
 		step.finish();

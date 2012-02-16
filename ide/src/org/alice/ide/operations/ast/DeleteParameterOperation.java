@@ -54,7 +54,8 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 		this.setName( "Delete" );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		final org.lgna.project.ast.UserMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), org.lgna.project.ast.UserMethod.class );
 		final int index = method.requiredParameters.indexOf( this.getParameter() );
 		if( method != null && index >= 0 ) {

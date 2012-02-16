@@ -66,11 +66,6 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		return null;
 	}
 
-	@Override
-	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
-		return new org.lgna.croquet.history.TransactionHistory();
-	}
-
 	protected abstract Container< ? > createContentPane( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog );
 	protected abstract void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog, Container< ? > contentPane );
 	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog, Container< ? > contentPane ) {
@@ -96,7 +91,8 @@ public abstract class DialogOperation extends SingleThreadOperation {
 	}
 
 	@Override
-	protected final void perform( final org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new org.lgna.croquet.history.TransactionHistory() );
 		org.lgna.croquet.history.CompletionStep<?> ancestor = step.getFirstAncestorStepOfModelAssignableTo( DialogOperation.class, org.lgna.croquet.history.CompletionStep.class );
 		Dialog ownerDialog;
 		if( ancestor != null ) {
@@ -108,7 +104,6 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		if( ownerDialog != null ) {
 			owner = ownerDialog;
 		} else {
-			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
 			ViewController< ?, ? > viewController = trigger.getViewController();
 			if( viewController != null ) {
 				owner = viewController;

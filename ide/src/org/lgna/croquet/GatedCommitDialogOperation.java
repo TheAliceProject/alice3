@@ -99,7 +99,8 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 			super( java.util.UUID.fromString( "fc908f6f-4b72-48b6-9b65-352dc9f2e18b" ), gatedCommitDialogOperation );
 		}
 		@Override
-		protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			if( this.getGatedCommitDialogOperation().isClearedToClose( this.getDialog(), true ) ) {
 				this.getGatedCommitDialogOperation().isCompleted = true;
 				step.finish();
@@ -116,7 +117,8 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 			super( java.util.UUID.fromString( "3363c6f0-c8a2-48f2-aefc-c53894ec8a99" ), gatedCommitDialogOperation );
 		}
 		@Override
-		protected void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			if( this.getGatedCommitDialogOperation().isClearedToClose( this.getDialog(), false ) ) {
 				step.cancel();
 				this.getDialog().setVisible( false );

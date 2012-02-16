@@ -176,7 +176,8 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		//todo: better name
 		protected abstract org.lgna.common.Resource selectResource();
 		@Override
-		protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			org.lgna.common.Resource resource = this.selectResource();
 			if( resource != null ) {
 				step.commitAndInvokeDo( this.createEdit( step, resource ) );
@@ -481,7 +482,8 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			this.setName( "Reload Content..." );
 		}
 		@Override
-		protected final void perform(org.lgna.croquet.history.CompletionStep<?> step) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			final org.lgna.common.Resource resource = ResourceManagerPane.this.getSelectedResource();
 			if( resource != null ) {
 				final Capsule prevCapsule;
