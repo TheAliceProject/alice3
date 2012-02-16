@@ -41,36 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package edu.cmu.cs.dennisc.math.animation;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum PathStyle implements 
-		MoveTo.Detail, 
-		MoveAndOrientTo.Detail, 
-		Place.Detail 
-{
-	BEE_LINE( false ),
-	SMOOTH( true );
-	private final boolean isSmooth;
-	PathStyle( boolean isSmooth ) {
-		this.isSmooth = isSmooth;
+public abstract class Dimension3Animation extends Tuple3Animation< edu.cmu.cs.dennisc.math.Dimension3 > {
+	public Dimension3Animation( double duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Dimension3 v0, edu.cmu.cs.dennisc.math.Dimension3 v1 ) {
+		super( duration, style, v0, v1 );
 	}
-	/*package-private*/ boolean isSmooth() {
-		return this.isSmooth;
-	}
-	private static final PathStyle DEFAULT_VALUE = PathStyle.BEE_LINE;
-	private static PathStyle getValue( Object[] details, PathStyle defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof PathStyle ) {
-				PathStyle pathStyle = (PathStyle)detail;
-				return pathStyle;
-			}
-		}
-		return defaultValue;
-	}
-	/*package-private*/ static PathStyle getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+	@Override
+	protected edu.cmu.cs.dennisc.math.Dimension3 newE( edu.cmu.cs.dennisc.math.Dimension3 other ) {
+		return new edu.cmu.cs.dennisc.math.Dimension3( other );
 	}
 }
